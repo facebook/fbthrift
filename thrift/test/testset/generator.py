@@ -57,6 +57,7 @@ enum class FieldModifier {{
   SharedReference,
   Lazy,
   Box,
+  CustomDefault,
 }};
 
 namespace detail {{
@@ -101,6 +102,18 @@ PRIMITIVE_TYPES = (
     "string",
 )
 
+PRIMITIVE_TYPES_WITH_CUSTOM_DEFAULT = (
+    "bool{true}",
+    "byte{1}",
+    "i16{2}",
+    "i32{3}",
+    "i64{4}",
+    "float{5}",
+    "double{6}",
+    'binary{"7"}',
+    'string{"8"}',
+)
+
 KEY_TYPES = (
     "string",
     "i64",
@@ -112,6 +125,12 @@ PRIMATIVE_TRANSFORM: Dict[Target, str] = {
     Target.NAME: "{}",
     Target.THRIFT: "{}",
     Target.CPP2: CPP2_TYPE_NS + "::{}_t",
+}
+
+PRIMATIVE_CUSTOM_DEFAULT_TRANSFORM: Dict[Target, str] = {
+    Target.NAME: "{}_custom_default",
+    Target.THRIFT: "{}",
+    Target.CPP2: CPP2_TYPE_NS + "::{}_t|FieldModifier::CustomDefault",
 }
 
 STRUCT_TRANSFORM: Dict[Target, str] = {
@@ -187,6 +206,40 @@ BOX_TRANSFORM: Dict[Target, str] = {
 }
 
 
+def has_custom_default(s: str) -> bool:
+    """Whether field_type has {}
+    >>> has_custom_default("no_custom_default|thrift.box")
+    False
+    >>> has_custom_default("i32{42}|thrift.box")
+    True
+    """
+    return s.find("{") != -1 and s.find("}") != -1
+
+
+def remove_custom_default(s: str) -> str:
+    """Remove custom default inside {}
+    >>> remove_custom_default("no_custom_default|thrift.box")
+    'no_custom_default|thrift.box'
+    >>> remove_custom_default("i32{42}|thrift.box")
+    'i32|thrift.box'
+    """
+    if not has_custom_default(s):
+        return s
+    return s[: s.find("{")] + s[s.find("}") + 1 :]
+
+
+def get_custom_default(s: str) -> str:
+    """Extract custom default inside {}
+    >>> get_custom_default("no_custom_default|thrift.box")
+    ''
+    >>> get_custom_default("i32{42}|thrift.box")
+    '42'
+    """
+    if not has_custom_default(s):
+        return ""
+    return s[s.find("{") + 1 : s.find("}")]
+
+
 def gen_primatives(
     target: Target, prims: Iterable[str] = PRIMITIVE_TYPES
 ) -> Dict[str, str]:
@@ -194,6 +247,25 @@ def gen_primatives(
     for prim in prims:
         value = PRIMATIVE_TRANSFORM[target].format(prim)
         result[PRIMATIVE_TRANSFORM[Target.NAME].format(prim)] = value
+    return result
+
+
+def gen_primatives_with_custom_default(
+    target: Target,
+) -> Dict[str, str]:
+    result = {}
+    for prim in PRIMITIVE_TYPES_WITH_CUSTOM_DEFAULT:
+        if target in [Target.CPP2, Target.NAME]:
+            value = PRIMATIVE_CUSTOM_DEFAULT_TRANSFORM[target].format(
+                remove_custom_default(prim)
+            )
+        else:
+            value = PRIMATIVE_CUSTOM_DEFAULT_TRANSFORM[target].format(prim)
+        result[
+            PRIMATIVE_CUSTOM_DEFAULT_TRANSFORM[Target.NAME].format(
+                remove_custom_default(prim)
+            )
+        ] = value
     return result
 
 
@@ -284,6 +356,7 @@ def gen_optional_box_fields(target: Target) -> Dict[str, str]:
 def gen_struct_fields(target: Target) -> Dict[str, str]:
     """Generates field name -> type that are appropriate for use in structs."""
     ret = gen_union_fields(target)
+    ret.update(**gen_primatives_with_custom_default(target))
     ret.update(
         **gen_optional(target, ret),
         **gen_required(target, ret),
@@ -312,9 +385,19 @@ def gen_thrift_def(
             v = field_type.split("|")
             field_type = v[0]
             annotations = " (" + ", ".join(v[1:]) + ")"
-        lines.append(
-            "  {0}: {1} field_{0}{2};".format(idx + 1, field_type, annotations)
-        )
+        if not has_custom_default(field_type):
+            lines.append(
+                "  {0}: {1} field_{0}{2};".format(idx + 1, field_type, annotations)
+            )
+        else:
+            lines.append(
+                "  {0}: {1} field_{0} = {2}{3};".format(
+                    idx + 1,
+                    remove_custom_default(field_type),
+                    get_custom_default(field_type),
+                    annotations,
+                )
+            )
     lines.append(f'}} (thrift.uri="facebook.com/thrift/test/testset/{name}")')
     return "\n".join(lines)
 

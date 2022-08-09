@@ -17,6 +17,7 @@ enum class FieldModifier {
   SharedReference,
   Lazy,
   Box,
+  CustomDefault,
 };
 
 namespace detail {
@@ -574,6 +575,51 @@ struct struct_ByFieldType<type::string_t, mod_set<>> {
 };
 
 template <>
+struct struct_ByFieldType<type::bool_t, mod_set<FieldModifier::CustomDefault>> {
+  using type = struct_bool_custom_default;
+};
+
+template <>
+struct struct_ByFieldType<type::byte_t, mod_set<FieldModifier::CustomDefault>> {
+  using type = struct_byte_custom_default;
+};
+
+template <>
+struct struct_ByFieldType<type::i16_t, mod_set<FieldModifier::CustomDefault>> {
+  using type = struct_i16_custom_default;
+};
+
+template <>
+struct struct_ByFieldType<type::i32_t, mod_set<FieldModifier::CustomDefault>> {
+  using type = struct_i32_custom_default;
+};
+
+template <>
+struct struct_ByFieldType<type::i64_t, mod_set<FieldModifier::CustomDefault>> {
+  using type = struct_i64_custom_default;
+};
+
+template <>
+struct struct_ByFieldType<type::float_t, mod_set<FieldModifier::CustomDefault>> {
+  using type = struct_float_custom_default;
+};
+
+template <>
+struct struct_ByFieldType<type::double_t, mod_set<FieldModifier::CustomDefault>> {
+  using type = struct_double_custom_default;
+};
+
+template <>
+struct struct_ByFieldType<type::binary_t, mod_set<FieldModifier::CustomDefault>> {
+  using type = struct_binary_custom_default;
+};
+
+template <>
+struct struct_ByFieldType<type::string_t, mod_set<FieldModifier::CustomDefault>> {
+  using type = struct_string_custom_default;
+};
+
+template <>
 struct struct_ByFieldType<type::list<type::bool_t>, mod_set<FieldModifier::Optional>> {
   using type = struct_optional_list_bool;
 };
@@ -1114,6 +1160,51 @@ struct struct_ByFieldType<type::string_t, mod_set<FieldModifier::Optional>> {
 };
 
 template <>
+struct struct_ByFieldType<type::bool_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Optional>> {
+  using type = struct_optional_bool_custom_default;
+};
+
+template <>
+struct struct_ByFieldType<type::byte_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Optional>> {
+  using type = struct_optional_byte_custom_default;
+};
+
+template <>
+struct struct_ByFieldType<type::i16_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Optional>> {
+  using type = struct_optional_i16_custom_default;
+};
+
+template <>
+struct struct_ByFieldType<type::i32_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Optional>> {
+  using type = struct_optional_i32_custom_default;
+};
+
+template <>
+struct struct_ByFieldType<type::i64_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Optional>> {
+  using type = struct_optional_i64_custom_default;
+};
+
+template <>
+struct struct_ByFieldType<type::float_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Optional>> {
+  using type = struct_optional_float_custom_default;
+};
+
+template <>
+struct struct_ByFieldType<type::double_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Optional>> {
+  using type = struct_optional_double_custom_default;
+};
+
+template <>
+struct struct_ByFieldType<type::binary_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Optional>> {
+  using type = struct_optional_binary_custom_default;
+};
+
+template <>
+struct struct_ByFieldType<type::string_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Optional>> {
+  using type = struct_optional_string_custom_default;
+};
+
+template <>
 struct struct_ByFieldType<type::list<type::bool_t>, mod_set<FieldModifier::Required>> {
   using type = struct_required_list_bool;
 };
@@ -1651,6 +1742,51 @@ struct struct_ByFieldType<type::binary_t, mod_set<FieldModifier::Required>> {
 template <>
 struct struct_ByFieldType<type::string_t, mod_set<FieldModifier::Required>> {
   using type = struct_required_string;
+};
+
+template <>
+struct struct_ByFieldType<type::bool_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Required>> {
+  using type = struct_required_bool_custom_default;
+};
+
+template <>
+struct struct_ByFieldType<type::byte_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Required>> {
+  using type = struct_required_byte_custom_default;
+};
+
+template <>
+struct struct_ByFieldType<type::i16_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Required>> {
+  using type = struct_required_i16_custom_default;
+};
+
+template <>
+struct struct_ByFieldType<type::i32_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Required>> {
+  using type = struct_required_i32_custom_default;
+};
+
+template <>
+struct struct_ByFieldType<type::i64_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Required>> {
+  using type = struct_required_i64_custom_default;
+};
+
+template <>
+struct struct_ByFieldType<type::float_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Required>> {
+  using type = struct_required_float_custom_default;
+};
+
+template <>
+struct struct_ByFieldType<type::double_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Required>> {
+  using type = struct_required_double_custom_default;
+};
+
+template <>
+struct struct_ByFieldType<type::binary_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Required>> {
+  using type = struct_required_binary_custom_default;
+};
+
+template <>
+struct struct_ByFieldType<type::string_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Required>> {
+  using type = struct_required_string_custom_default;
 };
 
 template <>
@@ -2529,6 +2665,51 @@ struct exception_ByFieldType<type::string_t, mod_set<>> {
 };
 
 template <>
+struct exception_ByFieldType<type::bool_t, mod_set<FieldModifier::CustomDefault>> {
+  using type = exception_bool_custom_default;
+};
+
+template <>
+struct exception_ByFieldType<type::byte_t, mod_set<FieldModifier::CustomDefault>> {
+  using type = exception_byte_custom_default;
+};
+
+template <>
+struct exception_ByFieldType<type::i16_t, mod_set<FieldModifier::CustomDefault>> {
+  using type = exception_i16_custom_default;
+};
+
+template <>
+struct exception_ByFieldType<type::i32_t, mod_set<FieldModifier::CustomDefault>> {
+  using type = exception_i32_custom_default;
+};
+
+template <>
+struct exception_ByFieldType<type::i64_t, mod_set<FieldModifier::CustomDefault>> {
+  using type = exception_i64_custom_default;
+};
+
+template <>
+struct exception_ByFieldType<type::float_t, mod_set<FieldModifier::CustomDefault>> {
+  using type = exception_float_custom_default;
+};
+
+template <>
+struct exception_ByFieldType<type::double_t, mod_set<FieldModifier::CustomDefault>> {
+  using type = exception_double_custom_default;
+};
+
+template <>
+struct exception_ByFieldType<type::binary_t, mod_set<FieldModifier::CustomDefault>> {
+  using type = exception_binary_custom_default;
+};
+
+template <>
+struct exception_ByFieldType<type::string_t, mod_set<FieldModifier::CustomDefault>> {
+  using type = exception_string_custom_default;
+};
+
+template <>
 struct exception_ByFieldType<type::list<type::bool_t>, mod_set<FieldModifier::Optional>> {
   using type = exception_optional_list_bool;
 };
@@ -3069,6 +3250,51 @@ struct exception_ByFieldType<type::string_t, mod_set<FieldModifier::Optional>> {
 };
 
 template <>
+struct exception_ByFieldType<type::bool_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Optional>> {
+  using type = exception_optional_bool_custom_default;
+};
+
+template <>
+struct exception_ByFieldType<type::byte_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Optional>> {
+  using type = exception_optional_byte_custom_default;
+};
+
+template <>
+struct exception_ByFieldType<type::i16_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Optional>> {
+  using type = exception_optional_i16_custom_default;
+};
+
+template <>
+struct exception_ByFieldType<type::i32_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Optional>> {
+  using type = exception_optional_i32_custom_default;
+};
+
+template <>
+struct exception_ByFieldType<type::i64_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Optional>> {
+  using type = exception_optional_i64_custom_default;
+};
+
+template <>
+struct exception_ByFieldType<type::float_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Optional>> {
+  using type = exception_optional_float_custom_default;
+};
+
+template <>
+struct exception_ByFieldType<type::double_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Optional>> {
+  using type = exception_optional_double_custom_default;
+};
+
+template <>
+struct exception_ByFieldType<type::binary_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Optional>> {
+  using type = exception_optional_binary_custom_default;
+};
+
+template <>
+struct exception_ByFieldType<type::string_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Optional>> {
+  using type = exception_optional_string_custom_default;
+};
+
+template <>
 struct exception_ByFieldType<type::list<type::bool_t>, mod_set<FieldModifier::Required>> {
   using type = exception_required_list_bool;
 };
@@ -3606,6 +3832,51 @@ struct exception_ByFieldType<type::binary_t, mod_set<FieldModifier::Required>> {
 template <>
 struct exception_ByFieldType<type::string_t, mod_set<FieldModifier::Required>> {
   using type = exception_required_string;
+};
+
+template <>
+struct exception_ByFieldType<type::bool_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Required>> {
+  using type = exception_required_bool_custom_default;
+};
+
+template <>
+struct exception_ByFieldType<type::byte_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Required>> {
+  using type = exception_required_byte_custom_default;
+};
+
+template <>
+struct exception_ByFieldType<type::i16_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Required>> {
+  using type = exception_required_i16_custom_default;
+};
+
+template <>
+struct exception_ByFieldType<type::i32_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Required>> {
+  using type = exception_required_i32_custom_default;
+};
+
+template <>
+struct exception_ByFieldType<type::i64_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Required>> {
+  using type = exception_required_i64_custom_default;
+};
+
+template <>
+struct exception_ByFieldType<type::float_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Required>> {
+  using type = exception_required_float_custom_default;
+};
+
+template <>
+struct exception_ByFieldType<type::double_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Required>> {
+  using type = exception_required_double_custom_default;
+};
+
+template <>
+struct exception_ByFieldType<type::binary_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Required>> {
+  using type = exception_required_binary_custom_default;
+};
+
+template <>
+struct exception_ByFieldType<type::string_t, mod_set<FieldModifier::CustomDefault, FieldModifier::Required>> {
+  using type = exception_required_string_custom_default;
 };
 
 template <>
