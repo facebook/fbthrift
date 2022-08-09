@@ -426,7 +426,12 @@ Value parseValue(Protocol& prot, TType arg_type) {
 }
 
 inline TType getTType(const Value& val) {
-  return toTType(static_cast<type::BaseType>(val.getType()));
+  auto type = toTType(static_cast<type::BaseType>(val.getType()));
+  if (type == protocol::T_UTF7 || type == protocol::T_UTF8 ||
+      type == protocol::T_UTF16) {
+    return protocol::T_STRING;
+  }
+  return type;
 }
 
 inline void ensureSameType(const Value& a, TType b) {
