@@ -239,47 +239,58 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'bool_field',
+      'is_terse' ==> true,
       'type' => \TType::BOOL,
     ),
     2 => shape(
       'var' => 'byte_field',
+      'is_terse' ==> true,
       'type' => \TType::BYTE,
     ),
     3 => shape(
       'var' => 'short_field',
+      'is_terse' ==> true,
       'type' => \TType::I16,
     ),
     4 => shape(
       'var' => 'int_field',
+      'is_terse' ==> true,
       'type' => \TType::I32,
     ),
     5 => shape(
       'var' => 'long_field',
+      'is_terse' ==> true,
       'type' => \TType::I64,
     ),
     6 => shape(
       'var' => 'float_field',
+      'is_terse' ==> true,
       'type' => \TType::FLOAT,
     ),
     7 => shape(
       'var' => 'double_field',
+      'is_terse' ==> true,
       'type' => \TType::DOUBLE,
     ),
     8 => shape(
       'var' => 'string_field',
+      'is_terse' ==> true,
       'type' => \TType::STRING,
     ),
     9 => shape(
       'var' => 'binary_field',
+      'is_terse' ==> true,
       'type' => \TType::STRING,
     ),
     10 => shape(
       'var' => 'enum_field',
+      'is_terse' ==> true,
       'type' => \TType::I32,
       'enum' => \thrift\test\terse_write\MyEnum::class,
     ),
     11 => shape(
       'var' => 'list_field',
+      'is_terse' ==> true,
       'type' => \TType::LST,
       'etype' => \TType::I16,
       'elem' => shape(
@@ -289,6 +300,7 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
     ),
     12 => shape(
       'var' => 'set_field',
+      'is_terse' ==> true,
       'type' => \TType::SET,
       'etype' => \TType::I16,
       'elem' => shape(
@@ -298,6 +310,7 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
     ),
     13 => shape(
       'var' => 'map_field',
+      'is_terse' ==> true,
       'type' => \TType::MAP,
       'ktype' => \TType::I16,
       'vtype' => \TType::I16,
@@ -311,6 +324,7 @@ class StructLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncS
     ),
     14 => shape(
       'var' => 'struct_field',
+      'is_terse' ==> true,
       'type' => \TType::STRUCT,
       'class' => \thrift\test\terse_write\MyStruct::class,
     ),
@@ -856,47 +870,58 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'terse_bool_field',
+      'is_terse' ==> true,
       'type' => \TType::BOOL,
     ),
     2 => shape(
       'var' => 'terse_byte_field',
+      'is_terse' ==> true,
       'type' => \TType::BYTE,
     ),
     3 => shape(
       'var' => 'terse_short_field',
+      'is_terse' ==> true,
       'type' => \TType::I16,
     ),
     4 => shape(
       'var' => 'terse_int_field',
+      'is_terse' ==> true,
       'type' => \TType::I32,
     ),
     5 => shape(
       'var' => 'terse_long_field',
+      'is_terse' ==> true,
       'type' => \TType::I64,
     ),
     6 => shape(
       'var' => 'terse_float_field',
+      'is_terse' ==> true,
       'type' => \TType::FLOAT,
     ),
     7 => shape(
       'var' => 'terse_double_field',
+      'is_terse' ==> true,
       'type' => \TType::DOUBLE,
     ),
     8 => shape(
       'var' => 'terse_string_field',
+      'is_terse' ==> true,
       'type' => \TType::STRING,
     ),
     9 => shape(
       'var' => 'terse_binary_field',
+      'is_terse' ==> true,
       'type' => \TType::STRING,
     ),
     10 => shape(
       'var' => 'terse_enum_field',
+      'is_terse' ==> true,
       'type' => \TType::I32,
       'enum' => \thrift\test\terse_write\MyEnum::class,
     ),
     11 => shape(
       'var' => 'terse_list_field',
+      'is_terse' ==> true,
       'type' => \TType::LST,
       'etype' => \TType::I16,
       'elem' => shape(
@@ -906,6 +931,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
     ),
     12 => shape(
       'var' => 'terse_set_field',
+      'is_terse' ==> true,
       'type' => \TType::SET,
       'etype' => \TType::I16,
       'elem' => shape(
@@ -915,6 +941,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
     ),
     13 => shape(
       'var' => 'terse_map_field',
+      'is_terse' ==> true,
       'type' => \TType::MAP,
       'ktype' => \TType::I16,
       'vtype' => \TType::I16,
@@ -928,6 +955,7 @@ class FieldLevelTerseStruct implements \IThriftSyncStruct, \IThriftShapishSyncSt
     ),
     14 => shape(
       'var' => 'terse_struct_field',
+      'is_terse' ==> true,
       'type' => \TType::STRUCT,
       'class' => \thrift\test\terse_write\MyStruct::class,
     ),
@@ -2126,47 +2154,58 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'bool_field',
+      'is_terse' ==> true,
       'type' => \TType::BOOL,
     ),
     2 => shape(
       'var' => 'byte_field',
+      'is_terse' ==> true,
       'type' => \TType::BYTE,
     ),
     3 => shape(
       'var' => 'short_field',
+      'is_terse' ==> true,
       'type' => \TType::I16,
     ),
     4 => shape(
       'var' => 'int_field',
+      'is_terse' ==> true,
       'type' => \TType::I32,
     ),
     5 => shape(
       'var' => 'long_field',
+      'is_terse' ==> true,
       'type' => \TType::I64,
     ),
     6 => shape(
       'var' => 'float_field',
+      'is_terse' ==> true,
       'type' => \TType::FLOAT,
     ),
     7 => shape(
       'var' => 'double_field',
+      'is_terse' ==> true,
       'type' => \TType::DOUBLE,
     ),
     8 => shape(
       'var' => 'string_field',
+      'is_terse' ==> true,
       'type' => \TType::STRING,
     ),
     9 => shape(
       'var' => 'binary_field',
+      'is_terse' ==> true,
       'type' => \TType::STRING,
     ),
     10 => shape(
       'var' => 'enum_field',
+      'is_terse' ==> true,
       'type' => \TType::I32,
       'enum' => \thrift\test\terse_write\MyEnum::class,
     ),
     11 => shape(
       'var' => 'list_field',
+      'is_terse' ==> true,
       'type' => \TType::LST,
       'etype' => \TType::I16,
       'elem' => shape(
@@ -2176,6 +2215,7 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
     ),
     12 => shape(
       'var' => 'set_field',
+      'is_terse' ==> true,
       'type' => \TType::SET,
       'etype' => \TType::I16,
       'elem' => shape(
@@ -2185,6 +2225,7 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
     ),
     13 => shape(
       'var' => 'map_field',
+      'is_terse' ==> true,
       'type' => \TType::MAP,
       'ktype' => \TType::I16,
       'vtype' => \TType::I16,
@@ -2198,6 +2239,7 @@ class TerseStructWithCustomDefault implements \IThriftSyncStruct, \IThriftShapis
     ),
     14 => shape(
       'var' => 'struct_field',
+      'is_terse' ==> true,
       'type' => \TType::STRUCT,
       'class' => \thrift\test\terse_write\MyStructWithCustomDefault::class,
     ),
@@ -2749,14 +2791,17 @@ class AdaptedFields implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'field1',
+      'is_terse' ==> true,
       'type' => \TType::I32,
     ),
     2 => shape(
       'var' => 'field2',
+      'is_terse' ==> true,
       'type' => \TType::I32,
     ),
     3 => shape(
       'var' => 'field3',
+      'is_terse' ==> true,
       'type' => \TType::I32,
     ),
   ];
@@ -2993,6 +3038,7 @@ class TerseException extends \TException implements \IThriftSyncStruct {
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'msg',
+      'is_terse' ==> true,
       'type' => \TType::STRING,
     ),
   ];
