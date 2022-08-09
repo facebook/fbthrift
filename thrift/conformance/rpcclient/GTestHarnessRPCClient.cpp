@@ -50,6 +50,14 @@ class ConformanceVerificationServer
     serverResult_.requestResponseBasic_ref().emplace().request() = *req;
   }
 
+  void requestResponseDeclaredException(std::unique_ptr<Request> req) override {
+    serverResult_.requestResponseDeclaredException_ref().emplace().request() =
+        *req;
+    throw can_throw(*testCase_.serverInstruction()
+                         ->requestResponseDeclaredException_ref()
+                         ->userException());
+  }
+
   folly::SemiFuture<folly::Unit> getTestReceived() {
     return getTestReceivedPromise_.getSemiFuture();
   }

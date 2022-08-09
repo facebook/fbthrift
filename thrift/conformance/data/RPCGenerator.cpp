@@ -24,7 +24,7 @@ Test createRequestResponseBasicTest() {
   ret.name() = "RequestResponseBasicTest";
 
   auto& testCase = ret.testCases()->emplace_back();
-  testCase.name() = "RequestResponse/Success";
+  testCase.name() = "RequestResponseBasic/Success";
 
   auto& rpcTest = testCase.rpc_ref().emplace();
   rpcTest.clientInstruction_ref()
@@ -59,12 +59,54 @@ Test createRequestResponseBasicTest() {
 
   return ret;
 }
+
+Test createRequestResponseDeclaredExceptionTest() {
+  Test ret;
+  ret.name() = "RequestResponseDeclaredExceptionTest";
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "RequestResponseDeclaredException/Success";
+
+  UserException userException;
+  userException.msg() = "world";
+
+  auto& rpcTest = testCase.rpc_ref().emplace();
+  rpcTest.clientInstruction_ref()
+      .emplace()
+      .requestResponseDeclaredException_ref()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+  rpcTest.clientTestResult_ref()
+      .emplace()
+      .requestResponseDeclaredException_ref()
+      .emplace()
+      .userException() = userException;
+
+  rpcTest.serverInstruction_ref()
+      .emplace()
+      .requestResponseDeclaredException_ref()
+      .emplace()
+      .userException() = userException;
+  rpcTest.serverTestResult_ref()
+      .emplace()
+      .requestResponseDeclaredException_ref()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+
+  return ret;
+}
+
 } // namespace
 
 TestSuite createRPCTestSuite() {
   TestSuite suite;
   suite.name() = "ThriftRPCTest";
   suite.tests()->push_back(createRequestResponseBasicTest());
+  suite.tests()->push_back(createRequestResponseDeclaredExceptionTest());
   return suite;
 }
 

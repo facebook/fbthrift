@@ -22,6 +22,7 @@
 #include <folly/io/async/EventBaseManager.h>
 
 #include <thrift/conformance/if/gen-cpp2/RPCConformanceService.h>
+#include <thrift/conformance/if/gen-cpp2/rpc_types.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 
 DEFINE_int32(port, 7777, "Port for Conformance Verification Server");
@@ -37,12 +38,25 @@ std::unique_ptr<Client<RPCConformanceService>> createClient() {
               folly::SocketAddress("::1", FLAGS_port)))));
 }
 
-RequestResponseBasicClientTestResult runRequestResponseTest(
+RequestResponseBasicClientTestResult runRequestResponseBasicTest(
     const RequestResponseBasicClientInstruction& instruction) {
   RequestResponseBasicClientTestResult result;
   auto client = createClient();
   client->sync_requestResponseBasic(
       result.response().emplace(), *instruction.request());
+  return result;
+}
+
+RequestResponseDeclaredExceptionClientTestResult
+requestResponseDeclaredExceptionTest(
+    const RequestResponseDeclaredExceptionClientInstruction& instruction) {
+  RequestResponseDeclaredExceptionClientTestResult result;
+  auto client = createClient();
+  try {
+    client->sync_requestResponseDeclaredException(*instruction.request());
+  } catch (const UserException& e) {
+    result.userException() = e;
+  }
   return result;
 }
 
@@ -57,8 +71,13 @@ int main(int argc, char** argv) {
   ClientTestResult result;
   switch (clientInstruction.getType()) {
     case ClientInstruction::Type::requestResponseBasic:
-      result.set_requestResponseBasic(runRequestResponseTest(
+      result.set_requestResponseBasic(runRequestResponseBasicTest(
           *clientInstruction.requestResponseBasic_ref()));
+      break;
+    case ClientInstruction::Type::requestResponseDeclaredException:
+      result.set_requestResponseDeclaredException(
+          requestResponseDeclaredExceptionTest(
+              *clientInstruction.requestResponseDeclaredException_ref()));
       break;
     default:
       throw std::runtime_error("Invalid TestCase type");

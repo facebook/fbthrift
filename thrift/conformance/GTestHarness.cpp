@@ -65,6 +65,19 @@ RequestResponseBasicClientTestResult RunRequestResponseBasic(
   return result;
 }
 
+RequestResponseDeclaredExceptionClientTestResult
+RunRequestResponseDeclaredException(
+    RPCConformanceServiceAsyncClient& client,
+    const RequestResponseDeclaredExceptionClientInstruction& instruction) {
+  RequestResponseDeclaredExceptionClientTestResult result;
+  try {
+    client.sync_requestResponseDeclaredException(*instruction.request());
+  } catch (const UserException& ue) {
+    result.userException() = ue;
+  }
+  return result;
+}
+
 ClientTestResult RunClientSteps(
     Client<RPCConformanceService>& client,
     const ClientInstruction& clientInstruction) {
@@ -73,6 +86,12 @@ ClientTestResult RunClientSteps(
     case ClientInstruction::Type::requestResponseBasic:
       result.set_requestResponseBasic(RunRequestResponseBasic(
           client, *clientInstruction.requestResponseBasic_ref()));
+      break;
+    case ClientInstruction::Type::requestResponseDeclaredException:
+      result.set_requestResponseDeclaredException(
+          RunRequestResponseDeclaredException(
+              client,
+              *clientInstruction.requestResponseDeclaredException_ref()));
       break;
     default:
       break;

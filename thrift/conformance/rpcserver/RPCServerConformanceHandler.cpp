@@ -26,4 +26,12 @@ void RPCServerConformanceHandler::requestResponseBasic(
              ->response();
 }
 
+void RPCServerConformanceHandler::requestResponseDeclaredException(
+    std::unique_ptr<Request> req) {
+  result_.requestResponseDeclaredException_ref().emplace().request() = *req;
+  throw can_throw(*testCase_->serverInstruction()
+                       ->requestResponseDeclaredException_ref()
+                       ->userException());
+}
+
 } // namespace apache::thrift::conformance

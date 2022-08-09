@@ -26,6 +26,8 @@ class RPCServerConformanceHandler
   void requestResponseBasic(
       Response& res, std::unique_ptr<Request> req) override;
 
+  void requestResponseDeclaredException(std::unique_ptr<Request> req) override;
+
   void sendTestCase(std::unique_ptr<RpcTestCase> req) override {
     testCase_ = std::move(req);
   }

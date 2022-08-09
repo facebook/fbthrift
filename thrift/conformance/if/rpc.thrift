@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+include "thrift/annotation/thrift.thrift"
+
 namespace cpp2 apache.thrift.conformance
 namespace php apache_thrift
 namespace py thrift.conformance.rpc
@@ -38,15 +40,25 @@ struct Response {
   2: optional i32 num;
 }
 
+exception UserException {
+  1: string msg;
+}
+
 union ServerTestResult {
   1: RequestResponseBasicServerTestResult requestResponseBasic;
+  2: RequestResponseDeclaredExceptionServerTestResult requestResponseDeclaredException;
 }
 
 union ClientTestResult {
   1: RequestResponseBasicClientTestResult requestResponseBasic;
+  2: RequestResponseDeclaredExceptionClientTestResult requestResponseDeclaredException;
 }
 
 struct RequestResponseBasicServerTestResult {
+  1: Request request;
+}
+
+struct RequestResponseDeclaredExceptionServerTestResult {
   1: Request request;
 }
 
@@ -54,12 +66,20 @@ struct RequestResponseBasicClientTestResult {
   1: Response response;
 }
 
+struct RequestResponseDeclaredExceptionClientTestResult {
+  // TODO(dokwon): Remove @thrift.Box after fixing incomplete type bug.
+  @thrift.Box
+  1: optional UserException userException;
+}
+
 union ClientInstruction {
   1: RequestResponseBasicClientInstruction requestResponseBasic;
+  2: RequestResponseDeclaredExceptionClientInstruction requestResponseDeclaredException;
 }
 
 union ServerInstruction {
   1: RequestResponseBasicServerInstruction requestResponseBasic;
+  2: RequestResponseDeclaredExceptionServerInstruction requestResponseDeclaredException;
 }
 
 struct RequestResponseBasicClientInstruction {
@@ -68,6 +88,16 @@ struct RequestResponseBasicClientInstruction {
 
 struct RequestResponseBasicServerInstruction {
   1: Response response;
+}
+
+struct RequestResponseDeclaredExceptionClientInstruction {
+  1: Request request;
+}
+
+struct RequestResponseDeclaredExceptionServerInstruction {
+  // TODO(dokwon): Remove @thrift.Box after fixing incomplete type bug.
+  @thrift.Box
+  1: optional UserException userException;
 }
 
 service RPCConformanceService {
@@ -81,4 +111,7 @@ service RPCConformanceService {
 
   // =================== Request-Response ===================
   Response requestResponseBasic(1: Request req);
+  void requestResponseDeclaredException(1: Request req) throws (
+    1: UserException e,
+  );
 }
