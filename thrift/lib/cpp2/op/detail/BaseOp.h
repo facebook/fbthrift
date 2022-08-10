@@ -18,7 +18,7 @@
 
 #include <thrift/lib/cpp2/op/Clear.h>
 #include <thrift/lib/cpp2/op/Compare.h>
-#include <thrift/lib/cpp2/type/detail/Ptr.h>
+#include <thrift/lib/cpp2/type/detail/RuntimeType.h>
 
 namespace apache {
 namespace thrift {
@@ -33,7 +33,7 @@ struct BaseAnyOp : type::detail::BaseErasedOp {
   static const T& ref(const void* ptr) { return *static_cast<const T*>(ptr); }
   template <typename PTag, typename U = type::native_type<PTag>>
   static const U& ref(const Ptr& ptr) {
-    if (ptr.type().cppType == typeid(U)) {
+    if (ptr.type->cppType == typeid(U)) {
       return *static_cast<const U*>(ptr.ptr);
     }
     bad_type();
@@ -47,7 +47,7 @@ struct BaseAnyOp : type::detail::BaseErasedOp {
   static void clear(void* ptr) { op::clear<Tag>(ref(ptr)); }
   static bool identical(const void* lhs, const Ptr& rhs) {
     // Caller should have already checked the types match.
-    assert(rhs.type().thriftType == Tag{});
+    assert(rhs.type->thriftType == Tag{});
     return op::identical<Tag>(ref(lhs), same(rhs));
   }
 };

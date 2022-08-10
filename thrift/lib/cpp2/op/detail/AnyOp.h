@@ -19,7 +19,7 @@
 #include <thrift/lib/cpp2/op/detail/BaseOp.h>
 #include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/Tag.h>
-#include <thrift/lib/cpp2/type/detail/Ptr.h>
+#include <thrift/lib/cpp2/type/detail/RuntimeType.h>
 
 namespace apache {
 namespace thrift {
@@ -150,11 +150,12 @@ struct AnyOp<type::map<KeyTag, ValTag>, T>
 template <typename Tag, typename T = type::native_type<Tag>>
 Ptr createAnyPtr(T&& val) {
   return {
-      &type::detail::getTypeInfo<AnyOp<Tag, std::decay_t<T>>, Tag, T>(),
+      {type::detail::getTypeInfo<AnyOp<Tag, std::decay_t<T>>, Tag, T>(),
+       std::is_const_v<std::remove_reference_t<T>>,
+       std::is_rvalue_reference_v<T>},
       // Note: const safety is validated at runtime.
       const_cast<std::decay_t<T>*>(&val),
-      std::is_const_v<std::remove_reference_t<T>>,
-      std::is_rvalue_reference_v<T>};
+  };
 }
 
 } // namespace detail

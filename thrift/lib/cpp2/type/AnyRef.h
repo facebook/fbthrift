@@ -25,7 +25,7 @@
 #include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/Tag.h>
 #include <thrift/lib/cpp2/type/Type.h>
-#include <thrift/lib/cpp2/type/detail/Ptr.h>
+#include <thrift/lib/cpp2/type/detail/RuntimeType.h>
 
 namespace apache {
 namespace thrift {
@@ -44,7 +44,7 @@ class AnyRef {
   AnyRef() noexcept = default;
 
   template <typename Tag, typename T>
-  constexpr static AnyRef create(T&& val) {
+  static AnyRef create(T&& val) {
     return {Tag{}, std::forward<T>(val)};
   }
 
@@ -66,8 +66,8 @@ class AnyRef {
   void clear() { ptr_.clear(); }
 
   // Type accessors.
-  constexpr const Type& type() const { return ptr_.type().thriftType; }
-  constexpr const std::type_info& typeId() const { return ptr_.type().cppType; }
+  const Type& type() const noexcept { return ptr_.type->thriftType; }
+  const std::type_info& typeId() const noexcept { return ptr_.type->cppType; }
 
   // Append to a list, string, etc.
   void append(AnyRef val) { ptr_.append(val.ptr_); }
@@ -127,7 +127,7 @@ class AnyRef {
     return AnyRef::create<type::string_t>(name);
   }
 
-  constexpr explicit AnyRef(detail::Ptr data) : ptr_(data) {}
+  explicit AnyRef(detail::Ptr data) noexcept : ptr_(data) {}
   template <typename Tag, typename T>
   AnyRef(Tag, T&& val)
       : ptr_(op::detail::createAnyPtr<Tag>(std::forward<T>(val))) {}
