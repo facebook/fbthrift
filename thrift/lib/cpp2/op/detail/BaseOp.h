@@ -18,37 +18,28 @@
 
 #include <thrift/lib/cpp2/op/Clear.h>
 #include <thrift/lib/cpp2/op/Compare.h>
+#include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/detail/RuntimeType.h>
 
 namespace apache {
 namespace thrift {
 namespace op {
 namespace detail {
-using Ptr = type::detail::Ptr;
 
-template <typename Tag, typename T>
+// Ops all Thrift types support.
+template <typename Tag>
 struct BaseAnyOp : type::detail::BaseErasedOp {
-  // Blind convert the pointer to T
+  // Blind convert the pointer to the native type.
+  using T = type::native_type<Tag>;
   static T& ref(void* ptr) { return *static_cast<T*>(ptr); }
   static const T& ref(const void* ptr) { return *static_cast<const T*>(ptr); }
-  template <typename PTag, typename U = type::native_type<PTag>>
-  static const U& ref(const Ptr& ptr) {
-    if (ptr.type->cppType == typeid(U)) {
-      return *static_cast<const U*>(ptr.ptr);
-    }
-    bad_type();
-  }
 
-  // Try to convert other to T, bad_type() on failure.
-  static const T& same(const Ptr& other) { return ref<Tag, T>(other); }
-
-  // Ops all Thrift types support.
   static bool empty(const void* ptr) { return op::isEmpty<Tag>(ref(ptr)); }
   static void clear(void* ptr) { op::clear<Tag>(ref(ptr)); }
-  static bool identical(const void* lhs, const Ptr& rhs) {
+  static bool identical(const void* lhs, const type::detail::Ptr& rhs) {
     // Caller should have already checked the types match.
-    assert(rhs.type->thriftType == Tag{});
-    return op::identical<Tag>(ref(lhs), same(rhs));
+    assert(rhs.type()->thriftType == Tag{});
+    return op::identical<Tag>(ref(lhs), rhs.as<Tag>());
   }
 };
 

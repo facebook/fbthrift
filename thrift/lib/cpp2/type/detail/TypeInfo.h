@@ -30,7 +30,7 @@ namespace thrift {
 namespace type {
 namespace detail {
 
-struct Ptr;
+class Ptr;
 
 // Runtime type information for a Thrift type.
 struct TypeInfo {
@@ -45,7 +45,7 @@ struct TypeInfo {
   void (*append)(void*, const Ptr&);
   bool (*add)(void*, const Ptr&);
   bool (*put)(void*, FieldId, const Ptr*, const Ptr&);
-  Ptr (*get)(Ptr, FieldId, const Ptr*);
+  Ptr (*get)(void*, FieldId, const Ptr*);
 
   // Type-safe, const-preserving casting functions.
   template <typename T>

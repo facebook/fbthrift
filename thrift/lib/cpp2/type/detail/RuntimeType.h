@@ -105,7 +105,7 @@ class RuntimeType {
   //
   // The runtime type is const, if either the context or type is const.
   // The runtime type is r-value, if both the context and the type are r-value.
-  RuntimeType mergeQualifiers(bool ctxConst, bool ctxRvalue = false) const {
+  RuntimeType withContext(bool ctxConst, bool ctxRvalue = false) const {
     return {info(), isConst() || ctxConst, isRvalue() && ctxRvalue};
   }
 
@@ -125,45 +125,53 @@ class RuntimeType {
 };
 
 // A type-erased, qualifier-preserving pointer to a Thrift value.
-struct Ptr {
-  RuntimeType type;
-  void* ptr = nullptr;
+class Ptr {
+ public:
+  Ptr() noexcept = default;
+  Ptr(RuntimeType type, void* ptr) noexcept : type_(type), ptr_(ptr) {}
+  Ptr(RuntimeType type, const void* ptr) noexcept
+      : type_(type.withContext(true)), ptr_(const_cast<void*>(ptr)) {}
 
-  // Bindings.
-  template <typename T>
-  constexpr const T& as() const {
-    return type->as<T>(ptr);
+  const RuntimeType& type() const noexcept { return type_; }
+
+  template <typename Tag>
+  const native_type<Tag>& as() const {
+    return type_->as<native_type<Tag>>(ptr_);
   }
-  template <typename T>
-  constexpr const T* tryAs() const {
-    return type->tryAs<T>(ptr);
+
+  template <typename Tag>
+  const native_type<Tag>* tryAs() const noexcept {
+    return type_->tryAs<native_type<Tag>>(ptr_);
   }
-  template <typename T>
-  constexpr T& mut() const {
-    return type.mut().as<T>(ptr);
+
+  template <typename Tag>
+  native_type<Tag>& mut() const {
+    return type_.mut().as<native_type<Tag>>(ptr_);
   }
-  template <typename T>
-  constexpr T* tryMut() const {
-    return type.isConst() ? nullptr : type->tryAs<T>(ptr);
+
+  template <typename Tag>
+  native_type<Tag>* tryMut() const noexcept {
+    return type_.isConst() ? nullptr : type_->tryAs<native_type<Tag>>(ptr_);
   }
-  bool empty() const { return type->empty(ptr); }
+
+  bool empty() const { return type_->empty(ptr_); }
   bool identical(const Ptr& rhs) const {
-    return type->thriftType == rhs.type->thriftType &&
-        type->identical(ptr, rhs);
+    return type_->thriftType == rhs.type_->thriftType &&
+        type_->identical(ptr_, rhs);
   }
-  void clear() const { type.mut().clear(ptr); }
+  void clear() const { type_.mut().clear(ptr_); }
 
-  void append(const Ptr& val) const { type.mut().append(ptr, val); }
-  bool add(const Ptr& val) const { return type.mut().add(ptr, val); }
+  void append(const Ptr& val) const { type_.mut().append(ptr_, val); }
+  bool add(const Ptr& val) const { return type_.mut().add(ptr_, val); }
   bool put(const Ptr& key, const Ptr& val) const {
-    return type.mut().put(ptr, {}, &key, val);
+    return type_.mut().put(ptr_, {}, &key, val);
   }
   bool put(FieldId id, const Ptr& val) const {
-    return type.mut().put(ptr, id, nullptr, val);
+    return type_.mut().put(ptr_, id, nullptr, val);
   }
 
-  Ptr mergeQuals(bool ctxConst, bool ctxRvalue = false) const {
-    return {type.mergeQualifiers(ctxConst, ctxRvalue), ptr};
+  Ptr withContext(bool ctxConst, bool ctxRvalue = false) const {
+    return {type_.withContext(ctxConst, ctxRvalue), ptr_};
   }
 
   // Gets the given field or entry, taking into account the context in
@@ -173,8 +181,12 @@ struct Ptr {
       const Ptr* key,
       bool ctxConst = false,
       bool ctxRvalue = false) const {
-    return type->get(mergeQuals(ctxConst, ctxRvalue), id, key);
+    return type_.withContext(ctxConst, ctxRvalue)->get(ptr_, id, key);
   }
+
+ private:
+  RuntimeType type_;
+  void* ptr_ = nullptr;
 };
 
 // A base impl that throws for every op.
@@ -196,7 +208,7 @@ struct BaseErasedOp {
   [[noreturn]] static bool put(void*, FieldId, const Ptr*, const Ptr&) {
     bad_op();
   }
-  [[noreturn]] static Ptr get(Ptr, FieldId, const Ptr*) { bad_op(); }
+  [[noreturn]] static Ptr get(void*, FieldId, const Ptr*) { bad_op(); }
 };
 
 // The ops for the empty type 'void'.

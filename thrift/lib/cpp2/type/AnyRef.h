@@ -66,8 +66,8 @@ class AnyRef {
   void clear() { ptr_.clear(); }
 
   // Type accessors.
-  const Type& type() const noexcept { return ptr_.type->thriftType; }
-  const std::type_info& typeId() const noexcept { return ptr_.type->cppType; }
+  const Type& type() const noexcept { return ptr_.type()->thriftType; }
+  const std::type_info& typeId() const noexcept { return ptr_.type()->cppType; }
 
   // Append to a list, string, etc.
   void append(AnyRef val) { ptr_.append(val.ptr_); }
@@ -105,19 +105,19 @@ class AnyRef {
   // Type-safe value accessors.
   template <typename Tag>
   constexpr const native_type<Tag>& as() const {
-    return ptr_.as<native_type<Tag>>();
+    return ptr_.as<Tag>();
   }
   template <typename Tag>
   constexpr native_type<Tag>& mut() {
-    return ptr_.mut<native_type<Tag>>();
+    return ptr_.mut<Tag>();
   }
   template <typename Tag>
   constexpr const native_type<Tag>* tryAs() const noexcept {
-    return ptr_.tryAs<native_type<Tag>>();
+    return ptr_.tryAs<Tag>();
   }
   template <typename Tag>
   constexpr const native_type<Tag>* tryMut() const noexcept {
-    return ptr_.tryMut<native_type<Tag>>();
+    return ptr_.tryMut<Tag>();
   }
 
  private:
