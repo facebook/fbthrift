@@ -118,17 +118,20 @@ class mstch_py3_type : public mstch_type {
     std::string cppType;
     std::string flatName;
   };
+
+  CachedProperties& get_cached_props(
+      const t_type* type, const mstch_factories& factories);
+
   mstch_py3_type(
       const t_type* type,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       mstch_element_position pos,
-      const t_program* prog,
-      CachedProperties& cachedProps)
-      : mstch_type(type, factories, cache, pos),
-        prog_{prog},
-        cachedProps_{cachedProps} {
-    strip_cpp_comments_and_newlines(cachedProps_.cppType);
+      const t_program* prog)
+      : mstch_type(type->get_true_type(), factories, cache, pos),
+        prog_(prog),
+        cached_props_(get_cached_props(type, factories)) {
+    strip_cpp_comments_and_newlines(cached_props_.cppType);
     register_methods(
         this,
         {
@@ -175,19 +178,19 @@ class mstch_py3_type : public mstch_type {
     return "_" + boost::algorithm::join(get_type_py3_namespace(), "_");
   }
 
-  mstch::node flatName() { return cachedProps_.flatName; }
+  mstch::node flatName() { return cached_props_.flatName; }
 
   mstch::node cppNamespaces() {
     return createStringArray(get_type_cpp2_namespace());
   }
 
-  mstch::node cppTemplate() { return cachedProps_.cppTemplate; }
+  mstch::node cppTemplate() { return cached_props_.cppTemplate; }
 
   mstch::node cythonTemplate() { return to_cython_template(); }
 
   mstch::node isDefaultTemplate() { return is_default_template(); }
 
-  mstch::node cppType() { return cachedProps_.cppType; }
+  mstch::node cppType() { return cached_props_.cppType; }
 
   mstch::node cythonType() { return to_cython_type(); }
 
@@ -226,14 +229,14 @@ class mstch_py3_type : public mstch_type {
         resolved_type_->is_xception();
   }
 
-  const std::string& get_flat_name() const { return cachedProps_.flatName; }
+  const std::string& get_flat_name() const { return cached_props_.flatName; }
 
   void set_flat_name(std::string extra) {
     std::string custom_prefix;
     if (!is_default_template()) {
       custom_prefix = to_cython_template() + "__";
     } else {
-      if (cachedProps_.cppType != "") {
+      if (cached_props_.cppType != "") {
         custom_prefix = to_cython_type() + "__";
       }
     }
@@ -242,17 +245,17 @@ class mstch_py3_type : public mstch_type {
       custom_prefix += typeProgram->name() + "_";
     }
     custom_prefix += extra;
-    cachedProps_.flatName = std::move(custom_prefix);
+    cached_props_.flatName = std::move(custom_prefix);
   }
 
   bool is_default_template() const {
-    return (!type_->is_container() && cachedProps_.cppTemplate == "") ||
-        (type_->is_list() && cachedProps_.cppTemplate == "std::vector") ||
-        (type_->is_set() && cachedProps_.cppTemplate == "std::set") ||
-        (type_->is_map() && cachedProps_.cppTemplate == "std::map");
+    return (!type_->is_container() && cached_props_.cppTemplate == "") ||
+        (type_->is_list() && cached_props_.cppTemplate == "std::vector") ||
+        (type_->is_set() && cached_props_.cppTemplate == "std::set") ||
+        (type_->is_map() && cached_props_.cppTemplate == "std::map");
   }
 
-  bool has_custom_cpp_type() const { return cachedProps_.cppType != ""; }
+  bool has_custom_cpp_type() const { return cached_props_.cppType != ""; }
 
  protected:
   const t_program* get_type_program() const {
@@ -274,23 +277,23 @@ class mstch_py3_type : public mstch_type {
 
   std::string to_cython_template() const {
     // handle special built-ins first:
-    if (cachedProps_.cppTemplate == "std::vector") {
+    if (cached_props_.cppTemplate == "std::vector") {
       return "vector";
-    } else if (cachedProps_.cppTemplate == "std::set") {
+    } else if (cached_props_.cppTemplate == "std::set") {
       return "cset";
-    } else if (cachedProps_.cppTemplate == "std::map") {
+    } else if (cached_props_.cppTemplate == "std::map") {
       return "cmap";
     }
     // then default handling:
     return boost::algorithm::replace_all_copy(
-        cachedProps_.cppTemplate, "::", "_");
+        cached_props_.cppTemplate, "::", "_");
   }
 
   std::string to_cython_type() const {
-    if (cachedProps_.cppType == "") {
+    if (cached_props_.cppType == "") {
       return "";
     }
-    std::string cython_type = cachedProps_.cppType;
+    std::string cython_type = cached_props_.cppType;
     boost::algorithm::replace_all(cython_type, "::", "_");
     boost::algorithm::replace_all(cython_type, "<", "_");
     boost::algorithm::replace_all(cython_type, ">", "");
@@ -320,10 +323,10 @@ class mstch_py3_type : public mstch_type {
 
   bool has_cython_type() const { return !type_->is_container(); }
 
-  bool is_iobuf() const { return cachedProps_.cppType == "folly::IOBuf"; }
+  bool is_iobuf() const { return cached_props_.cppType == "folly::IOBuf"; }
 
   bool is_iobuf_ref() const {
-    return cachedProps_.cppType == "std::unique_ptr<folly::IOBuf>";
+    return cached_props_.cppType == "std::unique_ptr<folly::IOBuf>";
   }
 
   bool is_flexible_binary() const {
@@ -331,8 +334,8 @@ class mstch_py3_type : public mstch_type {
         !is_iobuf_ref() &&
         // We know that folly::fbstring is completely substitutable for
         // std::string and it's a common-enough type to special-case:
-        cachedProps_.cppType != "folly::fbstring" &&
-        cachedProps_.cppType != "::folly::fbstring";
+        cached_props_.cppType != "folly::fbstring" &&
+        cached_props_.cppType != "::folly::fbstring";
   }
 
   bool has_custom_type_behavior() const {
@@ -340,21 +343,7 @@ class mstch_py3_type : public mstch_type {
   }
 
   const t_program* prog_;
-  CachedProperties& cachedProps_;
-};
-
-template <bool ForContainers = false>
-class py3_type_factory : public mstch_type_factory {
- public:
-  explicit py3_type_factory(const t_program* prog) : prog_{prog} {}
-  std::shared_ptr<mstch_base> make_mstch_object(
-      const t_type* type,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos) const override;
-
- protected:
-  const t_program* prog_;
+  CachedProperties& cached_props_;
 };
 
 class mstch_py3_program : public mstch_program {
@@ -407,7 +396,7 @@ class mstch_py3_program : public mstch_program {
   }
 
   mstch::node getContainerTypes() {
-    return make_mstch_array(containers_, py3_type_factory<true>(program_));
+    return make_mstch_array(containers_, *factories_.type_factory);
   }
 
   mstch::node getCppIncludes() {
@@ -1075,31 +1064,6 @@ class mstch_py3_enum_value : public mstch_enum_value {
   }
 };
 
-class mstch_py3_container_type : public mstch_py3_type {
- public:
-  mstch_py3_container_type(
-      const t_type* type,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos,
-      const t_program* prog,
-      CachedProperties& cachedProps)
-      : mstch_py3_type(type, factories, cache, pos, prog, cachedProps) {
-    register_methods(
-        this,
-        {
-            {"containerType:flat_name",
-             &mstch_py3_container_type::containerTypeFlatName},
-
-        });
-  }
-
-  mstch::node containerTypeFlatName() {
-    assert(type_->is_container());
-    return cachedProps_.flatName;
-  }
-};
-
 class mstch_py3_deprecated_annotation : public mstch_deprecated_annotation {
  public:
   mstch_py3_deprecated_annotation(
@@ -1151,23 +1115,6 @@ class py3_program_factory : public mstch_program_factory {
   }
   std::unordered_map<const t_type*, mstch_py3_type::CachedProperties>
       typePropsCache;
-};
-
-class py3_service_factory : public mstch_service_factory {
- public:
-  explicit py3_service_factory(const t_program* prog) : prog_{prog} {}
-
-  std::shared_ptr<mstch_base> make_mstch_object(
-      const t_service* service,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos) const override {
-    return std::make_shared<mstch_py3_service>(
-        service, factories, cache, pos, prog_);
-  }
-
- protected:
-  const t_program* prog_;
 };
 
 // Generator-specific validator that enforces that a reserved key is not used as
@@ -1292,38 +1239,32 @@ class t_mstch_py3_generator : public t_mstch_generator {
   const boost::filesystem::path generateRootPath_;
 };
 
-} // namespace
-
-template <bool ForContainers>
-std::shared_ptr<mstch_base> py3_type_factory<ForContainers>::make_mstch_object(
-    const t_type* type,
-    const mstch_factories& factories,
-    std::shared_ptr<mstch_cache> cache,
-    mstch_element_position pos) const {
-  using T = std::
-      conditional_t<ForContainers, mstch_py3_container_type, mstch_py3_type>;
-  auto trueType = type->get_true_type();
-  auto& propsCache =
-      dynamic_cast<py3_program_factory&>(*factories.program_factory)
-          .typePropsCache;
-  auto it = propsCache.find(trueType);
-  if (it == propsCache.end()) {
-    propsCache.emplace(
-        trueType,
-        mstch_py3_type::CachedProperties{
-            get_cpp_template(*trueType),
-            fmt::to_string(cpp2::get_type(trueType)),
-            {}});
+mstch_py3_type::CachedProperties& mstch_py3_type::get_cached_props(
+    const t_type* type, const mstch_factories& factories) {
+  auto true_type = type->get_true_type();
+  auto& cache = dynamic_cast<py3_program_factory&>(*factories.program_factory)
+                    .typePropsCache;
+  auto it = cache.find(true_type);
+  if (it == cache.end()) {
+    it = cache
+             .emplace(
+                 true_type,
+                 mstch_py3_type::CachedProperties{
+                     get_cpp_template(*true_type),
+                     fmt::to_string(cpp2::get_type(true_type)),
+                     {}})
+             .first;
   }
-  return std::make_shared<T>(
-      trueType, factories, cache, pos, prog_, propsCache.at(trueType));
+  return it->second;
 }
+
+} // namespace
 
 void t_mstch_py3_generator::set_mstch_factories() {
   factories_.program_factory = std::make_unique<py3_program_factory>();
-  factories_.service_factory = std::make_unique<py3_service_factory>(program_);
+  factories_.set_service_factory<mstch_py3_service>(program_);
   factories_.set_function_factory<mstch_py3_function>();
-  factories_.type_factory = std::make_unique<py3_type_factory<false>>(program_);
+  factories_.set_type_factory<mstch_py3_type>(program_);
   factories_.set_struct_factory<mstch_py3_struct>();
   factories_.set_field_factory<mstch_py3_field>();
   factories_.set_enum_factory<mstch_py3_enum>();
