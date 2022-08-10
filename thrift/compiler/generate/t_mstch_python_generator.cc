@@ -29,8 +29,8 @@
 #include <thrift/compiler/ast/t_service.h>
 #include <thrift/compiler/detail/mustache/mstch.h>
 #include <thrift/compiler/generate/common.h>
+#include <thrift/compiler/generate/mstch_objects.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
-#include <thrift/compiler/generate/t_mstch_objects.h>
 #include <thrift/compiler/lib/cpp2/util.h>
 #include <thrift/compiler/lib/py3/util.h>
 #include <thrift/compiler/lib/uri.h>
@@ -1062,16 +1062,16 @@ class python_mstch_const_value : public mstch_const_value {
 } // namespace
 
 void t_mstch_python_generator::set_mstch_factories() {
-  factories_.set_program_factory<python_mstch_program>();
-  factories_.set_service_factory<python_mstch_service>(program_);
-  factories_.set_function_factory<python_mstch_function>();
-  factories_.set_type_factory<python_mstch_type>(program_);
-  factories_.set_typedef_factory<python_mstch_typedef>();
-  factories_.set_struct_factory<python_mstch_struct>();
-  factories_.set_field_factory<python_mstch_field>();
-  factories_.set_enum_factory<python_mstch_enum>();
-  factories_.set_enum_value_factory<python_mstch_enum_value>();
-  factories_.set_const_value_factory<python_mstch_const_value>();
+  factories_.add<python_mstch_program>();
+  factories_.add<python_mstch_service>(program_);
+  factories_.add<python_mstch_function>();
+  factories_.add<python_mstch_type>(program_);
+  factories_.add<python_mstch_typedef>();
+  factories_.add<python_mstch_struct>();
+  factories_.add<python_mstch_field>();
+  factories_.add<python_mstch_enum>();
+  factories_.add<python_mstch_enum_value>();
+  factories_.add<python_mstch_const_value>();
 }
 
 boost::filesystem::path t_mstch_python_generator::package_to_path() {

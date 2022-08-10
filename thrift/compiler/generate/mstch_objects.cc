@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/compiler/generate/t_mstch_objects.h>
+#include <thrift/compiler/generate/mstch_objects.h>
 
 #include <fmt/core.h>
 
@@ -81,18 +81,18 @@ mstch::node mstch_base::is_struct() {
 }
 
 mstch_factories::mstch_factories() {
-  set_program_factory<mstch_program>();
-  set_type_factory<mstch_type>();
-  set_typedef_factory<mstch_typedef>();
-  set_struct_factory<mstch_struct>();
-  set_field_factory<mstch_field>();
-  set_enum_factory<mstch_enum>();
-  set_enum_value_factory<mstch_enum_value>();
-  set_const_factory<mstch_const>();
-  set_const_value_factory<mstch_const_value>();
-  set_const_map_element_factory<mstch_const_map_element>();
-  set_structured_annotation_factory<mstch_structured_annotation>();
-  set_deprecated_annotation_factory<mstch_deprecated_annotation>();
+  add<mstch_program>();
+  add<mstch_type>();
+  add<mstch_typedef>();
+  add<mstch_struct>();
+  add<mstch_field>();
+  add<mstch_enum>();
+  add<mstch_enum_value>();
+  add<mstch_const>();
+  add<mstch_const_value>();
+  add<mstch_const_map_element>();
+  add<mstch_structured_annotation>();
+  add<mstch_deprecated_annotation>();
 }
 
 mstch::node mstch_enum::values() {

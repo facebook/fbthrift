@@ -25,8 +25,8 @@
 #include <boost/algorithm/string/replace.hpp>
 
 #include <thrift/compiler/ast/t_struct.h>
+#include <thrift/compiler/generate/mstch_objects.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
-#include <thrift/compiler/generate/t_mstch_objects.h>
 #include <thrift/compiler/lib/uri.h>
 
 using namespace std;
@@ -1583,17 +1583,16 @@ void t_mstch_rust_generator::generate_program() {
 }
 
 void t_mstch_rust_generator::set_mstch_factories() {
-  factories_.set_program_factory<rust_mstch_program>(&options_);
-  factories_.set_service_factory<rust_mstch_service>(&options_);
-  factories_.set_type_factory<rust_mstch_type>(&options_);
-  factories_.set_typedef_factory<rust_mstch_typedef>(&options_);
-  factories_.set_struct_factory<rust_mstch_struct>(&options_);
-  factories_.set_field_factory<rust_mstch_field>(&options_);
-  factories_.set_enum_factory<rust_mstch_enum>(&options_);
-  factories_.set_enum_value_factory<rust_mstch_enum_value>();
-  factories_
-      .set_deprecated_annotation_factory<rust_mstch_deprecated_annotation>();
-  factories_.set_const_factory<rust_mstch_const>(&options_);
+  factories_.add<rust_mstch_program>(&options_);
+  factories_.add<rust_mstch_service>(&options_);
+  factories_.add<rust_mstch_type>(&options_);
+  factories_.add<rust_mstch_typedef>(&options_);
+  factories_.add<rust_mstch_struct>(&options_);
+  factories_.add<rust_mstch_field>(&options_);
+  factories_.add<rust_mstch_enum>(&options_);
+  factories_.add<rust_mstch_enum_value>();
+  factories_.add<rust_mstch_deprecated_annotation>();
+  factories_.add<rust_mstch_const>(&options_);
 }
 
 void t_mstch_rust_generator::load_crate_map(const std::string& path) {

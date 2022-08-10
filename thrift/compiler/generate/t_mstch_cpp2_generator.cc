@@ -28,8 +28,8 @@
 #include <thrift/compiler/ast/t_field.h>
 #include <thrift/compiler/gen/cpp/type_resolver.h>
 #include <thrift/compiler/generate/common.h>
+#include <thrift/compiler/generate/mstch_objects.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
-#include <thrift/compiler/generate/t_mstch_objects.h>
 #include <thrift/compiler/lib/cpp2/util.h>
 #include <thrift/compiler/lib/uri.h>
 #include <thrift/compiler/validator/validator.h>
@@ -707,6 +707,8 @@ class cpp_mstch_service : public mstch_service {
 
 class cpp_mstch_interaction : public cpp_mstch_service {
  public:
+  using ast_type = t_interaction;
+
   cpp_mstch_interaction(
       const t_interaction* interaction,
       const mstch_factories& factories,
@@ -2156,20 +2158,19 @@ void t_mstch_cpp2_generator::generate_program() {
 }
 
 void t_mstch_cpp2_generator::set_mstch_factories() {
-  factories_.set_program_factory<cpp_mstch_program>();
-  factories_.set_service_factory<cpp_mstch_service>();
-  factories_.set_interaction_factory<cpp_mstch_interaction>();
-  factories_.set_function_factory<cpp_mstch_function>();
-  factories_.set_type_factory<cpp_mstch_type>(context_);
-  factories_.set_typedef_factory<cpp_mstch_typedef>(context_);
-  factories_.set_struct_factory<cpp_mstch_struct>(context_);
-  factories_.set_field_factory<cpp_mstch_field>(context_);
-  factories_.set_enum_factory<cpp_mstch_enum>();
-  factories_.set_enum_value_factory<cpp_mstch_enum_value>();
-  factories_.set_const_factory<cpp_mstch_const>(context_);
-  factories_.set_const_value_factory<cpp_mstch_const_value>();
-  factories_
-      .set_deprecated_annotation_factory<cpp_mstch_deprecated_annotation>();
+  factories_.add<cpp_mstch_program>();
+  factories_.add<cpp_mstch_service>();
+  factories_.add<cpp_mstch_interaction>();
+  factories_.add<cpp_mstch_function>();
+  factories_.add<cpp_mstch_type>(context_);
+  factories_.add<cpp_mstch_typedef>(context_);
+  factories_.add<cpp_mstch_struct>(context_);
+  factories_.add<cpp_mstch_field>(context_);
+  factories_.add<cpp_mstch_enum>();
+  factories_.add<cpp_mstch_enum_value>();
+  factories_.add<cpp_mstch_const>(context_);
+  factories_.add<cpp_mstch_const_value>();
+  factories_.add<cpp_mstch_deprecated_annotation>();
 }
 
 void t_mstch_cpp2_generator::generate_constants(const t_program* program) {

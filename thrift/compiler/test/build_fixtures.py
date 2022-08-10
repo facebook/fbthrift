@@ -174,7 +174,7 @@ for name, index in zip(fixture_names, range(len(fixture_names))):
             args[0] = args[0] + join + extra
         if "cpp2" in args[0] or "schema" in args[0] or "mstch_java" in args[0]:
             # TODO: (yuhanhao) T41937765 When use generators that use
-            # `t_mstch_objects` in recursive mode, if included thrift file
+            # `mstch_objects` in recursive mode, if included thrift file
             # contains const structs or const union, generater will attempt to
             # de-reference a nullptr in `mstch_const_value::const_struct()`.
             # This is a hack before this is resolved.

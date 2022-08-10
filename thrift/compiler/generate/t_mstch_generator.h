@@ -24,8 +24,8 @@
 #include <boost/filesystem.hpp>
 #include <thrift/compiler/detail/mustache/mstch.h>
 
+#include <thrift/compiler/generate/mstch_objects.h>
 #include <thrift/compiler/generate/t_generator.h>
-#include <thrift/compiler/generate/t_mstch_objects.h>
 
 namespace apache {
 namespace thrift {

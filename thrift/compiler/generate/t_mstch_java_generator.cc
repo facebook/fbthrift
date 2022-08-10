@@ -1151,16 +1151,16 @@ void t_mstch_java_generator::generate_program() {
 }
 
 void t_mstch_java_generator::set_mstch_factories() {
-  factories_.set_program_factory<mstch_java_program>();
-  factories_.set_service_factory<mstch_java_service>();
-  factories_.set_function_factory<mstch_java_function>();
-  factories_.set_type_factory<mstch_java_type>();
-  factories_.set_struct_factory<mstch_java_struct>();
-  factories_.set_field_factory<mstch_java_field>();
-  factories_.set_enum_factory<mstch_java_enum>();
-  factories_.set_enum_value_factory<mstch_java_enum_value>();
-  factories_.set_const_factory<mstch_java_const>();
-  factories_.set_const_value_factory<mstch_java_const_value>();
+  factories_.add<mstch_java_program>();
+  factories_.add<mstch_java_service>();
+  factories_.add<mstch_java_function>();
+  factories_.add<mstch_java_type>();
+  factories_.add<mstch_java_struct>();
+  factories_.add<mstch_java_field>();
+  factories_.add<mstch_java_enum>();
+  factories_.add<mstch_java_enum_value>();
+  factories_.add<mstch_java_const>();
+  factories_.add<mstch_java_const_value>();
 }
 
 THRIFT_REGISTER_GENERATOR(mstch_java, "Java", "");

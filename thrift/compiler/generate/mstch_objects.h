@@ -122,6 +122,12 @@ using mstch_const_map_element_factory = mstch_factory<
 using mstch_structured_annotation_factory = mstch_factory<t_const>;
 using mstch_deprecated_annotation_factory = mstch_factory<t_annotation>;
 
+namespace detail {
+// Structured annotations don't have a separate AST node type yet so use a
+// tag type to distinguish it from t_const.
+struct structured_annotation_tag {};
+} // namespace detail
+
 class mstch_factories {
  public:
   std::unique_ptr<mstch_program_factory> program_factory;
@@ -144,89 +150,30 @@ class mstch_factories {
 
   mstch_factories();
 
-  struct no_context {};
+  struct no_data {};
 
-  // The following functions set factories for mstch object types.
-  // ctx: An optional context to be passed by value as the last argument to an
-  //      mstch object constructor.
+  // Adds a factory for the mstch object type MstchType.
+  // data: Optional data to be passed by value as the last argument to an
+  //       mstch object constructor.
   //
   // Example:
-  //   set_program_factory<my_mstch_program>();
+  //   factories.set<my_mstch_program>();
   //
   // where my_mstch_program is a subclass of mstch_program.
-  template <typename MstchType, typename Context = no_context>
-  void set_program_factory(Context ctx = {}) {
-    set_factory<MstchType>(program_factory, ctx);
-  }
-  template <typename MstchType, typename Context = no_context>
-  void set_service_factory(Context ctx = {}) {
-    set_factory<MstchType>(service_factory, ctx);
-  }
-  template <typename MstchType, typename Context = no_context>
-  void set_interaction_factory(Context ctx = {}) {
-    set_factory<MstchType>(interaction_factory, ctx);
-  }
-  template <typename MstchType, typename Context = no_context>
-  void set_function_factory(Context ctx = {}) {
-    set_factory<MstchType>(function_factory, ctx);
-  }
-  template <typename MstchType, typename Context = no_context>
-  void set_type_factory(Context ctx = {}) {
-    set_factory<MstchType>(type_factory, ctx);
-  }
-  template <typename MstchType, typename Context = no_context>
-  void set_typedef_factory(Context ctx = {}) {
-    set_factory<MstchType>(typedef_factory, ctx);
-  }
-  template <typename MstchType, typename Context = no_context>
-  void set_struct_factory(Context ctx = {}) {
-    set_factory<MstchType>(struct_factory, ctx);
-  }
-  template <typename MstchType, typename Context = no_context>
-  void set_field_factory(Context ctx = {}) {
-    set_factory<MstchType>(field_factory, ctx);
-  }
-  template <typename MstchType, typename Context = no_context>
-  void set_enum_factory(Context ctx = {}) {
-    set_factory<MstchType>(enum_factory, ctx);
-  }
-  template <typename MstchType, typename Context = no_context>
-  void set_enum_value_factory(Context ctx = {}) {
-    set_factory<MstchType>(enum_value_factory, ctx);
-  }
-  template <typename MstchType, typename Context = no_context>
-  void set_const_factory(Context ctx = {}) {
-    set_factory<MstchType>(const_factory, ctx);
-  }
-  template <typename MstchType, typename Context = no_context>
-  void set_const_value_factory(Context ctx = {}) {
-    set_factory<MstchType>(const_value_factory, ctx);
-  }
-  template <typename MstchType, typename Context = no_context>
-  void set_const_map_element_factory(Context ctx = {}) {
-    set_factory<MstchType>(const_map_element_factory, ctx);
-  }
-  template <typename MstchType, typename Context = no_context>
-  void set_structured_annotation_factory(Context ctx = {}) {
-    set_factory<MstchType>(structured_annotation_factory, ctx);
-  }
-  template <typename MstchType, typename Context = no_context>
-  void set_deprecated_annotation_factory(Context ctx = {}) {
-    set_factory<MstchType>(deprecated_annotation_factory, ctx);
+  template <typename MstchType, typename Data = no_data>
+  void add(Data data = {}) {
+    typename MstchType::ast_type* tag = nullptr;
+    make<MstchType>(get(tag), data);
   }
 
  private:
-  template <
-      typename Context,
-      typename MstchType,
-      typename Node,
-      typename... Args>
+  template <typename Data, typename MstchType, typename Node, typename... Args>
   class mstch_factory_impl : public mstch_factory<Node, Args...> {
    private:
-    Context ctx_;
+    Data data_;
 
    public:
-    explicit mstch_factory_impl(Context ctx) : ctx_(ctx) {}
+    explicit mstch_factory_impl(Data data) : data_(data) {}
 
     std::shared_ptr<mstch_base> make_mstch_object(
         const Node* node,
@@ -235,15 +182,15 @@ class mstch_factories {
         mstch_element_position pos,
         Args... args) const override {
       return std::make_shared<MstchType>(
-          node, factories, cache, pos, args..., ctx_);
+          node, factories, cache, pos, args..., data_);
     }
   };
 
   template <typename MstchType, typename Node, typename... Args>
-  class mstch_factory_impl<no_context, MstchType, Node, Args...>
+  class mstch_factory_impl<no_data, MstchType, Node, Args...>
       : public mstch_factory<Node, Args...> {
    public:
-    explicit mstch_factory_impl(no_context) {}
+    explicit mstch_factory_impl(no_data) {}
 
     std::shared_ptr<mstch_base> make_mstch_object(
         const Node* node,
@@ -255,17 +202,31 @@ class mstch_factories {
     }
   };
 
-  template <
-      typename MstchType,
-      typename Node,
-      typename... Args,
-      typename Context = no_context>
-  void set_factory(
-      std::unique_ptr<mstch_factory<Node, Args...>>& factory,
-      Context ctx = {}) {
-    factory =
-        std::make_unique<mstch_factory_impl<Context, MstchType, Node, Args...>>(
-            ctx);
+  // Returns a factory using a pointer to AST type for tag dispatch.
+  auto& get(t_program*) { return program_factory; }
+  auto& get(t_service*) { return service_factory; }
+  auto& get(t_interaction*) { return interaction_factory; }
+  auto& get(t_function*) { return function_factory; }
+  auto& get(t_type*) { return type_factory; }
+  auto& get(t_typedef*) { return typedef_factory; }
+  auto& get(t_struct*) { return struct_factory; }
+  auto& get(t_field*) { return field_factory; }
+  auto& get(t_enum*) { return enum_factory; }
+  auto& get(t_enum_value*) { return enum_value_factory; }
+  auto& get(t_const*) { return const_factory; }
+  auto& get(t_const_value*) { return const_value_factory; }
+  auto& get(std::pair<t_const_value*, t_const_value*>*) {
+    return const_map_element_factory;
+  }
+  auto& get(detail::structured_annotation_tag*) {
+    return structured_annotation_factory;
+  }
+  auto& get(t_annotation*) { return deprecated_annotation_factory; }
+
+  template <typename MstchType, typename Node, typename... Args, typename Data>
+  void make(std::unique_ptr<mstch_factory<Node, Args...>>& factory, Data data) {
+    using factory_impl = mstch_factory_impl<Data, MstchType, Node, Args...>;
+    factory = std::make_unique<factory_impl>(data);
   }
 };
 
@@ -455,6 +416,8 @@ class mstch_base : public mstch::object {
 
 class mstch_program : public mstch_base {
  public:
+  using ast_type = t_program;
+
   mstch_program(
       const t_program* p,
       const mstch_factories& factories,
@@ -522,6 +485,8 @@ class mstch_program : public mstch_base {
 
 class mstch_service : public mstch_base {
  public:
+  using ast_type = t_service;
+
   mstch_service(
       const t_service* s,
       const mstch_factories& factories,
@@ -623,6 +588,8 @@ class mstch_service : public mstch_base {
 
 class mstch_function : public mstch_base {
  public:
+  using ast_type = t_function;
+
   mstch_function(
       const t_function* f,
       const mstch_factories& factories,
@@ -748,6 +715,8 @@ class mstch_function : public mstch_base {
 
 class mstch_type : public mstch_base {
  public:
+  using ast_type = t_type;
+
   mstch_type(
       const t_type* t,
       const mstch_factories& factories,
@@ -874,6 +843,8 @@ class mstch_type : public mstch_base {
 
 class mstch_typedef : public mstch_base {
  public:
+  using ast_type = t_typedef;
+
   mstch_typedef(
       const t_typedef* t,
       const mstch_factories& factories,
@@ -905,6 +876,8 @@ class mstch_typedef : public mstch_base {
 
 class mstch_struct : public mstch_base {
  public:
+  using ast_type = t_struct;
+
   mstch_struct(
       const t_struct* s,
       const mstch_factories& factories,
@@ -1012,6 +985,8 @@ class mstch_struct : public mstch_base {
 
 class mstch_field : public mstch_base {
  public:
+  using ast_type = t_field;
+
   mstch_field(
       const t_field* f,
       const mstch_factories& factories,
@@ -1067,7 +1042,7 @@ class mstch_field : public mstch_base {
 
 class mstch_enum : public mstch_base {
  public:
-  using node_type = t_enum;
+  using ast_type = t_enum;
 
   mstch_enum(
       const t_enum* e,
@@ -1097,7 +1072,7 @@ class mstch_enum : public mstch_base {
 
 class mstch_enum_value : public mstch_base {
  public:
-  using node_type = t_enum_value;
+  using ast_type = t_enum_value;
 
   mstch_enum_value(
       const t_enum_value* ev,
@@ -1121,6 +1096,8 @@ class mstch_enum_value : public mstch_base {
 
 class mstch_const : public mstch_base {
  public:
+  using ast_type = t_const;
+
   mstch_const(
       const t_const* c,
       const mstch_factories& factories,
@@ -1159,6 +1136,7 @@ class mstch_const : public mstch_base {
 
 class mstch_const_value : public mstch_base {
  public:
+  using ast_type = t_const_value;
   using cv = t_const_value::t_const_value_type;
 
   mstch_const_value(
@@ -1271,10 +1249,10 @@ class mstch_const_value : public mstch_base {
 
 class mstch_const_map_element : public mstch_base {
  public:
-  using element_type = std::pair<t_const_value*, t_const_value*>;
+  using ast_type = std::pair<t_const_value*, t_const_value*>;
 
   mstch_const_map_element(
-      const element_type* e,
+      const ast_type* e,
       const mstch_factories& factories,
       std::shared_ptr<mstch_cache> cache,
       mstch_element_position pos,
@@ -1302,6 +1280,8 @@ class mstch_const_map_element : public mstch_base {
 
 class mstch_structured_annotation : public mstch_base {
  public:
+  using ast_type = detail::structured_annotation_tag;
+
   mstch_structured_annotation(
       const t_const* c,
       const mstch_factories& factories,
@@ -1336,6 +1316,8 @@ class mstch_structured_annotation : public mstch_base {
 
 class mstch_deprecated_annotation : public mstch_base {
  public:
+  using ast_type = t_annotation;
+
   mstch_deprecated_annotation(
       const t_annotation* a,
       const mstch_factories& factories,

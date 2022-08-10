@@ -18,8 +18,8 @@
 #include <memory>
 
 #include <thrift/compiler/generate/json.h>
+#include <thrift/compiler/generate/mstch_objects.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
-#include <thrift/compiler/generate/t_mstch_objects.h>
 
 namespace apache {
 namespace thrift {
@@ -322,14 +322,14 @@ void t_json_experimental_generator::generate_program() {
 }
 
 void t_json_experimental_generator::set_mstch_factories() {
-  factories_.set_program_factory<json_experimental_program>();
-  factories_.set_service_factory<json_experimental_service>();
-  factories_.set_function_factory<json_experimental_function>();
-  factories_.set_struct_factory<json_experimental_struct>();
-  factories_.set_field_factory<json_experimental_field>();
-  factories_.set_enum_factory<json_experimental_enum>();
-  factories_.set_enum_value_factory<json_experimental_enum_value>();
-  factories_.set_const_value_factory<json_experimental_const_value>();
+  factories_.add<json_experimental_program>();
+  factories_.add<json_experimental_service>();
+  factories_.add<json_experimental_function>();
+  factories_.add<json_experimental_struct>();
+  factories_.add<json_experimental_field>();
+  factories_.add<json_experimental_enum>();
+  factories_.add<json_experimental_enum_value>();
+  factories_.add<json_experimental_const_value>();
 }
 
 THRIFT_REGISTER_GENERATOR(json_experimental, "JSON_EXPERIMENTAL", "");

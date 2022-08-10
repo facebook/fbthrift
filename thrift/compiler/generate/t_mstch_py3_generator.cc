@@ -24,8 +24,8 @@
 #include <thrift/compiler/gen/cpp/reference_type.h>
 #include <thrift/compiler/gen/cpp/type_resolver.h>
 #include <thrift/compiler/generate/common.h>
+#include <thrift/compiler/generate/mstch_objects.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
-#include <thrift/compiler/generate/t_mstch_objects.h>
 #include <thrift/compiler/lib/cpp2/util.h>
 #include <thrift/compiler/lib/py3/util.h>
 
@@ -1262,15 +1262,14 @@ mstch_py3_type::CachedProperties& mstch_py3_type::get_cached_props(
 
 void t_mstch_py3_generator::set_mstch_factories() {
   factories_.program_factory = std::make_unique<py3_program_factory>();
-  factories_.set_service_factory<mstch_py3_service>(program_);
-  factories_.set_function_factory<mstch_py3_function>();
-  factories_.set_type_factory<mstch_py3_type>(program_);
-  factories_.set_struct_factory<mstch_py3_struct>();
-  factories_.set_field_factory<mstch_py3_field>();
-  factories_.set_enum_factory<mstch_py3_enum>();
-  factories_.set_enum_value_factory<mstch_py3_enum_value>();
-  factories_
-      .set_deprecated_annotation_factory<mstch_py3_deprecated_annotation>();
+  factories_.add<mstch_py3_service>(program_);
+  factories_.add<mstch_py3_function>();
+  factories_.add<mstch_py3_type>(program_);
+  factories_.add<mstch_py3_struct>();
+  factories_.add<mstch_py3_field>();
+  factories_.add<mstch_py3_enum>();
+  factories_.add<mstch_py3_enum_value>();
+  factories_.add<mstch_py3_deprecated_annotation>();
 }
 
 void t_mstch_py3_generator::generate_init_files() {
