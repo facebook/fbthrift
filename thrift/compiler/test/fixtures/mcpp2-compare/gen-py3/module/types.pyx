@@ -99,6 +99,19 @@ cdef class MyEnumA(thrift.py3.types.CompiledEnum):
     def __get_thrift_name__():
         return "module.MyEnumA"
 
+    def _to_python(self):
+        import importlib
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return python_types.MyEnumA(self.value)
+
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        return self.value
+
 
 __SetMetaClass(<PyTypeObject*> MyEnumA, <PyTypeObject*> __MyEnumAMeta)
 
@@ -140,6 +153,19 @@ cdef class AnnotatedEnum(thrift.py3.types.CompiledEnum):
     @staticmethod
     def __get_thrift_name__():
         return "module.AnnotatedEnum"
+
+    def _to_python(self):
+        import importlib
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return python_types.AnnotatedEnum(self.value)
+
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        return self.value
 
 
 __SetMetaClass(<PyTypeObject*> AnnotatedEnum, <PyTypeObject*> __AnnotatedEnumMeta)
@@ -183,6 +209,19 @@ cdef class AnnotatedEnum2(thrift.py3.types.CompiledEnum):
     def __get_thrift_name__():
         return "module.AnnotatedEnum2"
 
+    def _to_python(self):
+        import importlib
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return python_types.AnnotatedEnum2(self.value)
+
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        return self.value
+
 
 __SetMetaClass(<PyTypeObject*> AnnotatedEnum2, <PyTypeObject*> __AnnotatedEnum2Meta)
 
@@ -224,6 +263,19 @@ cdef class MyEnumB(thrift.py3.types.CompiledEnum):
     @staticmethod
     def __get_thrift_name__():
         return "module.MyEnumB"
+
+    def _to_python(self):
+        import importlib
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return python_types.MyEnumB(self.value)
+
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        return self.value
 
 
 __SetMetaClass(<PyTypeObject*> MyEnumB, <PyTypeObject*> __MyEnumBMeta)

@@ -95,6 +95,19 @@ cdef class MyEnumA(thrift.py3.types.CompiledEnum):
     def __get_thrift_name__():
         return "module.MyEnumA"
 
+    def _to_python(self):
+        import importlib
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return python_types.MyEnumA(self.value)
+
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        return self.value
+
 
 __SetMetaClass(<PyTypeObject*> MyEnumA, <PyTypeObject*> __MyEnumAMeta)
 

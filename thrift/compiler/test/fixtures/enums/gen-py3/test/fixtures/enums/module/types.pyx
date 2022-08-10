@@ -97,6 +97,19 @@ cdef class Metasyntactic(thrift.py3.types.CompiledEnum):
     def __get_thrift_name__():
         return "module.Metasyntactic"
 
+    def _to_python(self):
+        import importlib
+        python_types = importlib.import_module(
+            "test.fixtures.enums.module.thrift_types"
+        )
+        return python_types.Metasyntactic(self.value)
+
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        return self.value
+
 
 __SetMetaClass(<PyTypeObject*> Metasyntactic, <PyTypeObject*> __MetasyntacticMeta)
 
@@ -138,6 +151,19 @@ cdef class MyEnum1(thrift.py3.types.CompiledEnum):
     @staticmethod
     def __get_thrift_name__():
         return "module.MyEnum1"
+
+    def _to_python(self):
+        import importlib
+        python_types = importlib.import_module(
+            "test.fixtures.enums.module.thrift_types"
+        )
+        return python_types.MyEnum1(self.value)
+
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        return self.value
 
 
 __SetMetaClass(<PyTypeObject*> MyEnum1, <PyTypeObject*> __MyEnum1Meta)
@@ -181,6 +207,19 @@ cdef class MyEnum2(thrift.py3.types.CompiledEnum):
     def __get_thrift_name__():
         return "module.MyEnum2"
 
+    def _to_python(self):
+        import importlib
+        python_types = importlib.import_module(
+            "test.fixtures.enums.module.thrift_types"
+        )
+        return python_types.MyEnum2(self.value)
+
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        return self.value
+
 
 __SetMetaClass(<PyTypeObject*> MyEnum2, <PyTypeObject*> __MyEnum2Meta)
 
@@ -223,6 +262,19 @@ cdef class MyEnum3(thrift.py3.types.CompiledEnum):
     def __get_thrift_name__():
         return "module.MyEnum3"
 
+    def _to_python(self):
+        import importlib
+        python_types = importlib.import_module(
+            "test.fixtures.enums.module.thrift_types"
+        )
+        return python_types.MyEnum3(self.value)
+
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        return self.value
+
 
 __SetMetaClass(<PyTypeObject*> MyEnum3, <PyTypeObject*> __MyEnum3Meta)
 
@@ -264,6 +316,19 @@ cdef class MyEnum4(thrift.py3.types.CompiledEnum):
     @staticmethod
     def __get_thrift_name__():
         return "module.MyEnum4"
+
+    def _to_python(self):
+        import importlib
+        python_types = importlib.import_module(
+            "test.fixtures.enums.module.thrift_types"
+        )
+        return python_types.MyEnum4(self.value)
+
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        return self.value
 
 
 __SetMetaClass(<PyTypeObject*> MyEnum4, <PyTypeObject*> __MyEnum4Meta)

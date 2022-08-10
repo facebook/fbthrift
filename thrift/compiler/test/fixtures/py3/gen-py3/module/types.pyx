@@ -95,6 +95,19 @@ cdef class AnEnum(thrift.py3.types.CompiledEnum):
     def __get_thrift_name__():
         return "module.AnEnum"
 
+    def _to_python(self):
+        import importlib
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return python_types.AnEnum(self.value)
+
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        return self.value
+
 
 __SetMetaClass(<PyTypeObject*> AnEnum, <PyTypeObject*> __AnEnumMeta)
 
@@ -136,6 +149,19 @@ cdef class AnEnumRenamed(thrift.py3.types.CompiledEnum):
     @staticmethod
     def __get_thrift_name__():
         return "module.AnEnumRenamed"
+
+    def _to_python(self):
+        import importlib
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return python_types.AnEnumRenamed(self.value)
+
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        return self.value
 
 
 __SetMetaClass(<PyTypeObject*> AnEnumRenamed, <PyTypeObject*> __AnEnumRenamedMeta)
@@ -181,6 +207,19 @@ cdef class Flags(thrift.py3.types.Flag):
     @staticmethod
     def __get_thrift_name__():
         return "module.Flags"
+
+    def _to_python(self):
+        import importlib
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return python_types.Flags(self.value)
+
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        return self.value
 
 
 __SetMetaClass(<PyTypeObject*> Flags, <PyTypeObject*> __FlagsMeta)

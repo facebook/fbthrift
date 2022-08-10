@@ -677,7 +677,7 @@ cdef class CompiledEnum:
         return NotImplemented
 
     def __getattribute__(self, str name not None):
-        if name.startswith("__") or name in ("name", "value"):
+        if name.startswith("__") or name in ("name", "value", "_to_python", "_to_py3", "_to_py_deprecated"):
             return super().__getattribute__(name)
         return self.get_by_name(name)
 

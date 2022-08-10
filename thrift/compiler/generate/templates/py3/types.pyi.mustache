@@ -48,9 +48,10 @@ class {{enum:name}}(thrift.py3.types.{{^enum:flags?}}Enum{{/enum:flags?}}{{#enum
     {{#enum:values}}
     {{enum_value:py_name}}: {{enum:name}} = ...
     {{/enum:values}}
-    {{^enum:values}}
-    pass
-    {{/enum:values}}
+    {{!TODO: accommodate root_module_prefix}}
+    def _to_python(self) -> "{{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.thrift_types.{{enum:name}}": ...   # type: ignore
+    def _to_py3(self) -> {{enum:name}}: ...
+    def _to_py_deprecated(self) -> int: ...
 
 
 {{/program:enums}}

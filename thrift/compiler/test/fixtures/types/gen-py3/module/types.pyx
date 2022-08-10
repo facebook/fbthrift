@@ -97,6 +97,19 @@ cdef class has_bitwise_ops(thrift.py3.types.CompiledEnum):
     def __get_thrift_name__():
         return "module.has_bitwise_ops"
 
+    def _to_python(self):
+        import importlib
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return python_types.has_bitwise_ops(self.value)
+
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        return self.value
+
 
 __SetMetaClass(<PyTypeObject*> has_bitwise_ops, <PyTypeObject*> __has_bitwise_opsMeta)
 
@@ -138,6 +151,19 @@ cdef class is_unscoped(thrift.py3.types.CompiledEnum):
     @staticmethod
     def __get_thrift_name__():
         return "module.is_unscoped"
+
+    def _to_python(self):
+        import importlib
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return python_types.is_unscoped(self.value)
+
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        return self.value
 
 
 __SetMetaClass(<PyTypeObject*> is_unscoped, <PyTypeObject*> __is_unscopedMeta)
@@ -181,6 +207,19 @@ cdef class MyForwardRefEnum(thrift.py3.types.CompiledEnum):
     def __get_thrift_name__():
         return "module.MyForwardRefEnum"
 
+    def _to_python(self):
+        import importlib
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return python_types.MyForwardRefEnum(self.value)
+
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        return self.value
+
 
 __SetMetaClass(<PyTypeObject*> MyForwardRefEnum, <PyTypeObject*> __MyForwardRefEnumMeta)
 
@@ -222,6 +261,19 @@ cdef class MyEnumA(thrift.py3.types.CompiledEnum):
     @staticmethod
     def __get_thrift_name__():
         return "module.MyEnumA"
+
+    def _to_python(self):
+        import importlib
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return python_types.MyEnumA(self.value)
+
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        return self.value
 
 
 __SetMetaClass(<PyTypeObject*> MyEnumA, <PyTypeObject*> __MyEnumAMeta)

@@ -97,6 +97,19 @@ cdef class TestEnum(thrift.py3.types.CompiledEnum):
     def __get_thrift_name__():
         return "module.TestEnum"
 
+    def _to_python(self):
+        import importlib
+        python_types = importlib.import_module(
+            "test.fixtures.nolegacy.module.thrift_types"
+        )
+        return python_types.TestEnum(self.value)
+
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        return self.value
+
 
 __SetMetaClass(<PyTypeObject*> TestEnum, <PyTypeObject*> __TestEnumMeta)
 
