@@ -19,10 +19,10 @@
 
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/AsyncTransport.h>
-#include <folly/io/async/EventBaseManager.h>
 
 #include <thrift/conformance/if/gen-cpp2/RPCConformanceService.h>
 #include <thrift/conformance/if/gen-cpp2/rpc_types.h>
+#include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 
 DEFINE_int32(port, 7777, "Port for Conformance Verification Server");
@@ -32,10 +32,11 @@ using namespace apache::thrift::conformance;
 
 std::unique_ptr<Client<RPCConformanceService>> createClient() {
   return std::make_unique<Client<RPCConformanceService>>(
-      RocketClientChannel::newChannel(
-          folly::AsyncTransport::UniquePtr(new folly::AsyncSocket(
-              folly::EventBaseManager::get()->getEventBase(),
-              folly::SocketAddress("::1", FLAGS_port)))));
+      PooledRequestChannel::newChannel([](folly::EventBase& eb) {
+        return RocketClientChannel::newChannel(
+            folly::AsyncTransport::UniquePtr(new folly::AsyncSocket(
+                &eb, folly::SocketAddress("::1", FLAGS_port))));
+      }));
 }
 
 RequestResponseBasicClientTestResult runRequestResponseBasicTest(

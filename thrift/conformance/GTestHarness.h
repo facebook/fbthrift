@@ -45,6 +45,7 @@
 #include <thrift/conformance/if/gen-cpp2/test_suite_types.h>
 #include <thrift/lib/cpp/util/EnumUtils.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/op/Compare.h>
 
@@ -69,20 +70,21 @@ enum class ChannelType {
 // Creates a client for the localhost.
 template <typename Client>
 std::unique_ptr<Client> createClient(
-    folly::EventBase* eb, int port, ChannelType type = ChannelType::Header) {
-  folly::AsyncTransport::UniquePtr socket(
-      new folly::AsyncSocket(eb, folly::SocketAddress("::1", port)));
-  switch (type) {
-    case ChannelType::Header:
-      return std::make_unique<Client>(
-          HeaderClientChannel::newChannel(std::move(socket)));
-    case ChannelType::Rocket:
-      return std::make_unique<Client>(
-          RocketClientChannel::newChannel(std::move(socket)));
-    default:
-      throw std::invalid_argument(
-          "Unknown channel type: " + std::to_string(int(type)));
-  }
+    int port, ChannelType type = ChannelType::Header) {
+  return std::make_unique<Client>(PooledRequestChannel::newChannel(
+      [=](folly::EventBase& eb) -> PooledRequestChannel::ImplPtr {
+        folly::AsyncTransport::UniquePtr socket(
+            new folly::AsyncSocket(&eb, folly::SocketAddress("::1", port)));
+        switch (type) {
+          case ChannelType::Header:
+            return HeaderClientChannel::newChannel(std::move(socket));
+          case ChannelType::Rocket:
+            return RocketClientChannel::newChannel(std::move(socket));
+          default:
+            throw std::invalid_argument(
+                "Unknown channel type: " + std::to_string(int(type)));
+        }
+      }));
 }
 
 // Bundles a server process and client.
@@ -105,7 +107,7 @@ class ClientAndServer {
             }),
         [](int, int) { return true; });
     LOG(INFO) << "Using port: " << port;
-    client_ = createClient<Client>(&eb_, folly::to<int>(port), channelType_);
+    client_ = createClient<Client>(folly::to<int>(port), channelType_);
   }
 
   ~ClientAndServer() {
@@ -117,7 +119,6 @@ class ClientAndServer {
   Client& getClient() { return *client_; }
 
  private:
-  folly::EventBase eb_;
   folly::Subprocess server_;
   std::unique_ptr<Client> client_;
   ChannelType channelType_;
