@@ -4640,7 +4640,7 @@ pub mod server {
                         response
                     )?;
 
-            let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
+            let _ = reply_state.lock().unwrap().send_stream_reply(response, stream, P::PROTOCOL_ID);
             Ok(())
         }
 
@@ -4750,7 +4750,7 @@ pub mod server {
                         response
                     )?;
 
-            let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
+            let _ = reply_state.lock().unwrap().send_stream_reply(response, stream, P::PROTOCOL_ID);
             Ok(())
         }
 
@@ -4853,7 +4853,7 @@ pub mod server {
                         response
                     )?;
 
-            let _ = reply_state.lock().unwrap().send_stream_reply(response, stream);
+            let _ = reply_state.lock().unwrap().send_stream_reply(response, stream, P::PROTOCOL_ID);
             Ok(())
         }
 

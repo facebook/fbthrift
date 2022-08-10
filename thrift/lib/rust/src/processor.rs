@@ -40,6 +40,7 @@ use crate::protocol::ProtocolReader;
 use crate::protocol::ProtocolWriter;
 use crate::request_context::RequestContext;
 use crate::serialize::Serialize;
+use crate::thrift_protocol::ProtocolID;
 use crate::ttype::TType;
 
 pub trait ReplyState<F>
@@ -53,6 +54,7 @@ where
         stream: Option<
             Pin<Box<dyn Stream<Item = Result<FramingEncodedFinal<F>>> + Send + 'static>>,
         >,
+        protocol_id: ProtocolID,
     ) -> Result<()>;
 }
 
