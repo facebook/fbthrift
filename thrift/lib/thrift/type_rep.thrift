@@ -51,8 +51,8 @@ namespace py thrift.lib.thrift.type_rep
 struct DurationStruct {
   /** The count of seconds. */
   1: i64 seconds;
-  /** The count of nanoseconds. */
-  2: i32 nanos;
+  /** The count of nanoseconds. TODO(afuller): Fix to not require a default for terse fields */
+  2: i32 nanos = 0;
 } (thrift.uri = "facebook.com/thrift/type/Duration")
 
 /**
