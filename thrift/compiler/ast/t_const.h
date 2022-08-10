@@ -35,7 +35,6 @@ class t_program;
  * a value. The trick here is that the declared type might not match the type
  * of the value object, since that is not determined until after parsing the
  * whole thing out.
- *
  */
 class t_const final : public t_named {
  public:
@@ -48,7 +47,7 @@ class t_const final : public t_named {
    * @param value   - The constant value
    */
   t_const(
-      t_program* program,
+      const t_program* program,
       t_type_ref type,
       std::string name,
       std::unique_ptr<t_const_value> value)
@@ -71,7 +70,7 @@ class t_const final : public t_named {
       const char* key) const;
 
  private:
-  t_program* const program_;
+  const t_program* const program_;
   t_type_ref type_;
 
   std::unique_ptr<t_const_value> value_;
@@ -80,7 +79,7 @@ class t_const final : public t_named {
   // backwards compatibility.
  public:
   t_const(
-      t_program* program,
+      const t_program* program,
       const t_type* type,
       std::string name,
       std::unique_ptr<t_const_value> value)
@@ -95,7 +94,7 @@ class t_const final : public t_named {
         get_program(), get_type(), name(), value_->clone());
   }
 
-  t_program* get_program() const { return program_; }
+  const t_program* get_program() const { return program_; }
   const t_type* get_type() const { return type_.get_type(); }
   t_const_value* get_value() const { return value_.get(); }
 };

@@ -76,7 +76,7 @@ class t_structured : public t_type {
   std::vector<const t_field*> fields_id_order_;
   name_index<t_field> fields_by_name_;
 
-  t_structured(t_program* program, std::string name)
+  t_structured(const t_program* program, std::string name)
       : t_type(program, std::move(name)) {}
   explicit t_structured(t_program* program = nullptr) : t_type(program) {}
 

@@ -75,7 +75,7 @@ class t_type : public t_named {
    *
    * @param program - An entire thrift program
    */
-  explicit t_type(t_program* program) : program_(program) {}
+  explicit t_type(const t_program* program) : program_(program) {}
 
   /**
    * Constructor for t_type
@@ -90,7 +90,7 @@ class t_type : public t_named {
    * @param program - An entire thrift program
    * @param name    - The symbolic name of the thrift type
    */
-  t_type(t_program* program, std::string name)
+  t_type(const t_program* program, std::string name)
       : t_named(std::move(name)), program_(program) {}
 
   /**
@@ -101,7 +101,7 @@ class t_type : public t_named {
   std::string make_full_name(const char* prefix) const;
 
   // TODO(afuller): Make this private.
-  t_program* program_ = nullptr;
+  const t_program* program_ = nullptr;
 
   // TODO(afuller): Delete everything below this point. It's only here for
   // backwards compatibility.

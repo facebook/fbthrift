@@ -41,7 +41,7 @@ class t_program;
  */
 class t_struct : public t_structured {
  public:
-  t_struct(t_program* program, std::string name)
+  t_struct(const t_program* program, std::string name)
       : t_structured(program, std::move(name)) {}
 
   std::string get_full_name() const override {

@@ -31,7 +31,7 @@ class t_paramlist : public t_struct {
   // Param lists are unnamed.
   // TODO(afuller): The program should always be null, because this is an
   // 'unnamed' t_type (or more accurately, not a type at all).
-  explicit t_paramlist(t_program* program) : t_struct(program, "") {}
+  explicit t_paramlist(const t_program* program) : t_struct(program, "") {}
 
  private:
   friend class t_structured;
