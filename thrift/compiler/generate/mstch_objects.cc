@@ -23,18 +23,12 @@ namespace thrift {
 namespace compiler {
 
 std::shared_ptr<mstch_base> make_mstch_program_cached(
-    const t_program* program,
-    const mstch_factories& factories,
-    std::shared_ptr<mstch_cache> cache,
-    mstch_element_position pos) {
+    const t_program* program, mstch_context& ctx, mstch_element_position pos) {
   const auto& id = program->path();
-  auto itr = cache->programs_.find(id);
-  if (itr == cache->programs_.end()) {
-    itr = cache->programs_.emplace_hint(
-        itr,
-        id,
-        factories.program_factory->make_mstch_object(
-            program, factories, cache, pos));
+  auto itr = ctx.program_cache.find(id);
+  if (itr == ctx.program_cache.end()) {
+    itr = ctx.program_cache.emplace_hint(
+        itr, id, ctx.program_factory->make_mstch_object(program, ctx, pos));
   }
   return itr->second;
 }
@@ -42,28 +36,26 @@ std::shared_ptr<mstch_base> make_mstch_program_cached(
 std::shared_ptr<mstch_base> make_mstch_service_cached(
     const t_program* program,
     const t_service* service,
-    const mstch_factories& factories,
-    std::shared_ptr<mstch_cache> cache,
+    mstch_context& ctx,
     mstch_element_position pos) {
   std::string service_id = program->path() + service->get_name();
-  auto itr = cache->services_.find(service_id);
-  if (itr == cache->services_.end()) {
-    itr = cache->services_.emplace_hint(
+  auto itr = ctx.service_cache.find(service_id);
+  if (itr == ctx.service_cache.end()) {
+    itr = ctx.service_cache.emplace_hint(
         itr,
         service_id,
-        factories.service_factory->make_mstch_object(
-            service, factories, cache, pos));
+        ctx.service_factory->make_mstch_object(service, ctx, pos));
   }
   return itr->second;
 }
 
 bool mstch_base::has_option(const std::string& option) const {
-  return cache_->options_.find(option) != cache_->options_.end();
+  return context_.options.find(option) != context_.options.end();
 }
 
 std::string mstch_base::get_option(const std::string& option) const {
-  auto itr = cache_->options_.find(option);
-  if (itr != cache_->options_.end()) {
+  auto itr = context_.options.find(option);
+  if (itr != context_.options.end()) {
     return itr->second;
   }
   return {};
@@ -105,8 +97,8 @@ mstch::node mstch_type::get_struct() {
         type_->program()->name() + get_type_namespace(type_->program());
     return make_mstch_array_cached(
         std::vector<const t_struct*>{dynamic_cast<const t_struct*>(type_)},
-        *factories_.struct_factory,
-        cache_->structs_,
+        *context_.struct_factory,
+        context_.struct_cache,
         id);
   }
   return mstch::node();
@@ -118,8 +110,8 @@ mstch::node mstch_type::get_enum() {
         type_->program()->name() + get_type_namespace(type_->program());
     return make_mstch_array_cached(
         std::vector<const t_enum*>{dynamic_cast<const t_enum*>(resolved_type_)},
-        *factories_.enum_factory,
-        cache_->enums_,
+        *context_.enum_factory,
+        context_.enum_cache,
         id);
   }
   return mstch::node();
@@ -127,10 +119,9 @@ mstch::node mstch_type::get_enum() {
 
 mstch::node mstch_type::get_list_type() {
   if (resolved_type_->is_list()) {
-    return factories_.type_factory->make_mstch_object(
+    return context_.type_factory->make_mstch_object(
         dynamic_cast<const t_list*>(resolved_type_)->get_elem_type(),
-        factories_,
-        cache_,
+        context_,
         pos_);
   }
   return mstch::node();
@@ -138,10 +129,9 @@ mstch::node mstch_type::get_list_type() {
 
 mstch::node mstch_type::get_set_type() {
   if (resolved_type_->is_set()) {
-    return factories_.type_factory->make_mstch_object(
+    return context_.type_factory->make_mstch_object(
         dynamic_cast<const t_set*>(resolved_type_)->get_elem_type(),
-        factories_,
-        cache_,
+        context_,
         pos_);
   }
   return mstch::node();
@@ -149,10 +139,9 @@ mstch::node mstch_type::get_set_type() {
 
 mstch::node mstch_type::get_key_type() {
   if (resolved_type_->is_map()) {
-    return factories_.type_factory->make_mstch_object(
+    return context_.type_factory->make_mstch_object(
         dynamic_cast<const t_map*>(resolved_type_)->get_key_type(),
-        factories_,
-        cache_,
+        context_,
         pos_);
   }
   return mstch::node();
@@ -160,10 +149,9 @@ mstch::node mstch_type::get_key_type() {
 
 mstch::node mstch_type::get_value_type() {
   if (resolved_type_->is_map()) {
-    return factories_.type_factory->make_mstch_object(
+    return context_.type_factory->make_mstch_object(
         dynamic_cast<const t_map*>(resolved_type_)->get_val_type(),
-        factories_,
-        cache_,
+        context_,
         pos_);
   }
   return mstch::node();
@@ -171,40 +159,33 @@ mstch::node mstch_type::get_value_type() {
 
 mstch::node mstch_type::get_typedef_type() {
   if (type_->is_typedef()) {
-    return factories_.type_factory->make_mstch_object(
-        dynamic_cast<const t_typedef*>(type_)->get_type(),
-        factories_,
-        cache_,
-        pos_);
+    return context_.type_factory->make_mstch_object(
+        dynamic_cast<const t_typedef*>(type_)->get_type(), context_, pos_);
   }
   return mstch::node();
 }
 
 mstch::node mstch_type::get_typedef() {
   if (type_->is_typedef()) {
-    return factories_.typedef_factory->make_mstch_object(
-        dynamic_cast<const t_typedef*>(type_), factories_, cache_, pos_);
+    return context_.typedef_factory->make_mstch_object(
+        dynamic_cast<const t_typedef*>(type_), context_, pos_);
   }
   return mstch::node();
 }
 
 mstch::node mstch_type::get_sink_elem_type() {
   if (type_->is_sink()) {
-    return factories_.type_factory->make_mstch_object(
-        dynamic_cast<const t_sink*>(type_)->get_sink_type(),
-        factories_,
-        cache_,
-        pos_);
+    return context_.type_factory->make_mstch_object(
+        dynamic_cast<const t_sink*>(type_)->get_sink_type(), context_, pos_);
   }
   return mstch::node();
 }
 
 mstch::node mstch_type::get_sink_final_reponse_type() {
   if (type_->is_sink()) {
-    return factories_.type_factory->make_mstch_object(
+    return context_.type_factory->make_mstch_object(
         dynamic_cast<const t_sink*>(type_)->get_final_response_type(),
-        factories_,
-        cache_,
+        context_,
         pos_);
   }
   return mstch::node();
@@ -214,8 +195,8 @@ mstch::node mstch_type::get_sink_first_response_type() {
   if (type_->is_sink()) {
     if (const auto sinkresponse =
             dynamic_cast<const t_sink*>(type_)->get_first_response_type()) {
-      return factories_.type_factory->make_mstch_object(
-          sinkresponse, factories_, cache_, pos_);
+      return context_.type_factory->make_mstch_object(
+          sinkresponse, context_, pos_);
     }
   }
   return mstch::node();
@@ -223,10 +204,9 @@ mstch::node mstch_type::get_sink_first_response_type() {
 
 mstch::node mstch_type::get_stream_elem_type() {
   if (type_->is_streamresponse()) {
-    return factories_.type_factory->make_mstch_object(
+    return context_.type_factory->make_mstch_object(
         dynamic_cast<const t_stream_response*>(type_)->get_elem_type(),
-        factories_,
-        cache_,
+        context_,
         pos_);
   }
   return mstch::node();
@@ -237,8 +217,8 @@ mstch::node mstch_type::get_stream_first_response_type() {
     if (const auto streamresponse =
             dynamic_cast<const t_stream_response*>(resolved_type_)
                 ->get_first_response_type()) {
-      return factories_.type_factory->make_mstch_object(
-          streamresponse, factories_, cache_, pos_);
+      return context_.type_factory->make_mstch_object(
+          streamresponse, context_, pos_);
     }
   }
   return mstch::node();
@@ -248,28 +228,18 @@ mstch::node mstch_field::value() {
   if (!field_->get_value()) {
     return mstch::node();
   }
-  return factories_.const_value_factory->make_mstch_object(
-      field_->get_value(), factories_, cache_, pos_, nullptr, nullptr);
+  return context_.const_value_factory->make_mstch_object(
+      field_->get_value(), context_, pos_, nullptr, nullptr);
 }
 
 mstch::node mstch_const_map_element::element_key() {
-  return factories_.const_value_factory->make_mstch_object(
-      element_.first,
-      factories_,
-      cache_,
-      pos_,
-      current_const_,
-      expected_types_.first);
+  return context_.const_value_factory->make_mstch_object(
+      element_.first, context_, pos_, current_const_, expected_types_.first);
 }
 
 mstch::node mstch_const_map_element::element_value() {
-  return factories_.const_value_factory->make_mstch_object(
-      element_.second,
-      factories_,
-      cache_,
-      pos_,
-      current_const_,
-      expected_types_.second);
+  return context_.const_value_factory->make_mstch_object(
+      element_.second, context_, pos_, current_const_, expected_types_.second);
 }
 
 mstch::node mstch_const_value::value() {
@@ -372,7 +342,7 @@ mstch::node mstch_const_value::map_elems() {
   }
   return make_mstch_array(
       const_value_->get_map(),
-      *factories_.const_map_element_factory,
+      *context_.const_map_element_factory,
       current_const_,
       expected_types);
 }
@@ -392,7 +362,7 @@ mstch::node mstch_const_value::const_struct_type() {
 
   const auto* type = const_value_->ttype()->get_true_type();
   if (type->is_struct() || type->is_xception()) {
-    return factories_.type_factory->make_mstch_object(type, factories_, cache_);
+    return context_.type_factory->make_mstch_object(type, context_);
   }
 
   return {};
@@ -419,10 +389,9 @@ mstch::node mstch_const_value::const_struct() {
   }
 
   for (size_t i = 0, size = constants.size(); i < size; ++i) {
-    a.push_back(factories_.const_factory->make_mstch_object(
+    a.push_back(context_.const_factory->make_mstch_object(
         constants[i],
-        factories_,
-        cache_,
+        context_,
         mstch_element_position(i, size),
         current_const_,
         constants[i]->get_type(),
@@ -432,19 +401,13 @@ mstch::node mstch_const_value::const_struct() {
 }
 
 mstch::node mstch_const_value::owning_const() {
-  return factories_.const_factory->make_mstch_object(
-      const_value_->get_owner(),
-      factories_,
-      cache_,
-      pos_,
-      nullptr,
-      nullptr,
-      nullptr);
+  return context_.const_factory->make_mstch_object(
+      const_value_->get_owner(), context_, pos_, nullptr, nullptr, nullptr);
 }
 
 mstch::node mstch_field::type() {
-  return factories_.type_factory->make_mstch_object(
-      field_->get_type(), factories_, cache_, pos_);
+  return context_.type_factory->make_mstch_object(
+      field_->get_type(), context_, pos_);
 }
 
 mstch::node mstch_struct::fields() {
@@ -524,8 +487,8 @@ const std::vector<const t_field*>& mstch_struct::get_members_in_key_order() {
 }
 
 mstch::node mstch_function::return_type() {
-  return factories_.type_factory->make_mstch_object(
-      function_->get_returntype(), factories_, cache_, pos_);
+  return context_.type_factory->make_mstch_object(
+      function_->get_returntype(), context_, pos_);
 }
 
 mstch::node mstch_function::exceptions() {
@@ -570,27 +533,27 @@ mstch::node mstch_service::make_mstch_extended_service_cached(
   std::string id =
       service->program()->name() + get_service_namespace(service->program());
   return make_mstch_element_cached(
-      service, *factories_.service_factory, cache_->services_, id, 0, 1);
+      service, *context_.service_factory, context_.service_cache, id, 0, 1);
 }
 
 mstch::node mstch_typedef::type() {
-  return factories_.type_factory->make_mstch_object(
-      typedef_->get_type(), factories_, cache_, pos_);
+  return context_.type_factory->make_mstch_object(
+      typedef_->get_type(), context_, pos_);
 }
 
 mstch::node mstch_const::type() {
-  return factories_.type_factory->make_mstch_object(
-      const_->get_type(), factories_, cache_, pos_);
+  return context_.type_factory->make_mstch_object(
+      const_->get_type(), context_, pos_);
 }
 
 mstch::node mstch_const::value() {
-  return factories_.const_value_factory->make_mstch_object(
-      const_->get_value(), factories_, cache_, pos_, const_, expected_type_);
+  return context_.const_value_factory->make_mstch_object(
+      const_->get_value(), context_, pos_, const_, expected_type_);
 }
 
 mstch::node mstch_const::program() {
-  return factories_.program_factory->make_mstch_object(
-      const_->get_program(), factories_, cache_, pos_);
+  return context_.program_factory->make_mstch_object(
+      const_->get_program(), context_, pos_);
 }
 
 mstch::node mstch_program::has_thrift_uris() {
@@ -605,19 +568,25 @@ mstch::node mstch_program::has_thrift_uris() {
 mstch::node mstch_program::structs() {
   std::string id = program_->name() + get_program_namespace(program_);
   return make_mstch_array_cached(
-      get_program_objects(), *factories_.struct_factory, cache_->structs_, id);
+      get_program_objects(),
+      *context_.struct_factory,
+      context_.struct_cache,
+      id);
 }
 
 mstch::node mstch_program::enums() {
   std::string id = program_->name() + get_program_namespace(program_);
   return make_mstch_array_cached(
-      get_program_enums(), *factories_.enum_factory, cache_->enums_, id);
+      get_program_enums(), *context_.enum_factory, context_.enum_cache, id);
 }
 
 mstch::node mstch_program::services() {
   std::string id = program_->name() + get_program_namespace(program_);
   return make_mstch_array_cached(
-      program_->services(), *factories_.service_factory, cache_->services_, id);
+      program_->services(),
+      *context_.service_factory,
+      context_.service_cache,
+      id);
 }
 
 mstch::node mstch_program::typedefs() {
@@ -628,10 +597,9 @@ mstch::node mstch_program::constants() {
   mstch::array a;
   const auto& container = program_->consts();
   for (size_t i = 0, size = container.size(); i < size; ++i) {
-    a.push_back(factories_.const_factory->make_mstch_object(
+    a.push_back(context_.const_factory->make_mstch_object(
         container[i],
-        factories_,
-        cache_,
+        context_,
         mstch_element_position(i, size),
         container[i],
         container[i]->get_type(),

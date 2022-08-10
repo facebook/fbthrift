@@ -73,11 +73,8 @@ const std::string extract_module_path(const std::string& fully_qualified_name) {
 class python_mstch_program : public mstch_program {
  public:
   python_mstch_program(
-      const t_program* program,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos)
-      : mstch_program{program, factories, std::move(cache), pos} {
+      const t_program* p, mstch_context& ctx, mstch_element_position pos)
+      : mstch_program(p, ctx, pos) {
     register_methods(
         this,
         {
@@ -345,12 +342,11 @@ class python_mstch_program : public mstch_program {
 class python_mstch_service : public mstch_service {
  public:
   python_mstch_service(
-      const t_service* service,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      const t_service* s,
+      mstch_context& ctx,
       mstch_element_position pos,
       const t_program* prog)
-      : mstch_service(service, factories, cache, pos), prog_{prog} {
+      : mstch_service(s, ctx, pos), prog_(prog) {
     register_methods(
         this,
         {
@@ -375,7 +371,7 @@ class python_mstch_service : public mstch_service {
   mstch::node program_name() { return service_->program()->name(); }
 
   mstch::node parent_service_name() {
-    return cache_->options_.at("parent_service_name");
+    return context_.options.at("parent_service_name");
   }
 
   std::vector<t_function*> get_supported_functions(
@@ -453,11 +449,8 @@ class no_reserved_key_in_namespace_validator : virtual public validator {
 class python_mstch_function : public mstch_function {
  public:
   python_mstch_function(
-      const t_function* function,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos)
-      : mstch_function(function, factories, cache, pos) {
+      const t_function* f, mstch_context& ctx, mstch_element_position pos)
+      : mstch_function(f, ctx, pos) {
     register_methods(
         this,
         {
@@ -484,8 +477,7 @@ class python_mstch_function : public mstch_function {
       rettype = stream->has_first_response() ? stream->get_first_response_type()
                                              : &t_base_type::t_void();
     }
-    return factories_.type_factory->make_mstch_object(
-        rettype, factories_, cache_, pos_);
+    return context_.type_factory->make_mstch_object(rettype, context_, pos_);
   }
 
   mstch::node return_stream_elem_type() {
@@ -496,10 +488,9 @@ class python_mstch_function : public mstch_function {
     if (!rettype->is_streamresponse()) {
       return {};
     }
-    return factories_.type_factory->make_mstch_object(
+    return context_.type_factory->make_mstch_object(
         dynamic_cast<const t_stream_response*>(rettype)->get_elem_type(),
-        factories_,
-        cache_,
+        context_,
         pos_);
   }
 
@@ -515,11 +506,10 @@ class python_mstch_type : public mstch_type {
  public:
   python_mstch_type(
       const t_type* type,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos,
       const t_program* prog)
-      : mstch_type(type->get_true_type(), factories, std::move(cache), pos),
+      : mstch_type(type->get_true_type(), ctx, pos),
         prog_(prog),
         adapter_annotation_(find_structured_adapter_annotation(*type)) {
     register_methods(
@@ -622,11 +612,8 @@ class python_mstch_type : public mstch_type {
 class python_mstch_typedef : public mstch_typedef {
  public:
   python_mstch_typedef(
-      const t_typedef* t,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos)
-      : mstch_typedef(t, factories, std::move(cache), pos),
+      const t_typedef* t, mstch_context& ctx, mstch_element_position pos)
+      : mstch_typedef(t, ctx, pos),
         adapter_annotation_(find_structured_adapter_annotation(*t)) {
     register_methods(
         this,
@@ -650,11 +637,8 @@ class python_mstch_typedef : public mstch_typedef {
 class python_mstch_struct : public mstch_struct {
  public:
   python_mstch_struct(
-      const t_struct* s,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos)
-      : mstch_struct(s, factories, std::move(cache), pos),
+      const t_struct* s, mstch_context& ctx, mstch_element_position pos)
+      : mstch_struct(s, ctx, pos),
         adapter_annotation_(find_structured_adapter_annotation(*s)) {
     register_methods(
         this,
@@ -706,12 +690,11 @@ class python_mstch_field : public mstch_field {
  public:
   python_mstch_field(
       const t_field* field,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos,
       const field_generator_context* field_context)
-      : mstch_field(field, factories, std::move(cache), pos, field_context),
-        py_name_{py3::get_py3_name(*field)},
+      : mstch_field(field, ctx, pos, field_context),
+        py_name_(py3::get_py3_name(*field)),
         adapter_annotation_(find_structured_adapter_annotation(*field)) {
     register_methods(
         this,
@@ -757,8 +740,8 @@ class python_mstch_field : public mstch_field {
         const_cast<t_const_value*>(value)->set_map();
       }
     }
-    return factories_.const_value_factory->make_mstch_object(
-        value, factories_, cache_, pos_, nullptr, nullptr);
+    return context_.const_value_factory->make_mstch_object(
+        value, context_, pos_, nullptr, nullptr);
   }
   mstch::node has_adapter() { return adapter_annotation_ != nullptr; }
   mstch::node adapter_name() {
@@ -776,11 +759,8 @@ class python_mstch_field : public mstch_field {
 class python_mstch_enum : public mstch_enum {
  public:
   python_mstch_enum(
-      const t_enum* e,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos)
-      : mstch_enum(e, factories, std::move(cache), pos) {
+      const t_enum* e, mstch_context& ctx, mstch_element_position pos)
+      : mstch_enum(e, ctx, pos) {
     register_methods(
         this,
         {
@@ -794,11 +774,8 @@ class python_mstch_enum : public mstch_enum {
 class python_mstch_enum_value : public mstch_enum_value {
  public:
   python_mstch_enum_value(
-      const t_enum_value* enum_value,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos)
-      : mstch_enum_value(enum_value, factories, std::move(cache), pos) {
+      const t_enum_value* ev, mstch_context& ctx, mstch_element_position pos)
+      : mstch_enum_value(ev, ctx, pos) {
     register_methods(
         this,
         {
@@ -896,19 +873,12 @@ class t_mstch_python_generator : public t_mstch_generator {
 class python_mstch_const_value : public mstch_const_value {
  public:
   python_mstch_const_value(
-      const t_const_value* const_value,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      const t_const_value* cv,
+      mstch_context& ctx,
       mstch_element_position pos,
       const t_const* current_const,
       const t_type* expected_type)
-      : mstch_const_value(
-            const_value,
-            factories,
-            std::move(cache),
-            pos,
-            current_const,
-            expected_type) {
+      : mstch_const_value(cv, ctx, pos, current_const, expected_type) {
     register_methods(
         this,
         {
@@ -948,8 +918,7 @@ class python_mstch_const_value : public mstch_const_value {
     }
     const auto* type = const_value_->ttype()->get_true_type();
     if (type->is_enum()) {
-      return factories_.type_factory->make_mstch_object(
-          type, factories_, cache_);
+      return context_.type_factory->make_mstch_object(type, context_);
     }
     return {};
   }
@@ -1017,8 +986,8 @@ class python_mstch_const_value : public mstch_const_value {
       } else {
         return {};
       }
-      return factories_.type_factory->make_mstch_object(
-          elem_type, factories_, cache_, pos_);
+      return context_.type_factory->make_mstch_object(
+          elem_type, context_, pos_);
     }
     return {};
   }
@@ -1034,11 +1003,8 @@ class python_mstch_const_value : public mstch_const_value {
     if (auto ttype = const_value_->ttype()) {
       const auto* type = ttype->get_true_type();
       if (type->is_map()) {
-        return factories_.type_factory->make_mstch_object(
-            dynamic_cast<const t_map*>(type)->get_key_type(),
-            factories_,
-            cache_,
-            pos_);
+        return context_.type_factory->make_mstch_object(
+            dynamic_cast<const t_map*>(type)->get_key_type(), context_, pos_);
       }
     }
     return {};
@@ -1048,11 +1014,8 @@ class python_mstch_const_value : public mstch_const_value {
     if (auto ttype = const_value_->ttype()) {
       const auto* type = ttype->get_true_type();
       if (type->is_map()) {
-        return factories_.type_factory->make_mstch_object(
-            dynamic_cast<const t_map*>(type)->get_val_type(),
-            factories_,
-            cache_,
-            pos_);
+        return context_.type_factory->make_mstch_object(
+            dynamic_cast<const t_map*>(type)->get_val_type(), context_, pos_);
       }
     }
     return {};
@@ -1062,16 +1025,16 @@ class python_mstch_const_value : public mstch_const_value {
 } // namespace
 
 void t_mstch_python_generator::set_mstch_factories() {
-  factories_.add<python_mstch_program>();
-  factories_.add<python_mstch_service>(program_);
-  factories_.add<python_mstch_function>();
-  factories_.add<python_mstch_type>(program_);
-  factories_.add<python_mstch_typedef>();
-  factories_.add<python_mstch_struct>();
-  factories_.add<python_mstch_field>();
-  factories_.add<python_mstch_enum>();
-  factories_.add<python_mstch_enum_value>();
-  factories_.add<python_mstch_const_value>();
+  mstch_context_.add<python_mstch_program>();
+  mstch_context_.add<python_mstch_service>(program_);
+  mstch_context_.add<python_mstch_function>();
+  mstch_context_.add<python_mstch_type>(program_);
+  mstch_context_.add<python_mstch_typedef>();
+  mstch_context_.add<python_mstch_struct>();
+  mstch_context_.add<python_mstch_field>();
+  mstch_context_.add<python_mstch_enum>();
+  mstch_context_.add<python_mstch_enum_value>();
+  mstch_context_.add<python_mstch_const_value>();
 }
 
 boost::filesystem::path t_mstch_python_generator::package_to_path() {
@@ -1086,11 +1049,11 @@ void t_mstch_python_generator::generate_file(
   auto program = get_program();
   const auto& name = program->name();
   if (is_types_file == IsTypesFile) {
-    cache_->options_["is_types_file"] = "";
+    mstch_context_.options["is_types_file"] = "";
   } else {
-    cache_->options_.erase("is_types_file");
+    mstch_context_.options.erase("is_types_file");
   }
-  auto mstch_program = make_mstch_program_cached(program, factories_, cache_);
+  auto mstch_program = make_mstch_program_cached(program, mstch_context_);
   render_to_file(mstch_program, file, base / name / file);
 }
 

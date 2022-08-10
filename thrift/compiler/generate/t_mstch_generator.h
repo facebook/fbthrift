@@ -40,8 +40,6 @@ class t_mstch_generator : public t_generator {
       std::map<std::string, std::string> options,
       bool convert_delimiter = false);
 
-  virtual ~t_mstch_generator() override;
-
  protected:
   /**
    * Option pairs specified on command line for influencing generation behavior
@@ -229,8 +227,7 @@ class t_mstch_generator : public t_generator {
   }
 
  protected:
-  mstch_factories factories_;
-  std::shared_ptr<mstch_cache> cache_;
+  mstch_context mstch_context_;
 
   const std::shared_ptr<mstch_base>& cached_program(const t_program* program);
 };

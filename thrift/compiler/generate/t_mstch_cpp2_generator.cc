@@ -235,7 +235,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   void generate_out_of_line_services(const std::vector<t_service*>& services);
   void generate_inline_services(const std::vector<t_service*>& services);
 
-  std::shared_ptr<cpp2_generator_context> context_;
+  std::shared_ptr<cpp2_generator_context> cpp_context_;
   std::unordered_map<std::string, int32_t> client_name_to_split_count_;
 };
 
@@ -243,12 +243,11 @@ class cpp_mstch_program : public mstch_program {
  public:
   cpp_mstch_program(
       const t_program* program,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos,
       boost::optional<int32_t> split_id = boost::none,
       boost::optional<std::vector<t_struct*>> split_structs = boost::none)
-      : mstch_program(program, factories, std::move(cache), pos),
+      : mstch_program(program, ctx, pos),
         split_id_(split_id),
         split_structs_(split_structs) {
     register_methods(
@@ -369,8 +368,8 @@ class cpp_mstch_program : public mstch_program {
   }
   mstch::node cpp_includes() {
     mstch::array includes = t_mstch_cpp2_generator::cpp_includes(program_);
-    auto it = cache_->options_.find("includes");
-    if (it != cache_->options_.end()) {
+    auto it = context_.options.find("includes");
+    if (it != context_.options.end()) {
       std::vector<std::string> extra_includes;
       boost::split(extra_includes, it->second, [](char c) { return c == ':'; });
       for (auto& include : extra_includes) {
@@ -380,7 +379,7 @@ class cpp_mstch_program : public mstch_program {
     return includes;
   }
   mstch::node include_prefix() {
-    return t_mstch_cpp2_generator::include_prefix(program_, cache_->options_);
+    return t_mstch_cpp2_generator::include_prefix(program_, context_.options);
   }
   mstch::node cpp_declare_hash() {
     bool cpp_declare_in_structs = std::any_of(
@@ -402,7 +401,7 @@ class cpp_mstch_program : public mstch_program {
   mstch::node thrift_includes() {
     mstch::array a;
     for (const auto* program : program_->get_included_programs()) {
-      a.push_back(make_mstch_program_cached(program, factories_, cache_));
+      a.push_back(make_mstch_program_cached(program, context_));
     }
     return a;
   }
@@ -552,13 +551,13 @@ class cpp_mstch_program : public mstch_program {
         std::back_inserter(ret),
         [&](const t_type* node) -> mstch::node {
           if (auto typedf = dynamic_cast<t_typedef const*>(node)) {
-            return factories_.typedef_factory->make_mstch_object(
-                typedf, factories_, cache_);
+            return context_.typedef_factory->make_mstch_object(
+                typedf, context_);
           }
           return make_mstch_element_cached(
               static_cast<const t_struct*>(node),
-              *factories_.struct_factory,
-              cache_->structs_,
+              *context_.struct_factory,
+              context_.struct_cache,
               id,
               0,
               0);
@@ -590,7 +589,7 @@ class cpp_mstch_program : public mstch_program {
       return;
     }
 
-    int32_t split_count = std::max(cpp2::get_split_count(cache_->options_), 1);
+    int32_t split_count = std::max(cpp2::get_split_count(context_.options), 1);
 
     objects_ = *split_structs_;
 
@@ -605,12 +604,11 @@ class cpp_mstch_service : public mstch_service {
  public:
   cpp_mstch_service(
       const t_service* service,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos,
       int32_t split_id = 0,
       int32_t split_count = 1)
-      : mstch_service(service, factories, std::move(cache), pos) {
+      : mstch_service(service, ctx, pos) {
     register_methods(
         this,
         {
@@ -649,12 +647,12 @@ class cpp_mstch_service : public mstch_service {
   }
   mstch::node include_prefix() {
     return t_mstch_cpp2_generator::include_prefix(
-        service_->program(), cache_->options_);
+        service_->program(), context_.options);
   }
   mstch::node thrift_includes() {
     mstch::array a;
     for (const auto* program : service_->program()->get_included_programs()) {
-      a.push_back(make_mstch_program_cached(program, factories_, cache_));
+      a.push_back(make_mstch_program_cached(program, context_));
     }
     return a;
   }
@@ -711,11 +709,10 @@ class cpp_mstch_interaction : public cpp_mstch_service {
 
   cpp_mstch_interaction(
       const t_interaction* interaction,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos,
       const t_service* containing_service)
-      : cpp_mstch_service(interaction, factories, std::move(cache), pos),
+      : cpp_mstch_service(interaction, ctx, pos),
         containing_service_(containing_service) {}
 
   mstch::node parent_service_name() override {
@@ -736,10 +733,9 @@ class cpp_mstch_function : public mstch_function {
  public:
   cpp_mstch_function(
       const t_function* function,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos)
-      : mstch_function(function, factories, std::move(cache), pos) {
+      : mstch_function(function, ctx, pos) {
     register_methods(
         this,
         {
@@ -763,7 +759,7 @@ class cpp_mstch_function : public mstch_function {
   }
   mstch::node cpp_name() { return cpp2::get_name(function_); }
   mstch::node stack_arguments() {
-    return cpp2::is_stack_arguments(cache_->options_, *function_);
+    return cpp2::is_stack_arguments(context_.options, *function_);
   }
   mstch::node created_interaction() {
     return cpp2::get_name(function_->returned_interaction().get_type());
@@ -779,12 +775,10 @@ class cpp_mstch_type : public mstch_type {
  public:
   cpp_mstch_type(
       const t_type* type,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos,
-      std::shared_ptr<cpp2_generator_context> context)
-      : mstch_type(type, factories, std::move(cache), pos),
-        context_(std::move(context)) {
+      std::shared_ptr<cpp2_generator_context> cpp_ctx)
+      : mstch_type(type, ctx, pos), cpp_context_(std::move(cpp_ctx)) {
     register_methods(
         this,
         {
@@ -893,14 +887,14 @@ class cpp_mstch_type : public mstch_type {
   }
   mstch::node cpp_name() { return cpp2::get_name(type_); }
   mstch::node cpp_fullname() {
-    return context_->resolver().get_namespaced_name(
+    return cpp_context_->resolver().get_namespaced_name(
         *type_->get_program(), *type_);
   }
   mstch::node cpp_type() {
-    return context_->resolver().get_native_type(*type_);
+    return cpp_context_->resolver().get_native_type(*type_);
   }
   mstch::node cpp_standard_type() {
-    return context_->resolver().get_standard_type(*type_);
+    return cpp_context_->resolver().get_standard_type(*type_);
   }
   mstch::node cpp_adapter() {
     if (const auto* adapter =
@@ -939,7 +933,9 @@ class cpp_mstch_type : public mstch_type {
     return t_mstch_cpp2_generator::get_namespace_array(type_->program());
   }
   mstch::node type_class() { return cpp2::get_gen_type_class(*resolved_type_); }
-  mstch::node type_tag() { return context_->resolver().get_type_tag(*type_); }
+  mstch::node type_tag() {
+    return cpp_context_->resolver().get_type_tag(*type_);
+  }
   mstch::node type_class_with_indirection() {
     return cpp2::get_gen_type_class_with_indirection(*resolved_type_);
   }
@@ -952,19 +948,17 @@ class cpp_mstch_type : public mstch_type {
   }
 
  private:
-  std::shared_ptr<cpp2_generator_context> context_;
+  std::shared_ptr<cpp2_generator_context> cpp_context_;
 };
 
 class cpp_mstch_typedef : public mstch_typedef {
  public:
   cpp_mstch_typedef(
       const t_typedef* t,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos,
-      std::shared_ptr<cpp2_generator_context> context)
-      : mstch_typedef(t, factories, std::move(cache), pos),
-        context_(std::move(context)) {
+      std::shared_ptr<cpp2_generator_context> cpp_ctx)
+      : mstch_typedef(t, ctx, pos), cpp_context_(std::move(cpp_ctx)) {
     register_methods(
         this,
         {
@@ -973,7 +967,7 @@ class cpp_mstch_typedef : public mstch_typedef {
         });
   }
   mstch::node cpp_type() {
-    return context_->resolver().get_underlying_type_name(*typedef_);
+    return cpp_context_->resolver().get_underlying_type_name(*typedef_);
   }
   mstch::node cpp_strong_type() {
     return typedef_->find_structured_annotation_or_null(kCppStrongTypeUri) !=
@@ -981,19 +975,17 @@ class cpp_mstch_typedef : public mstch_typedef {
   }
 
  private:
-  std::shared_ptr<cpp2_generator_context> context_;
+  std::shared_ptr<cpp2_generator_context> cpp_context_;
 };
 
 class cpp_mstch_struct : public mstch_struct {
  public:
   cpp_mstch_struct(
       const t_struct* s,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos,
-      std::shared_ptr<cpp2_generator_context> context)
-      : mstch_struct(s, factories, std::move(cache), pos),
-        context_(std::move(context)) {
+      std::shared_ptr<cpp2_generator_context> cpp_ctx)
+      : mstch_struct(s, ctx, pos), cpp_context_(std::move(cpp_ctx)) {
     register_methods(
         this,
         {
@@ -1118,7 +1110,7 @@ class cpp_mstch_struct : public mstch_struct {
   }
 
   mstch::node is_struct_orderable() {
-    return context_->is_orderable(*struct_) &&
+    return cpp_context_->is_orderable(*struct_) &&
         !struct_->has_annotation("no_default_comparators");
   }
   mstch::node nondefault_copy_ctor_and_assignment() {
@@ -1135,16 +1127,16 @@ class cpp_mstch_struct : public mstch_struct {
   }
   mstch::node cpp_name() { return cpp2::get_name(struct_); }
   mstch::node cpp_fullname() {
-    return context_->resolver().get_underlying_namespaced_name(*struct_);
+    return cpp_context_->resolver().get_underlying_namespaced_name(*struct_);
   }
   mstch::node cpp_underlying_name() {
-    return context_->resolver().get_underlying_name(*struct_);
+    return cpp_context_->resolver().get_underlying_name(*struct_);
   }
   mstch::node cpp_underlying_type() {
-    return context_->resolver().get_underlying_type_name(*struct_);
+    return cpp_context_->resolver().get_underlying_type_name(*struct_);
   }
   mstch::node is_directly_adapted() {
-    return context_->resolver().is_directly_adapted(*struct_);
+    return cpp_context_->resolver().is_directly_adapted(*struct_);
   }
 
   mstch::node cpp_methods() {
@@ -1237,7 +1229,7 @@ class cpp_mstch_struct : public mstch_struct {
   mstch::node cpp_frozen2_exclude() {
     // TODO(dokwon): Fix frozen2 compatibility with adapter.
     return struct_->has_annotation("cpp.frozen2_exclude") ||
-        context_->resolver().is_directly_adapted(*struct_);
+        cpp_context_->resolver().is_directly_adapted(*struct_);
   }
   mstch::node cpp_allocator_via() {
     if (const auto* name =
@@ -1376,11 +1368,13 @@ class cpp_mstch_struct : public mstch_struct {
   }
 
   mstch::node extra_namespace() {
-    auto* extra = context_->resolver().get_extra_namespace(*struct_);
+    auto* extra = cpp_context_->resolver().get_extra_namespace(*struct_);
     return extra ? *extra : mstch::node{};
   }
 
-  mstch::node type_tag() { return context_->resolver().get_type_tag(*struct_); }
+  mstch::node type_tag() {
+    return cpp_context_->resolver().get_type_tag(*struct_);
+  }
 
   mstch::node no_deprecated_tag_incompatible_and_thrift_uri() {
     return !has_option("deprecated_tag_incompatible") &&
@@ -1512,7 +1506,7 @@ class cpp_mstch_struct : public mstch_struct {
         !struct_->has_annotation("cpp.detail.no_any");
   }
 
-  std::shared_ptr<cpp2_generator_context> context_;
+  std::shared_ptr<cpp2_generator_context> cpp_context_;
 
   std::vector<const t_field*> fields_in_layout_order_;
   cpp2::is_eligible_for_constexpr is_eligible_for_constexpr_;
@@ -1521,14 +1515,13 @@ class cpp_mstch_struct : public mstch_struct {
 class cpp_mstch_field : public mstch_field {
  public:
   cpp_mstch_field(
-      const t_field* field,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      const t_field* f,
+      mstch_context& ctx,
       mstch_element_position pos,
       const field_generator_context* field_context,
-      std::shared_ptr<cpp2_generator_context> context)
-      : mstch_field(field, factories, std::move(cache), pos, field_context),
-        context_(std::move(context)) {
+      std::shared_ptr<cpp2_generator_context> cpp_ctx)
+      : mstch_field(f, ctx, pos, field_context),
+        cpp_context_(std::move(cpp_ctx)) {
     register_methods(
         this,
         {
@@ -1608,7 +1601,7 @@ class cpp_mstch_field : public mstch_field {
   mstch::node cpp_name() { return cpp2::get_name(field_); }
   mstch::node cpp_type() {
     assert(field_context_->strct);
-    return context_->resolver().get_native_type(
+    return cpp_context_->resolver().get_native_type(
         *field_, *field_context_->strct);
   }
   mstch::node cpp_storage_name() {
@@ -1620,7 +1613,7 @@ class cpp_mstch_field : public mstch_field {
   }
   mstch::node cpp_storage_type() {
     assert(field_context_->strct);
-    return context_->resolver().get_storage_type(
+    return cpp_context_->resolver().get_storage_type(
         *field_, *field_context_->strct);
   }
   mstch::node eligible_for_storage_name_mangling() {
@@ -1633,7 +1626,7 @@ class cpp_mstch_field : public mstch_field {
     // TODO(afuller): Remove this once all non-field_ref based accessors have
     // been removed.
     assert(field_context_->strct);
-    return context_->resolver().get_storage_type(
+    return cpp_context_->resolver().get_storage_type(
         *field_, *field_context_->strct);
   }
   mstch::node has_deprecated_accessors() {
@@ -1761,10 +1754,9 @@ class cpp_mstch_field : public mstch_field {
       const auto* const_value = field_->get_value();
       using cv = t_const_value::t_const_value_type;
       if (const_value->get_type() == cv::CV_INTEGER) {
-        auto* enum_value = enm->find_value(const_value->get_integer());
-        if (enum_value != nullptr) {
-          return factories_.enum_value_factory->make_mstch_object(
-              enum_value, factories_, cache_, pos_);
+        if (auto* enum_value = enm->find_value(const_value->get_integer())) {
+          return context_.enum_value_factory->make_mstch_object(
+              enum_value, context_, pos_);
         }
       }
     }
@@ -1781,11 +1773,8 @@ class cpp_mstch_field : public mstch_field {
   mstch::node serialization_next_field_type() {
     assert(field_context_ && field_context_->serialization_next);
     return field_context_->serialization_next
-        ? factories_.type_factory->make_mstch_object(
-              field_context_->serialization_next->get_type(),
-              factories_,
-              cache_,
-              pos_)
+        ? context_.type_factory->make_mstch_object(
+              field_context_->serialization_next->get_type(), context_, pos_)
         : mstch::node("");
   }
   mstch::node deprecated_terse_writes() {
@@ -1831,7 +1820,9 @@ class cpp_mstch_field : public mstch_field {
     return field_->get_name() + "_" + suffix;
   }
 
-  mstch::node type_tag() { return context_->resolver().get_type_tag(*field_); }
+  mstch::node type_tag() {
+    return cpp_context_->resolver().get_type_tag(*field_);
+  }
 
   mstch::node raw_binary() {
     return field_->type()->get_true_type()->is_binary() &&
@@ -1873,17 +1864,14 @@ class cpp_mstch_field : public mstch_field {
     return is_private();
   }
 
-  std::shared_ptr<cpp2_generator_context> context_;
+  std::shared_ptr<cpp2_generator_context> cpp_context_;
 };
 
 class cpp_mstch_enum : public mstch_enum {
  public:
   cpp_mstch_enum(
-      const t_enum* e,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos)
-      : mstch_enum(e, factories, std::move(cache), pos) {
+      const t_enum* e, mstch_context& ctx, mstch_element_position pos)
+      : mstch_enum(e, ctx, pos) {
     register_methods(
         this,
         {
@@ -1948,8 +1936,8 @@ class cpp_mstch_enum : public mstch_enum {
   mstch::node has_zero() {
     auto* enum_value = enum_->find_value(0);
     if (enum_value != nullptr) {
-      return factories_.enum_value_factory->make_mstch_object(
-          enum_value, factories_, cache_, pos_);
+      return context_.enum_value_factory->make_mstch_object(
+          enum_value, context_, pos_);
     }
     return mstch::node();
   }
@@ -1970,11 +1958,8 @@ class cpp_mstch_enum : public mstch_enum {
 class cpp_mstch_enum_value : public mstch_enum_value {
  public:
   cpp_mstch_enum_value(
-      const t_enum_value* enum_value,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos)
-      : mstch_enum_value(enum_value, factories, std::move(cache), pos) {
+      const t_enum_value* ev, mstch_context& ctx, mstch_element_position pos)
+      : mstch_enum_value(ev, ctx, pos) {
     register_methods(
         this,
         {
@@ -2003,22 +1988,14 @@ class cpp_mstch_const : public mstch_const {
  public:
   cpp_mstch_const(
       const t_const* c,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos,
       const t_const* current_const,
       const t_type* expected_type,
       const t_field* field,
-      std::shared_ptr<cpp2_generator_context> context)
-      : mstch_const(
-            c,
-            factories,
-            std::move(cache),
-            pos,
-            current_const,
-            expected_type,
-            field),
-        context_(std::move(context)) {
+      std::shared_ptr<cpp2_generator_context> cpp_ctx)
+      : mstch_const(c, ctx, pos, current_const, expected_type, field),
+        cpp_context_(std::move(cpp_ctx)) {
     register_methods(
         this,
         {
@@ -2051,13 +2028,14 @@ class cpp_mstch_const : public mstch_const {
       return false;
     }
     if (const std::string* adapter =
-            context_->resolver().find_structured_adapter_annotation(*const_)) {
+            cpp_context_->resolver().find_structured_adapter_annotation(
+                *const_)) {
       return *adapter;
     }
     return {};
   }
   mstch::node cpp_type() {
-    return context_->resolver().get_native_type(*const_);
+    return cpp_context_->resolver().get_native_type(*const_);
   }
   mstch::node uri() { return const_->uri(); }
   mstch::node has_extra_arg() {
@@ -2067,34 +2045,21 @@ class cpp_mstch_const : public mstch_const {
   mstch::node extra_arg() {
     auto anno = cpp2::get_transitive_annotation_of_adapter_or_null(*const_);
     return std::shared_ptr<mstch_base>(std::make_shared<mstch_const_value>(
-        anno->value(), factories_, cache_, pos_, anno, &*anno->type()));
+        anno->value(), context_, pos_, anno, &*anno->type()));
   }
   mstch::node extra_arg_type() {
     auto anno = cpp2::get_transitive_annotation_of_adapter_or_null(*const_);
     return std::shared_ptr<mstch_base>(std::make_shared<cpp_mstch_type>(
-        &*anno->type(), factories_, cache_, pos_, context_));
+        &*anno->type(), context_, pos_, cpp_context_));
   }
 
  private:
-  std::shared_ptr<cpp2_generator_context> context_;
+  std::shared_ptr<cpp2_generator_context> cpp_context_;
 };
 
 class cpp_mstch_const_value : public mstch_const_value {
  public:
-  cpp_mstch_const_value(
-      const t_const_value* const_value,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos,
-      const t_const* current_const,
-      const t_type* expected_type)
-      : mstch_const_value(
-            const_value,
-            factories,
-            std::move(cache),
-            pos,
-            current_const,
-            expected_type) {}
+  using mstch_const_value::mstch_const_value;
 
  private:
   bool same_type_as_expected() const override {
@@ -2106,12 +2071,8 @@ class cpp_mstch_const_value : public mstch_const_value {
 class cpp_mstch_deprecated_annotation : public mstch_deprecated_annotation {
  public:
   cpp_mstch_deprecated_annotation(
-      const t_annotation* annotation,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos)
-      : mstch_deprecated_annotation(
-            annotation, factories, std::move(cache), pos) {
+      const t_annotation* a, mstch_context& ctx, mstch_element_position pos)
+      : mstch_deprecated_annotation(a, ctx, pos) {
     register_methods(
         this,
         {
@@ -2129,7 +2090,7 @@ t_mstch_cpp2_generator::t_mstch_cpp2_generator(
     t_generation_context context,
     const std::map<std::string, std::string>& options)
     : t_mstch_generator(program, std::move(context), "cpp2", options, true),
-      context_(std::make_shared<cpp2_generator_context>(
+      cpp_context_(std::make_shared<cpp2_generator_context>(
           cpp2_generator_context::create())),
       client_name_to_split_count_(
           cpp2::get_client_name_to_split_count(options)) {
@@ -2158,19 +2119,19 @@ void t_mstch_cpp2_generator::generate_program() {
 }
 
 void t_mstch_cpp2_generator::set_mstch_factories() {
-  factories_.add<cpp_mstch_program>();
-  factories_.add<cpp_mstch_service>();
-  factories_.add<cpp_mstch_interaction>();
-  factories_.add<cpp_mstch_function>();
-  factories_.add<cpp_mstch_type>(context_);
-  factories_.add<cpp_mstch_typedef>(context_);
-  factories_.add<cpp_mstch_struct>(context_);
-  factories_.add<cpp_mstch_field>(context_);
-  factories_.add<cpp_mstch_enum>();
-  factories_.add<cpp_mstch_enum_value>();
-  factories_.add<cpp_mstch_const>(context_);
-  factories_.add<cpp_mstch_const_value>();
-  factories_.add<cpp_mstch_deprecated_annotation>();
+  mstch_context_.add<cpp_mstch_program>();
+  mstch_context_.add<cpp_mstch_service>();
+  mstch_context_.add<cpp_mstch_interaction>();
+  mstch_context_.add<cpp_mstch_function>();
+  mstch_context_.add<cpp_mstch_type>(cpp_context_);
+  mstch_context_.add<cpp_mstch_typedef>(cpp_context_);
+  mstch_context_.add<cpp_mstch_struct>(cpp_context_);
+  mstch_context_.add<cpp_mstch_field>(cpp_context_);
+  mstch_context_.add<cpp_mstch_enum>();
+  mstch_context_.add<cpp_mstch_enum_value>();
+  mstch_context_.add<cpp_mstch_const>(cpp_context_);
+  mstch_context_.add<cpp_mstch_const_value>();
+  mstch_context_.add<cpp_mstch_deprecated_annotation>();
 }
 
 void t_mstch_cpp2_generator::generate_constants(const t_program* program) {
@@ -2248,8 +2209,7 @@ void t_mstch_cpp2_generator::generate_structs(const t_program* program) {
       s = std::string(digit - s.size(), '0') + s;
       auto split_program = std::make_shared<cpp_mstch_program>(
           program,
-          factories_,
-          cache_,
+          mstch_context_,
           mstch_element_position(),
           split_id,
           shards.at(split_id));
@@ -2276,7 +2236,7 @@ void t_mstch_cpp2_generator::generate_out_of_line_service(
     const t_service* service) {
   const auto& name = service->get_name();
   auto mstch_service =
-      make_mstch_service_cached(get_program(), service, factories_, cache_);
+      make_mstch_service_cached(get_program(), service, mstch_context_);
 
   render_to_file(mstch_service, "ServiceAsyncClient.h", name + "AsyncClient.h");
   render_to_file(mstch_service, "service.cpp", name + ".cpp");
@@ -2294,8 +2254,7 @@ void t_mstch_cpp2_generator::generate_out_of_line_service(
       s = std::string(digit - s.size(), '0') + s;
       auto split_service = std::make_shared<cpp_mstch_service>(
           service,
-          factories_,
-          cache_,
+          mstch_context_,
           mstch_element_position(),
           split_id,
           split_count);
@@ -2331,7 +2290,7 @@ void t_mstch_cpp2_generator::generate_out_of_line_services(
   mstch_services.reserve(services.size());
   for (const t_service* service : services) {
     mstch_services.push_back(
-        make_mstch_service_cached(get_program(), service, factories_, cache_));
+        make_mstch_service_cached(get_program(), service, mstch_context_));
   }
   mstch::map context{
       {"services", std::move(mstch_services)},
@@ -2349,7 +2308,7 @@ void t_mstch_cpp2_generator::generate_inline_services(
   mstch_services.reserve(services.size());
   for (const t_service* service : services) {
     mstch_services.push_back(
-        make_mstch_service_cached(get_program(), service, factories_, cache_));
+        make_mstch_service_cached(get_program(), service, mstch_context_));
   }
   auto any_service_has_any_function = [&](auto&& predicate) -> bool {
     return std::any_of(
@@ -2361,7 +2320,7 @@ void t_mstch_cpp2_generator::generate_inline_services(
               });
         });
   };
-  mstch::map context{
+  mstch::map context = {
       {"program", cached_program(get_program())},
       {"any_sinks?",
        any_service_has_any_function(std::mem_fn(&t_function::returns_sink))},

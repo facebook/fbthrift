@@ -364,11 +364,10 @@ class rust_mstch_program : public mstch_program {
  public:
   rust_mstch_program(
       const t_program* program,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos,
       const rust_codegen_options* options)
-      : mstch_program(program, factories, cache, pos), options_(*options) {
+      : mstch_program(program, ctx, pos), options_(*options) {
     register_methods(
         this,
         {
@@ -434,8 +433,8 @@ class rust_mstch_program : public mstch_program {
   mstch::node rust_includes() {
     mstch::array includes;
     for (auto* program : program_->get_included_programs()) {
-      includes.push_back(factories_.program_factory->make_mstch_object(
-          program, factories_, cache_, pos_));
+      includes.push_back(
+          context_.program_factory->make_mstch_object(program, context_, pos_));
     }
     return includes;
   }
@@ -517,11 +516,10 @@ class rust_mstch_service : public mstch_service {
  public:
   rust_mstch_service(
       const t_service* service,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos,
       const rust_codegen_options* options)
-      : mstch_service(service, factories, cache, pos), options_(*options) {
+      : mstch_service(service, ctx, pos), options_(*options) {
     for (auto function : service->get_functions()) {
       function_upcamel_names_.insert(camelcase(function->get_name()));
     }
@@ -590,11 +588,10 @@ class rust_mstch_function : public mstch_function {
  public:
   rust_mstch_function(
       const t_function* function,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos,
       const std::unordered_multiset<std::string>& function_upcamel_names)
-      : mstch_function(function, factories, cache, pos),
+      : mstch_function(function, ctx, pos),
         function_upcamel_names_(function_upcamel_names),
         success_return(function->get_returntype(), "Success", 0) {
     register_methods(
@@ -693,13 +690,12 @@ class rust_mstch_function_factory {
  public:
   std::shared_ptr<mstch_base> make_mstch_object(
       const t_function* function,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos,
       const std::unordered_multiset<std::string>& function_upcamel_names)
       const {
     return std::make_shared<rust_mstch_function>(
-        function, factories, cache, pos, function_upcamel_names);
+        function, ctx, pos, function_upcamel_names);
   }
 };
 
@@ -707,11 +703,10 @@ class rust_mstch_struct : public mstch_struct {
  public:
   rust_mstch_struct(
       const t_struct* s,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos,
       const rust_codegen_options* options)
-      : mstch_struct(s, factories, cache, pos), options_(*options) {
+      : mstch_struct(s, ctx, pos), options_(*options) {
     register_methods(
         this,
         {
@@ -791,11 +786,8 @@ class rust_mstch_struct : public mstch_struct {
 class rust_mstch_enum_value : public mstch_enum_value {
  public:
   rust_mstch_enum_value(
-      const t_enum_value* enum_value,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos)
-      : mstch_enum_value(enum_value, factories, cache, pos) {
+      const t_enum_value* ev, mstch_context& ctx, mstch_element_position pos)
+      : mstch_enum_value(ev, ctx, pos) {
     register_methods(
         this,
         {
@@ -818,11 +810,10 @@ class rust_mstch_enum : public mstch_enum {
  public:
   rust_mstch_enum(
       const t_enum* e,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos,
       const rust_codegen_options* options)
-      : mstch_enum(e, factories, cache, pos), options_(*options) {
+      : mstch_enum(e, ctx, pos), options_(*options) {
     register_methods(
         this,
         {
@@ -870,11 +861,10 @@ class rust_mstch_type : public mstch_type {
  public:
   rust_mstch_type(
       const t_type* type,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos,
       const rust_codegen_options* options)
-      : mstch_type(type, factories, cache, pos), options_(*options) {
+      : mstch_type(type, ctx, pos), options_(*options) {
     register_methods(
         this,
         {
@@ -920,11 +910,10 @@ class mstch_rust_value : public mstch_base {
       const t_const_value* const_value,
       const t_type* type,
       unsigned depth,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos,
       const rust_codegen_options& options)
-      : mstch_base(factories, cache, pos),
+      : mstch_base(ctx, pos),
         const_value_(const_value),
         type_(type),
         depth_(depth),
@@ -976,8 +965,7 @@ class mstch_rust_value : public mstch_base {
         });
   }
   mstch::node type() {
-    return factories_.type_factory->make_mstch_object(
-        type_, factories_, cache_, pos_);
+    return context_.type_factory->make_mstch_object(type_, context_, pos_);
   }
   mstch::node is_newtype() {
     return type_->is_typedef() && type_->has_annotation("rust.newtype");
@@ -987,7 +975,7 @@ class mstch_rust_value : public mstch_base {
     if (typedef_type) {
       auto inner_type = typedef_type->get_type();
       return std::make_shared<mstch_rust_value>(
-          const_value_, inner_type, depth_, factories_, cache_, pos_, options_);
+          const_value_, inner_type, depth_, context_, pos_, options_);
     }
     return mstch::node();
   }
@@ -1045,7 +1033,7 @@ class mstch_rust_value : public mstch_base {
     mstch::array elements;
     for (auto elem : const_value_->get_list()) {
       elements.push_back(std::make_shared<mstch_rust_value>(
-          elem, elem_type, depth_ + 1, factories_, cache_, pos_, options_));
+          elem, elem_type, depth_ + 1, context_, pos_, options_));
     }
     return elements;
   }
@@ -1100,13 +1088,7 @@ class mstch_rust_value : public mstch_base {
     for (auto&& field : struct_type->fields()) {
       if (field.name() == variant) {
         return std::make_shared<mstch_rust_value>(
-            content,
-            field.get_type(),
-            depth_ + 1,
-            factories_,
-            cache_,
-            pos_,
-            options_);
+            content, field.get_type(), depth_ + 1, context_, pos_, options_);
       }
     }
     return mstch::node();
@@ -1174,11 +1156,10 @@ class mstch_rust_map_entry : public mstch_base {
       const t_const_value* value,
       const t_type* value_type,
       unsigned depth,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos,
       const rust_codegen_options& options)
-      : mstch_base(factories, cache, pos),
+      : mstch_base(ctx, pos),
         key_(key),
         key_type_(key_type),
         value_(value),
@@ -1194,11 +1175,11 @@ class mstch_rust_map_entry : public mstch_base {
   }
   mstch::node key() {
     return std::make_shared<mstch_rust_value>(
-        key_, key_type_, depth_, factories_, cache_, pos_, options_);
+        key_, key_type_, depth_, context_, pos_, options_);
   }
   mstch::node value() {
     return std::make_shared<mstch_rust_value>(
-        value_, value_type_, depth_, factories_, cache_, pos_, options_);
+        value_, value_type_, depth_, context_, pos_, options_);
   }
 
  private:
@@ -1216,11 +1197,10 @@ class mstch_rust_struct_field : public mstch_base {
       const t_field* field,
       const t_const_value* value,
       unsigned depth,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos,
       const rust_codegen_options& options)
-      : mstch_base(factories, cache, pos),
+      : mstch_base(ctx, pos),
         field_(field),
         value_(value),
         depth_(depth),
@@ -1251,14 +1231,13 @@ class mstch_rust_struct_field : public mstch_base {
     if (value_) {
       auto type = field_->get_type();
       return std::make_shared<mstch_rust_value>(
-          value_, type, depth_, factories_, cache_, pos_, options_);
+          value_, type, depth_, context_, pos_, options_);
     }
     return mstch::node();
   }
   mstch::node type() {
     auto type = field_->get_type();
-    return factories_.type_factory->make_mstch_object(
-        type, factories_, cache_, pos_);
+    return context_.type_factory->make_mstch_object(type, context_, pos_);
   }
   mstch::node is_boxed() { return field_kind(*field_) == FieldKind::Box; }
   mstch::node is_arc() { return field_kind(*field_) == FieldKind::Arc; }
@@ -1288,8 +1267,7 @@ mstch::node mstch_rust_value::map_entries() {
         entry.second,
         value_type,
         depth_ + 1,
-        factories_,
-        cache_,
+        context_,
         pos_,
         options_));
   }
@@ -1317,7 +1295,7 @@ mstch::node mstch_rust_value::struct_fields() {
       value = field.default_value();
     }
     fields.push_back(std::make_shared<mstch_rust_struct_field>(
-        &field, value, depth_ + 1, factories_, cache_, pos_, options_));
+        &field, value, depth_ + 1, context_, pos_, options_));
   }
   return fields;
 }
@@ -1331,15 +1309,13 @@ class rust_mstch_const : public mstch_const {
  public:
   rust_mstch_const(
       const t_const* c,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos,
       const t_const* current_const,
       const t_type* expected_type,
       const t_field* field,
       const rust_codegen_options* options)
-      : mstch_const(
-            c, factories, cache, pos, current_const, expected_type, field),
+      : mstch_const(c, ctx, pos, current_const, expected_type, field),
         options_(*options) {
     register_methods(
         this,
@@ -1365,8 +1341,7 @@ class rust_mstch_const : public mstch_const {
         const_->get_value(),
         const_->get_type(),
         depth,
-        factories_,
-        cache_,
+        context_,
         pos_,
         options_);
   }
@@ -1381,13 +1356,11 @@ class rust_mstch_field : public mstch_field {
  public:
   rust_mstch_field(
       const t_field* field,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos,
       const field_generator_context* field_context,
       const rust_codegen_options* options)
-      : mstch_field(field, factories, cache, pos, field_context),
-        options_(*options) {
+      : mstch_field(field, ctx, pos, field_context), options_(*options) {
     register_methods(
         this,
         {
@@ -1420,7 +1393,7 @@ class rust_mstch_field : public mstch_field {
       unsigned depth = 2; // impl Default + fn default
       auto type = field_->get_type();
       return std::make_shared<mstch_rust_value>(
-          value, type, depth, factories_, cache_, pos_, options_);
+          value, type, depth, context_, pos_, options_);
     }
     return mstch::node();
   }
@@ -1437,11 +1410,10 @@ class rust_mstch_typedef : public mstch_typedef {
  public:
   rust_mstch_typedef(
       const t_typedef* t,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos,
       const rust_codegen_options* options)
-      : mstch_typedef(t, factories, cache, pos), options_(*options) {
+      : mstch_typedef(t, ctx, pos), options_(*options) {
     register_methods(
         this,
         {
@@ -1502,11 +1474,8 @@ class rust_mstch_typedef : public mstch_typedef {
 class rust_mstch_deprecated_annotation : public mstch_deprecated_annotation {
  public:
   rust_mstch_deprecated_annotation(
-      const t_annotation* annotation,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos)
-      : mstch_deprecated_annotation(annotation, factories, cache, pos) {
+      const t_annotation* a, mstch_context& ctx, mstch_element_position pos)
+      : mstch_deprecated_annotation(a, ctx, pos) {
     register_methods(
         this,
         {
@@ -1552,8 +1521,8 @@ mstch::node rust_mstch_service::rust_all_exceptions() {
   mstch::array output;
   for (const auto& funcs : function_map) {
     mstch::map data;
-    data["rust_exception:type"] = factories_.type_factory->make_mstch_object(
-        funcs.first, factories_, cache_, {});
+    data["rust_exception:type"] =
+        context_.type_factory->make_mstch_object(funcs.first, context_, {});
 
     auto functions = make_mstch_array(
         funcs.second, rust_mstch_function_factory(), function_upcamel_names_);
@@ -1583,16 +1552,16 @@ void t_mstch_rust_generator::generate_program() {
 }
 
 void t_mstch_rust_generator::set_mstch_factories() {
-  factories_.add<rust_mstch_program>(&options_);
-  factories_.add<rust_mstch_service>(&options_);
-  factories_.add<rust_mstch_type>(&options_);
-  factories_.add<rust_mstch_typedef>(&options_);
-  factories_.add<rust_mstch_struct>(&options_);
-  factories_.add<rust_mstch_field>(&options_);
-  factories_.add<rust_mstch_enum>(&options_);
-  factories_.add<rust_mstch_enum_value>();
-  factories_.add<rust_mstch_deprecated_annotation>();
-  factories_.add<rust_mstch_const>(&options_);
+  mstch_context_.add<rust_mstch_program>(&options_);
+  mstch_context_.add<rust_mstch_service>(&options_);
+  mstch_context_.add<rust_mstch_type>(&options_);
+  mstch_context_.add<rust_mstch_typedef>(&options_);
+  mstch_context_.add<rust_mstch_struct>(&options_);
+  mstch_context_.add<rust_mstch_field>(&options_);
+  mstch_context_.add<rust_mstch_enum>(&options_);
+  mstch_context_.add<rust_mstch_enum_value>();
+  mstch_context_.add<rust_mstch_deprecated_annotation>();
+  mstch_context_.add<rust_mstch_const>(&options_);
 }
 
 void t_mstch_rust_generator::load_crate_map(const std::string& path) {

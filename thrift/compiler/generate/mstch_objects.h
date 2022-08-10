@@ -35,7 +35,7 @@ namespace thrift {
 namespace compiler {
 
 class mstch_base;
-class mstch_factories;
+struct mstch_context;
 
 struct mstch_element_position {
   mstch_element_position() = default;
@@ -45,21 +45,6 @@ struct mstch_element_position {
   int32_t index = 0;
   bool first = false;
   bool last = false;
-};
-
-struct mstch_cache {
-  std::map<std::string, std::string> options_;
-  std::unordered_map<std::string, std::shared_ptr<mstch_base>> enums_;
-  std::unordered_map<std::string, std::shared_ptr<mstch_base>> structs_;
-  std::unordered_map<std::string, std::shared_ptr<mstch_base>> services_;
-  std::unordered_map<std::string, std::shared_ptr<mstch_base>> programs_;
-
-  void clear() {
-    enums_.clear();
-    structs_.clear();
-    services_.clear();
-    programs_.clear();
-  }
 };
 
 struct field_generator_context {
@@ -79,23 +64,21 @@ class mstch_factory {
 
   virtual ~mstch_factory() = default;
 
-  // Creates an mstch object that wraps a Thrift AST node and provides access to
-  // its properties. The `factories` object is owned by `t_mstch_generator` and
+  // Creates an mstch object that wraps a Thrift AST node and provides access
+  // to its properties. The `ctx` object is owned by `t_mstch_generator` and
   // persists throughout the generation phase.
   virtual std::shared_ptr<mstch_base> make_mstch_object(
       const Node* node,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos = {},
       Args...) const = 0;
 
   std::shared_ptr<mstch_base> make_mstch_object(
       const Node& node,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos = {},
       Args... args) const {
-    return make_mstch_object(&node, factories, cache, pos, args...);
+    return make_mstch_object(&node, ctx, pos, args...);
   }
 };
 
@@ -166,6 +149,9 @@ class mstch_factories {
     make<MstchType>(get(tag), data);
   }
 
+ protected:
+  ~mstch_factories() = default;
+
  private:
   template <typename Data, typename MstchType, typename Node, typename... Args>
   class mstch_factory_impl : public mstch_factory<Node, Args...> {
@@ -177,12 +163,10 @@ class mstch_factories {
 
     std::shared_ptr<mstch_base> make_mstch_object(
         const Node* node,
-        const mstch_factories& factories,
-        std::shared_ptr<mstch_cache> cache,
+        mstch_context& ctx,
         mstch_element_position pos,
         Args... args) const override {
-      return std::make_shared<MstchType>(
-          node, factories, cache, pos, args..., data_);
+      return std::make_shared<MstchType>(node, ctx, pos, args..., data_);
     }
   };
 
@@ -194,11 +178,10 @@ class mstch_factories {
 
     std::shared_ptr<mstch_base> make_mstch_object(
         const Node* node,
-        const mstch_factories& factories,
-        std::shared_ptr<mstch_cache> cache,
+        mstch_context& ctx,
         mstch_element_position pos,
         Args... args) const override {
-      return std::make_shared<MstchType>(node, factories, cache, pos, args...);
+      return std::make_shared<MstchType>(node, ctx, pos, args...);
     }
   };
 
@@ -230,17 +213,25 @@ class mstch_factories {
   }
 };
 
+// Mstch object construction context.
+struct mstch_context : mstch_factories {
+  std::map<std::string, std::string> options;
+
+  std::unordered_map<std::string, std::shared_ptr<mstch_base>> enum_cache;
+  std::unordered_map<std::string, std::shared_ptr<mstch_base>> struct_cache;
+  std::unordered_map<std::string, std::shared_ptr<mstch_base>> service_cache;
+  std::unordered_map<std::string, std::shared_ptr<mstch_base>> program_cache;
+};
+
 std::shared_ptr<mstch_base> make_mstch_program_cached(
     const t_program* program,
-    const mstch_factories& factories,
-    std::shared_ptr<mstch_cache> cache,
+    mstch_context& ctx,
     mstch_element_position pos = {});
 
 std::shared_ptr<mstch_base> make_mstch_service_cached(
     const t_program* program,
     const t_service* service,
-    const mstch_factories& factories,
-    std::shared_ptr<mstch_cache> cache,
+    mstch_context& ctx,
     mstch_element_position pos = {});
 
 // A base class for mstch object types that wrap Thrift AST nodes. It is called
@@ -268,11 +259,8 @@ class mstch_base : public mstch::object {
   };
 
  public:
-  mstch_base(
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos)
-      : factories_(factories), cache_(cache), pos_(pos) {
+  mstch_base(mstch_context& ctx, mstch_element_position pos)
+      : context_(ctx), pos_(pos) {
     register_methods(
         this,
         {
@@ -294,7 +282,7 @@ class mstch_base : public mstch::object {
   mstch::node structured_annotations(const t_named* annotated) {
     return make_mstch_array(
         annotated->structured_annotations(),
-        *factories_.structured_annotation_factory);
+        *context_.structured_annotation_factory);
   }
 
   template <typename Container, typename Factory, typename... Args>
@@ -304,8 +292,7 @@ class mstch_base : public mstch::object {
     size_t i = 0;
     for (auto&& element : container) {
       auto pos = mstch_element_position(i, container.size());
-      a.push_back(
-          factory.make_mstch_object(element, factories_, cache_, pos, args...));
+      a.push_back(factory.make_mstch_object(element, context_, pos, args...));
       ++i;
     }
     return a;
@@ -313,8 +300,7 @@ class mstch_base : public mstch::object {
 
   template <typename C, typename... Args>
   mstch::array make_mstch_services(const C& container, const Args&... args) {
-    return make_mstch_array(
-        container, factories_.service_factory.get(), args...);
+    return make_mstch_array(container, context_.service_factory.get(), args...);
   }
 
   template <typename C, typename... Args>
@@ -322,68 +308,65 @@ class mstch_base : public mstch::object {
       const C& container,
       const t_service* containing_service,
       const Args&... args) {
-    if (factories_.interaction_factory) {
+    if (context_.interaction_factory) {
       return make_mstch_array(
           container,
-          *factories_.interaction_factory,
+          *context_.interaction_factory,
           containing_service,
           args...);
     }
-    return make_mstch_array(container, *factories_.service_factory, args...);
+    return make_mstch_array(container, *context_.service_factory, args...);
   }
 
   template <typename C, typename... Args>
   mstch::array make_mstch_annotations(const C& container, const Args&... args) {
     return make_mstch_array(
-        container, *factories_.deprecated_annotation_factory, args...);
+        container, *context_.deprecated_annotation_factory, args...);
   }
 
   template <typename C, typename... Args>
   mstch::array make_mstch_enum_values(const C& container, const Args&... args) {
-    return make_mstch_array(container, *factories_.enum_value_factory, args...);
+    return make_mstch_array(container, *context_.enum_value_factory, args...);
   }
 
   template <typename C, typename... Args>
   mstch::array make_mstch_consts(const C& container, const Args&... args) {
-    return make_mstch_array(
-        container, *factories_.const_value_factory, args...);
+    return make_mstch_array(container, *context_.const_value_factory, args...);
   }
 
   virtual mstch::array make_mstch_fields(const field_range& fields) {
-    return make_mstch_array(fields, *factories_.field_factory, nullptr);
+    return make_mstch_array(fields, *context_.field_factory, nullptr);
   }
 
   template <typename C, typename... Args>
   mstch::array make_mstch_functions(const C& container, const Args&... args) {
-    return make_mstch_array(container, *factories_.function_factory, args...);
+    return make_mstch_array(container, *context_.function_factory, args...);
   }
 
   template <typename C, typename... Args>
   mstch::array make_mstch_typedefs(const C& container, const Args&... args) {
-    return make_mstch_array(container, *factories_.typedef_factory, args...);
+    return make_mstch_array(container, *context_.typedef_factory, args...);
   }
 
   template <typename C, typename... Args>
   mstch::array make_mstch_types(const C& container, const Args&... args) {
-    return make_mstch_array(container, *factories_.type_factory, args...);
+    return make_mstch_array(container, *context_.type_factory, args...);
   }
 
   template <typename Item, typename Factory, typename Cache>
   mstch::node make_mstch_element_cached(
       const Item& item,
       const Factory& factory,
-      Cache& c,
+      Cache& cache,
       const std::string& id,
       size_t element_index,
       size_t element_count) {
     std::string elem_id = id + item->get_name();
-    auto itr = c.find(elem_id);
-    if (itr == c.end()) {
+    auto itr = cache.find(elem_id);
+    if (itr == cache.end()) {
       auto pos = mstch_element_position(element_index, element_count);
-      itr = c.emplace_hint(
-          itr,
-          elem_id,
-          factory.make_mstch_object(item, factories_, cache_, pos));
+      itr = cache.emplace_hint(
+          itr, elem_id, factory.make_mstch_object(item, context_, pos));
     }
     return itr->second;
   }
@@ -392,12 +375,12 @@ class mstch_base : public mstch::object {
   mstch::array make_mstch_array_cached(
       const Container& container,
       const Factory& factory,
-      Cache& c,
+      Cache& cache,
       const std::string& id) {
     mstch::array a;
     for (size_t i = 0; i < container.size(); ++i) {
       a.push_back(make_mstch_element_cached(
-          container[i], factory, c, id, i, container.size()));
+          container[i], factory, cache, id, i, container.size()));
     }
     return a;
   }
@@ -409,8 +392,7 @@ class mstch_base : public mstch::object {
   void register_has_option(std::string key, std::string option);
 
  protected:
-  const mstch_factories& factories_;
-  std::shared_ptr<mstch_cache> cache_;
+  mstch_context& context_;
   const mstch_element_position pos_;
 };
 
@@ -419,11 +401,8 @@ class mstch_program : public mstch_base {
   using ast_type = t_program;
 
   mstch_program(
-      const t_program* p,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos)
-      : mstch_base(factories, cache, pos), program_(p) {
+      const t_program* p, mstch_context& ctx, mstch_element_position pos)
+      : mstch_base(ctx, pos), program_(p) {
     register_methods(
         this,
         {
@@ -488,11 +467,8 @@ class mstch_service : public mstch_base {
   using ast_type = t_service;
 
   mstch_service(
-      const t_service* s,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos)
-      : mstch_base(factories, cache, pos), service_(s) {
+      const t_service* s, mstch_context& ctx, mstch_element_position pos)
+      : mstch_base(ctx, pos), service_(s) {
     register_methods(
         this,
         {
@@ -538,7 +514,7 @@ class mstch_service : public mstch_base {
   mstch::node annotations() { return mstch_base::annotations(service_); }
   mstch::node thrift_uri() { return service_->uri(); }
 
-  mstch::node parent() { return cache_->options_.at("parent_service_name"); }
+  mstch::node parent() { return context_.options.at("parent_service_name"); }
 
   mstch::node has_streams() {
     auto& funcs = get_functions();
@@ -557,9 +533,9 @@ class mstch_service : public mstch_base {
   mstch::node has_interactions() { return !interactions_.empty(); }
   mstch::node interactions() {
     if (!service_->is_interaction()) {
-      // for Python interactions
-      cache_->options_["parent_service_name"] = service_->get_name();
-      cache_->options_["parent_service_cpp_name"] = cpp2::get_name(service_);
+      // For Python interactions:
+      context_.options["parent_service_name"] = service_->get_name();
+      context_.options["parent_service_cpp_name"] = cpp2::get_name(service_);
     }
     return make_mstch_interactions(interactions_, service_);
   }
@@ -591,11 +567,8 @@ class mstch_function : public mstch_base {
   using ast_type = t_function;
 
   mstch_function(
-      const t_function* f,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos)
-      : mstch_base(factories, cache, pos), function_(f) {
+      const t_function* f, mstch_context& ctx, mstch_element_position pos)
+      : mstch_base(ctx, pos), function_(f) {
     register_methods(
         this,
         {
@@ -717,14 +690,8 @@ class mstch_type : public mstch_base {
  public:
   using ast_type = t_type;
 
-  mstch_type(
-      const t_type* t,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos)
-      : mstch_base(factories, cache, pos),
-        type_(t),
-        resolved_type_(t->get_true_type()) {
+  mstch_type(const t_type* t, mstch_context& ctx, mstch_element_position pos)
+      : mstch_base(ctx, pos), type_(t), resolved_type_(t->get_true_type()) {
     register_methods(
         this,
         {
@@ -846,11 +813,8 @@ class mstch_typedef : public mstch_base {
   using ast_type = t_typedef;
 
   mstch_typedef(
-      const t_typedef* t,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos)
-      : mstch_base(factories, cache, pos), typedef_(t) {
+      const t_typedef* t, mstch_context& ctx, mstch_element_position pos)
+      : mstch_base(ctx, pos), typedef_(t) {
     register_methods(
         this,
         {
@@ -879,11 +843,8 @@ class mstch_struct : public mstch_base {
   using ast_type = t_struct;
 
   mstch_struct(
-      const t_struct* s,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos)
-      : mstch_base(factories, cache, pos), struct_(s) {
+      const t_struct* s, mstch_context& ctx, mstch_element_position pos)
+      : mstch_base(ctx, pos), struct_(s) {
     register_methods(
         this,
         {
@@ -905,13 +866,13 @@ class mstch_struct : public mstch_base {
         });
 
     // Populate field_context_generator for each field.
-    auto ctx = field_generator_context{};
-    ctx.strct = struct_;
+    auto field_ctx = field_generator_context();
+    field_ctx.strct = struct_;
     for (const t_field& field : s->fields()) {
       if (cpp2::field_has_isset(&field)) {
-        ctx.isset_index++;
+        field_ctx.isset_index++;
       }
-      context_map[&field] = ctx;
+      context_map[&field] = field_ctx;
     }
 
     const t_field* prev = nullptr;
@@ -946,8 +907,8 @@ class mstch_struct : public mstch_base {
     size_t i = 0;
     for (const auto* field : fields) {
       auto pos = mstch_element_position(i, fields.size());
-      a.push_back(factories_.field_factory->make_mstch_object(
-          field, factories_, cache_, pos, &context_map[field]));
+      a.push_back(context_.field_factory->make_mstch_object(
+          field, context_, pos, &context_map[field]));
       ++i;
     }
     return a;
@@ -989,13 +950,10 @@ class mstch_field : public mstch_base {
 
   mstch_field(
       const t_field* f,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos,
       const field_generator_context* field_context)
-      : mstch_base(factories, cache, pos),
-        field_(f),
-        field_context_(field_context) {
+      : mstch_base(ctx, pos), field_(f), field_context_(field_context) {
     register_methods(
         this,
         {
@@ -1044,12 +1002,8 @@ class mstch_enum : public mstch_base {
  public:
   using ast_type = t_enum;
 
-  mstch_enum(
-      const t_enum* e,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos)
-      : mstch_base(factories, cache, pos), enum_(e) {
+  mstch_enum(const t_enum* e, mstch_context& ctx, mstch_element_position pos)
+      : mstch_base(ctx, pos), enum_(e) {
     register_methods(
         this,
         {
@@ -1075,11 +1029,8 @@ class mstch_enum_value : public mstch_base {
   using ast_type = t_enum_value;
 
   mstch_enum_value(
-      const t_enum_value* ev,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos)
-      : mstch_base(factories, cache, pos), enum_value_(ev) {
+      const t_enum_value* ev, mstch_context& ctx, mstch_element_position pos)
+      : mstch_base(ctx, pos), enum_value_(ev) {
     register_methods(
         this,
         {
@@ -1100,13 +1051,12 @@ class mstch_const : public mstch_base {
 
   mstch_const(
       const t_const* c,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos,
       const t_const* current_const,
       const t_type* expected_type,
       const t_field* field)
-      : mstch_base(factories, cache, pos),
+      : mstch_base(ctx, pos),
         const_(c),
         current_const_(current_const),
         expected_type_(expected_type),
@@ -1141,12 +1091,11 @@ class mstch_const_value : public mstch_base {
 
   mstch_const_value(
       const t_const_value* cv,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos,
       const t_const* current_const,
       const t_type* expected_type)
-      : mstch_base(factories, cache, pos),
+      : mstch_base(ctx, pos),
         const_value_(cv),
         current_const_(current_const),
         expected_type_(expected_type),
@@ -1253,12 +1202,11 @@ class mstch_const_map_element : public mstch_base {
 
   mstch_const_map_element(
       const ast_type* e,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
+      mstch_context& ctx,
       mstch_element_position pos,
       const t_const* current_const,
       const std::pair<const t_type*, const t_type*>& expected_types)
-      : mstch_base(factories, cache, pos),
+      : mstch_base(ctx, pos),
         element_(*e),
         current_const_(current_const),
         expected_types_(expected_types) {
@@ -1283,11 +1231,8 @@ class mstch_structured_annotation : public mstch_base {
   using ast_type = detail::structured_annotation_tag;
 
   mstch_structured_annotation(
-      const t_const* c,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos)
-      : mstch_base(factories, cache, pos), const_(*c) {
+      const t_const* c, mstch_context& ctx, mstch_element_position pos)
+      : mstch_base(ctx, pos), const_(*c) {
     register_methods(
         this,
         {{"structured_annotation:const",
@@ -1296,10 +1241,9 @@ class mstch_structured_annotation : public mstch_base {
           &mstch_structured_annotation::is_const_struct}});
   }
   mstch::node constant() {
-    return factories_.const_factory->make_mstch_object(
+    return context_.const_factory->make_mstch_object(
         &const_,
-        factories_,
-        cache_,
+        context_,
         pos_,
         &const_,
         const_.type()->get_true_type(),
@@ -1319,11 +1263,8 @@ class mstch_deprecated_annotation : public mstch_base {
   using ast_type = t_annotation;
 
   mstch_deprecated_annotation(
-      const t_annotation* a,
-      const mstch_factories& factories,
-      std::shared_ptr<mstch_cache> cache,
-      mstch_element_position pos)
-      : mstch_base(factories, cache, pos), key_(a->first), val_(a->second) {
+      const t_annotation* a, mstch_context& ctx, mstch_element_position pos)
+      : mstch_base(ctx, pos), key_(a->first), val_(a->second) {
     register_methods(
         this,
         {
