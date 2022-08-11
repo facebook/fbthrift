@@ -33,9 +33,9 @@ TYPED_TEST_P(InterceptedFieldsTest, intercept) {
   EXPECT_EQ(TestFieldInterceptor::count, 0);
   ref.access_field();
   EXPECT_EQ(TestFieldInterceptor::count, 1);
-  ref.access_shared_field_ref();
+  ref.access_shared_field();
   EXPECT_EQ(TestFieldInterceptor::count, 2);
-  ref.access_optional_shared_field_ref();
+  ref.access_optional_shared_field();
   EXPECT_EQ(TestFieldInterceptor::count, 3);
   ref.access_shared_const_field_ref();
   EXPECT_EQ(TestFieldInterceptor::count, 4);

@@ -106,16 +106,28 @@
 <%#field:eligible_for_storage_name_mangling?%>
 
   template <typename ..., typename T = <%field:cpp_storage_type%>>
-  FOLLY_ERASE T& <%field:cpp_name%>() & { return <% > common/field_value%>; }
+  FOLLY_ERASE T& <%field:cpp_name%>() & {
+<% > module_types_h/field_interceptor%>
+    return <% > common/field_value%>;
+  }
 
   template <typename ..., typename T = <%field:cpp_storage_type%>>
-  FOLLY_ERASE const T& <%field:cpp_name%>() const& { return <% > common/field_value%>; }
+  FOLLY_ERASE const T& <%field:cpp_name%>() const& {
+<% > module_types_h/field_interceptor%>
+    return <% > common/field_value%>;
+  }
 
   template <typename ..., typename T = <%field:cpp_storage_type%>>
-  FOLLY_ERASE T&& <%field:cpp_name%>() && { return static_cast<T&&>(<% > common/field_value%>); }
+  FOLLY_ERASE T&& <%field:cpp_name%>() && {
+<% > module_types_h/field_interceptor%>
+    return static_cast<T&&>(<% > common/field_value%>);
+  }
 
   template <typename ..., typename T = <%field:cpp_storage_type%>>
-  FOLLY_ERASE const T&& <%field:cpp_name%>() const&& { return static_cast<const T&&>(<% > common/field_value%>); }
+  FOLLY_ERASE const T&& <%field:cpp_name%>() const&& {
+<% > module_types_h/field_interceptor%>
+    return static_cast<const T&&>(<% > common/field_value%>);
+  }
 <%/field:eligible_for_storage_name_mangling?%>
 <%/field:use_field_ref?%>
 <%/struct:fields%>

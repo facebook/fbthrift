@@ -110,16 +110,24 @@ class Foo final  {
   }
 
   template <typename ..., typename T = ::std::unique_ptr<::cpp2::Foo>>
-  FOLLY_ERASE T& foo() & { return __fbthrift_field_foo; }
+  FOLLY_ERASE T& foo() & {
+    return __fbthrift_field_foo;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::cpp2::Foo>>
-  FOLLY_ERASE const T& foo() const& { return __fbthrift_field_foo; }
+  FOLLY_ERASE const T& foo() const& {
+    return __fbthrift_field_foo;
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::cpp2::Foo>>
-  FOLLY_ERASE T&& foo() && { return static_cast<T&&>(__fbthrift_field_foo); }
+  FOLLY_ERASE T&& foo() && {
+    return static_cast<T&&>(__fbthrift_field_foo);
+  }
 
   template <typename ..., typename T = ::std::unique_ptr<::cpp2::Foo>>
-  FOLLY_ERASE const T&& foo() const&& { return static_cast<const T&&>(__fbthrift_field_foo); }
+  FOLLY_ERASE const T&& foo() const&& {
+    return static_cast<const T&&>(__fbthrift_field_foo);
+  }
   template <typename ..., typename T = ::std::shared_ptr<::cpp2::Foo>>
   FOLLY_ERASE T& bar_ref() & {
     return __fbthrift_field_bar;
@@ -141,16 +149,24 @@ class Foo final  {
   }
 
   template <typename ..., typename T = ::std::shared_ptr<::cpp2::Foo>>
-  FOLLY_ERASE T& bar() & { return __fbthrift_field_bar; }
+  FOLLY_ERASE T& bar() & {
+    return __fbthrift_field_bar;
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<::cpp2::Foo>>
-  FOLLY_ERASE const T& bar() const& { return __fbthrift_field_bar; }
+  FOLLY_ERASE const T& bar() const& {
+    return __fbthrift_field_bar;
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<::cpp2::Foo>>
-  FOLLY_ERASE T&& bar() && { return static_cast<T&&>(__fbthrift_field_bar); }
+  FOLLY_ERASE T&& bar() && {
+    return static_cast<T&&>(__fbthrift_field_bar);
+  }
 
   template <typename ..., typename T = ::std::shared_ptr<::cpp2::Foo>>
-  FOLLY_ERASE const T&& bar() const&& { return static_cast<const T&&>(__fbthrift_field_bar); }
+  FOLLY_ERASE const T&& bar() const&& {
+    return static_cast<const T&&>(__fbthrift_field_bar);
+  }
 
   template <class Protocol_>
   unsigned long read(Protocol_* iprot);
