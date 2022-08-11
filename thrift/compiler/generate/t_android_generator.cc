@@ -32,18 +32,7 @@ namespace {
  */
 class t_android_generator : public t_java_deprecated_generator {
  public:
-  t_android_generator(
-      t_program* program,
-      t_generation_context context,
-      const std::map<std::string, std::string>& options)
-      : t_java_deprecated_generator(program, std::move(context), options) {
-    generate_field_metadata_ = false;
-    generate_immutable_structs_ = true;
-    generate_boxed_primitive = true;
-    generate_builder = false;
-
-    out_dir_base_ = "gen-android";
-  }
+  using t_java_deprecated_generator::t_java_deprecated_generator;
 
   void init_generator() override;
 
@@ -59,6 +48,13 @@ class t_android_generator : public t_java_deprecated_generator {
  * streams.
  */
 void t_android_generator::init_generator() {
+  generate_field_metadata_ = false;
+  generate_immutable_structs_ = true;
+  generate_boxed_primitive = true;
+  generate_builder = false;
+
+  out_dir_base_ = "gen-android";
+
   // Make output directory.
   boost::filesystem::create_directory(get_out_dir());
   namespace_key_ = "android";

@@ -28,13 +28,10 @@ namespace {
 
 class t_json_experimental_generator : public t_mstch_generator {
  public:
-  t_json_experimental_generator(
-      t_program* program,
-      t_generation_context context,
-      const std::map<std::string, std::string>& options)
-      : t_mstch_generator(program, std::move(context), "json", options, true) {
-    out_dir_base_ = "gen-json_experimental";
-  }
+  using t_mstch_generator::t_mstch_generator;
+
+  std::string template_prefix() const override { return "json"; }
+  bool convert_delimiter() const override { return true; }
 
   void generate_program() override;
 
@@ -292,6 +289,7 @@ class json_experimental_const_value : public mstch_const_value {
 };
 
 void t_json_experimental_generator::generate_program() {
+  out_dir_base_ = "gen-json_experimental";
   const auto* program = get_program();
   set_mstch_factories();
   auto mstch_program = mstch_context_.program_factory->make_mstch_object(

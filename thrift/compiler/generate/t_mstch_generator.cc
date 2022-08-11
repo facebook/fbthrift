@@ -59,19 +59,6 @@ void chomp_last_char(string* data, char c) {
 
 } // namespace
 
-t_mstch_generator::t_mstch_generator(
-    t_program* program,
-    t_generation_context context,
-    boost::filesystem::path template_prefix,
-    std::map<std::string, std::string> options,
-    bool convert_delimiter)
-    : t_generator(program, std::move(context)),
-      options_(std::move(options)),
-      convert_delimiter_(convert_delimiter) {
-  mstch_context_.options = options_;
-  gen_template_map(template_prefix);
-}
-
 mstch::map t_mstch_generator::dump(const t_program& program) {
   mstch::map result{
       {"name", program.name()},
@@ -434,7 +421,7 @@ void t_mstch_generator::gen_template_map(const boost::filesystem::path& root) {
       // Remove a single '\n' or '\r\n' or '\r' at end, if present.
       chomp_last_char(&tpl, '\n');
       chomp_last_char(&tpl, '\r');
-      if (convert_delimiter_) {
+      if (convert_delimiter()) {
         tpl = "{{=<% %>=}}\n" + tpl;
       }
 
@@ -477,12 +464,10 @@ bool t_mstch_generator::has_option(const std::string& option) const {
   return options_.find(option) != options_.end();
 }
 
-std::string t_mstch_generator::get_option(const std::string& option) {
+boost::optional<std::string> t_mstch_generator::get_option(
+    const std::string& option) const {
   auto itr = options_.find(option);
-  if (itr != options_.end()) {
-    return itr->second;
-  }
-  return {};
+  return itr != options_.end() ? itr->second : boost::optional<std::string>();
 }
 
 mstch::map t_mstch_generator::prepend_prefix(

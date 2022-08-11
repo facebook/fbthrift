@@ -59,13 +59,9 @@ const std::string* get_py_adapter(const t_type* type) {
 
 class t_mstch_pyi_generator : public t_mstch_generator {
  public:
-  t_mstch_pyi_generator(
-      t_program* program,
-      t_generation_context context,
-      const std::map<std::string, std::string>& options)
-      : t_mstch_generator(program, std::move(context), "pyi", options) {
-    out_dir_base_ = "gen-py";
-  }
+  using t_mstch_generator::t_mstch_generator;
+
+  std::string template_prefix() const override { return "pyi"; }
 
   void generate_program() override;
   mstch::map extend_program(const t_program&) override;
@@ -438,6 +434,7 @@ mstch::array t_mstch_pyi_generator::get_py3_namespace(
 }
 
 void t_mstch_pyi_generator::generate_program() {
+  out_dir_base_ = "gen-py";
   generate_init_files(*get_program());
   generate_constants(*get_program());
   generate_ttypes(*get_program());

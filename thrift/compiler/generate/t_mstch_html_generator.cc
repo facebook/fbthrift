@@ -22,15 +22,12 @@ namespace compiler {
 
 class t_mstch_html_generator : public t_mstch_generator {
  public:
-  t_mstch_html_generator(
-      t_program* program,
-      t_generation_context context,
-      const std::map<std::string, std::string>& options)
-      : t_mstch_generator(program, std::move(context), "html", options) {
-    this->out_dir_base_ = "gen-mstch_html";
-  }
+  using t_mstch_generator::t_mstch_generator;
+
+  std::string template_prefix() const override { return "html"; }
 
   void generate_program() override {
+    out_dir_base_ = "gen-mstch_html";
     // Generate index.html.
     render_to_file(*this->get_program(), "index.html", "index.html");
   }

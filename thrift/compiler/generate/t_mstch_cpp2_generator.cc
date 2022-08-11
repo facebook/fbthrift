@@ -207,12 +207,39 @@ class cpp2_generator_context {
   gen::cpp::type_resolver resolver_;
 };
 
+int checked_stoi(const std::string& s, std::string msg) {
+  std::size_t pos = 0;
+  int ret = std::stoi(s, &pos);
+  if (pos != s.size()) {
+    throw std::runtime_error(msg);
+  }
+  return ret;
+}
+
+int get_split_count(const std::map<std::string, std::string>& options) {
+  auto iter = options.find("types_cpp_splits");
+  if (iter == options.end()) {
+    return 0;
+  }
+  return checked_stoi(
+      iter->second, "Invalid types_cpp_splits value: `" + iter->second + "`");
+}
+
 class t_mstch_cpp2_generator : public t_mstch_generator {
  public:
-  t_mstch_cpp2_generator(
-      t_program* program,
-      t_generation_context context,
-      const std::map<std::string, std::string>& options);
+  using t_mstch_generator::t_mstch_generator;
+
+  std::string template_prefix() const override { return "cpp2"; }
+  bool convert_delimiter() const override { return true; }
+
+  void process_options(
+      const std::map<std::string, std::string>& options) override {
+    t_mstch_generator::process_options(options);
+    cpp_context_ = std::make_shared<cpp2_generator_context>(
+        cpp2_generator_context::create());
+    client_name_to_split_count_ = get_client_name_to_split_count();
+    out_dir_base_ = get_out_dir_base(options);
+  }
 
   void generate_program() override;
   void fill_validator_list(validator_list&) const override;
@@ -234,6 +261,8 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   void generate_out_of_line_service(const t_service* service);
   void generate_out_of_line_services(const std::vector<t_service*>& services);
   void generate_inline_services(const std::vector<t_service*>& services);
+
+  std::unordered_map<std::string, int> get_client_name_to_split_count() const;
 
   std::shared_ptr<cpp2_generator_context> cpp_context_;
   std::unordered_map<std::string, int32_t> client_name_to_split_count_;
@@ -589,7 +618,7 @@ class cpp_mstch_program : public mstch_program {
       return;
     }
 
-    int32_t split_count = std::max(cpp2::get_split_count(context_.options), 1);
+    int split_count = std::max(get_split_count(context_.options), 1);
 
     objects_ = *split_structs_;
 
@@ -2085,18 +2114,6 @@ class cpp_mstch_deprecated_annotation : public mstch_deprecated_annotation {
   mstch::node fatal_string() { return render_fatal_string(val_.value); }
 };
 
-t_mstch_cpp2_generator::t_mstch_cpp2_generator(
-    t_program* program,
-    t_generation_context context,
-    const std::map<std::string, std::string>& options)
-    : t_mstch_generator(program, std::move(context), "cpp2", options, true),
-      cpp_context_(std::make_shared<cpp2_generator_context>(
-          cpp2_generator_context::create())),
-      client_name_to_split_count_(
-          cpp2::get_client_name_to_split_count(options)) {
-  out_dir_base_ = get_out_dir_base(options);
-}
-
 void t_mstch_cpp2_generator::generate_program() {
   const auto* program = get_program();
   set_mstch_factories();
@@ -2199,7 +2216,7 @@ void t_mstch_cpp2_generator::generate_structs(const t_program* program) {
   render_to_file(prog, "module_types.h", name + "_types.h");
   render_to_file(prog, "module_types.tcc", name + "_types.tcc");
 
-  if (auto split_count = cpp2::get_split_count(options_)) {
+  if (int split_count = get_split_count(options())) {
     auto digit = std::to_string(split_count - 1).size();
     auto shards = cpp2::lpt_split(program->objects(), split_count, [](auto t) {
       return t->fields().size();
@@ -2399,6 +2416,42 @@ mstch::node t_mstch_cpp2_generator::include_prefix(
   return prefix + out_dir_base + "/";
 }
 
+static auto split(const std::string& s, char delimiter) {
+  std::vector<std::string> ret;
+  boost::algorithm::split(ret, s, [&](char c) { return c == delimiter; });
+  return ret;
+}
+
+std::unordered_map<std::string, int>
+t_mstch_cpp2_generator::get_client_name_to_split_count() const {
+  auto client_cpp_splits = get_option("client_cpp_splits");
+  if (!client_cpp_splits) {
+    return {};
+  }
+
+  auto map = *client_cpp_splits;
+  if (map.size() < 2 || map[0] != '{' || *map.rbegin() != '}') {
+    throw std::runtime_error("Invalid client_cpp_splits value: `" + map + "`");
+  }
+  map = map.substr(1, map.size() - 2);
+  if (map.empty()) {
+    return {};
+  }
+  std::unordered_map<std::string, int> ret;
+  for (auto kv : split(map, ',')) {
+    auto a = split(kv, ':');
+    if (a.size() != 2) {
+      throw std::runtime_error(
+          "Invalid pair `" + kv + "` in client_cpp_splits value: `" + map +
+          "`");
+    }
+    ret[a[0]] = checked_stoi(
+        a[1],
+        "Invalid pair `" + kv + "` in client_cpp_splits value: `" + map + "`");
+  }
+  return ret;
+}
+
 class annotation_validator : public validator {
  public:
   explicit annotation_validator(
@@ -2485,8 +2538,11 @@ bool service_method_validator::visit(t_service* service) {
 
 class splits_validator : public validator {
  public:
-  explicit splits_validator(const std::map<std::string, std::string>& options)
-      : options_(options) {}
+  explicit splits_validator(
+      int split_count,
+      const std::unordered_map<std::string, int>& client_name_to_split_count)
+      : split_count_(split_count),
+        client_name_to_split_count_(client_name_to_split_count) {}
 
   using validator::visit;
 
@@ -2500,52 +2556,38 @@ class splits_validator : public validator {
 
  private:
   const t_program* program_ = nullptr;
+  int split_count_ = 0;
+  std::unordered_map<std::string, int> client_name_to_split_count_;
 
   void validate_type_cpp_splits(const int32_t object_count) {
-    try {
-      auto split_count = cpp2::get_split_count(options_);
-      if (split_count > object_count) {
-        report_error(
-            *program_,
-            "`types_cpp_splits={}` is misconfigured: it can not be greater "
-            "than the number of objects, which is {}.",
-            split_count,
-            object_count);
-      }
-    } catch (std::runtime_error& e) {
-      report_error(*program_, "{}", e.what());
+    if (split_count_ > object_count) {
+      report_error(
+          *program_,
+          "`types_cpp_splits={}` is misconfigured: it can not be greater "
+          "than the number of objects, which is {}.",
+          split_count_,
+          object_count);
     }
   }
 
   void validate_client_cpp_splits(const std::vector<t_service*>& services) {
-    try {
-      auto client_name_to_split_count =
-          cpp2::get_client_name_to_split_count(options_);
-
-      if (client_name_to_split_count.empty()) {
-        // fast path
-        return;
+    if (client_name_to_split_count_.empty()) {
+      return; // A fast path.
+    }
+    for (const t_service* s : services) {
+      auto iter = client_name_to_split_count_.find(s->get_name());
+      if (iter != client_name_to_split_count_.end() &&
+          iter->second > static_cast<int32_t>(s->get_functions().size())) {
+        report_error(
+            *s,
+            "`client_cpp_splits={}` (For service {}) is misconfigured: it "
+            "can not be greater than the number of functions, which is {}.",
+            iter->second,
+            s->get_name(),
+            s->get_functions().size());
       }
-
-      for (const t_service* s : services) {
-        auto iter = client_name_to_split_count.find(s->get_name());
-        if (iter != client_name_to_split_count.end() &&
-            iter->second > static_cast<int32_t>(s->get_functions().size())) {
-          report_error(
-              *s,
-              "`client_cpp_splits={}` (For service {}) is misconfigured: it "
-              "can not be greater than the number of functions, which is {}.",
-              iter->second,
-              s->get_name(),
-              s->get_functions().size());
-        }
-      }
-    } catch (std::runtime_error& e) {
-      report_error(*program_, "{}", e.what());
     }
   }
-
-  const std::map<std::string, std::string>& options_;
 };
 
 class lazy_field_validator : public validator {
@@ -2574,11 +2616,13 @@ class lazy_field_validator : public validator {
   }
 };
 
-void t_mstch_cpp2_generator::fill_validator_list(validator_list& l) const {
-  l.add<annotation_validator>(this->options_);
-  l.add<service_method_validator>(this->options_);
-  l.add<splits_validator>(this->options_);
-  l.add<lazy_field_validator>();
+void t_mstch_cpp2_generator::fill_validator_list(
+    validator_list& validators) const {
+  validators.add<annotation_validator>(options());
+  validators.add<service_method_validator>(options());
+  validators.add<splits_validator>(
+      get_split_count(options()), client_name_to_split_count_);
+  validators.add<lazy_field_validator>();
 }
 
 THRIFT_REGISTER_GENERATOR(mstch_cpp2, "cpp2", "");

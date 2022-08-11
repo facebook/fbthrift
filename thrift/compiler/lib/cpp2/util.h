@@ -205,12 +205,6 @@ bool is_stack_arguments(
     const std::map<std::string, std::string>& options,
     const t_function& function);
 
-int32_t get_split_count(const std::map<std::string, std::string>& options);
-
-// return client name -- client split count
-std::unordered_map<std::string, int32_t> get_client_name_to_split_count(
-    const std::map<std::string, std::string>& options);
-
 bool is_mixin(const t_field& field);
 
 inline const t_const* packed_isset(const t_struct& s) {

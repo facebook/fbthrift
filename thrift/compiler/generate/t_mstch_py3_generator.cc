@@ -1173,20 +1173,17 @@ class enum_member_union_field_names_validator : virtual public validator {
 
 class t_mstch_py3_generator : public t_mstch_generator {
  public:
-  t_mstch_py3_generator(
-      t_program* program,
-      t_generation_context context,
-      const std::map<std::string, std::string>& options)
-      : t_mstch_generator(program, std::move(context), "py3", options),
-        generateRootPath_(package_to_path()) {
-    out_dir_base_ = "gen-py3";
-    auto include_prefix = get_option("include_prefix");
-    if (!include_prefix.empty()) {
-      program->set_include_prefix(std::move(include_prefix));
-    }
-  }
+  using t_mstch_generator::t_mstch_generator;
+
+  std::string template_prefix() const override { return "py3"; }
 
   void generate_program() override {
+    generateRootPath_ = package_to_path();
+    out_dir_base_ = "gen-py3";
+    auto include_prefix = get_option("include_prefix").value_or("");
+    if (!include_prefix.empty()) {
+      program_->set_include_prefix(std::move(include_prefix));
+    }
     set_mstch_factories();
     generate_init_files();
     generate_types();
@@ -1200,7 +1197,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
 
   enum TypesFile { IsTypesFile, NotTypesFile };
 
- protected:
+ private:
   bool should_resolve_typedefs() const override { return true; }
   void set_mstch_factories();
   void generate_init_files();
@@ -1212,7 +1209,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
   void generate_services();
   boost::filesystem::path package_to_path();
 
-  const boost::filesystem::path generateRootPath_;
+  boost::filesystem::path generateRootPath_;
 };
 
 mstch_py3_type::CachedProperties& mstch_py3_type::get_cached_props(

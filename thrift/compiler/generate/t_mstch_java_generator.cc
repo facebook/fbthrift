@@ -139,13 +139,9 @@ std::vector<type_mapping> type_list;
 
 class t_mstch_java_generator : public t_mstch_generator {
  public:
-  t_mstch_java_generator(
-      t_program* program,
-      t_generation_context context,
-      const std::map<std::string, std::string>& options)
-      : t_mstch_generator(program, std::move(context), "java", options) {
-    out_dir_base_ = "gen-java";
-  }
+  using t_mstch_generator::t_mstch_generator;
+
+  std::string template_prefix() const override { return "java"; }
 
   void generate_program() override;
 
@@ -1097,6 +1093,7 @@ class mstch_java_type : public mstch_type {
 };
 
 void t_mstch_java_generator::generate_program() {
+  out_dir_base_ = "gen-java";
   set_mstch_factories();
 
   auto name = get_program()->name();

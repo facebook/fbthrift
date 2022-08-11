@@ -825,20 +825,17 @@ class enum_member_union_field_names_validator : virtual public validator {
 
 class t_mstch_python_generator : public t_mstch_generator {
  public:
-  t_mstch_python_generator(
-      t_program* program,
-      t_generation_context context,
-      const std::map<std::string, std::string>& options)
-      : t_mstch_generator(program, std::move(context), "python", options),
-        generate_root_path_{package_to_path()} {
-    out_dir_base_ = "gen-python";
-    auto include_prefix = get_option("include_prefix");
-    if (!include_prefix.empty()) {
-      program->set_include_prefix(std::move(include_prefix));
-    }
-  }
+  using t_mstch_generator::t_mstch_generator;
+
+  std::string template_prefix() const override { return "python"; }
 
   void generate_program() override {
+    generate_root_path_ = package_to_path();
+    out_dir_base_ = "gen-python";
+    auto include_prefix = get_option("include_prefix").value_or("");
+    if (!include_prefix.empty()) {
+      program_->set_include_prefix(std::move(include_prefix));
+    }
     set_mstch_factories();
     generate_types();
     generate_metadata();
@@ -867,7 +864,7 @@ class t_mstch_python_generator : public t_mstch_generator {
   void generate_services();
   boost::filesystem::path package_to_path();
 
-  const boost::filesystem::path generate_root_path_;
+  boost::filesystem::path generate_root_path_;
 };
 
 class python_mstch_const_value : public mstch_const_value {

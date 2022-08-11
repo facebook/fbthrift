@@ -70,11 +70,10 @@ class t_name_generator {
  */
 class t_hack_generator : public t_concat_generator {
  public:
-  t_hack_generator(
-      t_program* program,
-      t_generation_context context,
-      const std::map<std::string, std::string>& options)
-      : t_concat_generator(program, std::move(context)) {
+  using t_concat_generator::t_concat_generator;
+
+  void process_options(
+      const std::map<std::string, std::string>& options) override {
     json_ = option_is_specified(options, "json");
     phps_ = option_is_specified(options, "server");
     strict_types_ = option_is_specified(options, "stricttypes");
@@ -100,7 +99,7 @@ class t_hack_generator : public t_concat_generator {
     mangled_services_ = option_is_set(options, "mangledsvcs", false);
     typedef_ = option_is_specified(options, "typedef");
 
-    auto [_, ns_type_] = get_namespace(program);
+    auto [_, ns_type_] = get_namespace(program_);
     has_hack_namespace = ns_type_ == HackThriftNamespaceType::HACK ||
         ns_type_ == HackThriftNamespaceType::PACKAGE;
     has_nested_ns = false;

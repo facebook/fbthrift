@@ -46,6 +46,8 @@ std::string upcase_string(std::string original) {
  * @param tprogram The program to generate
  */
 void t_java_deprecated_generator::init_generator() {
+  out_dir_base_ = "gen-javadeprecated";
+
   // Make output directory
   boost::filesystem::create_directory(get_out_dir());
   namespace_key_ = "java";

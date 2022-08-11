@@ -37,11 +37,10 @@ namespace compiler {
  */
 class t_json_generator : public t_concat_generator {
  public:
-  t_json_generator(
-      t_program* program,
-      t_generation_context context,
-      const std::map<std::string, std::string>& options)
-      : t_concat_generator(program, std::move(context)) {
+  using t_concat_generator::t_concat_generator;
+
+  void process_options(
+      const std::map<std::string, std::string>& options) override {
     out_dir_base_ = "gen-json";
     annotate_ = options.find("annotate") != options.end();
   }

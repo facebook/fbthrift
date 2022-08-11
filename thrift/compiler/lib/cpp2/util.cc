@@ -54,15 +54,6 @@ fmt::string_view value_or_empty(const std::string* value) {
   return value ? *value : std::string_view("");
 }
 
-int checked_stoi(const std::string& s, std::string msg) {
-  std::size_t pos = 0;
-  int ret = std::stoi(s, &pos);
-  if (pos != s.size()) {
-    throw std::runtime_error(msg);
-  }
-  return ret;
-}
-
 } // namespace
 
 bool is_custom_type(const t_type& type) {
@@ -402,52 +393,6 @@ bool is_stack_arguments(
     return function.get_annotation("cpp.stack_arguments") != "0";
   }
   return options.count("stack_arguments");
-}
-
-int32_t get_split_count(std::map<std::string, std::string> const& options) {
-  auto iter = options.find("types_cpp_splits");
-  if (iter == options.end()) {
-    return 0;
-  }
-
-  return checked_stoi(
-      iter->second, "Invalid types_cpp_splits value: `" + iter->second + "`");
-}
-
-static auto split(const std::string& s, char delimiter) {
-  std::vector<std::string> ret;
-  boost::algorithm::split(ret, s, [&](char c) { return c == delimiter; });
-  return ret;
-}
-
-std::unordered_map<std::string, int32_t> get_client_name_to_split_count(
-    std::map<std::string, std::string> const& options) {
-  auto iter = options.find("client_cpp_splits");
-  if (iter == options.end()) {
-    return {};
-  }
-
-  auto map = iter->second;
-  if (map.size() < 2 || map[0] != '{' || *map.rbegin() != '}') {
-    throw std::runtime_error("Invalid client_cpp_splits value: `" + map + "`");
-  }
-  map = map.substr(1, map.size() - 2);
-  if (map.empty()) {
-    return {};
-  }
-  std::unordered_map<std::string, int32_t> ret;
-  for (auto kv : split(map, ',')) {
-    auto a = split(kv, ':');
-    if (a.size() != 2) {
-      throw std::runtime_error(
-          "Invalid pair `" + kv + "` in client_cpp_splits value: `" + map +
-          "`");
-    }
-    ret[a[0]] = checked_stoi(
-        a[1],
-        "Invalid pair `" + kv + "` in client_cpp_splits value: `" + map + "`");
-  }
-  return ret;
 }
 
 bool is_mixin(const t_field& field) {

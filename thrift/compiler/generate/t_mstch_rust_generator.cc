@@ -306,50 +306,9 @@ bool has_nonstandard_type_annotation(const t_type* type) {
 
 class t_mstch_rust_generator : public t_mstch_generator {
  public:
-  t_mstch_rust_generator(
-      t_program* program,
-      t_generation_context context,
-      const std::map<std::string, std::string>& options)
-      : t_mstch_generator(program, std::move(context), "rust", options) {
-    auto cratemap_flag = options.find("cratemap");
-    if (cratemap_flag != options.end()) {
-      load_crate_map(cratemap_flag->second);
-    }
+  using t_mstch_generator::t_mstch_generator;
 
-    options_.serde = options.count("serde");
-    options_.noserver = options.count("noserver");
-    options_.skip_none_serialization = options.count("skip_none_serialization");
-    if (options_.skip_none_serialization) {
-      assert(options_.serde);
-    }
-
-    auto include_prefix_flag = options.find("include_prefix");
-    if (include_prefix_flag != options.end()) {
-      program->set_include_prefix(include_prefix_flag->second);
-    }
-
-    auto include_srcs = options.find("include_srcs");
-    if (include_srcs != options.end()) {
-      auto paths = include_srcs->second;
-
-      string::size_type pos = 0;
-      while (pos != string::npos && pos < paths.size()) {
-        string::size_type next_pos = paths.find(':', pos);
-        auto path = paths.substr(pos, next_pos - pos);
-        options_.include_srcs.push_back(path);
-        pos = ((next_pos == string::npos) ? next_pos : next_pos + 1);
-      }
-    }
-
-    if (options_.multifile_mode) {
-      options_.current_crate = "crate::" + mangle(program->name());
-    } else {
-      options_.current_crate = "crate";
-    }
-
-    options_.current_program = program;
-    out_dir_base_ = "gen-rust";
-  }
+  std::string template_prefix() const override { return "rust"; }
 
   void generate_program() override;
   void fill_validator_list(validator_list&) const override;
@@ -1544,6 +1503,42 @@ mstch::node rust_mstch_service::rust_all_exceptions() {
 }
 
 void t_mstch_rust_generator::generate_program() {
+  if (auto cratemap_flag = get_option("cratemap")) {
+    load_crate_map(*cratemap_flag);
+  }
+
+  options_.serde = has_option("serde");
+  options_.noserver = has_option("noserver");
+  options_.skip_none_serialization = has_option("skip_none_serialization");
+  if (options_.skip_none_serialization) {
+    assert(options_.serde);
+  }
+
+  if (auto include_prefix_flag = get_option("include_prefix")) {
+    program_->set_include_prefix(*include_prefix_flag);
+  }
+
+  if (auto include_srcs = get_option("include_srcs")) {
+    auto paths = *include_srcs;
+
+    string::size_type pos = 0;
+    while (pos != string::npos && pos < paths.size()) {
+      string::size_type next_pos = paths.find(':', pos);
+      auto path = paths.substr(pos, next_pos - pos);
+      options_.include_srcs.push_back(path);
+      pos = ((next_pos == string::npos) ? next_pos : next_pos + 1);
+    }
+  }
+
+  if (options_.multifile_mode) {
+    options_.current_crate = "crate::" + mangle(program_->name());
+  } else {
+    options_.current_crate = "crate";
+  }
+
+  options_.current_program = program_;
+  out_dir_base_ = "gen-rust";
+
   set_mstch_factories();
 
   const auto& prog = cached_program(get_program());

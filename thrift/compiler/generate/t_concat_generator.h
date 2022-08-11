@@ -32,8 +32,7 @@ namespace compiler {
  */
 class t_concat_generator : public t_generator {
  public:
-  t_concat_generator(t_program* program, t_generation_context context)
-      : t_generator(program, std::move(context)) {}
+  using t_generator::t_generator;
 
   /**
    * Framework generator method that iterates over all the parts of a program

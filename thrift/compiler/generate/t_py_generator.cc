@@ -67,11 +67,10 @@ void mark_file_executable(const boost::filesystem::path& path) {
  */
 class t_py_generator : public t_concat_generator {
  public:
-  t_py_generator(
-      t_program* program,
-      t_generation_context context,
-      const std::map<std::string, std::string>& options)
-      : t_concat_generator(program, std::move(context)) {
+  using t_concat_generator::t_concat_generator;
+
+  void process_options(
+      const std::map<std::string, std::string>& options) override {
     gen_json_ = options.find("json") != options.end();
     gen_newstyle_ = options.find("new_style") != options.end();
     gen_slots_ = options.find("slots") != options.end();

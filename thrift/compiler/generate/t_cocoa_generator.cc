@@ -45,11 +45,10 @@ static const std::string kFromStringPostfix = "FromString";
  */
 class t_cocoa_generator : public t_concat_generator {
  public:
-  t_cocoa_generator(
-      t_program* program,
-      t_generation_context context,
-      const std::map<std::string, std::string>& options)
-      : t_concat_generator(program, std::move(context)) {
+  using t_concat_generator::t_concat_generator;
+
+  void process_options(
+      const std::map<std::string, std::string>& options) override {
     log_unexpected_ = options.find("log_unexpected") != options.end();
     validate_required_ = options.find("validate_required") != options.end();
     nullability_ = options.find("nullability") != options.end();

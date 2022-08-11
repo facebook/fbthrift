@@ -16,12 +16,11 @@
 
 #pragma once
 
-#include <fstream>
 #include <memory>
-#include <sstream>
 #include <stdexcept>
 
 #include <boost/filesystem.hpp>
+#include <boost/optional.hpp>
 #include <thrift/compiler/detail/mustache/mstch.h>
 
 #include <thrift/compiler/generate/mstch_objects.h>
@@ -33,22 +32,23 @@ namespace compiler {
 
 class t_mstch_generator : public t_generator {
  public:
-  t_mstch_generator(
-      t_program* program,
-      t_generation_context context,
-      boost::filesystem::path template_prefix,
-      std::map<std::string, std::string> options,
-      bool convert_delimiter = false);
+  using t_generator::t_generator;
+
+  void process_options(
+      const std::map<std::string, std::string>& options) override {
+    options_ = options;
+    mstch_context_.options = options;
+    gen_template_map(template_prefix());
+  }
+
+  virtual std::string template_prefix() const = 0;
+
+  // Return true to use <% and %> as delimiters instead of {{ and }}.
+  virtual bool convert_delimiter() const { return false; }
 
  protected:
   /**
-   * Option pairs specified on command line for influencing generation behavior
-   */
-  const std::map<std::string, std::string> options_;
-
-  /**
-   * If true, typedefs will be automatically resolved to their underlying
-   * type.
+   * If true, typedefs will be automatically resolved to their underlying type.
    */
   virtual bool should_resolve_typedefs() const { return false; }
 
@@ -203,11 +203,16 @@ class t_mstch_generator : public t_generator {
   }
 
   bool has_option(const std::string& option) const;
-  std::string get_option(const std::string& option);
+  boost::optional<std::string> get_option(const std::string& option) const;
+  const std::map<std::string, std::string>& options() const { return options_; }
 
  private:
+  /**
+   * Option pairs specified on command line for influencing generation behavior.
+   */
+  std::map<std::string, std::string> options_;
+
   std::map<std::string, std::string> template_map_;
-  bool convert_delimiter_;
 
   void gen_template_map(const boost::filesystem::path& root);
 

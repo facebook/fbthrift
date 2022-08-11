@@ -57,6 +57,9 @@ class t_generator {
   t_generator(t_program* program, t_generation_context context);
   virtual ~t_generator() = default;
 
+  // Called before generate_program to process options.
+  virtual void process_options(const std::map<std::string, std::string>&) {}
+
   virtual void fill_validator_list(validator_list&) const {}
 
   // Generate the program. Overridden by subclasses to implement program
@@ -142,8 +145,10 @@ class generator_factory_impl : public generator_factory {
       t_program& program,
       t_generation_context context,
       const std::map<std::string, std::string>& options) override {
-    return std::unique_ptr<t_generator>(
-        new Generator(&program, context, options));
+    auto generator =
+        std::unique_ptr<t_generator>(new Generator(&program, context));
+    generator->process_options(options);
+    return generator;
   }
 };
 } // namespace detail

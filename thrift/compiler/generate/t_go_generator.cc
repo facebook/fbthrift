@@ -58,11 +58,10 @@ static std::string package_flag;
  */
 class t_go_generator : public t_concat_generator {
  public:
-  t_go_generator(
-      t_program* program,
-      t_generation_context context,
-      const std::map<std::string, std::string>& options)
-      : t_concat_generator(program, std::move(context)) {
+  using t_concat_generator::t_concat_generator;
+
+  void process_options(
+      const std::map<std::string, std::string>& options) override {
     out_dir_base_ = "gen-go";
     gen_thrift_import_ = default_thrift_import;
 

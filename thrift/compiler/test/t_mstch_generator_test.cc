@@ -34,9 +34,9 @@ TEST(t_mstch_generator_test, cache_leaks) {
         mstch_element_position pos,
         int* object_count)
         : mstch_program(program, ctx, pos), object_count_(object_count) {
-      *object_count_ += 1;
+      ++*object_count_;
     }
-    virtual ~leaky_program() override { (*object_count_)--; }
+    virtual ~leaky_program() override { --*object_count_; }
 
    private:
     int* object_count_;
@@ -45,8 +45,10 @@ TEST(t_mstch_generator_test, cache_leaks) {
   class leaky_generator : public t_mstch_generator {
    public:
     leaky_generator(t_program* program, int* object_count)
-        : t_mstch_generator(program, t_generation_context(), ".", {}),
+        : t_mstch_generator(program, t_generation_context()),
           object_count_(object_count) {}
+
+    std::string template_prefix() const override { return "."; }
 
     void generate_program() override {
       mstch_context_.add<leaky_program>(object_count_);
