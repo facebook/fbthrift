@@ -24,8 +24,10 @@
 #pragma once
 
 #include <cstdint>
+#include <stdexcept>
 #include <type_traits>
 
+#include <fmt/core.h>
 #include <folly/Traits.h>
 #include <folly/Utility.h>
 #include <thrift/lib/cpp2/type/Tag.h>
@@ -35,7 +37,7 @@ namespace thrift {
 namespace type {
 
 // Runtime and compile time representations for an ordinal.
-enum class Ordinal : uint16_t {};
+enum class Ordinal : uint32_t {};
 template <Ordinal ord>
 using ordinal_tag = std::integral_constant<Ordinal, ord>;
 template <std::underlying_type_t<Ordinal> ord>
@@ -84,6 +86,36 @@ FOLLY_INLINE_VARIABLE constexpr bool
 template <typename Id>
 FOLLY_INLINE_VARIABLE constexpr bool is_id_v = detail::is_type_tag_v<Id> ||
     is_field_id_v<Id> || is_ordinal_v<Id> || is_ident_v<Id>;
+
+/**
+ * Converts a value into an ordinal. Useful for represending e.g. list indexes
+ * allowing 0 represent all elements in the list.
+ *
+ * @param value to convert to ordinal
+ * @return ordinal
+ */
+inline constexpr Ordinal toOrdinal(size_t pos) {
+  if (pos == std::numeric_limits<size_t>::max()) {
+    return Ordinal{};
+  }
+
+  constexpr auto max_size = static_cast<size_t>(
+      std::numeric_limits<std::underlying_type_t<Ordinal>>::max());
+  if (pos >= max_size) {
+    throw std::out_of_range(fmt::format("max size supported is {}", max_size));
+  }
+  return Ordinal(pos + 1);
+}
+
+/**
+ * Does reverse conversion from ordinal obtained by toOrdinal()
+ *
+ * @param value ordinal to convert back to integer
+ * @return integer
+ */
+inline constexpr size_t toPosition(Ordinal ordinal) noexcept {
+  return static_cast<size_t>(ordinal) - 1;
+}
 
 } // namespace type
 } // namespace thrift
