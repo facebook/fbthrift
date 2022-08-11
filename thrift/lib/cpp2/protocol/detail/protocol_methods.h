@@ -292,7 +292,7 @@ inline uint32_t checked_container_size(size_t size) {
   if (size > limit) {
     TProtocolException::throwExceededSizeLimit(size, limit);
   }
-  return size;
+  return static_cast<uint32_t>(size);
 }
 
 /*
