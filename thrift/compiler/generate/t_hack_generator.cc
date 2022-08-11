@@ -649,9 +649,7 @@ class t_hack_generator : public t_concat_generator {
     if (annotation) {
       for (const auto& item : annotation->value()->get_map()) {
         if (item.first->get_string() == "name") {
-          return new std::string(
-              (has_hack_namespace || has_nested_ns ? "\\" : "") +
-              item.second->get_string());
+          return new std::string(item.second->get_string());
         }
       }
     }
@@ -672,9 +670,7 @@ class t_hack_generator : public t_concat_generator {
           new std::string("thrift_adapted_types");
       for (const auto& item : annotation->value()->get_map()) {
         if (item.first->get_string() == "name") {
-          name = new std::string(
-              (has_hack_namespace || has_nested_ns ? "\\" : "") +
-              item.second->get_string());
+          name = new std::string(item.second->get_string());
         } else if (item.first->get_string() == "underlyingName") {
           underlying_name = new std::string(
               hack_name(item.second->get_string(), ttype->program(), true));
