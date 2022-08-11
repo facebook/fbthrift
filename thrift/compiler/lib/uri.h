@@ -25,10 +25,12 @@ namespace compiler {
 // thrift
 constexpr auto kBitmaskEnum = "facebook.com/thrift/annotation/BitmaskEnum";
 constexpr auto kBoxUri = "facebook.com/thrift/annotation/Box";
-constexpr auto kGenDefaultEnumValueUri =
-    "facebook.com/thrift/annotation/GenDefaultEnumValue";
 constexpr auto kExceptionMessageUri =
     "facebook.com/thrift/annotation/ExceptionMessage";
+constexpr auto kGenDefaultEnumValueUri =
+    "facebook.com/thrift/annotation/GenDefaultEnumValue";
+constexpr auto kGenerateRuntimeSchemaUri =
+    "facebook.com/thrift/annotation/GenerateRuntimeSchema";
 constexpr auto kInjectMetadataFieldsUri =
     "facebook.com/thrift/annotation/InjectMetadataFields";
 constexpr auto kMixinUri = "facebook.com/thrift/annotation/Mixin";

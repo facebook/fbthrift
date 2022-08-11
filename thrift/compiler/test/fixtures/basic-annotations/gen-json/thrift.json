@@ -598,6 +598,42 @@
           "column" : 22
         }
       }
+    },
+    "GenerateRuntimeSchema" : {
+      "lineno" : 290,
+      "is_exception" : false,
+      "is_union" : false,
+      "structured_annotations" : {
+        "scope.Struct" : {  },
+        "Experimental" : {  }
+      },
+      "fields" : {
+        "name" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 293,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 293,
+              "column" : 17
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 290,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 294,
+          "column" : 2
+        }
+      }
     }
   }
 }

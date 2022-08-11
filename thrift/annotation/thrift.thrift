@@ -282,3 +282,13 @@ struct ExceptionMessage {
 // TODO: Support in C++, Python, Java.
 @scope.Enum
 struct BitmaskEnum {}
+/**
+ * Generates a const of type schema.Struct containing the schma of the
+ * annotated struct. Optionally specify name to override default
+ * schema<structName>.
+ */
+@scope.Struct
+@Experimental
+struct GenerateRuntimeSchema {
+  1: string name;
+}

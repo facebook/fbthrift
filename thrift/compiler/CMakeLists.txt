@@ -57,6 +57,7 @@ add_library(
   diagnostic.cc
   source_location.cc
 
+  lib/schematizer.cc
   parse/lexer.cc
   parse/lexer.h
   parse/parsing_driver.cc

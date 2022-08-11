@@ -1813,3 +1813,99 @@ class BitmaskEnum implements \IThriftSyncStruct {
 
 }
 
+/**
+ * Generates a const of type schema.Struct containing the schma of the
+ * annotated struct. Optionally specify name to override default
+ * schema<structName>.
+ *
+ * Original thrift struct:-
+ * GenerateRuntimeSchema
+ */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/GenerateRuntimeSchema'))>>
+class GenerateRuntimeSchema implements \IThriftSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'name',
+      'type' => \TType::STRING,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'name' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'name' => ?string,
+  );
+
+  const int STRUCTURAL_ID = 2593878277785201336;
+  /**
+   * Original thrift field:-
+   * 1: string name
+   */
+  public string $name;
+
+  public function __construct(?string $name = null)[] {
+    $this->name = $name ?? '';
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'name'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'GenerateRuntimeSchema';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "thrift.GenerateRuntimeSchema",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "name",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        '\thrift\annotation\Struct' => \thrift\annotation\Struct::fromShape(
+          shape(
+          )
+        ),
+        '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
+          shape(
+          )
+        ),
+      ],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+}
+

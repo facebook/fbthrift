@@ -229,6 +229,22 @@
         "is_exception" : false,
         "is_union" : false,
         "lineno" : 284
+      },
+      "GenerateRuntimeSchema" : {
+        "name" : "GenerateRuntimeSchema",
+        "docstring" : "Generates a const of type schema.Struct containing the schma of the\nannotated struct. Optionally specify name to override default\nschema<structName>.\n",
+        "fields" : {
+          "name" : {
+            "name" : "name",
+            "key" : 1,
+            "lineno" : 293,
+            "required" : "opt-in-req-out",
+            "type" : "string"
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 292
       }
       },
   "source_path" : "thrift/annotation/thrift",

@@ -17,6 +17,7 @@
 #include <thrift/compiler/sema/standard_mutator.h>
 
 #include <thrift/compiler/lib/cpp2/util.h>
+#include <thrift/compiler/lib/schematizer.h>
 #include <thrift/compiler/lib/uri.h>
 #include <thrift/compiler/sema/patch_mutator.h>
 #include <thrift/compiler/sema/standard_mutator_stage.h>
@@ -252,6 +253,38 @@ void gen_default_enum_values(
   node.append_value(std::move(defaultValue));
 }
 
+void generate_runtime_schema(
+    diagnostic_context& ctx, mutator_context&, t_struct& node) {
+  const t_const* annotation =
+      node.find_structured_annotation_or_null(kGenerateRuntimeSchemaUri);
+  if (!annotation) {
+    return;
+  }
+
+  std::string name;
+  if (auto nameOverride =
+          annotation->get_value_from_structured_annotation_or_null("name")) {
+    name = nameOverride->get_string();
+  } else {
+    name = fmt::format("schema{}", node.name());
+  }
+
+  auto program = const_cast<t_program*>(node.program());
+  auto schemaType = dynamic_cast<const t_type*>(
+      program->scope()->find_def("facebook.com/thrift/type/Struct"));
+  if (!schemaType) {
+    ctx.error("Must include thrift/lib/thrift/schema.thrift");
+    return;
+  }
+
+  auto schema = schematizer::gen_schema(node);
+
+  auto schemaConst = std::make_unique<t_const>(
+      program, schemaType, std::move(name), std::move(schema));
+  schemaConst->set_generated();
+  program->add_definition(std::move(schemaConst));
+}
+
 ast_mutators standard_mutators() {
   ast_mutators mutators;
   {
@@ -270,6 +303,7 @@ ast_mutators standard_mutators() {
     main.add_struct_visitor(&mutate_terse_write_annotation_structured);
     main.add_exception_visitor(&mutate_terse_write_annotation_structured);
     main.add_struct_visitor(&mutate_inject_metadata_fields);
+    main.add_struct_visitor(&generate_runtime_schema);
   }
   add_patch_mutators(mutators);
   return mutators;

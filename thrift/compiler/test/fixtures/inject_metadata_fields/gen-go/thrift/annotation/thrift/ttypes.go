@@ -1898,3 +1898,118 @@ func (p *BitmaskEnum) String() string {
   return fmt.Sprintf("BitmaskEnum({})")
 }
 
+// Generates a const of type schema.Struct containing the schma of the
+// annotated struct. Optionally specify name to override default
+// schema<structName>.
+// 
+// Attributes:
+//  - Name
+type GenerateRuntimeSchema struct {
+  Name string `thrift:"name,1" db:"name" json:"name"`
+}
+
+func NewGenerateRuntimeSchema() *GenerateRuntimeSchema {
+  return &GenerateRuntimeSchema{}
+}
+
+
+func (p *GenerateRuntimeSchema) GetName() string {
+  return p.Name
+}
+type GenerateRuntimeSchemaBuilder struct {
+  obj *GenerateRuntimeSchema
+}
+
+func NewGenerateRuntimeSchemaBuilder() *GenerateRuntimeSchemaBuilder{
+  return &GenerateRuntimeSchemaBuilder{
+    obj: NewGenerateRuntimeSchema(),
+  }
+}
+
+func (p GenerateRuntimeSchemaBuilder) Emit() *GenerateRuntimeSchema{
+  return &GenerateRuntimeSchema{
+    Name: p.obj.Name,
+  }
+}
+
+func (g *GenerateRuntimeSchemaBuilder) Name(name string) *GenerateRuntimeSchemaBuilder {
+  g.obj.Name = name
+  return g
+}
+
+func (g *GenerateRuntimeSchema) SetName(name string) *GenerateRuntimeSchema {
+  g.Name = name
+  return g
+}
+
+func (p *GenerateRuntimeSchema) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *GenerateRuntimeSchema)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Name = v
+  }
+  return nil
+}
+
+func (p *GenerateRuntimeSchema) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("GenerateRuntimeSchema"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *GenerateRuntimeSchema) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("name", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:name: ", p), err) }
+  if err := oprot.WriteString(string(p.Name)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.name (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:name: ", p), err) }
+  return err
+}
+
+func (p *GenerateRuntimeSchema) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  nameVal := fmt.Sprintf("%v", p.Name)
+  return fmt.Sprintf("GenerateRuntimeSchema({Name:%s})", nameVal)
+}
+
