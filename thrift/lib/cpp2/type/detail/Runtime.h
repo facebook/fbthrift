@@ -275,6 +275,11 @@ struct BaseErasedOp {
 
 // The ops for the empty type 'void'.
 struct VoidErasedOp : BaseErasedOp {
+  static void delete_(void*) {}
+  static void* make(void* ptr, bool) {
+    assert(ptr == nullptr);
+    return ptr = nullptr;
+  }
   static bool empty(const void*) { return true; }
   static bool identical(const void*, const RuntimeBase&) { return true; }
   static void clear(void*) {}

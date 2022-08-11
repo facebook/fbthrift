@@ -177,5 +177,54 @@ TEST(RuntimeRefTest, ConstRef) {
   EXPECT_THROW(ref.clear(), std::logic_error);
 }
 
+TEST(RuntimeValueTest, Void) {
+  Value value;
+  EXPECT_EQ(value.type(), Type::get<void_t>());
+  EXPECT_TRUE(value.empty());
+  value.clear();
+  EXPECT_TRUE(value.empty());
+
+  EXPECT_THROW(value.as<string_t>(), std::bad_any_cast);
+  EXPECT_TRUE(value.tryAs<string_t>() == nullptr);
+}
+
+TEST(RuntimeValueTest, Int) {
+  Value value = Value::create<i32_t>(1);
+  EXPECT_EQ(value.type(), Type::get<i32_t>());
+  EXPECT_FALSE(value.empty());
+  value.clear();
+  EXPECT_TRUE(value.empty());
+
+  EXPECT_EQ(value.as<i32_t>(), 0);
+  value.as<i32_t>() = 2;
+  EXPECT_FALSE(value.empty());
+}
+
+TEST(RuntimeValueTest, List) {
+  Value value;
+  value = Value::create<list<string_t>>();
+  EXPECT_TRUE(value.empty());
+  value.as<list<string_t>>().emplace_back("hi");
+  EXPECT_FALSE(value.empty());
+  Value other(value);
+  EXPECT_FALSE(other.empty());
+  value.clear();
+  EXPECT_TRUE(value.empty());
+  EXPECT_TRUE(value.as<list<string_t>>().empty());
+  value = other;
+  EXPECT_FALSE(value.empty());
+}
+
+TEST(RuntimeValueTest, Identical) {
+  Value value;
+  value = Value::create<float_t>(1.0f);
+  EXPECT_FALSE(value.empty());
+  value.clear();
+  EXPECT_TRUE(value.empty());
+  EXPECT_TRUE(value.identical(Value::create<float_t>(0.0f)));
+  EXPECT_FALSE(value.identical(Value::create<float_t>(-0.0f)));
+  EXPECT_FALSE(value.identical(Value::create<double_t>(0.0)));
+}
+
 } // namespace
 } // namespace apache::thrift::type

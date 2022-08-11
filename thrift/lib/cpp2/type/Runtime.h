@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <cstddef>
 #include <string>
 #include <typeinfo>
 #include <utility>
@@ -169,6 +170,146 @@ inline Ref Ptr::operator*() const noexcept {
   return Ref{*this};
 }
 } // namespace detail
+
+// A runtime Thrift value that owns it's own memory.
+//
+// TODO(afuller): Store small values in-situ.
+class Value : public detail::RuntimeBase {
+  using Base = detail::RuntimeBase;
+
+ public:
+  template <typename Tag>
+  static Value create() {
+    return Value{Tag{}, nullptr};
+  }
+  template <typename Tag, typename T>
+  static Value create(T&& val) {
+    return {Tag{}, std::forward<T>(val)};
+  }
+  template <typename Tag>
+  static Value create(std::unique_ptr<native_type<Tag>> val) {
+    if (val == nullptr) {
+      return {};
+    }
+    return Value{Tag{}, std::move(val)};
+  }
+
+  Value() noexcept = default; // A void/null value.
+  Value(const Value& other) noexcept
+      : Base(other.type_, other.type_->make(other.ptr_, false)) {}
+
+  Value(Value&& other) noexcept : Base(other.type_, other.ptr_) {
+    other.Base::reset();
+  }
+  ~Value() { reset(); }
+
+  Value& operator=(const Value& other) noexcept {
+    reset();
+    Base::reset(other.type_, other.type_->make(other.ptr_, false));
+    return *this;
+  }
+
+  Value& operator=(Value&& other) noexcept {
+    reset();
+    Base::reset(other.type_, other.ptr_);
+    other.Base::reset();
+    return *this;
+  }
+
+  void reset() {
+    if (ptr_ != nullptr) {
+      type_->delete_(ptr_);
+      Base::reset();
+    }
+  }
+  using Base::as;
+  template <typename Tag>
+  native_type<Tag>& as() & {
+    return type_->as<native_type<Tag>>(ptr_);
+  }
+  template <typename Tag>
+  native_type<Tag>&& as() && {
+    return std::move(type_->as<native_type<Tag>>(ptr_));
+  }
+
+  // Returns nullptr on mismatch.
+  template <typename Tag>
+  native_type<Tag>* tryAs() noexcept {
+    return type_->tryAs<native_type<Tag>>(ptr_);
+  }
+  using Base::tryAs;
+
+  // Sets the referenced value to it's intrinsic default (e.g. ignoring custom
+  // field defaults).
+  void clear() { Base::clear(); }
+
+  // Append to a list, string, etc.
+  void append(const Base& val) { Base::append(val); }
+
+  // Add to a set, number, etc.
+  bool add(const Base& val) { return Base::add(val); }
+
+  // Put a key-value pair, overwriting any existing entry in a map, struct, etc.
+  //
+  // Returns true if an existing value was replaced.
+  bool put(FieldId id, const Base& val) { return Base::put(id, val); }
+  bool put(const Base& key, const Base& val) { return Base::put(key, val); }
+  bool put(const std::string& name, const Base& val) {
+    return put(asRef(name), val);
+  }
+
+  // Get by value.
+  Ref get(const Base& key) & { return *Base::get(key); }
+  Ref get(const Base& key) && { return *Base::get(key, false, true); }
+  ConstRef get(const Base& key) const& { return Base::get(key, true); }
+  ConstRef get(const Base& key) const&& { return Base::get(key, true, true); }
+
+  // Get by field id.
+  Ref get(FieldId id) & { return *Base::get(id); }
+  Ref get(FieldId id) && { return *Base::get(id, false, true); }
+  ConstRef get(FieldId id) const& { return Base::get(id, true); }
+  ConstRef get(FieldId id) const&& { return Base::get(id, true, true); }
+
+  // Get by name.
+  Ref get(const std::string& name) & { return get(asRef(name)); }
+  Ref get(const std::string& name) && { return get(asRef(name)); }
+  ConstRef get(const std::string& name) const& { return get(asRef(name)); }
+  ConstRef get(const std::string& name) const&& { return get(asRef(name)); }
+
+ private:
+  template <typename Tag, typename T = native_type<Tag>>
+  explicit Value(Tag, std::nullptr_t)
+      : Base(
+            op::detail::getAnyType<Tag, T>(),
+            op::detail::getAnyType<Tag, T>()->make(nullptr, false)) {
+    assert(ptr_ != nullptr);
+  }
+  template <typename Tag, typename T>
+  Value(Tag, std::unique_ptr<T> val)
+      : Base(op::detail::getAnyType<Tag, T>(), val.release()) {
+    assert(ptr_ != nullptr);
+  }
+  template <typename Tag, typename T>
+  Value(Tag, const T& val)
+      : Base(
+            op::detail::getAnyType<Tag, T>(),
+            op::detail::getAnyType<Tag, T>()->make(&val, false)) {
+    assert(ptr_ != nullptr);
+  }
+  template <typename Tag, typename T>
+  Value(Tag, T&& val)
+      : Base(
+            op::detail::getAnyType<Tag, T>(),
+            op::detail::getAnyType<Tag, T>()->make(&val, true)) {
+    assert(ptr_ != nullptr);
+  }
+
+  static ConstRef asRef(const std::string& name) {
+    return ConstRef::create<type::string_t>(name);
+  }
+
+  using Base::Base;
+};
 
 } // namespace type
 } // namespace thrift

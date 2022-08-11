@@ -40,6 +40,8 @@ struct TypeInfo {
 
   // Type-erased ~v-table.
   // TODO(afuller): Consider merging some of these functions to reduce size.
+  void (*delete_)(void*);
+  void* (*make)(void*, bool);
   bool (*empty)(const void*);
   bool (*identical)(const void*, const RuntimeBase&);
   void (*clear)(void*);
@@ -72,6 +74,8 @@ FOLLY_EXPORT const TypeInfo& getTypeInfo() {
   static const auto& kValue = *new TypeInfo{
       Tag{},
       typeid(T),
+      &Op::delete_,
+      &Op::make,
       &Op::empty,
       &Op::identical,
       &Op::clear,

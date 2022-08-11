@@ -85,7 +85,7 @@ struct ListOp : BaseAnyOp<Tag> {
 
   template <typename V = type::native_type<ValTag>>
   static void append(T& self, V&& val) {
-    self.emplace_back(std::forward<V>(val));
+    self.push_back(std::forward<V>(val));
   }
   static void append(void* s, const RuntimeBase& v) {
     append(ref(s), v.as<ValTag>());
@@ -121,7 +121,7 @@ struct SetOp : BaseAnyOp<Tag> {
 
   template <typename K = type::native_type<KeyTag>>
   static bool add(T& self, K&& key) {
-    return self.emplace(std::forward<K>(key)).second;
+    return self.insert(std::forward<K>(key)).second;
   }
   static bool add(void* s, const RuntimeBase& k) {
     return add(ref(s), k.as<KeyTag>());

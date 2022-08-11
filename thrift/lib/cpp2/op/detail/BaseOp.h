@@ -32,8 +32,19 @@ struct BaseAnyOp : type::detail::BaseErasedOp {
   // Blind convert the pointer to the native type.
   using T = type::native_type<Tag>;
   static T& ref(void* ptr) { return *static_cast<T*>(ptr); }
-  static const T& ref(const void* ptr) { return *static_cast<const T*>(ptr); }
+  static const T& ref(const void* ptr) { return cref(ptr); }
+  static const T& cref(const void* ptr) { return *static_cast<const T*>(ptr); }
 
+  static void delete_(void* ptr) { delete static_cast<T*>(ptr); }
+  static void* make(void* ptr, bool consume) {
+    if (ptr == nullptr) {
+      return std::make_unique<T>().release();
+    } else if (consume) {
+      return std::make_unique<T>(std::move(ref(ptr))).release();
+    } else {
+      return std::make_unique<T>(cref(ptr)).release();
+    }
+  }
   static bool empty(const void* ptr) { return op::isEmpty<Tag>(ref(ptr)); }
   static void clear(void* ptr) { op::clear<Tag>(ref(ptr)); }
   static bool identical(const void* lhs, const type::detail::RuntimeBase& rhs) {
