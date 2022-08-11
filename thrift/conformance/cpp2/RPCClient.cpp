@@ -41,6 +41,7 @@ std::unique_ptr<Client<RPCConformanceService>> createClient() {
       }));
 }
 
+// =================== Request-Response ===================
 RequestResponseBasicClientTestResult runRequestResponseBasicTest(
     const RequestResponseBasicClientInstruction& instruction) {
   RequestResponseBasicClientTestResult result;
@@ -85,6 +86,23 @@ requestResponseNoArgVoidResponseTest(
   return result;
 }
 
+// =================== Stream ===================
+StreamBasicClientTestResult streamBasicTest(
+    StreamBasicClientInstruction& instruction) {
+  auto client = createClient();
+  return folly::coro::blockingWait(
+      [&]() -> folly::coro::Task<StreamBasicClientTestResult> {
+        auto gen = (co_await client->co_streamBasic(*instruction.request()))
+                       .toAsyncGenerator();
+        StreamBasicClientTestResult result;
+        while (auto val = co_await gen.next()) {
+          result.streamPayloads()->push_back(std::move(*val));
+        }
+        co_return result;
+      }());
+}
+
+// =================== Sink ===================
 SinkBasicClientTestResult sinkBasicTest(
     SinkBasicClientInstruction& instruction) {
   auto client = createClient();
@@ -131,6 +149,10 @@ int main(int argc, char** argv) {
       result.set_requestResponseNoArgVoidResponse(
           requestResponseNoArgVoidResponseTest(
               *clientInstruction.requestResponseNoArgVoidResponse_ref()));
+      break;
+    case ClientInstruction::Type::streamBasic:
+      result.set_streamBasic(
+          streamBasicTest(*clientInstruction.streamBasic_ref()));
       break;
     case ClientInstruction::Type::sinkBasic:
       result.set_sinkBasic(sinkBasicTest(*clientInstruction.sinkBasic_ref()));

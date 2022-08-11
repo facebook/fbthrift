@@ -20,6 +20,7 @@
 
 namespace apache::thrift::conformance {
 
+// =================== Request-Response ===================
 void RPCServerConformanceHandler::requestResponseBasic(
     Response& res, std::unique_ptr<Request> req) {
   result_.requestResponseBasic_ref().emplace().request() = *req;
@@ -48,6 +49,17 @@ void RPCServerConformanceHandler::requestResponseNoArgVoidResponse() {
   result_.requestResponseNoArgVoidResponse_ref().emplace();
 }
 
+// =================== Stream ===================
+apache::thrift::ServerStream<Response> RPCServerConformanceHandler::streamBasic(
+    std::unique_ptr<Request> req) {
+  result_.streamBasic_ref().emplace().request() = *req;
+  for (auto& payload :
+       *testCase_->serverInstruction()->streamBasic_ref()->streamPayloads()) {
+    co_yield std::move(payload);
+  }
+}
+
+// =================== Sink ===================
 apache::thrift::SinkConsumer<Request, Response>
 RPCServerConformanceHandler::sinkBasic(std::unique_ptr<Request> req) {
   result_.sinkBasic_ref().emplace().request() = *req;

@@ -46,6 +46,7 @@ class ConformanceVerificationServer
     clientResultPromise_.setValue(*result);
   }
 
+  // =================== Request-Response ===================
   void requestResponseBasic(
       Response& res, std::unique_ptr<Request> req) override {
     res =
@@ -74,6 +75,17 @@ class ConformanceVerificationServer
     serverResult_.requestResponseNoArgVoidResponse_ref().emplace();
   }
 
+  // =================== Stream ===================
+  apache::thrift::ServerStream<Response> streamBasic(
+      std::unique_ptr<Request> req) override {
+    serverResult_.streamBasic_ref().emplace().request() = *req;
+    for (auto payload :
+         *testCase_.serverInstruction()->streamBasic_ref()->streamPayloads()) {
+      co_yield std::move(payload);
+    }
+  }
+
+  // =================== Sink ===================
   apache::thrift::SinkConsumer<Request, Response> sinkBasic(
       std::unique_ptr<Request> req) override {
     serverResult_.sinkBasic_ref().emplace().request() = *req;

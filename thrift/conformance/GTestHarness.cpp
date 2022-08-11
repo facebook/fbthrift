@@ -60,6 +60,7 @@ testing::AssertionResult runRoundTripTest(
   return testing::AssertionSuccess();
 }
 
+// =================== Request-Response ===================
 RequestResponseBasicClientTestResult runRequestResponseBasic(
     Client<RPCConformanceService>& client,
     const RequestResponseBasicClientInstruction& instruction) {
@@ -104,6 +105,23 @@ runRequestResponseNoArgVoidResponse(
   return result;
 }
 
+// =================== Stream ===================
+StreamBasicClientTestResult runStreamBasic(
+    RPCConformanceServiceAsyncClient& client,
+    const StreamBasicClientInstruction& instruction) {
+  return folly::coro::blockingWait(
+      [&]() -> folly::coro::Task<StreamBasicClientTestResult> {
+        auto gen = (co_await client.co_streamBasic(*instruction.request()))
+                       .toAsyncGenerator();
+        StreamBasicClientTestResult result;
+        while (auto val = co_await gen.next()) {
+          result.streamPayloads()->push_back(std::move(*val));
+        }
+        co_return result;
+      }());
+}
+
+// =================== Sink ===================
 SinkBasicClientTestResult runSinkBasic(
     RPCConformanceServiceAsyncClient& client,
     const SinkBasicClientInstruction& instruction) {
@@ -148,6 +166,10 @@ ClientTestResult runClientSteps(
           runRequestResponseNoArgVoidResponse(
               client,
               *clientInstruction.requestResponseNoArgVoidResponse_ref()));
+      break;
+    case ClientInstruction::Type::streamBasic:
+      result.set_streamBasic(
+          runStreamBasic(client, *clientInstruction.streamBasic_ref()));
       break;
     case ClientInstruction::Type::sinkBasic:
       result.set_sinkBasic(

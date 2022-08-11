@@ -19,6 +19,7 @@
 namespace apache::thrift::conformance::data {
 
 namespace {
+// =================== Request-Response ===================
 Test createRequestResponseBasicTest() {
   Test ret;
   ret.name() = "RequestResponseBasicTest";
@@ -210,6 +211,49 @@ Test createRequestResponseFragmentationTest() {
   return ret;
 }
 
+// =================== Stream ===================
+Test createStreamBasicTest() {
+  Test ret;
+  ret.name() = "StreamBasicTest";
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "StreamBasic/Success";
+
+  auto& rpcTest = testCase.rpc_ref().emplace();
+  rpcTest.clientInstruction_ref()
+      .emplace()
+      .streamBasic_ref()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+
+  auto& serverInstruction =
+      rpcTest.serverInstruction_ref().emplace().streamBasic_ref().emplace();
+  for (int i = 0; i < 100; i++) {
+    auto& payload = serverInstruction.streamPayloads()->emplace_back();
+    payload.data() = folly::to<std::string>(i);
+  }
+
+  rpcTest.clientTestResult_ref()
+      .emplace()
+      .streamBasic_ref()
+      .emplace()
+      .streamPayloads()
+      .copy_from(serverInstruction.streamPayloads());
+
+  rpcTest.serverTestResult_ref()
+      .emplace()
+      .streamBasic_ref()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+
+  return ret;
+}
+
+// =================== Sink ===================
 Test createSinkBasicTest() {
   Test ret;
   ret.name() = "SinkBasicTest";
@@ -252,11 +296,15 @@ Test createSinkBasicTest() {
 TestSuite createRPCTestSuite() {
   TestSuite suite;
   suite.name() = "ThriftRPCTest";
+  // =================== Request-Response ===================
   suite.tests()->push_back(createRequestResponseBasicTest());
   suite.tests()->push_back(createRequestResponseDeclaredExceptionTest());
   suite.tests()->push_back(createRequestResponseUndeclaredExceptionTest());
   suite.tests()->push_back(createRequestResponseNoArgVoidResponse());
   suite.tests()->push_back(createRequestResponseFragmentationTest());
+  // =================== Stream ===================
+  suite.tests()->push_back(createStreamBasicTest());
+  // =================== Sink ===================
   suite.tests()->push_back(createSinkBasicTest());
   return suite;
 }

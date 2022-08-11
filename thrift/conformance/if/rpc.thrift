@@ -49,6 +49,7 @@ union ServerTestResult {
   2: RequestResponseDeclaredExceptionServerTestResult requestResponseDeclaredException;
   3: RequestResponseNoArgVoidResponseServerTestResult requestResponseNoArgVoidResponse;
   4: RequestResponseUndeclaredExceptionServerTestResult requestResponseUndeclaredException;
+  100: StreamBasicServerTestResult streamBasic;
   200: SinkBasicServerTestResult sinkBasic;
 }
 
@@ -57,6 +58,7 @@ union ClientTestResult {
   2: RequestResponseDeclaredExceptionClientTestResult requestResponseDeclaredException;
   3: RequestResponseNoArgVoidResponseClientTestResult requestResponseNoArgVoidResponse;
   4: RequestResponseUndeclaredExceptionClientTestResult requestResponseUndeclaredException;
+  100: StreamBasicClientTestResult streamBasic;
   200: SinkBasicClientTestResult sinkBasic;
 }
 
@@ -73,6 +75,10 @@ struct RequestResponseUndeclaredExceptionServerTestResult {
 }
 
 struct RequestResponseNoArgVoidResponseServerTestResult {}
+
+struct StreamBasicServerTestResult {
+  1: Request request;
+}
 
 struct SinkBasicServerTestResult {
   1: Request request;
@@ -95,6 +101,10 @@ struct RequestResponseUndeclaredExceptionClientTestResult {
   1: string exceptionMessage;
 }
 
+struct StreamBasicClientTestResult {
+  1: list<Response> streamPayloads;
+}
+
 struct SinkBasicClientTestResult {
   1: Response finalResponse;
 }
@@ -104,6 +114,7 @@ union ClientInstruction {
   2: RequestResponseDeclaredExceptionClientInstruction requestResponseDeclaredException;
   3: RequestResponseNoArgVoidResponseClientInstruction requestResponseNoArgVoidResponse;
   4: RequestResponseUndeclaredExceptionClientInstruction requestResponseUndeclaredException;
+  100: StreamBasicClientInstruction streamBasic;
   200: SinkBasicClientInstruction sinkBasic;
 }
 
@@ -112,6 +123,7 @@ union ServerInstruction {
   2: RequestResponseDeclaredExceptionServerInstruction requestResponseDeclaredException;
   3: RequestResponseNoArgVoidResponseServerInstruction requestResponseNoArgVoidResponse;
   4: RequestResponseUndeclaredExceptionServerInstruction requestResponseUndeclaredException;
+  100: StreamBasicServerInstruction streamBasic;
   200: SinkBasicServerInstruction sinkBasic;
 }
 
@@ -128,6 +140,10 @@ struct RequestResponseUndeclaredExceptionClientInstruction {
 }
 
 struct RequestResponseNoArgVoidResponseClientInstruction {}
+
+struct StreamBasicClientInstruction {
+  1: Request request;
+}
 
 struct SinkBasicClientInstruction {
   1: Request request;
@@ -150,6 +166,10 @@ struct RequestResponseUndeclaredExceptionServerInstruction {
 
 struct RequestResponseNoArgVoidResponseServerInstruction {}
 
+struct StreamBasicServerInstruction {
+  1: list<Response> streamPayloads;
+}
+
 struct SinkBasicServerInstruction {
   1: Response finalResponse;
   2: i64 bufferSize;
@@ -171,6 +191,9 @@ service RPCConformanceService {
   );
   void requestResponseUndeclaredException(1: Request req);
   void requestResponseNoArgVoidResponse();
+
+  // =================== Stream ===================
+  stream<Response> streamBasic(1: Request req);
 
   // =================== Sink ===================
   sink<Request, Response> sinkBasic(1: Request req);

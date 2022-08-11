@@ -17,6 +17,7 @@
 #pragma once
 
 #include <thrift/conformance/if/gen-cpp2/RPCConformanceService.h>
+#include <thrift/lib/cpp2/async/ServerStream.h>
 #include <thrift/lib/cpp2/async/Sink.h>
 
 namespace apache::thrift::conformance {
@@ -24,6 +25,7 @@ namespace apache::thrift::conformance {
 class RPCServerConformanceHandler
     : public apache::thrift::ServiceHandler<RPCConformanceService> {
  public:
+  // =================== Request-Response ===================
   void requestResponseBasic(
       Response& res, std::unique_ptr<Request> req) override;
 
@@ -34,9 +36,15 @@ class RPCServerConformanceHandler
 
   void requestResponseNoArgVoidResponse() override;
 
+  // =================== Stream ===================
+  apache::thrift::ServerStream<Response> streamBasic(
+      std::unique_ptr<Request> req) override;
+
+  // =================== Sink ===================
   apache::thrift::SinkConsumer<Request, Response> sinkBasic(
       std::unique_ptr<Request> req) override;
 
+  // =================== Test Utils ===================
   void sendTestCase(std::unique_ptr<RpcTestCase> req) override {
     testCase_ = std::move(req);
   }
