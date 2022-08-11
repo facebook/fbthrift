@@ -48,8 +48,8 @@ InterceptedFields::InterceptedFields(const InterceptedFields&) = default;
 InterceptedFields& InterceptedFields::operator=(const InterceptedFields&) = default;
 InterceptedFields::InterceptedFields() :
       __fbthrift_field_access_field(),
-      access_shared_field(std::make_shared<::std::int32_t>()),
-      access_shared_const_field(std::make_shared<::std::int32_t>()) {
+      __fbthrift_field_access_shared_field(std::make_shared<::std::int32_t>()),
+      __fbthrift_field_access_shared_const_field(std::make_shared<::std::int32_t>()) {
 }
 
 
@@ -57,20 +57,20 @@ InterceptedFields::~InterceptedFields() {}
 
 InterceptedFields::InterceptedFields(FOLLY_MAYBE_UNUSED InterceptedFields&& other) noexcept :
     __fbthrift_field_access_field(std::move(other.__fbthrift_field_access_field)),
-    access_shared_field(std::move(other.access_shared_field)),
-    access_optional_shared_field(std::move(other.access_optional_shared_field)),
-    access_shared_const_field(std::move(other.access_shared_const_field)),
-    access_optional_shared_const_field(std::move(other.access_optional_shared_const_field)),
+    __fbthrift_field_access_shared_field(std::move(other.__fbthrift_field_access_shared_field)),
+    __fbthrift_field_access_optional_shared_field(std::move(other.__fbthrift_field_access_optional_shared_field)),
+    __fbthrift_field_access_shared_const_field(std::move(other.__fbthrift_field_access_shared_const_field)),
+    __fbthrift_field_access_optional_shared_const_field(std::move(other.__fbthrift_field_access_optional_shared_const_field)),
     __fbthrift_field_access_optional_boxed_field(std::move(other.__fbthrift_field_access_optional_boxed_field)),
     __isset(other.__isset) {
 }
 
 InterceptedFields& InterceptedFields::operator=(FOLLY_MAYBE_UNUSED InterceptedFields&& other) noexcept {
     this->__fbthrift_field_access_field = std::move(other.__fbthrift_field_access_field);
-    this->access_shared_field = std::move(other.access_shared_field);
-    this->access_optional_shared_field = std::move(other.access_optional_shared_field);
-    this->access_shared_const_field = std::move(other.access_shared_const_field);
-    this->access_optional_shared_const_field = std::move(other.access_optional_shared_const_field);
+    this->__fbthrift_field_access_shared_field = std::move(other.__fbthrift_field_access_shared_field);
+    this->__fbthrift_field_access_optional_shared_field = std::move(other.__fbthrift_field_access_optional_shared_field);
+    this->__fbthrift_field_access_shared_const_field = std::move(other.__fbthrift_field_access_shared_const_field);
+    this->__fbthrift_field_access_optional_shared_const_field = std::move(other.__fbthrift_field_access_optional_shared_const_field);
     this->__fbthrift_field_access_optional_boxed_field = std::move(other.__fbthrift_field_access_optional_boxed_field);
     __isset = other.__isset;
     return *this;
@@ -79,10 +79,10 @@ InterceptedFields& InterceptedFields::operator=(FOLLY_MAYBE_UNUSED InterceptedFi
 
 InterceptedFields::InterceptedFields(apache::thrift::FragileConstructor, ::std::int32_t access_field__arg, ::std::shared_ptr<::std::int32_t> access_shared_field__arg, ::std::shared_ptr<::std::int32_t> access_optional_shared_field__arg, ::std::shared_ptr<const ::std::int32_t> access_shared_const_field__arg, ::std::shared_ptr<const ::std::int32_t> access_optional_shared_const_field__arg, ::apache::thrift::detail::boxed_value_ptr<::std::int32_t> access_optional_boxed_field__arg) :
     __fbthrift_field_access_field(std::move(access_field__arg)),
-    access_shared_field(std::move(access_shared_field__arg)),
-    access_optional_shared_field(std::move(access_optional_shared_field__arg)),
-    access_shared_const_field(std::move(access_shared_const_field__arg)),
-    access_optional_shared_const_field(std::move(access_optional_shared_const_field__arg)),
+    __fbthrift_field_access_shared_field(std::move(access_shared_field__arg)),
+    __fbthrift_field_access_optional_shared_field(std::move(access_optional_shared_field__arg)),
+    __fbthrift_field_access_shared_const_field(std::move(access_shared_const_field__arg)),
+    __fbthrift_field_access_optional_shared_const_field(std::move(access_optional_shared_const_field__arg)),
     __fbthrift_field_access_optional_boxed_field(std::move(access_optional_boxed_field__arg)) {
   __isset.set(folly::index_constant<0>(), true);
 }
@@ -91,10 +91,10 @@ InterceptedFields::InterceptedFields(apache::thrift::FragileConstructor, ::std::
 void InterceptedFields::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_access_field = ::std::int32_t();
-  this->access_shared_field = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<::std::int32_t>>();
-  this->access_optional_shared_field.reset();
-  this->access_shared_const_field = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::std::int32_t>>();
-  this->access_optional_shared_const_field.reset();
+  this->__fbthrift_field_access_shared_field = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<::std::int32_t>>();
+  this->__fbthrift_field_access_optional_shared_field.reset();
+  this->__fbthrift_field_access_shared_const_field = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::std::int32_t>>();
+  this->__fbthrift_field_access_optional_shared_const_field.reset();
   this->__fbthrift_field_access_optional_boxed_field.reset();
   __isset = {};
 }
@@ -156,10 +156,10 @@ bool InterceptedFields::operator<(FOLLY_MAYBE_UNUSED const InterceptedFields& rh
 void swap(FOLLY_MAYBE_UNUSED InterceptedFields& a, FOLLY_MAYBE_UNUSED InterceptedFields& b) {
   using ::std::swap;
   swap(a.__fbthrift_field_access_field, b.__fbthrift_field_access_field);
-  swap(a.access_shared_field, b.access_shared_field);
-  swap(a.access_optional_shared_field, b.access_optional_shared_field);
-  swap(a.access_shared_const_field, b.access_shared_const_field);
-  swap(a.access_optional_shared_const_field, b.access_optional_shared_const_field);
+  swap(a.__fbthrift_field_access_shared_field, b.__fbthrift_field_access_shared_field);
+  swap(a.__fbthrift_field_access_optional_shared_field, b.__fbthrift_field_access_optional_shared_field);
+  swap(a.__fbthrift_field_access_shared_const_field, b.__fbthrift_field_access_shared_const_field);
+  swap(a.__fbthrift_field_access_optional_shared_const_field, b.__fbthrift_field_access_optional_shared_const_field);
   swap(a.__fbthrift_field_access_optional_boxed_field, b.__fbthrift_field_access_optional_boxed_field);
   swap(a.__isset, b.__isset);
 }
