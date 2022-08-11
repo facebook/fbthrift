@@ -316,7 +316,7 @@ struct ValueHelper<TT, type::if_structured<TT>> {
 // Protocol: protocol to use eg. apache::thrift::BinaryProtocolReader
 // TODO: handle jsonprotocol
 template <class Protocol>
-Value parseValue(Protocol& prot, TType arg_type) {
+Value parseValue(Protocol& prot, TType arg_type, bool string_to_binary = true) {
   Value result;
   switch (arg_type) {
     case protocol::T_BOOL: {
@@ -362,8 +362,14 @@ Value parseValue(Protocol& prot, TType arg_type) {
       return result;
     }
     case protocol::T_STRING: {
-      auto& binaryValue = result.binaryValue_ref().ensure();
-      prot.readBinary(binaryValue);
+      if (string_to_binary) {
+        auto& binaryValue = result.binaryValue_ref().ensure();
+        prot.readBinary(binaryValue);
+        return result;
+      }
+      std::string str;
+      prot.readString(str);
+      result.stringValue_ref() = str;
       return result;
     }
     case protocol::T_STRUCT: {
@@ -377,7 +383,7 @@ Value parseValue(Protocol& prot, TType arg_type) {
         if (ftype == protocol::T_STOP) {
           break;
         }
-        objectValue[FieldId{fid}] = parseValue(prot, ftype);
+        objectValue[FieldId{fid}] = parseValue(prot, ftype, string_to_binary);
         prot.readFieldEnd();
       }
       prot.readStructEnd();
@@ -390,8 +396,8 @@ Value parseValue(Protocol& prot, TType arg_type) {
       auto& mapValue = result.mapValue_ref().ensure();
       prot.readMapBegin(keyType, valType, size);
       for (uint32_t i = 0; i < size; i++) {
-        auto key = parseValue(prot, keyType);
-        mapValue[std::move(key)] = parseValue(prot, valType);
+        auto key = parseValue(prot, keyType, string_to_binary);
+        mapValue[std::move(key)] = parseValue(prot, valType, string_to_binary);
       }
       prot.readMapEnd();
       return result;
@@ -402,7 +408,7 @@ Value parseValue(Protocol& prot, TType arg_type) {
       auto& setValue = result.setValue_ref().ensure();
       prot.readSetBegin(elemType, size);
       for (uint32_t i = 0; i < size; i++) {
-        setValue.insert(parseValue(prot, elemType));
+        setValue.insert(parseValue(prot, elemType, string_to_binary));
       }
       prot.readSetEnd();
       return result;
@@ -414,7 +420,7 @@ Value parseValue(Protocol& prot, TType arg_type) {
       auto& listValue = result.listValue_ref().ensure();
       listValue.reserve(size);
       for (uint32_t i = 0; i < size; i++) {
-        listValue.push_back(parseValue(prot, elemType));
+        listValue.push_back(parseValue(prot, elemType, string_to_binary));
       }
       prot.readListEnd();
       return result;

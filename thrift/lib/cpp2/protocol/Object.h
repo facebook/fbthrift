@@ -46,10 +46,10 @@ Value asValueStruct(T&& value) {
 // and string is written as is. So during deserialization we cannot decode it
 // correctly without schema. String fields are currently saved in binaryValue.
 template <class Protocol>
-Object parseObject(const folly::IOBuf& buf) {
+Object parseObject(const folly::IOBuf& buf, bool string_to_binary = true) {
   Protocol prot;
   prot.setInput(&buf);
-  auto result = detail::parseValue(prot, protocol::T_STRUCT);
+  auto result = detail::parseValue(prot, protocol::T_STRUCT, string_to_binary);
   return *result.objectValue_ref();
 }
 
