@@ -22,12 +22,14 @@
 
 #include <folly/ConstexprMath.h>
 #include <folly/lang/Exception.h>
+#include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/Tag.h>
 #include <thrift/lib/cpp2/type/detail/TypeInfo.h>
 
 namespace apache {
 namespace thrift {
 namespace type {
+class Ref;
 namespace detail {
 
 const TypeInfo& voidTypeInfo();
@@ -88,6 +90,14 @@ class AlignedPtr {
 // This class only stores a single AlignedPtr, so should be passed by value.
 class RuntimeType {
  public:
+  template <typename U>
+  static RuntimeType create(const TypeInfo& info) noexcept {
+    return {
+        info,
+        std::is_const_v<std::remove_reference_t<U>>,
+        std::is_rvalue_reference_v<U>};
+  }
+
   RuntimeType() noexcept {}
   explicit RuntimeType(const TypeInfo& info) noexcept : info_(&info) {}
   RuntimeType(
@@ -124,70 +134,121 @@ class RuntimeType {
   }
 };
 
-// A type-erased, qualifier-preserving pointer to a Thrift value.
-class Ptr {
+// A base class for qualifier-preserving type-erased runtime types.
+class RuntimeBase {
  public:
-  Ptr() noexcept = default;
-  Ptr(RuntimeType type, void* ptr) noexcept : type_(type), ptr_(ptr) {}
-  Ptr(RuntimeType type, const void* ptr) noexcept
+  RuntimeBase() noexcept = default;
+  RuntimeBase(RuntimeType type, void* ptr) noexcept : type_(type), ptr_(ptr) {}
+  RuntimeBase(RuntimeType type, const void* ptr) noexcept
       : type_(type.withContext(true)), ptr_(const_cast<void*>(ptr)) {}
 
-  const RuntimeType& type() const noexcept { return type_; }
+  // Type accessors.
+  const Type& type() const noexcept { return type_->thriftType; }
+  const std::type_info& typeId() const noexcept { return type_->cppType; }
 
+  // Throws on mismatch.
   template <typename Tag>
   const native_type<Tag>& as() const {
     return type_->as<native_type<Tag>>(ptr_);
   }
 
+  // Returns nullptr on mismatch.
   template <typename Tag>
   const native_type<Tag>* tryAs() const noexcept {
     return type_->tryAs<native_type<Tag>>(ptr_);
   }
 
+  bool empty() const { return type_->empty(ptr_); }
+  bool identical(const RuntimeBase& rhs) const {
+    return type() == rhs.type() && type_->identical(ptr_, rhs);
+  }
+
+ protected:
+  RuntimeType type_;
+  void* ptr_ = nullptr;
+
+  ~RuntimeBase() = default; // Abstract base class;
+
+  // Throws on mismatch or if const.
   template <typename Tag>
   native_type<Tag>& mut() const {
     return type_.mut().as<native_type<Tag>>(ptr_);
   }
 
+  // Returns nullptr on mismatch or if const.
   template <typename Tag>
   native_type<Tag>* tryMut() const noexcept {
     return type_.isConst() ? nullptr : type_->tryAs<native_type<Tag>>(ptr_);
   }
 
-  bool empty() const { return type_->empty(ptr_); }
-  bool identical(const Ptr& rhs) const {
-    return type_->thriftType == rhs.type_->thriftType &&
-        type_->identical(ptr_, rhs);
-  }
   void clear() const { type_.mut().clear(ptr_); }
-
-  void append(const Ptr& val) const { type_.mut().append(ptr_, val); }
-  bool add(const Ptr& val) const { return type_.mut().add(ptr_, val); }
-  bool put(const Ptr& key, const Ptr& val) const {
+  void append(const RuntimeBase& val) const { type_.mut().append(ptr_, val); }
+  bool add(const RuntimeBase& val) const { return type_.mut().add(ptr_, val); }
+  bool put(const RuntimeBase& key, const RuntimeBase& val) const {
     return type_.mut().put(ptr_, {}, &key, val);
   }
-  bool put(FieldId id, const Ptr& val) const {
+  bool put(FieldId id, const RuntimeBase& val) const {
     return type_.mut().put(ptr_, id, nullptr, val);
   }
 
-  Ptr withContext(bool ctxConst, bool ctxRvalue = false) const {
-    return {type_.withContext(ctxConst, ctxRvalue), ptr_};
+  Ptr get(const RuntimeBase& key) const;
+  Ptr get(FieldId id) const;
+  Ptr get(const RuntimeBase& key, bool ctxConst, bool ctxRvalue = false) const;
+  Ptr get(FieldId id, bool ctxConst, bool ctxRvalue = false) const;
+
+  void mergeContext(bool ctxConst, bool ctxRvalue = false) {
+    type_ = type_.withContext(ctxConst, ctxRvalue);
   }
 
-  // Gets the given field or entry, taking into account the context in
-  // which the value is being accessed.
-  Ptr get(
-      FieldId id,
-      const Ptr* key,
-      bool ctxConst = false,
-      bool ctxRvalue = false) const {
-    return type_.withContext(ctxConst, ctxRvalue)->get(ptr_, id, key);
+  void reset(RuntimeType type, void* ptr) noexcept {
+    type_ = type;
+    ptr_ = ptr;
   }
+  void reset(RuntimeType type, const void* ptr) noexcept {
+    type_ = type.withContext(true);
+    ptr_ = const_cast<void*>(ptr);
+  }
+  void reset() noexcept {
+    type_ = {};
+    ptr_ = {};
+  }
+};
+
+// An un-owning pointer to a thrift value.
+class Ptr final : public RuntimeBase {
+ public:
+  using RuntimeBase::RuntimeBase;
+
+  // Pointers do not share constness with the value, so expose functions
+  // directly.
+  using RuntimeBase::add;
+  using RuntimeBase::append;
+  using RuntimeBase::clear;
+  using RuntimeBase::get;
+  using RuntimeBase::mut;
+  using RuntimeBase::put;
+  using RuntimeBase::tryMut;
+
+  // Deref.
+  Ref operator*() const noexcept;
 
  private:
-  RuntimeType type_;
-  void* ptr_ = nullptr;
+  friend class RuntimeBase;
 };
+
+inline Ptr RuntimeBase::get(const RuntimeBase& key) const {
+  return type_->get(ptr_, {}, &key);
+}
+inline Ptr RuntimeBase::get(FieldId id) const {
+  return type_->get(ptr_, id, nullptr);
+}
+inline Ptr RuntimeBase::get(
+    const RuntimeBase& key, bool ctxConst, bool ctxRvalue) const {
+  return type_.withContext(ctxConst, ctxRvalue)->get(ptr_, {}, &key);
+}
+inline Ptr RuntimeBase::get(FieldId id, bool ctxConst, bool ctxRvalue) const {
+  return type_.withContext(ctxConst, ctxRvalue)->get(ptr_, id, nullptr);
+}
 
 // A base impl that throws for every op.
 struct BaseErasedOp {
@@ -203,18 +264,19 @@ struct BaseErasedOp {
 
   [[noreturn]] static bool empty(const void*) { bad_op(); }
   [[noreturn]] static void clear(void*) { bad_op(); }
-  [[noreturn]] static void append(void*, const Ptr&) { bad_op(); }
-  [[noreturn]] static bool add(void*, const Ptr&) { bad_op(); }
-  [[noreturn]] static bool put(void*, FieldId, const Ptr*, const Ptr&) {
+  [[noreturn]] static void append(void*, const RuntimeBase&) { bad_op(); }
+  [[noreturn]] static bool add(void*, const RuntimeBase&) { bad_op(); }
+  [[noreturn]] static bool put(
+      void*, FieldId, const RuntimeBase*, const RuntimeBase&) {
     bad_op();
   }
-  [[noreturn]] static Ptr get(void*, FieldId, const Ptr*) { bad_op(); }
+  [[noreturn]] static Ptr get(void*, FieldId, const RuntimeBase*) { bad_op(); }
 };
 
 // The ops for the empty type 'void'.
 struct VoidErasedOp : BaseErasedOp {
   static bool empty(const void*) { return true; }
-  static bool identical(const void*, const Ptr&) { return true; }
+  static bool identical(const void*, const RuntimeBase&) { return true; }
   static void clear(void*) {}
 };
 
@@ -223,6 +285,10 @@ inline const TypeInfo& voidTypeInfo() {
 }
 
 } // namespace detail
+
+// An un-owning pointer to a thrift value.
+using Ptr = detail::Ptr;
+
 } // namespace type
 } // namespace thrift
 } // namespace apache

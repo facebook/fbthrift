@@ -30,6 +30,7 @@ namespace thrift {
 namespace type {
 namespace detail {
 
+class RuntimeBase;
 class Ptr;
 
 // Runtime type information for a Thrift type.
@@ -40,12 +41,12 @@ struct TypeInfo {
   // Type-erased ~v-table.
   // TODO(afuller): Consider merging some of these functions to reduce size.
   bool (*empty)(const void*);
-  bool (*identical)(const void*, const Ptr&);
+  bool (*identical)(const void*, const RuntimeBase&);
   void (*clear)(void*);
-  void (*append)(void*, const Ptr&);
-  bool (*add)(void*, const Ptr&);
-  bool (*put)(void*, FieldId, const Ptr*, const Ptr&);
-  Ptr (*get)(void*, FieldId, const Ptr*);
+  void (*append)(void*, const RuntimeBase&);
+  bool (*add)(void*, const RuntimeBase&);
+  bool (*put)(void*, FieldId, const RuntimeBase*, const RuntimeBase&);
+  Ptr (*get)(void*, FieldId, const RuntimeBase*);
 
   // Type-safe, const-preserving casting functions.
   template <typename T>

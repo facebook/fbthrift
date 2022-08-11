@@ -19,13 +19,15 @@
 #include <thrift/lib/cpp2/op/detail/BaseOp.h>
 #include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/Tag.h>
+#include <thrift/lib/cpp2/type/ThriftType.h>
 #include <thrift/lib/cpp2/type/detail/Runtime.h>
+#include <thrift/lib/cpp2/type/detail/TypeInfo.h>
 
 namespace apache {
 namespace thrift {
 namespace op {
 namespace detail {
-using Ptr = type::detail::Ptr;
+using RuntimeBase = type::detail::RuntimeBase;
 
 // Compile-time and type-erased Thrift operator implementations.
 template <typename Tag, typename = void>
@@ -34,12 +36,17 @@ struct AnyOp : BaseAnyOp<Tag> {
 
   // TODO(afuller): Implement all Tags and remove runtime throwing fallback.
   using type::detail::BaseErasedOp::unimplemented;
-  [[noreturn]] static void append(void*, const Ptr&) { unimplemented(); }
-  [[noreturn]] static bool add(void*, const Ptr&) { unimplemented(); }
-  [[noreturn]] static bool put(void*, FieldId, const Ptr*, const Ptr&) {
+  [[noreturn]] static void append(void*, const RuntimeBase&) {
     unimplemented();
   }
-  [[noreturn]] static Ptr get(void*, FieldId, const Ptr*) { unimplemented(); }
+  [[noreturn]] static bool add(void*, const RuntimeBase&) { unimplemented(); }
+  [[noreturn]] static bool put(
+      void*, FieldId, const RuntimeBase*, const RuntimeBase&) {
+    unimplemented();
+  }
+  [[noreturn]] static type::Ptr get(void*, FieldId, const RuntimeBase*) {
+    unimplemented();
+  }
 };
 
 template <typename Tag>
@@ -49,7 +56,9 @@ struct NumericOp : BaseAnyOp<Tag> {
   using Base::ref;
 
   static bool add(T& self, const T& val) { return (self += val, true); }
-  static bool add(void* s, const Ptr& v) { return add(ref(s), v.as<Tag>()); }
+  static bool add(void* s, const RuntimeBase& v) {
+    return add(ref(s), v.as<Tag>());
+  }
 };
 
 template <>
@@ -78,20 +87,24 @@ struct ListOp : BaseAnyOp<Tag> {
   static void append(T& self, V&& val) {
     self.emplace_back(std::forward<V>(val));
   }
-  static void append(void* s, const Ptr& v) { append(ref(s), v.as<ValTag>()); }
+  static void append(void* s, const RuntimeBase& v) {
+    append(ref(s), v.as<ValTag>());
+  }
 
   template <typename V = type::native_type<ValTag>>
   [[noreturn]] static bool add(T&, V&&) {
     unimplemented(); // TODO(afuller): Add if not already present.
   }
-  static bool add(void* s, const Ptr& v) { return add(ref(s), v.as<ValTag>()); }
+  static bool add(void* s, const RuntimeBase& v) {
+    return add(ref(s), v.as<ValTag>());
+  }
 
   template <typename U>
   static decltype(auto) get(U&& self, size_t pos) {
     return folly::forward_like<U>(self.at(pos));
   }
 
-  [[noreturn]] static Ptr get(void*, FieldId, const Ptr*) {
+  [[noreturn]] static type::Ptr get(void*, FieldId, const RuntimeBase*) {
     unimplemented(); // TODO(afuller): Get by position.
   }
 };
@@ -110,13 +123,15 @@ struct SetOp : BaseAnyOp<Tag> {
   static bool add(T& self, K&& key) {
     return self.emplace(std::forward<K>(key)).second;
   }
-  static bool add(void* s, const Ptr& k) { return add(ref(s), k.as<KeyTag>()); }
+  static bool add(void* s, const RuntimeBase& k) {
+    return add(ref(s), k.as<KeyTag>());
+  }
 
   template <typename K = type::native_type<KeyTag>>
   static bool contains(const T& self, K&& key) {
     return self.find(std::forward<K>(key)) != self.end();
   }
-  [[noreturn]] static Ptr get(void*, FieldId, const Ptr*) {
+  [[noreturn]] static type::Ptr get(void*, FieldId, const RuntimeBase*) {
     unimplemented(); // TODO(afuller): Get by key (aka contains).
   }
 };
@@ -148,19 +163,20 @@ struct MapOp : BaseAnyOp<type::map<KeyTag, ValTag>> {
     return true; // replacing existing.
   }
 
-  static bool put(void* s, FieldId, const Ptr* k, const Ptr& v) {
+  static bool put(
+      void* s, FieldId, const RuntimeBase* k, const RuntimeBase& v) {
     if (k == nullptr) {
       bad_op();
     }
     return put(ref(s), k->as<KeyTag>(), v.as<ValTag>());
   }
 
-  [[noreturn]] static bool add(void*, const Ptr&) {
+  [[noreturn]] static bool add(void*, const RuntimeBase&) {
     // TODO(afuller): Add key/value pair, if key not already present.
     unimplemented();
   }
 
-  [[noreturn]] static Ptr get(void*, FieldId, const Ptr*) {
+  [[noreturn]] static type::Ptr get(void*, FieldId, const RuntimeBase*) {
     unimplemented(); // TODO(afuller): Get by key.
   }
 };
@@ -168,16 +184,16 @@ struct MapOp : BaseAnyOp<type::map<KeyTag, ValTag>> {
 template <typename KeyTag, typename ValTag>
 struct AnyOp<type::map<KeyTag, ValTag>> : MapOp<KeyTag, ValTag> {};
 
-// Create a AnyOp-based Thrift pointer.
+// Create a AnyOp-based Thrift type info.
+template <typename Tag>
+const type::detail::TypeInfo& getAnyTypeInfo() {
+  return type::detail::getTypeInfo<AnyOp<Tag>, Tag>();
+}
+
+// Create a AnyOp-based Thrift runtime type.
 template <typename Tag, typename T = type::native_type<Tag>>
-Ptr createAnyPtr(T&& val) {
-  return {
-      {type::detail::getTypeInfo<AnyOp<Tag>, Tag, T>(),
-       std::is_const_v<std::remove_reference_t<T>>,
-       std::is_rvalue_reference_v<T>},
-      // Note: const safety is validated at runtime.
-      const_cast<std::decay_t<T>*>(&val),
-  };
+type::detail::RuntimeType getAnyType() {
+  return type::detail::RuntimeType::create<T>(getAnyTypeInfo<Tag>());
 }
 
 } // namespace detail

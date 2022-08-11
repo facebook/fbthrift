@@ -29,6 +29,7 @@
 #include <thrift/lib/cpp2/type/Tag.h>
 #include <thrift/lib/cpp2/type/Testing.h>
 #include <thrift/lib/cpp2/type/Traits.h>
+#include <thrift/lib/cpp2/type/detail/Runtime.h>
 
 namespace apache::thrift::test {
 
