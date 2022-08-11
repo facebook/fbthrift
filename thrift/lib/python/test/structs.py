@@ -20,18 +20,25 @@ import math
 import unittest
 from unittest import mock
 
+from folly.iobuf import IOBuf
+
 from testing.thrift_types import (
     Color,
+    ComplexRef,
+    customized,
     easy,
     File,
     Integers,
+    IOBufListStruct,
     Kind,
+    ListTypes,
     Nested1,
     Nested2,
     Nested3,
     numerical,
     OptionalFile,
     Optionals,
+    Perm,
     Reserved,
     Runtime,
     UnusedError,
@@ -70,13 +77,6 @@ class StructTests(unittest.TestCase):
         self.assertEqual(x.val_list, dif_list)
         dif_int = copy.copy(x.an_int)
         self.assertEqual(x.an_int, dif_int)
-
-    def test_deepcopy(self) -> None:
-        x = easy(val=1, an_int=Integers(small=300), name="bar", val_list=[1, 2, 3, 4])
-        dif = copy.deepcopy(x)
-        self.assertEqual(x.val, dif.val)
-        self.assertEqual(x.val_list, dif.val_list)
-        self.assertEqual(x.name, dif.name)
 
     def test_hashability(self) -> None:
         hash(easy())
@@ -315,3 +315,61 @@ class NumericalConversionsTests(unittest.TestCase):
                 # pyre-ignore[6]: for test
                 int_list=[math.pi, math.e],
             )
+
+
+class StructDeepcopyTests(unittest.TestCase):
+    def test_deepcopy(self) -> None:
+        x = easy(val=1, an_int=Integers(small=300), name="bar", val_list=[1, 2, 3, 4])
+        dif = copy.deepcopy(x)
+        self.assertIs(x, dif)
+
+    def test_nested_in_python_types(self) -> None:
+        x = easy(val=1, an_int=Integers(small=300), name="bar", val_list=[1, 2, 3, 4])
+        nested_in_py = {"a": {"b": {"c": x}}}
+        dif = copy.deepcopy(nested_in_py)
+        self.assertEqual(nested_in_py, dif)
+
+    def test_list_set_map_types_copy(self) -> None:
+        custom = customized(
+            list_template=[1, 2, 3, 4],
+            set_template={1, 2, 3},
+            map_template={0: 1, 2: 3},
+        )
+        dif = copy.deepcopy(custom)
+        self.assertIs(custom, dif)
+
+        # test copying just the map/list field in the thrift object
+        dif = copy.deepcopy(custom.list_template)
+        self.assertIs(custom.list_template, dif)
+
+        dif = copy.deepcopy(custom.set_template)
+        self.assertIs(custom.set_template, dif)
+
+        dif = copy.deepcopy(custom.map_template)
+        self.assertIs(custom.map_template, dif)
+
+    def test_list_ref_copy(self) -> None:
+        obj = ComplexRef(name="outer", list_recursive_ref=[ComplexRef(name="inner")])
+        dif = copy.deepcopy(obj)
+        self.assertIs(obj, dif)
+
+    def test_list_string_copy(self) -> None:
+        obj = ListTypes(
+            first=["one", "two", "three"],
+            second=[1, 2, 3],
+            third=[[1, 2], [3, 4]],
+            fourth=[{1, 2}, {3, 4}],
+            fifth=[{1: 2}, {3: 4}],
+        )
+        dif = copy.deepcopy(obj)
+        self.assertIs(obj, dif)
+
+    def test_enum_values_copy(self) -> None:
+        file = File(name="test.txt", permissions=Perm.read, type=Kind.REGULAR)
+        dif = copy.deepcopy(file)
+        self.assertIs(file, dif)
+
+    def test_binary_values_copy(self) -> None:
+        obj = IOBufListStruct(iobufs=[IOBuf(b"one"), IOBuf(b"two")])
+        dif = copy.deepcopy(obj)
+        self.assertIs(obj, dif)

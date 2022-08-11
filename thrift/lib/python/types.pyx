@@ -471,11 +471,10 @@ cdef class Struct(StructOrUnion):
         return new_inst
 
     def __copy__(Struct self):
-        # deep copy the instance
-        return self._fbthrift_create(copy.deepcopy(self._fbthrift_data))
+        return self
 
-    def __deepcopy__(Struct self, _):
-        return self.__copy__()
+    def __deepcopy__(Struct self, _memo):
+        return self
 
     def __eq__(Struct self, other):
         if type(other) != type(self):
@@ -670,8 +669,10 @@ cdef class Union(StructOrUnion):
         return inst
 
     def __copy__(Union self):
-        # deep copy the instance
-        return self._fbthrift_create(copy.deepcopy(self._fbthrift_data))
+        return self
+
+    def __deepcopy__(Union self, _memo):
+        return self
 
     def __eq__(Union self, other):
         if type(other) != type(self):
@@ -816,6 +817,12 @@ cdef class Container:
     """
     Base class for immutable container types
     """
+    def __copy__(Container self):
+        return self
+
+    def __deepcopy__(Container self, _memo):
+        return self
+
     def __len__(Container self):
         return len(self._fbthrift_elements)
 

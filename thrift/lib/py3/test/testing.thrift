@@ -334,6 +334,14 @@ struct Complex {
   13: ColorGroups val_struct_with_containers;
 }
 
+struct ListTypes {
+  1: list<string> first;
+  2: list<i32> second;
+  3: list<list<i32>> third;
+  4: list<set<i32>> fourth;
+  5: list<map<i32, i32>> fifth;
+}
+
 struct StructuredAnnotation {
   2: map<double, i64> first;
   3: i64 second;
