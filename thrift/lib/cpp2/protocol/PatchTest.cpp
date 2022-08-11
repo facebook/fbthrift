@@ -20,10 +20,12 @@
 
 #include <folly/io/IOBuf.h>
 #include <folly/portability/GTest.h>
+#include <thrift/lib/cpp/util/VarintUtils.h>
 #include <thrift/lib/cpp2/op/Patch.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Object.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/cpp2/type/Id.h>
 #include <thrift/lib/cpp2/type/Tag.h>
 #include <thrift/lib/thrift/gen-cpp2/patch_types.h>
 #include <thrift/test/testset/Testset.h>
@@ -258,6 +260,25 @@ TEST_F(PatchTest, List) {
            makePatch(op::PatchOp::Clear, asValueStruct<type::bool_t>(true)),
            value)
            .listValue_ref());
+
+  // Patch
+  {
+    auto elementPatchValue = asValueStruct<type::binary_t>(std::string{"best"});
+    Value fieldPatchValue;
+    fieldPatchValue.objectValue_ref() =
+        makePatch(op::PatchOp::Put, elementPatchValue);
+    Value listElementPatch;
+    listElementPatch.mapValue_ref()
+        .ensure()[asValueStruct<type::i32_t>(apache::thrift::util::i32ToZigzag(
+            static_cast<int32_t>(type::toOrdinal(0))))] = fieldPatchValue;
+    auto patchObj = makePatch(op::PatchOp::Patch, listElementPatch);
+
+    auto patched = *applyContainerPatch(
+                        makePatch(op::PatchOp::Patch, listElementPatch), value)
+                        .listValue_ref();
+    EXPECT_EQ(
+        std::vector<Value>{asValueStruct<type::binary_t>("testbest")}, patched);
+  }
 
   // Prepent
   {

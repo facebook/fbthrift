@@ -22,7 +22,9 @@
 #include <folly/io/IOBufQueue.h>
 #include <folly/lang/Exception.h>
 #include <thrift/lib/cpp/util/EnumUtils.h>
+#include <thrift/lib/cpp/util/VarintUtils.h>
 #include <thrift/lib/cpp2/op/Get.h>
+#include <thrift/lib/cpp2/type/Id.h>
 #include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/Tag.h>
 #include <thrift/lib/thrift/gen-cpp2/patch_types.h>
@@ -216,6 +218,7 @@ void ApplyPatch::operator()(
       Value::Type::listValue,
       {PatchOp::Assign,
        PatchOp::Clear,
+       PatchOp::Patch,
        PatchOp::Add,
        PatchOp::Put,
        PatchOp::Prepend,
@@ -227,6 +230,22 @@ void ApplyPatch::operator()(
   if (auto* clear = findOp(patch, PatchOp::Clear)) {
     if (argAs<type::bool_t>(*clear)) {
       value.clear();
+    }
+  }
+
+  if (auto* elementPatches = findOp(patch, PatchOp::Patch)) {
+    for (const auto& [idx, elPatch] : *elementPatches->mapValue_ref()) {
+      if (idx.if_i32()) {
+        auto index = type::toPosition(
+            type::Ordinal(apache::thrift::util::zigzagToI32(idx.as_i32())));
+        if (index >= 0 && static_cast<size_t>(index) < value.size()) {
+          applyPatch(*elPatch.objectValue_ref(), value[index]);
+        } else {
+          throw std::runtime_error("patch index out of range");
+        }
+      } else {
+        throw std::runtime_error("expected index as i32");
+      }
     }
   }
 
