@@ -10,6 +10,8 @@ import typing as _typing
 import folly.iobuf as _fbthrift_iobuf
 import thrift.py3.builder
 
+import facebook.thrift.annotation.thrift.types as _facebook_thrift_annotation_thrift_types
+import facebook.thrift.annotation.thrift.builders as _facebook_thrift_annotation_thrift_builders
 
 import module.types as _module_types
 
@@ -42,6 +44,13 @@ class CustomFieldNames_Builder(thrift.py3.builder.StructBuilder):
 
 class ExceptionWithPrimitiveField_Builder(thrift.py3.builder.StructBuilder):
     message: _typing.Optional[str]
+    error_code: _typing.Optional[int]
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class ExceptionWithStructuredAnnotation_Builder(thrift.py3.builder.StructBuilder):
+    message_field: _typing.Optional[str]
     error_code: _typing.Optional[int]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...

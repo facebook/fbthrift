@@ -71,6 +71,19 @@ const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::ExceptionWithPri
   TType::T_I32,
 }};
 
+const std::array<folly::StringPiece, 2> TStructDataStorage<::cpp2::ExceptionWithStructuredAnnotation>::fields_names = {{
+  "message_field",
+  "error_code",
+}};
+const std::array<int16_t, 2> TStructDataStorage<::cpp2::ExceptionWithStructuredAnnotation>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::ExceptionWithStructuredAnnotation>::fields_types = {{
+  TType::T_STRING,
+  TType::T_I32,
+}};
+
 const std::array<folly::StringPiece, 0> TStructDataStorage<::cpp2::Banal>::fields_names = {{
 }};
 const std::array<int16_t, 0> TStructDataStorage<::cpp2::Banal>::fields_ids = {{

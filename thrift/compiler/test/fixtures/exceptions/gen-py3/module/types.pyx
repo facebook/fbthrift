@@ -53,6 +53,8 @@ import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
 import weakref as __weakref
 import builtins as _builtins
+cimport facebook.thrift.annotation.thrift.types as _facebook_thrift_annotation_thrift_types
+import facebook.thrift.annotation.thrift.types as _facebook_thrift_annotation_thrift_types
 
 cimport module.types_reflection as _types_reflection
 
@@ -632,6 +634,121 @@ cdef class ExceptionWithPrimitiveField(thrift.py3.exceptions.GeneratedError):
         import thrift.util.converter
         py_deprecated_types = importlib.import_module("module.ttypes")
         return thrift.util.converter.to_py_struct(py_deprecated_types.ExceptionWithPrimitiveField, self)
+@__cython.auto_pickle(False)
+cdef class ExceptionWithStructuredAnnotation(thrift.py3.exceptions.GeneratedError):
+    def __init__(ExceptionWithStructuredAnnotation self, *args, **kwargs):
+        self._cpp_obj = make_shared[cExceptionWithStructuredAnnotation]()
+        self._fields_setter = _fbthrift_types_fields.__ExceptionWithStructuredAnnotation_FieldsSetter._fbthrift_create(self._cpp_obj.get())
+        super().__init__( *args, **kwargs)
+
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
+
+    cdef object _fbthrift_isset(self):
+        return thrift.py3.types._IsSet("ExceptionWithStructuredAnnotation", {
+          "message_field": deref(self._cpp_obj).message_field_ref().has_value(),
+          "error_code": deref(self._cpp_obj).error_code_ref().has_value(),
+        })
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cExceptionWithStructuredAnnotation] cpp_obj):
+        __fbthrift_inst = <ExceptionWithStructuredAnnotation>ExceptionWithStructuredAnnotation.__new__(ExceptionWithStructuredAnnotation, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
+        _builtins.Exception.__init__(__fbthrift_inst, *(v for _, v in __fbthrift_inst))
+        return __fbthrift_inst
+
+    cdef inline message_field_impl(self):
+
+        return (<bytes>deref(self._cpp_obj).message_field_ref().value()).decode('UTF-8')
+
+    @property
+    def message_field(self):
+        return self.message_field_impl()
+
+    cdef inline error_code_impl(self):
+
+        return deref(self._cpp_obj).error_code_ref().value()
+
+    @property
+    def error_code(self):
+        return self.error_code_impl()
+
+
+    def __hash__(ExceptionWithStructuredAnnotation self):
+        return super().__hash__()
+
+    def __repr__(ExceptionWithStructuredAnnotation self):
+        return super().__repr__()
+
+    def __str__(ExceptionWithStructuredAnnotation self):
+        return super().__str__()
+
+
+    def __copy__(ExceptionWithStructuredAnnotation self):
+        cdef shared_ptr[cExceptionWithStructuredAnnotation] cpp_obj = make_shared[cExceptionWithStructuredAnnotation](
+            deref(self._cpp_obj)
+        )
+        return ExceptionWithStructuredAnnotation._fbthrift_create(cmove(cpp_obj))
+
+    def __richcmp__(self, other, int op):
+        r = self._fbthrift_cmp_sametype(other, op)
+        return __richcmp[cExceptionWithStructuredAnnotation](
+            self._cpp_obj,
+            (<ExceptionWithStructuredAnnotation>other)._cpp_obj,
+            op,
+        ) if r is None else r
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__ExceptionWithStructuredAnnotation()
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        ExceptionMetadata[cExceptionWithStructuredAnnotation].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.ExceptionWithStructuredAnnotation"
+
+    @classmethod
+    def _fbthrift_get_field_name_by_index(cls, idx):
+        return __sv_to_str(__get_field_name_by_index[cExceptionWithStructuredAnnotation](idx))
+
+    @classmethod
+    def _fbthrift_get_struct_size(cls):
+        return 2
+
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(ExceptionWithStructuredAnnotation self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cExceptionWithStructuredAnnotation](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(ExceptionWithStructuredAnnotation self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cExceptionWithStructuredAnnotation]()
+        with nogil:
+            needed = serializer.cdeserialize[cExceptionWithStructuredAnnotation](buf, self._cpp_obj.get(), proto)
+        return needed
+
+    def _to_python(self):
+        import importlib
+        import thrift.python.converter
+        python_types = importlib.import_module(
+            "module.thrift_types"
+        )
+        return thrift.python.converter.to_python_struct(python_types.ExceptionWithStructuredAnnotation, self)
+
+    def _to_py3(self):
+        return self
+
+    def _to_py_deprecated(self):
+        import importlib
+        import thrift.util.converter
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        return thrift.util.converter.to_py_struct(py_deprecated_types.ExceptionWithStructuredAnnotation, self)
 @__cython.auto_pickle(False)
 cdef class Banal(thrift.py3.exceptions.GeneratedError):
     def __init__(Banal self, *args, **kwargs):

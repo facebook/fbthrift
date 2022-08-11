@@ -18,6 +18,8 @@ namespace enums {
   ::apache::thrift::detail::md::EnumMetadata<MyEnum2>::gen(metadata);
   ::apache::thrift::detail::md::EnumMetadata<MyEnum3>::gen(metadata);
   ::apache::thrift::detail::md::EnumMetadata<MyEnum4>::gen(metadata);
+  ::apache::thrift::detail::md::EnumMetadata<MyBitmaskEnum1>::gen(metadata);
+  ::apache::thrift::detail::md::EnumMetadata<MyBitmaskEnum2>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<SomeStruct>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyStruct>::gen(metadata);
   return metadata;

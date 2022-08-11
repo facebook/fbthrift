@@ -14,6 +14,8 @@ import folly.iobuf as _fbthrift_iobuf
 import thrift.python.types as _fbthrift_python_types
 import thrift.python.exceptions as _fbthrift_python_exceptions
 
+import facebook.thrift.annotation.thrift.thrift_types
+
 
 class Fiery(_fbthrift_python_exceptions.GeneratedError):
     message: _typing.Final[str] = ...
@@ -84,6 +86,21 @@ class ExceptionWithPrimitiveField(_fbthrift_python_exceptions.GeneratedError):
     def _to_python(self) -> ExceptionWithPrimitiveField: ...
     def _to_py3(self) -> "module.types.ExceptionWithPrimitiveField": ...  # type: ignore
     def _to_py_deprecated(self) -> "module.ttypes.ExceptionWithPrimitiveField": ...  # type: ignore
+
+
+class ExceptionWithStructuredAnnotation(_fbthrift_python_exceptions.GeneratedError):
+    message_field: _typing.Final[str] = ...
+    error_code: _typing.Final[int] = ...
+    def __init__(
+        self, *,
+        message_field: _typing.Optional[str]=...,
+        error_code: _typing.Optional[int]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[str, int]]]: ...
+    def _to_python(self) -> ExceptionWithStructuredAnnotation: ...
+    def _to_py3(self) -> "module.types.ExceptionWithStructuredAnnotation": ...  # type: ignore
+    def _to_py_deprecated(self) -> "module.ttypes.ExceptionWithStructuredAnnotation": ...  # type: ignore
 
 
 class Banal(_fbthrift_python_exceptions.GeneratedError):

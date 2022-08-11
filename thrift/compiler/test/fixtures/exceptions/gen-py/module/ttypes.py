@@ -12,6 +12,8 @@ from thrift.Thrift import TType, TMessageType, TPriority, TRequestContext, TProc
 from thrift.protocol.TProtocol import TProtocolException
 
 
+import thrift.annotation.thrift.ttypes
+
 
 import pprint
 import warnings
@@ -28,7 +30,7 @@ except ImportError:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'Fiery', 'Serious', 'ComplexFieldNames', 'CustomFieldNames', 'ExceptionWithPrimitiveField', 'Banal']
+__all__ = ['UTF8STRINGS', 'Fiery', 'Serious', 'ComplexFieldNames', 'CustomFieldNames', 'ExceptionWithPrimitiveField', 'ExceptionWithStructuredAnnotation', 'Banal']
 
 class Fiery(TException):
   """
@@ -585,6 +587,120 @@ class ExceptionWithPrimitiveField(TException):
   def _to_py_deprecated(self):
     return self
 
+class ExceptionWithStructuredAnnotation(TException):
+  """
+  Attributes:
+   - message_field
+   - error_code
+  """
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  __init__ = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.STRING:
+          self.message_field = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
+      elif fid == 2:
+        if ftype == TType.I32:
+          self.error_code = iprot.readI32()
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('ExceptionWithStructuredAnnotation')
+    if self.message_field != None:
+      oprot.writeFieldBegin('message_field', TType.STRING, 1)
+      oprot.writeString(self.message_field.encode('utf-8')) if UTF8STRINGS and not isinstance(self.message_field, bytes) else oprot.writeString(self.message_field)
+      oprot.writeFieldEnd()
+    if self.error_code != None:
+      oprot.writeFieldBegin('error_code', TType.I32, 2)
+      oprot.writeI32(self.error_code)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def __str__(self):
+    return repr(self)
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    if self.message_field is not None:
+      value = pprint.pformat(self.message_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    message_field=%s' % (value))
+    if self.error_code is not None:
+      value = pprint.pformat(self.error_code, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    error_code=%s' % (value))
+    if 'message' not in self.__dict__:
+      message = getattr(self, 'message', None)
+      if message:
+        L.append('message=%r' % message)
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  def __dir__(self):
+    return (
+      'message_field',
+      'error_code',
+    )
+
+  # Override the __hash__ function for Python3 - t10434117
+  __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("module.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.ExceptionWithStructuredAnnotation, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("module.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.ExceptionWithStructuredAnnotation, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 class Banal(TException):
 
   thrift_spec = None
@@ -796,6 +912,32 @@ def ExceptionWithPrimitiveField__setstate__(self, state):
 
 ExceptionWithPrimitiveField.__getstate__ = lambda self: self.__dict__.copy()
 ExceptionWithPrimitiveField.__setstate__ = ExceptionWithPrimitiveField__setstate__
+
+all_structs.append(ExceptionWithStructuredAnnotation)
+ExceptionWithStructuredAnnotation.thrift_spec = (
+  None, # 0
+  (1, TType.STRING, 'message_field', True, None, 2, ), # 1
+  (2, TType.I32, 'error_code', None, None, 2, ), # 2
+)
+
+ExceptionWithStructuredAnnotation.thrift_struct_annotations = {
+}
+ExceptionWithStructuredAnnotation.thrift_field_annotations = {
+}
+
+def ExceptionWithStructuredAnnotation__init__(self, message_field=None, error_code=None,):
+  self.message_field = message_field
+  self.error_code = error_code
+
+ExceptionWithStructuredAnnotation.__init__ = ExceptionWithStructuredAnnotation__init__
+
+def ExceptionWithStructuredAnnotation__setstate__(self, state):
+  state.setdefault('message_field', None)
+  state.setdefault('error_code', None)
+  self.__dict__ = state
+
+ExceptionWithStructuredAnnotation.__getstate__ = lambda self: self.__dict__.copy()
+ExceptionWithStructuredAnnotation.__setstate__ = ExceptionWithStructuredAnnotation__setstate__
 
 all_structs.append(Banal)
 Banal.thrift_spec = (

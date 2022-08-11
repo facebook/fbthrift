@@ -178,6 +178,23 @@ void reset_field<::facebook::thrift::annotation::v1test>(
 }
 
 template<>
+void reset_field<::facebook::thrift::annotation::ExceptionMessage>(
+    ::facebook::thrift::annotation::ExceptionMessage& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.field_ref().copy_from(default_inst<::facebook::thrift::annotation::ExceptionMessage>().field_ref());
+      return;
+  }
+}
+
+template<>
+void reset_field<::facebook::thrift::annotation::BitmaskEnum>(
+    ::facebook::thrift::annotation::BitmaskEnum& obj, uint16_t index) {
+  switch (index) {
+  }
+}
+
+template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::facebook::thrift::annotation::Beta>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
@@ -370,6 +387,26 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::facebook::thrift::annotation::v1test>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::facebook::thrift::annotation::ExceptionMessage>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::facebook::thrift::annotation::BitmaskEnum>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

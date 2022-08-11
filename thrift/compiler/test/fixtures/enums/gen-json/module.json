@@ -101,6 +101,44 @@
           "column" : 2
         }
       }
+    },
+    "MyBitmaskEnum1" : {
+      "lineno" : 79,
+      "constants" : {
+        "ONE" : 1,
+        "TWO" : 2,
+        "FOUR" : 4,
+        "Unspecified" : 0
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 79,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 83,
+          "column" : 16
+        }
+      }
+    },
+    "MyBitmaskEnum2" : {
+      "lineno" : 85,
+      "constants" : {
+        "ONE" : 1,
+        "TWO" : 2,
+        "FOUR" : 4,
+        "Unspecified" : 0
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 85,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 90,
+          "column" : 2
+        }
+      }
     }
   },
   "structs" : {

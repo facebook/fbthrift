@@ -309,6 +309,110 @@ func MyEnum4FromString(s string) (MyEnum4, error) {
 
 func MyEnum4Ptr(v MyEnum4) *MyEnum4 { return &v }
 
+type MyBitmaskEnum1 int64
+const (
+  MyBitmaskEnum1_ONE MyBitmaskEnum1 = 1
+  MyBitmaskEnum1_TWO MyBitmaskEnum1 = 2
+  MyBitmaskEnum1_FOUR MyBitmaskEnum1 = 4
+  MyBitmaskEnum1_Unspecified MyBitmaskEnum1 = 0
+)
+
+var MyBitmaskEnum1ToName = map[MyBitmaskEnum1]string {
+  MyBitmaskEnum1_ONE: "ONE",
+  MyBitmaskEnum1_TWO: "TWO",
+  MyBitmaskEnum1_FOUR: "FOUR",
+  MyBitmaskEnum1_Unspecified: "Unspecified",
+}
+
+var MyBitmaskEnum1ToValue = map[string]MyBitmaskEnum1 {
+  "ONE": MyBitmaskEnum1_ONE,
+  "TWO": MyBitmaskEnum1_TWO,
+  "FOUR": MyBitmaskEnum1_FOUR,
+  "Unspecified": MyBitmaskEnum1_Unspecified,
+}
+
+var MyBitmaskEnum1Names = []string {
+  "ONE",
+  "TWO",
+  "FOUR",
+  "Unspecified",
+}
+
+var MyBitmaskEnum1Values = []MyBitmaskEnum1 {
+  MyBitmaskEnum1_ONE,
+  MyBitmaskEnum1_TWO,
+  MyBitmaskEnum1_FOUR,
+  MyBitmaskEnum1_Unspecified,
+}
+
+func (p MyBitmaskEnum1) String() string {
+  if v, ok := MyBitmaskEnum1ToName[p]; ok {
+    return v
+  }
+  return "<UNSET>"
+}
+
+func MyBitmaskEnum1FromString(s string) (MyBitmaskEnum1, error) {
+  if v, ok := MyBitmaskEnum1ToValue[s]; ok {
+    return v, nil
+  }
+  return MyBitmaskEnum1(0), fmt.Errorf("not a valid MyBitmaskEnum1 string")
+}
+
+func MyBitmaskEnum1Ptr(v MyBitmaskEnum1) *MyBitmaskEnum1 { return &v }
+
+type MyBitmaskEnum2 int64
+const (
+  MyBitmaskEnum2_ONE MyBitmaskEnum2 = 1
+  MyBitmaskEnum2_TWO MyBitmaskEnum2 = 2
+  MyBitmaskEnum2_FOUR MyBitmaskEnum2 = 4
+  MyBitmaskEnum2_Unspecified MyBitmaskEnum2 = 0
+)
+
+var MyBitmaskEnum2ToName = map[MyBitmaskEnum2]string {
+  MyBitmaskEnum2_ONE: "ONE",
+  MyBitmaskEnum2_TWO: "TWO",
+  MyBitmaskEnum2_FOUR: "FOUR",
+  MyBitmaskEnum2_Unspecified: "Unspecified",
+}
+
+var MyBitmaskEnum2ToValue = map[string]MyBitmaskEnum2 {
+  "ONE": MyBitmaskEnum2_ONE,
+  "TWO": MyBitmaskEnum2_TWO,
+  "FOUR": MyBitmaskEnum2_FOUR,
+  "Unspecified": MyBitmaskEnum2_Unspecified,
+}
+
+var MyBitmaskEnum2Names = []string {
+  "ONE",
+  "TWO",
+  "FOUR",
+  "Unspecified",
+}
+
+var MyBitmaskEnum2Values = []MyBitmaskEnum2 {
+  MyBitmaskEnum2_ONE,
+  MyBitmaskEnum2_TWO,
+  MyBitmaskEnum2_FOUR,
+  MyBitmaskEnum2_Unspecified,
+}
+
+func (p MyBitmaskEnum2) String() string {
+  if v, ok := MyBitmaskEnum2ToName[p]; ok {
+    return v
+  }
+  return "<UNSET>"
+}
+
+func MyBitmaskEnum2FromString(s string) (MyBitmaskEnum2, error) {
+  if v, ok := MyBitmaskEnum2ToValue[s]; ok {
+    return v, nil
+  }
+  return MyBitmaskEnum2(0), fmt.Errorf("not a valid MyBitmaskEnum2 string")
+}
+
+func MyBitmaskEnum2Ptr(v MyBitmaskEnum2) *MyBitmaskEnum2 { return &v }
+
 // Attributes:
 //  - Reasonable
 //  - Fine

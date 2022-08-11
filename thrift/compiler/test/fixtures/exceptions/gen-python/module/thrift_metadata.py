@@ -10,6 +10,8 @@ from __future__ import annotations
 import apache.thrift.metadata.thrift_types as _fbthrift_metadata
 
 
+import facebook.thrift.annotation.thrift.thrift_metadata
+
 # TODO (ffrancet): This general pattern can be optimized by using tuples and dicts
 # instead of re-generating thrift structs
 def _fbthrift_gen_metadata_exception_Fiery(metadata_struct: _fbthrift_metadata.ThriftMetadata) -> _fbthrift_metadata.ThriftMetadata:
@@ -136,6 +138,33 @@ def gen_metadata_exception_ExceptionWithPrimitiveField() -> _fbthrift_metadata.T
 
 # TODO (ffrancet): This general pattern can be optimized by using tuples and dicts
 # instead of re-generating thrift structs
+def _fbthrift_gen_metadata_exception_ExceptionWithStructuredAnnotation(metadata_struct: _fbthrift_metadata.ThriftMetadata) -> _fbthrift_metadata.ThriftMetadata:
+    qualified_name = "module.ExceptionWithStructuredAnnotation"
+
+    if qualified_name in metadata_struct.exceptions:
+        return metadata_struct
+    fields = [
+        _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="message_field", is_optional=False, structured_annotations=[
+        ]),
+        _fbthrift_metadata.ThriftField(id=2, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), name="error_code", is_optional=False, structured_annotations=[
+        ]),
+    ]
+    struct_dict = dict(metadata_struct.exceptions)
+    struct_dict[qualified_name] = _fbthrift_metadata.ThriftException(name=qualified_name, fields=fields,
+        structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="thrift.ExceptionMessage"), fields= { "field": _fbthrift_metadata.ThriftConstValue(cv_string="message_field"),  }),
+        ])
+    new_struct = metadata_struct(exceptions=struct_dict)
+
+     # message_field
+     # error_code
+
+    return new_struct
+def gen_metadata_exception_ExceptionWithStructuredAnnotation() -> _fbthrift_metadata.ThriftMetadata:
+    return _fbthrift_gen_metadata_exception_ExceptionWithStructuredAnnotation(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
+
+# TODO (ffrancet): This general pattern can be optimized by using tuples and dicts
+# instead of re-generating thrift structs
 def _fbthrift_gen_metadata_exception_Banal(metadata_struct: _fbthrift_metadata.ThriftMetadata) -> _fbthrift_metadata.ThriftMetadata:
     qualified_name = "module.Banal"
 
@@ -237,6 +266,7 @@ def getThriftModuleMetadata() -> _fbthrift_metadata.ThriftMetadata:
     meta = _fbthrift_gen_metadata_exception_ComplexFieldNames(meta)
     meta = _fbthrift_gen_metadata_exception_CustomFieldNames(meta)
     meta = _fbthrift_gen_metadata_exception_ExceptionWithPrimitiveField(meta)
+    meta = _fbthrift_gen_metadata_exception_ExceptionWithStructuredAnnotation(meta)
     meta = _fbthrift_gen_metadata_exception_Banal(meta)
     meta = _fbthrift_gen_metadata_service_Raiser(meta)
     return meta

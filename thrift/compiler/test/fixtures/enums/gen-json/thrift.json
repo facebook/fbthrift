@@ -448,6 +448,56 @@
           "column" : 17
         }
       }
+    },
+    "ExceptionMessage" : {
+      "lineno" : 274,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "field" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 276,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 276,
+              "column" : 18
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 274,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 277,
+          "column" : 2
+        }
+      }
+    },
+    "BitmaskEnum" : {
+      "lineno" : 283,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 283,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 284,
+          "column" : 22
+        }
+      }
     }
   }
 }

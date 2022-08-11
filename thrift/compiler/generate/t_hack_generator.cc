@@ -623,7 +623,8 @@ class t_hack_generator : public t_concat_generator {
   }
 
   bool is_bitmask_enum(const t_enum* tenum) {
-    return tenum->has_annotation("bitmask");
+    return tenum->has_annotation("bitmask") ||
+        tenum->find_structured_annotation_or_null(kBitmaskEnum) != nullptr;
   }
 
   const std::string* find_hack_adapter(const t_type* type) {
@@ -801,6 +802,29 @@ class t_hack_generator : public t_concat_generator {
       return std::make_pair(true, "");
     }
     return std::make_pair(false, "");
+  }
+
+  bool has_hack_struct_as_trait(const t_struct* tstruct) const {
+    if (tstruct->has_annotation("php.trait")) {
+      return true;
+    }
+    const auto annotation =
+        tstruct->find_structured_annotation_or_null(kHackStructAsTraitUri);
+    return annotation != nullptr;
+  }
+
+  std::string find_exception_message(const t_struct* tstruct) {
+    const auto& value = tstruct->get_annotation("message");
+    if (value != "") {
+      return value;
+    }
+    const auto annotation =
+        tstruct->find_structured_annotation_or_null(kExceptionMessageUri);
+    if (annotation != nullptr) {
+      return annotation->get_value_from_structured_annotation("field")
+          .get_string();
+    }
+    return "";
   }
 
   std::string hack_namespace(const t_program* p) const {
@@ -4060,8 +4084,8 @@ void t_hack_generator::generate_php_struct_methods(
     generate_php_union_methods(out, tstruct, name);
   }
   if (type == ThriftStructType::EXCEPTION) {
-    const auto& value = tstruct->get_annotation("message");
-    if (tstruct->has_annotation("message") && value != "message") {
+    const auto value = find_exception_message(tstruct);
+    if (value != "" && value != "message") {
       const auto* message_field = tstruct->get_field_by_name(value);
       if (const auto field_wrapper = find_hack_wrapper(*message_field)) {
         throw std::runtime_error(
@@ -4722,7 +4746,7 @@ void t_hack_generator::_generate_php_struct_definition(
     const t_struct* tstruct,
     ThriftStructType type,
     const std::string& name) {
-  bool generateAsTrait = tstruct->has_annotation("php.trait");
+  bool generateAsTrait = has_hack_struct_as_trait(tstruct);
 
   if (type != ThriftStructType::ARGS && type != ThriftStructType::RESULT &&
       (type == ThriftStructType::EXCEPTION || !generateAsTrait)) {

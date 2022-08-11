@@ -10,6 +10,8 @@ import (
 	"sync"
 	"fmt"
 	thrift "github.com/facebook/fbthrift/thrift/lib/go/thrift"
+	thrift0 "thrift/annotation/thrift"
+
 )
 
 // (needed to ensure safety because of naive import list construction.)
@@ -19,6 +21,7 @@ var _ = sync.Mutex{}
 var _ = bytes.Equal
 var _ = context.Background
 
+var _ = thrift0.GoUnusedProtection__
 var GoUnusedProtection__ int;
 
 // Attributes:
@@ -738,6 +741,163 @@ func (p *ExceptionWithPrimitiveField) String() string {
 }
 
 func (p *ExceptionWithPrimitiveField) Error() string {
+  return p.String()
+}
+
+// Attributes:
+//  - MessageField
+//  - ErrorCode
+type ExceptionWithStructuredAnnotation struct {
+  MessageField string `thrift:"message_field,1" db:"message_field" json:"message_field"`
+  ErrorCode int32 `thrift:"error_code,2" db:"error_code" json:"error_code"`
+}
+
+func NewExceptionWithStructuredAnnotation() *ExceptionWithStructuredAnnotation {
+  return &ExceptionWithStructuredAnnotation{}
+}
+
+
+func (p *ExceptionWithStructuredAnnotation) GetMessageField() string {
+  return p.MessageField
+}
+
+func (p *ExceptionWithStructuredAnnotation) GetErrorCode() int32 {
+  return p.ErrorCode
+}
+type ExceptionWithStructuredAnnotationBuilder struct {
+  obj *ExceptionWithStructuredAnnotation
+}
+
+func NewExceptionWithStructuredAnnotationBuilder() *ExceptionWithStructuredAnnotationBuilder{
+  return &ExceptionWithStructuredAnnotationBuilder{
+    obj: NewExceptionWithStructuredAnnotation(),
+  }
+}
+
+func (p ExceptionWithStructuredAnnotationBuilder) Emit() *ExceptionWithStructuredAnnotation{
+  return &ExceptionWithStructuredAnnotation{
+    MessageField: p.obj.MessageField,
+    ErrorCode: p.obj.ErrorCode,
+  }
+}
+
+func (e *ExceptionWithStructuredAnnotationBuilder) MessageField(messageField string) *ExceptionWithStructuredAnnotationBuilder {
+  e.obj.MessageField = messageField
+  return e
+}
+
+func (e *ExceptionWithStructuredAnnotationBuilder) ErrorCode(errorCode int32) *ExceptionWithStructuredAnnotationBuilder {
+  e.obj.ErrorCode = errorCode
+  return e
+}
+
+func (e *ExceptionWithStructuredAnnotation) SetMessageField(messageField string) *ExceptionWithStructuredAnnotation {
+  e.MessageField = messageField
+  return e
+}
+
+func (e *ExceptionWithStructuredAnnotation) SetErrorCode(errorCode int32) *ExceptionWithStructuredAnnotation {
+  e.ErrorCode = errorCode
+  return e
+}
+
+func (p *ExceptionWithStructuredAnnotation) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *ExceptionWithStructuredAnnotation)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.MessageField = v
+  }
+  return nil
+}
+
+func (p *ExceptionWithStructuredAnnotation)  ReadField2(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.ErrorCode = v
+  }
+  return nil
+}
+
+func (p *ExceptionWithStructuredAnnotation) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("ExceptionWithStructuredAnnotation"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *ExceptionWithStructuredAnnotation) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("message_field", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:message_field: ", p), err) }
+  if err := oprot.WriteString(string(p.MessageField)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.message_field (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:message_field: ", p), err) }
+  return err
+}
+
+func (p *ExceptionWithStructuredAnnotation) writeField2(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("error_code", thrift.I32, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:error_code: ", p), err) }
+  if err := oprot.WriteI32(int32(p.ErrorCode)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.error_code (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:error_code: ", p), err) }
+  return err
+}
+
+func (p *ExceptionWithStructuredAnnotation) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  messageFieldVal := fmt.Sprintf("%v", p.MessageField)
+  errorCodeVal := fmt.Sprintf("%v", p.ErrorCode)
+  return fmt.Sprintf("ExceptionWithStructuredAnnotation({MessageField:%s ErrorCode:%s})", messageFieldVal, errorCodeVal)
+}
+
+func (p *ExceptionWithStructuredAnnotation) Error() string {
   return p.String()
 }
 

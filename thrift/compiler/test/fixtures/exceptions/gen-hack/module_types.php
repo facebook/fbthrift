@@ -506,6 +506,123 @@ class ExceptionWithPrimitiveField extends \TException implements \IThriftSyncStr
 
 /**
  * Original thrift exception:-
+ * ExceptionWithStructuredAnnotation
+ */
+class ExceptionWithStructuredAnnotation extends \TException implements \IThriftSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'message_field',
+      'type' => \TType::STRING,
+    ),
+    2 => shape(
+      'var' => 'error_code',
+      'type' => \TType::I32,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'message_field' => 1,
+    'error_code' => 2,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'message_field' => ?string,
+    ?'error_code' => ?int,
+  );
+
+  const int STRUCTURAL_ID = 267833845416100769;
+  /**
+   * Original thrift field:-
+   * 1: string message_field
+   */
+  public string $message_field;
+  /**
+   * Original thrift field:-
+   * 2: i32 error_code
+   */
+  public int $error_code;
+
+  public function __construct(?string $message_field = null, ?int $error_code = null)[] {
+    parent::__construct();
+    $this->message_field = $message_field ?? '';
+    $this->error_code = $error_code ?? 0;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'message_field'),
+      Shapes::idx($shape, 'error_code'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'ExceptionWithStructuredAnnotation';
+  }
+
+  <<__Override>>
+  public function getMessage()[]: string {
+    return $this->message_field ?? '';
+  }
+
+  public static function getExceptionMetadata()[]: \tmeta_ThriftException {
+    return tmeta_ThriftException::fromShape(
+      shape(
+        "name" => "module.ExceptionWithStructuredAnnotation",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "message_field",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "error_code",
+            )
+          ),
+        ],
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        '\thrift\annotation\ExceptionMessage' => \thrift\annotation\ExceptionMessage::fromShape(
+          shape(
+            "field" => "message_field",
+          )
+        ),
+      ],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+}
+
+/**
+ * Original thrift exception:-
  * Banal
  */
 class Banal extends \TException implements \IThriftSyncStruct {

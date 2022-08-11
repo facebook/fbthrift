@@ -10,6 +10,7 @@
 
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include "thrift/compiler/test/fixtures/exceptions/gen-cpp2/module_types.h"
+#include "thrift/annotation/gen-cpp2/thrift_metadata.h"
 
 namespace cpp2 {
 class Raiser;
@@ -46,6 +47,11 @@ class StructMetadata<::cpp2::ExceptionWithPrimitiveField> {
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
+class StructMetadata<::cpp2::ExceptionWithStructuredAnnotation> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
 class StructMetadata<::cpp2::Banal> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
@@ -72,6 +78,11 @@ class ExceptionMetadata<::cpp2::CustomFieldNames> {
 };
 template <>
 class ExceptionMetadata<::cpp2::ExceptionWithPrimitiveField> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class ExceptionMetadata<::cpp2::ExceptionWithStructuredAnnotation> {
  public:
   static void gen(ThriftMetadata& metadata);
 };

@@ -142,6 +142,58 @@ FOLLY_POP_WARNING
 #endif
 }}} // test::fixtures::enums
 
+namespace apache { namespace thrift {
+
+constexpr std::size_t const TEnumTraits<::test::fixtures::enums::MyBitmaskEnum1>::size;
+folly::Range<::test::fixtures::enums::MyBitmaskEnum1 const*> const TEnumTraits<::test::fixtures::enums::MyBitmaskEnum1>::values = folly::range(TEnumDataStorage<::test::fixtures::enums::MyBitmaskEnum1>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::test::fixtures::enums::MyBitmaskEnum1>::names = folly::range(TEnumDataStorage<::test::fixtures::enums::MyBitmaskEnum1>::names);
+
+bool TEnumTraits<::test::fixtures::enums::MyBitmaskEnum1>::findName(type value, folly::StringPiece* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_name(value, out);
+}
+
+bool TEnumTraits<::test::fixtures::enums::MyBitmaskEnum1>::findValue(folly::StringPiece name, type* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_value(name, out);
+}
+
+}} // apache::thrift
+
+namespace test { namespace fixtures { namespace enums {
+#ifndef ANDROID
+FOLLY_PUSH_WARNING
+FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
+const _MyBitmaskEnum1_EnumMapFactory::ValuesToNamesMapType _MyBitmaskEnum1_VALUES_TO_NAMES = _MyBitmaskEnum1_EnumMapFactory::makeValuesToNamesMap();
+const _MyBitmaskEnum1_EnumMapFactory::NamesToValuesMapType _MyBitmaskEnum1_NAMES_TO_VALUES = _MyBitmaskEnum1_EnumMapFactory::makeNamesToValuesMap();
+FOLLY_POP_WARNING
+#endif
+}}} // test::fixtures::enums
+
+namespace apache { namespace thrift {
+
+constexpr std::size_t const TEnumTraits<::test::fixtures::enums::MyBitmaskEnum2>::size;
+folly::Range<::test::fixtures::enums::MyBitmaskEnum2 const*> const TEnumTraits<::test::fixtures::enums::MyBitmaskEnum2>::values = folly::range(TEnumDataStorage<::test::fixtures::enums::MyBitmaskEnum2>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::test::fixtures::enums::MyBitmaskEnum2>::names = folly::range(TEnumDataStorage<::test::fixtures::enums::MyBitmaskEnum2>::names);
+
+bool TEnumTraits<::test::fixtures::enums::MyBitmaskEnum2>::findName(type value, folly::StringPiece* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_name(value, out);
+}
+
+bool TEnumTraits<::test::fixtures::enums::MyBitmaskEnum2>::findValue(folly::StringPiece name, type* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_value(name, out);
+}
+
+}} // apache::thrift
+
+namespace test { namespace fixtures { namespace enums {
+#ifndef ANDROID
+FOLLY_PUSH_WARNING
+FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
+const _MyBitmaskEnum2_EnumMapFactory::ValuesToNamesMapType _MyBitmaskEnum2_VALUES_TO_NAMES = _MyBitmaskEnum2_EnumMapFactory::makeValuesToNamesMap();
+const _MyBitmaskEnum2_EnumMapFactory::NamesToValuesMapType _MyBitmaskEnum2_NAMES_TO_VALUES = _MyBitmaskEnum2_EnumMapFactory::makeNamesToValuesMap();
+FOLLY_POP_WARNING
+#endif
+}}} // test::fixtures::enums
+
 namespace apache {
 namespace thrift {
 namespace detail {

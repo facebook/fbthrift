@@ -37,3 +37,12 @@ struct MyFourthStruct {
 struct MyFifthStruct {
   1: string foo;
 }
+
+struct MySixthStruct {
+  1: string foo;
+} (php.trait = 1)
+
+@hack.StructAsTrait
+struct MySeventhStruct {
+  1: string foo;
+}

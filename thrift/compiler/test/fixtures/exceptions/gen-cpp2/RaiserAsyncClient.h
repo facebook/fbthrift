@@ -9,6 +9,7 @@
 #include <thrift/lib/cpp2/gen/client_h.h>
 
 #include "thrift/compiler/test/fixtures/exceptions/gen-cpp2/module_types.h"
+#include "thrift/annotation/gen-cpp2/thrift_types.h"
 
 namespace apache { namespace thrift {
   class Cpp2RequestContext;

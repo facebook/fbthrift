@@ -2278,3 +2278,220 @@ class v1test implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
 }
 
+/**
+ * Specifies the field where the exception message is stored. The field
+ * is used to generate an additional method to get it.
+ *
+ * Original thrift struct:-
+ * ExceptionMessage
+ */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/ExceptionMessage'))>>
+class ExceptionMessage implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'field',
+      'type' => \TType::STRING,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'field' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'field' => ?string,
+  );
+
+  const type TShape = shape(
+    'field' => string,
+  );
+  const int STRUCTURAL_ID = 6158382972310209096;
+  /**
+   * Original thrift field:-
+   * 1: string field
+   */
+  public string $field;
+
+  public function __construct(?string $field = null)[] {
+    $this->field = $field ?? '';
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'field'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'ExceptionMessage';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "thrift.ExceptionMessage",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "field",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        '\thrift\annotation\Exception' => \thrift\annotation\Exception::fromShape(
+          shape(
+          )
+        ),
+      ],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public static function __stringifyMapKeys<T>(Map<arraykey, T> $m)[]: Map<string, T> {
+    $new = dict[];
+    foreach ($m as $k => $v) {
+      $new[(string)$k] = $v;
+    }
+    return new Map($new);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['field'],
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'field' => $this->field,
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'field') !== null) {
+      $this->field = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['field']);
+    }
+  }
+
+}
+
+/**
+ * Specifies if the enum is a bitmask.
+ *
+ * Original thrift struct:-
+ * BitmaskEnum
+ */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/BitmaskEnum'))>>
+class BitmaskEnum implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const type TShape = shape(
+  );
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  public function __construct()[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function getName()[]: string {
+    return 'BitmaskEnum';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "thrift.BitmaskEnum",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        '\thrift\annotation\Enum' => \thrift\annotation\FbthriftInternalEnum::fromShape(
+          shape(
+          )
+        ),
+      ],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public static function __stringifyMapKeys<T>(Map<arraykey, T> $m)[]: Map<string, T> {
+    $new = dict[];
+    foreach ($m as $k => $v) {
+      $new[(string)$k] = $v;
+    }
+    return new Map($new);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+  }
+
+}
+

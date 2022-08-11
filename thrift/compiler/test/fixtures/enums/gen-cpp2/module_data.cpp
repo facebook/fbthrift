@@ -87,6 +87,32 @@ const std::array<folly::StringPiece, 5> TEnumDataStorage<::test::fixtures::enums
   "Unspecified",
 }};
 
+const std::array<::test::fixtures::enums::MyBitmaskEnum1, 4> TEnumDataStorage<::test::fixtures::enums::MyBitmaskEnum1>::values = {{
+  type::ONE,
+  type::TWO,
+  type::FOUR,
+  type::Unspecified,
+}};
+const std::array<folly::StringPiece, 4> TEnumDataStorage<::test::fixtures::enums::MyBitmaskEnum1>::names = {{
+  "ONE",
+  "TWO",
+  "FOUR",
+  "Unspecified",
+}};
+
+const std::array<::test::fixtures::enums::MyBitmaskEnum2, 4> TEnumDataStorage<::test::fixtures::enums::MyBitmaskEnum2>::values = {{
+  type::ONE,
+  type::TWO,
+  type::FOUR,
+  type::Unspecified,
+}};
+const std::array<folly::StringPiece, 4> TEnumDataStorage<::test::fixtures::enums::MyBitmaskEnum2>::names = {{
+  "ONE",
+  "TWO",
+  "FOUR",
+  "Unspecified",
+}};
+
 const std::array<folly::StringPiece, 4> TStructDataStorage<::test::fixtures::enums::SomeStruct>::fields_names = {{
   "reasonable",
   "fine",

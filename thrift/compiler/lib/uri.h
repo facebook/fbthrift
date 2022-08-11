@@ -23,9 +23,12 @@ namespace compiler {
 // TODO(dokwon): Make uris inline when thrift compiler is C++17 ready.
 
 // thrift
+constexpr auto kBitmaskEnum = "facebook.com/thrift/annotation/BitmaskEnum";
 constexpr auto kBoxUri = "facebook.com/thrift/annotation/Box";
 constexpr auto kGenDefaultEnumValueUri =
     "facebook.com/thrift/annotation/GenDefaultEnumValue";
+constexpr auto kExceptionMessageUri =
+    "facebook.com/thrift/annotation/ExceptionMessage";
 constexpr auto kInjectMetadataFieldsUri =
     "facebook.com/thrift/annotation/InjectMetadataFields";
 constexpr auto kMixinUri = "facebook.com/thrift/annotation/Mixin";
@@ -88,6 +91,8 @@ constexpr auto kHackFieldWrapperUri =
 constexpr auto kHackNameUri = "facebook.com/thrift/annotation/hack/Name";
 constexpr auto kHackSkipCodegenUri =
     "facebook.com/thrift/annotation/hack/SkipCodegen";
+constexpr auto kHackStructAsTraitUri =
+    "facebook.com/thrift/annotation/hack/StructAsTrait";
 constexpr auto kHackStructTraitUri =
     "facebook.com/thrift/annotation/hack/StructTrait";
 constexpr auto kHackUnionEnumAttributesUri =

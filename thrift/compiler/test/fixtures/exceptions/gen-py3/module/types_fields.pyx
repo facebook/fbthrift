@@ -185,6 +185,44 @@ cdef class __ExceptionWithPrimitiveField_FieldsSetter(__StructFieldsSetter):
 
 
 @__cython.auto_pickle(False)
+cdef class __ExceptionWithStructuredAnnotation_FieldsSetter(__StructFieldsSetter):
+
+    @staticmethod
+    cdef __ExceptionWithStructuredAnnotation_FieldsSetter _fbthrift_create(_module_types.cExceptionWithStructuredAnnotation* struct_cpp_obj):
+        cdef __ExceptionWithStructuredAnnotation_FieldsSetter __fbthrift_inst = __ExceptionWithStructuredAnnotation_FieldsSetter.__new__(__ExceptionWithStructuredAnnotation_FieldsSetter)
+        __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
+        __fbthrift_inst._setters[__cstring_view(<const char*>"message_field")] = __ExceptionWithStructuredAnnotation_FieldsSetter._set_field_0
+        __fbthrift_inst._setters[__cstring_view(<const char*>"error_code")] = __ExceptionWithStructuredAnnotation_FieldsSetter._set_field_1
+        return __fbthrift_inst
+
+    cdef void set_field(__ExceptionWithStructuredAnnotation_FieldsSetter self, const char* name, object value) except *:
+        cdef __cstring_view cname = __cstring_view(name)
+        cdef cumap[__cstring_view, __ExceptionWithStructuredAnnotation_FieldsSetterFunc].iterator found = self._setters.find(cname)
+        if found == self._setters.end():
+            raise TypeError(f"invalid field name {name.decode('utf-8')}")
+        deref(found).second(self, value)
+
+    cdef void _set_field_0(self, _fbthrift_value) except *:
+        # for field message_field
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cExceptionWithStructuredAnnotation](deref(self._struct_cpp_obj), 0)
+            return
+        if not isinstance(_fbthrift_value, str):
+            raise TypeError(f'message_field is not a { str !r}.')
+        deref(self._struct_cpp_obj).message_field_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
+
+    cdef void _set_field_1(self, _fbthrift_value) except *:
+        # for field error_code
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cExceptionWithStructuredAnnotation](deref(self._struct_cpp_obj), 1)
+            return
+        if not isinstance(_fbthrift_value, int):
+            raise TypeError(f'error_code is not a { int !r}.')
+        _fbthrift_value = <cint32_t> _fbthrift_value
+        deref(self._struct_cpp_obj).error_code_ref().assign(_fbthrift_value)
+
+
+@__cython.auto_pickle(False)
 cdef class __Banal_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod

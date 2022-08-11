@@ -11,7 +11,7 @@ import com.facebook.thrift.type.TypeList;
 import java.util.ArrayList;
 import java.util.List;
 
-public class __fbthrift_TypeList_68a18cc7 implements TypeList {
+public class __fbthrift_TypeList_082887bf implements TypeList {
 
   private static List<TypeMapping> list = new ArrayList<>();
 
@@ -23,6 +23,8 @@ public class __fbthrift_TypeList_68a18cc7 implements TypeList {
     list.add(new TypeList.TypeMapping("test.dev/fixtures/enums/MyEnum2", "test.fixtures.enums.MyEnum2"));
     list.add(new TypeList.TypeMapping("test.dev/fixtures/enums/MyEnum3", "test.fixtures.enums.MyEnum3"));
     list.add(new TypeList.TypeMapping("test.dev/fixtures/enums/MyEnum4", "test.fixtures.enums.MyEnum4"));
+    list.add(new TypeList.TypeMapping("test.dev/fixtures/enums/MyBitmaskEnum1", "test.fixtures.enums.MyBitmaskEnum1"));
+    list.add(new TypeList.TypeMapping("test.dev/fixtures/enums/MyBitmaskEnum2", "test.fixtures.enums.MyBitmaskEnum2"));
   }
 
   @java.lang.Override

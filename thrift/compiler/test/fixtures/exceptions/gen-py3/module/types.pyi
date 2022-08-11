@@ -14,6 +14,7 @@ from typing_extensions import Final
 
 import sys
 import itertools
+import facebook.thrift.annotation.thrift.types as _facebook_thrift_annotation_thrift_types
 
 
 __property__ = property
@@ -150,6 +151,34 @@ class ExceptionWithPrimitiveField(thrift.py3.exceptions.GeneratedError, _typing.
     def _to_python(self) -> "module.thrift_types.ExceptionWithPrimitiveField": ...   # type: ignore
     def _to_py3(self) -> ExceptionWithPrimitiveField: ...
     def _to_py_deprecated(self) -> "module.ttypes.ExceptionWithPrimitiveField": ...   # type: ignore
+
+class ExceptionWithStructuredAnnotation(thrift.py3.exceptions.GeneratedError, _typing.Hashable):
+    class __fbthrift_IsSet:
+        message_field: bool
+        error_code: bool
+        pass
+
+    message_field: Final[str] = ...
+
+    error_code: Final[int] = ...
+
+    def __init__(
+        self, *,
+        message_field: _typing.Optional[str]=None,
+        error_code: _typing.Optional[int]=None
+    ) -> None: ...
+
+    def __hash__(self) -> int: ...
+    def __str__(self) -> str: ...
+    def __repr__(self) -> str: ...
+    def __lt__(self, other: 'ExceptionWithStructuredAnnotation') -> bool: ...
+    def __gt__(self, other: 'ExceptionWithStructuredAnnotation') -> bool: ...
+    def __le__(self, other: 'ExceptionWithStructuredAnnotation') -> bool: ...
+    def __ge__(self, other: 'ExceptionWithStructuredAnnotation') -> bool: ...
+
+    def _to_python(self) -> "module.thrift_types.ExceptionWithStructuredAnnotation": ...   # type: ignore
+    def _to_py3(self) -> ExceptionWithStructuredAnnotation: ...
+    def _to_py_deprecated(self) -> "module.ttypes.ExceptionWithStructuredAnnotation": ...   # type: ignore
 
 class Banal(thrift.py3.exceptions.GeneratedError, _typing.Hashable):
     class __fbthrift_IsSet:

@@ -265,3 +265,20 @@ struct v1alpha {}
 @Testing // Should only be used in tests.
 @scope.Transitive
 struct v1test {}
+
+/**
+ * Specifies the field where the exception message is stored. The field
+ * is used to generate an additional method to get it.
+ */
+// TODO: Support in C++, Python, Java.
+@scope.Exception
+struct ExceptionMessage {
+  1: string field;
+}
+
+/**
+ * Specifies if the enum is a bitmask.
+ */
+// TODO: Support in C++, Python, Java.
+@scope.Enum
+struct BitmaskEnum {}

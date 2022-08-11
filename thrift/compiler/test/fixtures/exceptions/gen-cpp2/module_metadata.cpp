@@ -150,6 +150,32 @@ StructMetadata<::cpp2::ExceptionWithPrimitiveField>::gen(ThriftMetadata& metadat
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::ExceptionWithStructuredAnnotation>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs()->emplace("module.ExceptionWithStructuredAnnotation", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return res.first->second;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_ExceptionWithStructuredAnnotation = res.first->second;
+  module_ExceptionWithStructuredAnnotation.name() = "module.ExceptionWithStructuredAnnotation";
+  module_ExceptionWithStructuredAnnotation.is_union() = false;
+  static const auto* const
+  module_ExceptionWithStructuredAnnotation_fields = new std::array<EncodedThriftField, 2>{{
+    {1, "message_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
+    {2, "error_code", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
+  }};
+  for (const auto& f : *module_ExceptionWithStructuredAnnotation_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id() = f.id;
+    field.name() = f.name;
+    field.is_optional() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type(), metadata);
+    field.structured_annotations() = f.structured_annotations;
+    module_ExceptionWithStructuredAnnotation.fields()->push_back(std::move(field));
+  }
+  module_ExceptionWithStructuredAnnotation.structured_annotations()->push_back(*cvStruct("thrift.ExceptionMessage", {{"field", cvString(R"(message_field)")}}).cv_struct_ref());
+  return res.first->second;
+}
+const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::Banal>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs()->emplace("module.Banal", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
@@ -263,6 +289,28 @@ void ExceptionMetadata<::cpp2::ExceptionWithPrimitiveField>::gen(ThriftMetadata&
     f.metadata_type_interface->writeAndGenType(*field.type(), metadata);
     module_ExceptionWithPrimitiveField.fields()->push_back(std::move(field));
   }
+}
+void ExceptionMetadata<::cpp2::ExceptionWithStructuredAnnotation>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.exceptions()->emplace("module.ExceptionWithStructuredAnnotation", ::apache::thrift::metadata::ThriftException{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftException& module_ExceptionWithStructuredAnnotation = res.first->second;
+  module_ExceptionWithStructuredAnnotation.name() = "module.ExceptionWithStructuredAnnotation";
+  static const auto* const
+  module_ExceptionWithStructuredAnnotation_fields = new std::array<EncodedThriftField, 2>{{
+    {1, "message_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
+    {2, "error_code", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
+  }};
+  for (const auto& f : *module_ExceptionWithStructuredAnnotation_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id() = f.id;
+    field.name() = f.name;
+    field.is_optional() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type(), metadata);
+    module_ExceptionWithStructuredAnnotation.fields()->push_back(std::move(field));
+  }
+  module_ExceptionWithStructuredAnnotation.structured_annotations()->push_back(*cvStruct("thrift.ExceptionMessage", {{"field", cvString(R"(message_field)")}}).cv_struct_ref());
 }
 void ExceptionMetadata<::cpp2::Banal>::gen(ThriftMetadata& metadata) {
   auto res = metadata.exceptions()->emplace("module.Banal", ::apache::thrift::metadata::ThriftException{});

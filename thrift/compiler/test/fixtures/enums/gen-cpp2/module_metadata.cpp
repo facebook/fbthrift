@@ -87,6 +87,31 @@ void EnumMetadata<::test::fixtures::enums::MyEnum4>::gen(ThriftMetadata& metadat
     enum_metadata.elements()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
+void EnumMetadata<::test::fixtures::enums::MyBitmaskEnum1>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.enums()->emplace("module.MyBitmaskEnum1", ::apache::thrift::metadata::ThriftEnum{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
+  enum_metadata.name() = "module.MyBitmaskEnum1";
+  using EnumTraits = TEnumTraits<::test::fixtures::enums::MyBitmaskEnum1>;
+  for (std::size_t i = 0; i != EnumTraits::size; ++i) {
+    enum_metadata.elements()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
+  }
+}
+void EnumMetadata<::test::fixtures::enums::MyBitmaskEnum2>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.enums()->emplace("module.MyBitmaskEnum2", ::apache::thrift::metadata::ThriftEnum{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
+  enum_metadata.name() = "module.MyBitmaskEnum2";
+  using EnumTraits = TEnumTraits<::test::fixtures::enums::MyBitmaskEnum2>;
+  for (std::size_t i = 0; i != EnumTraits::size; ++i) {
+    enum_metadata.elements()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
+  }
+  enum_metadata.structured_annotations()->push_back(*cvStruct("thrift.BitmaskEnum", {}).cv_struct_ref());
+}
 
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::test::fixtures::enums::SomeStruct>::gen(ThriftMetadata& metadata) {

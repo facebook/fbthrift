@@ -33,6 +33,8 @@ namespace annotation {
   ::apache::thrift::detail::md::StructMetadata<v1beta>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<v1alpha>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<v1test>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<ExceptionMessage>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<BitmaskEnum>::gen(metadata);
   return metadata;
 }
 } // namespace facebook

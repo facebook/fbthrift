@@ -41,6 +41,7 @@ from thrift.py3.common cimport (
     MetadataBox as __MetadataBox,
 )
 from folly.optional cimport cOptional as __cOptional
+cimport facebook.thrift.annotation.thrift.types as _facebook_thrift_annotation_thrift_types
 
 cimport module.types_fields as _fbthrift_types_fields
 
@@ -124,6 +125,19 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[cint32_t] error_code_ref "error_code_ref" ()
 
 
+    cdef cppclass cExceptionWithStructuredAnnotation "::cpp2::ExceptionWithStructuredAnnotation"(cTException):
+        cExceptionWithStructuredAnnotation() except +
+        cExceptionWithStructuredAnnotation(const cExceptionWithStructuredAnnotation&) except +
+        bint operator==(cExceptionWithStructuredAnnotation&)
+        bint operator!=(cExceptionWithStructuredAnnotation&)
+        bint operator<(cExceptionWithStructuredAnnotation&)
+        bint operator>(cExceptionWithStructuredAnnotation&)
+        bint operator<=(cExceptionWithStructuredAnnotation&)
+        bint operator>=(cExceptionWithStructuredAnnotation&)
+        __field_ref[string] message_field_ref "message_field_ref" ()
+        __field_ref[cint32_t] error_code_ref "error_code_ref" ()
+
+
     cdef cppclass cBanal "::cpp2::Banal"(cTException):
         cBanal() except +
         cBanal(const cBanal&) except +
@@ -187,6 +201,17 @@ cdef class ExceptionWithPrimitiveField(thrift.py3.exceptions.GeneratedError):
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cExceptionWithPrimitiveField])
+
+
+
+cdef class ExceptionWithStructuredAnnotation(thrift.py3.exceptions.GeneratedError):
+    cdef shared_ptr[cExceptionWithStructuredAnnotation] _cpp_obj
+    cdef _fbthrift_types_fields.__ExceptionWithStructuredAnnotation_FieldsSetter _fields_setter
+    cdef inline object message_field_impl(self)
+    cdef inline object error_code_impl(self)
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cExceptionWithStructuredAnnotation])
 
 
 

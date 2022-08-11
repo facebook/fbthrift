@@ -12,6 +12,8 @@ import thrift.python.types as _fbthrift_python_types
 import thrift.python.exceptions as _fbthrift_python_exceptions
 
 
+import facebook.thrift.annotation.thrift.thrift_types
+
 
 class Fiery(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta):
     _fbthrift_SPEC = (
@@ -272,6 +274,54 @@ class ExceptionWithPrimitiveField(metaclass=_fbthrift_python_exceptions.Generate
         return thrift.util.converter.to_py_struct(py_deprecated_types.ExceptionWithPrimitiveField, self)
 
 
+class ExceptionWithStructuredAnnotation(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
+            "message_field",  # name
+            _fbthrift_python_types.typeinfo_string,  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+        (
+            2,  # id
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
+            "error_code",  # name
+            _fbthrift_python_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.ExceptionWithStructuredAnnotation"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__exception_ExceptionWithStructuredAnnotation()
+
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(py3_types.ExceptionWithStructuredAnnotation, self)
+
+    def _to_py_deprecated(self):
+        import importlib
+        py_deprecated_types = importlib.import_module("module.ttypes")
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(py_deprecated_types.ExceptionWithStructuredAnnotation, self)
+
+
 class Banal(metaclass=_fbthrift_python_exceptions.GeneratedErrorMeta):
     _fbthrift_SPEC = (
     )
@@ -317,6 +367,8 @@ def _fbthrift_metadata__exception_CustomFieldNames():
     return module.thrift_metadata.gen_metadata_exception_CustomFieldNames()
 def _fbthrift_metadata__exception_ExceptionWithPrimitiveField():
     return module.thrift_metadata.gen_metadata_exception_ExceptionWithPrimitiveField()
+def _fbthrift_metadata__exception_ExceptionWithStructuredAnnotation():
+    return module.thrift_metadata.gen_metadata_exception_ExceptionWithStructuredAnnotation()
 def _fbthrift_metadata__exception_Banal():
     return module.thrift_metadata.gen_metadata_exception_Banal()
 
@@ -326,6 +378,7 @@ _fbthrift_all_structs = [
     ComplexFieldNames,
     CustomFieldNames,
     ExceptionWithPrimitiveField,
+    ExceptionWithStructuredAnnotation,
     Banal,
 ]
 _fbthrift_python_types.fill_specs(*_fbthrift_all_structs)

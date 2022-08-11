@@ -162,6 +162,58 @@
           }
         },
         "lineno" : 65
+      },
+      "MyBitmaskEnum1" : {
+        "name" : "MyBitmaskEnum1",
+        "constants" : {
+          "ONE" : {
+            "name" : "ONE",
+            "lineno" : 80,
+            "value" : 1
+          },
+          "TWO" : {
+            "name" : "TWO",
+            "lineno" : 81,
+            "value" : 2
+          },
+          "FOUR" : {
+            "name" : "FOUR",
+            "lineno" : 82,
+            "value" : 4
+          },
+          "Unspecified" : {
+            "name" : "Unspecified",
+            "lineno" : -1,
+            "value" : 0
+          }
+        },
+        "lineno" : 79
+      },
+      "MyBitmaskEnum2" : {
+        "name" : "MyBitmaskEnum2",
+        "constants" : {
+          "ONE" : {
+            "name" : "ONE",
+            "lineno" : 87,
+            "value" : 1
+          },
+          "TWO" : {
+            "name" : "TWO",
+            "lineno" : 88,
+            "value" : 2
+          },
+          "FOUR" : {
+            "name" : "FOUR",
+            "lineno" : 89,
+            "value" : 4
+          },
+          "Unspecified" : {
+            "name" : "Unspecified",
+            "lineno" : -1,
+            "value" : 0
+          }
+        },
+        "lineno" : 86
       }
       },
   "structs" :

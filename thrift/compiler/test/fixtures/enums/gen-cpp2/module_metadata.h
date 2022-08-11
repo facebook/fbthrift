@@ -44,6 +44,16 @@ class EnumMetadata<::test::fixtures::enums::MyEnum4> {
   static void gen(ThriftMetadata& metadata);
 };
 template <>
+class EnumMetadata<::test::fixtures::enums::MyBitmaskEnum1> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class EnumMetadata<::test::fixtures::enums::MyBitmaskEnum2> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
 class StructMetadata<::test::fixtures::enums::SomeStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);

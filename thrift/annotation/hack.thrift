@@ -109,3 +109,6 @@ struct StructTrait {
 struct Attributes {
   1: list<string> attributes;
 }
+
+@scope.Struct
+struct StructAsTrait {}

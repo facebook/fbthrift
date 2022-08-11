@@ -578,6 +578,121 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
+void TccStructTraits<::cpp2::ExceptionWithStructuredAnnotation>::translateFieldName(
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::cpp2::ExceptionWithStructuredAnnotation>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace cpp2 {
+
+const folly::StringPiece ExceptionWithStructuredAnnotation::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
+  if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
+  return apache::thrift::TStructDataStorage<ExceptionWithStructuredAnnotation>::fields_names[folly::to_underlying(ord) - 1];
+}
+
+ExceptionWithStructuredAnnotation::ExceptionWithStructuredAnnotation(const ExceptionWithStructuredAnnotation&) = default;
+ExceptionWithStructuredAnnotation& ExceptionWithStructuredAnnotation::operator=(const ExceptionWithStructuredAnnotation&) = default;
+ExceptionWithStructuredAnnotation::ExceptionWithStructuredAnnotation() :
+      __fbthrift_field_error_code() {
+}
+
+
+ExceptionWithStructuredAnnotation::~ExceptionWithStructuredAnnotation() {}
+
+ExceptionWithStructuredAnnotation::ExceptionWithStructuredAnnotation(FOLLY_MAYBE_UNUSED ExceptionWithStructuredAnnotation&& other) noexcept :
+    __fbthrift_field_message_field(std::move(other.__fbthrift_field_message_field)),
+    __fbthrift_field_error_code(std::move(other.__fbthrift_field_error_code)),
+    __isset(other.__isset) {
+}
+
+ExceptionWithStructuredAnnotation& ExceptionWithStructuredAnnotation::operator=(FOLLY_MAYBE_UNUSED ExceptionWithStructuredAnnotation&& other) noexcept {
+    this->__fbthrift_field_message_field = std::move(other.__fbthrift_field_message_field);
+    this->__fbthrift_field_error_code = std::move(other.__fbthrift_field_error_code);
+    __isset = other.__isset;
+    return *this;
+}
+
+
+ExceptionWithStructuredAnnotation::ExceptionWithStructuredAnnotation(apache::thrift::FragileConstructor, ::std::string message_field__arg, ::std::int32_t error_code__arg) :
+    __fbthrift_field_message_field(std::move(message_field__arg)),
+    __fbthrift_field_error_code(std::move(error_code__arg)) {
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
+}
+
+
+void ExceptionWithStructuredAnnotation::__fbthrift_clear() {
+  // clear all fields
+  this->__fbthrift_field_message_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_error_code = ::std::int32_t();
+  __isset = {};
+}
+
+void ExceptionWithStructuredAnnotation::__fbthrift_clear_terse_fields() {
+}
+
+bool ExceptionWithStructuredAnnotation::__fbthrift_is_empty() const {
+  return false;
+}
+
+bool ExceptionWithStructuredAnnotation::operator==(FOLLY_MAYBE_UNUSED const ExceptionWithStructuredAnnotation& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
+  if (!(lhs.message_field_ref() == rhs.message_field_ref())) {
+    return false;
+  }
+  if (!(lhs.error_code_ref() == rhs.error_code_ref())) {
+    return false;
+  }
+  return true;
+}
+
+bool ExceptionWithStructuredAnnotation::operator<(FOLLY_MAYBE_UNUSED const ExceptionWithStructuredAnnotation& rhs) const {
+  FOLLY_MAYBE_UNUSED auto& lhs = *this;
+  if (!(lhs.message_field_ref() == rhs.message_field_ref())) {
+    return lhs.message_field_ref() < rhs.message_field_ref();
+  }
+  if (!(lhs.error_code_ref() == rhs.error_code_ref())) {
+    return lhs.error_code_ref() < rhs.error_code_ref();
+  }
+  return false;
+}
+
+
+void swap(FOLLY_MAYBE_UNUSED ExceptionWithStructuredAnnotation& a, FOLLY_MAYBE_UNUSED ExceptionWithStructuredAnnotation& b) {
+  using ::std::swap;
+  swap(a.__fbthrift_field_message_field, b.__fbthrift_field_message_field);
+  swap(a.__fbthrift_field_error_code, b.__fbthrift_field_error_code);
+  swap(a.__isset, b.__isset);
+}
+
+template void ExceptionWithStructuredAnnotation::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t ExceptionWithStructuredAnnotation::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t ExceptionWithStructuredAnnotation::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t ExceptionWithStructuredAnnotation::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void ExceptionWithStructuredAnnotation::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t ExceptionWithStructuredAnnotation::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t ExceptionWithStructuredAnnotation::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t ExceptionWithStructuredAnnotation::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+
+} // cpp2
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
 void TccStructTraits<::cpp2::Banal>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,

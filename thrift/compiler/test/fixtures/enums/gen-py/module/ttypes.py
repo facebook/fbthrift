@@ -34,7 +34,7 @@ except ImportError:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'Metasyntactic', 'MyEnum1', 'MyEnum2', 'MyEnum3', 'MyEnum4', 'SomeStruct', 'MyStruct']
+__all__ = ['UTF8STRINGS', 'Metasyntactic', 'MyEnum1', 'MyEnum2', 'MyEnum3', 'MyEnum4', 'MyBitmaskEnum1', 'MyBitmaskEnum2', 'SomeStruct', 'MyStruct']
 
 class Metasyntactic:
   FOO = 1
@@ -148,6 +148,46 @@ class MyEnum4:
     "ME4_B": 2147483646,
     "ME4_C": 2147483647,
     "ME4_D": -2147483648,
+    "Unspecified": 0,
+  }
+
+class MyBitmaskEnum1:
+  ONE = 1
+  TWO = 2
+  FOUR = 4
+  Unspecified = 0
+
+  _VALUES_TO_NAMES = {
+    1: "ONE",
+    2: "TWO",
+    4: "FOUR",
+    0: "Unspecified",
+  }
+
+  _NAMES_TO_VALUES = {
+    "ONE": 1,
+    "TWO": 2,
+    "FOUR": 4,
+    "Unspecified": 0,
+  }
+
+class MyBitmaskEnum2:
+  ONE = 1
+  TWO = 2
+  FOUR = 4
+  Unspecified = 0
+
+  _VALUES_TO_NAMES = {
+    1: "ONE",
+    2: "TWO",
+    4: "FOUR",
+    0: "Unspecified",
+  }
+
+  _NAMES_TO_VALUES = {
+    "ONE": 1,
+    "TWO": 2,
+    "FOUR": 4,
     "Unspecified": 0,
   }
 

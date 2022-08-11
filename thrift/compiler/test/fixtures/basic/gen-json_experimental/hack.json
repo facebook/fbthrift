@@ -156,6 +156,12 @@
         "is_exception" : false,
         "is_union" : false,
         "lineno" : 109
+      },
+      "StructAsTrait" : {
+        "name" : "StructAsTrait",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 114
       }
       },
   "source_path" : "thrift/annotation/hack",

@@ -1718,3 +1718,183 @@ func (p *V1test) String() string {
   return fmt.Sprintf("V1test({})")
 }
 
+// Specifies the field where the exception message is stored. The field
+// is used to generate an additional method to get it.
+// 
+// Attributes:
+//  - Field
+type ExceptionMessage struct {
+  Field string `thrift:"field,1" db:"field" json:"field"`
+}
+
+func NewExceptionMessage() *ExceptionMessage {
+  return &ExceptionMessage{}
+}
+
+
+func (p *ExceptionMessage) GetField() string {
+  return p.Field
+}
+type ExceptionMessageBuilder struct {
+  obj *ExceptionMessage
+}
+
+func NewExceptionMessageBuilder() *ExceptionMessageBuilder{
+  return &ExceptionMessageBuilder{
+    obj: NewExceptionMessage(),
+  }
+}
+
+func (p ExceptionMessageBuilder) Emit() *ExceptionMessage{
+  return &ExceptionMessage{
+    Field: p.obj.Field,
+  }
+}
+
+func (e *ExceptionMessageBuilder) Field(field string) *ExceptionMessageBuilder {
+  e.obj.Field = field
+  return e
+}
+
+func (e *ExceptionMessage) SetField(field string) *ExceptionMessage {
+  e.Field = field
+  return e
+}
+
+func (p *ExceptionMessage) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *ExceptionMessage)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Field = v
+  }
+  return nil
+}
+
+func (p *ExceptionMessage) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("ExceptionMessage"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *ExceptionMessage) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("field", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:field: ", p), err) }
+  if err := oprot.WriteString(string(p.Field)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.field (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:field: ", p), err) }
+  return err
+}
+
+func (p *ExceptionMessage) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  fieldVal := fmt.Sprintf("%v", p.Field)
+  return fmt.Sprintf("ExceptionMessage({Field:%s})", fieldVal)
+}
+
+// Specifies if the enum is a bitmask.
+type BitmaskEnum struct {
+}
+
+func NewBitmaskEnum() *BitmaskEnum {
+  return &BitmaskEnum{}
+}
+
+type BitmaskEnumBuilder struct {
+  obj *BitmaskEnum
+}
+
+func NewBitmaskEnumBuilder() *BitmaskEnumBuilder{
+  return &BitmaskEnumBuilder{
+    obj: NewBitmaskEnum(),
+  }
+}
+
+func (p BitmaskEnumBuilder) Emit() *BitmaskEnum{
+  return &BitmaskEnum{
+  }
+}
+
+func (p *BitmaskEnum) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *BitmaskEnum) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("BitmaskEnum"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *BitmaskEnum) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  return fmt.Sprintf("BitmaskEnum({})")
+}
+

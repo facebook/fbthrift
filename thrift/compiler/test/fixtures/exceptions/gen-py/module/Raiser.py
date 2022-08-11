@@ -12,7 +12,9 @@ from thrift.Thrift import TType, TMessageType, TPriority, TRequestContext, TProc
 from thrift.protocol.TProtocol import TProtocolException
 
 
-from .ttypes import UTF8STRINGS, Fiery, Serious, ComplexFieldNames, CustomFieldNames, ExceptionWithPrimitiveField, Banal
+from .ttypes import UTF8STRINGS, Fiery, Serious, ComplexFieldNames, CustomFieldNames, ExceptionWithPrimitiveField, ExceptionWithStructuredAnnotation, Banal
+import thrift.annotation.thrift.ttypes
+
 from thrift.Thrift import TProcessor
 import pprint
 import warnings

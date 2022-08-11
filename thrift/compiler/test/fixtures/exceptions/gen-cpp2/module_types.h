@@ -10,6 +10,7 @@
 
 #include <thrift/lib/cpp2/type/Tag.h>
 
+#include "thrift/annotation/gen-cpp2/thrift_types.h"
 
 namespace apache {
 namespace thrift {
@@ -21,6 +22,8 @@ struct internal_error_message;
 struct error_message;
 struct internal_error_message;
 struct message;
+struct error_code;
+struct message_field;
 struct error_code;
 } // namespace tag
 namespace detail {
@@ -56,6 +59,14 @@ APACHE_THRIFT_DEFINE_ACCESSOR(message);
 #define APACHE_THRIFT_ACCESSOR_error_code
 APACHE_THRIFT_DEFINE_ACCESSOR(error_code);
 #endif
+#ifndef APACHE_THRIFT_ACCESSOR_message_field
+#define APACHE_THRIFT_ACCESSOR_message_field
+APACHE_THRIFT_DEFINE_ACCESSOR(message_field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_error_code
+#define APACHE_THRIFT_ACCESSOR_error_code
+APACHE_THRIFT_DEFINE_ACCESSOR(error_code);
+#endif
 } // namespace detail
 } // namespace thrift
 } // namespace apache
@@ -70,6 +81,7 @@ class Serious;
 class ComplexFieldNames;
 class CustomFieldNames;
 class ExceptionWithPrimitiveField;
+class ExceptionWithStructuredAnnotation;
 class Banal;
 } // cpp2
 // END forward_declare
@@ -931,6 +943,195 @@ class FOLLY_EXPORT ExceptionWithPrimitiveField : public virtual apache::thrift::
 
 template <class Protocol_>
 unsigned long ExceptionWithPrimitiveField::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+
+class FOLLY_EXPORT ExceptionWithStructuredAnnotation : public virtual apache::thrift::TException {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+  template<class> friend struct ::apache::thrift::detail::invoke_reffer;
+
+  //  used by a static_assert in the corresponding source
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static const folly::StringPiece __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
+
+  void __fbthrift_clear();
+  void __fbthrift_clear_terse_fields();
+  bool __fbthrift_is_empty() const;
+  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
+         ::apache::thrift::ExceptionKind::UNSPECIFIED;
+  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
+         ::apache::thrift::ExceptionSafety::UNSPECIFIED;
+  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame =
+         ::apache::thrift::ExceptionBlame::UNSPECIFIED;
+
+ public:
+  using __fbthrift_cpp2_type = ExceptionWithStructuredAnnotation;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
+
+
+ public:
+
+  ExceptionWithStructuredAnnotation();
+
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  ExceptionWithStructuredAnnotation(apache::thrift::FragileConstructor, ::std::string message_field__arg, ::std::int32_t error_code__arg);
+
+  ExceptionWithStructuredAnnotation(ExceptionWithStructuredAnnotation&&) noexcept;
+
+  ExceptionWithStructuredAnnotation(const ExceptionWithStructuredAnnotation& src);
+
+
+  ExceptionWithStructuredAnnotation& operator=(ExceptionWithStructuredAnnotation&&) noexcept;
+  ExceptionWithStructuredAnnotation& operator=(const ExceptionWithStructuredAnnotation& src);
+
+  ~ExceptionWithStructuredAnnotation() override;
+
+ private:
+  ::std::string __fbthrift_field_message_field;
+ private:
+  ::std::int32_t __fbthrift_field_error_code;
+ private:
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
+
+ public:
+
+  bool operator==(const ExceptionWithStructuredAnnotation&) const;
+  bool operator<(const ExceptionWithStructuredAnnotation&) const;
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> message_field_ref() const& {
+    return {this->__fbthrift_field_message_field, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> message_field_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_message_field), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> message_field_ref() & {
+    return {this->__fbthrift_field_message_field, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> message_field_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_message_field), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> message_field() const& {
+    return {this->__fbthrift_field_message_field, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> message_field() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_message_field), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> message_field() & {
+    return {this->__fbthrift_field_message_field, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> message_field() && {
+    return {static_cast<T&&>(this->__fbthrift_field_message_field), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> error_code_ref() const& {
+    return {this->__fbthrift_field_error_code, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> error_code_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_error_code), __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> error_code_ref() & {
+    return {this->__fbthrift_field_error_code, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> error_code_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_error_code), __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> error_code() const& {
+    return {this->__fbthrift_field_error_code, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> error_code() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_error_code), __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> error_code() & {
+    return {this->__fbthrift_field_error_code, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> error_code() && {
+    return {static_cast<T&&>(this->__fbthrift_field_error_code), __isset.at(1), __isset.bit(1)};
+  }
+
+  const ::std::string& get_message_field() const& {
+    return __fbthrift_field_message_field;
+  }
+
+  ::std::string get_message_field() && {
+    return std::move(__fbthrift_field_message_field);
+  }
+
+  template <typename T_ExceptionWithStructuredAnnotation_message_field_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.message_field_ref() = BAR;` instead of `FOO.set_message_field(BAR);`")]]
+  ::std::string& set_message_field(T_ExceptionWithStructuredAnnotation_message_field_struct_setter&& message_field_) {
+    message_field_ref() = std::forward<T_ExceptionWithStructuredAnnotation_message_field_struct_setter>(message_field_);
+    return __fbthrift_field_message_field;
+  }
+
+  ::std::int32_t get_error_code() const {
+    return __fbthrift_field_error_code;
+  }
+
+  [[deprecated("Use `FOO.error_code_ref() = BAR;` instead of `FOO.set_error_code(BAR);`")]]
+  ::std::int32_t& set_error_code(::std::int32_t error_code_) {
+    error_code_ref() = error_code_;
+    return __fbthrift_field_error_code;
+  }
+
+  template <class Protocol_>
+  unsigned long read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+  const char* what() const noexcept override {
+    return "::cpp2::ExceptionWithStructuredAnnotation";
+  }
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops<ExceptionWithStructuredAnnotation>;
+  friend void swap(ExceptionWithStructuredAnnotation& a, ExceptionWithStructuredAnnotation& b);
+};
+
+template <class Protocol_>
+unsigned long ExceptionWithStructuredAnnotation::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

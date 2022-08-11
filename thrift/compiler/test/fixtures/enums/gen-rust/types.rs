@@ -674,6 +674,250 @@ where
     }
 }
 
+#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct MyBitmaskEnum1(pub ::std::primitive::i32);
+
+impl MyBitmaskEnum1 {
+    pub const ONE: Self = MyBitmaskEnum1(1i32);
+    pub const TWO: Self = MyBitmaskEnum1(2i32);
+    pub const FOUR: Self = MyBitmaskEnum1(4i32);
+    pub const Unspecified: Self = MyBitmaskEnum1(0i32);
+}
+
+impl ::fbthrift::ThriftEnum for MyBitmaskEnum1 {
+    fn enumerate() -> &'static [(MyBitmaskEnum1, &'static str)] {
+        &[
+            (MyBitmaskEnum1::ONE, "ONE"),
+            (MyBitmaskEnum1::TWO, "TWO"),
+            (MyBitmaskEnum1::FOUR, "FOUR"),
+            (MyBitmaskEnum1::Unspecified, "Unspecified"),
+        ]
+    }
+
+    fn variants() -> &'static [&'static str] {
+        &[
+            "ONE",
+            "TWO",
+            "FOUR",
+            "Unspecified",
+        ]
+    }
+
+    fn variant_values() -> &'static [MyBitmaskEnum1] {
+        &[
+            MyBitmaskEnum1::ONE,
+            MyBitmaskEnum1::TWO,
+            MyBitmaskEnum1::FOUR,
+            MyBitmaskEnum1::Unspecified,
+        ]
+    }
+}
+
+impl ::std::default::Default for MyBitmaskEnum1 {
+    fn default() -> Self {
+        MyBitmaskEnum1(::fbthrift::__UNKNOWN_ID)
+    }
+}
+
+impl<'a> ::std::convert::From<&'a MyBitmaskEnum1> for ::std::primitive::i32 {
+    #[inline]
+    fn from(x: &'a MyBitmaskEnum1) -> Self {
+        x.0
+    }
+}
+
+impl ::std::convert::From<MyBitmaskEnum1> for ::std::primitive::i32 {
+    #[inline]
+    fn from(x: MyBitmaskEnum1) -> Self {
+        x.0
+    }
+}
+
+impl ::std::convert::From<::std::primitive::i32> for MyBitmaskEnum1 {
+    #[inline]
+    fn from(x: ::std::primitive::i32) -> Self {
+        Self(x)
+    }
+}
+
+impl ::std::fmt::Display for MyBitmaskEnum1 {
+    fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        static VARIANTS_BY_NUMBER: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+            ("Unspecified", 0),
+            ("ONE", 1),
+            ("TWO", 2),
+            ("FOUR", 4),
+        ];
+        ::fbthrift::help::enum_display(VARIANTS_BY_NUMBER, fmt, self.0)
+    }
+}
+
+impl ::std::fmt::Debug for MyBitmaskEnum1 {
+    fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        write!(fmt, "MyBitmaskEnum1::{}", self)
+    }
+}
+
+impl ::std::str::FromStr for MyBitmaskEnum1 {
+    type Err = ::anyhow::Error;
+
+    fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
+        static VARIANTS_BY_NAME: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+            ("FOUR", 4),
+            ("ONE", 1),
+            ("TWO", 2),
+            ("Unspecified", 0),
+        ];
+        ::fbthrift::help::enum_from_str(VARIANTS_BY_NAME, string, "MyBitmaskEnum1").map(MyBitmaskEnum1)
+    }
+}
+
+impl ::fbthrift::GetTType for MyBitmaskEnum1 {
+    const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
+}
+
+impl<P> ::fbthrift::Serialize<P> for MyBitmaskEnum1
+where
+    P: ::fbthrift::ProtocolWriter,
+{
+    #[inline]
+    fn write(&self, p: &mut P) {
+        p.write_i32(self.into())
+    }
+}
+
+impl<P> ::fbthrift::Deserialize<P> for MyBitmaskEnum1
+where
+    P: ::fbthrift::ProtocolReader,
+{
+    #[inline]
+    fn read(p: &mut P) -> ::anyhow::Result<Self> {
+        ::std::result::Result::Ok(MyBitmaskEnum1::from(p.read_i32()?))
+    }
+}
+
+#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct MyBitmaskEnum2(pub ::std::primitive::i32);
+
+impl MyBitmaskEnum2 {
+    pub const ONE: Self = MyBitmaskEnum2(1i32);
+    pub const TWO: Self = MyBitmaskEnum2(2i32);
+    pub const FOUR: Self = MyBitmaskEnum2(4i32);
+    pub const Unspecified: Self = MyBitmaskEnum2(0i32);
+}
+
+impl ::fbthrift::ThriftEnum for MyBitmaskEnum2 {
+    fn enumerate() -> &'static [(MyBitmaskEnum2, &'static str)] {
+        &[
+            (MyBitmaskEnum2::ONE, "ONE"),
+            (MyBitmaskEnum2::TWO, "TWO"),
+            (MyBitmaskEnum2::FOUR, "FOUR"),
+            (MyBitmaskEnum2::Unspecified, "Unspecified"),
+        ]
+    }
+
+    fn variants() -> &'static [&'static str] {
+        &[
+            "ONE",
+            "TWO",
+            "FOUR",
+            "Unspecified",
+        ]
+    }
+
+    fn variant_values() -> &'static [MyBitmaskEnum2] {
+        &[
+            MyBitmaskEnum2::ONE,
+            MyBitmaskEnum2::TWO,
+            MyBitmaskEnum2::FOUR,
+            MyBitmaskEnum2::Unspecified,
+        ]
+    }
+}
+
+impl ::std::default::Default for MyBitmaskEnum2 {
+    fn default() -> Self {
+        MyBitmaskEnum2(::fbthrift::__UNKNOWN_ID)
+    }
+}
+
+impl<'a> ::std::convert::From<&'a MyBitmaskEnum2> for ::std::primitive::i32 {
+    #[inline]
+    fn from(x: &'a MyBitmaskEnum2) -> Self {
+        x.0
+    }
+}
+
+impl ::std::convert::From<MyBitmaskEnum2> for ::std::primitive::i32 {
+    #[inline]
+    fn from(x: MyBitmaskEnum2) -> Self {
+        x.0
+    }
+}
+
+impl ::std::convert::From<::std::primitive::i32> for MyBitmaskEnum2 {
+    #[inline]
+    fn from(x: ::std::primitive::i32) -> Self {
+        Self(x)
+    }
+}
+
+impl ::std::fmt::Display for MyBitmaskEnum2 {
+    fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        static VARIANTS_BY_NUMBER: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+            ("Unspecified", 0),
+            ("ONE", 1),
+            ("TWO", 2),
+            ("FOUR", 4),
+        ];
+        ::fbthrift::help::enum_display(VARIANTS_BY_NUMBER, fmt, self.0)
+    }
+}
+
+impl ::std::fmt::Debug for MyBitmaskEnum2 {
+    fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        write!(fmt, "MyBitmaskEnum2::{}", self)
+    }
+}
+
+impl ::std::str::FromStr for MyBitmaskEnum2 {
+    type Err = ::anyhow::Error;
+
+    fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
+        static VARIANTS_BY_NAME: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+            ("FOUR", 4),
+            ("ONE", 1),
+            ("TWO", 2),
+            ("Unspecified", 0),
+        ];
+        ::fbthrift::help::enum_from_str(VARIANTS_BY_NAME, string, "MyBitmaskEnum2").map(MyBitmaskEnum2)
+    }
+}
+
+impl ::fbthrift::GetTType for MyBitmaskEnum2 {
+    const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
+}
+
+impl<P> ::fbthrift::Serialize<P> for MyBitmaskEnum2
+where
+    P: ::fbthrift::ProtocolWriter,
+{
+    #[inline]
+    fn write(&self, p: &mut P) {
+        p.write_i32(self.into())
+    }
+}
+
+impl<P> ::fbthrift::Deserialize<P> for MyBitmaskEnum2
+where
+    P: ::fbthrift::ProtocolReader,
+{
+    #[inline]
+    fn read(p: &mut P) -> ::anyhow::Result<Self> {
+        ::std::result::Result::Ok(MyBitmaskEnum2::from(p.read_i32()?))
+    }
+}
+
 #[allow(clippy::derivable_impls)]
 impl ::std::default::Default for self::SomeStruct {
     fn default() -> Self {

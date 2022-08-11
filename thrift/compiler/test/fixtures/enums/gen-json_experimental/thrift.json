@@ -206,6 +206,29 @@
         "is_exception" : false,
         "is_union" : false,
         "lineno" : 267
+      },
+      "ExceptionMessage" : {
+        "name" : "ExceptionMessage",
+        "docstring" : "Specifies the field where the exception message is stored. The field\nis used to generate an additional method to get it.\n",
+        "fields" : {
+          "field" : {
+            "name" : "field",
+            "key" : 1,
+            "lineno" : 276,
+            "required" : "opt-in-req-out",
+            "type" : "string"
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 275
+      },
+      "BitmaskEnum" : {
+        "name" : "BitmaskEnum",
+        "docstring" : "Specifies if the enum is a bitmask.\n",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 284
       }
       },
   "source_path" : "thrift/annotation/thrift",

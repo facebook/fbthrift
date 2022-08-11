@@ -85,6 +85,21 @@ struct VisitByFieldId<::cpp2::ExceptionWithPrimitiveField> {
 };
 
 template <>
+struct VisitByFieldId<::cpp2::ExceptionWithStructuredAnnotation> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
+    case 1:
+      return f(0, static_cast<T&&>(t).message_field_ref());
+    case 2:
+      return f(1, static_cast<T&&>(t).error_code_ref());
+    default:
+      throwInvalidThriftId(fieldId, "::cpp2::ExceptionWithStructuredAnnotation");
+    }
+  }
+};
+
+template <>
 struct VisitByFieldId<::cpp2::Banal> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {

@@ -22,6 +22,7 @@ namespace hack {
   ::apache::thrift::detail::md::StructMetadata<UnionEnumAttributes>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<StructTrait>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Attributes>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<StructAsTrait>::gen(metadata);
   return metadata;
 }
 } // namespace facebook

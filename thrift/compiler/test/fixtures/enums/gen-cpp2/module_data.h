@@ -47,6 +47,20 @@ template <> struct TEnumDataStorage<::test::fixtures::enums::MyEnum4> {
   static const std::array<folly::StringPiece, size> names;
 };
 
+template <> struct TEnumDataStorage<::test::fixtures::enums::MyBitmaskEnum1> {
+  using type = ::test::fixtures::enums::MyBitmaskEnum1;
+  static constexpr const std::size_t size = 4;
+  static const std::array<type, size> values;
+  static const std::array<folly::StringPiece, size> names;
+};
+
+template <> struct TEnumDataStorage<::test::fixtures::enums::MyBitmaskEnum2> {
+  using type = ::test::fixtures::enums::MyBitmaskEnum2;
+  static constexpr const std::size_t size = 4;
+  static const std::array<type, size> values;
+  static const std::array<folly::StringPiece, size> names;
+};
+
 template <> struct TStructDataStorage<::test::fixtures::enums::SomeStruct> {
   static constexpr const std::size_t fields_size = 4;
   static const std::array<folly::StringPiece, fields_size> fields_names;

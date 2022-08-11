@@ -210,6 +210,81 @@ class MyEnum4_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
 }
 
 /**
+ * Original thrift enum:-
+ * MyBitmaskEnum1
+ */
+final class MyBitmaskEnum1 extends \Flags {
+  const int   ONE = 1;
+  const int   TWO = 2;
+  const int   FOUR = 4;
+  const int   Unspecified = 0;
+}
+
+class MyBitmaskEnum1_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getEnumMetadata()[]: \tmeta_ThriftEnum {
+    return \tmeta_ThriftEnum::fromShape(
+      shape(
+        "name" => "module.MyBitmaskEnum1",
+        "elements" => dict[
+          1 => "ONE",
+          2 => "TWO",
+          4 => "FOUR",
+          0 => "Unspecified",
+        ],
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
+    return shape(
+      'enum' => dict[],
+      'constants' => dict[
+      ],
+    );
+  }
+}
+
+/**
+ * Original thrift enum:-
+ * MyBitmaskEnum2
+ */
+final class MyBitmaskEnum2 extends \Flags {
+  const int   ONE = 1;
+  const int   TWO = 2;
+  const int   FOUR = 4;
+  const int   Unspecified = 0;
+}
+
+class MyBitmaskEnum2_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getEnumMetadata()[]: \tmeta_ThriftEnum {
+    return \tmeta_ThriftEnum::fromShape(
+      shape(
+        "name" => "module.MyBitmaskEnum2",
+        "elements" => dict[
+          1 => "ONE",
+          2 => "TWO",
+          4 => "FOUR",
+          0 => "Unspecified",
+        ],
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
+    return shape(
+      'enum' => dict[
+        '\thrift\annotation\BitmaskEnum' => \thrift\annotation\BitmaskEnum::fromShape(
+          shape(
+          )
+        ),
+      ],
+      'constants' => dict[
+      ],
+    );
+  }
+}
+
+/**
  * Original thrift struct:-
  * SomeStruct
  */

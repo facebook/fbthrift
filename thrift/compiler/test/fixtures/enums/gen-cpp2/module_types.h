@@ -114,6 +114,24 @@ enum class MyEnum4 {
 
 
 
+enum class MyBitmaskEnum1 {
+  ONE = 1,
+  TWO = 2,
+  FOUR = 4,
+  Unspecified = 0,
+};
+
+
+
+enum class MyBitmaskEnum2 {
+  ONE = 1,
+  TWO = 2,
+  FOUR = 4,
+  Unspecified = 0,
+};
+
+
+
 }}} // test::fixtures::enums
 
 namespace std {
@@ -127,6 +145,10 @@ template<> struct hash<::test::fixtures::enums::MyEnum3> :
   ::apache::thrift::detail::enum_hash<::test::fixtures::enums::MyEnum3> {};
 template<> struct hash<::test::fixtures::enums::MyEnum4> :
   ::apache::thrift::detail::enum_hash<::test::fixtures::enums::MyEnum4> {};
+template<> struct hash<::test::fixtures::enums::MyBitmaskEnum1> :
+  ::apache::thrift::detail::enum_hash<::test::fixtures::enums::MyBitmaskEnum1> {};
+template<> struct hash<::test::fixtures::enums::MyBitmaskEnum2> :
+  ::apache::thrift::detail::enum_hash<::test::fixtures::enums::MyBitmaskEnum2> {};
 } // std
 
 namespace apache { namespace thrift {
@@ -272,6 +294,62 @@ template <> struct TEnumTraits<::test::fixtures::enums::MyEnum4> {
 };
 
 
+template <> struct TEnumDataStorage<::test::fixtures::enums::MyBitmaskEnum1>;
+
+template <> struct TEnumTraits<::test::fixtures::enums::MyBitmaskEnum1> {
+  using type = ::test::fixtures::enums::MyBitmaskEnum1;
+
+  static constexpr std::size_t const size = 4;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static bool findName(type value, folly::StringPiece* out) noexcept;
+  static bool findValue(folly::StringPiece name, type* out) noexcept;
+
+#if FOLLY_HAS_STRING_VIEW
+  static bool findName(type value, std::string_view* out) noexcept {
+    folly::StringPiece outp;
+    return findName(value, &outp) && ((*out = outp), true);
+  }
+#endif
+  static char const* findName(type value) noexcept {
+    folly::StringPiece ret;
+    (void)findName(value, &ret);
+    return ret.data();
+  }
+  static constexpr type min() { return type::Unspecified; }
+  static constexpr type max() { return type::FOUR; }
+};
+
+
+template <> struct TEnumDataStorage<::test::fixtures::enums::MyBitmaskEnum2>;
+
+template <> struct TEnumTraits<::test::fixtures::enums::MyBitmaskEnum2> {
+  using type = ::test::fixtures::enums::MyBitmaskEnum2;
+
+  static constexpr std::size_t const size = 4;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static bool findName(type value, folly::StringPiece* out) noexcept;
+  static bool findValue(folly::StringPiece name, type* out) noexcept;
+
+#if FOLLY_HAS_STRING_VIEW
+  static bool findName(type value, std::string_view* out) noexcept {
+    folly::StringPiece outp;
+    return findName(value, &outp) && ((*out = outp), true);
+  }
+#endif
+  static char const* findName(type value) noexcept {
+    folly::StringPiece ret;
+    (void)findName(value, &ret);
+    return ret.data();
+  }
+  static constexpr type min() { return type::Unspecified; }
+  static constexpr type max() { return type::FOUR; }
+};
+
+
 }} // apache::thrift
 
 namespace test { namespace fixtures { namespace enums {
@@ -310,6 +388,20 @@ using _MyEnum4_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnum4>
 extern const _MyEnum4_EnumMapFactory::ValuesToNamesMapType _MyEnum4_VALUES_TO_NAMES;
 [[deprecated("use apache::thrift::TEnumTraits")]]
 extern const _MyEnum4_EnumMapFactory::NamesToValuesMapType _MyEnum4_NAMES_TO_VALUES;
+#endif
+using _MyBitmaskEnum1_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyBitmaskEnum1>;
+#ifndef ANDROID
+[[deprecated("use apache::thrift::util::enumNameSafe, apache::thrift::util::enumName, or apache::thrift::TEnumTraits")]]
+extern const _MyBitmaskEnum1_EnumMapFactory::ValuesToNamesMapType _MyBitmaskEnum1_VALUES_TO_NAMES;
+[[deprecated("use apache::thrift::TEnumTraits")]]
+extern const _MyBitmaskEnum1_EnumMapFactory::NamesToValuesMapType _MyBitmaskEnum1_NAMES_TO_VALUES;
+#endif
+using _MyBitmaskEnum2_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyBitmaskEnum2>;
+#ifndef ANDROID
+[[deprecated("use apache::thrift::util::enumNameSafe, apache::thrift::util::enumName, or apache::thrift::TEnumTraits")]]
+extern const _MyBitmaskEnum2_EnumMapFactory::ValuesToNamesMapType _MyBitmaskEnum2_VALUES_TO_NAMES;
+[[deprecated("use apache::thrift::TEnumTraits")]]
+extern const _MyBitmaskEnum2_EnumMapFactory::NamesToValuesMapType _MyBitmaskEnum2_NAMES_TO_VALUES;
 #endif
 }}} // test::fixtures::enums
 

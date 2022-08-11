@@ -69,6 +69,12 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::test::fixtures::enum
     cdef cppclass cMyEnum4 "::test::fixtures::enums::MyEnum4":
         pass
 
+    cdef cppclass cMyBitmaskEnum1 "::test::fixtures::enums::MyBitmaskEnum1":
+        pass
+
+    cdef cppclass cMyBitmaskEnum2 "::test::fixtures::enums::MyBitmaskEnum2":
+        pass
+
 
 
 
@@ -90,6 +96,14 @@ cdef class MyEnum3(thrift.py3.types.CompiledEnum):
 
 
 cdef class MyEnum4(thrift.py3.types.CompiledEnum):
+    pass
+
+
+cdef class MyBitmaskEnum1(thrift.py3.types.CompiledEnum):
+    pass
+
+
+cdef class MyBitmaskEnum2(thrift.py3.types.CompiledEnum):
     pass
 
 cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":

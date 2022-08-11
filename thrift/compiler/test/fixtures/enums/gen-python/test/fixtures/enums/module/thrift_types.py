@@ -212,6 +212,30 @@ class MyEnum4(_fbthrift_python_types.Enum, enum.Enum):
     @staticmethod
     def __get_metadata__():
         return test.fixtures.enums.module.thrift_metadata.gen_metadata_enum_MyEnum4()
+class MyBitmaskEnum1(_fbthrift_python_types.Enum, enum.Enum):
+    ONE = 1
+    TWO = 2
+    FOUR = 4
+    Unspecified = 0
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.MyBitmaskEnum1"
+
+    @staticmethod
+    def __get_metadata__():
+        return test.fixtures.enums.module.thrift_metadata.gen_metadata_enum_MyBitmaskEnum1()
+class MyBitmaskEnum2(_fbthrift_python_types.Enum, enum.Enum):
+    ONE = 1
+    TWO = 2
+    FOUR = 4
+    Unspecified = 0
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.MyBitmaskEnum2"
+
+    @staticmethod
+    def __get_metadata__():
+        return test.fixtures.enums.module.thrift_metadata.gen_metadata_enum_MyBitmaskEnum2()
 
 def _fbthrift_metadata__struct_SomeStruct():
     return test.fixtures.enums.module.thrift_metadata.gen_metadata_struct_SomeStruct()

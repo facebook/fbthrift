@@ -39,6 +39,7 @@ from thrift.py3.types cimport (
 )
 from folly.optional cimport cOptional as __cOptional
 
+cimport facebook.thrift.annotation.thrift.types as _facebook_thrift_annotation_thrift_types
 
 cimport module.types as _module_types
 
@@ -98,6 +99,18 @@ cdef class __ExceptionWithPrimitiveField_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
     cdef __ExceptionWithPrimitiveField_FieldsSetter _fbthrift_create(_module_types.cExceptionWithPrimitiveField* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+
+
+ctypedef void (*__ExceptionWithStructuredAnnotation_FieldsSetterFunc)(__ExceptionWithStructuredAnnotation_FieldsSetter, object) except *
+
+cdef class __ExceptionWithStructuredAnnotation_FieldsSetter(__StructFieldsSetter):
+    cdef _module_types.cExceptionWithStructuredAnnotation* _struct_cpp_obj
+    cdef cumap[__cstring_view, __ExceptionWithStructuredAnnotation_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __ExceptionWithStructuredAnnotation_FieldsSetter _fbthrift_create(_module_types.cExceptionWithStructuredAnnotation* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
 

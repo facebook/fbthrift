@@ -10,6 +10,8 @@ cimport folly.iobuf as _fbthrift_iobuf
 
 cimport thrift.py3.builder
 
+cimport facebook.thrift.annotation.thrift.types as _facebook_thrift_annotation_thrift_types
+cimport facebook.thrift.annotation.thrift.builders as _facebook_thrift_annotation_thrift_builders
 
 cimport module.types as _module_types
 
@@ -33,6 +35,11 @@ cdef class CustomFieldNames_Builder(thrift.py3.builder.StructBuilder):
 
 cdef class ExceptionWithPrimitiveField_Builder(thrift.py3.builder.StructBuilder):
     cdef public str message
+    cdef public pint error_code
+
+
+cdef class ExceptionWithStructuredAnnotation_Builder(thrift.py3.builder.StructBuilder):
+    cdef public str message_field
     cdef public pint error_code
 
 

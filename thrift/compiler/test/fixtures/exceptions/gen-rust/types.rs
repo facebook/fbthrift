@@ -150,6 +150,35 @@ impl ::std::fmt::Display for ExceptionWithPrimitiveField {
 }
 
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct ExceptionWithStructuredAnnotation {
+    pub message_field: ::std::string::String,
+    pub error_code: ::std::primitive::i32,
+    // This field forces `..Default::default()` when instantiating this
+    // struct, to make code future-proof against new fields added later to
+    // the definition in Thrift. If you don't want this, add the annotation
+    // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+    #[doc(hidden)]
+    pub _dot_dot_Default_default: self::dot_dot::OtherFields,
+}
+
+impl ::fbthrift::ExceptionInfo for ExceptionWithStructuredAnnotation {
+    fn exn_value(&self) -> String {
+        format!("{:?}", self)
+    }
+
+    #[inline]
+    fn exn_is_declared(&self) -> bool { true }
+}
+
+impl ::std::error::Error for ExceptionWithStructuredAnnotation {}
+
+impl ::std::fmt::Display for ExceptionWithStructuredAnnotation {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        write!(f, "{:?}", self)
+    }
+}
+
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Banal {
     // This field forces `..Default::default()` when instantiating this
     // struct, to make code future-proof against new fields added later to
@@ -538,6 +567,83 @@ where
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
             message: field_message.unwrap_or_default(),
+            error_code: field_error_code.unwrap_or_default(),
+            _dot_dot_Default_default: self::dot_dot::OtherFields(()),
+        })
+    }
+}
+
+
+#[allow(clippy::derivable_impls)]
+impl ::std::default::Default for self::ExceptionWithStructuredAnnotation {
+    fn default() -> Self {
+        Self {
+            message_field: ::std::default::Default::default(),
+            error_code: ::std::default::Default::default(),
+            _dot_dot_Default_default: self::dot_dot::OtherFields(()),
+        }
+    }
+}
+
+impl ::std::fmt::Debug for self::ExceptionWithStructuredAnnotation {
+    fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        formatter
+            .debug_struct("ExceptionWithStructuredAnnotation")
+            .field("message_field", &self.message_field)
+            .field("error_code", &self.error_code)
+            .finish()
+    }
+}
+
+unsafe impl ::std::marker::Send for self::ExceptionWithStructuredAnnotation {}
+unsafe impl ::std::marker::Sync for self::ExceptionWithStructuredAnnotation {}
+
+impl ::fbthrift::GetTType for self::ExceptionWithStructuredAnnotation {
+    const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+}
+
+impl<P> ::fbthrift::Serialize<P> for self::ExceptionWithStructuredAnnotation
+where
+    P: ::fbthrift::ProtocolWriter,
+{
+    fn write(&self, p: &mut P) {
+        p.write_struct_begin("ExceptionWithStructuredAnnotation");
+        p.write_field_begin("message_field", ::fbthrift::TType::String, 1);
+        ::fbthrift::Serialize::write(&self.message_field, p);
+        p.write_field_end();
+        p.write_field_begin("error_code", ::fbthrift::TType::I32, 2);
+        ::fbthrift::Serialize::write(&self.error_code, p);
+        p.write_field_end();
+        p.write_field_stop();
+        p.write_struct_end();
+    }
+}
+
+impl<P> ::fbthrift::Deserialize<P> for self::ExceptionWithStructuredAnnotation
+where
+    P: ::fbthrift::ProtocolReader,
+{
+    fn read(p: &mut P) -> ::anyhow::Result<Self> {
+        static FIELDS: &[::fbthrift::Field] = &[
+            ::fbthrift::Field::new("error_code", ::fbthrift::TType::I32, 2),
+            ::fbthrift::Field::new("message_field", ::fbthrift::TType::String, 1),
+        ];
+        let mut field_message_field = ::std::option::Option::None;
+        let mut field_error_code = ::std::option::Option::None;
+        let _ = p.read_struct_begin(|_| ())?;
+        loop {
+            let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
+            match (fty, fid as ::std::primitive::i32) {
+                (::fbthrift::TType::Stop, _) => break,
+                (::fbthrift::TType::String, 1) => field_message_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::I32, 2) => field_error_code = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (fty, _) => p.skip(fty)?,
+            }
+            p.read_field_end()?;
+        }
+        p.read_struct_end()?;
+        ::std::result::Result::Ok(Self {
+            message_field: field_message_field.unwrap_or_default(),
             error_code: field_error_code.unwrap_or_default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
         })

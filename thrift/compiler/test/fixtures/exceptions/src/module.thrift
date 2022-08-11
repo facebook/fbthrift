@@ -16,6 +16,8 @@
 
 namespace java.swift test.fixtures.exceptions
 
+include "thrift/annotation/thrift.thrift"
+
 transient server exception Fiery {
   1: required string message;
 } (message = "message")
@@ -38,6 +40,12 @@ exception ExceptionWithPrimitiveField {
   1: string message;
   2: i32 error_code;
 } (message = "message")
+
+@thrift.ExceptionMessage{field = "message_field"}
+exception ExceptionWithStructuredAnnotation {
+  1: string message_field;
+  2: i32 error_code;
+}
 
 service Raiser {
   void doBland();

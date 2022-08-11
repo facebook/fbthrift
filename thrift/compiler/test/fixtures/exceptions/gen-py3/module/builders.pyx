@@ -37,6 +37,13 @@ cdef class ExceptionWithPrimitiveField_Builder(thrift.py3.builder.StructBuilder)
         yield "message", self.message
         yield "error_code", self.error_code
 
+cdef class ExceptionWithStructuredAnnotation_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _module_types.ExceptionWithStructuredAnnotation
+
+    def __iter__(self):
+        yield "message_field", self.message_field
+        yield "error_code", self.error_code
+
 cdef class Banal_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.Banal
 

@@ -11,6 +11,7 @@ pub mod types;
 
 #[doc(hidden)]
 pub mod dependencies {
+    pub use thrift as thrift;
 }
 
 pub mod services {
