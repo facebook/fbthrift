@@ -25,10 +25,10 @@
 #include <folly/container/F14Map.h>
 #include <thrift/lib/cpp2/op/Serializer.h>
 #include <thrift/lib/cpp2/type/Any.h>
-#include <thrift/lib/cpp2/type/AnyRef.h>
 #include <thrift/lib/cpp2/type/AnyValue.h>
 #include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/Protocol.h>
+#include <thrift/lib/cpp2/type/Runtime.h>
 #include <thrift/lib/cpp2/type/detail/TypeRegistry.h>
 
 namespace apache {
@@ -50,18 +50,18 @@ class TypeRegistry {
   // Store a value in an AnyData using the registered serializers.
   //
   // Throws std::out_of_range if no matching serializer has been registered.
-  AnyData store(AnyRef value, const Protocol& protocol) const;
+  AnyData store(Ref value, const Protocol& protocol) const;
   template <StandardProtocol P>
-  AnyData store(AnyRef value) const {
+  AnyData store(Ref value) const {
     return store(value, Protocol::get<P>());
   }
   template <typename Tag>
   AnyData store(const native_type<Tag>& value, const Protocol& protocol) const {
-    return store(AnyRef::create<Tag>(value), protocol);
+    return store(Ref::create<Tag>(value), protocol);
   }
   template <typename Tag, StandardProtocol P>
   AnyData store(const native_type<Tag>& value) const {
-    return store(AnyRef::create<Tag>(value), Protocol::get<P>());
+    return store(Ref::create<Tag>(value), Protocol::get<P>());
   }
 
   // Load a value from an AnyData using the registered serializers.
@@ -73,7 +73,7 @@ class TypeRegistry {
   //
   // Throws std::out_of_range if no matching serializer has been registered.
   // Throws std::bad_any_cast if value cannot be stored in out.
-  void load(const AnyData& data, AnyRef out) const;
+  void load(const AnyData& data, Ref out) const;
   AnyValue load(const AnyData& data) const;
 
   // Registers the given serializer for the given type

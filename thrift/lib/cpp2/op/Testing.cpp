@@ -21,10 +21,10 @@
 namespace apache {
 namespace thrift {
 namespace test {
-using type::AnyRef;
 using type::AnyValue;
 using type::BaseType;
 using type::Protocol;
+using type::Ref;
 using type::Type;
 
 const Protocol kFollyToStringProtocol =
@@ -36,7 +36,7 @@ const type::Protocol& Number1Serializer::getProtocol() const {
 }
 
 void MultiSerializer::encode(
-    type::AnyRef value, folly::io::QueueAppender&& appender) const {
+    type::Ref value, folly::io::QueueAppender&& appender) const {
   switch (value.type().base_type()) {
     case BaseType::I32:
       ++intEncCount;
@@ -87,7 +87,7 @@ void MultiSerializer::decode(
   }
 }
 
-void MultiSerializer::decode(folly::io::Cursor& cursor, AnyRef value) const {
+void MultiSerializer::decode(folly::io::Cursor& cursor, Ref value) const {
   switch (value.type().base_type()) {
     case BaseType::I32:
       ++intDecCount;

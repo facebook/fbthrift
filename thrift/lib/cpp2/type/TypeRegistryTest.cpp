@@ -19,8 +19,8 @@
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/op/Testing.h>
 #include <thrift/lib/cpp2/type/Any.h>
-#include <thrift/lib/cpp2/type/AnyRef.h>
 #include <thrift/lib/cpp2/type/AnyValue.h>
+#include <thrift/lib/cpp2/type/Runtime.h>
 #include <thrift/lib/cpp2/type/Tag.h>
 #include <thrift/lib/cpp2/type/Testing.h>
 #include <thrift/lib/cpp2/type/UniversalName.h>
@@ -31,7 +31,7 @@ namespace {
 TEST(TypeRegistry, Void) {
   TypeRegistry treg;
   // We can store void.
-  AnyData data = treg.store<StandardProtocol::Compact>(AnyRef{});
+  AnyData data = treg.store<StandardProtocol::Compact>(Ref{});
   EXPECT_EQ(data.type(), Type::get<void_t>());
   EXPECT_TRUE(data.protocol().empty()); // void has no protocol
 
@@ -41,14 +41,14 @@ TEST(TypeRegistry, Void) {
   EXPECT_EQ(val.type(), Type::get<void_t>());
 
   // Happy with an empty AnyRef.
-  AnyRef rval;
+  Ref rval;
   treg.load(data, rval);
   EXPECT_TRUE(rval.empty());
   EXPECT_EQ(rval.type(), Type::create<void_t>());
 
   // Cannot load void into a real reference.
   int32_t uval;
-  rval = AnyRef::create<i32_t>(uval);
+  rval = Ref::create<i32_t>(uval);
   EXPECT_THROW(treg.load(data, rval), std::bad_any_cast);
 }
 

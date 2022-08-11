@@ -19,7 +19,7 @@
 #include <thrift/lib/cpp2/op/detail/BaseOp.h>
 #include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/Tag.h>
-#include <thrift/lib/cpp2/type/detail/RuntimeType.h>
+#include <thrift/lib/cpp2/type/detail/Runtime.h>
 
 namespace apache {
 namespace thrift {

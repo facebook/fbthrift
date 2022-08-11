@@ -32,7 +32,7 @@ FOLLY_EXPORT TypeRegistry& getGeneratedTypeRegistry() {
 
 } // namespace detail
 
-AnyData TypeRegistry::store(AnyRef value, const Protocol& protocol) const {
+AnyData TypeRegistry::store(Ref value, const Protocol& protocol) const {
   if (value.type() == Type::get<type::void_t>()) {
     return {};
   }
@@ -55,7 +55,7 @@ AnyData TypeRegistry::store(AnyRef value, const Protocol& protocol) const {
   return AnyData{std::move(builder)};
 }
 
-void TypeRegistry::load(const AnyData& data, AnyRef out) const {
+void TypeRegistry::load(const AnyData& data, Ref out) const {
   if (data.type() == Type::get<type::void_t>()) {
     if (out.type() != Type::get<type::void_t>()) {
       folly::throw_exception<std::bad_any_cast>();

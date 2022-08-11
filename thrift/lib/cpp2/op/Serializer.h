@@ -23,10 +23,10 @@
 
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBufQueue.h>
-#include <thrift/lib/cpp2/type/AnyRef.h>
 #include <thrift/lib/cpp2/type/AnyValue.h>
 #include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/Protocol.h>
+#include <thrift/lib/cpp2/type/Runtime.h>
 
 namespace apache {
 namespace thrift {
@@ -56,7 +56,7 @@ class Serializer {
   // TODO(afuller): Figure out if appender should really be accepted by r-value,
   // which was copied from the *Protocol::setOutput interface.
   virtual void encode(
-      type::AnyRef value, folly::io::QueueAppender&& appender) const = 0;
+      type::Ref value, folly::io::QueueAppender&& appender) const = 0;
   virtual void encode(
       const type::AnyValue& value,
       folly::io::QueueAppender&& appender) const = 0;
@@ -66,7 +66,7 @@ class Serializer {
   // Throws std::bad_any_cast if the type is not supported.
   // TODO(afuller): Consider accepting a cursor by value, and returning a new˝
   // cursor instead of having one in/out param.
-  virtual void decode(folly::io::Cursor& cursor, type::AnyRef value) const = 0;
+  virtual void decode(folly::io::Cursor& cursor, type::Ref value) const = 0;
   virtual void decode(
       const type::Type& type,
       folly::io::Cursor& cursor,
@@ -79,7 +79,7 @@ class Serializer {
   template <typename Tag>
   type::native_type<Tag> decode(folly::io::Cursor& cursor) const {
     type::native_type<Tag> result;
-    decode(cursor, type::AnyRef::create<Tag>(result));
+    decode(cursor, type::Ref::create<Tag>(result));
     return result;
   }
 
@@ -102,7 +102,7 @@ class TagSerializer : public Serializer {
  public:
   using Base::encode;
   void encode(
-      type::AnyRef value, folly::io::QueueAppender&& appender) const final {
+      type::Ref value, folly::io::QueueAppender&& appender) const final {
     derived().encode(value.as<Tag>(), std::move(appender));
   }
   void encode(const type::AnyValue& value, folly::io::QueueAppender&& appender)
@@ -111,7 +111,7 @@ class TagSerializer : public Serializer {
   }
 
   using Base::decode;
-  void decode(folly::io::Cursor& cursor, type::AnyRef value) const final {
+  void decode(folly::io::Cursor& cursor, type::Ref value) const final {
     checkType(value.type(), type::Type::get<Tag>());
     derived().decode(cursor, value.mut<Tag>());
   }
