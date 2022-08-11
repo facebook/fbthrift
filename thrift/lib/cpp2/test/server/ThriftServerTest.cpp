@@ -3604,6 +3604,19 @@ TEST(ThriftServer, GetSetMaxRequests) {
   }
 }
 
+TEST(ThriftServer, AddRemoveWorker) {
+  ThriftServer server;
+  server.setInterface(std::make_shared<TestInterface>());
+  server.setupThreadManager();
+  auto tm = server.getThreadManager_deprecated();
+  auto tc = tm->workerCount();
+  tm->addWorker(10);
+  EXPECT_EQ(tc + 10, tm->workerCount());
+  tm->removeWorker(5);
+  EXPECT_EQ(tc + 10 - 5, tm->workerCount());
+  EXPECT_THROW(tm->removeWorker(tc + 1), InvalidArgumentException);
+}
+
 TEST_P(HeaderOrRocket, setMaxReuqestsToOne) {
   ScopedServerInterfaceThread runner(
       std::make_shared<TestInterface>(), "::1", 0, [](auto&& server) {

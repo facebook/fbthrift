@@ -71,9 +71,9 @@ class ExecutorToThreadManagerAdaptor : public concurrency::ThreadManager {
 
   void setNamePrefix(const std::string&) override {}
 
-  void addWorker(size_t) override {}
+  void addWorker(size_t count) override { adjustWorkerCount(count); }
 
-  void removeWorker(size_t) override {}
+  void removeWorker(size_t count) override { adjustWorkerCount(-count); }
 
   size_t idleWorkerCount() const override {
     return resourcePoolSet_.idleWorkerCount();
@@ -127,6 +127,18 @@ class ExecutorToThreadManagerAdaptor : public concurrency::ThreadManager {
  private:
   ResourcePoolSet& resourcePoolSet_;
   folly::Executor& defaultAsyncExecutor_;
+
+  void adjustWorkerCount(int delta) {
+    if (auto* asThreadPoolExecutor =
+            dynamic_cast<folly::ThreadPoolExecutor*>(&defaultAsyncExecutor_)) {
+      int count = int(asThreadPoolExecutor->numThreads());
+      if (delta < 0 && count < std::abs(delta)) {
+        // This is what ThreadManger does
+        throw concurrency::InvalidArgumentException();
+      }
+      asThreadPoolExecutor->setNumThreads(count + delta);
+    }
+  }
 };
 
 } // namespace apache::thrift
