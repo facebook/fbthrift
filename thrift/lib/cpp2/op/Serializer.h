@@ -56,7 +56,7 @@ class Serializer {
   // TODO(afuller): Figure out if appender should really be accepted by r-value,
   // which was copied from the *Protocol::setOutput interface.
   virtual void encode(
-      type::Ref value, folly::io::QueueAppender&& appender) const = 0;
+      type::ConstRef value, folly::io::QueueAppender&& appender) const = 0;
   virtual void encode(
       const type::AnyValue& value,
       folly::io::QueueAppender&& appender) const = 0;
@@ -102,7 +102,7 @@ class TagSerializer : public Serializer {
  public:
   using Base::encode;
   void encode(
-      type::Ref value, folly::io::QueueAppender&& appender) const final {
+      type::ConstRef value, folly::io::QueueAppender&& appender) const final {
     derived().encode(value.as<Tag>(), std::move(appender));
   }
   void encode(const type::AnyValue& value, folly::io::QueueAppender&& appender)

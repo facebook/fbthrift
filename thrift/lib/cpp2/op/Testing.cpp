@@ -36,7 +36,7 @@ const type::Protocol& Number1Serializer::getProtocol() const {
 }
 
 void MultiSerializer::encode(
-    type::Ref value, folly::io::QueueAppender&& appender) const {
+    type::ConstRef value, folly::io::QueueAppender&& appender) const {
   switch (value.type().base_type()) {
     case BaseType::I32:
       ++intEncCount;

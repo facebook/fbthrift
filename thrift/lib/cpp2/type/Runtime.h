@@ -31,6 +31,61 @@ namespace apache {
 namespace thrift {
 namespace type {
 
+// A light weight (pass-by-value), non-owning *const* reference to a runtime
+// Thrift value.
+//
+// Should typically be passed by value as it only holds two
+// ponters; a pointer to the value being reference and a pointer to the static
+// runtime metadata associated with the type of the value.
+class ConstRef final : public detail::RuntimeBase {
+  using Base = detail::RuntimeBase;
+
+ public:
+  template <typename Tag, typename T>
+  static ConstRef create(T&& val) {
+    return {Tag{}, std::forward<T>(val)}; // Preserve underlying ref type.
+  }
+
+  ConstRef() noexcept = default;
+  // 'capture' any other runtime type.
+  /* implicit */ ConstRef(const Base& other) noexcept : Base(other) {}
+
+  // Rebinds the Ref to another value (or void).
+  template <typename Tag, typename T = native_type<Tag>>
+  void reset(T&& val) {
+    Base::reset(op::detail::getAnyType<Tag, T>(), &val);
+  }
+  void reset() noexcept { Base::reset(); }
+
+  // Get by value.
+  ConstRef get(const Base& key) & { return Base::get(key); }
+  ConstRef get(const Base& key) && { return Base::get(key, false, true); }
+  ConstRef get(const Base& key) const& { return Base::get(key, true); }
+  ConstRef get(const Base& key) const&& { return Base::get(key, true, true); }
+
+  // Get by field id.
+  ConstRef get(FieldId id) & { return Base::get(id); }
+  ConstRef get(FieldId id) && { return Base::get(id, false, true); }
+  ConstRef get(FieldId id) const& { return Base::get(id, true); }
+  ConstRef get(FieldId id) const&& { return Base::get(id, true, true); }
+
+  // Get by name.
+  ConstRef get(const std::string& name) & { return get(asRef(name)); }
+  ConstRef get(const std::string& name) && { return get(asRef(name)); }
+  ConstRef get(const std::string& name) const& { return get(asRef(name)); }
+  ConstRef get(const std::string& name) const&& { return get(asRef(name)); }
+
+ private:
+  friend class detail::Ptr;
+
+  static ConstRef asRef(const std::string& name) {
+    return create<type::string_t>(name);
+  }
+
+  template <typename Tag, typename T>
+  ConstRef(Tag, T&& val) : Base(op::detail::getAnyType<Tag, T>(), &val) {}
+};
+
 // A light weight (pass-by-value), non-owning reference to a runtime Thrift
 // value.
 //
@@ -43,17 +98,10 @@ class Ref final : public detail::RuntimeBase {
  public:
   template <typename Tag, typename T>
   static Ref create(T&& val) {
-    return {Tag{}, std::forward<T>(val)}; // Preserve underlying ref type.
+    return {Tag{}, std::forward<T>(val)};
   }
 
   Ref() noexcept = default;
-
-  // Rebinds the Ref to another value (or void).
-  template <typename Tag, typename T = native_type<Tag>>
-  void reset(T&& val) {
-    Base::reset(op::detail::getAnyType<Tag, T>(), &val);
-  }
-  void reset() noexcept { Base::reset(); }
 
   // Sets the referenced value to it's intrinsic default (e.g. ignoring custom
   // field defaults).
@@ -77,20 +125,20 @@ class Ref final : public detail::RuntimeBase {
   // Get by value.
   Ref get(const Base& key) & { return *Base::get(key); }
   Ref get(const Base& key) && { return *Base::get(key, false, true); }
-  Ref get(const Base& key) const& { return *Base::get(key, true); }
-  Ref get(const Base& key) const&& { return *Base::get(key, true, true); }
+  ConstRef get(const Base& key) const& { return Base::get(key, true); }
+  ConstRef get(const Base& key) const&& { return Base::get(key, true, true); }
 
   // Get by field id.
   Ref get(FieldId id) & { return *Base::get(id); }
   Ref get(FieldId id) && { return *Base::get(id, false, true); }
-  Ref get(FieldId id) const& { return *Base::get(id, true); }
-  Ref get(FieldId id) const&& { return *Base::get(id, true, true); }
+  ConstRef get(FieldId id) const& { return Base::get(id, true); }
+  ConstRef get(FieldId id) const&& { return Base::get(id, true, true); }
 
   // Get by name.
   Ref get(const std::string& name) & { return get(asRef(name)); }
   Ref get(const std::string& name) && { return get(asRef(name)); }
-  Ref get(const std::string& name) const& { return get(asRef(name)); }
-  Ref get(const std::string& name) const&& { return get(asRef(name)); }
+  ConstRef get(const std::string& name) const& { return get(asRef(name)); }
+  ConstRef get(const std::string& name) const&& { return get(asRef(name)); }
 
   // Throws on mismatch or if const.
   template <typename Tag>
@@ -107,8 +155,8 @@ class Ref final : public detail::RuntimeBase {
  private:
   friend class detail::Ptr;
 
-  static Ref asRef(const std::string& name) {
-    return Ref::create<type::string_t>(name);
+  static ConstRef asRef(const std::string& name) {
+    return ConstRef::create<type::string_t>(name);
   }
 
   explicit Ref(detail::Ptr data) noexcept : Base(data) {}
