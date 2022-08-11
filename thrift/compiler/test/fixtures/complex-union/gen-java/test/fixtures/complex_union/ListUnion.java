@@ -43,6 +43,36 @@ public final class ListUnion implements com.facebook.thrift.payload.ThriftSerial
     private java.lang.Object value;
     private short id;
 
+    public static ListUnion from(int _id, java.lang.Object _field) {
+        return from((short) _id, _field);
+    }
+
+    public static ListUnion from(short _id, java.lang.Object _field) {
+        java.util.Objects.requireNonNull(_field);
+        if (!FIELD_METADATA.containsKey(Integer.valueOf(_id))) {
+            throw new java.lang.IllegalArgumentException("unknown field " + _id);
+        }
+
+        ListUnion _u = new  ListUnion();
+
+        try {
+            switch(_id) {
+                case 2:
+                    _u.id = _id;
+                    _u.value = (List<Long>) _field;
+                    return _u;
+                case 3:
+                    _u.id = _id;
+                    _u.value = (List<String>) _field;
+                    return _u;
+                default:
+                throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+            }
+        } catch (Exception t) {
+            throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+        }
+    }
+
     @ThriftConstructor
     public ListUnion() {
     }

@@ -33,6 +33,28 @@ public final class Nada implements com.facebook.thrift.payload.ThriftSerializabl
     private java.lang.Object value;
     private short id;
 
+    public static Nada from(int _id, java.lang.Object _field) {
+        return from((short) _id, _field);
+    }
+
+    public static Nada from(short _id, java.lang.Object _field) {
+        java.util.Objects.requireNonNull(_field);
+        if (!FIELD_METADATA.containsKey(Integer.valueOf(_id))) {
+            throw new java.lang.IllegalArgumentException("unknown field " + _id);
+        }
+
+        Nada _u = new  Nada();
+
+        try {
+            switch(_id) {
+                default:
+                throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+            }
+        } catch (Exception t) {
+            throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+        }
+    }
+
     @ThriftConstructor
     public Nada() {
     }

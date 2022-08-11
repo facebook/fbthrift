@@ -38,6 +38,32 @@ public final class NonCopyableUnion implements com.facebook.thrift.payload.Thrif
     private java.lang.Object value;
     private short id;
 
+    public static NonCopyableUnion from(int _id, java.lang.Object _field) {
+        return from((short) _id, _field);
+    }
+
+    public static NonCopyableUnion from(short _id, java.lang.Object _field) {
+        java.util.Objects.requireNonNull(_field);
+        if (!FIELD_METADATA.containsKey(Integer.valueOf(_id))) {
+            throw new java.lang.IllegalArgumentException("unknown field " + _id);
+        }
+
+        NonCopyableUnion _u = new  NonCopyableUnion();
+
+        try {
+            switch(_id) {
+                case 1:
+                    _u.id = _id;
+                    _u.value = (test.fixtures.complex_union.NonCopyableStruct) _field;
+                    return _u;
+                default:
+                throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+            }
+        } catch (Exception t) {
+            throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+        }
+    }
+
     @ThriftConstructor
     public NonCopyableUnion() {
     }

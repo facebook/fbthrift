@@ -41,6 +41,32 @@ public final class UnionToBeRenamed implements com.facebook.thrift.payload.Thrif
     private java.lang.Object value;
     private short id;
 
+    public static UnionToBeRenamed from(int _id, java.lang.Object _field) {
+        return from((short) _id, _field);
+    }
+
+    public static UnionToBeRenamed from(short _id, java.lang.Object _field) {
+        java.util.Objects.requireNonNull(_field);
+        if (!FIELD_METADATA.containsKey(Integer.valueOf(_id))) {
+            throw new java.lang.IllegalArgumentException("unknown field " + _id);
+        }
+
+        UnionToBeRenamed _u = new  UnionToBeRenamed();
+
+        try {
+            switch(_id) {
+                case 1:
+                    _u.id = _id;
+                    _u.value = (int) _field;
+                    return _u;
+                default:
+                throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+            }
+        } catch (Exception t) {
+            throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+        }
+    }
+
     @ThriftConstructor
     public UnionToBeRenamed() {
     }

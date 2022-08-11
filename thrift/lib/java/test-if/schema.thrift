@@ -51,3 +51,10 @@ struct Nested1 {
 struct Nested2 {
   1: map<i32, Nested1> nests;
 }
+
+union TestUnion {
+  1: Pet thePet;
+  2: Pet theOtherPet;
+  3: EveryLayout allThings;
+  4: JustABinary aBinary;
+}

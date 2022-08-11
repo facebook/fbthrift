@@ -43,6 +43,36 @@ public final class ValUnion implements com.facebook.thrift.payload.ThriftSeriali
     private java.lang.Object value;
     private short id;
 
+    public static ValUnion from(int _id, java.lang.Object _field) {
+        return from((short) _id, _field);
+    }
+
+    public static ValUnion from(short _id, java.lang.Object _field) {
+        java.util.Objects.requireNonNull(_field);
+        if (!FIELD_METADATA.containsKey(Integer.valueOf(_id))) {
+            throw new java.lang.IllegalArgumentException("unknown field " + _id);
+        }
+
+        ValUnion _u = new  ValUnion();
+
+        try {
+            switch(_id) {
+                case 1:
+                    _u.id = _id;
+                    _u.value = (test.fixtures.complex_union.Val) _field;
+                    return _u;
+                case 2:
+                    _u.id = _id;
+                    _u.value = (test.fixtures.complex_union.Val) _field;
+                    return _u;
+                default:
+                throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+            }
+        } catch (Exception t) {
+            throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+        }
+    }
+
     @ThriftConstructor
     public ValUnion() {
     }

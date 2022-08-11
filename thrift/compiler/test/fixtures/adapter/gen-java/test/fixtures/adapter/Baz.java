@@ -61,6 +61,48 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
     private java.lang.Object value;
     private short id;
 
+    public static Baz from(int _id, java.lang.Object _field) {
+        return from((short) _id, _field);
+    }
+
+    public static Baz from(short _id, java.lang.Object _field) {
+        java.util.Objects.requireNonNull(_field);
+        if (!FIELD_METADATA.containsKey(Integer.valueOf(_id))) {
+            throw new java.lang.IllegalArgumentException("unknown field " + _id);
+        }
+
+        Baz _u = new  Baz();
+
+        try {
+            switch(_id) {
+                case 1:
+                    _u.id = _id;
+                    _u.value = (int) _field;
+                    return _u;
+                case 4:
+                    _u.id = _id;
+                    _u.value = (Set<String>) _field;
+                    return _u;
+                case 6:
+                    _u.id = _id;
+                    _u.value = (Map<String, List<String>>) _field;
+                    return _u;
+                case 8:
+                    _u.id = _id;
+                    _u.value = (byte[]) _field;
+                    return _u;
+                case 9:
+                    _u.id = _id;
+                    _u.value = (long) _field;
+                    return _u;
+                default:
+                throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+            }
+        } catch (Exception t) {
+            throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+        }
+    }
+
     @ThriftConstructor
     public Baz() {
     }

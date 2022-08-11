@@ -63,6 +63,52 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
     private java.lang.Object value;
     private short id;
 
+    public static ComplexUnion from(int _id, java.lang.Object _field) {
+        return from((short) _id, _field);
+    }
+
+    public static ComplexUnion from(short _id, java.lang.Object _field) {
+        java.util.Objects.requireNonNull(_field);
+        if (!FIELD_METADATA.containsKey(Integer.valueOf(_id))) {
+            throw new java.lang.IllegalArgumentException("unknown field " + _id);
+        }
+
+        ComplexUnion _u = new  ComplexUnion();
+
+        try {
+            switch(_id) {
+                case 1:
+                    _u.id = _id;
+                    _u.value = (long) _field;
+                    return _u;
+                case 5:
+                    _u.id = _id;
+                    _u.value = (String) _field;
+                    return _u;
+                case 2:
+                    _u.id = _id;
+                    _u.value = (List<Long>) _field;
+                    return _u;
+                case 3:
+                    _u.id = _id;
+                    _u.value = (List<String>) _field;
+                    return _u;
+                case 9:
+                    _u.id = _id;
+                    _u.value = (Map<Short, String>) _field;
+                    return _u;
+                case 14:
+                    _u.id = _id;
+                    _u.value = (String) _field;
+                    return _u;
+                default:
+                throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+            }
+        } catch (Exception t) {
+            throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+        }
+    }
+
     @ThriftConstructor
     public ComplexUnion() {
     }

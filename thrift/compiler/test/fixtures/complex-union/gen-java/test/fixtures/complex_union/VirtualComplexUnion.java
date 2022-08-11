@@ -43,6 +43,36 @@ public final class VirtualComplexUnion implements com.facebook.thrift.payload.Th
     private java.lang.Object value;
     private short id;
 
+    public static VirtualComplexUnion from(int _id, java.lang.Object _field) {
+        return from((short) _id, _field);
+    }
+
+    public static VirtualComplexUnion from(short _id, java.lang.Object _field) {
+        java.util.Objects.requireNonNull(_field);
+        if (!FIELD_METADATA.containsKey(Integer.valueOf(_id))) {
+            throw new java.lang.IllegalArgumentException("unknown field " + _id);
+        }
+
+        VirtualComplexUnion _u = new  VirtualComplexUnion();
+
+        try {
+            switch(_id) {
+                case 1:
+                    _u.id = _id;
+                    _u.value = (String) _field;
+                    return _u;
+                case 2:
+                    _u.id = _id;
+                    _u.value = (String) _field;
+                    return _u;
+                default:
+                throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+            }
+        } catch (Exception t) {
+            throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+        }
+    }
+
     @ThriftConstructor
     public VirtualComplexUnion() {
     }

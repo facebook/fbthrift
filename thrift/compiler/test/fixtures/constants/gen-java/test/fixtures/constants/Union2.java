@@ -53,6 +53,44 @@ public final class Union2 implements com.facebook.thrift.payload.ThriftSerializa
     private java.lang.Object value;
     private short id;
 
+    public static Union2 from(int _id, java.lang.Object _field) {
+        return from((short) _id, _field);
+    }
+
+    public static Union2 from(short _id, java.lang.Object _field) {
+        java.util.Objects.requireNonNull(_field);
+        if (!FIELD_METADATA.containsKey(Integer.valueOf(_id))) {
+            throw new java.lang.IllegalArgumentException("unknown field " + _id);
+        }
+
+        Union2 _u = new  Union2();
+
+        try {
+            switch(_id) {
+                case 1:
+                    _u.id = _id;
+                    _u.value = (int) _field;
+                    return _u;
+                case 2:
+                    _u.id = _id;
+                    _u.value = (double) _field;
+                    return _u;
+                case 3:
+                    _u.id = _id;
+                    _u.value = (test.fixtures.constants.Struct1) _field;
+                    return _u;
+                case 4:
+                    _u.id = _id;
+                    _u.value = (test.fixtures.constants.Union1) _field;
+                    return _u;
+                default:
+                throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+            }
+        } catch (Exception t) {
+            throw new IllegalArgumentException("invalid type " + _field.getClass().getName() + " for field " + _id);
+        }
+    }
+
     @ThriftConstructor
     public Union2() {
     }
