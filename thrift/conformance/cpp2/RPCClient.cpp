@@ -17,6 +17,8 @@
 #include <glog/logging.h>
 #include <folly/init/Init.h>
 
+#include <folly/experimental/coro/AsyncGenerator.h>
+#include <folly/experimental/coro/BlockingWait.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/AsyncTransport.h>
 
@@ -83,6 +85,24 @@ requestResponseNoArgVoidResponseTest(
   return result;
 }
 
+SinkBasicClientTestResult sinkBasicTest(
+    SinkBasicClientInstruction& instruction) {
+  auto client = createClient();
+  return folly::coro::blockingWait(
+      [&]() -> folly::coro::Task<SinkBasicClientTestResult> {
+        auto sink = co_await client->co_sinkBasic(*instruction.request());
+        auto finalResponse =
+            co_await sink.sink([&]() -> folly::coro::AsyncGenerator<Request&&> {
+              for (auto& payload : *instruction.sinkPayloads()) {
+                co_yield std::move(payload);
+              }
+            }());
+        SinkBasicClientTestResult result;
+        result.finalResponse() = std::move(finalResponse);
+        co_return result;
+      }());
+}
+
 int main(int argc, char** argv) {
   folly::init(&argc, &argv);
 
@@ -111,6 +131,9 @@ int main(int argc, char** argv) {
       result.set_requestResponseNoArgVoidResponse(
           requestResponseNoArgVoidResponseTest(
               *clientInstruction.requestResponseNoArgVoidResponse_ref()));
+      break;
+    case ClientInstruction::Type::sinkBasic:
+      result.set_sinkBasic(sinkBasicTest(*clientInstruction.sinkBasic_ref()));
       break;
     default:
       throw std::runtime_error("Invalid TestCase type");

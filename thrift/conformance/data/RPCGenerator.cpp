@@ -210,6 +210,43 @@ Test createRequestResponseFragmentationTest() {
   return ret;
 }
 
+Test createSinkBasicTest() {
+  Test ret;
+  ret.name() = "SinkBasicTest";
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "SinkBasic/Success";
+
+  auto& rpcTest = testCase.rpc_ref().emplace();
+  auto& clientInstruction =
+      rpcTest.clientInstruction_ref().emplace().sinkBasic_ref().emplace();
+  clientInstruction.request().emplace().data() = "hello";
+  for (int i = 0; i < 100; i++) {
+    auto& sinkPayload = clientInstruction.sinkPayloads()->emplace_back();
+    sinkPayload.data() = folly::to<std::string>(i);
+  }
+
+  rpcTest.clientTestResult_ref()
+      .emplace()
+      .sinkBasic_ref()
+      .emplace()
+      .finalResponse()
+      .emplace()
+      .data() = "world";
+
+  auto& serverInstruction =
+      rpcTest.serverInstruction_ref().emplace().sinkBasic_ref().emplace();
+  serverInstruction.finalResponse().emplace().data() = "world";
+  serverInstruction.bufferSize() = 1000;
+
+  auto& serverResult =
+      rpcTest.serverTestResult_ref().emplace().sinkBasic_ref().emplace();
+  serverResult.request().emplace().data() = "hello";
+  serverResult.sinkPayloads().copy_from(clientInstruction.sinkPayloads());
+
+  return ret;
+}
+
 } // namespace
 
 TestSuite createRPCTestSuite() {
@@ -220,6 +257,7 @@ TestSuite createRPCTestSuite() {
   suite.tests()->push_back(createRequestResponseUndeclaredExceptionTest());
   suite.tests()->push_back(createRequestResponseNoArgVoidResponse());
   suite.tests()->push_back(createRequestResponseFragmentationTest());
+  suite.tests()->push_back(createSinkBasicTest());
   return suite;
 }
 

@@ -21,10 +21,12 @@
 
 #include <fmt/core.h>
 #include <folly/Subprocess.h>
+#include <folly/experimental/coro/AsyncGenerator.h>
 #include <folly/futures/Future.h>
 #include <thrift/conformance/RpcStructComparator.h>
 #include <thrift/conformance/Utils.h>
 #include <thrift/conformance/if/gen-cpp2/RPCConformanceService.h>
+#include <thrift/lib/cpp2/async/Sink.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
 namespace apache::thrift::conformance {
@@ -70,6 +72,24 @@ class ConformanceVerificationServer
 
   void requestResponseNoArgVoidResponse() override {
     serverResult_.requestResponseNoArgVoidResponse_ref().emplace();
+  }
+
+  apache::thrift::SinkConsumer<Request, Response> sinkBasic(
+      std::unique_ptr<Request> req) override {
+    serverResult_.sinkBasic_ref().emplace().request() = *req;
+    return apache::thrift::SinkConsumer<Request, Response>{
+        [&](folly::coro::AsyncGenerator<Request&&> gen)
+            -> folly::coro::Task<Response> {
+          while (auto item = co_await gen.next()) {
+            serverResult_.sinkBasic_ref()->sinkPayloads()->push_back(
+                std::move(*item));
+          }
+          co_return *testCase_.serverInstruction()
+              ->sinkBasic_ref()
+              ->finalResponse();
+        },
+        static_cast<uint64_t>(
+            *testCase_.serverInstruction()->sinkBasic_ref()->bufferSize())};
   }
 
   folly::SemiFuture<folly::Unit> getTestReceived() {

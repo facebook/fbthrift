@@ -18,6 +18,8 @@
 
 #include <stdexcept>
 
+#include <folly/experimental/coro/AsyncGenerator.h>
+#include <folly/experimental/coro/BlockingWait.h>
 #include <thrift/conformance/RpcStructComparator.h>
 #include <thrift/conformance/if/gen-cpp2/rpc_types.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
@@ -102,6 +104,24 @@ runRequestResponseNoArgVoidResponse(
   return result;
 }
 
+SinkBasicClientTestResult runSinkBasic(
+    RPCConformanceServiceAsyncClient& client,
+    const SinkBasicClientInstruction& instruction) {
+  return folly::coro::blockingWait(
+      [&]() -> folly::coro::Task<SinkBasicClientTestResult> {
+        auto sink = co_await client.co_sinkBasic(*instruction.request());
+        auto finalResponse =
+            co_await sink.sink([&]() -> folly::coro::AsyncGenerator<Request&&> {
+              for (auto payload : *instruction.sinkPayloads()) {
+                co_yield std::move(payload);
+              }
+            }());
+        SinkBasicClientTestResult result;
+        result.finalResponse() = std::move(finalResponse);
+        co_return result;
+      }());
+}
+
 ClientTestResult runClientSteps(
     Client<RPCConformanceService>& client,
     const ClientInstruction& clientInstruction) {
@@ -128,6 +148,10 @@ ClientTestResult runClientSteps(
           runRequestResponseNoArgVoidResponse(
               client,
               *clientInstruction.requestResponseNoArgVoidResponse_ref()));
+      break;
+    case ClientInstruction::Type::sinkBasic:
+      result.set_sinkBasic(
+          runSinkBasic(client, *clientInstruction.sinkBasic_ref()));
       break;
     default:
       break;
