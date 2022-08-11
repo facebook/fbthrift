@@ -32,7 +32,6 @@ Mask reverseMask(const Mask& mask) {
 }
 
 void clear(const Mask& mask, protocol::Object& obj) {
-  detail::throwIfContainsMapMask(mask);
   (detail::MaskRef{mask, false}).clear(obj);
 }
 

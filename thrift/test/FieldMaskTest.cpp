@@ -16,9 +16,11 @@
 
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/FieldMask.h>
+#include <thrift/lib/cpp2/protocol/Object.h>
 #include <thrift/test/gen-cpp2/FieldMask_types.h>
 
 using apache::thrift::protocol::allMask;
+using apache::thrift::protocol::asValueStruct;
 using apache::thrift::protocol::Mask;
 using apache::thrift::protocol::MaskWrapper;
 using apache::thrift::protocol::MaskWrapperInit;
@@ -349,27 +351,113 @@ TEST(FieldMaskTest, SchemalessClear) {
 }
 
 TEST(FieldMaskTest, SchemalessClearException) {
-  protocol::Object bazObject;
-  // bar{2: "40"}
-  bazObject[FieldId{2}].emplace_string() = "40";
+  {
+    protocol::Object barObject;
+    // bar{2: "40"}
+    barObject[FieldId{2}].emplace_string() = "40";
+    Mask m; // object[2] is not an object but has an object mask.
+    auto& includes = m.includes_ref().emplace();
+    includes[2].includes_ref().emplace()[4] = noneMask();
+    EXPECT_THROW(protocol::clear(m, barObject), std::runtime_error);
+  }
 
-  Mask m1; // object[2] is not an object but has an object mask.
-  auto& includes = m1.includes_ref().emplace();
-  includes[2].includes_ref().emplace()[4] = noneMask();
-  EXPECT_THROW(protocol::clear(m1, bazObject), std::runtime_error);
+  {
+    protocol::Object fooObject, barObject;
+    // bar{1: foo{2: 20}, 2: "40"}
+    fooObject[FieldId{2}].emplace_i32() = 20;
+    barObject[FieldId{1}].emplace_object() = fooObject;
+    barObject[FieldId{2}].emplace_string() = "40";
+    Mask m; // object[1][2] is not an object but has an object mask.
+    auto& includes = m.includes_ref().emplace();
+    includes[1].includes_ref().emplace()[2].excludes_ref().emplace()[5] =
+        allMask();
+    includes[2] = allMask();
+    EXPECT_THROW(protocol::clear(m, barObject), std::runtime_error);
+  }
 
-  protocol::Object fooObject, barObject;
-  // bar{1: foo{2: 20}, 2: "40"}
-  fooObject[FieldId{2}].emplace_i32() = 20;
-  barObject[FieldId{1}].emplace_object() = fooObject;
+  {
+    protocol::Object barObject;
+    std::map<int, std::string> map = {{1, "1"}};
+    barObject[FieldId{1}] =
+        asValueStruct<type::map<type::i32_t, type::string_t>>(map);
+    Mask m; // object[1] is a map but has an object mask.
+    m.includes_ref().emplace()[1].includes_ref().emplace()[1] = allMask();
+    EXPECT_THROW(protocol::clear(m, barObject), std::runtime_error);
+  }
+}
+
+TEST(FieldMaskTest, SchemalessClearMap) {
+  protocol::Object barObject;
+  // bar{1: map{1: map{1: "1",
+  //                   2: "2"},
+  //            2: map{3: "3"}},
+  //     2: "40",
+  //     3: 5}
+  std::map<int, std::map<int, std::string>> map = {
+      {1, {{1, "1"}, {2, "2"}}}, {2, {{3, "3"}}}};
+  barObject[FieldId{1}] = asValueStruct<
+      type::map<type::i64_t, type::map<type::i16_t, type::string_t>>>(map);
   barObject[FieldId{2}].emplace_string() = "40";
+  barObject[FieldId{3}].emplace_i32() = 5;
 
-  Mask m2; // object[1][2] is not an object but has an object mask.
-  auto& includes2 = m2.includes_ref().emplace();
-  includes2[1].includes_ref().emplace()[2].excludes_ref().emplace()[5] =
-      allMask();
-  includes2[2] = allMask();
-  EXPECT_THROW(protocol::clear(m2, barObject), std::runtime_error);
+  Mask mask;
+  // includes{2: excludes{},
+  //          1: excludes_map{5: excludes_map{5: excludes{}},
+  //                          1: includes_map{1: excludes{}}}}
+  auto& includes = mask.includes_ref().emplace();
+  includes[2] = allMask();
+  auto& nestedExcludes = includes[1].excludes_map_ref().emplace();
+  nestedExcludes[5].excludes_map_ref().emplace()[5] =
+      allMask(); // The object doesn't have this field.
+  nestedExcludes[1].includes_map_ref().emplace()[1] = allMask();
+  // This clears object[1][2], object[1][1][2], and object[2].
+  protocol::clear(mask, barObject);
+
+  ASSERT_TRUE(barObject.contains(FieldId{1}));
+  std::map<Value, Value>& m1 = barObject.at(FieldId{1}).mapValue_ref().value();
+  ASSERT_TRUE(m1.contains(asValueStruct<type::i64_t>(1)));
+  EXPECT_FALSE(m1.contains(asValueStruct<type::i64_t>(2)));
+  std::map<Value, Value>& m2 =
+      m1[asValueStruct<type::i64_t>(1)].mapValue_ref().value();
+  EXPECT_EQ(m2[asValueStruct<type::i16_t>(1)].stringValue_ref().value(), "1");
+  EXPECT_FALSE(m2.contains(asValueStruct<type::i16_t>(2)));
+  EXPECT_FALSE(barObject.contains(FieldId{2}));
+  ASSERT_TRUE(barObject.contains(FieldId{3}));
+  EXPECT_EQ(barObject.at(FieldId{3}).as_i32(), 5);
+}
+
+TEST(FieldMaskTest, SchemalessClearExceptionMap) {
+  {
+    protocol::Object barObject;
+    // bar{2: "40"}
+    barObject[FieldId{2}].emplace_string() = "40";
+    Mask m; // object[2] is not a map but has a map mask.
+    auto& includes = m.includes_ref().emplace();
+    includes[2].includes_map_ref().emplace()[4] = noneMask();
+    EXPECT_THROW(protocol::clear(m, barObject), std::runtime_error);
+  }
+
+  {
+    protocol::Object fooObject, barObject;
+    // bar{1: foo{2: 20}, 2: "40"}
+    fooObject[FieldId{2}].emplace_i32() = 20;
+    barObject[FieldId{1}].emplace_object() = fooObject;
+    barObject[FieldId{2}].emplace_string() = "40";
+    Mask m; // object[1][2] is not a map but has a map mask.
+    auto& includes = m.includes_ref().emplace();
+    includes[1].includes_ref().emplace()[2].excludes_map_ref().emplace()[5] =
+        allMask();
+    includes[2] = allMask();
+    EXPECT_THROW(protocol::clear(m, barObject), std::runtime_error);
+  }
+
+  {
+    protocol::Object barObject, fooObject;
+    barObject[FieldId{1}].emplace_object() = fooObject;
+    Mask m; // object[1] is an object but has a map mask.
+    m.includes_ref().emplace()[1].includes_map_ref().emplace()[1] = allMask();
+    EXPECT_THROW(protocol::clear(m, barObject), std::runtime_error);
+  }
 }
 
 // Calls copy on the mask, src, and dst.

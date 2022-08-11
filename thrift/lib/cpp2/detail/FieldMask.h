@@ -66,6 +66,10 @@ class MaskRef {
   // Throws a runtime exception if the mask and object are incompatible.
   void clear(protocol::Object& t) const;
 
+  // Removes masked fields in a map value in schemaless Thrift Object.
+  // Throws a runtime exception if the mask and object are incompatible.
+  void clear(std::map<Value, Value>& map) const;
+
   // Copies masked fields from one object to another (schemaless).
   // If the masked field doesn't exist in src, the field in dst will be removed.
   // Throws a runtime exception if the mask and objects are incompatible.
@@ -76,6 +80,8 @@ class MaskRef {
   // Only contains fields either in src or dst.
   std::unordered_set<FieldId> getFieldsToCopy(
       const protocol::Object& src, const protocol::Object& dst) const;
+  void throwIfNotFieldMask() const;
+  void throwIfNotMapMask() const;
 };
 
 // Throws an error if the given value is not a dynamic object value.

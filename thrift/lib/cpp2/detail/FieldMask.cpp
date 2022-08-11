@@ -36,10 +36,20 @@ const Mask& getMask(const MapIdToMask& map, MapId id) {
   return map.contains(mapId) ? map.at(mapId) : field_mask_constants::noneMask();
 }
 
-MaskRef MaskRef::get(FieldId id) const {
+void MaskRef::throwIfNotFieldMask() const {
   if (!isFieldMask()) {
-    throw std::runtime_error("using FieldId for a non field mask.");
+    throw std::runtime_error("not a field mask");
   }
+}
+
+void MaskRef::throwIfNotMapMask() const {
+  if (!isMapMask()) {
+    throw std::runtime_error("not a map mask");
+  }
+}
+
+MaskRef MaskRef::get(FieldId id) const {
+  throwIfNotFieldMask();
   if (mask.includes_ref()) {
     return MaskRef{getMask(mask.includes_ref().value(), id), is_exclusion};
   }
@@ -47,9 +57,7 @@ MaskRef MaskRef::get(FieldId id) const {
 }
 
 MaskRef MaskRef::get(MapId id) const {
-  if (!isMapMask()) {
-    throw std::runtime_error("using MapId for a non map mask.");
-  }
+  throwIfNotMapMask();
   if (mask.includes_map_ref()) {
     return MaskRef{getMask(mask.includes_map_ref().value(), id), is_exclusion};
   }
@@ -81,20 +89,58 @@ bool MaskRef::isMapMask() const {
   return mask.includes_map_ref() || mask.excludes_map_ref();
 }
 
+int64_t getIntFromValue(Value v) {
+  if (v.is_byte()) {
+    return v.byteValue_ref().value();
+  }
+  if (v.is_i16()) {
+    return v.i16Value_ref().value();
+  }
+  if (v.is_i32()) {
+    return v.i32Value_ref().value();
+  }
+  if (v.is_i64()) {
+    return v.i64Value_ref().value();
+  }
+  throw std::runtime_error("mask map only works with an integer key.");
+}
+
+void clear_impl(MaskRef ref, auto& obj, auto id, Value& value) {
+  // Id doesn't exist in field mask, skip.
+  if (ref.isNoneMask()) {
+    return;
+  }
+  // Id that we want to clear.
+  if (ref.isAllMask()) {
+    obj.erase(id);
+    return;
+  }
+  // clear fields in object recursively
+  if (value.objectValue_ref()) {
+    ref.clear(value.objectValue_ref().value());
+    return;
+  }
+  // clear fields in map recursively
+  if (value.mapValue_ref()) {
+    ref.clear(value.mapValue_ref().value());
+    return;
+  }
+  throw std::runtime_error("The field mask and object are incompatible.");
+}
+
 void MaskRef::clear(protocol::Object& obj) const {
+  throwIfNotFieldMask();
   for (auto& [id, value] : obj) {
     MaskRef ref = get(FieldId{id});
-    // Id doesn't exist in field mask, skip.
-    if (ref.isNoneMask()) {
-      continue;
-    }
-    // Id that we want to clear.
-    if (ref.isAllMask()) {
-      obj.erase(FieldId(id));
-      continue;
-    }
-    errorIfNotObject(value);
-    ref.clear(value.objectValue_ref().value());
+    clear_impl(ref, obj, FieldId{id}, value);
+  }
+}
+
+void MaskRef::clear(std::map<Value, Value>& map) const {
+  throwIfNotMapMask();
+  for (auto& [key, value] : map) {
+    MaskRef ref = get(MapId{getIntFromValue(key)});
+    clear_impl(ref, map, key, value);
   }
 }
 
