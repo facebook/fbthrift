@@ -437,7 +437,7 @@ void Cpp2Worker::dispatchRequest(
           priority = found->metadata.priority.value_or(concurrency::NORMAL);
         }
         cpp2ReqCtx->setRequestExecutionScope(
-            concurrency::PriorityThreadManager::ExecutionScope(priority));
+            serverConfigs->getRequestExecutionScope(cpp2ReqCtx, priority));
 
         ServerRequest serverRequest(
             std::move(request),
