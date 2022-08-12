@@ -274,7 +274,7 @@ class t_hack_generator : public t_concat_generator {
   void generate_php_struct_fields(
       std::ofstream& out,
       const t_struct* tstruct,
-      const std::string& struct_hack_name,
+      const std::string& struct_hack_name_with_ns,
       ThriftStructType type = ThriftStructType::STRUCT);
 
   void generate_php_struct_field_methods(
@@ -3976,14 +3976,13 @@ void t_hack_generator::generate_php_union_methods(
 void t_hack_generator::generate_php_struct_fields(
     std::ofstream& out,
     const t_struct* tstruct,
-    const std::string& struct_hack_name,
+    const std::string& struct_hack_name_with_ns,
     ThriftStructType type) {
-  auto struct_class_name =
-      hack_name(struct_hack_name, tstruct->program(), true);
   for (const auto& field : tstruct->fields()) {
     if (skip_codegen(&field)) {
       continue;
     }
+    const auto& fieldName = field.name();
     bool is_base_exception_field = type == ThriftStructType::EXCEPTION &&
         is_base_exception_property(&field);
 
@@ -3991,9 +3990,9 @@ void t_hack_generator::generate_php_struct_fields(
 
     if (is_base_exception_field && field_wrapper) {
       throw std::runtime_error(
-          tstruct->name() + "::" + field.name() +
-          " has a wrapped type. FieldWrapper annotation "
-          "is not allowed for base exception properties.");
+          tstruct->name() + "::" + fieldName +
+          " has a wrapped type. FieldWrapper annotation is not" +
+          " allowed for base exception properties.");
     }
 
     const t_type* t = field.get_type();
@@ -4026,11 +4025,11 @@ void t_hack_generator::generate_php_struct_fields(
     // annotations.
     std::string typehint = field_to_typehint(
         field,
-        struct_class_name,
+        struct_hack_name_with_ns,
         nullable && !tstruct->is_union() /* is_field_nullable */);
 
     if (dynamic_cast<const t_result_struct*>(tstruct) &&
-        field.name() == "success") {
+        fieldName == "success") {
       typehint = "this::TResult";
     }
 
@@ -4047,7 +4046,7 @@ void t_hack_generator::generate_php_struct_fields(
       indent(out) << "<<" << field_attributes << ">>\n";
     }
 
-    if (type == ThriftStructType::EXCEPTION && field.name() == "code") {
+    if (type == ThriftStructType::EXCEPTION && fieldName == "code") {
       if (!(t->is_any_int() || t->is_enum())) {
         throw std::runtime_error(
             tstruct->name() + "::code defined to be a non-integral type. " +
@@ -4068,14 +4067,13 @@ void t_hack_generator::generate_php_struct_fields(
         ? "private"
         : ((protected_unions_ && tstruct->is_union()) ? "protected" : "public");
 
-    indent(out) << visibility << " " << typehint << " $" << field.name()
-                << ";\n";
+    indent(out) << visibility << " " << typehint << " $" << fieldName << ";\n";
     generate_php_struct_field_methods(
         out, &field, type == ThriftStructType::EXCEPTION);
 
     if (field_wrapper) {
       generate_php_field_wrapper_methods(
-          out, field, tstruct->is_union(), nullable, struct_class_name);
+          out, field, tstruct->is_union(), nullable, struct_hack_name_with_ns);
     }
   }
 }
@@ -4085,7 +4083,7 @@ void t_hack_generator::generate_php_field_wrapper_methods(
     const t_field& field,
     bool is_union,
     bool nullable,
-    const std::string& struct_class_name) {
+    const std::string& struct_hack_name_with_ns) {
   if (is_union) {
     return;
   }
@@ -4096,7 +4094,7 @@ void t_hack_generator::generate_php_field_wrapper_methods(
   indent(out) << "public function get_" << fieldName << "()[]: "
               << field_to_typehint(
                      field,
-                     struct_class_name,
+                     struct_hack_name_with_ns,
                      /*is_field_nullable*/ nullable)
               << " {\n";
   indent_up();
