@@ -260,7 +260,8 @@ class PythonAsyncProcessor : public AsyncProcessor {
           std::move(serializedCompressedRequestCaptured),
           protTypeCaptured,
           contextCaptured,
-          ebCaptured);
+          ebCaptured,
+          false /* fromExecuteRequest  */);
     };
 
     using PriorityThreadManager =
@@ -292,7 +293,8 @@ class PythonAsyncProcessor : public AsyncProcessor {
         std::move(serializedCompressedRequest),
         protType,
         context,
-        eb);
+        eb,
+        true /* fromExecuteRequest  */);
   }
 
   // Create a task and add it to thread manager's queue. Essentially the same
@@ -351,7 +353,8 @@ class PythonAsyncProcessor : public AsyncProcessor {
       apache::thrift::SerializedCompressedRequest&& serializedCompressedRequest,
       apache::thrift::protocol::PROTOCOL_TYPES protType,
       apache::thrift::Cpp2RequestContext* context,
-      folly::EventBase* eb) {
+      folly::EventBase* eb,
+      bool fromExecuteRequest) {
     auto fname = context->getMethodName();
     bool oneway = isOnewayMethod(fname);
 
@@ -366,7 +369,7 @@ class PythonAsyncProcessor : public AsyncProcessor {
       eb->runInEventBaseThread([req = std::move(req)]() mutable { req = {}; });
     };
 
-    if (!oneway && !req->getShouldStartProcessing()) {
+    if (!fromExecuteRequest && !oneway && !req->getShouldStartProcessing()) {
       return;
     }
 

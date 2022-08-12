@@ -990,11 +990,6 @@ inline void processViaExecuteRequest(
                        {},
                        {},
                        {}},
-               // This false is just a dummy value
-               oneway = !untypedMethodMetadata.isWildcard()
-                   ? (*untypedMethodMetadata.rpcKind ==
-                      RpcKind::SINGLE_REQUEST_NO_RESPONSE)
-                   : false,
                processor = processor,
                executor = std::move(executor),
                &untypedMethodMetadata](bool runInline) mutable {
@@ -1009,7 +1004,14 @@ inline void processViaExecuteRequest(
             std::chrono::steady_clock::now();
       }
     }
-    if (!untypedMethodMetadata.isWildcard() && !oneway &&
+
+    auto notOnewayOrWildcard = untypedMethodMetadata.isWildcard() ||
+        (*untypedMethodMetadata.rpcKind != RpcKind::SINGLE_REQUEST_NO_RESPONSE);
+
+    // only check queuetimeout if it is not oneway or it's
+    // a wildcard method because wildcard method doesn't
+    // mark oneway
+    if (notOnewayOrWildcard &&
         !serverRequest.request()->getShouldStartProcessing()) {
       HandlerCallbackBase::releaseRequest(
           detail::ServerRequestHelper::request(std::move(serverRequest)),
