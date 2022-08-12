@@ -151,9 +151,9 @@ class redef_checker {
 };
 
 // Helper for validating the adapters
-class adapter_checker {
+class adapter_or_wrapper_checker {
  public:
-  explicit adapter_checker(diagnostic_context& ctx) : ctx_(ctx) {}
+  explicit adapter_or_wrapper_checker(diagnostic_context& ctx) : ctx_(ctx) {}
 
   // Checks if adapter name is provided
   // Do not allow composing two structured annotations on typedef
@@ -237,6 +237,73 @@ class adapter_checker {
       const char* unstructured_adapter_annotation,
       const char* structured_adapter_annotation_error_name,
       bool disallow_structured_annotations_on_both_field_and_typedef) = delete;
+
+  // If a type is wrapped itself or is a container of wrapped types, then it
+  // cannot be adapted
+  void check(
+      const t_named& node,
+      const char* structured_adapter_annotation,
+      const char* structured_wrapper_annotation,
+      const char* structured_adapter_annotation_error_name,
+      const char* structured_wrapper_annotation_error_name) {
+    bool has_adapter_annotation =
+        node.find_structured_annotation_or_null(structured_adapter_annotation);
+    if (!has_adapter_annotation) {
+      return;
+    }
+    const t_type* type;
+    if (const auto* field = dynamic_cast<const t_field*>(&node)) {
+      if (!field->type().resolved()) {
+        return;
+      }
+      type = field->type().get_type();
+    } else if (const auto* typdef = dynamic_cast<const t_typedef*>(&node)) {
+      type = typdef->get_type();
+    } else {
+      return;
+    }
+
+    auto has_wrapper =
+        type->find_structured_annotation_or_null(structured_wrapper_annotation);
+    std::string typedef_name = type->name();
+    while (!has_wrapper) {
+      if (const auto* inner_typedf = dynamic_cast<const t_typedef*>(type)) {
+        has_wrapper = inner_typedf->find_structured_annotation_or_null(
+            structured_wrapper_annotation);
+        typedef_name = inner_typedf->name();
+        type = inner_typedf->get_type();
+      } else if (type->is_container()) {
+        if (const auto* map = dynamic_cast<const t_map*>(type)) {
+          type = map->get_val_type();
+        } else if (const auto* list = dynamic_cast<const t_list*>(type)) {
+          type = list->get_elem_type();
+        } else {
+          break;
+        }
+      } else if (type->is_struct()) {
+        has_wrapper = type->find_structured_annotation_or_null(
+            structured_wrapper_annotation);
+        typedef_name = type->name();
+        break;
+      } else {
+        break;
+      }
+    }
+    if (has_wrapper) {
+      ctx_.error(
+          "`{}` on `{}` cannot be combined with `{}` on `{}`.",
+          structured_adapter_annotation_error_name,
+          node.name(),
+          structured_wrapper_annotation_error_name,
+          typedef_name);
+    }
+  }
+
+  void check(
+      const t_named&& node,
+      const char* structured_adapter_annotation,
+      const char* unstructured_adapter_annotation,
+      const char* structured_adapter_annotation_error_name) = delete;
 
  private:
   diagnostic_context& ctx_;
@@ -552,12 +619,23 @@ void validate_ref_annotation(diagnostic_context& ctx, const t_field& node) {
 
 void validate_cpp_adapter_annotation(
     diagnostic_context& ctx, const t_named& node) {
-  adapter_checker(ctx).check(node, kCppAdapterUri, "@cpp.Adapter");
+  adapter_or_wrapper_checker(ctx).check(node, kCppAdapterUri, "@cpp.Adapter");
 }
 
 void validate_hack_adapter_annotation(
     diagnostic_context& ctx, const t_named& node) {
-  adapter_checker(ctx).check(node, kHackAdapterUri, "@hack.Adapter");
+  adapter_or_wrapper_checker(ctx).check(node, kHackAdapterUri, "@hack.Adapter");
+}
+
+void validate_hack_wrapper_annotation(
+    diagnostic_context& ctx, const t_named& node) {
+  adapter_or_wrapper_checker(ctx).check(node, kHackWrapperUri, "@hack.Wrapper");
+}
+// Do not adapt a wrapped type
+void validate_hack_wrapper_and_adapter_annotation(
+    diagnostic_context& ctx, const t_named& node) {
+  adapter_or_wrapper_checker(ctx).check(
+      node, kHackAdapterUri, kHackWrapperUri, "@hack.Adapter", "@hack.Wrapper");
 }
 
 void validate_box_annotation(
@@ -729,7 +807,7 @@ void validate_cpp_field_interceptor_annotation(
 
 void validate_cpp_field_adapter_annotation(
     diagnostic_context& ctx, const t_field& field) {
-  adapter_checker(ctx).check(
+  adapter_or_wrapper_checker(ctx).check(
       field,
       kCppAdapterUri,
       kCppUnstructuredAdapter,
@@ -739,7 +817,7 @@ void validate_cpp_field_adapter_annotation(
 
 void validate_hack_field_adapter_annotation(
     diagnostic_context& ctx, const t_field& field) {
-  adapter_checker(ctx).check(
+  adapter_or_wrapper_checker(ctx).check(
       field,
       kHackAdapterUri,
       kHackUnstructuredAdapter,
@@ -906,6 +984,9 @@ ast_validator standard_validator() {
   validator.add_definition_visitor(&validate_annotation_scopes);
   validator.add_definition_visitor(&validate_cpp_adapter_annotation);
   validator.add_definition_visitor(&validate_hack_adapter_annotation);
+  validator.add_definition_visitor(&validate_hack_wrapper_annotation);
+  validator.add_definition_visitor(
+      &validate_hack_wrapper_and_adapter_annotation);
 
   validator.add_const_visitor(&validate_const_type_and_value);
   validator.add_program_visitor(&validate_uri_uniqueness);

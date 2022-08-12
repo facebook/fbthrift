@@ -935,6 +935,79 @@ class CompilerFailureTest(unittest.TestCase):
             "than once in all typedef levels in `DoubleAdapted`.\n",
         )
 
+    def test_hack_wrapper(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                include "thrift/annotation/hack.thrift"
+
+                @hack.Adapter{name = "\MyAdapter1"}
+                typedef i64 i64Adapted
+
+                @hack.Wrapper{name = "\MyTypeIntWrapper"}
+                typedef i64 i64WithWrapper
+
+                @hack.Wrapper{name = "\MyTypeIntWrapper"}
+                @hack.Adapter{name = "\MyAdapter1"}
+                typedef i64 i64Wrapped_andAdapted
+
+                @hack.Wrapper{name = "\MyTypeIntWrapper"}
+                typedef i64Adapted i64Wrapped_andAdapted_2
+
+                typedef list<i64Wrapped_andAdapted> list_of_i64Wrapped_andAdapted
+
+                @hack.Adapter{name = "\MyAdapter1"}
+                typedef list<i64Wrapped_andAdapted> adapted_list_of_i64Wrapped_andAdapted
+
+                typedef StructWithWrapper structWithWrapper_typedf
+
+                @hack.Adapter{name = "\MyAdapter1"}
+                typedef StructWithWrapper adapted_structWithWrapper_typedf
+
+                @hack.Wrapper{name = "\MyStructWrapper"}
+                struct StructWithWrapper {
+                1: i64 int_field;
+                }
+
+                @hack.Wrapper{name = "\MyStructWrapper"}
+                struct MyNestedStruct {
+                @hack.FieldWrapper{name = "\MyFieldWrapper"}
+                1: i64WithWrapper double_wrapped_field;
+                @hack.FieldWrapper{name = "\MyFieldWrapper"}
+                @hack.Adapter{name = "\MyFieldAdapter"}
+                2: i64WithWrapper double_wrapped_and_adapted_field;
+                @hack.FieldWrapper{name = "\MyFieldWrapper"}
+                3: StructWithWrapper double_wrapped_struct;
+                @hack.FieldWrapper{name = "\MyFieldWrapper"}
+                4: map<string, StructWithWrapper> wrapped_map_of_string_to_StructWithWrapper;
+                @hack.Adapter{name = "\MyFieldAdapter"}
+                5: map<string, StructWithWrapper> adapted_map_of_string_to_StructWithWrapper;
+                @hack.FieldWrapper{name = "\MyFieldWrapper"}
+                @hack.Adapter{name = "\MyFieldAdapter"}
+                6: StructWithWrapper adapted_double_wrapped_struct;
+                }
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[ERROR:foo.thrift:35] `@hack.Adapter` on `double_wrapped_and_adapted_field` "
+            "cannot be combined with `@hack.Wrapper` on `i64WithWrapper`.\n"
+            "[ERROR:foo.thrift:42] `@hack.Adapter` on `adapted_map_of_string_to_StructWithWrapper` "
+            "cannot be combined with `@hack.Wrapper` on `StructWithWrapper`.\n"
+            "[ERROR:foo.thrift:44] `@hack.Adapter` on `adapted_double_wrapped_struct` "
+            "cannot be combined with `@hack.Wrapper` on `StructWithWrapper`.\n"
+            "[ERROR:foo.thrift:18] `@hack.Adapter` on `adapted_list_of_i64Wrapped_andAdapted` "
+            "cannot be combined with `@hack.Wrapper` on `i64Wrapped_andAdapted`.\n"
+            "[ERROR:foo.thrift:23] `@hack.Adapter` on `adapted_structWithWrapper_typedf` "
+            "cannot be combined with `@hack.Wrapper` on `StructWithWrapper`.\n",
+        )
+
     def test_mixin_nonstruct_members(self):
         write_file(
             "foo.thrift",
