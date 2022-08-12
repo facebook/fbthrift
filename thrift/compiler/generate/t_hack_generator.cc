@@ -4234,6 +4234,33 @@ void t_hack_generator::generate_php_struct_fields(
       generate_php_field_wrapper_methods(
           out, field, tstruct->is_union(), nullable, struct_hack_name_with_ns);
     }
+    if (!tstruct->is_union() && is_async_type(t, false)) {
+      out << "\n";
+
+      // set_<fieldName>_DO_NOT_USE_THRIFT_INTERNAL()
+      indent(out) << "public function set_" << fieldName
+                  << "_DO_NOT_USE_THRIFT_INTERNAL("
+                  << type_to_typehint(
+                         t,
+                         {{TypeToTypehintVariations::RECURSIVE_IGNORE_WRAPPER,
+                           true}})
+                  << " $" << fieldName << ")[]: void {\n";
+      indent_up();
+
+      t_name_generator namer;
+      generate_php_struct_async_struct_creation_method_field_assignment(
+          out,
+          tstruct,
+          field,
+          "$" + fieldName,
+          struct_hack_name_with_ns,
+          namer,
+          false,
+          true,
+          "$this");
+      indent_down();
+      indent(out) << "}\n\n";
+    }
   }
 }
 

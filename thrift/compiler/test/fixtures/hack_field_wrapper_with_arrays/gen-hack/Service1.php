@@ -1174,6 +1174,11 @@ class Service1_func2_args implements \IThriftAsyncStruct, \IThriftShapishAsyncSt
   );
   const int STRUCTURAL_ID = 7334474533984828341;
   public ?StructWithWrapper $arg1;
+
+  public function set_arg1_DO_NOT_USE_THRIFT_INTERNAL(\thrift_adapted_types\StructWithWrapper $arg1)[]: void {
+    $this->arg1 = \MyStructWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<\thrift_adapted_types\StructWithWrapper>($arg1);
+  }
+
   public i64WithWrapper $arg2;
 
   public function __construct()[] {

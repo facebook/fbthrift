@@ -392,6 +392,12 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
   }
 
 
+  public function set_double_wrapped_struct_DO_NOT_USE_THRIFT_INTERNAL(\thrift_adapted_types\StructWithWrapper $double_wrapped_struct)[]: void {
+    $double_wrapped_struct = \MyStructWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<\thrift_adapted_types\StructWithWrapper>($double_wrapped_struct);
+    $this->get_double_wrapped_struct()->setValue_DO_NOT_USE_THRIFT_INTERNAL($double_wrapped_struct);
+  }
+
+
   public function __construct()[] {
     $this->adapted_type = \MyAdapter1::fromThrift(0);
     $this->wrapped_field = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<int, MyNestedStruct>(0, 1, $this);
@@ -1009,6 +1015,19 @@ class MyComplexStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct
    * 7: list<map<string, struct include.StructWithWrapper>> list_of_map_of_string_to_StructWithWrapper
    */
   public vec<dict<string, StructWithWrapper>> $list_of_map_of_string_to_StructWithWrapper;
+
+  public function set_list_of_map_of_string_to_StructWithWrapper_DO_NOT_USE_THRIFT_INTERNAL(vec<dict<string, \thrift_adapted_types\StructWithWrapper>> $list_of_map_of_string_to_StructWithWrapper)[]: void {
+    $this->list_of_map_of_string_to_StructWithWrapper = Vec\map(
+      $list_of_map_of_string_to_StructWithWrapper,
+      $val0 ==> 
+        Dict\map(
+          $val0,
+          $val1 ==> 
+            \MyStructWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<\thrift_adapted_types\StructWithWrapper>($val1)
+        )
+    );
+  }
+
 
   public function __construct()[] {
     $this->map_of_string_to_MyStruct = dict[];
