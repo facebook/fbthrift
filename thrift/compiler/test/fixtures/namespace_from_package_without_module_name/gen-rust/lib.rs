@@ -175,7 +175,7 @@ pub mod client {
             &self,
             arg_int1: ::std::primitive::i64,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i64, crate::errors::test_service::InitError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i64, crate::errors::test_service::InitError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -221,7 +221,7 @@ pub mod client {
         fn init(
             &self,
             arg_int1: ::std::primitive::i64,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i64, crate::errors::test_service::InitError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i64, crate::errors::test_service::InitError>>;
     }
 
     pub trait TestServiceExt<T>: TestService
@@ -232,7 +232,7 @@ pub mod client {
             &self,
             arg_int1: ::std::primitive::i64,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i64, crate::errors::test_service::InitError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i64, crate::errors::test_service::InitError>>;
     }
 
     struct Args_TestService_init<'a> {
@@ -265,7 +265,7 @@ pub mod client {
         fn init(
             &self,
             arg_int1: ::std::primitive::i64,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i64, crate::errors::test_service::InitError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i64, crate::errors::test_service::InitError>> {
             let rpc_options = T::RpcOptions::default();
             self._init_impl(
                 arg_int1,
@@ -287,7 +287,7 @@ pub mod client {
             &self,
             arg_int1: ::std::primitive::i64,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i64, crate::errors::test_service::InitError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i64, crate::errors::test_service::InitError>> {
             self._init_impl(
                 arg_int1,
                 rpc_options,
@@ -303,7 +303,7 @@ pub mod client {
         fn init(
             &self,
             arg_int1: ::std::primitive::i64,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i64, crate::errors::test_service::InitError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i64, crate::errors::test_service::InitError>> {
             self.as_ref().init(
                 arg_int1,
             )
@@ -321,7 +321,7 @@ pub mod client {
             &self,
             arg_int1: ::std::primitive::i64,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i64, crate::errors::test_service::InitError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i64, crate::errors::test_service::InitError>> {
             <Self as ::std::convert::AsRef<dyn TestServiceExt<T>>>::as_ref(self).init_with_rpc_opts(
                 arg_int1,
                 rpc_options,
@@ -868,7 +868,7 @@ pub mod mock {
         fn init(
             &self,
             arg_int1: ::std::primitive::i64,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i64, crate::errors::test_service::InitError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i64, crate::errors::test_service::InitError>> {
             let mut closure = self.init.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut(::std::primitive::i64) -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure(arg_int1.clone())))

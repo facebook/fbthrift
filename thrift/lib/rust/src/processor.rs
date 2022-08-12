@@ -16,7 +16,6 @@
 
 use std::ffi::CStr;
 use std::marker::PhantomData;
-use std::pin::Pin;
 use std::sync::Arc;
 use std::sync::Mutex;
 
@@ -24,7 +23,7 @@ use anyhow::bail;
 use anyhow::Error;
 use anyhow::Result;
 use async_trait::async_trait;
-use futures::stream::Stream;
+use futures::stream::BoxStream;
 
 use crate::application_exception::ApplicationException;
 use crate::application_exception::ApplicationExceptionErrorCode;
@@ -51,9 +50,7 @@ where
     fn send_stream_reply(
         &mut self,
         response: FramingEncodedFinal<F>,
-        stream: Option<
-            Pin<Box<dyn Stream<Item = Result<FramingEncodedFinal<F>>> + Send + 'static>>,
-        >,
+        stream: Option<BoxStream<'static, Result<FramingEncodedFinal<F>>>>,
         protocol_id: ProtocolID,
     ) -> Result<()>;
 }

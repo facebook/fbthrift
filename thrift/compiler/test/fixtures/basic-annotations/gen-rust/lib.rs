@@ -1531,7 +1531,7 @@ pub mod client {
         fn _ping_impl(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PingError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::PingError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -1574,7 +1574,7 @@ pub mod client {
         fn _getRandomData_impl(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -1618,7 +1618,7 @@ pub mod client {
             &self,
             arg_id: ::std::primitive::i64,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::bool, crate::errors::my_service::HasDataByIdError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_service::HasDataByIdError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -1663,7 +1663,7 @@ pub mod client {
             &self,
             arg_id: ::std::primitive::i64,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetDataByIdError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::string::String, crate::errors::my_service::GetDataByIdError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -1709,7 +1709,7 @@ pub mod client {
             arg_id: ::std::primitive::i64,
             arg_data: &::std::primitive::str,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PutDataByIdError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::PutDataByIdError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -1756,7 +1756,7 @@ pub mod client {
             arg_id: ::std::primitive::i64,
             arg_data: &::std::primitive::str,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::LobDataByIdError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::LobDataByIdError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -1801,7 +1801,7 @@ pub mod client {
         fn _doNothing_impl(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::DoNothingError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::DoNothingError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -1845,37 +1845,37 @@ pub mod client {
     pub trait MyService: ::std::marker::Send {
         fn ping(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PingError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::PingError>>;
 
         fn getRandomData(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>>;
 
         fn hasDataById(
             &self,
             arg_id: ::std::primitive::i64,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::bool, crate::errors::my_service::HasDataByIdError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_service::HasDataByIdError>>;
 
         fn getDataById(
             &self,
             arg_id: ::std::primitive::i64,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetDataByIdError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::string::String, crate::errors::my_service::GetDataByIdError>>;
 
         fn putDataById(
             &self,
             arg_id: ::std::primitive::i64,
             arg_data: &::std::primitive::str,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PutDataByIdError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::PutDataByIdError>>;
 
         fn lobDataById(
             &self,
             arg_id: ::std::primitive::i64,
             arg_data: &::std::primitive::str,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::LobDataByIdError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::LobDataByIdError>>;
 
         fn doNothing(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::DoNothingError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::DoNothingError>>;
     }
 
     pub trait MyServiceExt<T>: MyService
@@ -1885,37 +1885,37 @@ pub mod client {
         fn ping_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PingError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::PingError>>;
         fn getRandomData_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>>;
         fn hasDataById_with_rpc_opts(
             &self,
             arg_id: ::std::primitive::i64,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::bool, crate::errors::my_service::HasDataByIdError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_service::HasDataByIdError>>;
         fn getDataById_with_rpc_opts(
             &self,
             arg_id: ::std::primitive::i64,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetDataByIdError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::string::String, crate::errors::my_service::GetDataByIdError>>;
         fn putDataById_with_rpc_opts(
             &self,
             arg_id: ::std::primitive::i64,
             arg_data: &::std::primitive::str,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PutDataByIdError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::PutDataByIdError>>;
         fn lobDataById_with_rpc_opts(
             &self,
             arg_id: ::std::primitive::i64,
             arg_data: &::std::primitive::str,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::LobDataByIdError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::LobDataByIdError>>;
         fn doNothing_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::DoNothingError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::DoNothingError>>;
     }
 
     struct Args_MyService_ping<'a> {
@@ -2051,7 +2051,7 @@ pub mod client {
     {
         fn ping(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PingError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::PingError>> {
             let rpc_options = T::RpcOptions::default();
             self._ping_impl(
                 rpc_options,
@@ -2059,7 +2059,7 @@ pub mod client {
         }
         fn getRandomData(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> {
             let rpc_options = T::RpcOptions::default();
             self._getRandomData_impl(
                 rpc_options,
@@ -2068,7 +2068,7 @@ pub mod client {
         fn hasDataById(
             &self,
             arg_id: ::std::primitive::i64,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::bool, crate::errors::my_service::HasDataByIdError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_service::HasDataByIdError>> {
             let rpc_options = T::RpcOptions::default();
             self._hasDataById_impl(
                 arg_id,
@@ -2078,7 +2078,7 @@ pub mod client {
         fn getDataById(
             &self,
             arg_id: ::std::primitive::i64,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetDataByIdError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::string::String, crate::errors::my_service::GetDataByIdError>> {
             let rpc_options = T::RpcOptions::default();
             self._getDataById_impl(
                 arg_id,
@@ -2089,7 +2089,7 @@ pub mod client {
             &self,
             arg_id: ::std::primitive::i64,
             arg_data: &::std::primitive::str,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PutDataByIdError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::PutDataByIdError>> {
             let rpc_options = T::RpcOptions::default();
             self._putDataById_impl(
                 arg_id,
@@ -2101,7 +2101,7 @@ pub mod client {
             &self,
             arg_id: ::std::primitive::i64,
             arg_data: &::std::primitive::str,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::LobDataByIdError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::LobDataByIdError>> {
             let rpc_options = T::RpcOptions::default();
             self._lobDataById_impl(
                 arg_id,
@@ -2111,7 +2111,7 @@ pub mod client {
         }
         fn doNothing(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::DoNothingError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::DoNothingError>> {
             let rpc_options = T::RpcOptions::default();
             self._doNothing_impl(
                 rpc_options,
@@ -2131,7 +2131,7 @@ pub mod client {
         fn ping_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PingError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::PingError>> {
             self._ping_impl(
                 rpc_options,
             )
@@ -2139,7 +2139,7 @@ pub mod client {
         fn getRandomData_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> {
             self._getRandomData_impl(
                 rpc_options,
             )
@@ -2148,7 +2148,7 @@ pub mod client {
             &self,
             arg_id: ::std::primitive::i64,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::bool, crate::errors::my_service::HasDataByIdError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_service::HasDataByIdError>> {
             self._hasDataById_impl(
                 arg_id,
                 rpc_options,
@@ -2158,7 +2158,7 @@ pub mod client {
             &self,
             arg_id: ::std::primitive::i64,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetDataByIdError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::string::String, crate::errors::my_service::GetDataByIdError>> {
             self._getDataById_impl(
                 arg_id,
                 rpc_options,
@@ -2169,7 +2169,7 @@ pub mod client {
             arg_id: ::std::primitive::i64,
             arg_data: &::std::primitive::str,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PutDataByIdError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::PutDataByIdError>> {
             self._putDataById_impl(
                 arg_id,
                 arg_data,
@@ -2181,7 +2181,7 @@ pub mod client {
             arg_id: ::std::primitive::i64,
             arg_data: &::std::primitive::str,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::LobDataByIdError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::LobDataByIdError>> {
             self._lobDataById_impl(
                 arg_id,
                 arg_data,
@@ -2191,7 +2191,7 @@ pub mod client {
         fn doNothing_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::DoNothingError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::DoNothingError>> {
             self._doNothing_impl(
                 rpc_options,
             )
@@ -2205,20 +2205,20 @@ pub mod client {
     {
         fn ping(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PingError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::PingError>> {
             self.as_ref().ping(
             )
         }
         fn getRandomData(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> {
             self.as_ref().getRandomData(
             )
         }
         fn hasDataById(
             &self,
             arg_id: ::std::primitive::i64,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::bool, crate::errors::my_service::HasDataByIdError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_service::HasDataByIdError>> {
             self.as_ref().hasDataById(
                 arg_id,
             )
@@ -2226,7 +2226,7 @@ pub mod client {
         fn getDataById(
             &self,
             arg_id: ::std::primitive::i64,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetDataByIdError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::string::String, crate::errors::my_service::GetDataByIdError>> {
             self.as_ref().getDataById(
                 arg_id,
             )
@@ -2235,7 +2235,7 @@ pub mod client {
             &self,
             arg_id: ::std::primitive::i64,
             arg_data: &::std::primitive::str,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PutDataByIdError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::PutDataByIdError>> {
             self.as_ref().putDataById(
                 arg_id,
                 arg_data,
@@ -2245,7 +2245,7 @@ pub mod client {
             &self,
             arg_id: ::std::primitive::i64,
             arg_data: &::std::primitive::str,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::LobDataByIdError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::LobDataByIdError>> {
             self.as_ref().lobDataById(
                 arg_id,
                 arg_data,
@@ -2253,7 +2253,7 @@ pub mod client {
         }
         fn doNothing(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::DoNothingError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::DoNothingError>> {
             self.as_ref().doNothing(
             )
         }
@@ -2269,7 +2269,7 @@ pub mod client {
         fn ping_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PingError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::PingError>> {
             <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).ping_with_rpc_opts(
                 rpc_options,
             )
@@ -2277,7 +2277,7 @@ pub mod client {
         fn getRandomData_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> {
             <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).getRandomData_with_rpc_opts(
                 rpc_options,
             )
@@ -2286,7 +2286,7 @@ pub mod client {
             &self,
             arg_id: ::std::primitive::i64,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::bool, crate::errors::my_service::HasDataByIdError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_service::HasDataByIdError>> {
             <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).hasDataById_with_rpc_opts(
                 arg_id,
                 rpc_options,
@@ -2296,7 +2296,7 @@ pub mod client {
             &self,
             arg_id: ::std::primitive::i64,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetDataByIdError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::string::String, crate::errors::my_service::GetDataByIdError>> {
             <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).getDataById_with_rpc_opts(
                 arg_id,
                 rpc_options,
@@ -2307,7 +2307,7 @@ pub mod client {
             arg_id: ::std::primitive::i64,
             arg_data: &::std::primitive::str,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PutDataByIdError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::PutDataByIdError>> {
             <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).putDataById_with_rpc_opts(
                 arg_id,
                 arg_data,
@@ -2319,7 +2319,7 @@ pub mod client {
             arg_id: ::std::primitive::i64,
             arg_data: &::std::primitive::str,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::LobDataByIdError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::LobDataByIdError>> {
             <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).lobDataById_with_rpc_opts(
                 arg_id,
                 arg_data,
@@ -2329,7 +2329,7 @@ pub mod client {
         fn doNothing_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::DoNothingError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::DoNothingError>> {
             <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).doNothing_with_rpc_opts(
                 rpc_options,
             )
@@ -2466,7 +2466,7 @@ pub mod client {
         fn _ping_impl(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service_prio_parent::PingError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service_prio_parent::PingError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -2509,7 +2509,7 @@ pub mod client {
         fn _pong_impl(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service_prio_parent::PongError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service_prio_parent::PongError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -2553,11 +2553,11 @@ pub mod client {
     pub trait MyServicePrioParent: ::std::marker::Send {
         fn ping(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service_prio_parent::PingError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service_prio_parent::PingError>>;
 
         fn pong(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service_prio_parent::PongError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service_prio_parent::PongError>>;
     }
 
     pub trait MyServicePrioParentExt<T>: MyServicePrioParent
@@ -2567,11 +2567,11 @@ pub mod client {
         fn ping_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service_prio_parent::PingError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service_prio_parent::PingError>>;
         fn pong_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service_prio_parent::PongError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service_prio_parent::PongError>>;
     }
 
     struct Args_MyServicePrioParent_ping<'a> {
@@ -2613,7 +2613,7 @@ pub mod client {
     {
         fn ping(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service_prio_parent::PingError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service_prio_parent::PingError>> {
             let rpc_options = T::RpcOptions::default();
             self._ping_impl(
                 rpc_options,
@@ -2621,7 +2621,7 @@ pub mod client {
         }
         fn pong(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service_prio_parent::PongError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service_prio_parent::PongError>> {
             let rpc_options = T::RpcOptions::default();
             self._pong_impl(
                 rpc_options,
@@ -2641,7 +2641,7 @@ pub mod client {
         fn ping_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service_prio_parent::PingError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service_prio_parent::PingError>> {
             self._ping_impl(
                 rpc_options,
             )
@@ -2649,7 +2649,7 @@ pub mod client {
         fn pong_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service_prio_parent::PongError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service_prio_parent::PongError>> {
             self._pong_impl(
                 rpc_options,
             )
@@ -2663,13 +2663,13 @@ pub mod client {
     {
         fn ping(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service_prio_parent::PingError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service_prio_parent::PingError>> {
             self.as_ref().ping(
             )
         }
         fn pong(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service_prio_parent::PongError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service_prio_parent::PongError>> {
             self.as_ref().pong(
             )
         }
@@ -2685,7 +2685,7 @@ pub mod client {
         fn ping_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service_prio_parent::PingError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service_prio_parent::PingError>> {
             <Self as ::std::convert::AsRef<dyn MyServicePrioParentExt<T>>>::as_ref(self).ping_with_rpc_opts(
                 rpc_options,
             )
@@ -2693,7 +2693,7 @@ pub mod client {
         fn pong_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service_prio_parent::PongError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service_prio_parent::PongError>> {
             <Self as ::std::convert::AsRef<dyn MyServicePrioParentExt<T>>>::as_ref(self).pong_with_rpc_opts(
                 rpc_options,
             )
@@ -2828,7 +2828,7 @@ pub mod client {
         fn _pang_impl(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service_prio_child::PangError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service_prio_child::PangError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -2902,7 +2902,7 @@ pub mod client {
     pub trait MyServicePrioChild: crate::client::MyServicePrioParent + ::std::marker::Send {
         fn pang(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service_prio_child::PangError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service_prio_child::PangError>>;
     }
 
     pub trait MyServicePrioChildExt<T>: MyServicePrioChild + crate::client::MyServicePrioParentExt<T>
@@ -2912,7 +2912,7 @@ pub mod client {
         fn pang_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service_prio_child::PangError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service_prio_child::PangError>>;
     }
 
     struct Args_MyServicePrioChild_pang<'a> {
@@ -2940,7 +2940,7 @@ pub mod client {
     {
         fn pang(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service_prio_child::PangError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service_prio_child::PangError>> {
             let rpc_options = T::RpcOptions::default();
             self._pang_impl(
                 rpc_options,
@@ -2960,7 +2960,7 @@ pub mod client {
         fn pang_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service_prio_child::PangError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service_prio_child::PangError>> {
             self._pang_impl(
                 rpc_options,
             )
@@ -2975,7 +2975,7 @@ pub mod client {
     {
         fn pang(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service_prio_child::PangError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service_prio_child::PangError>> {
             self.as_ref().pang(
             )
         }
@@ -2993,7 +2993,7 @@ pub mod client {
         fn pang_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service_prio_child::PangError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service_prio_child::PangError>> {
             <Self as ::std::convert::AsRef<dyn MyServicePrioChildExt<T>>>::as_ref(self).pang_with_rpc_opts(
                 rpc_options,
             )
@@ -3130,7 +3130,7 @@ pub mod client {
         fn _foo_impl(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::bad_interaction::FooError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::bad_interaction::FooError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -3174,7 +3174,7 @@ pub mod client {
     pub trait BadInteraction: ::std::marker::Send {
         fn foo(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::bad_interaction::FooError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::bad_interaction::FooError>>;
     }
 
     pub trait BadInteractionExt<T>: BadInteraction
@@ -3184,7 +3184,7 @@ pub mod client {
         fn foo_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::bad_interaction::FooError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::bad_interaction::FooError>>;
     }
 
     struct Args_BadInteraction_foo<'a> {
@@ -3212,7 +3212,7 @@ pub mod client {
     {
         fn foo(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::bad_interaction::FooError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::bad_interaction::FooError>> {
             let rpc_options = T::RpcOptions::default();
             self._foo_impl(
                 rpc_options,
@@ -3232,7 +3232,7 @@ pub mod client {
         fn foo_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::bad_interaction::FooError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::bad_interaction::FooError>> {
             self._foo_impl(
                 rpc_options,
             )
@@ -3246,7 +3246,7 @@ pub mod client {
     {
         fn foo(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::bad_interaction::FooError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::bad_interaction::FooError>> {
             self.as_ref().foo(
             )
         }
@@ -3262,7 +3262,7 @@ pub mod client {
         fn foo_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::bad_interaction::FooError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::bad_interaction::FooError>> {
             <Self as ::std::convert::AsRef<dyn BadInteractionExt<T>>>::as_ref(self).foo_with_rpc_opts(
                 rpc_options,
             )
@@ -3400,7 +3400,7 @@ pub mod client {
         fn _bar_impl(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::bad_service::BarError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::bad_service::BarError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -3448,7 +3448,7 @@ pub mod client {
 
         fn bar(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::bad_service::BarError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::bad_service::BarError>>;
     }
 
     pub trait BadServiceExt<T>: BadService
@@ -3458,7 +3458,7 @@ pub mod client {
         fn bar_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::bad_service::BarError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::bad_service::BarError>>;
     }
 
     struct Args_BadService_bar<'a> {
@@ -3502,7 +3502,7 @@ pub mod client {
         }
         fn bar(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::bad_service::BarError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::bad_service::BarError>> {
             let rpc_options = T::RpcOptions::default();
             self._bar_impl(
                 rpc_options,
@@ -3522,7 +3522,7 @@ pub mod client {
         fn bar_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::bad_service::BarError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::bad_service::BarError>> {
             self._bar_impl(
                 rpc_options,
             )
@@ -3541,7 +3541,7 @@ pub mod client {
         }
         fn bar(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::bad_service::BarError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::bad_service::BarError>> {
             self.as_ref().bar(
             )
         }
@@ -3557,7 +3557,7 @@ pub mod client {
         fn bar_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::bad_service::BarError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::bad_service::BarError>> {
             <Self as ::std::convert::AsRef<dyn BadServiceExt<T>>>::as_ref(self).bar_with_rpc_opts(
                 rpc_options,
             )
@@ -6225,14 +6225,14 @@ pub mod mock {
     impl<'mock> super::client::MyService for MyService<'mock> {
         fn ping(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PingError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::PingError>> {
             let mut closure = self.ping.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut() -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure()))
         }
         fn getRandomData(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> {
             let mut closure = self.getRandomData.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut() -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure()))
@@ -6240,7 +6240,7 @@ pub mod mock {
         fn hasDataById(
             &self,
             arg_id: ::std::primitive::i64,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::bool, crate::errors::my_service::HasDataByIdError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_service::HasDataByIdError>> {
             let mut closure = self.hasDataById.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut(::std::primitive::i64) -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure(arg_id.clone())))
@@ -6248,7 +6248,7 @@ pub mod mock {
         fn getDataById(
             &self,
             arg_id: ::std::primitive::i64,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetDataByIdError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::string::String, crate::errors::my_service::GetDataByIdError>> {
             let mut closure = self.getDataById.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut(::std::primitive::i64) -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure(arg_id.clone())))
@@ -6257,7 +6257,7 @@ pub mod mock {
             &self,
             arg_id: ::std::primitive::i64,
             arg_data: &::std::primitive::str,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PutDataByIdError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::PutDataByIdError>> {
             let mut closure = self.putDataById.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut(::std::primitive::i64, ::std::string::String) -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure(arg_id.clone(), arg_data.to_owned())))
@@ -6266,14 +6266,14 @@ pub mod mock {
             &self,
             arg_id: ::std::primitive::i64,
             arg_data: &::std::primitive::str,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::LobDataByIdError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::LobDataByIdError>> {
             let mut closure = self.lobDataById.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut(::std::primitive::i64, ::std::string::String) -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure(arg_id.clone(), arg_data.to_owned())))
         }
         fn doNothing(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::DoNothingError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::DoNothingError>> {
             let mut closure = self.doNothing.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut() -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure()))
@@ -6300,14 +6300,14 @@ pub mod mock {
     impl<'mock> super::client::MyServicePrioParent for MyServicePrioParent<'mock> {
         fn ping(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service_prio_parent::PingError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service_prio_parent::PingError>> {
             let mut closure = self.ping.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut() -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure()))
         }
         fn pong(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service_prio_parent::PongError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service_prio_parent::PongError>> {
             let mut closure = self.pong.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut() -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure()))
@@ -6334,7 +6334,7 @@ pub mod mock {
     impl<'mock> super::client::MyServicePrioChild for MyServicePrioChild<'mock> {
         fn pang(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service_prio_child::PangError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service_prio_child::PangError>> {
             let mut closure = self.pang.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut() -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure()))
@@ -6373,7 +6373,7 @@ pub mod mock {
         }
         fn bar(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::bad_service::BarError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::bad_service::BarError>> {
             let mut closure = self.bar.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut() -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure()))

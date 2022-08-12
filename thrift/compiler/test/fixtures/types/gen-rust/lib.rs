@@ -299,7 +299,7 @@ pub mod client {
             &self,
             arg_m: &include::types::SomeMap,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -344,7 +344,7 @@ pub mod client {
             &self,
             arg_r: &[::std::primitive::i64],
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::errors::some_service::BinaryKeyedMapError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::errors::some_service::BinaryKeyedMapError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -390,12 +390,12 @@ pub mod client {
         fn bounce_map(
             &self,
             arg_m: &include::types::SomeMap,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>>;
 
         fn binary_keyed_map(
             &self,
             arg_r: &[::std::primitive::i64],
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::errors::some_service::BinaryKeyedMapError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::errors::some_service::BinaryKeyedMapError>>;
     }
 
     pub trait SomeServiceExt<T>: SomeService
@@ -406,12 +406,12 @@ pub mod client {
             &self,
             arg_m: &include::types::SomeMap,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>>;
         fn binary_keyed_map_with_rpc_opts(
             &self,
             arg_r: &[::std::primitive::i64],
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::errors::some_service::BinaryKeyedMapError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::errors::some_service::BinaryKeyedMapError>>;
     }
 
     struct Args_SomeService_bounce_map<'a> {
@@ -462,7 +462,7 @@ pub mod client {
         fn bounce_map(
             &self,
             arg_m: &include::types::SomeMap,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>> {
             let rpc_options = T::RpcOptions::default();
             self._bounce_map_impl(
                 arg_m,
@@ -472,7 +472,7 @@ pub mod client {
         fn binary_keyed_map(
             &self,
             arg_r: &[::std::primitive::i64],
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::errors::some_service::BinaryKeyedMapError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::errors::some_service::BinaryKeyedMapError>> {
             let rpc_options = T::RpcOptions::default();
             self._binary_keyed_map_impl(
                 arg_r,
@@ -494,7 +494,7 @@ pub mod client {
             &self,
             arg_m: &include::types::SomeMap,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>> {
             self._bounce_map_impl(
                 arg_m,
                 rpc_options,
@@ -504,7 +504,7 @@ pub mod client {
             &self,
             arg_r: &[::std::primitive::i64],
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::errors::some_service::BinaryKeyedMapError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::errors::some_service::BinaryKeyedMapError>> {
             self._binary_keyed_map_impl(
                 arg_r,
                 rpc_options,
@@ -520,7 +520,7 @@ pub mod client {
         fn bounce_map(
             &self,
             arg_m: &include::types::SomeMap,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>> {
             self.as_ref().bounce_map(
                 arg_m,
             )
@@ -528,7 +528,7 @@ pub mod client {
         fn binary_keyed_map(
             &self,
             arg_r: &[::std::primitive::i64],
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::errors::some_service::BinaryKeyedMapError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::errors::some_service::BinaryKeyedMapError>> {
             self.as_ref().binary_keyed_map(
                 arg_r,
             )
@@ -546,7 +546,7 @@ pub mod client {
             &self,
             arg_m: &include::types::SomeMap,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>> {
             <Self as ::std::convert::AsRef<dyn SomeServiceExt<T>>>::as_ref(self).bounce_map_with_rpc_opts(
                 arg_m,
                 rpc_options,
@@ -556,7 +556,7 @@ pub mod client {
             &self,
             arg_r: &[::std::primitive::i64],
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::errors::some_service::BinaryKeyedMapError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::errors::some_service::BinaryKeyedMapError>> {
             <Self as ::std::convert::AsRef<dyn SomeServiceExt<T>>>::as_ref(self).binary_keyed_map_with_rpc_opts(
                 arg_r,
                 rpc_options,
@@ -1228,7 +1228,7 @@ pub mod mock {
         fn bounce_map(
             &self,
             arg_m: &include::types::SomeMap,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>> {
             let mut closure = self.bounce_map.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut(include::types::SomeMap) -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure(arg_m.clone())))
@@ -1236,7 +1236,7 @@ pub mod mock {
         fn binary_keyed_map(
             &self,
             arg_r: &[::std::primitive::i64],
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::errors::some_service::BinaryKeyedMapError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::errors::some_service::BinaryKeyedMapError>> {
             let mut closure = self.binary_keyed_map.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut(::std::vec::Vec<::std::primitive::i64>) -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure(arg_r.to_owned())))

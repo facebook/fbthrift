@@ -261,7 +261,7 @@ pub mod services {
 
         pub enum ReturnstreamExn {
             #[doc(hidden)]
-            Success(::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>> + ::std::marker::Send + 'static >>),
+            Success(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>>),
             ApplicationException(::fbthrift::ApplicationException),
         }
 
@@ -579,7 +579,7 @@ pub mod services {
 
         pub enum StreamthrowsExn {
             #[doc(hidden)]
-            Success(::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>> + ::std::marker::Send + 'static >>),
+            Success(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>>),
             ApplicationException(::fbthrift::ApplicationException),
         }
 
@@ -896,7 +896,7 @@ pub mod services {
 
         pub enum ServicethrowsExn {
             #[doc(hidden)]
-            Success(::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>> + ::std::marker::Send + 'static >>),
+            Success(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>>),
             e(crate::types::FooEx),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1248,7 +1248,7 @@ pub mod services {
 
         pub enum BoththrowsExn {
             #[doc(hidden)]
-            Success(::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>> + ::std::marker::Send + 'static >>),
+            Success(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>>),
             e(crate::types::FooEx),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1584,7 +1584,7 @@ pub mod services {
 
         pub enum ResponseandstreamstreamthrowsExn {
             #[doc(hidden)]
-            Success((::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>> + ::std::marker::Send + 'static >>)),
+            Success((::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>>)),
             ApplicationException(::fbthrift::ApplicationException),
         }
 
@@ -1908,7 +1908,7 @@ pub mod services {
 
         pub enum ResponseandstreamservicethrowsExn {
             #[doc(hidden)]
-            Success((::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>> + ::std::marker::Send + 'static >>)),
+            Success((::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>>)),
             e(crate::types::FooEx),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -2267,7 +2267,7 @@ pub mod services {
 
         pub enum ResponseandstreamboththrowsExn {
             #[doc(hidden)]
-            Success((::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>> + ::std::marker::Send + 'static >>)),
+            Success((::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>>)),
             e(crate::types::FooEx),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -2572,7 +2572,7 @@ pub mod services {
 
         pub enum ReturnstreamFastExn {
             #[doc(hidden)]
-            Success(::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>> + ::std::marker::Send + 'static >>),
+            Success(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>>),
             ApplicationException(::fbthrift::ApplicationException),
         }
 
@@ -2658,7 +2658,7 @@ pub mod client {
             arg_i32_from: ::std::primitive::i32,
             arg_i32_to: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::ReturnstreamError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>>, crate::errors::pub_sub_streaming_service::ReturnstreamError>> {
             use ::const_cstr::const_cstr;
             use ::futures::future::FutureExt as _;
             use ::tracing::Instrument as _;
@@ -2723,7 +2723,7 @@ pub mod client {
             &self,
             arg_foo: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::StreamthrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>>, crate::errors::pub_sub_streaming_service::StreamthrowsError>> {
             use ::const_cstr::const_cstr;
             use ::futures::future::FutureExt as _;
             use ::tracing::Instrument as _;
@@ -2787,7 +2787,7 @@ pub mod client {
             &self,
             arg_foo: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::ServicethrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>>, crate::errors::pub_sub_streaming_service::ServicethrowsError>> {
             use ::const_cstr::const_cstr;
             use ::futures::future::FutureExt as _;
             use ::tracing::Instrument as _;
@@ -2851,7 +2851,7 @@ pub mod client {
             &self,
             arg_foo: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::BoththrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>>, crate::errors::pub_sub_streaming_service::BoththrowsError>> {
             use ::const_cstr::const_cstr;
             use ::futures::future::FutureExt as _;
             use ::tracing::Instrument as _;
@@ -2915,7 +2915,7 @@ pub mod client {
             &self,
             arg_foo: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>> + ::std::marker::Send + 'static >>), crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>>), crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsError>> {
             use ::const_cstr::const_cstr;
             use ::futures::future::FutureExt as _;
             use ::tracing::Instrument as _;
@@ -2979,7 +2979,7 @@ pub mod client {
             &self,
             arg_foo: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>> + ::std::marker::Send + 'static >>), crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>>), crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsError>> {
             use ::const_cstr::const_cstr;
             use ::futures::future::FutureExt as _;
             use ::tracing::Instrument as _;
@@ -3043,7 +3043,7 @@ pub mod client {
             &self,
             arg_foo: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>> + ::std::marker::Send + 'static >>), crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>>), crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsError>> {
             use ::const_cstr::const_cstr;
             use ::futures::future::FutureExt as _;
             use ::tracing::Instrument as _;
@@ -3108,7 +3108,7 @@ pub mod client {
             arg_i32_from: ::std::primitive::i32,
             arg_i32_to: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::ReturnstreamFastError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>>, crate::errors::pub_sub_streaming_service::ReturnstreamFastError>> {
             use ::const_cstr::const_cstr;
             use ::futures::future::FutureExt as _;
             use ::tracing::Instrument as _;
@@ -3175,43 +3175,43 @@ pub mod client {
             &self,
             arg_i32_from: ::std::primitive::i32,
             arg_i32_to: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::ReturnstreamError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>>, crate::errors::pub_sub_streaming_service::ReturnstreamError>>;
 
         fn streamthrows(
             &self,
             arg_foo: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::StreamthrowsError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>>, crate::errors::pub_sub_streaming_service::StreamthrowsError>>;
 
         fn servicethrows(
             &self,
             arg_foo: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::ServicethrowsError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>>, crate::errors::pub_sub_streaming_service::ServicethrowsError>>;
 
         fn boththrows(
             &self,
             arg_foo: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::BoththrowsError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>>, crate::errors::pub_sub_streaming_service::BoththrowsError>>;
 
         fn responseandstreamstreamthrows(
             &self,
             arg_foo: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>> + ::std::marker::Send + 'static >>), crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>>), crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsError>>;
 
         fn responseandstreamservicethrows(
             &self,
             arg_foo: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>> + ::std::marker::Send + 'static >>), crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>>), crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsError>>;
 
         fn responseandstreamboththrows(
             &self,
             arg_foo: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>> + ::std::marker::Send + 'static >>), crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>>), crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsError>>;
 
         fn returnstreamFast(
             &self,
             arg_i32_from: ::std::primitive::i32,
             arg_i32_to: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::ReturnstreamFastError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>>, crate::errors::pub_sub_streaming_service::ReturnstreamFastError>>;
     }
 
     pub trait PubSubStreamingServiceExt<T>: PubSubStreamingService
@@ -3223,43 +3223,43 @@ pub mod client {
             arg_i32_from: ::std::primitive::i32,
             arg_i32_to: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::ReturnstreamError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>>, crate::errors::pub_sub_streaming_service::ReturnstreamError>>;
         fn streamthrows_with_rpc_opts(
             &self,
             arg_foo: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::StreamthrowsError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>>, crate::errors::pub_sub_streaming_service::StreamthrowsError>>;
         fn servicethrows_with_rpc_opts(
             &self,
             arg_foo: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::ServicethrowsError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>>, crate::errors::pub_sub_streaming_service::ServicethrowsError>>;
         fn boththrows_with_rpc_opts(
             &self,
             arg_foo: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::BoththrowsError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>>, crate::errors::pub_sub_streaming_service::BoththrowsError>>;
         fn responseandstreamstreamthrows_with_rpc_opts(
             &self,
             arg_foo: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>> + ::std::marker::Send + 'static >>), crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>>), crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsError>>;
         fn responseandstreamservicethrows_with_rpc_opts(
             &self,
             arg_foo: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>> + ::std::marker::Send + 'static >>), crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>>), crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsError>>;
         fn responseandstreamboththrows_with_rpc_opts(
             &self,
             arg_foo: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>> + ::std::marker::Send + 'static >>), crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>>), crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsError>>;
         fn returnstreamFast_with_rpc_opts(
             &self,
             arg_i32_from: ::std::primitive::i32,
             arg_i32_to: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::ReturnstreamFastError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>>, crate::errors::pub_sub_streaming_service::ReturnstreamFastError>>;
     }
 
     struct Args_PubSubStreamingService_returnstream<'a> {
@@ -3427,7 +3427,7 @@ pub mod client {
             &self,
             arg_i32_from: ::std::primitive::i32,
             arg_i32_to: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::ReturnstreamError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>>, crate::errors::pub_sub_streaming_service::ReturnstreamError>> {
             let rpc_options = T::RpcOptions::default();
             self._returnstream_impl(
                 arg_i32_from,
@@ -3438,7 +3438,7 @@ pub mod client {
         fn streamthrows(
             &self,
             arg_foo: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::StreamthrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>>, crate::errors::pub_sub_streaming_service::StreamthrowsError>> {
             let rpc_options = T::RpcOptions::default();
             self._streamthrows_impl(
                 arg_foo,
@@ -3448,7 +3448,7 @@ pub mod client {
         fn servicethrows(
             &self,
             arg_foo: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::ServicethrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>>, crate::errors::pub_sub_streaming_service::ServicethrowsError>> {
             let rpc_options = T::RpcOptions::default();
             self._servicethrows_impl(
                 arg_foo,
@@ -3458,7 +3458,7 @@ pub mod client {
         fn boththrows(
             &self,
             arg_foo: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::BoththrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>>, crate::errors::pub_sub_streaming_service::BoththrowsError>> {
             let rpc_options = T::RpcOptions::default();
             self._boththrows_impl(
                 arg_foo,
@@ -3468,7 +3468,7 @@ pub mod client {
         fn responseandstreamstreamthrows(
             &self,
             arg_foo: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>> + ::std::marker::Send + 'static >>), crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>>), crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsError>> {
             let rpc_options = T::RpcOptions::default();
             self._responseandstreamstreamthrows_impl(
                 arg_foo,
@@ -3478,7 +3478,7 @@ pub mod client {
         fn responseandstreamservicethrows(
             &self,
             arg_foo: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>> + ::std::marker::Send + 'static >>), crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>>), crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsError>> {
             let rpc_options = T::RpcOptions::default();
             self._responseandstreamservicethrows_impl(
                 arg_foo,
@@ -3488,7 +3488,7 @@ pub mod client {
         fn responseandstreamboththrows(
             &self,
             arg_foo: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>> + ::std::marker::Send + 'static >>), crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>>), crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsError>> {
             let rpc_options = T::RpcOptions::default();
             self._responseandstreamboththrows_impl(
                 arg_foo,
@@ -3499,7 +3499,7 @@ pub mod client {
             &self,
             arg_i32_from: ::std::primitive::i32,
             arg_i32_to: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::ReturnstreamFastError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>>, crate::errors::pub_sub_streaming_service::ReturnstreamFastError>> {
             let rpc_options = T::RpcOptions::default();
             self._returnstreamFast_impl(
                 arg_i32_from,
@@ -3523,7 +3523,7 @@ pub mod client {
             arg_i32_from: ::std::primitive::i32,
             arg_i32_to: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::ReturnstreamError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>>, crate::errors::pub_sub_streaming_service::ReturnstreamError>> {
             self._returnstream_impl(
                 arg_i32_from,
                 arg_i32_to,
@@ -3534,7 +3534,7 @@ pub mod client {
             &self,
             arg_foo: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::StreamthrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>>, crate::errors::pub_sub_streaming_service::StreamthrowsError>> {
             self._streamthrows_impl(
                 arg_foo,
                 rpc_options,
@@ -3544,7 +3544,7 @@ pub mod client {
             &self,
             arg_foo: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::ServicethrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>>, crate::errors::pub_sub_streaming_service::ServicethrowsError>> {
             self._servicethrows_impl(
                 arg_foo,
                 rpc_options,
@@ -3554,7 +3554,7 @@ pub mod client {
             &self,
             arg_foo: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::BoththrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>>, crate::errors::pub_sub_streaming_service::BoththrowsError>> {
             self._boththrows_impl(
                 arg_foo,
                 rpc_options,
@@ -3564,7 +3564,7 @@ pub mod client {
             &self,
             arg_foo: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>> + ::std::marker::Send + 'static >>), crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>>), crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsError>> {
             self._responseandstreamstreamthrows_impl(
                 arg_foo,
                 rpc_options,
@@ -3574,7 +3574,7 @@ pub mod client {
             &self,
             arg_foo: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>> + ::std::marker::Send + 'static >>), crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>>), crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsError>> {
             self._responseandstreamservicethrows_impl(
                 arg_foo,
                 rpc_options,
@@ -3584,7 +3584,7 @@ pub mod client {
             &self,
             arg_foo: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>> + ::std::marker::Send + 'static >>), crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>>), crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsError>> {
             self._responseandstreamboththrows_impl(
                 arg_foo,
                 rpc_options,
@@ -3595,7 +3595,7 @@ pub mod client {
             arg_i32_from: ::std::primitive::i32,
             arg_i32_to: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::ReturnstreamFastError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>>, crate::errors::pub_sub_streaming_service::ReturnstreamFastError>> {
             self._returnstreamFast_impl(
                 arg_i32_from,
                 arg_i32_to,
@@ -3613,7 +3613,7 @@ pub mod client {
             &self,
             arg_i32_from: ::std::primitive::i32,
             arg_i32_to: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::ReturnstreamError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>>, crate::errors::pub_sub_streaming_service::ReturnstreamError>> {
             self.as_ref().returnstream(
                 arg_i32_from,
                 arg_i32_to,
@@ -3622,7 +3622,7 @@ pub mod client {
         fn streamthrows(
             &self,
             arg_foo: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::StreamthrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>>, crate::errors::pub_sub_streaming_service::StreamthrowsError>> {
             self.as_ref().streamthrows(
                 arg_foo,
             )
@@ -3630,7 +3630,7 @@ pub mod client {
         fn servicethrows(
             &self,
             arg_foo: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::ServicethrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>>, crate::errors::pub_sub_streaming_service::ServicethrowsError>> {
             self.as_ref().servicethrows(
                 arg_foo,
             )
@@ -3638,7 +3638,7 @@ pub mod client {
         fn boththrows(
             &self,
             arg_foo: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::BoththrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>>, crate::errors::pub_sub_streaming_service::BoththrowsError>> {
             self.as_ref().boththrows(
                 arg_foo,
             )
@@ -3646,7 +3646,7 @@ pub mod client {
         fn responseandstreamstreamthrows(
             &self,
             arg_foo: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>> + ::std::marker::Send + 'static >>), crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>>), crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsError>> {
             self.as_ref().responseandstreamstreamthrows(
                 arg_foo,
             )
@@ -3654,7 +3654,7 @@ pub mod client {
         fn responseandstreamservicethrows(
             &self,
             arg_foo: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>> + ::std::marker::Send + 'static >>), crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>>), crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsError>> {
             self.as_ref().responseandstreamservicethrows(
                 arg_foo,
             )
@@ -3662,7 +3662,7 @@ pub mod client {
         fn responseandstreamboththrows(
             &self,
             arg_foo: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>> + ::std::marker::Send + 'static >>), crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>>), crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsError>> {
             self.as_ref().responseandstreamboththrows(
                 arg_foo,
             )
@@ -3671,7 +3671,7 @@ pub mod client {
             &self,
             arg_i32_from: ::std::primitive::i32,
             arg_i32_to: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::ReturnstreamFastError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>>, crate::errors::pub_sub_streaming_service::ReturnstreamFastError>> {
             self.as_ref().returnstreamFast(
                 arg_i32_from,
                 arg_i32_to,
@@ -3691,7 +3691,7 @@ pub mod client {
             arg_i32_from: ::std::primitive::i32,
             arg_i32_to: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::ReturnstreamError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>>, crate::errors::pub_sub_streaming_service::ReturnstreamError>> {
             <Self as ::std::convert::AsRef<dyn PubSubStreamingServiceExt<T>>>::as_ref(self).returnstream_with_rpc_opts(
                 arg_i32_from,
                 arg_i32_to,
@@ -3702,7 +3702,7 @@ pub mod client {
             &self,
             arg_foo: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::StreamthrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>>, crate::errors::pub_sub_streaming_service::StreamthrowsError>> {
             <Self as ::std::convert::AsRef<dyn PubSubStreamingServiceExt<T>>>::as_ref(self).streamthrows_with_rpc_opts(
                 arg_foo,
                 rpc_options,
@@ -3712,7 +3712,7 @@ pub mod client {
             &self,
             arg_foo: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::ServicethrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>>, crate::errors::pub_sub_streaming_service::ServicethrowsError>> {
             <Self as ::std::convert::AsRef<dyn PubSubStreamingServiceExt<T>>>::as_ref(self).servicethrows_with_rpc_opts(
                 arg_foo,
                 rpc_options,
@@ -3722,7 +3722,7 @@ pub mod client {
             &self,
             arg_foo: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::BoththrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>>, crate::errors::pub_sub_streaming_service::BoththrowsError>> {
             <Self as ::std::convert::AsRef<dyn PubSubStreamingServiceExt<T>>>::as_ref(self).boththrows_with_rpc_opts(
                 arg_foo,
                 rpc_options,
@@ -3732,7 +3732,7 @@ pub mod client {
             &self,
             arg_foo: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>> + ::std::marker::Send + 'static >>), crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>>), crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsError>> {
             <Self as ::std::convert::AsRef<dyn PubSubStreamingServiceExt<T>>>::as_ref(self).responseandstreamstreamthrows_with_rpc_opts(
                 arg_foo,
                 rpc_options,
@@ -3742,7 +3742,7 @@ pub mod client {
             &self,
             arg_foo: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>> + ::std::marker::Send + 'static >>), crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>>), crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsError>> {
             <Self as ::std::convert::AsRef<dyn PubSubStreamingServiceExt<T>>>::as_ref(self).responseandstreamservicethrows_with_rpc_opts(
                 arg_foo,
                 rpc_options,
@@ -3752,7 +3752,7 @@ pub mod client {
             &self,
             arg_foo: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>> + ::std::marker::Send + 'static >>), crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>>), crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsError>> {
             <Self as ::std::convert::AsRef<dyn PubSubStreamingServiceExt<T>>>::as_ref(self).responseandstreamboththrows_with_rpc_opts(
                 arg_foo,
                 rpc_options,
@@ -3763,7 +3763,7 @@ pub mod client {
             arg_i32_from: ::std::primitive::i32,
             arg_i32_to: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::ReturnstreamFastError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>>, crate::errors::pub_sub_streaming_service::ReturnstreamFastError>> {
             <Self as ::std::convert::AsRef<dyn PubSubStreamingServiceExt<T>>>::as_ref(self).returnstreamFast_with_rpc_opts(
                 arg_i32_from,
                 arg_i32_to,
@@ -3882,7 +3882,7 @@ pub mod server {
             &self,
             _i32_from: ::std::primitive::i32,
             _i32_to: ::std::primitive::i32,
-        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>> + ::std::marker::Send + 'static >>, crate::services::pub_sub_streaming_service::ReturnstreamExn> {
+        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>>, crate::services::pub_sub_streaming_service::ReturnstreamExn> {
             ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ReturnstreamExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "PubSubStreamingService",
@@ -3895,7 +3895,7 @@ pub mod server {
         async fn streamthrows(
             &self,
             _foo: ::std::primitive::i32,
-        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>> + ::std::marker::Send + 'static >>, crate::services::pub_sub_streaming_service::StreamthrowsExn> {
+        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>>, crate::services::pub_sub_streaming_service::StreamthrowsExn> {
             ::std::result::Result::Err(crate::services::pub_sub_streaming_service::StreamthrowsExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "PubSubStreamingService",
@@ -3908,7 +3908,7 @@ pub mod server {
         async fn servicethrows(
             &self,
             _foo: ::std::primitive::i32,
-        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>> + ::std::marker::Send + 'static >>, crate::services::pub_sub_streaming_service::ServicethrowsExn> {
+        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>>, crate::services::pub_sub_streaming_service::ServicethrowsExn> {
             ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ServicethrowsExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "PubSubStreamingService",
@@ -3921,7 +3921,7 @@ pub mod server {
         async fn boththrows(
             &self,
             _foo: ::std::primitive::i32,
-        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>> + ::std::marker::Send + 'static >>, crate::services::pub_sub_streaming_service::BoththrowsExn> {
+        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>>, crate::services::pub_sub_streaming_service::BoththrowsExn> {
             ::std::result::Result::Err(crate::services::pub_sub_streaming_service::BoththrowsExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "PubSubStreamingService",
@@ -3934,7 +3934,7 @@ pub mod server {
         async fn responseandstreamstreamthrows(
             &self,
             _foo: ::std::primitive::i32,
-        ) -> ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>> + ::std::marker::Send + 'static >>), crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsExn> {
+        ) -> ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>>), crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsExn> {
             ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "PubSubStreamingService",
@@ -3947,7 +3947,7 @@ pub mod server {
         async fn responseandstreamservicethrows(
             &self,
             _foo: ::std::primitive::i32,
-        ) -> ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>> + ::std::marker::Send + 'static >>), crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsExn> {
+        ) -> ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>>), crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsExn> {
             ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "PubSubStreamingService",
@@ -3960,7 +3960,7 @@ pub mod server {
         async fn responseandstreamboththrows(
             &self,
             _foo: ::std::primitive::i32,
-        ) -> ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>> + ::std::marker::Send + 'static >>), crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsExn> {
+        ) -> ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>>), crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsExn> {
             ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "PubSubStreamingService",
@@ -3974,7 +3974,7 @@ pub mod server {
             &self,
             _i32_from: ::std::primitive::i32,
             _i32_to: ::std::primitive::i32,
-        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>> + ::std::marker::Send + 'static >>, crate::services::pub_sub_streaming_service::ReturnstreamFastExn> {
+        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>>, crate::services::pub_sub_streaming_service::ReturnstreamFastExn> {
             ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ReturnstreamFastExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "PubSubStreamingService",
@@ -3995,7 +3995,7 @@ pub mod server {
             &self,
             i32_from: ::std::primitive::i32,
             i32_to: ::std::primitive::i32,
-        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>> + ::std::marker::Send + 'static >>, crate::services::pub_sub_streaming_service::ReturnstreamExn> {
+        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>>, crate::services::pub_sub_streaming_service::ReturnstreamExn> {
             (**self).returnstream(
                 i32_from, 
                 i32_to, 
@@ -4006,7 +4006,7 @@ pub mod server {
         async fn streamthrows(
             &self,
             foo: ::std::primitive::i32,
-        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>> + ::std::marker::Send + 'static >>, crate::services::pub_sub_streaming_service::StreamthrowsExn> {
+        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>>, crate::services::pub_sub_streaming_service::StreamthrowsExn> {
             (**self).streamthrows(
                 foo, 
             ).await
@@ -4016,7 +4016,7 @@ pub mod server {
         async fn servicethrows(
             &self,
             foo: ::std::primitive::i32,
-        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>> + ::std::marker::Send + 'static >>, crate::services::pub_sub_streaming_service::ServicethrowsExn> {
+        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>>, crate::services::pub_sub_streaming_service::ServicethrowsExn> {
             (**self).servicethrows(
                 foo, 
             ).await
@@ -4026,7 +4026,7 @@ pub mod server {
         async fn boththrows(
             &self,
             foo: ::std::primitive::i32,
-        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>> + ::std::marker::Send + 'static >>, crate::services::pub_sub_streaming_service::BoththrowsExn> {
+        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>>, crate::services::pub_sub_streaming_service::BoththrowsExn> {
             (**self).boththrows(
                 foo, 
             ).await
@@ -4036,7 +4036,7 @@ pub mod server {
         async fn responseandstreamstreamthrows(
             &self,
             foo: ::std::primitive::i32,
-        ) -> ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>> + ::std::marker::Send + 'static >>), crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsExn> {
+        ) -> ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>>), crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsExn> {
             (**self).responseandstreamstreamthrows(
                 foo, 
             ).await
@@ -4046,7 +4046,7 @@ pub mod server {
         async fn responseandstreamservicethrows(
             &self,
             foo: ::std::primitive::i32,
-        ) -> ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>> + ::std::marker::Send + 'static >>), crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsExn> {
+        ) -> ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>>), crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsExn> {
             (**self).responseandstreamservicethrows(
                 foo, 
             ).await
@@ -4056,7 +4056,7 @@ pub mod server {
         async fn responseandstreamboththrows(
             &self,
             foo: ::std::primitive::i32,
-        ) -> ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>> + ::std::marker::Send + 'static >>), crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsExn> {
+        ) -> ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>>), crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsExn> {
             (**self).responseandstreamboththrows(
                 foo, 
             ).await
@@ -4067,7 +4067,7 @@ pub mod server {
             &self,
             i32_from: ::std::primitive::i32,
             i32_to: ::std::primitive::i32,
-        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>> + ::std::marker::Send + 'static >>, crate::services::pub_sub_streaming_service::ReturnstreamFastExn> {
+        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>>, crate::services::pub_sub_streaming_service::ReturnstreamFastExn> {
             (**self).returnstreamFast(
                 i32_from, 
                 i32_to, 
@@ -5521,7 +5521,7 @@ pub mod mock {
             &self,
             arg_i32_from: ::std::primitive::i32,
             arg_i32_to: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::ReturnstreamError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>>, crate::errors::pub_sub_streaming_service::ReturnstreamError>> {
             let mut closure = self.returnstream.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut(::std::primitive::i32, ::std::primitive::i32) -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure(arg_i32_from.clone(), arg_i32_to.clone())))
@@ -5529,7 +5529,7 @@ pub mod mock {
         fn streamthrows(
             &self,
             arg_foo: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::StreamthrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>>, crate::errors::pub_sub_streaming_service::StreamthrowsError>> {
             let mut closure = self.streamthrows.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut(::std::primitive::i32) -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure(arg_foo.clone())))
@@ -5537,7 +5537,7 @@ pub mod mock {
         fn servicethrows(
             &self,
             arg_foo: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::ServicethrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>>, crate::errors::pub_sub_streaming_service::ServicethrowsError>> {
             let mut closure = self.servicethrows.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut(::std::primitive::i32) -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure(arg_foo.clone())))
@@ -5545,7 +5545,7 @@ pub mod mock {
         fn boththrows(
             &self,
             arg_foo: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::BoththrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>>, crate::errors::pub_sub_streaming_service::BoththrowsError>> {
             let mut closure = self.boththrows.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut(::std::primitive::i32) -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure(arg_foo.clone())))
@@ -5553,7 +5553,7 @@ pub mod mock {
         fn responseandstreamstreamthrows(
             &self,
             arg_foo: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>> + ::std::marker::Send + 'static >>), crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>>), crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsError>> {
             let mut closure = self.responseandstreamstreamthrows.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut(::std::primitive::i32) -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure(arg_foo.clone())))
@@ -5561,7 +5561,7 @@ pub mod mock {
         fn responseandstreamservicethrows(
             &self,
             arg_foo: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>> + ::std::marker::Send + 'static >>), crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>>), crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsError>> {
             let mut closure = self.responseandstreamservicethrows.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut(::std::primitive::i32) -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure(arg_foo.clone())))
@@ -5569,7 +5569,7 @@ pub mod mock {
         fn responseandstreamboththrows(
             &self,
             arg_foo: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>> + ::std::marker::Send + 'static >>), crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>>), crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsError>> {
             let mut closure = self.responseandstreamboththrows.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut(::std::primitive::i32) -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure(arg_foo.clone())))
@@ -5578,7 +5578,7 @@ pub mod mock {
             &self,
             arg_i32_from: ::std::primitive::i32,
             arg_i32_to: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::ReturnstreamFastError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>>, crate::errors::pub_sub_streaming_service::ReturnstreamFastError>> {
             let mut closure = self.returnstreamFast.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut(::std::primitive::i32, ::std::primitive::i32) -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure(arg_i32_from.clone(), arg_i32_to.clone())))
@@ -5591,7 +5591,7 @@ pub mod mock {
             pub struct returnstream<'mock> {
                 pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
                     dyn ::std::ops::FnMut(::std::primitive::i32, ::std::primitive::i32) -> ::std::result::Result<
-                        ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>> + ::std::marker::Send + 'static >>,
+                        ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>>,
                         crate::errors::pub_sub_streaming_service::ReturnstreamError,
                     > + ::std::marker::Send + ::std::marker::Sync + 'mock,
                 >>,
@@ -5609,16 +5609,16 @@ pub mod mock {
                     }
                 }
 
-                pub fn ret(&self, _value: ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>> + ::std::marker::Send + 'static >>) {
+                pub fn ret(&self, _value: ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>>) {
                     unimplemented!("Mocking streams is not yet implemented, as value isn't cloneable")
                 }
 
-                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32, ::std::primitive::i32) -> ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>> + ::std::marker::Send + 'static >> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32, ::std::primitive::i32) -> ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                     let mut closure = self.closure.lock().unwrap();
                     *closure = ::std::boxed::Box::new(move |i32_from, i32_to| ::std::result::Result::Ok(mock(i32_from, i32_to)));
                 }
 
-                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32, ::std::primitive::i32) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::ReturnstreamError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32, ::std::primitive::i32) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>>, crate::errors::pub_sub_streaming_service::ReturnstreamError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                     let mut closure = self.closure.lock().unwrap();
                     *closure = ::std::boxed::Box::new(move |i32_from, i32_to| mock(i32_from, i32_to));
                 }
@@ -5636,7 +5636,7 @@ pub mod mock {
             pub struct streamthrows<'mock> {
                 pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
                     dyn ::std::ops::FnMut(::std::primitive::i32) -> ::std::result::Result<
-                        ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>> + ::std::marker::Send + 'static >>,
+                        ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>>,
                         crate::errors::pub_sub_streaming_service::StreamthrowsError,
                     > + ::std::marker::Send + ::std::marker::Sync + 'mock,
                 >>,
@@ -5654,16 +5654,16 @@ pub mod mock {
                     }
                 }
 
-                pub fn ret(&self, _value: ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>> + ::std::marker::Send + 'static >>) {
+                pub fn ret(&self, _value: ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>>) {
                     unimplemented!("Mocking streams is not yet implemented, as value isn't cloneable")
                 }
 
-                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32) -> ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>> + ::std::marker::Send + 'static >> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32) -> ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                     let mut closure = self.closure.lock().unwrap();
                     *closure = ::std::boxed::Box::new(move |foo| ::std::result::Result::Ok(mock(foo)));
                 }
 
-                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::StreamthrowsError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>>, crate::errors::pub_sub_streaming_service::StreamthrowsError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                     let mut closure = self.closure.lock().unwrap();
                     *closure = ::std::boxed::Box::new(move |foo| mock(foo));
                 }
@@ -5681,7 +5681,7 @@ pub mod mock {
             pub struct servicethrows<'mock> {
                 pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
                     dyn ::std::ops::FnMut(::std::primitive::i32) -> ::std::result::Result<
-                        ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>> + ::std::marker::Send + 'static >>,
+                        ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>>,
                         crate::errors::pub_sub_streaming_service::ServicethrowsError,
                     > + ::std::marker::Send + ::std::marker::Sync + 'mock,
                 >>,
@@ -5699,16 +5699,16 @@ pub mod mock {
                     }
                 }
 
-                pub fn ret(&self, _value: ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>> + ::std::marker::Send + 'static >>) {
+                pub fn ret(&self, _value: ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>>) {
                     unimplemented!("Mocking streams is not yet implemented, as value isn't cloneable")
                 }
 
-                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32) -> ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>> + ::std::marker::Send + 'static >> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32) -> ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                     let mut closure = self.closure.lock().unwrap();
                     *closure = ::std::boxed::Box::new(move |foo| ::std::result::Result::Ok(mock(foo)));
                 }
 
-                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::ServicethrowsError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>>, crate::errors::pub_sub_streaming_service::ServicethrowsError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                     let mut closure = self.closure.lock().unwrap();
                     *closure = ::std::boxed::Box::new(move |foo| mock(foo));
                 }
@@ -5726,7 +5726,7 @@ pub mod mock {
             pub struct boththrows<'mock> {
                 pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
                     dyn ::std::ops::FnMut(::std::primitive::i32) -> ::std::result::Result<
-                        ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>> + ::std::marker::Send + 'static >>,
+                        ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>>,
                         crate::errors::pub_sub_streaming_service::BoththrowsError,
                     > + ::std::marker::Send + ::std::marker::Sync + 'mock,
                 >>,
@@ -5744,16 +5744,16 @@ pub mod mock {
                     }
                 }
 
-                pub fn ret(&self, _value: ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>> + ::std::marker::Send + 'static >>) {
+                pub fn ret(&self, _value: ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>>) {
                     unimplemented!("Mocking streams is not yet implemented, as value isn't cloneable")
                 }
 
-                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32) -> ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>> + ::std::marker::Send + 'static >> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32) -> ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                     let mut closure = self.closure.lock().unwrap();
                     *closure = ::std::boxed::Box::new(move |foo| ::std::result::Result::Ok(mock(foo)));
                 }
 
-                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::BoththrowsError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>>, crate::errors::pub_sub_streaming_service::BoththrowsError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                     let mut closure = self.closure.lock().unwrap();
                     *closure = ::std::boxed::Box::new(move |foo| mock(foo));
                 }
@@ -5771,7 +5771,7 @@ pub mod mock {
             pub struct responseandstreamstreamthrows<'mock> {
                 pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
                     dyn ::std::ops::FnMut(::std::primitive::i32) -> ::std::result::Result<
-                        (::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>> + ::std::marker::Send + 'static >>),
+                        (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>>),
                         crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsError,
                     > + ::std::marker::Send + ::std::marker::Sync + 'mock,
                 >>,
@@ -5789,16 +5789,16 @@ pub mod mock {
                     }
                 }
 
-                pub fn ret(&self, _value: (::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>> + ::std::marker::Send + 'static >>)) {
+                pub fn ret(&self, _value: (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>>)) {
                     unimplemented!("Mocking streams is not yet implemented, as value isn't cloneable")
                 }
 
-                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32) -> (::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>> + ::std::marker::Send + 'static >>) + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32) -> (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>>) + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                     let mut closure = self.closure.lock().unwrap();
                     *closure = ::std::boxed::Box::new(move |foo| ::std::result::Result::Ok(mock(foo)));
                 }
 
-                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32) -> ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>> + ::std::marker::Send + 'static >>), crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32) -> ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>>), crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                     let mut closure = self.closure.lock().unwrap();
                     *closure = ::std::boxed::Box::new(move |foo| mock(foo));
                 }
@@ -5816,7 +5816,7 @@ pub mod mock {
             pub struct responseandstreamservicethrows<'mock> {
                 pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
                     dyn ::std::ops::FnMut(::std::primitive::i32) -> ::std::result::Result<
-                        (::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>> + ::std::marker::Send + 'static >>),
+                        (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>>),
                         crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsError,
                     > + ::std::marker::Send + ::std::marker::Sync + 'mock,
                 >>,
@@ -5834,16 +5834,16 @@ pub mod mock {
                     }
                 }
 
-                pub fn ret(&self, _value: (::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>> + ::std::marker::Send + 'static >>)) {
+                pub fn ret(&self, _value: (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>>)) {
                     unimplemented!("Mocking streams is not yet implemented, as value isn't cloneable")
                 }
 
-                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32) -> (::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>> + ::std::marker::Send + 'static >>) + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32) -> (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>>) + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                     let mut closure = self.closure.lock().unwrap();
                     *closure = ::std::boxed::Box::new(move |foo| ::std::result::Result::Ok(mock(foo)));
                 }
 
-                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32) -> ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>> + ::std::marker::Send + 'static >>), crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32) -> ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>>), crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                     let mut closure = self.closure.lock().unwrap();
                     *closure = ::std::boxed::Box::new(move |foo| mock(foo));
                 }
@@ -5861,7 +5861,7 @@ pub mod mock {
             pub struct responseandstreamboththrows<'mock> {
                 pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
                     dyn ::std::ops::FnMut(::std::primitive::i32) -> ::std::result::Result<
-                        (::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>> + ::std::marker::Send + 'static >>),
+                        (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>>),
                         crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsError,
                     > + ::std::marker::Send + ::std::marker::Sync + 'mock,
                 >>,
@@ -5879,16 +5879,16 @@ pub mod mock {
                     }
                 }
 
-                pub fn ret(&self, _value: (::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>> + ::std::marker::Send + 'static >>)) {
+                pub fn ret(&self, _value: (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>>)) {
                     unimplemented!("Mocking streams is not yet implemented, as value isn't cloneable")
                 }
 
-                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32) -> (::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>> + ::std::marker::Send + 'static >>) + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32) -> (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>>) + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                     let mut closure = self.closure.lock().unwrap();
                     *closure = ::std::boxed::Box::new(move |foo| ::std::result::Result::Ok(mock(foo)));
                 }
 
-                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32) -> ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>> + ::std::marker::Send + 'static >>), crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32) -> ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>>), crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                     let mut closure = self.closure.lock().unwrap();
                     *closure = ::std::boxed::Box::new(move |foo| mock(foo));
                 }
@@ -5906,7 +5906,7 @@ pub mod mock {
             pub struct returnstreamFast<'mock> {
                 pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
                     dyn ::std::ops::FnMut(::std::primitive::i32, ::std::primitive::i32) -> ::std::result::Result<
-                        ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>> + ::std::marker::Send + 'static >>,
+                        ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>>,
                         crate::errors::pub_sub_streaming_service::ReturnstreamFastError,
                     > + ::std::marker::Send + ::std::marker::Sync + 'mock,
                 >>,
@@ -5924,16 +5924,16 @@ pub mod mock {
                     }
                 }
 
-                pub fn ret(&self, _value: ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>> + ::std::marker::Send + 'static >>) {
+                pub fn ret(&self, _value: ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>>) {
                     unimplemented!("Mocking streams is not yet implemented, as value isn't cloneable")
                 }
 
-                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32, ::std::primitive::i32) -> ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>> + ::std::marker::Send + 'static >> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32, ::std::primitive::i32) -> ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                     let mut closure = self.closure.lock().unwrap();
                     *closure = ::std::boxed::Box::new(move |i32_from, i32_to| ::std::result::Result::Ok(mock(i32_from, i32_to)));
                 }
 
-                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32, ::std::primitive::i32) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>> + ::std::marker::Send + 'static >>, crate::errors::pub_sub_streaming_service::ReturnstreamFastError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i32, ::std::primitive::i32) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>>, crate::errors::pub_sub_streaming_service::ReturnstreamFastError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                     let mut closure = self.closure.lock().unwrap();
                     *closure = ::std::boxed::Box::new(move |i32_from, i32_to| mock(i32_from, i32_to));
                 }
@@ -5983,7 +5983,7 @@ pub mod errors {
         pub type ReturnstreamError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::pub_sub_streaming_service::ReturnstreamExn> for
-            ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>> + ::std::marker::Send + 'static >>, ReturnstreamError>
+            ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>>, ReturnstreamError>
         {
             fn from(e: crate::services::pub_sub_streaming_service::ReturnstreamExn) -> Self {
                 match e {
@@ -6026,7 +6026,7 @@ pub mod errors {
         pub type StreamthrowsError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::pub_sub_streaming_service::StreamthrowsExn> for
-            ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>> + ::std::marker::Send + 'static >>, StreamthrowsError>
+            ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>>, StreamthrowsError>
         {
             fn from(e: crate::services::pub_sub_streaming_service::StreamthrowsExn) -> Self {
                 match e {
@@ -6132,7 +6132,7 @@ pub mod errors {
             }
         }
         impl ::std::convert::From<crate::services::pub_sub_streaming_service::ServicethrowsExn> for
-            ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>> + ::std::marker::Send + 'static >>, ServicethrowsError>
+            ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>>, ServicethrowsError>
         {
             fn from(e: crate::services::pub_sub_streaming_service::ServicethrowsExn) -> Self {
                 match e {
@@ -6214,7 +6214,7 @@ pub mod errors {
             }
         }
         impl ::std::convert::From<crate::services::pub_sub_streaming_service::BoththrowsExn> for
-            ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>> + ::std::marker::Send + 'static >>, BoththrowsError>
+            ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>>, BoththrowsError>
         {
             fn from(e: crate::services::pub_sub_streaming_service::BoththrowsExn) -> Self {
                 match e {
@@ -6289,7 +6289,7 @@ pub mod errors {
         pub type ResponseandstreamstreamthrowsError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsExn> for
-            ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>> + ::std::marker::Send + 'static >>), ResponseandstreamstreamthrowsError>
+            ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>>), ResponseandstreamstreamthrowsError>
         {
             fn from(e: crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsExn) -> Self {
                 match e {
@@ -6395,7 +6395,7 @@ pub mod errors {
             }
         }
         impl ::std::convert::From<crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsExn> for
-            ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>> + ::std::marker::Send + 'static >>), ResponseandstreamservicethrowsError>
+            ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>>), ResponseandstreamservicethrowsError>
         {
             fn from(e: crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsExn) -> Self {
                 match e {
@@ -6477,7 +6477,7 @@ pub mod errors {
             }
         }
         impl ::std::convert::From<crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsExn> for
-            ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>> + ::std::marker::Send + 'static >>), ResponseandstreamboththrowsError>
+            ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>>), ResponseandstreamboththrowsError>
         {
             fn from(e: crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsExn) -> Self {
                 match e {
@@ -6552,7 +6552,7 @@ pub mod errors {
         pub type ReturnstreamFastError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::pub_sub_streaming_service::ReturnstreamFastExn> for
-            ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>> + ::std::marker::Send + 'static >>, ReturnstreamFastError>
+            ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>>, ReturnstreamFastError>
         {
             fn from(e: crate::services::pub_sub_streaming_service::ReturnstreamFastExn) -> Self {
                 match e {

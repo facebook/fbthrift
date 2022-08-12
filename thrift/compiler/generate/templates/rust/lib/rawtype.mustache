@@ -47,12 +47,10 @@
     }}{{#type:stream_has_first_response?}}{{!
         }}({{#type:stream_first_response_type}}{{>lib/type}}{{/type:stream_first_response_type}}, {{!
     }}{{/type:stream_has_first_response?}}{{!
-    }}::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = {{!
-        }}::std::result::Result<{{!
-            }}{{#type:stream_elem_type}}{{>lib/type}}{{/type:stream_elem_type}}, {{!
-            }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}StreamError{{!
-        }}>>{{!
-    }} + ::std::marker::Send + 'static >>{{!
+    }}::futures::stream::BoxStream<'static, ::std::result::Result<{{!
+        }}{{#type:stream_elem_type}}{{>lib/type}}{{/type:stream_elem_type}}, {{!
+        }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}StreamError{{!
+    }}>>{{!
     }}{{#type:stream_has_first_response?}}{{!
         }}){{!
     }}{{/type:stream_has_first_response?}}{{!

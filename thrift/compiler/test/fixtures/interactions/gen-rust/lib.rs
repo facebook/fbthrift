@@ -527,7 +527,7 @@ pub mod services {
 
         pub enum TruthifyExn {
             #[doc(hidden)]
-            Success(::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>> + ::std::marker::Send + 'static >>),
+            Success(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>>),
             ApplicationException(::fbthrift::ApplicationException),
         }
 
@@ -1186,7 +1186,7 @@ pub mod services {
 
         pub enum TruthifyExn {
             #[doc(hidden)]
-            Success(::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>> + ::std::marker::Send + 'static >>),
+            Success(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>>),
             ApplicationException(::fbthrift::ApplicationException),
         }
 
@@ -2093,7 +2093,7 @@ pub mod services {
 
         pub enum SerializeExn {
             #[doc(hidden)]
-            Success((::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>> + ::std::marker::Send + 'static >>)),
+            Success((::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>>)),
             ApplicationException(::fbthrift::ApplicationException),
         }
 
@@ -2177,7 +2177,7 @@ pub mod client {
         fn _frobnicate_impl(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::my_interaction::FrobnicateError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_interaction::FrobnicateError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -2220,7 +2220,7 @@ pub mod client {
         fn _ping_impl(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_interaction::PingError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_interaction::PingError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -2263,7 +2263,7 @@ pub mod client {
         fn _truthify_impl(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::errors::my_interaction::TruthifyError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>>, crate::errors::my_interaction::TruthifyError>> {
             use ::const_cstr::const_cstr;
             use ::futures::future::FutureExt as _;
             use ::tracing::Instrument as _;
@@ -2325,7 +2325,7 @@ pub mod client {
         fn _encode_impl(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<, crate::errors::my_interaction::EncodeError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<, crate::errors::my_interaction::EncodeError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -2369,19 +2369,19 @@ pub mod client {
     pub trait MyInteraction: ::std::marker::Send {
         fn frobnicate(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::my_interaction::FrobnicateError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_interaction::FrobnicateError>>;
 
         fn ping(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_interaction::PingError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_interaction::PingError>>;
 
         fn truthify(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::errors::my_interaction::TruthifyError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>>, crate::errors::my_interaction::TruthifyError>>;
 
         fn encode(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<, crate::errors::my_interaction::EncodeError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<, crate::errors::my_interaction::EncodeError>>;
     }
 
     pub trait MyInteractionExt<T>: MyInteraction
@@ -2391,19 +2391,19 @@ pub mod client {
         fn frobnicate_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::my_interaction::FrobnicateError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_interaction::FrobnicateError>>;
         fn ping_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_interaction::PingError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_interaction::PingError>>;
         fn truthify_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::errors::my_interaction::TruthifyError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>>, crate::errors::my_interaction::TruthifyError>>;
         fn encode_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<, crate::errors::my_interaction::EncodeError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<, crate::errors::my_interaction::EncodeError>>;
     }
 
     struct Args_MyInteraction_frobnicate<'a> {
@@ -2473,7 +2473,7 @@ pub mod client {
     {
         fn frobnicate(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::my_interaction::FrobnicateError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_interaction::FrobnicateError>> {
             let rpc_options = T::RpcOptions::default();
             self._frobnicate_impl(
                 rpc_options,
@@ -2481,7 +2481,7 @@ pub mod client {
         }
         fn ping(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_interaction::PingError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_interaction::PingError>> {
             let rpc_options = T::RpcOptions::default();
             self._ping_impl(
                 rpc_options,
@@ -2489,7 +2489,7 @@ pub mod client {
         }
         fn truthify(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::errors::my_interaction::TruthifyError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>>, crate::errors::my_interaction::TruthifyError>> {
             let rpc_options = T::RpcOptions::default();
             self._truthify_impl(
                 rpc_options,
@@ -2497,7 +2497,7 @@ pub mod client {
         }
         fn encode(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<, crate::errors::my_interaction::EncodeError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<, crate::errors::my_interaction::EncodeError>> {
             let rpc_options = T::RpcOptions::default();
             self._encode_impl(
                 rpc_options,
@@ -2517,7 +2517,7 @@ pub mod client {
         fn frobnicate_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::my_interaction::FrobnicateError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_interaction::FrobnicateError>> {
             self._frobnicate_impl(
                 rpc_options,
             )
@@ -2525,7 +2525,7 @@ pub mod client {
         fn ping_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_interaction::PingError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_interaction::PingError>> {
             self._ping_impl(
                 rpc_options,
             )
@@ -2533,7 +2533,7 @@ pub mod client {
         fn truthify_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::errors::my_interaction::TruthifyError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>>, crate::errors::my_interaction::TruthifyError>> {
             self._truthify_impl(
                 rpc_options,
             )
@@ -2541,7 +2541,7 @@ pub mod client {
         fn encode_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<, crate::errors::my_interaction::EncodeError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<, crate::errors::my_interaction::EncodeError>> {
             self._encode_impl(
                 rpc_options,
             )
@@ -2555,25 +2555,25 @@ pub mod client {
     {
         fn frobnicate(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::my_interaction::FrobnicateError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_interaction::FrobnicateError>> {
             self.as_ref().frobnicate(
             )
         }
         fn ping(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_interaction::PingError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_interaction::PingError>> {
             self.as_ref().ping(
             )
         }
         fn truthify(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::errors::my_interaction::TruthifyError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>>, crate::errors::my_interaction::TruthifyError>> {
             self.as_ref().truthify(
             )
         }
         fn encode(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<, crate::errors::my_interaction::EncodeError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<, crate::errors::my_interaction::EncodeError>> {
             self.as_ref().encode(
             )
         }
@@ -2589,7 +2589,7 @@ pub mod client {
         fn frobnicate_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::my_interaction::FrobnicateError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_interaction::FrobnicateError>> {
             <Self as ::std::convert::AsRef<dyn MyInteractionExt<T>>>::as_ref(self).frobnicate_with_rpc_opts(
                 rpc_options,
             )
@@ -2597,7 +2597,7 @@ pub mod client {
         fn ping_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_interaction::PingError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_interaction::PingError>> {
             <Self as ::std::convert::AsRef<dyn MyInteractionExt<T>>>::as_ref(self).ping_with_rpc_opts(
                 rpc_options,
             )
@@ -2605,7 +2605,7 @@ pub mod client {
         fn truthify_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::errors::my_interaction::TruthifyError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>>, crate::errors::my_interaction::TruthifyError>> {
             <Self as ::std::convert::AsRef<dyn MyInteractionExt<T>>>::as_ref(self).truthify_with_rpc_opts(
                 rpc_options,
             )
@@ -2613,7 +2613,7 @@ pub mod client {
         fn encode_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<, crate::errors::my_interaction::EncodeError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<, crate::errors::my_interaction::EncodeError>> {
             <Self as ::std::convert::AsRef<dyn MyInteractionExt<T>>>::as_ref(self).encode_with_rpc_opts(
                 rpc_options,
             )
@@ -2750,7 +2750,7 @@ pub mod client {
         fn _frobnicate_impl(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::my_interaction_fast::FrobnicateError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_interaction_fast::FrobnicateError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -2793,7 +2793,7 @@ pub mod client {
         fn _ping_impl(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_interaction_fast::PingError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_interaction_fast::PingError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -2836,7 +2836,7 @@ pub mod client {
         fn _truthify_impl(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::errors::my_interaction_fast::TruthifyError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>>, crate::errors::my_interaction_fast::TruthifyError>> {
             use ::const_cstr::const_cstr;
             use ::futures::future::FutureExt as _;
             use ::tracing::Instrument as _;
@@ -2898,7 +2898,7 @@ pub mod client {
         fn _encode_impl(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<, crate::errors::my_interaction_fast::EncodeError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<, crate::errors::my_interaction_fast::EncodeError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -2942,19 +2942,19 @@ pub mod client {
     pub trait MyInteractionFast: ::std::marker::Send {
         fn frobnicate(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::my_interaction_fast::FrobnicateError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_interaction_fast::FrobnicateError>>;
 
         fn ping(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_interaction_fast::PingError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_interaction_fast::PingError>>;
 
         fn truthify(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::errors::my_interaction_fast::TruthifyError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>>, crate::errors::my_interaction_fast::TruthifyError>>;
 
         fn encode(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<, crate::errors::my_interaction_fast::EncodeError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<, crate::errors::my_interaction_fast::EncodeError>>;
     }
 
     pub trait MyInteractionFastExt<T>: MyInteractionFast
@@ -2964,19 +2964,19 @@ pub mod client {
         fn frobnicate_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::my_interaction_fast::FrobnicateError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_interaction_fast::FrobnicateError>>;
         fn ping_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_interaction_fast::PingError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_interaction_fast::PingError>>;
         fn truthify_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::errors::my_interaction_fast::TruthifyError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>>, crate::errors::my_interaction_fast::TruthifyError>>;
         fn encode_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<, crate::errors::my_interaction_fast::EncodeError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<, crate::errors::my_interaction_fast::EncodeError>>;
     }
 
     struct Args_MyInteractionFast_frobnicate<'a> {
@@ -3046,7 +3046,7 @@ pub mod client {
     {
         fn frobnicate(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::my_interaction_fast::FrobnicateError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_interaction_fast::FrobnicateError>> {
             let rpc_options = T::RpcOptions::default();
             self._frobnicate_impl(
                 rpc_options,
@@ -3054,7 +3054,7 @@ pub mod client {
         }
         fn ping(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_interaction_fast::PingError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_interaction_fast::PingError>> {
             let rpc_options = T::RpcOptions::default();
             self._ping_impl(
                 rpc_options,
@@ -3062,7 +3062,7 @@ pub mod client {
         }
         fn truthify(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::errors::my_interaction_fast::TruthifyError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>>, crate::errors::my_interaction_fast::TruthifyError>> {
             let rpc_options = T::RpcOptions::default();
             self._truthify_impl(
                 rpc_options,
@@ -3070,7 +3070,7 @@ pub mod client {
         }
         fn encode(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<, crate::errors::my_interaction_fast::EncodeError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<, crate::errors::my_interaction_fast::EncodeError>> {
             let rpc_options = T::RpcOptions::default();
             self._encode_impl(
                 rpc_options,
@@ -3090,7 +3090,7 @@ pub mod client {
         fn frobnicate_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::my_interaction_fast::FrobnicateError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_interaction_fast::FrobnicateError>> {
             self._frobnicate_impl(
                 rpc_options,
             )
@@ -3098,7 +3098,7 @@ pub mod client {
         fn ping_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_interaction_fast::PingError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_interaction_fast::PingError>> {
             self._ping_impl(
                 rpc_options,
             )
@@ -3106,7 +3106,7 @@ pub mod client {
         fn truthify_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::errors::my_interaction_fast::TruthifyError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>>, crate::errors::my_interaction_fast::TruthifyError>> {
             self._truthify_impl(
                 rpc_options,
             )
@@ -3114,7 +3114,7 @@ pub mod client {
         fn encode_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<, crate::errors::my_interaction_fast::EncodeError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<, crate::errors::my_interaction_fast::EncodeError>> {
             self._encode_impl(
                 rpc_options,
             )
@@ -3128,25 +3128,25 @@ pub mod client {
     {
         fn frobnicate(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::my_interaction_fast::FrobnicateError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_interaction_fast::FrobnicateError>> {
             self.as_ref().frobnicate(
             )
         }
         fn ping(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_interaction_fast::PingError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_interaction_fast::PingError>> {
             self.as_ref().ping(
             )
         }
         fn truthify(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::errors::my_interaction_fast::TruthifyError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>>, crate::errors::my_interaction_fast::TruthifyError>> {
             self.as_ref().truthify(
             )
         }
         fn encode(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<, crate::errors::my_interaction_fast::EncodeError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<, crate::errors::my_interaction_fast::EncodeError>> {
             self.as_ref().encode(
             )
         }
@@ -3162,7 +3162,7 @@ pub mod client {
         fn frobnicate_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::my_interaction_fast::FrobnicateError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_interaction_fast::FrobnicateError>> {
             <Self as ::std::convert::AsRef<dyn MyInteractionFastExt<T>>>::as_ref(self).frobnicate_with_rpc_opts(
                 rpc_options,
             )
@@ -3170,7 +3170,7 @@ pub mod client {
         fn ping_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_interaction_fast::PingError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_interaction_fast::PingError>> {
             <Self as ::std::convert::AsRef<dyn MyInteractionFastExt<T>>>::as_ref(self).ping_with_rpc_opts(
                 rpc_options,
             )
@@ -3178,7 +3178,7 @@ pub mod client {
         fn truthify_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::errors::my_interaction_fast::TruthifyError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>>, crate::errors::my_interaction_fast::TruthifyError>> {
             <Self as ::std::convert::AsRef<dyn MyInteractionFastExt<T>>>::as_ref(self).truthify_with_rpc_opts(
                 rpc_options,
             )
@@ -3186,7 +3186,7 @@ pub mod client {
         fn encode_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<, crate::errors::my_interaction_fast::EncodeError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<, crate::errors::my_interaction_fast::EncodeError>> {
             <Self as ::std::convert::AsRef<dyn MyInteractionFastExt<T>>>::as_ref(self).encode_with_rpc_opts(
                 rpc_options,
             )
@@ -3324,7 +3324,7 @@ pub mod client {
         fn _frobnicate_impl(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::serial_interaction::FrobnicateError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::serial_interaction::FrobnicateError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -3368,7 +3368,7 @@ pub mod client {
     pub trait SerialInteraction: ::std::marker::Send {
         fn frobnicate(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::serial_interaction::FrobnicateError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::serial_interaction::FrobnicateError>>;
     }
 
     pub trait SerialInteractionExt<T>: SerialInteraction
@@ -3378,7 +3378,7 @@ pub mod client {
         fn frobnicate_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::serial_interaction::FrobnicateError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::serial_interaction::FrobnicateError>>;
     }
 
     struct Args_SerialInteraction_frobnicate<'a> {
@@ -3406,7 +3406,7 @@ pub mod client {
     {
         fn frobnicate(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::serial_interaction::FrobnicateError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::serial_interaction::FrobnicateError>> {
             let rpc_options = T::RpcOptions::default();
             self._frobnicate_impl(
                 rpc_options,
@@ -3426,7 +3426,7 @@ pub mod client {
         fn frobnicate_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::serial_interaction::FrobnicateError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::serial_interaction::FrobnicateError>> {
             self._frobnicate_impl(
                 rpc_options,
             )
@@ -3440,7 +3440,7 @@ pub mod client {
     {
         fn frobnicate(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::serial_interaction::FrobnicateError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::serial_interaction::FrobnicateError>> {
             self.as_ref().frobnicate(
             )
         }
@@ -3456,7 +3456,7 @@ pub mod client {
         fn frobnicate_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::serial_interaction::FrobnicateError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::serial_interaction::FrobnicateError>> {
             <Self as ::std::convert::AsRef<dyn SerialInteractionExt<T>>>::as_ref(self).frobnicate_with_rpc_opts(
                 rpc_options,
             )
@@ -3594,7 +3594,7 @@ pub mod client {
         fn _foo_impl(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::FooError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::FooError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -3638,7 +3638,7 @@ pub mod client {
             &self,
             arg_arg: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::InteractError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::InteractError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -3682,7 +3682,7 @@ pub mod client {
         fn _interactFast_impl(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::InteractFastError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_service::InteractFastError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -3725,7 +3725,7 @@ pub mod client {
         fn _serialize_impl(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>> + ::std::marker::Send + 'static >>), crate::errors::my_service::SerializeError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>>), crate::errors::my_service::SerializeError>> {
             use ::const_cstr::const_cstr;
             use ::futures::future::FutureExt as _;
             use ::tracing::Instrument as _;
@@ -3800,20 +3800,20 @@ pub mod client {
 
         fn foo(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::FooError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::FooError>>;
 
         fn interact(
             &self,
             arg_arg: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::InteractError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::InteractError>>;
 
         fn interactFast(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::InteractFastError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_service::InteractFastError>>;
 
         fn serialize(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>> + ::std::marker::Send + 'static >>), crate::errors::my_service::SerializeError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>>), crate::errors::my_service::SerializeError>>;
     }
 
     pub trait MyServiceExt<T>: MyService
@@ -3823,20 +3823,20 @@ pub mod client {
         fn foo_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::FooError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::FooError>>;
         fn interact_with_rpc_opts(
             &self,
             arg_arg: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::InteractError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::InteractError>>;
         fn interactFast_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::InteractFastError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_service::InteractFastError>>;
         fn serialize_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>> + ::std::marker::Send + 'static >>), crate::errors::my_service::SerializeError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>>), crate::errors::my_service::SerializeError>>;
     }
 
     struct Args_MyService_foo<'a> {
@@ -3958,7 +3958,7 @@ pub mod client {
         }
         fn foo(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::FooError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::FooError>> {
             let rpc_options = T::RpcOptions::default();
             self._foo_impl(
                 rpc_options,
@@ -3967,7 +3967,7 @@ pub mod client {
         fn interact(
             &self,
             arg_arg: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::InteractError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::InteractError>> {
             let rpc_options = T::RpcOptions::default();
             self._interact_impl(
                 arg_arg,
@@ -3976,7 +3976,7 @@ pub mod client {
         }
         fn interactFast(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::InteractFastError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_service::InteractFastError>> {
             let rpc_options = T::RpcOptions::default();
             self._interactFast_impl(
                 rpc_options,
@@ -3984,7 +3984,7 @@ pub mod client {
         }
         fn serialize(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>> + ::std::marker::Send + 'static >>), crate::errors::my_service::SerializeError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>>), crate::errors::my_service::SerializeError>> {
             let rpc_options = T::RpcOptions::default();
             self._serialize_impl(
                 rpc_options,
@@ -4004,7 +4004,7 @@ pub mod client {
         fn foo_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::FooError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::FooError>> {
             self._foo_impl(
                 rpc_options,
             )
@@ -4013,7 +4013,7 @@ pub mod client {
             &self,
             arg_arg: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::InteractError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::InteractError>> {
             self._interact_impl(
                 arg_arg,
                 rpc_options,
@@ -4022,7 +4022,7 @@ pub mod client {
         fn interactFast_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::InteractFastError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_service::InteractFastError>> {
             self._interactFast_impl(
                 rpc_options,
             )
@@ -4030,7 +4030,7 @@ pub mod client {
         fn serialize_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>> + ::std::marker::Send + 'static >>), crate::errors::my_service::SerializeError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>>), crate::errors::my_service::SerializeError>> {
             self._serialize_impl(
                 rpc_options,
             )
@@ -4059,27 +4059,27 @@ pub mod client {
         }
         fn foo(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::FooError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::FooError>> {
             self.as_ref().foo(
             )
         }
         fn interact(
             &self,
             arg_arg: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::InteractError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::InteractError>> {
             self.as_ref().interact(
                 arg_arg,
             )
         }
         fn interactFast(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::InteractFastError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_service::InteractFastError>> {
             self.as_ref().interactFast(
             )
         }
         fn serialize(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>> + ::std::marker::Send + 'static >>), crate::errors::my_service::SerializeError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>>), crate::errors::my_service::SerializeError>> {
             self.as_ref().serialize(
             )
         }
@@ -4095,7 +4095,7 @@ pub mod client {
         fn foo_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::FooError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::FooError>> {
             <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).foo_with_rpc_opts(
                 rpc_options,
             )
@@ -4104,7 +4104,7 @@ pub mod client {
             &self,
             arg_arg: ::std::primitive::i32,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::InteractError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::InteractError>> {
             <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).interact_with_rpc_opts(
                 arg_arg,
                 rpc_options,
@@ -4113,7 +4113,7 @@ pub mod client {
         fn interactFast_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::InteractFastError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_service::InteractFastError>> {
             <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).interactFast_with_rpc_opts(
                 rpc_options,
             )
@@ -4121,7 +4121,7 @@ pub mod client {
         fn serialize_with_rpc_opts(
             &self,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>> + ::std::marker::Send + 'static >>), crate::errors::my_service::SerializeError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>>), crate::errors::my_service::SerializeError>> {
             <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).serialize_with_rpc_opts(
                 rpc_options,
             )
@@ -4256,7 +4256,7 @@ pub mod server {
         #[doc(hidden)]
         async fn truthify(
             &self,
-        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::services::my_interaction::TruthifyExn> {
+        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>>, crate::services::my_interaction::TruthifyExn> {
             ::std::result::Result::Err(crate::services::my_interaction::TruthifyExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyInteraction",
@@ -4297,7 +4297,7 @@ pub mod server {
         #[doc(hidden)]
         async fn truthify(
             &self,
-        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::services::my_interaction::TruthifyExn> {
+        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>>, crate::services::my_interaction::TruthifyExn> {
             (**self).truthify(
             ).await
         }
@@ -4920,7 +4920,7 @@ pub mod server {
         #[doc(hidden)]
         async fn truthify(
             &self,
-        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::services::my_interaction_fast::TruthifyExn> {
+        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>>, crate::services::my_interaction_fast::TruthifyExn> {
             ::std::result::Result::Err(crate::services::my_interaction_fast::TruthifyExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyInteractionFast",
@@ -4961,7 +4961,7 @@ pub mod server {
         #[doc(hidden)]
         async fn truthify(
             &self,
-        ) -> ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>> + ::std::marker::Send + 'static >>, crate::services::my_interaction_fast::TruthifyExn> {
+        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>>, crate::services::my_interaction_fast::TruthifyExn> {
             (**self).truthify(
             ).await
         }
@@ -5898,7 +5898,7 @@ pub mod server {
         #[doc(hidden)]
         async fn serialize(
             &self,
-        ) -> ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>> + ::std::marker::Send + 'static >>), crate::services::my_service::SerializeExn> {
+        ) -> ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>>), crate::services::my_service::SerializeExn> {
             ::std::result::Result::Err(crate::services::my_service::SerializeExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
@@ -5952,7 +5952,7 @@ pub mod server {
         #[doc(hidden)]
         async fn serialize(
             &self,
-        ) -> ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>> + ::std::marker::Send + 'static >>), crate::services::my_service::SerializeExn> {
+        ) -> ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>>), crate::services::my_service::SerializeExn> {
             (**self).serialize(
             ).await
         }
@@ -6748,7 +6748,7 @@ pub mod mock {
         }
         fn foo(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::FooError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::FooError>> {
             let mut closure = self.foo.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut() -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure()))
@@ -6756,21 +6756,21 @@ pub mod mock {
         fn interact(
             &self,
             arg_arg: ::std::primitive::i32,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::InteractError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::InteractError>> {
             let mut closure = self.interact.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut(::std::primitive::i32) -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure(arg_arg.clone())))
         }
         fn interactFast(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::InteractFastError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_service::InteractFastError>> {
             let mut closure = self.interactFast.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut() -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure()))
         }
         fn serialize(
             &self,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>> + ::std::marker::Send + 'static >>), crate::errors::my_service::SerializeError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>>), crate::errors::my_service::SerializeError>> {
             let mut closure = self.serialize.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut() -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure()))
@@ -6921,7 +6921,7 @@ pub mod mock {
             pub struct serialize<'mock> {
                 pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
                     dyn ::std::ops::FnMut() -> ::std::result::Result<
-                        (::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>> + ::std::marker::Send + 'static >>),
+                        (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>>),
                         crate::errors::my_service::SerializeError,
                     > + ::std::marker::Send + ::std::marker::Sync + 'mock,
                 >>,
@@ -6939,16 +6939,16 @@ pub mod mock {
                     }
                 }
 
-                pub fn ret(&self, _value: (::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>> + ::std::marker::Send + 'static >>)) {
+                pub fn ret(&self, _value: (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>>)) {
                     unimplemented!("Mocking streams is not yet implemented, as value isn't cloneable")
                 }
 
-                pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> (::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>> + ::std::marker::Send + 'static >>) + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> (::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>>) + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                     let mut closure = self.closure.lock().unwrap();
                     *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
                 }
 
-                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut() -> ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>> + ::std::marker::Send + 'static >>), crate::errors::my_service::SerializeError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut() -> ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>>), crate::errors::my_service::SerializeError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                     let mut closure = self.closure.lock().unwrap();
                     *closure = ::std::boxed::Box::new(move || mock());
                 }
@@ -7056,7 +7056,7 @@ pub mod errors {
         pub type TruthifyError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::my_interaction::TruthifyExn> for
-            ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>> + ::std::marker::Send + 'static >>, TruthifyError>
+            ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>>, TruthifyError>
         {
             fn from(e: crate::services::my_interaction::TruthifyExn) -> Self {
                 match e {
@@ -7149,7 +7149,7 @@ pub mod errors {
         pub type TruthifyError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::my_interaction_fast::TruthifyExn> for
-            ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>> + ::std::marker::Send + 'static >>, TruthifyError>
+            ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>>, TruthifyError>
         {
             fn from(e: crate::services::my_interaction_fast::TruthifyExn) -> Self {
                 match e {
@@ -7277,7 +7277,7 @@ pub mod errors {
         pub type SerializeError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::my_service::SerializeExn> for
-            ::std::result::Result<(::std::primitive::i32, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>> + ::std::marker::Send + 'static >>), SerializeError>
+            ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>>), SerializeError>
         {
             fn from(e: crate::services::my_service::SerializeExn) -> Self {
                 match e {

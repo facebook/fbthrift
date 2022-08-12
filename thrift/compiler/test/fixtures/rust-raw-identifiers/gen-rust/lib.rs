@@ -286,7 +286,7 @@ pub mod client {
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::ReturnError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::foo::ReturnError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -331,7 +331,7 @@ pub mod client {
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::SuperError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::foo::SuperError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -377,12 +377,12 @@ pub mod client {
         fn r#return(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::ReturnError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::foo::ReturnError>>;
 
         fn super_(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::SuperError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::foo::SuperError>>;
     }
 
     pub trait FooExt<T>: Foo
@@ -393,12 +393,12 @@ pub mod client {
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::ReturnError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::foo::ReturnError>>;
         fn super__with_rpc_opts(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::SuperError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::foo::SuperError>>;
     }
 
     struct Args_Foo_return<'a> {
@@ -449,7 +449,7 @@ pub mod client {
         fn r#return(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::ReturnError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::foo::ReturnError>> {
             let rpc_options = T::RpcOptions::default();
             self._return_impl(
                 arg_bar,
@@ -459,7 +459,7 @@ pub mod client {
         fn super_(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::SuperError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::foo::SuperError>> {
             let rpc_options = T::RpcOptions::default();
             self._super_impl(
                 arg_bar,
@@ -481,7 +481,7 @@ pub mod client {
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::ReturnError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::foo::ReturnError>> {
             self._return_impl(
                 arg_bar,
                 rpc_options,
@@ -491,7 +491,7 @@ pub mod client {
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::SuperError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::foo::SuperError>> {
             self._super_impl(
                 arg_bar,
                 rpc_options,
@@ -507,7 +507,7 @@ pub mod client {
         fn r#return(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::ReturnError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::foo::ReturnError>> {
             self.as_ref().r#return(
                 arg_bar,
             )
@@ -515,7 +515,7 @@ pub mod client {
         fn super_(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::SuperError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::foo::SuperError>> {
             self.as_ref().super_(
                 arg_bar,
             )
@@ -533,7 +533,7 @@ pub mod client {
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::ReturnError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::foo::ReturnError>> {
             <Self as ::std::convert::AsRef<dyn FooExt<T>>>::as_ref(self).r#return_with_rpc_opts(
                 arg_bar,
                 rpc_options,
@@ -543,7 +543,7 @@ pub mod client {
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::SuperError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::foo::SuperError>> {
             <Self as ::std::convert::AsRef<dyn FooExt<T>>>::as_ref(self).super__with_rpc_opts(
                 arg_bar,
                 rpc_options,
@@ -1215,7 +1215,7 @@ pub mod mock {
         fn r#return(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::ReturnError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::foo::ReturnError>> {
             let mut closure = self.r#return.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut(crate::types::ThereAreNoPascalCaseKeywords) -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure(arg_bar.clone())))
@@ -1223,7 +1223,7 @@ pub mod mock {
         fn super_(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::SuperError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::foo::SuperError>> {
             let mut closure = self.super_.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut(crate::types::ThereAreNoPascalCaseKeywords) -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure(arg_bar.clone())))

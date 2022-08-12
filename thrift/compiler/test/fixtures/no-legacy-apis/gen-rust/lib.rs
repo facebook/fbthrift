@@ -176,7 +176,7 @@ pub mod client {
             &self,
             arg_u: &crate::types::MyUnion,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::QueryError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::QueryError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -222,7 +222,7 @@ pub mod client {
         fn query(
             &self,
             arg_u: &crate::types::MyUnion,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::QueryError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::QueryError>>;
     }
 
     pub trait MyServiceExt<T>: MyService
@@ -233,7 +233,7 @@ pub mod client {
             &self,
             arg_u: &crate::types::MyUnion,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::QueryError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::QueryError>>;
     }
 
     struct Args_MyService_query<'a> {
@@ -266,7 +266,7 @@ pub mod client {
         fn query(
             &self,
             arg_u: &crate::types::MyUnion,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::QueryError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::QueryError>> {
             let rpc_options = T::RpcOptions::default();
             self._query_impl(
                 arg_u,
@@ -288,7 +288,7 @@ pub mod client {
             &self,
             arg_u: &crate::types::MyUnion,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::QueryError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::QueryError>> {
             self._query_impl(
                 arg_u,
                 rpc_options,
@@ -304,7 +304,7 @@ pub mod client {
         fn query(
             &self,
             arg_u: &crate::types::MyUnion,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::QueryError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::QueryError>> {
             self.as_ref().query(
                 arg_u,
             )
@@ -322,7 +322,7 @@ pub mod client {
             &self,
             arg_u: &crate::types::MyUnion,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::QueryError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::QueryError>> {
             <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).query_with_rpc_opts(
                 arg_u,
                 rpc_options,
@@ -869,7 +869,7 @@ pub mod mock {
         fn query(
             &self,
             arg_u: &crate::types::MyUnion,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::QueryError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::QueryError>> {
             let mut closure = self.query.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut(crate::types::MyUnion) -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure(arg_u.clone())))

@@ -204,7 +204,7 @@ pub mod client {
             arg_arg2: &::std::primitive::str,
             arg_arg3: &crate::types::Foo,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::MyI32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<crate::types::MyI32, crate::errors::service::FuncError>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -254,7 +254,7 @@ pub mod client {
             arg_arg1: &::std::primitive::str,
             arg_arg2: &::std::primitive::str,
             arg_arg3: &crate::types::Foo,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::MyI32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<crate::types::MyI32, crate::errors::service::FuncError>>;
     }
 
     pub trait ServiceExt<T>: Service
@@ -267,7 +267,7 @@ pub mod client {
             arg_arg2: &::std::primitive::str,
             arg_arg3: &crate::types::Foo,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::MyI32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>>;
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<crate::types::MyI32, crate::errors::service::FuncError>>;
     }
 
     struct Args_Service_func<'a> {
@@ -310,7 +310,7 @@ pub mod client {
             arg_arg1: &::std::primitive::str,
             arg_arg2: &::std::primitive::str,
             arg_arg3: &crate::types::Foo,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::MyI32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<crate::types::MyI32, crate::errors::service::FuncError>> {
             let rpc_options = T::RpcOptions::default();
             self._func_impl(
                 arg_arg1,
@@ -336,7 +336,7 @@ pub mod client {
             arg_arg2: &::std::primitive::str,
             arg_arg3: &crate::types::Foo,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::MyI32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<crate::types::MyI32, crate::errors::service::FuncError>> {
             self._func_impl(
                 arg_arg1,
                 arg_arg2,
@@ -356,7 +356,7 @@ pub mod client {
             arg_arg1: &::std::primitive::str,
             arg_arg2: &::std::primitive::str,
             arg_arg3: &crate::types::Foo,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::MyI32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<crate::types::MyI32, crate::errors::service::FuncError>> {
             self.as_ref().func(
                 arg_arg1,
                 arg_arg2,
@@ -378,7 +378,7 @@ pub mod client {
             arg_arg2: &::std::primitive::str,
             arg_arg3: &crate::types::Foo,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::MyI32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<crate::types::MyI32, crate::errors::service::FuncError>> {
             <Self as ::std::convert::AsRef<dyn ServiceExt<T>>>::as_ref(self).func_with_rpc_opts(
                 arg_arg1,
                 arg_arg2,
@@ -947,7 +947,7 @@ pub mod mock {
             arg_arg1: &::std::primitive::str,
             arg_arg2: &::std::primitive::str,
             arg_arg3: &crate::types::Foo,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::MyI32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>> {
+        ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<crate::types::MyI32, crate::errors::service::FuncError>> {
             let mut closure = self.func.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut(crate::types::StringWithAdapter, ::std::string::String, crate::types::Foo) -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure(arg_arg1.to_owned(), arg_arg2.to_owned(), arg_arg3.clone())))

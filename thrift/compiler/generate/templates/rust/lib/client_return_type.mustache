@@ -15,7 +15,7 @@
   limitations under the License.
 
 }}{{!
-}}::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<{{!
+}}::futures::future::BoxFuture<'static, ::std::result::Result<{{!
     }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
     }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
-}}>> + ::std::marker::Send + 'static>>
+}}>>

@@ -15,12 +15,11 @@
  */
 
 use std::ffi::CStr;
-use std::future::Future;
-use std::pin::Pin;
 use std::sync::Arc;
 
 use futures::future;
-use futures::stream::Stream;
+use futures::future::BoxFuture;
+use futures::stream::BoxStream;
 use futures::FutureExt;
 
 use crate::help::Spawner;
@@ -59,7 +58,7 @@ pub trait Transport: Framing + Send + Sized + 'static {
         fn_name: &'static CStr,
         req: FramingEncodedFinal<Self>,
         rpc_options: Self::RpcOptions,
-    ) -> Pin<Box<dyn Future<Output = Result<FramingDecoded<Self>, anyhow::Error>> + Send + 'static>>;
+    ) -> BoxFuture<'static, anyhow::Result<FramingDecoded<Self>>>;
 
     fn call_stream(
         &self,
@@ -67,25 +66,12 @@ pub trait Transport: Framing + Send + Sized + 'static {
         _fn_name: &'static CStr,
         _req: FramingEncodedFinal<Self>,
         _rpc_options: Self::RpcOptions,
-    ) -> Pin<
-        Box<
-            dyn Future<
-                    Output = Result<
-                        (
-                            FramingDecoded<Self>,
-                            Pin<
-                                Box<
-                                    dyn Stream<Item = Result<FramingDecoded<Self>, anyhow::Error>>
-                                        + Send
-                                        + 'static,
-                                >,
-                            >,
-                        ),
-                        anyhow::Error,
-                    >,
-                > + Send
-                + 'static,
-        >,
+    ) -> BoxFuture<
+        'static,
+        anyhow::Result<(
+            FramingDecoded<Self>,
+            BoxStream<'static, anyhow::Result<FramingDecoded<Self>>>,
+        )>,
     > {
         future::err(anyhow::Error::msg(
             "Streaming is not supported by this transport",
