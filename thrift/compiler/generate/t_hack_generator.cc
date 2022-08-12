@@ -3693,34 +3693,62 @@ bool t_hack_generator::generate_php_struct_async_toShape_method_helper(
       container_prefix = "Vec\\";
       val_type = static_cast<const t_list*>(ttype)->get_elem_type();
     }
-    val_type = val_type->get_true_type();
+
+    if (const auto* ttypedef =
+            dynamic_cast<const t_placeholder_typedef*>(val_type)) {
+      val_type = ttypedef->get_type();
+    }
+    auto [wrapper, name, ns] = find_hack_wrapper(val_type);
     if (val_type->is_container() || val_type->is_struct()) {
       std::stringstream inner;
-      bool is_async = false;
       std::string inner_val = namer("$val");
       indent_up();
-
       indent_up();
-      is_async = generate_php_struct_async_toShape_method_helper(
+      bool is_async_val = generate_php_struct_async_toShape_method_helper(
           inner, val_type, namer, inner_val);
       indent_down();
-
-      out << container_prefix << (is_async ? "map_async" : "map") << "(\n";
+      auto inner_str = (is_async_val ? "await " : "") + inner.str();
+      if (!wrapper && inner_val == inner_str) {
+        // Since value doesn't need mapping, 'inner_val' will be unused.
+        // Decrement the counter so that we don't skip namer values.
+        namer.decrement_counter();
+        indent_down();
+        out << val;
+        if (use_to_darray_conv) {
+          indent_down();
+          out << "\n" << indent() << ")";
+        }
+        return false;
+      }
+      bool use_map_async = wrapper || is_async_val;
+      out << container_prefix << (use_map_async ? "map_async" : "map") << "(\n";
 
       out << indent() << val << ",\n"
-          << indent() << (is_async ? "async " : "") << inner_val << " ==> \n";
+          << indent() << (use_map_async ? "async " : "") << inner_val
+          << " ==> \n";
 
       indent_up();
-      out << indent() << (is_async ? "await " : "") << inner.str() << "\n";
-      indent_down();
 
+      if (wrapper) {
+        out << indent() << "{\n";
+        indent_up();
+        out << indent() << inner_val << " = await " << inner_val
+            << "->genUnwrap();\n";
+        out << indent() << "return " << inner_str << ";\n";
+        indent_down();
+        out << indent() << "}\n";
+      } else {
+        out << indent() << inner_str << "\n";
+      }
+
+      indent_down();
       indent_down();
       out << indent() << ")";
       if (use_to_darray_conv) {
         indent_down();
         out << "\n" << indent() << ")";
       }
-      return is_async;
+      return use_map_async;
     } else {
       out << generate_to_array_method(ttype, val);
       return false;
@@ -3781,10 +3809,21 @@ void t_hack_generator::generate_php_struct_async_shape_methods(
       << "public async function __genToShape(): Awaitable<self::TShape> {\n";
   indent_up();
   for (const auto& field : tstruct->fields()) {
+    auto fieldRef = "$this->" + field.name();
     if (find_hack_wrapper(field)) {
       out << indent() << "$" << field.name() << " = await "
-          << (tstruct->is_union() ? "" : "(") << "$this->" << field.name()
+          << (tstruct->is_union() ? "" : "(") << fieldRef
           << (tstruct->is_union() ? "?" : " as nonnull)") << "->genUnwrap();\n";
+      fieldRef = "$" + field.name();
+    }
+    auto [wrapper, name, ns] = find_hack_wrapper(field.get_type());
+    if (wrapper) {
+      bool nullable =
+          field_is_nullable(
+              tstruct, &field, render_default_value(field.get_type())) ||
+          nullable_everything_;
+      out << indent() << "$" << field.name() << " = await " << fieldRef
+          << (nullable ? "?" : "") << "->genUnwrap();\n";
     }
   }
   indent(out) << "return shape(\n";
@@ -3808,6 +3847,11 @@ void t_hack_generator::generate_php_struct_async_shape_methods(
     auto fieldRef = "$this->" + field.name();
     if (find_hack_wrapper(field)) {
       fieldRef = "$" + field.name();
+    } else {
+      auto [wrapper, name, ns] = find_hack_wrapper(field.get_type());
+      if (wrapper) {
+        fieldRef = "$" + field.name();
+      }
     }
     if (!t->is_container() && !t->is_struct()) {
       out << fieldRef << ",\n";

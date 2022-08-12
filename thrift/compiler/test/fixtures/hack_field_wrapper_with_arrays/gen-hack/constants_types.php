@@ -367,13 +367,14 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
 
   public async function __genToShape(): Awaitable<self::TShape> {
     $compensation = await ($this->compensation as nonnull)->genUnwrap();
+    $intern_id = await $this->intern_id->genUnwrap();
     return shape(
       'weeks' => $this->weeks,
       'title' => $this->title,
       'employer' => $this->employer,
       'compensation' => $compensation,
       'school' => $this->school,
-      'intern_id' => $this->intern_id,
+      'intern_id' => $intern_id,
     );
   }
   public function getInstanceKey()[write_props]: string {

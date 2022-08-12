@@ -538,6 +538,7 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
 
   public async function __genToShape(): Awaitable<self::TShape> {
     $recurse = await ($this->recurse as nonnull)->genUnwrap();
+    $int_field = await $this->int_field->genUnwrap();
     return shape(
       'name' => $this->name,
       'recurse' => await ($recurse === null 
@@ -557,7 +558,7 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
         async $val0 ==> 
           await $val0->__genToShape()
       ),
-      'int_field' => $this->int_field,
+      'int_field' => $int_field,
     );
   }
   public function getInstanceKey()[write_props]: string {

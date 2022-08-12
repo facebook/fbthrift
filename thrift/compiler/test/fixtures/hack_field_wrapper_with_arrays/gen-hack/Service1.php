@@ -1316,14 +1316,16 @@ class Service1_func2_args implements \IThriftAsyncStruct, \IThriftShapishAsyncSt
   }
 
   public async function __genToShape(): Awaitable<self::TShape> {
+    $arg1 = await $this->arg1?->genUnwrap();
+    $arg2 = await $this->arg2->genUnwrap();
     return shape(
-      'arg1' => ($this->arg1 === null 
+      'arg1' => ($arg1 === null 
         ? null 
         : (
-        $this->arg1->__toShape()
+        $arg1->__toShape()
         )
       ),
-      'arg2' => $this->arg2,
+      'arg2' => $arg2,
     );
   }
   public function getInstanceKey()[write_props]: string {

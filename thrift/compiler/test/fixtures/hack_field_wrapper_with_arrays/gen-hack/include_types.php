@@ -732,7 +732,9 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
     $optional_adapted_and_wrapped_type = await ($this->optional_adapted_and_wrapped_type as nonnull)->genUnwrap();
     $invalid_key_map = await ($this->invalid_key_map as nonnull)->genUnwrap();
     $wrapped_type_int = await ($this->wrapped_type_int as nonnull)->genUnwrap();
+    $wrapped_type_int = await $wrapped_type_int->genUnwrap();
     $double_wrapped_struct = await ($this->double_wrapped_struct as nonnull)->genUnwrap();
+    $double_wrapped_struct = await $double_wrapped_struct?->genUnwrap();
     return shape(
       'wrapped_field' => $wrapped_field,
       'annotated_field' => $annotated_field,
@@ -1532,13 +1534,16 @@ class MyComplexStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct
               await $val1->__genToShape()
           )
       ),
-      'list_of_map_of_string_to_StructWithWrapper' => Vec\map(
+      'list_of_map_of_string_to_StructWithWrapper' => await Vec\map_async(
         $this->list_of_map_of_string_to_StructWithWrapper,
-        $val0 ==> 
-          Dict\map(
+        async $val0 ==> 
+          await Dict\map_async(
             $val0,
-            $val1 ==> 
-              $val1->__toShape()
+            async $val1 ==> 
+              {
+                $val1 = await $val1->genUnwrap();
+                return $val1->__toShape();
+              }
           )
       ),
     );
