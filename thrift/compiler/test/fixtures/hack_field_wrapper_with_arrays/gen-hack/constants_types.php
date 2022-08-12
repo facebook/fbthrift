@@ -150,8 +150,8 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
   public function __construct()[] {
     $this->weeks = 0;
     $this->title = '';
-    $this->intern_id = 0;
     $this->compensation = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<?float, Internship>(null, 4, $this);
+    $this->intern_id = \MyTypeIntWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<\detail\i64WithWrapper>(0);
   }
 
   public static function withDefaultValues()[]: this {

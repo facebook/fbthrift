@@ -301,8 +301,8 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
   public function __construct()[] {
     $this->name = '';
     $this->recurse_map = dict[];
-    $this->int_field = 0;
     $this->recurse = MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<?structured_annotation_recursive, structured_annotation_recursive>(null, 2, $this);
+    $this->int_field = \MyTypeIntWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<\thrift_adapted_types\i64WithWrapper>(0);
   }
 
   public static function withDefaultValues()[]: this {

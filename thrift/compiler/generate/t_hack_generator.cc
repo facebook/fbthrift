@@ -297,12 +297,12 @@ class t_hack_generator : public t_concat_generator {
       std::ofstream& out,
       const t_struct* tstruct,
       ThriftStructType type,
-      const std::string& name);
+      const std::string& struct_hack_name_with_ns);
   void generate_php_struct_default_constructor(
       std::ofstream& out,
       const t_struct* tstruct,
       ThriftStructType type,
-      const std::string& name);
+      const std::string& struct_hack_name_with_ns);
   void generate_php_struct_withDefaultValues_method(std::ofstream& out);
 
   void generate_php_struct_constructor_field_assignment(
@@ -4371,6 +4371,12 @@ void t_hack_generator::generate_php_struct_constructor_field_assignment(
   bool need_enum_code_fixme = is_exception && field_name == "code" &&
       t->is_enum() && !enum_transparenttype_;
   if (is_default_assignment) {
+    auto [type_wrapper, underlying_name, ns] =
+        find_hack_wrapper(field.get_type());
+    if (type_wrapper && !nullable) {
+      dval = *type_wrapper + "::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<" +
+          hack_typehint + ">(" + dval + ")";
+    }
     if (const auto* field_wrapper = find_hack_wrapper(field)) {
       out << indent() << "$this->" << field_name << " = " << *field_wrapper
           << "::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<" << (nullable ? "?" : "")
@@ -4398,7 +4404,6 @@ void t_hack_generator::generate_php_struct_constructor_field_assignment(
     if (tstruct->is_union()) {
       out << indent() << "  $this->_type = "
           << union_field_to_enum(&field, struct_hack_name_with_ns) << ";\n"
-
           << indent() << "}\n";
     }
   }
@@ -4465,7 +4470,7 @@ void t_hack_generator::generate_php_struct_default_constructor(
     std::ofstream& out,
     const t_struct* tstruct,
     ThriftStructType type,
-    const std::string& name) {
+    const std::string& struct_hack_name_with_ns) {
   out << indent() << "public function __construct()[] {\n";
   indent_up();
   if (!tstruct->is_union()) {
@@ -4473,7 +4478,7 @@ void t_hack_generator::generate_php_struct_default_constructor(
       out << indent() << "parent::__construct();\n";
     }
 
-    std::vector<const t_field*> wrapped_fields;
+    std::vector<const t_field*> wrapped_fields_or_types;
     if (type != ThriftStructType::RESULT) {
       for (const auto& field : tstruct->fields()) {
         if (skip_codegen(&field)) {
@@ -4482,15 +4487,21 @@ void t_hack_generator::generate_php_struct_default_constructor(
         // Fields with FieldWrappr annotation are nullable and need to be set
         // at the end after all non-nullable fields are set.
         if (find_hack_wrapper(field)) {
-          wrapped_fields.push_back(&field);
+          wrapped_fields_or_types.push_back(&field);
         } else {
-          generate_php_struct_constructor_field_assignment(
-              out, field, tstruct, type, name, true);
+          auto [type_wrapper, underlying_name, ns] =
+              find_hack_wrapper(field.get_type());
+          if (type_wrapper) {
+            wrapped_fields_or_types.push_back(&field);
+          } else {
+            generate_php_struct_constructor_field_assignment(
+                out, field, tstruct, type, struct_hack_name_with_ns, true);
+          }
         }
       }
-      for (const auto& field : wrapped_fields) {
+      for (const auto& field : wrapped_fields_or_types) {
         generate_php_struct_constructor_field_assignment(
-            out, *field, tstruct, type, name, true);
+            out, *field, tstruct, type, struct_hack_name_with_ns, true);
       }
     }
   }

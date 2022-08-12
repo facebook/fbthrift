@@ -1180,7 +1180,7 @@ class Service1_func2_args implements \IThriftAsyncStruct, \IThriftShapishAsyncSt
   public i64WithWrapper $arg2;
 
   public function __construct()[] {
-    $this->arg2 = 0;
+    $this->arg2 = \MyTypeIntWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<\detail\i64WithWrapper>(0);
   }
 
   public static function withDefaultValues()[]: this {
