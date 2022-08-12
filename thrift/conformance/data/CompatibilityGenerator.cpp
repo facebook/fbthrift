@@ -27,21 +27,19 @@
 #include <boost/mp11.hpp>
 #include <fmt/core.h>
 #include <folly/container/Foreach.h>
-#include <folly/io/IOBufQueue.h>
-#include <thrift/conformance/cpp2/AnyRegistry.h>
-#include <thrift/conformance/cpp2/Object.h>
 #include <thrift/conformance/cpp2/Protocol.h>
 #include <thrift/conformance/data/ValueGenerator.h>
 #include <thrift/conformance/data/internal/TestGenerator.h>
 #include <thrift/conformance/if/gen-cpp2/test_suite_types.h>
-#include <thrift/lib/cpp/util/EnumUtils.h>
-#include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/type/Name.h>
 #include <thrift/test/testset/Testset.h>
 #include <thrift/test/testset/gen-cpp2/Enum_types.h>
 #include <thrift/test/testset/gen-cpp2/testset_types_custom_protocol.h>
 
 // TODO: use FieldQualifier
+using apache::thrift::conformance::data::detail::
+    genCompatibilityRoundTripTestCase;
+using apache::thrift::conformance::data::detail::serializeThriftStruct;
 using apache::thrift::test::testset::FieldModifier;
 using apache::thrift::test::testset::detail::exception_ByFieldType;
 using apache::thrift::test::testset::detail::mod_set;
@@ -53,33 +51,14 @@ namespace apache::thrift::conformance::data {
 
 namespace {
 
-[[nodiscard]] std::unique_ptr<folly::IOBuf> serialize(
-    const Object& a, const Protocol& protocol) {
-  switch (auto p = protocol.standard()) {
-    case StandardProtocol::Compact:
-      return serializeObject<apache::thrift::CompactProtocolWriter>(a);
-    case StandardProtocol::Binary:
-      return serializeObject<apache::thrift::BinaryProtocolWriter>(a);
-    default:
-      throw std::invalid_argument(
-          "Unsupported protocol: " + util::enumNameSafe(p));
-  }
-}
-
 template <class TT>
 [[nodiscard]] TestCase addFieldTestCase(const Protocol& protocol) {
   const typename struct_ByFieldType<TT, mod_set<>>::type def;
-
-  RoundTripTestCase roundTrip;
-  roundTrip.request()->value() = AnyRegistry::generated().store(def, protocol);
-  roundTrip.request()->value()->data() = *serialize({}, protocol);
-  roundTrip.expectedResponse().emplace().value() =
-      AnyRegistry::generated().store(def, protocol);
-
-  TestCase testCase;
-  testCase.name() = fmt::format("testset.{}/AddField", type::getName<TT>());
-  testCase.test()->roundTrip_ref() = std::move(roundTrip);
-  return testCase;
+  return genCompatibilityRoundTripTestCase(
+      protocol,
+      fmt::format("testset.{}/AddField", type::getName<TT>()),
+      Object{},
+      def);
 }
 
 template <class TT>
@@ -87,18 +66,11 @@ template <class TT>
     const Protocol& protocol) {
   const typename struct_ByFieldType<TT, mod_set<FieldModifier::CustomDefault>>::
       type def;
-
-  RoundTripTestCase roundTrip;
-  roundTrip.request()->value() = AnyRegistry::generated().store(def, protocol);
-  roundTrip.request()->value()->data() = *serialize({}, protocol);
-  roundTrip.expectedResponse().emplace().value() =
-      AnyRegistry::generated().store(def, protocol);
-
-  TestCase testCase;
-  testCase.name() =
-      fmt::format("testset.{}/AddFieldWithCustomDefault", type::getName<TT>());
-  testCase.test()->roundTrip_ref() = std::move(roundTrip);
-  return testCase;
+  return genCompatibilityRoundTripTestCase(
+      protocol,
+      fmt::format("testset.{}/AddFieldWithCustomDefault", type::getName<TT>()),
+      Object{},
+      def);
 }
 
 template <class TT>
@@ -107,20 +79,17 @@ template <class TT>
   const typename struct_ByFieldType<
       TT,
       mod_set<FieldModifier::Optional, FieldModifier::CustomDefault>>::type def;
-
-  RoundTripTestCase roundTrip;
-  roundTrip.request()->value() = AnyRegistry::generated().store(def, protocol);
-  roundTrip.request()->value()->data() = *serialize({}, protocol);
-  roundTrip.expectedResponse().emplace().value() =
-      AnyRegistry::generated().store(def, protocol);
-  roundTrip.expectedResponse().emplace().value()->data() =
-      *serialize({}, protocol);
-
-  TestCase testCase;
-  testCase.name() = fmt::format(
-      "testset.{}/AddOptionalFieldWithCustomDefault", type::getName<TT>());
-  testCase.test()->roundTrip_ref() = std::move(roundTrip);
-  return testCase;
+  auto ret = genCompatibilityRoundTripTestCase(
+      protocol,
+      fmt::format(
+          "testset.{}/AddOptionalFieldWithCustomDefault", type::getName<TT>()),
+      def,
+      def);
+  // Optional field that's not in payload should always be empty, even if there
+  // is custom default
+  ret.test()->roundTrip_ref()->expectedResponse().ensure().value()->data() =
+      *serializeThriftStruct(Object{}, protocol);
+  return ret;
 }
 
 template <class T>
@@ -148,40 +117,16 @@ template <class TT>
       obj.members()[obj.members()->rbegin()->first + 1] = i.second;
     }
 
-    RoundTripTestCase roundTrip;
-    roundTrip.request()->value() =
-        AnyRegistry::generated().store(def, protocol);
-    roundTrip.request()->value()->data() = *serialize(obj, protocol);
-    roundTrip.expectedResponse().emplace().value() =
-        AnyRegistry::generated().store(def, protocol);
-
-    TestCase testCase;
-    testCase.name() = fmt::format(
-        "testset.{}/RemoveField/{}", type::getName<TT>(), value.name);
-    testCase.test()->roundTrip_ref() = std::move(roundTrip);
-    ret.push_back(std::move(testCase));
+    ret.push_back(genCompatibilityRoundTripTestCase(
+        protocol,
+        fmt::format(
+            "testset.{}/RemoveField/{}", type::getName<TT>(), value.name),
+        obj,
+        def));
   }
 
   return ret;
 }
-
-template <class ThriftStruct>
-[[nodiscard]] std::unique_ptr<folly::IOBuf> serializeThriftStruct(
-    const ThriftStruct& s, const Protocol& protocol) {
-  static_assert(is_thrift_class_v<ThriftStruct>);
-  switch (auto p = protocol.standard()) {
-    case StandardProtocol::Compact:
-      return apache::thrift::CompactSerializer::serialize<folly::IOBufQueue>(s)
-          .move();
-    case StandardProtocol::Binary:
-      return apache::thrift::BinarySerializer::serialize<folly::IOBufQueue>(s)
-          .move();
-    default:
-      throw std::invalid_argument(
-          "Unsupported protocol: " + util::enumNameSafe(p));
-  }
-}
-
 constexpr auto alwaysReturnTrue = [](auto&&) { return true; };
 
 template <
@@ -212,22 +157,15 @@ template <
       new_data.field_1() = static_cast<type::native_type<New>>(value.value);
     }
 
-    RoundTripTestCase roundTrip;
-    roundTrip.request()->value() =
-        AnyRegistry::generated().store(new_data, protocol);
-    roundTrip.request()->value()->data() =
-        *serializeThriftStruct(old_data, protocol);
-    roundTrip.expectedResponse().emplace().value() =
-        AnyRegistry::generated().store(new_data, protocol);
-
-    TestCase testCase;
-    testCase.name() = fmt::format(
-        "testset.{}.{}/ChangeFieldType/{}",
-        type::getName<Old>(),
-        type::getName<New>(),
-        value.name);
-    testCase.test()->roundTrip_ref() = std::move(roundTrip);
-    ret.push_back(std::move(testCase));
+    ret.push_back(genCompatibilityRoundTripTestCase(
+        protocol,
+        fmt::format(
+            "testset.{}.{}/ChangeFieldType/{}",
+            type::getName<Old>(),
+            type::getName<New>(),
+            value.name),
+        old_data,
+        new_data));
   }
 
   return ret;
@@ -261,20 +199,15 @@ template <class Old, class New>
     old_data.field_1() = value.value;
     new_data.field_1() = value.value;
 
-    RoundTripTestCase roundTrip;
-    roundTrip.request()->value() =
-        AnyRegistry::generated().store(old_data, protocol);
-    roundTrip.expectedResponse().emplace().value() =
-        AnyRegistry::generated().store(new_data, protocol);
-
-    TestCase testCase;
-    testCase.name() = fmt::format(
-        "testset.{}.{}/ChangeQualifier/{}",
-        getQualifierName<Old>(),
-        getQualifierName<New>(),
-        value.name);
-    testCase.test()->roundTrip_ref() = std::move(roundTrip);
-    ret.push_back(std::move(testCase));
+    ret.push_back(genCompatibilityRoundTripTestCase(
+        protocol,
+        fmt::format(
+            "testset.{}.{}/ChangeQualifier/{}",
+            getQualifierName<Old>(),
+            getQualifierName<New>(),
+            value.name),
+        old_data,
+        new_data));
   }
 
   return ret;
@@ -318,29 +251,18 @@ template <class Old, class New>
     int32_t new_value) {
   setEnum(old_data.field().ensure(), old_value);
   setEnum(new_data.field().ensure(), new_value);
-
-  RoundTripTestCase roundTrip;
-  roundTrip.request()->value() =
-      AnyRegistry::generated().store(new_data, protocol);
-  roundTrip.request()->value()->data() =
-      *serializeThriftStruct(old_data, protocol);
-  roundTrip.expectedResponse().emplace().value() =
-      AnyRegistry::generated().store(new_data, protocol);
-
-  TestCase testCase;
-  testCase.name() = fmt::format(
+  auto name = fmt::format(
       "testset/ChangeEnumType/{}.{}.{}.{}",
       getEnumStructName<decltype(old_data)>(),
       old_value,
       getEnumStructName<decltype(new_data)>(),
       new_value);
-  for (char& c : *testCase.name()) {
+  for (char& c : name) {
     if (c == '-') {
       c = '_';
     }
   }
-  testCase.test()->roundTrip_ref() = std::move(roundTrip);
-  return testCase;
+  return genCompatibilityRoundTripTestCase(protocol, name, old_data, new_data);
 }
 
 [[nodiscard]] std::vector<TestCase> changeEnumValueTestCases(
@@ -418,22 +340,16 @@ template <class TT>
           return;
         }
 
-        RoundTripTestCase roundTrip;
-        roundTrip.request()->value() =
-            AnyRegistry::generated().store(new_data, protocol);
-        roundTrip.request()->value()->data() =
-            *serializeThriftStruct(old_data, protocol);
-        roundTrip.expectedResponse().emplace().value() =
-            AnyRegistry::generated().store(new_data, protocol);
-        TestCase testCase;
-        testCase.name() = fmt::format(
-            "testset.{}/{}To{}/{}",
-            type::getName<TT>(),
-            get_name(old_data),
-            get_name(new_data),
-            value.name);
-        testCase.test()->roundTrip_ref() = std::move(roundTrip);
-        ret.push_back(std::move(testCase));
+        ret.push_back(genCompatibilityRoundTripTestCase(
+            protocol,
+            fmt::format(
+                "testset.{}/{}To{}/{}",
+                type::getName<TT>(),
+                get_name(old_data),
+                get_name(new_data),
+                value.name),
+            old_data,
+            new_data));
       });
     });
   }

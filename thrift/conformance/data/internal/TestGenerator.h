@@ -21,7 +21,13 @@
 
 #include <boost/mp11.hpp>
 
+#include <folly/io/IOBufQueue.h>
+#include <thrift/conformance/cpp2/AnyRegistry.h>
+#include <thrift/conformance/cpp2/Object.h>
 #include <thrift/conformance/cpp2/Protocol.h>
+#include <thrift/conformance/if/gen-cpp2/test_suite_types.h>
+#include <thrift/lib/cpp/util/EnumUtils.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
 
 namespace apache::thrift::conformance::data::detail {
 
@@ -46,5 +52,49 @@ std::set<Protocol> toProtocols(const C& protocolCtorArgs) {
 
 constexpr std::initializer_list<StandardProtocol> kDefaultProtocols = {
     StandardProtocol::Binary, StandardProtocol::Compact};
+
+[[nodiscard]] std::unique_ptr<folly::IOBuf> serializeThriftStruct(
+    const Object& a, const Protocol& protocol);
+
+template <class ThriftStruct>
+[[nodiscard]] std::
+    enable_if_t<is_thrift_class_v<ThriftStruct>, std::unique_ptr<folly::IOBuf>>
+    serializeThriftStruct(const ThriftStruct& s, const Protocol& protocol) {
+  switch (auto p = protocol.standard()) {
+    case StandardProtocol::Compact:
+      return apache::thrift::CompactSerializer::serialize<folly::IOBufQueue>(s)
+          .move();
+    case StandardProtocol::Binary:
+      return apache::thrift::BinarySerializer::serialize<folly::IOBufQueue>(s)
+          .move();
+    default:
+      throw std::invalid_argument(
+          "Unsupported protocol: " + util::enumNameSafe(p));
+  }
+}
+
+// For Compatibility tests, we set the request to thrift.Any of new struct, then
+// replace the underlying IOBuf to serialized old struct.
+//
+// This way, the Thrift.Any will be deserialized with old struct and the layout
+// of new struct
+template <class Old, class New>
+[[nodiscard]] TestCase genCompatibilityRoundTripTestCase(
+    const Protocol& protocol,
+    std::string name,
+    const Old& oldData,
+    const New& newData) {
+  RoundTripTestCase roundTrip;
+  auto newAny = AnyRegistry::generated().store(newData, protocol);
+  roundTrip.request()->value() = newAny;
+  roundTrip.request()->value()->data() =
+      *serializeThriftStruct(oldData, protocol);
+  roundTrip.expectedResponse().emplace().value() = std::move(newAny);
+
+  TestCase testCase;
+  testCase.name() = std::move(name);
+  testCase.test()->roundTrip_ref() = std::move(roundTrip);
+  return testCase;
+}
 
 } // namespace apache::thrift::conformance::data::detail
