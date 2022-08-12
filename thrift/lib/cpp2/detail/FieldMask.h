@@ -291,4 +291,35 @@ Mask path(const Mask& other) {
 // Throws a runtime error if the mask contains a map mask.
 void throwIfContainsMapMask(const Mask& mask);
 
+template <typename T>
+void compare_impl(const T& original, const T& modified, FieldIdToMask& mask) {
+  op::for_each_field_id<T>([&](auto fieldIdTag) {
+    using FieldIdTag = decltype(fieldIdTag);
+    int16_t fieldId = static_cast<int16_t>(fieldIdTag());
+    auto&& original_field = op::get<T, FieldIdTag>(original);
+    auto&& modified_field = op::get<T, FieldIdTag>(modified);
+    auto* original_ptr = op::get_value_or_null(original_field);
+    auto* modified_ptr = op::get_value_or_null(modified_field);
+
+    if (!original_ptr && !modified_ptr) { // same
+      return;
+    }
+    if (!original_ptr || !modified_ptr) { // different
+      mask[fieldId] = field_mask_constants::allMask();
+      return;
+    }
+    if (*original_ptr == *modified_ptr) { // same
+      return;
+    }
+    // check if nested fields need to be added to mask
+    using FieldType = op::get_native_type<T, FieldIdTag>;
+    if constexpr (is_thrift_struct_v<FieldType>) {
+      compare_impl(
+          *original_ptr, *modified_ptr, mask[fieldId].includes_ref().emplace());
+      return;
+    }
+    // The values are different and not nested.
+    mask[fieldId] = field_mask_constants::allMask();
+  });
+}
 } // namespace apache::thrift::protocol::detail

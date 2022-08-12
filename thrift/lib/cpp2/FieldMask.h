@@ -128,4 +128,15 @@ struct MaskWrapper : type::detail::Wrap<Mask> {
   }
 };
 
+// Constructs a FieldMask object that includes the fields that are
+// different in the given two Thrift structs.
+// TODO: support map mask
+template <typename T>
+Mask compare(const T& original, const T& modified) {
+  static_assert(is_thrift_struct_v<T>, "not a thrift struct");
+  Mask result;
+  detail::compare_impl(original, modified, result.includes_ref().emplace());
+  return result;
+}
+
 } // namespace apache::thrift::protocol

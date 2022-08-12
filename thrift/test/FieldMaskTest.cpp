@@ -1763,4 +1763,88 @@ TEST(FieldMaskTest, ReverseMask) {
   EXPECT_EQ(reverseMask(inclusiveMask), exclusiveMask);
   EXPECT_EQ(reverseMask(exclusiveMask), inclusiveMask);
 }
+
+TEST(FieldMaskTest, Compare) {
+  Bar2 original;
+  Foo2 foo;
+  foo.field_1() = 1;
+  foo.field_2() = 2;
+  original.field_3() = foo;
+  original.field_4() = 4;
+
+  {
+    Bar2 modified = original;
+    modified.field_3()->field_1() = 5;
+    modified.field_4() = 6;
+    // obj[1][1] and obj[2] are different
+    Mask mask = protocol::compare(original, modified);
+    EXPECT_EQ(mask.includes_ref().value()[2], allMask());
+    ASSERT_TRUE(mask.includes_ref().value().contains(1));
+    EXPECT_EQ(
+        mask.includes_ref().value()[1].includes_ref().value()[1], allMask());
+    EXPECT_FALSE(
+        mask.includes_ref().value()[1].includes_ref().value().contains(2));
+    EXPECT_EQ(protocol::compare(modified, original), mask); // commutative
+  }
+  {
+    Bar2 modified = original;
+    Mask mask = protocol::compare(original, modified);
+    // This doesn't create a nested mask.
+    EXPECT_EQ(mask, noneMask());
+    EXPECT_EQ(protocol::compare(modified, original), mask); // commutative
+  }
+
+  // tests if this works with unset optional fields
+  {
+    Bar2 empty;
+    Mask mask = protocol::compare(original, empty);
+    EXPECT_EQ(mask.includes_ref().value()[1], allMask());
+    EXPECT_EQ(mask.includes_ref().value()[2], allMask());
+    EXPECT_EQ(protocol::compare(empty, original), mask); // commutative
+  }
+  {
+    Bar2 empty, empty2;
+    Mask mask = protocol::compare(empty, empty2);
+    EXPECT_EQ(mask, noneMask());
+  }
+
+  // test if this works with smart pointer fields
+  {
+    SmartPointerStruct src, dst;
+    protocol::ensure(allMask(), src);
+    protocol::ensure(allMask(), dst);
+    // This compares by value, so the resulting mask is noneMask.
+    Mask mask = protocol::compare(src, dst);
+    EXPECT_EQ(mask, noneMask());
+  }
+  {
+    SmartPointerStruct src, empty;
+    protocol::ensure(allMask(), src);
+    Mask mask = protocol::compare(src, empty);
+    EXPECT_EQ(mask.includes_ref().value()[1], allMask());
+    EXPECT_EQ(mask.includes_ref().value()[2], allMask());
+    EXPECT_EQ(mask.includes_ref().value()[3], allMask());
+    EXPECT_EQ(protocol::compare(empty, src), mask); // commutative
+  }
+  {
+    SmartPointerStruct src, dst;
+    protocol::ensure(allMask(), src);
+    protocol::ensure(allMask(), dst);
+    // Compare should create a mask for nested fields.
+    src.unique_ref()->field_1() = 1;
+    dst.unique_ref()->field_1() = 10;
+    dst.shared_ref() = nullptr;
+    // mask = {1: includes{1: allMask()},
+    //         2: allMask()}
+    Mask mask = protocol::compare(src, dst);
+    ASSERT_TRUE(mask.includes_ref().value().contains(1));
+    EXPECT_EQ(
+        mask.includes_ref().value()[1].includes_ref().value()[1], allMask());
+    EXPECT_FALSE(
+        mask.includes_ref().value()[1].includes_ref().value().contains(2));
+    EXPECT_EQ(mask.includes_ref().value()[2], allMask());
+    EXPECT_FALSE(mask.includes_ref().value().contains(3));
+    EXPECT_EQ(protocol::compare(dst, src), mask); // commutative
+  }
+}
 } // namespace apache::thrift::test
