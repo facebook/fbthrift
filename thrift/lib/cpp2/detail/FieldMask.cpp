@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <type_traits>
 #include <folly/Utility.h>
 #include <thrift/lib/cpp2/detail/FieldMask.h>
 
@@ -104,8 +105,21 @@ int64_t getIntFromValue(Value v) {
   throw std::runtime_error("mask map only works with an integer key.");
 }
 
+// call clear based on the type of the value.
+void clear(MaskRef ref, Value& value) {
+  if (value.objectValue_ref()) {
+    ref.clear(value.objectValue_ref().value());
+    return;
+  }
+  if (value.mapValue_ref()) {
+    ref.clear(value.mapValue_ref().value());
+    return;
+  }
+  throw std::runtime_error("The mask and object are incompatible.");
+}
+
 void clear_impl(MaskRef ref, auto& obj, auto id, Value& value) {
-  // Id doesn't exist in field mask, skip.
+  // Id doesn't exist in mask, skip.
   if (ref.isNoneMask()) {
     return;
   }
@@ -114,17 +128,7 @@ void clear_impl(MaskRef ref, auto& obj, auto id, Value& value) {
     obj.erase(id);
     return;
   }
-  // clear fields in object recursively
-  if (value.objectValue_ref()) {
-    ref.clear(value.objectValue_ref().value());
-    return;
-  }
-  // clear fields in map recursively
-  if (value.mapValue_ref()) {
-    ref.clear(value.mapValue_ref().value());
-    return;
-  }
-  throw std::runtime_error("The field mask and object are incompatible.");
+  clear(ref, value);
 }
 
 void MaskRef::clear(protocol::Object& obj) const {
@@ -143,45 +147,83 @@ void MaskRef::clear(std::map<Value, Value>& map) const {
   }
 }
 
+// call copy based on the type of the value.
+void copy(MaskRef ref, const Value& src, Value& dst) {
+  if (src.objectValue_ref() && dst.objectValue_ref()) {
+    ref.copy(src.objectValue_ref().value(), dst.objectValue_ref().value());
+    return;
+  }
+  if (src.mapValue_ref() && dst.mapValue_ref()) {
+    ref.copy(src.mapValue_ref().value(), dst.mapValue_ref().value());
+    return;
+  }
+  throw std::runtime_error("The mask and object are incompatible.");
+}
+
+void copy_impl(MaskRef ref, auto& src, auto& dst, auto id) {
+  // Id doesn't exist in field mask, skip.
+  if (ref.isNoneMask()) {
+    return;
+  }
+  // Id that we want to copy.
+  if (ref.isAllMask()) {
+    if (src.contains(id)) {
+      dst[id] = src.at(id);
+    } else {
+      dst.erase(id);
+    }
+    return;
+  }
+  if (!src.contains(id) && !dst.contains(id)) { // skip
+    return;
+  }
+  // Field doesn't exist in src, so just clear dst with the mask.
+  if (!src.contains(id)) {
+    clear(ref, dst.at(id));
+    return;
+  }
+  // Field exists in both src and dst, so call copy recursively.
+  if (dst.contains(id)) {
+    copy(ref, src.at(id), dst.at(id));
+    return;
+  }
+  // Field only exists in src. Need to construct object/ map only if there's
+  // a field to add.
+  if (src.at(id).objectValue_ref()) {
+    Object newObject;
+    ref.copy(src.at(id).objectValue_ref().value(), newObject);
+    if (!newObject.empty()) {
+      dst[id].emplace_object() = std::move(newObject);
+    }
+    return;
+  }
+  if (src.at(id).mapValue_ref()) {
+    std::map<Value, Value> newMap;
+    ref.copy(src.at(id).mapValue_ref().value(), newMap);
+    if (!newMap.empty()) {
+      dst[id].emplace_map() = std::move(newMap);
+    }
+    return;
+  }
+  throw std::runtime_error("The mask and object are incompatible.");
+}
+
 void MaskRef::copy(const protocol::Object& src, protocol::Object& dst) const {
-  // Get all fields that are possibly masked (either in src or dst).
+  throwIfNotFieldMask();
+  // Get all field ids that are possibly masked.
   for (FieldId fieldId : getFieldsToCopy(src, dst)) {
     MaskRef ref = get(fieldId);
-    // Id doesn't exist in field mask, skip.
-    if (ref.isNoneMask()) {
-      continue;
-    }
-    // Id that we want to copy.
-    if (ref.isAllMask()) {
-      if (src.contains(fieldId)) {
-        dst[fieldId] = src.at(fieldId);
-      } else {
-        dst.erase(fieldId);
-      }
-      continue;
-    }
-    // Field doesn't exist in src, so just clear dst with the mask.
-    if (!src.contains(fieldId)) {
-      errorIfNotObject(dst.at(fieldId));
-      ref.clear(dst.at(fieldId).objectValue_ref().value());
-      continue;
-    }
-    // Field exists in both src and dst, so call copy recursively.
-    errorIfNotObject(src.at(fieldId));
-    if (dst.contains(fieldId)) {
-      errorIfNotObject(dst.at(fieldId));
-      ref.copy(
-          src.at(fieldId).objectValue_ref().value(),
-          dst.at(fieldId).objectValue_ref().value());
-      continue;
-    }
-    // Field only exists in src. Need to construct object only if there's
-    // a field to add.
-    protocol::Object newObject;
-    ref.copy(src.at(fieldId).objectValue_ref().value(), newObject);
-    if (!newObject.empty()) {
-      dst[fieldId].emplace_object() = std::move(newObject);
-    }
+    copy_impl(ref, src, dst, fieldId);
+  }
+}
+
+void MaskRef::copy(
+    const std::map<Value, Value>& src, std::map<Value, Value>& dst) const {
+  throwIfNotMapMask();
+  // Get all map keys that are possibly masked.
+  for (Value key : getKeysToCopy(src, dst)) {
+    MaskRef ref = get(MapId{getIntFromValue(key)});
+    copy_impl(ref, src, dst, key);
   }
 }
 
@@ -212,10 +254,18 @@ std::unordered_set<FieldId> MaskRef::getFieldsToCopy(
   return fieldIds;
 }
 
-void errorIfNotObject(const protocol::Value& value) {
-  if (!value.objectValue_ref()) {
-    throw std::runtime_error("The field mask and object are incompatible.");
+std::set<Value> MaskRef::getKeysToCopy(
+    const std::map<Value, Value>& src, std::map<Value, Value>& dst) const {
+  // cannot use unordered_set as Value doesn't have hash function.
+  // TODO: check if all keys have the same type
+  std::set<Value> keys;
+  for (auto& [id, _] : src) {
+    keys.insert(id);
   }
+  for (auto& [id, _] : dst) {
+    keys.insert(id);
+  }
+  return keys;
 }
 
 void throwIfContainsMapMask(const Mask& mask) {

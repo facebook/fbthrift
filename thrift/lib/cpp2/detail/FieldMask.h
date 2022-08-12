@@ -77,25 +77,27 @@ class MaskRef {
   // If the masked field doesn't exist in src, the field in dst will be removed.
   // Throws a runtime exception if the mask and objects are incompatible.
   void copy(const protocol::Object& src, protocol::Object& dst) const;
+  void copy(
+      const std::map<Value, Value>& src, std::map<Value, Value>& dst) const;
 
  private:
-  // Gets all fields that need to be copied from src to dst.
-  // Only contains fields either in src or dst.
+  // Gets all fields/ keys that need to be copied from src to dst.
   std::unordered_set<FieldId> getFieldsToCopy(
       const protocol::Object& src, const protocol::Object& dst) const;
+
+  std::set<Value> getKeysToCopy(
+      const std::map<Value, Value>& src, std::map<Value, Value>& dst) const;
+
   void throwIfNotFieldMask() const;
   void throwIfNotMapMask() const;
 };
-
-// Throws an error if the given value is not a dynamic object value.
-void errorIfNotObject(const protocol::Value& value);
 
 // Throws an error if a thrift struct type is not compatible with the mask.
 // TODO(aoka): Check compatibility in ensure, clear, and copy methods.
 template <typename T>
 void errorIfNotCompatible(const Mask& mask) {
   if (!is_compatible_with<T>(mask)) {
-    throw std::runtime_error("The field mask and struct are incompatible.");
+    throw std::runtime_error("The mask and struct are incompatible.");
   }
 }
 

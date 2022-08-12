@@ -37,7 +37,6 @@ void clear(const Mask& mask, protocol::Object& obj) {
 
 void copy(
     const Mask& mask, const protocol::Object& src, protocol::Object& dst) {
-  detail::throwIfContainsMapMask(mask);
   (detail::MaskRef{mask, false}).copy(src, dst);
 }
 
