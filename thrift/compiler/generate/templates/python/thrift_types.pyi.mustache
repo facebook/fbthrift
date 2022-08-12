@@ -49,9 +49,9 @@ class {{enum:name}}(_fbthrift_python_types.Enum, enum.{{!
     {{#enum:values}}
     {{enum_value:py_name}}: {{enum:name}} = ...
     {{/enum:values}}
-    {{^enum:values}}
-    pass
-    {{/enum:values}}
+    def _to_python(self) -> {{enum:name}}: ...
+    def _to_py3(self) -> "{{program:module_path}}.types.{{enum:name}}": ...  # type: ignore
+    def _to_py_deprecated(self) -> int: ...
 {{/program:enums}}
 {{#program:structs}}
 

@@ -160,6 +160,17 @@ class Metasyntactic(_fbthrift_python_types.Enum, enum.Enum):
     @staticmethod
     def __get_metadata__():
         return test.fixtures.enums.module.thrift_metadata.gen_metadata_enum_Metasyntactic()
+
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
+        import importlib
+        py3_types = importlib.import_module("test.fixtures.enums.module.types")
+        return py3_types.Metasyntactic(self.value)
+
+    def _to_py_deprecated(self):
+        return self.value
 class MyEnum1(_fbthrift_python_types.Enum, enum.Enum):
     ME1_1 = 1
     ME1_2 = 2
@@ -174,6 +185,17 @@ class MyEnum1(_fbthrift_python_types.Enum, enum.Enum):
     @staticmethod
     def __get_metadata__():
         return test.fixtures.enums.module.thrift_metadata.gen_metadata_enum_MyEnum1()
+
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
+        import importlib
+        py3_types = importlib.import_module("test.fixtures.enums.module.types")
+        return py3_types.MyEnum1(self.value)
+
+    def _to_py_deprecated(self):
+        return self.value
 class MyEnum2(_fbthrift_python_types.Enum, enum.Enum):
     ME2_0 = 0
     ME2_1 = 1
@@ -185,6 +207,17 @@ class MyEnum2(_fbthrift_python_types.Enum, enum.Enum):
     @staticmethod
     def __get_metadata__():
         return test.fixtures.enums.module.thrift_metadata.gen_metadata_enum_MyEnum2()
+
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
+        import importlib
+        py3_types = importlib.import_module("test.fixtures.enums.module.types")
+        return py3_types.MyEnum2(self.value)
+
+    def _to_py_deprecated(self):
+        return self.value
 class MyEnum3(_fbthrift_python_types.Enum, enum.Enum):
     ME3_0 = 0
     ME3_1 = 1
@@ -199,6 +232,17 @@ class MyEnum3(_fbthrift_python_types.Enum, enum.Enum):
     @staticmethod
     def __get_metadata__():
         return test.fixtures.enums.module.thrift_metadata.gen_metadata_enum_MyEnum3()
+
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
+        import importlib
+        py3_types = importlib.import_module("test.fixtures.enums.module.types")
+        return py3_types.MyEnum3(self.value)
+
+    def _to_py_deprecated(self):
+        return self.value
 class MyEnum4(_fbthrift_python_types.Enum, enum.Enum):
     ME4_A = 2147483645
     ME4_B = 2147483646
@@ -212,6 +256,17 @@ class MyEnum4(_fbthrift_python_types.Enum, enum.Enum):
     @staticmethod
     def __get_metadata__():
         return test.fixtures.enums.module.thrift_metadata.gen_metadata_enum_MyEnum4()
+
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
+        import importlib
+        py3_types = importlib.import_module("test.fixtures.enums.module.types")
+        return py3_types.MyEnum4(self.value)
+
+    def _to_py_deprecated(self):
+        return self.value
 class MyBitmaskEnum1(_fbthrift_python_types.Enum, enum.Enum):
     ONE = 1
     TWO = 2
@@ -224,6 +279,17 @@ class MyBitmaskEnum1(_fbthrift_python_types.Enum, enum.Enum):
     @staticmethod
     def __get_metadata__():
         return test.fixtures.enums.module.thrift_metadata.gen_metadata_enum_MyBitmaskEnum1()
+
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
+        import importlib
+        py3_types = importlib.import_module("test.fixtures.enums.module.types")
+        return py3_types.MyBitmaskEnum1(self.value)
+
+    def _to_py_deprecated(self):
+        return self.value
 class MyBitmaskEnum2(_fbthrift_python_types.Enum, enum.Enum):
     ONE = 1
     TWO = 2
@@ -236,6 +302,17 @@ class MyBitmaskEnum2(_fbthrift_python_types.Enum, enum.Enum):
     @staticmethod
     def __get_metadata__():
         return test.fixtures.enums.module.thrift_metadata.gen_metadata_enum_MyBitmaskEnum2()
+
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
+        import importlib
+        py3_types = importlib.import_module("test.fixtures.enums.module.types")
+        return py3_types.MyBitmaskEnum2(self.value)
+
+    def _to_py_deprecated(self):
+        return self.value
 
 def _fbthrift_metadata__struct_SomeStruct():
     return test.fixtures.enums.module.thrift_metadata.gen_metadata_struct_SomeStruct()

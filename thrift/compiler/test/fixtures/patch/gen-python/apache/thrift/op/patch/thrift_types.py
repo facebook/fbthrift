@@ -1123,6 +1123,17 @@ class PatchOp(_fbthrift_python_types.Enum, enum.Enum):
     def __get_metadata__():
         return apache.thrift.op.patch.thrift_metadata.gen_metadata_enum_PatchOp()
 
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
+        import importlib
+        py3_types = importlib.import_module("apache.thrift.op.patch.types")
+        return py3_types.PatchOp(self.value)
+
+    def _to_py_deprecated(self):
+        return self.value
+
 def _fbthrift_metadata__struct_GeneratePatch():
     return apache.thrift.op.patch.thrift_metadata.gen_metadata_struct_GeneratePatch()
 def _fbthrift_metadata__struct_GenerateOptionalPatch():

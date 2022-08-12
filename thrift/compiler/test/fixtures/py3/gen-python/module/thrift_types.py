@@ -392,6 +392,17 @@ class AnEnum(_fbthrift_python_types.Enum, enum.Enum):
     @staticmethod
     def __get_metadata__():
         return module.thrift_metadata.gen_metadata_enum_AnEnum()
+
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        return py3_types.AnEnum(self.value)
+
+    def _to_py_deprecated(self):
+        return self.value
 class AnEnumRenamed(_fbthrift_python_types.Enum, enum.Enum):
     name_ = 0
     value_ = 1
@@ -403,6 +414,17 @@ class AnEnumRenamed(_fbthrift_python_types.Enum, enum.Enum):
     @staticmethod
     def __get_metadata__():
         return module.thrift_metadata.gen_metadata_enum_AnEnumRenamed()
+
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        return py3_types.AnEnumRenamed(self.value)
+
+    def _to_py_deprecated(self):
+        return self.value
 class Flags(_fbthrift_python_types.Enum, enum.Flag):
     flag_A = 1
     flag_B = 2
@@ -415,6 +437,17 @@ class Flags(_fbthrift_python_types.Enum, enum.Flag):
     @staticmethod
     def __get_metadata__():
         return module.thrift_metadata.gen_metadata_enum_Flags()
+
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        return py3_types.Flags(self.value)
+
+    def _to_py_deprecated(self):
+        return self.value
 
 def _fbthrift_metadata__exception_SimpleException():
     return module.thrift_metadata.gen_metadata_exception_SimpleException()

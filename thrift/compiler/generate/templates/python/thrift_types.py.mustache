@@ -122,6 +122,17 @@ class {{enum:name}}(_fbthrift_python_types.Enum, enum.{{!
     @staticmethod
     def __get_metadata__():
         return {{program:module_path}}.thrift_metadata.gen_metadata_enum_{{enum:name}}()
+
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
+        import importlib
+        py3_types = importlib.import_module("{{program:module_path}}.types")
+        return py3_types.{{enum:name}}(self.value)
+
+    def _to_py_deprecated(self):
+        return self.value
 {{/program:enums}}
 
 {{#program:structs}}

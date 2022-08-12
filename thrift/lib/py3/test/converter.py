@@ -315,6 +315,12 @@ class PythonToPy3ConverterTest(unittest.TestCase):
         self.assertEqual(to.type, py3_types.Potahto.Type.to)
         self.assertEqual(to.value, True)
 
+    def test_enum(self) -> None:
+        self.assertEqual(
+            python_types.Color.RED._to_py3(),
+            py3_types.Color.RED,
+        )
+
 
 class NoneToPy3ConverterTest(unittest.TestCase):
     def test_optional_type(self) -> None:

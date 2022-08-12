@@ -126,6 +126,17 @@ class MyEnum(_fbthrift_python_types.Enum, enum.Enum):
     def __get_metadata__():
         return test.fixtures.basic.module.thrift_metadata.gen_metadata_enum_MyEnum()
 
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
+        import importlib
+        py3_types = importlib.import_module("test.fixtures.basic.module.types")
+        return py3_types.MyEnum(self.value)
+
+    def _to_py_deprecated(self):
+        return self.value
+
 def _fbthrift_metadata__struct_MyStruct():
     return test.fixtures.basic.module.thrift_metadata.gen_metadata_struct_MyStruct()
 def _fbthrift_metadata__struct_MyUnion():

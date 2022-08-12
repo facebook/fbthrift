@@ -481,6 +481,17 @@ class EmptyEnum(_fbthrift_python_types.Enum, enum.Enum):
     @staticmethod
     def __get_metadata__():
         return module.thrift_metadata.gen_metadata_enum_EmptyEnum()
+
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        return py3_types.EmptyEnum(self.value)
+
+    def _to_py_deprecated(self):
+        return self.value
 class City(_fbthrift_python_types.Enum, enum.Enum):
     NYC = 0
     MPK = 1
@@ -493,6 +504,17 @@ class City(_fbthrift_python_types.Enum, enum.Enum):
     @staticmethod
     def __get_metadata__():
         return module.thrift_metadata.gen_metadata_enum_City()
+
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        return py3_types.City(self.value)
+
+    def _to_py_deprecated(self):
+        return self.value
 class Company(_fbthrift_python_types.Enum, enum.Enum):
     FACEBOOK = 0
     WHATSAPP = 1
@@ -505,6 +527,17 @@ class Company(_fbthrift_python_types.Enum, enum.Enum):
     @staticmethod
     def __get_metadata__():
         return module.thrift_metadata.gen_metadata_enum_Company()
+
+    def _to_python(self):
+        return self
+
+    def _to_py3(self):
+        import importlib
+        py3_types = importlib.import_module("module.types")
+        return py3_types.Company(self.value)
+
+    def _to_py_deprecated(self):
+        return self.value
 
 def _fbthrift_metadata__struct_Internship():
     return module.thrift_metadata.gen_metadata_struct_Internship()

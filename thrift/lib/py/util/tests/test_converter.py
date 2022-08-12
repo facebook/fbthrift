@@ -284,6 +284,12 @@ class PythonToPyDeprecatedConverterTest(unittest.TestCase):
         self.assertEqual(to.getType(), py_deprecated_types.Potahto.TO)
         self.assertEqual(to.get_to(), True)
 
+    def test_enum(self) -> None:
+        self.assertEqual(
+            python_types.Color.RED._to_py_deprecated(),
+            py_deprecated_types.Color.RED,
+        )
+
 
 class NoneToPyDeprecatedConverterTest(unittest.TestCase):
     def test_none(self) -> None:
