@@ -1145,7 +1145,7 @@ class Service1_func1_result extends \ThriftSyncStructWithResult {
 
 }
 
-class Service1_func2_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+class Service1_func2_args implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -1177,27 +1177,38 @@ class Service1_func2_args implements \IThriftSyncStruct, \IThriftShapishSyncStru
   public ?StructWithWrapper $arg1;
   public i64WithWrapper $arg2;
 
-  public function __construct(?StructWithWrapper $arg1 = null, ?i64WithWrapper $arg2 = null)[] {
-    $this->arg1 = $arg1;
-    $this->arg2 = $arg2 ?? 0;
+  public function __construct()[] {
+    $this->arg2 = 0;
   }
 
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  public static function fromShape(self::TConstructorShape $shape)[]: this {
-    return new static(
-      Shapes::idx($shape, 'arg1'),
-      Shapes::idx($shape, 'arg2'),
-    );
+  public static async function genFromShape(self::TConstructorShape $shape)[zoned_local]: Awaitable<this> {
+    $obj = new static();
+    $arg1 = Shapes::idx($shape, 'arg1');
+    if ($arg1 !== null) {
+      $obj->arg1 = $arg1;
+    }
+    $arg2 = Shapes::idx($shape, 'arg2');
+    if ($arg2 !== null) {
+      $obj->arg2 = $arg2;
+    }
+    return $obj;
   }
 
-  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
-    return new static(
-      HH\FIXME\UNSAFE_CAST<mixed, StructWithWrapper>(idx($map, 'arg1'), 'map value is mixed'),
-      HH\FIXME\UNSAFE_CAST<mixed, i64WithWrapper>(idx($map, 'arg2'), 'map value is mixed'),
-    );
+  public static async function genFromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): Awaitable<this> {
+    $obj = new static();
+    $arg1 = idx($map, 'arg1');
+    if ($arg1 !== null) {
+      $obj->arg1 = HH\FIXME\UNSAFE_CAST<mixed, \thrift_adapted_types\StructWithWrapper>($arg1, 'Map value is mixed');
+    }
+    $arg2 = idx($map, 'arg2');
+    if ($arg2 !== null) {
+      $obj->arg2 = HH\FIXME\UNSAFE_CAST<mixed, \detail\i64WithWrapper>($arg2, 'Map value is mixed');
+    }
+    return $obj;
   }
 
   public function getName()[]: string {
@@ -1292,16 +1303,24 @@ class Service1_func2_args implements \IThriftSyncStruct, \IThriftShapishSyncStru
     return Dict\map_keys($m, $key ==> (string)$key);
   }
 
-  public static function __fromShape(self::TShape $shape)[]: this {
-    return new static(
-      Shapes::idx($shape, 'arg1') === null ? null : (StructWithWrapper::__fromShape($shape['arg1'])),
-      $shape['arg2'],
-    );
+  public static async function __genFromShape(self::TShape $shape): Awaitable<this> {
+    $obj = new static();
+    $arg1 = Shapes::idx($shape, 'arg1');
+    if ($arg1 !== null) {
+      $obj->arg1 = StructWithWrapper::__fromShape($arg1);
+    }
+    $obj->arg2 = $shape['arg2'];
+    return $obj;
   }
 
-  public function __toShape()[]: self::TShape {
+  public async function __genToShape(): Awaitable<self::TShape> {
     return shape(
-      'arg1' => $this->arg1?->__toShape(),
+      'arg1' => ($this->arg1 === null 
+        ? null 
+        : (
+        $this->arg1->__toShape()
+        )
+      ),
       'arg2' => $this->arg2,
     );
   }
@@ -1351,24 +1370,29 @@ class Service1_func2_result extends \ThriftSyncStructWithResult {
   const int STRUCTURAL_ID = 338438324750488489;
   public ?this::TResult $success;
 
-  public function __construct(?this::TResult $success = null)[] {
-    $this->success = $success;
+  public function __construct()[] {
   }
 
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  public static function fromShape(self::TConstructorShape $shape)[]: this {
-    return new static(
-      Shapes::idx($shape, 'success'),
-    );
+  public static async function genFromShape(self::TConstructorShape $shape)[zoned_local]: Awaitable<this> {
+    $obj = new static();
+    $success = Shapes::idx($shape, 'success');
+    if ($success !== null) {
+      $obj->success = $success;
+    }
+    return $obj;
   }
 
-  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
-    return new static(
-      HH\FIXME\UNSAFE_CAST<mixed, i64WithWrapper>(idx($map, 'success'), 'map value is mixed'),
-    );
+  public static async function genFromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): Awaitable<this> {
+    $obj = new static();
+    $success = idx($map, 'success');
+    if ($success !== null) {
+      $obj->success = HH\FIXME\UNSAFE_CAST<mixed, \detail\i64WithWrapper>($success, 'Map value is mixed');
+    }
+    return $obj;
   }
 
   public function getName()[]: string {

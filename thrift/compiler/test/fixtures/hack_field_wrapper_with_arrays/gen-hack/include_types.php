@@ -788,7 +788,7 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
  * Original thrift struct:-
  * MyComplexStruct
  */
-class MyComplexStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct {
+class MyComplexStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -999,42 +999,84 @@ class MyComplexStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct 
    */
   public vec<dict<string, StructWithWrapper>> $list_of_map_of_string_to_StructWithWrapper;
 
-  public function __construct(?dict<string, MyStruct> $map_of_string_to_MyStruct = null, ?dict<string, vec<MyStruct>> $map_of_string_to_list_of_MyStruct = null, ?dict<string, dict<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?dict<string, dict<string, MyStruct>> $map_of_string_to_map_of_string_to_MyStruct = null, ?vec<dict<string, vec<MyStruct>>> $list_of_map_of_string_to_list_of_MyStruct = null, ?vec<dict<string, MyStruct>> $list_of_map_of_string_to_MyStruct = null, ?vec<dict<string, StructWithWrapper>> $list_of_map_of_string_to_StructWithWrapper = null)[] {
-    $this->map_of_string_to_MyStruct = $map_of_string_to_MyStruct ?? dict[];
-    $this->map_of_string_to_list_of_MyStruct = $map_of_string_to_list_of_MyStruct ?? dict[];
-    $this->map_of_string_to_map_of_string_to_i32 = $map_of_string_to_map_of_string_to_i32 ?? dict[];
-    $this->map_of_string_to_map_of_string_to_MyStruct = $map_of_string_to_map_of_string_to_MyStruct ?? dict[];
-    $this->list_of_map_of_string_to_list_of_MyStruct = $list_of_map_of_string_to_list_of_MyStruct ?? vec[];
-    $this->list_of_map_of_string_to_MyStruct = $list_of_map_of_string_to_MyStruct ?? vec[];
-    $this->list_of_map_of_string_to_StructWithWrapper = $list_of_map_of_string_to_StructWithWrapper ?? vec[];
+  public function __construct()[] {
+    $this->map_of_string_to_MyStruct = dict[];
+    $this->map_of_string_to_list_of_MyStruct = dict[];
+    $this->map_of_string_to_map_of_string_to_i32 = dict[];
+    $this->map_of_string_to_map_of_string_to_MyStruct = dict[];
+    $this->list_of_map_of_string_to_list_of_MyStruct = vec[];
+    $this->list_of_map_of_string_to_MyStruct = vec[];
+    $this->list_of_map_of_string_to_StructWithWrapper = vec[];
   }
 
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  public static function fromShape(self::TConstructorShape $shape)[]: this {
-    return new static(
-      Shapes::idx($shape, 'map_of_string_to_MyStruct'),
-      Shapes::idx($shape, 'map_of_string_to_list_of_MyStruct'),
-      Shapes::idx($shape, 'map_of_string_to_map_of_string_to_i32'),
-      Shapes::idx($shape, 'map_of_string_to_map_of_string_to_MyStruct'),
-      Shapes::idx($shape, 'list_of_map_of_string_to_list_of_MyStruct'),
-      Shapes::idx($shape, 'list_of_map_of_string_to_MyStruct'),
-      Shapes::idx($shape, 'list_of_map_of_string_to_StructWithWrapper'),
-    );
+  public static async function genFromShape(self::TConstructorShape $shape)[zoned_local]: Awaitable<this> {
+    $obj = new static();
+    $map_of_string_to_MyStruct = Shapes::idx($shape, 'map_of_string_to_MyStruct');
+    if ($map_of_string_to_MyStruct !== null) {
+      $obj->map_of_string_to_MyStruct = $map_of_string_to_MyStruct;
+    }
+    $map_of_string_to_list_of_MyStruct = Shapes::idx($shape, 'map_of_string_to_list_of_MyStruct');
+    if ($map_of_string_to_list_of_MyStruct !== null) {
+      $obj->map_of_string_to_list_of_MyStruct = $map_of_string_to_list_of_MyStruct;
+    }
+    $map_of_string_to_map_of_string_to_i32 = Shapes::idx($shape, 'map_of_string_to_map_of_string_to_i32');
+    if ($map_of_string_to_map_of_string_to_i32 !== null) {
+      $obj->map_of_string_to_map_of_string_to_i32 = $map_of_string_to_map_of_string_to_i32;
+    }
+    $map_of_string_to_map_of_string_to_MyStruct = Shapes::idx($shape, 'map_of_string_to_map_of_string_to_MyStruct');
+    if ($map_of_string_to_map_of_string_to_MyStruct !== null) {
+      $obj->map_of_string_to_map_of_string_to_MyStruct = $map_of_string_to_map_of_string_to_MyStruct;
+    }
+    $list_of_map_of_string_to_list_of_MyStruct = Shapes::idx($shape, 'list_of_map_of_string_to_list_of_MyStruct');
+    if ($list_of_map_of_string_to_list_of_MyStruct !== null) {
+      $obj->list_of_map_of_string_to_list_of_MyStruct = $list_of_map_of_string_to_list_of_MyStruct;
+    }
+    $list_of_map_of_string_to_MyStruct = Shapes::idx($shape, 'list_of_map_of_string_to_MyStruct');
+    if ($list_of_map_of_string_to_MyStruct !== null) {
+      $obj->list_of_map_of_string_to_MyStruct = $list_of_map_of_string_to_MyStruct;
+    }
+    $list_of_map_of_string_to_StructWithWrapper = Shapes::idx($shape, 'list_of_map_of_string_to_StructWithWrapper');
+    if ($list_of_map_of_string_to_StructWithWrapper !== null) {
+      $obj->list_of_map_of_string_to_StructWithWrapper = $list_of_map_of_string_to_StructWithWrapper;
+    }
+    return $obj;
   }
 
-  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
-    return new static(
-      HH\FIXME\UNSAFE_CAST<mixed, dict<string, MyStruct>>(idx($map, 'map_of_string_to_MyStruct'), 'map value is mixed'),
-      HH\FIXME\UNSAFE_CAST<mixed, dict<string, vec<MyStruct>>>(idx($map, 'map_of_string_to_list_of_MyStruct'), 'map value is mixed'),
-      HH\FIXME\UNSAFE_CAST<mixed, dict<string, dict<string, int>>>(idx($map, 'map_of_string_to_map_of_string_to_i32'), 'map value is mixed'),
-      HH\FIXME\UNSAFE_CAST<mixed, dict<string, dict<string, MyStruct>>>(idx($map, 'map_of_string_to_map_of_string_to_MyStruct'), 'map value is mixed'),
-      HH\FIXME\UNSAFE_CAST<mixed, vec<dict<string, vec<MyStruct>>>>(idx($map, 'list_of_map_of_string_to_list_of_MyStruct'), 'map value is mixed'),
-      HH\FIXME\UNSAFE_CAST<mixed, vec<dict<string, MyStruct>>>(idx($map, 'list_of_map_of_string_to_MyStruct'), 'map value is mixed'),
-      HH\FIXME\UNSAFE_CAST<mixed, vec<dict<string, StructWithWrapper>>>(idx($map, 'list_of_map_of_string_to_StructWithWrapper'), 'map value is mixed'),
-    );
+  public static async function genFromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): Awaitable<this> {
+    $obj = new static();
+    $map_of_string_to_MyStruct = idx($map, 'map_of_string_to_MyStruct');
+    if ($map_of_string_to_MyStruct !== null) {
+      $obj->map_of_string_to_MyStruct = HH\FIXME\UNSAFE_CAST<mixed, dict<string, MyStruct>>($map_of_string_to_MyStruct, 'Map value is mixed');
+    }
+    $map_of_string_to_list_of_MyStruct = idx($map, 'map_of_string_to_list_of_MyStruct');
+    if ($map_of_string_to_list_of_MyStruct !== null) {
+      $obj->map_of_string_to_list_of_MyStruct = HH\FIXME\UNSAFE_CAST<mixed, dict<string, vec<MyStruct>>>($map_of_string_to_list_of_MyStruct, 'Map value is mixed');
+    }
+    $map_of_string_to_map_of_string_to_i32 = idx($map, 'map_of_string_to_map_of_string_to_i32');
+    if ($map_of_string_to_map_of_string_to_i32 !== null) {
+      $obj->map_of_string_to_map_of_string_to_i32 = HH\FIXME\UNSAFE_CAST<mixed, dict<string, dict<string, int>>>($map_of_string_to_map_of_string_to_i32, 'Map value is mixed');
+    }
+    $map_of_string_to_map_of_string_to_MyStruct = idx($map, 'map_of_string_to_map_of_string_to_MyStruct');
+    if ($map_of_string_to_map_of_string_to_MyStruct !== null) {
+      $obj->map_of_string_to_map_of_string_to_MyStruct = HH\FIXME\UNSAFE_CAST<mixed, dict<string, dict<string, MyStruct>>>($map_of_string_to_map_of_string_to_MyStruct, 'Map value is mixed');
+    }
+    $list_of_map_of_string_to_list_of_MyStruct = idx($map, 'list_of_map_of_string_to_list_of_MyStruct');
+    if ($list_of_map_of_string_to_list_of_MyStruct !== null) {
+      $obj->list_of_map_of_string_to_list_of_MyStruct = HH\FIXME\UNSAFE_CAST<mixed, vec<dict<string, vec<MyStruct>>>>($list_of_map_of_string_to_list_of_MyStruct, 'Map value is mixed');
+    }
+    $list_of_map_of_string_to_MyStruct = idx($map, 'list_of_map_of_string_to_MyStruct');
+    if ($list_of_map_of_string_to_MyStruct !== null) {
+      $obj->list_of_map_of_string_to_MyStruct = HH\FIXME\UNSAFE_CAST<mixed, vec<dict<string, MyStruct>>>($list_of_map_of_string_to_MyStruct, 'Map value is mixed');
+    }
+    $list_of_map_of_string_to_StructWithWrapper = idx($map, 'list_of_map_of_string_to_StructWithWrapper');
+    if ($list_of_map_of_string_to_StructWithWrapper !== null) {
+      $obj->list_of_map_of_string_to_StructWithWrapper = HH\FIXME\UNSAFE_CAST<mixed, vec<dict<string, \thrift_adapted_types\StructWithWrapper>>>($list_of_map_of_string_to_StructWithWrapper, 'Map value is mixed');
+    }
+    return $obj;
   }
 
   public function getName()[]: string {

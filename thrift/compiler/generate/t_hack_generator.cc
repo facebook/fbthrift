@@ -230,8 +230,8 @@ class t_hack_generator : public t_concat_generator {
 
   // Only use this to determine if struct uses IThriftShapishAsyncStruct
   bool is_async_shapish_struct(const t_struct* tstruct);
-  bool is_async_type(const t_type* type);
-  bool is_async_field(const t_field& field);
+  bool is_async_type(const t_type* type, bool check_nested_structs);
+  bool is_async_field(const t_field& field, bool check_nested_structs);
 
   void generate_php_struct_definition(
       std::ofstream& out,
@@ -3715,7 +3715,7 @@ void t_hack_generator::generate_php_structural_id(
 bool t_hack_generator::is_async_struct(const t_struct* tstruct) {
   for (const auto& field : tstruct->fields()) {
     if (!skip_codegen(&field)) {
-      if (find_hack_wrapper(field)) {
+      if (is_async_field(field, false)) {
         return true;
       }
     }
@@ -3742,7 +3742,7 @@ bool t_hack_generator::is_async_shapish_struct(const t_struct* tstruct) {
 
   for (const auto& field : tstruct->fields()) {
     if (!skip_codegen(&field)) {
-      if (is_async_field(field)) {
+      if (is_async_field(field, true)) {
         struct_async_type_[parent_struct_name] = ThriftShapishStructType::ASYNC;
         return true;
       }
@@ -3752,26 +3752,39 @@ bool t_hack_generator::is_async_shapish_struct(const t_struct* tstruct) {
   return false;
 }
 
-bool t_hack_generator::is_async_field(const t_field& field) {
-  return find_hack_wrapper(field) ||
-      is_async_type(field.get_type()->get_true_type());
+bool t_hack_generator::is_async_field(
+    const t_field& field, bool check_nested_structs) {
+  auto [wrapper, name, ns] = find_hack_wrapper(field.get_type());
+  return find_hack_wrapper(field) /* Check for field wrapper */ ||
+      wrapper /* Check for typedef wrapper*/ ||
+      is_async_type(
+             field.get_type()->get_true_type(),
+             check_nested_structs) /* Check for struct wrapper and containers
+                                    */
+      ;
 }
 
-bool t_hack_generator::is_async_type(const t_type* type) {
+bool t_hack_generator::is_async_type(
+    const t_type* type, bool check_nested_structs) {
+  auto [wrapper, name, ns] = find_hack_wrapper(type);
+  if (wrapper) {
+    return true;
+  }
   type = type->get_true_type();
   if (type->is_base_type() || type->is_enum()) {
     return false;
   } else if (type->is_container()) {
     if (const auto* tlist = dynamic_cast<const t_list*>(type)) {
-      return is_async_type(tlist->get_elem_type());
+      return is_async_type(tlist->get_elem_type(), check_nested_structs);
     } else if (const auto* tset = dynamic_cast<const t_set*>(type)) {
-      return is_async_type(tset->get_elem_type());
+      return is_async_type(tset->get_elem_type(), check_nested_structs);
     } else if (const auto* tmap = dynamic_cast<const t_map*>(type)) {
-      return is_async_type(tmap->get_key_type()) ||
-          is_async_type(tmap->get_val_type());
+      return is_async_type(tmap->get_val_type(), check_nested_structs);
     }
   } else if (const auto* tstruct = dynamic_cast<const t_struct*>(type)) {
-    return is_async_shapish_struct(tstruct);
+    if (check_nested_structs) {
+      return is_async_shapish_struct(tstruct);
+    }
   }
   return false;
 }
