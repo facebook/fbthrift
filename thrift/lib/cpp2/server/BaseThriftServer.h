@@ -583,6 +583,22 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   }
 
   /**
+   * This an equivalent entry point to setThreadManager. During deprecation
+   * there will be places where we have to continue to call setThreadManager
+   * from user code - where we decide to migrate them by adding resource pools
+   * specific paths to the service code. When we do we'll use
+   * setThreadManager_deprecated instead of setThreadManager so we can track
+   * when all instances of setThreadManager have been removed.
+   */
+  void setThreadManager_deprecated(
+      std::shared_ptr<apache::thrift::concurrency::ThreadManager>
+          threadManager) {
+    setThreadManagerInternal(threadManager);
+    runtimeDisableResourcePoolsDeprecated();
+    runtimeServerActions_.userSuppliedThreadManager = true;
+  }
+
+  /**
    * Set Thread Manager by using the executor (for Python server).
    *
    * @param executor folly::Executor to be set as the threadManager
