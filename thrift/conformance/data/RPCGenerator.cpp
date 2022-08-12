@@ -291,11 +291,7 @@ Test createSinkBasicTest() {
   return ret;
 }
 
-} // namespace
-
-TestSuite createRPCTestSuite() {
-  TestSuite suite;
-  suite.name() = "ThriftRPCTest";
+void addCommonRPCTests(TestSuite& suite) {
   // =================== Request-Response ===================
   suite.tests()->push_back(createRequestResponseBasicTest());
   suite.tests()->push_back(createRequestResponseDeclaredExceptionTest());
@@ -306,6 +302,21 @@ TestSuite createRPCTestSuite() {
   suite.tests()->push_back(createStreamBasicTest());
   // =================== Sink ===================
   suite.tests()->push_back(createSinkBasicTest());
+}
+
+} // namespace
+
+TestSuite createRPCServerTestSuite() {
+  TestSuite suite;
+  suite.name() = "ThriftRPCServerTest";
+  addCommonRPCTests(suite);
+  return suite;
+}
+
+TestSuite createRPCClientTestSuite() {
+  TestSuite suite;
+  suite.name() = "ThriftRPCClientTest";
+  addCommonRPCTests(suite);
   return suite;
 }
 

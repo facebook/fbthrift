@@ -18,11 +18,11 @@
 #include <thrift/conformance/data/RPCGenerator.h>
 #include <thrift/conformance/data/TestGenerator.h>
 
-using apache::thrift::conformance::data::createRPCTestSuite;
+using apache::thrift::conformance::data::createRPCServerTestSuite;
 using apache::thrift::conformance::data::serializeToFile;
 
 int main(int argc, char** argv) {
   folly::Init(&argc, &argv);
   serializeToFile<apache::thrift::BinaryProtocolWriter>(
-      createRPCTestSuite(), stdout);
+      createRPCServerTestSuite(), stdout);
 }

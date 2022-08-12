@@ -14,20 +14,15 @@
  * limitations under the License.
  */
 
+#include <folly/init/Init.h>
 #include <thrift/conformance/data/RPCGenerator.h>
+#include <thrift/conformance/data/TestGenerator.h>
 
-#include <folly/portability/GTest.h>
+using apache::thrift::conformance::data::createRPCClientTestSuite;
+using apache::thrift::conformance::data::serializeToFile;
 
-namespace apache::thrift::conformance::data {
-
-TEST(TestGeneratorTest, RPCTestSuite) {
-  auto suite = createRPCTestSuite();
-  EXPECT_EQ(suite.name(), "ThriftRPCTest");
-  const auto& test = suite.tests()->at(0);
-  EXPECT_EQ(test.name(), "RequestResponseBasicTest");
-  const auto& testCase = test.testCases()->at(0);
-  EXPECT_EQ(testCase.name(), "RequestResponseBasic/Success");
-  EXPECT_TRUE(testCase.test()->rpc_ref());
+int main(int argc, char** argv) {
+  folly::Init(&argc, &argv);
+  serializeToFile<apache::thrift::BinaryProtocolWriter>(
+      createRPCClientTestSuite(), stdout);
 }
-
-} // namespace apache::thrift::conformance::data

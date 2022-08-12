@@ -18,5 +18,8 @@
 #include <thrift/conformance/if/gen-cpp2/test_suite_types.h>
 
 namespace apache::thrift::conformance::data {
-TestSuite createRPCTestSuite();
-}
+
+TestSuite createRPCServerTestSuite();
+TestSuite createRPCClientTestSuite();
+
+} // namespace apache::thrift::conformance::data
