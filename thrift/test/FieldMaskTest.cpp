@@ -723,6 +723,55 @@ TEST(FieldMaskTest, IsCompatibleWithAdaptedField) {
   EXPECT_FALSE(protocol::is_compatible_with<Baz>(m));
 }
 
+TEST(FieldMaskTest, IsCompatibleWithSmartPointer) {
+  EXPECT_TRUE(protocol::is_compatible_with<SmartPointerStruct>(allMask()));
+  EXPECT_TRUE(protocol::is_compatible_with<SmartPointerStruct>(noneMask()));
+
+  {
+    Mask mask;
+    // includes{1: excludes{},
+    //          2: excludes{},
+    //          3: includes{}}
+    auto& includes = mask.includes_ref().emplace();
+    includes[1] = allMask();
+    includes[2] = allMask();
+    includes[3] = noneMask();
+    EXPECT_TRUE(protocol::is_compatible_with<SmartPointerStruct>(mask));
+  }
+
+  {
+    Mask mask;
+    // includes{1: excludes{2: excludes{}},
+    //          2: excludes{2: includes{}},
+    //          3: includes{1: excludes{}}}
+    auto& includes = mask.includes_ref().emplace();
+    includes[1].excludes_ref().emplace()[2] = allMask();
+    includes[2].excludes_ref().emplace()[2] = noneMask();
+    includes[3].includes_ref().emplace()[1] = allMask();
+    EXPECT_TRUE(protocol::is_compatible_with<SmartPointerStruct>(mask));
+  }
+  {
+    Mask mask;
+    // includes{1: excludes{100: excludes{}}}
+    mask.includes_ref().emplace()[1].excludes_ref().emplace()[100] = allMask();
+    EXPECT_FALSE(protocol::is_compatible_with<SmartPointerStruct>(mask));
+  }
+  {
+    Mask mask;
+    // includes{2: includes{100: excludes{}}}
+    mask.includes_ref().emplace()[2].includes_ref().emplace()[100] = allMask();
+    EXPECT_FALSE(protocol::is_compatible_with<SmartPointerStruct>(mask));
+  }
+  {
+    Mask mask;
+    // includes{3: includes{1: excludes{1: excludes{}}}}
+    auto& includes = mask.includes_ref().emplace();
+    includes[3].includes_ref().emplace()[1].excludes_ref().emplace()[1] =
+        allMask();
+    EXPECT_FALSE(protocol::is_compatible_with<SmartPointerStruct>(mask));
+  }
+}
+
 TEST(FieldMaskTest, Ensure) {
   Mask mask;
   // mask = includes{1: includes{2: excludes{}},
@@ -772,6 +821,66 @@ TEST(FieldMaskTest, Ensure) {
     ASSERT_FALSE(bar.field_3()->field_2().has_value());
     ASSERT_TRUE(bar.field_4().has_value());
     EXPECT_EQ(bar.field_4(), "");
+  }
+}
+
+void assertSmartPointerStructIsEmpty(SmartPointerStruct& obj) {
+  EXPECT_FALSE(bool(obj.unique_ref()));
+  EXPECT_FALSE(bool(obj.shared_ref()));
+  EXPECT_FALSE(bool(obj.boxed_ref()));
+}
+
+void assertPointerHasAllValues(auto&& ptr) {
+  ASSERT_TRUE(bool(ptr));
+  EXPECT_EQ(ptr->field_1(), 0);
+  EXPECT_EQ(ptr->field_2(), 0);
+}
+
+void assertSmartPointerStructHasAllValues(SmartPointerStruct& obj) {
+  assertPointerHasAllValues(obj.unique_ref());
+  assertPointerHasAllValues(obj.shared_ref());
+  assertPointerHasAllValues(obj.boxed_ref());
+}
+
+TEST(FieldMaskTest, EnsureSmartPointer) {
+  // test with allMask and noneMask
+  {
+    SmartPointerStruct obj;
+    protocol::ensure(noneMask(), obj);
+    assertSmartPointerStructIsEmpty(obj);
+
+    protocol::ensure(allMask(), obj);
+    assertSmartPointerStructHasAllValues(obj);
+
+    protocol::ensure(allMask(), obj);
+    assertSmartPointerStructHasAllValues(obj);
+  }
+
+  {
+    SmartPointerStruct obj;
+    // mask = includes{1: excludes{}}
+    MaskWrapper<SmartPointerStruct> wrapper(MaskWrapperInit::none);
+    wrapper.includes<tag::unique>();
+    protocol::ensure(wrapper.toThrift(), obj);
+    assertPointerHasAllValues(obj.unique_ref());
+    EXPECT_FALSE(bool(obj.shared_ref()));
+    EXPECT_FALSE(bool(obj.boxed_ref()));
+  }
+  {
+    SmartPointerStruct obj;
+    // Mask includes unique.field_1 and boxed except for boxed.field_2.
+    MaskWrapper<SmartPointerStruct> wrapper(MaskWrapperInit::none);
+    wrapper.includes<tag::unique, tag::field_1>();
+    wrapper.includes<tag::boxed>();
+    wrapper.excludes<tag::boxed, tag::field_2>();
+    protocol::ensure(wrapper.toThrift(), obj);
+    ASSERT_TRUE(bool(obj.unique_ref()));
+    EXPECT_EQ(obj.unique_ref()->field_1(), 0);
+    EXPECT_FALSE(obj.unique_ref()->field_2().has_value());
+    EXPECT_FALSE(bool(obj.shared_ref()));
+    ASSERT_TRUE(bool(obj.boxed_ref()));
+    EXPECT_EQ(obj.boxed_ref()->field_1(), 0);
+    EXPECT_FALSE(obj.boxed_ref()->field_2().has_value());
   }
 }
 
@@ -890,6 +999,52 @@ TEST(FieldMaskTest, SchemafulClearEdgeCase) {
   protocol::clear(m, obj2);
 }
 
+TEST(FieldMaskTest, SchemafulClearSmartPointer) {
+  // test with allMask and noneMask
+  {
+    SmartPointerStruct obj;
+    protocol::ensure(allMask(), obj);
+    protocol::clear(noneMask(), obj);
+    assertSmartPointerStructHasAllValues(obj);
+
+    protocol::clear(allMask(), obj);
+    assertSmartPointerStructIsEmpty(obj);
+
+    protocol::clear(allMask(), obj);
+    assertSmartPointerStructIsEmpty(obj);
+  }
+
+  {
+    SmartPointerStruct obj;
+    protocol::ensure(allMask(), obj);
+    // mask = includes{1: excludes{}}
+    MaskWrapper<SmartPointerStruct> wrapper(MaskWrapperInit::none);
+    wrapper.includes<tag::unique>();
+    protocol::clear(wrapper.toThrift(), obj);
+    EXPECT_FALSE(bool(obj.unique_ref()));
+    assertPointerHasAllValues(obj.shared_ref());
+    assertPointerHasAllValues(obj.boxed_ref());
+  }
+
+  {
+    SmartPointerStruct obj;
+    MaskWrapper<SmartPointerStruct> setup(MaskWrapperInit::all);
+    setup.excludes<tag::shared, tag::field_1>();
+    protocol::ensure(setup.toThrift(), obj);
+    // mask = excludes{1: includes{1: excludes{}},
+    //                 3: excludes{}}
+    MaskWrapper<SmartPointerStruct> wrapper(MaskWrapperInit::all);
+    wrapper.excludes<tag::unique, tag::field_1>();
+    wrapper.excludes<tag::boxed>();
+    protocol::clear(wrapper.toThrift(), obj);
+    ASSERT_TRUE(bool(obj.unique_ref()));
+    EXPECT_EQ(obj.unique_ref()->field_1(), 0);
+    EXPECT_FALSE(obj.unique_ref()->field_2().has_value());
+    EXPECT_FALSE(bool(obj.shared_ref()));
+    assertPointerHasAllValues(obj.boxed());
+  }
+}
+
 TEST(FieldMaskTest, SchemafulClearException) {
   Bar2 bar;
   Mask m1; // m1 = includes{2: includes{4: includes{}}}
@@ -1002,6 +1157,74 @@ TEST(FieldMaskTest, SchemafulCopyTerseWrite) {
   m.includes_ref().emplace()[2].includes_ref().emplace()[1] = allMask();
   protocol::copy(m, src, dst);
   EXPECT_EQ(dst, src);
+}
+
+TEST(FieldMaskTest, SchemafulCopySmartPointer) {
+  // test with allMask and noneMask
+  SmartPointerStruct full, dst, empty;
+  protocol::ensure(allMask(), full);
+
+  protocol::copy(allMask(), empty, dst);
+  assertSmartPointerStructIsEmpty(dst);
+
+  protocol::copy(noneMask(), full, dst);
+  assertSmartPointerStructIsEmpty(dst);
+
+  protocol::copy(allMask(), full, dst);
+  assertSmartPointerStructHasAllValues(dst);
+  protocol::copy(allMask(), full, dst);
+  assertSmartPointerStructHasAllValues(dst);
+
+  protocol::copy(noneMask(), empty, dst);
+  assertSmartPointerStructHasAllValues(dst);
+  protocol::copy(allMask(), empty, dst);
+  assertSmartPointerStructIsEmpty(dst);
+}
+
+TEST(FieldMaskTest, SchemafulCopySmartPointerAddField) {
+  SmartPointerStruct src, dst;
+  // src contains unique field except for unique.field_1 and box field.
+  MaskWrapper<SmartPointerStruct> setup(MaskWrapperInit::all);
+  setup.excludes<tag::unique, tag::field_1>();
+  setup.excludes<tag::shared>();
+  protocol::ensure(setup.toThrift(), src);
+  {
+    MaskWrapper<SmartPointerStruct> wrapper(MaskWrapperInit::none);
+    wrapper.includes<tag::unique, tag::field_1>();
+    protocol::copy(wrapper.toThrift(), src, dst); // doesn't create object
+    assertSmartPointerStructIsEmpty(dst);
+  }
+  {
+    MaskWrapper<SmartPointerStruct> wrapper2(MaskWrapperInit::none);
+    wrapper2.includes<tag::boxed, tag::field_1>();
+    protocol::copy(wrapper2.toThrift(), src, dst); // creates object
+    EXPECT_FALSE(bool(dst.unique_ref()));
+    EXPECT_FALSE(bool(dst.shared_ref()));
+    ASSERT_TRUE(bool(dst.boxed_ref()));
+    EXPECT_EQ(dst.boxed_ref()->field_1(), 0);
+    EXPECT_FALSE(dst.boxed_ref()->field_2().has_value());
+  }
+}
+
+TEST(FieldMaskTest, SchemafulCopySmartPointerRemoveField) {
+  SmartPointerStruct src, dst;
+  // dst contains unique field except for unique.field_1 and box field.
+  MaskWrapper<SmartPointerStruct> setup(MaskWrapperInit::all);
+  setup.excludes<tag::unique, tag::field_1>();
+  setup.excludes<tag::shared>();
+  protocol::ensure(setup.toThrift(), dst);
+
+  MaskWrapper<SmartPointerStruct> wrapper(MaskWrapperInit::none);
+  wrapper.includes<tag::unique, tag::field_2>();
+  wrapper.includes<tag::boxed, tag::field_1>();
+  protocol::copy(wrapper.toThrift(), src, dst);
+  ASSERT_TRUE(bool(dst.unique_ref()));
+  EXPECT_FALSE(dst.unique_ref()->field_1().has_value());
+  EXPECT_FALSE(dst.unique_ref()->field_2().has_value());
+  EXPECT_FALSE(bool(dst.shared_ref()));
+  ASSERT_TRUE(bool(dst.boxed_ref()));
+  EXPECT_FALSE(dst.boxed_ref()->field_1().has_value());
+  EXPECT_EQ(dst.boxed_ref()->field_2(), 0);
 }
 
 TEST(FieldMaskTest, SchemafulCopyException) {

@@ -56,3 +56,12 @@ struct TerseWrite {
   1: i32 field;
   2: Foo foo;
 }
+
+struct SmartPointerStruct {
+  @cpp.Ref{type = cpp.RefType.Unique}
+  1: optional Foo2 unique;
+  @cpp.Ref{type = cpp.RefType.SharedMutable}
+  2: optional Foo2 shared;
+  @thrift.Box
+  3: optional Foo2 boxed;
+}
