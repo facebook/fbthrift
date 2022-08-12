@@ -169,10 +169,9 @@ class Service1AsyncClient extends \ThriftClientBase implements Service1AsyncClie
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    $args = Service1_func2_args::fromShape(shape(
-      'arg1' => $arg1,
-      'arg2' => $arg2,
-    ));
+    $args = Service1_func2_args::withDefaultValues();
+    $args->arg1 = $arg1;
+    $args->arg2 = $arg2;
     await $this->asyncHandler_->genBefore("Service1", "func2", $args);
     $currentseqid = $this->sendImplHelper($args, "func2", false);
     return await $this->genAwaitResponse(Service1_func2_result::class, "func2", false, $currentseqid, $rpc_options);
@@ -237,10 +236,9 @@ class Service1Client extends \ThriftClientBase implements Service1ClientIf {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    $args = Service1_func2_args::fromShape(shape(
-      'arg1' => $arg1,
-      'arg2' => $arg2,
-    ));
+    $args = Service1_func2_args::withDefaultValues();
+    $args->arg1 = $arg1;
+    $args->arg2 = $arg2;
     await $this->asyncHandler_->genBefore("Service1", "func2", $args);
     $currentseqid = $this->sendImplHelper($args, "func2", false);
     return await $this->genAwaitResponse(Service1_func2_result::class, "func2", false, $currentseqid, $rpc_options);
@@ -268,10 +266,9 @@ class Service1Client extends \ThriftClientBase implements Service1ClientIf {
     return $this->recvImplHelper(Service1_func1_result::class, "func1", false, $expectedsequenceid);
   }
   public function send_func2(?StructWithWrapper $arg1, ?i64WithWrapper $arg2): int {
-    $args = Service1_func2_args::fromShape(shape(
-      'arg1' => $arg1,
-      'arg2' => $arg2,
-    ));
+    $args = Service1_func2_args::withDefaultValues();
+    $args->arg1 = $arg1;
+    $args->arg2 = $arg2;
     return $this->sendImplHelper($args, "func2", false);
   }
   public function recv_func2(?int $expectedsequenceid = null): i64WithWrapper {

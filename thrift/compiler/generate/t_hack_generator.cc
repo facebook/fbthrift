@@ -5181,10 +5181,21 @@ void t_hack_generator::_generate_args(
     const t_function* tfunction) {
   const std::string& argsname = generate_function_helper_name(
       tservice, tfunction, PhpFunctionNameSuffix::ARGS);
-  const auto& fields = tfunction->get_paramlist()->fields();
-  out << indent() << "$args = " << argsname;
 
-  if (!fields.empty()) {
+  const t_struct* params_struct = tfunction->get_paramlist();
+  const auto& fields = params_struct->fields();
+  bool is_async = is_async_struct(params_struct);
+  out << indent() << "$args = " << argsname;
+  if (is_async) {
+    out << "::withDefaultValues();\n";
+    if (!fields.empty()) {
+      // Loop through the fields and assign to the args struct
+      for (auto&& field : fields) {
+        std::string name = field.name();
+        out << indent() << "$args->" << name << " = $" << name << ";\n";
+      }
+    }
+  } else if (!fields.empty()) {
     out << "::fromShape(shape(\n";
     indent_up();
     // Loop through the fields and assign to the args struct
