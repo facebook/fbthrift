@@ -30,7 +30,7 @@ class constants_CONSTANTS implements \IThriftConstants {
 
     $Internship0->school = "Monters University";
 
-    $Internship0->intern_id = 10011;
+    $Internship0->intern_id = \MyTypeIntWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<\detail\i64WithWrapper>(10011);
 
     return $Internship0;
   }
@@ -52,7 +52,7 @@ class constants_CONSTANTS implements \IThriftConstants {
 
     $Internship0->school = "Monters University";
 
-    $Internship0->intern_id = 10011;
+    $Internship0->intern_id = \MyTypeIntWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<\detail\i64WithWrapper>(10011);
 
     $Internship1 = Internship::withDefaultValues();
     $Internship1->weeks = 10;
@@ -63,7 +63,7 @@ class constants_CONSTANTS implements \IThriftConstants {
 
     $Internship1->get_compensation()->setValue_DO_NOT_USE_THRIFT_INTERNAL(1000.0);
 
-    $Internship1->intern_id = 10013;
+    $Internship1->intern_id = \MyTypeIntWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<\detail\i64WithWrapper>(10013);
 
     return vec[
       $Internship0,
@@ -106,16 +106,16 @@ class constants_CONSTANTS implements \IThriftConstants {
   <<__Memoize>>
   public static function wrapped_structs()[write_props]: vec<StructWithWrapper>{
     return vec[
-      StructWithWrapper::fromShape(
+      \MyStructWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<\thrift_adapted_types\StructWithWrapper>(\thrift_adapted_types\StructWithWrapper::fromShape(
         shape(
           "int_field" => 1,
         )
-      ),
-      StructWithWrapper::fromShape(
+      )),
+      \MyStructWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<\thrift_adapted_types\StructWithWrapper>(\thrift_adapted_types\StructWithWrapper::fromShape(
         shape(
           "int_field" => 2,
         )
-      ),
+      )),
     ];
   }
 
@@ -123,10 +123,13 @@ class constants_CONSTANTS implements \IThriftConstants {
    * Original thrift constant:-
    * list<i64> wrapped_ints
    */
-  const vec<i64WithWrapper> wrapped_ints = vec[
-    1,
-    2,
-  ];
+  <<__Memoize>>
+  public static function wrapped_ints()[write_props]: vec<i64WithWrapper>{
+    return vec[
+      \MyTypeIntWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<\detail\i64WithWrapper>(1),
+      \MyTypeIntWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<\detail\i64WithWrapper>(2),
+    ];
+  }
 
 
   public static function getAllStructuredAnnotations()[write_props]: dict<string, dict<string, \IThriftStruct>> {

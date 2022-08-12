@@ -145,13 +145,15 @@ class t_hack_generator : public t_concat_generator {
   std::string render_const_value(
       const t_type* type,
       const t_const_value* value,
-      bool immutable_collections = false);
+      bool immutable_collections = false,
+      bool ignore_wrapper = false);
   std::string render_const_value_helper(
       const t_type* type,
       const t_const_value* value,
       std::ostream& temp_var_initializations_out,
       t_name_generator& namer,
-      bool immutable_collections = false);
+      bool immutable_collections = false,
+      bool ignore_wrapper = false);
   std::string render_default_value(const t_type* type);
 
   /**
@@ -1779,6 +1781,13 @@ void t_hack_generator::generate_const(const t_const* tconst) {
 }
 
 bool t_hack_generator::is_hack_const_type(const t_type* type) {
+  auto [wrapper, name, ns] = find_hack_wrapper(type);
+  if (wrapper) {
+    return false;
+  }
+  if (const auto* ttypedef = dynamic_cast<const t_typedef*>(type)) {
+    return is_hack_const_type(ttypedef->get_type());
+  }
   type = type->get_true_type();
   if (type->is_base_type() || type->is_enum()) {
     return true;
@@ -1814,12 +1823,18 @@ std::string t_hack_generator::render_string(std::string value) {
 std::string t_hack_generator::render_const_value(
     const t_type* type,
     const t_const_value* value,
-    bool immutable_collections) {
+    bool immutable_collections,
+    bool ignore_wrapper) {
   std::ostringstream out;
   std::ostringstream initialization_out;
   t_name_generator namer;
   auto const_val = render_const_value_helper(
-      type, value, initialization_out, namer, immutable_collections);
+      type,
+      value,
+      initialization_out,
+      namer,
+      immutable_collections,
+      ignore_wrapper);
   out << initialization_out.str();
   out << const_val;
   return out.str();
@@ -1830,9 +1845,32 @@ std::string t_hack_generator::render_const_value_helper(
     const t_const_value* value,
     std::ostream& temp_var_initializations_out,
     t_name_generator& namer,
-    bool immutable_collections) {
+    bool immutable_collections,
+    bool ignore_wrapper) {
   std::ostringstream out;
-  type = type->get_true_type();
+  if (const auto* ttypedef = dynamic_cast<const t_placeholder_typedef*>(type)) {
+    type = ttypedef->get_type();
+  }
+  if (const auto* ttypedef = dynamic_cast<const t_typedef*>(type)) {
+    type = ttypedef->get_type();
+    auto val = render_const_value_helper(
+        type,
+        value,
+        temp_var_initializations_out,
+        namer,
+        immutable_collections);
+    if (ignore_wrapper) {
+      return val;
+    }
+    auto [wrapper, name, ns] = find_hack_wrapper(ttypedef);
+    if (wrapper) {
+      out << *wrapper << "::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<";
+      out << hack_wrapped_type_name(name, ns) << ">(" << val << ")";
+      return out.str();
+    }
+    return val;
+  }
+
   if (const auto* tbase_type = dynamic_cast<const t_base_type*>(type)) {
     switch (tbase_type->get_base()) {
       case t_base_type::TYPE_STRING:
@@ -1873,14 +1911,21 @@ std::string t_hack_generator::render_const_value_helper(
       out << hack_name(tenum) << "::coerce(" << value->get_integer() << ")";
     }
   } else if (const auto* tstruct = dynamic_cast<const t_struct*>(type)) {
-    auto struct_name = hack_name(type);
+    std::string struct_name;
+    auto [wrapper, name, ns] = find_hack_wrapper(type);
+    if (!ignore_wrapper && wrapper) {
+      out << *wrapper << "::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<";
+      struct_name = hack_wrapped_type_name(name, ns);
+      out << struct_name << ">(";
+    } else {
+      struct_name = hack_name(type);
+    }
     if (is_async_struct(tstruct)) {
-      auto temp_val = namer(("$" + struct_name).c_str());
+      auto temp_val = namer(("$" + hack_name(type, true)).c_str());
       int preserved_indent_size = get_indent();
       set_indent(2);
       temp_var_initializations_out << indent() << temp_val << " = "
-                                   << hack_name(type)
-                                   << "::withDefaultValues();\n";
+                                   << struct_name << "::withDefaultValues();\n";
       for (const auto& entry : value->get_map()) {
         const auto* field =
             tstruct->get_field_by_name(entry.first->get_string());
@@ -1913,7 +1958,7 @@ std::string t_hack_generator::render_const_value_helper(
 
       set_indent(preserved_indent_size);
     } else {
-      out << hack_name(type) << "::fromShape(\n";
+      out << struct_name << "::fromShape(\n";
       indent_up();
       indent(out) << "shape(\n";
       indent_up();
@@ -1955,6 +2000,9 @@ std::string t_hack_generator::render_const_value_helper(
       indent(out) << ")\n";
       indent_down();
       indent(out) << ")";
+    }
+    if (wrapper) {
+      out << ")";
     }
   } else if (const auto* tmap = dynamic_cast<const t_map*>(type)) {
     const t_type* ktype = tmap->get_key_type();
@@ -4861,7 +4909,9 @@ std::string t_hack_generator::render_structured_annotations(
                          annotation->get_type(),
                          annotation->get_value(),
                          temp_var_initializations_out,
-                         namer)
+                         namer,
+                         false,
+                         true)
                   << ",\n";
     }
     indent_down();

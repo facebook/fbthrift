@@ -746,7 +746,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       "key_struct2" => $structured_annotation_recursive4,
     ];
 
-    $structured_annotation_recursive0->int_field = 10;
+    $structured_annotation_recursive0->int_field = \MyTypeIntWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<\thrift_adapted_types\i64WithWrapper>(10);
 
     $structured_annotation_recursive6 = structured_annotation_recursive::withDefaultValues();
     $structured_annotation_recursive6->name = "abc_struct_field";
@@ -800,7 +800,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               shape(
                 "int_field" => 11,
               )
-            ),
+            )),
           ],
           'type' => dict[],
         ),
