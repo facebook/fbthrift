@@ -24,6 +24,7 @@
 
 #include <thrift/conformance/if/gen-cpp2/RPCConformanceService.h>
 #include <thrift/conformance/if/gen-cpp2/rpc_types.h>
+#include <thrift/lib/cpp/transport/TTransport.h>
 #include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 
@@ -31,6 +32,7 @@ DEFINE_int32(port, 7777, "Port for Conformance Verification Server");
 
 using namespace apache::thrift;
 using namespace apache::thrift::conformance;
+using apache::thrift::transport::TTransportException;
 
 std::unique_ptr<Client<RPCConformanceService>> createClient() {
   return std::make_unique<Client<RPCConformanceService>>(
@@ -102,6 +104,31 @@ StreamBasicClientTestResult streamBasicTest(
       }());
 }
 
+StreamChunkTimeoutClientTestResult streamChunkTimeoutTest(
+    StreamChunkTimeoutClientInstruction& instruction) {
+  auto client = createClient();
+  StreamChunkTimeoutClientTestResult result;
+  apache::thrift::RpcOptions rpcOptions{};
+  rpcOptions.setChunkTimeout(
+      std::chrono::milliseconds{*instruction.chunkTimeoutMs()});
+  try {
+    folly::coro::blockingWait([&]() -> folly::coro::Task<void> {
+      auto gen = (co_await client->co_streamChunkTimeout(
+                      rpcOptions, *instruction.request()))
+                     .toAsyncGenerator();
+      while (auto val = co_await gen.next()) {
+        result.streamPayloads()->push_back(std::move(*val));
+      }
+    }());
+  } catch (const TTransportException& e) {
+    if (e.getType() ==
+        TTransportException::TTransportExceptionType::TIMED_OUT) {
+      result.chunkTimeoutException() = true;
+    }
+  }
+  return result;
+}
+
 // =================== Sink ===================
 SinkBasicClientTestResult sinkBasicTest(
     SinkBasicClientInstruction& instruction) {
@@ -153,6 +180,10 @@ int main(int argc, char** argv) {
     case ClientInstruction::Type::streamBasic:
       result.set_streamBasic(
           streamBasicTest(*clientInstruction.streamBasic_ref()));
+      break;
+    case ClientInstruction::Type::streamChunkTimeout:
+      result.set_streamChunkTimeout(
+          streamChunkTimeoutTest(*clientInstruction.streamChunkTimeout_ref()));
       break;
     case ClientInstruction::Type::sinkBasic:
       result.set_sinkBasic(sinkBasicTest(*clientInstruction.sinkBasic_ref()));

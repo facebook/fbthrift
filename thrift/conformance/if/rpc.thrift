@@ -50,6 +50,7 @@ union ServerTestResult {
   3: RequestResponseNoArgVoidResponseServerTestResult requestResponseNoArgVoidResponse;
   4: RequestResponseUndeclaredExceptionServerTestResult requestResponseUndeclaredException;
   100: StreamBasicServerTestResult streamBasic;
+  101: StreamChunkTimeoutServerTestResult streamChunkTimeout;
   200: SinkBasicServerTestResult sinkBasic;
 }
 
@@ -59,6 +60,7 @@ union ClientTestResult {
   3: RequestResponseNoArgVoidResponseClientTestResult requestResponseNoArgVoidResponse;
   4: RequestResponseUndeclaredExceptionClientTestResult requestResponseUndeclaredException;
   100: StreamBasicClientTestResult streamBasic;
+  101: StreamChunkTimeoutClientTestResult streamChunkTimeout;
   200: SinkBasicClientTestResult sinkBasic;
 }
 
@@ -77,6 +79,10 @@ struct RequestResponseUndeclaredExceptionServerTestResult {
 struct RequestResponseNoArgVoidResponseServerTestResult {}
 
 struct StreamBasicServerTestResult {
+  1: Request request;
+}
+
+struct StreamChunkTimeoutServerTestResult {
   1: Request request;
 }
 
@@ -105,6 +111,11 @@ struct StreamBasicClientTestResult {
   1: list<Response> streamPayloads;
 }
 
+struct StreamChunkTimeoutClientTestResult {
+  1: list<Response> streamPayloads;
+  2: bool chunkTimeoutException;
+}
+
 struct SinkBasicClientTestResult {
   1: Response finalResponse;
 }
@@ -115,6 +126,7 @@ union ClientInstruction {
   3: RequestResponseNoArgVoidResponseClientInstruction requestResponseNoArgVoidResponse;
   4: RequestResponseUndeclaredExceptionClientInstruction requestResponseUndeclaredException;
   100: StreamBasicClientInstruction streamBasic;
+  101: StreamChunkTimeoutClientInstruction streamChunkTimeout;
   200: SinkBasicClientInstruction sinkBasic;
 }
 
@@ -124,6 +136,7 @@ union ServerInstruction {
   3: RequestResponseNoArgVoidResponseServerInstruction requestResponseNoArgVoidResponse;
   4: RequestResponseUndeclaredExceptionServerInstruction requestResponseUndeclaredException;
   100: StreamBasicServerInstruction streamBasic;
+  101: StreamChunkTimeoutServerInstruction streamChunkTimeout;
   200: SinkBasicServerInstruction sinkBasic;
 }
 
@@ -143,6 +156,11 @@ struct RequestResponseNoArgVoidResponseClientInstruction {}
 
 struct StreamBasicClientInstruction {
   1: Request request;
+}
+
+struct StreamChunkTimeoutClientInstruction {
+  1: Request request;
+  2: i32 chunkTimeoutMs;
 }
 
 struct SinkBasicClientInstruction {
@@ -170,6 +188,11 @@ struct StreamBasicServerInstruction {
   1: list<Response> streamPayloads;
 }
 
+struct StreamChunkTimeoutServerInstruction {
+  1: list<Response> streamPayloads;
+  2: i32 chunkTimeoutMs;
+}
+
 struct SinkBasicServerInstruction {
   1: Response finalResponse;
   2: i64 bufferSize;
@@ -194,6 +217,7 @@ service RPCConformanceService {
 
   // =================== Stream ===================
   stream<Response> streamBasic(1: Request req);
+  stream<Response> streamChunkTimeout(1: Request req);
 
   // =================== Sink ===================
   sink<Request, Response> sinkBasic(1: Request req);

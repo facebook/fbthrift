@@ -22,6 +22,7 @@
 #include <fmt/core.h>
 #include <folly/Subprocess.h>
 #include <folly/experimental/coro/AsyncGenerator.h>
+#include <folly/experimental/coro/Sleep.h>
 #include <folly/futures/Future.h>
 #include <thrift/conformance/RpcStructComparator.h>
 #include <thrift/conformance/Utils.h>
@@ -83,6 +84,20 @@ class ConformanceVerificationServer
          *testCase_.serverInstruction()->streamBasic_ref()->streamPayloads()) {
       co_yield std::move(payload);
     }
+  }
+
+  apache::thrift::ServerStream<Response> streamChunkTimeout(
+      std::unique_ptr<Request> req) override {
+    serverResult_.streamChunkTimeout_ref().emplace().request() = *req;
+    for (auto payload : *testCase_.serverInstruction()
+                             ->streamChunkTimeout_ref()
+                             ->streamPayloads()) {
+      co_yield std::move(payload);
+    }
+    co_await folly::coro::sleep(
+        std::chrono::milliseconds(*testCase_.serverInstruction()
+                                       ->streamChunkTimeout_ref()
+                                       ->chunkTimeoutMs()));
   }
 
   // =================== Sink ===================

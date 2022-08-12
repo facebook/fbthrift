@@ -253,6 +253,50 @@ Test createStreamBasicTest() {
   return ret;
 }
 
+Test createStreamChunkTimeoutTest() {
+  Test ret;
+  ret.name() = "StreamChunkTimeoutTest";
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "StreamChunkTimeout/Success";
+
+  auto& rpcTest = testCase.rpc_ref().emplace();
+  auto& clientInstruction = rpcTest.clientInstruction_ref()
+                                .emplace()
+                                .streamChunkTimeout_ref()
+                                .emplace();
+  clientInstruction.request().emplace().data() = "hello";
+  clientInstruction.chunkTimeoutMs() = 100;
+
+  auto& serverInstruction = rpcTest.serverInstruction_ref()
+                                .emplace()
+                                .streamChunkTimeout_ref()
+                                .emplace();
+  for (int i = 0; i < 100; i++) {
+    auto& payload = serverInstruction.streamPayloads()->emplace_back();
+    payload.data() = folly::to<std::string>(i);
+  }
+  serverInstruction.chunkTimeoutMs() = 150;
+
+  auto& clientTestResult = rpcTest.clientTestResult_ref()
+                               .emplace()
+                               .streamChunkTimeout_ref()
+                               .emplace();
+  clientTestResult.streamPayloads().copy_from(
+      serverInstruction.streamPayloads());
+  clientTestResult.chunkTimeoutException() = true;
+
+  rpcTest.serverTestResult_ref()
+      .emplace()
+      .streamChunkTimeout_ref()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = "hello";
+
+  return ret;
+}
+
 // =================== Sink ===================
 Test createSinkBasicTest() {
   Test ret;
@@ -317,6 +361,8 @@ TestSuite createRPCClientTestSuite() {
   TestSuite suite;
   suite.name() = "ThriftRPCClientTest";
   addCommonRPCTests(suite);
+  // =================== Stream ===================
+  suite.tests()->push_back(createStreamChunkTimeoutTest());
   return suite;
 }
 
