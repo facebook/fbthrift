@@ -1348,7 +1348,7 @@ class Service1_func2_args implements \IThriftAsyncStruct, \IThriftShapishAsyncSt
 
 }
 
-class Service1_func2_result extends \ThriftSyncStructWithResult {
+class Service1_func2_result extends \ThriftAsyncStructWithResult {
   use \ThriftSerializationTrait;
 
   const type TResult = i64WithWrapper;

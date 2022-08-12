@@ -1477,6 +1477,8 @@ void t_hack_generator::init_generator() {
               true);
           codegen_file_open = true;
         }
+        f_types_ << "type " << hack_name(tstruct, true) << " = " << *wrapper
+                 << "<" << hack_wrapped_type_name(name, ns) << ">;\n";
       }
     }
   }
@@ -1557,15 +1559,46 @@ void t_hack_generator::close_generator() {
  * @param ttypedef The type definition
  */
 void t_hack_generator::generate_typedef(const t_typedef* ttypedef) {
-  if (typedef_) {
-    auto typedef_name = hack_name(ttypedef, true);
-    auto typehint = type_to_typehint(
-        ttypedef, {{TypeToTypehintVariations::IGNORE_TYPEDEF, true}});
+  if (!typedef_) {
+    return;
+  }
+  auto typedef_name = hack_name(ttypedef, true);
+  auto [wrapper, name, ns] = find_hack_wrapper(ttypedef, false);
+  if (wrapper) {
+    // For wrapped typedef, typehint is generated in nested ns.
+    // Set this flag to true to ensure that any references to other typedefs or
+    // structs is prefixed with "\"
+    has_nested_ns = true;
+  }
+  auto typehint = type_to_typehint(
+      ttypedef,
+      {{TypeToTypehintVariations::IGNORE_TYPEDEF, true},
+       {TypeToTypehintVariations::IGNORE_WRAPPER, true}});
+  if (wrapper) {
+    f_types_ << "type " << typedef_name << " = " << *wrapper << "<"
+             << hack_wrapped_type_name(name, ns) << ">;\n";
+
+    if (!f_adapted_types_.is_open()) {
+      init_codegen_file(
+          f_adapted_types_,
+          get_out_dir() + get_program()->name() + "_adapted_types.php");
+    }
+    if (ns) {
+      f_adapted_types_ << "namespace " << *ns << " {\n";
+    }
+    f_adapted_types_ << "type " << *name << " = " << typehint << ";\n";
+
+    if (ns) {
+      f_adapted_types_ << "}\n";
+    }
+  } else {
     if (typedef_name == typehint) {
       return;
     }
     f_types_ << "type " << typedef_name << " = " << typehint << ";\n";
   }
+  // Reset the flag
+  has_nested_ns = false;
 }
 
 /**
@@ -2606,7 +2639,27 @@ const t_type* t_hack_generator::tmeta_ThriftMetadata_type() {
  * Make a struct
  */
 void t_hack_generator::generate_struct(const t_struct* tstruct) {
-  generate_php_struct_definition(f_types_, tstruct);
+  auto [wrapper, name, ns] = find_hack_wrapper(tstruct, false);
+  if (wrapper) {
+    // For wrapped typedef, typehint is generated in nested ns.
+    // Set this flag to true to ensure that any references to other typedefs or
+    // structs is prefixed with "\"
+    has_nested_ns = true;
+    if (ns) {
+      f_adapted_types_ << "namespace " << *ns << " {\n\n";
+    }
+    indent_up();
+    generate_php_struct_definition(
+        f_adapted_types_, tstruct, ThriftStructType::STRUCT);
+    indent_down();
+    if (ns) {
+      f_adapted_types_ << "\n}\n\n";
+    }
+    // reset the flag
+    has_nested_ns = false;
+  } else {
+    generate_php_struct_definition(f_types_, tstruct);
+  }
 }
 
 bool t_hack_generator::is_valid_hack_type(const t_type* type) {
@@ -4761,9 +4814,14 @@ void t_hack_generator::_generate_php_struct_definition(
       (type == ThriftStructType::EXCEPTION || !generateAsTrait)) {
     generate_php_docstring(out, tstruct, type == ThriftStructType::EXCEPTION);
   }
-  generate_hack_attributes(f_types_, tstruct, /*include_user_defined*/ true);
-  out << (generateAsTrait ? "trait " : "class ")
-      << hack_name(name, tstruct->program(), true);
+
+  generate_hack_attributes(out, tstruct, /*include_user_defined*/ true);
+  auto [wrapper, underlying_name, ns] = find_hack_wrapper(tstruct, false);
+  auto sname = hack_name(name, tstruct->program(), true);
+  if (wrapper) {
+    sname = *underlying_name;
+  }
+  out << (generateAsTrait ? "trait " : "class ") << sname;
   if (generateAsTrait) {
     out << "Trait";
   } else if (tstruct->is_exception()) {
@@ -4773,10 +4831,11 @@ void t_hack_generator::_generate_php_struct_definition(
   const t_result_struct* result_struct =
       dynamic_cast<const t_result_struct*>(tstruct);
   if (result_struct != nullptr) {
+    out << " extends \\Thrift" << (is_async ? "Async" : "Sync");
     if (result_struct->getResultReturnType() == "void") {
-      out << " extends \\ThriftSyncStructWithoutResult";
+      out << "StructWithoutResult";
     } else {
-      out << " extends \\ThriftSyncStructWithResult";
+      out << "StructWithResult";
     }
   } else if (is_async) {
     out << " implements \\IThriftAsyncStruct";
@@ -4830,7 +4889,7 @@ void t_hack_generator::_generate_php_struct_definition(
   }
 
   generate_php_structural_id(out, tstruct, generateAsTrait);
-  generate_php_struct_fields(out, tstruct, name, type);
+  generate_php_struct_fields(out, tstruct, sname, type);
 
   if (tstruct->is_union()) {
     // Generate _type to store which field is set and initialize it to _EMPTY_
