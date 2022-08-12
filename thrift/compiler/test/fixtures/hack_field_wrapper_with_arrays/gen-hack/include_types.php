@@ -430,10 +430,12 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
     }
     $wrapped_type_int = Shapes::idx($shape, 'wrapped_type_int');
     if ($wrapped_type_int !== null) {
+      $wrapped_type_int = await \MyTypeIntWrapper::genFromThrift<\detail\i64WithWrapper>($wrapped_type_int);
       await $obj->get_wrapped_type_int()->genWrap($wrapped_type_int);
     }
     $double_wrapped_struct = Shapes::idx($shape, 'double_wrapped_struct');
     if ($double_wrapped_struct !== null) {
+      $double_wrapped_struct = await \MyStructWrapper::genFromThrift<\thrift_adapted_types\StructWithWrapper>($double_wrapped_struct);
       await $obj->get_double_wrapped_struct()->genWrap($double_wrapped_struct);
     }
     return $obj;
@@ -463,11 +465,13 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
     }
     $wrapped_type_int = idx($map, 'wrapped_type_int');
     if ($wrapped_type_int !== null) {
-      await $obj->get_wrapped_type_int()->genWrap(HH\FIXME\UNSAFE_CAST<mixed, \detail\i64WithWrapper>($wrapped_type_int, 'Map value is mixed'));
+      $wrapped_type_int = await \MyTypeIntWrapper::genFromThrift<\detail\i64WithWrapper>(HH\FIXME\UNSAFE_CAST<mixed, \detail\i64WithWrapper>($wrapped_type_int, 'Map value is mixed'));
+      await $obj->get_wrapped_type_int()->genWrap($wrapped_type_int);
     }
     $double_wrapped_struct = idx($map, 'double_wrapped_struct');
     if ($double_wrapped_struct !== null) {
-      await $obj->get_double_wrapped_struct()->genWrap(HH\FIXME\UNSAFE_CAST<mixed, \thrift_adapted_types\StructWithWrapper>($double_wrapped_struct, 'Map value is mixed'));
+      $double_wrapped_struct = await \MyStructWrapper::genFromThrift<\thrift_adapted_types\StructWithWrapper>(HH\FIXME\UNSAFE_CAST<mixed, \thrift_adapted_types\StructWithWrapper>($double_wrapped_struct, 'Map value is mixed'));
+      await $obj->get_double_wrapped_struct()->genWrap($double_wrapped_struct);
     }
     return $obj;
   }
@@ -711,10 +715,11 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
     if ($optional_adapted_and_wrapped_type !== null) {
       await $obj->get_optional_adapted_and_wrapped_type()->genWrap($optional_adapted_and_wrapped_type);
     }
-    await $obj->get_wrapped_type_int()->genWrap($shape['wrapped_type_int']);
+    $wrapped_type_int = await \MyTypeIntWrapper::genFromThrift<\detail\i64WithWrapper>($shape['wrapped_type_int']);
+    await $obj->get_wrapped_type_int()->genWrap($wrapped_type_int);
     $double_wrapped_struct = Shapes::idx($shape, 'double_wrapped_struct');
     if ($double_wrapped_struct !== null) {
-      $double_wrapped_struct = StructWithWrapper::__fromShape($double_wrapped_struct);
+      $double_wrapped_struct = await \MyStructWrapper::genFromThrift<\thrift_adapted_types\StructWithWrapper>(\thrift_adapted_types\StructWithWrapper::__fromShape($double_wrapped_struct));
       await $obj->get_double_wrapped_struct()->genWrap($double_wrapped_struct);
     }
     return $obj;
@@ -1045,7 +1050,15 @@ class MyComplexStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct
     }
     $list_of_map_of_string_to_StructWithWrapper = Shapes::idx($shape, 'list_of_map_of_string_to_StructWithWrapper');
     if ($list_of_map_of_string_to_StructWithWrapper !== null) {
-      $obj->list_of_map_of_string_to_StructWithWrapper = $list_of_map_of_string_to_StructWithWrapper;
+      $obj->list_of_map_of_string_to_StructWithWrapper = await Vec\map_async(
+        $list_of_map_of_string_to_StructWithWrapper,
+        async $val0 ==> 
+          await Dict\map_async(
+            $val0,
+            async $val1 ==> 
+              await \MyStructWrapper::genFromThrift<\thrift_adapted_types\StructWithWrapper>($val1)
+          )
+      );
     }
     return $obj;
   }
@@ -1078,7 +1091,15 @@ class MyComplexStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct
     }
     $list_of_map_of_string_to_StructWithWrapper = idx($map, 'list_of_map_of_string_to_StructWithWrapper');
     if ($list_of_map_of_string_to_StructWithWrapper !== null) {
-      $obj->list_of_map_of_string_to_StructWithWrapper = HH\FIXME\UNSAFE_CAST<mixed, vec<dict<string, \thrift_adapted_types\StructWithWrapper>>>($list_of_map_of_string_to_StructWithWrapper, 'Map value is mixed');
+      $obj->list_of_map_of_string_to_StructWithWrapper = await Vec\map_async(
+        HH\FIXME\UNSAFE_CAST<mixed, vec<dict<string, \thrift_adapted_types\StructWithWrapper>>>($list_of_map_of_string_to_StructWithWrapper, 'Map value is mixed'),
+        async $val0 ==> 
+          await Dict\map_async(
+            $val0,
+            async $val1 ==> 
+              await \MyStructWrapper::genFromThrift<\thrift_adapted_types\StructWithWrapper>($val1)
+          )
+      );
     }
     return $obj;
   }
@@ -1445,14 +1466,14 @@ class MyComplexStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct
           )
         )
     );
-    $obj->list_of_map_of_string_to_StructWithWrapper = Vec\map(
+    $obj->list_of_map_of_string_to_StructWithWrapper = await Vec\map_async(
       $shape['list_of_map_of_string_to_StructWithWrapper'],
-      $val11 ==> 
+      async $val11 ==> 
         self::__stringifyMapKeys(
-          Dict\map(
+          await Dict\map_async(
             $val11,
-            $val12 ==> 
-              StructWithWrapper::__fromShape($val12)
+            async $val12 ==> 
+              await \MyStructWrapper::genFromThrift<\thrift_adapted_types\StructWithWrapper>(\thrift_adapted_types\StructWithWrapper::__fromShape($val12))
           )
         )
     );

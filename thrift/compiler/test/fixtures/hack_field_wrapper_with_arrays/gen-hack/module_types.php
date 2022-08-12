@@ -189,13 +189,13 @@ class MyUnion implements \IThriftAsyncStruct, \IThriftUnion<MyUnionEnum>, \IThri
     $obj = new static();
     $union_annotated_field = Shapes::idx($shape, 'union_annotated_field');
     if ($union_annotated_field !== null) {
-      $obj->union_annotated_field = await \MyFieldWrapper::genFromThrift<int, MyUnion>($union_annotated_field, 1, $obj);
       $obj->_type = MyUnionEnum::union_annotated_field;
+      $obj->union_annotated_field = await \MyFieldWrapper::genFromThrift<int, MyUnion>($union_annotated_field, 1, $obj);
     }
     $union_adapted_type = Shapes::idx($shape, 'union_adapted_type');
     if ($union_adapted_type !== null) {
-      $obj->union_adapted_type = $union_adapted_type;
       $obj->_type = MyUnionEnum::union_adapted_type;
+      $obj->union_adapted_type = $union_adapted_type;
     }
     return $obj;
   }
@@ -204,13 +204,13 @@ class MyUnion implements \IThriftAsyncStruct, \IThriftUnion<MyUnionEnum>, \IThri
     $obj = new static();
     $union_annotated_field = idx($map, 'union_annotated_field');
     if ($union_annotated_field !== null) {
-      $obj->union_annotated_field = await \MyFieldWrapper::genFromThrift<int, MyUnion>(HH\FIXME\UNSAFE_CAST<mixed, int>($union_annotated_field, 'Map value is mixed'), 1, $obj);
       $obj->_type = MyUnionEnum::union_annotated_field;
+      $obj->union_annotated_field = await \MyFieldWrapper::genFromThrift<int, MyUnion>(HH\FIXME\UNSAFE_CAST<mixed, int>($union_annotated_field, 'Map value is mixed'), 1, $obj);
     }
     $union_adapted_type = idx($map, 'union_adapted_type');
     if ($union_adapted_type !== null) {
-      $obj->union_adapted_type = HH\FIXME\UNSAFE_CAST<mixed, int>($union_adapted_type, 'Map value is mixed');
       $obj->_type = MyUnionEnum::union_adapted_type;
+      $obj->union_adapted_type = HH\FIXME\UNSAFE_CAST<mixed, int>($union_adapted_type, 'Map value is mixed');
     }
     return $obj;
   }
@@ -345,13 +345,13 @@ class MyUnion implements \IThriftAsyncStruct, \IThriftUnion<MyUnionEnum>, \IThri
     $obj = new static();
     $union_annotated_field = Shapes::idx($shape, 'union_annotated_field');
     if ($union_annotated_field !== null) {
-      $obj->union_annotated_field = await \MyFieldWrapper::genFromThrift<int, MyUnion>($union_annotated_field, 1, $obj);
       $obj->_type = MyUnionEnum::union_annotated_field;
+      $obj->union_annotated_field = await \MyFieldWrapper::genFromThrift<int, MyUnion>($union_annotated_field, 1, $obj);
     }
     $union_adapted_type = Shapes::idx($shape, 'union_adapted_type');
     if ($union_adapted_type !== null) {
-      $obj->union_adapted_type = $union_adapted_type;
       $obj->_type = MyUnionEnum::union_adapted_type;
+      $obj->union_adapted_type = $union_adapted_type;
     }
     return $obj;
   }

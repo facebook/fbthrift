@@ -329,7 +329,7 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
     }
     $int_field = Shapes::idx($shape, 'int_field');
     if ($int_field !== null) {
-      $obj->int_field = $int_field;
+      $obj->int_field = await \MyTypeIntWrapper::genFromThrift<\thrift_adapted_types\i64WithWrapper>($int_field);
     }
     return $obj;
   }
@@ -354,7 +354,7 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
     }
     $int_field = idx($map, 'int_field');
     if ($int_field !== null) {
-      $obj->int_field = HH\FIXME\UNSAFE_CAST<mixed, \thrift_adapted_types\i64WithWrapper>($int_field, 'Map value is mixed');
+      $obj->int_field = await \MyTypeIntWrapper::genFromThrift<\thrift_adapted_types\i64WithWrapper>(HH\FIXME\UNSAFE_CAST<mixed, \thrift_adapted_types\i64WithWrapper>($int_field, 'Map value is mixed'));
     }
     return $obj;
   }
@@ -532,7 +532,7 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
           await structured_annotation_recursive::__genFromShape($val0)
       )
     );
-    $obj->int_field = $shape['int_field'];
+    $obj->int_field = await \MyTypeIntWrapper::genFromThrift<\thrift_adapted_types\i64WithWrapper>($shape['int_field']);
     return $obj;
   }
 

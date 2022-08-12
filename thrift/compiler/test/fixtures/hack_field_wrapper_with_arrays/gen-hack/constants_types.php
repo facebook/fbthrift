@@ -182,7 +182,7 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
     }
     $intern_id = Shapes::idx($shape, 'intern_id');
     if ($intern_id !== null) {
-      $obj->intern_id = $intern_id;
+      $obj->intern_id = await \MyTypeIntWrapper::genFromThrift<\detail\i64WithWrapper>($intern_id);
     }
     return $obj;
   }
@@ -211,7 +211,7 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
     }
     $intern_id = idx($map, 'intern_id');
     if ($intern_id !== null) {
-      $obj->intern_id = HH\FIXME\UNSAFE_CAST<mixed, \detail\i64WithWrapper>($intern_id, 'Map value is mixed');
+      $obj->intern_id = await \MyTypeIntWrapper::genFromThrift<\detail\i64WithWrapper>(HH\FIXME\UNSAFE_CAST<mixed, \detail\i64WithWrapper>($intern_id, 'Map value is mixed'));
     }
     return $obj;
   }
@@ -361,7 +361,7 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
     if ($school !== null) {
       $obj->school = $school;
     }
-    $obj->intern_id = $shape['intern_id'];
+    $obj->intern_id = await \MyTypeIntWrapper::genFromThrift<\detail\i64WithWrapper>($shape['intern_id']);
     return $obj;
   }
 

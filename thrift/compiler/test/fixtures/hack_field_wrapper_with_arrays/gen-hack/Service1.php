@@ -1191,11 +1191,11 @@ class Service1_func2_args implements \IThriftAsyncStruct, \IThriftShapishAsyncSt
     $obj = new static();
     $arg1 = Shapes::idx($shape, 'arg1');
     if ($arg1 !== null) {
-      $obj->arg1 = $arg1;
+      $obj->arg1 = await \MyStructWrapper::genFromThrift<\thrift_adapted_types\StructWithWrapper>($arg1);
     }
     $arg2 = Shapes::idx($shape, 'arg2');
     if ($arg2 !== null) {
-      $obj->arg2 = $arg2;
+      $obj->arg2 = await \MyTypeIntWrapper::genFromThrift<\detail\i64WithWrapper>($arg2);
     }
     return $obj;
   }
@@ -1204,11 +1204,11 @@ class Service1_func2_args implements \IThriftAsyncStruct, \IThriftShapishAsyncSt
     $obj = new static();
     $arg1 = idx($map, 'arg1');
     if ($arg1 !== null) {
-      $obj->arg1 = HH\FIXME\UNSAFE_CAST<mixed, \thrift_adapted_types\StructWithWrapper>($arg1, 'Map value is mixed');
+      $obj->arg1 = await \MyStructWrapper::genFromThrift<\thrift_adapted_types\StructWithWrapper>(HH\FIXME\UNSAFE_CAST<mixed, \thrift_adapted_types\StructWithWrapper>($arg1, 'Map value is mixed'));
     }
     $arg2 = idx($map, 'arg2');
     if ($arg2 !== null) {
-      $obj->arg2 = HH\FIXME\UNSAFE_CAST<mixed, \detail\i64WithWrapper>($arg2, 'Map value is mixed');
+      $obj->arg2 = await \MyTypeIntWrapper::genFromThrift<\detail\i64WithWrapper>(HH\FIXME\UNSAFE_CAST<mixed, \detail\i64WithWrapper>($arg2, 'Map value is mixed'));
     }
     return $obj;
   }
@@ -1309,9 +1309,9 @@ class Service1_func2_args implements \IThriftAsyncStruct, \IThriftShapishAsyncSt
     $obj = new static();
     $arg1 = Shapes::idx($shape, 'arg1');
     if ($arg1 !== null) {
-      $obj->arg1 = StructWithWrapper::__fromShape($arg1);
+      $obj->arg1 = await \MyStructWrapper::genFromThrift<\thrift_adapted_types\StructWithWrapper>(\thrift_adapted_types\StructWithWrapper::__fromShape($arg1));
     }
-    $obj->arg2 = $shape['arg2'];
+    $obj->arg2 = await \MyTypeIntWrapper::genFromThrift<\detail\i64WithWrapper>($shape['arg2']);
     return $obj;
   }
 
@@ -1384,7 +1384,7 @@ class Service1_func2_result extends \ThriftAsyncStructWithResult {
     $obj = new static();
     $success = Shapes::idx($shape, 'success');
     if ($success !== null) {
-      $obj->success = $success;
+      $obj->success = await \MyTypeIntWrapper::genFromThrift<\detail\i64WithWrapper>($success);
     }
     return $obj;
   }
@@ -1393,7 +1393,7 @@ class Service1_func2_result extends \ThriftAsyncStructWithResult {
     $obj = new static();
     $success = idx($map, 'success');
     if ($success !== null) {
-      $obj->success = HH\FIXME\UNSAFE_CAST<mixed, \detail\i64WithWrapper>($success, 'Map value is mixed');
+      $obj->success = await \MyTypeIntWrapper::genFromThrift<\detail\i64WithWrapper>(HH\FIXME\UNSAFE_CAST<mixed, \detail\i64WithWrapper>($success, 'Map value is mixed'));
     }
     return $obj;
   }
