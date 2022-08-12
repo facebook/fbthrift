@@ -211,7 +211,7 @@ class MethodMetadata {
   MethodMetadata(Data* mPtr, NonOwningTag) : isOwning_(false), data_(mPtr) {}
 
   template <typename... Args>
-  MethodMetadata(std::in_place_t, Args... args)
+  MethodMetadata(std::in_place_t, Args&&... args)
       : isOwning_(true), data_(new Data(std::forward<Args>(args)...)) {}
 
   friend void swap(MethodMetadata& left, MethodMetadata& right) noexcept {
