@@ -4487,7 +4487,6 @@ void t_hack_generator::generate_php_struct_constructor(
   if (tstruct->is_union()) {
     out << indent() << "$this->_type = "
         << union_field_to_enum(nullptr, struct_hack_name_with_ns) << ";\n";
-
   }
 
   for (const auto& field : tstruct->fields()) {
