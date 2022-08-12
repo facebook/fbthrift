@@ -74,7 +74,7 @@ class Fields implements \IThriftSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -156,7 +156,7 @@ class FieldsInjectedToEmptyStruct implements \IThriftSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\InjectMetadataFields' => \thrift\annotation\InjectMetadataFields::fromShape(
@@ -268,7 +268,7 @@ class FieldsInjectedToStruct implements \IThriftSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\InjectMetadataFields' => \thrift\annotation\InjectMetadataFields::fromShape(
@@ -430,7 +430,7 @@ class FieldsInjectedWithIncludedStruct implements \IThriftSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\InjectMetadataFields' => \thrift\annotation\InjectMetadataFields::fromShape(

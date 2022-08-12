@@ -578,7 +578,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -1344,7 +1344,7 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<\thrift\test\BazEnum>, \I
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -1897,7 +1897,7 @@ class Bar implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -2164,7 +2164,7 @@ class DirectlyAdapted implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -2367,7 +2367,7 @@ class StructWithFieldAdapter implements \IThriftSyncStruct, \IThriftShapishSyncS
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -2637,7 +2637,7 @@ class TerseAdaptedFields implements \IThriftSyncStruct, \IThriftShapishSyncStruc
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -2847,7 +2847,7 @@ class B implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -2942,7 +2942,7 @@ class A implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -3046,7 +3046,7 @@ class Config implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -3169,7 +3169,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[

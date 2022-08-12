@@ -74,7 +74,7 @@ class InitialResponse implements \IThriftSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -156,7 +156,7 @@ class FinalResponse implements \IThriftSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -238,7 +238,7 @@ class SinkPayload implements \IThriftSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -320,7 +320,7 @@ class CompatibleWithKeywordSink implements \IThriftSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -402,7 +402,7 @@ class InitialException extends \TException implements \IThriftSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -484,7 +484,7 @@ class SinkException1 extends \TException implements \IThriftSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -566,7 +566,7 @@ class SinkException2 extends \TException implements \IThriftSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[

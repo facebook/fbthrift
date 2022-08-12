@@ -30,7 +30,7 @@ class MyEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TEnumAnnotations {
     return shape(
       'enum' => dict[],
       'constants' => dict[
@@ -111,7 +111,7 @@ class MyStructNestedAnnotation implements \IThriftSyncStruct, \IThriftShapishSyn
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -211,7 +211,7 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<MyUnionEnum>, \IThrif
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -292,7 +292,7 @@ class MyException extends \TException implements \IThriftSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -651,7 +651,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -870,7 +870,7 @@ class SecretStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[

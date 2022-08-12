@@ -1052,7 +1052,7 @@ class NestedContainers_mapList_args implements \IThriftSyncStruct, \IThriftShapi
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -1120,7 +1120,7 @@ class NestedContainers_mapList_result extends \ThriftSyncStructWithoutResult {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -1233,7 +1233,7 @@ class NestedContainers_mapSet_args implements \IThriftSyncStruct, \IThriftShapis
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -1301,7 +1301,7 @@ class NestedContainers_mapSet_result extends \ThriftSyncStructWithoutResult {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -1414,7 +1414,7 @@ class NestedContainers_listMap_args implements \IThriftSyncStruct, \IThriftShapi
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -1482,7 +1482,7 @@ class NestedContainers_listMap_result extends \ThriftSyncStructWithoutResult {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -1586,7 +1586,7 @@ class NestedContainers_listSet_args implements \IThriftSyncStruct, \IThriftShapi
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -1654,7 +1654,7 @@ class NestedContainers_listSet_result extends \ThriftSyncStructWithoutResult {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -1815,7 +1815,7 @@ class NestedContainers_turtles_args implements \IThriftSyncStruct, \IThriftShapi
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -1898,7 +1898,7 @@ class NestedContainers_turtles_result extends \ThriftSyncStructWithoutResult {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -2196,7 +2196,7 @@ class NestedContainersStaticMetadata implements \IThriftServiceStaticMetadata {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TServiceAnnotations {
     return shape(
       'service' => dict[],
       'functions' => dict[

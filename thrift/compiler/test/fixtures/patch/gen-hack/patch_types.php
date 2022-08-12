@@ -109,7 +109,7 @@ class PatchOp_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TEnumAnnotations {
     return shape(
       'enum' => dict[
         '\thrift\annotation\GenDefaultEnumValue' => \thrift\annotation\GenDefaultEnumValue::fromShape(
@@ -172,7 +172,7 @@ class GeneratePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\Program' => \thrift\annotation\Program::fromShape(
@@ -259,7 +259,7 @@ class GenerateOptionalPatch implements \IThriftSyncStruct, \IThriftShapishSyncSt
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\Struct' => \thrift\annotation\Struct::fromShape(
@@ -403,7 +403,7 @@ class BoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -564,7 +564,7 @@ class BytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -735,7 +735,7 @@ class I16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -906,7 +906,7 @@ class I32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -1077,7 +1077,7 @@ class I64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -1238,7 +1238,7 @@ class FloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -1399,7 +1399,7 @@ class DoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -1614,7 +1614,7 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -1758,7 +1758,7 @@ class BinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\op\GenerateOptionalPatch' => \thrift\op\GenerateOptionalPatch::fromShape(
@@ -1974,7 +1974,7 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -2239,7 +2239,7 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -2509,7 +2509,7 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -2779,7 +2779,7 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -3049,7 +3049,7 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -3314,7 +3314,7 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -3579,7 +3579,7 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -3844,7 +3844,7 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -4109,7 +4109,7 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(

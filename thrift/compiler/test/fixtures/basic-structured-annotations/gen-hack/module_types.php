@@ -31,7 +31,7 @@ class MyEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TEnumAnnotations {
     return shape(
       'enum' => dict[
         '\fixtures\basic-structured-annotations\structured_annotation_inline' => \fixtures\basic-structured-annotations\structured_annotation_inline::fromShape(
@@ -153,7 +153,7 @@ class structured_annotation_inline implements \IThriftSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -236,7 +236,7 @@ class structured_annotation_with_default implements \IThriftSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -395,7 +395,7 @@ class structured_annotation_recursive implements \IThriftSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -478,7 +478,7 @@ class structured_annotation_forward implements \IThriftSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -590,7 +590,7 @@ class structured_annotation_nested implements \IThriftSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -754,7 +754,7 @@ class MyStruct implements \IThriftSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\fixtures\basic-structured-annotations\structured_annotation_inline' => \fixtures\basic-structured-annotations\structured_annotation_inline::fromShape(
@@ -923,7 +923,7 @@ class MyException extends \TException implements \IThriftSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\fixtures\basic-structured-annotations\structured_annotation_nested' => \fixtures\basic-structured-annotations\structured_annotation_nested::fromShape(
@@ -1137,7 +1137,7 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<\fixtures\basic-struc
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\fixtures\basic-structured-annotations\structured_annotation_nested' => \fixtures\basic-structured-annotations\structured_annotation_nested::fromShape(

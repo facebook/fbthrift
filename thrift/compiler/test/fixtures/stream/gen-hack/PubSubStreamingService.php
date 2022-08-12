@@ -1588,7 +1588,7 @@ class PubSubStreamingService_returnstream_args implements \IThriftSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -1662,7 +1662,7 @@ class PubSubStreamingService_returnstream_StreamResponse implements \IThriftSync
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -1714,7 +1714,7 @@ class PubSubStreamingService_returnstream_FirstResponse implements \IThriftSyncS
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -1788,7 +1788,7 @@ class PubSubStreamingService_streamthrows_args implements \IThriftSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -1887,7 +1887,7 @@ class PubSubStreamingService_streamthrows_StreamResponse implements \IThriftSync
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -1939,7 +1939,7 @@ class PubSubStreamingService_streamthrows_FirstResponse implements \IThriftSyncS
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -2013,7 +2013,7 @@ class PubSubStreamingService_servicethrows_args implements \IThriftSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -2087,7 +2087,7 @@ class PubSubStreamingService_servicethrows_StreamResponse implements \IThriftSyn
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -2166,7 +2166,7 @@ class PubSubStreamingService_servicethrows_FirstResponse implements \IThriftSync
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -2240,7 +2240,7 @@ class PubSubStreamingService_boththrows_args implements \IThriftSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -2339,7 +2339,7 @@ class PubSubStreamingService_boththrows_StreamResponse implements \IThriftSyncSt
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -2418,7 +2418,7 @@ class PubSubStreamingService_boththrows_FirstResponse implements \IThriftSyncStr
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -2492,7 +2492,7 @@ class PubSubStreamingService_responseandstreamstreamthrows_args implements \IThr
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -2591,7 +2591,7 @@ class PubSubStreamingService_responseandstreamstreamthrows_StreamResponse implem
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -2665,7 +2665,7 @@ class PubSubStreamingService_responseandstreamstreamthrows_FirstResponse impleme
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -2739,7 +2739,7 @@ class PubSubStreamingService_responseandstreamservicethrows_args implements \ITh
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -2813,7 +2813,7 @@ class PubSubStreamingService_responseandstreamservicethrows_StreamResponse imple
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -2912,7 +2912,7 @@ class PubSubStreamingService_responseandstreamservicethrows_FirstResponse implem
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -2986,7 +2986,7 @@ class PubSubStreamingService_responseandstreamboththrows_args implements \IThrif
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -3085,7 +3085,7 @@ class PubSubStreamingService_responseandstreamboththrows_StreamResponse implemen
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -3184,7 +3184,7 @@ class PubSubStreamingService_responseandstreamboththrows_FirstResponse implement
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -3278,7 +3278,7 @@ class PubSubStreamingService_returnstreamFast_args implements \IThriftSyncStruct
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -3352,7 +3352,7 @@ class PubSubStreamingService_returnstreamFast_StreamResponse implements \IThrift
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -3404,7 +3404,7 @@ class PubSubStreamingService_returnstreamFast_FirstResponse implements \IThriftS
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -3837,7 +3837,7 @@ class PubSubStreamingServiceStaticMetadata implements \IThriftServiceStaticMetad
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TServiceAnnotations {
     return shape(
       'service' => dict[],
       'functions' => dict[

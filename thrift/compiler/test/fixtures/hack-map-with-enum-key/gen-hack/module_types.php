@@ -28,7 +28,7 @@ class FooEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TEnumAnnotations {
     return shape(
       'enum' => dict[],
       'constants' => dict[
@@ -184,7 +184,7 @@ class BarStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[

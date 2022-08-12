@@ -55,7 +55,7 @@ class Beta implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\Program' => \thrift\annotation\Program::fromShape(
@@ -144,7 +144,7 @@ class Experimental implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\Program' => \thrift\annotation\Program::fromShape(
@@ -237,7 +237,7 @@ class Testing implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\Program' => \thrift\annotation\Program::fromShape(
@@ -352,7 +352,7 @@ class Deprecated implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\Beta' => \thrift\annotation\Beta::fromShape(
@@ -534,7 +534,7 @@ class ReserveIds implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\Structured' => \thrift\annotation\Structured::fromShape(
@@ -685,7 +685,7 @@ class Legacy implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\Deprecated' => \thrift\annotation\Deprecated::fromShape(
@@ -806,7 +806,7 @@ class RequiresBackwardCompatibility implements \IThriftSyncStruct, \IThriftShapi
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\Structured' => \thrift\annotation\Structured::fromShape(
@@ -899,7 +899,7 @@ class NoExperimental implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\Program' => \thrift\annotation\Program::fromShape(
@@ -987,7 +987,7 @@ class NoBeta implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\NoExperimental' => \thrift\annotation\NoExperimental::fromShape(
@@ -1075,7 +1075,7 @@ class NoLegacy implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\Program' => \thrift\annotation\Program::fromShape(
@@ -1171,7 +1171,7 @@ class NoDeprecated implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\NoLegacy' => \thrift\annotation\NoLegacy::fromShape(
@@ -1273,7 +1273,7 @@ class TerseWrite implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\Program' => \thrift\annotation\Program::fromShape(
@@ -1371,7 +1371,7 @@ class Box implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\Field' => \thrift\annotation\Field::fromShape(
@@ -1457,7 +1457,7 @@ class Mixin implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\Field' => \thrift\annotation\Field::fromShape(
@@ -1548,7 +1548,7 @@ class SerializeInFieldIdOrder implements \IThriftSyncStruct, \IThriftShapishSync
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\Struct' => \thrift\annotation\Struct::fromShape(
@@ -1679,7 +1679,7 @@ class GenDefaultEnumValue implements \IThriftSyncStruct, \IThriftShapishSyncStru
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\FbthriftInternalEnum' => \thrift\annotation\FbthriftInternalEnum::fromShape(
@@ -1776,7 +1776,7 @@ class v1 implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\Transitive' => \thrift\annotation\Transitive::fromShape(
@@ -1864,7 +1864,7 @@ class v1beta implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\v1' => \thrift\annotation\v1::fromShape(
@@ -1964,7 +1964,7 @@ class v1alpha implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\v1beta' => \thrift\annotation\v1beta::fromShape(
@@ -2065,7 +2065,7 @@ class v1test implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\TerseWrite' => \thrift\annotation\TerseWrite::fromShape(
@@ -2193,7 +2193,7 @@ class ExceptionMessage implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\Exception' => \thrift\annotation\Exception::fromShape(
@@ -2282,7 +2282,7 @@ class BitmaskEnum implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\Enum' => \thrift\annotation\FbthriftInternalEnum::fromShape(
@@ -2395,7 +2395,7 @@ class GenerateRuntimeSchema implements \IThriftSyncStruct, \IThriftShapishSyncSt
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         '\thrift\annotation\Struct' => \thrift\annotation\Struct::fromShape(

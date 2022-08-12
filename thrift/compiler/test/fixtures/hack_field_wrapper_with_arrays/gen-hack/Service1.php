@@ -731,7 +731,7 @@ class Service1_func_args implements \IThriftSyncStruct, \IThriftShapishAsyncStru
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -861,7 +861,7 @@ class Service1_func_result extends \ThriftSyncStructWithResult {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -986,7 +986,7 @@ class Service1_func1_args implements \IThriftSyncStruct, \IThriftShapishAsyncStr
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -1116,7 +1116,7 @@ class Service1_func1_result extends \ThriftSyncStructWithResult {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -1272,7 +1272,7 @@ class Service1_func2_args implements \IThriftAsyncStruct, \IThriftShapishAsyncSt
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -1435,7 +1435,7 @@ class Service1_func2_result extends \ThriftAsyncStructWithResult {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -1665,7 +1665,7 @@ class Service1StaticMetadata implements \IThriftServiceStaticMetadata {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TServiceAnnotations {
     return shape(
       'service' => dict[],
       'functions' => dict[

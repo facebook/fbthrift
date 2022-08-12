@@ -88,7 +88,7 @@ class StructWithWrapper implements \IThriftSyncStruct, \IThriftShapishSyncStruct
       );
     }
 
-    public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
       return shape(
         'struct' => dict[
           '\thrift\annotation\hack\Wrapper' => \thrift\annotation\hack\Wrapper::fromShape(

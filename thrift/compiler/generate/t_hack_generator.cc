@@ -1537,9 +1537,10 @@ void t_hack_generator::close_generator() {
     indent_up();
     f_consts_ << "\n";
     // write structured annotations
-    f_consts_ << indent()
-              << "public static function getAllStructuredAnnotations()[]: "
-                 "dict<string, dict<string, \\IThriftStruct>> {\n";
+    f_consts_
+        << indent()
+        << "public static function getAllStructuredAnnotations()[write_props]: "
+           "dict<string, dict<string, \\IThriftStruct>> {\n";
     indent_up();
 
     std::stringstream annotations_out;
@@ -1686,9 +1687,10 @@ void t_hack_generator::generate_enum(const t_enum* tenum) {
   f_types_ << indent() << "}\n\n";
 
   // Structured annotations
-  f_types_ << indent()
-           << "public static function getAllStructuredAnnotations()[]: "
-              "\\TEnumAnnotations {\n";
+  f_types_
+      << indent()
+      << "public static function getAllStructuredAnnotations()[write_props]: "
+         "\\TEnumAnnotations {\n";
   indent_up();
 
   std::stringstream annotations_out;
@@ -1752,7 +1754,8 @@ void t_hack_generator::generate_const(const t_const* tconst) {
     // cannot use const for objects (incl arrays). use static
   } else {
     f_consts_ << "<<__Memoize>>\n"
-              << indent() << "public static function " << name << "()[]: "
+              << indent() << "public static function " << name
+              << "()[write_props]: "
               << type_to_typehint(
                      type,
                      {{TypeToTypehintVariations::IMMUTABLE_COLLECTIONS, true}})
@@ -4578,8 +4581,9 @@ void t_hack_generator::generate_php_struct_metadata_method(
 
 void t_hack_generator::generate_php_struct_structured_annotations_method(
     std::ofstream& out, const t_struct* tstruct) {
-  indent(out) << "public static function getAllStructuredAnnotations()[]: "
-                 "\\TStructAnnotations {\n";
+  indent(out)
+      << "public static function getAllStructuredAnnotations()[write_props]: "
+         "\\TStructAnnotations {\n";
   indent_up();
 
   std::stringstream annotations_out;
@@ -5766,9 +5770,10 @@ void t_hack_generator::generate_service_helpers(
   f_service_ << indent() << "}\n\n";
 
   // Structured annotations
-  f_service_ << indent()
-             << "public static function getAllStructuredAnnotations()[]: "
-                "\\TServiceAnnotations {\n";
+  f_service_
+      << indent()
+      << "public static function getAllStructuredAnnotations()[write_props]: "
+         "\\TServiceAnnotations {\n";
   indent_up();
 
   std::stringstream annotations_out;

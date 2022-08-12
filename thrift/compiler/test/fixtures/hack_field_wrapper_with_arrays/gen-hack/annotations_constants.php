@@ -17,7 +17,7 @@ class annotations_CONSTANTS implements \IThriftConstants {
   ];
 
 
-  public static function getAllStructuredAnnotations()[]: dict<string, dict<string, \IThriftStruct>> {
+  public static function getAllStructuredAnnotations()[write_props]: dict<string, dict<string, \IThriftStruct>> {
     $structured_annotation_recursive0 = structured_annotation_recursive::withDefaultValues();
     $structured_annotation_recursive0->name = "abc_constants";
 

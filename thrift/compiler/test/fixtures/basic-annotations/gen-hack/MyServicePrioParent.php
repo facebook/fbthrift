@@ -484,7 +484,7 @@ class MyServicePrioParent_ping_args implements \IThriftSyncStruct, \IThriftShapi
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -554,7 +554,7 @@ class MyServicePrioParent_ping_result extends \ThriftSyncStructWithoutResult {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -618,7 +618,7 @@ class MyServicePrioParent_pong_args implements \IThriftSyncStruct, \IThriftShapi
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -688,7 +688,7 @@ class MyServicePrioParent_pong_result extends \ThriftSyncStructWithoutResult {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -771,7 +771,7 @@ class MyServicePrioParentStaticMetadata implements \IThriftServiceStaticMetadata
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TServiceAnnotations {
     return shape(
       'service' => dict[],
       'functions' => dict[

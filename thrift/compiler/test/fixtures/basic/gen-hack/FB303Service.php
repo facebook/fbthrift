@@ -369,7 +369,7 @@ class FB303Service_renamed_rpc implements \IThriftSyncStruct, \IThriftShapishSyn
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -488,7 +488,7 @@ class FB303Service_renamed_rpc_result extends \ThriftSyncStructWithResult {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -595,7 +595,7 @@ class FB303ServiceStaticMetadata implements \IThriftServiceStaticMetadata {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TServiceAnnotations {
     return shape(
       'service' => dict[],
       'functions' => dict[

@@ -525,7 +525,7 @@ class DbMixedStackArguments_getDataByKey0_args implements \IThriftSyncStruct, \I
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -624,7 +624,7 @@ class DbMixedStackArguments_getDataByKey0_result extends \ThriftSyncStructWithRe
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -714,7 +714,7 @@ class DbMixedStackArguments_getDataByKey1_args implements \IThriftSyncStruct, \I
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -813,7 +813,7 @@ class DbMixedStackArguments_getDataByKey1_result extends \ThriftSyncStructWithRe
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -925,7 +925,7 @@ class DbMixedStackArgumentsStaticMetadata implements \IThriftServiceStaticMetada
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TServiceAnnotations {
     return shape(
       'service' => dict[],
       'functions' => dict[

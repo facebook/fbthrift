@@ -340,7 +340,7 @@ class FooService_simple_rpc_args implements \IThriftSyncStruct, \IThriftShapishS
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -410,7 +410,7 @@ class FooService_simple_rpc_result extends \ThriftSyncStructWithoutResult {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -483,7 +483,7 @@ class RenamedServiceStaticMetadata implements \IThriftServiceStaticMetadata {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TServiceAnnotations {
     return shape(
       'service' => dict[
         '\thrift\annotation\hack\Name' => \thrift\annotation\hack\Name::fromShape(

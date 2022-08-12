@@ -12,7 +12,7 @@ class module_CONSTANTS implements \IThriftConstants {
    * struct module.MyStruct myStruct
    */
   <<__Memoize>>
-  public static function myStruct()[]: MyStruct{
+  public static function myStruct()[write_props]: MyStruct{
     return MyStruct::fromShape(
       shape(
         "major" => 42,
@@ -23,7 +23,7 @@ class module_CONSTANTS implements \IThriftConstants {
   }
 
 
-  public static function getAllStructuredAnnotations()[]: dict<string, dict<string, \IThriftStruct>> {
+  public static function getAllStructuredAnnotations()[write_props]: dict<string, dict<string, \IThriftStruct>> {
     return dict[
     ];
   }

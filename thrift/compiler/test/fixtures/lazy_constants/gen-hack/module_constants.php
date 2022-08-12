@@ -78,7 +78,7 @@ class module_CONSTANTS implements \IThriftConstants {
    * struct module.Internship instagram
    */
   <<__Memoize>>
-  public static function instagram()[]: \test\fixtures\lazy_constants\Internship{
+  public static function instagram()[write_props]: \test\fixtures\lazy_constants\Internship{
     return \test\fixtures\lazy_constants\Internship::fromShape(
       shape(
         "weeks" => 12,
@@ -93,7 +93,7 @@ class module_CONSTANTS implements \IThriftConstants {
    * list<struct module.Range> kRanges
    */
   <<__Memoize>>
-  public static function kRanges()[]: vec<\test\fixtures\lazy_constants\Range>{
+  public static function kRanges()[write_props]: vec<\test\fixtures\lazy_constants\Range>{
     return vec[
       \test\fixtures\lazy_constants\Range::fromShape(
         shape(
@@ -115,7 +115,7 @@ class module_CONSTANTS implements \IThriftConstants {
    * list<struct module.Internship> internList
    */
   <<__Memoize>>
-  public static function internList()[]: vec<\test\fixtures\lazy_constants\Internship>{
+  public static function internList()[write_props]: vec<\test\fixtures\lazy_constants\Internship>{
     return vec[
       \test\fixtures\lazy_constants\Internship::fromShape(
         shape(
@@ -176,7 +176,7 @@ class module_CONSTANTS implements \IThriftConstants {
   ];
 
 
-  public static function getAllStructuredAnnotations()[]: dict<string, dict<string, \IThriftStruct>> {
+  public static function getAllStructuredAnnotations()[write_props]: dict<string, dict<string, \IThriftStruct>> {
     return dict[
     ];
   }

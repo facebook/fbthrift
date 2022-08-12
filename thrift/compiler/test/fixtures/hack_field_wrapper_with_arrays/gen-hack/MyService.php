@@ -368,7 +368,7 @@ class MyService_second_args implements \IThriftSyncStruct, \IThriftShapishSyncSt
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     $structured_annotation_recursive0 = structured_annotation_recursive::withDefaultValues();
     $structured_annotation_recursive0->name = "abc_service_method";
 
@@ -518,7 +518,7 @@ class MyService_second_result extends \ThriftSyncStructWithResult {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -607,7 +607,7 @@ class MyServiceStaticMetadata implements \IThriftServiceStaticMetadata {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TServiceAnnotations {
     $structured_annotation_recursive0 = structured_annotation_recursive::withDefaultValues();
     $structured_annotation_recursive0->name = "abc_service";
 

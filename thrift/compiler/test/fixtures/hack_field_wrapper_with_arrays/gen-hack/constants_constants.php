@@ -18,7 +18,7 @@ class constants_CONSTANTS implements \IThriftConstants {
    * struct constants.Internship instagram
    */
   <<__Memoize>>
-  public static function instagram()[]: Internship{
+  public static function instagram()[write_props]: Internship{
     $Internship0 = Internship::withDefaultValues();
     $Internship0->weeks = 12;
 
@@ -40,7 +40,7 @@ class constants_CONSTANTS implements \IThriftConstants {
    * list<struct constants.Internship> internList
    */
   <<__Memoize>>
-  public static function internList()[]: vec<Internship>{
+  public static function internList()[write_props]: vec<Internship>{
     $Internship0 = Internship::withDefaultValues();
     $Internship0->weeks = 12;
 
@@ -76,7 +76,7 @@ class constants_CONSTANTS implements \IThriftConstants {
    * list<struct constants.SWE> engineers
    */
   <<__Memoize>>
-  public static function engineers()[]: vec<SWE>{
+  public static function engineers()[write_props]: vec<SWE>{
     return vec[
       SWE::fromShape(
         shape(
@@ -104,7 +104,7 @@ class constants_CONSTANTS implements \IThriftConstants {
    * list<struct include.StructWithWrapper> wrapped_structs
    */
   <<__Memoize>>
-  public static function wrapped_structs()[]: vec<StructWithWrapper>{
+  public static function wrapped_structs()[write_props]: vec<StructWithWrapper>{
     return vec[
       StructWithWrapper::fromShape(
         shape(
@@ -129,7 +129,7 @@ class constants_CONSTANTS implements \IThriftConstants {
   ];
 
 
-  public static function getAllStructuredAnnotations()[]: dict<string, dict<string, \IThriftStruct>> {
+  public static function getAllStructuredAnnotations()[write_props]: dict<string, dict<string, \IThriftStruct>> {
     return dict[
       'engineers' => dict[
         'AnnotationStruct' => AnnotationStruct::fromShape(

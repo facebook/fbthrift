@@ -14,7 +14,7 @@ class module_CONSTANTS implements \IThriftConstants {
    * map<string, string> MyConst
    */
   <<__Memoize>>
-  public static function MyConst()[]: \ConstMap<string, string>{
+  public static function MyConst()[write_props]: \ConstMap<string, string>{
     return ImmMap {
       "ENUMERATOR" => "enum",
       "CONST" => "const",
@@ -22,7 +22,7 @@ class module_CONSTANTS implements \IThriftConstants {
   }
 
 
-  public static function getAllStructuredAnnotations()[]: dict<string, dict<string, \IThriftStruct>> {
+  public static function getAllStructuredAnnotations()[write_props]: dict<string, dict<string, \IThriftStruct>> {
     return dict[
       'MyConst' => dict[
         '\fixtures\basic-structured-annotations\structured_annotation_inline' => \fixtures\basic-structured-annotations\structured_annotation_inline::fromShape(

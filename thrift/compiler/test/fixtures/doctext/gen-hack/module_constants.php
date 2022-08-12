@@ -40,7 +40,7 @@ class module_CONSTANTS implements \IThriftConstants {
   const int SHOUTY = 11;
 
 
-  public static function getAllStructuredAnnotations()[]: dict<string, dict<string, \IThriftStruct>> {
+  public static function getAllStructuredAnnotations()[write_props]: dict<string, dict<string, \IThriftStruct>> {
     return dict[
     ];
   }

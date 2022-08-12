@@ -29,7 +29,7 @@ class MyEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TEnumAnnotations {
     $structured_annotation_recursive0 = structured_annotation_recursive::withDefaultValues();
     $structured_annotation_recursive0->name = "abc_enum";
 
@@ -154,7 +154,7 @@ class structured_annotation_with_default implements \IThriftSyncStruct, \IThrift
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -481,7 +481,7 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -710,7 +710,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     );
   }
 
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     $structured_annotation_recursive0 = structured_annotation_recursive::withDefaultValues();
     $structured_annotation_recursive0->name = "abc_struct";
 

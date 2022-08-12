@@ -26,7 +26,7 @@ class module_CONSTANTS implements \IThriftConstants {
    * struct module.MyStruct var3
    */
   <<__Memoize>>
-  public static function var3()[]: \thrift\test\MyStruct{
+  public static function var3()[write_props]: \thrift\test\MyStruct{
     return \thrift\test\MyStruct::fromShape(
       shape(
         "field" => 30,
@@ -51,7 +51,7 @@ class module_CONSTANTS implements \IThriftConstants {
    * struct module.MyStruct var6
    */
   <<__Memoize>>
-  public static function var6()[]: \thrift\test\MyStruct{
+  public static function var6()[write_props]: \thrift\test\MyStruct{
     return \thrift\test\MyStruct::fromShape(
       shape(
         "field" => 60,
@@ -60,7 +60,7 @@ class module_CONSTANTS implements \IThriftConstants {
   }
 
 
-  public static function getAllStructuredAnnotations()[]: dict<string, dict<string, \IThriftStruct>> {
+  public static function getAllStructuredAnnotations()[write_props]: dict<string, dict<string, \IThriftStruct>> {
     return dict[
       'var1' => dict[
         '\thrift\test\Config' => \thrift\test\Config::fromShape(
