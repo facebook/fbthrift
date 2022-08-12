@@ -12,7 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import asyncio
+import types
+import typing
 import unittest
+
+from testing.example.services import TestServiceInterface
 
 from testing.example.types import (
     Color,
@@ -29,10 +34,9 @@ from testing.example.types import (
     TestStructWithSet,
     TestUnion,
 )
-
 from thrift.py3.common import Protocol
-
 from thrift.py3.serializer import deserialize
+from thrift.py3.server import getServiceName
 
 
 class NoLegacyTest(unittest.TestCase):
@@ -175,3 +179,66 @@ class NoLegacyTest(unittest.TestCase):
         )
         self.assertEqual(testUnion.type, TestUnion.Type.dataptr)
         self.assertEqual(testUnion.dataptr, [1, 2, 3])
+
+
+class Handler(TestServiceInterface):
+    async def getName(self) -> str:
+        return "TestServiceName"
+
+    async def invert(self, value: bool) -> bool:
+        return not value
+
+    async def processCollection(
+        self, values: typing.Sequence[int], addValue: int, doThrow: bool
+    ) -> typing.Sequence[int]:
+        if doThrow:
+            raise ErrorWithEnum(color=Color.red, retcode=-1)
+
+        return [v + addValue for v in values]
+
+    async def renamedMethod(self, ret: bool) -> bool:
+        return ret
+
+
+class NoLegacyServiceTests(unittest.TestCase):
+    def test_get_service_name(self) -> None:
+        h = Handler()
+        self.assertEqual(getServiceName(h), "TestService")
+
+    def test_annotations(self) -> None:
+        annotations = TestServiceInterface.annotations
+        self.assertIsInstance(annotations, types.MappingProxyType)
+        self.assertFalse(annotations.get("NotAnAnnotation"))
+        self.assertEqual(annotations["fun_times"], "yes")
+
+    def test_get_name(self) -> None:
+        h = Handler()
+        loop = asyncio.get_event_loop()
+        ret = loop.run_until_complete(h.getName())
+        self.assertEqual(ret, "TestServiceName")
+
+    def test_invert(self) -> None:
+        h = Handler()
+        loop = asyncio.get_event_loop()
+        ret = loop.run_until_complete(h.invert(True))
+        self.assertFalse(ret)
+
+    def test_process_collection_no_throw(self) -> None:
+        h = Handler()
+        loop = asyncio.get_event_loop()
+        values = [1, 2, 3]
+        ret = loop.run_until_complete(h.processCollection(values, 1, False))
+        self.assertEqual(ret, [2, 3, 4])
+        self.assertEqual(values, [1, 2, 3])
+
+    def test_process_collection_throw(self) -> None:
+        h = Handler()
+        loop = asyncio.get_event_loop()
+        with self.assertRaises(ErrorWithEnum):
+            loop.run_until_complete(h.processCollection([], 0, True))
+
+    def test_renamed_method(self) -> None:
+        h = Handler()
+        loop = asyncio.get_event_loop()
+        ret = loop.run_until_complete(h.renamedMethod(True))
+        self.assertTrue(ret)

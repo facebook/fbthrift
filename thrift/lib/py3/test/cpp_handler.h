@@ -32,8 +32,8 @@ class TestingService
 
   void hard_error(bool valid) override {
     cpp2::HardError error;
-    error.code_ref() = 0;
-    error.errortext_ref() = valid ? "valid UTF-8" : "\xfa\xf0";
+    error.code() = 0;
+    error.errortext() = valid ? "valid UTF-8" : "\xfa\xf0";
     throw error;
   }
 };

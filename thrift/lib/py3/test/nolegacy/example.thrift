@@ -92,3 +92,14 @@ union TestUnion {
   // Use deserialization in order to create such a unions
   6: list<i32> dataptr (cpp2.ref_type = "shared");
 }
+
+service TestService {
+  string getName();
+  bool invert(1: bool value);
+  list<i32> processCollection(
+    1: list<i32> values,
+    2: i32 addValue,
+    3: bool doThrow,
+  ) throws (1: ErrorWithEnum e);
+  bool renamedMethod(1: bool ret) (cpp.name = "renamedMethodInCpp");
+} (fun_times = "yes")
