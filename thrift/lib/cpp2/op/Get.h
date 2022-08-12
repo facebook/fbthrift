@@ -19,6 +19,7 @@
 #include <folly/Traits.h>
 #include <thrift/lib/cpp/Field.h>
 #include <thrift/lib/cpp2/Thrift.h>
+#include <thrift/lib/cpp2/op/detail/Get.h>
 #include <thrift/lib/cpp2/type/Id.h>
 #include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/TagUtil.h>
@@ -164,6 +165,17 @@ void for_each_ordinal_impl(F&& f, std::index_sequence<I...>) {
 }
 
 } // namespace detail
+// Returns pointer to the value from the given field.
+// Returns nullptr if it doesn't have a value.
+// For example:
+//   // returns foo.field_ref().value()
+//   get_value_or_null(foo.field_ref())
+//   // returns *foo.smart_ptr_ref()
+//   get_value_or_null(foo.smart_ptr_ref())
+//   // returns nullptr if optional field doesn't have a value.
+//   get_value_or_null(foo.optional_ref())
+constexpr detail::GetValueOrNull get_value_or_null{};
+
 } // namespace op
 } // namespace thrift
 } // namespace apache
