@@ -158,7 +158,7 @@ int main(int argc, char** argv) {
       result.set_sinkBasic(sinkBasicTest(*clientInstruction.sinkBasic_ref()));
       break;
     default:
-      throw std::runtime_error("Invalid TestCase type");
+      throw std::runtime_error("Invalid TestCase Type.");
   }
 
   client->sync_sendTestResult(result);

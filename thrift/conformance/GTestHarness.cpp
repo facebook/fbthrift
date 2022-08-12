@@ -176,7 +176,7 @@ ClientTestResult runClientSteps(
           runSinkBasic(client, *clientInstruction.sinkBasic_ref()));
       break;
     default:
-      break;
+      throw std::runtime_error("Invalid TestCase Type.");
   }
   return result;
 }
