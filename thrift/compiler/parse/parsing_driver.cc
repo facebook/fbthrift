@@ -16,7 +16,6 @@
 
 #include <thrift/compiler/parse/parsing_driver.h>
 
-#include <errno.h>
 #include <stdlib.h>
 #include <cmath>
 #include <cstdarg>
