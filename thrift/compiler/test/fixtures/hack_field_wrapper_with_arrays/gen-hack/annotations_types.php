@@ -239,6 +239,7 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
     ),
     5 => shape(
       'var' => 'int_field',
+      'is_type_wrapped' => true,
       'type' => \TType::I64,
     ),
   ];

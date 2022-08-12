@@ -285,13 +285,15 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
     7 => shape(
       'var' => 'wrapped_type_int',
       'is_wrapped' => true,
+      'is_type_wrapped' => true,
       'type' => \TType::I64,
     ),
     8 => shape(
       'var' => 'double_wrapped_struct',
       'is_wrapped' => true,
+      'is_type_wrapped' => true,
       'type' => \TType::STRUCT,
-      'class' => StructWithWrapper::class,
+      'class' => \thrift_adapted_types\StructWithWrapper::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -926,8 +928,9 @@ class MyComplexStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct
           'type' => \TType::STRING,
         ),
         'val' => shape(
+          'is_type_wrapped' => true,
           'type' => \TType::STRUCT,
-          'class' => StructWithWrapper::class,
+          'class' => \thrift_adapted_types\StructWithWrapper::class,
         ),
         'format' => 'harray',
       ),

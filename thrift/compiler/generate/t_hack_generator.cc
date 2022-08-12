@@ -2743,6 +2743,12 @@ void t_hack_generator::generate_php_type_spec(
   if (const auto* adapter = find_hack_adapter(t)) {
     indent(out) << "'adapter' => " << *adapter << "::class,\n";
   }
+
+  // Check the wrapper before resolving typedefs.
+  auto [wrapper, name, ns] = find_hack_wrapper(t);
+  if (wrapper) {
+    indent(out) << "'is_type_wrapped' => true,\n";
+  }
   t = t->get_true_type();
   indent(out) << "'type' => " << type_to_enum(t) << ",\n";
 
@@ -2751,13 +2757,26 @@ void t_hack_generator::generate_php_type_spec(
   } else if (t->is_enum()) {
     indent(out) << "'enum' => " << hack_name(t) << "::class,\n";
   } else if (t->is_struct() || t->is_xception()) {
-    indent(out) << "'class' => " << hack_name(t) << "::class,\n";
+    auto sname = hack_name(t);
+    if (const auto* tstruct = dynamic_cast<const t_struct*>(t)) {
+      auto [wrapper, name, ns] = find_hack_wrapper(tstruct);
+      if (wrapper) {
+        sname = hack_wrapped_type_name(name, ns);
+      }
+    }
+    indent(out) << "'class' => " << sname << "::class,\n";
+
   } else if (const auto* tmap = dynamic_cast<const t_map*>(t)) {
     const t_type* ktype = tmap->get_key_type();
     const t_type* vtype = tmap->get_val_type();
     if (find_hack_adapter(ktype)) {
       throw std::runtime_error(
-          "using hack.adapter annotation with map keys is not supported yet");
+          "using hack.Adapter annotation with map keys is not supported yet");
+    }
+    auto [wrapper, name, ns] = find_hack_wrapper(ktype);
+    if (wrapper) {
+      throw std::runtime_error(
+          "using hack.Wrapper annotation with map keys is not supported yet");
     }
     indent(out) << "'ktype' => " << type_to_enum(ktype) << ",\n";
     indent(out) << "'vtype' => " << type_to_enum(vtype) << ",\n";
@@ -2798,6 +2817,12 @@ void t_hack_generator::generate_php_type_spec(
     if (find_hack_adapter(etype)) {
       throw std::runtime_error(
           "using hack.adapter annotation with set keys is not supported yet");
+    }
+
+    auto [wrapper, name, ns] = find_hack_wrapper(etype);
+    if (wrapper) {
+      throw std::runtime_error(
+          "using hack.Wrapper annotation with set keys is not supported yet");
     }
     indent(out) << "'etype' => " << type_to_enum(etype) << ",\n";
     indent(out) << "'elem' => shape(\n";

@@ -80,6 +80,7 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
     ),
     6 => shape(
       'var' => 'intern_id',
+      'is_type_wrapped' => true,
       'type' => \TType::I64,
     ),
   ];

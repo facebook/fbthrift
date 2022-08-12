@@ -1151,11 +1151,13 @@ class Service1_func2_args implements \IThriftAsyncStruct, \IThriftShapishAsyncSt
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'arg1',
+      'is_type_wrapped' => true,
       'type' => \TType::STRUCT,
-      'class' => StructWithWrapper::class,
+      'class' => \thrift_adapted_types\StructWithWrapper::class,
     ),
     2 => shape(
       'var' => 'arg2',
+      'is_type_wrapped' => true,
       'type' => \TType::I64,
     ),
   ];
@@ -1356,6 +1358,7 @@ class Service1_func2_result extends \ThriftAsyncStructWithResult {
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
       'var' => 'success',
+      'is_type_wrapped' => true,
       'type' => \TType::I64,
     ),
   ];
