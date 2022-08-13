@@ -1212,7 +1212,9 @@ pub mod server {
     pub trait Raiser: ::std::marker::Send + ::std::marker::Sync + 'static {
         async fn doBland(
             &self,
-        ) -> ::std::result::Result<(), crate::services::raiser::DoBlandExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::raiser::DoBlandExn> {
             ::std::result::Result::Err(crate::services::raiser::DoBlandExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "Raiser",
@@ -1222,7 +1224,9 @@ pub mod server {
         }
         async fn doRaise(
             &self,
-        ) -> ::std::result::Result<(), crate::services::raiser::DoRaiseExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::raiser::DoRaiseExn> {
             ::std::result::Result::Err(crate::services::raiser::DoRaiseExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "Raiser",
@@ -1232,7 +1236,9 @@ pub mod server {
         }
         async fn get200(
             &self,
-        ) -> ::std::result::Result<::std::string::String, crate::services::raiser::Get200Exn> {
+        ) -> ::std::result::Result<
+    ::std::string::String,
+    crate::services::raiser::Get200Exn> {
             ::std::result::Result::Err(crate::services::raiser::Get200Exn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "Raiser",
@@ -1242,7 +1248,9 @@ pub mod server {
         }
         async fn get500(
             &self,
-        ) -> ::std::result::Result<::std::string::String, crate::services::raiser::Get500Exn> {
+        ) -> ::std::result::Result<
+    ::std::string::String,
+    crate::services::raiser::Get500Exn> {
             ::std::result::Result::Err(crate::services::raiser::Get500Exn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "Raiser",
@@ -1259,25 +1267,33 @@ pub mod server {
     {
         async fn doBland(
             &self,
-        ) -> ::std::result::Result<(), crate::services::raiser::DoBlandExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::raiser::DoBlandExn> {
             (**self).doBland(
             ).await
         }
         async fn doRaise(
             &self,
-        ) -> ::std::result::Result<(), crate::services::raiser::DoRaiseExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::raiser::DoRaiseExn> {
             (**self).doRaise(
             ).await
         }
         async fn get200(
             &self,
-        ) -> ::std::result::Result<::std::string::String, crate::services::raiser::Get200Exn> {
+        ) -> ::std::result::Result<
+    ::std::string::String,
+    crate::services::raiser::Get200Exn> {
             (**self).get200(
             ).await
         }
         async fn get500(
             &self,
-        ) -> ::std::result::Result<::std::string::String, crate::services::raiser::Get500Exn> {
+        ) -> ::std::result::Result<
+    ::std::string::String,
+    crate::services::raiser::Get500Exn> {
             (**self).get500(
             ).await
         }
@@ -2263,8 +2279,9 @@ pub mod errors {
         {
             fn from(e: crate::services::raiser::DoBlandExn) -> Self {
                 match e {
-                    crate::services::raiser::DoBlandExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::raiser::DoBlandExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::raiser::DoBlandExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(DoBlandError::ApplicationException(aexn)),
                 }
@@ -2347,8 +2364,9 @@ pub mod errors {
         {
             fn from(e: crate::services::raiser::DoRaiseExn) -> Self {
                 match e {
-                    crate::services::raiser::DoRaiseExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::raiser::DoRaiseExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::raiser::DoRaiseExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(DoRaiseError::ApplicationException(aexn)),
                     crate::services::raiser::DoRaiseExn::b(exn) =>
@@ -2368,8 +2386,9 @@ pub mod errors {
         {
             fn from(e: crate::services::raiser::Get200Exn) -> Self {
                 match e {
-                    crate::services::raiser::Get200Exn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::raiser::Get200Exn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::raiser::Get200Exn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(Get200Error::ApplicationException(aexn)),
                 }
@@ -2452,8 +2471,9 @@ pub mod errors {
         {
             fn from(e: crate::services::raiser::Get500Exn) -> Self {
                 match e {
-                    crate::services::raiser::Get500Exn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::raiser::Get500Exn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::raiser::Get500Exn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(Get500Error::ApplicationException(aexn)),
                     crate::services::raiser::Get500Exn::f(exn) =>

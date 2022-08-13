@@ -671,7 +671,9 @@ pub mod server {
         async fn bounce_map(
             &self,
             _m: include::types::SomeMap,
-        ) -> ::std::result::Result<include::types::SomeMap, crate::services::some_service::BounceMapExn> {
+        ) -> ::std::result::Result<
+    include::types::SomeMap,
+    crate::services::some_service::BounceMapExn> {
             ::std::result::Result::Err(crate::services::some_service::BounceMapExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "SomeService",
@@ -682,7 +684,9 @@ pub mod server {
         async fn binary_keyed_map(
             &self,
             _r: ::std::vec::Vec<::std::primitive::i64>,
-        ) -> ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::services::some_service::BinaryKeyedMapExn> {
+        ) -> ::std::result::Result<
+    ::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>,
+    crate::services::some_service::BinaryKeyedMapExn> {
             ::std::result::Result::Err(crate::services::some_service::BinaryKeyedMapExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "SomeService",
@@ -700,7 +704,9 @@ pub mod server {
         async fn bounce_map(
             &self,
             m: include::types::SomeMap,
-        ) -> ::std::result::Result<include::types::SomeMap, crate::services::some_service::BounceMapExn> {
+        ) -> ::std::result::Result<
+    include::types::SomeMap,
+    crate::services::some_service::BounceMapExn> {
             (**self).bounce_map(
                 m, 
             ).await
@@ -708,7 +714,9 @@ pub mod server {
         async fn binary_keyed_map(
             &self,
             r: ::std::vec::Vec<::std::primitive::i64>,
-        ) -> ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::services::some_service::BinaryKeyedMapExn> {
+        ) -> ::std::result::Result<
+    ::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>,
+    crate::services::some_service::BinaryKeyedMapExn> {
             (**self).binary_keyed_map(
                 r, 
             ).await
@@ -1351,8 +1359,9 @@ pub mod errors {
         {
             fn from(e: crate::services::some_service::BounceMapExn) -> Self {
                 match e {
-                    crate::services::some_service::BounceMapExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::some_service::BounceMapExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::some_service::BounceMapExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(BounceMapError::ApplicationException(aexn)),
                 }
@@ -1366,8 +1375,9 @@ pub mod errors {
         {
             fn from(e: crate::services::some_service::BinaryKeyedMapExn) -> Self {
                 match e {
-                    crate::services::some_service::BinaryKeyedMapExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::some_service::BinaryKeyedMapExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::some_service::BinaryKeyedMapExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(BinaryKeyedMapError::ApplicationException(aexn)),
                 }

@@ -527,7 +527,8 @@ pub mod services {
 
         pub enum TruthifyExn {
             #[doc(hidden)]
-            Success(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>>),
+            Success(    ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::services::my_interaction::TruthifyStreamExn>>
+),
             ApplicationException(::fbthrift::ApplicationException),
         }
 
@@ -1186,7 +1187,8 @@ pub mod services {
 
         pub enum TruthifyExn {
             #[doc(hidden)]
-            Success(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>>),
+            Success(    ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::services::my_interaction_fast::TruthifyStreamExn>>
+),
             ApplicationException(::fbthrift::ApplicationException),
         }
 
@@ -2093,7 +2095,11 @@ pub mod services {
 
         pub enum SerializeExn {
             #[doc(hidden)]
-            Success((::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>>)),
+            Success((
+    ::std::primitive::i32,
+    ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::my_service::SerializeStreamExn>>
+)
+),
             ApplicationException(::fbthrift::ApplicationException),
         }
 
@@ -4234,7 +4240,9 @@ pub mod server {
     pub trait MyInteraction: ::std::marker::Send + ::std::marker::Sync + 'static {
         async fn frobnicate(
             &self,
-        ) -> ::std::result::Result<::std::primitive::i32, crate::services::my_interaction::FrobnicateExn> {
+        ) -> ::std::result::Result<
+    ::std::primitive::i32,
+    crate::services::my_interaction::FrobnicateExn> {
             ::std::result::Result::Err(crate::services::my_interaction::FrobnicateExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyInteraction",
@@ -4244,7 +4252,9 @@ pub mod server {
         }
         async fn ping(
             &self,
-        ) -> ::std::result::Result<(), crate::services::my_interaction::PingExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_interaction::PingExn> {
             ::std::result::Result::Err(crate::services::my_interaction::PingExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyInteraction",
@@ -4256,7 +4266,10 @@ pub mod server {
         #[doc(hidden)]
         async fn truthify(
             &self,
-        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>>, crate::services::my_interaction::TruthifyExn> {
+        ) -> ::std::result::Result<
+        ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::services::my_interaction::TruthifyStreamExn>>
+,
+    crate::services::my_interaction::TruthifyExn> {
             ::std::result::Result::Err(crate::services::my_interaction::TruthifyExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyInteraction",
@@ -4266,7 +4279,9 @@ pub mod server {
         }
         async fn encode(
             &self,
-        ) -> ::std::result::Result<, crate::services::my_interaction::EncodeExn> {
+        ) -> ::std::result::Result<
+    ,
+    crate::services::my_interaction::EncodeExn> {
             ::std::result::Result::Err(crate::services::my_interaction::EncodeExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyInteraction",
@@ -4283,13 +4298,17 @@ pub mod server {
     {
         async fn frobnicate(
             &self,
-        ) -> ::std::result::Result<::std::primitive::i32, crate::services::my_interaction::FrobnicateExn> {
+        ) -> ::std::result::Result<
+    ::std::primitive::i32,
+    crate::services::my_interaction::FrobnicateExn> {
             (**self).frobnicate(
             ).await
         }
         async fn ping(
             &self,
-        ) -> ::std::result::Result<(), crate::services::my_interaction::PingExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_interaction::PingExn> {
             (**self).ping(
             ).await
         }
@@ -4297,13 +4316,18 @@ pub mod server {
         #[doc(hidden)]
         async fn truthify(
             &self,
-        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction::TruthifyStreamError>>, crate::services::my_interaction::TruthifyExn> {
+        ) -> ::std::result::Result<
+        ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::services::my_interaction::TruthifyStreamExn>>
+,
+    crate::services::my_interaction::TruthifyExn> {
             (**self).truthify(
             ).await
         }
         async fn encode(
             &self,
-        ) -> ::std::result::Result<, crate::services::my_interaction::EncodeExn> {
+        ) -> ::std::result::Result<
+    ,
+    crate::services::my_interaction::EncodeExn> {
             (**self).encode(
             ).await
         }
@@ -4644,10 +4668,10 @@ pub mod server {
                             ::std::result::Result::Ok(res) => {
                                 crate::services::my_interaction::TruthifyStreamExn::Success(res)
                             },
-                            ::std::result::Result::Err(exn) => {
-                                let aexn = ::fbthrift::ApplicationException::handler_panic("MyInteraction.truthify", Box::new(exn));
-                                crate::services::my_interaction::TruthifyStreamExn::ApplicationException(aexn)
+                            ::std::result::Result::Err(crate::services::my_interaction::TruthifyStreamExn::Success(_)) => {
+                                panic!("{} attempted to return success via error", "truthify");
                             }
+                            ::std::result::Result::Err(exn) => exn,
                         };
 
                         ::fbthrift::help::serialize_stream_item::<P, _>(item)
@@ -4898,7 +4922,9 @@ pub mod server {
     pub trait MyInteractionFast: ::std::marker::Send + ::std::marker::Sync + 'static {
         async fn frobnicate(
             &self,
-        ) -> ::std::result::Result<::std::primitive::i32, crate::services::my_interaction_fast::FrobnicateExn> {
+        ) -> ::std::result::Result<
+    ::std::primitive::i32,
+    crate::services::my_interaction_fast::FrobnicateExn> {
             ::std::result::Result::Err(crate::services::my_interaction_fast::FrobnicateExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyInteractionFast",
@@ -4908,7 +4934,9 @@ pub mod server {
         }
         async fn ping(
             &self,
-        ) -> ::std::result::Result<(), crate::services::my_interaction_fast::PingExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_interaction_fast::PingExn> {
             ::std::result::Result::Err(crate::services::my_interaction_fast::PingExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyInteractionFast",
@@ -4920,7 +4948,10 @@ pub mod server {
         #[doc(hidden)]
         async fn truthify(
             &self,
-        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>>, crate::services::my_interaction_fast::TruthifyExn> {
+        ) -> ::std::result::Result<
+        ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::services::my_interaction_fast::TruthifyStreamExn>>
+,
+    crate::services::my_interaction_fast::TruthifyExn> {
             ::std::result::Result::Err(crate::services::my_interaction_fast::TruthifyExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyInteractionFast",
@@ -4930,7 +4961,9 @@ pub mod server {
         }
         async fn encode(
             &self,
-        ) -> ::std::result::Result<, crate::services::my_interaction_fast::EncodeExn> {
+        ) -> ::std::result::Result<
+    ,
+    crate::services::my_interaction_fast::EncodeExn> {
             ::std::result::Result::Err(crate::services::my_interaction_fast::EncodeExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyInteractionFast",
@@ -4947,13 +4980,17 @@ pub mod server {
     {
         async fn frobnicate(
             &self,
-        ) -> ::std::result::Result<::std::primitive::i32, crate::services::my_interaction_fast::FrobnicateExn> {
+        ) -> ::std::result::Result<
+    ::std::primitive::i32,
+    crate::services::my_interaction_fast::FrobnicateExn> {
             (**self).frobnicate(
             ).await
         }
         async fn ping(
             &self,
-        ) -> ::std::result::Result<(), crate::services::my_interaction_fast::PingExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_interaction_fast::PingExn> {
             (**self).ping(
             ).await
         }
@@ -4961,13 +4998,18 @@ pub mod server {
         #[doc(hidden)]
         async fn truthify(
             &self,
-        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::errors::my_interaction_fast::TruthifyStreamError>>, crate::services::my_interaction_fast::TruthifyExn> {
+        ) -> ::std::result::Result<
+        ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::bool, crate::services::my_interaction_fast::TruthifyStreamExn>>
+,
+    crate::services::my_interaction_fast::TruthifyExn> {
             (**self).truthify(
             ).await
         }
         async fn encode(
             &self,
-        ) -> ::std::result::Result<, crate::services::my_interaction_fast::EncodeExn> {
+        ) -> ::std::result::Result<
+    ,
+    crate::services::my_interaction_fast::EncodeExn> {
             (**self).encode(
             ).await
         }
@@ -5308,10 +5350,10 @@ pub mod server {
                             ::std::result::Result::Ok(res) => {
                                 crate::services::my_interaction_fast::TruthifyStreamExn::Success(res)
                             },
-                            ::std::result::Result::Err(exn) => {
-                                let aexn = ::fbthrift::ApplicationException::handler_panic("MyInteractionFast.truthify", Box::new(exn));
-                                crate::services::my_interaction_fast::TruthifyStreamExn::ApplicationException(aexn)
+                            ::std::result::Result::Err(crate::services::my_interaction_fast::TruthifyStreamExn::Success(_)) => {
+                                panic!("{} attempted to return success via error", "truthify");
                             }
+                            ::std::result::Result::Err(exn) => exn,
                         };
 
                         ::fbthrift::help::serialize_stream_item::<P, _>(item)
@@ -5562,7 +5604,9 @@ pub mod server {
     pub trait SerialInteraction: ::std::marker::Send + ::std::marker::Sync + 'static {
         async fn frobnicate(
             &self,
-        ) -> ::std::result::Result<(), crate::services::serial_interaction::FrobnicateExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::serial_interaction::FrobnicateExn> {
             ::std::result::Result::Err(crate::services::serial_interaction::FrobnicateExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "SerialInteraction",
@@ -5579,7 +5623,9 @@ pub mod server {
     {
         async fn frobnicate(
             &self,
-        ) -> ::std::result::Result<(), crate::services::serial_interaction::FrobnicateExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::serial_interaction::FrobnicateExn> {
             (**self).frobnicate(
             ).await
         }
@@ -5865,7 +5911,9 @@ pub mod server {
         }
         async fn foo(
             &self,
-        ) -> ::std::result::Result<(), crate::services::my_service::FooExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_service::FooExn> {
             ::std::result::Result::Err(crate::services::my_service::FooExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
@@ -5876,7 +5924,9 @@ pub mod server {
         async fn interact(
             &self,
             _arg: ::std::primitive::i32,
-        ) -> ::std::result::Result<(), crate::services::my_service::InteractExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_service::InteractExn> {
             ::std::result::Result::Err(crate::services::my_service::InteractExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
@@ -5886,7 +5936,9 @@ pub mod server {
         }
         async fn interactFast(
             &self,
-        ) -> ::std::result::Result<::std::primitive::i32, crate::services::my_service::InteractFastExn> {
+        ) -> ::std::result::Result<
+    ::std::primitive::i32,
+    crate::services::my_service::InteractFastExn> {
             ::std::result::Result::Err(crate::services::my_service::InteractFastExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
@@ -5898,7 +5950,13 @@ pub mod server {
         #[doc(hidden)]
         async fn serialize(
             &self,
-        ) -> ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>>), crate::services::my_service::SerializeExn> {
+        ) -> ::std::result::Result<
+    (
+    ::std::primitive::i32,
+    ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::my_service::SerializeStreamExn>>
+)
+,
+    crate::services::my_service::SerializeExn> {
             ::std::result::Result::Err(crate::services::my_service::SerializeExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
@@ -5930,21 +5988,27 @@ pub mod server {
         }
         async fn foo(
             &self,
-        ) -> ::std::result::Result<(), crate::services::my_service::FooExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_service::FooExn> {
             (**self).foo(
             ).await
         }
         async fn interact(
             &self,
             arg: ::std::primitive::i32,
-        ) -> ::std::result::Result<(), crate::services::my_service::InteractExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_service::InteractExn> {
             (**self).interact(
                 arg, 
             ).await
         }
         async fn interactFast(
             &self,
-        ) -> ::std::result::Result<::std::primitive::i32, crate::services::my_service::InteractFastExn> {
+        ) -> ::std::result::Result<
+    ::std::primitive::i32,
+    crate::services::my_service::InteractFastExn> {
             (**self).interactFast(
             ).await
         }
@@ -5952,7 +6016,13 @@ pub mod server {
         #[doc(hidden)]
         async fn serialize(
             &self,
-        ) -> ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::my_service::SerializeStreamError>>), crate::services::my_service::SerializeExn> {
+        ) -> ::std::result::Result<
+    (
+    ::std::primitive::i32,
+    ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::my_service::SerializeStreamExn>>
+)
+,
+    crate::services::my_service::SerializeExn> {
             (**self).serialize(
             ).await
         }
@@ -6388,10 +6458,10 @@ pub mod server {
                             ::std::result::Result::Ok(res) => {
                                 crate::services::my_service::SerializeStreamExn::Success(res)
                             },
-                            ::std::result::Result::Err(exn) => {
-                                let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.serialize", Box::new(exn));
-                                crate::services::my_service::SerializeStreamExn::ApplicationException(aexn)
+                            ::std::result::Result::Err(crate::services::my_service::SerializeStreamExn::Success(_)) => {
+                                panic!("{} attempted to return success via error", "serialize");
                             }
+                            ::std::result::Result::Err(exn) => exn,
                         };
 
                         ::fbthrift::help::serialize_stream_item::<P, _>(item)
@@ -7028,8 +7098,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_interaction::FrobnicateExn) -> Self {
                 match e {
-                    crate::services::my_interaction::FrobnicateExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_interaction::FrobnicateExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_interaction::FrobnicateExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(FrobnicateError::ApplicationException(aexn)),
                     crate::services::my_interaction::FrobnicateExn::ex(exn) =>
@@ -7045,8 +7116,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_interaction::PingExn) -> Self {
                 match e {
-                    crate::services::my_interaction::PingExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_interaction::PingExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_interaction::PingExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(PingError::ApplicationException(aexn)),
                 }
@@ -7060,8 +7132,14 @@ pub mod errors {
         {
             fn from(e: crate::services::my_interaction::TruthifyExn) -> Self {
                 match e {
-                    crate::services::my_interaction::TruthifyExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_interaction::TruthifyExn::Success(res) => {
+                        use ::futures::stream::StreamExt;
+                        let stream = res;
+                        ::std::result::Result::Ok(stream.map(|res| match res {
+                            ::std::result::Result::Ok(item) => ::std::result::Result::Ok(item),
+                            ::std::result::Result::Err(exn) => exn.into(),
+                        }).boxed())
+                    }
                     crate::services::my_interaction::TruthifyExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(TruthifyError::ApplicationException(aexn)),
                 }
@@ -7103,8 +7181,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_interaction::EncodeExn) -> Self {
                 match e {
-                    crate::services::my_interaction::EncodeExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_interaction::EncodeExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_interaction::EncodeExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(EncodeError::ApplicationException(aexn)),
                 }
@@ -7123,8 +7202,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_interaction_fast::FrobnicateExn) -> Self {
                 match e {
-                    crate::services::my_interaction_fast::FrobnicateExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_interaction_fast::FrobnicateExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_interaction_fast::FrobnicateExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(FrobnicateError::ApplicationException(aexn)),
                 }
@@ -7138,8 +7218,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_interaction_fast::PingExn) -> Self {
                 match e {
-                    crate::services::my_interaction_fast::PingExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_interaction_fast::PingExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_interaction_fast::PingExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(PingError::ApplicationException(aexn)),
                 }
@@ -7153,8 +7234,14 @@ pub mod errors {
         {
             fn from(e: crate::services::my_interaction_fast::TruthifyExn) -> Self {
                 match e {
-                    crate::services::my_interaction_fast::TruthifyExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_interaction_fast::TruthifyExn::Success(res) => {
+                        use ::futures::stream::StreamExt;
+                        let stream = res;
+                        ::std::result::Result::Ok(stream.map(|res| match res {
+                            ::std::result::Result::Ok(item) => ::std::result::Result::Ok(item),
+                            ::std::result::Result::Err(exn) => exn.into(),
+                        }).boxed())
+                    }
                     crate::services::my_interaction_fast::TruthifyExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(TruthifyError::ApplicationException(aexn)),
                 }
@@ -7196,8 +7283,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_interaction_fast::EncodeExn) -> Self {
                 match e {
-                    crate::services::my_interaction_fast::EncodeExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_interaction_fast::EncodeExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_interaction_fast::EncodeExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(EncodeError::ApplicationException(aexn)),
                 }
@@ -7216,8 +7304,9 @@ pub mod errors {
         {
             fn from(e: crate::services::serial_interaction::FrobnicateExn) -> Self {
                 match e {
-                    crate::services::serial_interaction::FrobnicateExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::serial_interaction::FrobnicateExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::serial_interaction::FrobnicateExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(FrobnicateError::ApplicationException(aexn)),
                 }
@@ -7236,8 +7325,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::FooExn) -> Self {
                 match e {
-                    crate::services::my_service::FooExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::FooExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_service::FooExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(FooError::ApplicationException(aexn)),
                 }
@@ -7251,8 +7341,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::InteractExn) -> Self {
                 match e {
-                    crate::services::my_service::InteractExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::InteractExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_service::InteractExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(InteractError::ApplicationException(aexn)),
                 }
@@ -7266,8 +7357,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::InteractFastExn) -> Self {
                 match e {
-                    crate::services::my_service::InteractFastExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::InteractFastExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_service::InteractFastExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(InteractFastError::ApplicationException(aexn)),
                 }
@@ -7281,8 +7373,14 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::SerializeExn) -> Self {
                 match e {
-                    crate::services::my_service::SerializeExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::SerializeExn::Success(res) => {
+                        use ::futures::stream::StreamExt;
+                        let (resp, stream) = res;
+                        ::std::result::Result::Ok((resp, stream.map(|res| match res {
+                            ::std::result::Result::Ok(item) => ::std::result::Result::Ok(item),
+                            ::std::result::Result::Err(exn) => exn.into(),
+                        }).boxed()))
+                    }
                     crate::services::my_service::SerializeExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(SerializeError::ApplicationException(aexn)),
                 }

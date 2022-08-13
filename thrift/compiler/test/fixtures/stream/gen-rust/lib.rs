@@ -261,7 +261,8 @@ pub mod services {
 
         pub enum ReturnstreamExn {
             #[doc(hidden)]
-            Success(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>>),
+            Success(    ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::pub_sub_streaming_service::ReturnstreamStreamExn>>
+),
             ApplicationException(::fbthrift::ApplicationException),
         }
 
@@ -579,7 +580,8 @@ pub mod services {
 
         pub enum StreamthrowsExn {
             #[doc(hidden)]
-            Success(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>>),
+            Success(    ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::pub_sub_streaming_service::StreamthrowsStreamExn>>
+),
             ApplicationException(::fbthrift::ApplicationException),
         }
 
@@ -896,7 +898,8 @@ pub mod services {
 
         pub enum ServicethrowsExn {
             #[doc(hidden)]
-            Success(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>>),
+            Success(    ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::pub_sub_streaming_service::ServicethrowsStreamExn>>
+),
             e(crate::types::FooEx),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1248,7 +1251,8 @@ pub mod services {
 
         pub enum BoththrowsExn {
             #[doc(hidden)]
-            Success(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>>),
+            Success(    ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::pub_sub_streaming_service::BoththrowsStreamExn>>
+),
             e(crate::types::FooEx),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1584,7 +1588,11 @@ pub mod services {
 
         pub enum ResponseandstreamstreamthrowsExn {
             #[doc(hidden)]
-            Success((::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>>)),
+            Success((
+    ::std::primitive::i32,
+    ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamExn>>
+)
+),
             ApplicationException(::fbthrift::ApplicationException),
         }
 
@@ -1908,7 +1916,11 @@ pub mod services {
 
         pub enum ResponseandstreamservicethrowsExn {
             #[doc(hidden)]
-            Success((::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>>)),
+            Success((
+    ::std::primitive::i32,
+    ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamExn>>
+)
+),
             e(crate::types::FooEx),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -2267,7 +2279,11 @@ pub mod services {
 
         pub enum ResponseandstreamboththrowsExn {
             #[doc(hidden)]
-            Success((::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>>)),
+            Success((
+    ::std::primitive::i32,
+    ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsStreamExn>>
+)
+),
             e(crate::types::FooEx),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -2572,7 +2588,8 @@ pub mod services {
 
         pub enum ReturnstreamFastExn {
             #[doc(hidden)]
-            Success(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>>),
+            Success(    ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::pub_sub_streaming_service::ReturnstreamFastStreamExn>>
+),
             ApplicationException(::fbthrift::ApplicationException),
         }
 
@@ -3882,7 +3899,10 @@ pub mod server {
             &self,
             _i32_from: ::std::primitive::i32,
             _i32_to: ::std::primitive::i32,
-        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>>, crate::services::pub_sub_streaming_service::ReturnstreamExn> {
+        ) -> ::std::result::Result<
+        ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::pub_sub_streaming_service::ReturnstreamStreamExn>>
+,
+    crate::services::pub_sub_streaming_service::ReturnstreamExn> {
             ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ReturnstreamExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "PubSubStreamingService",
@@ -3895,7 +3915,10 @@ pub mod server {
         async fn streamthrows(
             &self,
             _foo: ::std::primitive::i32,
-        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>>, crate::services::pub_sub_streaming_service::StreamthrowsExn> {
+        ) -> ::std::result::Result<
+        ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::pub_sub_streaming_service::StreamthrowsStreamExn>>
+,
+    crate::services::pub_sub_streaming_service::StreamthrowsExn> {
             ::std::result::Result::Err(crate::services::pub_sub_streaming_service::StreamthrowsExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "PubSubStreamingService",
@@ -3908,7 +3931,10 @@ pub mod server {
         async fn servicethrows(
             &self,
             _foo: ::std::primitive::i32,
-        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>>, crate::services::pub_sub_streaming_service::ServicethrowsExn> {
+        ) -> ::std::result::Result<
+        ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::pub_sub_streaming_service::ServicethrowsStreamExn>>
+,
+    crate::services::pub_sub_streaming_service::ServicethrowsExn> {
             ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ServicethrowsExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "PubSubStreamingService",
@@ -3921,7 +3947,10 @@ pub mod server {
         async fn boththrows(
             &self,
             _foo: ::std::primitive::i32,
-        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>>, crate::services::pub_sub_streaming_service::BoththrowsExn> {
+        ) -> ::std::result::Result<
+        ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::pub_sub_streaming_service::BoththrowsStreamExn>>
+,
+    crate::services::pub_sub_streaming_service::BoththrowsExn> {
             ::std::result::Result::Err(crate::services::pub_sub_streaming_service::BoththrowsExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "PubSubStreamingService",
@@ -3934,7 +3963,13 @@ pub mod server {
         async fn responseandstreamstreamthrows(
             &self,
             _foo: ::std::primitive::i32,
-        ) -> ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>>), crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsExn> {
+        ) -> ::std::result::Result<
+    (
+    ::std::primitive::i32,
+    ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamExn>>
+)
+,
+    crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsExn> {
             ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "PubSubStreamingService",
@@ -3947,7 +3982,13 @@ pub mod server {
         async fn responseandstreamservicethrows(
             &self,
             _foo: ::std::primitive::i32,
-        ) -> ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>>), crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsExn> {
+        ) -> ::std::result::Result<
+    (
+    ::std::primitive::i32,
+    ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamExn>>
+)
+,
+    crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsExn> {
             ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "PubSubStreamingService",
@@ -3960,7 +4001,13 @@ pub mod server {
         async fn responseandstreamboththrows(
             &self,
             _foo: ::std::primitive::i32,
-        ) -> ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>>), crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsExn> {
+        ) -> ::std::result::Result<
+    (
+    ::std::primitive::i32,
+    ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsStreamExn>>
+)
+,
+    crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsExn> {
             ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "PubSubStreamingService",
@@ -3974,7 +4021,10 @@ pub mod server {
             &self,
             _i32_from: ::std::primitive::i32,
             _i32_to: ::std::primitive::i32,
-        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>>, crate::services::pub_sub_streaming_service::ReturnstreamFastExn> {
+        ) -> ::std::result::Result<
+        ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::pub_sub_streaming_service::ReturnstreamFastStreamExn>>
+,
+    crate::services::pub_sub_streaming_service::ReturnstreamFastExn> {
             ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ReturnstreamFastExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "PubSubStreamingService",
@@ -3995,7 +4045,10 @@ pub mod server {
             &self,
             i32_from: ::std::primitive::i32,
             i32_to: ::std::primitive::i32,
-        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamStreamError>>, crate::services::pub_sub_streaming_service::ReturnstreamExn> {
+        ) -> ::std::result::Result<
+        ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::pub_sub_streaming_service::ReturnstreamStreamExn>>
+,
+    crate::services::pub_sub_streaming_service::ReturnstreamExn> {
             (**self).returnstream(
                 i32_from, 
                 i32_to, 
@@ -4006,7 +4059,10 @@ pub mod server {
         async fn streamthrows(
             &self,
             foo: ::std::primitive::i32,
-        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::StreamthrowsStreamError>>, crate::services::pub_sub_streaming_service::StreamthrowsExn> {
+        ) -> ::std::result::Result<
+        ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::pub_sub_streaming_service::StreamthrowsStreamExn>>
+,
+    crate::services::pub_sub_streaming_service::StreamthrowsExn> {
             (**self).streamthrows(
                 foo, 
             ).await
@@ -4016,7 +4072,10 @@ pub mod server {
         async fn servicethrows(
             &self,
             foo: ::std::primitive::i32,
-        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ServicethrowsStreamError>>, crate::services::pub_sub_streaming_service::ServicethrowsExn> {
+        ) -> ::std::result::Result<
+        ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::pub_sub_streaming_service::ServicethrowsStreamExn>>
+,
+    crate::services::pub_sub_streaming_service::ServicethrowsExn> {
             (**self).servicethrows(
                 foo, 
             ).await
@@ -4026,7 +4085,10 @@ pub mod server {
         async fn boththrows(
             &self,
             foo: ::std::primitive::i32,
-        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::BoththrowsStreamError>>, crate::services::pub_sub_streaming_service::BoththrowsExn> {
+        ) -> ::std::result::Result<
+        ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::pub_sub_streaming_service::BoththrowsStreamExn>>
+,
+    crate::services::pub_sub_streaming_service::BoththrowsExn> {
             (**self).boththrows(
                 foo, 
             ).await
@@ -4036,7 +4098,13 @@ pub mod server {
         async fn responseandstreamstreamthrows(
             &self,
             foo: ::std::primitive::i32,
-        ) -> ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError>>), crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsExn> {
+        ) -> ::std::result::Result<
+    (
+    ::std::primitive::i32,
+    ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamExn>>
+)
+,
+    crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsExn> {
             (**self).responseandstreamstreamthrows(
                 foo, 
             ).await
@@ -4046,7 +4114,13 @@ pub mod server {
         async fn responseandstreamservicethrows(
             &self,
             foo: ::std::primitive::i32,
-        ) -> ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamError>>), crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsExn> {
+        ) -> ::std::result::Result<
+    (
+    ::std::primitive::i32,
+    ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamExn>>
+)
+,
+    crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsExn> {
             (**self).responseandstreamservicethrows(
                 foo, 
             ).await
@@ -4056,7 +4130,13 @@ pub mod server {
         async fn responseandstreamboththrows(
             &self,
             foo: ::std::primitive::i32,
-        ) -> ::std::result::Result<(::std::primitive::i32, ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError>>), crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsExn> {
+        ) -> ::std::result::Result<
+    (
+    ::std::primitive::i32,
+    ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsStreamExn>>
+)
+,
+    crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsExn> {
             (**self).responseandstreamboththrows(
                 foo, 
             ).await
@@ -4067,7 +4147,10 @@ pub mod server {
             &self,
             i32_from: ::std::primitive::i32,
             i32_to: ::std::primitive::i32,
-        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::pub_sub_streaming_service::ReturnstreamFastStreamError>>, crate::services::pub_sub_streaming_service::ReturnstreamFastExn> {
+        ) -> ::std::result::Result<
+        ::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::services::pub_sub_streaming_service::ReturnstreamFastStreamExn>>
+,
+    crate::services::pub_sub_streaming_service::ReturnstreamFastExn> {
             (**self).returnstreamFast(
                 i32_from, 
                 i32_to, 
@@ -4412,10 +4495,10 @@ pub mod server {
                             ::std::result::Result::Ok(res) => {
                                 crate::services::pub_sub_streaming_service::ReturnstreamStreamExn::Success(res)
                             },
-                            ::std::result::Result::Err(exn) => {
-                                let aexn = ::fbthrift::ApplicationException::handler_panic("PubSubStreamingService.returnstream", Box::new(exn));
-                                crate::services::pub_sub_streaming_service::ReturnstreamStreamExn::ApplicationException(aexn)
+                            ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ReturnstreamStreamExn::Success(_)) => {
+                                panic!("{} attempted to return success via error", "returnstream");
                             }
+                            ::std::result::Result::Err(exn) => exn,
                         };
 
                         ::fbthrift::help::serialize_stream_item::<P, _>(item)
@@ -4514,17 +4597,10 @@ pub mod server {
                             ::std::result::Result::Ok(res) => {
                                 crate::services::pub_sub_streaming_service::StreamthrowsStreamExn::Success(res)
                             },
-                            ::std::result::Result::Err(exn) => {
-                                match exn {
-                                    crate::errors::pub_sub_streaming_service::StreamthrowsStreamError::e(exn) => {
-                                        crate::services::pub_sub_streaming_service::StreamthrowsStreamExn::e(exn)
-                                    },
-                                    _ => {
-                                        let aexn = ::fbthrift::ApplicationException::handler_panic("PubSubStreamingService.streamthrows", Box::new(exn));
-                                        crate::services::pub_sub_streaming_service::StreamthrowsStreamExn::ApplicationException(aexn)
-                                    }
-                                }
+                            ::std::result::Result::Err(crate::services::pub_sub_streaming_service::StreamthrowsStreamExn::Success(_)) => {
+                                panic!("{} attempted to return success via error", "streamthrows");
                             }
+                            ::std::result::Result::Err(exn) => exn,
                         };
 
                         ::fbthrift::help::serialize_stream_item::<P, _>(item)
@@ -4623,10 +4699,10 @@ pub mod server {
                             ::std::result::Result::Ok(res) => {
                                 crate::services::pub_sub_streaming_service::ServicethrowsStreamExn::Success(res)
                             },
-                            ::std::result::Result::Err(exn) => {
-                                let aexn = ::fbthrift::ApplicationException::handler_panic("PubSubStreamingService.servicethrows", Box::new(exn));
-                                crate::services::pub_sub_streaming_service::ServicethrowsStreamExn::ApplicationException(aexn)
+                            ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ServicethrowsStreamExn::Success(_)) => {
+                                panic!("{} attempted to return success via error", "servicethrows");
                             }
+                            ::std::result::Result::Err(exn) => exn,
                         };
 
                         ::fbthrift::help::serialize_stream_item::<P, _>(item)
@@ -4729,17 +4805,10 @@ pub mod server {
                             ::std::result::Result::Ok(res) => {
                                 crate::services::pub_sub_streaming_service::BoththrowsStreamExn::Success(res)
                             },
-                            ::std::result::Result::Err(exn) => {
-                                match exn {
-                                    crate::errors::pub_sub_streaming_service::BoththrowsStreamError::e(exn) => {
-                                        crate::services::pub_sub_streaming_service::BoththrowsStreamExn::e(exn)
-                                    },
-                                    _ => {
-                                        let aexn = ::fbthrift::ApplicationException::handler_panic("PubSubStreamingService.boththrows", Box::new(exn));
-                                        crate::services::pub_sub_streaming_service::BoththrowsStreamExn::ApplicationException(aexn)
-                                    }
-                                }
+                            ::std::result::Result::Err(crate::services::pub_sub_streaming_service::BoththrowsStreamExn::Success(_)) => {
+                                panic!("{} attempted to return success via error", "boththrows");
                             }
+                            ::std::result::Result::Err(exn) => exn,
                         };
 
                         ::fbthrift::help::serialize_stream_item::<P, _>(item)
@@ -4842,17 +4911,10 @@ pub mod server {
                             ::std::result::Result::Ok(res) => {
                                 crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamExn::Success(res)
                             },
-                            ::std::result::Result::Err(exn) => {
-                                match exn {
-                                    crate::errors::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamError::e(exn) => {
-                                        crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamExn::e(exn)
-                                    },
-                                    _ => {
-                                        let aexn = ::fbthrift::ApplicationException::handler_panic("PubSubStreamingService.responseandstreamstreamthrows", Box::new(exn));
-                                        crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamExn::ApplicationException(aexn)
-                                    }
-                                }
+                            ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamExn::Success(_)) => {
+                                panic!("{} attempted to return success via error", "responseandstreamstreamthrows");
                             }
+                            ::std::result::Result::Err(exn) => exn,
                         };
 
                         ::fbthrift::help::serialize_stream_item::<P, _>(item)
@@ -4951,10 +5013,10 @@ pub mod server {
                             ::std::result::Result::Ok(res) => {
                                 crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamExn::Success(res)
                             },
-                            ::std::result::Result::Err(exn) => {
-                                let aexn = ::fbthrift::ApplicationException::handler_panic("PubSubStreamingService.responseandstreamservicethrows", Box::new(exn));
-                                crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamExn::ApplicationException(aexn)
+                            ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamExn::Success(_)) => {
+                                panic!("{} attempted to return success via error", "responseandstreamservicethrows");
                             }
+                            ::std::result::Result::Err(exn) => exn,
                         };
 
                         ::fbthrift::help::serialize_stream_item::<P, _>(item)
@@ -5057,17 +5119,10 @@ pub mod server {
                             ::std::result::Result::Ok(res) => {
                                 crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsStreamExn::Success(res)
                             },
-                            ::std::result::Result::Err(exn) => {
-                                match exn {
-                                    crate::errors::pub_sub_streaming_service::ResponseandstreamboththrowsStreamError::e(exn) => {
-                                        crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsStreamExn::e(exn)
-                                    },
-                                    _ => {
-                                        let aexn = ::fbthrift::ApplicationException::handler_panic("PubSubStreamingService.responseandstreamboththrows", Box::new(exn));
-                                        crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsStreamExn::ApplicationException(aexn)
-                                    }
-                                }
+                            ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsStreamExn::Success(_)) => {
+                                panic!("{} attempted to return success via error", "responseandstreamboththrows");
                             }
+                            ::std::result::Result::Err(exn) => exn,
                         };
 
                         ::fbthrift::help::serialize_stream_item::<P, _>(item)
@@ -5171,10 +5226,10 @@ pub mod server {
                             ::std::result::Result::Ok(res) => {
                                 crate::services::pub_sub_streaming_service::ReturnstreamFastStreamExn::Success(res)
                             },
-                            ::std::result::Result::Err(exn) => {
-                                let aexn = ::fbthrift::ApplicationException::handler_panic("PubSubStreamingService.returnstreamFast", Box::new(exn));
-                                crate::services::pub_sub_streaming_service::ReturnstreamFastStreamExn::ApplicationException(aexn)
+                            ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ReturnstreamFastStreamExn::Success(_)) => {
+                                panic!("{} attempted to return success via error", "returnstreamFast");
                             }
+                            ::std::result::Result::Err(exn) => exn,
                         };
 
                         ::fbthrift::help::serialize_stream_item::<P, _>(item)
@@ -5987,8 +6042,14 @@ pub mod errors {
         {
             fn from(e: crate::services::pub_sub_streaming_service::ReturnstreamExn) -> Self {
                 match e {
-                    crate::services::pub_sub_streaming_service::ReturnstreamExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::pub_sub_streaming_service::ReturnstreamExn::Success(res) => {
+                        use ::futures::stream::StreamExt;
+                        let stream = res;
+                        ::std::result::Result::Ok(stream.map(|res| match res {
+                            ::std::result::Result::Ok(item) => ::std::result::Result::Ok(item),
+                            ::std::result::Result::Err(exn) => exn.into(),
+                        }).boxed())
+                    }
                     crate::services::pub_sub_streaming_service::ReturnstreamExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(ReturnstreamError::ApplicationException(aexn)),
                 }
@@ -6030,8 +6091,14 @@ pub mod errors {
         {
             fn from(e: crate::services::pub_sub_streaming_service::StreamthrowsExn) -> Self {
                 match e {
-                    crate::services::pub_sub_streaming_service::StreamthrowsExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::pub_sub_streaming_service::StreamthrowsExn::Success(res) => {
+                        use ::futures::stream::StreamExt;
+                        let stream = res;
+                        ::std::result::Result::Ok(stream.map(|res| match res {
+                            ::std::result::Result::Ok(item) => ::std::result::Result::Ok(item),
+                            ::std::result::Result::Err(exn) => exn.into(),
+                        }).boxed())
+                    }
                     crate::services::pub_sub_streaming_service::StreamthrowsExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(StreamthrowsError::ApplicationException(aexn)),
                 }
@@ -6136,8 +6203,14 @@ pub mod errors {
         {
             fn from(e: crate::services::pub_sub_streaming_service::ServicethrowsExn) -> Self {
                 match e {
-                    crate::services::pub_sub_streaming_service::ServicethrowsExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::pub_sub_streaming_service::ServicethrowsExn::Success(res) => {
+                        use ::futures::stream::StreamExt;
+                        let stream = res;
+                        ::std::result::Result::Ok(stream.map(|res| match res {
+                            ::std::result::Result::Ok(item) => ::std::result::Result::Ok(item),
+                            ::std::result::Result::Err(exn) => exn.into(),
+                        }).boxed())
+                    }
                     crate::services::pub_sub_streaming_service::ServicethrowsExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(ServicethrowsError::ApplicationException(aexn)),
                     crate::services::pub_sub_streaming_service::ServicethrowsExn::e(exn) =>
@@ -6218,8 +6291,14 @@ pub mod errors {
         {
             fn from(e: crate::services::pub_sub_streaming_service::BoththrowsExn) -> Self {
                 match e {
-                    crate::services::pub_sub_streaming_service::BoththrowsExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::pub_sub_streaming_service::BoththrowsExn::Success(res) => {
+                        use ::futures::stream::StreamExt;
+                        let stream = res;
+                        ::std::result::Result::Ok(stream.map(|res| match res {
+                            ::std::result::Result::Ok(item) => ::std::result::Result::Ok(item),
+                            ::std::result::Result::Err(exn) => exn.into(),
+                        }).boxed())
+                    }
                     crate::services::pub_sub_streaming_service::BoththrowsExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(BoththrowsError::ApplicationException(aexn)),
                     crate::services::pub_sub_streaming_service::BoththrowsExn::e(exn) =>
@@ -6293,8 +6372,14 @@ pub mod errors {
         {
             fn from(e: crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsExn) -> Self {
                 match e {
-                    crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsExn::Success(res) => {
+                        use ::futures::stream::StreamExt;
+                        let (resp, stream) = res;
+                        ::std::result::Result::Ok((resp, stream.map(|res| match res {
+                            ::std::result::Result::Ok(item) => ::std::result::Result::Ok(item),
+                            ::std::result::Result::Err(exn) => exn.into(),
+                        }).boxed()))
+                    }
                     crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(ResponseandstreamstreamthrowsError::ApplicationException(aexn)),
                 }
@@ -6399,8 +6484,14 @@ pub mod errors {
         {
             fn from(e: crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsExn) -> Self {
                 match e {
-                    crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsExn::Success(res) => {
+                        use ::futures::stream::StreamExt;
+                        let (resp, stream) = res;
+                        ::std::result::Result::Ok((resp, stream.map(|res| match res {
+                            ::std::result::Result::Ok(item) => ::std::result::Result::Ok(item),
+                            ::std::result::Result::Err(exn) => exn.into(),
+                        }).boxed()))
+                    }
                     crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(ResponseandstreamservicethrowsError::ApplicationException(aexn)),
                     crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsExn::e(exn) =>
@@ -6481,8 +6572,14 @@ pub mod errors {
         {
             fn from(e: crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsExn) -> Self {
                 match e {
-                    crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsExn::Success(res) => {
+                        use ::futures::stream::StreamExt;
+                        let (resp, stream) = res;
+                        ::std::result::Result::Ok((resp, stream.map(|res| match res {
+                            ::std::result::Result::Ok(item) => ::std::result::Result::Ok(item),
+                            ::std::result::Result::Err(exn) => exn.into(),
+                        }).boxed()))
+                    }
                     crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(ResponseandstreamboththrowsError::ApplicationException(aexn)),
                     crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsExn::e(exn) =>
@@ -6556,8 +6653,14 @@ pub mod errors {
         {
             fn from(e: crate::services::pub_sub_streaming_service::ReturnstreamFastExn) -> Self {
                 match e {
-                    crate::services::pub_sub_streaming_service::ReturnstreamFastExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::pub_sub_streaming_service::ReturnstreamFastExn::Success(res) => {
+                        use ::futures::stream::StreamExt;
+                        let stream = res;
+                        ::std::result::Result::Ok(stream.map(|res| match res {
+                            ::std::result::Result::Ok(item) => ::std::result::Result::Ok(item),
+                            ::std::result::Result::Err(exn) => exn.into(),
+                        }).boxed())
+                    }
                     crate::services::pub_sub_streaming_service::ReturnstreamFastExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(ReturnstreamFastError::ApplicationException(aexn)),
                 }

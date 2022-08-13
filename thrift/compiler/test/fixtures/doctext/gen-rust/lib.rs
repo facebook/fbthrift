@@ -395,7 +395,8 @@ pub mod services {
 
         pub enum NumbersExn {
             #[doc(hidden)]
-            Success(::futures::stream::BoxStream<'static, ::std::result::Result<crate::types::number, crate::errors::c::NumbersStreamError>>),
+            Success(    ::futures::stream::BoxStream<'static, ::std::result::Result<crate::types::number, crate::services::c::NumbersStreamExn>>
+),
             ApplicationException(::fbthrift::ApplicationException),
         }
 
@@ -1138,7 +1139,9 @@ pub mod server {
         #[doc = "Function doctext."]
         async fn f(
             &self,
-        ) -> ::std::result::Result<(), crate::services::c::FExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::c::FExn> {
             ::std::result::Result::Err(crate::services::c::FExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "C",
@@ -1151,7 +1154,10 @@ pub mod server {
         #[doc = "Streaming function"]
         async fn numbers(
             &self,
-        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<crate::types::number, crate::errors::c::NumbersStreamError>>, crate::services::c::NumbersExn> {
+        ) -> ::std::result::Result<
+        ::futures::stream::BoxStream<'static, ::std::result::Result<crate::types::number, crate::services::c::NumbersStreamExn>>
+,
+    crate::services::c::NumbersExn> {
             ::std::result::Result::Err(crate::services::c::NumbersExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "C",
@@ -1165,7 +1171,9 @@ pub mod server {
             _a: ::std::primitive::i32,
             _b: ::std::string::String,
             _c: ::std::collections::BTreeSet<::std::primitive::i32>,
-        ) -> ::std::result::Result<::std::string::String, crate::services::c::ThingExn> {
+        ) -> ::std::result::Result<
+    ::std::string::String,
+    crate::services::c::ThingExn> {
             ::std::result::Result::Err(crate::services::c::ThingExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "C",
@@ -1182,7 +1190,9 @@ pub mod server {
     {
         async fn f(
             &self,
-        ) -> ::std::result::Result<(), crate::services::c::FExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::c::FExn> {
             (**self).f(
             ).await
         }
@@ -1190,7 +1200,10 @@ pub mod server {
         #[doc(hidden)]
         async fn numbers(
             &self,
-        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<crate::types::number, crate::errors::c::NumbersStreamError>>, crate::services::c::NumbersExn> {
+        ) -> ::std::result::Result<
+        ::futures::stream::BoxStream<'static, ::std::result::Result<crate::types::number, crate::services::c::NumbersStreamExn>>
+,
+    crate::services::c::NumbersExn> {
             (**self).numbers(
             ).await
         }
@@ -1199,7 +1212,9 @@ pub mod server {
             a: ::std::primitive::i32,
             b: ::std::string::String,
             c: ::std::collections::BTreeSet<::std::primitive::i32>,
-        ) -> ::std::result::Result<::std::string::String, crate::services::c::ThingExn> {
+        ) -> ::std::result::Result<
+    ::std::string::String,
+    crate::services::c::ThingExn> {
             (**self).thing(
                 a, 
                 b, 
@@ -1464,10 +1479,10 @@ pub mod server {
                             ::std::result::Result::Ok(res) => {
                                 crate::services::c::NumbersStreamExn::Success(res)
                             },
-                            ::std::result::Result::Err(exn) => {
-                                let aexn = ::fbthrift::ApplicationException::handler_panic("C.numbers", Box::new(exn));
-                                crate::services::c::NumbersStreamExn::ApplicationException(aexn)
+                            ::std::result::Result::Err(crate::services::c::NumbersStreamExn::Success(_)) => {
+                                panic!("{} attempted to return success via error", "numbers");
                             }
+                            ::std::result::Result::Err(exn) => exn,
                         };
 
                         ::fbthrift::help::serialize_stream_item::<P, _>(item)
@@ -2048,8 +2063,9 @@ pub mod errors {
         {
             fn from(e: crate::services::c::FExn) -> Self {
                 match e {
-                    crate::services::c::FExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::c::FExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::c::FExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(FError::ApplicationException(aexn)),
                 }
@@ -2063,8 +2079,14 @@ pub mod errors {
         {
             fn from(e: crate::services::c::NumbersExn) -> Self {
                 match e {
-                    crate::services::c::NumbersExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::c::NumbersExn::Success(res) => {
+                        use ::futures::stream::StreamExt;
+                        let stream = res;
+                        ::std::result::Result::Ok(stream.map(|res| match res {
+                            ::std::result::Result::Ok(item) => ::std::result::Result::Ok(item),
+                            ::std::result::Result::Err(exn) => exn.into(),
+                        }).boxed())
+                    }
                     crate::services::c::NumbersExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(NumbersError::ApplicationException(aexn)),
                 }
@@ -2141,8 +2163,9 @@ pub mod errors {
         {
             fn from(e: crate::services::c::ThingExn) -> Self {
                 match e {
-                    crate::services::c::ThingExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::c::ThingExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::c::ThingExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(ThingError::ApplicationException(aexn)),
                     crate::services::c::ThingExn::bang(exn) =>

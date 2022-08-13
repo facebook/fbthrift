@@ -42,10 +42,7 @@
             }}{{#function:args}}
             _{{field:name}}: {{#field:type}}{{>lib/type}}{{/field:type}},{{!
             }}{{/function:args}}
-        ) -> ::std::result::Result<{{!
-            }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
-            }}{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn{{!
-        }}> {
+        ) -> {{>lib/server_return_type}} {
             ::std::result::Result::Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "{{service:name}}",
@@ -86,10 +83,7 @@
             }}{{#function:args}}
             {{field:rust_name}}: {{#field:type}}{{>lib/type}}{{/field:type}},{{!
             }}{{/function:args}}
-        ) -> ::std::result::Result<{{!
-            }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
-            }}{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn{{!
-        }}> {
+        ) -> {{>lib/server_return_type}} {
             (**self).{{function:rust_name}}({{!
                 }}{{#service:requestContext?}}
                 request_context, {{!
@@ -305,23 +299,10 @@
                             ::std::result::Result::Ok(res) => {
                                 {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::Success(res)
                             },
-                            ::std::result::Result::Err(exn) => {
-                                {{^function:stream_exceptions?}}
-                                let aexn = ::fbthrift::ApplicationException::handler_panic("{{service:name}}.{{function:name}}", Box::new(exn));
-                                {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::ApplicationException(aexn)
-                                {{/function:stream_exceptions?}}
-                                {{#function:stream_exceptions?}}
-                                match exn {
-                                    {{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}StreamError::{{#function:stream_exceptions}}{{field:rust_name}}{{/function:stream_exceptions}}(exn) => {
-                                        {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::{{#function:stream_exceptions}}{{field:rust_name}}{{/function:stream_exceptions}}(exn)
-                                    },
-                                    _ => {
-                                        let aexn = ::fbthrift::ApplicationException::handler_panic("{{service:name}}.{{function:name}}", Box::new(exn));
-                                        {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::ApplicationException(aexn)
-                                    }
-                                }
-                                {{/function:stream_exceptions?}}
+                            ::std::result::Result::Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::Success(_)) => {
+                                panic!("{} attempted to return success via error", "{{function:rust_name}}");
                             }
+                            ::std::result::Result::Err(exn) => exn,
                         };
 
                         ::fbthrift::help::serialize_stream_item::<P, _>(item)

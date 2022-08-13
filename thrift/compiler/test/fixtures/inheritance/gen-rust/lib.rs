@@ -1279,7 +1279,9 @@ pub mod server {
     pub trait MyRoot: ::std::marker::Send + ::std::marker::Sync + 'static {
         async fn do_root(
             &self,
-        ) -> ::std::result::Result<(), crate::services::my_root::DoRootExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_root::DoRootExn> {
             ::std::result::Result::Err(crate::services::my_root::DoRootExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyRoot",
@@ -1296,7 +1298,9 @@ pub mod server {
     {
         async fn do_root(
             &self,
-        ) -> ::std::result::Result<(), crate::services::my_root::DoRootExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_root::DoRootExn> {
             (**self).do_root(
             ).await
         }
@@ -1594,7 +1598,9 @@ pub mod server {
     pub trait MyNode: ::std::marker::Send + ::std::marker::Sync + 'static {
         async fn do_mid(
             &self,
-        ) -> ::std::result::Result<(), crate::services::my_node::DoMidExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_node::DoMidExn> {
             ::std::result::Result::Err(crate::services::my_node::DoMidExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyNode",
@@ -1611,7 +1617,9 @@ pub mod server {
     {
         async fn do_mid(
             &self,
-        ) -> ::std::result::Result<(), crate::services::my_node::DoMidExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_node::DoMidExn> {
             (**self).do_mid(
             ).await
         }
@@ -1921,7 +1929,9 @@ pub mod server {
     pub trait MyLeaf: ::std::marker::Send + ::std::marker::Sync + 'static {
         async fn do_leaf(
             &self,
-        ) -> ::std::result::Result<(), crate::services::my_leaf::DoLeafExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_leaf::DoLeafExn> {
             ::std::result::Result::Err(crate::services::my_leaf::DoLeafExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyLeaf",
@@ -1938,7 +1948,9 @@ pub mod server {
     {
         async fn do_leaf(
             &self,
-        ) -> ::std::result::Result<(), crate::services::my_leaf::DoLeafExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_leaf::DoLeafExn> {
             (**self).do_leaf(
             ).await
         }
@@ -2598,8 +2610,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_root::DoRootExn) -> Self {
                 match e {
-                    crate::services::my_root::DoRootExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_root::DoRootExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_root::DoRootExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(DoRootError::ApplicationException(aexn)),
                 }
@@ -2618,8 +2631,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_node::DoMidExn) -> Self {
                 match e {
-                    crate::services::my_node::DoMidExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_node::DoMidExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_node::DoMidExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(DoMidError::ApplicationException(aexn)),
                 }
@@ -2638,8 +2652,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_leaf::DoLeafExn) -> Self {
                 match e {
-                    crate::services::my_leaf::DoLeafExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_leaf::DoLeafExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_leaf::DoLeafExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(DoLeafError::ApplicationException(aexn)),
                 }

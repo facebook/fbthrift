@@ -658,7 +658,9 @@ pub mod server {
         async fn r#return(
             &self,
             _bar: crate::types::ThereAreNoPascalCaseKeywords,
-        ) -> ::std::result::Result<(), crate::services::foo::ReturnExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::foo::ReturnExn> {
             ::std::result::Result::Err(crate::services::foo::ReturnExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "Foo",
@@ -669,7 +671,9 @@ pub mod server {
         async fn super_(
             &self,
             _bar: crate::types::ThereAreNoPascalCaseKeywords,
-        ) -> ::std::result::Result<(), crate::services::foo::SuperExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::foo::SuperExn> {
             ::std::result::Result::Err(crate::services::foo::SuperExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "Foo",
@@ -687,7 +691,9 @@ pub mod server {
         async fn r#return(
             &self,
             bar: crate::types::ThereAreNoPascalCaseKeywords,
-        ) -> ::std::result::Result<(), crate::services::foo::ReturnExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::foo::ReturnExn> {
             (**self).r#return(
                 bar, 
             ).await
@@ -695,7 +701,9 @@ pub mod server {
         async fn super_(
             &self,
             bar: crate::types::ThereAreNoPascalCaseKeywords,
-        ) -> ::std::result::Result<(), crate::services::foo::SuperExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::foo::SuperExn> {
             (**self).super_(
                 bar, 
             ).await
@@ -1338,8 +1346,9 @@ pub mod errors {
         {
             fn from(e: crate::services::foo::ReturnExn) -> Self {
                 match e {
-                    crate::services::foo::ReturnExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::foo::ReturnExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::foo::ReturnExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(ReturnError::ApplicationException(aexn)),
                 }
@@ -1353,8 +1362,9 @@ pub mod errors {
         {
             fn from(e: crate::services::foo::SuperExn) -> Self {
                 match e {
-                    crate::services::foo::SuperExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::foo::SuperExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::foo::SuperExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(SuperError::ApplicationException(aexn)),
                 }

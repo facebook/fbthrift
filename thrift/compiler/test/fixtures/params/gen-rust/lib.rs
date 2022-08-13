@@ -1339,7 +1339,9 @@ pub mod server {
         async fn mapList(
             &self,
             _foo: ::std::collections::BTreeMap<::std::primitive::i32, ::std::vec::Vec<::std::primitive::i32>>,
-        ) -> ::std::result::Result<(), crate::services::nested_containers::MapListExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::nested_containers::MapListExn> {
             ::std::result::Result::Err(crate::services::nested_containers::MapListExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "NestedContainers",
@@ -1350,7 +1352,9 @@ pub mod server {
         async fn mapSet(
             &self,
             _foo: ::std::collections::BTreeMap<::std::primitive::i32, ::std::collections::BTreeSet<::std::primitive::i32>>,
-        ) -> ::std::result::Result<(), crate::services::nested_containers::MapSetExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::nested_containers::MapSetExn> {
             ::std::result::Result::Err(crate::services::nested_containers::MapSetExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "NestedContainers",
@@ -1361,7 +1365,9 @@ pub mod server {
         async fn listMap(
             &self,
             _foo: ::std::vec::Vec<::std::collections::BTreeMap<::std::primitive::i32, ::std::primitive::i32>>,
-        ) -> ::std::result::Result<(), crate::services::nested_containers::ListMapExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::nested_containers::ListMapExn> {
             ::std::result::Result::Err(crate::services::nested_containers::ListMapExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "NestedContainers",
@@ -1372,7 +1378,9 @@ pub mod server {
         async fn listSet(
             &self,
             _foo: ::std::vec::Vec<::std::collections::BTreeSet<::std::primitive::i32>>,
-        ) -> ::std::result::Result<(), crate::services::nested_containers::ListSetExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::nested_containers::ListSetExn> {
             ::std::result::Result::Err(crate::services::nested_containers::ListSetExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "NestedContainers",
@@ -1383,7 +1391,9 @@ pub mod server {
         async fn turtles(
             &self,
             _foo: ::std::vec::Vec<::std::vec::Vec<::std::collections::BTreeMap<::std::primitive::i32, ::std::collections::BTreeMap<::std::primitive::i32, ::std::collections::BTreeSet<::std::primitive::i32>>>>>,
-        ) -> ::std::result::Result<(), crate::services::nested_containers::TurtlesExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::nested_containers::TurtlesExn> {
             ::std::result::Result::Err(crate::services::nested_containers::TurtlesExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "NestedContainers",
@@ -1401,7 +1411,9 @@ pub mod server {
         async fn mapList(
             &self,
             foo: ::std::collections::BTreeMap<::std::primitive::i32, ::std::vec::Vec<::std::primitive::i32>>,
-        ) -> ::std::result::Result<(), crate::services::nested_containers::MapListExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::nested_containers::MapListExn> {
             (**self).mapList(
                 foo, 
             ).await
@@ -1409,7 +1421,9 @@ pub mod server {
         async fn mapSet(
             &self,
             foo: ::std::collections::BTreeMap<::std::primitive::i32, ::std::collections::BTreeSet<::std::primitive::i32>>,
-        ) -> ::std::result::Result<(), crate::services::nested_containers::MapSetExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::nested_containers::MapSetExn> {
             (**self).mapSet(
                 foo, 
             ).await
@@ -1417,7 +1431,9 @@ pub mod server {
         async fn listMap(
             &self,
             foo: ::std::vec::Vec<::std::collections::BTreeMap<::std::primitive::i32, ::std::primitive::i32>>,
-        ) -> ::std::result::Result<(), crate::services::nested_containers::ListMapExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::nested_containers::ListMapExn> {
             (**self).listMap(
                 foo, 
             ).await
@@ -1425,7 +1441,9 @@ pub mod server {
         async fn listSet(
             &self,
             foo: ::std::vec::Vec<::std::collections::BTreeSet<::std::primitive::i32>>,
-        ) -> ::std::result::Result<(), crate::services::nested_containers::ListSetExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::nested_containers::ListSetExn> {
             (**self).listSet(
                 foo, 
             ).await
@@ -1433,7 +1451,9 @@ pub mod server {
         async fn turtles(
             &self,
             foo: ::std::vec::Vec<::std::vec::Vec<::std::collections::BTreeMap<::std::primitive::i32, ::std::collections::BTreeMap<::std::primitive::i32, ::std::collections::BTreeSet<::std::primitive::i32>>>>>,
-        ) -> ::std::result::Result<(), crate::services::nested_containers::TurtlesExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::nested_containers::TurtlesExn> {
             (**self).turtles(
                 foo, 
             ).await
@@ -2553,8 +2573,9 @@ pub mod errors {
         {
             fn from(e: crate::services::nested_containers::MapListExn) -> Self {
                 match e {
-                    crate::services::nested_containers::MapListExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::nested_containers::MapListExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::nested_containers::MapListExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(MapListError::ApplicationException(aexn)),
                 }
@@ -2568,8 +2589,9 @@ pub mod errors {
         {
             fn from(e: crate::services::nested_containers::MapSetExn) -> Self {
                 match e {
-                    crate::services::nested_containers::MapSetExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::nested_containers::MapSetExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::nested_containers::MapSetExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(MapSetError::ApplicationException(aexn)),
                 }
@@ -2583,8 +2605,9 @@ pub mod errors {
         {
             fn from(e: crate::services::nested_containers::ListMapExn) -> Self {
                 match e {
-                    crate::services::nested_containers::ListMapExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::nested_containers::ListMapExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::nested_containers::ListMapExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(ListMapError::ApplicationException(aexn)),
                 }
@@ -2598,8 +2621,9 @@ pub mod errors {
         {
             fn from(e: crate::services::nested_containers::ListSetExn) -> Self {
                 match e {
-                    crate::services::nested_containers::ListSetExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::nested_containers::ListSetExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::nested_containers::ListSetExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(ListSetError::ApplicationException(aexn)),
                 }
@@ -2613,8 +2637,9 @@ pub mod errors {
         {
             fn from(e: crate::services::nested_containers::TurtlesExn) -> Self {
                 match e {
-                    crate::services::nested_containers::TurtlesExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::nested_containers::TurtlesExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::nested_containers::TurtlesExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(TurtlesError::ApplicationException(aexn)),
                 }

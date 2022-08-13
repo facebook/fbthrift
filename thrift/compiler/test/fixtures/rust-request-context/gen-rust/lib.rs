@@ -1100,7 +1100,8 @@ pub mod services {
 
         pub enum StreamByIdExn {
             #[doc(hidden)]
-            Success(::futures::stream::BoxStream<'static, ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdStreamError>>),
+            Success(    ::futures::stream::BoxStream<'static, ::std::result::Result<crate::types::MyStruct, crate::services::my_service::StreamByIdStreamExn>>
+),
             ApplicationException(::fbthrift::ApplicationException),
         }
 
@@ -1418,7 +1419,8 @@ pub mod services {
 
         pub enum StreamByIdWithExceptionExn {
             #[doc(hidden)]
-            Success(::futures::stream::BoxStream<'static, ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithExceptionStreamError>>),
+            Success(    ::futures::stream::BoxStream<'static, ::std::result::Result<crate::types::MyStruct, crate::services::my_service::StreamByIdWithExceptionStreamExn>>
+),
             ApplicationException(::fbthrift::ApplicationException),
         }
 
@@ -1719,7 +1721,11 @@ pub mod services {
 
         pub enum StreamByIdWithResponseExn {
             #[doc(hidden)]
-            Success((crate::types::MyDataItem, ::futures::stream::BoxStream<'static, ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithResponseStreamError>>)),
+            Success((
+    crate::types::MyDataItem,
+    ::futures::stream::BoxStream<'static, ::std::result::Result<crate::types::MyStruct, crate::services::my_service::StreamByIdWithResponseStreamExn>>
+)
+),
             ApplicationException(::fbthrift::ApplicationException),
         }
 
@@ -3304,7 +3310,9 @@ pub mod server {
     pub trait MyInteraction: ::std::marker::Send + ::std::marker::Sync + 'static {
         async fn ping(
             &self,
-        ) -> ::std::result::Result<(), crate::services::my_interaction::PingExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_interaction::PingExn> {
             ::std::result::Result::Err(crate::services::my_interaction::PingExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyInteraction",
@@ -3321,7 +3329,9 @@ pub mod server {
     {
         async fn ping(
             &self,
-        ) -> ::std::result::Result<(), crate::services::my_interaction::PingExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_interaction::PingExn> {
             (**self).ping(
             ).await
         }
@@ -3594,7 +3604,9 @@ pub mod server {
         async fn ping(
             &self,
             _request_context: &Self::RequestContext,
-        ) -> ::std::result::Result<(), crate::services::my_service::PingExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_service::PingExn> {
             ::std::result::Result::Err(crate::services::my_service::PingExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
@@ -3605,7 +3617,9 @@ pub mod server {
         async fn getRandomData(
             &self,
             _request_context: &Self::RequestContext,
-        ) -> ::std::result::Result<::std::string::String, crate::services::my_service::GetRandomDataExn> {
+        ) -> ::std::result::Result<
+    ::std::string::String,
+    crate::services::my_service::GetRandomDataExn> {
             ::std::result::Result::Err(crate::services::my_service::GetRandomDataExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
@@ -3617,7 +3631,9 @@ pub mod server {
             &self,
             _request_context: &Self::RequestContext,
             _id: ::std::primitive::i64,
-        ) -> ::std::result::Result<::std::primitive::bool, crate::services::my_service::HasDataByIdExn> {
+        ) -> ::std::result::Result<
+    ::std::primitive::bool,
+    crate::services::my_service::HasDataByIdExn> {
             ::std::result::Result::Err(crate::services::my_service::HasDataByIdExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
@@ -3629,7 +3645,9 @@ pub mod server {
             &self,
             _request_context: &Self::RequestContext,
             _id: ::std::primitive::i64,
-        ) -> ::std::result::Result<::std::string::String, crate::services::my_service::GetDataByIdExn> {
+        ) -> ::std::result::Result<
+    ::std::string::String,
+    crate::services::my_service::GetDataByIdExn> {
             ::std::result::Result::Err(crate::services::my_service::GetDataByIdExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
@@ -3642,7 +3660,9 @@ pub mod server {
             _request_context: &Self::RequestContext,
             _id: ::std::primitive::i64,
             _data: ::std::string::String,
-        ) -> ::std::result::Result<(), crate::services::my_service::PutDataByIdExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_service::PutDataByIdExn> {
             ::std::result::Result::Err(crate::services::my_service::PutDataByIdExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
@@ -3655,7 +3675,9 @@ pub mod server {
             _request_context: &Self::RequestContext,
             _id: ::std::primitive::i64,
             _data: ::std::string::String,
-        ) -> ::std::result::Result<(), crate::services::my_service::LobDataByIdExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_service::LobDataByIdExn> {
             ::std::result::Result::Err(crate::services::my_service::LobDataByIdExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
@@ -3669,7 +3691,10 @@ pub mod server {
             &self,
             _request_context: &Self::RequestContext,
             _id: ::std::primitive::i64,
-        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdStreamError>>, crate::services::my_service::StreamByIdExn> {
+        ) -> ::std::result::Result<
+        ::futures::stream::BoxStream<'static, ::std::result::Result<crate::types::MyStruct, crate::services::my_service::StreamByIdStreamExn>>
+,
+    crate::services::my_service::StreamByIdExn> {
             ::std::result::Result::Err(crate::services::my_service::StreamByIdExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
@@ -3683,7 +3708,10 @@ pub mod server {
             &self,
             _request_context: &Self::RequestContext,
             _id: ::std::primitive::i64,
-        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithExceptionStreamError>>, crate::services::my_service::StreamByIdWithExceptionExn> {
+        ) -> ::std::result::Result<
+        ::futures::stream::BoxStream<'static, ::std::result::Result<crate::types::MyStruct, crate::services::my_service::StreamByIdWithExceptionStreamExn>>
+,
+    crate::services::my_service::StreamByIdWithExceptionExn> {
             ::std::result::Result::Err(crate::services::my_service::StreamByIdWithExceptionExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
@@ -3697,7 +3725,13 @@ pub mod server {
             &self,
             _request_context: &Self::RequestContext,
             _id: ::std::primitive::i64,
-        ) -> ::std::result::Result<(crate::types::MyDataItem, ::futures::stream::BoxStream<'static, ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithResponseStreamError>>), crate::services::my_service::StreamByIdWithResponseExn> {
+        ) -> ::std::result::Result<
+    (
+    crate::types::MyDataItem,
+    ::futures::stream::BoxStream<'static, ::std::result::Result<crate::types::MyStruct, crate::services::my_service::StreamByIdWithResponseStreamExn>>
+)
+,
+    crate::services::my_service::StreamByIdWithResponseExn> {
             ::std::result::Result::Err(crate::services::my_service::StreamByIdWithResponseExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
@@ -3720,7 +3754,9 @@ pub mod server {
         async fn ping(
             &self,
             request_context: &Self::RequestContext,
-        ) -> ::std::result::Result<(), crate::services::my_service::PingExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_service::PingExn> {
             (**self).ping(
                 request_context, 
             ).await
@@ -3728,7 +3764,9 @@ pub mod server {
         async fn getRandomData(
             &self,
             request_context: &Self::RequestContext,
-        ) -> ::std::result::Result<::std::string::String, crate::services::my_service::GetRandomDataExn> {
+        ) -> ::std::result::Result<
+    ::std::string::String,
+    crate::services::my_service::GetRandomDataExn> {
             (**self).getRandomData(
                 request_context, 
             ).await
@@ -3737,7 +3775,9 @@ pub mod server {
             &self,
             request_context: &Self::RequestContext,
             id: ::std::primitive::i64,
-        ) -> ::std::result::Result<::std::primitive::bool, crate::services::my_service::HasDataByIdExn> {
+        ) -> ::std::result::Result<
+    ::std::primitive::bool,
+    crate::services::my_service::HasDataByIdExn> {
             (**self).hasDataById(
                 request_context, 
                 id, 
@@ -3747,7 +3787,9 @@ pub mod server {
             &self,
             request_context: &Self::RequestContext,
             id: ::std::primitive::i64,
-        ) -> ::std::result::Result<::std::string::String, crate::services::my_service::GetDataByIdExn> {
+        ) -> ::std::result::Result<
+    ::std::string::String,
+    crate::services::my_service::GetDataByIdExn> {
             (**self).getDataById(
                 request_context, 
                 id, 
@@ -3758,7 +3800,9 @@ pub mod server {
             request_context: &Self::RequestContext,
             id: ::std::primitive::i64,
             data: ::std::string::String,
-        ) -> ::std::result::Result<(), crate::services::my_service::PutDataByIdExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_service::PutDataByIdExn> {
             (**self).putDataById(
                 request_context, 
                 id, 
@@ -3770,7 +3814,9 @@ pub mod server {
             request_context: &Self::RequestContext,
             id: ::std::primitive::i64,
             data: ::std::string::String,
-        ) -> ::std::result::Result<(), crate::services::my_service::LobDataByIdExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_service::LobDataByIdExn> {
             (**self).lobDataById(
                 request_context, 
                 id, 
@@ -3783,7 +3829,10 @@ pub mod server {
             &self,
             request_context: &Self::RequestContext,
             id: ::std::primitive::i64,
-        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdStreamError>>, crate::services::my_service::StreamByIdExn> {
+        ) -> ::std::result::Result<
+        ::futures::stream::BoxStream<'static, ::std::result::Result<crate::types::MyStruct, crate::services::my_service::StreamByIdStreamExn>>
+,
+    crate::services::my_service::StreamByIdExn> {
             (**self).streamById(
                 request_context, 
                 id, 
@@ -3795,7 +3844,10 @@ pub mod server {
             &self,
             request_context: &Self::RequestContext,
             id: ::std::primitive::i64,
-        ) -> ::std::result::Result<::futures::stream::BoxStream<'static, ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithExceptionStreamError>>, crate::services::my_service::StreamByIdWithExceptionExn> {
+        ) -> ::std::result::Result<
+        ::futures::stream::BoxStream<'static, ::std::result::Result<crate::types::MyStruct, crate::services::my_service::StreamByIdWithExceptionStreamExn>>
+,
+    crate::services::my_service::StreamByIdWithExceptionExn> {
             (**self).streamByIdWithException(
                 request_context, 
                 id, 
@@ -3807,7 +3859,13 @@ pub mod server {
             &self,
             request_context: &Self::RequestContext,
             id: ::std::primitive::i64,
-        ) -> ::std::result::Result<(crate::types::MyDataItem, ::futures::stream::BoxStream<'static, ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithResponseStreamError>>), crate::services::my_service::StreamByIdWithResponseExn> {
+        ) -> ::std::result::Result<
+    (
+    crate::types::MyDataItem,
+    ::futures::stream::BoxStream<'static, ::std::result::Result<crate::types::MyStruct, crate::services::my_service::StreamByIdWithResponseStreamExn>>
+)
+,
+    crate::services::my_service::StreamByIdWithResponseExn> {
             (**self).streamByIdWithResponse(
                 request_context, 
                 id, 
@@ -4613,10 +4671,10 @@ pub mod server {
                             ::std::result::Result::Ok(res) => {
                                 crate::services::my_service::StreamByIdStreamExn::Success(res)
                             },
-                            ::std::result::Result::Err(exn) => {
-                                let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.streamById", Box::new(exn));
-                                crate::services::my_service::StreamByIdStreamExn::ApplicationException(aexn)
+                            ::std::result::Result::Err(crate::services::my_service::StreamByIdStreamExn::Success(_)) => {
+                                panic!("{} attempted to return success via error", "streamById");
                             }
+                            ::std::result::Result::Err(exn) => exn,
                         };
 
                         ::fbthrift::help::serialize_stream_item::<P, _>(item)
@@ -4716,17 +4774,10 @@ pub mod server {
                             ::std::result::Result::Ok(res) => {
                                 crate::services::my_service::StreamByIdWithExceptionStreamExn::Success(res)
                             },
-                            ::std::result::Result::Err(exn) => {
-                                match exn {
-                                    crate::errors::my_service::StreamByIdWithExceptionStreamError::e(exn) => {
-                                        crate::services::my_service::StreamByIdWithExceptionStreamExn::e(exn)
-                                    },
-                                    _ => {
-                                        let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.streamByIdWithException", Box::new(exn));
-                                        crate::services::my_service::StreamByIdWithExceptionStreamExn::ApplicationException(aexn)
-                                    }
-                                }
+                            ::std::result::Result::Err(crate::services::my_service::StreamByIdWithExceptionStreamExn::Success(_)) => {
+                                panic!("{} attempted to return success via error", "streamByIdWithException");
                             }
+                            ::std::result::Result::Err(exn) => exn,
                         };
 
                         ::fbthrift::help::serialize_stream_item::<P, _>(item)
@@ -4826,10 +4877,10 @@ pub mod server {
                             ::std::result::Result::Ok(res) => {
                                 crate::services::my_service::StreamByIdWithResponseStreamExn::Success(res)
                             },
-                            ::std::result::Result::Err(exn) => {
-                                let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.streamByIdWithResponse", Box::new(exn));
-                                crate::services::my_service::StreamByIdWithResponseStreamExn::ApplicationException(aexn)
+                            ::std::result::Result::Err(crate::services::my_service::StreamByIdWithResponseStreamExn::Success(_)) => {
+                                panic!("{} attempted to return success via error", "streamByIdWithResponse");
                             }
+                            ::std::result::Result::Err(exn) => exn,
                         };
 
                         ::fbthrift::help::serialize_stream_item::<P, _>(item)
@@ -5694,8 +5745,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_interaction::PingExn) -> Self {
                 match e {
-                    crate::services::my_interaction::PingExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_interaction::PingExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_interaction::PingExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(PingError::ApplicationException(aexn)),
                 }
@@ -5714,8 +5766,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::PingExn) -> Self {
                 match e {
-                    crate::services::my_service::PingExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::PingExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_service::PingExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(PingError::ApplicationException(aexn)),
                 }
@@ -5729,8 +5782,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::GetRandomDataExn) -> Self {
                 match e {
-                    crate::services::my_service::GetRandomDataExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::GetRandomDataExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_service::GetRandomDataExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(GetRandomDataError::ApplicationException(aexn)),
                 }
@@ -5744,8 +5798,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::HasDataByIdExn) -> Self {
                 match e {
-                    crate::services::my_service::HasDataByIdExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::HasDataByIdExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_service::HasDataByIdExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(HasDataByIdError::ApplicationException(aexn)),
                 }
@@ -5759,8 +5814,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::GetDataByIdExn) -> Self {
                 match e {
-                    crate::services::my_service::GetDataByIdExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::GetDataByIdExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_service::GetDataByIdExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(GetDataByIdError::ApplicationException(aexn)),
                 }
@@ -5774,8 +5830,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::PutDataByIdExn) -> Self {
                 match e {
-                    crate::services::my_service::PutDataByIdExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::PutDataByIdExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_service::PutDataByIdExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(PutDataByIdError::ApplicationException(aexn)),
                 }
@@ -5789,8 +5846,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::LobDataByIdExn) -> Self {
                 match e {
-                    crate::services::my_service::LobDataByIdExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::LobDataByIdExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_service::LobDataByIdExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(LobDataByIdError::ApplicationException(aexn)),
                 }
@@ -5804,8 +5862,14 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::StreamByIdExn) -> Self {
                 match e {
-                    crate::services::my_service::StreamByIdExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::StreamByIdExn::Success(res) => {
+                        use ::futures::stream::StreamExt;
+                        let stream = res;
+                        ::std::result::Result::Ok(stream.map(|res| match res {
+                            ::std::result::Result::Ok(item) => ::std::result::Result::Ok(item),
+                            ::std::result::Result::Err(exn) => exn.into(),
+                        }).boxed())
+                    }
                     crate::services::my_service::StreamByIdExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(StreamByIdError::ApplicationException(aexn)),
                 }
@@ -5847,8 +5911,14 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::StreamByIdWithExceptionExn) -> Self {
                 match e {
-                    crate::services::my_service::StreamByIdWithExceptionExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::StreamByIdWithExceptionExn::Success(res) => {
+                        use ::futures::stream::StreamExt;
+                        let stream = res;
+                        ::std::result::Result::Ok(stream.map(|res| match res {
+                            ::std::result::Result::Ok(item) => ::std::result::Result::Ok(item),
+                            ::std::result::Result::Err(exn) => exn.into(),
+                        }).boxed())
+                    }
                     crate::services::my_service::StreamByIdWithExceptionExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(StreamByIdWithExceptionError::ApplicationException(aexn)),
                 }
@@ -5918,8 +5988,14 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::StreamByIdWithResponseExn) -> Self {
                 match e {
-                    crate::services::my_service::StreamByIdWithResponseExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::StreamByIdWithResponseExn::Success(res) => {
+                        use ::futures::stream::StreamExt;
+                        let (resp, stream) = res;
+                        ::std::result::Result::Ok((resp, stream.map(|res| match res {
+                            ::std::result::Result::Ok(item) => ::std::result::Result::Ok(item),
+                            ::std::result::Result::Err(exn) => exn.into(),
+                        }).boxed()))
+                    }
                     crate::services::my_service::StreamByIdWithResponseExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(StreamByIdWithResponseError::ApplicationException(aexn)),
                 }

@@ -436,7 +436,9 @@ pub mod server {
         async fn init(
             &self,
             _int1: ::std::primitive::i64,
-        ) -> ::std::result::Result<::std::primitive::i64, crate::services::test_service::InitExn> {
+        ) -> ::std::result::Result<
+    ::std::primitive::i64,
+    crate::services::test_service::InitExn> {
             ::std::result::Result::Err(crate::services::test_service::InitExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "TestService",
@@ -454,7 +456,9 @@ pub mod server {
         async fn init(
             &self,
             int1: ::std::primitive::i64,
-        ) -> ::std::result::Result<::std::primitive::i64, crate::services::test_service::InitExn> {
+        ) -> ::std::result::Result<
+    ::std::primitive::i64,
+    crate::services::test_service::InitExn> {
             (**self).init(
                 int1, 
             ).await
@@ -938,8 +942,9 @@ pub mod errors {
         {
             fn from(e: crate::services::test_service::InitExn) -> Self {
                 match e {
-                    crate::services::test_service::InitExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::test_service::InitExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::test_service::InitExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(InitError::ApplicationException(aexn)),
                 }

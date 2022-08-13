@@ -497,7 +497,9 @@ pub mod server {
             _arg1: crate::types::StringWithAdapter,
             _arg2: ::std::string::String,
             _arg3: crate::types::Foo,
-        ) -> ::std::result::Result<crate::types::MyI32, crate::services::service::FuncExn> {
+        ) -> ::std::result::Result<
+    crate::types::MyI32,
+    crate::services::service::FuncExn> {
             ::std::result::Result::Err(crate::services::service::FuncExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "Service",
@@ -517,7 +519,9 @@ pub mod server {
             arg1: crate::types::StringWithAdapter,
             arg2: ::std::string::String,
             arg3: crate::types::Foo,
-        ) -> ::std::result::Result<crate::types::MyI32, crate::services::service::FuncExn> {
+        ) -> ::std::result::Result<
+    crate::types::MyI32,
+    crate::services::service::FuncExn> {
             (**self).func(
                 arg1, 
                 arg2, 
@@ -1017,8 +1021,9 @@ pub mod errors {
         {
             fn from(e: crate::services::service::FuncExn) -> Self {
                 match e {
-                    crate::services::service::FuncExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::service::FuncExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::service::FuncExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(FuncError::ApplicationException(aexn)),
                 }

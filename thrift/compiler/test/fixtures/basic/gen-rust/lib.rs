@@ -3916,7 +3916,9 @@ pub mod server {
     pub trait FooService: ::std::marker::Send + ::std::marker::Sync + 'static {
         async fn simple_rpc(
             &self,
-        ) -> ::std::result::Result<(), crate::services::foo_service::SimpleRpcExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::foo_service::SimpleRpcExn> {
             ::std::result::Result::Err(crate::services::foo_service::SimpleRpcExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "FooService",
@@ -3933,7 +3935,9 @@ pub mod server {
     {
         async fn simple_rpc(
             &self,
-        ) -> ::std::result::Result<(), crate::services::foo_service::SimpleRpcExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::foo_service::SimpleRpcExn> {
             (**self).simple_rpc(
             ).await
         }
@@ -4232,7 +4236,9 @@ pub mod server {
         async fn simple_rpc(
             &self,
             _int_parameter: ::std::primitive::i32,
-        ) -> ::std::result::Result<crate::types::ReservedKeyword, crate::services::f_b303_service::SimpleRpcExn> {
+        ) -> ::std::result::Result<
+    crate::types::ReservedKeyword,
+    crate::services::f_b303_service::SimpleRpcExn> {
             ::std::result::Result::Err(crate::services::f_b303_service::SimpleRpcExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "FB303Service",
@@ -4250,7 +4256,9 @@ pub mod server {
         async fn simple_rpc(
             &self,
             int_parameter: ::std::primitive::i32,
-        ) -> ::std::result::Result<crate::types::ReservedKeyword, crate::services::f_b303_service::SimpleRpcExn> {
+        ) -> ::std::result::Result<
+    crate::types::ReservedKeyword,
+    crate::services::f_b303_service::SimpleRpcExn> {
             (**self).simple_rpc(
                 int_parameter, 
             ).await
@@ -4555,7 +4563,9 @@ pub mod server {
     pub trait MyService: ::std::marker::Send + ::std::marker::Sync + 'static {
         async fn ping(
             &self,
-        ) -> ::std::result::Result<(), crate::services::my_service::PingExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_service::PingExn> {
             ::std::result::Result::Err(crate::services::my_service::PingExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
@@ -4565,7 +4575,9 @@ pub mod server {
         }
         async fn getRandomData(
             &self,
-        ) -> ::std::result::Result<::std::string::String, crate::services::my_service::GetRandomDataExn> {
+        ) -> ::std::result::Result<
+    ::std::string::String,
+    crate::services::my_service::GetRandomDataExn> {
             ::std::result::Result::Err(crate::services::my_service::GetRandomDataExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
@@ -4576,7 +4588,9 @@ pub mod server {
         async fn sink(
             &self,
             _sink: ::std::primitive::i64,
-        ) -> ::std::result::Result<(), crate::services::my_service::SinkExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_service::SinkExn> {
             ::std::result::Result::Err(crate::services::my_service::SinkExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
@@ -4588,7 +4602,9 @@ pub mod server {
             &self,
             _id: ::std::primitive::i64,
             _data: ::std::string::String,
-        ) -> ::std::result::Result<(), crate::services::my_service::PutDataByIdExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_service::PutDataByIdExn> {
             ::std::result::Result::Err(crate::services::my_service::PutDataByIdExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
@@ -4599,7 +4615,9 @@ pub mod server {
         async fn hasDataById(
             &self,
             _id: ::std::primitive::i64,
-        ) -> ::std::result::Result<::std::primitive::bool, crate::services::my_service::HasDataByIdExn> {
+        ) -> ::std::result::Result<
+    ::std::primitive::bool,
+    crate::services::my_service::HasDataByIdExn> {
             ::std::result::Result::Err(crate::services::my_service::HasDataByIdExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
@@ -4610,7 +4628,9 @@ pub mod server {
         async fn getDataById(
             &self,
             _id: ::std::primitive::i64,
-        ) -> ::std::result::Result<::std::string::String, crate::services::my_service::GetDataByIdExn> {
+        ) -> ::std::result::Result<
+    ::std::string::String,
+    crate::services::my_service::GetDataByIdExn> {
             ::std::result::Result::Err(crate::services::my_service::GetDataByIdExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
@@ -4621,7 +4641,9 @@ pub mod server {
         async fn deleteDataById(
             &self,
             _id: ::std::primitive::i64,
-        ) -> ::std::result::Result<(), crate::services::my_service::DeleteDataByIdExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_service::DeleteDataByIdExn> {
             ::std::result::Result::Err(crate::services::my_service::DeleteDataByIdExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
@@ -4633,7 +4655,9 @@ pub mod server {
             &self,
             _id: ::std::primitive::i64,
             _data: ::std::string::String,
-        ) -> ::std::result::Result<(), crate::services::my_service::LobDataByIdExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_service::LobDataByIdExn> {
             ::std::result::Result::Err(crate::services::my_service::LobDataByIdExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
@@ -4643,7 +4667,9 @@ pub mod server {
         }
         async fn invalid_return_for_hack(
             &self,
-        ) -> ::std::result::Result<::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>>, crate::services::my_service::InvalidReturnForHackExn> {
+        ) -> ::std::result::Result<
+    ::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>>,
+    crate::services::my_service::InvalidReturnForHackExn> {
             ::std::result::Result::Err(crate::services::my_service::InvalidReturnForHackExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
@@ -4653,7 +4679,9 @@ pub mod server {
         }
         async fn rpc_skipped_codegen(
             &self,
-        ) -> ::std::result::Result<(), crate::services::my_service::RpcSkippedCodegenExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_service::RpcSkippedCodegenExn> {
             ::std::result::Result::Err(crate::services::my_service::RpcSkippedCodegenExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
@@ -4670,20 +4698,26 @@ pub mod server {
     {
         async fn ping(
             &self,
-        ) -> ::std::result::Result<(), crate::services::my_service::PingExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_service::PingExn> {
             (**self).ping(
             ).await
         }
         async fn getRandomData(
             &self,
-        ) -> ::std::result::Result<::std::string::String, crate::services::my_service::GetRandomDataExn> {
+        ) -> ::std::result::Result<
+    ::std::string::String,
+    crate::services::my_service::GetRandomDataExn> {
             (**self).getRandomData(
             ).await
         }
         async fn sink(
             &self,
             sink: ::std::primitive::i64,
-        ) -> ::std::result::Result<(), crate::services::my_service::SinkExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_service::SinkExn> {
             (**self).sink(
                 sink, 
             ).await
@@ -4692,7 +4726,9 @@ pub mod server {
             &self,
             id: ::std::primitive::i64,
             data: ::std::string::String,
-        ) -> ::std::result::Result<(), crate::services::my_service::PutDataByIdExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_service::PutDataByIdExn> {
             (**self).putDataById(
                 id, 
                 data, 
@@ -4701,7 +4737,9 @@ pub mod server {
         async fn hasDataById(
             &self,
             id: ::std::primitive::i64,
-        ) -> ::std::result::Result<::std::primitive::bool, crate::services::my_service::HasDataByIdExn> {
+        ) -> ::std::result::Result<
+    ::std::primitive::bool,
+    crate::services::my_service::HasDataByIdExn> {
             (**self).hasDataById(
                 id, 
             ).await
@@ -4709,7 +4747,9 @@ pub mod server {
         async fn getDataById(
             &self,
             id: ::std::primitive::i64,
-        ) -> ::std::result::Result<::std::string::String, crate::services::my_service::GetDataByIdExn> {
+        ) -> ::std::result::Result<
+    ::std::string::String,
+    crate::services::my_service::GetDataByIdExn> {
             (**self).getDataById(
                 id, 
             ).await
@@ -4717,7 +4757,9 @@ pub mod server {
         async fn deleteDataById(
             &self,
             id: ::std::primitive::i64,
-        ) -> ::std::result::Result<(), crate::services::my_service::DeleteDataByIdExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_service::DeleteDataByIdExn> {
             (**self).deleteDataById(
                 id, 
             ).await
@@ -4726,7 +4768,9 @@ pub mod server {
             &self,
             id: ::std::primitive::i64,
             data: ::std::string::String,
-        ) -> ::std::result::Result<(), crate::services::my_service::LobDataByIdExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_service::LobDataByIdExn> {
             (**self).lobDataById(
                 id, 
                 data, 
@@ -4734,13 +4778,17 @@ pub mod server {
         }
         async fn invalid_return_for_hack(
             &self,
-        ) -> ::std::result::Result<::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>>, crate::services::my_service::InvalidReturnForHackExn> {
+        ) -> ::std::result::Result<
+    ::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>>,
+    crate::services::my_service::InvalidReturnForHackExn> {
             (**self).invalid_return_for_hack(
             ).await
         }
         async fn rpc_skipped_codegen(
             &self,
-        ) -> ::std::result::Result<(), crate::services::my_service::RpcSkippedCodegenExn> {
+        ) -> ::std::result::Result<
+    (),
+    crate::services::my_service::RpcSkippedCodegenExn> {
             (**self).rpc_skipped_codegen(
             ).await
         }
@@ -5969,7 +6017,9 @@ pub mod server {
         async fn getDataByKey0(
             &self,
             _key: ::std::string::String,
-        ) -> ::std::result::Result<::std::vec::Vec<::std::primitive::u8>, crate::services::db_mixed_stack_arguments::GetDataByKey0Exn> {
+        ) -> ::std::result::Result<
+    ::std::vec::Vec<::std::primitive::u8>,
+    crate::services::db_mixed_stack_arguments::GetDataByKey0Exn> {
             ::std::result::Result::Err(crate::services::db_mixed_stack_arguments::GetDataByKey0Exn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "DbMixedStackArguments",
@@ -5980,7 +6030,9 @@ pub mod server {
         async fn getDataByKey1(
             &self,
             _key: ::std::string::String,
-        ) -> ::std::result::Result<::std::vec::Vec<::std::primitive::u8>, crate::services::db_mixed_stack_arguments::GetDataByKey1Exn> {
+        ) -> ::std::result::Result<
+    ::std::vec::Vec<::std::primitive::u8>,
+    crate::services::db_mixed_stack_arguments::GetDataByKey1Exn> {
             ::std::result::Result::Err(crate::services::db_mixed_stack_arguments::GetDataByKey1Exn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "DbMixedStackArguments",
@@ -5998,7 +6050,9 @@ pub mod server {
         async fn getDataByKey0(
             &self,
             key: ::std::string::String,
-        ) -> ::std::result::Result<::std::vec::Vec<::std::primitive::u8>, crate::services::db_mixed_stack_arguments::GetDataByKey0Exn> {
+        ) -> ::std::result::Result<
+    ::std::vec::Vec<::std::primitive::u8>,
+    crate::services::db_mixed_stack_arguments::GetDataByKey0Exn> {
             (**self).getDataByKey0(
                 key, 
             ).await
@@ -6006,7 +6060,9 @@ pub mod server {
         async fn getDataByKey1(
             &self,
             key: ::std::string::String,
-        ) -> ::std::result::Result<::std::vec::Vec<::std::primitive::u8>, crate::services::db_mixed_stack_arguments::GetDataByKey1Exn> {
+        ) -> ::std::result::Result<
+    ::std::vec::Vec<::std::primitive::u8>,
+    crate::services::db_mixed_stack_arguments::GetDataByKey1Exn> {
             (**self).getDataByKey1(
                 key, 
             ).await
@@ -7360,8 +7416,9 @@ pub mod errors {
         {
             fn from(e: crate::services::foo_service::SimpleRpcExn) -> Self {
                 match e {
-                    crate::services::foo_service::SimpleRpcExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::foo_service::SimpleRpcExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::foo_service::SimpleRpcExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(SimpleRpcError::ApplicationException(aexn)),
                 }
@@ -7380,8 +7437,9 @@ pub mod errors {
         {
             fn from(e: crate::services::f_b303_service::SimpleRpcExn) -> Self {
                 match e {
-                    crate::services::f_b303_service::SimpleRpcExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::f_b303_service::SimpleRpcExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::f_b303_service::SimpleRpcExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(SimpleRpcError::ApplicationException(aexn)),
                 }
@@ -7400,8 +7458,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::PingExn) -> Self {
                 match e {
-                    crate::services::my_service::PingExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::PingExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_service::PingExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(PingError::ApplicationException(aexn)),
                 }
@@ -7415,8 +7474,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::GetRandomDataExn) -> Self {
                 match e {
-                    crate::services::my_service::GetRandomDataExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::GetRandomDataExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_service::GetRandomDataExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(GetRandomDataError::ApplicationException(aexn)),
                 }
@@ -7430,8 +7490,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::SinkExn) -> Self {
                 match e {
-                    crate::services::my_service::SinkExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::SinkExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_service::SinkExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(SinkError::ApplicationException(aexn)),
                 }
@@ -7445,8 +7506,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::PutDataByIdExn) -> Self {
                 match e {
-                    crate::services::my_service::PutDataByIdExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::PutDataByIdExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_service::PutDataByIdExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(PutDataByIdError::ApplicationException(aexn)),
                 }
@@ -7460,8 +7522,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::HasDataByIdExn) -> Self {
                 match e {
-                    crate::services::my_service::HasDataByIdExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::HasDataByIdExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_service::HasDataByIdExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(HasDataByIdError::ApplicationException(aexn)),
                 }
@@ -7475,8 +7538,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::GetDataByIdExn) -> Self {
                 match e {
-                    crate::services::my_service::GetDataByIdExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::GetDataByIdExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_service::GetDataByIdExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(GetDataByIdError::ApplicationException(aexn)),
                 }
@@ -7490,8 +7554,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::DeleteDataByIdExn) -> Self {
                 match e {
-                    crate::services::my_service::DeleteDataByIdExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::DeleteDataByIdExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_service::DeleteDataByIdExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(DeleteDataByIdError::ApplicationException(aexn)),
                 }
@@ -7505,8 +7570,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::LobDataByIdExn) -> Self {
                 match e {
-                    crate::services::my_service::LobDataByIdExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::LobDataByIdExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_service::LobDataByIdExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(LobDataByIdError::ApplicationException(aexn)),
                 }
@@ -7520,8 +7586,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::InvalidReturnForHackExn) -> Self {
                 match e {
-                    crate::services::my_service::InvalidReturnForHackExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::InvalidReturnForHackExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_service::InvalidReturnForHackExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(InvalidReturnForHackError::ApplicationException(aexn)),
                 }
@@ -7535,8 +7602,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::RpcSkippedCodegenExn) -> Self {
                 match e {
-                    crate::services::my_service::RpcSkippedCodegenExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::RpcSkippedCodegenExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_service::RpcSkippedCodegenExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(RpcSkippedCodegenError::ApplicationException(aexn)),
                 }
@@ -7555,8 +7623,9 @@ pub mod errors {
         {
             fn from(e: crate::services::db_mixed_stack_arguments::GetDataByKey0Exn) -> Self {
                 match e {
-                    crate::services::db_mixed_stack_arguments::GetDataByKey0Exn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::db_mixed_stack_arguments::GetDataByKey0Exn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::db_mixed_stack_arguments::GetDataByKey0Exn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(GetDataByKey0Error::ApplicationException(aexn)),
                 }
@@ -7570,8 +7639,9 @@ pub mod errors {
         {
             fn from(e: crate::services::db_mixed_stack_arguments::GetDataByKey1Exn) -> Self {
                 match e {
-                    crate::services::db_mixed_stack_arguments::GetDataByKey1Exn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::db_mixed_stack_arguments::GetDataByKey1Exn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::db_mixed_stack_arguments::GetDataByKey1Exn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(GetDataByKey1Error::ApplicationException(aexn)),
                 }

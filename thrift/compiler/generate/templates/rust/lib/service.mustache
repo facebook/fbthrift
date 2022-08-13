@@ -418,7 +418,7 @@
         {{/function:returns_stream?}}
         pub enum {{function:upcamel}}Exn {
             #[doc(hidden)]
-            Success({{#function:return_type}}{{>lib/type}}{{/function:return_type}}),{{!
+            Success({{>lib/server_ok_type}}),{{!
             }}{{#function:exceptions}}
             {{field:rust_name}}({{#field:type}}{{>lib/type}}{{/field:type}}),{{!
             }}{{/function:exceptions}}

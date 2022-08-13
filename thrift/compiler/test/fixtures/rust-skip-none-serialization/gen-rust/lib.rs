@@ -2040,8 +2040,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::PingExn) -> Self {
                 match e {
-                    crate::services::my_service::PingExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::PingExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_service::PingExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(PingError::ApplicationException(aexn)),
                 }
@@ -2055,8 +2056,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::GetRandomDataExn) -> Self {
                 match e {
-                    crate::services::my_service::GetRandomDataExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::GetRandomDataExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_service::GetRandomDataExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(GetRandomDataError::ApplicationException(aexn)),
                 }
@@ -2070,8 +2072,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::HasDataByIdExn) -> Self {
                 match e {
-                    crate::services::my_service::HasDataByIdExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::HasDataByIdExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_service::HasDataByIdExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(HasDataByIdError::ApplicationException(aexn)),
                 }
@@ -2085,8 +2088,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::GetDataByIdExn) -> Self {
                 match e {
-                    crate::services::my_service::GetDataByIdExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::GetDataByIdExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_service::GetDataByIdExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(GetDataByIdError::ApplicationException(aexn)),
                 }
@@ -2100,8 +2104,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::PutDataByIdExn) -> Self {
                 match e {
-                    crate::services::my_service::PutDataByIdExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::PutDataByIdExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_service::PutDataByIdExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(PutDataByIdError::ApplicationException(aexn)),
                 }
@@ -2115,8 +2120,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::LobDataByIdExn) -> Self {
                 match e {
-                    crate::services::my_service::LobDataByIdExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::LobDataByIdExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_service::LobDataByIdExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(LobDataByIdError::ApplicationException(aexn)),
                 }

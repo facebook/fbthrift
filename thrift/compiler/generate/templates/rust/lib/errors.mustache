@@ -95,8 +95,28 @@
         {
             fn from(e: {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn) -> Self {
                 match e {
-                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(res) => {
+                        {{^function:returns_stream?}}
+                        ::std::result::Result::Ok(res)
+                        {{/function:returns_stream?}}
+                        {{#function:returns_stream?}}
+                        use ::futures::stream::StreamExt;
+                        {{#function:stream_has_first_response?}}
+                        let (resp, stream) = res;
+                        ::std::result::Result::Ok((resp, stream.map(|res| match res {
+                            ::std::result::Result::Ok(item) => ::std::result::Result::Ok(item),
+                            ::std::result::Result::Err(exn) => exn.into(),
+                        }).boxed()))
+                        {{/function:stream_has_first_response?}}
+                        {{^function:stream_has_first_response?}}
+                        let stream = res;
+                        ::std::result::Result::Ok(stream.map(|res| match res {
+                            ::std::result::Result::Ok(item) => ::std::result::Result::Ok(item),
+                            ::std::result::Result::Err(exn) => exn.into(),
+                        }).boxed())
+                        {{/function:stream_has_first_response?}}
+                        {{/function:returns_stream?}}
+                    }
                     {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(aexn) =>
                         ::std::result::Result::Err({{function:upcamel}}Error::ApplicationException(aexn)),
                     {{#function:exceptions}}

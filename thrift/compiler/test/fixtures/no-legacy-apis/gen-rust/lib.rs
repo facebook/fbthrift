@@ -437,7 +437,9 @@ pub mod server {
         async fn query(
             &self,
             _u: crate::types::MyUnion,
-        ) -> ::std::result::Result<crate::types::MyStruct, crate::services::my_service::QueryExn> {
+        ) -> ::std::result::Result<
+    crate::types::MyStruct,
+    crate::services::my_service::QueryExn> {
             ::std::result::Result::Err(crate::services::my_service::QueryExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "MyService",
@@ -455,7 +457,9 @@ pub mod server {
         async fn query(
             &self,
             u: crate::types::MyUnion,
-        ) -> ::std::result::Result<crate::types::MyStruct, crate::services::my_service::QueryExn> {
+        ) -> ::std::result::Result<
+    crate::types::MyStruct,
+    crate::services::my_service::QueryExn> {
             (**self).query(
                 u, 
             ).await
@@ -939,8 +943,9 @@ pub mod errors {
         {
             fn from(e: crate::services::my_service::QueryExn) -> Self {
                 match e {
-                    crate::services::my_service::QueryExn::Success(res) =>
-                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::QueryExn::Success(res) => {
+                        ::std::result::Result::Ok(res)
+                    }
                     crate::services::my_service::QueryExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(QueryError::ApplicationException(aexn)),
                 }
