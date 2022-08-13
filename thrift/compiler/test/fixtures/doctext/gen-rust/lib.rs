@@ -203,6 +203,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let Self::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("Numbers");
                 match self {
                     Self::Success(inner) => {
@@ -214,11 +217,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    Self::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    Self::ApplicationException(_) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -1474,21 +1473,26 @@ pub mod server {
                     let response = crate::services::c::NumbersResponseExn::Success(());
                     let stream = res;
 
-                    let stream = stream.map(|item| {
-                        let item = match item {
-                            ::std::result::Result::Ok(res) => {
-                                crate::services::c::NumbersStreamExn::Success(res)
-                            },
-                            ::std::result::Result::Err(crate::services::c::NumbersStreamExn::Success(_)) => {
-                                panic!("{} attempted to return success via error", "numbers");
-                            }
-                            ::std::result::Result::Err(exn) => exn,
-                        };
+                    let stream = ::std::panic::AssertUnwindSafe(stream)
+                        .catch_unwind()
+                        .map(|item| {
+                            let item = match item {
+                                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                                    crate::services::c::NumbersStreamExn::Success(res)
+                                },
+                                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::c::NumbersStreamExn::Success(_))) => {
+                                    panic!("{} attempted to return success via error", "numbers");
+                                }
+                                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => exn,
+                                ::std::result::Result::Err(exn) => {
+                                    let aexn = ::fbthrift::ApplicationException::handler_panic("C.numbers", exn);
+                                    crate::services::c::NumbersStreamExn::ApplicationException(aexn)
+                                }
+                            };
 
-                        ::fbthrift::help::serialize_stream_item::<P, _>(item)
-
-                    })
-                    .boxed();
+                                ::fbthrift::help::serialize_stream_item::<P, _>(item)
+                            })
+                        .boxed();
                     (response, Some(stream))
                 },
                 crate::services::c::NumbersExn::ApplicationException(aexn)=> {

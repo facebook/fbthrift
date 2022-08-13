@@ -908,6 +908,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let Self::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("StreamById");
                 match self {
                     Self::Success(inner) => {
@@ -919,11 +922,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    Self::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    Self::ApplicationException(_) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -1214,6 +1213,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let Self::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("StreamByIdWithException");
                 match self {
                     Self::Success(inner) => {
@@ -1234,11 +1236,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    Self::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    Self::ApplicationException(_) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -1522,6 +1520,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let Self::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("StreamByIdWithResponse");
                 match self {
                     Self::Success(inner) => {
@@ -1533,11 +1534,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    Self::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    Self::ApplicationException(_) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -4666,21 +4663,26 @@ pub mod server {
                     let response = crate::services::my_service::StreamByIdResponseExn::Success(());
                     let stream = res;
 
-                    let stream = stream.map(|item| {
-                        let item = match item {
-                            ::std::result::Result::Ok(res) => {
-                                crate::services::my_service::StreamByIdStreamExn::Success(res)
-                            },
-                            ::std::result::Result::Err(crate::services::my_service::StreamByIdStreamExn::Success(_)) => {
-                                panic!("{} attempted to return success via error", "streamById");
-                            }
-                            ::std::result::Result::Err(exn) => exn,
-                        };
+                    let stream = ::std::panic::AssertUnwindSafe(stream)
+                        .catch_unwind()
+                        .map(|item| {
+                            let item = match item {
+                                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                                    crate::services::my_service::StreamByIdStreamExn::Success(res)
+                                },
+                                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_service::StreamByIdStreamExn::Success(_))) => {
+                                    panic!("{} attempted to return success via error", "streamById");
+                                }
+                                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => exn,
+                                ::std::result::Result::Err(exn) => {
+                                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.streamById", exn);
+                                    crate::services::my_service::StreamByIdStreamExn::ApplicationException(aexn)
+                                }
+                            };
 
-                        ::fbthrift::help::serialize_stream_item::<P, _>(item)
-
-                    })
-                    .boxed();
+                                ::fbthrift::help::serialize_stream_item::<P, _>(item)
+                            })
+                        .boxed();
                     (response, Some(stream))
                 },
                 crate::services::my_service::StreamByIdExn::ApplicationException(aexn)=> {
@@ -4769,21 +4771,26 @@ pub mod server {
                     let response = crate::services::my_service::StreamByIdWithExceptionResponseExn::Success(());
                     let stream = res;
 
-                    let stream = stream.map(|item| {
-                        let item = match item {
-                            ::std::result::Result::Ok(res) => {
-                                crate::services::my_service::StreamByIdWithExceptionStreamExn::Success(res)
-                            },
-                            ::std::result::Result::Err(crate::services::my_service::StreamByIdWithExceptionStreamExn::Success(_)) => {
-                                panic!("{} attempted to return success via error", "streamByIdWithException");
-                            }
-                            ::std::result::Result::Err(exn) => exn,
-                        };
+                    let stream = ::std::panic::AssertUnwindSafe(stream)
+                        .catch_unwind()
+                        .map(|item| {
+                            let item = match item {
+                                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                                    crate::services::my_service::StreamByIdWithExceptionStreamExn::Success(res)
+                                },
+                                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_service::StreamByIdWithExceptionStreamExn::Success(_))) => {
+                                    panic!("{} attempted to return success via error", "streamByIdWithException");
+                                }
+                                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => exn,
+                                ::std::result::Result::Err(exn) => {
+                                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.streamByIdWithException", exn);
+                                    crate::services::my_service::StreamByIdWithExceptionStreamExn::ApplicationException(aexn)
+                                }
+                            };
 
-                        ::fbthrift::help::serialize_stream_item::<P, _>(item)
-
-                    })
-                    .boxed();
+                                ::fbthrift::help::serialize_stream_item::<P, _>(item)
+                            })
+                        .boxed();
                     (response, Some(stream))
                 },
                 crate::services::my_service::StreamByIdWithExceptionExn::ApplicationException(aexn)=> {
@@ -4872,21 +4879,26 @@ pub mod server {
                     let (response, stream) = res;
                     let response = crate::services::my_service::StreamByIdWithResponseResponseExn::Success(response);
 
-                    let stream = stream.map(|item| {
-                        let item = match item {
-                            ::std::result::Result::Ok(res) => {
-                                crate::services::my_service::StreamByIdWithResponseStreamExn::Success(res)
-                            },
-                            ::std::result::Result::Err(crate::services::my_service::StreamByIdWithResponseStreamExn::Success(_)) => {
-                                panic!("{} attempted to return success via error", "streamByIdWithResponse");
-                            }
-                            ::std::result::Result::Err(exn) => exn,
-                        };
+                    let stream = ::std::panic::AssertUnwindSafe(stream)
+                        .catch_unwind()
+                        .map(|item| {
+                            let item = match item {
+                                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                                    crate::services::my_service::StreamByIdWithResponseStreamExn::Success(res)
+                                },
+                                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_service::StreamByIdWithResponseStreamExn::Success(_))) => {
+                                    panic!("{} attempted to return success via error", "streamByIdWithResponse");
+                                }
+                                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => exn,
+                                ::std::result::Result::Err(exn) => {
+                                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.streamByIdWithResponse", exn);
+                                    crate::services::my_service::StreamByIdWithResponseStreamExn::ApplicationException(aexn)
+                                }
+                            };
 
-                        ::fbthrift::help::serialize_stream_item::<P, _>(item)
-
-                    })
-                    .boxed();
+                                ::fbthrift::help::serialize_stream_item::<P, _>(item)
+                            })
+                        .boxed();
                     (response, Some(stream))
                 },
                 crate::services::my_service::StreamByIdWithResponseExn::ApplicationException(aexn)=> {

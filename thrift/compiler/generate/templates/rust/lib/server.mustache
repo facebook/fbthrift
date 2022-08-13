@@ -294,22 +294,27 @@
                     let stream = res;
                     {{/function:stream_has_first_response?}}
 
-                    let stream = stream.map(|item| {
-                        let item = match item {
-                            ::std::result::Result::Ok(res) => {
-                                {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::Success(res)
-                            },
-                            ::std::result::Result::Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::Success(_)) => {
-                                panic!("{} attempted to return success via error", "{{function:rust_name}}");
-                            }
-                            ::std::result::Result::Err(exn) => exn,
-                        };
+                    let stream = ::std::panic::AssertUnwindSafe(stream)
+                        .catch_unwind()
+                        .map(|item| {
+                            let item = match item {
+                                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::Success(res)
+                                },
+                                ::std::result::Result::Ok(::std::result::Result::Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::Success(_))) => {
+                                    panic!("{} attempted to return success via error", "{{function:rust_name}}");
+                                }
+                                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => exn,
+                                ::std::result::Result::Err(exn) => {
+                                    let aexn = ::fbthrift::ApplicationException::handler_panic("{{service:name}}.{{function:name}}", exn);
+                                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::ApplicationException(aexn)
+                                }
+                            };
 
-                        ::fbthrift::help::serialize_stream_item::<P, _>(item)
-
-                    })
-                    {{!TODO(T125947234): should we instrument with tracing?}}
-                    .boxed();
+                                ::fbthrift::help::serialize_stream_item::<P, _>(item)
+                            })
+                        {{!TODO(T125947234): should we instrument with tracing?}}
+                        .boxed();
                     (response, Some(stream))
                 },
                 {{#function:exceptions?}}

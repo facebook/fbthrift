@@ -69,6 +69,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let Self::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("Returnstream");
                 match self {
                     Self::Success(inner) => {
@@ -80,11 +83,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    Self::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    Self::ApplicationException(_) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -375,6 +374,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let Self::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("Streamthrows");
                 match self {
                     Self::Success(inner) => {
@@ -395,11 +397,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    Self::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    Self::ApplicationException(_) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -683,6 +681,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let Self::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("Servicethrows");
                 match self {
                     Self::Success(inner) => {
@@ -694,11 +695,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    Self::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    Self::ApplicationException(_) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -1023,6 +1020,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let Self::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("Boththrows");
                 match self {
                     Self::Success(inner) => {
@@ -1043,11 +1043,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    Self::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    Self::ApplicationException(_) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -1376,6 +1372,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let Self::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("Responseandstreamstreamthrows");
                 match self {
                     Self::Success(inner) => {
@@ -1396,11 +1395,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    Self::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    Self::ApplicationException(_) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -1694,6 +1689,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let Self::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("Responseandstreamservicethrows");
                 match self {
                     Self::Success(inner) => {
@@ -1705,11 +1703,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    Self::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    Self::ApplicationException(_) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -2044,6 +2038,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let Self::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("Responseandstreamboththrows");
                 match self {
                     Self::Success(inner) => {
@@ -2064,11 +2061,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    Self::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    Self::ApplicationException(_) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -2396,6 +2389,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let Self::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("ReturnstreamFast");
                 match self {
                     Self::Success(inner) => {
@@ -2407,11 +2403,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    Self::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    Self::ApplicationException(_) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -4490,21 +4482,26 @@ pub mod server {
                     let response = crate::services::pub_sub_streaming_service::ReturnstreamResponseExn::Success(());
                     let stream = res;
 
-                    let stream = stream.map(|item| {
-                        let item = match item {
-                            ::std::result::Result::Ok(res) => {
-                                crate::services::pub_sub_streaming_service::ReturnstreamStreamExn::Success(res)
-                            },
-                            ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ReturnstreamStreamExn::Success(_)) => {
-                                panic!("{} attempted to return success via error", "returnstream");
-                            }
-                            ::std::result::Result::Err(exn) => exn,
-                        };
+                    let stream = ::std::panic::AssertUnwindSafe(stream)
+                        .catch_unwind()
+                        .map(|item| {
+                            let item = match item {
+                                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                                    crate::services::pub_sub_streaming_service::ReturnstreamStreamExn::Success(res)
+                                },
+                                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::pub_sub_streaming_service::ReturnstreamStreamExn::Success(_))) => {
+                                    panic!("{} attempted to return success via error", "returnstream");
+                                }
+                                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => exn,
+                                ::std::result::Result::Err(exn) => {
+                                    let aexn = ::fbthrift::ApplicationException::handler_panic("PubSubStreamingService.returnstream", exn);
+                                    crate::services::pub_sub_streaming_service::ReturnstreamStreamExn::ApplicationException(aexn)
+                                }
+                            };
 
-                        ::fbthrift::help::serialize_stream_item::<P, _>(item)
-
-                    })
-                    .boxed();
+                                ::fbthrift::help::serialize_stream_item::<P, _>(item)
+                            })
+                        .boxed();
                     (response, Some(stream))
                 },
                 crate::services::pub_sub_streaming_service::ReturnstreamExn::ApplicationException(aexn)=> {
@@ -4592,21 +4589,26 @@ pub mod server {
                     let response = crate::services::pub_sub_streaming_service::StreamthrowsResponseExn::Success(());
                     let stream = res;
 
-                    let stream = stream.map(|item| {
-                        let item = match item {
-                            ::std::result::Result::Ok(res) => {
-                                crate::services::pub_sub_streaming_service::StreamthrowsStreamExn::Success(res)
-                            },
-                            ::std::result::Result::Err(crate::services::pub_sub_streaming_service::StreamthrowsStreamExn::Success(_)) => {
-                                panic!("{} attempted to return success via error", "streamthrows");
-                            }
-                            ::std::result::Result::Err(exn) => exn,
-                        };
+                    let stream = ::std::panic::AssertUnwindSafe(stream)
+                        .catch_unwind()
+                        .map(|item| {
+                            let item = match item {
+                                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                                    crate::services::pub_sub_streaming_service::StreamthrowsStreamExn::Success(res)
+                                },
+                                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::pub_sub_streaming_service::StreamthrowsStreamExn::Success(_))) => {
+                                    panic!("{} attempted to return success via error", "streamthrows");
+                                }
+                                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => exn,
+                                ::std::result::Result::Err(exn) => {
+                                    let aexn = ::fbthrift::ApplicationException::handler_panic("PubSubStreamingService.streamthrows", exn);
+                                    crate::services::pub_sub_streaming_service::StreamthrowsStreamExn::ApplicationException(aexn)
+                                }
+                            };
 
-                        ::fbthrift::help::serialize_stream_item::<P, _>(item)
-
-                    })
-                    .boxed();
+                                ::fbthrift::help::serialize_stream_item::<P, _>(item)
+                            })
+                        .boxed();
                     (response, Some(stream))
                 },
                 crate::services::pub_sub_streaming_service::StreamthrowsExn::ApplicationException(aexn)=> {
@@ -4694,21 +4696,26 @@ pub mod server {
                     let response = crate::services::pub_sub_streaming_service::ServicethrowsResponseExn::Success(());
                     let stream = res;
 
-                    let stream = stream.map(|item| {
-                        let item = match item {
-                            ::std::result::Result::Ok(res) => {
-                                crate::services::pub_sub_streaming_service::ServicethrowsStreamExn::Success(res)
-                            },
-                            ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ServicethrowsStreamExn::Success(_)) => {
-                                panic!("{} attempted to return success via error", "servicethrows");
-                            }
-                            ::std::result::Result::Err(exn) => exn,
-                        };
+                    let stream = ::std::panic::AssertUnwindSafe(stream)
+                        .catch_unwind()
+                        .map(|item| {
+                            let item = match item {
+                                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                                    crate::services::pub_sub_streaming_service::ServicethrowsStreamExn::Success(res)
+                                },
+                                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::pub_sub_streaming_service::ServicethrowsStreamExn::Success(_))) => {
+                                    panic!("{} attempted to return success via error", "servicethrows");
+                                }
+                                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => exn,
+                                ::std::result::Result::Err(exn) => {
+                                    let aexn = ::fbthrift::ApplicationException::handler_panic("PubSubStreamingService.servicethrows", exn);
+                                    crate::services::pub_sub_streaming_service::ServicethrowsStreamExn::ApplicationException(aexn)
+                                }
+                            };
 
-                        ::fbthrift::help::serialize_stream_item::<P, _>(item)
-
-                    })
-                    .boxed();
+                                ::fbthrift::help::serialize_stream_item::<P, _>(item)
+                            })
+                        .boxed();
                     (response, Some(stream))
                 },
                 crate::services::pub_sub_streaming_service::ServicethrowsExn::e(exn) => {
@@ -4800,21 +4807,26 @@ pub mod server {
                     let response = crate::services::pub_sub_streaming_service::BoththrowsResponseExn::Success(());
                     let stream = res;
 
-                    let stream = stream.map(|item| {
-                        let item = match item {
-                            ::std::result::Result::Ok(res) => {
-                                crate::services::pub_sub_streaming_service::BoththrowsStreamExn::Success(res)
-                            },
-                            ::std::result::Result::Err(crate::services::pub_sub_streaming_service::BoththrowsStreamExn::Success(_)) => {
-                                panic!("{} attempted to return success via error", "boththrows");
-                            }
-                            ::std::result::Result::Err(exn) => exn,
-                        };
+                    let stream = ::std::panic::AssertUnwindSafe(stream)
+                        .catch_unwind()
+                        .map(|item| {
+                            let item = match item {
+                                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                                    crate::services::pub_sub_streaming_service::BoththrowsStreamExn::Success(res)
+                                },
+                                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::pub_sub_streaming_service::BoththrowsStreamExn::Success(_))) => {
+                                    panic!("{} attempted to return success via error", "boththrows");
+                                }
+                                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => exn,
+                                ::std::result::Result::Err(exn) => {
+                                    let aexn = ::fbthrift::ApplicationException::handler_panic("PubSubStreamingService.boththrows", exn);
+                                    crate::services::pub_sub_streaming_service::BoththrowsStreamExn::ApplicationException(aexn)
+                                }
+                            };
 
-                        ::fbthrift::help::serialize_stream_item::<P, _>(item)
-
-                    })
-                    .boxed();
+                                ::fbthrift::help::serialize_stream_item::<P, _>(item)
+                            })
+                        .boxed();
                     (response, Some(stream))
                 },
                 crate::services::pub_sub_streaming_service::BoththrowsExn::e(exn) => {
@@ -4906,21 +4918,26 @@ pub mod server {
                     let (response, stream) = res;
                     let response = crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsResponseExn::Success(response);
 
-                    let stream = stream.map(|item| {
-                        let item = match item {
-                            ::std::result::Result::Ok(res) => {
-                                crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamExn::Success(res)
-                            },
-                            ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamExn::Success(_)) => {
-                                panic!("{} attempted to return success via error", "responseandstreamstreamthrows");
-                            }
-                            ::std::result::Result::Err(exn) => exn,
-                        };
+                    let stream = ::std::panic::AssertUnwindSafe(stream)
+                        .catch_unwind()
+                        .map(|item| {
+                            let item = match item {
+                                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                                    crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamExn::Success(res)
+                                },
+                                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamExn::Success(_))) => {
+                                    panic!("{} attempted to return success via error", "responseandstreamstreamthrows");
+                                }
+                                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => exn,
+                                ::std::result::Result::Err(exn) => {
+                                    let aexn = ::fbthrift::ApplicationException::handler_panic("PubSubStreamingService.responseandstreamstreamthrows", exn);
+                                    crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsStreamExn::ApplicationException(aexn)
+                                }
+                            };
 
-                        ::fbthrift::help::serialize_stream_item::<P, _>(item)
-
-                    })
-                    .boxed();
+                                ::fbthrift::help::serialize_stream_item::<P, _>(item)
+                            })
+                        .boxed();
                     (response, Some(stream))
                 },
                 crate::services::pub_sub_streaming_service::ResponseandstreamstreamthrowsExn::ApplicationException(aexn)=> {
@@ -5008,21 +5025,26 @@ pub mod server {
                     let (response, stream) = res;
                     let response = crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsResponseExn::Success(response);
 
-                    let stream = stream.map(|item| {
-                        let item = match item {
-                            ::std::result::Result::Ok(res) => {
-                                crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamExn::Success(res)
-                            },
-                            ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamExn::Success(_)) => {
-                                panic!("{} attempted to return success via error", "responseandstreamservicethrows");
-                            }
-                            ::std::result::Result::Err(exn) => exn,
-                        };
+                    let stream = ::std::panic::AssertUnwindSafe(stream)
+                        .catch_unwind()
+                        .map(|item| {
+                            let item = match item {
+                                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                                    crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamExn::Success(res)
+                                },
+                                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamExn::Success(_))) => {
+                                    panic!("{} attempted to return success via error", "responseandstreamservicethrows");
+                                }
+                                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => exn,
+                                ::std::result::Result::Err(exn) => {
+                                    let aexn = ::fbthrift::ApplicationException::handler_panic("PubSubStreamingService.responseandstreamservicethrows", exn);
+                                    crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsStreamExn::ApplicationException(aexn)
+                                }
+                            };
 
-                        ::fbthrift::help::serialize_stream_item::<P, _>(item)
-
-                    })
-                    .boxed();
+                                ::fbthrift::help::serialize_stream_item::<P, _>(item)
+                            })
+                        .boxed();
                     (response, Some(stream))
                 },
                 crate::services::pub_sub_streaming_service::ResponseandstreamservicethrowsExn::e(exn) => {
@@ -5114,21 +5136,26 @@ pub mod server {
                     let (response, stream) = res;
                     let response = crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsResponseExn::Success(response);
 
-                    let stream = stream.map(|item| {
-                        let item = match item {
-                            ::std::result::Result::Ok(res) => {
-                                crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsStreamExn::Success(res)
-                            },
-                            ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsStreamExn::Success(_)) => {
-                                panic!("{} attempted to return success via error", "responseandstreamboththrows");
-                            }
-                            ::std::result::Result::Err(exn) => exn,
-                        };
+                    let stream = ::std::panic::AssertUnwindSafe(stream)
+                        .catch_unwind()
+                        .map(|item| {
+                            let item = match item {
+                                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                                    crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsStreamExn::Success(res)
+                                },
+                                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsStreamExn::Success(_))) => {
+                                    panic!("{} attempted to return success via error", "responseandstreamboththrows");
+                                }
+                                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => exn,
+                                ::std::result::Result::Err(exn) => {
+                                    let aexn = ::fbthrift::ApplicationException::handler_panic("PubSubStreamingService.responseandstreamboththrows", exn);
+                                    crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsStreamExn::ApplicationException(aexn)
+                                }
+                            };
 
-                        ::fbthrift::help::serialize_stream_item::<P, _>(item)
-
-                    })
-                    .boxed();
+                                ::fbthrift::help::serialize_stream_item::<P, _>(item)
+                            })
+                        .boxed();
                     (response, Some(stream))
                 },
                 crate::services::pub_sub_streaming_service::ResponseandstreamboththrowsExn::e(exn) => {
@@ -5221,21 +5248,26 @@ pub mod server {
                     let response = crate::services::pub_sub_streaming_service::ReturnstreamFastResponseExn::Success(());
                     let stream = res;
 
-                    let stream = stream.map(|item| {
-                        let item = match item {
-                            ::std::result::Result::Ok(res) => {
-                                crate::services::pub_sub_streaming_service::ReturnstreamFastStreamExn::Success(res)
-                            },
-                            ::std::result::Result::Err(crate::services::pub_sub_streaming_service::ReturnstreamFastStreamExn::Success(_)) => {
-                                panic!("{} attempted to return success via error", "returnstreamFast");
-                            }
-                            ::std::result::Result::Err(exn) => exn,
-                        };
+                    let stream = ::std::panic::AssertUnwindSafe(stream)
+                        .catch_unwind()
+                        .map(|item| {
+                            let item = match item {
+                                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                                    crate::services::pub_sub_streaming_service::ReturnstreamFastStreamExn::Success(res)
+                                },
+                                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::pub_sub_streaming_service::ReturnstreamFastStreamExn::Success(_))) => {
+                                    panic!("{} attempted to return success via error", "returnstreamFast");
+                                }
+                                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => exn,
+                                ::std::result::Result::Err(exn) => {
+                                    let aexn = ::fbthrift::ApplicationException::handler_panic("PubSubStreamingService.returnstreamFast", exn);
+                                    crate::services::pub_sub_streaming_service::ReturnstreamFastStreamExn::ApplicationException(aexn)
+                                }
+                            };
 
-                        ::fbthrift::help::serialize_stream_item::<P, _>(item)
-
-                    })
-                    .boxed();
+                                ::fbthrift::help::serialize_stream_item::<P, _>(item)
+                            })
+                        .boxed();
                     (response, Some(stream))
                 },
                 crate::services::pub_sub_streaming_service::ReturnstreamFastExn::ApplicationException(aexn)=> {
