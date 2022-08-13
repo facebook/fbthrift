@@ -686,8 +686,10 @@ TEST_F(PatchTest, Struct) {
   auto sourceValue = asValueStruct<type::struct_c>(source);
 
   Value ensureValuePatch;
-  ensureValuePatch.mapValue_ref().ensure()[asValueStruct<type::i16_t>(1)] =
+  Object ensureObject;
+  ensureObject.members().ensure()[1] =
       asValueStruct<type::list<type::i32_t>>(std::vector<int32_t>{});
+  ensureValuePatch.objectValue_ref() = ensureObject;
 
   Value fieldPatchValue;
   fieldPatchValue.objectValue_ref() = makePatch(

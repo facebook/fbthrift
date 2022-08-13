@@ -414,12 +414,11 @@ void ApplyPatch::operator()(const Object& patch, Object& value) const {
   }
 
   if (auto* ensure = findOp(patch, PatchOp::EnsureStruct)) {
-    for (const auto& [id, val] : *ensure->mapValue_ref()) {
-      if (id.if_i16()) {
-        value.members()->insert({*id.i16Value_ref(), val});
-      } else {
-        throw std::runtime_error("EnsureStruct should have i16 typed keys");
-      }
+    if (ensure->if_object()) {
+      auto& ensureMembers = *ensure->as_object().members();
+      value.members()->insert(ensureMembers.begin(), ensureMembers.end());
+    } else {
+      throw std::runtime_error("struct patch Ensure should contain an object");
     }
   }
 
