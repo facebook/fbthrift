@@ -237,6 +237,7 @@ struct v1 {}
  */
 @v1 // All v1 features.
 @GenDefaultEnumValue
+@NoLegacy // Disables features that will be removed.
 @Beta // All uses of v1beta inherit `@Beta`.
 @scope.Transitive
 struct v1beta {}
@@ -250,7 +251,6 @@ struct v1beta {}
  */
 @v1beta // All v1beta features.
 @SerializeInFieldIdOrder
-@NoLegacy // Disables features that will be removed.
 @Experimental // All uses of v1alpha inherit `@Experimental`.
 @scope.Transitive
 struct v1alpha {}

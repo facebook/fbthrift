@@ -476,6 +476,7 @@
       "structured_annotations" : {
         "v1" : {  },
         "GenDefaultEnumValue" : {  },
+        "NoLegacy" : {  },
         "Beta" : {  },
         "scope.Transitive" : {  }
       },
@@ -488,19 +489,18 @@
           "column" : 1
         },
         "end" : {
-          "line" : 242,
+          "line" : 243,
           "column" : 17
         }
       }
     },
     "v1alpha" : {
-      "lineno" : 251,
+      "lineno" : 252,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
         "v1beta" : {  },
         "SerializeInFieldIdOrder" : {  },
-        "NoLegacy" : {  },
         "Experimental" : {  },
         "scope.Transitive" : {  }
       },
@@ -509,7 +509,7 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 251,
+          "line" : 252,
           "column" : 1
         },
         "end" : {

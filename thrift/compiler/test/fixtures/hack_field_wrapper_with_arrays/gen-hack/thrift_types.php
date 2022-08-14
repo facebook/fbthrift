@@ -2039,6 +2039,10 @@ class v1beta implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           shape(
           )
         ),
+        '\thrift\annotation\NoLegacy' => \thrift\annotation\NoLegacy::fromShape(
+          shape(
+          )
+        ),
         '\thrift\annotation\Beta' => \thrift\annotation\Beta::fromShape(
           shape(
           )
@@ -2145,10 +2149,6 @@ class v1alpha implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           )
         ),
         '\thrift\annotation\SerializeInFieldIdOrder' => \thrift\annotation\SerializeInFieldIdOrder::fromShape(
-          shape(
-          )
-        ),
-        '\thrift\annotation\NoLegacy' => \thrift\annotation\NoLegacy::fromShape(
           shape(
           )
         ),
