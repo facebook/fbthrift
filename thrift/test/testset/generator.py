@@ -58,6 +58,7 @@ enum class FieldModifier {{
   Lazy,
   Box,
   CustomDefault,
+  AlternativeCustomDefault,
 }};
 
 namespace detail {{
@@ -114,6 +115,18 @@ PRIMITIVE_TYPES_WITH_CUSTOM_DEFAULT = (
     'string{"8"}',
 )
 
+PRIMITIVE_TYPES_WITH_ALTERNATIVE_CUSTOM_DEFAULT = (
+    "bool{true}",
+    "byte{10}",
+    "i16{20}",
+    "i32{30}",
+    "i64{40}",
+    "float{50}",
+    "double{60}",
+    'binary{"70"}',
+    'string{"80"}',
+)
+
 KEY_TYPES = (
     "string",
     "i64",
@@ -131,6 +144,12 @@ PRIMATIVE_CUSTOM_DEFAULT_TRANSFORM: Dict[Target, str] = {
     Target.NAME: "{}_custom_default",
     Target.THRIFT: "{}",
     Target.CPP2: CPP2_TYPE_NS + "::{}_t|FieldModifier::CustomDefault",
+}
+
+PRIMATIVE_ALTERNATIVE_CUSTOM_DEFAULT_TRANSFORM: Dict[Target, str] = {
+    Target.NAME: "{}_alternative_custom_default",
+    Target.THRIFT: "{}",
+    Target.CPP2: CPP2_TYPE_NS + "::{}_t|FieldModifier::AlternativeCustomDefault",
 }
 
 STRUCT_TRANSFORM: Dict[Target, str] = {
@@ -240,33 +259,44 @@ def get_custom_default(s: str) -> str:
     return s[s.find("{") + 1 : s.find("}")]
 
 
-def gen_primatives(
-    target: Target, prims: Iterable[str] = PRIMITIVE_TYPES
+def gen_primatives_impl(
+    target: Target,
+    prims: Iterable[str],
+    transform: Dict[Target, str],
 ) -> Dict[str, str]:
     result = {}
     for prim in prims:
-        value = PRIMATIVE_TRANSFORM[target].format(prim)
-        result[PRIMATIVE_TRANSFORM[Target.NAME].format(prim)] = value
+        value = transform[target].format(
+            remove_custom_default(prim)
+            if target in [Target.CPP2, Target.NAME]
+            else prim
+        )
+        result[transform[Target.NAME].format(remove_custom_default(prim))] = value
     return result
+
+
+def gen_primatives(
+    target: Target, prims: Iterable[str] = PRIMITIVE_TYPES
+) -> Dict[str, str]:
+    return gen_primatives_impl(target, prims, PRIMATIVE_TRANSFORM)
 
 
 def gen_primatives_with_custom_default(
     target: Target,
 ) -> Dict[str, str]:
-    result = {}
-    for prim in PRIMITIVE_TYPES_WITH_CUSTOM_DEFAULT:
-        if target in [Target.CPP2, Target.NAME]:
-            value = PRIMATIVE_CUSTOM_DEFAULT_TRANSFORM[target].format(
-                remove_custom_default(prim)
-            )
-        else:
-            value = PRIMATIVE_CUSTOM_DEFAULT_TRANSFORM[target].format(prim)
-        result[
-            PRIMATIVE_CUSTOM_DEFAULT_TRANSFORM[Target.NAME].format(
-                remove_custom_default(prim)
-            )
-        ] = value
-    return result
+    return gen_primatives_impl(
+        target, PRIMITIVE_TYPES_WITH_CUSTOM_DEFAULT, PRIMATIVE_CUSTOM_DEFAULT_TRANSFORM
+    )
+
+
+def gen_primatives_with_alternative_custom_default(
+    target: Target,
+) -> Dict[str, str]:
+    return gen_primatives_impl(
+        target,
+        PRIMITIVE_TYPES_WITH_ALTERNATIVE_CUSTOM_DEFAULT,
+        PRIMATIVE_ALTERNATIVE_CUSTOM_DEFAULT_TRANSFORM,
+    )
 
 
 def _gen_unary_tramsform(
@@ -357,6 +387,7 @@ def gen_struct_fields(target: Target) -> Dict[str, str]:
     """Generates field name -> type that are appropriate for use in structs."""
     ret = gen_union_fields(target)
     ret.update(**gen_primatives_with_custom_default(target))
+    ret.update(**gen_primatives_with_alternative_custom_default(target))
     ret.update(
         **gen_optional(target, ret),
         **gen_required(target, ret),

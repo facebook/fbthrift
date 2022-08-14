@@ -362,6 +362,33 @@ struct struct_binary_custom_default {
 struct struct_string_custom_default {
   1: string field_1 = "8";
 } (thrift.uri="facebook.com/thrift/test/testset/struct_string_custom_default")
+struct struct_bool_alternative_custom_default {
+  1: bool field_1 = true;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_bool_alternative_custom_default")
+struct struct_byte_alternative_custom_default {
+  1: byte field_1 = 10;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_byte_alternative_custom_default")
+struct struct_i16_alternative_custom_default {
+  1: i16 field_1 = 20;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_i16_alternative_custom_default")
+struct struct_i32_alternative_custom_default {
+  1: i32 field_1 = 30;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_i32_alternative_custom_default")
+struct struct_i64_alternative_custom_default {
+  1: i64 field_1 = 40;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_i64_alternative_custom_default")
+struct struct_float_alternative_custom_default {
+  1: float field_1 = 50;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_float_alternative_custom_default")
+struct struct_double_alternative_custom_default {
+  1: double field_1 = 60;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_double_alternative_custom_default")
+struct struct_binary_alternative_custom_default {
+  1: binary field_1 = "70";
+} (thrift.uri="facebook.com/thrift/test/testset/struct_binary_alternative_custom_default")
+struct struct_string_alternative_custom_default {
+  1: string field_1 = "80";
+} (thrift.uri="facebook.com/thrift/test/testset/struct_string_alternative_custom_default")
 struct struct_optional_list_bool {
   1: optional list<bool> field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_bool")
@@ -713,6 +740,33 @@ struct struct_optional_binary_custom_default {
 struct struct_optional_string_custom_default {
   1: optional string field_1 = "8";
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_string_custom_default")
+struct struct_optional_bool_alternative_custom_default {
+  1: optional bool field_1 = true;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_bool_alternative_custom_default")
+struct struct_optional_byte_alternative_custom_default {
+  1: optional byte field_1 = 10;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_byte_alternative_custom_default")
+struct struct_optional_i16_alternative_custom_default {
+  1: optional i16 field_1 = 20;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_i16_alternative_custom_default")
+struct struct_optional_i32_alternative_custom_default {
+  1: optional i32 field_1 = 30;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_i32_alternative_custom_default")
+struct struct_optional_i64_alternative_custom_default {
+  1: optional i64 field_1 = 40;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_i64_alternative_custom_default")
+struct struct_optional_float_alternative_custom_default {
+  1: optional float field_1 = 50;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_float_alternative_custom_default")
+struct struct_optional_double_alternative_custom_default {
+  1: optional double field_1 = 60;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_double_alternative_custom_default")
+struct struct_optional_binary_alternative_custom_default {
+  1: optional binary field_1 = "70";
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_binary_alternative_custom_default")
+struct struct_optional_string_alternative_custom_default {
+  1: optional string field_1 = "80";
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_string_alternative_custom_default")
 struct struct_required_list_bool {
   1: required list<bool> field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_list_bool")
@@ -1064,6 +1118,33 @@ struct struct_required_binary_custom_default {
 struct struct_required_string_custom_default {
   1: required string field_1 = "8";
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_string_custom_default")
+struct struct_required_bool_alternative_custom_default {
+  1: required bool field_1 = true;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_bool_alternative_custom_default")
+struct struct_required_byte_alternative_custom_default {
+  1: required byte field_1 = 10;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_byte_alternative_custom_default")
+struct struct_required_i16_alternative_custom_default {
+  1: required i16 field_1 = 20;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_i16_alternative_custom_default")
+struct struct_required_i32_alternative_custom_default {
+  1: required i32 field_1 = 30;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_i32_alternative_custom_default")
+struct struct_required_i64_alternative_custom_default {
+  1: required i64 field_1 = 40;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_i64_alternative_custom_default")
+struct struct_required_float_alternative_custom_default {
+  1: required float field_1 = 50;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_float_alternative_custom_default")
+struct struct_required_double_alternative_custom_default {
+  1: required double field_1 = 60;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_double_alternative_custom_default")
+struct struct_required_binary_alternative_custom_default {
+  1: required binary field_1 = "70";
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_binary_alternative_custom_default")
+struct struct_required_string_alternative_custom_default {
+  1: required string field_1 = "80";
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_string_alternative_custom_default")
 struct struct_optional_list_bool_box {
   1: optional list<bool> field_1 (thrift.box);
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_bool_box")
@@ -1618,6 +1699,33 @@ exception exception_binary_custom_default {
 exception exception_string_custom_default {
   1: string field_1 = "8";
 } (thrift.uri="facebook.com/thrift/test/testset/exception_string_custom_default")
+exception exception_bool_alternative_custom_default {
+  1: bool field_1 = true;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_bool_alternative_custom_default")
+exception exception_byte_alternative_custom_default {
+  1: byte field_1 = 10;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_byte_alternative_custom_default")
+exception exception_i16_alternative_custom_default {
+  1: i16 field_1 = 20;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_i16_alternative_custom_default")
+exception exception_i32_alternative_custom_default {
+  1: i32 field_1 = 30;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_i32_alternative_custom_default")
+exception exception_i64_alternative_custom_default {
+  1: i64 field_1 = 40;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_i64_alternative_custom_default")
+exception exception_float_alternative_custom_default {
+  1: float field_1 = 50;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_float_alternative_custom_default")
+exception exception_double_alternative_custom_default {
+  1: double field_1 = 60;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_double_alternative_custom_default")
+exception exception_binary_alternative_custom_default {
+  1: binary field_1 = "70";
+} (thrift.uri="facebook.com/thrift/test/testset/exception_binary_alternative_custom_default")
+exception exception_string_alternative_custom_default {
+  1: string field_1 = "80";
+} (thrift.uri="facebook.com/thrift/test/testset/exception_string_alternative_custom_default")
 exception exception_optional_list_bool {
   1: optional list<bool> field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_bool")
@@ -1969,6 +2077,33 @@ exception exception_optional_binary_custom_default {
 exception exception_optional_string_custom_default {
   1: optional string field_1 = "8";
 } (thrift.uri="facebook.com/thrift/test/testset/exception_optional_string_custom_default")
+exception exception_optional_bool_alternative_custom_default {
+  1: optional bool field_1 = true;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_bool_alternative_custom_default")
+exception exception_optional_byte_alternative_custom_default {
+  1: optional byte field_1 = 10;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_byte_alternative_custom_default")
+exception exception_optional_i16_alternative_custom_default {
+  1: optional i16 field_1 = 20;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_i16_alternative_custom_default")
+exception exception_optional_i32_alternative_custom_default {
+  1: optional i32 field_1 = 30;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_i32_alternative_custom_default")
+exception exception_optional_i64_alternative_custom_default {
+  1: optional i64 field_1 = 40;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_i64_alternative_custom_default")
+exception exception_optional_float_alternative_custom_default {
+  1: optional float field_1 = 50;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_float_alternative_custom_default")
+exception exception_optional_double_alternative_custom_default {
+  1: optional double field_1 = 60;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_double_alternative_custom_default")
+exception exception_optional_binary_alternative_custom_default {
+  1: optional binary field_1 = "70";
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_binary_alternative_custom_default")
+exception exception_optional_string_alternative_custom_default {
+  1: optional string field_1 = "80";
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_string_alternative_custom_default")
 exception exception_required_list_bool {
   1: required list<bool> field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_required_list_bool")
@@ -2320,6 +2455,33 @@ exception exception_required_binary_custom_default {
 exception exception_required_string_custom_default {
   1: required string field_1 = "8";
 } (thrift.uri="facebook.com/thrift/test/testset/exception_required_string_custom_default")
+exception exception_required_bool_alternative_custom_default {
+  1: required bool field_1 = true;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_bool_alternative_custom_default")
+exception exception_required_byte_alternative_custom_default {
+  1: required byte field_1 = 10;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_byte_alternative_custom_default")
+exception exception_required_i16_alternative_custom_default {
+  1: required i16 field_1 = 20;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_i16_alternative_custom_default")
+exception exception_required_i32_alternative_custom_default {
+  1: required i32 field_1 = 30;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_i32_alternative_custom_default")
+exception exception_required_i64_alternative_custom_default {
+  1: required i64 field_1 = 40;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_i64_alternative_custom_default")
+exception exception_required_float_alternative_custom_default {
+  1: required float field_1 = 50;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_float_alternative_custom_default")
+exception exception_required_double_alternative_custom_default {
+  1: required double field_1 = 60;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_double_alternative_custom_default")
+exception exception_required_binary_alternative_custom_default {
+  1: required binary field_1 = "70";
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_binary_alternative_custom_default")
+exception exception_required_string_alternative_custom_default {
+  1: required string field_1 = "80";
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_string_alternative_custom_default")
 exception exception_optional_list_bool_box {
   1: optional list<bool> field_1 (thrift.box);
 } (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_bool_box")
@@ -3074,414 +3236,441 @@ struct struct_all {
   116: struct_double_custom_default field_116;
   117: struct_binary_custom_default field_117;
   118: struct_string_custom_default field_118;
-  119: struct_optional_list_bool field_119;
-  120: struct_optional_list_byte field_120;
-  121: struct_optional_list_i16 field_121;
-  122: struct_optional_list_i32 field_122;
-  123: struct_optional_list_i64 field_123;
-  124: struct_optional_list_float field_124;
-  125: struct_optional_list_double field_125;
-  126: struct_optional_list_binary field_126;
-  127: struct_optional_list_string field_127;
-  128: struct_optional_set_string field_128;
-  129: struct_optional_set_i64 field_129;
-  130: struct_optional_map_string_bool field_130;
-  131: struct_optional_map_string_byte field_131;
-  132: struct_optional_map_string_i16 field_132;
-  133: struct_optional_map_string_i32 field_133;
-  134: struct_optional_map_string_i64 field_134;
-  135: struct_optional_map_string_float field_135;
-  136: struct_optional_map_string_double field_136;
-  137: struct_optional_map_string_binary field_137;
-  138: struct_optional_map_string_string field_138;
-  139: struct_optional_map_i64_bool field_139;
-  140: struct_optional_map_i64_byte field_140;
-  141: struct_optional_map_i64_i16 field_141;
-  142: struct_optional_map_i64_i32 field_142;
-  143: struct_optional_map_i64_i64 field_143;
-  144: struct_optional_map_i64_float field_144;
-  145: struct_optional_map_i64_double field_145;
-  146: struct_optional_map_i64_binary field_146;
-  147: struct_optional_map_i64_string field_147;
-  148: struct_optional_map_string_set_string field_148;
-  149: struct_optional_map_string_set_i64 field_149;
-  150: struct_optional_map_i64_set_string field_150;
-  151: struct_optional_map_i64_set_i64 field_151;
-  152: struct_optional_list_bool_cpp_ref field_152;
-  153: struct_optional_list_byte_cpp_ref field_153;
-  154: struct_optional_list_i16_cpp_ref field_154;
-  155: struct_optional_list_i32_cpp_ref field_155;
-  156: struct_optional_list_i64_cpp_ref field_156;
-  157: struct_optional_list_float_cpp_ref field_157;
-  158: struct_optional_list_double_cpp_ref field_158;
-  159: struct_optional_list_binary_cpp_ref field_159;
-  160: struct_optional_list_string_cpp_ref field_160;
-  161: struct_optional_set_string_cpp_ref field_161;
-  162: struct_optional_set_i64_cpp_ref field_162;
-  163: struct_optional_map_string_bool_cpp_ref field_163;
-  164: struct_optional_map_string_byte_cpp_ref field_164;
-  165: struct_optional_map_string_i16_cpp_ref field_165;
-  166: struct_optional_map_string_i32_cpp_ref field_166;
-  167: struct_optional_map_string_i64_cpp_ref field_167;
-  168: struct_optional_map_string_float_cpp_ref field_168;
-  169: struct_optional_map_string_double_cpp_ref field_169;
-  170: struct_optional_map_string_binary_cpp_ref field_170;
-  171: struct_optional_map_string_string_cpp_ref field_171;
-  172: struct_optional_map_i64_bool_cpp_ref field_172;
-  173: struct_optional_map_i64_byte_cpp_ref field_173;
-  174: struct_optional_map_i64_i16_cpp_ref field_174;
-  175: struct_optional_map_i64_i32_cpp_ref field_175;
-  176: struct_optional_map_i64_i64_cpp_ref field_176;
-  177: struct_optional_map_i64_float_cpp_ref field_177;
-  178: struct_optional_map_i64_double_cpp_ref field_178;
-  179: struct_optional_map_i64_binary_cpp_ref field_179;
-  180: struct_optional_map_i64_string_cpp_ref field_180;
-  181: struct_optional_map_string_set_string_cpp_ref field_181;
-  182: struct_optional_map_string_set_i64_cpp_ref field_182;
-  183: struct_optional_map_i64_set_string_cpp_ref field_183;
-  184: struct_optional_map_i64_set_i64_cpp_ref field_184;
-  185: struct_optional_list_bool_shared_cpp_ref field_185;
-  186: struct_optional_list_byte_shared_cpp_ref field_186;
-  187: struct_optional_list_i16_shared_cpp_ref field_187;
-  188: struct_optional_list_i32_shared_cpp_ref field_188;
-  189: struct_optional_list_i64_shared_cpp_ref field_189;
-  190: struct_optional_list_float_shared_cpp_ref field_190;
-  191: struct_optional_list_double_shared_cpp_ref field_191;
-  192: struct_optional_list_binary_shared_cpp_ref field_192;
-  193: struct_optional_list_string_shared_cpp_ref field_193;
-  194: struct_optional_set_string_shared_cpp_ref field_194;
-  195: struct_optional_set_i64_shared_cpp_ref field_195;
-  196: struct_optional_map_string_bool_shared_cpp_ref field_196;
-  197: struct_optional_map_string_byte_shared_cpp_ref field_197;
-  198: struct_optional_map_string_i16_shared_cpp_ref field_198;
-  199: struct_optional_map_string_i32_shared_cpp_ref field_199;
-  200: struct_optional_map_string_i64_shared_cpp_ref field_200;
-  201: struct_optional_map_string_float_shared_cpp_ref field_201;
-  202: struct_optional_map_string_double_shared_cpp_ref field_202;
-  203: struct_optional_map_string_binary_shared_cpp_ref field_203;
-  204: struct_optional_map_string_string_shared_cpp_ref field_204;
-  205: struct_optional_map_i64_bool_shared_cpp_ref field_205;
-  206: struct_optional_map_i64_byte_shared_cpp_ref field_206;
-  207: struct_optional_map_i64_i16_shared_cpp_ref field_207;
-  208: struct_optional_map_i64_i32_shared_cpp_ref field_208;
-  209: struct_optional_map_i64_i64_shared_cpp_ref field_209;
-  210: struct_optional_map_i64_float_shared_cpp_ref field_210;
-  211: struct_optional_map_i64_double_shared_cpp_ref field_211;
-  212: struct_optional_map_i64_binary_shared_cpp_ref field_212;
-  213: struct_optional_map_i64_string_shared_cpp_ref field_213;
-  214: struct_optional_map_string_set_string_shared_cpp_ref field_214;
-  215: struct_optional_map_string_set_i64_shared_cpp_ref field_215;
-  216: struct_optional_map_i64_set_string_shared_cpp_ref field_216;
-  217: struct_optional_map_i64_set_i64_shared_cpp_ref field_217;
-  218: struct_optional_bool field_218;
-  219: struct_optional_byte field_219;
-  220: struct_optional_i16 field_220;
-  221: struct_optional_i32 field_221;
-  222: struct_optional_i64 field_222;
-  223: struct_optional_float field_223;
-  224: struct_optional_double field_224;
-  225: struct_optional_binary field_225;
-  226: struct_optional_string field_226;
-  227: struct_optional_bool_custom_default field_227;
-  228: struct_optional_byte_custom_default field_228;
-  229: struct_optional_i16_custom_default field_229;
-  230: struct_optional_i32_custom_default field_230;
-  231: struct_optional_i64_custom_default field_231;
-  232: struct_optional_float_custom_default field_232;
-  233: struct_optional_double_custom_default field_233;
-  234: struct_optional_binary_custom_default field_234;
-  235: struct_optional_string_custom_default field_235;
-  236: struct_required_list_bool field_236;
-  237: struct_required_list_byte field_237;
-  238: struct_required_list_i16 field_238;
-  239: struct_required_list_i32 field_239;
-  240: struct_required_list_i64 field_240;
-  241: struct_required_list_float field_241;
-  242: struct_required_list_double field_242;
-  243: struct_required_list_binary field_243;
-  244: struct_required_list_string field_244;
-  245: struct_required_set_string field_245;
-  246: struct_required_set_i64 field_246;
-  247: struct_required_map_string_bool field_247;
-  248: struct_required_map_string_byte field_248;
-  249: struct_required_map_string_i16 field_249;
-  250: struct_required_map_string_i32 field_250;
-  251: struct_required_map_string_i64 field_251;
-  252: struct_required_map_string_float field_252;
-  253: struct_required_map_string_double field_253;
-  254: struct_required_map_string_binary field_254;
-  255: struct_required_map_string_string field_255;
-  256: struct_required_map_i64_bool field_256;
-  257: struct_required_map_i64_byte field_257;
-  258: struct_required_map_i64_i16 field_258;
-  259: struct_required_map_i64_i32 field_259;
-  260: struct_required_map_i64_i64 field_260;
-  261: struct_required_map_i64_float field_261;
-  262: struct_required_map_i64_double field_262;
-  263: struct_required_map_i64_binary field_263;
-  264: struct_required_map_i64_string field_264;
-  265: struct_required_map_string_set_string field_265;
-  266: struct_required_map_string_set_i64 field_266;
-  267: struct_required_map_i64_set_string field_267;
-  268: struct_required_map_i64_set_i64 field_268;
-  269: struct_required_list_bool_cpp_ref field_269;
-  270: struct_required_list_byte_cpp_ref field_270;
-  271: struct_required_list_i16_cpp_ref field_271;
-  272: struct_required_list_i32_cpp_ref field_272;
-  273: struct_required_list_i64_cpp_ref field_273;
-  274: struct_required_list_float_cpp_ref field_274;
-  275: struct_required_list_double_cpp_ref field_275;
-  276: struct_required_list_binary_cpp_ref field_276;
-  277: struct_required_list_string_cpp_ref field_277;
-  278: struct_required_set_string_cpp_ref field_278;
-  279: struct_required_set_i64_cpp_ref field_279;
-  280: struct_required_map_string_bool_cpp_ref field_280;
-  281: struct_required_map_string_byte_cpp_ref field_281;
-  282: struct_required_map_string_i16_cpp_ref field_282;
-  283: struct_required_map_string_i32_cpp_ref field_283;
-  284: struct_required_map_string_i64_cpp_ref field_284;
-  285: struct_required_map_string_float_cpp_ref field_285;
-  286: struct_required_map_string_double_cpp_ref field_286;
-  287: struct_required_map_string_binary_cpp_ref field_287;
-  288: struct_required_map_string_string_cpp_ref field_288;
-  289: struct_required_map_i64_bool_cpp_ref field_289;
-  290: struct_required_map_i64_byte_cpp_ref field_290;
-  291: struct_required_map_i64_i16_cpp_ref field_291;
-  292: struct_required_map_i64_i32_cpp_ref field_292;
-  293: struct_required_map_i64_i64_cpp_ref field_293;
-  294: struct_required_map_i64_float_cpp_ref field_294;
-  295: struct_required_map_i64_double_cpp_ref field_295;
-  296: struct_required_map_i64_binary_cpp_ref field_296;
-  297: struct_required_map_i64_string_cpp_ref field_297;
-  298: struct_required_map_string_set_string_cpp_ref field_298;
-  299: struct_required_map_string_set_i64_cpp_ref field_299;
-  300: struct_required_map_i64_set_string_cpp_ref field_300;
-  301: struct_required_map_i64_set_i64_cpp_ref field_301;
-  302: struct_required_list_bool_shared_cpp_ref field_302;
-  303: struct_required_list_byte_shared_cpp_ref field_303;
-  304: struct_required_list_i16_shared_cpp_ref field_304;
-  305: struct_required_list_i32_shared_cpp_ref field_305;
-  306: struct_required_list_i64_shared_cpp_ref field_306;
-  307: struct_required_list_float_shared_cpp_ref field_307;
-  308: struct_required_list_double_shared_cpp_ref field_308;
-  309: struct_required_list_binary_shared_cpp_ref field_309;
-  310: struct_required_list_string_shared_cpp_ref field_310;
-  311: struct_required_set_string_shared_cpp_ref field_311;
-  312: struct_required_set_i64_shared_cpp_ref field_312;
-  313: struct_required_map_string_bool_shared_cpp_ref field_313;
-  314: struct_required_map_string_byte_shared_cpp_ref field_314;
-  315: struct_required_map_string_i16_shared_cpp_ref field_315;
-  316: struct_required_map_string_i32_shared_cpp_ref field_316;
-  317: struct_required_map_string_i64_shared_cpp_ref field_317;
-  318: struct_required_map_string_float_shared_cpp_ref field_318;
-  319: struct_required_map_string_double_shared_cpp_ref field_319;
-  320: struct_required_map_string_binary_shared_cpp_ref field_320;
-  321: struct_required_map_string_string_shared_cpp_ref field_321;
-  322: struct_required_map_i64_bool_shared_cpp_ref field_322;
-  323: struct_required_map_i64_byte_shared_cpp_ref field_323;
-  324: struct_required_map_i64_i16_shared_cpp_ref field_324;
-  325: struct_required_map_i64_i32_shared_cpp_ref field_325;
-  326: struct_required_map_i64_i64_shared_cpp_ref field_326;
-  327: struct_required_map_i64_float_shared_cpp_ref field_327;
-  328: struct_required_map_i64_double_shared_cpp_ref field_328;
-  329: struct_required_map_i64_binary_shared_cpp_ref field_329;
-  330: struct_required_map_i64_string_shared_cpp_ref field_330;
-  331: struct_required_map_string_set_string_shared_cpp_ref field_331;
-  332: struct_required_map_string_set_i64_shared_cpp_ref field_332;
-  333: struct_required_map_i64_set_string_shared_cpp_ref field_333;
-  334: struct_required_map_i64_set_i64_shared_cpp_ref field_334;
-  335: struct_required_bool field_335;
-  336: struct_required_byte field_336;
-  337: struct_required_i16 field_337;
-  338: struct_required_i32 field_338;
-  339: struct_required_i64 field_339;
-  340: struct_required_float field_340;
-  341: struct_required_double field_341;
-  342: struct_required_binary field_342;
-  343: struct_required_string field_343;
-  344: struct_required_bool_custom_default field_344;
-  345: struct_required_byte_custom_default field_345;
-  346: struct_required_i16_custom_default field_346;
-  347: struct_required_i32_custom_default field_347;
-  348: struct_required_i64_custom_default field_348;
-  349: struct_required_float_custom_default field_349;
-  350: struct_required_double_custom_default field_350;
-  351: struct_required_binary_custom_default field_351;
-  352: struct_required_string_custom_default field_352;
-  353: struct_optional_list_bool_box field_353;
-  354: struct_optional_list_byte_box field_354;
-  355: struct_optional_list_i16_box field_355;
-  356: struct_optional_list_i32_box field_356;
-  357: struct_optional_list_i64_box field_357;
-  358: struct_optional_list_float_box field_358;
-  359: struct_optional_list_double_box field_359;
-  360: struct_optional_list_binary_box field_360;
-  361: struct_optional_list_string_box field_361;
-  362: struct_optional_set_string_box field_362;
-  363: struct_optional_set_i64_box field_363;
-  364: struct_optional_map_string_bool_box field_364;
-  365: struct_optional_map_string_byte_box field_365;
-  366: struct_optional_map_string_i16_box field_366;
-  367: struct_optional_map_string_i32_box field_367;
-  368: struct_optional_map_string_i64_box field_368;
-  369: struct_optional_map_string_float_box field_369;
-  370: struct_optional_map_string_double_box field_370;
-  371: struct_optional_map_string_binary_box field_371;
-  372: struct_optional_map_string_string_box field_372;
-  373: struct_optional_map_i64_bool_box field_373;
-  374: struct_optional_map_i64_byte_box field_374;
-  375: struct_optional_map_i64_i16_box field_375;
-  376: struct_optional_map_i64_i32_box field_376;
-  377: struct_optional_map_i64_i64_box field_377;
-  378: struct_optional_map_i64_float_box field_378;
-  379: struct_optional_map_i64_double_box field_379;
-  380: struct_optional_map_i64_binary_box field_380;
-  381: struct_optional_map_i64_string_box field_381;
-  382: struct_optional_map_string_set_string_box field_382;
-  383: struct_optional_map_string_set_i64_box field_383;
-  384: struct_optional_map_i64_set_string_box field_384;
-  385: struct_optional_map_i64_set_i64_box field_385;
-  386: struct_list_bool_lazy field_386;
-  387: struct_list_byte_lazy field_387;
-  388: struct_list_i16_lazy field_388;
-  389: struct_list_i32_lazy field_389;
-  390: struct_list_i64_lazy field_390;
-  391: struct_list_float_lazy field_391;
-  392: struct_list_double_lazy field_392;
-  393: struct_list_binary_lazy field_393;
-  394: struct_list_string_lazy field_394;
-  395: struct_set_string_lazy field_395;
-  396: struct_set_i64_lazy field_396;
-  397: struct_map_string_bool_lazy field_397;
-  398: struct_map_string_byte_lazy field_398;
-  399: struct_map_string_i16_lazy field_399;
-  400: struct_map_string_i32_lazy field_400;
-  401: struct_map_string_i64_lazy field_401;
-  402: struct_map_string_float_lazy field_402;
-  403: struct_map_string_double_lazy field_403;
-  404: struct_map_string_binary_lazy field_404;
-  405: struct_map_string_string_lazy field_405;
-  406: struct_map_i64_bool_lazy field_406;
-  407: struct_map_i64_byte_lazy field_407;
-  408: struct_map_i64_i16_lazy field_408;
-  409: struct_map_i64_i32_lazy field_409;
-  410: struct_map_i64_i64_lazy field_410;
-  411: struct_map_i64_float_lazy field_411;
-  412: struct_map_i64_double_lazy field_412;
-  413: struct_map_i64_binary_lazy field_413;
-  414: struct_map_i64_string_lazy field_414;
-  415: struct_map_string_set_string_lazy field_415;
-  416: struct_map_string_set_i64_lazy field_416;
-  417: struct_map_i64_set_string_lazy field_417;
-  418: struct_map_i64_set_i64_lazy field_418;
-  419: struct_string_lazy field_419;
-  420: union_empty field_420;
-  421: union_list_bool field_421;
-  422: union_list_byte field_422;
-  423: union_list_i16 field_423;
-  424: union_list_i32 field_424;
-  425: union_list_i64 field_425;
-  426: union_list_float field_426;
-  427: union_list_double field_427;
-  428: union_list_binary field_428;
-  429: union_list_string field_429;
-  430: union_set_string field_430;
-  431: union_set_i64 field_431;
-  432: union_map_string_bool field_432;
-  433: union_map_string_byte field_433;
-  434: union_map_string_i16 field_434;
-  435: union_map_string_i32 field_435;
-  436: union_map_string_i64 field_436;
-  437: union_map_string_float field_437;
-  438: union_map_string_double field_438;
-  439: union_map_string_binary field_439;
-  440: union_map_string_string field_440;
-  441: union_map_i64_bool field_441;
-  442: union_map_i64_byte field_442;
-  443: union_map_i64_i16 field_443;
-  444: union_map_i64_i32 field_444;
-  445: union_map_i64_i64 field_445;
-  446: union_map_i64_float field_446;
-  447: union_map_i64_double field_447;
-  448: union_map_i64_binary field_448;
-  449: union_map_i64_string field_449;
-  450: union_map_string_set_string field_450;
-  451: union_map_string_set_i64 field_451;
-  452: union_map_i64_set_string field_452;
-  453: union_map_i64_set_i64 field_453;
-  454: union_list_bool_cpp_ref field_454;
-  455: union_list_byte_cpp_ref field_455;
-  456: union_list_i16_cpp_ref field_456;
-  457: union_list_i32_cpp_ref field_457;
-  458: union_list_i64_cpp_ref field_458;
-  459: union_list_float_cpp_ref field_459;
-  460: union_list_double_cpp_ref field_460;
-  461: union_list_binary_cpp_ref field_461;
-  462: union_list_string_cpp_ref field_462;
-  463: union_set_string_cpp_ref field_463;
-  464: union_set_i64_cpp_ref field_464;
-  465: union_map_string_bool_cpp_ref field_465;
-  466: union_map_string_byte_cpp_ref field_466;
-  467: union_map_string_i16_cpp_ref field_467;
-  468: union_map_string_i32_cpp_ref field_468;
-  469: union_map_string_i64_cpp_ref field_469;
-  470: union_map_string_float_cpp_ref field_470;
-  471: union_map_string_double_cpp_ref field_471;
-  472: union_map_string_binary_cpp_ref field_472;
-  473: union_map_string_string_cpp_ref field_473;
-  474: union_map_i64_bool_cpp_ref field_474;
-  475: union_map_i64_byte_cpp_ref field_475;
-  476: union_map_i64_i16_cpp_ref field_476;
-  477: union_map_i64_i32_cpp_ref field_477;
-  478: union_map_i64_i64_cpp_ref field_478;
-  479: union_map_i64_float_cpp_ref field_479;
-  480: union_map_i64_double_cpp_ref field_480;
-  481: union_map_i64_binary_cpp_ref field_481;
-  482: union_map_i64_string_cpp_ref field_482;
-  483: union_map_string_set_string_cpp_ref field_483;
-  484: union_map_string_set_i64_cpp_ref field_484;
-  485: union_map_i64_set_string_cpp_ref field_485;
-  486: union_map_i64_set_i64_cpp_ref field_486;
-  487: union_list_bool_shared_cpp_ref field_487;
-  488: union_list_byte_shared_cpp_ref field_488;
-  489: union_list_i16_shared_cpp_ref field_489;
-  490: union_list_i32_shared_cpp_ref field_490;
-  491: union_list_i64_shared_cpp_ref field_491;
-  492: union_list_float_shared_cpp_ref field_492;
-  493: union_list_double_shared_cpp_ref field_493;
-  494: union_list_binary_shared_cpp_ref field_494;
-  495: union_list_string_shared_cpp_ref field_495;
-  496: union_set_string_shared_cpp_ref field_496;
-  497: union_set_i64_shared_cpp_ref field_497;
-  498: union_map_string_bool_shared_cpp_ref field_498;
-  499: union_map_string_byte_shared_cpp_ref field_499;
-  500: union_map_string_i16_shared_cpp_ref field_500;
-  501: union_map_string_i32_shared_cpp_ref field_501;
-  502: union_map_string_i64_shared_cpp_ref field_502;
-  503: union_map_string_float_shared_cpp_ref field_503;
-  504: union_map_string_double_shared_cpp_ref field_504;
-  505: union_map_string_binary_shared_cpp_ref field_505;
-  506: union_map_string_string_shared_cpp_ref field_506;
-  507: union_map_i64_bool_shared_cpp_ref field_507;
-  508: union_map_i64_byte_shared_cpp_ref field_508;
-  509: union_map_i64_i16_shared_cpp_ref field_509;
-  510: union_map_i64_i32_shared_cpp_ref field_510;
-  511: union_map_i64_i64_shared_cpp_ref field_511;
-  512: union_map_i64_float_shared_cpp_ref field_512;
-  513: union_map_i64_double_shared_cpp_ref field_513;
-  514: union_map_i64_binary_shared_cpp_ref field_514;
-  515: union_map_i64_string_shared_cpp_ref field_515;
-  516: union_map_string_set_string_shared_cpp_ref field_516;
-  517: union_map_string_set_i64_shared_cpp_ref field_517;
-  518: union_map_i64_set_string_shared_cpp_ref field_518;
-  519: union_map_i64_set_i64_shared_cpp_ref field_519;
-  520: union_bool field_520;
-  521: union_byte field_521;
-  522: union_i16 field_522;
-  523: union_i32 field_523;
-  524: union_i64 field_524;
-  525: union_float field_525;
-  526: union_double field_526;
-  527: union_binary field_527;
-  528: union_string field_528;
+  119: struct_bool_alternative_custom_default field_119;
+  120: struct_byte_alternative_custom_default field_120;
+  121: struct_i16_alternative_custom_default field_121;
+  122: struct_i32_alternative_custom_default field_122;
+  123: struct_i64_alternative_custom_default field_123;
+  124: struct_float_alternative_custom_default field_124;
+  125: struct_double_alternative_custom_default field_125;
+  126: struct_binary_alternative_custom_default field_126;
+  127: struct_string_alternative_custom_default field_127;
+  128: struct_optional_list_bool field_128;
+  129: struct_optional_list_byte field_129;
+  130: struct_optional_list_i16 field_130;
+  131: struct_optional_list_i32 field_131;
+  132: struct_optional_list_i64 field_132;
+  133: struct_optional_list_float field_133;
+  134: struct_optional_list_double field_134;
+  135: struct_optional_list_binary field_135;
+  136: struct_optional_list_string field_136;
+  137: struct_optional_set_string field_137;
+  138: struct_optional_set_i64 field_138;
+  139: struct_optional_map_string_bool field_139;
+  140: struct_optional_map_string_byte field_140;
+  141: struct_optional_map_string_i16 field_141;
+  142: struct_optional_map_string_i32 field_142;
+  143: struct_optional_map_string_i64 field_143;
+  144: struct_optional_map_string_float field_144;
+  145: struct_optional_map_string_double field_145;
+  146: struct_optional_map_string_binary field_146;
+  147: struct_optional_map_string_string field_147;
+  148: struct_optional_map_i64_bool field_148;
+  149: struct_optional_map_i64_byte field_149;
+  150: struct_optional_map_i64_i16 field_150;
+  151: struct_optional_map_i64_i32 field_151;
+  152: struct_optional_map_i64_i64 field_152;
+  153: struct_optional_map_i64_float field_153;
+  154: struct_optional_map_i64_double field_154;
+  155: struct_optional_map_i64_binary field_155;
+  156: struct_optional_map_i64_string field_156;
+  157: struct_optional_map_string_set_string field_157;
+  158: struct_optional_map_string_set_i64 field_158;
+  159: struct_optional_map_i64_set_string field_159;
+  160: struct_optional_map_i64_set_i64 field_160;
+  161: struct_optional_list_bool_cpp_ref field_161;
+  162: struct_optional_list_byte_cpp_ref field_162;
+  163: struct_optional_list_i16_cpp_ref field_163;
+  164: struct_optional_list_i32_cpp_ref field_164;
+  165: struct_optional_list_i64_cpp_ref field_165;
+  166: struct_optional_list_float_cpp_ref field_166;
+  167: struct_optional_list_double_cpp_ref field_167;
+  168: struct_optional_list_binary_cpp_ref field_168;
+  169: struct_optional_list_string_cpp_ref field_169;
+  170: struct_optional_set_string_cpp_ref field_170;
+  171: struct_optional_set_i64_cpp_ref field_171;
+  172: struct_optional_map_string_bool_cpp_ref field_172;
+  173: struct_optional_map_string_byte_cpp_ref field_173;
+  174: struct_optional_map_string_i16_cpp_ref field_174;
+  175: struct_optional_map_string_i32_cpp_ref field_175;
+  176: struct_optional_map_string_i64_cpp_ref field_176;
+  177: struct_optional_map_string_float_cpp_ref field_177;
+  178: struct_optional_map_string_double_cpp_ref field_178;
+  179: struct_optional_map_string_binary_cpp_ref field_179;
+  180: struct_optional_map_string_string_cpp_ref field_180;
+  181: struct_optional_map_i64_bool_cpp_ref field_181;
+  182: struct_optional_map_i64_byte_cpp_ref field_182;
+  183: struct_optional_map_i64_i16_cpp_ref field_183;
+  184: struct_optional_map_i64_i32_cpp_ref field_184;
+  185: struct_optional_map_i64_i64_cpp_ref field_185;
+  186: struct_optional_map_i64_float_cpp_ref field_186;
+  187: struct_optional_map_i64_double_cpp_ref field_187;
+  188: struct_optional_map_i64_binary_cpp_ref field_188;
+  189: struct_optional_map_i64_string_cpp_ref field_189;
+  190: struct_optional_map_string_set_string_cpp_ref field_190;
+  191: struct_optional_map_string_set_i64_cpp_ref field_191;
+  192: struct_optional_map_i64_set_string_cpp_ref field_192;
+  193: struct_optional_map_i64_set_i64_cpp_ref field_193;
+  194: struct_optional_list_bool_shared_cpp_ref field_194;
+  195: struct_optional_list_byte_shared_cpp_ref field_195;
+  196: struct_optional_list_i16_shared_cpp_ref field_196;
+  197: struct_optional_list_i32_shared_cpp_ref field_197;
+  198: struct_optional_list_i64_shared_cpp_ref field_198;
+  199: struct_optional_list_float_shared_cpp_ref field_199;
+  200: struct_optional_list_double_shared_cpp_ref field_200;
+  201: struct_optional_list_binary_shared_cpp_ref field_201;
+  202: struct_optional_list_string_shared_cpp_ref field_202;
+  203: struct_optional_set_string_shared_cpp_ref field_203;
+  204: struct_optional_set_i64_shared_cpp_ref field_204;
+  205: struct_optional_map_string_bool_shared_cpp_ref field_205;
+  206: struct_optional_map_string_byte_shared_cpp_ref field_206;
+  207: struct_optional_map_string_i16_shared_cpp_ref field_207;
+  208: struct_optional_map_string_i32_shared_cpp_ref field_208;
+  209: struct_optional_map_string_i64_shared_cpp_ref field_209;
+  210: struct_optional_map_string_float_shared_cpp_ref field_210;
+  211: struct_optional_map_string_double_shared_cpp_ref field_211;
+  212: struct_optional_map_string_binary_shared_cpp_ref field_212;
+  213: struct_optional_map_string_string_shared_cpp_ref field_213;
+  214: struct_optional_map_i64_bool_shared_cpp_ref field_214;
+  215: struct_optional_map_i64_byte_shared_cpp_ref field_215;
+  216: struct_optional_map_i64_i16_shared_cpp_ref field_216;
+  217: struct_optional_map_i64_i32_shared_cpp_ref field_217;
+  218: struct_optional_map_i64_i64_shared_cpp_ref field_218;
+  219: struct_optional_map_i64_float_shared_cpp_ref field_219;
+  220: struct_optional_map_i64_double_shared_cpp_ref field_220;
+  221: struct_optional_map_i64_binary_shared_cpp_ref field_221;
+  222: struct_optional_map_i64_string_shared_cpp_ref field_222;
+  223: struct_optional_map_string_set_string_shared_cpp_ref field_223;
+  224: struct_optional_map_string_set_i64_shared_cpp_ref field_224;
+  225: struct_optional_map_i64_set_string_shared_cpp_ref field_225;
+  226: struct_optional_map_i64_set_i64_shared_cpp_ref field_226;
+  227: struct_optional_bool field_227;
+  228: struct_optional_byte field_228;
+  229: struct_optional_i16 field_229;
+  230: struct_optional_i32 field_230;
+  231: struct_optional_i64 field_231;
+  232: struct_optional_float field_232;
+  233: struct_optional_double field_233;
+  234: struct_optional_binary field_234;
+  235: struct_optional_string field_235;
+  236: struct_optional_bool_custom_default field_236;
+  237: struct_optional_byte_custom_default field_237;
+  238: struct_optional_i16_custom_default field_238;
+  239: struct_optional_i32_custom_default field_239;
+  240: struct_optional_i64_custom_default field_240;
+  241: struct_optional_float_custom_default field_241;
+  242: struct_optional_double_custom_default field_242;
+  243: struct_optional_binary_custom_default field_243;
+  244: struct_optional_string_custom_default field_244;
+  245: struct_optional_bool_alternative_custom_default field_245;
+  246: struct_optional_byte_alternative_custom_default field_246;
+  247: struct_optional_i16_alternative_custom_default field_247;
+  248: struct_optional_i32_alternative_custom_default field_248;
+  249: struct_optional_i64_alternative_custom_default field_249;
+  250: struct_optional_float_alternative_custom_default field_250;
+  251: struct_optional_double_alternative_custom_default field_251;
+  252: struct_optional_binary_alternative_custom_default field_252;
+  253: struct_optional_string_alternative_custom_default field_253;
+  254: struct_required_list_bool field_254;
+  255: struct_required_list_byte field_255;
+  256: struct_required_list_i16 field_256;
+  257: struct_required_list_i32 field_257;
+  258: struct_required_list_i64 field_258;
+  259: struct_required_list_float field_259;
+  260: struct_required_list_double field_260;
+  261: struct_required_list_binary field_261;
+  262: struct_required_list_string field_262;
+  263: struct_required_set_string field_263;
+  264: struct_required_set_i64 field_264;
+  265: struct_required_map_string_bool field_265;
+  266: struct_required_map_string_byte field_266;
+  267: struct_required_map_string_i16 field_267;
+  268: struct_required_map_string_i32 field_268;
+  269: struct_required_map_string_i64 field_269;
+  270: struct_required_map_string_float field_270;
+  271: struct_required_map_string_double field_271;
+  272: struct_required_map_string_binary field_272;
+  273: struct_required_map_string_string field_273;
+  274: struct_required_map_i64_bool field_274;
+  275: struct_required_map_i64_byte field_275;
+  276: struct_required_map_i64_i16 field_276;
+  277: struct_required_map_i64_i32 field_277;
+  278: struct_required_map_i64_i64 field_278;
+  279: struct_required_map_i64_float field_279;
+  280: struct_required_map_i64_double field_280;
+  281: struct_required_map_i64_binary field_281;
+  282: struct_required_map_i64_string field_282;
+  283: struct_required_map_string_set_string field_283;
+  284: struct_required_map_string_set_i64 field_284;
+  285: struct_required_map_i64_set_string field_285;
+  286: struct_required_map_i64_set_i64 field_286;
+  287: struct_required_list_bool_cpp_ref field_287;
+  288: struct_required_list_byte_cpp_ref field_288;
+  289: struct_required_list_i16_cpp_ref field_289;
+  290: struct_required_list_i32_cpp_ref field_290;
+  291: struct_required_list_i64_cpp_ref field_291;
+  292: struct_required_list_float_cpp_ref field_292;
+  293: struct_required_list_double_cpp_ref field_293;
+  294: struct_required_list_binary_cpp_ref field_294;
+  295: struct_required_list_string_cpp_ref field_295;
+  296: struct_required_set_string_cpp_ref field_296;
+  297: struct_required_set_i64_cpp_ref field_297;
+  298: struct_required_map_string_bool_cpp_ref field_298;
+  299: struct_required_map_string_byte_cpp_ref field_299;
+  300: struct_required_map_string_i16_cpp_ref field_300;
+  301: struct_required_map_string_i32_cpp_ref field_301;
+  302: struct_required_map_string_i64_cpp_ref field_302;
+  303: struct_required_map_string_float_cpp_ref field_303;
+  304: struct_required_map_string_double_cpp_ref field_304;
+  305: struct_required_map_string_binary_cpp_ref field_305;
+  306: struct_required_map_string_string_cpp_ref field_306;
+  307: struct_required_map_i64_bool_cpp_ref field_307;
+  308: struct_required_map_i64_byte_cpp_ref field_308;
+  309: struct_required_map_i64_i16_cpp_ref field_309;
+  310: struct_required_map_i64_i32_cpp_ref field_310;
+  311: struct_required_map_i64_i64_cpp_ref field_311;
+  312: struct_required_map_i64_float_cpp_ref field_312;
+  313: struct_required_map_i64_double_cpp_ref field_313;
+  314: struct_required_map_i64_binary_cpp_ref field_314;
+  315: struct_required_map_i64_string_cpp_ref field_315;
+  316: struct_required_map_string_set_string_cpp_ref field_316;
+  317: struct_required_map_string_set_i64_cpp_ref field_317;
+  318: struct_required_map_i64_set_string_cpp_ref field_318;
+  319: struct_required_map_i64_set_i64_cpp_ref field_319;
+  320: struct_required_list_bool_shared_cpp_ref field_320;
+  321: struct_required_list_byte_shared_cpp_ref field_321;
+  322: struct_required_list_i16_shared_cpp_ref field_322;
+  323: struct_required_list_i32_shared_cpp_ref field_323;
+  324: struct_required_list_i64_shared_cpp_ref field_324;
+  325: struct_required_list_float_shared_cpp_ref field_325;
+  326: struct_required_list_double_shared_cpp_ref field_326;
+  327: struct_required_list_binary_shared_cpp_ref field_327;
+  328: struct_required_list_string_shared_cpp_ref field_328;
+  329: struct_required_set_string_shared_cpp_ref field_329;
+  330: struct_required_set_i64_shared_cpp_ref field_330;
+  331: struct_required_map_string_bool_shared_cpp_ref field_331;
+  332: struct_required_map_string_byte_shared_cpp_ref field_332;
+  333: struct_required_map_string_i16_shared_cpp_ref field_333;
+  334: struct_required_map_string_i32_shared_cpp_ref field_334;
+  335: struct_required_map_string_i64_shared_cpp_ref field_335;
+  336: struct_required_map_string_float_shared_cpp_ref field_336;
+  337: struct_required_map_string_double_shared_cpp_ref field_337;
+  338: struct_required_map_string_binary_shared_cpp_ref field_338;
+  339: struct_required_map_string_string_shared_cpp_ref field_339;
+  340: struct_required_map_i64_bool_shared_cpp_ref field_340;
+  341: struct_required_map_i64_byte_shared_cpp_ref field_341;
+  342: struct_required_map_i64_i16_shared_cpp_ref field_342;
+  343: struct_required_map_i64_i32_shared_cpp_ref field_343;
+  344: struct_required_map_i64_i64_shared_cpp_ref field_344;
+  345: struct_required_map_i64_float_shared_cpp_ref field_345;
+  346: struct_required_map_i64_double_shared_cpp_ref field_346;
+  347: struct_required_map_i64_binary_shared_cpp_ref field_347;
+  348: struct_required_map_i64_string_shared_cpp_ref field_348;
+  349: struct_required_map_string_set_string_shared_cpp_ref field_349;
+  350: struct_required_map_string_set_i64_shared_cpp_ref field_350;
+  351: struct_required_map_i64_set_string_shared_cpp_ref field_351;
+  352: struct_required_map_i64_set_i64_shared_cpp_ref field_352;
+  353: struct_required_bool field_353;
+  354: struct_required_byte field_354;
+  355: struct_required_i16 field_355;
+  356: struct_required_i32 field_356;
+  357: struct_required_i64 field_357;
+  358: struct_required_float field_358;
+  359: struct_required_double field_359;
+  360: struct_required_binary field_360;
+  361: struct_required_string field_361;
+  362: struct_required_bool_custom_default field_362;
+  363: struct_required_byte_custom_default field_363;
+  364: struct_required_i16_custom_default field_364;
+  365: struct_required_i32_custom_default field_365;
+  366: struct_required_i64_custom_default field_366;
+  367: struct_required_float_custom_default field_367;
+  368: struct_required_double_custom_default field_368;
+  369: struct_required_binary_custom_default field_369;
+  370: struct_required_string_custom_default field_370;
+  371: struct_required_bool_alternative_custom_default field_371;
+  372: struct_required_byte_alternative_custom_default field_372;
+  373: struct_required_i16_alternative_custom_default field_373;
+  374: struct_required_i32_alternative_custom_default field_374;
+  375: struct_required_i64_alternative_custom_default field_375;
+  376: struct_required_float_alternative_custom_default field_376;
+  377: struct_required_double_alternative_custom_default field_377;
+  378: struct_required_binary_alternative_custom_default field_378;
+  379: struct_required_string_alternative_custom_default field_379;
+  380: struct_optional_list_bool_box field_380;
+  381: struct_optional_list_byte_box field_381;
+  382: struct_optional_list_i16_box field_382;
+  383: struct_optional_list_i32_box field_383;
+  384: struct_optional_list_i64_box field_384;
+  385: struct_optional_list_float_box field_385;
+  386: struct_optional_list_double_box field_386;
+  387: struct_optional_list_binary_box field_387;
+  388: struct_optional_list_string_box field_388;
+  389: struct_optional_set_string_box field_389;
+  390: struct_optional_set_i64_box field_390;
+  391: struct_optional_map_string_bool_box field_391;
+  392: struct_optional_map_string_byte_box field_392;
+  393: struct_optional_map_string_i16_box field_393;
+  394: struct_optional_map_string_i32_box field_394;
+  395: struct_optional_map_string_i64_box field_395;
+  396: struct_optional_map_string_float_box field_396;
+  397: struct_optional_map_string_double_box field_397;
+  398: struct_optional_map_string_binary_box field_398;
+  399: struct_optional_map_string_string_box field_399;
+  400: struct_optional_map_i64_bool_box field_400;
+  401: struct_optional_map_i64_byte_box field_401;
+  402: struct_optional_map_i64_i16_box field_402;
+  403: struct_optional_map_i64_i32_box field_403;
+  404: struct_optional_map_i64_i64_box field_404;
+  405: struct_optional_map_i64_float_box field_405;
+  406: struct_optional_map_i64_double_box field_406;
+  407: struct_optional_map_i64_binary_box field_407;
+  408: struct_optional_map_i64_string_box field_408;
+  409: struct_optional_map_string_set_string_box field_409;
+  410: struct_optional_map_string_set_i64_box field_410;
+  411: struct_optional_map_i64_set_string_box field_411;
+  412: struct_optional_map_i64_set_i64_box field_412;
+  413: struct_list_bool_lazy field_413;
+  414: struct_list_byte_lazy field_414;
+  415: struct_list_i16_lazy field_415;
+  416: struct_list_i32_lazy field_416;
+  417: struct_list_i64_lazy field_417;
+  418: struct_list_float_lazy field_418;
+  419: struct_list_double_lazy field_419;
+  420: struct_list_binary_lazy field_420;
+  421: struct_list_string_lazy field_421;
+  422: struct_set_string_lazy field_422;
+  423: struct_set_i64_lazy field_423;
+  424: struct_map_string_bool_lazy field_424;
+  425: struct_map_string_byte_lazy field_425;
+  426: struct_map_string_i16_lazy field_426;
+  427: struct_map_string_i32_lazy field_427;
+  428: struct_map_string_i64_lazy field_428;
+  429: struct_map_string_float_lazy field_429;
+  430: struct_map_string_double_lazy field_430;
+  431: struct_map_string_binary_lazy field_431;
+  432: struct_map_string_string_lazy field_432;
+  433: struct_map_i64_bool_lazy field_433;
+  434: struct_map_i64_byte_lazy field_434;
+  435: struct_map_i64_i16_lazy field_435;
+  436: struct_map_i64_i32_lazy field_436;
+  437: struct_map_i64_i64_lazy field_437;
+  438: struct_map_i64_float_lazy field_438;
+  439: struct_map_i64_double_lazy field_439;
+  440: struct_map_i64_binary_lazy field_440;
+  441: struct_map_i64_string_lazy field_441;
+  442: struct_map_string_set_string_lazy field_442;
+  443: struct_map_string_set_i64_lazy field_443;
+  444: struct_map_i64_set_string_lazy field_444;
+  445: struct_map_i64_set_i64_lazy field_445;
+  446: struct_string_lazy field_446;
+  447: union_empty field_447;
+  448: union_list_bool field_448;
+  449: union_list_byte field_449;
+  450: union_list_i16 field_450;
+  451: union_list_i32 field_451;
+  452: union_list_i64 field_452;
+  453: union_list_float field_453;
+  454: union_list_double field_454;
+  455: union_list_binary field_455;
+  456: union_list_string field_456;
+  457: union_set_string field_457;
+  458: union_set_i64 field_458;
+  459: union_map_string_bool field_459;
+  460: union_map_string_byte field_460;
+  461: union_map_string_i16 field_461;
+  462: union_map_string_i32 field_462;
+  463: union_map_string_i64 field_463;
+  464: union_map_string_float field_464;
+  465: union_map_string_double field_465;
+  466: union_map_string_binary field_466;
+  467: union_map_string_string field_467;
+  468: union_map_i64_bool field_468;
+  469: union_map_i64_byte field_469;
+  470: union_map_i64_i16 field_470;
+  471: union_map_i64_i32 field_471;
+  472: union_map_i64_i64 field_472;
+  473: union_map_i64_float field_473;
+  474: union_map_i64_double field_474;
+  475: union_map_i64_binary field_475;
+  476: union_map_i64_string field_476;
+  477: union_map_string_set_string field_477;
+  478: union_map_string_set_i64 field_478;
+  479: union_map_i64_set_string field_479;
+  480: union_map_i64_set_i64 field_480;
+  481: union_list_bool_cpp_ref field_481;
+  482: union_list_byte_cpp_ref field_482;
+  483: union_list_i16_cpp_ref field_483;
+  484: union_list_i32_cpp_ref field_484;
+  485: union_list_i64_cpp_ref field_485;
+  486: union_list_float_cpp_ref field_486;
+  487: union_list_double_cpp_ref field_487;
+  488: union_list_binary_cpp_ref field_488;
+  489: union_list_string_cpp_ref field_489;
+  490: union_set_string_cpp_ref field_490;
+  491: union_set_i64_cpp_ref field_491;
+  492: union_map_string_bool_cpp_ref field_492;
+  493: union_map_string_byte_cpp_ref field_493;
+  494: union_map_string_i16_cpp_ref field_494;
+  495: union_map_string_i32_cpp_ref field_495;
+  496: union_map_string_i64_cpp_ref field_496;
+  497: union_map_string_float_cpp_ref field_497;
+  498: union_map_string_double_cpp_ref field_498;
+  499: union_map_string_binary_cpp_ref field_499;
+  500: union_map_string_string_cpp_ref field_500;
+  501: union_map_i64_bool_cpp_ref field_501;
+  502: union_map_i64_byte_cpp_ref field_502;
+  503: union_map_i64_i16_cpp_ref field_503;
+  504: union_map_i64_i32_cpp_ref field_504;
+  505: union_map_i64_i64_cpp_ref field_505;
+  506: union_map_i64_float_cpp_ref field_506;
+  507: union_map_i64_double_cpp_ref field_507;
+  508: union_map_i64_binary_cpp_ref field_508;
+  509: union_map_i64_string_cpp_ref field_509;
+  510: union_map_string_set_string_cpp_ref field_510;
+  511: union_map_string_set_i64_cpp_ref field_511;
+  512: union_map_i64_set_string_cpp_ref field_512;
+  513: union_map_i64_set_i64_cpp_ref field_513;
+  514: union_list_bool_shared_cpp_ref field_514;
+  515: union_list_byte_shared_cpp_ref field_515;
+  516: union_list_i16_shared_cpp_ref field_516;
+  517: union_list_i32_shared_cpp_ref field_517;
+  518: union_list_i64_shared_cpp_ref field_518;
+  519: union_list_float_shared_cpp_ref field_519;
+  520: union_list_double_shared_cpp_ref field_520;
+  521: union_list_binary_shared_cpp_ref field_521;
+  522: union_list_string_shared_cpp_ref field_522;
+  523: union_set_string_shared_cpp_ref field_523;
+  524: union_set_i64_shared_cpp_ref field_524;
+  525: union_map_string_bool_shared_cpp_ref field_525;
+  526: union_map_string_byte_shared_cpp_ref field_526;
+  527: union_map_string_i16_shared_cpp_ref field_527;
+  528: union_map_string_i32_shared_cpp_ref field_528;
+  529: union_map_string_i64_shared_cpp_ref field_529;
+  530: union_map_string_float_shared_cpp_ref field_530;
+  531: union_map_string_double_shared_cpp_ref field_531;
+  532: union_map_string_binary_shared_cpp_ref field_532;
+  533: union_map_string_string_shared_cpp_ref field_533;
+  534: union_map_i64_bool_shared_cpp_ref field_534;
+  535: union_map_i64_byte_shared_cpp_ref field_535;
+  536: union_map_i64_i16_shared_cpp_ref field_536;
+  537: union_map_i64_i32_shared_cpp_ref field_537;
+  538: union_map_i64_i64_shared_cpp_ref field_538;
+  539: union_map_i64_float_shared_cpp_ref field_539;
+  540: union_map_i64_double_shared_cpp_ref field_540;
+  541: union_map_i64_binary_shared_cpp_ref field_541;
+  542: union_map_i64_string_shared_cpp_ref field_542;
+  543: union_map_string_set_string_shared_cpp_ref field_543;
+  544: union_map_string_set_i64_shared_cpp_ref field_544;
+  545: union_map_i64_set_string_shared_cpp_ref field_545;
+  546: union_map_i64_set_i64_shared_cpp_ref field_546;
+  547: union_bool field_547;
+  548: union_byte field_548;
+  549: union_i16 field_549;
+  550: union_i32 field_550;
+  551: union_i64 field_551;
+  552: union_float field_552;
+  553: union_double field_553;
+  554: union_binary field_554;
+  555: union_string field_555;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_all")
