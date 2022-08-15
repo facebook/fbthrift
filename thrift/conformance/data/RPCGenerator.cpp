@@ -19,6 +19,9 @@
 namespace apache::thrift::conformance::data {
 
 namespace {
+const uint32_t kMaxFrameSize = (1 << 24) - 1;
+const std::string kLargeData = std::string(kMaxFrameSize * 2, 'a');
+
 // =================== Request-Response ===================
 Test createRequestResponseBasicTest() {
   Test ret;
@@ -174,9 +177,6 @@ Test createRequestResponseFragmentationTest() {
   auto& testCase = ret.testCases()->emplace_back();
   testCase.name() = "RequestResponseFragmentation/Success";
 
-  const uint32_t maxFrameSize = (1 << 24) - 1;
-  const std::string largeData = std::string(maxFrameSize * 2, 'a');
-
   auto& rpcTest = testCase.rpc_ref().emplace();
   rpcTest.clientInstruction_ref()
       .emplace()
@@ -184,14 +184,14 @@ Test createRequestResponseFragmentationTest() {
       .emplace()
       .request()
       .emplace()
-      .data() = largeData;
+      .data() = kLargeData;
   rpcTest.clientTestResult_ref()
       .emplace()
       .requestResponseBasic_ref()
       .emplace()
       .response()
       .emplace()
-      .data() = largeData;
+      .data() = kLargeData;
 
   rpcTest.serverInstruction_ref()
       .emplace()
@@ -199,14 +199,14 @@ Test createRequestResponseFragmentationTest() {
       .emplace()
       .response()
       .emplace()
-      .data() = largeData;
+      .data() = kLargeData;
   rpcTest.serverTestResult_ref()
       .emplace()
       .requestResponseBasic_ref()
       .emplace()
       .request()
       .emplace()
-      .data() = largeData;
+      .data() = kLargeData;
 
   return ret;
 }
@@ -297,6 +297,44 @@ Test createStreamChunkTimeoutTest() {
   return ret;
 }
 
+Test createStreamFragmentationTest() {
+  Test ret;
+  ret.name() = "StreamFragmentationTest";
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "StreamFragmentation/Success";
+
+  auto& rpcTest = testCase.rpc_ref().emplace();
+  rpcTest.clientInstruction_ref()
+      .emplace()
+      .streamBasic_ref()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = kLargeData;
+
+  auto& serverInstruction =
+      rpcTest.serverInstruction_ref().emplace().streamBasic_ref().emplace();
+  serverInstruction.streamPayloads()->emplace_back().data() = kLargeData;
+
+  rpcTest.clientTestResult_ref()
+      .emplace()
+      .streamBasic_ref()
+      .emplace()
+      .streamPayloads()
+      .copy_from(serverInstruction.streamPayloads());
+
+  rpcTest.serverTestResult_ref()
+      .emplace()
+      .streamBasic_ref()
+      .emplace()
+      .request()
+      .emplace()
+      .data() = kLargeData;
+
+  return ret;
+}
+
 // =================== Sink ===================
 Test createSinkBasicTest() {
   Test ret;
@@ -335,6 +373,40 @@ Test createSinkBasicTest() {
   return ret;
 }
 
+Test createSinkFragmentationTest() {
+  Test ret;
+  ret.name() = "SinkFragmentationTest";
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "SinkFragmentation/Success";
+
+  auto& rpcTest = testCase.rpc_ref().emplace();
+  auto& clientInstruction =
+      rpcTest.clientInstruction_ref().emplace().sinkBasic_ref().emplace();
+  clientInstruction.request().emplace().data() = kLargeData;
+  clientInstruction.sinkPayloads()->emplace_back().data() = kLargeData;
+
+  rpcTest.clientTestResult_ref()
+      .emplace()
+      .sinkBasic_ref()
+      .emplace()
+      .finalResponse()
+      .emplace()
+      .data() = kLargeData;
+
+  auto& serverInstruction =
+      rpcTest.serverInstruction_ref().emplace().sinkBasic_ref().emplace();
+  serverInstruction.finalResponse().emplace().data() = kLargeData;
+  serverInstruction.bufferSize() = 1000;
+
+  auto& serverResult =
+      rpcTest.serverTestResult_ref().emplace().sinkBasic_ref().emplace();
+  serverResult.request().emplace().data() = kLargeData;
+  serverResult.sinkPayloads().copy_from(clientInstruction.sinkPayloads());
+
+  return ret;
+}
+
 void addCommonRPCTests(TestSuite& suite) {
   // =================== Request-Response ===================
   suite.tests()->push_back(createRequestResponseBasicTest());
@@ -344,8 +416,10 @@ void addCommonRPCTests(TestSuite& suite) {
   suite.tests()->push_back(createRequestResponseFragmentationTest());
   // =================== Stream ===================
   suite.tests()->push_back(createStreamBasicTest());
+  suite.tests()->push_back(createStreamFragmentationTest());
   // =================== Sink ===================
   suite.tests()->push_back(createSinkBasicTest());
+  suite.tests()->push_back(createSinkFragmentationTest());
 }
 
 } // namespace

@@ -165,7 +165,7 @@ class RPCClientConformanceTest : public testing::Test {
 
     // Wait for result from client
     folly::Try<ClientTestResult> actualClientResult =
-        handler_->clientResult().within(std::chrono::seconds(1)).getTry();
+        handler_->clientResult().within(std::chrono::seconds(5)).getTry();
 
     // End test if result was not received
     if (actualClientResult.hasException()) {
