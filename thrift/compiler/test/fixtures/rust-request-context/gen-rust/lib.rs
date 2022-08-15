@@ -4666,22 +4666,26 @@ pub mod server {
                     let stream = ::std::panic::AssertUnwindSafe(stream)
                         .catch_unwind()
                         .map(|item| {
-                            let item = match item {
+                            let (item, is_ex) = match item {
                                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
-                                    crate::services::my_service::StreamByIdStreamExn::Success(res)
+                                    (crate::services::my_service::StreamByIdStreamExn::Success(res), false)
                                 },
                                 ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_service::StreamByIdStreamExn::Success(_))) => {
                                     panic!("{} attempted to return success via error", "streamById");
                                 }
-                                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => exn,
+                                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => (exn, true),
                                 ::std::result::Result::Err(exn) => {
                                     let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.streamById", exn);
-                                    crate::services::my_service::StreamByIdStreamExn::ApplicationException(aexn)
+                                    (crate::services::my_service::StreamByIdStreamExn::ApplicationException(aexn), true)
                                 }
                             };
 
-                                ::fbthrift::help::serialize_stream_item::<P, _>(item)
-                            })
+                            match ::fbthrift::help::serialize_stream_item::<P, _>(item) {
+                                Ok(payload) if !is_ex => ::fbthrift::SerializedStreamElement::Success(payload),
+                                Ok(payload) => ::fbthrift::SerializedStreamElement::Ex(payload),
+                                Err(err) => ::fbthrift::SerializedStreamElement::SerializationError(err),
+                            }
+                        })
                         .boxed();
                     (response, Some(stream))
                 },
@@ -4774,22 +4778,26 @@ pub mod server {
                     let stream = ::std::panic::AssertUnwindSafe(stream)
                         .catch_unwind()
                         .map(|item| {
-                            let item = match item {
+                            let (item, is_ex) = match item {
                                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
-                                    crate::services::my_service::StreamByIdWithExceptionStreamExn::Success(res)
+                                    (crate::services::my_service::StreamByIdWithExceptionStreamExn::Success(res), false)
                                 },
                                 ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_service::StreamByIdWithExceptionStreamExn::Success(_))) => {
                                     panic!("{} attempted to return success via error", "streamByIdWithException");
                                 }
-                                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => exn,
+                                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => (exn, true),
                                 ::std::result::Result::Err(exn) => {
                                     let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.streamByIdWithException", exn);
-                                    crate::services::my_service::StreamByIdWithExceptionStreamExn::ApplicationException(aexn)
+                                    (crate::services::my_service::StreamByIdWithExceptionStreamExn::ApplicationException(aexn), true)
                                 }
                             };
 
-                                ::fbthrift::help::serialize_stream_item::<P, _>(item)
-                            })
+                            match ::fbthrift::help::serialize_stream_item::<P, _>(item) {
+                                Ok(payload) if !is_ex => ::fbthrift::SerializedStreamElement::Success(payload),
+                                Ok(payload) => ::fbthrift::SerializedStreamElement::Ex(payload),
+                                Err(err) => ::fbthrift::SerializedStreamElement::SerializationError(err),
+                            }
+                        })
                         .boxed();
                     (response, Some(stream))
                 },
@@ -4882,22 +4890,26 @@ pub mod server {
                     let stream = ::std::panic::AssertUnwindSafe(stream)
                         .catch_unwind()
                         .map(|item| {
-                            let item = match item {
+                            let (item, is_ex) = match item {
                                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
-                                    crate::services::my_service::StreamByIdWithResponseStreamExn::Success(res)
+                                    (crate::services::my_service::StreamByIdWithResponseStreamExn::Success(res), false)
                                 },
                                 ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_service::StreamByIdWithResponseStreamExn::Success(_))) => {
                                     panic!("{} attempted to return success via error", "streamByIdWithResponse");
                                 }
-                                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => exn,
+                                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => (exn, true),
                                 ::std::result::Result::Err(exn) => {
                                     let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.streamByIdWithResponse", exn);
-                                    crate::services::my_service::StreamByIdWithResponseStreamExn::ApplicationException(aexn)
+                                    (crate::services::my_service::StreamByIdWithResponseStreamExn::ApplicationException(aexn), true)
                                 }
                             };
 
-                                ::fbthrift::help::serialize_stream_item::<P, _>(item)
-                            })
+                            match ::fbthrift::help::serialize_stream_item::<P, _>(item) {
+                                Ok(payload) if !is_ex => ::fbthrift::SerializedStreamElement::Success(payload),
+                                Ok(payload) => ::fbthrift::SerializedStreamElement::Ex(payload),
+                                Err(err) => ::fbthrift::SerializedStreamElement::SerializationError(err),
+                            }
+                        })
                         .boxed();
                     (response, Some(stream))
                 },

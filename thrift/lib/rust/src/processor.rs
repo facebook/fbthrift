@@ -42,6 +42,15 @@ use crate::serialize::Serialize;
 use crate::thrift_protocol::ProtocolID;
 use crate::ttype::TType;
 
+pub enum SerializedStreamElement<Payload> {
+    /// A normal stream response, without any error. Contains the serialized response.
+    Success(Payload),
+    /// Contains the serialized exception.
+    Ex(Payload),
+    /// The serialization failed. Contains the error.
+    SerializationError(Error),
+}
+
 pub trait ReplyState<F>
 where
     F: Framing,
@@ -50,7 +59,7 @@ where
     fn send_stream_reply(
         &mut self,
         response: FramingEncodedFinal<F>,
-        stream: Option<BoxStream<'static, Result<FramingEncodedFinal<F>>>>,
+        stream: Option<BoxStream<'static, SerializedStreamElement<FramingEncodedFinal<F>>>>,
         protocol_id: ProtocolID,
     ) -> Result<()>;
 }
