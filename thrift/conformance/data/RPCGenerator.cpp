@@ -407,6 +407,46 @@ Test createSinkFragmentationTest() {
   return ret;
 }
 
+Test createSinkSubsequentCreditsTest() {
+  // Same as SinkBasicTest but server buffer size is smaller than number of sink
+  // payloads, so server must keep sending subsequent credits in order to
+  // receive all sink payloads
+  Test ret;
+  ret.name() = "SinkSubsequentCreditsTest";
+
+  auto& testCase = ret.testCases()->emplace_back();
+  testCase.name() = "SinkSubsequestCredits/Success";
+
+  auto& rpcTest = testCase.rpc_ref().emplace();
+  auto& clientInstruction =
+      rpcTest.clientInstruction_ref().emplace().sinkBasic_ref().emplace();
+  clientInstruction.request().emplace().data() = "hello";
+  for (int i = 0; i < 100; i++) {
+    auto& sinkPayload = clientInstruction.sinkPayloads()->emplace_back();
+    sinkPayload.data() = folly::to<std::string>(i);
+  }
+
+  rpcTest.clientTestResult_ref()
+      .emplace()
+      .sinkBasic_ref()
+      .emplace()
+      .finalResponse()
+      .emplace()
+      .data() = "world";
+
+  auto& serverInstruction =
+      rpcTest.serverInstruction_ref().emplace().sinkBasic_ref().emplace();
+  serverInstruction.finalResponse().emplace().data() = "world";
+  serverInstruction.bufferSize() = 10;
+
+  auto& serverResult =
+      rpcTest.serverTestResult_ref().emplace().sinkBasic_ref().emplace();
+  serverResult.request().emplace().data() = "hello";
+  serverResult.sinkPayloads().copy_from(clientInstruction.sinkPayloads());
+
+  return ret;
+}
+
 void addCommonRPCTests(TestSuite& suite) {
   // =================== Request-Response ===================
   suite.tests()->push_back(createRequestResponseBasicTest());
@@ -420,6 +460,7 @@ void addCommonRPCTests(TestSuite& suite) {
   // =================== Sink ===================
   suite.tests()->push_back(createSinkBasicTest());
   suite.tests()->push_back(createSinkFragmentationTest());
+  suite.tests()->push_back(createSinkSubsequentCreditsTest());
 }
 
 } // namespace
