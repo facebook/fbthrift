@@ -18,6 +18,9 @@
 
 #include <type_traits>
 
+#include <folly/Optional.h>
+
+#include <thrift/lib/cpp/protocol/TType.h>
 #include <thrift/lib/cpp2/op/Get.h>
 #include <thrift/lib/cpp2/op/Hash.h>
 #include <thrift/lib/cpp2/type/BaseType.h>
@@ -104,6 +107,8 @@ class Type : public detail::Wrap<TypeStruct> {
   // Specifically, that all contained 'type name' values have full,
   // human-readable, Thrift URIs.
   bool isFull() const { return isFull(data_); }
+
+  folly::Optional<protocol::TType> toTType() const noexcept;
 
  private:
   static bool isFull(const TypeUri& typeUri);
