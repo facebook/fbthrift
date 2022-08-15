@@ -329,6 +329,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let Self::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("Numbers");
                 match self {
                     NumbersResponseExn::Success(_inner) => {
@@ -339,11 +342,7 @@ pub mod services {
                         );
                         p.write_field_end();
                     }
-                    NumbersResponseExn::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    Self::ApplicationException(_) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();

@@ -195,6 +195,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let Self::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("Returnstream");
                 match self {
                     ReturnstreamResponseExn::Success(_inner) => {
@@ -205,11 +208,7 @@ pub mod services {
                         );
                         p.write_field_end();
                     }
-                    ReturnstreamResponseExn::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    Self::ApplicationException(_) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -513,6 +512,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let Self::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("Streamthrows");
                 match self {
                     StreamthrowsResponseExn::Success(_inner) => {
@@ -523,11 +525,7 @@ pub mod services {
                         );
                         p.write_field_end();
                     }
-                    StreamthrowsResponseExn::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    Self::ApplicationException(_) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -816,6 +814,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let Self::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("Servicethrows");
                 match self {
                     ServicethrowsResponseExn::Success(_inner) => {
@@ -835,11 +836,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    ServicethrowsResponseExn::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    Self::ApplicationException(_) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -1168,6 +1165,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let Self::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("Boththrows");
                 match self {
                     BoththrowsResponseExn::Success(_inner) => {
@@ -1187,11 +1187,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    BoththrowsResponseExn::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    Self::ApplicationException(_) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -1511,6 +1507,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let Self::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("Responseandstreamstreamthrows");
                 match self {
                     ResponseandstreamstreamthrowsResponseExn::Success(_inner) => {
@@ -1522,11 +1521,7 @@ pub mod services {
                         _inner.write(p);
                         p.write_field_end();
                     }
-                    ResponseandstreamstreamthrowsResponseExn::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    Self::ApplicationException(_) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -1824,6 +1819,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let Self::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("Responseandstreamservicethrows");
                 match self {
                     ResponseandstreamservicethrowsResponseExn::Success(_inner) => {
@@ -1844,11 +1842,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    ResponseandstreamservicethrowsResponseExn::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    Self::ApplicationException(_) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -2186,6 +2180,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let Self::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("Responseandstreamboththrows");
                 match self {
                     ResponseandstreamboththrowsResponseExn::Success(_inner) => {
@@ -2206,11 +2203,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    ResponseandstreamboththrowsResponseExn::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    Self::ApplicationException(_) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -2515,6 +2508,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let Self::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("ReturnstreamFast");
                 match self {
                     ReturnstreamFastResponseExn::Success(_inner) => {
@@ -2525,11 +2521,7 @@ pub mod services {
                         );
                         p.write_field_end();
                     }
-                    ReturnstreamFastResponseExn::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    Self::ApplicationException(_) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();
