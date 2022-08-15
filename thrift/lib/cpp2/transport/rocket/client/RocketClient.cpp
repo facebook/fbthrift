@@ -50,6 +50,16 @@
 
 namespace apache {
 namespace thrift {
+
+namespace detail {
+THRIFT_PLUGGABLE_FUNC_REGISTER(
+    std::optional<TransportMetadataPush>,
+    getTransportMetadataPush,
+    folly::AsyncTransport*) {
+  return {};
+}
+} // namespace detail
+
 namespace rocket {
 
 THRIFT_FLAG_DEFINE_int64(rocket_server_version_timeout_ms, 500);
@@ -160,6 +170,7 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
     }
     switch (serverMeta.getType()) {
       case ServerPushMetadata::Type::setupResponse: {
+        sendTransportMetadataPush();
         setServerVersion(std::min(
             serverMeta.setupResponse_ref()->version_ref().value_or(0),
             (int32_t)std::numeric_limits<int16_t>::max()));
@@ -1453,6 +1464,24 @@ void RocketClient::setServerVersion(int32_t serverVersion) {
   serverVersionTimeout_.reset();
   if (queue_.resolveWriteBuffer(serverVersion)) {
     scheduleWriteLoopCallback();
+  }
+}
+
+void RocketClient::sendTransportMetadataPush() {
+  auto transport = getTransportWrapper();
+  auto onError = [dg = DestructorGuard(this),
+                  g = makeRequestCountGuard(RequestType::INTERNAL)](
+                     transport::TTransportException ex) {
+    FB_LOG_EVERY_MS(ERROR, 1000)
+        << "sendTransportMetadataPush failed: " << ex.what();
+  };
+  if (auto transportMetadataPush =
+          apache::thrift::detail::getTransportMetadataPush(transport)) {
+    ClientPushMetadata clientMeta;
+    clientMeta.transportMetadataPush_ref() = std::move(*transportMetadataPush);
+    std::ignore = sendFrame(
+        MetadataPushFrame::makeFromMetadata(packCompact(std::move(clientMeta))),
+        std::move(onError));
   }
 }
 

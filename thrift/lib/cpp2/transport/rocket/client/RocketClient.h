@@ -30,6 +30,7 @@
 #include <folly/io/async/EventBaseLocal.h>
 
 #include <thrift/lib/cpp/transport/TTransportException.h>
+#include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/async/RpcOptions.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RequestContext.h>
@@ -37,6 +38,7 @@
 #include <thrift/lib/cpp2/transport/rocket/client/RocketStreamServerCallback.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Parser.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace folly {
 class IOBuf;
@@ -48,6 +50,14 @@ class FiberManager;
 
 namespace apache {
 namespace thrift {
+
+namespace detail {
+THRIFT_PLUGGABLE_FUNC_DECLARE(
+    std::optional<TransportMetadataPush>,
+    getTransportMetadataPush,
+    folly::AsyncTransport*);
+} // namespace detail
+
 namespace rocket {
 
 class RocketClient : public virtual folly::DelayedDestruction,
@@ -610,6 +620,7 @@ class RocketClient : public virtual folly::DelayedDestruction,
   std::unique_ptr<ServerVersionTimeout> serverVersionTimeout_;
   void onServerVersionRequired();
   void setServerVersion(int32_t serverVersion);
+  void sendTransportMetadataPush();
 
  protected:
   // Close the connection and fail all the requests *inline*. This should not be

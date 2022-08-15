@@ -449,6 +449,18 @@ struct StreamHeadersPush {
   2: optional HeadersPayloadContent headersPayloadContent;
 }
 
+struct TransportMetadataPush {
+  // Those are the transport metadata in key:value string pairs. They can
+  // be any interesting data from the underlying transport for which the client
+  // wants to send over to the server. This push frame is generated after the
+  // client has received the response from the server for the setup frame. Thus
+  // dynamic information such as the result of the TLS handshake can also be
+  // added to this metadata map.
+  1: optional map<string, string> (
+    cpp.template = "folly::F14NodeMap",
+  ) transportMetadata;
+}
+
 enum DrainCompleteCode {
   EXCEEDED_INGRESS_MEM_LIMIT = 1,
 }
@@ -474,6 +486,7 @@ union ClientPushMetadata {
   1: InteractionTerminate interactionTerminate;
   // Supported in Rocket protocol version 7+
   2: StreamHeadersPush streamHeadersPush;
+  3: TransportMetadataPush transportMetadataPush;
 }
 
 struct HeadersPayloadContent {
