@@ -116,7 +116,7 @@ public class ByteBufTJSONProtocol extends ByteBufTProtocol {
   private static final byte getTypeIDForTypeName(ByteBuf name) throws TException {
     try {
       byte result = TType.STOP;
-      if (name.readByte() > 1) {
+      if (name.readableBytes() > 0) {
         byte n1 = name.readByte();
         byte n2 = name.readByte();
         switch (n1) {
@@ -306,7 +306,7 @@ public class ByteBufTJSONProtocol extends ByteBufTProtocol {
   // Marked protected to avoid synthetic accessor in JSONListContext.read
   // and JSONPairContext.read
   protected void readJSONSyntaxChar(byte[] b) throws TException {
-    byte ch = getByteBuf().readByte();
+    byte ch = reader_.read();
     if (ch != b[0]) {
       throw new TProtocolException(
           TProtocolException.INVALID_DATA, "Unexpected character:" + (char) ch);
@@ -448,24 +448,24 @@ public class ByteBufTJSONProtocol extends ByteBufTProtocol {
 
   private void writeJSONObjectStart() throws TException {
     context_.write();
-    trans_.write(LBRACE);
+    getByteBuf().writeBytes(LBRACE);
     pushContext(new JSONPairContext());
   }
 
   private void writeJSONObjectEnd() throws TException {
     popContext();
-    trans_.write(RBRACE);
+    getByteBuf().writeBytes(RBRACE);
   }
 
   private void writeJSONArrayStart() throws TException {
     context_.write();
-    trans_.write(LBRACKET);
+    getByteBuf().writeBytes(LBRACKET);
     pushContext(new JSONListContext());
   }
 
   private void writeJSONArrayEnd() throws TException {
     popContext();
-    trans_.write(RBRACKET);
+    getByteBuf().writeBytes(RBRACKET);
   }
 
   @Override
