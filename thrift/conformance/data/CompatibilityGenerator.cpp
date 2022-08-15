@@ -92,6 +92,35 @@ template <class TT>
   return ret;
 }
 
+template <class TT, bool IsOptional>
+[[nodiscard]] TestCase changeFieldCustomDefaultTestCase(
+    const Protocol& protocol) {
+  using OldModSet = std::conditional_t<
+      IsOptional,
+      mod_set<FieldModifier::Optional, FieldModifier::CustomDefault>,
+      mod_set<FieldModifier::CustomDefault>>;
+
+  using NewModSet = std::conditional_t<
+      IsOptional,
+      mod_set<FieldModifier::Optional, FieldModifier::AlternativeCustomDefault>,
+      mod_set<FieldModifier::AlternativeCustomDefault>>;
+
+  const typename struct_ByFieldType<TT, OldModSet>::type oldData;
+  const typename struct_ByFieldType<TT, NewModSet>::type newData;
+
+  auto ret = genCompatibilityRoundTripTestCase(
+      protocol,
+      fmt::format(
+          "testset.{}/Change{}FieldCustomDefault",
+          type::getName<TT>(),
+          IsOptional ? "Optional" : ""),
+      oldData,
+      newData);
+  ret.test()->roundTrip_ref()->expectedResponse().ensure().value()->data() =
+      *serializeThriftStruct(oldData, protocol);
+  return ret;
+}
+
 template <class T>
 [[nodiscard]] Object toObject(const T& t) {
   Value v;
@@ -411,6 +440,9 @@ Test createCompatibilityTest(const Protocol& protocol) {
   addToTest({addFieldWithCustomDefaultTestCase<TT>(protocol)});
   addToTest({addOptionalFieldWithCustomDefaultTestCase<TT>(protocol)});
   addToTest(changeStructType<TT>(protocol));
+
+  addToTest({changeFieldCustomDefaultTestCase<TT, false>(protocol)});
+  addToTest({changeFieldCustomDefaultTestCase<TT, true>(protocol)});
 
   return test;
 }
