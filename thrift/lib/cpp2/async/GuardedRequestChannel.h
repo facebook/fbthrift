@@ -23,7 +23,7 @@ namespace apache::thrift {
 
 // Wrapper around a RequestChannel object where an RAII guard is held during
 // execution of the request if RequestGuardType is a valid RAII guard, and/or
-// lifetime of the guard if ChannelGuardType is a valilid RAII guard
+// lifetime of the guard if ChannelGuardType is a valid RAII guard
 template <class RequestGuardType, class ChannelGuardType>
 class GuardedRequestChannel : public RequestChannel {
  public:
