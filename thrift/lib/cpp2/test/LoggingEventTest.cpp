@@ -48,6 +48,7 @@ constexpr std::string_view kNewConnection = "new_connection";
 constexpr std::string_view kNewConnectionRocket = "new_connection.rocket";
 constexpr std::string_view kNewConnectionHeader = "new_connection.header";
 constexpr std::string_view kRocketSetup = "rocket.setup";
+constexpr std::string_view kTransportMetadata = "transport.metadata";
 
 using namespace apache::thrift;
 
@@ -85,6 +86,8 @@ class TestEventRegistry : public LoggingEventRegistry {
     connectionEventMap_[kNewConnectionHeader] =
         makeHandler<TestConnectionEventHandler>();
     connectionEventMap_[kRocketSetup] =
+        makeHandler<TestConnectionEventHandler>();
+    connectionEventMap_[kTransportMetadata] =
         makeHandler<TestConnectionEventHandler>();
     serverTrackerMap_
         [apache::thrift::instrumentation::kThriftServerTrackerKey] =

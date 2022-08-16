@@ -446,6 +446,21 @@ void RocketServerConnection::handleUntrackedFrame(
           }
           break;
         }
+        case ClientPushMetadata::Type::transportMetadataPush: {
+          if (auto context = frameHandler_->getCpp2ConnContext()) {
+            auto md =
+                clientMeta.transportMetadataPush_ref()->transportMetadata_ref();
+            THRIFT_CONNECTION_EVENT(transport.metadata).log(*context, [&] {
+              folly::dynamic transportMetadata = folly::dynamic::object;
+              if (md) {
+                for (auto p : *md) {
+                  transportMetadata[p.first] = p.second;
+                }
+              }
+              return transportMetadata;
+            });
+          }
+        }
         default:
           break;
       }
