@@ -24,6 +24,7 @@
 
 #include <boost/filesystem.hpp>
 #include <thrift/compiler/parse/lexer.h>
+#include <thrift/compiler/parse/parser.h>
 
 namespace apache {
 namespace thrift {
@@ -98,8 +99,6 @@ source_location parsing_driver::location() const {
 }
 
 std::unique_ptr<t_program_bundle> parsing_driver::parse() {
-  parser_ = std::make_unique<yy::parser>(*this, &yylval_, &yylloc_);
-
   std::unique_ptr<t_program_bundle> result;
   try {
     parse_file();
@@ -124,7 +123,6 @@ void parsing_driver::parse_file() {
     source src = source_mgr_->add_file(path);
     lexer_ = std::make_unique<lexer>(*lex_handler_, ctx_, src);
     program->set_src_range({src.start, src.start});
-    reset_locations();
   } catch (const std::runtime_error& ex) {
     end_parsing(ex.what());
   }
@@ -133,7 +131,8 @@ void parsing_driver::parse_file() {
   info("Scanning {} for includes\n", path);
   mode = parsing_mode::INCLUDES;
   try {
-    if (parser_->parse() != 0) {
+    auto actions = parser_actions{*this};
+    if (!compiler::parse(*lexer_, actions, ctx_)) {
       end_parsing("Parser error during include pass.");
     }
   } catch (const std::string& x) {
@@ -177,7 +176,6 @@ void parsing_driver::parse_file() {
   try {
     src = source_mgr_->add_file(path);
     lexer_ = std::make_unique<lexer>(*lex_handler_, ctx_, src);
-    reset_locations();
   } catch (const std::runtime_error& ex) {
     end_parsing(ex.what());
   }
@@ -185,7 +183,8 @@ void parsing_driver::parse_file() {
   mode = parsing_mode::PROGRAM;
   info("Parsing {} for types\n", path);
   try {
-    if (parser_->parse() != 0) {
+    auto actions = parser_actions{*this};
+    if (!compiler::parse(*lexer_, actions, ctx_)) {
       end_parsing("Parser error during types pass.");
     }
   } catch (const std::string& x) {
@@ -211,7 +210,8 @@ std::string parsing_driver::directory_name(const std::string& filename) {
   return result;
 }
 
-std::string parsing_driver::find_include_file(const std::string& filename) {
+std::string parsing_driver::find_include_file(
+    source_location loc, const std::string& filename) {
   // Absolute path? Just try that
   boost::filesystem::path path{filename};
   if (path.has_root_directory()) {
@@ -239,8 +239,9 @@ std::string parsing_driver::find_include_file(const std::string& filename) {
     }
     debug("Could not find: {}.", filename);
   }
-  // File was not found
-  end_parsing(fmt::format("Could not find include file {}", filename));
+  // File was not found.
+  error(loc, "Could not find include file {}", filename);
+  end_parsing();
 }
 
 void parsing_driver::validate_not_ambiguous_enum(const std::string& name) {
@@ -466,10 +467,6 @@ void parsing_driver::set_doctext(t_node& node, t_doc doctext) const {
   }
 }
 
-void parsing_driver::reset_locations() {
-  yylval_ = 0;
-}
-
 std::unique_ptr<t_const> parsing_driver::new_struct_annotation(
     std::unique_ptr<t_const_value> const_struct, const source_range& range) {
   auto ttype = const_struct->ttype(); // Copy the t_type_ref.
@@ -573,7 +570,7 @@ t_type_ref parsing_driver::new_type_ref(
   // specific declaration order.
   if (!result.resolved() && is_const) {
     error(
-        location(),
+        range.begin,
         "The type '{}' is not defined yet. Types must be "
         "defined before the usage in constant values.",
         name);
@@ -597,12 +594,11 @@ void parsing_driver::set_functions(
   }
 }
 
-t_ref<t_named> parsing_driver::add_def(std::unique_ptr<t_named> node) {
+void parsing_driver::add_def(std::unique_ptr<t_named> node) {
   if (mode != parsing_mode::PROGRAM) {
-    return nullptr;
+    return;
   }
 
-  t_ref<t_named> result(node.get());
   // Add to scope.
   // TODO(afuller): Move program level scope management to t_program.
   if (auto* tnode = dynamic_cast<t_interaction*>(node.get())) {
@@ -626,7 +622,6 @@ t_ref<t_named> parsing_driver::add_def(std::unique_ptr<t_named> node) {
   }
   // Add to program.
   program->add_definition(std::move(node));
-  return result;
 }
 
 void parsing_driver::add_include(std::string name, const source_range& range) {
@@ -634,7 +629,7 @@ void parsing_driver::add_include(std::string name, const source_range& range) {
     return;
   }
 
-  std::string path = find_include_file(name);
+  std::string path = find_include_file(range.begin, name);
   assert(!path.empty()); // Should have throw an exception if not found.
 
   if (program_cache.find(path) == program_cache.end()) {
@@ -650,12 +645,12 @@ void parsing_driver::add_include(std::string name, const source_range& range) {
   }
 }
 
-void parsing_driver::set_package(std::string name) {
+void parsing_driver::set_package(std::string name, const source_range& range) {
   if (mode != parsing_mode::PROGRAM) {
     return;
   }
   if (!program->package().empty()) {
-    error(location(), "Package already specified.");
+    error(range.begin, "Package already specified.");
   }
   try {
     program->set_package(t_package(std::move(name)));
@@ -741,17 +736,13 @@ void parsing_driver::maybe_allocate_field_id(
 }
 
 std::unique_ptr<t_const_value> parsing_driver::to_const_value(
-    int64_t int_const) {
+    source_location loc, int64_t value) {
   if (mode == parsing_mode::PROGRAM && !params.allow_64bit_consts &&
-      (int_const < INT32_MIN || int_const > INT32_MAX)) {
-    warning(
-        location(),
-        "64-bit constant {} may not work in all languages",
-        int_const);
+      (value < INT32_MIN || value > INT32_MAX)) {
+    warning(loc, "64-bit constant {} may not work in all languages", value);
   }
-
   auto node = std::make_unique<t_const_value>();
-  node->set_integer(int_const);
+  node->set_integer(value);
   return node;
 }
 

@@ -60,6 +60,8 @@ add_library(
   lib/schematizer.cc
   parse/lexer.cc
   parse/lexer.h
+  parse/parser.cc
+  parse/parser.h
   parse/parsing_driver.cc
   sema/const_checker.cc
   sema/patch_mutator.cc

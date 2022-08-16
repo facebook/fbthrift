@@ -20,7 +20,6 @@
 #include <limits>
 #include <memory>
 #include <set>
-#include <stack>
 #include <string>
 #include <unordered_set>
 #include <vector>
@@ -31,18 +30,13 @@
 #include <thrift/compiler/ast/diagnostic_context.h>
 #include <thrift/compiler/ast/node_list.h>
 #include <thrift/compiler/ast/t_const_value.h>
-#include <thrift/compiler/ast/t_exception.h>
 #include <thrift/compiler/ast/t_field.h>
-#include <thrift/compiler/ast/t_interaction.h>
 #include <thrift/compiler/ast/t_named.h>
 #include <thrift/compiler/ast/t_node.h>
-#include <thrift/compiler/ast/t_package.h>
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/ast/t_program_bundle.h>
 #include <thrift/compiler/ast/t_scope.h>
-#include <thrift/compiler/ast/t_union.h>
 #include <thrift/compiler/diagnostic.h>
-#include <thrift/compiler/parse/t_ref.h>
 #include <thrift/compiler/source_location.h>
 
 namespace apache {
@@ -51,10 +45,6 @@ namespace compiler {
 
 class lex_handler;
 class lexer;
-
-namespace yy {
-class parser;
-}
 
 // Parsing only representations.
 struct t_annotations {
@@ -67,9 +57,6 @@ struct t_def_attrs {
   t_doc doc;
   std::unique_ptr<node_list<t_const>> struct_annotations;
 };
-
-template <typename T>
-class t_ref;
 
 enum class parsing_mode {
   INCLUDES = 1,
@@ -130,10 +117,6 @@ class parsing_driver {
   std::unique_ptr<lex_handler_impl> lex_handler_;
   std::unique_ptr<lexer> lexer_;
 
-  // Bison's semantic and location objects.
-  int yylval_ = 0;
-  source_range yylloc_;
-
   // Returns the current source location, see lexer::location.
   source_location location() const;
 
@@ -179,9 +162,6 @@ class parsing_driver {
       std::string path,
       parsing_params parse_params);
   ~parsing_driver();
-
-  const lexer& get_lexer() const { return *lexer_; }
-  lexer& get_lexer() { return *lexer_; }
 
   int get_lineno(source_location loc = {});
 
@@ -235,7 +215,8 @@ class parsing_driver {
   /**
    * Finds the appropriate file path for the given include filename.
    */
-  std::string find_include_file(const std::string& filename);
+  std::string find_include_file(
+      source_location loc, const std::string& filename);
 
   /**
    * Check the type of the parsed const information against its declared type.
@@ -276,25 +257,6 @@ class parsing_driver {
   // Checks if the given experimental features is enabled, and reports a failure
   // and returns false iff not.
   bool require_experimental_feature(const char* feature);
-
-  void reset_locations();
-
-  // Computes an enclosing source range for a group of ranges.
-  //
-  // For a given grammar node, some subexpressions might not exist.
-  // For example, a user can omit qualifier when defining a field.
-  // We need to skip locations of such nodes.
-  static source_range compute_location(std::vector<source_range> ranges) {
-    assert(!ranges.empty());
-    auto empty = [](const source_range& loc) { return loc.begin == loc.end; };
-    auto iter = std::remove_if(ranges.begin(), ranges.end(), empty);
-    if (iter == ranges.begin()) {
-      // The whole grammar node is empty.
-      return ranges[0];
-    }
-
-    return {ranges[0].begin, (iter - 1)->end};
-  }
 
   // Populate the annotation on the given node.
   static void set_annotations(
@@ -339,18 +301,19 @@ class parsing_driver {
       const source_range& loc) const;
 
   // Adds a definition to the program.
-  t_ref<t_named> add_def(std::unique_ptr<t_named> node);
+  void add_def(std::unique_ptr<t_named> node);
 
   void add_include(std::string name, const source_range& range);
-  void set_package(std::string name);
+  void set_package(std::string name, const source_range& range);
 
-  t_field_id to_field_id(int64_t int_const) {
-    return narrow_int<t_field_id>(int_const, "field ids");
+  t_field_id to_field_id(source_location loc, int64_t value) {
+    return narrow_int<t_field_id>(loc, value, "field ids");
   }
-  int32_t to_enum_value(int64_t int_const) {
-    return narrow_int<int32_t>(int_const, "enum values");
+  int32_t to_enum_value(source_location loc, int64_t value) {
+    return narrow_int<int32_t>(loc, value, "enum values");
   }
-  std::unique_ptr<t_const_value> to_const_value(int64_t int_const);
+  std::unique_ptr<t_const_value> to_const_value(
+      source_location loc, int64_t value);
 
   int64_t to_int(uint64_t val, bool negative = false);
 
@@ -372,8 +335,6 @@ class parsing_driver {
  private:
   std::set<std::string> already_parsed_paths_;
   std::set<std::string> circular_deps_;
-
-  std::unique_ptr<yy::parser> parser_;
 
   diagnostic_context& ctx_;
 
@@ -401,19 +362,19 @@ class parsing_driver {
   void maybe_allocate_field_id(t_field_id& next_id, t_field& field);
 
   template <typename T>
-  T narrow_int(int64_t int_const, const char* name) {
+  T narrow_int(source_location loc, int64_t value, const char* name) {
     using limits = std::numeric_limits<T>;
     if (mode == parsing_mode::PROGRAM &&
-        (int_const < limits::min() || int_const > limits::max())) {
+        (value < limits::min() || value > limits::max())) {
       error(
-          location(),
+          loc,
           "Integer constant {} outside the range of {} ([{}, {}]).",
-          int_const,
+          value,
           name,
           limits::min(),
           limits::max());
     }
-    return int_const;
+    return value;
   }
 };
 
