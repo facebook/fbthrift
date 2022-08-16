@@ -19,6 +19,7 @@
 #include <stdexcept>
 
 #include <fmt/core.h>
+#include <folly/MapUtil.h>
 #include <folly/io/IOBufQueue.h>
 #include <folly/lang/Exception.h>
 #include <thrift/lib/cpp/util/EnumUtils.h>
@@ -344,9 +345,8 @@ void ApplyPatch::operator()(
   auto patchElements = [&](auto patchFields) {
     for (const auto& [keyv, valv] : *patchFields->mapValue_ref()) {
       // Only patch values for fields that exist for now
-      auto fieldIt = value.find(keyv);
-      if (fieldIt != value.end()) {
-        applyPatch(*valv.objectValue_ref(), fieldIt->second);
+      if (auto* field = folly::get_ptr(value, keyv)) {
+        applyPatch(*valv.objectValue_ref(), *field);
       }
     }
   };
@@ -398,13 +398,12 @@ void ApplyPatch::operator()(const Object& patch, Object& value) const {
   }
 
   auto applyFieldPatch = [&](auto patchFields) {
-    auto& valueMembers = value.members().ensure();
+    value.members().ensure();
     for (const auto& [id, field_value] :
          *patchFields->objectValue_ref()->members()) {
       // Only patch values for fields that exist for now
-      auto fieldIt = valueMembers.find(id);
-      if (fieldIt != valueMembers.end()) {
-        applyPatch(*field_value.objectValue_ref(), fieldIt->second);
+      if (auto* field = folly::get_ptr(*value.members(), id)) {
+        applyPatch(*field_value.objectValue_ref(), *field);
       }
     }
   };
@@ -413,10 +412,9 @@ void ApplyPatch::operator()(const Object& patch, Object& value) const {
     applyFieldPatch(patchFields);
   }
 
-  if (auto* ensure = findOp(patch, PatchOp::EnsureStruct)) {
-    if (ensure->if_object()) {
-      auto& ensureMembers = *ensure->as_object().members();
-      value.members()->insert(ensureMembers.begin(), ensureMembers.end());
+  if (const auto* ensure = findOp(patch, PatchOp::EnsureStruct)) {
+    if (const auto* obj = ensure->if_object()) {
+      value.members()->insert(obj->begin(), obj->end());
     } else {
       throw std::runtime_error("struct patch Ensure should contain an object");
     }
