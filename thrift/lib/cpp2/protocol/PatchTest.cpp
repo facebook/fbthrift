@@ -208,12 +208,22 @@ TEST_F(PatchTest, String) {
     strPatch.append(patch);
     EXPECT_EQ(data + patch, *apply(strPatch, stringData).stringValue_ref());
   }
+  {
+    op::StringPatch strPatch;
+    strPatch.append("");
+    EXPECT_EQ(data, *apply(strPatch, stringData).stringValue_ref());
+  }
 
   // Prepend
   {
     op::StringPatch strPatch;
     strPatch.prepend(patch);
     EXPECT_EQ(patch + data, *apply(strPatch, stringData).stringValue_ref());
+  }
+  {
+    op::StringPatch strPatch;
+    strPatch.prepend("");
+    EXPECT_EQ(data, *apply(strPatch, stringData).stringValue_ref());
   }
 
   // Clear, Append and Prepend in one
@@ -235,16 +245,23 @@ TEST_F(PatchTest, String) {
 }
 
 TEST_F(PatchTest, List) {
-  std::vector<std::string> data = {"test"}, patch = {"new value"};
+  std::vector<std::string> data = {"test"}, patch = {"new value"}, empty = {};
   auto value = asValueStruct<type::list<type::binary_t>>(data);
   auto patchValue = asValueStruct<type::list<type::binary_t>>(patch);
+  auto emptyValue = asValueStruct<type::list<type::binary_t>>(empty);
+  auto emptySet =
+      asValueStruct<type::set<type::binary_t>>(std::set<std::string>{});
+
+  auto expectNoop = [&](auto& patchObj) {
+    EXPECT_EQ(
+        *value.listValue_ref(),
+        *applyContainerPatch(patchObj, value).listValue_ref());
+  };
 
   // Noop
   {
     Object patchObj;
-    EXPECT_EQ(
-        *value.listValue_ref(),
-        *applyContainerPatch(patchObj, value).listValue_ref());
+    expectNoop(patchObj);
   }
 
   // Assign
@@ -263,6 +280,11 @@ TEST_F(PatchTest, List) {
         std::vector<Value>{},
         *applyContainerPatch(patchObj, value).listValue_ref());
   }
+  {
+    Object patchObj =
+        makePatch(op::PatchOp::Clear, asValueStruct<type::bool_t>(false));
+    expectNoop(patchObj);
+  }
 
   // Patch
   {
@@ -279,6 +301,12 @@ TEST_F(PatchTest, List) {
     EXPECT_EQ(
         std::vector<Value>{asValueStruct<type::binary_t>("testbest")}, patched);
   }
+  {
+    auto emptyMapValue = asValueStruct<type::map<type::i32_t, type::binary_t>>(
+        std::map<int32_t, std::string>{});
+    Object patchObj = makePatch(op::PatchOp::Patch, emptyMapValue);
+    expectNoop(patchObj);
+  }
 
   // Prepend
   {
@@ -289,6 +317,10 @@ TEST_F(PatchTest, List) {
         value.listValue_ref()->end());
     Object patchObj = makePatch(op::PatchOp::Prepend, patchValue);
     EXPECT_EQ(expected, *applyContainerPatch(patchObj, value).listValue_ref());
+  }
+  {
+    Object patchObj = makePatch(op::PatchOp::Prepend, emptyValue);
+    expectNoop(patchObj);
   }
 
   // Append
@@ -301,6 +333,10 @@ TEST_F(PatchTest, List) {
     Object patchObj = makePatch(op::PatchOp::Put, patchValue);
     EXPECT_EQ(expected, *applyContainerPatch(patchObj, value).listValue_ref());
   }
+  {
+    Object patchObj = makePatch(op::PatchOp::Put, emptyValue);
+    expectNoop(patchObj);
+  }
 
   // Remove
   {
@@ -310,6 +346,10 @@ TEST_F(PatchTest, List) {
     EXPECT_EQ(
         std::vector<Value>{},
         *applyContainerPatch(patchObj, value).listValue_ref());
+  }
+  {
+    Object patchObj = makePatch(op::PatchOp::Remove, emptySet);
+    expectNoop(patchObj);
   }
 
   // Add
@@ -329,6 +369,10 @@ TEST_F(PatchTest, List) {
         op::PatchOp::Add,
         asValueStruct<type::set<type::binary_t>>(std::set{"best"}));
     EXPECT_EQ(expected, *applyContainerPatch(patchObj, value).listValue_ref());
+  }
+  {
+    Object patchObj = makePatch(op::PatchOp::Add, emptySet);
+    expectNoop(patchObj);
   }
 
   // Combination
@@ -358,13 +402,19 @@ TEST_F(PatchTest, Set) {
   std::set<std::string> data = {"test"}, patch = {"new value"};
   auto value = asValueStruct<type::set<type::binary_t>>(data);
   auto patchValue = asValueStruct<type::set<type::binary_t>>(patch);
+  auto emptySet =
+      asValueStruct<type::set<type::binary_t>>(std::set<std::string>{});
+
+  auto expectNoop = [&](auto& patchObj) {
+    EXPECT_EQ(
+        *value.setValue_ref(),
+        *applyContainerPatch(patchObj, value).setValue_ref());
+  };
 
   // Noop
   {
     Object patchObj;
-    EXPECT_EQ(
-        *value.setValue_ref(),
-        *applyContainerPatch(patchObj, value).setValue_ref());
+    expectNoop(patchObj);
   }
 
   // Assign
@@ -383,6 +433,11 @@ TEST_F(PatchTest, Set) {
         std::set<Value>{},
         *applyContainerPatch(patchObj, value).setValue_ref());
   }
+  {
+    Object patchObj =
+        makePatch(op::PatchOp::Clear, asValueStruct<type::bool_t>(false));
+    expectNoop(patchObj);
+  }
 
   // Put
   {
@@ -391,6 +446,10 @@ TEST_F(PatchTest, Set) {
         patchValue.setValue_ref()->begin(), patchValue.setValue_ref()->end());
     Object patchObj = makePatch(op::PatchOp::Put, patchValue);
     EXPECT_EQ(expected, *applyContainerPatch(patchObj, value).setValue_ref());
+  }
+  {
+    Object patchObj = makePatch(op::PatchOp::Put, emptySet);
+    expectNoop(patchObj);
   }
 
   // Remove
@@ -401,6 +460,10 @@ TEST_F(PatchTest, Set) {
     EXPECT_EQ(
         std::set<Value>{},
         *applyContainerPatch(patchObj, value).setValue_ref());
+  }
+  {
+    Object patchObj = makePatch(op::PatchOp::Remove, emptySet);
+    expectNoop(patchObj);
   }
 
   // Add
@@ -421,6 +484,10 @@ TEST_F(PatchTest, Set) {
         asValueStruct<type::set<type::binary_t>>(std::set{"best test"}));
     auto patchResult = *applyContainerPatch(patchObj, value).setValue_ref();
     EXPECT_EQ(expected, patchResult);
+  }
+  {
+    Object patchObj = makePatch(op::PatchOp::Add, emptySet);
+    expectNoop(patchObj);
   }
 
   // Combination
@@ -450,13 +517,21 @@ TEST_F(PatchTest, Map) {
   auto patchValue =
       asValueStruct<type::map<type::binary_t, type::binary_t>>(patch);
   auto emptyMap = std::map<Value, Value>{};
+  auto emptySet =
+      asValueStruct<type::set<type::binary_t>>(std::set<std::string>{});
+  auto emptyValue = asValueStruct<type::map<type::binary_t, type::binary_t>>(
+      std::map<std::string, std::string>{});
+
+  auto expectNoop = [&](auto&& patchObj) {
+    EXPECT_EQ(
+        *value.mapValue_ref(),
+        *applyContainerPatch(patchObj, value).mapValue_ref());
+  };
 
   // Noop
   {
     Object patchObj;
-    EXPECT_EQ(
-        *value.mapValue_ref(),
-        *applyContainerPatch(patchObj, value).mapValue_ref());
+    expectNoop(patchObj);
   }
 
   // Assign
@@ -473,6 +548,11 @@ TEST_F(PatchTest, Map) {
         makePatch(op::PatchOp::Clear, asValueStruct<type::bool_t>(true));
     EXPECT_EQ(emptyMap, *applyContainerPatch(patchObj, value).mapValue_ref());
   }
+  {
+    Object patchObj =
+        makePatch(op::PatchOp::Clear, asValueStruct<type::bool_t>(false));
+    expectNoop(patchObj);
+  }
 
   // Remove
   {
@@ -480,6 +560,10 @@ TEST_F(PatchTest, Map) {
         op::PatchOp::Remove,
         asValueStruct<type::set<type::binary_t>>(std::set{"key"}));
     EXPECT_EQ(emptyMap, *applyContainerPatch(patchObj, value).mapValue_ref());
+  }
+  {
+    Object patchObj = makePatch(op::PatchOp::Remove, emptySet);
+    expectNoop(patchObj);
   }
 
   // Ensure
@@ -505,6 +589,10 @@ TEST_F(PatchTest, Map) {
     auto patchResult = *applyContainerPatch(patchObj, value).mapValue_ref();
     EXPECT_EQ(expected, patchResult);
   }
+  {
+    Object patchObj = makePatch(op::PatchOp::EnsureStruct, emptyValue);
+    expectNoop(patchObj);
+  }
 
   // Put
   {
@@ -516,6 +604,10 @@ TEST_F(PatchTest, Map) {
         asValueStruct<type::map<type::binary_t, type::binary_t>>(
             std::map<std::string, std::string>{{"key", "key updated value"}}));
     EXPECT_EQ(expected, *applyContainerPatch(patchObj, value).mapValue_ref());
+  }
+  {
+    Object patchObj = makePatch(op::PatchOp::Put, emptyValue);
+    expectNoop(patchObj);
   }
 
   // Combination
@@ -563,6 +655,10 @@ TEST_F(PatchTest, Map) {
         *expected.mapValue_ref(),
         *applyContainerPatch(patchObj, value).mapValue_ref());
   }
+  {
+    Object patchObj = makePatch(op::PatchOp::Patch, emptyValue);
+    expectNoop(patchObj);
+  }
 
   // Ensure and PatchAfter
   {
@@ -595,6 +691,10 @@ TEST_F(PatchTest, Map) {
         *expected.mapValue_ref(),
         *applyContainerPatch(patchObj, value).mapValue_ref());
   }
+  {
+    Object patchObj = makePatch(op::PatchOp::PatchAfter, emptyValue);
+    expectNoop(patchObj);
+  }
 }
 
 TEST_F(PatchTest, Struct) {
@@ -607,12 +707,16 @@ TEST_F(PatchTest, Struct) {
   auto value = asValueStruct<type::struct_c>(valueObject);
   auto patchValue = asValueStruct<type::struct_c>(patchObject);
 
-  // Noop
-  {
-    Object patchObj;
+  auto expectNoop = [&](auto&& patchObj) {
     EXPECT_EQ(
         *value.objectValue_ref(),
         *applyContainerPatch(patchObj, value).objectValue_ref());
+  };
+
+  // Noop
+  {
+    Object patchObj;
+    expectNoop(patchObj);
   }
 
   // Assign
@@ -631,6 +735,11 @@ TEST_F(PatchTest, Struct) {
                     .objectValue_ref()
                     ->members()
                     ->empty());
+  }
+  {
+    Object patchObj =
+        makePatch(op::PatchOp::Clear, asValueStruct<type::bool_t>(false));
+    expectNoop(patchObj);
   }
 
   // Patch
@@ -688,6 +797,13 @@ TEST_F(PatchTest, Struct) {
             .objectValue_ref()
             ->members()
             .ensure()[1]);
+  }
+  {
+    Value fieldPatch;
+    fieldPatch.objectValue_ref().ensure();
+    expectNoop(makePatch(op::PatchOp::Patch, fieldPatch));
+    expectNoop(makePatch(op::PatchOp::EnsureStruct, fieldPatch));
+    expectNoop(makePatch(op::PatchOp::PatchAfter, fieldPatch));
   }
 }
 } // namespace
