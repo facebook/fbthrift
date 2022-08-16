@@ -70,4 +70,8 @@ std::unique_ptr<folly::IOBuf> serializeObject(const Object& obj) {
   return queue.move();
 }
 
+// Returns whether the protocol::Value/ Object is its intrinsic default.
+bool isIntrinsicDefault(const Value& value);
+bool isIntrinsicDefault(const Object& obj);
+
 } // namespace apache::thrift::protocol

@@ -33,6 +33,7 @@
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/ObjectTest_types.h>
+#include <thrift/lib/cpp2/type/Tag.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
 #include <thrift/test/testset/Testset.h>
 #include <thrift/test/testset/gen-cpp2/testset_types_custom_protocol.h>
@@ -703,6 +704,55 @@ TEST(Value, Wrapper) {
   EXPECT_TRUE(folly::IOBufEqualTo{}(value.as_binary(), buf));
   EXPECT_TRUE(folly::IOBufEqualTo{}(*value.if_binary(), buf));
   EXPECT_TRUE(folly::IOBufEqualTo{}(value.binaryValue_ref().value(), buf));
+}
+
+TEST(Value, IsIntrinsicDefaultTrue) {
+  EXPECT_TRUE(isIntrinsicDefault(asValueStruct<type::bool_t>(false)));
+  EXPECT_TRUE(isIntrinsicDefault(asValueStruct<type::byte_t>(0)));
+  EXPECT_TRUE(isIntrinsicDefault(asValueStruct<type::i16_t>(0)));
+  EXPECT_TRUE(isIntrinsicDefault(asValueStruct<type::i32_t>(0)));
+  EXPECT_TRUE(isIntrinsicDefault(asValueStruct<type::i64_t>(0)));
+  EXPECT_TRUE(isIntrinsicDefault(asValueStruct<type::float_t>(0.0)));
+  EXPECT_TRUE(isIntrinsicDefault(asValueStruct<type::double_t>(0.0)));
+  EXPECT_TRUE(isIntrinsicDefault(asValueStruct<type::string_t>("")));
+  EXPECT_TRUE(isIntrinsicDefault(asValueStruct<type::binary_t>("")));
+  EXPECT_TRUE(isIntrinsicDefault(
+      asValueStruct<type::list<type::string_t>>(std::vector<std::string>{})));
+  EXPECT_TRUE(isIntrinsicDefault(
+      asValueStruct<type::set<type::i64_t>>(std::set<int>{})));
+  EXPECT_TRUE(
+      isIntrinsicDefault(asValueStruct<type::map<type::i32_t, type::string_t>>(
+          std::map<int, std::string>{})));
+  testset::struct_with<type::map<type::string_t, type::i32_t>> s;
+  s.field_1_ref() = std::map<std::string, int>{};
+  Value objectValue = asValueStruct<type::struct_c>(s);
+  EXPECT_TRUE(isIntrinsicDefault(objectValue));
+  EXPECT_TRUE(isIntrinsicDefault(objectValue.as_object()));
+  EXPECT_TRUE(isIntrinsicDefault(Value{}));
+}
+
+TEST(Value, IsIntrinsicDefaultFalse) {
+  EXPECT_FALSE(isIntrinsicDefault(asValueStruct<type::bool_t>(true)));
+  EXPECT_FALSE(isIntrinsicDefault(asValueStruct<type::byte_t>(1)));
+  EXPECT_FALSE(isIntrinsicDefault(asValueStruct<type::i16_t>(1)));
+  EXPECT_FALSE(isIntrinsicDefault(asValueStruct<type::i32_t>(1)));
+  EXPECT_FALSE(isIntrinsicDefault(asValueStruct<type::i64_t>(1)));
+  EXPECT_FALSE(isIntrinsicDefault(asValueStruct<type::float_t>(0.5)));
+  EXPECT_FALSE(isIntrinsicDefault(asValueStruct<type::double_t>(0.5)));
+  EXPECT_FALSE(isIntrinsicDefault(asValueStruct<type::string_t>("foo")));
+  EXPECT_FALSE(isIntrinsicDefault(asValueStruct<type::binary_t>("foo")));
+  EXPECT_FALSE(isIntrinsicDefault(asValueStruct<type::list<type::string_t>>(
+      std::vector<std::string>{"foo"})));
+  EXPECT_FALSE(isIntrinsicDefault(
+      asValueStruct<type::set<type::i64_t>>(std::set<int>{1, 2, 3})));
+  EXPECT_FALSE(
+      isIntrinsicDefault(asValueStruct<type::map<type::i32_t, type::string_t>>(
+          std::map<int, std::string>{{1, "foo"}, {2, "bar"}})));
+  testset::struct_with<type::map<type::string_t, type::i32_t>> s;
+  s.field_1_ref() = std::map<std::string, int>{{"foo", 1}, {"bar", 2}};
+  Value objectValue = asValueStruct<type::struct_c>(s);
+  EXPECT_FALSE(isIntrinsicDefault(objectValue));
+  EXPECT_FALSE(isIntrinsicDefault(objectValue.as_object()));
 }
 } // namespace
 } // namespace apache::thrift::protocol
