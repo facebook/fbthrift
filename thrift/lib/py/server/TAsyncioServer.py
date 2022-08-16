@@ -239,7 +239,7 @@ class SenderTransport(WrappedTransport):
 
 class ThriftHeaderClientProtocol(ThriftHeaderClientProtocolBase):
     async def timeout_task(self, fname, seqid, delay):
-        await asyncio.sleep(delay, loop=self.loop)
+        await asyncio.sleep(delay)
         self._handle_timeout(fname, seqid)
 
     def wrapAsyncioTransport(self, asyncio_transport):

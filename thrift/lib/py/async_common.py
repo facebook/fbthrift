@@ -159,7 +159,6 @@ class WrappedTransport(TWriteOnlyBuffer):
         self._loop = loop
         self._queue = asyncio.Queue(
             maxsize=self.MAX_QUEUE_SIZE,
-            loop=self._loop,
         )
         self._consumer = self._loop.create_task(self._send())
         self._producers = []
