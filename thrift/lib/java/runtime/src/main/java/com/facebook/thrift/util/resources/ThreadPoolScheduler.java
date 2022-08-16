@@ -22,8 +22,6 @@ import io.airlift.stats.ExponentialDecay;
 import io.netty.util.internal.PlatformDependent;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -34,7 +32,6 @@ import org.slf4j.LoggerFactory;
 import reactor.core.Disposable;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
-import reactor.util.concurrent.Queues;
 
 /**
  * Scheduler that lets you wrap a ThreadPoolScheduler without throwing an exception. Unlike other
@@ -56,7 +53,11 @@ final class ThreadPoolScheduler extends AtomicBoolean implements Scheduler {
   private final Worker worker;
   private final Scheduler scheduler;
 
-  public ThreadPoolScheduler(int numThreads, int maxPendingTasks) {
+  public ThreadPoolScheduler(
+      int minNumThreads,
+      int maxNumThreads,
+      int maxPendingTasks,
+      int minPendingTasksBeforeNewThread) {
     this.executionTime = new Distribution(ExponentialDecay.oneMinute());
     this.perThreadExecutionTimes = PlatformDependent.newConcurrentHashMap();
 
@@ -72,46 +73,45 @@ final class ThreadPoolScheduler extends AtomicBoolean implements Scheduler {
             perThreadExecutionTimes,
             (t, e) -> LOGGER.error("uncaught exception on thread {}", t.getName(), e));
 
-    int minThreads = Math.min(numThreads, Runtime.getRuntime().availableProcessors() / 4);
-
-    BlockingQueue<Runnable> queue =
-        new LinkedBlockingQueue<Runnable>() {
-          @Override
-          public boolean offer(Runnable e) {
-            if (size() > Queues.SMALL_BUFFER_SIZE) {
-              return false;
-            } else {
-              return super.offer(e);
-            }
-          }
-        };
-
     this.threadPoolExecutor =
-        new ThreadPoolExecutor(
-            minThreads,
-            numThreads,
-            60_000L,
-            TimeUnit.MILLISECONDS,
-            queue,
+        createThreadPoolExecutor(
+            minNumThreads,
+            maxNumThreads,
+            minPendingTasksBeforeNewThread,
             threadFactory,
-            (r, executor) -> {
-              try {
-                if (executor.getQueue().size() < maxPendingTasks) {
-                  executor.getQueue().put(r);
-                } else {
-                  LOGGER.error("rejecting task because max pending tasks of " + maxPendingTasks);
-                }
-              } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-              }
-            });
-
+            maxPendingTasks);
     threadPoolExecutor.prestartAllCoreThreads();
 
     this.worker = new ThreadPoolSchedulerWorker();
     this.scheduler = Schedulers.newElastic("thrift-offloop-scheduler", 60, true);
 
     scheduler.schedulePeriodically(this::captureThreadPoolExecutorMetrics, 1, 1, TimeUnit.SECONDS);
+  }
+
+  private static ThreadPoolExecutor createThreadPoolExecutor(
+      int minThreads,
+      int maxNumThreads,
+      int minPendingTasksBeforeNewThread,
+      ThreadFactory threadFactory,
+      int maxPendingTasks) {
+    return new ThreadPoolExecutor(
+        minThreads,
+        maxNumThreads,
+        60_000L,
+        TimeUnit.MILLISECONDS,
+        new ThreadPoolSchedulerQueue(minPendingTasksBeforeNewThread),
+        threadFactory,
+        (r, executor) -> {
+          try {
+            if (executor.getQueue().size() < maxPendingTasks) {
+              executor.getQueue().put(r);
+            } else {
+              LOGGER.error("rejecting task because max pending tasks of " + maxPendingTasks);
+            }
+          } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+          }
+        });
   }
 
   private void captureThreadPoolExecutorMetrics() {

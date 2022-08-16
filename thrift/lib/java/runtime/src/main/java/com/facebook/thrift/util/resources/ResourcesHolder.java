@@ -16,6 +16,15 @@
 
 package com.facebook.thrift.util.resources;
 
+import static com.facebook.thrift.util.resources.ResourceConfiguration.eventLoopGroupThreadPrefix;
+import static com.facebook.thrift.util.resources.ResourceConfiguration.forceExecutionOffEventLoop;
+import static com.facebook.thrift.util.resources.ResourceConfiguration.maxPendingTasksForOffLoop;
+import static com.facebook.thrift.util.resources.ResourceConfiguration.minNumThreadsForOffLoop;
+import static com.facebook.thrift.util.resources.ResourceConfiguration.minPendingTasksBeforeNewThread;
+import static com.facebook.thrift.util.resources.ResourceConfiguration.numThreadsForEventLoop;
+import static com.facebook.thrift.util.resources.ResourceConfiguration.numThreadsForOffLoop;
+import static com.facebook.thrift.util.resources.ResourceConfiguration.separateOffLoopScheduler;
+
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.SingleThreadEventLoop;
@@ -33,24 +42,6 @@ import reactor.core.publisher.MonoProcessor;
 class ResourcesHolder implements Closeable {
   private static final Logger LOGGER = LoggerFactory.getLogger(ResourcesHolder.class);
 
-  private final boolean forceExecutionOffEventLoop =
-      System.getProperty("thrift.force-execution-off-eventloop", "true").equalsIgnoreCase("true");
-
-  private final int maxPendingTasksForOffLoop =
-      Math.max(16, Integer.getInteger("thrift.pending-tasks.count", Integer.MAX_VALUE));
-
-  private final int numThreadsForOffLoop =
-      Math.max(
-          Runtime.getRuntime().availableProcessors(),
-          Integer.getInteger(
-              "thrift.executor-threads.count", Runtime.getRuntime().availableProcessors() * 5));
-
-  private final int numThreadsForEventLoop =
-      Math.max(
-          1,
-          Integer.getInteger(
-              "thrift.eventloop-threads.count", Runtime.getRuntime().availableProcessors() * 2));
-
   private final MonoProcessor<Void> onClose = MonoProcessor.create();
 
   private final HashedWheelTimer timer;
@@ -62,10 +53,8 @@ class ResourcesHolder implements Closeable {
     this.timer = createHashedWheelTimer();
     this.eventLoopGroup =
         com.facebook.thrift.util.NettyUtil.createEventLoopGroup(
-            numThreadsForEventLoop, "thrift-eventloop");
+            numThreadsForEventLoop, eventLoopGroupThreadPrefix);
     this.offLoopScheduler = createOffLoopScheduler();
-    boolean separateOffLoopScheduler =
-        System.getProperty("thrift.separate-offloop-scheduler", "false").equalsIgnoreCase("true");
     this.clientOffLoopScheduler =
         separateOffLoopScheduler ? createClientOffLoopScheduler() : offLoopScheduler;
 
@@ -120,7 +109,11 @@ class ResourcesHolder implements Closeable {
     LOGGER.info("force execution off event loop enabled:  {}", forceExecutionOffEventLoop);
     LOGGER.info("off event loop max threads: {}", numThreadsForOffLoop);
     LOGGER.info("off event loop max pending tasks: {}", maxPendingTasksForOffLoop);
-    return new ThreadPoolScheduler(numThreadsForOffLoop, maxPendingTasksForOffLoop);
+    return new ThreadPoolScheduler(
+        minNumThreadsForOffLoop,
+        numThreadsForOffLoop,
+        maxPendingTasksForOffLoop,
+        minPendingTasksBeforeNewThread);
   }
 
   private ThreadPoolScheduler createClientOffLoopScheduler() {
@@ -128,7 +121,11 @@ class ResourcesHolder implements Closeable {
     LOGGER.info("force client execution off event loop enabled:  {}", forceExecutionOffEventLoop);
     LOGGER.info("client off event loop max threads: {}", numThreadsForOffLoop);
     LOGGER.info("client off event loop max pending tasks: {}", maxPendingTasksForOffLoop);
-    return new ThreadPoolScheduler(numThreadsForOffLoop, maxPendingTasksForOffLoop);
+    return new ThreadPoolScheduler(
+        minNumThreadsForOffLoop,
+        numThreadsForOffLoop,
+        maxPendingTasksForOffLoop,
+        minPendingTasksBeforeNewThread);
   }
 
   protected void shutdownOffLoopScheduler() {
