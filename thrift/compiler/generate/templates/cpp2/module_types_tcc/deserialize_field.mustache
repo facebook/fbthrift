@@ -42,14 +42,8 @@ auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<<%field:cpp_storage_
 %><%/field:cpp_first_adapter%>, _readState);
 <%#field:cpp_first_adapter%>
 <%#field:cpp_adapter%>
-<%#type:cpp_adapter%>
 <%#field:cpp_ref?%>*ptr<%/field:cpp_ref?%><%^field:cpp_ref?%><% > field/member%><%/field:cpp_ref?%> = <%!
-  %>::apache::thrift::adapt_detail::fromThriftField<<%field:cpp_adapter%>, <%field:key%>>(<%type:cpp_adapter%>::fromThrift(::std::move(tvalue)), *this);
-<%/type:cpp_adapter%>
-<%^type:cpp_adapter%>
-<%#field:cpp_ref?%>*ptr<%/field:cpp_ref?%><%^field:cpp_ref?%><% > field/member%><%/field:cpp_ref?%> = <%!
-  %>::apache::thrift::adapt_detail::fromThriftField<<%field:cpp_first_adapter%>, <%field:key%>>(::std::move(tvalue), *this);
-<%/type:cpp_adapter%>
+  %>::apache::thrift::adapt_detail::fromThriftField<<%field:cpp_adapter%>, <%field:key%>>(<% > types/adapter_pre%>::std::move(tvalue)<% > types/adapter_post%>, *this);
 <%/field:cpp_adapter%>
 <%^field:cpp_adapter%>
 <%#field:cpp_ref?%>*ptr<%/field:cpp_ref?%><%^field:cpp_ref?%><% > field/member%><%/field:cpp_ref?%> = <%!
