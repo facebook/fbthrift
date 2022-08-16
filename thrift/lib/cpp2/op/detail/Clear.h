@@ -21,9 +21,7 @@
 #include <folly/CPortability.h>
 #include <folly/Overload.h>
 #include <folly/Portability.h>
-#if FOLLY_LIBRARY_SANITIZE_ADDRESS
-#include <sanitizer/lsan_interface.h>
-#endif
+#include <folly/memory/SanitizeLeak.h>
 #include <thrift/lib/cpp2/FieldRef.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/op/Compare.h>
@@ -102,9 +100,7 @@ struct GetIntrinsicDefault<
       // Note, this is a separate leaky singleton instance from
       // 'op::getIntrinsicDefault<struct_t<Struct>>'.
       auto& obj = *new Struct{};
-#if FOLLY_LIBRARY_SANITIZE_ADDRESS
-      __lsan_ignore_object(&obj);
-#endif
+      folly::annotate_object_leaked(&obj);
       apache::thrift::clear(obj);
       auto* value = new T(op::create<field_adapted_tag>(obj));
       return value;
