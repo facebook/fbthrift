@@ -15,6 +15,7 @@
  */
 
 #include <stdexcept>
+#include <folly/VirtualExecutor.h>
 #include <folly/executors/ThreadPoolExecutor.h>
 #include <thrift/lib/cpp2/server/ResourcePool.h>
 
@@ -48,8 +49,14 @@ void ResourcePool::stop() {
     if (auto threadPoolExecutor =
             dynamic_cast<folly::ThreadPoolExecutor*>(executor_.get())) {
       threadPoolExecutor->join();
+    } else if (
+        auto virtualExecutor =
+            dynamic_cast<folly::VirtualExecutor*>(executor_.get())) {
+      executor_.reset();
     } else {
-      LOG(WARNING) << "Could not join executor threads";
+      auto& exe = *executor_.get();
+      LOG(WARNING) << "Could not join executor threads:"
+                   << folly::demangle(typeid(exe)).toStdString();
     }
   }
 }

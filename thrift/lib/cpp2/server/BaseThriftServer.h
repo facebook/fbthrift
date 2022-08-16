@@ -599,18 +599,23 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   }
 
   /**
-   * Set Thread Manager by using the executor (for Python server).
+   * Set Thread Manager from an executor.
    *
    * @param executor folly::Executor to be set as the threadManager
    */
   void setThreadManagerFromExecutor(
       folly::Executor* executor, std::string name = "") {
-    concurrency::ThreadManagerExecutorAdapter::Options opts(std::move(name));
-    setThreadManagerInternal(
-        std::make_shared<concurrency::ThreadManagerExecutorAdapter>(
-            folly::getKeepAliveToken(executor), std::move(opts)));
-    runtimeDisableResourcePoolsDeprecated();
-    runtimeServerActions_.userSuppliedThreadManager = true;
+    if (THRIFT_FLAG(allow_resource_pools_set_thread_manager_from_executor)) {
+      setThreadManagerType(ThreadManagerType::EXECUTOR_ADAPTER);
+      setThreadManagerExecutor(executor);
+    } else {
+      concurrency::ThreadManagerExecutorAdapter::Options opts(std::move(name));
+      setThreadManagerInternal(
+          std::make_shared<concurrency::ThreadManagerExecutorAdapter>(
+              folly::getKeepAliveToken(executor), std::move(opts)));
+      runtimeDisableResourcePoolsDeprecated();
+      runtimeServerActions_.userSuppliedThreadManager = true;
+    }
   }
 
   /**

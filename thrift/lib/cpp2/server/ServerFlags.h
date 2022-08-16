@@ -25,6 +25,8 @@ DECLARE_bool(thrift_experimental_use_resource_pools);
 THRIFT_FLAG_DECLARE_bool(allow_resource_pools_for_wildcards);
 THRIFT_FLAG_DECLARE_bool(allow_wildcard_process_via_execute_request);
 
+THRIFT_FLAG_DECLARE_bool(allow_resource_pools_set_thread_manager_from_executor);
+
 namespace apache::thrift {
 
 bool useResourcePoolsFlagsSet();
