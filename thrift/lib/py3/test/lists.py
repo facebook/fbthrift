@@ -102,20 +102,38 @@ class ListTests(unittest.TestCase):
         y = I32List([1, 2, 3, 4, 5])
         z = I32List([1, 2, 3, 1, 10])
 
+        # pyre-fixme[6]: For 2nd param expected `SupportsDunderGT[Variable[_T]]` but
+        #  got `List__i32`.
         self.assertLess(x, y)
+        # pyre-fixme[6]: For 2nd param expected `SupportsDunderGT[Variable[_T]]` but
+        #  got `List__i32`.
         self.assertLess(z, x)
+        # pyre-fixme[6]: For 2nd param expected `SupportsDunderGT[Variable[_T]]` but
+        #  got `List__i32`.
         self.assertLess(z, y)
         self.assertNotEqual(z, y)
         self.assertNotEqual(x, y)
         self.assertNotEqual(z, x)
+        # pyre-fixme[6]: For 2nd param expected `SupportsDunderLT[Variable[_T]]` but
+        #  got `List__i32`.
         self.assertGreater(y, x)
+        # pyre-fixme[6]: For 2nd param expected `SupportsDunderLT[Variable[_T]]` but
+        #  got `List__i32`.
         self.assertGreater(x, z)
+        # pyre-fixme[6]: For 2nd param expected `SupportsDunderLE[Variable[_T]]` but
+        #  got `List__i32`.
         self.assertGreaterEqual(x, z)
+        # pyre-fixme[6]: For 2nd param expected `SupportsDunderGT[Variable[_T]]` but
+        #  got `List__i32`.
         self.assertLessEqual(x, y)
 
         x2 = I32List([1, 2, 3, 4])
         self.assertEqual(x, x2)
+        # pyre-fixme[6]: For 2nd param expected `SupportsDunderGT[Variable[_T]]` but
+        #  got `List__i32`.
         self.assertLessEqual(x, x2)
+        # pyre-fixme[6]: For 2nd param expected `SupportsDunderLE[Variable[_T]]` but
+        #  got `List__i32`.
         self.assertGreaterEqual(x, x2)
 
     def test_is_container(self) -> None:
