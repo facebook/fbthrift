@@ -1661,6 +1661,7 @@ class cpp_mstch_field : public mstch_field {
   mstch::node has_deprecated_accessors() {
     return !cpp2::is_explicit_ref(field_) && !cpp2::is_lazy(field_) &&
         !gen::cpp::type_resolver::find_first_adapter(*field_) &&
+        !gen::cpp::type_resolver::find_field_interceptor(*field_) &&
         !has_option("no_getters_setters");
   }
   mstch::node cpp_ref() { return cpp2::is_explicit_ref(field_); }

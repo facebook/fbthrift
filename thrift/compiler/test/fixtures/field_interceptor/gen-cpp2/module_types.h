@@ -494,16 +494,6 @@ class InterceptedFields final  {
     return ::apache::thrift::optional_boxed_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_access_optional_boxed_field)};
   }
 
-  ::std::int32_t get_access_field() const {
-    return __fbthrift_field_access_field;
-  }
-
-  [[deprecated("Use `FOO.access_field_ref() = BAR;` instead of `FOO.set_access_field(BAR);`")]]
-  ::std::int32_t& set_access_field(::std::int32_t access_field_) {
-    access_field_ref() = access_field_;
-    return __fbthrift_field_access_field;
-  }
-
   template <class Protocol_>
   unsigned long read(Protocol_* iprot);
   template <class Protocol_>
