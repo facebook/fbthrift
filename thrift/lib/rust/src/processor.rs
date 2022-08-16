@@ -45,8 +45,10 @@ use crate::ttype::TType;
 pub enum SerializedStreamElement<Payload> {
     /// A normal stream response, without any error. Contains the serialized response.
     Success(Payload),
-    /// Contains the serialized exception.
-    Ex(Payload),
+    /// Contains the serialized declared exception.
+    DeclaredException(Payload),
+    /// Contains the application exception.
+    ApplicationException(ApplicationException),
     /// The serialization failed. Contains the error.
     SerializationError(Error),
 }

@@ -297,24 +297,32 @@
                     let stream = ::std::panic::AssertUnwindSafe(stream)
                         .catch_unwind()
                         .map(|item| {
-                            let (item, is_ex) = match item {
+                            match item {
                                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
-                                    ({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::Success(res), false)
-                                },
+                                    let item = {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::Success(res);
+                                    match ::fbthrift::help::serialize_stream_item::<P, _>(item) {
+                                        Ok(payload) => ::fbthrift::SerializedStreamElement::Success(payload),
+                                        Err(err) => ::fbthrift::SerializedStreamElement::SerializationError(err),
+                                    }
+                                }
                                 ::std::result::Result::Ok(::std::result::Result::Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::Success(_))) => {
                                     panic!("{} attempted to return success via error", "{{function:rust_name}}");
                                 }
-                                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => (exn, true),
+                                ::std::result::Result::Ok(::std::result::Result::Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::ApplicationException(aexn))) => {
+                                    ::fbthrift::SerializedStreamElement::ApplicationException(aexn)
+                                }
+                                {{#function:stream_exceptions?}}
+                                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
+                                    match ::fbthrift::help::serialize_stream_item::<P, _>(exn) {
+                                        Ok(payload) => ::fbthrift::SerializedStreamElement::DeclaredException(payload),
+                                        Err(err) => ::fbthrift::SerializedStreamElement::SerializationError(err),
+                                    }
+                                }
+                                {{/function:stream_exceptions?}}
                                 ::std::result::Result::Err(exn) => {
                                     let aexn = ::fbthrift::ApplicationException::handler_panic("{{service:name}}.{{function:name}}", exn);
-                                    ({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::ApplicationException(aexn), true)
+                                    ::fbthrift::SerializedStreamElement::ApplicationException(aexn)
                                 }
-                            };
-
-                            match ::fbthrift::help::serialize_stream_item::<P, _>(item) {
-                                Ok(payload) if !is_ex => ::fbthrift::SerializedStreamElement::Success(payload),
-                                Ok(payload) => ::fbthrift::SerializedStreamElement::Ex(payload),
-                                Err(err) => ::fbthrift::SerializedStreamElement::SerializationError(err),
                             }
                         })
                         {{!TODO(T125947234): should we instrument with tracing?}}
