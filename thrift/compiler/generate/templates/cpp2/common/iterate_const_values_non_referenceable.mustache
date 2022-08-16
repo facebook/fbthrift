@@ -20,7 +20,7 @@ Containers:
 
 List:
 %><%^type:struct?%><%!
-%><%#value:list?%><%#type:list_elem_type%><%!
+%><%#value:list?%><%#type:list?%><%#type:list_elem_type%><%!
   %>std::initializer_list<<%!
     %><%type:cpp_type%><%!
   %>>{<%!
@@ -30,10 +30,10 @@ List:
   <%/last?%><%!
   %><%/value:list_elements%><%!
   %>}<%!
-%><%/type:list_elem_type%><%/value:list?%><%!
+%><%/type:list_elem_type%><%/type:list?%><%/value:list?%><%!
 
 Set:
-%><%#value:list?%><%#type:set_elem_type%><%!
+%><%#value:list?%><%#type:set?%><%#type:set_elem_type%><%!
   %>std::initializer_list<<%!
     %><%type:cpp_type%><%!
   %>>{<%!
@@ -43,10 +43,10 @@ Set:
   <%/last?%><%!
   %><%/value:list_elements%><%!
   %>}<%!
-%><%/type:set_elem_type%><%/value:list?%><%!
+%><%/type:set_elem_type%><%/type:set?%><%/value:list?%><%!
 
 Map:
-%><%#value:map?%><%!
+%><%#value:map?%><%#type:map?%><%!
   %>std::initializer_list<std::pair<<%!
     %><%#type:key_type%>const <%type:cpp_type%><%/type:key_type%>, <%!
     %><%#type:value_type%><%type:cpp_type%><%/type:value_type%><%!
@@ -65,7 +65,7 @@ Map:
   <%/last?%><%!
   %><%/value:map_elements%><%!
   %>}<%!
-%><%/value:map?%><%!
+%><%/type:map?%><%/value:map?%><%!
 %><%/type:struct?%><%!
 
 Struct:
