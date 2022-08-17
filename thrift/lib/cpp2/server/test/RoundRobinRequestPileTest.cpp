@@ -15,12 +15,20 @@
  */
 
 #include <vector>
+
 #include <folly/portability/GTest.h>
+#include <folly/synchronization/Baton.h>
+
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/server/RoundRobinRequestPile.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/TestServiceAsyncClient.h>
+#include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
 using namespace std;
 using namespace apache::thrift;
+using namespace apache::thrift::test;
 using namespace apache::thrift::transport;
 using namespace apache::thrift::concurrency;
 
@@ -246,4 +254,41 @@ TEST(RoundRobinRequestPileTest, SingleBucket) {
 
   auto [req1, _] = pile.dequeue();
   EXPECT_EQ(req1, std::nullopt);
+}
+
+TEST(RoundRobinRequestPileTest, requestCount) {
+  THRIFT_FLAG_SET_MOCK(experimental_use_resource_pools, true);
+
+  class BlockingCallTestService
+      : public apache::thrift::ServiceHandler<TestService> {
+   public:
+    folly::SemiFuture<int32_t> semifuture_echoInt(int32_t) override {
+      return folly::makeSemiFuture(1);
+    }
+  };
+
+  ScopedServerInterfaceThread runner(
+      std::make_shared<BlockingCallTestService>());
+
+  auto& thriftServer = dynamic_cast<ThriftServer&>(runner.getThriftServer());
+
+  // grab the resource pool
+  // and set the number to 0
+  auto& rpSet = thriftServer.resourcePoolSet();
+  auto& rp = rpSet.resourcePool(ResourcePoolHandle::defaultAsync());
+  ConcurrencyControllerInterface& cc = *rp.concurrencyController();
+  cc.setExecutionLimitRequests(0);
+
+  auto client = runner.newClient<TestServiceAsyncClient>();
+
+  client->semifuture_echoInt(0);
+
+  // This is an e2e test we need to give request
+  // time to hit the server
+  usleep(2000000);
+
+  EXPECT_EQ(cc.getExecutionLimitRequests(), 0);
+  EXPECT_EQ(rpSet.numQueued(), 1);
+
+  cc.setExecutionLimitRequests(1);
 }

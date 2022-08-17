@@ -122,6 +122,8 @@ std::optional<ServerRequestRejection> RoundRobinRequestPile::enqueue(
   DCHECK_LT(pri, opts_.numBucketsPerPriority.size());
   DCHECK_LT(bucket, opts_.numBucketsPerPriority[pri]);
 
+  RequestPileBase::onEnqueued(request);
+
   // TODO(yichengfb): enforcing limit on single bucket queue
   // We temporarily disable limit for single bucket queue
   // because we currently rely on AtomicNotificationQueue to
@@ -130,8 +132,6 @@ std::optional<ServerRequestRejection> RoundRobinRequestPile::enqueue(
     singleBucketRequestQueues_[pri].enqueue(std::move(request));
     return std::nullopt;
   }
-
-  RequestPileBase::onEnqueued(request);
 
   if (opts_.numMaxRequests != 0) {
     auto res = requestQueues_[pri][bucket].tryPush(
@@ -179,7 +179,9 @@ RoundRobinRequestPile::dequeue() {
 uint64_t RoundRobinRequestPile::requestCount() const {
   uint64_t res = 0;
   for (size_t i = 0; i < opts_.numBucketsPerPriority.size(); ++i) {
-    if (!retrievalIndexQueues_[i] || !retrievalIndexQueues_[i]->empty()) {
+    if (!retrievalIndexQueues_[i]) {
+      res += singleBucketRequestQueues_[i].size();
+    } else if (!retrievalIndexQueues_[i]->empty()) {
       for (size_t j = 0; j < opts_.numBucketsPerPriority[i]; ++j) {
         res += requestQueues_[i][j].size();
       }
