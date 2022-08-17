@@ -114,6 +114,7 @@ struct ForEachField<::facebook::thrift::test::MyStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).field_ref()...);
+    f(1, static_cast<T&&>(t).set_string_ref()...);
   }
 };
 } // namespace detail

@@ -30,6 +30,10 @@ class module_CONSTANTS implements \IThriftConstants {
     return \thrift\test\MyStruct::fromShape(
       shape(
         "field" => 30,
+        "set_string" => Set {
+          "10",
+          "20",
+        },
       )
     );
   }
@@ -55,6 +59,10 @@ class module_CONSTANTS implements \IThriftConstants {
     return \thrift\test\MyStruct::fromShape(
       shape(
         "field" => 60,
+        "set_string" => Set {
+          "30",
+          "40",
+        },
       )
     );
   }

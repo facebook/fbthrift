@@ -200,10 +200,11 @@ const string var2 = "20";
 
 struct MyStruct {
   1: i32 field;
+  2: SetWithAdapter set_string;
 }
 
 @Config{path = "baz"}
-const MyStruct var3 = MyStruct{field = 30};
+const MyStruct var3 = MyStruct{field = 30, set_string = ["10", "20"]};
 
 @Config{path = "foo2"}
 const i32 var4 = 40;
@@ -212,4 +213,4 @@ const i32 var4 = 40;
 const string var5 = "50";
 
 @Config{path = "baz2"}
-const MyStruct var6 = MyStruct{field = 60};
+const MyStruct var6 = MyStruct{field = 60, set_string = ["30", "40"]};

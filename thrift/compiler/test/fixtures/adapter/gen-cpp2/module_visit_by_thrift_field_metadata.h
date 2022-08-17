@@ -185,6 +185,8 @@ struct VisitByFieldId<::facebook::thrift::test::MyStruct> {
     switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).field_ref());
+    case 2:
+      return f(1, static_cast<T&&>(t).set_string_ref());
     default:
       throwInvalidThriftId(fieldId, "::facebook::thrift::test::MyStruct");
     }

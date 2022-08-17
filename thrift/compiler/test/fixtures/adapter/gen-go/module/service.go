@@ -232,10 +232,10 @@ func (p *ServiceProcessor) FunctionServiceMap() map[string]string {
 }
 
 func NewServiceProcessor(handler Service) *ServiceProcessor {
-  self20 := &ServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
-  self20.processorMap["func"] = &serviceProcessorFunc{handler:handler}
-  self20.functionServiceMap["func"] = "Service"
-  return self20
+  self21 := &ServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
+  self21.processorMap["func"] = &serviceProcessorFunc{handler:handler}
+  self21.functionServiceMap["func"] = "Service"
+  return self21
 }
 
 type serviceProcessorFunc struct {

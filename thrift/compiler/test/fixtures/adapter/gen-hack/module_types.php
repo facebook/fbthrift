@@ -3110,27 +3110,46 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'var' => 'field',
       'type' => \TType::I32,
     ),
+    2 => shape(
+      'var' => 'set_string',
+      'adapter' => \Adapter2::class,
+      'type' => \TType::SET,
+      'etype' => \TType::STRING,
+      'elem' => shape(
+        'type' => \TType::STRING,
+      ),
+      'format' => 'collection',
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'field' => 1,
+    'set_string' => 2,
   ];
 
   const type TConstructorShape = shape(
     ?'field' => ?int,
+    ?'set_string' => ?\thrift\test\SetWithAdapter,
   );
 
   const type TShape = shape(
     'field' => int,
+    'set_string' => \thrift\test\SetWithAdapter,
   );
-  const int STRUCTURAL_ID = 7035499037608086885;
+  const int STRUCTURAL_ID = 5903652997290634247;
   /**
    * Original thrift field:-
    * 1: i32 field
    */
   public int $field;
+  /**
+   * Original thrift field:-
+   * 2: set<string> set_string
+   */
+  public \thrift\test\SetWithAdapter $set_string;
 
-  public function __construct(?int $field = null)[] {
+  public function __construct(?int $field = null, ?\thrift\test\SetWithAdapter $set_string = null)[] {
     $this->field = $field ?? 0;
+    $this->set_string = $set_string ?? \Adapter2::fromThrift(Set {});
   }
 
   public static function withDefaultValues()[]: this {
@@ -3140,6 +3159,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'field'),
+      Shapes::idx($shape, 'set_string'),
     );
   }
 
@@ -3163,6 +3183,34 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               "name" => "field",
             )
           ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
+                    shape(
+                      "name" => "module.SetWithAdapter",
+                      "underlyingType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_set" => \tmeta_ThriftSetType::fromShape(
+                            shape(
+                              "valueType" => \tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "set_string",
+            )
+          ),
         ],
         "is_union" => false,
       )
@@ -3173,6 +3221,21 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
+        'set_string' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\thrift\annotation\hack\Adapter' => \thrift\annotation\hack\Adapter::fromShape(
+              shape(
+                "name" => "\Adapter2",
+              )
+            ),
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
+              shape(
+                "name" => "my::Adapter2",
+              )
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -3180,12 +3243,14 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       $shape['field'],
+      new Set(Keyset\keys($shape['set_string'])),
     );
   }
 
   public function __toShape()[]: self::TShape {
     return shape(
       'field' => $this->field,
+      'set_string' => ThriftUtil::toDArray(Dict\fill_keys($this->set_string->toValuesArray(), true), static::class),
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -3207,6 +3272,20 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         $this->field = (int)$_tmp0;
       }
     }
+    if (idx($parsed, 'set_string') !== null) {
+      $_json4 = HH\FIXME\UNSAFE_CAST<mixed, \thrift\test\SetWithAdapter>($parsed['set_string']);
+      $_container5 = Set {};
+      foreach($_json4 as $_key2 => $_value3) {
+        $_elem6 = '';
+        $_elem6 = $_value3;
+        $_container5->add($_elem6);
+      }
+      $this->set_string = $_container5;
+    }
+  }
+
+  private static function __hackAdapterTypeChecks()[]: void {
+    \ThriftUtil::requireSameType<\Adapter2::TThriftType, \thrift\test\SetWithAdapter>();
   }
 
 }

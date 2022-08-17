@@ -269,8 +269,9 @@ StructMetadata<::facebook::thrift::test::MyStruct>::gen(ThriftMetadata& metadata
   module_MyStruct.name() = "module.MyStruct";
   module_MyStruct.is_union() = false;
   static const auto* const
-  module_MyStruct_fields = new std::array<EncodedThriftField, 1>{{
+  module_MyStruct_fields = new std::array<EncodedThriftField, 2>{{
     {1, "field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
+    {2, "set_string", false, std::make_unique<Typedef>("module.SetWithAdapter", std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{*cvStruct("hack.Adapter", {{"name", cvString(R"(\Adapter2)")}}).cv_struct_ref(), *cvStruct("cpp.Adapter", {{"name", cvString(R"(my::Adapter2)")}}).cv_struct_ref(), }), std::vector<ThriftConstStruct>{}},
   }};
   for (const auto& f : *module_MyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;

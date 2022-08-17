@@ -25,19 +25,23 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
 
     @ThriftConstructor
     public MyStruct(
-        @com.facebook.swift.codec.ThriftField(value=1, name="field", requiredness=Requiredness.NONE) final int field
+        @com.facebook.swift.codec.ThriftField(value=1, name="field", requiredness=Requiredness.NONE) final int field,
+        @com.facebook.swift.codec.ThriftField(value=2, name="set_string", requiredness=Requiredness.NONE) final Set<String> setString
     ) {
         this.field = field;
+        this.setString = setString;
     }
     
     @ThriftConstructor
     protected MyStruct() {
       this.field = 0;
+      this.setString = null;
     }
     
     public static class Builder {
     
         private int field = 0;
+        private Set<String> setString = null;
     
         @com.facebook.swift.codec.ThriftField(value=1, name="field", requiredness=Requiredness.NONE)
         public Builder setField(int field) {
@@ -47,30 +51,46 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     
         public int getField() { return field; }
     
+            @com.facebook.swift.codec.ThriftField(value=2, name="set_string", requiredness=Requiredness.NONE)
+        public Builder setSetString(Set<String> setString) {
+            this.setString = setString;
+            return this;
+        }
+    
+        public Set<String> getSetString() { return setString; }
+    
         public Builder() { }
         public Builder(MyStruct other) {
             this.field = other.field;
+            this.setString = other.setString;
         }
     
         @ThriftConstructor
         public MyStruct build() {
             MyStruct result = new MyStruct (
-                this.field
+                this.field,
+                this.setString
             );
             return result;
         }
     }
-        public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+            public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
     private final int field;
     public static final int _FIELD = 1;
     private static final TField FIELD_FIELD_DESC = new TField("field", TType.I32, (short)1);
+        private final Set<String> setString;
+    public static final int _SET_STRING = 2;
+    private static final TField SET_STRING_FIELD_DESC = new TField("set_string", TType.SET, (short)2);
     static {
       NAMES_TO_IDS.put("field", 1);
       THRIFT_NAMES_TO_IDS.put("field", 1);
       FIELD_METADATA.put(1, FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("setString", 2);
+      THRIFT_NAMES_TO_IDS.put("set_string", 2);
+      FIELD_METADATA.put(2, SET_STRING_FIELD_DESC);
       com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
         new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/MyStruct"), 
         MyStruct.class, MyStruct::read0));
@@ -80,10 +100,16 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     @com.facebook.swift.codec.ThriftField(value=1, name="field", requiredness=Requiredness.NONE)
     public int getField() { return field; }
     
+    
+    @Nullable
+    @com.facebook.swift.codec.ThriftField(value=2, name="set_string", requiredness=Requiredness.NONE)
+    public Set<String> getSetString() { return setString; }
+    
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         helper.add("field", field);
+        helper.add("setString", setString);
         return helper.toString();
     }
     
@@ -100,13 +126,15 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     
         return
             Objects.equals(field, other.field) &&
+    Objects.equals(setString, other.setString) &&
             true;
     }
     
     @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new java.lang.Object[] {
-            field
+            field,
+            setString
         });
     }
     
@@ -131,6 +159,24 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
+        case _SET_STRING:
+          if (__field.type == TType.SET) {
+            Set<String> setString;
+            {
+            TSet _set = oprot.readSetBegin();
+            setString = new HashSet<String>(Math.max(0, _set.size));
+            for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
+                
+                String _value1 = oprot.readString();
+                setString.add(_value1);
+            }
+            oprot.readSetEnd();
+            }
+            builder.setSetString(setString);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(oprot, __field.type);
           break;
@@ -146,6 +192,16 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       oprot.writeFieldBegin(FIELD_FIELD_DESC);
       oprot.writeI32(this.field);
       oprot.writeFieldEnd();
+      if (this.setString != null) {
+        oprot.writeFieldBegin(SET_STRING_FIELD_DESC);
+        Set<String> _iter0 = this.setString;
+        oprot.writeSetBegin(new TSet(TType.STRING, _iter0.size()));
+        for (String _iter1 : _iter0) {
+          oprot.writeString(_iter1);
+        }
+        oprot.writeSetEnd();
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }

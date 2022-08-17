@@ -25,6 +25,11 @@ public class Constants {
   public static final MyStruct var3 = new MyStruct();
   static {
     var3.setField(30);
+    Set<String> tmp0 = new HashSet<String>();
+    tmp0.add("10");
+    tmp0.add("20");
+
+    var3.setSet_string(tmp0);
   }
 
   public static final Integer var4 = 40;
@@ -34,6 +39,11 @@ public class Constants {
   public static final MyStruct var6 = new MyStruct();
   static {
     var6.setField(60);
+    Set<String> tmp1 = new HashSet<String>();
+    tmp1.add("30");
+    tmp1.add("40");
+
+    var6.setSet_string(tmp1);
   }
 
 }

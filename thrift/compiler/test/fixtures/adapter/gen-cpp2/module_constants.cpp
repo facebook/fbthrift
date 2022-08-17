@@ -28,7 +28,8 @@ const ::apache::thrift::adapt_detail::adapted_t<MyVarAdapter, ::std::string>& mo
 }
 const ::apache::thrift::adapt_detail::adapted_t<MyVarAdapter, ::facebook::thrift::test::MyStruct>& module_constants::var3() {
   static const folly::Indestructible<::apache::thrift::adapt_detail::adapted_t<MyVarAdapter, ::facebook::thrift::test::MyStruct>> instance(
-      MyVarAdapter::fromThrift(::facebook::thrift::test::MyStruct(::apache::thrift::detail::make_constant< ::facebook::thrift::test::MyStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::field>(static_cast<::std::int32_t>(30)))),
+      MyVarAdapter::fromThrift(::facebook::thrift::test::MyStruct(::apache::thrift::detail::make_constant< ::facebook::thrift::test::MyStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::field>(static_cast<::std::int32_t>(30)), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::set_string>(static_cast<::std::set<::std::string>>(std::initializer_list<::std::string>{apache::thrift::StringTraits<std::string>::fromStringLiteral("10"),
+  apache::thrift::StringTraits<std::string>::fromStringLiteral("20")})))),
                                            ::apache::thrift::detail::make_constant< ::facebook::thrift::test::Config>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::path>(apache::thrift::StringTraits<std::string>::fromStringLiteral("baz"))),
                                            "facebook.com/thrift/test/var3"));
   return *instance;
@@ -49,7 +50,8 @@ const ::apache::thrift::adapt_detail::adapted_t<MyVarAdapter, ::std::string>& mo
 }
 const ::apache::thrift::adapt_detail::adapted_t<MyVarAdapter, ::facebook::thrift::test::MyStruct>& module_constants::var6() {
   static const folly::Indestructible<::apache::thrift::adapt_detail::adapted_t<MyVarAdapter, ::facebook::thrift::test::MyStruct>> instance(
-      MyVarAdapter::fromThrift(::facebook::thrift::test::MyStruct(::apache::thrift::detail::make_constant< ::facebook::thrift::test::MyStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::field>(static_cast<::std::int32_t>(60)))),
+      MyVarAdapter::fromThrift(::facebook::thrift::test::MyStruct(::apache::thrift::detail::make_constant< ::facebook::thrift::test::MyStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::field>(static_cast<::std::int32_t>(60)), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::set_string>(static_cast<::std::set<::std::string>>(std::initializer_list<::std::string>{apache::thrift::StringTraits<std::string>::fromStringLiteral("30"),
+  apache::thrift::StringTraits<std::string>::fromStringLiteral("40")})))),
                                            ::apache::thrift::detail::make_constant< ::facebook::thrift::test::Config>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::path>(apache::thrift::StringTraits<std::string>::fromStringLiteral("baz2"))),
                                            "facebook.com/thrift/test/var6"));
   return *instance;

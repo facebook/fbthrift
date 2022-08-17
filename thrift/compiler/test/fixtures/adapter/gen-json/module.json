@@ -35,66 +35,66 @@
       }
     },
     "var3" : {
-      "lineno" : 205,
-      "value" : { "field" : 30 },
+      "lineno" : 206,
+      "value" : { "field" : 30, "set_string" : [ "10", "20" ] },
       "type_enum" : "STRUCT",
       "spec_args" : "MyStruct",
       "source_range" : {
         "begin" : {
-          "line" : 205,
+          "line" : 206,
           "column" : 1
         },
         "end" : {
-          "line" : 206,
-          "column" : 43
+          "line" : 207,
+          "column" : 70
         }
       }
     },
     "var4" : {
-      "lineno" : 208,
+      "lineno" : 209,
       "value" : 40,
       "type_enum" : "I32",
       "spec_args" : null,
       "source_range" : {
         "begin" : {
-          "line" : 208,
+          "line" : 209,
           "column" : 1
         },
         "end" : {
-          "line" : 209,
+          "line" : 210,
           "column" : 20
         }
       }
     },
     "var5" : {
-      "lineno" : 211,
+      "lineno" : 212,
       "value" : "50",
       "type_enum" : "STRING",
       "spec_args" : null,
       "source_range" : {
         "begin" : {
-          "line" : 211,
+          "line" : 212,
           "column" : 1
         },
         "end" : {
-          "line" : 212,
+          "line" : 213,
           "column" : 25
         }
       }
     },
     "var6" : {
-      "lineno" : 214,
-      "value" : { "field" : 60 },
+      "lineno" : 215,
+      "value" : { "field" : 60, "set_string" : [ "30", "40" ] },
       "type_enum" : "STRUCT",
       "spec_args" : "MyStruct",
       "source_range" : {
         "begin" : {
-          "line" : 214,
+          "line" : 215,
           "column" : 1
         },
         "end" : {
-          "line" : 215,
-          "column" : 43
+          "line" : 216,
+          "column" : 70
         }
       }
     }
@@ -936,6 +936,21 @@
               "column" : 15
             }
           }
+        },
+        "set_string" : {
+          "type_enum" : "TYPEDEF",
+          "spec_args" : "SetWithAdapter",
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 203,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 203,
+              "column" : 31
+            }
+          }
         }
       },
       "source_range" : {
@@ -944,7 +959,7 @@
           "column" : 1
         },
         "end" : {
-          "line" : 203,
+          "line" : 204,
           "column" : 2
         }
       }

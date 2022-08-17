@@ -146,9 +146,10 @@ pub struct Config {
     pub _dot_dot_Default_default: self::dot_dot::OtherFields,
 }
 
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Clone, PartialEq)]
 pub struct MyStruct {
     pub field: ::std::primitive::i32,
+    pub set_string: crate::types::SetWithAdapter,
     // This field forces `..Default::default()` when instantiating this
     // struct, to make code future-proof against new fields added later to
     // the definition in Thrift. If you don't want this, add the annotation
@@ -1074,6 +1075,7 @@ impl ::std::default::Default for self::MyStruct {
     fn default() -> Self {
         Self {
             field: ::std::default::Default::default(),
+            set_string: ::std::default::Default::default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
         }
     }
@@ -1084,6 +1086,7 @@ impl ::std::fmt::Debug for self::MyStruct {
         formatter
             .debug_struct("MyStruct")
             .field("field", &self.field)
+            .field("set_string", &self.set_string)
             .finish()
     }
 }
@@ -1110,6 +1113,9 @@ where
         p.write_field_begin("field", ::fbthrift::TType::I32, 1);
         ::fbthrift::Serialize::write(&self.field, p);
         p.write_field_end();
+        p.write_field_begin("set_string", ::fbthrift::TType::Set, 2);
+        ::fbthrift::Serialize::write(&self.set_string, p);
+        p.write_field_end();
         p.write_field_stop();
         p.write_struct_end();
     }
@@ -1122,14 +1128,17 @@ where
     fn read(p: &mut P) -> ::anyhow::Result<Self> {
         static FIELDS: &[::fbthrift::Field] = &[
             ::fbthrift::Field::new("field", ::fbthrift::TType::I32, 1),
+            ::fbthrift::Field::new("set_string", ::fbthrift::TType::Set, 2),
         ];
         let mut field_field = ::std::option::Option::None;
+        let mut field_set_string = ::std::option::Option::None;
         let _ = p.read_struct_begin(|_| ())?;
         loop {
             let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
             match (fty, fid as ::std::primitive::i32) {
                 (::fbthrift::TType::Stop, _) => break,
                 (::fbthrift::TType::I32, 1) => field_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::Set, 2) => field_set_string = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (fty, _) => p.skip(fty)?,
             }
             p.read_field_end()?;
@@ -1137,6 +1146,7 @@ where
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
             field: field_field.unwrap_or_default(),
+            set_string: field_set_string.unwrap_or_default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
         })
     }

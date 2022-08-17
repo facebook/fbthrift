@@ -27,13 +27,18 @@ import com.facebook.thrift.protocol.*;
 public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
   private static final TField FIELD_FIELD_DESC = new TField("field", TType.I32, (short)1);
+  private static final TField SET_STRING_FIELD_DESC = new TField("set_string", TType.SET, (short)2);
 
   public final Integer field;
+  public final Set<String> set_string;
   public static final int FIELD = 1;
+  public static final int SET_STRING = 2;
 
   public MyStruct(
-      Integer field) {
+      Integer field,
+      Set<String> set_string) {
     this.field = field;
+    this.set_string = set_string;
   }
 
   /**
@@ -44,6 +49,11 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       this.field = TBaseHelper.deepCopy(other.field);
     } else {
       this.field = null;
+    }
+    if (other.isSetSet_string()) {
+      this.set_string = TBaseHelper.deepCopy(other.set_string);
+    } else {
+      this.set_string = null;
     }
   }
 
@@ -60,6 +70,15 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     return this.field != null;
   }
 
+  public Set<String> getSet_string() {
+    return this.set_string;
+  }
+
+  // Returns true if field set_string is set (has been assigned a value) and false otherwise
+  public boolean isSetSet_string() {
+    return this.set_string != null;
+  }
+
   @Override
   public boolean equals(Object _that) {
     if (_that == null)
@@ -72,12 +91,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
 
     if (!TBaseHelper.equalsNobinary(this.isSetField(), that.isSetField(), this.field, that.field)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetSet_string(), that.isSetSet_string(), this.set_string, that.set_string)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {field});
+    return Arrays.deepHashCode(new Object[] {field, set_string});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -87,6 +108,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
 
   public static MyStruct deserialize(TProtocol iprot) throws TException {
     Integer tmp_field = null;
+    Set<String> tmp_set_string = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -104,6 +126,25 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case SET_STRING:
+          if (__field.type == TType.SET) {
+            {
+              TSet _set53 = iprot.readSetBegin();
+              tmp_set_string = new HashSet<String>(Math.max(0, 2*_set53.size));
+              for (int _i54 = 0; 
+                   (_set53.size < 0) ? iprot.peekSet() : (_i54 < _set53.size); 
+                   ++_i54)
+              {
+                String _elem55;
+                _elem55 = iprot.readString();
+                tmp_set_string.add(_elem55);
+              }
+              iprot.readSetEnd();
+            }
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -115,6 +156,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     MyStruct _that;
     _that = new MyStruct(
       tmp_field
+      ,tmp_set_string
     );
     _that.validate();
     return _that;
@@ -127,6 +169,17 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     if (this.field != null) {
       oprot.writeFieldBegin(FIELD_FIELD_DESC);
       oprot.writeI32(this.field);
+      oprot.writeFieldEnd();
+    }
+    if (this.set_string != null) {
+      oprot.writeFieldBegin(SET_STRING_FIELD_DESC);
+      {
+        oprot.writeSetBegin(new TSet(TType.STRING, this.set_string.size()));
+        for (String _iter56 : this.set_string)        {
+          oprot.writeString(_iter56);
+        }
+        oprot.writeSetEnd();
+      }
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();

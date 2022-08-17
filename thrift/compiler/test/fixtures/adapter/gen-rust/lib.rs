@@ -16,6 +16,12 @@ pub mod consts {
 
     pub static var3: ::once_cell::sync::Lazy<crate::types::MyStruct> = ::once_cell::sync::Lazy::new(|| crate::types::MyStruct {
             field: 30,
+            set_string: {
+                let mut set = ::std::collections::BTreeSet::new();
+                set.insert("10".to_owned());
+                set.insert("20".to_owned());
+                set
+            },
             ..::std::default::Default::default()
         });
 
@@ -25,6 +31,12 @@ pub mod consts {
 
     pub static var6: ::once_cell::sync::Lazy<crate::types::MyStruct> = ::once_cell::sync::Lazy::new(|| crate::types::MyStruct {
             field: 60,
+            set_string: {
+                let mut set = ::std::collections::BTreeSet::new();
+                set.insert("30".to_owned());
+                set.insert("40".to_owned());
+                set
+            },
             ..::std::default::Default::default()
         });
 }

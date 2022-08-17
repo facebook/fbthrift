@@ -1759,6 +1759,7 @@ class MyStruct:
   """
   Attributes:
    - field
+   - set_string
   """
 
   thrift_spec = None
@@ -1786,6 +1787,21 @@ class MyStruct:
           self.field = iprot.readI32()
         else:
           iprot.skip(ftype)
+      elif fid == 2:
+        if ftype == TType.SET:
+          self.set_string = set()
+          (_etype158, _size155) = iprot.readSetBegin()
+          if _size155 >= 0:
+            for _i159 in range(_size155):
+              _elem160 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+              self.set_string.add(_elem160)
+          else: 
+            while iprot.peekSet():
+              _elem161 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+              self.set_string.add(_elem161)
+          iprot.readSetEnd()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -1802,6 +1818,13 @@ class MyStruct:
     if self.field != None:
       oprot.writeFieldBegin('field', TType.I32, 1)
       oprot.writeI32(self.field)
+      oprot.writeFieldEnd()
+    if self.set_string != None:
+      oprot.writeFieldBegin('set_string', TType.SET, 2)
+      oprot.writeSetBegin(TType.STRING, len(self.set_string))
+      for iter162 in self.set_string:
+        oprot.writeString(iter162.encode('utf-8')) if UTF8STRINGS and not isinstance(iter162, bytes) else oprot.writeString(iter162)
+      oprot.writeSetEnd()
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
@@ -1822,6 +1845,10 @@ class MyStruct:
       self.field = json_obj['field']
       if self.field > 0x7fffffff or self.field < -0x80000000:
         raise TProtocolException(TProtocolException.INVALID_DATA, 'number exceeds limit in field')
+    if 'set_string' in json_obj and json_obj['set_string'] is not None:
+      self.set_string = set_cls()
+      for _tmp_e163 in json_obj['set_string']:
+        self.set_string.add(_tmp_e163)
 
   def __repr__(self):
     L = []
@@ -1830,6 +1857,10 @@ class MyStruct:
       value = pprint.pformat(self.field, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    field=%s' % (value))
+    if self.set_string is not None:
+      value = pprint.pformat(self.set_string, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    set_string=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -1844,6 +1875,7 @@ class MyStruct:
   def __dir__(self):
     return (
       'field',
+      'set_string',
     )
 
   # Override the __hash__ function for Python3 - t10434117
@@ -2158,6 +2190,7 @@ all_structs.append(MyStruct)
 MyStruct.thrift_spec = (
   None, # 0
   (1, TType.I32, 'field', None, None, 2, ), # 1
+  (2, TType.SET, 'set_string', (TType.STRING,True), None, 2, ), # 2
 )
 
 MyStruct.thrift_struct_annotations = {
@@ -2165,13 +2198,15 @@ MyStruct.thrift_struct_annotations = {
 MyStruct.thrift_field_annotations = {
 }
 
-def MyStruct__init__(self, field=None,):
+def MyStruct__init__(self, field=None, set_string=None,):
   self.field = field
+  self.set_string = set_string
 
 MyStruct.__init__ = MyStruct__init__
 
 def MyStruct__setstate__(self, state):
   state.setdefault('field', None)
+  state.setdefault('set_string', None)
   self.__dict__ = state
 
 MyStruct.__getstate__ = lambda self: self.__dict__.copy()

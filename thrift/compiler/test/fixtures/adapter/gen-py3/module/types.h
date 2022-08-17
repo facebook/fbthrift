@@ -166,6 +166,9 @@ void reset_field<::facebook::thrift::test::MyStruct>(
     case 0:
       obj.field_ref().copy_from(default_inst<::facebook::thrift::test::MyStruct>().field_ref());
       return;
+    case 1:
+      obj.set_string_ref().copy_from(default_inst<::facebook::thrift::test::MyStruct>().set_string_ref());
+      return;
   }
 }
 

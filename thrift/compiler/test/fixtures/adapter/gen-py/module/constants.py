@@ -33,6 +33,10 @@ var2 = "20"
 
 var3 = MyStruct(**{
   "field" : 30,
+  "set_string" : set([
+    "10",
+    "20",
+  ]),
 })
 
 var4 = 40
@@ -41,5 +45,9 @@ var5 = "50"
 
 var6 = MyStruct(**{
   "field" : 60,
+  "set_string" : set([
+    "30",
+    "40",
+  ]),
 })
 

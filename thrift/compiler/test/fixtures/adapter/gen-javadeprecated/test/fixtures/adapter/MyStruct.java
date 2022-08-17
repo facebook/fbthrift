@@ -27,9 +27,12 @@ import com.facebook.thrift.protocol.*;
 public class MyStruct implements TBase, java.io.Serializable, Cloneable, Comparable<MyStruct> {
   private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
   private static final TField FIELD_FIELD_DESC = new TField("field", TType.I32, (short)1);
+  private static final TField SET_STRING_FIELD_DESC = new TField("set_string", TType.SET, (short)2);
 
   public int field;
+  public Set<String> set_string;
   public static final int FIELD = 1;
+  public static final int SET_STRING = 2;
 
   // isset id assignments
   private static final int __FIELD_ISSET_ID = 0;
@@ -41,6 +44,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(FIELD, new FieldMetaData("field", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.I32)));
+    tmpMetaDataMap.put(SET_STRING, new FieldMetaData("set_string", TFieldRequirementType.DEFAULT, 
+        new SetMetaData(TType.SET, 
+            new FieldValueMetaData(TType.STRING))));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -52,14 +58,17 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   }
 
   public MyStruct(
-      int field) {
+      int field,
+      Set<String> set_string) {
     this();
     this.field = field;
     setFieldIsSet(true);
+    this.set_string = set_string;
   }
 
   public static class Builder {
     private int field;
+    private Set<String> set_string;
 
     BitSet __optional_isset = new BitSet(1);
 
@@ -72,11 +81,17 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return this;
     }
 
+    public Builder setSet_string(final Set<String> set_string) {
+      this.set_string = set_string;
+      return this;
+    }
+
     public MyStruct build() {
       MyStruct result = new MyStruct();
       if (__optional_isset.get(__FIELD_ISSET_ID)) {
         result.setField(this.field);
       }
+      result.setSet_string(this.set_string);
       return result;
     }
   }
@@ -92,6 +107,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
     this.field = TBaseHelper.deepCopy(other.field);
+    if (other.isSetSet_string()) {
+      this.set_string = TBaseHelper.deepCopy(other.set_string);
+    }
   }
 
   public MyStruct deepCopy() {
@@ -121,6 +139,31 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     __isset_bit_vector.set(__FIELD_ISSET_ID, __value);
   }
 
+  public Set<String> getSet_string() {
+    return this.set_string;
+  }
+
+  public MyStruct setSet_string(Set<String> set_string) {
+    this.set_string = set_string;
+    return this;
+  }
+
+  public void unsetSet_string() {
+    this.set_string = null;
+  }
+
+  // Returns true if field set_string is set (has been assigned a value) and false otherwise
+  public boolean isSetSet_string() {
+    return this.set_string != null;
+  }
+
+  public void setSet_stringIsSet(boolean __value) {
+    if (!__value) {
+      this.set_string = null;
+    }
+  }
+
+  @SuppressWarnings("unchecked")
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case FIELD:
@@ -128,6 +171,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
         unsetField();
       } else {
         setField((Integer)__value);
+      }
+      break;
+
+    case SET_STRING:
+      if (__value == null) {
+        unsetSet_string();
+      } else {
+        setSet_string((Set<String>)__value);
       }
       break;
 
@@ -140,6 +191,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     switch (fieldID) {
     case FIELD:
       return new Integer(getField());
+
+    case SET_STRING:
+      return getSet_string();
 
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -158,12 +212,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
 
     if (!TBaseHelper.equalsNobinary(this.field, that.field)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetSet_string(), that.isSetSet_string(), this.set_string, that.set_string)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {field});
+    return Arrays.deepHashCode(new Object[] {field, set_string});
   }
 
   @Override
@@ -183,6 +239,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(field, other.field);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetSet_string()).compareTo(other.isSetSet_string());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(set_string, other.set_string);
     if (lastComparison != 0) { 
       return lastComparison;
     }
@@ -208,6 +272,25 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case SET_STRING:
+          if (__field.type == TType.SET) {
+            {
+              TSet _set53 = iprot.readSetBegin();
+              this.set_string = new HashSet<String>(Math.max(0, 2*_set53.size));
+              for (int _i54 = 0; 
+                   (_set53.size < 0) ? iprot.peekSet() : (_i54 < _set53.size); 
+                   ++_i54)
+              {
+                String _elem55;
+                _elem55 = iprot.readString();
+                this.set_string.add(_elem55);
+              }
+              iprot.readSetEnd();
+            }
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -228,6 +311,17 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     oprot.writeFieldBegin(FIELD_FIELD_DESC);
     oprot.writeI32(this.field);
     oprot.writeFieldEnd();
+    if (this.set_string != null) {
+      oprot.writeFieldBegin(SET_STRING_FIELD_DESC);
+      {
+        oprot.writeSetBegin(new TSet(TType.STRING, this.set_string.size()));
+        for (String _iter56 : this.set_string)        {
+          oprot.writeString(_iter56);
+        }
+        oprot.writeSetEnd();
+      }
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -253,6 +347,17 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     sb.append(space);
     sb.append(":").append(space);
     sb.append(TBaseHelper.toString(this.getField(), indent + 1, prettyPrint));
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("set_string");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getSet_string() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getSet_string(), indent + 1, prettyPrint));
+    }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
     sb.append(")");

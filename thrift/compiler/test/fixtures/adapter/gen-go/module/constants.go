@@ -40,10 +40,14 @@ var Var6 *MyStruct
 func init() {
 Var3 = &MyStruct{
   Field: 30,
+  SetString: []string{
+    "10",     "20",   },
 }
 
 Var6 = &MyStruct{
   Field: 60,
+  SetString: []string{
+    "30",     "40",   },
 }
 
 }

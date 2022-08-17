@@ -1324,16 +1324,47 @@ const folly::StringPiece MyStruct::__fbthrift_get_field_name(::apache::thrift::F
   return apache::thrift::TStructDataStorage<MyStruct>::fields_names[folly::to_underlying(ord) - 1];
 }
 
+MyStruct::MyStruct(const MyStruct& srcObj) :
+    __fbthrift_field_field(srcObj.__fbthrift_field_field),
+    __fbthrift_field_set_string(srcObj.__fbthrift_field_set_string),
+    __isset(srcObj.__isset) {
+  ::apache::thrift::adapt_detail::construct<my::Adapter2, 2>(__fbthrift_field_set_string, *this);
+}
 
-MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int32_t field__arg) :
-    __fbthrift_field_field(std::move(field__arg)) {
+MyStruct& MyStruct::operator=(const MyStruct& other) {
+  MyStruct tmp(other);
+  swap(*this, tmp);
+  return *this;
+}
+
+MyStruct::MyStruct(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept :
+    __fbthrift_field_field(std::move(other.__fbthrift_field_field)),
+    __fbthrift_field_set_string(std::move(other.__fbthrift_field_set_string)),
+    __isset(other.__isset) {
+  ::apache::thrift::adapt_detail::construct<my::Adapter2, 2>(__fbthrift_field_set_string, *this);
+}
+
+MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
+    this->__fbthrift_field_field = std::move(other.__fbthrift_field_field);
+    this->__fbthrift_field_set_string = std::move(other.__fbthrift_field_set_string);
+    __isset = other.__isset;
+    return *this;
+}
+
+
+MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int32_t field__arg, ::facebook::thrift::test::SetWithAdapter set_string__arg) :
+    __fbthrift_field_field(std::move(field__arg)),
+    __fbthrift_field_set_string(std::move(set_string__arg)) {
+  ::apache::thrift::adapt_detail::construct<my::Adapter2, 2>(__fbthrift_field_set_string, *this);
   __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
 }
 
 
 void MyStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_field = ::std::int32_t();
+  ::apache::thrift::adapt_detail::clear<my::Adapter2, 2>(__fbthrift_field_set_string, *this);
   __isset = {};
 }
 
@@ -1349,21 +1380,17 @@ bool MyStruct::operator==(FOLLY_MAYBE_UNUSED const MyStruct& rhs) const {
   if (!(lhs.field_ref() == rhs.field_ref())) {
     return false;
   }
-  return true;
-}
-
-bool MyStruct::operator<(FOLLY_MAYBE_UNUSED const MyStruct& rhs) const {
-  FOLLY_MAYBE_UNUSED auto& lhs = *this;
-  if (!(lhs.field_ref() == rhs.field_ref())) {
-    return lhs.field_ref() < rhs.field_ref();
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter2>(lhs.__fbthrift_field_set_string, rhs.__fbthrift_field_set_string)) {
+    return false;
   }
-  return false;
+  return true;
 }
 
 
 void swap(FOLLY_MAYBE_UNUSED MyStruct& a, FOLLY_MAYBE_UNUSED MyStruct& b) {
   using ::std::swap;
   swap(a.__fbthrift_field_field, b.__fbthrift_field_field);
+  swap(a.__fbthrift_field_set_string, b.__fbthrift_field_set_string);
   swap(a.__isset, b.__isset);
 }
 
@@ -1410,6 +1437,7 @@ FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 2, ::std::string, ::facebook::thrift::test::TerseAdaptedFields>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 3, ::std::set<::std::int32_t>, ::facebook::thrift::test::TerseAdaptedFields>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter, 1, ::facebook::thrift::test::A, ::facebook::thrift::test::B>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter2, 2, ::std::set<::std::string>, ::facebook::thrift::test::MyStruct>();
   ::apache::thrift::adapt_detail::validateAdapter<my::Adapter1, ::std::int64_t>();
 }
 }}}} // facebook::thrift::test

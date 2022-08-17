@@ -2617,8 +2617,10 @@ func (p *Config) String() string {
 
 // Attributes:
 //  - Field
+//  - SetString
 type MyStruct struct {
   Field int32 `thrift:"field,1" db:"field" json:"field"`
+  SetString SetWithAdapter `thrift:"set_string,2" db:"set_string" json:"set_string"`
 }
 
 func NewMyStruct() *MyStruct {
@@ -2628,6 +2630,10 @@ func NewMyStruct() *MyStruct {
 
 func (p *MyStruct) GetField() int32 {
   return p.Field
+}
+
+func (p *MyStruct) GetSetString() SetWithAdapter {
+  return p.SetString
 }
 type MyStructBuilder struct {
   obj *MyStruct
@@ -2642,6 +2648,7 @@ func NewMyStructBuilder() *MyStructBuilder{
 func (p MyStructBuilder) Emit() *MyStruct{
   return &MyStruct{
     Field: p.obj.Field,
+    SetString: p.obj.SetString,
   }
 }
 
@@ -2650,8 +2657,18 @@ func (m *MyStructBuilder) Field(field int32) *MyStructBuilder {
   return m
 }
 
+func (m *MyStructBuilder) SetString(setString SetWithAdapter) *MyStructBuilder {
+  m.obj.SetString = setString
+  return m
+}
+
 func (m *MyStruct) SetField(field int32) *MyStruct {
   m.Field = field
+  return m
+}
+
+func (m *MyStruct) SetSetString(setString SetWithAdapter) *MyStruct {
+  m.SetString = setString
   return m
 }
 
@@ -2670,6 +2687,10 @@ func (p *MyStruct) Read(iprot thrift.Protocol) error {
     switch fieldId {
     case 1:
       if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
         return err
       }
     default:
@@ -2696,10 +2717,33 @@ func (p *MyStruct)  ReadField1(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *MyStruct)  ReadField2(iprot thrift.Protocol) error {
+  _, size, err := iprot.ReadSetBegin()
+  if err != nil {
+    return thrift.PrependError("error reading set begin: ", err)
+  }
+  tSet := make(SetWithAdapter, 0, size)
+  p.SetString =  tSet
+  for i := 0; i < size; i ++ {
+    var _elem20 string
+    if v, err := iprot.ReadString(); err != nil {
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _elem20 = v
+    }
+    p.SetString = append(p.SetString, _elem20)
+  }
+  if err := iprot.ReadSetEnd(); err != nil {
+    return thrift.PrependError("error reading set end: ", err)
+  }
+  return nil
+}
+
 func (p *MyStruct) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("MyStruct"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -2717,12 +2761,38 @@ func (p *MyStruct) writeField1(oprot thrift.Protocol) (err error) {
   return err
 }
 
+func (p *MyStruct) writeField2(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("set_string", thrift.SET, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:set_string: ", p), err) }
+  if err := oprot.WriteSetBegin(thrift.STRING, len(p.SetString)); err != nil {
+    return thrift.PrependError("error writing set begin: ", err)
+  }
+  set := make(map[string]bool, len(p.SetString))
+  for _, v := range p.SetString {
+    if ok := set[v]; ok {
+      return thrift.PrependError("", fmt.Errorf("%T error writing set field: slice is not unique", v))
+    }
+    set[v] = true
+  }
+  for _, v := range p.SetString {
+    if err := oprot.WriteString(string(v)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+  }
+  if err := oprot.WriteSetEnd(); err != nil {
+    return thrift.PrependError("error writing set end: ", err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:set_string: ", p), err) }
+  return err
+}
+
 func (p *MyStruct) String() string {
   if p == nil {
     return "<nil>"
   }
 
   fieldVal := fmt.Sprintf("%v", p.Field)
-  return fmt.Sprintf("MyStruct({Field:%s})", fieldVal)
+  setStringVal := fmt.Sprintf("%v", p.SetString)
+  return fmt.Sprintf("MyStruct({Field:%s SetString:%s})", fieldVal, setStringVal)
 }
 
