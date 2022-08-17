@@ -25,6 +25,7 @@
 #include <thrift/lib/cpp/util/EnumUtils.h>
 #include <thrift/lib/cpp/util/VarintUtils.h>
 #include <thrift/lib/cpp2/op/Get.h>
+#include <thrift/lib/cpp2/protocol/Object.h>
 #include <thrift/lib/cpp2/type/Id.h>
 #include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/Tag.h>
@@ -425,7 +426,44 @@ void ApplyPatch::operator()(const Object& patch, Object& value) const {
   }
 }
 
+// TODO: Handle EnsureUnion
+Mask extractMaskFromPatch(const protocol::Object& patch) {
+  // If Assign, it is modified.
+  if (findOp(patch, PatchOp::Assign)) {
+    return allMask();
+  }
+  // All other operators are noop if they have the intrinsic default value.
+  if (isIntrinsicDefault(patch)) {
+    return noneMask();
+  }
+  // If Clear, it is modified if true.
+  if (auto* clear = findOp(patch, PatchOp::Clear)) {
+    return allMask();
+  }
+
+  Mask mask = noneMask();
+  // Add, Prepend, Put, and Remove should return allMask if it is not a map
+  // patch. If it's a map patch, only add modified fields.
+  // TODO: handle map type.
+  for (auto op :
+       {PatchOp::Add, PatchOp::Prepend, PatchOp::Put, PatchOp::Remove}) {
+    if (auto* value = findOp(patch, op)) {
+      return allMask();
+    }
+  }
+  // TODO: handle Patch, Ensure, PatchAfter for map and object types.
+  if (findOp(patch, PatchOp::Patch)) {
+    return allMask();
+  }
+
+  return mask;
+}
+
 } // namespace detail
+
+Mask extractMaskFromPatch(const protocol::Object& patch) {
+  return detail::extractMaskFromPatch(patch);
+}
 } // namespace protocol
 } // namespace thrift
 } // namespace apache

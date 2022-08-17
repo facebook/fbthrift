@@ -39,14 +39,18 @@ class PatchTest : public testing::Test {
   static Value asVal(bool val) { return asValueStruct<type::bool_t>(val); }
 
   template <typename P>
-  static Value apply(const P& patchStruct, Value val) {
+  static Object convertToObject(const P& patchStruct) {
     // Serialize to compact.
     std::string buffer;
     CompactSerializer::serialize(patchStruct.toThrift(), &buffer);
     auto binaryObj = folly::IOBuf::wrapBuffer(buffer.data(), buffer.size());
     // Parse to Object.
-    Object patchObj = parseObject<CompactProtocolReader>(*binaryObj);
-    // Apply to val.
+    return parseObject<CompactProtocolReader>(*binaryObj);
+  }
+
+  template <typename P>
+  static Value apply(const P& patchStruct, Value val) {
+    Object patchObj = convertToObject(patchStruct);
     applyPatch(patchObj, val);
     return val;
   }
@@ -54,6 +58,12 @@ class PatchTest : public testing::Test {
   template <typename P, typename V>
   static Value apply(const P& patchStruct, V&& val) {
     return apply(patchStruct, asVal(val));
+  }
+
+  template <typename P>
+  static Mask getMask(const P& patchStruct) {
+    Object patchObj = convertToObject(patchStruct);
+    return extractMaskFromPatch(patchObj);
   }
 
   template <typename PatchType, typename F>
@@ -75,6 +85,14 @@ class PatchTest : public testing::Test {
 
     // Wrong object to patch
     EXPECT_THROW(apply(PatchType{}, true), std::runtime_error);
+
+    // Test getting mask from patch
+    EXPECT_EQ(getMask(PatchType{}), noneMask());
+    EXPECT_EQ(getMask(PatchType{} + 0), noneMask());
+    EXPECT_EQ(getMask(PatchType{} - 0), noneMask());
+    EXPECT_EQ(getMask(PatchType{} = 43), allMask());
+    EXPECT_EQ(getMask(PatchType{} + 1), allMask());
+    EXPECT_EQ(getMask(PatchType{} - 1), allMask());
   }
 
   static Object patchAddOperation(Object&& patch, auto operation, auto value) {
@@ -118,6 +136,12 @@ TEST_F(PatchTest, Bool) {
   EXPECT_THROW(
       apply(op::BoolPatch{}, asValueStruct<type::i16_t>(42)),
       std::runtime_error);
+
+  // Test getting mask from patch
+  EXPECT_EQ(getMask(op::BoolPatch{}), noneMask());
+  EXPECT_EQ(getMask(op::BoolPatch{} = true), allMask());
+  EXPECT_EQ(getMask(op::BoolPatch{} = false), allMask());
+  EXPECT_EQ(getMask(!op::BoolPatch{}), allMask());
 
   // Should we check non-patch objects passed as patch? Previous checks kind of
   // cover this.
@@ -183,6 +207,10 @@ TEST_F(PatchTest, Binary) {
   EXPECT_THROW(
       apply(op::BinaryPatch{} = patchValue, asValueStruct<type::i16_t>(42)),
       std::runtime_error);
+
+  // Test getting mask from patch
+  EXPECT_EQ(getMask(op::BinaryPatch{}), noneMask());
+  EXPECT_EQ(getMask(op::BinaryPatch{} = folly::IOBuf()), allMask());
 }
 
 TEST_F(PatchTest, String) {
@@ -190,16 +218,19 @@ TEST_F(PatchTest, String) {
   auto stringData = asValueStruct<type::string_t>(data);
   // Noop
   EXPECT_EQ(data, *apply(op::StringPatch{}, stringData).stringValue_ref());
+  EXPECT_EQ(getMask(op::StringPatch{}), noneMask());
 
   // Assign
   EXPECT_EQ(
       patch, *apply(op::StringPatch{} = patch, stringData).stringValue_ref());
+  EXPECT_EQ(getMask(op::StringPatch{} = patch), allMask());
 
   // Clear
   {
     op::StringPatch strPatch;
     strPatch.clear();
     EXPECT_TRUE(apply(strPatch, stringData).stringValue_ref()->empty());
+    EXPECT_EQ(getMask(strPatch), allMask());
   }
 
   // Append
@@ -207,11 +238,13 @@ TEST_F(PatchTest, String) {
     op::StringPatch strPatch;
     strPatch.append(patch);
     EXPECT_EQ(data + patch, *apply(strPatch, stringData).stringValue_ref());
+    EXPECT_EQ(getMask(strPatch), allMask());
   }
   {
     op::StringPatch strPatch;
     strPatch.append("");
     EXPECT_EQ(data, *apply(strPatch, stringData).stringValue_ref());
+    EXPECT_EQ(getMask(strPatch), noneMask());
   }
 
   // Prepend
@@ -219,11 +252,13 @@ TEST_F(PatchTest, String) {
     op::StringPatch strPatch;
     strPatch.prepend(patch);
     EXPECT_EQ(patch + data, *apply(strPatch, stringData).stringValue_ref());
+    EXPECT_EQ(getMask(strPatch), allMask());
   }
   {
     op::StringPatch strPatch;
     strPatch.prepend("");
     EXPECT_EQ(data, *apply(strPatch, stringData).stringValue_ref());
+    EXPECT_EQ(getMask(strPatch), noneMask());
   }
 
   // Clear, Append and Prepend in one
@@ -233,6 +268,7 @@ TEST_F(PatchTest, String) {
     strPatch.append(patch);
     strPatch.prepend(patch);
     EXPECT_EQ(patch + patch, *apply(strPatch, stringData).stringValue_ref());
+    EXPECT_EQ(getMask(strPatch), allMask());
   }
 
   // Wrong patch provided
@@ -256,6 +292,7 @@ TEST_F(PatchTest, List) {
     EXPECT_EQ(
         *value.listValue_ref(),
         *applyContainerPatch(patchObj, value).listValue_ref());
+    EXPECT_EQ(extractMaskFromPatch(patchObj), noneMask());
   };
 
   // Noop
@@ -270,6 +307,7 @@ TEST_F(PatchTest, List) {
     EXPECT_EQ(
         *patchValue.listValue_ref(),
         *applyContainerPatch(patchObj, value).listValue_ref());
+    EXPECT_EQ(extractMaskFromPatch(patchObj), allMask());
   }
 
   // Clear
@@ -279,6 +317,7 @@ TEST_F(PatchTest, List) {
     EXPECT_EQ(
         std::vector<Value>{},
         *applyContainerPatch(patchObj, value).listValue_ref());
+    EXPECT_EQ(extractMaskFromPatch(patchObj), allMask());
   }
   {
     Object patchObj =
@@ -300,6 +339,7 @@ TEST_F(PatchTest, List) {
     auto patched = *applyContainerPatch(patchObj, value).listValue_ref();
     EXPECT_EQ(
         std::vector<Value>{asValueStruct<type::binary_t>("testbest")}, patched);
+    EXPECT_EQ(extractMaskFromPatch(patchObj), allMask());
   }
   {
     auto emptyMapValue = asValueStruct<type::map<type::i32_t, type::binary_t>>(
@@ -317,6 +357,7 @@ TEST_F(PatchTest, List) {
         value.listValue_ref()->end());
     Object patchObj = makePatch(op::PatchOp::Prepend, patchValue);
     EXPECT_EQ(expected, *applyContainerPatch(patchObj, value).listValue_ref());
+    EXPECT_EQ(extractMaskFromPatch(patchObj), allMask());
   }
   {
     Object patchObj = makePatch(op::PatchOp::Prepend, emptyValue);
@@ -332,6 +373,7 @@ TEST_F(PatchTest, List) {
         patchValue.listValue_ref()->end());
     Object patchObj = makePatch(op::PatchOp::Put, patchValue);
     EXPECT_EQ(expected, *applyContainerPatch(patchObj, value).listValue_ref());
+    EXPECT_EQ(extractMaskFromPatch(patchObj), allMask());
   }
   {
     Object patchObj = makePatch(op::PatchOp::Put, emptyValue);
@@ -346,6 +388,7 @@ TEST_F(PatchTest, List) {
     EXPECT_EQ(
         std::vector<Value>{},
         *applyContainerPatch(patchObj, value).listValue_ref());
+    EXPECT_EQ(extractMaskFromPatch(patchObj), allMask());
   }
   {
     Object patchObj = makePatch(op::PatchOp::Remove, emptySet);
@@ -361,6 +404,7 @@ TEST_F(PatchTest, List) {
         *value.listValue_ref(),
         *applyContainerPatch(patchObj, value).listValue_ref())
         << "Shuold insert nothing";
+    EXPECT_EQ(extractMaskFromPatch(patchObj), allMask());
   }
   {
     auto expected = *value.listValue_ref();
@@ -369,6 +413,7 @@ TEST_F(PatchTest, List) {
         op::PatchOp::Add,
         asValueStruct<type::set<type::binary_t>>(std::set{"best"}));
     EXPECT_EQ(expected, *applyContainerPatch(patchObj, value).listValue_ref());
+    EXPECT_EQ(extractMaskFromPatch(patchObj), allMask());
   }
   {
     Object patchObj = makePatch(op::PatchOp::Add, emptySet);
@@ -395,6 +440,7 @@ TEST_F(PatchTest, List) {
     EXPECT_EQ(
         *expected.listValue_ref(),
         *applyContainerPatch(patchObj, value).listValue_ref());
+    EXPECT_EQ(extractMaskFromPatch(patchObj), allMask());
   }
 }
 
@@ -409,6 +455,7 @@ TEST_F(PatchTest, Set) {
     EXPECT_EQ(
         *value.setValue_ref(),
         *applyContainerPatch(patchObj, value).setValue_ref());
+    EXPECT_EQ(extractMaskFromPatch(patchObj), noneMask());
   };
 
   // Noop
@@ -423,6 +470,7 @@ TEST_F(PatchTest, Set) {
     EXPECT_EQ(
         *patchValue.setValue_ref(),
         *applyContainerPatch(patchObj, value).setValue_ref());
+    EXPECT_EQ(extractMaskFromPatch(patchObj), allMask());
   }
 
   // Clear
@@ -432,6 +480,7 @@ TEST_F(PatchTest, Set) {
     EXPECT_EQ(
         std::set<Value>{},
         *applyContainerPatch(patchObj, value).setValue_ref());
+    EXPECT_EQ(extractMaskFromPatch(patchObj), allMask());
   }
   {
     Object patchObj =
@@ -446,6 +495,7 @@ TEST_F(PatchTest, Set) {
         patchValue.setValue_ref()->begin(), patchValue.setValue_ref()->end());
     Object patchObj = makePatch(op::PatchOp::Put, patchValue);
     EXPECT_EQ(expected, *applyContainerPatch(patchObj, value).setValue_ref());
+    EXPECT_EQ(extractMaskFromPatch(patchObj), allMask());
   }
   {
     Object patchObj = makePatch(op::PatchOp::Put, emptySet);
@@ -460,6 +510,7 @@ TEST_F(PatchTest, Set) {
     EXPECT_EQ(
         std::set<Value>{},
         *applyContainerPatch(patchObj, value).setValue_ref());
+    EXPECT_EQ(extractMaskFromPatch(patchObj), allMask());
   }
   {
     Object patchObj = makePatch(op::PatchOp::Remove, emptySet);
@@ -475,6 +526,7 @@ TEST_F(PatchTest, Set) {
         *value.setValue_ref(),
         *applyContainerPatch(patchObj, value).setValue_ref())
         << "Shuold insert nothing";
+    EXPECT_EQ(extractMaskFromPatch(patchObj), allMask());
   }
   {
     auto expected = *value.setValue_ref();
@@ -484,6 +536,7 @@ TEST_F(PatchTest, Set) {
         asValueStruct<type::set<type::binary_t>>(std::set{"best test"}));
     auto patchResult = *applyContainerPatch(patchObj, value).setValue_ref();
     EXPECT_EQ(expected, patchResult);
+    EXPECT_EQ(extractMaskFromPatch(patchObj), allMask());
   }
   {
     Object patchObj = makePatch(op::PatchOp::Add, emptySet);
@@ -507,6 +560,7 @@ TEST_F(PatchTest, Set) {
     EXPECT_EQ(
         *expected.setValue_ref(),
         *applyContainerPatch(patchObj, value).setValue_ref());
+    EXPECT_EQ(extractMaskFromPatch(patchObj), allMask());
   }
 }
 

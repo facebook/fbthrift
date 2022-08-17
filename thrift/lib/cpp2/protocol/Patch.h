@@ -17,6 +17,7 @@
 #pragma once
 
 #include <folly/Portability.h>
+#include <thrift/lib/cpp2/FieldMask.h>
 #include <thrift/lib/cpp2/protocol/Object.h>
 #include <thrift/lib/thrift/detail/protocol.h>
 
@@ -52,6 +53,16 @@ struct ApplyPatch {
  * @param value to be patched
  */
 FOLLY_INLINE_VARIABLE constexpr detail::ApplyPatch applyPatch{};
+
+// Constructs a Mask that only contains fields that are modified by the Patch.
+// It will construct nested Mask for map and object patches.
+// For map, it uses the address of Value key as the key for the mask.
+// Note that Mask contains pointer to `protocol::Value` in patch, so
+// caller needs to make sure Patch has longer lifetime than the mask.
+Mask extractMaskFromPatch(const protocol::Object& patch);
+
+// Extracting mask from a temporary patch is dangerous and should be disallowed.
+protocol::Mask extractMaskFromPatch(Object&& patch) = delete;
 
 } // namespace protocol
 } // namespace thrift
