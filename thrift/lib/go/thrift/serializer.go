@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,6 +57,22 @@ func NewSerializer() *Serializer {
 func NewCompactSerializer() *Serializer {
 	transport := NewMemoryBufferLen(1024)
 	protocol := NewCompactProtocolFactory().GetProtocol(transport)
+
+	return &Serializer{transport, protocol}
+}
+
+// NewJSONSerializer creates a new serializer using the JSON protocol
+func NewJSONSerializer() *Serializer {
+	transport := NewMemoryBufferLen(1024)
+	protocol := NewJSONProtocolFactory().GetProtocol(transport)
+
+	return &Serializer{transport, protocol}
+}
+
+// NewSimpleJSONSerializer creates a new serializer using the SimpleJSON protocol
+func NewSimpleJSONSerializer() *Serializer {
+	transport := NewMemoryBufferLen(1024)
+	protocol := NewSimpleJSONProtocolFactory().GetProtocol(transport)
 
 	return &Serializer{transport, protocol}
 }
