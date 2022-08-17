@@ -28,8 +28,6 @@
 
 #include <thrift/compiler/diagnostic.h>
 
-using apache::thrift::compiler::yy::parser;
-
 namespace apache {
 namespace thrift {
 namespace compiler {
@@ -95,66 +93,51 @@ const char* lex_float_constant(const char* p) {
   return p ? lex_float_exponent(p, p) : nullptr;
 }
 
-// Bison may pass location by value or by reference.
-using location_arg = std::conditional<
-    std::is_same<
-        decltype(parser::make_tok_void),
-        parser::symbol_type(source_range)>::value,
-    source_range,
-    const source_range&>::type;
-using make_token_fun = parser::symbol_type (*)(location_arg);
-
-const std::unordered_map<std::string, make_token_fun> keywords = {
-    {"false",
-     [](location_arg loc) {
-       return parser::make_tok_bool_constant(false, loc);
-     }},
-    {"true",
-     [](location_arg loc) {
-       return parser::make_tok_bool_constant(true, loc);
-     }},
-    {"include", parser::make_tok_include},
-    {"cpp_include", parser::make_tok_cpp_include},
-    {"hs_include", parser::make_tok_hs_include},
-    {"package", parser::make_tok_package},
-    {"namespace", parser::make_tok_namespace},
-    {"void", parser::make_tok_void},
-    {"bool", parser::make_tok_bool},
-    {"byte", parser::make_tok_byte},
-    {"i16", parser::make_tok_i16},
-    {"i32", parser::make_tok_i32},
-    {"i64", parser::make_tok_i64},
-    {"double", parser::make_tok_double},
-    {"float", parser::make_tok_float},
-    {"string", parser::make_tok_string},
-    {"binary", parser::make_tok_binary},
-    {"map", parser::make_tok_map},
-    {"list", parser::make_tok_list},
-    {"set", parser::make_tok_set},
-    {"sink", parser::make_tok_sink},
-    {"stream", parser::make_tok_stream},
-    {"interaction", parser::make_tok_interaction},
-    {"performs", parser::make_tok_performs},
-    {"oneway", parser::make_tok_oneway},
-    {"idempotent", parser::make_tok_idempotent},
-    {"readonly", parser::make_tok_readonly},
-    {"safe", parser::make_tok_safe},
-    {"transient", parser::make_tok_transient},
-    {"stateful", parser::make_tok_stateful},
-    {"permanent", parser::make_tok_permanent},
-    {"server", parser::make_tok_server},
-    {"client", parser::make_tok_client},
-    {"typedef", parser::make_tok_typedef},
-    {"struct", parser::make_tok_struct},
-    {"union", parser::make_tok_union},
-    {"exception", parser::make_tok_exception},
-    {"extends", parser::make_tok_extends},
-    {"throws", parser::make_tok_throws},
-    {"service", parser::make_tok_service},
-    {"enum", parser::make_tok_enum},
-    {"const", parser::make_tok_const},
-    {"required", parser::make_tok_required},
-    {"optional", parser::make_tok_optional},
+const std::unordered_map<std::string, tok> keywords = {
+    {"false", tok::bool_constant},
+    {"true", tok::bool_constant},
+    {"include", tok::kw_include},
+    {"cpp_include", tok::kw_cpp_include},
+    {"hs_include", tok::kw_hs_include},
+    {"package", tok::kw_package},
+    {"namespace", tok::kw_namespace},
+    {"void", tok::kw_void},
+    {"bool", tok::kw_bool},
+    {"byte", tok::kw_byte},
+    {"i16", tok::kw_i16},
+    {"i32", tok::kw_i32},
+    {"i64", tok::kw_i64},
+    {"double", tok::kw_double},
+    {"float", tok::kw_float},
+    {"string", tok::kw_string},
+    {"binary", tok::kw_binary},
+    {"map", tok::kw_map},
+    {"list", tok::kw_list},
+    {"set", tok::kw_set},
+    {"sink", tok::kw_sink},
+    {"stream", tok::kw_stream},
+    {"interaction", tok::kw_interaction},
+    {"performs", tok::kw_performs},
+    {"oneway", tok::kw_oneway},
+    {"idempotent", tok::kw_idempotent},
+    {"readonly", tok::kw_readonly},
+    {"safe", tok::kw_safe},
+    {"transient", tok::kw_transient},
+    {"stateful", tok::kw_stateful},
+    {"permanent", tok::kw_permanent},
+    {"server", tok::kw_server},
+    {"client", tok::kw_client},
+    {"typedef", tok::kw_typedef},
+    {"struct", tok::kw_struct},
+    {"union", tok::kw_union},
+    {"exception", tok::kw_exception},
+    {"extends", tok::kw_extends},
+    {"throws", tok::kw_throws},
+    {"service", tok::kw_service},
+    {"enum", tok::kw_enum},
+    {"const", tok::kw_const},
+    {"required", tok::kw_required},
+    {"optional", tok::kw_optional},
 };
 
 } // namespace
@@ -165,20 +148,20 @@ lexer::lexer(lex_handler& handler, diagnostics_engine& diags, source src)
   token_start_ = ptr_;
 }
 
-parser::symbol_type lexer::make_int_constant(int offset, int base) {
-  std::string text = token_text();
+token lexer::make_int_constant(int offset, int base) {
+  fmt::string_view text = token_text();
   errno = 0;
-  uint64_t val = strtoull(text.c_str() + offset, nullptr, base);
-  if (errno == ERANGE) {
-    return report_error("integer constant {} is too large", text);
-  }
-  return parser::make_tok_int_constant(val, token_source_range());
+  uint64_t val = strtoull(
+      std::string(text.data(), text.size()).c_str() + offset, nullptr, base);
+  return errno != ERANGE
+      ? token::make_int_constant(token_source_range(), val)
+      : report_error("integer constant {} is too large", text);
 }
 
-parser::symbol_type lexer::make_float_constant() {
-  std::string text = token_text();
+token lexer::make_float_constant() {
+  fmt::string_view text = token_text();
   errno = 0;
-  double val = strtod(text.c_str(), nullptr);
+  double val = strtod(std::string(text.data(), text.size()).c_str(), nullptr);
   if (errno == ERANGE) {
     if (val == 0) {
       return report_error(
@@ -188,21 +171,20 @@ parser::symbol_type lexer::make_float_constant() {
     }
     // Allow subnormals.
   }
-  return parser::make_tok_dub_constant(val, token_source_range());
+  return token::make_float_constant(token_source_range(), val);
 }
 
 template <typename... T>
-parser::symbol_type lexer::report_error(
-    fmt::format_string<T...> msg, T&&... args) {
+token lexer::report_error(fmt::format_string<T...> msg, T&&... args) {
   diags_->report(
       location(token_start_),
       diagnostic_level::error,
       msg,
       std::forward<T>(args)...);
-  return parser::make_tok_error(token_source_range());
+  return token(tok::error, token_source_range());
 }
 
-parser::symbol_type lexer::unexpected_token() {
+token lexer::unexpected_token() {
   return report_error("unexpected token in input: {}", token_text());
 }
 
@@ -227,7 +209,7 @@ bool lexer::lex_doc_comment() {
     }
   } while (strncmp(ptr_, prefix, prefix_size) == 0);
   if (!is_inline) {
-    handler_->on_doc_comment(token_text().c_str(), location());
+    handler_->on_doc_comment(token_text(), location());
   }
   return is_inline;
 }
@@ -252,7 +234,7 @@ lexer::comment_lex_result lexer::lex_block_comment() {
     auto non_star = std::find_if(
         token_start_ + 2, ptr_ - 1, [](char c) { return c != '*'; });
     if (non_star != ptr_ - 1) {
-      handler_->on_doc_comment(token_text().c_str(), location());
+      handler_->on_doc_comment(token_text(), location());
     }
   }
   return comment_lex_result::skipped;
@@ -297,9 +279,9 @@ lexer::comment_lex_result lexer::lex_whitespace_or_comment() {
   }
 }
 
-parser::symbol_type lexer::get_next_token() {
+token lexer::get_next_token() {
   if (lex_whitespace_or_comment() == comment_lex_result::doc_comment) {
-    return parser::make_tok_inline_doc(token_text(), token_source_range());
+    return token::make_inline_doc(token_source_range(), token_text());
   }
 
   start_token();
@@ -311,11 +293,13 @@ parser::symbol_type lexer::get_next_token() {
       ++ptr_;
     }
     auto text = token_text();
-    auto it = keywords.find(text);
+    auto it = keywords.find(std::string(text.data(), text.size()));
     if (it != keywords.end()) {
-      return it->second(token_source_range());
+      return it->second == tok::bool_constant
+          ? token::make_bool_constant(token_source_range(), it->first == "true")
+          : token(it->second, token_source_range());
     }
-    return parser::make_tok_identifier(text, token_source_range());
+    return token::make_identifier(token_source_range(), text);
   } else if (c == '.') {
     if (const char* p = lex_float_constant(ptr_)) {
       ptr_ = p;
@@ -381,49 +365,19 @@ parser::symbol_type lexer::get_next_token() {
     const char* p = std::find(ptr_, end(), c);
     if (*p) {
       ptr_ = p + 1;
-      return parser::make_tok_literal(
-          std::string(token_start_ + 1, p), token_source_range());
+      const char* begin = token_start_ + 1;
+      return token::make_string_literal(
+          token_source_range(), {begin, static_cast<size_t>(p - begin)});
     }
   } else if (!c && ptr_ > end()) {
     --ptr_; // Put '\0' back in case get_next_token() is called again.
-    return parser::make_tok_eof(token_source_range());
+    return token(tok::eof, token_source_range());
   }
 
   // Lex operators and punctuators.
-  switch (c) {
-    case '{':
-      return parser::make_tok_char_bracket_curly_l(token_source_range());
-    case '}':
-      return parser::make_tok_char_bracket_curly_r(token_source_range());
-    case ',':
-      return parser::make_tok_char_comma(token_source_range());
-    case ';':
-      return parser::make_tok_char_semicolon(token_source_range());
-    case '=':
-      return parser::make_tok_char_equal(token_source_range());
-    case '[':
-      return parser::make_tok_char_bracket_square_l(token_source_range());
-    case ']':
-      return parser::make_tok_char_bracket_square_r(token_source_range());
-    case ':':
-      return parser::make_tok_char_colon(token_source_range());
-    case '(':
-      return parser::make_tok_char_bracket_round_l(token_source_range());
-    case ')':
-      return parser::make_tok_char_bracket_round_r(token_source_range());
-    case '<':
-      return parser::make_tok_char_bracket_angle_l(token_source_range());
-    case '>':
-      return parser::make_tok_char_bracket_angle_r(token_source_range());
-    case '@':
-      return parser::make_tok_char_at_sign(token_source_range());
-    case '-':
-      return parser::make_tok_char_minus(token_source_range());
-    case '+':
-      return parser::make_tok_char_plus(token_source_range());
-  }
-
-  return unexpected_token();
+  auto kind = detail::to_tok(c);
+  return kind != tok::error ? token(kind, token_source_range())
+                            : unexpected_token();
 }
 
 } // namespace compiler

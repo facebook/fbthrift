@@ -21,9 +21,9 @@
 using namespace apache::thrift::compiler;
 
 struct test_lex_handler : lex_handler {
-  std::string doc_comment;
+  fmt::string_view doc_comment;
 
-  void on_doc_comment(const char* text, source_location) override {
+  void on_doc_comment(fmt::string_view text, source_location) override {
     doc_comment = text;
   }
 };
@@ -45,13 +45,13 @@ TEST_F(LexerTest, move) {
   auto lexer = make_lexer("42");
   auto moved_lexer = std::move(lexer);
   auto token = moved_lexer.get_next_token();
-  EXPECT_EQ(token.token(), yy::parser::token::tok_int_constant);
+  EXPECT_EQ(token.kind, tok::int_constant);
 }
 
 TEST_F(LexerTest, eof) {
   auto lexer = make_lexer("");
   auto token = lexer.get_next_token();
-  EXPECT_EQ(token.token(), yy::parser::token::tok_eof);
+  EXPECT_EQ(token.kind, tok::eof);
 }
 
 TEST_F(LexerTest, identifier) {
@@ -59,20 +59,17 @@ TEST_F(LexerTest, identifier) {
   const std::string values[] = {"foo", "_", "bar42", "baz."};
   for (auto value : values) {
     auto token = lexer.get_next_token();
-    EXPECT_EQ(token.token(), yy::parser::token::tok_identifier);
-    EXPECT_EQ(token.value.as<std::string>(), value);
+    EXPECT_EQ(token.kind, tok::identifier);
+    EXPECT_EQ(token.string_value(), value);
   }
 }
 
 TEST_F(LexerTest, keywords) {
   auto lexer = make_lexer("double include string");
-  const yy::parser::token::yytokentype types[] = {
-      yy::parser::token::tok_double,
-      yy::parser::token::tok_include,
-      yy::parser::token::tok_string};
-  for (auto type : types) {
+  const tok kinds[] = {tok::kw_double, tok::kw_include, tok::kw_string};
+  for (auto kind : kinds) {
     auto token = lexer.get_next_token();
-    EXPECT_EQ(token.token(), type);
+    EXPECT_EQ(token.kind, kind);
   }
 }
 
@@ -81,8 +78,8 @@ TEST_F(LexerTest, int_constant) {
   const uint64_t values[] = {42, 0b100, 0B010, 0777, 0xdeadbeef, 0XCAFE};
   for (auto value : values) {
     auto token = lexer.get_next_token();
-    EXPECT_EQ(token.token(), yy::parser::token::tok_int_constant);
-    EXPECT_EQ(token.value.as<uint64_t>(), value);
+    EXPECT_EQ(token.kind, tok::int_constant);
+    EXPECT_EQ(token.int_value(), value);
   }
 }
 
@@ -91,8 +88,8 @@ TEST_F(LexerTest, float_constant) {
   const double values[] = {3.14, 1e23, 1.2E+34, 0.0, .4e-2};
   for (auto value : values) {
     auto token = lexer.get_next_token();
-    EXPECT_EQ(token.token(), yy::parser::token::tok_dub_constant);
-    EXPECT_EQ(token.value.as<double>(), value);
+    EXPECT_EQ(token.kind, tok::float_constant);
+    EXPECT_EQ(token.float_value(), value);
   }
 }
 
@@ -101,15 +98,15 @@ TEST_F(LexerTest, string_literal) {
   const std::string values[] = {"foo", "bar", "multi\nline\nstring"};
   for (auto value : values) {
     auto token = lexer.get_next_token();
-    EXPECT_EQ(token.token(), yy::parser::token::tok_literal);
-    EXPECT_EQ(token.value.as<std::string>(), value);
+    EXPECT_EQ(token.kind, tok::string_literal);
+    EXPECT_EQ(token.string_value(), value);
   }
 }
 
 TEST_F(LexerTest, whitespace) {
   auto lexer = make_lexer("\t\r\n end");
   auto token = lexer.get_next_token();
-  EXPECT_EQ(token.token(), yy::parser::token::tok_identifier);
+  EXPECT_EQ(token.kind, tok::identifier);
 }
 
 TEST_F(LexerTest, block_comment) {
@@ -122,7 +119,7 @@ TEST_F(LexerTest, block_comment) {
       end
       )");
   auto token = lexer.get_next_token();
-  EXPECT_EQ(token.token(), yy::parser::token::tok_identifier);
+  EXPECT_EQ(token.kind, tok::identifier);
 }
 
 TEST_F(LexerTest, block_doc_comment) {
@@ -131,7 +128,7 @@ TEST_F(LexerTest, block_doc_comment) {
         42
       )");
   auto token = lexer.get_next_token();
-  EXPECT_EQ(token.token(), yy::parser::token::tok_int_constant);
+  EXPECT_EQ(token.kind, tok::int_constant);
   EXPECT_EQ(handler.doc_comment, "/** Block comment */");
 }
 
@@ -143,7 +140,7 @@ TEST_F(LexerTest, line_doc_comment) {
         42
       )");
   auto token = lexer.get_next_token();
-  EXPECT_EQ(token.token(), yy::parser::token::tok_int_constant);
+  EXPECT_EQ(token.kind, tok::int_constant);
 }
 
 TEST_F(LexerTest, inline_doc_comment) {
@@ -153,5 +150,5 @@ TEST_F(LexerTest, inline_doc_comment) {
         ///< comment
       )");
   auto token = lexer.get_next_token();
-  EXPECT_EQ(token.token(), yy::parser::token::tok_inline_doc);
+  EXPECT_EQ(token.kind, tok::inline_doc);
 }

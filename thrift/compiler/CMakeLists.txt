@@ -18,11 +18,6 @@ set(COMPILER_DIR ${CMAKE_CURRENT_BINARY_DIR})
 # Override the default install path for `make install` step.
 set(CMAKE_INSTALL_PREFIX ${THRIFT_SOURCE_DIR})
 
-# Compile Bison files.
-set(BISON_FLAGS "--skeleton=lalr1.cc")
-BISON_TARGET(ThriftParser parse/thrifty.yy ${COMPILER_DIR}/thrifty.cc
-  COMPILE_FLAGS "${BISON_FLAGS}")
-
 # The Thrift AST library.
 add_library(
   compiler_ast
@@ -63,13 +58,13 @@ add_library(
   parse/parser.cc
   parse/parser.h
   parse/parsing_driver.cc
+  parse/token.cc
+  parse/token.h
   sema/const_checker.cc
   sema/patch_mutator.cc
   sema/scope_validator.cc
   sema/standard_mutator.cc
   sema/standard_validator.cc
-
-  ${BISON_ThriftParser_OUTPUTS}
 )
 target_compile_definitions(
   compiler_base

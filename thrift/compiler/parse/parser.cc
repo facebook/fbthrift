@@ -35,73 +35,19 @@ class parser {
 
   struct parse_error : std::exception {};
 
-  struct token_kind {
-    yy::parser::token::yytokentype value;
-
-    token_kind(yy::parser::token::yytokentype val = yy::parser::token::tok_eof)
-        : value(val) {}
-    /* implicit */ token_kind(char c)
-        : value(static_cast<yy::parser::token::yytokentype>(c)) {}
-
-    operator yy::parser::token::yytokentype() const { return value; }
-  };
-
-  struct token {
-    token_kind kind;
-    source_range range;
-  };
-  token token_; // The current unconsumed token.
-  boost::optional<yy::parser::symbol_type> bison_token_;
+  token token_ = token(tok::eof, {}); // The current unconsumed token.
 
   // End of the last consumed token.
   source_location end_;
 
-  void consume_token() {
-    // Convert token kinds that represent individual chars into the chars
-    // themselves for readability and diagnostics.
-    auto make_token_kind = [](yy::parser::token::yytokentype t) -> token_kind {
-      switch (t) {
-        case yy::parser::token::tok_char_comma:
-          return ',';
-        case yy::parser::token::tok_char_semicolon:
-          return ';';
-        case yy::parser::token::tok_char_bracket_curly_l:
-          return '{';
-        case yy::parser::token::tok_char_bracket_curly_r:
-          return '}';
-        case yy::parser::token::tok_char_equal:
-          return '=';
-        case yy::parser::token::tok_char_bracket_square_l:
-          return '[';
-        case yy::parser::token::tok_char_bracket_square_r:
-          return ']';
-        case yy::parser::token::tok_char_colon:
-          return ':';
-        case yy::parser::token::tok_char_bracket_round_l:
-          return '(';
-        case yy::parser::token::tok_char_bracket_round_r:
-          return ')';
-        case yy::parser::token::tok_char_bracket_angle_l:
-          return '<';
-        case yy::parser::token::tok_char_bracket_angle_r:
-          return '>';
-        case yy::parser::token::tok_char_at_sign:
-          return '@';
-        case yy::parser::token::tok_char_plus:
-          return '+';
-        case yy::parser::token::tok_char_minus:
-          return '-';
-        default:
-          return t;
-      }
-    };
+  token consume_token() {
+    token t = token_;
     end_ = token_.range.end;
-    bison_token_.emplace(lexer_.get_next_token());
-    token_.kind = make_token_kind(bison_token_->token());
-    token_.range = bison_token_->location;
-    if (token_.kind == yy::parser::token::tok_error) {
+    token_ = lexer_.get_next_token();
+    if (token_.kind == tok::error) {
       actions_.on_error();
     }
+    return t;
   }
 
   bool try_consume_token(token_kind kind) {
@@ -120,118 +66,10 @@ class parser {
   source_range expect_and_consume(token_kind expected) {
     auto range = token_.range;
     if (token_.kind != expected) {
-      report_expected(to_string(expected));
+      report_expected(to_string(expected.value));
     }
     consume_token();
     return range;
-  }
-
-  static std::string to_string(token_kind kind) {
-    if (kind < 256) {
-      return fmt::format("'{}'", static_cast<char>(kind));
-    }
-    switch (kind) {
-      case yy::parser::token::tok_identifier:
-        return "identifier";
-      case yy::parser::token::tok_literal:
-        return "string literal";
-      case yy::parser::token::tok_doctext:
-        return "doctext";
-      case yy::parser::token::tok_inline_doc:
-        return "inline doc";
-      case yy::parser::token::tok_bool_constant:
-        return "bool constant";
-      case yy::parser::token::tok_int_constant:
-        return "integral constant";
-      case yy::parser::token::tok_dub_constant:
-        return "floating-point constant";
-      case yy::parser::token::tok_include:
-        return "include";
-      case yy::parser::token::tok_cpp_include:
-        return "cpp_include";
-      case yy::parser::token::tok_hs_include:
-        return "hs_include";
-      case yy::parser::token::tok_package:
-        return "package";
-      case yy::parser::token::tok_namespace:
-        return "namespace";
-      case yy::parser::token::tok_void:
-        return "void";
-      case yy::parser::token::tok_bool:
-        return "bool";
-      case yy::parser::token::tok_byte:
-        return "byte";
-      case yy::parser::token::tok_string:
-        return "string";
-      case yy::parser::token::tok_binary:
-        return "binary";
-      case yy::parser::token::tok_i16:
-        return "i16";
-      case yy::parser::token::tok_i32:
-        return "i32";
-      case yy::parser::token::tok_i64:
-        return "i64";
-      case yy::parser::token::tok_double:
-        return "double";
-      case yy::parser::token::tok_float:
-        return "float";
-      case yy::parser::token::tok_map:
-        return "map";
-      case yy::parser::token::tok_list:
-        return "list";
-      case yy::parser::token::tok_set:
-        return "set";
-      case yy::parser::token::tok_stream:
-        return "stream";
-      case yy::parser::token::tok_sink:
-        return "sink";
-      case yy::parser::token::tok_oneway:
-        return "oneway";
-      case yy::parser::token::tok_idempotent:
-        return "idempotent";
-      case yy::parser::token::tok_readonly:
-        return "readonly";
-      case yy::parser::token::tok_safe:
-        return "safe";
-      case yy::parser::token::tok_transient:
-        return "transient";
-      case yy::parser::token::tok_stateful:
-        return "stateful";
-      case yy::parser::token::tok_permanent:
-        return "permanent";
-      case yy::parser::token::tok_server:
-        return "server";
-      case yy::parser::token::tok_client:
-        return "client";
-      case yy::parser::token::tok_typedef:
-        return "typedef";
-      case yy::parser::token::tok_struct:
-        return "struct";
-      case yy::parser::token::tok_exception:
-        return "exception";
-      case yy::parser::token::tok_throws:
-        return "throws";
-      case yy::parser::token::tok_extends:
-        return "extends";
-      case yy::parser::token::tok_service:
-        return "service";
-      case yy::parser::token::tok_enum:
-        return "enum";
-      case yy::parser::token::tok_const:
-        return "const";
-      case yy::parser::token::tok_required:
-        return "required";
-      case yy::parser::token::tok_optional:
-        return "optional";
-      case yy::parser::token::tok_union:
-        return "union";
-      case yy::parser::token::tok_interaction:
-        return "interaction";
-      case yy::parser::token::tok_performs:
-        return "performs";
-      default:
-        return "<unknown token>";
-    }
   }
 
   // The parse methods are ordered top down from the most general to concrete.
@@ -244,7 +82,7 @@ class parser {
   bool parse_program() {
     consume_token();
     try {
-      while (token_.kind != yy::parser::token::tok_eof) {
+      while (token_.kind != tok::eof) {
         auto stmt = parse_statement();
         if (stmt) {
           actions_.on_statement(std::move(stmt));
@@ -308,35 +146,35 @@ class parser {
 
   statement parse_header_or_definition() {
     switch (token_.kind) {
-      case yy::parser::token::tok_include:
-      case yy::parser::token::tok_cpp_include:
-      case yy::parser::token::tok_hs_include:
-      case yy::parser::token::tok_package:
+      case tok::kw_include:
+      case tok::kw_cpp_include:
+      case tok::kw_hs_include:
+      case tok::kw_package:
         return parse_include_or_package();
-      case yy::parser::token::tok_namespace:
+      case tok::kw_namespace:
         parse_namespace();
         return t_statement_type::standard_header;
-      case yy::parser::token::tok_typedef:
+      case tok::kw_typedef:
         return parse_typedef();
-      case yy::parser::token::tok_enum:
+      case tok::kw_enum:
         return parse_enum();
-      case yy::parser::token::tok_const:
+      case tok::kw_const:
         return parse_const();
-      case yy::parser::token::tok_struct:
+      case tok::kw_struct:
         return parse_struct();
-      case yy::parser::token::tok_union:
+      case tok::kw_union:
         return parse_union();
-      case yy::parser::token::tok_safe:
-      case yy::parser::token::tok_transient:
-      case yy::parser::token::tok_stateful:
-      case yy::parser::token::tok_permanent:
-      case yy::parser::token::tok_client:
-      case yy::parser::token::tok_server:
-      case yy::parser::token::tok_exception:
+      case tok::kw_safe:
+      case tok::kw_transient:
+      case tok::kw_stateful:
+      case tok::kw_permanent:
+      case tok::kw_client:
+      case tok::kw_server:
+      case tok::kw_exception:
         return parse_exception();
-      case yy::parser::token::tok_service:
+      case tok::kw_service:
         return parse_service();
-      case yy::parser::token::tok_interaction:
+      case tok::kw_interaction:
         return parse_interaction();
       default:
         report_expected("header or definition");
@@ -355,23 +193,23 @@ class parser {
     source_location loc = token_.range.begin;
     actions_.on_program_doctext();
     consume_token();
-    if (token_.kind != yy::parser::token::tok_literal) {
+    if (token_.kind != tok::string_literal) {
       report_expected("string literal");
     }
-    auto literal = bison_token_->value.as<std::string>();
+    auto literal = token_.string_value();
     auto range = source_range{loc, token_.range.end};
     consume_token();
     switch (kind) {
-      case yy::parser::token::tok_package:
-        actions_.on_package(range, std::move(literal));
+      case tok::kw_package:
+        actions_.on_package(range, literal);
         return t_statement_type::program_header;
-      case yy::parser::token::tok_include:
+      case tok::kw_include:
         actions_.on_include(range, std::move(literal));
         break;
-      case yy::parser::token::tok_cpp_include:
+      case tok::kw_cpp_include:
         actions_.on_cpp_include(range, std::move(literal));
         break;
-      case yy::parser::token::tok_hs_include:
+      case tok::kw_hs_include:
         actions_.on_hs_include(range, std::move(literal));
         break;
       default:
@@ -381,17 +219,13 @@ class parser {
   }
 
   void parse_namespace() {
-    assert(token_.kind == yy::parser::token::tok_namespace);
+    assert(token_.kind == tok::kw_namespace);
     actions_.on_program_doctext();
     consume_token();
     auto language = parse_identifier();
-    std::string ns;
-    if (token_.kind == yy::parser::token::tok_literal) {
-      ns = bison_token_->value.as<std::string>();
-      consume_token();
-    } else {
-      ns = parse_identifier();
-    }
+    std::string ns = token_.kind == tok::string_literal
+        ? consume_token().string_value()
+        : parse_identifier();
     return actions_.on_namespace(language, ns);
   }
 
@@ -417,13 +251,11 @@ class parser {
   }
 
   // InlineDocOptional: tok_inline_doc | /* empty */
-  t_docstring parse_inline_doc_optional() {
-    if (token_.kind != yy::parser::token::tok_inline_doc) {
+  boost::optional<std::string> parse_inline_doc_optional() {
+    if (token_.kind != tok::inline_doc) {
       return {};
     }
-    auto doc = bison_token_->value.as<t_docstring>();
-    consume_token();
-    return actions_.on_inline_doc(std::move(doc));
+    return actions_.on_inline_doc(consume_token().string_value());
   }
 
   // StructuredAnnotation:
@@ -470,12 +302,10 @@ class parser {
       auto value = std::string("1");
       if (try_consume_token('=')) {
         range.end = token_.range.end;
-        if (token_.kind == yy::parser::token::tok_literal) {
-          value = bison_token_->value.as<std::string>();
-          consume_token();
-        } else if (token_.kind == yy::parser::token::tok_bool_constant) {
-          value = fmt::format("{:d}", bison_token_->value.as<bool>());
-          consume_token();
+        if (token_.kind == tok::string_literal) {
+          value = consume_token().string_value();
+        } else if (token_.kind == tok::bool_constant) {
+          value = fmt::format("{:d}", consume_token().bool_value());
         } else if (auto integer = try_parse_integer()) {
           value = fmt::format("{}", *integer);
         } else {
@@ -495,10 +325,10 @@ class parser {
   //
   // Extends: tok_extends Identifier | /* empty */
   std::unique_ptr<t_service> parse_service() {
-    auto loc = expect_and_consume(yy::parser::token::tok_service).begin;
+    auto loc = expect_and_consume(tok::kw_service).begin;
     auto name = parse_identifier();
     auto base = std::string();
-    if (try_consume_token(yy::parser::token::tok_extends)) {
+    if (try_consume_token(tok::kw_extends)) {
       base = parse_identifier();
     }
     auto functions = parse_braced_function_list();
@@ -508,7 +338,7 @@ class parser {
 
   // Interaction: tok_interaction Identifier "{" FunctionList "}"
   std::unique_ptr<t_interaction> parse_interaction() {
-    auto loc = expect_and_consume(yy::parser::token::tok_interaction).begin;
+    auto loc = expect_and_consume(tok::kw_interaction).begin;
     auto name = parse_identifier();
     auto functions = parse_braced_function_list();
     return actions_.on_interaction(
@@ -527,7 +357,7 @@ class parser {
     expect_and_consume('{');
     auto functions = std::make_unique<t_function_list>();
     while (token_.kind != '}') {
-      if (token_.kind != yy::parser::token::tok_performs) {
+      if (token_.kind != tok::kw_performs) {
         functions->emplace_back(parse_function());
         parse_comma_or_semicolon_optional();
         continue;
@@ -560,15 +390,15 @@ class parser {
     // Parse a function qualifier.
     auto qual = t_function_qualifier();
     switch (token_.kind) {
-      case yy::parser::token::tok_oneway:
+      case tok::kw_oneway:
         qual = t_function_qualifier::one_way;
         consume_token();
         break;
-      case yy::parser::token::tok_idempotent:
+      case tok::kw_idempotent:
         qual = t_function_qualifier::idempotent;
         consume_token();
         break;
-      case yy::parser::token::tok_readonly:
+      case tok::kw_readonly:
         qual = t_function_qualifier::read_only;
         consume_token();
         break;
@@ -620,11 +450,11 @@ class parser {
     do {
       auto type = t_type_ref();
       switch (token_.kind) {
-        case yy::parser::token::tok_void:
+        case tok::kw_void:
           type = t_base_type::t_void();
           consume_token();
           break;
-        case yy::parser::token::tok_stream: {
+        case tok::kw_stream: {
           consume_token();
           expect_and_consume('<');
           auto response = parse_type_throws();
@@ -632,7 +462,7 @@ class parser {
           type = actions_.on_stream_return_type(std::move(response));
           break;
         }
-        case yy::parser::token::tok_sink: {
+        case tok::kw_sink: {
           consume_token();
           expect_and_consume('<');
           auto sink = parse_type_throws();
@@ -654,7 +484,7 @@ class parser {
 
   // MaybeThrows: tok_throws "(" FieldList ")" | /* empty */
   std::unique_ptr<t_throws> parse_throws() {
-    if (!try_consume_token(yy::parser::token::tok_throws)) {
+    if (!try_consume_token(tok::kw_throws)) {
       return {};
     }
     expect_and_consume('(');
@@ -665,7 +495,7 @@ class parser {
 
   // Typedef: tok_typedef FieldType Identifier
   std::unique_ptr<t_typedef> parse_typedef() {
-    auto loc = expect_and_consume(yy::parser::token::tok_typedef).begin;
+    auto loc = expect_and_consume(tok::kw_typedef).begin;
     auto type = parse_field_type();
     auto name = parse_identifier();
     return actions_.on_typedef({loc, end_}, std::move(type), std::move(name));
@@ -673,7 +503,7 @@ class parser {
 
   // Struct: tok_struct Identifier "{" FieldList "}"
   std::unique_ptr<t_struct> parse_struct() {
-    auto loc = expect_and_consume(yy::parser::token::tok_struct).begin;
+    auto loc = expect_and_consume(tok::kw_struct).begin;
     auto name = parse_identifier();
     auto fields = parse_braced_field_list();
     return actions_.on_struct({loc, end_}, std::move(name), std::move(fields));
@@ -681,7 +511,7 @@ class parser {
 
   // Union: tok_union Identifier "{" FieldList "}"
   std::unique_ptr<t_union> parse_union() {
-    auto loc = expect_and_consume(yy::parser::token::tok_union).begin;
+    auto loc = expect_and_consume(tok::kw_union).begin;
     auto name = parse_identifier();
     auto fields = parse_braced_field_list();
     return actions_.on_union({loc, end_}, std::move(name), std::move(fields));
@@ -695,20 +525,19 @@ class parser {
   // ErrorBlame: tok_client | tok_server | /* empty */
   std::unique_ptr<t_exception> parse_exception() {
     auto loc = token_.range.begin;
-    auto safety = try_consume_token(yy::parser::token::tok_safe)
-        ? t_error_safety::safe
-        : t_error_safety::unspecified;
+    auto safety = try_consume_token(tok::kw_safe) ? t_error_safety::safe
+                                                  : t_error_safety::unspecified;
     auto kind = t_error_kind::unspecified;
     switch (token_.kind) {
-      case yy::parser::token::tok_transient:
+      case tok::kw_transient:
         kind = t_error_kind::transient;
         consume_token();
         break;
-      case yy::parser::token::tok_stateful:
+      case tok::kw_stateful:
         kind = t_error_kind::stateful;
         consume_token();
         break;
-      case yy::parser::token::tok_permanent:
+      case tok::kw_permanent:
         kind = t_error_kind::permanent;
         consume_token();
         break;
@@ -716,12 +545,12 @@ class parser {
         break;
     }
     auto blame = t_error_blame::unspecified;
-    if (try_consume_token(yy::parser::token::tok_client)) {
+    if (try_consume_token(tok::kw_client)) {
       blame = t_error_blame::client;
-    } else if (try_consume_token(yy::parser::token::tok_server)) {
+    } else if (try_consume_token(tok::kw_server)) {
       blame = t_error_blame::server;
     }
-    expect_and_consume(yy::parser::token::tok_exception);
+    expect_and_consume(tok::kw_exception);
     auto name = parse_identifier();
     auto fields = parse_braced_field_list();
     return actions_.on_exception(
@@ -768,9 +597,9 @@ class parser {
 
     // Parse the field qualifier.
     auto qual = t_field_qualifier();
-    if (try_consume_token(yy::parser::token::tok_optional)) {
+    if (try_consume_token(tok::kw_optional)) {
       qual = t_field_qualifier::optional;
-    } else if (try_consume_token(yy::parser::token::tok_required)) {
+    } else if (try_consume_token(tok::kw_required)) {
       qual = t_field_qualifier::required;
     }
 
@@ -826,13 +655,12 @@ class parser {
       return actions_.on_field_type(*type, parse_annotations());
     }
     switch (token_.kind) {
-      case yy::parser::token::tok_identifier: {
-        auto value = bison_token_->value.as<std::string>();
-        consume_token();
+      case tok::identifier: {
+        auto value = consume_token().string_value();
         return actions_.on_field_type(
             range, std::move(value), parse_annotations());
       }
-      case yy::parser::token::tok_list: {
+      case tok::kw_list: {
         consume_token();
         expect_and_consume('<');
         auto element_type = parse_field_type();
@@ -840,14 +668,14 @@ class parser {
         return actions_.on_list_type(
             std::move(element_type), parse_annotations());
       }
-      case yy::parser::token::tok_set: {
+      case tok::kw_set: {
         consume_token();
         expect_and_consume('<');
         auto key_type = parse_field_type();
         expect_and_consume('>');
         return actions_.on_set_type(std::move(key_type), parse_annotations());
       }
-      case yy::parser::token::tok_map: {
+      case tok::kw_map: {
         consume_token();
         expect_and_consume('<');
         auto key_type = parse_field_type();
@@ -868,23 +696,23 @@ class parser {
   const t_base_type* try_parse_base_type() {
     auto get_base_type = [this]() -> const t_base_type* {
       switch (token_.kind) {
-        case yy::parser::token::tok_string:
+        case tok::kw_string:
           return &t_base_type::t_string();
-        case yy::parser::token::tok_binary:
+        case tok::kw_binary:
           return &t_base_type::t_binary();
-        case yy::parser::token::tok_bool:
+        case tok::kw_bool:
           return &t_base_type::t_bool();
-        case yy::parser::token::tok_byte:
+        case tok::kw_byte:
           return &t_base_type::t_byte();
-        case yy::parser::token::tok_i16:
+        case tok::kw_i16:
           return &t_base_type::t_i16();
-        case yy::parser::token::tok_i32:
+        case tok::kw_i32:
           return &t_base_type::t_i32();
-        case yy::parser::token::tok_i64:
+        case tok::kw_i64:
           return &t_base_type::t_i64();
-        case yy::parser::token::tok_double:
+        case tok::kw_double:
           return &t_base_type::t_double();
-        case yy::parser::token::tok_float:
+        case tok::kw_float:
           return &t_base_type::t_float();
         default:
           return nullptr;
@@ -904,7 +732,7 @@ class parser {
   //       InlineDocOptional
   //   | /* empty */
   std::unique_ptr<t_enum> parse_enum() {
-    auto loc = expect_and_consume(yy::parser::token::tok_enum).begin;
+    auto loc = expect_and_consume(tok::kw_enum).begin;
     auto name = parse_identifier();
     expect_and_consume('{');
     auto values = t_enum_value_list();
@@ -945,7 +773,7 @@ class parser {
 
   // Const: tok_const FieldType Identifier "=" ConstValue
   std::unique_ptr<t_const> parse_const() {
-    auto loc = expect_and_consume(yy::parser::token::tok_const).begin;
+    auto loc = expect_and_consume(tok::kw_const).begin;
     auto type = parse_field_type();
     auto name = parse_identifier();
     auto end = end_;
@@ -961,36 +789,30 @@ class parser {
   std::unique_ptr<t_const_value> parse_const_value() {
     auto loc = token_.range.begin;
     auto s = sign::plus;
-    switch (static_cast<int>(token_.kind)) {
-      case yy::parser::token::tok_bool_constant: {
-        auto value = bison_token_->value.as<bool>();
-        consume_token();
-        return actions_.on_bool_const(value);
-      }
-      case '-':
+    switch (token_.kind) {
+      case tok::bool_constant:
+        return actions_.on_bool_const(consume_token().bool_value());
+      case to_tok('-'):
         s = sign::minus;
         FMT_FALLTHROUGH;
-      case '+':
+      case to_tok('+'):
         consume_token();
-        if (token_.kind == yy::parser::token::tok_int_constant) {
+        if (token_.kind == tok::int_constant) {
           return actions_.on_int_const(loc, parse_integer(s));
-        } else if (token_.kind == yy::parser::token::tok_dub_constant) {
+        } else if (token_.kind == tok::float_constant) {
           return actions_.on_double_const(parse_double(s));
         }
         report_expected("number");
         break;
-      case yy::parser::token::tok_int_constant:
+      case tok::int_constant:
         return actions_.on_int_const(loc, parse_integer());
-      case yy::parser::token::tok_dub_constant:
+      case tok::float_constant:
         return actions_.on_double_const(parse_double());
-      case yy::parser::token::tok_literal: {
-        auto value = bison_token_->value.as<std::string>();
-        consume_token();
-        return actions_.on_string_literal(value);
-      }
-      case '[':
+      case tok::string_literal:
+        return actions_.on_string_literal(consume_token().string_value());
+      case to_tok('['):
         return parse_const_list();
-      case '{':
+      case to_tok('{'):
         return parse_const_map();
       default:
         if (auto id = try_parse_identifier()) {
@@ -1077,23 +899,21 @@ class parser {
   //   | tok_char_plus tok_int_constant
   //   | tok_char_minus tok_int_constant
   boost::optional<int64_t> try_parse_integer(sign s = sign::plus) {
-    switch (static_cast<int>(token_.kind)) {
-      case '-':
+    switch (token_.kind) {
+      case to_tok('-'):
         s = sign::minus;
         FMT_FALLTHROUGH;
-      case '+':
+      case to_tok('+'):
         consume_token();
-        if (token_.kind != yy::parser::token::tok_int_constant) {
+        if (token_.kind != tok::int_constant) {
           report_expected("integer");
         }
         FMT_FALLTHROUGH;
-      case yy::parser::token::tok_int_constant: {
-        auto value = bison_token_->value.as<uint64_t>();
-        consume_token();
-        return actions_.on_integer(s, value);
-      }
+      case tok::int_constant:
+        return actions_.on_integer(s, consume_token().int_value());
+      default:
+        return {};
     }
-    return {};
   }
 
   int64_t parse_integer(sign s = sign::plus) {
@@ -1108,21 +928,22 @@ class parser {
   //   | tok_char_plus tok_dub_constant
   //   | tok_char_minus tok_dub_constant
   double parse_double(sign s = sign::plus) {
-    switch (static_cast<int>(token_.kind)) {
-      case '-':
+    switch (token_.kind) {
+      case to_tok('-'):
         s = sign::minus;
         FMT_FALLTHROUGH;
-      case '+':
+      case to_tok('+'):
         consume_token();
-        if (token_.kind != yy::parser::token::tok_dub_constant) {
+        if (token_.kind != tok::float_constant) {
           break;
         }
         FMT_FALLTHROUGH;
-      case yy::parser::token::tok_dub_constant: {
-        double value = bison_token_->value.as<double>();
-        consume_token();
+      case tok::float_constant: {
+        double value = consume_token().float_value();
         return s == sign::plus ? value : -value;
       }
+      default:
+        break;
     }
     report_expected("double");
   }
@@ -1143,23 +964,25 @@ class parser {
   boost::optional<std::string> try_parse_identifier() {
     auto id = std::string();
     switch (token_.kind) {
-      case yy::parser::token::tok_identifier:
-        id = bison_token_->value.as<std::string>();
+      case tok::identifier:
+        id = token_.string_value();
         break;
       // Context-sensitive keywords allowed in identifiers:
-      case yy::parser::token::tok_package:
-      case yy::parser::token::tok_sink:
-      case yy::parser::token::tok_oneway:
-      case yy::parser::token::tok_readonly:
-      case yy::parser::token::tok_idempotent:
-      case yy::parser::token::tok_safe:
-      case yy::parser::token::tok_transient:
-      case yy::parser::token::tok_stateful:
-      case yy::parser::token::tok_permanent:
-      case yy::parser::token::tok_server:
-      case yy::parser::token::tok_client:
-        id = to_string(token_.kind);
+      case tok::kw_package:
+      case tok::kw_sink:
+      case tok::kw_oneway:
+      case tok::kw_readonly:
+      case tok::kw_idempotent:
+      case tok::kw_safe:
+      case tok::kw_transient:
+      case tok::kw_stateful:
+      case tok::kw_permanent:
+      case tok::kw_server:
+      case tok::kw_client: {
+        auto s = to_string(token_.kind);
+        id = {s.data(), s.size()};
         break;
+      }
       default:
         return {};
     }

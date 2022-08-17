@@ -16,16 +16,9 @@
 
 #pragma once
 
-#include <string>
-
 #include <fmt/core.h>
+#include <thrift/compiler/parse/token.h>
 #include <thrift/compiler/source_location.h>
-
-// This is a macro because of a difference between the OSS and internal builds.
-#ifndef THRIFTY_HH
-#define THRIFTY_HH <thrift/compiler/parse/thrifty.yy.h>
-#endif
-#include THRIFTY_HH
 
 namespace apache {
 namespace thrift {
@@ -39,7 +32,7 @@ class lex_handler {
   virtual ~lex_handler() {}
 
   // Invoked on a documentation comment such as `/** ... */` or `/// ...`.
-  virtual void on_doc_comment(const char* text, source_location loc) = 0;
+  virtual void on_doc_comment(fmt::string_view text, source_location loc) = 0;
 };
 
 // A Thrift lexer.
@@ -66,19 +59,20 @@ class lexer {
   // Returns the string representation of the last token reported via
   // `get_next_token` or `lex_handler`. If no token has been reported returns
   // an empty string.
-  std::string token_text() const { return {token_start_, ptr_}; }
+  fmt::string_view token_text() const {
+    return {token_start_, static_cast<size_t>(ptr_ - token_start_)};
+  }
 
   void start_token() { token_start_ = ptr_; }
 
   // Reports an error if the parsed value cannot fit in the widest supported
   // representation, i.e. int64_t and double.
-  yy::parser::symbol_type make_int_constant(int offset, int base);
-  yy::parser::symbol_type make_float_constant();
+  token make_int_constant(int offset, int base);
+  token make_float_constant();
 
   template <typename... T>
-  yy::parser::symbol_type report_error(
-      fmt::format_string<T...> msg, T&&... args);
-  yy::parser::symbol_type unexpected_token();
+  token report_error(fmt::format_string<T...> msg, T&&... args);
+  token unexpected_token();
 
   enum class comment_lex_result { skipped, doc_comment, unterminated };
 
@@ -90,7 +84,7 @@ class lexer {
  public:
   lexer(lex_handler& handler, diagnostics_engine& diags, source src);
 
-  yy::parser::symbol_type get_next_token();
+  token get_next_token();
 
   // Returns the current source location. If a token has been returned via
   // `get_next_token` or `lex_handler` the returned location points one past

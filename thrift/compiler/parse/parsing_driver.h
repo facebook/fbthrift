@@ -241,7 +241,7 @@ class parsing_driver {
 
   /** Strip comment chars and align leading whitespace on multiline doctext
    */
-  t_doc strip_doctext(const char* text);
+  t_doc strip_doctext(fmt::string_view text);
 
   /** update doctext of given node */
   void set_doctext(t_node& node, t_doc doctext) const;

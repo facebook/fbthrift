@@ -53,7 +53,7 @@ class parsing_driver::lex_handler_impl : public lex_handler {
   // as an optional prefix before either a definition or standalone at
   // the header. Hence this method of "pushing" it into the driver and
   // "pop-ing" it on the node as needed.
-  void on_doc_comment(const char* text, source_location loc) override {
+  void on_doc_comment(fmt::string_view text, source_location loc) override {
     driver_.clear_doctext();
     driver_.doctext = driver_.strip_doctext(text);
     driver_.doctext_lineno = driver_.get_lineno(loc);
@@ -761,12 +761,12 @@ int64_t parsing_driver::to_int(uint64_t val, bool negative) {
   return val;
 }
 
-t_doc parsing_driver::strip_doctext(const char* text) {
+t_doc parsing_driver::strip_doctext(fmt::string_view text) {
   if (mode != apache::thrift::compiler::parsing_mode::PROGRAM) {
     return boost::none;
   }
 
-  std::string str{text};
+  std::string str(text.data(), text.size());
   if (str.compare(0, 3, "/**") == 0) {
     str = str.substr(3, str.length() - 3 - 2);
   } else if (str.compare(0, 3, "///") == 0) {
