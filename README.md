@@ -78,7 +78,6 @@ On other platforms or if on Linux and without system dependencies `getdeps.py` w
 Some of the dependencies `getdeps.py` uses and installs are:
 
 **System**:
-[Bison 3.1 or later](https://www.gnu.org/software/bison),
 [Boost](https://www.boost.org),
 [CMake](https://cmake.org),
 [OpenSSLv1.0.2g](https://www.openssl.org),

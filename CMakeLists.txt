@@ -85,7 +85,6 @@ option(thriftpy3
 
 # Find required dependencies for the Thrift compiler.
 if (compiler_only OR build_all)
-  find_package(BISON 3.0.4 REQUIRED)
   include_directories(${OPENSSL_INCLUDE_DIR})
   set(THRIFT1 thrift1)
   set(THRIFTCPP2 thriftcpp2)
