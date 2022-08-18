@@ -22,6 +22,7 @@
 
 #include <folly/ConstexprMath.h>
 #include <folly/lang/Exception.h>
+#include <thrift/lib/cpp2/type/Id.h>
 #include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/Tag.h>
 #include <thrift/lib/cpp2/type/detail/TypeInfo.h>
@@ -262,8 +263,6 @@ struct BaseErasedOp {
     folly::throw_exception<std::runtime_error>(msg);
   }
 
-  [[noreturn]] static bool empty(const void*) { bad_op(); }
-  [[noreturn]] static void clear(void*) { bad_op(); }
   [[noreturn]] static void append(void*, const RuntimeBase&) { bad_op(); }
   [[noreturn]] static bool add(void*, const RuntimeBase&) { bad_op(); }
   [[noreturn]] static bool put(

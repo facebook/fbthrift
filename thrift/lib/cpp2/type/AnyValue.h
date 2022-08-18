@@ -18,13 +18,16 @@
 
 #include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/Type.h>
-#include <thrift/lib/cpp2/type/detail/AnyData.h>
+#include <thrift/lib/cpp2/type/detail/AnyValue.h>
 
 namespace apache {
 namespace thrift {
 namespace type {
 
 // A type-erased Thrift value.
+//
+// TODO(afuller): Harden and stress test type::Value and migrage usage once
+// satisfied.
 class AnyValue : public detail::AnyValueBase {
   using Base = detail::AnyValueBase;
 

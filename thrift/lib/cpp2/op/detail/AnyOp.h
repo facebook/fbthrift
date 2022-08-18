@@ -16,7 +16,11 @@
 
 #pragma once
 
+#include <stdexcept>
+
+#include <folly/lang/Exception.h>
 #include <thrift/lib/cpp2/op/detail/BaseOp.h>
+#include <thrift/lib/cpp2/type/Id.h>
 #include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/Tag.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
@@ -27,15 +31,24 @@ namespace apache {
 namespace thrift {
 namespace op {
 namespace detail {
-using RuntimeBase = type::detail::RuntimeBase;
+
+template <typename Tag>
+const TypeInfo& getAnyTypeInfo();
+
+// Create a AnyOp-based Thrift runtime type.
+template <typename Tag, typename T = type::native_type<Tag>>
+RuntimeType getAnyType() {
+  return RuntimeType::create<T>(getAnyTypeInfo<Tag>());
+}
 
 // Compile-time and type-erased Thrift operator implementations.
 template <typename Tag, typename = void>
 struct AnyOp : BaseAnyOp<Tag> {
   static_assert(type::is_concrete_v<Tag>, "");
+  using Base = BaseAnyOp<Tag>;
 
   // TODO(afuller): Implement all Tags and remove runtime throwing fallback.
-  using type::detail::BaseErasedOp::unimplemented;
+  using Base::unimplemented;
   [[noreturn]] static void append(void*, const RuntimeBase&) {
     unimplemented();
   }
@@ -44,7 +57,7 @@ struct AnyOp : BaseAnyOp<Tag> {
       void*, FieldId, const RuntimeBase*, const RuntimeBase&) {
     unimplemented();
   }
-  [[noreturn]] static type::Ptr get(void*, FieldId, const RuntimeBase*) {
+  [[noreturn]] static Ptr get(void*, FieldId, const RuntimeBase*) {
     unimplemented();
   }
 };
@@ -104,7 +117,7 @@ struct ListOp : BaseAnyOp<Tag> {
     return folly::forward_like<U>(self.at(pos));
   }
 
-  [[noreturn]] static type::Ptr get(void*, FieldId, const RuntimeBase*) {
+  [[noreturn]] static Ptr get(void*, FieldId, const RuntimeBase*) {
     unimplemented(); // TODO(afuller): Get by position.
   }
 };
@@ -131,7 +144,7 @@ struct SetOp : BaseAnyOp<Tag> {
   static bool contains(const T& self, K&& key) {
     return self.find(std::forward<K>(key)) != self.end();
   }
-  [[noreturn]] static type::Ptr get(void*, FieldId, const RuntimeBase*) {
+  [[noreturn]] static Ptr get(void*, FieldId, const RuntimeBase*) {
     unimplemented(); // TODO(afuller): Get by key (aka contains).
   }
 };
@@ -143,7 +156,7 @@ template <
     typename KeyTag,
     typename ValTag,
     typename Tag = type::map<KeyTag, ValTag>>
-struct MapOp : BaseAnyOp<type::map<KeyTag, ValTag>> {
+struct MapOp : BaseAnyOp<Tag> {
   using T = type::native_type<Tag>;
   using Base = BaseAnyOp<Tag>;
   using Base::bad_op;
@@ -176,7 +189,7 @@ struct MapOp : BaseAnyOp<type::map<KeyTag, ValTag>> {
     unimplemented();
   }
 
-  [[noreturn]] static type::Ptr get(void*, FieldId, const RuntimeBase*) {
+  [[noreturn]] static Ptr get(void*, FieldId, const RuntimeBase*) {
     unimplemented(); // TODO(afuller): Get by key.
   }
 };
@@ -186,14 +199,8 @@ struct AnyOp<type::map<KeyTag, ValTag>> : MapOp<KeyTag, ValTag> {};
 
 // Create a AnyOp-based Thrift type info.
 template <typename Tag>
-const type::detail::TypeInfo& getAnyTypeInfo() {
+const TypeInfo& getAnyTypeInfo() {
   return type::detail::getTypeInfo<AnyOp<Tag>, Tag>();
-}
-
-// Create a AnyOp-based Thrift runtime type.
-template <typename Tag, typename T = type::native_type<Tag>>
-type::detail::RuntimeType getAnyType() {
-  return type::detail::RuntimeType::create<T>(getAnyTypeInfo<Tag>());
 }
 
 } // namespace detail

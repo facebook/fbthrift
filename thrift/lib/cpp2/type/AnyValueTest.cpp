@@ -68,5 +68,26 @@ TEST(AnyValueTest, Identical) {
   EXPECT_FALSE(value.identical(AnyValue::create<double_t>(0.0)));
 }
 
+struct IntValue {
+  int value;
+
+  bool empty() const { return value == 0; }
+  void clear() { value = 0; }
+  bool identical(IntValue other) const { return value == other.value; }
+  folly::exception_wrapper asExceptionWrapper() const { return {}; }
+};
+
+TEST(AnyDataTest, IAnyData) {
+  folly::Poly<detail::IAnyData> data = IntValue{1};
+  EXPECT_FALSE(data.empty());
+  EXPECT_TRUE(data.identical(IntValue{1}));
+
+  data.clear();
+  EXPECT_TRUE(data.empty());
+  EXPECT_EQ(folly::poly_cast<IntValue&>(data).value, 0);
+  EXPECT_TRUE(data.identical(IntValue{0}));
+  EXPECT_FALSE(data.identical(IntValue{1}));
+}
+
 } // namespace
 } // namespace apache::thrift::type

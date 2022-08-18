@@ -25,6 +25,11 @@ namespace thrift {
 namespace op {
 namespace detail {
 
+template <class Tag, class Id>
+struct GetOrdinalImpl;
+template <size_t... I, typename F>
+void for_each_ordinal_impl(F&& f, std::index_sequence<I...>);
+
 // TODO: support adapted field and smart pointers with custom allocators
 struct GetValueOrNull {
   template <typename T>

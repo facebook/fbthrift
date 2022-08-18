@@ -28,15 +28,6 @@ namespace apache {
 namespace thrift {
 namespace op {
 
-// TODO(afuller): Consider moving to a new detail/Get.h as these are going to
-// get larger.
-namespace detail {
-template <class Tag, class Id>
-struct GetOrdinalImpl;
-template <size_t... I, typename F>
-void for_each_ordinal_impl(F&& f, std::index_sequence<I...>);
-} // namespace detail
-
 // Resolves to the number of definitions contained in Thrift class.
 template <typename S>
 FOLLY_INLINE_VARIABLE constexpr std::size_t size_v = ::apache::thrift::detail::

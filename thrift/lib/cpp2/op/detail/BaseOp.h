@@ -25,6 +25,11 @@ namespace apache {
 namespace thrift {
 namespace op {
 namespace detail {
+using FieldId = type::FieldId;
+using Ptr = type::detail::Ptr;
+using RuntimeBase = type::detail::RuntimeBase;
+using RuntimeType = type::detail::RuntimeType;
+using TypeInfo = type::detail::TypeInfo;
 
 // Ops all Thrift types support.
 template <typename Tag>
@@ -47,7 +52,7 @@ struct BaseAnyOp : type::detail::BaseErasedOp {
   }
   static bool empty(const void* ptr) { return op::isEmpty<Tag>(ref(ptr)); }
   static void clear(void* ptr) { op::clear<Tag>(ref(ptr)); }
-  static bool identical(const void* lhs, const type::detail::RuntimeBase& rhs) {
+  static bool identical(const void* lhs, const RuntimeBase& rhs) {
     // Caller should have already checked the types match.
     assert(rhs.type() == Tag{});
     return op::identical<Tag>(ref(lhs), rhs.as<Tag>());
