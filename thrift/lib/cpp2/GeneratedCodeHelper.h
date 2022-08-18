@@ -18,9 +18,11 @@
 
 #include <string>
 #include <string_view>
+#include <tuple>
 #include <type_traits>
 #include <utility>
 
+#include <folly/Memory.h>
 #include <folly/Portability.h>
 
 #include <fmt/core.h>
@@ -1730,6 +1732,69 @@ void async_tm_coro(CallbackPtr<T> callback, folly::coro::Task<T>&& task) {
 
 folly::exception_wrapper create_app_exn_unimplemented(const char* name);
 [[noreturn]] void throw_app_exn_unimplemented(const char* name);
+
+#if FOLLY_HAS_COROUTINES
+/**
+ * Exception thrown from default generated ServiceHandler coroutine methods to
+ * signal to caller that the method is not implemented by the user. This
+ * information can then be used by async_tm_* to try other overloads.
+ *
+ * The primary purpose of this mechanism is to avoid coroutine codegen, which
+ * has a huge impact on compile times.
+ *
+ * In most cases, default generated methods wrap another implementation, e.g.
+ * future_* wraps semifuture_*. So co_* could wrap future_*. That would involve
+ * using co_await, co_yield, co_return etc. We want to avoid these because the
+ * compiler is slow to compile coroutines.
+ */
+class UnimplementedCoroMethod : public std::exception {
+ public:
+  /**
+   * Because the public interface of coroutine methods accept input by value
+   * which are moved in (e.g. std::unique_ptr<T>), this exception needs to pass
+   * the arguments back to the caller so that another overload can be called
+   * with these values.
+   */
+  template <typename... Args>
+  static UnimplementedCoroMethod withCapturedArgs(Args... args) {
+    return UnimplementedCoroMethod(
+        folly::make_erased_unique<std::tuple<Args...>>(std::move(args)...));
+  }
+
+  /**
+   * If the stack_arguments option is set, then arguments are not moved in so
+   * capturing them is not necessary.
+   */
+  static UnimplementedCoroMethod withoutCapturedArgs() {
+    return UnimplementedCoroMethod(folly::empty_erased_unique_ptr());
+  }
+
+  /**
+   * Returns the arguments provided in withCapturedArgs.
+   *
+   * The template parameters must exactly match those passed to
+   * withCapturedArgs. Otherwise, the behavior is undefined.
+   */
+  template <typename... Args>
+  std::tuple<Args...> restoreArgs() && {
+    DCHECK(args_ != nullptr);
+    auto* args = reinterpret_cast<std::tuple<Args...>*>(args_.get());
+    return std::move(*args);
+  }
+
+ private:
+  explicit UnimplementedCoroMethod(folly::erased_unique_ptr args)
+      : args_{std::move(args)} {}
+  folly::erased_unique_ptr args_;
+};
+#endif // FOLLY_HAS_COROUTINES
+
+/**
+ * Helper function to mark that some objects are intentionally unused and avoid
+ * tripping compiler warnings.
+ */
+template <typename... Ignore>
+void ignore(Ignore&&...) {}
 
 } // namespace si
 } // namespace detail

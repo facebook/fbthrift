@@ -116,7 +116,7 @@ folly::Future<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::c
 folly::coro::Task<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf, void>> apache::thrift::ServiceHandler<::cpp2::MyService>::co_interact(::std::int32_t p_arg) {
   auto expected{apache::thrift::detail::si::InvocationType::Coro};
   __fbthrift_invocation_interact.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
-  return folly::coro::toTask(future_interact(p_arg));
+  folly::throw_exception(apache::thrift::detail::si::UnimplementedCoroMethod::withCapturedArgs<::std::int32_t /*arg*/>(p_arg));
 }
 
 folly::coro::Task<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf, void>> apache::thrift::ServiceHandler<::cpp2::MyService>::co_interact(apache::thrift::RequestParams /* params */, ::std::int32_t p_arg) {
@@ -132,6 +132,9 @@ void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_interact(std::u
   // available to the future through the thread-local backchannel, so we create
   // a RAII object that sets up RequestParams and clears them on destruction.
   apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
+#if FOLLY_HAS_COROUTINES
+determineInvocationType:
+#endif // FOLLY_HAS_COROUTINES
   auto invocationType = __fbthrift_invocation_interact.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -187,6 +190,11 @@ void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_interact(std::u
         folly::assume_unreachable();
       }
     }
+#if FOLLY_HAS_COROUTINES
+  } catch (apache::thrift::detail::si::UnimplementedCoroMethod& ex) {
+    std::tie(p_arg) = std::move(ex).restoreArgs<::std::int32_t /*arg*/>();
+    goto determineInvocationType;
+#endif // FOLLY_HAS_COROUTINES
   } catch (...) {
     callback->exception(std::current_exception());
   }
@@ -212,7 +220,7 @@ folly::Future<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::c
 folly::coro::Task<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionFastIf, ::std::int32_t>> apache::thrift::ServiceHandler<::cpp2::MyService>::co_interactFast() {
   auto expected{apache::thrift::detail::si::InvocationType::Coro};
   __fbthrift_invocation_interactFast.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
-  return folly::coro::toTask(future_interactFast());
+  folly::throw_exception(apache::thrift::detail::si::UnimplementedCoroMethod::withCapturedArgs<>());
 }
 
 folly::coro::Task<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionFastIf, ::std::int32_t>> apache::thrift::ServiceHandler<::cpp2::MyService>::co_interactFast(apache::thrift::RequestParams /* params */) {
@@ -228,6 +236,9 @@ void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_interactFast(st
   // available to the future through the thread-local backchannel, so we create
   // a RAII object that sets up RequestParams and clears them on destruction.
   apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
+#if FOLLY_HAS_COROUTINES
+determineInvocationType:
+#endif // FOLLY_HAS_COROUTINES
   auto invocationType = __fbthrift_invocation_interactFast.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -283,6 +294,11 @@ void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_interactFast(st
         folly::assume_unreachable();
       }
     }
+#if FOLLY_HAS_COROUTINES
+  } catch (apache::thrift::detail::si::UnimplementedCoroMethod& ex) {
+    std::tie() = std::move(ex).restoreArgs<>();
+    goto determineInvocationType;
+#endif // FOLLY_HAS_COROUTINES
   } catch (...) {
     callback->exception(std::current_exception());
   }
@@ -308,7 +324,7 @@ folly::Future<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::c
 folly::coro::Task<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> apache::thrift::ServiceHandler<::cpp2::MyService>::co_serialize() {
   auto expected{apache::thrift::detail::si::InvocationType::Coro};
   __fbthrift_invocation_serialize.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
-  return folly::coro::toTask(future_serialize());
+  folly::throw_exception(apache::thrift::detail::si::UnimplementedCoroMethod::withCapturedArgs<>());
 }
 
 folly::coro::Task<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> apache::thrift::ServiceHandler<::cpp2::MyService>::co_serialize(apache::thrift::RequestParams /* params */) {
@@ -324,6 +340,9 @@ void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_serialize(std::
   // available to the future through the thread-local backchannel, so we create
   // a RAII object that sets up RequestParams and clears them on destruction.
   apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
+#if FOLLY_HAS_COROUTINES
+determineInvocationType:
+#endif // FOLLY_HAS_COROUTINES
   auto invocationType = __fbthrift_invocation_serialize.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -379,6 +398,11 @@ void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_serialize(std::
         folly::assume_unreachable();
       }
     }
+#if FOLLY_HAS_COROUTINES
+  } catch (apache::thrift::detail::si::UnimplementedCoroMethod& ex) {
+    std::tie() = std::move(ex).restoreArgs<>();
+    goto determineInvocationType;
+#endif // FOLLY_HAS_COROUTINES
   } catch (...) {
     callback->exception(std::current_exception());
   }
@@ -399,7 +423,7 @@ folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::cpp2::MyServi
 folly::coro::Task<::std::int32_t> apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::co_frobnicate() {
   auto expected{apache::thrift::detail::si::InvocationType::Coro};
   __fbthrift_invocation_frobnicate.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  return folly::coro::toTask(semifuture_frobnicate());
+  folly::throw_exception(apache::thrift::detail::si::UnimplementedCoroMethod::withCapturedArgs<>());
 }
 
 folly::coro::Task<::std::int32_t> apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::co_frobnicate(apache::thrift::RequestParams /* params */) {
@@ -415,6 +439,9 @@ void apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::async_t
   // available to the future through the thread-local backchannel, so we create
   // a RAII object that sets up RequestParams and clears them on destruction.
   apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
+#if FOLLY_HAS_COROUTINES
+determineInvocationType:
+#endif // FOLLY_HAS_COROUTINES
   auto invocationType = __fbthrift_invocation_frobnicate.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -464,6 +491,11 @@ void apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::async_t
         folly::assume_unreachable();
       }
     }
+#if FOLLY_HAS_COROUTINES
+  } catch (apache::thrift::detail::si::UnimplementedCoroMethod& ex) {
+    std::tie() = std::move(ex).restoreArgs<>();
+    goto determineInvocationType;
+#endif // FOLLY_HAS_COROUTINES
   } catch (...) {
     callback->exception(std::current_exception());
   }
@@ -484,7 +516,7 @@ folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::cpp2::MyService>
 folly::coro::Task<void> apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::co_ping() {
   auto expected{apache::thrift::detail::si::InvocationType::Coro};
   __fbthrift_invocation_ping.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  return folly::coro::toTask(semifuture_ping());
+  folly::throw_exception(apache::thrift::detail::si::UnimplementedCoroMethod::withCapturedArgs<>());
 }
 
 folly::coro::Task<void> apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::co_ping(apache::thrift::RequestParams /* params */) {
@@ -500,6 +532,9 @@ void apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::async_t
   // available to the future through the thread-local backchannel, so we create
   // a RAII object that sets up RequestParams and clears them on destruction.
   apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
+#if FOLLY_HAS_COROUTINES
+determineInvocationType:
+#endif // FOLLY_HAS_COROUTINES
   auto invocationType = __fbthrift_invocation_ping.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -549,6 +584,11 @@ void apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::async_t
         folly::assume_unreachable();
       }
     }
+#if FOLLY_HAS_COROUTINES
+  } catch (apache::thrift::detail::si::UnimplementedCoroMethod& ex) {
+    std::tie() = std::move(ex).restoreArgs<>();
+    goto determineInvocationType;
+#endif // FOLLY_HAS_COROUTINES
   } catch (...) {
     callback->exception(std::current_exception());
   }
@@ -568,7 +608,7 @@ folly::SemiFuture<::apache::thrift::ServerStream<bool>> apache::thrift::ServiceH
 folly::coro::Task<::apache::thrift::ServerStream<bool>> apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::co_truthify() {
   auto expected{apache::thrift::detail::si::InvocationType::Coro};
   __fbthrift_invocation_truthify.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  return folly::coro::toTask(semifuture_truthify());
+  folly::throw_exception(apache::thrift::detail::si::UnimplementedCoroMethod::withCapturedArgs<>());
 }
 
 folly::coro::Task<::apache::thrift::ServerStream<bool>> apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::co_truthify(apache::thrift::RequestParams /* params */) {
@@ -584,6 +624,9 @@ void apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::async_t
   // available to the future through the thread-local backchannel, so we create
   // a RAII object that sets up RequestParams and clears them on destruction.
   apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
+#if FOLLY_HAS_COROUTINES
+determineInvocationType:
+#endif // FOLLY_HAS_COROUTINES
   auto invocationType = __fbthrift_invocation_truthify.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -633,6 +676,11 @@ void apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::async_t
         folly::assume_unreachable();
       }
     }
+#if FOLLY_HAS_COROUTINES
+  } catch (apache::thrift::detail::si::UnimplementedCoroMethod& ex) {
+    std::tie() = std::move(ex).restoreArgs<>();
+    goto determineInvocationType;
+#endif // FOLLY_HAS_COROUTINES
   } catch (...) {
     callback->exception(std::current_exception());
   }
@@ -652,7 +700,7 @@ folly::SemiFuture<::apache::thrift::ResponseAndSinkConsumer<::std::set<::std::in
 folly::coro::Task<::apache::thrift::ResponseAndSinkConsumer<::std::set<::std::int32_t>, ::std::string, ::std::string>> apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::co_encode() {
   auto expected{apache::thrift::detail::si::InvocationType::Coro};
   __fbthrift_invocation_encode.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  return folly::coro::toTask(semifuture_encode());
+  folly::throw_exception(apache::thrift::detail::si::UnimplementedCoroMethod::withCapturedArgs<>());
 }
 
 folly::coro::Task<::apache::thrift::ResponseAndSinkConsumer<::std::set<::std::int32_t>, ::std::string, ::std::string>> apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::co_encode(apache::thrift::RequestParams /* params */) {
@@ -668,6 +716,9 @@ void apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::async_t
   // available to the future through the thread-local backchannel, so we create
   // a RAII object that sets up RequestParams and clears them on destruction.
   apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
+#if FOLLY_HAS_COROUTINES
+determineInvocationType:
+#endif // FOLLY_HAS_COROUTINES
   auto invocationType = __fbthrift_invocation_encode.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -717,6 +768,11 @@ void apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::async_t
         folly::assume_unreachable();
       }
     }
+#if FOLLY_HAS_COROUTINES
+  } catch (apache::thrift::detail::si::UnimplementedCoroMethod& ex) {
+    std::tie() = std::move(ex).restoreArgs<>();
+    goto determineInvocationType;
+#endif // FOLLY_HAS_COROUTINES
   } catch (...) {
     callback->exception(std::current_exception());
   }
@@ -753,7 +809,7 @@ folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::cpp2::MyService>
 folly::coro::Task<void> apache::thrift::ServiceHandler<::cpp2::MyService>::SerialInteractionIf::co_frobnicate() {
   auto expected{apache::thrift::detail::si::InvocationType::Coro};
   __fbthrift_invocation_frobnicate.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  return folly::coro::toTask(semifuture_frobnicate());
+  folly::throw_exception(apache::thrift::detail::si::UnimplementedCoroMethod::withCapturedArgs<>());
 }
 
 folly::coro::Task<void> apache::thrift::ServiceHandler<::cpp2::MyService>::SerialInteractionIf::co_frobnicate(apache::thrift::RequestParams /* params */) {
@@ -769,6 +825,9 @@ void apache::thrift::ServiceHandler<::cpp2::MyService>::SerialInteractionIf::asy
   // available to the future through the thread-local backchannel, so we create
   // a RAII object that sets up RequestParams and clears them on destruction.
   apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
+#if FOLLY_HAS_COROUTINES
+determineInvocationType:
+#endif // FOLLY_HAS_COROUTINES
   auto invocationType = __fbthrift_invocation_frobnicate.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -819,6 +878,11 @@ void apache::thrift::ServiceHandler<::cpp2::MyService>::SerialInteractionIf::asy
         folly::assume_unreachable();
       }
     }
+#if FOLLY_HAS_COROUTINES
+  } catch (apache::thrift::detail::si::UnimplementedCoroMethod& ex) {
+    std::tie() = std::move(ex).restoreArgs<>();
+    goto determineInvocationType;
+#endif // FOLLY_HAS_COROUTINES
   } catch (...) {
     callback->exception(std::current_exception());
   }

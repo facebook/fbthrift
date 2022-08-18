@@ -60,7 +60,13 @@ folly::Future<<% > types/return_type_server_lift_unit%>> <% > service_common/ser
 folly::coro::Task<<% > types/return_type_server%>> <% > service_common/service_class_name%>::co_<%function:cpp_name%>(<% > service_common/function_param_list_server%>) {
   auto expected{apache::thrift::detail::si::InvocationType::Coro};
   __fbthrift_invocation_<%function:cpp_name%>.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::<%^service:interaction?%>Future<%/service:interaction?%><%#service:interaction?%>SemiFuture<%/service:interaction?%>, std::memory_order_relaxed);
-  return folly::coro::toTask(<%^service:interaction?%>future_<%/service:interaction?%><%#service:interaction?%>semifuture_<%/service:interaction?%><%function:cpp_name%>(<% > service_common/param_list_move%>));
+  <%#function:stack_arguments?%>
+  apache::thrift::detail::si::ignore(<% > service_common/param_list_move%>);
+  folly::throw_exception(apache::thrift::detail::si::UnimplementedCoroMethod::withoutCapturedArgs());
+  <%/function:stack_arguments?%>
+  <%^function:stack_arguments?%>
+  folly::throw_exception(apache::thrift::detail::si::UnimplementedCoroMethod::withCapturedArgs<<% > service_common/function_param_list_server_commented_out%>>(<% > service_common/param_list_move%>));
+  <%/function:stack_arguments?%>
 }
 
 folly::coro::Task<<% > types/return_type_server%>> <% > service_common/service_class_name%>::co_<%function:cpp_name%>(apache::thrift::RequestParams /* params */<%function:comma%><% > service_common/function_param_list_server%>) {
@@ -83,6 +89,11 @@ void <% > service_common/service_class_name%>::async_tm_<%function:cpp_name%>(st
   // available to the future through the thread-local backchannel, so we create
   // a RAII object that sets up RequestParams and clears them on destruction.
   apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
+<%#function:coroutine?%>
+#if FOLLY_HAS_COROUTINES
+determineInvocationType:
+#endif // FOLLY_HAS_COROUTINES
+<%/function:coroutine?%>
   auto invocationType = __fbthrift_invocation_<%function:cpp_name%>.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -166,6 +177,15 @@ void <% > service_common/service_class_name%>::async_tm_<%function:cpp_name%>(st
         folly::assume_unreachable();
       }
     }
+<%#function:coroutine?%>
+#if FOLLY_HAS_COROUTINES
+  } catch (apache::thrift::detail::si::UnimplementedCoroMethod&<%^function:stack_arguments?%> ex<%/function:stack_arguments?%>) {
+    <%^function:stack_arguments?%>
+    std::tie(<% > service_common/param_list%>) = std::move(ex).restoreArgs<<% > service_common/function_param_list_server_commented_out%>>();
+    <%/function:stack_arguments?%>
+    goto determineInvocationType;
+#endif // FOLLY_HAS_COROUTINES
+<%/function:coroutine?%>
   } catch (...) {
     callback->exception(std::current_exception());
   }
