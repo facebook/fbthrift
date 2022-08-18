@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@
 #include <thrift/lib/cpp/util/test/VarintUtilsTestUtil.h>
 
 using namespace apache::thrift::util;
+using namespace apache::thrift::util::detail;
 
 class VarintUtilsTest : public testing::Test {};
 
@@ -202,3 +203,189 @@ INSTANTIATE_TYPED_TEST_SUITE_P(s8_any, VarintUtilsMegaTest, s8_any);
 INSTANTIATE_TYPED_TEST_SUITE_P(s16_any, VarintUtilsMegaTest, s16_any);
 INSTANTIATE_TYPED_TEST_SUITE_P(s32_any, VarintUtilsMegaTest, s32_any);
 INSTANTIATE_TYPED_TEST_SUITE_P(s64_any, VarintUtilsMegaTest, s64_any);
+
+template <typename Param>
+struct ReadVarintMediumSlowTest : public testing::TestWithParam<Param> {};
+TYPED_TEST_SUITE_P(ReadVarintMediumSlowTest);
+
+struct FakeCursor {
+  FakeCursor() : bytesSkipped(0) {}
+  void skipNoAdvance(size_t skip) { bytesSkipped += skip; }
+  template <typename T>
+  T read() {
+    ADD_FAILURE();
+    return T{};
+  }
+  size_t bytesSkipped;
+};
+
+TYPED_TEST_P(ReadVarintMediumSlowTest, Simple) {
+  if (TypeParam::skip) {
+    return;
+  }
+
+  for (int i = 1; i < TypeParam::kMaxVarintSize; i++) {
+    // A bunch of continuation bytes that are otherwise zero...
+    unsigned char buf[TypeParam::kMaxVarintSize];
+    memset(buf, 0x80, sizeof(buf));
+    // But with a 1 (and no continuation bit) in byte i.
+    buf[i] = 0x01;
+
+    typename TypeParam::UIntType expected = 1ULL << (7 * i);
+
+    FakeCursor cursor;
+    typename TypeParam::UIntType value;
+    TypeParam::doReadVarintMediumSlow(cursor, value, buf, sizeof(buf));
+    EXPECT_EQ(expected, value);
+    EXPECT_EQ(i + 1, cursor.bytesSkipped);
+  }
+}
+
+TYPED_TEST_P(ReadVarintMediumSlowTest, Overflow) {
+  if (TypeParam::skip) {
+    return;
+  }
+
+  unsigned char buf[TypeParam::kMaxVarintSize];
+  memset(buf, 0x80, sizeof(buf));
+  FakeCursor cursor;
+  typename TypeParam::UIntType value;
+  EXPECT_THROW(
+      TypeParam::doReadVarintMediumSlow(cursor, value, buf, sizeof(buf)),
+      std::out_of_range);
+}
+
+TYPED_TEST_P(ReadVarintMediumSlowTest, JunkHighBits) {
+  if (TypeParam::skip) {
+    return;
+  }
+
+  unsigned char buf[TypeParam::kMaxVarintSize];
+  memset(buf, 0x80, sizeof(buf));
+  // Impossibly large varint, but allowed by the reference parser (with the
+  // semantics of dropping the high bits). Check that the accelerated ones do
+  // the same thing.
+  buf[TypeParam::kMaxVarintSize - 1] = 0x7F;
+  FakeCursor cursor;
+  typename TypeParam::UIntType value;
+  TypeParam::doReadVarintMediumSlow(cursor, value, buf, sizeof(buf));
+  EXPECT_EQ(1ULL << (sizeof(typename TypeParam::UIntType) * 8 - 1), value);
+}
+
+TYPED_TEST_P(ReadVarintMediumSlowTest, BigZeros) {
+  if (TypeParam::skip) {
+    return;
+  }
+
+  for (int i = 1; i < TypeParam::kMaxVarintSize; i++) {
+    unsigned char buf[TypeParam::kMaxVarintSize];
+    // A space-consuming way of expressing 0, but currently allowed.
+    memset(buf, 0x80, sizeof(buf));
+    buf[i] = 0;
+    FakeCursor cursor;
+    typename TypeParam::UIntType value;
+    TypeParam::doReadVarintMediumSlow(cursor, value, buf, sizeof(buf));
+    EXPECT_EQ(0, value);
+    EXPECT_EQ(i + 1, cursor.bytesSkipped);
+  }
+}
+
+TYPED_TEST_P(ReadVarintMediumSlowTest, Decodes) {
+  if (TypeParam::skip) {
+    return;
+  }
+  // We check all possible combinations of one, two, or three bits being set.
+  // The reasoning is that the high-performance implementations all do some
+  // degree of bit permuting, so a 1-bit difference in each position should
+  // catch any permutation errors.
+  const static int kNumBits = 8 * sizeof(typename TypeParam::UIntType);
+  // We start the lowest value for the high bit at 7, so that we only test
+  // 2-bytes-or-larger varints, which is all that the readVarintMediumSlow
+  // functions are expected to handle.
+  for (int i = 7; i < kNumBits; i++) {
+    for (int j = 0; j <= i; j++) {
+      for (int k = 0; k <= j; k++) {
+        unsigned char buf[TypeParam::kMaxVarintSize];
+        memset(buf, 0x80, sizeof(buf));
+        buf[i / 7] = 0;
+        buf[i / 7] |= (1 << (i % 7));
+        buf[j / 7] |= (1 << (j % 7));
+        buf[k / 7] |= (1 << (k % 7));
+        typename TypeParam::UIntType expected =
+            (1ULL << i) | (1ULL << j) | (1ULL << k);
+        typename TypeParam::UIntType value;
+        FakeCursor cursor;
+        TypeParam::doReadVarintMediumSlow(cursor, value, buf, sizeof(buf));
+        EXPECT_EQ(expected, value);
+        EXPECT_EQ(i / 7 + 1, cursor.bytesSkipped);
+      }
+    }
+  }
+}
+
+REGISTER_TYPED_TEST_SUITE_P(
+    ReadVarintMediumSlowTest,
+    Simple,
+    Overflow,
+    JunkHighBits,
+    BigZeros,
+    Decodes);
+
+struct SkippingU64Impl {
+  const static bool skip = true;
+  const static int kMaxVarintSize = 10;
+  using UIntType = uint64_t;
+  template <typename CursorT>
+  static void doReadVarintMediumSlow(
+      CursorT&, uint64_t&, const uint8_t*, size_t) {
+    ADD_FAILURE();
+  }
+};
+
+struct UnrolledU64Impl {
+  const static bool skip = false;
+  const static int kMaxVarintSize = 10;
+  using UIntType = uint64_t;
+  template <typename CursorT>
+  static void doReadVarintMediumSlow(
+      CursorT& c, uint64_t& value, const uint8_t* p, size_t len) {
+    readVarintMediumSlowUnrolled(c, value, p, len);
+  }
+};
+
+#if THRIFT_UTIL_VARINTUTILS_SIMD_DECODER
+struct SIMDU64Impl {
+  const static bool skip = false;
+  const static int kMaxVarintSize = 10;
+  using UIntType = uint64_t;
+  template <typename CursorT>
+  static void doReadVarintMediumSlow(
+      CursorT& c, uint64_t& value, const uint8_t* p, size_t len) {
+    readVarintMediumSlowU64SIMD(c, value, p, len);
+  }
+};
+#else
+using SIMDU64Impl = SkippingU64Impl;
+#endif
+
+#if THRIFT_UTIL_VARINTUTILS_BMI2_DECODER
+struct BMI2U64Impl {
+  const static bool skip = false;
+  const static int kMaxVarintSize = 10;
+  using UIntType = uint64_t;
+  template <typename CursorT>
+  static void doReadVarintMediumSlow(
+      CursorT& c, uint64_t& value, const uint8_t* p, size_t len) {
+    readVarintMediumSlowU64BMI2(c, value, p, len);
+  }
+};
+#else
+using BMI2U64Impl = SkippingU64Impl;
+#endif
+
+INSTANTIATE_TYPED_TEST_SUITE_P(
+    UnrolledU64Impl, ReadVarintMediumSlowTest, UnrolledU64Impl);
+INSTANTIATE_TYPED_TEST_SUITE_P(
+    SIMDU64Impl, ReadVarintMediumSlowTest, SIMDU64Impl);
+INSTANTIATE_TYPED_TEST_SUITE_P(
+    BMI2U64Impl, ReadVarintMediumSlowTest, BMI2U64Impl);
