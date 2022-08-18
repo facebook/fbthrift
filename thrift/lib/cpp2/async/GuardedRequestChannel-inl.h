@@ -30,6 +30,10 @@ class GuardedRequestClientCallback : public RequestClientCallback {
 
   bool isSync() const override { return cb_->isSync(); }
 
+  folly::Executor::KeepAlive<> getExecutor() const override {
+    return cb_->getExecutor();
+  }
+
   void onResponse(ClientReceiveState&& state) noexcept override {
     cb_.release()->onResponse(std::move(state));
     delete this;
