@@ -239,6 +239,7 @@ struct v1 {}
 @GenDefaultEnumValue
 @NoLegacy // Disables features that will be removed.
 @Beta // All uses of v1beta inherit `@Beta`.
+@TerseWrite
 @scope.Transitive
 struct v1beta {}
 
@@ -259,7 +260,6 @@ struct v1alpha {}
  * Enables experimental features, even those that are known to break common
  * use cases.
  */
-@TerseWrite
 @NoDeprecated // Remove deprecated features by default for tests.
 @v1alpha // All v1alpha features.
 @Testing // Should only be used in tests.

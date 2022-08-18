@@ -1481,6 +1481,10 @@ class v1beta implements \IThriftSyncStruct {
           shape(
           )
         ),
+        '\thrift\annotation\TerseWrite' => \thrift\annotation\TerseWrite::fromShape(
+          shape(
+          )
+        ),
         '\thrift\annotation\Transitive' => \thrift\annotation\Transitive::fromShape(
           shape(
           )
@@ -1626,10 +1630,6 @@ class v1test implements \IThriftSyncStruct {
   public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\thrift\annotation\TerseWrite' => \thrift\annotation\TerseWrite::fromShape(
-          shape(
-          )
-        ),
         '\thrift\annotation\NoDeprecated' => \thrift\annotation\NoDeprecated::fromShape(
           shape(
           )
