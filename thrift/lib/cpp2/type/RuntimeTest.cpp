@@ -234,5 +234,15 @@ TEST(RuntimeValueTest, Identical) {
   EXPECT_FALSE(value.identical(Value::of<double_t>(0.0)));
 }
 
+TEST(RuntimeValueTest, CppType_Map) {
+  using T = std::unordered_map<std::string, int>;
+  using Tag = cpp_type<T, type::map<string_t, i32_t>>;
+
+  auto map = Value::create<Tag>();
+  map.put("foo", Ref::to<i32_t>(2));
+  Ref value = map.get("foo");
+  EXPECT_EQ(value.as<i32_t>(), 2);
+}
+
 } // namespace
 } // namespace apache::thrift::type

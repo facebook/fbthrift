@@ -200,6 +200,10 @@ struct MapOp : BaseAnyOp<Tag> {
 template <typename KeyTag, typename ValTag>
 struct AnyOp<type::map<KeyTag, ValTag>> : MapOp<KeyTag, ValTag> {};
 
+template <typename T, typename KeyTag, typename ValTag>
+struct AnyOp<type::cpp_type<T, type::map<KeyTag, ValTag>>>
+    : MapOp<KeyTag, ValTag, type::cpp_type<T, type::map<KeyTag, ValTag>>> {};
+
 // Create a AnyOp-based Thrift type info.
 template <typename Tag>
 const TypeInfo& getAnyTypeInfo() {
