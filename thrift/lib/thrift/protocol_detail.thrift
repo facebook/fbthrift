@@ -19,6 +19,7 @@
 include "thrift/annotation/thrift.thrift"
 include "thrift/lib/thrift/standard.thrift"
 include "thrift/annotation/cpp.thrift"
+include "thrift/annotation/hack.thrift"
 cpp_include "thrift/lib/thrift/detail/protocol.h"
 
 @thrift.v1alpha
@@ -81,7 +82,11 @@ union ValueUnion {
 
   // Containers of values.
   14: list<Value> listValue;
+  @hack.SkipCodegen{
+    reason = "Set can only have integer/string/binary/enum values",
+  }
   15: set<Value> setValue;
+  @hack.SkipCodegen{reason = "Map keys can only be integer/string/binary/enum"}
   16: map<Value, Value> mapValue;
 } (
   cpp.virtual, // TODO(ytj): add protected dtor for base class
