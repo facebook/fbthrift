@@ -156,9 +156,8 @@ TEST(RuntimeRefTest, Map) {
   EXPECT_FALSE(ref.empty());
   EXPECT_THROW(
       ref.put(FieldId{1}, Ref::create<i32_t>(v = 2)), std::logic_error);
-  EXPECT_THROW(ref.get(FieldId{1}), std::runtime_error);
-  EXPECT_THROW(ref.get("one"), std::runtime_error);
-  EXPECT_THROW(ref.get(Ref::create<string_t>(one)), std::runtime_error);
+  EXPECT_THROW(ref.get(FieldId{1}), std::logic_error);
+  EXPECT_EQ(ref.get("one"), Ref::create<i32_t>(2));
 
   ref.clear();
   EXPECT_TRUE(ref.empty());

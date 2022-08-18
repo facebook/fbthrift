@@ -189,8 +189,11 @@ struct MapOp : BaseAnyOp<Tag> {
     unimplemented();
   }
 
-  [[noreturn]] static Ptr get(void*, FieldId, const RuntimeBase*) {
-    unimplemented(); // TODO(afuller): Get by key.
+  static Ptr get(void* s, FieldId, const RuntimeBase* k) {
+    if (k != nullptr) {
+      return {getAnyType<ValTag>(), &ref(s).at(k->as<KeyTag>())};
+    }
+    bad_op();
   }
 };
 
