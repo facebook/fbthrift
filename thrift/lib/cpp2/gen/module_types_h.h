@@ -108,21 +108,10 @@ FOLLY_ERASE void assign_struct_field(std::shared_ptr<F>& f, T&& t) {
   f = std::make_shared<folly::remove_cvref_t<T>>(static_cast<T&&>(t));
 }
 
-template <typename S, typename... A, typename... T>
+// TODO(ytj): Remove TypeClass after migrating existing callsites
+template <typename S, typename... A, typename... T, typename TypeClass>
 FOLLY_ERASE constexpr S make_constant(
-    type_class::structure, wrapped_struct_argument<A, T>... arg) {
-  using _ = int[];
-  S s;
-  void(
-      _{0,
-        (void(assign_struct_field(access_field<A>(s), static_cast<T>(arg.ref))),
-         0)...});
-  return s;
-}
-
-template <typename S, typename... A, typename... T>
-FOLLY_ERASE constexpr S make_constant(
-    type_class::variant, wrapped_struct_argument<A, T>... arg) {
+    TypeClass, wrapped_struct_argument<A, T>... arg) {
   using _ = int[];
   S s;
   void(
