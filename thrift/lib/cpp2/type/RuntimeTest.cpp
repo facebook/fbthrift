@@ -106,10 +106,12 @@ TEST(RuntimeRefTest, List) {
   std::string elem = "hi";
   auto ref = Ref::to<list<string_t>>(value);
   EXPECT_TRUE(ref.empty());
+  EXPECT_EQ(ref.size(), 0);
   ref.append(Ref::to<string_t>(elem));
   EXPECT_THAT(value, ::testing::ElementsAre("hi"));
 
   EXPECT_FALSE(ref.empty());
+  EXPECT_EQ(ref.size(), 1);
   EXPECT_THROW(ref.get(FieldId{1}), std::runtime_error);
   EXPECT_THROW(ref.get("field1"), std::runtime_error);
   EXPECT_THROW(ref.get(Ref::to<i32_t>(0)), std::runtime_error);
@@ -127,10 +129,12 @@ TEST(RuntimeRefTest, Set) {
   std::string key = "hi";
   auto ref = Ref::to<set<string_t>>(value);
   EXPECT_TRUE(ref.empty());
+  EXPECT_EQ(ref.size(), 0);
   EXPECT_TRUE(ref.add(Ref::to<string_t>(key)));
   EXPECT_THAT(value, ::testing::ElementsAre("hi"));
 
   EXPECT_FALSE(ref.empty());
+  EXPECT_EQ(ref.size(), 1);
   EXPECT_THROW(ref.get(FieldId{1}), std::runtime_error);
   EXPECT_THROW(ref.get("hi"), std::runtime_error);
   EXPECT_THROW(ref.get(Ref::to<string_t>(key)), std::runtime_error);
@@ -146,6 +150,7 @@ TEST(RuntimeRefTest, Map) {
   int v;
   auto ref = Ref::to<map<string_t, i32_t>>(value);
   EXPECT_TRUE(ref.empty());
+  EXPECT_EQ(ref.size(), 0);
   EXPECT_FALSE(ref.put(Ref::to<string_t>(one), Ref::to<i32_t>(v = 1)));
   EXPECT_EQ(value["one"], 1);
 
@@ -153,6 +158,7 @@ TEST(RuntimeRefTest, Map) {
   EXPECT_EQ(value["one"], 2);
 
   EXPECT_FALSE(ref.empty());
+  EXPECT_EQ(ref.size(), 1);
   EXPECT_THROW(ref.put(FieldId{1}, Ref::to<i32_t>(v = 2)), std::logic_error);
   EXPECT_THROW(ref.get(FieldId{1}), std::logic_error);
   EXPECT_EQ(ref.get("one"), Ref::to<i32_t>(2));

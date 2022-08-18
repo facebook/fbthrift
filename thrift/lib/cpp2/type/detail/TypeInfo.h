@@ -50,6 +50,7 @@ struct TypeInfo {
   bool (*add)(void*, const RuntimeBase&);
   bool (*put)(void*, FieldId, const RuntimeBase*, const RuntimeBase&);
   Ptr (*get)(void*, FieldId, const RuntimeBase*);
+  size_t (*size)(const void*);
 
   int equal(const void* lhs, const RuntimeBase& rhs) const {
     return compare(lhs, rhs) == 0;
@@ -89,6 +90,7 @@ FOLLY_EXPORT const TypeInfo& getTypeInfo() {
       &Op::add,
       &Op::put,
       &Op::get,
+      &Op::size,
   };
   return kValue;
 }

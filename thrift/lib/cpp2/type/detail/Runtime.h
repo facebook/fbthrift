@@ -279,6 +279,7 @@ struct BaseErasedOp {
     bad_op();
   }
   [[noreturn]] static Ptr get(void*, FieldId, const RuntimeBase*) { bad_op(); }
+  [[noreturn]] static size_t size(const void*) { bad_op(); }
 };
 
 template <typename ConstT, typename MutT>
@@ -308,6 +309,8 @@ class RuntimeAccessBase : public RuntimeBase {
   MutT get(const std::string& name) && { return get(asRef(name)); }
   ConstT get(const std::string& name) const& { return get(asRef(name)); }
   ConstT get(const std::string& name) const&& { return get(asRef(name)); }
+
+  size_t size() const { return type_->size(ptr_); }
 
  protected:
   static ConstT asRef(const std::string& name) {

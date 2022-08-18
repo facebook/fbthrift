@@ -60,6 +60,7 @@ struct AnyOp : BaseAnyOp<Tag> {
   [[noreturn]] static Ptr get(void*, FieldId, const RuntimeBase*) {
     unimplemented();
   }
+  [[noreturn]] static size_t size(const void*) { unimplemented(); }
 };
 
 template <typename Tag>
@@ -89,10 +90,18 @@ struct AnyOp<type::float_t> : NumericOp<type::float_t> {};
 template <>
 struct AnyOp<type::double_t> : NumericOp<type::double_t> {};
 
-template <typename ValTag, typename Tag = type::list<ValTag>>
-struct ListOp : BaseAnyOp<Tag> {
-  using T = type::native_type<Tag>;
+template <typename Tag>
+struct ContainerOp : BaseAnyOp<Tag> {
   using Base = BaseAnyOp<Tag>;
+  using Base::ref;
+
+  static size_t size(const void* s) { return ref(s).size(); }
+};
+
+template <typename ValTag, typename Tag = type::list<ValTag>>
+struct ListOp : ContainerOp<Tag> {
+  using T = type::native_type<Tag>;
+  using Base = ContainerOp<Tag>;
   using Base::ref;
   using Base::unimplemented;
 
@@ -126,9 +135,9 @@ template <typename ValTag>
 struct AnyOp<type::list<ValTag>> : ListOp<ValTag> {};
 
 template <typename KeyTag, typename Tag = type::set<KeyTag>>
-struct SetOp : BaseAnyOp<Tag> {
+struct SetOp : ContainerOp<Tag> {
   using T = type::native_type<Tag>;
-  using Base = BaseAnyOp<Tag>;
+  using Base = ContainerOp<Tag>;
   using Base::ref;
   using Base::unimplemented;
 
@@ -156,9 +165,9 @@ template <
     typename KeyTag,
     typename ValTag,
     typename Tag = type::map<KeyTag, ValTag>>
-struct MapOp : BaseAnyOp<Tag> {
+struct MapOp : ContainerOp<Tag> {
   using T = type::native_type<Tag>;
-  using Base = BaseAnyOp<Tag>;
+  using Base = ContainerOp<Tag>;
   using Base::bad_op;
   using Base::ref;
   using Base::unimplemented;
