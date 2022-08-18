@@ -194,6 +194,7 @@ class RuntimeBase {
     return type_.mut().put(ptr_, id, nullptr, val);
   }
 
+  // TODO(afuller): Make context an enum, instead of pair of bools.
   Ptr get(const RuntimeBase& key) const;
   Ptr get(FieldId id) const;
   Ptr get(const RuntimeBase& key, bool ctxConst, bool ctxRvalue = false) const;
@@ -278,6 +279,63 @@ struct BaseErasedOp {
     bad_op();
   }
   [[noreturn]] static Ptr get(void*, FieldId, const RuntimeBase*) { bad_op(); }
+};
+
+template <typename Derived, typename ConstType = Derived>
+class BaseRef : public RuntimeBase {
+  using Base = RuntimeBase;
+
+ public:
+  using Base::Base;
+  explicit BaseRef(const Base& other) : Base(other) {}
+
+  template <typename Tag>
+  static Derived to(native_type<Tag>& val) {
+    return {Tag{}, val};
+  }
+  template <typename Tag>
+  static Derived to(const native_type<Tag>& val) {
+    return {Tag{}, val};
+  }
+  template <typename Tag>
+  static Derived to(native_type<Tag>&& val) {
+    return {Tag{}, std::move(val)};
+  }
+  template <typename Tag>
+  static Derived to(const native_type<Tag>&& val) {
+    return {Tag{}, std::move(val)};
+  }
+
+  // Get by value.
+  Derived get(const Base& key) & { return Derived{Base::get(key)}; }
+  Derived get(const Base& key) && {
+    return Derived{Base::get(key, false, true)};
+  }
+  ConstType get(const Base& key) const& {
+    return ConstType{Base::get(key, true)};
+  }
+  ConstType get(const Base& key) const&& {
+    return ConstType{Base::get(key, true, true)};
+  }
+
+  // Get by field id.
+  Derived get(FieldId id) & { return Derived{Base::get(id)}; }
+  Derived get(FieldId id) && { return Derived{Base::get(id, false, true)}; }
+  ConstType get(FieldId id) const& { return ConstType{Base::get(id, true)}; }
+  ConstType get(FieldId id) const&& {
+    return ConstType{Base::get(id, true, true)};
+  }
+
+  // Get by name.
+  Derived get(const std::string& name) & { return get(asRef(name)); }
+  Derived get(const std::string& name) && { return get(asRef(name)); }
+  ConstType get(const std::string& name) const& { return get(asRef(name)); }
+  ConstType get(const std::string& name) const&& { return get(asRef(name)); }
+
+ protected:
+  static ConstType asRef(const std::string& name) {
+    return to<type::string_t>(name);
+  }
 };
 
 // The ops for the empty type 'void'.

@@ -38,50 +38,17 @@ namespace type {
 // Should typically be passed by value as it only holds two
 // ponters; a pointer to the value being reference and a pointer to the static
 // runtime metadata associated with the type of the value.
-class ConstRef final : public detail::RuntimeBase {
-  using Base = detail::RuntimeBase;
+class ConstRef final : public detail::BaseRef<ConstRef> {
+  using Base = detail::BaseRef<ConstRef>;
 
  public:
-  template <typename Tag, typename T>
-  static ConstRef to(T&& val) {
-    return {Tag{}, std::forward<T>(val)}; // Preserve underlying ref type.
-  }
-
   ConstRef() noexcept = default;
   // 'capture' any other runtime type.
-  /* implicit */ ConstRef(const Base& other) noexcept : Base(other) {}
-
-  // Rebinds the Ref to another value (or void).
-  template <typename Tag, typename T = native_type<Tag>>
-  void reset(T&& val) {
-    Base::reset(op::detail::getAnyType<Tag, T>(), &val);
-  }
-  void reset() noexcept { Base::reset(); }
-
-  // Get by value.
-  ConstRef get(const Base& key) & { return Base::get(key); }
-  ConstRef get(const Base& key) && { return Base::get(key, false, true); }
-  ConstRef get(const Base& key) const& { return Base::get(key, true); }
-  ConstRef get(const Base& key) const&& { return Base::get(key, true, true); }
-
-  // Get by field id.
-  ConstRef get(FieldId id) & { return Base::get(id); }
-  ConstRef get(FieldId id) && { return Base::get(id, false, true); }
-  ConstRef get(FieldId id) const& { return Base::get(id, true); }
-  ConstRef get(FieldId id) const&& { return Base::get(id, true, true); }
-
-  // Get by name.
-  ConstRef get(const std::string& name) & { return get(asRef(name)); }
-  ConstRef get(const std::string& name) && { return get(asRef(name)); }
-  ConstRef get(const std::string& name) const& { return get(asRef(name)); }
-  ConstRef get(const std::string& name) const&& { return get(asRef(name)); }
+  /* implicit */ ConstRef(const detail::RuntimeBase& other) noexcept
+      : Base(other) {}
 
  private:
-  friend class detail::Ptr;
-
-  static ConstRef asRef(const std::string& name) {
-    return to<type::string_t>(name);
-  }
+  friend Base;
 
   template <typename Tag, typename T>
   ConstRef(Tag, T&& val) : Base(op::detail::getAnyType<Tag, T>(), &val) {}
@@ -93,15 +60,11 @@ class ConstRef final : public detail::RuntimeBase {
 // Should typically be passed by value as it only holds two
 // ponters; a pointer to the value being reference and a pointer to the static
 // runtime metadata associated with the type of the value.
-class Ref final : public detail::RuntimeBase {
-  using Base = detail::RuntimeBase;
+class Ref final : public detail::BaseRef<Ref, ConstRef> {
+  using Base = detail::BaseRef<Ref, ConstRef>;
+  using RuntimeBase = detail::RuntimeBase;
 
  public:
-  template <typename Tag, typename T>
-  static Ref to(T&& val) {
-    return {Tag{}, std::forward<T>(val)};
-  }
-
   Ref() noexcept = default;
 
   // Sets the referenced value to it's intrinsic default (e.g. ignoring custom
@@ -109,37 +72,21 @@ class Ref final : public detail::RuntimeBase {
   void clear() { Base::clear(); }
 
   // Append to a list, string, etc.
-  void append(const Base& val) { Base::append(val); }
+  void append(const RuntimeBase& val) { Base::append(val); }
 
   // Add to a set, number, etc.
-  bool add(const Base& val) { return Base::add(val); }
+  bool add(const RuntimeBase& val) { return Base::add(val); }
 
   // Put a key-value pair, overwriting any existing entry in a map, struct, etc.
   //
   // Returns true if an existing value was replaced.
-  bool put(FieldId id, const Base& val) { return Base::put(id, val); }
-  bool put(const Base& key, const Base& val) { return Base::put(key, val); }
-  bool put(const std::string& name, const Base& val) {
+  bool put(FieldId id, const RuntimeBase& val) { return Base::put(id, val); }
+  bool put(const RuntimeBase& key, const RuntimeBase& val) {
+    return Base::put(key, val);
+  }
+  bool put(const std::string& name, const RuntimeBase& val) {
     return put(asRef(name), val);
   }
-
-  // Get by value.
-  Ref get(const Base& key) & { return *Base::get(key); }
-  Ref get(const Base& key) && { return *Base::get(key, false, true); }
-  ConstRef get(const Base& key) const& { return Base::get(key, true); }
-  ConstRef get(const Base& key) const&& { return Base::get(key, true, true); }
-
-  // Get by field id.
-  Ref get(FieldId id) & { return *Base::get(id); }
-  Ref get(FieldId id) && { return *Base::get(id, false, true); }
-  ConstRef get(FieldId id) const& { return Base::get(id, true); }
-  ConstRef get(FieldId id) const&& { return Base::get(id, true, true); }
-
-  // Get by name.
-  Ref get(const std::string& name) & { return get(asRef(name)); }
-  Ref get(const std::string& name) && { return get(asRef(name)); }
-  ConstRef get(const std::string& name) const& { return get(asRef(name)); }
-  ConstRef get(const std::string& name) const&& { return get(asRef(name)); }
 
   // Throws on mismatch or if const.
   template <typename Tag>
@@ -155,10 +102,8 @@ class Ref final : public detail::RuntimeBase {
 
  private:
   friend class detail::Ptr;
-
-  static ConstRef asRef(const std::string& name) {
-    return ConstRef::to<type::string_t>(name);
-  }
+  friend Base;
+  using Base::asRef;
 
   explicit Ref(detail::Ptr data) noexcept : Base(data) {}
   template <typename Tag, typename T>
