@@ -40,6 +40,27 @@ class parser {
   // End of the last consumed token.
   source_location end_;
 
+  class range_tracker {
+   private:
+    source_location begin_;
+    const source_location& end_;
+
+   public:
+    explicit range_tracker(source_location begin, const source_location& end)
+        : begin_(begin), end_(end) {}
+
+    operator source_range() const { return {begin_, end_}; }
+  };
+
+  // Tracks the source range of a syntactic construct.
+  // Usage:
+  //   auto range = range_tracker();
+  //   // Parse <construct>.
+  //   actions_.on_<construct>(range, ...);
+  range_tracker track_range() const {
+    return range_tracker(token_.range.begin, end_);
+  }
+
   token consume_token() {
     token t = token_;
     end_ = token_.range.end;
@@ -102,11 +123,10 @@ class parser {
   //     /* program_doc_text (empty) */ header
   //   | definition
   std::unique_ptr<t_named> parse_statement() {
-    auto loc = token_.range.begin;
+    auto range = track_range();
     auto attrs = parse_statement_attrs();
     auto stmt = parse_header_or_definition();
     auto annotations = parse_annotations();
-    auto end = end_;
     parse_comma_or_semicolon_optional();
     switch (stmt.type) {
       case t_statement_type::standard_header:
@@ -114,11 +134,11 @@ class parser {
         break;
       case t_statement_type::program_header:
         actions_.on_program_header(
-            {loc, end}, std::move(attrs), std::move(annotations));
+            range, std::move(attrs), std::move(annotations));
         break;
       case t_statement_type::definition:
         actions_.on_definition(
-            {loc, end}, *stmt.def, std::move(attrs), std::move(annotations));
+            range, *stmt.def, std::move(attrs), std::move(annotations));
         break;
     }
     return std::move(stmt.def);
@@ -190,15 +210,14 @@ class parser {
   //   | "hs_include" string_literal
   //   | "package" string_literal
   t_statement_type parse_include_or_package() {
+    auto range = track_range();
     auto kind = token_.kind;
-    source_location loc = token_.range.begin;
     actions_.on_program_doctext();
     consume_token();
     if (token_.kind != tok::string_literal) {
       report_expected("string literal");
     }
     auto literal = token_.string_value();
-    auto range = source_range{loc, token_.range.end};
     consume_token();
     switch (kind) {
       case tok::kw_package:
@@ -639,10 +658,10 @@ class parser {
   //
   // We disallow context-sensitive keywords as field type identifiers.
   // This avoids an ambuguity in the resolution of the function_qualifier
-  // function_type part of the function rule, when one of the "oneway",
+  // return_type part of the function rule, when one of the "oneway",
   // "idempotent" or "readonly" is encountered. It could either resolve
   // the token as function_qualifier or resolve "" as function_qualifier and
-  // the token as function_type.
+  // the token as return_type.
   t_type_ref parse_field_type() {
     auto range = token_.range;
     if (const t_base_type* type = try_parse_base_type()) {
