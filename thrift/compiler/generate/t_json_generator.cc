@@ -411,9 +411,8 @@ void t_json_generator::print_const_value(const t_const_value* tvalue) {
 
 void t_json_generator::print_lineno(const t_node& node) {
   auto loc = node.src_range().begin;
-  unsigned line = loc != source_location()
-      ? resolved_location(loc, *context_.get_source_manager()).line()
-      : 0;
+  unsigned line =
+      loc != source_location() ? resolved_location(loc, source_mgr_).line() : 0;
   indent(f_out_) << "\"lineno\" : " << line << ",\n";
 }
 
@@ -770,9 +769,6 @@ bool t_json_generator::should_resolve_to_true_type(const t_type* ttype) {
  * @param range The source range.
  */
 void t_json_generator::print_source_range(const source_range& range) {
-  auto source_mgr = context_.get_source_manager();
-  assert(source_mgr);
-
   indent(f_out_) << "\"source_range\" : {" << endl;
   indent_up();
 
@@ -789,7 +785,7 @@ void t_json_generator::print_source_range(const source_range& range) {
     }
   };
 
-  auto begin_loc = line_column(range.begin, *source_mgr);
+  auto begin_loc = line_column(range.begin, source_mgr_);
   indent(f_out_) << "\"begin\" : {" << endl;
   indent_up();
   indent(f_out_) << "\"line\" : " << begin_loc.line << "," << endl;
@@ -797,7 +793,7 @@ void t_json_generator::print_source_range(const source_range& range) {
   indent_down();
   indent(f_out_) << "}," << endl;
 
-  auto end_loc = line_column(range.end, *source_mgr);
+  auto end_loc = line_column(range.end, source_mgr_);
   indent(f_out_) << "\"end\" : {" << endl;
   indent_up();
   indent(f_out_) << "\"line\" : " << end_loc.line << "," << endl;

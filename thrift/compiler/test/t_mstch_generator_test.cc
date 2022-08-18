@@ -15,7 +15,6 @@
  */
 
 #include <string>
-#include <vector>
 
 #include <folly/portability/GTest.h>
 
@@ -44,8 +43,8 @@ TEST(t_mstch_generator_test, cache_leaks) {
 
   class leaky_generator : public t_mstch_generator {
    public:
-    leaky_generator(t_program* program, int* object_count)
-        : t_mstch_generator(program, t_generation_context()),
+    leaky_generator(t_program& program, int* object_count)
+        : t_mstch_generator(program, source_mgr_),
           object_count_(object_count) {}
 
     std::string template_prefix() const override { return "."; }
@@ -56,13 +55,14 @@ TEST(t_mstch_generator_test, cache_leaks) {
     }
 
    private:
+    source_manager source_mgr_;
     int* object_count_;
   };
 
   int object_count = 0;
   {
-    auto program = std::make_unique<t_program>("my_leak.thrift");
-    leaky_generator generator(program.get(), &object_count);
+    t_program program("my_leak.thrift");
+    leaky_generator generator(program, &object_count);
     generator.generate_program();
   }
 

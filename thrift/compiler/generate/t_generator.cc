@@ -26,22 +26,18 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-t_generation_context::t_generation_context(
-    std::string out_path, bool is_out_path_absolute, source_manager* sm)
-    : out_path_(std::move(out_path)),
-      is_out_path_absolute_(is_out_path_absolute),
-      source_mgr_(sm) {
-  boost::filesystem::path path = {out_path_};
-  if (!out_path_.empty()) {
-    if (!(out_path_.back() == '/' || out_path_.back() == '\\')) {
-      path += boost::filesystem::path::preferred_separator;
-    }
+void t_generator::process_options(
+    const std::map<std::string, std::string>& options,
+    std::string out_path,
+    bool add_gen_dir) {
+  boost::filesystem::path path = {out_path};
+  if (!out_path.empty() && out_path.back() != '/' && out_path.back() != '\\') {
+    path += boost::filesystem::path::preferred_separator;
   }
   out_path_ = path.make_preferred().string();
+  add_gen_dir_ = add_gen_dir;
+  process_options(options);
 }
-
-t_generator::t_generator(t_program* program, t_generation_context context)
-    : program_(program), context_(std::move(context)) {}
 
 generator_factory::generator_factory(
     std::string name, std::string long_name, std::string documentation)
@@ -59,15 +55,10 @@ void generator_registry::register_generator(
 }
 
 std::unique_ptr<t_generator> generator_registry::make_generator(
-    const std::string& name,
-    t_program& program,
-    t_generation_context context,
-    const std::map<std::string, std::string>& options) {
+    const std::string& name, t_program& p, source_manager& sm) {
   generator_map& map = get_generators();
   auto iter = map.find(name);
-  return iter != map.end()
-      ? iter->second->make_generator(program, std::move(context), options)
-      : nullptr;
+  return iter != map.end() ? iter->second->make_generator(p, sm) : nullptr;
 }
 
 generator_registry::generator_map& generator_registry::get_generators() {

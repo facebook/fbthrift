@@ -744,9 +744,8 @@ void t_py_generator::generate_json_reader(
 void t_py_generator::init_generator() {
   // Make output directory structure
   string module = get_real_py_module(program_);
-  package_dir_ = context_.is_out_path_absolute()
-      ? get_out_path()
-      : detail::format_abs_path(get_out_dir());
+  package_dir_ =
+      add_gen_dir() ? detail::format_abs_path(get_out_dir()) : get_out_path();
   boost::filesystem::create_directory(package_dir_);
   while (true) {
     boost::filesystem::create_directory(package_dir_);

@@ -62,7 +62,8 @@ struct gen_params {
   bool gen_recurse = false;
   std::string genfile;
   std::vector<std::string> targets;
-  t_generation_context context;
+  std::string out_path;
+  bool add_gen_dir = true;
 };
 
 /**
@@ -241,7 +242,7 @@ std::string parse_args(
         return {};
       }
       std::string out_path = *arg;
-      bool out_path_is_absolute = (flag == "out");
+      bool add_gen_dir = (flag == "o");
 
       // Strip out trailing \ on a Windows path
       if (detail::platform_is_windows()) {
@@ -251,7 +252,7 @@ std::string parse_args(
         }
       }
 
-      if (out_path_is_absolute) {
+      if (!add_gen_dir) {
         // Invoker specified `-out blah`. We are supposed to output directly
         // into blah, e.g. `blah/Foo.java`. Make the directory if necessary,
         // just like how for `-o blah` we make `o/gen-java`
@@ -272,7 +273,8 @@ std::string parse_args(
             out_path.c_str());
         return {};
       }
-      gparams.context = {std::move(out_path), out_path_is_absolute};
+      gparams.out_path = std::move(out_path);
+      gparams.add_gen_dir = add_gen_dir;
     } else {
       fprintf(
           stderr, "!!! Unrecognized option: %s\n", arguments[arg_i].c_str());
@@ -359,10 +361,11 @@ bool generate(
             return parse_control::more;
           });
       auto generator = generator_registry::make_generator(
-          generator_name, program, params.context, options);
+          generator_name, program, diags.source_mgr());
       if (!generator) {
         continue;
       }
+      generator->process_options(options, params.out_path, params.add_gen_dir);
 
       auto validator_diags = diagnostics_engine(
           diags.source_mgr(),
@@ -516,7 +519,6 @@ compile_result compile(const std::vector<std::string>& arguments) {
     return result;
   }
   source_manager source_mgr;
-  gparams.context.set_source_manager(source_mgr);
   diagnostic_context ctx(source_mgr, result.detail, std::move(dparams));
 
   // Parse it!
