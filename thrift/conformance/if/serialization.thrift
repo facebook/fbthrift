@@ -43,4 +43,6 @@ struct RoundTripTestCase {
   1: RoundTripRequest request;
   // The expected output of the test, if different from the input.
   2: optional RoundTripResponse expectedResponse;
+  // Whether an exception is expected
+  3: bool expectException = false;
 }

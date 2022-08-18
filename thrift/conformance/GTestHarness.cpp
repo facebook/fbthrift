@@ -32,6 +32,11 @@ testing::AssertionResult runRoundTripTest(
   try {
     client.sync_roundTrip(res, *roundTrip.request());
   } catch (const apache::thrift::TApplicationException&) {
+    return *roundTrip.expectException() ? testing::AssertionSuccess()
+                                        : testing::AssertionFailure();
+  }
+
+  if (*roundTrip.expectException()) {
     return testing::AssertionFailure();
   }
 
