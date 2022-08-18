@@ -15,30 +15,19 @@ namespace cpp2 {
 struct module_constants {
 
   static constexpr ::std::int32_t const myInt_ = static_cast<::std::int32_t>(1337);
-
   static constexpr ::std::int32_t myInt() {
     return myInt_;
   }
 
-  // consider using folly::StringPiece instead of std::string whenever possible
-  // to referencing this statically allocated string constant, in order to
-  // prevent unnecessary allocations
-
   static constexpr char const * const name_ = "Mark Zuckerberg";
-
   static constexpr char const * name() {
     return name_;
   }
-
-  // consider using folly::StringPiece instead of std::string whenever possible
-  // to referencing this statically allocated string constant, in order to
-  // prevent unnecessary allocations
 
   static constexpr char const * const multi_line_string_ = R"__FBTHRIFT_STRL(This
 is a
 multi line string.
 )__FBTHRIFT_STRL";
-
   static constexpr char const * multi_line_string() {
     return multi_line_string_;
   }
@@ -46,53 +35,41 @@ multi line string.
   static ::std::vector<::std::map<::std::string, ::std::int32_t>> const& states();
 
   static constexpr double const x_ = static_cast<double>(1);
-
   static constexpr double x() {
     return x_;
   }
 
   static constexpr double const y_ = static_cast<double>(1000000);
-
   static constexpr double y() {
     return y_;
   }
 
   static constexpr double const z_ = static_cast<double>(1000000000);
-
   static constexpr double z() {
     return z_;
   }
 
   static constexpr double const zeroDoubleValue_ = static_cast<double>(0);
-
   static constexpr double zeroDoubleValue() {
     return zeroDoubleValue_;
   }
 
   static constexpr double const longDoubleValue_ = static_cast<double>(2.59961000990301e-05);
-
   static constexpr double longDoubleValue() {
     return longDoubleValue_;
   }
 
   static constexpr ::cpp2::MyCompany const my_company_ =  ::cpp2::MyCompany::FACEBOOK;
-
   static constexpr ::cpp2::MyCompany my_company() {
     return my_company_;
   }
 
-  // consider using folly::StringPiece instead of std::string whenever possible
-  // to referencing this statically allocated string constant, in order to
-  // prevent unnecessary allocations
-
   static constexpr char const * const foo_ = "foo";
-
   static constexpr char const * foo() {
     return foo_;
   }
 
   static constexpr ::cpp2::MyIntIdentifier const bar_ = static_cast<::cpp2::MyIntIdentifier>(42);
-
   static constexpr ::cpp2::MyIntIdentifier bar() {
     return bar_;
   }
@@ -145,52 +122,27 @@ multi line string.
 
   static ::cpp2::union2 const& u_2_6();
 
-  // consider using folly::StringPiece instead of std::string whenever possible
-  // to referencing this statically allocated string constant, in order to
-  // prevent unnecessary allocations
-
   static constexpr char const * const apostrophe_ = "'";
-
   static constexpr char const * apostrophe() {
     return apostrophe_;
   }
 
-  // consider using folly::StringPiece instead of std::string whenever possible
-  // to referencing this statically allocated string constant, in order to
-  // prevent unnecessary allocations
-
   static constexpr char const * const tripleApostrophe_ = "'''";
-
   static constexpr char const * tripleApostrophe() {
     return tripleApostrophe_;
   }
 
-  // consider using folly::StringPiece instead of std::string whenever possible
-  // to referencing this statically allocated string constant, in order to
-  // prevent unnecessary allocations
-
   static constexpr char const * const quotationMark_ = "\"";
-
   static constexpr char const * quotationMark() {
     return quotationMark_;
   }
 
-  // consider using folly::StringPiece instead of std::string whenever possible
-  // to referencing this statically allocated string constant, in order to
-  // prevent unnecessary allocations
-
   static constexpr char const * const backslash_ = "\\";
-
   static constexpr char const * backslash() {
     return backslash_;
   }
 
-  // consider using folly::StringPiece instead of std::string whenever possible
-  // to referencing this statically allocated string constant, in order to
-  // prevent unnecessary allocations
-
   static constexpr char const * const escaped_a_ = "\x61";
-
   static constexpr char const * escaped_a() {
     return escaped_a_;
   }
@@ -200,53 +152,41 @@ multi line string.
   static ::std::vector<::std::string> const& escaped_strings();
 
   static constexpr bool const false_c_ = static_cast<bool>(false);
-
   static constexpr bool false_c() {
     return false_c_;
   }
 
   static constexpr bool const true_c_ = static_cast<bool>(true);
-
   static constexpr bool true_c() {
     return true_c_;
   }
 
   static constexpr ::std::int8_t const zero_byte_ = static_cast<::std::int8_t>(0);
-
   static constexpr ::std::int8_t zero_byte() {
     return zero_byte_;
   }
 
   static constexpr ::std::int16_t const zero16_ = static_cast<::std::int16_t>(0);
-
   static constexpr ::std::int16_t zero16() {
     return zero16_;
   }
 
   static constexpr ::std::int32_t const zero32_ = static_cast<::std::int32_t>(0);
-
   static constexpr ::std::int32_t zero32() {
     return zero32_;
   }
 
   static constexpr ::std::int64_t const zero64_ = static_cast<::std::int64_t>(0);
-
   static constexpr ::std::int64_t zero64() {
     return zero64_;
   }
 
   static constexpr double const zero_dot_zero_ = static_cast<double>(0);
-
   static constexpr double zero_dot_zero() {
     return zero_dot_zero_;
   }
 
-  // consider using folly::StringPiece instead of std::string whenever possible
-  // to referencing this statically allocated string constant, in order to
-  // prevent unnecessary allocations
-
   static constexpr char const * const empty_string_ = "";
-
   static constexpr char const * empty_string() {
     return empty_string_;
   }
@@ -268,127 +208,106 @@ multi line string.
   static ::std::map<::std::string, ::std::string> const& empty_string_string_map();
 
   static constexpr ::std::int64_t const maxIntDec_ = static_cast<::std::int64_t>(9223372036854775807);
-
   static constexpr ::std::int64_t maxIntDec() {
     return maxIntDec_;
   }
 
   static constexpr ::std::int64_t const maxIntOct_ = static_cast<::std::int64_t>(9223372036854775807);
-
   static constexpr ::std::int64_t maxIntOct() {
     return maxIntOct_;
   }
 
   static constexpr ::std::int64_t const maxIntHex_ = static_cast<::std::int64_t>(9223372036854775807);
-
   static constexpr ::std::int64_t maxIntHex() {
     return maxIntHex_;
   }
 
   static constexpr ::std::int64_t const maxIntBin_ = static_cast<::std::int64_t>(9223372036854775807);
-
   static constexpr ::std::int64_t maxIntBin() {
     return maxIntBin_;
   }
 
   static constexpr double const maxDub_ = static_cast<double>(1.7976931348623157e+308);
-
   static constexpr double maxDub() {
     return maxDub_;
   }
 
   static constexpr double const minDub_ = static_cast<double>(2.2250738585072014e-308);
-
   static constexpr double minDub() {
     return minDub_;
   }
 
   static constexpr double const minSDub_ = static_cast<double>(5e-324);
-
   static constexpr double minSDub() {
     return minSDub_;
   }
 
   static constexpr ::std::int64_t const maxPIntDec_ = static_cast<::std::int64_t>(9223372036854775807);
-
   static constexpr ::std::int64_t maxPIntDec() {
     return maxPIntDec_;
   }
 
   static constexpr ::std::int64_t const maxPIntOct_ = static_cast<::std::int64_t>(9223372036854775807);
-
   static constexpr ::std::int64_t maxPIntOct() {
     return maxPIntOct_;
   }
 
   static constexpr ::std::int64_t const maxPIntHex_ = static_cast<::std::int64_t>(9223372036854775807);
-
   static constexpr ::std::int64_t maxPIntHex() {
     return maxPIntHex_;
   }
 
   static constexpr ::std::int64_t const maxPIntBin_ = static_cast<::std::int64_t>(9223372036854775807);
-
   static constexpr ::std::int64_t maxPIntBin() {
     return maxPIntBin_;
   }
 
   static constexpr double const maxPDub_ = static_cast<double>(1.7976931348623157e+308);
-
   static constexpr double maxPDub() {
     return maxPDub_;
   }
 
   static constexpr double const minPDub_ = static_cast<double>(2.2250738585072014e-308);
-
   static constexpr double minPDub() {
     return minPDub_;
   }
 
   static constexpr double const minPSDub_ = static_cast<double>(5e-324);
-
   static constexpr double minPSDub() {
     return minPSDub_;
   }
 
   static constexpr ::std::int64_t const minIntDec_ = static_cast<::std::int64_t>(-9223372036854775808);
-
   static constexpr ::std::int64_t minIntDec() {
     return minIntDec_;
   }
 
   static constexpr ::std::int64_t const minIntOct_ = static_cast<::std::int64_t>(-9223372036854775808);
-
   static constexpr ::std::int64_t minIntOct() {
     return minIntOct_;
   }
 
   static constexpr ::std::int64_t const minIntHex_ = static_cast<::std::int64_t>(-9223372036854775808);
-
   static constexpr ::std::int64_t minIntHex() {
     return minIntHex_;
   }
 
   static constexpr ::std::int64_t const minIntBin_ = static_cast<::std::int64_t>(-9223372036854775808);
-
   static constexpr ::std::int64_t minIntBin() {
     return minIntBin_;
   }
 
   static constexpr double const maxNDub_ = static_cast<double>(-1.7976931348623157e+308);
-
   static constexpr double maxNDub() {
     return maxNDub_;
   }
 
   static constexpr double const minNDub_ = static_cast<double>(-2.2250738585072014e-308);
-
   static constexpr double minNDub() {
     return minNDub_;
   }
 
   static constexpr double const minNSDub_ = static_cast<double>(-5e-324);
-
   static constexpr double minNSDub() {
     return minNSDub_;
   }

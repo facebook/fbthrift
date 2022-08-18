@@ -15,59 +15,46 @@ namespace py3 { namespace simple {
 struct module_constants {
 
   static constexpr bool const A_BOOL_ = static_cast<bool>(true);
-
   static constexpr bool A_BOOL() {
     return A_BOOL_;
   }
 
   static constexpr ::std::int8_t const A_BYTE_ = static_cast<::std::int8_t>(8);
-
   static constexpr ::std::int8_t A_BYTE() {
     return A_BYTE_;
   }
 
   static constexpr ::std::int16_t const THE_ANSWER_ = static_cast<::std::int16_t>(42);
-
   static constexpr ::std::int16_t THE_ANSWER() {
     return THE_ANSWER_;
   }
 
   static constexpr ::std::int32_t const A_NUMBER_ = static_cast<::std::int32_t>(84);
-
   static constexpr ::std::int32_t A_NUMBER() {
     return A_NUMBER_;
   }
 
   static constexpr ::std::int64_t const A_BIG_NUMBER_ = static_cast<::std::int64_t>(102);
-
   static constexpr ::std::int64_t A_BIG_NUMBER() {
     return A_BIG_NUMBER_;
   }
 
   static constexpr double const A_REAL_NUMBER_ = static_cast<double>(3.14);
-
   static constexpr double A_REAL_NUMBER() {
     return A_REAL_NUMBER_;
   }
 
   static constexpr double const A_FAKE_NUMBER_ = static_cast<double>(3);
-
   static constexpr double A_FAKE_NUMBER() {
     return A_FAKE_NUMBER_;
   }
 
-  // consider using folly::StringPiece instead of std::string whenever possible
-  // to referencing this statically allocated string constant, in order to
-  // prevent unnecessary allocations
-
   static constexpr char const * const A_WORD_ = "Good word";
-
   static constexpr char const * A_WORD() {
     return A_WORD_;
   }
 
   static constexpr ::std::string const SOME_BYTES_ = "bytes";
-
   static constexpr ::std::string SOME_BYTES() {
     return SOME_BYTES_;
   }
