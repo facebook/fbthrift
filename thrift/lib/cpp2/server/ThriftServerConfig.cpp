@@ -196,8 +196,8 @@ void ThriftServerConfig::setCPUWorkerThreadName(
   setStaticAttribute(poolThreadName_, std::string{cpuWorkerThreadName}, source);
 }
 
-void ThriftServerConfig::unsetCPUWorkerThreadName(AttributeSource source) {
-  unsetStaticAttribute(poolThreadName_, source);
+void ThriftServerConfig::resetCPUWorkerThreadName(AttributeSource source) {
+  resetStaticAttribute(poolThreadName_, source);
 }
 
 void ThriftServerConfig::setWorkersJoinTimeout(
@@ -205,8 +205,8 @@ void ThriftServerConfig::setWorkersJoinTimeout(
   setStaticAttribute(workersJoinTimeout_, std::move(timeout), source);
 }
 
-void ThriftServerConfig::unsetWorkersJoinTimeout(AttributeSource source) {
-  unsetStaticAttribute(workersJoinTimeout_, source);
+void ThriftServerConfig::resetWorkersJoinTimeout(AttributeSource source) {
+  resetStaticAttribute(workersJoinTimeout_, source);
 }
 
 void ThriftServerConfig::setMaxNumPendingConnectionsPerWorker(
@@ -215,9 +215,9 @@ void ThriftServerConfig::setMaxNumPendingConnectionsPerWorker(
       maxNumPendingConnectionsPerWorker_, std::move(num), source);
 }
 
-void ThriftServerConfig::unsetMaxNumPendingConnectionsPerWorker(
+void ThriftServerConfig::resetMaxNumPendingConnectionsPerWorker(
     AttributeSource source) {
-  unsetStaticAttribute(maxNumPendingConnectionsPerWorker_, source);
+  resetStaticAttribute(maxNumPendingConnectionsPerWorker_, source);
 }
 
 void ThriftServerConfig::setIdleTimeout(
@@ -225,8 +225,8 @@ void ThriftServerConfig::setIdleTimeout(
   setStaticAttribute(timeout_, std::move(timeout), source);
 }
 
-void ThriftServerConfig::unsetIdleTimeout(AttributeSource source) {
-  unsetStaticAttribute(timeout_, source);
+void ThriftServerConfig::resetIdleTimeout(AttributeSource source) {
+  resetStaticAttribute(timeout_, source);
 }
 
 void ThriftServerConfig::setNumIOWorkerThreads(
@@ -234,8 +234,8 @@ void ThriftServerConfig::setNumIOWorkerThreads(
   setStaticAttribute(nWorkers_, std::move(numIOWorkerThreads), source);
 }
 
-void ThriftServerConfig::unsetNumIOWorkerThreads(AttributeSource source) {
-  unsetStaticAttribute(nWorkers_, source);
+void ThriftServerConfig::resetNumIOWorkerThreads(AttributeSource source) {
+  resetStaticAttribute(nWorkers_, source);
 }
 
 void ThriftServerConfig::setNumCPUWorkerThreads(
@@ -243,8 +243,8 @@ void ThriftServerConfig::setNumCPUWorkerThreads(
   setStaticAttribute(nPoolThreads_, std::move(numCPUWorkerThreads), source);
 }
 
-void ThriftServerConfig::unsetNumCPUWorkerThreads(AttributeSource source) {
-  unsetStaticAttribute(nPoolThreads_, source);
+void ThriftServerConfig::resetNumCPUWorkerThreads(AttributeSource source) {
+  resetStaticAttribute(nPoolThreads_, source);
 }
 
 void ThriftServerConfig::setListenBacklog(
@@ -252,8 +252,8 @@ void ThriftServerConfig::setListenBacklog(
   setStaticAttribute(listenBacklog_, std::move(listenBacklog), source);
 }
 
-void ThriftServerConfig::unsetListenBacklog(AttributeSource source) {
-  unsetStaticAttribute(listenBacklog_, source);
+void ThriftServerConfig::resetListenBacklog(AttributeSource source) {
+  resetStaticAttribute(listenBacklog_, source);
 }
 
 void ThriftServerConfig::setMethodsBypassMaxRequestsLimit(
@@ -264,9 +264,9 @@ void ThriftServerConfig::setMethodsBypassMaxRequestsLimit(
       source);
 }
 
-void ThriftServerConfig::unsetMethodsBypassMaxRequestsLimit(
+void ThriftServerConfig::resetMethodsBypassMaxRequestsLimit(
     AttributeSource source) {
-  unsetStaticAttribute(methodsBypassMaxRequestsLimit_, source);
+  resetStaticAttribute(methodsBypassMaxRequestsLimit_, source);
 }
 
 void ThriftServerConfig::setMaxDebugPayloadMemoryPerRequest(
@@ -275,9 +275,9 @@ void ThriftServerConfig::setMaxDebugPayloadMemoryPerRequest(
       maxDebugPayloadMemoryPerRequest_, std::move(limit), source);
 }
 
-void ThriftServerConfig::unsetMaxDebugPayloadMemoryPerRequest(
+void ThriftServerConfig::resetMaxDebugPayloadMemoryPerRequest(
     AttributeSource source) {
-  unsetStaticAttribute(maxDebugPayloadMemoryPerRequest_, source);
+  resetStaticAttribute(maxDebugPayloadMemoryPerRequest_, source);
 }
 
 void ThriftServerConfig::setMaxDebugPayloadMemoryPerWorker(
@@ -285,9 +285,9 @@ void ThriftServerConfig::setMaxDebugPayloadMemoryPerWorker(
   setStaticAttribute(maxDebugPayloadMemoryPerWorker_, std::move(limit), source);
 }
 
-void ThriftServerConfig::unsetMaxDebugPayloadMemoryPerWorker(
+void ThriftServerConfig::resetMaxDebugPayloadMemoryPerWorker(
     AttributeSource source) {
-  unsetStaticAttribute(maxDebugPayloadMemoryPerWorker_, source);
+  resetStaticAttribute(maxDebugPayloadMemoryPerWorker_, source);
 }
 
 void ThriftServerConfig::setMaxFinishedDebugPayloadsPerWorker(
@@ -296,9 +296,9 @@ void ThriftServerConfig::setMaxFinishedDebugPayloadsPerWorker(
       maxFinishedDebugPayloadsPerWorker_, std::move(limit), source);
 }
 
-void ThriftServerConfig::unsetMaxFinishedDebugPayloadsPerWorker(
+void ThriftServerConfig::resetMaxFinishedDebugPayloadsPerWorker(
     AttributeSource source) {
-  unsetStaticAttribute(maxFinishedDebugPayloadsPerWorker_, source);
+  resetStaticAttribute(maxFinishedDebugPayloadsPerWorker_, source);
 }
 
 void ThriftServerConfig::setConnectionAgeTimeout(
@@ -306,8 +306,8 @@ void ThriftServerConfig::setConnectionAgeTimeout(
   setStaticAttribute(connectionAgeTimeout_, std::move(timeout), source);
 }
 
-void ThriftServerConfig::unsetConnectionAgeTimeout(AttributeSource source) {
-  unsetStaticAttribute(connectionAgeTimeout_, source);
+void ThriftServerConfig::resetConnectionAgeTimeout(AttributeSource source) {
+  resetStaticAttribute(connectionAgeTimeout_, source);
 }
 
 void ThriftServerConfig::setMaxConnections(

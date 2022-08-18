@@ -32,7 +32,7 @@ namespace thrift {
  * ServerAttribute provides a mechanism for setting values which have varying
  * precedence depending on who set it. The resolved value (`.get()`)
  * prioritizes the value in the following order, falling back to the next one
- * if the value is unset:
+ * if the value is reset:
  *   1. explicit application override through legacy BaseThriftServer setters
  *   2. baseline from configuration mechanism
  *   3. default provided in constructor, or through ThriftServerInitialConfig
@@ -206,7 +206,7 @@ struct ServerAttributeStatic {
     rawValues_.choose(source) = value;
     updateMergedValue();
   }
-  void unset(AttributeSource source) {
+  void reset(AttributeSource source) {
     rawValues_.choose(source) = std::nullopt;
     updateMergedValue();
   }

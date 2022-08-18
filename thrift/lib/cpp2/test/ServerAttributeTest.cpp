@@ -222,18 +222,18 @@ TEST(ServerAttributeStatic, Basic) {
   attr.set("override", AttributeSource::OVERRIDE);
   EXPECT_EQ(attr.get(), "override");
 
-  attr.unset(AttributeSource::OVERRIDE);
+  attr.reset(AttributeSource::OVERRIDE);
   EXPECT_EQ(attr.get(), "baseline");
-  attr.unset(AttributeSource::BASELINE);
+  attr.reset(AttributeSource::BASELINE);
   EXPECT_EQ(attr.get(), "default");
 
   attr.set("override", AttributeSource::OVERRIDE);
   EXPECT_EQ(attr.get(), "override");
   attr.set("baseline", AttributeSource::BASELINE);
   EXPECT_EQ(attr.get(), "override");
-  attr.unset(AttributeSource::BASELINE);
+  attr.reset(AttributeSource::BASELINE);
   EXPECT_EQ(attr.get(), "override");
 
-  attr.unset(AttributeSource::OVERRIDE);
+  attr.reset(AttributeSource::OVERRIDE);
   EXPECT_EQ(attr.get(), "default");
 }

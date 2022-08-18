@@ -235,7 +235,7 @@ class ThriftServerConfig {
       const std::string& cpuWorkerThreadName,
       AttributeSource source = AttributeSource::OVERRIDE);
 
-  void unsetCPUWorkerThreadName(
+  void resetCPUWorkerThreadName(
       AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
@@ -246,7 +246,7 @@ class ThriftServerConfig {
       std::chrono::seconds timeout,
       AttributeSource source = AttributeSource::OVERRIDE);
 
-  void unsetWorkersJoinTimeout(
+  void resetWorkersJoinTimeout(
       AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
@@ -258,7 +258,7 @@ class ThriftServerConfig {
   void setMaxNumPendingConnectionsPerWorker(
       uint32_t num, AttributeSource source = AttributeSource::OVERRIDE);
 
-  void unsetMaxNumPendingConnectionsPerWorker(
+  void resetMaxNumPendingConnectionsPerWorker(
       AttributeSource source = AttributeSource::OVERRIDE);
 
   /** Set maximum number of milliseconds we'll wait for data (0 = infinity).
@@ -270,7 +270,7 @@ class ThriftServerConfig {
       std::chrono::milliseconds timeout,
       AttributeSource source = AttributeSource::OVERRIDE);
 
-  void unsetIdleTimeout(AttributeSource source = AttributeSource::OVERRIDE);
+  void resetIdleTimeout(AttributeSource source = AttributeSource::OVERRIDE);
   /**
    * Set the number of IO worker threads
    *
@@ -280,7 +280,7 @@ class ThriftServerConfig {
       size_t numIOWorkerThreads,
       AttributeSource source = AttributeSource::OVERRIDE);
 
-  void unsetNumIOWorkerThreads(
+  void resetNumIOWorkerThreads(
       AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
@@ -297,7 +297,7 @@ class ThriftServerConfig {
       size_t numCPUWorkerThreads,
       AttributeSource source = AttributeSource::OVERRIDE);
 
-  void unsetNumCPUWorkerThreads(
+  void resetNumCPUWorkerThreads(
       AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
@@ -306,7 +306,7 @@ class ThriftServerConfig {
   void setMaxDebugPayloadMemoryPerRequest(
       uint64_t limit, AttributeSource source = AttributeSource::OVERRIDE);
 
-  void unsetMaxDebugPayloadMemoryPerRequest(
+  void resetMaxDebugPayloadMemoryPerRequest(
       AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
@@ -316,7 +316,7 @@ class ThriftServerConfig {
   void setMaxDebugPayloadMemoryPerWorker(
       uint64_t limit, AttributeSource source = AttributeSource::OVERRIDE);
 
-  void unsetMaxDebugPayloadMemoryPerWorker(
+  void resetMaxDebugPayloadMemoryPerWorker(
       AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
@@ -326,7 +326,7 @@ class ThriftServerConfig {
   void setMaxFinishedDebugPayloadsPerWorker(
       uint16_t limit, AttributeSource source = AttributeSource::OVERRIDE);
 
-  void unsetMaxFinishedDebugPayloadsPerWorker(
+  void resetMaxFinishedDebugPayloadsPerWorker(
       AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
@@ -336,13 +336,13 @@ class ThriftServerConfig {
   void setListenBacklog(
       int listenBacklog, AttributeSource source = AttributeSource::OVERRIDE);
 
-  void unsetListenBacklog(AttributeSource source = AttributeSource::OVERRIDE);
+  void resetListenBacklog(AttributeSource source = AttributeSource::OVERRIDE);
 
   void setMethodsBypassMaxRequestsLimit(
       const std::vector<std::string>& methods,
       AttributeSource source = AttributeSource::OVERRIDE);
 
-  void unsetMethodsBypassMaxRequestsLimit(
+  void resetMethodsBypassMaxRequestsLimit(
       AttributeSource source = AttributeSource::OVERRIDE);
 
   /** Set maximum number of milliseconds we'll keep the connection alive (0 =
@@ -354,7 +354,7 @@ class ThriftServerConfig {
       std::chrono::milliseconds timeout,
       AttributeSource source = AttributeSource::OVERRIDE);
 
-  void unsetConnectionAgeTimeout(
+  void resetConnectionAgeTimeout(
       AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
@@ -544,10 +544,10 @@ class ThriftServerConfig {
   }
 
   template <typename T>
-  void unsetStaticAttribute(
+  void resetStaticAttribute(
       ServerAttributeStatic<T>& staticAttribute, AttributeSource source) {
     CHECK(!isFrozen());
-    staticAttribute.unset(source);
+    staticAttribute.reset(source);
   }
 
   //! Default number of worker threads (should be # of processor cores).
