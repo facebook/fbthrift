@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
-package com.facebook.thrift.rsocket.transport.server;
+package com.facebook.thrift.rsocket.transport.reactor.server;
 
+import com.facebook.thrift.util.SPINiftyMetrics;
 import io.rsocket.Closeable;
 import java.net.SocketAddress;
 
-public interface NettyServerClosable extends Closeable {
+public interface ReactorServerCloseable extends Closeable {
   SocketAddress getAddress();
+
+  SPINiftyMetrics getMetrics();
 }

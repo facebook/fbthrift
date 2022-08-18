@@ -16,14 +16,17 @@
 
 package com.facebook.thrift.util;
 
+import com.facebook.thrift.rsocket.transport.reactor.server.RSocketProtocolDetector;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.epoll.Epoll;
 import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.kqueue.KQueue;
 import io.netty.channel.kqueue.KQueueEventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.handler.flush.FlushConsolidationHandler;
 import io.netty.util.concurrent.FastThreadLocalThread;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
@@ -35,9 +38,22 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 import reactor.core.scheduler.NonBlocking;
+import reactor.netty.Connection;
 
 public final class NettyUtil {
   private static final Logger LOGGER = LoggerFactory.getLogger(NettyUtil.class);
+
+  public static RSocketProtocolDetector getRSocketProtocolDetector(Connection connection) {
+    return new RSocketProtocolDetector(connection);
+  }
+
+  public static FlushConsolidationHandler getDefaultThriftFlushConsolidationHandler() {
+    return new FlushConsolidationHandler(256, true);
+  }
+
+  public static ChannelHandler getRSocketLengthFieldBasedFrameDecoder() {
+    return new RSocketLengthCodec();
+  }
 
   /**
    * Converts a Netty {@link ChannelFuture} to a reactor-core Mono&lt;Void&gt;

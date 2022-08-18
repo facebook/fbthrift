@@ -165,10 +165,11 @@ public class MyServiceRpcServerHandler
                 _chain.preWriteException(_t);
                 if (_t instanceof test.fixtures.basicannotations.MyException) {
                     com.facebook.thrift.payload.Writer _exceptionWriter = _create_ping_exception_writer(_t, _chain, _payload.getMessageSeqId(), (short) 1);
-                                    com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
-                        _payload,
-                        _exceptionWriter);
+                    com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                      com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
+                          _payload,
+                          _exceptionWriter,
+                          _t.getMessage());
 
                     return reactor.core.publisher.Mono.just(_serverResponsePayload);
                 }

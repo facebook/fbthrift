@@ -23,9 +23,11 @@ import com.facebook.thrift.payload.Writer;
 import org.apache.thrift.ErrorBlame;
 import org.apache.thrift.ErrorClassification;
 import org.apache.thrift.PayloadAppUnknownExceptionMetdata;
+import org.apache.thrift.PayloadDeclaredExceptionMetadata;
 import org.apache.thrift.PayloadExceptionMetadata;
 import org.apache.thrift.PayloadExceptionMetadataBase;
 import org.apache.thrift.PayloadMetadata;
+import org.apache.thrift.PayloadResponseMetadata;
 import org.apache.thrift.RequestRpcMetadata;
 import org.apache.thrift.ResponseRpcMetadata;
 import org.apache.thrift.TApplicationException;
@@ -69,12 +71,6 @@ public final class RpcPayloadUtil {
 
   private RpcPayloadUtil() {}
 
-  public static ServerResponsePayload createServerResponsePayload(
-      final ServerRequestPayload payload, final Writer writer) {
-    return ServerResponsePayload.create(
-        writer, createResponseRpcMetadata(payload.getRequestRpcMetadata()), null, false);
-  }
-
   public static ServerResponsePayload fromTApplicationException(
       final TApplicationException applicationException,
       final RequestRpcMetadata requestRpcMetadata,
@@ -115,9 +111,49 @@ public final class RpcPayloadUtil {
         false);
   }
 
+  public static ServerResponsePayload createServerResponsePayload(
+      final ServerRequestPayload payload, final Writer writer) {
+    return createServerResponsePayload(payload, writer, null);
+  }
+
+  public static PayloadExceptionMetadata createDeclaredPayloadException() {
+    PayloadDeclaredExceptionMetadata metadata =
+        new PayloadDeclaredExceptionMetadata.Builder()
+            .setErrorClassification(
+                new ErrorClassification.Builder().setBlame(ErrorBlame.SERVER).build())
+            .build();
+
+    return PayloadExceptionMetadata.fromDeclaredException(metadata);
+  }
+
+  public static ServerResponsePayload createServerResponsePayload(
+      final ServerRequestPayload payload, final Writer writer, String what) {
+
+    PayloadExceptionMetadataBase base = null;
+    if (what != null) {
+      base =
+          new PayloadExceptionMetadataBase.Builder()
+              .setWhatUtf8(what)
+              .setMetadata(createDeclaredPayloadException())
+              .build();
+    }
+
+    return ServerResponsePayload.create(
+        writer, createResponseRpcMetadata(payload.getRequestRpcMetadata(), base), null, false);
+  }
+
   private static ResponseRpcMetadata createResponseRpcMetadata(
-      final RequestRpcMetadata requestRpcMetadata) {
+      final RequestRpcMetadata requestRpcMetadata, PayloadExceptionMetadataBase base) {
+    final PayloadMetadata payloadMetadata;
+    if (base != null) {
+      payloadMetadata = PayloadMetadata.fromExceptionMetadata(base);
+    } else {
+      payloadMetadata =
+          PayloadMetadata.fromResponseMetadata(PayloadResponseMetadata.defaultInstance());
+    }
+
     return new ResponseRpcMetadata.Builder()
+        .setPayloadMetadata(payloadMetadata)
         .setOtherMetadata(requestRpcMetadata.getOtherMetadata())
         .build();
   }

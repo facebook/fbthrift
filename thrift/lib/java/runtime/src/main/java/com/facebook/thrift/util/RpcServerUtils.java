@@ -16,19 +16,14 @@
 
 package com.facebook.thrift.util;
 
-import static io.rsocket.frame.FrameLengthCodec.FRAME_LENGTH_MASK;
-import static io.rsocket.frame.FrameLengthCodec.FRAME_LENGTH_SIZE;
-
 import com.facebook.nifty.ssl.SslSession;
 import com.facebook.swift.service.ThriftServerConfig;
 import com.facebook.thrift.legacy.server.LegacyServerTransportFactory;
 import com.facebook.thrift.metadata.ThriftTransportType;
-import com.facebook.thrift.rsocket.transport.RSocketDuplexHandler;
+import com.facebook.thrift.rsocket.server.RSocketServerTransportFactory;
 import com.facebook.thrift.server.RpcServerHandler;
 import com.facebook.thrift.server.ServerTransport;
 import com.facebook.thrift.server.ServerTransportFactory;
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.ServerChannel;
 import io.netty.channel.epoll.EpollEventLoopGroup;
@@ -39,8 +34,6 @@ import io.netty.channel.kqueue.KQueueServerDomainSocketChannel;
 import io.netty.channel.kqueue.KQueueServerSocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.unix.DomainSocketAddress;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import io.netty.handler.flush.FlushConsolidationHandler;
 import io.netty.handler.ssl.ApplicationProtocolConfig;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
@@ -48,6 +41,7 @@ import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.ssl.SslProvider;
 import java.io.FileInputStream;
 import java.net.InetSocketAddress;
+import java.net.ServerSocket;
 import java.net.SocketAddress;
 import java.security.cert.X509Certificate;
 import java.util.Objects;
@@ -55,7 +49,6 @@ import javax.net.ssl.SSLSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
-import reactor.core.publisher.FluxProcessor;
 import reactor.core.publisher.Mono;
 
 public class RpcServerUtils {
@@ -147,14 +140,6 @@ public class RpcServerUtils {
     }
   }
 
-  public static void configureRSocket(
-      ChannelPipeline pipeline, FluxProcessor<ByteBuf, ByteBuf> receiverProcessor) {
-    pipeline.addLast(
-        new FlushConsolidationHandler(256, true),
-        new LengthFieldBasedFrameDecoder(FRAME_LENGTH_MASK, 0, FRAME_LENGTH_SIZE, 0, 0),
-        new RSocketDuplexHandler(receiverProcessor));
-  }
-
   /**
    * Creates Nifty SslSession from Netty 4 SSL Handler object. Session fetch throws
    * SSLUnverifiedException interaction is not ssl based
@@ -222,7 +207,14 @@ public class RpcServerUtils {
 
   private static ServerTransportFactory<? extends ServerTransport> createRSocketTransport(
       ThriftServerConfig config) {
-    return (bindAddress, rpcServerHandler) ->
-        Mono.error(new UnsupportedOperationException("Need to Support RSocket"));
+    return new RSocketServerTransportFactory(config);
+  }
+
+  public static int findFreePort() {
+    try (ServerSocket s = new ServerSocket(0)) {
+      return s.getLocalPort();
+    } catch (Exception e) {
+      throw Exceptions.propagate(e);
+    }
   }
 }

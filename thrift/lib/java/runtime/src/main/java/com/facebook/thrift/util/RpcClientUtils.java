@@ -29,8 +29,8 @@ import com.facebook.thrift.payload.ClientResponsePayload;
 import com.facebook.thrift.payload.Reader;
 import com.facebook.thrift.protocol.ByteBufTProtocol;
 import com.facebook.thrift.protocol.TProtocolType;
+import com.facebook.thrift.util.resources.RpcResources;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
@@ -304,9 +304,8 @@ public final class RpcClientUtils {
     TField field = protocol.readFieldBegin();
 
     if (field.id == 0) {
-      response =
-          ClientResponsePayload.createResult(
-              reader.read(protocol), responseRpcMetadata, null, false);
+      K read = reader.read(protocol);
+      response = ClientResponsePayload.createResult(read, responseRpcMetadata, null, false);
     } else {
       Reader exceptionReader = exceptionReaders.get(field.id);
       Exception exception;
@@ -335,7 +334,6 @@ public final class RpcClientUtils {
    */
   public static Optional<? extends TException> getUndeclaredException(
       ResponseRpcMetadata rpcMetadata) {
-
     return Optional.ofNullable(rpcMetadata.getPayloadMetadata())
         .filter(PayloadMetadata::isSetExceptionMetadata)
         .map(PayloadMetadata::getExceptionMetadata)
@@ -390,7 +388,8 @@ public final class RpcClientUtils {
    * @return Created RSocketConnector
    */
   public static RSocketConnector createRSocketConnector() {
-    ByteBuf setupMetadata = ByteBufAllocator.DEFAULT.buffer().writeInt((int) K_ROCKET_PROTOCOL_KEY);
+    ByteBuf setupMetadata =
+        RpcResources.getByteBufAllocator().buffer().writeInt((int) K_ROCKET_PROTOCOL_KEY);
 
     ByteBufTProtocol protocol = TProtocolType.TCompact.apply(setupMetadata);
 

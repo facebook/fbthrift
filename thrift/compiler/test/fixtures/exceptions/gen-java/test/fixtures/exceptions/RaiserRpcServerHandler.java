@@ -239,28 +239,31 @@ public class RaiserRpcServerHandler
                 _chain.preWriteException(_t);
                 if (_t instanceof test.fixtures.exceptions.Banal) {
                     com.facebook.thrift.payload.Writer _exceptionWriter = _create_doRaise_exception_writer(_t, _chain, _payload.getMessageSeqId(), (short) 1);
-                                    com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
-                        _payload,
-                        _exceptionWriter);
+                    com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                      com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
+                          _payload,
+                          _exceptionWriter,
+                          _t.getMessage());
 
                     return reactor.core.publisher.Mono.just(_serverResponsePayload);
                 }
                 if (_t instanceof test.fixtures.exceptions.Fiery) {
                     com.facebook.thrift.payload.Writer _exceptionWriter = _create_doRaise_exception_writer(_t, _chain, _payload.getMessageSeqId(), (short) 2);
-                                    com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
-                        _payload,
-                        _exceptionWriter);
+                    com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                      com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
+                          _payload,
+                          _exceptionWriter,
+                          _t.getMessage());
 
                     return reactor.core.publisher.Mono.just(_serverResponsePayload);
                 }
                 if (_t instanceof test.fixtures.exceptions.Serious) {
                     com.facebook.thrift.payload.Writer _exceptionWriter = _create_doRaise_exception_writer(_t, _chain, _payload.getMessageSeqId(), (short) 3);
-                                    com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
-                        _payload,
-                        _exceptionWriter);
+                    com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                      com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
+                          _payload,
+                          _exceptionWriter,
+                          _t.getMessage());
 
                     return reactor.core.publisher.Mono.just(_serverResponsePayload);
                 }
@@ -471,28 +474,31 @@ oprot.writeString(_iter0);
                 _chain.preWriteException(_t);
                 if (_t instanceof test.fixtures.exceptions.Fiery) {
                     com.facebook.thrift.payload.Writer _exceptionWriter = _create_get500_exception_writer(_t, _chain, _payload.getMessageSeqId(), (short) 1);
-                                    com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
-                        _payload,
-                        _exceptionWriter);
+                    com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                      com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
+                          _payload,
+                          _exceptionWriter,
+                          _t.getMessage());
 
                     return reactor.core.publisher.Mono.just(_serverResponsePayload);
                 }
                 if (_t instanceof test.fixtures.exceptions.Banal) {
                     com.facebook.thrift.payload.Writer _exceptionWriter = _create_get500_exception_writer(_t, _chain, _payload.getMessageSeqId(), (short) 2);
-                                    com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
-                        _payload,
-                        _exceptionWriter);
+                    com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                      com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
+                          _payload,
+                          _exceptionWriter,
+                          _t.getMessage());
 
                     return reactor.core.publisher.Mono.just(_serverResponsePayload);
                 }
                 if (_t instanceof test.fixtures.exceptions.Serious) {
                     com.facebook.thrift.payload.Writer _exceptionWriter = _create_get500_exception_writer(_t, _chain, _payload.getMessageSeqId(), (short) 3);
-                                    com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
-                        _payload,
-                        _exceptionWriter);
+                    com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                      com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
+                          _payload,
+                          _exceptionWriter,
+                          _t.getMessage());
 
                     return reactor.core.publisher.Mono.just(_serverResponsePayload);
                 }

@@ -20,7 +20,7 @@ import com.facebook.thrift.client.RpcClient;
 import com.facebook.thrift.client.RpcClientFactory;
 import com.facebook.thrift.client.ThriftClientConfig;
 import com.facebook.thrift.metadata.ThriftTransportType;
-import com.facebook.thrift.rsocket.transport.client.NettyClientTransport;
+import com.facebook.thrift.rsocket.transport.reactor.client.ReactorClientTransport;
 import com.facebook.thrift.util.ReactorHooks;
 import com.facebook.thrift.util.RpcClientUtils;
 import com.facebook.thrift.util.resources.RpcResources;
@@ -53,8 +53,8 @@ public class RSocketRpcClientFactory implements RpcClientFactory {
   public Mono<RpcClient> createRpcClient(SocketAddress socketAddress) {
 
     try {
-      final NettyClientTransport transport =
-          new NettyClientTransport(socketAddress, this.config, ThriftTransportType.RSOCKET);
+      final ReactorClientTransport transport =
+          new ReactorClientTransport(socketAddress, this.config, ThriftTransportType.RSOCKET);
 
       return connector
           .payloadDecoder(PayloadDecoder.ZERO_COPY)

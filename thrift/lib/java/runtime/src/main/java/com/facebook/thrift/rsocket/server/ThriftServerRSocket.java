@@ -16,9 +16,11 @@
 
 package com.facebook.thrift.rsocket.server;
 
-import static com.facebook.thrift.rsocket.util.MetadataUtil.decodeRequestRpcMetadata;
 import static com.facebook.thrift.rsocket.util.PayloadUtil.createPayload;
 
+import com.facebook.nifty.core.ConnectionContext;
+import com.facebook.nifty.core.NiftyConnectionContext;
+import com.facebook.nifty.core.RequestContext;
 import com.facebook.thrift.payload.Reader;
 import com.facebook.thrift.payload.ServerRequestPayload;
 import com.facebook.thrift.payload.ServerResponsePayload;
@@ -26,7 +28,7 @@ import com.facebook.thrift.payload.Writer;
 import com.facebook.thrift.protocol.ByteBufTProtocol;
 import com.facebook.thrift.protocol.TProtocolType;
 import com.facebook.thrift.server.RpcServerHandler;
-import com.google.common.base.Preconditions;
+import com.facebook.thrift.util.NettyNiftyRequestContext;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.rsocket.Payload;
@@ -34,7 +36,9 @@ import io.rsocket.RSocket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
+import org.apache.thrift.ProtocolId;
 import org.apache.thrift.RequestRpcMetadata;
 import org.apache.thrift.RpcKind;
 import org.apache.thrift.protocol.TProtocol;
@@ -44,53 +48,73 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 public class ThriftServerRSocket implements RSocket {
-  private static final Logger log = LoggerFactory.getLogger(ThriftServerRSocket.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(ThriftServerRSocket.class);
+
   private final RpcServerHandler rpcServerHandler;
-  private final TProtocolType protocolType;
   private final ByteBufAllocator alloc;
 
-  public ThriftServerRSocket(
-      RpcServerHandler rpcServerHandler, TProtocolType protocolType, ByteBufAllocator alloc) {
+  public ThriftServerRSocket(RpcServerHandler rpcServerHandler, ByteBufAllocator alloc) {
     this.rpcServerHandler = rpcServerHandler;
-    this.protocolType = protocolType;
     this.alloc = alloc;
   }
 
   @Override
   public Mono<Payload> requestResponse(Payload payload) {
-    ServerRequestPayload serverRequestPayload =
-        payloadToServerRequestPayload(payload, protocolType);
-    RequestRpcMetadata metadata = serverRequestPayload.getRequestRpcMetadata();
-    Preconditions.checkArgument(metadata.getKind() == RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE);
-    return rpcServerHandler
-        .singleRequestSingleResponse(serverRequestPayload)
-        .doOnError(Throwable::printStackTrace)
-        .map(this::serverResponsePayloadToRSocketPayload);
+    try {
+      RequestRpcMetadata requestRpcMetadata = decodeRequestRpcMetadata(payload);
+
+      RequestContext requestContext = createRequestContext(requestRpcMetadata.getOtherMetadata());
+
+      ServerRequestPayload requestPayload =
+          deserializeRequest(payload, requestRpcMetadata, requestContext);
+
+      payload.release();
+
+      assert requestPayload.getRequestRpcMetadata().getKind()
+          == RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE;
+
+      return rpcServerHandler
+          .singleRequestSingleResponse(requestPayload)
+          .map(responsePayload -> handleResponse(alloc, requestPayload, responsePayload));
+    } catch (Throwable t) {
+      payload.release();
+      return Mono.error(t);
+    }
   }
 
-  @Override
-  public Mono<Void> fireAndForget(Payload payload) {
-    ServerRequestPayload serverRequestPayload =
-        payloadToServerRequestPayload(payload, protocolType);
-    RequestRpcMetadata metadata = serverRequestPayload.getRequestRpcMetadata();
-    Preconditions.checkArgument(metadata.getKind() == RpcKind.SINGLE_REQUEST_NO_RESPONSE);
-    return rpcServerHandler.singleRequestNoResponse(serverRequestPayload);
+  private static RequestContext createRequestContext(Map<String, String> requestHeaders) {
+    ConnectionContext connectionContext = new NiftyConnectionContext();
+    return new NettyNiftyRequestContext(requestHeaders, connectionContext);
   }
 
-  private Payload serverResponsePayloadToRSocketPayload(ServerResponsePayload responsePayload) {
+  @SuppressWarnings("rawtypes")
+  private static ServerRequestPayload deserializeRequest(
+      Payload payload, RequestRpcMetadata requestRpcMetadata, RequestContext requestContext) {
+    ByteBufTProtocol out =
+        TProtocolType.fromProtocolId(requestRpcMetadata.getProtocol()).apply(payload.sliceData());
+    Function<List<Reader>, List<Object>> readerTransformer = createReaderFunction(out);
+    return ServerRequestPayload.create(readerTransformer, requestRpcMetadata, requestContext);
+  }
+
+  private static RequestRpcMetadata decodeRequestRpcMetadata(Payload payload) {
+    ByteBufTProtocol out =
+        TProtocolType.fromProtocolId(ProtocolId.COMPACT).apply(payload.sliceMetadata());
+    return RequestRpcMetadata.read0(out);
+  }
+
+  private static Payload handleResponse(
+      ByteBufAllocator alloc,
+      ServerRequestPayload requestPayload,
+      ServerResponsePayload responsePayload) {
     ByteBuf data = null;
     ByteBuf metadata = null;
+
     try {
       data = alloc.buffer();
       metadata = alloc.buffer();
 
-      final ByteBufTProtocol in = protocolType.apply(data);
-
-      final Writer writer = responsePayload.getDataWriter();
-      writer.write(in);
-
-      final ByteBufTProtocol metadataProtocol = TProtocolType.TCompact.apply(metadata);
-      responsePayload.getResponseRpcMetadata().write0(metadataProtocol);
+      serializeResponse(requestPayload, responsePayload, data);
+      serializeMetadata(responsePayload, metadata);
 
       return createPayload(
           alloc, responsePayload.getResponseRpcMetadata().getCompression(), data, metadata);
@@ -103,17 +127,46 @@ public class ThriftServerRSocket implements RSocket {
       if (metadata != null && metadata.refCnt() > 0) {
         metadata.release();
       }
-
       throw Exceptions.propagate(t);
     }
   }
 
-  private ServerRequestPayload payloadToServerRequestPayload(
-      Payload requestPayload, TProtocolType protocolType) {
-    RequestRpcMetadata rpcMetadata = decodeRequestRpcMetadata(requestPayload);
-    final ByteBufTProtocol data = protocolType.apply(requestPayload.sliceData());
+  private static void serializeMetadata(ServerResponsePayload responsePayload, ByteBuf metadata) {
+    final ByteBufTProtocol metadataProtocol = TProtocolType.TCompact.apply(metadata);
+    responsePayload.getResponseRpcMetadata().write0(metadataProtocol);
+  }
 
-    return ServerRequestPayload.create(createReaderFunction(data), rpcMetadata, null);
+  private static void serializeResponse(
+      ServerRequestPayload requestPayload, ServerResponsePayload responsePayload, ByteBuf data) {
+    final ByteBufTProtocol in = getTProtocol(requestPayload, data);
+    final Writer writer = responsePayload.getDataWriter();
+    writer.write(in);
+  }
+
+  private static ByteBufTProtocol getTProtocol(ServerRequestPayload requestPayload, ByteBuf data) {
+    return TProtocolType.fromProtocolId(requestPayload.getRequestRpcMetadata().getProtocol())
+        .apply(data);
+  }
+
+  @Override
+  public Mono<Void> fireAndForget(Payload payload) {
+    try {
+      RequestRpcMetadata requestRpcMetadata = decodeRequestRpcMetadata(payload);
+
+      RequestContext requestContext = createRequestContext(requestRpcMetadata.getOtherMetadata());
+
+      ServerRequestPayload requestPayload =
+          deserializeRequest(payload, requestRpcMetadata, requestContext);
+
+      payload.release();
+
+      assert requestPayload.getRequestRpcMetadata().getKind() == RpcKind.SINGLE_REQUEST_NO_RESPONSE;
+
+      return rpcServerHandler.singleRequestNoResponse(requestPayload);
+    } catch (Throwable t) {
+      payload.release();
+      return Mono.error(t);
+    }
   }
 
   @SuppressWarnings("rawtypes")
