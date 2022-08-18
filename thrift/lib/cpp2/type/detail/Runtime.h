@@ -164,6 +164,8 @@ class RuntimeBase {
     return type() == rhs.type() && type_->identical(ptr_, rhs);
   }
 
+  bool equal(const RuntimeBase& rhs) const { return type_->equal(ptr_, rhs); }
+
  protected:
   RuntimeType type_;
   void* ptr_ = nullptr;
@@ -212,6 +214,12 @@ class RuntimeBase {
   void reset() noexcept {
     type_ = {};
     ptr_ = {};
+  }
+
+ private:
+  friend bool operator==(
+      const RuntimeBase& lhs, const RuntimeBase& rhs) noexcept {
+    return lhs.equal(rhs);
   }
 };
 
@@ -281,6 +289,12 @@ struct VoidErasedOp : BaseErasedOp {
   }
   static bool empty(const void*) { return true; }
   static bool identical(const void*, const RuntimeBase&) { return true; }
+  static int compare(const void*, const RuntimeBase& rhs) {
+    if (!rhs.type().empty()) {
+      bad_op();
+    }
+    return 0;
+  }
   static void clear(void*) {}
 };
 

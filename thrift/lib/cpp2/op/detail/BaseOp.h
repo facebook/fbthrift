@@ -57,6 +57,15 @@ struct BaseAnyOp : type::detail::BaseErasedOp {
     assert(rhs.type() == Tag{});
     return op::identical<Tag>(ref(lhs), rhs.as<Tag>());
   }
+
+  static int compare(const void* lhs, const RuntimeBase& rhs) {
+    if (const T* ptr = rhs.tryAs<Tag>()) {
+      return op::equal<Tag>(ref(lhs), *ptr) ? 0 : 1;
+    }
+    // TODO(afuller): Throw bad_op() when all compatible type overloads are
+    // implemented.
+    unimplemented();
+  }
 };
 
 } // namespace detail

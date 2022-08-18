@@ -16,8 +16,14 @@
 
 #include <thrift/lib/cpp2/type/Runtime.h>
 
+#include <map>
+#include <set>
+#include <string>
+#include <vector>
+
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
+#include <thrift/lib/cpp2/type/Tag.h>
 
 namespace apache::thrift::type {
 namespace {
@@ -84,10 +90,15 @@ TEST(RuntimeRefTest, Int) {
   EXPECT_FALSE(ref.empty());
   EXPECT_TRUE(ref.add(ref));
   EXPECT_EQ(value, 2);
+  EXPECT_EQ(ref, Ref::create<i32_t>(2));
+  EXPECT_EQ(ref, Value::create<i32_t>(2));
+
   ref.clear();
   EXPECT_TRUE(ref.empty());
   EXPECT_EQ(value, 0);
   EXPECT_EQ(ref.as<i32_t>(), 0);
+  EXPECT_EQ(ref, Ref::create<i32_t>(0));
+  EXPECT_EQ(ref, Value::create<i32_t>());
 }
 
 TEST(RuntimeRefTest, List) {

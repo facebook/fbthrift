@@ -44,11 +44,16 @@ struct TypeInfo {
   void* (*make)(void*, bool);
   bool (*empty)(const void*);
   bool (*identical)(const void*, const RuntimeBase&);
+  int (*compare)(const void*, const RuntimeBase&);
   void (*clear)(void*);
   void (*append)(void*, const RuntimeBase&);
   bool (*add)(void*, const RuntimeBase&);
   bool (*put)(void*, FieldId, const RuntimeBase*, const RuntimeBase&);
   Ptr (*get)(void*, FieldId, const RuntimeBase*);
+
+  int equal(const void* lhs, const RuntimeBase& rhs) const {
+    return compare(lhs, rhs) == 0;
+  }
 
   // Type-safe, const-preserving casting functions.
   template <typename T>
@@ -78,6 +83,7 @@ FOLLY_EXPORT const TypeInfo& getTypeInfo() {
       &Op::make,
       &Op::empty,
       &Op::identical,
+      &Op::compare,
       &Op::clear,
       &Op::append,
       &Op::add,
