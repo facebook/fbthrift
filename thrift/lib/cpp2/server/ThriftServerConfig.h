@@ -363,10 +363,8 @@ class ThriftServerConfig {
    * @param maxConnections new setting for maximum # of connections.
    */
   void setMaxConnections(
-      folly::observer::Observer<uint32_t> maxConnections,
+      folly::observer::Observer<std::optional<uint32_t>> maxConnections,
       AttributeSource source = AttributeSource::OVERRIDE);
-
-  void unsetMaxConnections(AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * Set the maximum # of requests being processed in handler before overload.
@@ -374,32 +372,23 @@ class ThriftServerConfig {
    * @param maxRequests new setting for maximum # of active requests.
    */
   void setMaxRequests(
-      folly::observer::Observer<uint32_t> maxRequests,
+      folly::observer::Observer<std::optional<uint32_t>> maxRequests,
       AttributeSource source = AttributeSource::OVERRIDE);
-
-  void unsetMaxRequests(AttributeSource source = AttributeSource::OVERRIDE);
 
   void setMaxResponseSize(
-      folly::observer::Observer<uint64_t> size,
+      folly::observer::Observer<std::optional<uint64_t>> size,
       AttributeSource source = AttributeSource::OVERRIDE);
-
-  void unsetMaxResponseSize(AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * Sets the maximum QPS this server is allowed to handle, above that we will
    * start shedding additional requests. Enforced via folly/TokenBucket.h.
    */
   void setMaxQps(
-      folly::observer::Observer<uint32_t> maxQps,
+      folly::observer::Observer<std::optional<uint32_t>> maxQps,
       AttributeSource source = AttributeSource::OVERRIDE);
-
-  void unsetMaxQps(AttributeSource source = AttributeSource::OVERRIDE);
 
   void setUseClientTimeout(
-      folly::observer::Observer<bool> useClientTimeout,
-      AttributeSource source = AttributeSource::OVERRIDE);
-
-  void unsetUseClientTimeout(
+      folly::observer::Observer<std::optional<bool>> useClientTimeout,
       AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
@@ -407,30 +396,25 @@ class ThriftServerConfig {
    * http://en.wikipedia.org/wiki/CoDel
    */
   void setEnableCodel(
-      folly::observer::Observer<bool> enableCodel,
+      folly::observer::Observer<std::optional<bool>> enableCodel,
       AttributeSource source = AttributeSource::OVERRIDE);
-
-  void unsetEnableCodel(AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * Set the task expire time
    *
    */
   void setTaskExpireTime(
-      folly::observer::Observer<std::chrono::milliseconds> timeout,
+      folly::observer::Observer<std::optional<std::chrono::milliseconds>>
+          timeout,
       AttributeSource source = AttributeSource::OVERRIDE);
-
-  void unsetTaskExpireTime(AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * Set the stream starvation time
    *
    */
   void setStreamExpireTime(
-      folly::observer::Observer<std::chrono::milliseconds> timeout,
-      AttributeSource source = AttributeSource::OVERRIDE);
-
-  void unsetStreamExpireTime(
+      folly::observer::Observer<std::optional<std::chrono::milliseconds>>
+          timeout,
       AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
@@ -440,21 +424,17 @@ class ThriftServerConfig {
    * override this if you do heavily batched requests.
    */
   void setQueueTimeout(
-      folly::observer::Observer<std::chrono::milliseconds> timeout,
+      folly::observer::Observer<std::optional<std::chrono::milliseconds>>
+          timeout,
       AttributeSource source = AttributeSource::OVERRIDE);
-
-  void unsetQueueTimeout(AttributeSource source = AttributeSource::OVERRIDE);
-
   /**
    * Sets the duration before which new connections waiting on a socket's queue
    * are closed. A value of 0 represents an infinite duration.
    * See `folly::AsyncServerSocket::setQueueTimeout`.
    */
   void setSocketQueueTimeout(
-      folly::observer::Observer<std::chrono::nanoseconds> timeout,
-      AttributeSource source = AttributeSource::OVERRIDE);
-
-  void unsetSocketQueueTimeout(
+      folly::observer::Observer<std::optional<std::chrono::nanoseconds>>
+          timeout,
       AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
@@ -464,10 +444,8 @@ class ThriftServerConfig {
    * read by the client is irrelevant. Zero disables the timeout.
    */
   void setSocketWriteTimeout(
-      folly::observer::Observer<std::chrono::milliseconds> timeout,
-      AttributeSource source = AttributeSource::OVERRIDE);
-
-  void unsetSocketWriteTimeout(
+      folly::observer::Observer<std::optional<std::chrono::milliseconds>>
+          timeout,
       AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
@@ -476,10 +454,7 @@ class ThriftServerConfig {
    * will be closed
    */
   void setIngressMemoryLimit(
-      folly::observer::Observer<size_t> ingressMemoryLimit,
-      AttributeSource source = AttributeSource::OVERRIDE);
-
-  void unsetIngressMemoryLimit(
+      folly::observer::Observer<std::optional<size_t>> ingressMemoryLimit,
       AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
@@ -491,10 +466,7 @@ class ThriftServerConfig {
    * discarded.
    */
   void setEgressMemoryLimit(
-      folly::observer::Observer<size_t> max,
-      AttributeSource source = AttributeSource::OVERRIDE);
-
-  void unsetEgressMemoryLimit(
+      folly::observer::Observer<std::optional<size_t>> max,
       AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
@@ -502,11 +474,8 @@ class ThriftServerConfig {
    * size greater or equal than this attribute
    */
   void setMinPayloadSizeToEnforceIngressMemoryLimit(
-      folly::observer::Observer<size_t>
+      folly::observer::Observer<std::optional<size_t>>
           minPayloadSizeToEnforceIngressMemoryLimit,
-      AttributeSource source = AttributeSource::OVERRIDE);
-
-  void unsetMinPayloadSizeToEnforceIngressMemoryLimit(
       AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
@@ -515,10 +484,7 @@ class ThriftServerConfig {
    * threshold.
    */
   void setEgressBufferBackpressureThreshold(
-      folly::observer::Observer<size_t> thresholdInBytes,
-      AttributeSource source = AttributeSource::OVERRIDE);
-
-  void unsetEgressBufferBackpressureThreshold(
+      folly::observer::Observer<std::optional<size_t>> thresholdInBytes,
       AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
@@ -526,52 +492,36 @@ class ThriftServerConfig {
    * egress buffer size falls below this factor of the threshold.
    */
   void setEgressBufferRecoveryFactor(
-      folly::observer::Observer<double> recoveryFactor,
-      AttributeSource source = AttributeSource::OVERRIDE);
-
-  void unsetEgressBufferRecoveryFactor(
+      folly::observer::Observer<std::optional<double>> recoveryFactor,
       AttributeSource source = AttributeSource::OVERRIDE);
 
   void setPolledServiceHealthLiveness(
-      folly::observer::Observer<std::chrono::milliseconds> liveness,
-      AttributeSource source = AttributeSource::OVERRIDE);
-
-  void unsetPolledServiceHealthLiveness(
+      folly::observer::Observer<std::optional<std::chrono::milliseconds>>
+          liveness,
       AttributeSource source = AttributeSource::OVERRIDE);
 
   // Rejects all header-backed connections to this server
   void disableLegacyTransports(
-      folly::observer::Observer<bool> value,
-      AttributeSource source = AttributeSource::OVERRIDE);
-
-  void unsetdisableLegacyTransports(
+      folly::observer::Observer<std::optional<bool>> value,
       AttributeSource source = AttributeSource::OVERRIDE);
 
   void setPerConnectionSocketOptions(
-      folly::observer::Observer<folly::SocketOptionMap> options,
-      AttributeSource source = AttributeSource::OVERRIDE);
-
-  void unsetPerConnectionSocketOptions(
+      folly::observer::Observer<std::optional<folly::SocketOptionMap>> options,
       AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * Set write batching interval
    */
   void setWriteBatchingInterval(
-      folly::observer::Observer<std::chrono::milliseconds> interval,
-      AttributeSource source = AttributeSource::OVERRIDE);
-
-  void unsetWriteBatchingInterval(
+      folly::observer::Observer<std::optional<std::chrono::milliseconds>>
+          interval,
       AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
    * Set write batching size. Ignored if write batching interval is not set.
    */
   void setWriteBatchingSize(
-      folly::observer::Observer<size_t> batchingSize,
-      AttributeSource source = AttributeSource::OVERRIDE);
-
-  void unsetWriteBatchingSize(
+      folly::observer::Observer<std::optional<size_t>> batchingSize,
       AttributeSource source = AttributeSource::OVERRIDE);
 
   /**
@@ -579,10 +529,7 @@ class ThriftServerConfig {
    * set.
    */
   void setWriteBatchingByteSize(
-      folly::observer::Observer<size_t> batchingByteSize,
-      AttributeSource source = AttributeSource::OVERRIDE);
-
-  void unsetWriteBatchingByteSize(
+      folly::observer::Observer<std::optional<size_t>> batchingByteSize,
       AttributeSource source = AttributeSource::OVERRIDE);
 
  private:

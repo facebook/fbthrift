@@ -99,9 +99,7 @@ struct ServerAttributeRawValues {
 
 template <typename T>
 T& mergeServerAttributeRawValues(
-    folly::Optional<T>& override,
-    folly::Optional<T>& baseline,
-    T& defaultValue) {
+    std::optional<T>& override, std::optional<T>& baseline, T& defaultValue) {
   return override ? *override : baseline ? *baseline : defaultValue;
 }
 
@@ -124,19 +122,20 @@ struct ServerAttributeObservable {
            baselineObserver = rawValues_.baseline_.getObserver(),
            defaultObserver =
                default_.getObserver()]() mutable -> std::shared_ptr<T> {
-            folly::Optional<folly::observer::Observer<T>> override =
-                **overrideObserver;
-            folly::Optional<folly::observer::Observer<T>> baseline =
-                **baselineObserver;
+            std::optional<T> override = **overrideObserver;
+            std::optional<T> baseline = **baselineObserver;
+            T defaultValue = **defaultObserver;
             return std::make_shared<T>(
-                **apache::thrift::detail::mergeServerAttributeRawValues(
-                    override, baseline, defaultObserver));
+                apache::thrift::detail::mergeServerAttributeRawValues(
+                    override, baseline, defaultValue));
           });
     });
   }
 
-  void set(folly::observer::Observer<T> value, AttributeSource source) {
-    rawValues_.choose(source).setValue(folly::Optional{std::move(value)});
+  void set(
+      folly::observer::Observer<std::optional<T>> value,
+      AttributeSource source) {
+    rawValues_.choose(source).setValue(std::move(value));
     if (source == AttributeSource::OVERRIDE) {
       // For backward compatibility reasons, we need to block until the observer
       // value is updated. This ensures that reads always produce the latest
@@ -147,18 +146,12 @@ struct ServerAttributeObservable {
     }
   }
 
-  void unset(AttributeSource source) {
-    rawValues_.choose(source).setValue(folly::none);
-    if (source == AttributeSource::OVERRIDE) {
-      // See explanation in `.set()`
-      folly::observer_detail::ObserverManager::waitForAllUpdates();
-    }
-  }
-
  protected:
   ServerAttributeRawValues<folly::observer::SimpleObservable<
-      folly::Optional<folly::observer::Observer<T>>>>
-      rawValues_{folly::none, folly::none};
+      folly::observer::Observer<std::optional<T>>>>
+      rawValues_{
+          folly::observer::makeStaticObserver<std::optional<T>>(std::nullopt),
+          folly::observer::makeStaticObserver<std::optional<T>>(std::nullopt)};
   folly::observer::SimpleObservable<folly::observer::Observer<T>> default_;
   mutable folly::DelayedInit<folly::observer::Observer<T>> mergedObserver_;
 };
@@ -171,7 +164,6 @@ struct ServerAttributeAtomic
   using apache::thrift::detail::ServerAttributeObservable<
       T>::ServerAttributeObservable;
   using apache::thrift::detail::ServerAttributeObservable<T>::set;
-  using apache::thrift::detail::ServerAttributeObservable<T>::unset;
   using apache::thrift::detail::ServerAttributeObservable<T>::getObserver;
   using apache::thrift::detail::ServerAttributeObservable<T>::setDefault;
 
@@ -192,7 +184,6 @@ struct ServerAttributeThreadLocal
   using apache::thrift::detail::ServerAttributeObservable<
       T>::ServerAttributeObservable;
   using apache::thrift::detail::ServerAttributeObservable<T>::set;
-  using apache::thrift::detail::ServerAttributeObservable<T>::unset;
   using apache::thrift::detail::ServerAttributeObservable<T>::getObserver;
   using apache::thrift::detail::ServerAttributeObservable<T>::setDefault;
 
@@ -216,7 +207,7 @@ struct ServerAttributeStatic {
     updateMergedValue();
   }
   void unset(AttributeSource source) {
-    rawValues_.choose(source) = folly::none;
+    rawValues_.choose(source) = std::nullopt;
     updateMergedValue();
   }
 
@@ -230,8 +221,8 @@ struct ServerAttributeStatic {
     merged_ = std::cref(merged);
   }
 
-  apache::thrift::detail::ServerAttributeRawValues<folly::Optional<T>>
-      rawValues_{folly::none, folly::none};
+  apache::thrift::detail::ServerAttributeRawValues<std::optional<T>> rawValues_{
+      std::nullopt, std::nullopt};
   T default_;
   std::reference_wrapper<const T> merged_;
 };

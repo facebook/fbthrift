@@ -311,222 +311,146 @@ void ThriftServerConfig::unsetConnectionAgeTimeout(AttributeSource source) {
 }
 
 void ThriftServerConfig::setMaxConnections(
-    folly::observer::Observer<uint32_t> maxConnections,
+    folly::observer::Observer<std::optional<uint32_t>> maxConnections,
     AttributeSource source) {
   maxConnections_.set(maxConnections, source);
 }
 
-void ThriftServerConfig::unsetMaxConnections(AttributeSource source) {
-  maxConnections_.unset(source);
-}
-
 void ThriftServerConfig::setMaxRequests(
-    folly::observer::Observer<uint32_t> maxRequests, AttributeSource source) {
+    folly::observer::Observer<std::optional<uint32_t>> maxRequests,
+    AttributeSource source) {
   maxRequests_.set(maxRequests, source);
 }
 
-void ThriftServerConfig::unsetMaxRequests(AttributeSource source) {
-  maxRequests_.unset(source);
-}
-
 void ThriftServerConfig::setMaxResponseSize(
-    folly::observer::Observer<uint64_t> size, AttributeSource source) {
+    folly::observer::Observer<std::optional<uint64_t>> size,
+    AttributeSource source) {
   maxResponseSize_.set(size, source);
 }
 
-void ThriftServerConfig::unsetMaxResponseSize(AttributeSource source) {
-  maxResponseSize_.unset(source);
-}
-
 void ThriftServerConfig::setMaxQps(
-    folly::observer::Observer<uint32_t> maxQps, AttributeSource source) {
+    folly::observer::Observer<std::optional<uint32_t>> maxQps,
+    AttributeSource source) {
   maxQps_.set(maxQps, source);
 }
 
-void ThriftServerConfig::unsetMaxQps(AttributeSource source) {
-  maxQps_.unset(source);
-}
-
 void ThriftServerConfig::setUseClientTimeout(
-    folly::observer::Observer<bool> useClientTimeout, AttributeSource source) {
+    folly::observer::Observer<std::optional<bool>> useClientTimeout,
+    AttributeSource source) {
   useClientTimeout_.set(useClientTimeout, source);
 }
 
-void ThriftServerConfig::unsetUseClientTimeout(AttributeSource source) {
-  useClientTimeout_.unset(source);
-}
-
-void ThriftServerConfig::setWriteBatchingInterval(
-    folly::observer::Observer<std::chrono::milliseconds> interval,
-    AttributeSource source) {
-  writeBatchingInterval_.set(interval, source);
-}
-
-void ThriftServerConfig::unsetWriteBatchingInterval(AttributeSource source) {
-  writeBatchingInterval_.unset(source);
-}
-
-void ThriftServerConfig::setWriteBatchingSize(
-    folly::observer::Observer<size_t> batchingSize, AttributeSource source) {
-  writeBatchingSize_.set(batchingSize, source);
-}
-
-void ThriftServerConfig::unsetWriteBatchingSize(AttributeSource source) {
-  writeBatchingSize_.unset(source);
-}
-
-void ThriftServerConfig::setWriteBatchingByteSize(
-    folly::observer::Observer<size_t> batchingByteSize,
-    AttributeSource source) {
-  writeBatchingByteSize_.set(batchingByteSize, source);
-}
-
-void ThriftServerConfig::unsetWriteBatchingByteSize(AttributeSource source) {
-  writeBatchingByteSize_.unset(source);
-}
-
 void ThriftServerConfig::setEnableCodel(
-    folly::observer::Observer<bool> enableCodel, AttributeSource source) {
+    folly::observer::Observer<std::optional<bool>> enableCodel,
+    AttributeSource source) {
   enableCodel_.set(enableCodel, source);
 }
 
-void ThriftServerConfig::unsetEnableCodel(AttributeSource source) {
-  enableCodel_.unset(source);
-}
-
 void ThriftServerConfig::setTaskExpireTime(
-    folly::observer::Observer<std::chrono::milliseconds> timeout,
+    folly::observer::Observer<std::optional<std::chrono::milliseconds>> timeout,
     AttributeSource source) {
   taskExpireTime_.set(timeout, source);
 }
 
-void ThriftServerConfig::unsetTaskExpireTime(AttributeSource source) {
-  taskExpireTime_.unset(source);
-}
-
 void ThriftServerConfig::setStreamExpireTime(
-    folly::observer::Observer<std::chrono::milliseconds> timeout,
+    folly::observer::Observer<std::optional<std::chrono::milliseconds>> timeout,
     AttributeSource source) {
   streamExpireTime_.set(timeout, source);
 }
 
-void ThriftServerConfig::unsetStreamExpireTime(AttributeSource source) {
-  streamExpireTime_.unset(source);
-}
-
 void ThriftServerConfig::setQueueTimeout(
-    folly::observer::Observer<std::chrono::milliseconds> timeout,
+    folly::observer::Observer<std::optional<std::chrono::milliseconds>> timeout,
     AttributeSource source) {
   queueTimeout_.set(timeout, source);
 }
 
-void ThriftServerConfig::unsetQueueTimeout(AttributeSource source) {
-  queueTimeout_.unset(source);
-}
-
 void ThriftServerConfig::setSocketQueueTimeout(
-    folly::observer::Observer<std::chrono::nanoseconds> timeout,
+    folly::observer::Observer<std::optional<std::chrono::nanoseconds>> timeout,
     AttributeSource source) {
   socketQueueTimeout_.set(timeout, source);
 }
 
-void ThriftServerConfig::unsetSocketQueueTimeout(AttributeSource source) {
-  socketQueueTimeout_.unset(source);
-}
-
 void ThriftServerConfig::setSocketWriteTimeout(
-    folly::observer::Observer<std::chrono::milliseconds> timeout,
+    folly::observer::Observer<std::optional<std::chrono::milliseconds>> timeout,
     AttributeSource source) {
   socketWriteTimeout_.set(timeout, source);
 }
 
-void ThriftServerConfig::unsetSocketWriteTimeout(AttributeSource source) {
-  socketWriteTimeout_.unset(source);
+void ThriftServerConfig::setWriteBatchingInterval(
+    folly::observer::Observer<std::optional<std::chrono::milliseconds>>
+        interval,
+    AttributeSource source) {
+  writeBatchingInterval_.set(interval, source);
+}
+
+void ThriftServerConfig::setWriteBatchingSize(
+    folly::observer::Observer<std::optional<size_t>> batchingSize,
+    AttributeSource source) {
+  writeBatchingSize_.set(batchingSize, source);
+}
+
+void ThriftServerConfig::setWriteBatchingByteSize(
+    folly::observer::Observer<std::optional<size_t>> batchingByteSize,
+    AttributeSource source) {
+  writeBatchingByteSize_.set(batchingByteSize, source);
 }
 
 void ThriftServerConfig::setIngressMemoryLimit(
-    folly::observer::Observer<size_t> ingressMemoryLimit,
+    folly::observer::Observer<std::optional<size_t>> ingressMemoryLimit,
     AttributeSource source) {
   ingressMemoryLimit_.set(ingressMemoryLimit, source);
 }
 
-void ThriftServerConfig::unsetIngressMemoryLimit(AttributeSource source) {
-  ingressMemoryLimit_.unset(source);
-}
-
 void ThriftServerConfig::setEgressMemoryLimit(
-    folly::observer::Observer<size_t> max, AttributeSource source) {
+    folly::observer::Observer<std::optional<size_t>> max,
+    AttributeSource source) {
   egressMemoryLimit_.set(max, source);
 }
 
-void ThriftServerConfig::unsetEgressMemoryLimit(AttributeSource source) {
-  egressMemoryLimit_.unset(source);
-}
-
 void ThriftServerConfig::setMinPayloadSizeToEnforceIngressMemoryLimit(
-    folly::observer::Observer<size_t> minPayloadSizeToEnforceIngressMemoryLimit,
+    folly::observer::Observer<std::optional<size_t>>
+        minPayloadSizeToEnforceIngressMemoryLimit,
     AttributeSource source) {
   minPayloadSizeToEnforceIngressMemoryLimit_.set(
       minPayloadSizeToEnforceIngressMemoryLimit, source);
 }
 
-void ThriftServerConfig::unsetMinPayloadSizeToEnforceIngressMemoryLimit(
-    AttributeSource source) {
-  minPayloadSizeToEnforceIngressMemoryLimit_.unset(source);
-}
-
 void ThriftServerConfig::setEgressBufferBackpressureThreshold(
-    folly::observer::Observer<size_t> thresholdInBytes,
+    folly::observer::Observer<std::optional<size_t>> thresholdInBytes,
     AttributeSource source) {
   egressBufferBackpressureThreshold_.set(thresholdInBytes, source);
 }
 
-void ThriftServerConfig::unsetEgressBufferBackpressureThreshold(
-    AttributeSource source) {
-  egressBufferBackpressureThreshold_.unset(source);
-}
-
 void ThriftServerConfig::setEgressBufferRecoveryFactor(
-    folly::observer::Observer<double> recoveryFactor, AttributeSource source) {
-  auto clampedRecoveryFactor = folly::observer::makeStaticObserver(
-      std::clamp(**recoveryFactor, 0.0, 1.0));
+    folly::observer::Observer<std::optional<double>> recoveryFactor,
+    AttributeSource source) {
+  auto clampedRecoveryFactor =
+      folly::observer::makeObserver([=]() -> std::optional<double> {
+        if (**recoveryFactor) {
+          return std::clamp(***recoveryFactor, 0.0, 1.0);
+        }
+        return std::nullopt;
+      });
   egressBufferRecoveryFactor_.set(clampedRecoveryFactor, source);
 }
 
-void ThriftServerConfig::unsetEgressBufferRecoveryFactor(
-    AttributeSource source) {
-  egressBufferRecoveryFactor_.unset(source);
-}
-
 void ThriftServerConfig::setPolledServiceHealthLiveness(
-    folly::observer::Observer<std::chrono::milliseconds> liveness,
+    folly::observer::Observer<std::optional<std::chrono::milliseconds>>
+        liveness,
     AttributeSource source) {
   polledServiceHealthLiveness_.set(liveness, source);
 }
 
-void ThriftServerConfig::unsetPolledServiceHealthLiveness(
-    AttributeSource source) {
-  polledServiceHealthLiveness_.unset(source);
-}
-
 void ThriftServerConfig::disableLegacyTransports(
-    folly::observer::Observer<bool> value, AttributeSource source) {
+    folly::observer::Observer<std::optional<bool>> value,
+    AttributeSource source) {
   disableHeaderTransport_.set(value, source);
 }
 
-void ThriftServerConfig::unsetdisableLegacyTransports(AttributeSource source) {
-  disableHeaderTransport_.unset(source);
-}
-
 void ThriftServerConfig::setPerConnectionSocketOptions(
-    folly::observer::Observer<folly::SocketOptionMap> options,
+    folly::observer::Observer<std::optional<folly::SocketOptionMap>> options,
     AttributeSource source) {
   perConnectionSocketOptions_.set(std::move(options), source);
-}
-
-void ThriftServerConfig::unsetPerConnectionSocketOptions(
-    AttributeSource source) {
-  perConnectionSocketOptions_.unset(source);
 }
 
 } // namespace thrift
