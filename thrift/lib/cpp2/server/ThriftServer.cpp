@@ -63,15 +63,15 @@
 
 using namespace std::literals::chrono_literals;
 
-FOLLY_GFLAGS_DEFINE_bool(
+DEFINE_bool(
     thrift_abort_if_exceeds_shutdown_deadline,
     true,
     "Abort the server if failed to drain active requests within deadline");
 
-FOLLY_GFLAGS_DEFINE_string(
+DEFINE_string(
     thrift_ssl_policy, "disabled", "SSL required / permitted / disabled");
 
-FOLLY_GFLAGS_DEFINE_string(
+DEFINE_string(
     service_identity,
     "",
     "The name of the service. Associates the service with ACLs and keys");

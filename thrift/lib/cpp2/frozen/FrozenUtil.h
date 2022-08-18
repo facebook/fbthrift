@@ -25,8 +25,8 @@
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/thrift/gen-cpp2/frozen_constants.h>
 
-FOLLY_GFLAGS_DECLARE_bool(thrift_frozen_util_disable_mlock);
-FOLLY_GFLAGS_DECLARE_bool(thrift_frozen_util_mlock_on_fault);
+DECLARE_bool(thrift_frozen_util_disable_mlock);
+DECLARE_bool(thrift_frozen_util_mlock_on_fault);
 
 namespace apache {
 namespace thrift {

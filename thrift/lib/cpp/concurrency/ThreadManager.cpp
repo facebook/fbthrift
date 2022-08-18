@@ -46,8 +46,7 @@
 #include <folly/synchronization/SmallLocks.h>
 #include <folly/tracing/StaticTracepoint.h>
 
-FOLLY_GFLAGS_DEFINE_bool(
-    codel_enabled, false, "Enable codel queue timeout algorithm");
+DEFINE_bool(codel_enabled, false, "Enable codel queue timeout algorithm");
 
 namespace apache {
 namespace thrift {

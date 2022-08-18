@@ -40,7 +40,7 @@
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 
-FOLLY_GFLAGS_DECLARE_bool(codel_enabled);
+DECLARE_bool(codel_enabled);
 
 namespace apache {
 namespace thrift {
