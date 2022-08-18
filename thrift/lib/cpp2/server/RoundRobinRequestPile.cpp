@@ -191,4 +191,16 @@ uint64_t RoundRobinRequestPile::requestCount() const {
   return res;
 }
 
+std::string RoundRobinRequestPile::describe() const {
+  std::string result;
+  result = fmt::format(
+      "RoundRobinRequestPile priorities:{}",
+      opts_.numBucketsPerPriority.size());
+  for (size_t i = 0; i < opts_.numBucketsPerPriority.size(); ++i) {
+    result +=
+        fmt::format(" Pri:{} Buckets:{}", i, opts_.numBucketsPerPriority[i]);
+  }
+  return result;
+}
+
 } // namespace apache::thrift

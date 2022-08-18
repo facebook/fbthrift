@@ -106,6 +106,8 @@ class RoundRobinRequestPile : public RequestPileBase {
 
   void onRequestFinished(intptr_t /* userData */) override {}
 
+  std::string describe() const override;
+
  private:
   // we choose 1KB as segment size to minimize allocations
   using RetrievalIndexQueue = folly::UMPMCQueue<

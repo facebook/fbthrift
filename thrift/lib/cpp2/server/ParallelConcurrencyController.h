@@ -78,6 +78,8 @@ class ParallelConcurrencyController : public ConcurrencyControllerBase {
   bool isRequestActive(const ServerRequest& req);
 
   void onExecuteFinish(bool dequeueSuccess);
+
+  std::string describe() const override;
 };
 
 using StandardConcurrencyController = ParallelConcurrencyController;

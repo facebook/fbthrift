@@ -187,8 +187,16 @@ class ResourcePoolSet {
   // is called by the thrift server during shutdown.
   void stopAndJoin();
 
+  // Returns a string with a human readable description of the setup of this
+  // object. Do not encode any assumptions about the format of the string
+  // returned.
+  std::string describe() const;
+
  private:
+  std::string describeExecutor(
+      std::optional<std::reference_wrapper<folly::Executor>> executor) const;
   void calculatePriorityMapping();
+
   using ResourcePools = std::vector<std::unique_ptr<ResourcePool>>;
   ResourcePools resourcePools_;
   mutable std::mutex mutex_;

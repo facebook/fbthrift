@@ -70,6 +70,8 @@ class RequestPileInterface {
   // If a callback was requested this will be called when the request processing
   // has finished.
   virtual void onRequestFinished(UserData userData);
+
+  virtual std::string describe() const;
 };
 
 } // namespace apache::thrift

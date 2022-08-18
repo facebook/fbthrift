@@ -15,6 +15,7 @@
  */
 
 #include <folly/GLog.h>
+
 #include <thrift/lib/cpp2/server/ConcurrencyControllerInterface.h>
 
 namespace apache::thrift {
@@ -25,4 +26,7 @@ void ConcurrencyControllerInterface::onRequestFinished(UserData) {
   LOG(FATAL) << "Unimplemented onRequestFinished called";
 }
 
+std::string ConcurrencyControllerInterface::describe() const {
+  return typeid(*this).name();
+}
 } // namespace apache::thrift

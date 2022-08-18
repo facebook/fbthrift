@@ -16,6 +16,7 @@
 
 #include <stdexcept>
 #include <folly/VirtualExecutor.h>
+#include <folly/executors/CPUThreadPoolExecutor.h>
 #include <folly/executors/ThreadPoolExecutor.h>
 #include <thrift/lib/cpp2/server/ResourcePool.h>
 
@@ -199,6 +200,11 @@ std::optional<ResourcePoolHandle> ResourcePoolSet::findResourcePool(
                        : std::unique_lock<std::mutex>(mutex_);
   for (std::size_t i = 0; i < resourcePools_.size(); ++i) {
     if (resourcePools_.at(i) && resourcePools_.at(i)->name() == poolName) {
+      if (i == ResourcePoolHandle::kDefaultSync) {
+        return ResourcePoolHandle::defaultSync();
+      } else if (i == ResourcePoolHandle::kDefaultAsync) {
+        return ResourcePoolHandle::defaultAsync();
+      }
       return ResourcePoolHandle::makeHandle(poolName, i);
     }
   }
@@ -287,6 +293,54 @@ void ResourcePoolSet::stopAndJoin() {
     if (resourcePool) {
       resourcePool->stop();
     }
+  }
+}
+
+std::string ResourcePoolSet::describe() const {
+  std::string result;
+  auto guard = locked_ ? std::unique_lock<std::mutex>()
+                       : std::unique_lock<std::mutex>(mutex_);
+  for (std::size_t i = 0; i < resourcePools_.size(); ++i) {
+    if (resourcePools_.at(i)) {
+      auto& rp = resourcePools_.at(i);
+      result += fmt::format(
+          "{{{} {} ReqPile:[{}] CC:[{}] Exe:[{}] Pri:{}}} ",
+          i,
+          rp->name(),
+          rp->requestPile() ? rp->requestPile().value().get().describe()
+                            : "None",
+          rp->concurrencyController()
+              ? rp->concurrencyController().value().get().describe()
+              : "None",
+          describeExecutor(rp->executor()),
+          priorities_[i] ? std::to_string(priorities_[i].value()) : "None");
+    }
+  }
+  if (!resourcePools_.empty()) {
+    result += "{Priority map";
+    for (auto i = 0; i < concurrency::N_PRIORITIES; ++i) {
+      result += fmt::format(
+          " Pri:{}={}", i, resourcePools_[poolByPriority_[i]]->name());
+    }
+    result += " }";
+  }
+  return result;
+}
+
+std::string ResourcePoolSet::describeExecutor(
+    std::optional<std::reference_wrapper<folly::Executor>> executor) const {
+  if (executor) {
+    auto& exe = executor.value().get();
+    std::string result = fmt::format("{}", folly::demangle(typeid(exe)));
+    if (auto* executorAsCPUThreadPool =
+            dynamic_cast<folly::CPUThreadPoolExecutor*>(
+                &executor.value().get())) {
+      result +=
+          fmt::format(" threads:{}", executorAsCPUThreadPool->numThreads());
+    }
+    return result;
+  } else {
+    return "None";
   }
 }
 

@@ -26,4 +26,8 @@ void RequestPileInterface::onRequestFinished(UserData) {
   LOG(FATAL) << "Unimplemented onRequestFinished called";
 }
 
+std::string RequestPileInterface::describe() const {
+  return typeid(*this).name();
+}
+
 } // namespace apache::thrift

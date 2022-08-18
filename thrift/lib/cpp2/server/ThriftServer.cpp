@@ -789,6 +789,8 @@ void ThriftServer::setupThreadManager() {
   // lock whether or not we are actually using them so that the checks on
   // resourcePoolSet().empty() can be efficient.
   resourcePoolSet().lock();
+
+  LOG(INFO) << "Resource pools:" << resourcePoolSet().describe();
 }
 
 void ThriftServer::runtimeResourcePoolsChecks() {

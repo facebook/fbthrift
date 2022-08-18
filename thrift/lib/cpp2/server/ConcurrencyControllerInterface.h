@@ -67,6 +67,8 @@ class ConcurrencyControllerInterface {
   // This is for temporarily logging pending dequeue counts
   // in ParallelConcurrencyController
   virtual uint64_t numPendingDequeRequest() const { return 0; }
+
+  virtual std::string describe() const;
 };
 
 } // namespace apache::thrift
