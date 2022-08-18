@@ -57,11 +57,11 @@ class TypeRegistry {
   }
   template <typename Tag>
   AnyData store(const native_type<Tag>& value, const Protocol& protocol) const {
-    return store(Ref::create<Tag>(value), protocol);
+    return store(Ref::to<Tag>(value), protocol);
   }
   template <typename Tag, StandardProtocol P>
   AnyData store(const native_type<Tag>& value) const {
-    return store(Ref::create<Tag>(value), Protocol::get<P>());
+    return store(Ref::to<Tag>(value), Protocol::get<P>());
   }
 
   // Load a value from an AnyData using the registered serializers.

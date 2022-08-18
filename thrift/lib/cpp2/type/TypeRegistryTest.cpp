@@ -48,7 +48,7 @@ TEST(TypeRegistry, Void) {
 
   // Cannot load void into a real reference.
   int32_t uval;
-  rval = Ref::create<i32_t>(uval);
+  rval = Ref::to<i32_t>(uval);
   EXPECT_THROW(treg.load(data, rval), std::bad_any_cast);
 }
 

@@ -79,7 +79,7 @@ class Serializer {
   template <typename Tag>
   type::native_type<Tag> decode(folly::io::Cursor& cursor) const {
     type::native_type<Tag> result;
-    decode(cursor, type::Ref::create<Tag>(result));
+    decode(cursor, type::Ref::to<Tag>(result));
     return result;
   }
 

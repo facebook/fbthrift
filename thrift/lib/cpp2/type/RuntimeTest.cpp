@@ -85,38 +85,37 @@ TEST(RuntimeRefTest, Void) {
 
 TEST(RuntimeRefTest, Int) {
   int32_t value = 1;
-  Ref ref = Ref::create<i32_t>(value);
+  Ref ref = Ref::to<i32_t>(value);
   EXPECT_EQ(ref.type(), Type::get<i32_t>());
   EXPECT_FALSE(ref.empty());
   EXPECT_TRUE(ref.add(ref));
   EXPECT_EQ(value, 2);
-  EXPECT_EQ(ref, Ref::create<i32_t>(2));
-  EXPECT_EQ(ref, Value::create<i32_t>(2));
+  EXPECT_EQ(ref, Ref::to<i32_t>(2));
+  EXPECT_EQ(ref, Value::of<i32_t>(2));
 
   ref.clear();
   EXPECT_TRUE(ref.empty());
   EXPECT_EQ(value, 0);
   EXPECT_EQ(ref.as<i32_t>(), 0);
-  EXPECT_EQ(ref, Ref::create<i32_t>(0));
+  EXPECT_EQ(ref, Ref::to<i32_t>(0));
   EXPECT_EQ(ref, Value::create<i32_t>());
 }
 
 TEST(RuntimeRefTest, List) {
   std::vector<std::string> value;
   std::string elem = "hi";
-  auto ref = Ref::create<list<string_t>>(value);
+  auto ref = Ref::to<list<string_t>>(value);
   EXPECT_TRUE(ref.empty());
-  ref.append(Ref::create<string_t>(elem));
+  ref.append(Ref::to<string_t>(elem));
   EXPECT_THAT(value, ::testing::ElementsAre("hi"));
 
   EXPECT_FALSE(ref.empty());
   EXPECT_THROW(ref.get(FieldId{1}), std::runtime_error);
   EXPECT_THROW(ref.get("field1"), std::runtime_error);
-  int i;
-  EXPECT_THROW(ref.get(Ref::create<i32_t>(i = 0)), std::runtime_error);
-  EXPECT_THROW(ref.get(Ref::create<i32_t>(i = 1)), std::runtime_error);
-  EXPECT_THROW(ref.add(Ref::create<string_t>(value[0])), std::runtime_error);
-  EXPECT_THROW(ref.get(Ref::create<i32_t>(i)), std::runtime_error);
+  EXPECT_THROW(ref.get(Ref::to<i32_t>(0)), std::runtime_error);
+  EXPECT_THROW(ref.get(Ref::to<i32_t>(1)), std::runtime_error);
+  EXPECT_THROW(ref.add(Ref::to<string_t>(value[0])), std::runtime_error);
+  EXPECT_THROW(ref.get(Ref::to<i32_t>(1)), std::runtime_error);
 
   ref.clear();
   EXPECT_TRUE(ref.empty());
@@ -126,15 +125,15 @@ TEST(RuntimeRefTest, List) {
 TEST(RuntimeRefTest, Set) {
   std::set<std::string> value;
   std::string key = "hi";
-  auto ref = Ref::create<set<string_t>>(value);
+  auto ref = Ref::to<set<string_t>>(value);
   EXPECT_TRUE(ref.empty());
-  EXPECT_TRUE(ref.add(Ref::create<string_t>(key)));
+  EXPECT_TRUE(ref.add(Ref::to<string_t>(key)));
   EXPECT_THAT(value, ::testing::ElementsAre("hi"));
 
   EXPECT_FALSE(ref.empty());
   EXPECT_THROW(ref.get(FieldId{1}), std::runtime_error);
   EXPECT_THROW(ref.get("hi"), std::runtime_error);
-  EXPECT_THROW(ref.get(Ref::create<string_t>(key)), std::runtime_error);
+  EXPECT_THROW(ref.get(Ref::to<string_t>(key)), std::runtime_error);
 
   ref.clear();
   EXPECT_TRUE(ref.empty());
@@ -145,19 +144,18 @@ TEST(RuntimeRefTest, Map) {
   std::map<std::string, int> value;
   std::string one = "one";
   int v;
-  auto ref = Ref::create<map<string_t, i32_t>>(value);
+  auto ref = Ref::to<map<string_t, i32_t>>(value);
   EXPECT_TRUE(ref.empty());
-  EXPECT_FALSE(ref.put(Ref::create<string_t>(one), Ref::create<i32_t>(v = 1)));
+  EXPECT_FALSE(ref.put(Ref::to<string_t>(one), Ref::to<i32_t>(v = 1)));
   EXPECT_EQ(value["one"], 1);
 
-  EXPECT_TRUE(ref.put("one", Ref::create<i32_t>(v = 2)));
+  EXPECT_TRUE(ref.put("one", Ref::to<i32_t>(v = 2)));
   EXPECT_EQ(value["one"], 2);
 
   EXPECT_FALSE(ref.empty());
-  EXPECT_THROW(
-      ref.put(FieldId{1}, Ref::create<i32_t>(v = 2)), std::logic_error);
+  EXPECT_THROW(ref.put(FieldId{1}, Ref::to<i32_t>(v = 2)), std::logic_error);
   EXPECT_THROW(ref.get(FieldId{1}), std::logic_error);
-  EXPECT_EQ(ref.get("one"), Ref::create<i32_t>(2));
+  EXPECT_EQ(ref.get("one"), Ref::to<i32_t>(2));
 
   ref.clear();
   EXPECT_TRUE(ref.empty());
@@ -166,23 +164,23 @@ TEST(RuntimeRefTest, Map) {
 
 TEST(RuntimeRefTest, Identical) {
   float value = 1.0f;
-  auto ref = Ref::create<float_t>(value);
+  auto ref = Ref::to<float_t>(value);
   EXPECT_FALSE(ref.empty());
   ref.clear();
   float zero = 0.0;
   float negZero = -0.0;
   double dblZero = 0.0;
   EXPECT_TRUE(ref.empty());
-  EXPECT_TRUE(ref.identical(Ref::create<float_t>(zero)));
-  EXPECT_FALSE(ref.identical(Ref::create<float_t>(negZero)));
-  EXPECT_FALSE(ref.identical(Ref::create<double_t>(dblZero)));
+  EXPECT_TRUE(ref.identical(Ref::to<float_t>(zero)));
+  EXPECT_FALSE(ref.identical(Ref::to<float_t>(negZero)));
+  EXPECT_FALSE(ref.identical(Ref::to<double_t>(dblZero)));
 }
 
 TEST(RuntimeRefTest, ConstRef) {
   constexpr int32_t one = 1;
-  auto ref = Ref::create<i32_t>(one);
+  auto ref = Ref::to<i32_t>(one);
   EXPECT_FALSE(ref.empty());
-  EXPECT_TRUE(ref.identical(Ref::create<i32_t>(1)));
+  EXPECT_TRUE(ref.identical(Ref::to<i32_t>(1)));
   // Cannot be modified.
   EXPECT_THROW(ref.clear(), std::logic_error);
 }
@@ -199,7 +197,7 @@ TEST(RuntimeValueTest, Void) {
 }
 
 TEST(RuntimeValueTest, Int) {
-  Value value = Value::create<i32_t>(1);
+  Value value = Value::of<i32_t>(1);
   EXPECT_EQ(value.type(), Type::get<i32_t>());
   EXPECT_FALSE(value.empty());
   value.clear();
@@ -227,13 +225,13 @@ TEST(RuntimeValueTest, List) {
 
 TEST(RuntimeValueTest, Identical) {
   Value value;
-  value = Value::create<float_t>(1.0f);
+  value = Value::of<float_t>(1.0f);
   EXPECT_FALSE(value.empty());
   value.clear();
   EXPECT_TRUE(value.empty());
-  EXPECT_TRUE(value.identical(Value::create<float_t>(0.0f)));
-  EXPECT_FALSE(value.identical(Value::create<float_t>(-0.0f)));
-  EXPECT_FALSE(value.identical(Value::create<double_t>(0.0)));
+  EXPECT_TRUE(value.identical(Value::of<float_t>(0.0f)));
+  EXPECT_FALSE(value.identical(Value::of<float_t>(-0.0f)));
+  EXPECT_FALSE(value.identical(Value::of<double_t>(0.0)));
 }
 
 } // namespace

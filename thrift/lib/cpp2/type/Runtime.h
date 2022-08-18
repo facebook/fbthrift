@@ -43,7 +43,7 @@ class ConstRef final : public detail::RuntimeBase {
 
  public:
   template <typename Tag, typename T>
-  static ConstRef create(T&& val) {
+  static ConstRef to(T&& val) {
     return {Tag{}, std::forward<T>(val)}; // Preserve underlying ref type.
   }
 
@@ -80,7 +80,7 @@ class ConstRef final : public detail::RuntimeBase {
   friend class detail::Ptr;
 
   static ConstRef asRef(const std::string& name) {
-    return create<type::string_t>(name);
+    return to<type::string_t>(name);
   }
 
   template <typename Tag, typename T>
@@ -98,7 +98,7 @@ class Ref final : public detail::RuntimeBase {
 
  public:
   template <typename Tag, typename T>
-  static Ref create(T&& val) {
+  static Ref to(T&& val) {
     return {Tag{}, std::forward<T>(val)};
   }
 
@@ -157,7 +157,7 @@ class Ref final : public detail::RuntimeBase {
   friend class detail::Ptr;
 
   static ConstRef asRef(const std::string& name) {
-    return ConstRef::create<type::string_t>(name);
+    return ConstRef::to<type::string_t>(name);
   }
 
   explicit Ref(detail::Ptr data) noexcept : Base(data) {}
@@ -183,11 +183,11 @@ class Value : public detail::RuntimeBase {
     return Value{Tag{}, nullptr};
   }
   template <typename Tag, typename T>
-  static Value create(T&& val) {
+  static Value of(T&& val) {
     return {Tag{}, std::forward<T>(val)};
   }
   template <typename Tag>
-  static Value create(std::unique_ptr<native_type<Tag>> val) {
+  static Value of(std::unique_ptr<native_type<Tag>> val) {
     if (val == nullptr) {
       return {};
     }
@@ -305,7 +305,7 @@ class Value : public detail::RuntimeBase {
   }
 
   static ConstRef asRef(const std::string& name) {
-    return ConstRef::create<type::string_t>(name);
+    return ConstRef::to<type::string_t>(name);
   }
 
   using Base::Base;
