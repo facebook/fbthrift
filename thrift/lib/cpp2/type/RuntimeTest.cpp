@@ -18,6 +18,7 @@
 
 #include <map>
 #include <set>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -112,12 +113,13 @@ TEST(RuntimeRefTest, List) {
 
   EXPECT_FALSE(ref.empty());
   EXPECT_EQ(ref.size(), 1);
-  EXPECT_THROW(ref.get(FieldId{1}), std::runtime_error);
-  EXPECT_THROW(ref.get("field1"), std::runtime_error);
-  EXPECT_THROW(ref.get(Ref::to<i32_t>(0)), std::runtime_error);
-  EXPECT_THROW(ref.get(Ref::to<i32_t>(1)), std::runtime_error);
+  EXPECT_THROW(ref[FieldId{1}], std::logic_error);
+  EXPECT_THROW(ref["field1"], std::logic_error);
+  EXPECT_EQ(ref[0], Ref::to<string_t>("hi"));
+  EXPECT_EQ(ref[Ordinal{1}], Ref::to<string_t>("hi"));
+  EXPECT_THROW(ref[1], std::out_of_range);
   EXPECT_THROW(ref.add(Ref::to<string_t>(value[0])), std::runtime_error);
-  EXPECT_THROW(ref.get(Ref::to<i32_t>(1)), std::runtime_error);
+  EXPECT_THROW(ref[Ref::to<i32_t>(0)], std::logic_error);
 
   ref.clear();
   EXPECT_TRUE(ref.empty());
@@ -126,18 +128,17 @@ TEST(RuntimeRefTest, List) {
 
 TEST(RuntimeRefTest, Set) {
   std::set<std::string> value;
-  std::string key = "hi";
   auto ref = Ref::to<set<string_t>>(value);
   EXPECT_TRUE(ref.empty());
   EXPECT_EQ(ref.size(), 0);
-  EXPECT_TRUE(ref.add(Ref::to<string_t>(key)));
+  EXPECT_TRUE(ref.add(Ref::to<string_t>("hi")));
   EXPECT_THAT(value, ::testing::ElementsAre("hi"));
 
   EXPECT_FALSE(ref.empty());
   EXPECT_EQ(ref.size(), 1);
   EXPECT_THROW(ref.get(FieldId{1}), std::runtime_error);
   EXPECT_THROW(ref.get("hi"), std::runtime_error);
-  EXPECT_THROW(ref.get(Ref::to<string_t>(key)), std::runtime_error);
+  EXPECT_THROW(ref.get(Ref::to<string_t>("hi")), std::runtime_error);
 
   ref.clear();
   EXPECT_TRUE(ref.empty());
@@ -146,22 +147,21 @@ TEST(RuntimeRefTest, Set) {
 
 TEST(RuntimeRefTest, Map) {
   std::map<std::string, int> value;
-  std::string one = "one";
-  int v;
   auto ref = Ref::to<map<string_t, i32_t>>(value);
   EXPECT_TRUE(ref.empty());
   EXPECT_EQ(ref.size(), 0);
-  EXPECT_FALSE(ref.put(Ref::to<string_t>(one), Ref::to<i32_t>(v = 1)));
+  EXPECT_FALSE(ref.put(Ref::to<string_t>("one"), Ref::to<i32_t>(1)));
   EXPECT_EQ(value["one"], 1);
 
-  EXPECT_TRUE(ref.put("one", Ref::to<i32_t>(v = 2)));
+  EXPECT_TRUE(ref.put("one", Ref::to<i32_t>(2)));
   EXPECT_EQ(value["one"], 2);
 
   EXPECT_FALSE(ref.empty());
   EXPECT_EQ(ref.size(), 1);
-  EXPECT_THROW(ref.put(FieldId{1}, Ref::to<i32_t>(v = 2)), std::logic_error);
-  EXPECT_THROW(ref.get(FieldId{1}), std::logic_error);
-  EXPECT_EQ(ref.get("one"), Ref::to<i32_t>(2));
+  EXPECT_THROW(ref.put(FieldId{1}, Ref::to<i32_t>(2)), std::logic_error);
+  EXPECT_THROW(ref[FieldId{1}], std::logic_error);
+  EXPECT_EQ(ref["one"], Ref::to<i32_t>(2));
+  EXPECT_THROW(ref["two"], std::out_of_range);
 
   ref.clear();
   EXPECT_TRUE(ref.empty());
@@ -240,13 +240,21 @@ TEST(RuntimeValueTest, Identical) {
   EXPECT_FALSE(value.identical(Value::of<double_t>(0.0)));
 }
 
+TEST(RuntimeValueTest, CppType_List) {
+  using T = std::list<std::string>;
+  using Tag = cpp_type<T, type::list<string_t>>;
+  auto list = Value::create<Tag>();
+  list.append(Ref::to<string_t>("foo"));
+  EXPECT_EQ(list[0], Ref::to<string_t>("foo"));
+}
+
 TEST(RuntimeValueTest, CppType_Map) {
   using T = std::unordered_map<std::string, int>;
   using Tag = cpp_type<T, type::map<string_t, i32_t>>;
 
   auto map = Value::create<Tag>();
   map.put("foo", Ref::to<i32_t>(2));
-  Ref value = map.get("foo");
+  Ref value = map["foo"];
   EXPECT_EQ(value.as<i32_t>(), 2);
 }
 

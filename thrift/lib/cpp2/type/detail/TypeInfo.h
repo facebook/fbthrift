@@ -17,10 +17,12 @@
 #pragma once
 
 #include <any>
+#include <stdexcept>
 #include <typeinfo>
 
 #include <folly/CPortability.h>
 #include <folly/lang/Exception.h>
+#include <thrift/lib/cpp2/type/Id.h>
 #include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/Tag.h>
 #include <thrift/lib/cpp2/type/Type.h>
@@ -49,12 +51,16 @@ struct TypeInfo {
   void (*append)(void*, const RuntimeBase&);
   bool (*add)(void*, const RuntimeBase&);
   bool (*put)(void*, FieldId, const RuntimeBase*, const RuntimeBase&);
-  Ptr (*get)(void*, FieldId, const RuntimeBase*);
+  Ptr (*get_)(void*, FieldId, size_t, const RuntimeBase*);
   size_t (*size)(const void*);
 
   int equal(const void* lhs, const RuntimeBase& rhs) const {
     return compare(lhs, rhs) == 0;
   }
+
+  Ptr get(void* ptr, FieldId id) const;
+  Ptr get(void* ptr, size_t pos) const;
+  Ptr get(void* ptr, const RuntimeBase& val) const;
 
   // Type-safe, const-preserving casting functions.
   template <typename T>

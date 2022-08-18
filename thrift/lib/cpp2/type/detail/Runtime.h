@@ -197,8 +197,10 @@ class RuntimeBase {
   // TODO(afuller): Make context an enum, instead of pair of bools.
   Ptr get(const RuntimeBase& key) const;
   Ptr get(FieldId id) const;
+  Ptr get(size_t pos) const;
   Ptr get(const RuntimeBase& key, bool ctxConst, bool ctxRvalue = false) const;
   Ptr get(FieldId id, bool ctxConst, bool ctxRvalue = false) const;
+  Ptr get(size_t pos, bool ctxConst, bool ctxRvalue = false) const;
 
   void mergeContext(bool ctxConst, bool ctxRvalue = false) {
     type_ = type_.withContext(ctxConst, ctxRvalue);
@@ -246,21 +248,38 @@ class Ptr final : public RuntimeBase {
   friend class RuntimeBase;
 };
 
+inline Ptr TypeInfo::get(void* ptr, FieldId id) const {
+  return get_(ptr, id, std::string::npos, nullptr);
+}
+inline Ptr TypeInfo::get(void* ptr, size_t pos) const {
+  return get_(ptr, {}, pos, nullptr);
+}
+inline Ptr TypeInfo::get(void* ptr, const RuntimeBase& val) const {
+  return get_(ptr, {}, std::string::npos, &val);
+}
+
 inline Ptr RuntimeBase::get(const RuntimeBase& key) const {
-  return type_->get(ptr_, {}, &key);
+  return type_->get(ptr_, key);
 }
 inline Ptr RuntimeBase::get(FieldId id) const {
-  return type_->get(ptr_, id, nullptr);
+  return type_->get(ptr_, id);
+}
+inline Ptr RuntimeBase::get(size_t pos) const {
+  return type_->get(ptr_, pos);
 }
 inline Ptr RuntimeBase::get(
     const RuntimeBase& key, bool ctxConst, bool ctxRvalue) const {
-  return type_.withContext(ctxConst, ctxRvalue)->get(ptr_, {}, &key);
+  return type_.withContext(ctxConst, ctxRvalue)->get(ptr_, key);
 }
 inline Ptr RuntimeBase::get(FieldId id, bool ctxConst, bool ctxRvalue) const {
-  return type_.withContext(ctxConst, ctxRvalue)->get(ptr_, id, nullptr);
+  return type_.withContext(ctxConst, ctxRvalue)->get(ptr_, id);
+}
+inline Ptr RuntimeBase::get(size_t pos, bool ctxConst, bool ctxRvalue) const {
+  return type_.withContext(ctxConst, ctxRvalue)->get(ptr_, pos);
 }
 
-// A base impl that throws for every op.
+// A base struct provides helpers for throwing exceptions and default throwing
+// impls type-specific ops.
 struct BaseErasedOp {
   [[noreturn]] static void bad_op(const char* msg = "not supported") {
     folly::throw_exception<std::logic_error>(msg);
@@ -278,10 +297,15 @@ struct BaseErasedOp {
       void*, FieldId, const RuntimeBase*, const RuntimeBase&) {
     bad_op();
   }
-  [[noreturn]] static Ptr get(void*, FieldId, const RuntimeBase*) { bad_op(); }
+  [[noreturn]] static Ptr get(void*, FieldId, size_t, const RuntimeBase*) {
+    bad_op();
+  }
   [[noreturn]] static size_t size(const void*) { bad_op(); }
 };
 
+// TODO(afuller): Consider adding asMap(), asList(), etc, to create type-safe
+// views, with APIs that match c++ standard containers (vs the Thrift 'op' names
+// used in the core API).
 template <typename ConstT, typename MutT>
 class RuntimeAccessBase : public RuntimeBase {
   using Base = RuntimeBase;
@@ -310,7 +334,37 @@ class RuntimeAccessBase : public RuntimeBase {
   ConstT get(const std::string& name) const& { return get(asRef(name)); }
   ConstT get(const std::string& name) const&& { return get(asRef(name)); }
 
+  // Get by position.
+  MutT get(size_t pos) & { return MutT{Base::get(pos)}; }
+  MutT get(size_t pos) && { return MutT{Base::get(pos, false, true)}; }
+  ConstT get(size_t pos) const& { return ConstT{Base::get(pos, true)}; }
+  ConstT get(size_t pos) const&& { return ConstT{Base::get(pos, true, true)}; }
+
+  // Get by ordinal.
+  MutT get(Ordinal ord) & { return get(type::toPosition(ord)); }
+  MutT get(Ordinal ord) && { return get(type::toPosition(ord)); }
+  ConstT get(Ordinal ord) const& { return get(type::toPosition(ord)); }
+  ConstT get(Ordinal ord) const&& { return get(type::toPosition(ord)); }
+
   size_t size() const { return type_->size(ptr_); }
+
+  // TODO(afuller): Make these 'ensuring' gets, aka insert_or_assign.
+  template <typename Id>
+  MutT operator[](Id&& id) & {
+    return get(std::forward<Id>(id));
+  }
+  template <typename Id>
+  MutT operator[](Id&& id) && {
+    return get(std::forward<Id>(id));
+  }
+  template <typename Id>
+  ConstT operator[](Id&& id) const& {
+    return get(std::forward<Id>(id));
+  }
+  template <typename Id>
+  ConstT operator[](Id&& id) const&& {
+    return get(std::forward<Id>(id));
+  }
 
  protected:
   static ConstT asRef(const std::string& name) {

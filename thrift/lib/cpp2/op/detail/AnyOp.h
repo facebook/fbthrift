@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <iterator>
 #include <stdexcept>
 
 #include <folly/lang/Exception.h>
@@ -38,6 +39,9 @@ const TypeInfo& getAnyTypeInfo();
 // Create a AnyOp-based Thrift runtime type.
 template <typename Tag, typename T = type::native_type<Tag>>
 RuntimeType getAnyType() {
+  static_assert(
+      std::is_same<folly::remove_cvref_t<T>, type::native_type<Tag>>::value,
+      "type missmatch");
   return RuntimeType::create<T>(getAnyTypeInfo<Tag>());
 }
 
@@ -57,7 +61,7 @@ struct AnyOp : BaseAnyOp<Tag> {
       void*, FieldId, const RuntimeBase*, const RuntimeBase&) {
     unimplemented();
   }
-  [[noreturn]] static Ptr get(void*, FieldId, const RuntimeBase*) {
+  [[noreturn]] static Ptr get(void*, FieldId, size_t, const RuntimeBase*) {
     unimplemented();
   }
   [[noreturn]] static size_t size(const void*) { unimplemented(); }
@@ -96,12 +100,26 @@ struct ContainerOp : BaseAnyOp<Tag> {
   using Base::ref;
 
   static size_t size(const void* s) { return ref(s).size(); }
+
+  // TODO(afuller): This is O(n) for non-random access iterators, expose
+  // some form of type-erased iterators directly as well.
+  static auto find(void* s, size_t pos) {
+    if (pos >= ref(s).size()) {
+      // TODO(afuller): Consider returning 'end' instead.
+      folly::throw_exception<std::out_of_range>("out of range");
+    }
+    auto itr = ref(s).begin();
+    std::advance(itr, pos);
+    return itr;
+  }
 };
 
 template <typename ValTag, typename Tag = type::list<ValTag>>
 struct ListOp : ContainerOp<Tag> {
   using T = type::native_type<Tag>;
   using Base = ContainerOp<Tag>;
+  using Base::bad_op;
+  using Base::find;
   using Base::ref;
   using Base::unimplemented;
 
@@ -126,18 +144,25 @@ struct ListOp : ContainerOp<Tag> {
     return folly::forward_like<U>(self.at(pos));
   }
 
-  [[noreturn]] static Ptr get(void*, FieldId, const RuntimeBase*) {
-    unimplemented(); // TODO(afuller): Get by position.
+  static Ptr get(void* s, FieldId, size_t pos, const RuntimeBase*) {
+    if (pos != std::string::npos) {
+      return {getAnyType<ValTag>(), &*find(s, pos)};
+    }
+    bad_op();
   }
 };
 
 template <typename ValTag>
 struct AnyOp<type::list<ValTag>> : ListOp<ValTag> {};
+template <typename T, typename ValTag>
+struct AnyOp<type::cpp_type<T, type::list<ValTag>>>
+    : ListOp<ValTag, type::cpp_type<T, type::list<ValTag>>> {};
 
 template <typename KeyTag, typename Tag = type::set<KeyTag>>
 struct SetOp : ContainerOp<Tag> {
   using T = type::native_type<Tag>;
   using Base = ContainerOp<Tag>;
+  using Base::find;
   using Base::ref;
   using Base::unimplemented;
 
@@ -153,7 +178,10 @@ struct SetOp : ContainerOp<Tag> {
   static bool contains(const T& self, K&& key) {
     return self.find(std::forward<K>(key)) != self.end();
   }
-  [[noreturn]] static Ptr get(void*, FieldId, const RuntimeBase*) {
+  static Ptr get(void* s, FieldId, size_t pos, const RuntimeBase*) {
+    if (pos != std::string::npos) {
+      return {getAnyType<KeyTag>(), &*find(s, pos)};
+    }
     unimplemented(); // TODO(afuller): Get by key (aka contains).
   }
 };
@@ -198,9 +226,12 @@ struct MapOp : ContainerOp<Tag> {
     unimplemented();
   }
 
-  static Ptr get(void* s, FieldId, const RuntimeBase* k) {
+  static Ptr get(void* s, FieldId, size_t pos, const RuntimeBase* k) {
     if (k != nullptr) {
       return {getAnyType<ValTag>(), &ref(s).at(k->as<KeyTag>())};
+    }
+    if (pos != std::string::npos) {
+      return {getAnyType<KeyTag>(), &Base::find(s, pos)->first};
     }
     bad_op();
   }
