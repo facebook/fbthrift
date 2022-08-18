@@ -21,36 +21,8 @@ from collections import namedtuple, OrderedDict
 from thrift.Thrift import TType
 
 
-__all__ = ["create_client", "Serializer", "struct_to_dict", "parse_struct_spec"]
+__all__ = ["Serializer", "struct_to_dict", "parse_struct_spec"]
 StructField = namedtuple("StructField", "id type name type_args default req_type")
-
-
-def create_client(
-    client_klass,
-    host=None,
-    port=None,
-    client_type=None,
-    path=None,
-    timeout=None,
-):
-    """
-    Given a thrift client class, and a host/port
-    return a client using HeaderTransport
-    """
-    from thrift.protocol.THeaderProtocol import THeaderProtocol
-    from thrift.transport.TSocket import TSocket
-
-    sock = TSocket(host=host, port=port, unix_socket=path)
-    sock.setTimeout(timeout)
-    protocol = THeaderProtocol(
-        sock,
-        client_types=[client_type]
-        if client_type
-        else None,  # We accept the same as our inital send_
-        client_type=client_type,  # Used for the inital send_
-    )
-    sock.open()
-    return client_klass(protocol)
 
 
 def parse_struct_spec(struct):
