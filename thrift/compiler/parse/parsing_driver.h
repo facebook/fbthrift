@@ -172,27 +172,9 @@ class parsing_driver {
    */
   std::unique_ptr<t_program_bundle> parse();
 
-  // Reports a debug diagnostic at the current location.
-  template <typename... T>
-  void debug(fmt::format_string<T...> msg, T&&... args) {
-    ctx_.report(
-        location(), diagnostic_level::debug, msg, std::forward<T>(args)...);
-  }
-
-  // Reports an info diagnostic at the current location.
-  template <typename... T>
-  void info(fmt::format_string<T...> msg, T&&... args) {
-    ctx_.report(
-        location(), diagnostic_level::info, msg, std::forward<T>(args)...);
-  }
-
   template <typename... T>
   void warning(source_location loc, fmt::format_string<T...> msg, T&&... args) {
     ctx_.report(loc, diagnostic_level::warning, msg, std::forward<T>(args)...);
-  }
-
-  void parse_error(source_location loc, fmt::string_view msg) {
-    ctx_.report(loc, diagnostic_level::error, "{}", msg);
   }
 
   template <typename... T>
@@ -228,7 +210,8 @@ class parsing_driver {
    * An ambiguous enum is one that is redefined but not referred to by
    * ENUM_NAME.ENUM_VALUE.
    */
-  void validate_not_ambiguous_enum(const std::string& name);
+  void validate_not_ambiguous_enum(
+      source_location loc, const std::string& name);
 
   /**
    * Clears any previously stored doctext string.
@@ -253,10 +236,6 @@ class parsing_driver {
    * you will get what you deserve.
    */
   t_doc clean_up_doctext(std::string docstring);
-
-  // Checks if the given experimental features is enabled, and reports a failure
-  // and returns false iff not.
-  bool require_experimental_feature(const char* feature);
 
   // Populate the annotation on the given node.
   static void set_annotations(
@@ -318,9 +297,10 @@ class parsing_driver {
   int64_t to_int(uint64_t val, bool negative = false);
 
   const t_service* find_service(const std::string& name);
-  const t_const* find_const(const std::string& name);
+  const t_const* find_const(source_location loc, const std::string& name);
 
-  std::unique_ptr<t_const_value> copy_const_value(const std::string& name);
+  std::unique_ptr<t_const_value> copy_const_value(
+      source_location loc, const std::string& name);
 
   void set_parsed_definition();
   void validate_header_location();

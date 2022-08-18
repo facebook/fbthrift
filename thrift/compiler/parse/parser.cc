@@ -828,7 +828,7 @@ class parser {
         if (auto id = try_parse_identifier()) {
           return token_.kind == '{'
               ? parse_const_struct_body(range, *id)
-              : actions_.on_reference_const(std::move(*id));
+              : actions_.on_reference_const(range, std::move(*id));
         }
         break;
     }

@@ -87,9 +87,6 @@ parsing_driver::parsing_driver(
 parsing_driver::~parsing_driver() = default;
 
 int parsing_driver::get_lineno(source_location loc) {
-  if (loc == source_location()) {
-    loc = lexer_->location();
-  }
   return loc != source_location() ? resolved_location(loc, *source_mgr_).line()
                                   : 0;
 }
@@ -111,24 +108,26 @@ std::unique_ptr<t_program_bundle> parsing_driver::parse() {
 }
 
 void parsing_driver::parse_file() {
-  // Skip on already parsed files
+  // Skip already parsed files.
   const std::string& path = program->path();
   if (!already_parsed_paths_.insert(path).second) {
     return;
   }
 
-  assert(!ctx_.visiting());
-  ctx_.begin_visit(*program);
+  auto src = source();
   try {
-    source src = source_mgr_->add_file(path);
-    lexer_ = std::make_unique<lexer>(*lex_handler_, ctx_, src);
-    program->set_src_range({src.start, src.start});
+    src = source_mgr_->add_file(path);
   } catch (const std::runtime_error& ex) {
     end_parsing(ex.what());
   }
+  lexer_ = std::make_unique<lexer>(*lex_handler_, ctx_, src);
+  program->set_src_range({src.start, src.start});
 
-  // Create new scope and scan for includes
-  info("Scanning {} for includes\n", path);
+  // Create a new scope and scan for includes.
+  assert(!ctx_.visiting());
+  ctx_.begin_visit(*program);
+  ctx_.report(
+      src.start, diagnostic_level::info, "Scanning {} for includes\n", path);
   mode = parsing_mode::INCLUDES;
   try {
     auto actions = parser_actions{*this};
@@ -172,7 +171,6 @@ void parsing_driver::parse_file() {
   program = old_program;
 
   // Parse the program file
-  auto src = source();
   try {
     src = source_mgr_->add_file(path);
     lexer_ = std::make_unique<lexer>(*lex_handler_, ctx_, src);
@@ -181,7 +179,8 @@ void parsing_driver::parse_file() {
   }
 
   mode = parsing_mode::PROGRAM;
-  info("Parsing {} for types\n", path);
+  ctx_.report(
+      src.start, diagnostic_level::info, "Parsing {} for types\n", path);
   try {
     auto actions = parser_actions{*this};
     if (!compiler::parse(*lexer_, actions, ctx_)) {
@@ -237,19 +236,20 @@ std::string parsing_driver::find_include_file(
     if (boost::filesystem::exists(sfilename)) {
       return sfilename.string();
     }
-    debug("Could not find: {}.", filename);
+    ctx_.report(loc, diagnostic_level::debug, "Could not find: {}.", filename);
   }
   // File was not found.
   error(loc, "Could not find include file {}", filename);
   end_parsing();
 }
 
-void parsing_driver::validate_not_ambiguous_enum(const std::string& name) {
+void parsing_driver::validate_not_ambiguous_enum(
+    source_location loc, const std::string& name) {
   if (scope_cache->is_ambiguous_enum_value(name)) {
     std::string possible_enums =
         scope_cache->get_fully_qualified_enum_value_names(name).c_str();
     warning(
-        location(),
+        loc,
         "The ambiguous enum `{}` is defined in more than one place. "
         "Please refer to this enum using ENUM_NAME.ENUM_VALUE.{}",
         name,
@@ -413,18 +413,6 @@ t_doc parsing_driver::clean_up_doctext(std::string docstring) {
   }
 
   return docstring;
-}
-
-bool parsing_driver::require_experimental_feature(const char* feature) {
-  assert(feature != std::string("all"));
-  if (params.allow_experimental_features.count("all") ||
-      params.allow_experimental_features.count(feature)) {
-    ctx_.warning_legacy_strict(
-        location(), "'{}' is an experimental feature", feature);
-    return true;
-  }
-  error(location(), "'{}' is an experimental feature.", feature);
-  return false;
 }
 
 void parsing_driver::set_annotations(
@@ -792,22 +780,23 @@ const t_service* parsing_driver::find_service(const std::string& name) {
   return nullptr;
 }
 
-const t_const* parsing_driver::find_const(const std::string& name) {
-  validate_not_ambiguous_enum(name);
+const t_const* parsing_driver::find_const(
+    source_location loc, const std::string& name) {
+  validate_not_ambiguous_enum(loc, name);
   if (const t_const* constant = scope_cache->find_constant(name)) {
     return constant;
   }
   if (const t_const* constant =
           scope_cache->find_constant(program->scope_name(name))) {
-    validate_not_ambiguous_enum(program->scope_name(name));
+    validate_not_ambiguous_enum(loc, program->scope_name(name));
     return constant;
   }
   return nullptr;
 }
 
 std::unique_ptr<t_const_value> parsing_driver::copy_const_value(
-    const std::string& name) {
-  if (const t_const* constant = find_const(name)) {
+    source_location loc, const std::string& name) {
+  if (const t_const* constant = find_const(loc, name)) {
     // Copy const_value to perform isolated mutations
     auto result = constant->get_value()->clone();
     // We only want to clone the value, while discarding all real type
@@ -822,7 +811,7 @@ std::unique_ptr<t_const_value> parsing_driver::copy_const_value(
   // TODO(afuller): Make this an error.
   if (mode == parsing_mode::PROGRAM) {
     warning(
-        location(),
+        loc,
         "The identifier '{}' is not defined yet. Constants and enums should "
         "be defined before using them as default values.",
         name);

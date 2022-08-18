@@ -386,8 +386,9 @@ class parser_actions {
     return const_value;
   }
 
-  std::unique_ptr<t_const_value> on_reference_const(std::string name) {
-    return driver_.copy_const_value(std::move(name));
+  std::unique_ptr<t_const_value> on_reference_const(
+      source_location loc, std::string name) {
+    return driver_.copy_const_value(loc, std::move(name));
   }
 
   std::unique_ptr<t_const_value> on_string_literal(std::string value) {
