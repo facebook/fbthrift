@@ -34,12 +34,12 @@ namespace go thrift.lib.thrift.protocol_detail
 namespace py thrift.lib.thrift.protocol_detail
 
 typedef ObjectStruct (
-  cpp.type = "ObjectWrapper<ObjectStruct>",
+  cpp.type = "::apache::thrift::protocol::detail::ObjectWrapper<::apache::thrift::protocol::detail::ObjectStruct>",
   cpp.indirection,
 ) Object
 
 typedef ValueUnion (
-  cpp.type = "ValueWrapper<ValueUnion>",
+  cpp.type = "::apache::thrift::protocol::detail::ValueWrapper<::apache::thrift::protocol::detail::ValueUnion>",
   cpp.indirection,
 ) Value
 
