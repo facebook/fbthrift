@@ -37,7 +37,7 @@
             },
             "end" : {
               "line" : 34,
-              "column" : 20
+              "column" : 21
             }
           }
         },
@@ -52,7 +52,7 @@
             },
             "end" : {
               "line" : 35,
-              "column" : 26
+              "column" : 27
             }
           }
         }
@@ -84,7 +84,7 @@
             },
             "end" : {
               "line" : 39,
-              "column" : 19
+              "column" : 20
             }
           }
         },
@@ -99,7 +99,7 @@
             },
             "end" : {
               "line" : 40,
-              "column" : 25
+              "column" : 26
             }
           }
         }

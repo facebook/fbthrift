@@ -177,7 +177,7 @@ class JsonCompilerTest(unittest.TestCase):
                                     },
                                     "end": {
                                         "line": 4,
-                                        "column": 21,
+                                        "column": 22,
                                     },
                                 },
                             },
@@ -257,7 +257,7 @@ class JsonCompilerTest(unittest.TestCase):
                                     },
                                     "end": {
                                         "line": 4,
-                                        "column": 34,
+                                        "column": 35,
                                     },
                                 },
                             },
@@ -330,7 +330,7 @@ class JsonCompilerTest(unittest.TestCase):
                                     },
                                     "end": {
                                         "line": 2,
-                                        "column": 21,
+                                        "column": 22,
                                     },
                                 },
                             },
@@ -389,7 +389,7 @@ class JsonCompilerTest(unittest.TestCase):
                                     },
                                     "end": {
                                         "line": 2,
-                                        "column": 17,
+                                        "column": 18,
                                     },
                                 },
                             },
