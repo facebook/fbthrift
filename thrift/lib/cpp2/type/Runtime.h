@@ -49,6 +49,8 @@ class ConstRef final : public detail::BaseRef<ConstRef> {
 
  private:
   friend Base;
+  template <typename ConstT, typename MutT>
+  friend class detail::RuntimeAccessBase;
 
   template <typename Tag, typename T>
   ConstRef(Tag, T&& val) : Base(op::detail::getAnyType<Tag, T>(), &val) {}
@@ -102,6 +104,8 @@ class Ref final : public detail::BaseRef<Ref, ConstRef> {
 
  private:
   friend class detail::Ptr;
+  template <typename ConstT, typename MutT>
+  friend class detail::RuntimeAccessBase;
   friend Base;
   using Base::asRef;
 
@@ -119,17 +123,22 @@ inline Ref Ptr::operator*() const noexcept {
 // A runtime Thrift value that owns it's own memory.
 //
 // TODO(afuller): Store small values in-situ.
-class Value : public detail::RuntimeBase {
-  using Base = detail::RuntimeBase;
+class Value : public detail::RuntimeAccessBase<ConstRef, Ref> {
+  using Base = detail::RuntimeAccessBase<ConstRef, Ref>;
+  using RuntimeBase = detail::RuntimeBase;
 
  public:
   template <typename Tag>
   static Value create() {
     return Value{Tag{}, nullptr};
   }
-  template <typename Tag, typename T>
-  static Value of(T&& val) {
-    return {Tag{}, std::forward<T>(val)};
+  template <typename Tag>
+  static Value of(const native_type<Tag>& val) {
+    return {Tag{}, val};
+  }
+  template <typename Tag>
+  static Value of(native_type<Tag>&& val) {
+    return {Tag{}, std::move(val)};
   }
   template <typename Tag>
   static Value of(std::unique_ptr<native_type<Tag>> val) {
@@ -189,37 +198,21 @@ class Value : public detail::RuntimeBase {
   void clear() { Base::clear(); }
 
   // Append to a list, string, etc.
-  void append(const Base& val) { Base::append(val); }
+  void append(const RuntimeBase& val) { Base::append(val); }
 
   // Add to a set, number, etc.
-  bool add(const Base& val) { return Base::add(val); }
+  bool add(const RuntimeBase& val) { return Base::add(val); }
 
   // Put a key-value pair, overwriting any existing entry in a map, struct, etc.
   //
   // Returns true if an existing value was replaced.
-  bool put(FieldId id, const Base& val) { return Base::put(id, val); }
-  bool put(const Base& key, const Base& val) { return Base::put(key, val); }
-  bool put(const std::string& name, const Base& val) {
+  bool put(FieldId id, const RuntimeBase& val) { return Base::put(id, val); }
+  bool put(const RuntimeBase& key, const RuntimeBase& val) {
+    return Base::put(key, val);
+  }
+  bool put(const std::string& name, const RuntimeBase& val) {
     return put(asRef(name), val);
   }
-
-  // Get by value.
-  Ref get(const Base& key) & { return *Base::get(key); }
-  Ref get(const Base& key) && { return *Base::get(key, false, true); }
-  ConstRef get(const Base& key) const& { return Base::get(key, true); }
-  ConstRef get(const Base& key) const&& { return Base::get(key, true, true); }
-
-  // Get by field id.
-  Ref get(FieldId id) & { return *Base::get(id); }
-  Ref get(FieldId id) && { return *Base::get(id, false, true); }
-  ConstRef get(FieldId id) const& { return Base::get(id, true); }
-  ConstRef get(FieldId id) const&& { return Base::get(id, true, true); }
-
-  // Get by name.
-  Ref get(const std::string& name) & { return get(asRef(name)); }
-  Ref get(const std::string& name) && { return get(asRef(name)); }
-  ConstRef get(const std::string& name) const& { return get(asRef(name)); }
-  ConstRef get(const std::string& name) const&& { return get(asRef(name)); }
 
  private:
   template <typename Tag, typename T = native_type<Tag>>

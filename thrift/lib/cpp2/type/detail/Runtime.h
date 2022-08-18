@@ -281,13 +281,46 @@ struct BaseErasedOp {
   [[noreturn]] static Ptr get(void*, FieldId, const RuntimeBase*) { bad_op(); }
 };
 
-template <typename Derived, typename ConstType = Derived>
-class BaseRef : public RuntimeBase {
+template <typename ConstT, typename MutT>
+class RuntimeAccessBase : public RuntimeBase {
   using Base = RuntimeBase;
 
  public:
   using Base::Base;
-  explicit BaseRef(const Base& other) : Base(other) {}
+  explicit RuntimeAccessBase(const Base& other) : Base(other) {}
+
+  // Get by value.
+  MutT get(const Base& key) & { return MutT{Base::get(key)}; }
+  MutT get(const Base& key) && { return MutT{Base::get(key, false, true)}; }
+  ConstT get(const Base& key) const& { return ConstT{Base::get(key, true)}; }
+  ConstT get(const Base& key) const&& {
+    return ConstT{Base::get(key, true, true)};
+  }
+
+  // Get by field id.
+  MutT get(FieldId id) & { return MutT{Base::get(id)}; }
+  MutT get(FieldId id) && { return MutT{Base::get(id, false, true)}; }
+  ConstT get(FieldId id) const& { return ConstT{Base::get(id, true)}; }
+  ConstT get(FieldId id) const&& { return ConstT{Base::get(id, true, true)}; }
+
+  // Get by name.
+  MutT get(const std::string& name) & { return get(asRef(name)); }
+  MutT get(const std::string& name) && { return get(asRef(name)); }
+  ConstT get(const std::string& name) const& { return get(asRef(name)); }
+  ConstT get(const std::string& name) const&& { return get(asRef(name)); }
+
+ protected:
+  static ConstT asRef(const std::string& name) {
+    return ConstT::template to<type::string_t>(name);
+  }
+};
+
+template <typename Derived, typename ConstT = Derived>
+class BaseRef : public RuntimeAccessBase<ConstT, Derived> {
+  using Base = RuntimeAccessBase<ConstT, Derived>;
+
+ public:
+  using Base::Base;
 
   template <typename Tag>
   static Derived to(native_type<Tag>& val) {
@@ -304,37 +337,6 @@ class BaseRef : public RuntimeBase {
   template <typename Tag>
   static Derived to(const native_type<Tag>&& val) {
     return {Tag{}, std::move(val)};
-  }
-
-  // Get by value.
-  Derived get(const Base& key) & { return Derived{Base::get(key)}; }
-  Derived get(const Base& key) && {
-    return Derived{Base::get(key, false, true)};
-  }
-  ConstType get(const Base& key) const& {
-    return ConstType{Base::get(key, true)};
-  }
-  ConstType get(const Base& key) const&& {
-    return ConstType{Base::get(key, true, true)};
-  }
-
-  // Get by field id.
-  Derived get(FieldId id) & { return Derived{Base::get(id)}; }
-  Derived get(FieldId id) && { return Derived{Base::get(id, false, true)}; }
-  ConstType get(FieldId id) const& { return ConstType{Base::get(id, true)}; }
-  ConstType get(FieldId id) const&& {
-    return ConstType{Base::get(id, true, true)};
-  }
-
-  // Get by name.
-  Derived get(const std::string& name) & { return get(asRef(name)); }
-  Derived get(const std::string& name) && { return get(asRef(name)); }
-  ConstType get(const std::string& name) const& { return get(asRef(name)); }
-  ConstType get(const std::string& name) const&& { return get(asRef(name)); }
-
- protected:
-  static ConstType asRef(const std::string& name) {
-    return to<type::string_t>(name);
   }
 };
 
