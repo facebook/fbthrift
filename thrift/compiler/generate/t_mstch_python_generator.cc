@@ -653,6 +653,7 @@ class python_mstch_struct : public mstch_struct {
             {"struct:adapter_name", &python_mstch_struct::adapter_name},
             {"struct:adapter_type_hint",
              &python_mstch_struct::adapter_type_hint},
+            {"struct:legacy_api?", &python_mstch_struct::legacy_api},
         });
   }
 
@@ -680,6 +681,10 @@ class python_mstch_struct : public mstch_struct {
 
   mstch::node adapter_type_hint() {
     return get_annotation_property(adapter_annotation_, "typeHint");
+  }
+
+  mstch::node legacy_api() {
+    return ::apache::thrift::compiler::generate_legacy_api(*struct_);
   }
 
  private:
@@ -765,10 +770,15 @@ class python_mstch_enum : public mstch_enum {
         this,
         {
             {"enum:flags?", &python_mstch_enum::has_flags},
+            {"enum:legacy_api?", &python_mstch_enum::legacy_api},
         });
   }
 
   mstch::node has_flags() { return enum_->has_annotation("py3.flags"); }
+
+  mstch::node legacy_api() {
+    return ::apache::thrift::compiler::generate_legacy_api(*enum_);
+  }
 };
 
 class python_mstch_enum_value : public mstch_enum_value {

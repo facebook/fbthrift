@@ -84,6 +84,7 @@ class {{> structs/unadapted_name}}(metaclass={{!
 
     {{/struct:exception_message?}}
     {{/struct:exception?}}
+    {{#struct:legacy_api?}}
     def _to_python(self):
         return self
 
@@ -98,6 +99,7 @@ class {{> structs/unadapted_name}}(metaclass={{!
         py_deprecated_types = importlib.import_module("{{program:py_deprecated_module_path}}.ttypes")
         import thrift.util.converter
         return thrift.util.converter.to_py_struct(py_deprecated_types.{{> structs/unadapted_name}}, self)
+    {{/struct:legacy_api?}}
 {{#struct:has_adapter?}}
 
 
@@ -123,6 +125,7 @@ class {{enum:name}}(_fbthrift_python_types.Enum, enum.{{!
     def __get_metadata__():
         return {{program:module_path}}.thrift_metadata.gen_metadata_enum_{{enum:name}}()
 
+    {{#enum:legacy_api?}}
     def _to_python(self):
         return self
 
@@ -133,6 +136,7 @@ class {{enum:name}}(_fbthrift_python_types.Enum, enum.{{!
 
     def _to_py_deprecated(self):
         return self.value
+    {{/enum:legacy_api?}}
 {{/program:enums}}
 
 {{#program:structs}}
