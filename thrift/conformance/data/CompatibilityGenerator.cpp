@@ -389,6 +389,7 @@ template <typename TT>
 Test createCompatibilityTestWithTypeTag(const Protocol& protocol) {
   Test test;
   test.name() = protocol.name();
+  test.tags()->emplace("spec/definition/compatibility/#data");
 
   auto addToTest = [&](std::vector<TestCase>&& tests) {
     for (auto& t : tests) {
@@ -411,6 +412,7 @@ Test createCompatibilityTestWithTypeTag(const Protocol& protocol) {
 Test createCompatibilityTest(const Protocol& protocol) {
   Test test;
   test.name() = protocol.name();
+  test.tags()->emplace("spec/definition/compatibility/#data");
 
   auto addToTest = [&](std::vector<TestCase>&& tests) {
     for (auto& t : tests) {
