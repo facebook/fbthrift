@@ -103,6 +103,11 @@ class OmniClient : public apache::thrift::TClientBase {
 
   uint16_t getChannelProtocolId();
 
+  std::shared_ptr<apache::thrift::RequestChannel> getChannelShared()
+      const noexcept {
+    return channel_;
+  }
+
  private:
   /**
    * Sends the request to the Thrift service through the RequestChannel.
@@ -143,6 +148,11 @@ class OmniInteractionClient : public OmniClient {
 
   friend class OmniClient;
 };
+
+folly::Future<std::unique_ptr<OmniInteractionClient>>
+createOmniInteractionClient(
+    std::shared_ptr<apache::thrift::RequestChannel> channel,
+    const std::string& methodName);
 
 } // namespace client
 } // namespace python

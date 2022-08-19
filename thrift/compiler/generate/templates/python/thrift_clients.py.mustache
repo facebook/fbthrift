@@ -112,6 +112,13 @@ class {{service:name}}(_fbthrift_python_Client["{{service:name}}.Async", "{{serv
             {{/function:return_type}}
         {{/service:supported_functions}}
 
+        {{#service:interactions}}
+        def create{{service:name}}(
+          self #{{service:parent_service_name}}
+        ) -> {{service:parent_service_name}}.Async:
+            return self._create_interaction("{{service:name}}", {{service:parent_service_name}}.Async)  # type: ignore
+
+        {{/service:interactions}}
     class Sync({{#service:extends}}{{!
         }}{{> services/client_module_path}}.Sync{{!
     }}{{/service:extends}}{{^service:extends?}}{{!

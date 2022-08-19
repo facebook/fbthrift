@@ -24,6 +24,9 @@ cdef extern from "thrift/lib/cpp/transport/THeader.h":
         THRIFT_ROCKET_CLIENT_TYPE,
         THRIFT_HTTP_CLIENT_TYPE,
 
+cdef extern from "thrift/lib/cpp2/async/RequestChannel.h" namespace "::apache::thrift":
+    cdef cppclass cRequestChannel "::apache::thrift::RequestChannel":
+        pass
 
 cdef extern from "thrift/lib/python/client/RequestChannel.h" namespace "::thrift::python::client":
     cdef cppclass cRequestChannel_ptr "::thrift::python::client::RequestChannel_ptr":

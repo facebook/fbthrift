@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <memory>
 #include <thrift/lib/python/client/OmniClient.h>
 
 #include <fmt/format.h>
@@ -413,9 +414,9 @@ OmniInteractionClient::OmniInteractionClient(
     const std::string& methodName)
     : OmniClient(channel), methodName_(methodName) {
   DCHECK(
-      !channel->getEventBase() ||
-      channel->getEventBase()->isInEventBaseThread());
-  this->interactionId_ = channel->createInteraction(methodName_);
+      !channel_->getEventBase() ||
+      channel_->getEventBase()->isInEventBaseThread());
+  this->interactionId_ = channel_->createInteraction(methodName_);
 }
 
 OmniInteractionClient::~OmniInteractionClient() {
@@ -452,6 +453,19 @@ void OmniInteractionClient::setInteraction(
   DCHECK(interactionId_);
   DCHECK(rpcOptions.getInteractionId() == 0);
   rpcOptions.setInteractionId(interactionId_);
+}
+
+folly::Future<std::unique_ptr<OmniInteractionClient>>
+createOmniInteractionClient(
+    std::shared_ptr<apache::thrift::RequestChannel> channel,
+    const std::string& methodName) {
+  auto* eventBase = channel->getEventBase();
+  return folly::via(
+      eventBase,
+      [copiedMethod = methodName, channel = std::move(channel)]()
+          -> std::unique_ptr<OmniInteractionClient> {
+        return std::make_unique<OmniInteractionClient>(channel, copiedMethod);
+      });
 }
 
 } // namespace client

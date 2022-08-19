@@ -23,11 +23,11 @@ import folly.executor
 
 from cython.operator cimport dereference as deref
 from folly.executor cimport get_executor
-from folly.futures cimport bridgeSemiFutureWith
+from folly.futures cimport bridgeSemiFutureWith, bridgeFutureWith
 from folly.iobuf cimport IOBuf
-from libcpp.memory cimport make_unique
+from libcpp.memory cimport make_unique, static_pointer_cast
 from libcpp.utility cimport move as cmove
-from thrift.python.client.omni_client cimport cOmniClientResponseWithHeaders, RpcKind
+from thrift.python.client.omni_client cimport cOmniClientResponseWithHeaders, RpcKind, cOmniInteractionClient, createOmniInteractionClient
 from thrift.python.exceptions cimport create_py_exception
 from thrift.python.exceptions import ApplicationError, ApplicationErrorType
 from thrift.python.serializer import serialize_iobuf, deserialize
@@ -74,6 +74,21 @@ cdef class AsyncClient:
             badfuture.set_exception(asyncio.InvalidStateError('Client Out of Context'))
             badfuture.exception()
             self._connect_future = badfuture
+
+    def _create_interaction(
+        AsyncClient self,
+        string methodName,
+        interactionClass,
+    ):
+        # TODO subclass check
+        interactionClient = interactionClass()
+        bridgeFutureWith[unique_ptr[cOmniInteractionClient]](
+            (<AsyncClient> interactionClient)._executor,
+            createOmniInteractionClient(deref(self._omni_client).getChannelShared(), methodName),
+            _interaction_client_callback,
+            <PyObject *> interactionClient,
+        )
+        return interactionClient
 
     def _send_request(
         AsyncClient self,
@@ -150,3 +165,16 @@ cdef void _async_client_send_request_callback(
         )
     py_resp = deserialize(response_cls, response_iobuf, protocol=protocol)
     pyfuture.set_result(py_resp if py_stream is None else (py_resp, py_stream))
+
+cdef void _interaction_client_callback(cFollyTry[unique_ptr[cOmniInteractionClient]]&& result,
+    PyObject* userData,):
+    cdef AsyncClient client = <object> userData
+    future = client._connect_future
+    if result.hasException():
+        try:
+            result.exception().throw_exception()
+        except Exception as pyex:
+            future.set_exception(pyex)
+    else:
+        client._omni_client = unique_ptr[cOmniClient](<cOmniClient*>result.value().release())
+        future.set_result(None)

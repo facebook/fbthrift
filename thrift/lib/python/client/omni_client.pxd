@@ -13,15 +13,15 @@
 # limitations under the License.
 
 from libcpp cimport bool
-from folly cimport cFollyExceptionWrapper, cFollySemiFuture
+from folly cimport cFollyExceptionWrapper, cFollySemiFuture, cFollyFuture
 from folly.expected cimport cExpected
 from folly.iobuf cimport cIOBuf
 from libc.stdint cimport uint16_t
-from libcpp.memory cimport unique_ptr
+from libcpp.memory cimport unique_ptr, shared_ptr
 from libcpp.string cimport string
 from libcpp.unordered_map cimport unordered_map
 from libcpp.pair cimport pair
-from thrift.python.client.request_channel cimport cRequestChannel_ptr
+from thrift.python.client.request_channel cimport cRequestChannel_ptr, cRequestChannel
 
 
 cdef extern from "thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h" namespace "::apache::thrift":
@@ -75,4 +75,10 @@ cdef extern from "thrift/lib/python/client/OmniClient.h" namespace "::thrift::py
             const unordered_map[string, string] headers,
             const RpcKind rpcKind,
         )
+        shared_ptr[cRequestChannel] getChannelShared()
         uint16_t getChannelProtocolId()
+
+    cdef cppclass cOmniInteractionClient "::thrift::python::client::OmniInteractionClient"(cOmniClient) nogil:
+        cOmniInteractionClient(shared_ptr[cRequestChannel] channel, const string& methodName)
+
+    cdef cFollyFuture[unique_ptr[cOmniInteractionClient]]& createOmniInteractionClient(shared_ptr[cRequestChannel] channel, const string& methodName)
