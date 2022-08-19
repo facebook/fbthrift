@@ -18,6 +18,8 @@ include "thrift/annotation/cpp.thrift"
 include "thrift/annotation/thrift.thrift"
 include "thrift/lib/thrift/id.thrift"
 include "thrift/lib/thrift/protocol_detail.thrift"
+include "thrift/lib/thrift/type.thrift"
+include "thrift/lib/thrift/standard.thrift"
 
 @thrift.v1alpha
 package "facebook.com/thrift/protocol"
@@ -39,4 +41,29 @@ typedef id.ExternId PathSegmentId
 
 struct Path {
   1: list<PathSegmentId> path;
+}
+
+// Represents serialized data of unmasked fields.
+union MaskedData {
+  1: id.ValueId full;
+  2: map<id.FieldId, MaskedData> fields;
+  3: map<id.ValueId, MaskedData> values;
+}
+
+struct EncodedValue {
+  1: type.BaseType wireType;
+  2: standard.ByteBuffer data;
+}
+
+// We cannot have adapted type in a list, so this is the workaround.
+struct ValueStruct {
+  1: Value value;
+}
+
+// MaskedData uses ValueId to get encodedValues and map keys from the lists.
+struct MaskedProtocolData {
+  1: type.Protocol protocol;
+  2: MaskedData data;
+  3: list<EncodedValue> values;
+  4: list<ValueStruct> keys;
 }
