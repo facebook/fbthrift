@@ -166,7 +166,7 @@ const std::array<folly::StringPiece, 5> TStructDataStorage<::test::fixtures::pat
   "clear",
   "patchPrior",
   "ensure",
-  "patchAfter",
+  "patch",
 }};
 const std::array<int16_t, 5> TStructDataStorage<::test::fixtures::patch::MyDataPatchStruct>::fields_ids = {{
   1,
@@ -187,7 +187,7 @@ const std::array<folly::StringPiece, 4> TStructDataStorage<::test::fixtures::pat
   "clear",
   "patchPrior",
   "ensure",
-  "patchAfter",
+  "patch",
 }};
 const std::array<int16_t, 4> TStructDataStorage<::test::fixtures::patch::OptionalMyDataPatchStruct>::fields_ids = {{
   2,
@@ -217,7 +217,7 @@ const std::array<folly::StringPiece, 5> TStructDataStorage<::test::fixtures::pat
   "clear",
   "patchPrior",
   "ensure",
-  "patchAfter",
+  "patch",
 }};
 const std::array<int16_t, 5> TStructDataStorage<::test::fixtures::patch::InnerUnionPatchStruct>::fields_ids = {{
   1,
@@ -238,7 +238,7 @@ const std::array<folly::StringPiece, 4> TStructDataStorage<::test::fixtures::pat
   "clear",
   "patchPrior",
   "ensure",
-  "patchAfter",
+  "patch",
 }};
 const std::array<int16_t, 4> TStructDataStorage<::test::fixtures::patch::OptionalInnerUnionPatchStruct>::fields_ids = {{
   2,
@@ -274,7 +274,7 @@ const std::array<folly::StringPiece, 5> TStructDataStorage<::test::fixtures::pat
   "clear",
   "patchPrior",
   "ensure",
-  "patchAfter",
+  "patch",
 }};
 const std::array<int16_t, 5> TStructDataStorage<::test::fixtures::patch::MyUnionPatchStruct>::fields_ids = {{
   1,
@@ -295,7 +295,7 @@ const std::array<folly::StringPiece, 4> TStructDataStorage<::test::fixtures::pat
   "clear",
   "patchPrior",
   "ensure",
-  "patchAfter",
+  "patch",
 }};
 const std::array<int16_t, 4> TStructDataStorage<::test::fixtures::patch::OptionalMyUnionPatchStruct>::fields_ids = {{
   2,
@@ -333,7 +333,7 @@ const std::array<folly::StringPiece, 4> TStructDataStorage<::test::fixtures::pat
   "clear",
   "patchPrior",
   "ensure",
-  "patchAfter",
+  "patch",
 }};
 const std::array<int16_t, 4> TStructDataStorage<::test::fixtures::patch::OptionalMyStructField21PatchStruct>::fields_ids = {{
   2,
@@ -371,7 +371,7 @@ const std::array<folly::StringPiece, 4> TStructDataStorage<::test::fixtures::pat
   "clear",
   "patchPrior",
   "ensure",
-  "patchAfter",
+  "patch",
 }};
 const std::array<int16_t, 4> TStructDataStorage<::test::fixtures::patch::OptionalMyStructField22PatchStruct>::fields_ids = {{
   2,
@@ -409,7 +409,7 @@ const std::array<folly::StringPiece, 4> TStructDataStorage<::test::fixtures::pat
   "clear",
   "patchPrior",
   "ensure",
-  "patchAfter",
+  "patch",
 }};
 const std::array<int16_t, 4> TStructDataStorage<::test::fixtures::patch::OptionalMyStructField23PatchStruct>::fields_ids = {{
   2,
@@ -508,7 +508,7 @@ const std::array<folly::StringPiece, 5> TStructDataStorage<::test::fixtures::pat
   "clear",
   "patchPrior",
   "ensure",
-  "patchAfter",
+  "patch",
 }};
 const std::array<int16_t, 5> TStructDataStorage<::test::fixtures::patch::MyStructPatchStruct>::fields_ids = {{
   1,
@@ -529,7 +529,7 @@ const std::array<folly::StringPiece, 4> TStructDataStorage<::test::fixtures::pat
   "clear",
   "patchPrior",
   "ensure",
-  "patchAfter",
+  "patch",
 }};
 const std::array<int16_t, 4> TStructDataStorage<::test::fixtures::patch::OptionalMyStructPatchStruct>::fields_ids = {{
   2,

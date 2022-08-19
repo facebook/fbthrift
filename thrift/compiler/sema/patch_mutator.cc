@@ -260,7 +260,7 @@ struct PatchGen : StructGen {
   t_field& patchAfter(t_type_ref patch_type) {
     return doc(
         "Patches any set value, including newly set values. Applies last.",
-        field(kPatchAfterId, patch_type, "patchAfter"));
+        field(kPatchAfterId, patch_type, "patch"));
   }
 };
 

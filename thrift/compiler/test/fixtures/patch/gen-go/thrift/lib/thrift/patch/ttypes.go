@@ -1835,20 +1835,20 @@ func (p *BinaryPatch) String() string {
 //  - Clear: Clears any set value. Applies first.
 //  - PatchPrior: Patches any previously set values. Applies second.
 //  - Ensure: Assigns the value, if not already set to the same field. Applies third.
-//  - PatchAfter: Patches any set value, including newly set values. Applies last.
+//  - Patch: Patches any set value, including newly set values. Applies last.
 type OptionalBoolPatch struct {
   // unused field # 1
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
   PatchPrior *BoolPatch `thrift:"patchPrior,3" db:"patchPrior" json:"patchPrior"`
   Ensure *bool `thrift:"ensure,4,optional" db:"ensure" json:"ensure,omitempty"`
   // unused field # 5
-  PatchAfter *BoolPatch `thrift:"patchAfter,6" db:"patchAfter" json:"patchAfter"`
+  Patch *BoolPatch `thrift:"patch,6" db:"patch" json:"patch"`
 }
 
 func NewOptionalBoolPatch() *OptionalBoolPatch {
   return &OptionalBoolPatch{
     PatchPrior: NewBoolPatch(),
-    PatchAfter: NewBoolPatch(),
+    Patch: NewBoolPatch(),
   }
 }
 
@@ -1870,12 +1870,12 @@ func (p *OptionalBoolPatch) GetEnsure() bool {
   }
 return *p.Ensure
 }
-var OptionalBoolPatch_PatchAfter_DEFAULT *BoolPatch
-func (p *OptionalBoolPatch) GetPatchAfter() *BoolPatch {
-  if !p.IsSetPatchAfter() {
-    return OptionalBoolPatch_PatchAfter_DEFAULT
+var OptionalBoolPatch_Patch_DEFAULT *BoolPatch
+func (p *OptionalBoolPatch) GetPatch() *BoolPatch {
+  if !p.IsSetPatch() {
+    return OptionalBoolPatch_Patch_DEFAULT
   }
-return p.PatchAfter
+return p.Patch
 }
 func (p *OptionalBoolPatch) IsSetPatchPrior() bool {
   return p != nil && p.PatchPrior != nil
@@ -1885,8 +1885,8 @@ func (p *OptionalBoolPatch) IsSetEnsure() bool {
   return p != nil && p.Ensure != nil
 }
 
-func (p *OptionalBoolPatch) IsSetPatchAfter() bool {
-  return p != nil && p.PatchAfter != nil
+func (p *OptionalBoolPatch) IsSetPatch() bool {
+  return p != nil && p.Patch != nil
 }
 
 type OptionalBoolPatchBuilder struct {
@@ -1904,7 +1904,7 @@ func (p OptionalBoolPatchBuilder) Emit() *OptionalBoolPatch{
     Clear: p.obj.Clear,
     PatchPrior: p.obj.PatchPrior,
     Ensure: p.obj.Ensure,
-    PatchAfter: p.obj.PatchAfter,
+    Patch: p.obj.Patch,
   }
 }
 
@@ -1923,8 +1923,8 @@ func (o *OptionalBoolPatchBuilder) Ensure(ensure *bool) *OptionalBoolPatchBuilde
   return o
 }
 
-func (o *OptionalBoolPatchBuilder) PatchAfter(patchAfter *BoolPatch) *OptionalBoolPatchBuilder {
-  o.obj.PatchAfter = patchAfter
+func (o *OptionalBoolPatchBuilder) Patch(patch *BoolPatch) *OptionalBoolPatchBuilder {
+  o.obj.Patch = patch
   return o
 }
 
@@ -1943,8 +1943,8 @@ func (o *OptionalBoolPatch) SetEnsure(ensure *bool) *OptionalBoolPatch {
   return o
 }
 
-func (o *OptionalBoolPatch) SetPatchAfter(patchAfter *BoolPatch) *OptionalBoolPatch {
-  o.PatchAfter = patchAfter
+func (o *OptionalBoolPatch) SetPatch(patch *BoolPatch) *OptionalBoolPatch {
+  o.Patch = patch
   return o
 }
 
@@ -2019,9 +2019,9 @@ func (p *OptionalBoolPatch)  ReadField4(iprot thrift.Protocol) error {
 }
 
 func (p *OptionalBoolPatch)  ReadField6(iprot thrift.Protocol) error {
-  p.PatchAfter = NewBoolPatch()
-  if err := p.PatchAfter.Read(iprot); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.PatchAfter), err)
+  p.Patch = NewBoolPatch()
+  if err := p.Patch.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Patch), err)
   }
   return nil
 }
@@ -2074,13 +2074,13 @@ func (p *OptionalBoolPatch) writeField4(oprot thrift.Protocol) (err error) {
 }
 
 func (p *OptionalBoolPatch) writeField6(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("patchAfter", thrift.STRUCT, 6); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:patchAfter: ", p), err) }
-  if err := p.PatchAfter.Write(oprot); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.PatchAfter), err)
+  if err := oprot.WriteFieldBegin("patch", thrift.STRUCT, 6); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:patch: ", p), err) }
+  if err := p.Patch.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Patch), err)
   }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:patchAfter: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:patch: ", p), err) }
   return err
 }
 
@@ -2102,33 +2102,33 @@ func (p *OptionalBoolPatch) String() string {
   } else {
     ensureVal = fmt.Sprintf("%v", *p.Ensure)
   }
-  var patchAfterVal string
-  if p.PatchAfter == nil {
-    patchAfterVal = "<nil>"
+  var patchVal string
+  if p.Patch == nil {
+    patchVal = "<nil>"
   } else {
-    patchAfterVal = fmt.Sprintf("%v", p.PatchAfter)
+    patchVal = fmt.Sprintf("%v", p.Patch)
   }
-  return fmt.Sprintf("OptionalBoolPatch({Clear:%s PatchPrior:%s Ensure:%s PatchAfter:%s})", clearVal, patchPriorVal, ensureVal, patchAfterVal)
+  return fmt.Sprintf("OptionalBoolPatch({Clear:%s PatchPrior:%s Ensure:%s Patch:%s})", clearVal, patchPriorVal, ensureVal, patchVal)
 }
 
 // Attributes:
 //  - Clear: Clears any set value. Applies first.
 //  - PatchPrior: Patches any previously set values. Applies second.
 //  - Ensure: Assigns the value, if not already set to the same field. Applies third.
-//  - PatchAfter: Patches any set value, including newly set values. Applies last.
+//  - Patch: Patches any set value, including newly set values. Applies last.
 type OptionalBytePatch struct {
   // unused field # 1
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
   PatchPrior *BytePatch `thrift:"patchPrior,3" db:"patchPrior" json:"patchPrior"`
   Ensure *int8 `thrift:"ensure,4,optional" db:"ensure" json:"ensure,omitempty"`
   // unused field # 5
-  PatchAfter *BytePatch `thrift:"patchAfter,6" db:"patchAfter" json:"patchAfter"`
+  Patch *BytePatch `thrift:"patch,6" db:"patch" json:"patch"`
 }
 
 func NewOptionalBytePatch() *OptionalBytePatch {
   return &OptionalBytePatch{
     PatchPrior: NewBytePatch(),
-    PatchAfter: NewBytePatch(),
+    Patch: NewBytePatch(),
   }
 }
 
@@ -2150,12 +2150,12 @@ func (p *OptionalBytePatch) GetEnsure() int8 {
   }
 return *p.Ensure
 }
-var OptionalBytePatch_PatchAfter_DEFAULT *BytePatch
-func (p *OptionalBytePatch) GetPatchAfter() *BytePatch {
-  if !p.IsSetPatchAfter() {
-    return OptionalBytePatch_PatchAfter_DEFAULT
+var OptionalBytePatch_Patch_DEFAULT *BytePatch
+func (p *OptionalBytePatch) GetPatch() *BytePatch {
+  if !p.IsSetPatch() {
+    return OptionalBytePatch_Patch_DEFAULT
   }
-return p.PatchAfter
+return p.Patch
 }
 func (p *OptionalBytePatch) IsSetPatchPrior() bool {
   return p != nil && p.PatchPrior != nil
@@ -2165,8 +2165,8 @@ func (p *OptionalBytePatch) IsSetEnsure() bool {
   return p != nil && p.Ensure != nil
 }
 
-func (p *OptionalBytePatch) IsSetPatchAfter() bool {
-  return p != nil && p.PatchAfter != nil
+func (p *OptionalBytePatch) IsSetPatch() bool {
+  return p != nil && p.Patch != nil
 }
 
 type OptionalBytePatchBuilder struct {
@@ -2184,7 +2184,7 @@ func (p OptionalBytePatchBuilder) Emit() *OptionalBytePatch{
     Clear: p.obj.Clear,
     PatchPrior: p.obj.PatchPrior,
     Ensure: p.obj.Ensure,
-    PatchAfter: p.obj.PatchAfter,
+    Patch: p.obj.Patch,
   }
 }
 
@@ -2203,8 +2203,8 @@ func (o *OptionalBytePatchBuilder) Ensure(ensure *int8) *OptionalBytePatchBuilde
   return o
 }
 
-func (o *OptionalBytePatchBuilder) PatchAfter(patchAfter *BytePatch) *OptionalBytePatchBuilder {
-  o.obj.PatchAfter = patchAfter
+func (o *OptionalBytePatchBuilder) Patch(patch *BytePatch) *OptionalBytePatchBuilder {
+  o.obj.Patch = patch
   return o
 }
 
@@ -2223,8 +2223,8 @@ func (o *OptionalBytePatch) SetEnsure(ensure *int8) *OptionalBytePatch {
   return o
 }
 
-func (o *OptionalBytePatch) SetPatchAfter(patchAfter *BytePatch) *OptionalBytePatch {
-  o.PatchAfter = patchAfter
+func (o *OptionalBytePatch) SetPatch(patch *BytePatch) *OptionalBytePatch {
+  o.Patch = patch
   return o
 }
 
@@ -2300,9 +2300,9 @@ func (p *OptionalBytePatch)  ReadField4(iprot thrift.Protocol) error {
 }
 
 func (p *OptionalBytePatch)  ReadField6(iprot thrift.Protocol) error {
-  p.PatchAfter = NewBytePatch()
-  if err := p.PatchAfter.Read(iprot); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.PatchAfter), err)
+  p.Patch = NewBytePatch()
+  if err := p.Patch.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Patch), err)
   }
   return nil
 }
@@ -2355,13 +2355,13 @@ func (p *OptionalBytePatch) writeField4(oprot thrift.Protocol) (err error) {
 }
 
 func (p *OptionalBytePatch) writeField6(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("patchAfter", thrift.STRUCT, 6); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:patchAfter: ", p), err) }
-  if err := p.PatchAfter.Write(oprot); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.PatchAfter), err)
+  if err := oprot.WriteFieldBegin("patch", thrift.STRUCT, 6); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:patch: ", p), err) }
+  if err := p.Patch.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Patch), err)
   }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:patchAfter: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:patch: ", p), err) }
   return err
 }
 
@@ -2383,33 +2383,33 @@ func (p *OptionalBytePatch) String() string {
   } else {
     ensureVal = fmt.Sprintf("%v", *p.Ensure)
   }
-  var patchAfterVal string
-  if p.PatchAfter == nil {
-    patchAfterVal = "<nil>"
+  var patchVal string
+  if p.Patch == nil {
+    patchVal = "<nil>"
   } else {
-    patchAfterVal = fmt.Sprintf("%v", p.PatchAfter)
+    patchVal = fmt.Sprintf("%v", p.Patch)
   }
-  return fmt.Sprintf("OptionalBytePatch({Clear:%s PatchPrior:%s Ensure:%s PatchAfter:%s})", clearVal, patchPriorVal, ensureVal, patchAfterVal)
+  return fmt.Sprintf("OptionalBytePatch({Clear:%s PatchPrior:%s Ensure:%s Patch:%s})", clearVal, patchPriorVal, ensureVal, patchVal)
 }
 
 // Attributes:
 //  - Clear: Clears any set value. Applies first.
 //  - PatchPrior: Patches any previously set values. Applies second.
 //  - Ensure: Assigns the value, if not already set to the same field. Applies third.
-//  - PatchAfter: Patches any set value, including newly set values. Applies last.
+//  - Patch: Patches any set value, including newly set values. Applies last.
 type OptionalI16Patch struct {
   // unused field # 1
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
   PatchPrior *I16Patch `thrift:"patchPrior,3" db:"patchPrior" json:"patchPrior"`
   Ensure *int16 `thrift:"ensure,4,optional" db:"ensure" json:"ensure,omitempty"`
   // unused field # 5
-  PatchAfter *I16Patch `thrift:"patchAfter,6" db:"patchAfter" json:"patchAfter"`
+  Patch *I16Patch `thrift:"patch,6" db:"patch" json:"patch"`
 }
 
 func NewOptionalI16Patch() *OptionalI16Patch {
   return &OptionalI16Patch{
     PatchPrior: NewI16Patch(),
-    PatchAfter: NewI16Patch(),
+    Patch: NewI16Patch(),
   }
 }
 
@@ -2431,12 +2431,12 @@ func (p *OptionalI16Patch) GetEnsure() int16 {
   }
 return *p.Ensure
 }
-var OptionalI16Patch_PatchAfter_DEFAULT *I16Patch
-func (p *OptionalI16Patch) GetPatchAfter() *I16Patch {
-  if !p.IsSetPatchAfter() {
-    return OptionalI16Patch_PatchAfter_DEFAULT
+var OptionalI16Patch_Patch_DEFAULT *I16Patch
+func (p *OptionalI16Patch) GetPatch() *I16Patch {
+  if !p.IsSetPatch() {
+    return OptionalI16Patch_Patch_DEFAULT
   }
-return p.PatchAfter
+return p.Patch
 }
 func (p *OptionalI16Patch) IsSetPatchPrior() bool {
   return p != nil && p.PatchPrior != nil
@@ -2446,8 +2446,8 @@ func (p *OptionalI16Patch) IsSetEnsure() bool {
   return p != nil && p.Ensure != nil
 }
 
-func (p *OptionalI16Patch) IsSetPatchAfter() bool {
-  return p != nil && p.PatchAfter != nil
+func (p *OptionalI16Patch) IsSetPatch() bool {
+  return p != nil && p.Patch != nil
 }
 
 type OptionalI16PatchBuilder struct {
@@ -2465,7 +2465,7 @@ func (p OptionalI16PatchBuilder) Emit() *OptionalI16Patch{
     Clear: p.obj.Clear,
     PatchPrior: p.obj.PatchPrior,
     Ensure: p.obj.Ensure,
-    PatchAfter: p.obj.PatchAfter,
+    Patch: p.obj.Patch,
   }
 }
 
@@ -2484,8 +2484,8 @@ func (o *OptionalI16PatchBuilder) Ensure(ensure *int16) *OptionalI16PatchBuilder
   return o
 }
 
-func (o *OptionalI16PatchBuilder) PatchAfter(patchAfter *I16Patch) *OptionalI16PatchBuilder {
-  o.obj.PatchAfter = patchAfter
+func (o *OptionalI16PatchBuilder) Patch(patch *I16Patch) *OptionalI16PatchBuilder {
+  o.obj.Patch = patch
   return o
 }
 
@@ -2504,8 +2504,8 @@ func (o *OptionalI16Patch) SetEnsure(ensure *int16) *OptionalI16Patch {
   return o
 }
 
-func (o *OptionalI16Patch) SetPatchAfter(patchAfter *I16Patch) *OptionalI16Patch {
-  o.PatchAfter = patchAfter
+func (o *OptionalI16Patch) SetPatch(patch *I16Patch) *OptionalI16Patch {
+  o.Patch = patch
   return o
 }
 
@@ -2580,9 +2580,9 @@ func (p *OptionalI16Patch)  ReadField4(iprot thrift.Protocol) error {
 }
 
 func (p *OptionalI16Patch)  ReadField6(iprot thrift.Protocol) error {
-  p.PatchAfter = NewI16Patch()
-  if err := p.PatchAfter.Read(iprot); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.PatchAfter), err)
+  p.Patch = NewI16Patch()
+  if err := p.Patch.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Patch), err)
   }
   return nil
 }
@@ -2635,13 +2635,13 @@ func (p *OptionalI16Patch) writeField4(oprot thrift.Protocol) (err error) {
 }
 
 func (p *OptionalI16Patch) writeField6(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("patchAfter", thrift.STRUCT, 6); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:patchAfter: ", p), err) }
-  if err := p.PatchAfter.Write(oprot); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.PatchAfter), err)
+  if err := oprot.WriteFieldBegin("patch", thrift.STRUCT, 6); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:patch: ", p), err) }
+  if err := p.Patch.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Patch), err)
   }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:patchAfter: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:patch: ", p), err) }
   return err
 }
 
@@ -2663,33 +2663,33 @@ func (p *OptionalI16Patch) String() string {
   } else {
     ensureVal = fmt.Sprintf("%v", *p.Ensure)
   }
-  var patchAfterVal string
-  if p.PatchAfter == nil {
-    patchAfterVal = "<nil>"
+  var patchVal string
+  if p.Patch == nil {
+    patchVal = "<nil>"
   } else {
-    patchAfterVal = fmt.Sprintf("%v", p.PatchAfter)
+    patchVal = fmt.Sprintf("%v", p.Patch)
   }
-  return fmt.Sprintf("OptionalI16Patch({Clear:%s PatchPrior:%s Ensure:%s PatchAfter:%s})", clearVal, patchPriorVal, ensureVal, patchAfterVal)
+  return fmt.Sprintf("OptionalI16Patch({Clear:%s PatchPrior:%s Ensure:%s Patch:%s})", clearVal, patchPriorVal, ensureVal, patchVal)
 }
 
 // Attributes:
 //  - Clear: Clears any set value. Applies first.
 //  - PatchPrior: Patches any previously set values. Applies second.
 //  - Ensure: Assigns the value, if not already set to the same field. Applies third.
-//  - PatchAfter: Patches any set value, including newly set values. Applies last.
+//  - Patch: Patches any set value, including newly set values. Applies last.
 type OptionalI32Patch struct {
   // unused field # 1
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
   PatchPrior *I32Patch `thrift:"patchPrior,3" db:"patchPrior" json:"patchPrior"`
   Ensure *int32 `thrift:"ensure,4,optional" db:"ensure" json:"ensure,omitempty"`
   // unused field # 5
-  PatchAfter *I32Patch `thrift:"patchAfter,6" db:"patchAfter" json:"patchAfter"`
+  Patch *I32Patch `thrift:"patch,6" db:"patch" json:"patch"`
 }
 
 func NewOptionalI32Patch() *OptionalI32Patch {
   return &OptionalI32Patch{
     PatchPrior: NewI32Patch(),
-    PatchAfter: NewI32Patch(),
+    Patch: NewI32Patch(),
   }
 }
 
@@ -2711,12 +2711,12 @@ func (p *OptionalI32Patch) GetEnsure() int32 {
   }
 return *p.Ensure
 }
-var OptionalI32Patch_PatchAfter_DEFAULT *I32Patch
-func (p *OptionalI32Patch) GetPatchAfter() *I32Patch {
-  if !p.IsSetPatchAfter() {
-    return OptionalI32Patch_PatchAfter_DEFAULT
+var OptionalI32Patch_Patch_DEFAULT *I32Patch
+func (p *OptionalI32Patch) GetPatch() *I32Patch {
+  if !p.IsSetPatch() {
+    return OptionalI32Patch_Patch_DEFAULT
   }
-return p.PatchAfter
+return p.Patch
 }
 func (p *OptionalI32Patch) IsSetPatchPrior() bool {
   return p != nil && p.PatchPrior != nil
@@ -2726,8 +2726,8 @@ func (p *OptionalI32Patch) IsSetEnsure() bool {
   return p != nil && p.Ensure != nil
 }
 
-func (p *OptionalI32Patch) IsSetPatchAfter() bool {
-  return p != nil && p.PatchAfter != nil
+func (p *OptionalI32Patch) IsSetPatch() bool {
+  return p != nil && p.Patch != nil
 }
 
 type OptionalI32PatchBuilder struct {
@@ -2745,7 +2745,7 @@ func (p OptionalI32PatchBuilder) Emit() *OptionalI32Patch{
     Clear: p.obj.Clear,
     PatchPrior: p.obj.PatchPrior,
     Ensure: p.obj.Ensure,
-    PatchAfter: p.obj.PatchAfter,
+    Patch: p.obj.Patch,
   }
 }
 
@@ -2764,8 +2764,8 @@ func (o *OptionalI32PatchBuilder) Ensure(ensure *int32) *OptionalI32PatchBuilder
   return o
 }
 
-func (o *OptionalI32PatchBuilder) PatchAfter(patchAfter *I32Patch) *OptionalI32PatchBuilder {
-  o.obj.PatchAfter = patchAfter
+func (o *OptionalI32PatchBuilder) Patch(patch *I32Patch) *OptionalI32PatchBuilder {
+  o.obj.Patch = patch
   return o
 }
 
@@ -2784,8 +2784,8 @@ func (o *OptionalI32Patch) SetEnsure(ensure *int32) *OptionalI32Patch {
   return o
 }
 
-func (o *OptionalI32Patch) SetPatchAfter(patchAfter *I32Patch) *OptionalI32Patch {
-  o.PatchAfter = patchAfter
+func (o *OptionalI32Patch) SetPatch(patch *I32Patch) *OptionalI32Patch {
+  o.Patch = patch
   return o
 }
 
@@ -2860,9 +2860,9 @@ func (p *OptionalI32Patch)  ReadField4(iprot thrift.Protocol) error {
 }
 
 func (p *OptionalI32Patch)  ReadField6(iprot thrift.Protocol) error {
-  p.PatchAfter = NewI32Patch()
-  if err := p.PatchAfter.Read(iprot); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.PatchAfter), err)
+  p.Patch = NewI32Patch()
+  if err := p.Patch.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Patch), err)
   }
   return nil
 }
@@ -2915,13 +2915,13 @@ func (p *OptionalI32Patch) writeField4(oprot thrift.Protocol) (err error) {
 }
 
 func (p *OptionalI32Patch) writeField6(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("patchAfter", thrift.STRUCT, 6); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:patchAfter: ", p), err) }
-  if err := p.PatchAfter.Write(oprot); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.PatchAfter), err)
+  if err := oprot.WriteFieldBegin("patch", thrift.STRUCT, 6); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:patch: ", p), err) }
+  if err := p.Patch.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Patch), err)
   }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:patchAfter: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:patch: ", p), err) }
   return err
 }
 
@@ -2943,33 +2943,33 @@ func (p *OptionalI32Patch) String() string {
   } else {
     ensureVal = fmt.Sprintf("%v", *p.Ensure)
   }
-  var patchAfterVal string
-  if p.PatchAfter == nil {
-    patchAfterVal = "<nil>"
+  var patchVal string
+  if p.Patch == nil {
+    patchVal = "<nil>"
   } else {
-    patchAfterVal = fmt.Sprintf("%v", p.PatchAfter)
+    patchVal = fmt.Sprintf("%v", p.Patch)
   }
-  return fmt.Sprintf("OptionalI32Patch({Clear:%s PatchPrior:%s Ensure:%s PatchAfter:%s})", clearVal, patchPriorVal, ensureVal, patchAfterVal)
+  return fmt.Sprintf("OptionalI32Patch({Clear:%s PatchPrior:%s Ensure:%s Patch:%s})", clearVal, patchPriorVal, ensureVal, patchVal)
 }
 
 // Attributes:
 //  - Clear: Clears any set value. Applies first.
 //  - PatchPrior: Patches any previously set values. Applies second.
 //  - Ensure: Assigns the value, if not already set to the same field. Applies third.
-//  - PatchAfter: Patches any set value, including newly set values. Applies last.
+//  - Patch: Patches any set value, including newly set values. Applies last.
 type OptionalI64Patch struct {
   // unused field # 1
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
   PatchPrior *I64Patch `thrift:"patchPrior,3" db:"patchPrior" json:"patchPrior"`
   Ensure *int64 `thrift:"ensure,4,optional" db:"ensure" json:"ensure,omitempty"`
   // unused field # 5
-  PatchAfter *I64Patch `thrift:"patchAfter,6" db:"patchAfter" json:"patchAfter"`
+  Patch *I64Patch `thrift:"patch,6" db:"patch" json:"patch"`
 }
 
 func NewOptionalI64Patch() *OptionalI64Patch {
   return &OptionalI64Patch{
     PatchPrior: NewI64Patch(),
-    PatchAfter: NewI64Patch(),
+    Patch: NewI64Patch(),
   }
 }
 
@@ -2991,12 +2991,12 @@ func (p *OptionalI64Patch) GetEnsure() int64 {
   }
 return *p.Ensure
 }
-var OptionalI64Patch_PatchAfter_DEFAULT *I64Patch
-func (p *OptionalI64Patch) GetPatchAfter() *I64Patch {
-  if !p.IsSetPatchAfter() {
-    return OptionalI64Patch_PatchAfter_DEFAULT
+var OptionalI64Patch_Patch_DEFAULT *I64Patch
+func (p *OptionalI64Patch) GetPatch() *I64Patch {
+  if !p.IsSetPatch() {
+    return OptionalI64Patch_Patch_DEFAULT
   }
-return p.PatchAfter
+return p.Patch
 }
 func (p *OptionalI64Patch) IsSetPatchPrior() bool {
   return p != nil && p.PatchPrior != nil
@@ -3006,8 +3006,8 @@ func (p *OptionalI64Patch) IsSetEnsure() bool {
   return p != nil && p.Ensure != nil
 }
 
-func (p *OptionalI64Patch) IsSetPatchAfter() bool {
-  return p != nil && p.PatchAfter != nil
+func (p *OptionalI64Patch) IsSetPatch() bool {
+  return p != nil && p.Patch != nil
 }
 
 type OptionalI64PatchBuilder struct {
@@ -3025,7 +3025,7 @@ func (p OptionalI64PatchBuilder) Emit() *OptionalI64Patch{
     Clear: p.obj.Clear,
     PatchPrior: p.obj.PatchPrior,
     Ensure: p.obj.Ensure,
-    PatchAfter: p.obj.PatchAfter,
+    Patch: p.obj.Patch,
   }
 }
 
@@ -3044,8 +3044,8 @@ func (o *OptionalI64PatchBuilder) Ensure(ensure *int64) *OptionalI64PatchBuilder
   return o
 }
 
-func (o *OptionalI64PatchBuilder) PatchAfter(patchAfter *I64Patch) *OptionalI64PatchBuilder {
-  o.obj.PatchAfter = patchAfter
+func (o *OptionalI64PatchBuilder) Patch(patch *I64Patch) *OptionalI64PatchBuilder {
+  o.obj.Patch = patch
   return o
 }
 
@@ -3064,8 +3064,8 @@ func (o *OptionalI64Patch) SetEnsure(ensure *int64) *OptionalI64Patch {
   return o
 }
 
-func (o *OptionalI64Patch) SetPatchAfter(patchAfter *I64Patch) *OptionalI64Patch {
-  o.PatchAfter = patchAfter
+func (o *OptionalI64Patch) SetPatch(patch *I64Patch) *OptionalI64Patch {
+  o.Patch = patch
   return o
 }
 
@@ -3140,9 +3140,9 @@ func (p *OptionalI64Patch)  ReadField4(iprot thrift.Protocol) error {
 }
 
 func (p *OptionalI64Patch)  ReadField6(iprot thrift.Protocol) error {
-  p.PatchAfter = NewI64Patch()
-  if err := p.PatchAfter.Read(iprot); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.PatchAfter), err)
+  p.Patch = NewI64Patch()
+  if err := p.Patch.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Patch), err)
   }
   return nil
 }
@@ -3195,13 +3195,13 @@ func (p *OptionalI64Patch) writeField4(oprot thrift.Protocol) (err error) {
 }
 
 func (p *OptionalI64Patch) writeField6(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("patchAfter", thrift.STRUCT, 6); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:patchAfter: ", p), err) }
-  if err := p.PatchAfter.Write(oprot); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.PatchAfter), err)
+  if err := oprot.WriteFieldBegin("patch", thrift.STRUCT, 6); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:patch: ", p), err) }
+  if err := p.Patch.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Patch), err)
   }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:patchAfter: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:patch: ", p), err) }
   return err
 }
 
@@ -3223,33 +3223,33 @@ func (p *OptionalI64Patch) String() string {
   } else {
     ensureVal = fmt.Sprintf("%v", *p.Ensure)
   }
-  var patchAfterVal string
-  if p.PatchAfter == nil {
-    patchAfterVal = "<nil>"
+  var patchVal string
+  if p.Patch == nil {
+    patchVal = "<nil>"
   } else {
-    patchAfterVal = fmt.Sprintf("%v", p.PatchAfter)
+    patchVal = fmt.Sprintf("%v", p.Patch)
   }
-  return fmt.Sprintf("OptionalI64Patch({Clear:%s PatchPrior:%s Ensure:%s PatchAfter:%s})", clearVal, patchPriorVal, ensureVal, patchAfterVal)
+  return fmt.Sprintf("OptionalI64Patch({Clear:%s PatchPrior:%s Ensure:%s Patch:%s})", clearVal, patchPriorVal, ensureVal, patchVal)
 }
 
 // Attributes:
 //  - Clear: Clears any set value. Applies first.
 //  - PatchPrior: Patches any previously set values. Applies second.
 //  - Ensure: Assigns the value, if not already set to the same field. Applies third.
-//  - PatchAfter: Patches any set value, including newly set values. Applies last.
+//  - Patch: Patches any set value, including newly set values. Applies last.
 type OptionalFloatPatch struct {
   // unused field # 1
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
   PatchPrior *FloatPatch `thrift:"patchPrior,3" db:"patchPrior" json:"patchPrior"`
   Ensure *float32 `thrift:"ensure,4,optional" db:"ensure" json:"ensure,omitempty"`
   // unused field # 5
-  PatchAfter *FloatPatch `thrift:"patchAfter,6" db:"patchAfter" json:"patchAfter"`
+  Patch *FloatPatch `thrift:"patch,6" db:"patch" json:"patch"`
 }
 
 func NewOptionalFloatPatch() *OptionalFloatPatch {
   return &OptionalFloatPatch{
     PatchPrior: NewFloatPatch(),
-    PatchAfter: NewFloatPatch(),
+    Patch: NewFloatPatch(),
   }
 }
 
@@ -3271,12 +3271,12 @@ func (p *OptionalFloatPatch) GetEnsure() float32 {
   }
 return *p.Ensure
 }
-var OptionalFloatPatch_PatchAfter_DEFAULT *FloatPatch
-func (p *OptionalFloatPatch) GetPatchAfter() *FloatPatch {
-  if !p.IsSetPatchAfter() {
-    return OptionalFloatPatch_PatchAfter_DEFAULT
+var OptionalFloatPatch_Patch_DEFAULT *FloatPatch
+func (p *OptionalFloatPatch) GetPatch() *FloatPatch {
+  if !p.IsSetPatch() {
+    return OptionalFloatPatch_Patch_DEFAULT
   }
-return p.PatchAfter
+return p.Patch
 }
 func (p *OptionalFloatPatch) IsSetPatchPrior() bool {
   return p != nil && p.PatchPrior != nil
@@ -3286,8 +3286,8 @@ func (p *OptionalFloatPatch) IsSetEnsure() bool {
   return p != nil && p.Ensure != nil
 }
 
-func (p *OptionalFloatPatch) IsSetPatchAfter() bool {
-  return p != nil && p.PatchAfter != nil
+func (p *OptionalFloatPatch) IsSetPatch() bool {
+  return p != nil && p.Patch != nil
 }
 
 type OptionalFloatPatchBuilder struct {
@@ -3305,7 +3305,7 @@ func (p OptionalFloatPatchBuilder) Emit() *OptionalFloatPatch{
     Clear: p.obj.Clear,
     PatchPrior: p.obj.PatchPrior,
     Ensure: p.obj.Ensure,
-    PatchAfter: p.obj.PatchAfter,
+    Patch: p.obj.Patch,
   }
 }
 
@@ -3324,8 +3324,8 @@ func (o *OptionalFloatPatchBuilder) Ensure(ensure *float32) *OptionalFloatPatchB
   return o
 }
 
-func (o *OptionalFloatPatchBuilder) PatchAfter(patchAfter *FloatPatch) *OptionalFloatPatchBuilder {
-  o.obj.PatchAfter = patchAfter
+func (o *OptionalFloatPatchBuilder) Patch(patch *FloatPatch) *OptionalFloatPatchBuilder {
+  o.obj.Patch = patch
   return o
 }
 
@@ -3344,8 +3344,8 @@ func (o *OptionalFloatPatch) SetEnsure(ensure *float32) *OptionalFloatPatch {
   return o
 }
 
-func (o *OptionalFloatPatch) SetPatchAfter(patchAfter *FloatPatch) *OptionalFloatPatch {
-  o.PatchAfter = patchAfter
+func (o *OptionalFloatPatch) SetPatch(patch *FloatPatch) *OptionalFloatPatch {
+  o.Patch = patch
   return o
 }
 
@@ -3420,9 +3420,9 @@ func (p *OptionalFloatPatch)  ReadField4(iprot thrift.Protocol) error {
 }
 
 func (p *OptionalFloatPatch)  ReadField6(iprot thrift.Protocol) error {
-  p.PatchAfter = NewFloatPatch()
-  if err := p.PatchAfter.Read(iprot); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.PatchAfter), err)
+  p.Patch = NewFloatPatch()
+  if err := p.Patch.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Patch), err)
   }
   return nil
 }
@@ -3475,13 +3475,13 @@ func (p *OptionalFloatPatch) writeField4(oprot thrift.Protocol) (err error) {
 }
 
 func (p *OptionalFloatPatch) writeField6(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("patchAfter", thrift.STRUCT, 6); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:patchAfter: ", p), err) }
-  if err := p.PatchAfter.Write(oprot); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.PatchAfter), err)
+  if err := oprot.WriteFieldBegin("patch", thrift.STRUCT, 6); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:patch: ", p), err) }
+  if err := p.Patch.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Patch), err)
   }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:patchAfter: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:patch: ", p), err) }
   return err
 }
 
@@ -3503,33 +3503,33 @@ func (p *OptionalFloatPatch) String() string {
   } else {
     ensureVal = fmt.Sprintf("%v", *p.Ensure)
   }
-  var patchAfterVal string
-  if p.PatchAfter == nil {
-    patchAfterVal = "<nil>"
+  var patchVal string
+  if p.Patch == nil {
+    patchVal = "<nil>"
   } else {
-    patchAfterVal = fmt.Sprintf("%v", p.PatchAfter)
+    patchVal = fmt.Sprintf("%v", p.Patch)
   }
-  return fmt.Sprintf("OptionalFloatPatch({Clear:%s PatchPrior:%s Ensure:%s PatchAfter:%s})", clearVal, patchPriorVal, ensureVal, patchAfterVal)
+  return fmt.Sprintf("OptionalFloatPatch({Clear:%s PatchPrior:%s Ensure:%s Patch:%s})", clearVal, patchPriorVal, ensureVal, patchVal)
 }
 
 // Attributes:
 //  - Clear: Clears any set value. Applies first.
 //  - PatchPrior: Patches any previously set values. Applies second.
 //  - Ensure: Assigns the value, if not already set to the same field. Applies third.
-//  - PatchAfter: Patches any set value, including newly set values. Applies last.
+//  - Patch: Patches any set value, including newly set values. Applies last.
 type OptionalDoublePatch struct {
   // unused field # 1
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
   PatchPrior *DoublePatch `thrift:"patchPrior,3" db:"patchPrior" json:"patchPrior"`
   Ensure *float64 `thrift:"ensure,4,optional" db:"ensure" json:"ensure,omitempty"`
   // unused field # 5
-  PatchAfter *DoublePatch `thrift:"patchAfter,6" db:"patchAfter" json:"patchAfter"`
+  Patch *DoublePatch `thrift:"patch,6" db:"patch" json:"patch"`
 }
 
 func NewOptionalDoublePatch() *OptionalDoublePatch {
   return &OptionalDoublePatch{
     PatchPrior: NewDoublePatch(),
-    PatchAfter: NewDoublePatch(),
+    Patch: NewDoublePatch(),
   }
 }
 
@@ -3551,12 +3551,12 @@ func (p *OptionalDoublePatch) GetEnsure() float64 {
   }
 return *p.Ensure
 }
-var OptionalDoublePatch_PatchAfter_DEFAULT *DoublePatch
-func (p *OptionalDoublePatch) GetPatchAfter() *DoublePatch {
-  if !p.IsSetPatchAfter() {
-    return OptionalDoublePatch_PatchAfter_DEFAULT
+var OptionalDoublePatch_Patch_DEFAULT *DoublePatch
+func (p *OptionalDoublePatch) GetPatch() *DoublePatch {
+  if !p.IsSetPatch() {
+    return OptionalDoublePatch_Patch_DEFAULT
   }
-return p.PatchAfter
+return p.Patch
 }
 func (p *OptionalDoublePatch) IsSetPatchPrior() bool {
   return p != nil && p.PatchPrior != nil
@@ -3566,8 +3566,8 @@ func (p *OptionalDoublePatch) IsSetEnsure() bool {
   return p != nil && p.Ensure != nil
 }
 
-func (p *OptionalDoublePatch) IsSetPatchAfter() bool {
-  return p != nil && p.PatchAfter != nil
+func (p *OptionalDoublePatch) IsSetPatch() bool {
+  return p != nil && p.Patch != nil
 }
 
 type OptionalDoublePatchBuilder struct {
@@ -3585,7 +3585,7 @@ func (p OptionalDoublePatchBuilder) Emit() *OptionalDoublePatch{
     Clear: p.obj.Clear,
     PatchPrior: p.obj.PatchPrior,
     Ensure: p.obj.Ensure,
-    PatchAfter: p.obj.PatchAfter,
+    Patch: p.obj.Patch,
   }
 }
 
@@ -3604,8 +3604,8 @@ func (o *OptionalDoublePatchBuilder) Ensure(ensure *float64) *OptionalDoublePatc
   return o
 }
 
-func (o *OptionalDoublePatchBuilder) PatchAfter(patchAfter *DoublePatch) *OptionalDoublePatchBuilder {
-  o.obj.PatchAfter = patchAfter
+func (o *OptionalDoublePatchBuilder) Patch(patch *DoublePatch) *OptionalDoublePatchBuilder {
+  o.obj.Patch = patch
   return o
 }
 
@@ -3624,8 +3624,8 @@ func (o *OptionalDoublePatch) SetEnsure(ensure *float64) *OptionalDoublePatch {
   return o
 }
 
-func (o *OptionalDoublePatch) SetPatchAfter(patchAfter *DoublePatch) *OptionalDoublePatch {
-  o.PatchAfter = patchAfter
+func (o *OptionalDoublePatch) SetPatch(patch *DoublePatch) *OptionalDoublePatch {
+  o.Patch = patch
   return o
 }
 
@@ -3700,9 +3700,9 @@ func (p *OptionalDoublePatch)  ReadField4(iprot thrift.Protocol) error {
 }
 
 func (p *OptionalDoublePatch)  ReadField6(iprot thrift.Protocol) error {
-  p.PatchAfter = NewDoublePatch()
-  if err := p.PatchAfter.Read(iprot); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.PatchAfter), err)
+  p.Patch = NewDoublePatch()
+  if err := p.Patch.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Patch), err)
   }
   return nil
 }
@@ -3755,13 +3755,13 @@ func (p *OptionalDoublePatch) writeField4(oprot thrift.Protocol) (err error) {
 }
 
 func (p *OptionalDoublePatch) writeField6(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("patchAfter", thrift.STRUCT, 6); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:patchAfter: ", p), err) }
-  if err := p.PatchAfter.Write(oprot); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.PatchAfter), err)
+  if err := oprot.WriteFieldBegin("patch", thrift.STRUCT, 6); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:patch: ", p), err) }
+  if err := p.Patch.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Patch), err)
   }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:patchAfter: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:patch: ", p), err) }
   return err
 }
 
@@ -3783,33 +3783,33 @@ func (p *OptionalDoublePatch) String() string {
   } else {
     ensureVal = fmt.Sprintf("%v", *p.Ensure)
   }
-  var patchAfterVal string
-  if p.PatchAfter == nil {
-    patchAfterVal = "<nil>"
+  var patchVal string
+  if p.Patch == nil {
+    patchVal = "<nil>"
   } else {
-    patchAfterVal = fmt.Sprintf("%v", p.PatchAfter)
+    patchVal = fmt.Sprintf("%v", p.Patch)
   }
-  return fmt.Sprintf("OptionalDoublePatch({Clear:%s PatchPrior:%s Ensure:%s PatchAfter:%s})", clearVal, patchPriorVal, ensureVal, patchAfterVal)
+  return fmt.Sprintf("OptionalDoublePatch({Clear:%s PatchPrior:%s Ensure:%s Patch:%s})", clearVal, patchPriorVal, ensureVal, patchVal)
 }
 
 // Attributes:
 //  - Clear: Clears any set value. Applies first.
 //  - PatchPrior: Patches any previously set values. Applies second.
 //  - Ensure: Assigns the value, if not already set to the same field. Applies third.
-//  - PatchAfter: Patches any set value, including newly set values. Applies last.
+//  - Patch: Patches any set value, including newly set values. Applies last.
 type OptionalStringPatch struct {
   // unused field # 1
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
   PatchPrior *StringPatch `thrift:"patchPrior,3" db:"patchPrior" json:"patchPrior"`
   Ensure *string `thrift:"ensure,4,optional" db:"ensure" json:"ensure,omitempty"`
   // unused field # 5
-  PatchAfter *StringPatch `thrift:"patchAfter,6" db:"patchAfter" json:"patchAfter"`
+  Patch *StringPatch `thrift:"patch,6" db:"patch" json:"patch"`
 }
 
 func NewOptionalStringPatch() *OptionalStringPatch {
   return &OptionalStringPatch{
     PatchPrior: NewStringPatch(),
-    PatchAfter: NewStringPatch(),
+    Patch: NewStringPatch(),
   }
 }
 
@@ -3831,12 +3831,12 @@ func (p *OptionalStringPatch) GetEnsure() string {
   }
 return *p.Ensure
 }
-var OptionalStringPatch_PatchAfter_DEFAULT *StringPatch
-func (p *OptionalStringPatch) GetPatchAfter() *StringPatch {
-  if !p.IsSetPatchAfter() {
-    return OptionalStringPatch_PatchAfter_DEFAULT
+var OptionalStringPatch_Patch_DEFAULT *StringPatch
+func (p *OptionalStringPatch) GetPatch() *StringPatch {
+  if !p.IsSetPatch() {
+    return OptionalStringPatch_Patch_DEFAULT
   }
-return p.PatchAfter
+return p.Patch
 }
 func (p *OptionalStringPatch) IsSetPatchPrior() bool {
   return p != nil && p.PatchPrior != nil
@@ -3846,8 +3846,8 @@ func (p *OptionalStringPatch) IsSetEnsure() bool {
   return p != nil && p.Ensure != nil
 }
 
-func (p *OptionalStringPatch) IsSetPatchAfter() bool {
-  return p != nil && p.PatchAfter != nil
+func (p *OptionalStringPatch) IsSetPatch() bool {
+  return p != nil && p.Patch != nil
 }
 
 type OptionalStringPatchBuilder struct {
@@ -3865,7 +3865,7 @@ func (p OptionalStringPatchBuilder) Emit() *OptionalStringPatch{
     Clear: p.obj.Clear,
     PatchPrior: p.obj.PatchPrior,
     Ensure: p.obj.Ensure,
-    PatchAfter: p.obj.PatchAfter,
+    Patch: p.obj.Patch,
   }
 }
 
@@ -3884,8 +3884,8 @@ func (o *OptionalStringPatchBuilder) Ensure(ensure *string) *OptionalStringPatch
   return o
 }
 
-func (o *OptionalStringPatchBuilder) PatchAfter(patchAfter *StringPatch) *OptionalStringPatchBuilder {
-  o.obj.PatchAfter = patchAfter
+func (o *OptionalStringPatchBuilder) Patch(patch *StringPatch) *OptionalStringPatchBuilder {
+  o.obj.Patch = patch
   return o
 }
 
@@ -3904,8 +3904,8 @@ func (o *OptionalStringPatch) SetEnsure(ensure *string) *OptionalStringPatch {
   return o
 }
 
-func (o *OptionalStringPatch) SetPatchAfter(patchAfter *StringPatch) *OptionalStringPatch {
-  o.PatchAfter = patchAfter
+func (o *OptionalStringPatch) SetPatch(patch *StringPatch) *OptionalStringPatch {
+  o.Patch = patch
   return o
 }
 
@@ -3980,9 +3980,9 @@ func (p *OptionalStringPatch)  ReadField4(iprot thrift.Protocol) error {
 }
 
 func (p *OptionalStringPatch)  ReadField6(iprot thrift.Protocol) error {
-  p.PatchAfter = NewStringPatch()
-  if err := p.PatchAfter.Read(iprot); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.PatchAfter), err)
+  p.Patch = NewStringPatch()
+  if err := p.Patch.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Patch), err)
   }
   return nil
 }
@@ -4035,13 +4035,13 @@ func (p *OptionalStringPatch) writeField4(oprot thrift.Protocol) (err error) {
 }
 
 func (p *OptionalStringPatch) writeField6(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("patchAfter", thrift.STRUCT, 6); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:patchAfter: ", p), err) }
-  if err := p.PatchAfter.Write(oprot); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.PatchAfter), err)
+  if err := oprot.WriteFieldBegin("patch", thrift.STRUCT, 6); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:patch: ", p), err) }
+  if err := p.Patch.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Patch), err)
   }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:patchAfter: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:patch: ", p), err) }
   return err
 }
 
@@ -4063,33 +4063,33 @@ func (p *OptionalStringPatch) String() string {
   } else {
     ensureVal = fmt.Sprintf("%v", *p.Ensure)
   }
-  var patchAfterVal string
-  if p.PatchAfter == nil {
-    patchAfterVal = "<nil>"
+  var patchVal string
+  if p.Patch == nil {
+    patchVal = "<nil>"
   } else {
-    patchAfterVal = fmt.Sprintf("%v", p.PatchAfter)
+    patchVal = fmt.Sprintf("%v", p.Patch)
   }
-  return fmt.Sprintf("OptionalStringPatch({Clear:%s PatchPrior:%s Ensure:%s PatchAfter:%s})", clearVal, patchPriorVal, ensureVal, patchAfterVal)
+  return fmt.Sprintf("OptionalStringPatch({Clear:%s PatchPrior:%s Ensure:%s Patch:%s})", clearVal, patchPriorVal, ensureVal, patchVal)
 }
 
 // Attributes:
 //  - Clear: Clears any set value. Applies first.
 //  - PatchPrior: Patches any previously set values. Applies second.
 //  - Ensure: Assigns the value, if not already set to the same field. Applies third.
-//  - PatchAfter: Patches any set value, including newly set values. Applies last.
+//  - Patch: Patches any set value, including newly set values. Applies last.
 type OptionalBinaryPatch struct {
   // unused field # 1
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
   PatchPrior *BinaryPatch `thrift:"patchPrior,3" db:"patchPrior" json:"patchPrior"`
   Ensure []byte `thrift:"ensure,4,optional" db:"ensure" json:"ensure,omitempty"`
   // unused field # 5
-  PatchAfter *BinaryPatch `thrift:"patchAfter,6" db:"patchAfter" json:"patchAfter"`
+  Patch *BinaryPatch `thrift:"patch,6" db:"patch" json:"patch"`
 }
 
 func NewOptionalBinaryPatch() *OptionalBinaryPatch {
   return &OptionalBinaryPatch{
     PatchPrior: NewBinaryPatch(),
-    PatchAfter: NewBinaryPatch(),
+    Patch: NewBinaryPatch(),
   }
 }
 
@@ -4109,12 +4109,12 @@ var OptionalBinaryPatch_Ensure_DEFAULT []byte
 func (p *OptionalBinaryPatch) GetEnsure() []byte {
   return p.Ensure
 }
-var OptionalBinaryPatch_PatchAfter_DEFAULT *BinaryPatch
-func (p *OptionalBinaryPatch) GetPatchAfter() *BinaryPatch {
-  if !p.IsSetPatchAfter() {
-    return OptionalBinaryPatch_PatchAfter_DEFAULT
+var OptionalBinaryPatch_Patch_DEFAULT *BinaryPatch
+func (p *OptionalBinaryPatch) GetPatch() *BinaryPatch {
+  if !p.IsSetPatch() {
+    return OptionalBinaryPatch_Patch_DEFAULT
   }
-return p.PatchAfter
+return p.Patch
 }
 func (p *OptionalBinaryPatch) IsSetPatchPrior() bool {
   return p != nil && p.PatchPrior != nil
@@ -4124,8 +4124,8 @@ func (p *OptionalBinaryPatch) IsSetEnsure() bool {
   return p != nil && p.Ensure != nil
 }
 
-func (p *OptionalBinaryPatch) IsSetPatchAfter() bool {
-  return p != nil && p.PatchAfter != nil
+func (p *OptionalBinaryPatch) IsSetPatch() bool {
+  return p != nil && p.Patch != nil
 }
 
 type OptionalBinaryPatchBuilder struct {
@@ -4143,7 +4143,7 @@ func (p OptionalBinaryPatchBuilder) Emit() *OptionalBinaryPatch{
     Clear: p.obj.Clear,
     PatchPrior: p.obj.PatchPrior,
     Ensure: p.obj.Ensure,
-    PatchAfter: p.obj.PatchAfter,
+    Patch: p.obj.Patch,
   }
 }
 
@@ -4162,8 +4162,8 @@ func (o *OptionalBinaryPatchBuilder) Ensure(ensure []byte) *OptionalBinaryPatchB
   return o
 }
 
-func (o *OptionalBinaryPatchBuilder) PatchAfter(patchAfter *BinaryPatch) *OptionalBinaryPatchBuilder {
-  o.obj.PatchAfter = patchAfter
+func (o *OptionalBinaryPatchBuilder) Patch(patch *BinaryPatch) *OptionalBinaryPatchBuilder {
+  o.obj.Patch = patch
   return o
 }
 
@@ -4182,8 +4182,8 @@ func (o *OptionalBinaryPatch) SetEnsure(ensure []byte) *OptionalBinaryPatch {
   return o
 }
 
-func (o *OptionalBinaryPatch) SetPatchAfter(patchAfter *BinaryPatch) *OptionalBinaryPatch {
-  o.PatchAfter = patchAfter
+func (o *OptionalBinaryPatch) SetPatch(patch *BinaryPatch) *OptionalBinaryPatch {
+  o.Patch = patch
   return o
 }
 
@@ -4258,9 +4258,9 @@ func (p *OptionalBinaryPatch)  ReadField4(iprot thrift.Protocol) error {
 }
 
 func (p *OptionalBinaryPatch)  ReadField6(iprot thrift.Protocol) error {
-  p.PatchAfter = NewBinaryPatch()
-  if err := p.PatchAfter.Read(iprot); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.PatchAfter), err)
+  p.Patch = NewBinaryPatch()
+  if err := p.Patch.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Patch), err)
   }
   return nil
 }
@@ -4313,13 +4313,13 @@ func (p *OptionalBinaryPatch) writeField4(oprot thrift.Protocol) (err error) {
 }
 
 func (p *OptionalBinaryPatch) writeField6(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("patchAfter", thrift.STRUCT, 6); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:patchAfter: ", p), err) }
-  if err := p.PatchAfter.Write(oprot); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.PatchAfter), err)
+  if err := oprot.WriteFieldBegin("patch", thrift.STRUCT, 6); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:patch: ", p), err) }
+  if err := p.Patch.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Patch), err)
   }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:patchAfter: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:patch: ", p), err) }
   return err
 }
 
@@ -4336,12 +4336,12 @@ func (p *OptionalBinaryPatch) String() string {
     patchPriorVal = fmt.Sprintf("%v", p.PatchPrior)
   }
   ensureVal := fmt.Sprintf("%v", p.Ensure)
-  var patchAfterVal string
-  if p.PatchAfter == nil {
-    patchAfterVal = "<nil>"
+  var patchVal string
+  if p.Patch == nil {
+    patchVal = "<nil>"
   } else {
-    patchAfterVal = fmt.Sprintf("%v", p.PatchAfter)
+    patchVal = fmt.Sprintf("%v", p.Patch)
   }
-  return fmt.Sprintf("OptionalBinaryPatch({Clear:%s PatchPrior:%s Ensure:%s PatchAfter:%s})", clearVal, patchPriorVal, ensureVal, patchAfterVal)
+  return fmt.Sprintf("OptionalBinaryPatch({Clear:%s PatchPrior:%s Ensure:%s Patch:%s})", clearVal, patchPriorVal, ensureVal, patchVal)
 }
 

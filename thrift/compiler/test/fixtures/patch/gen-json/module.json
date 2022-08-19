@@ -632,7 +632,7 @@
             }
           }
         },
-        "patchAfter" : {
+        "patch" : {
           "type_enum" : "STRUCT",
           "spec_args" : "MyDataFieldPatch",
           "required" : true,
@@ -709,7 +709,7 @@
             }
           }
         },
-        "patchAfter" : {
+        "patch" : {
           "type_enum" : "STRUCT",
           "spec_args" : "MyDataPatch",
           "required" : true,
@@ -833,7 +833,7 @@
             }
           }
         },
-        "patchAfter" : {
+        "patch" : {
           "type_enum" : "STRUCT",
           "spec_args" : "InnerUnionFieldPatch",
           "required" : true,
@@ -910,7 +910,7 @@
             }
           }
         },
-        "patchAfter" : {
+        "patch" : {
           "type_enum" : "STRUCT",
           "spec_args" : "InnerUnionPatch",
           "required" : true,
@@ -1064,7 +1064,7 @@
             }
           }
         },
-        "patchAfter" : {
+        "patch" : {
           "type_enum" : "STRUCT",
           "spec_args" : "MyUnionFieldPatch",
           "required" : true,
@@ -1141,7 +1141,7 @@
             }
           }
         },
-        "patchAfter" : {
+        "patch" : {
           "type_enum" : "STRUCT",
           "spec_args" : "MyUnionPatch",
           "required" : true,
@@ -1672,7 +1672,7 @@
             }
           }
         },
-        "patchAfter" : {
+        "patch" : {
           "type_enum" : "STRUCT",
           "spec_args" : "MyStructField21Patch",
           "required" : true,
@@ -1826,7 +1826,7 @@
             }
           }
         },
-        "patchAfter" : {
+        "patch" : {
           "type_enum" : "STRUCT",
           "spec_args" : "MyStructField22Patch",
           "required" : true,
@@ -1980,7 +1980,7 @@
             }
           }
         },
-        "patchAfter" : {
+        "patch" : {
           "type_enum" : "STRUCT",
           "spec_args" : "MyStructField23Patch",
           "required" : true,
@@ -2072,7 +2072,7 @@
             }
           }
         },
-        "patchAfter" : {
+        "patch" : {
           "type_enum" : "STRUCT",
           "spec_args" : "MyStructFieldPatch",
           "required" : true,
@@ -2149,7 +2149,7 @@
             }
           }
         },
-        "patchAfter" : {
+        "patch" : {
           "type_enum" : "STRUCT",
           "spec_args" : "MyStructPatch",
           "required" : true,

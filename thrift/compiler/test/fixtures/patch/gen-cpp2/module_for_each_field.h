@@ -88,7 +88,7 @@ struct ForEachField<::test::fixtures::patch::MyDataPatchStruct> {
     f(1, static_cast<T&&>(t).clear_ref()...);
     f(2, static_cast<T&&>(t).patchPrior_ref()...);
     f(3, static_cast<T&&>(t).ensure_ref()...);
-    f(4, static_cast<T&&>(t).patchAfter_ref()...);
+    f(4, static_cast<T&&>(t).patch_ref()...);
   }
 };
 
@@ -99,7 +99,7 @@ struct ForEachField<::test::fixtures::patch::OptionalMyDataPatchStruct> {
     f(0, static_cast<T&&>(t).clear_ref()...);
     f(1, static_cast<T&&>(t).patchPrior_ref()...);
     f(2, static_cast<T&&>(t).ensure_ref()...);
-    f(3, static_cast<T&&>(t).patchAfter_ref()...);
+    f(3, static_cast<T&&>(t).patch_ref()...);
   }
 };
 
@@ -119,7 +119,7 @@ struct ForEachField<::test::fixtures::patch::InnerUnionPatchStruct> {
     f(1, static_cast<T&&>(t).clear_ref()...);
     f(2, static_cast<T&&>(t).patchPrior_ref()...);
     f(3, static_cast<T&&>(t).ensure_ref()...);
-    f(4, static_cast<T&&>(t).patchAfter_ref()...);
+    f(4, static_cast<T&&>(t).patch_ref()...);
   }
 };
 
@@ -130,7 +130,7 @@ struct ForEachField<::test::fixtures::patch::OptionalInnerUnionPatchStruct> {
     f(0, static_cast<T&&>(t).clear_ref()...);
     f(1, static_cast<T&&>(t).patchPrior_ref()...);
     f(2, static_cast<T&&>(t).ensure_ref()...);
-    f(3, static_cast<T&&>(t).patchAfter_ref()...);
+    f(3, static_cast<T&&>(t).patch_ref()...);
   }
 };
 
@@ -152,7 +152,7 @@ struct ForEachField<::test::fixtures::patch::MyUnionPatchStruct> {
     f(1, static_cast<T&&>(t).clear_ref()...);
     f(2, static_cast<T&&>(t).patchPrior_ref()...);
     f(3, static_cast<T&&>(t).ensure_ref()...);
-    f(4, static_cast<T&&>(t).patchAfter_ref()...);
+    f(4, static_cast<T&&>(t).patch_ref()...);
   }
 };
 
@@ -163,7 +163,7 @@ struct ForEachField<::test::fixtures::patch::OptionalMyUnionPatchStruct> {
     f(0, static_cast<T&&>(t).clear_ref()...);
     f(1, static_cast<T&&>(t).patchPrior_ref()...);
     f(2, static_cast<T&&>(t).ensure_ref()...);
-    f(3, static_cast<T&&>(t).patchAfter_ref()...);
+    f(3, static_cast<T&&>(t).patch_ref()...);
   }
 };
 
@@ -185,7 +185,7 @@ struct ForEachField<::test::fixtures::patch::OptionalMyStructField21PatchStruct>
     f(0, static_cast<T&&>(t).clear_ref()...);
     f(1, static_cast<T&&>(t).patchPrior_ref()...);
     f(2, static_cast<T&&>(t).ensure_ref()...);
-    f(3, static_cast<T&&>(t).patchAfter_ref()...);
+    f(3, static_cast<T&&>(t).patch_ref()...);
   }
 };
 
@@ -207,7 +207,7 @@ struct ForEachField<::test::fixtures::patch::OptionalMyStructField22PatchStruct>
     f(0, static_cast<T&&>(t).clear_ref()...);
     f(1, static_cast<T&&>(t).patchPrior_ref()...);
     f(2, static_cast<T&&>(t).ensure_ref()...);
-    f(3, static_cast<T&&>(t).patchAfter_ref()...);
+    f(3, static_cast<T&&>(t).patch_ref()...);
   }
 };
 
@@ -229,7 +229,7 @@ struct ForEachField<::test::fixtures::patch::OptionalMyStructField23PatchStruct>
     f(0, static_cast<T&&>(t).clear_ref()...);
     f(1, static_cast<T&&>(t).patchPrior_ref()...);
     f(2, static_cast<T&&>(t).ensure_ref()...);
-    f(3, static_cast<T&&>(t).patchAfter_ref()...);
+    f(3, static_cast<T&&>(t).patch_ref()...);
   }
 };
 
@@ -272,7 +272,7 @@ struct ForEachField<::test::fixtures::patch::MyStructPatchStruct> {
     f(1, static_cast<T&&>(t).clear_ref()...);
     f(2, static_cast<T&&>(t).patchPrior_ref()...);
     f(3, static_cast<T&&>(t).ensure_ref()...);
-    f(4, static_cast<T&&>(t).patchAfter_ref()...);
+    f(4, static_cast<T&&>(t).patch_ref()...);
   }
 };
 
@@ -283,7 +283,7 @@ struct ForEachField<::test::fixtures::patch::OptionalMyStructPatchStruct> {
     f(0, static_cast<T&&>(t).clear_ref()...);
     f(1, static_cast<T&&>(t).patchPrior_ref()...);
     f(2, static_cast<T&&>(t).ensure_ref()...);
-    f(3, static_cast<T&&>(t).patchAfter_ref()...);
+    f(3, static_cast<T&&>(t).patch_ref()...);
   }
 };
 } // namespace detail

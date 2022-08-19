@@ -86,9 +86,9 @@ class OptionalPatch : public BaseEnsurePatch<Patch, OptionalPatch<Patch>> {
     patch.ensure(std::forward<U>(_default));
     return patch;
   }
-  P& ensure() { return *ensureAnd().patchAfter(); }
-  P& ensure(const T& val) { return *ensureAnd(val).patchAfter(); }
-  P& ensure(T&& val) { return *ensureAnd(std::move(val)).patchAfter(); }
+  P& ensure() { return *ensureAnd().patch(); }
+  P& ensure(const T& val) { return *ensureAnd(val).patch(); }
+  P& ensure(T&& val) { return *ensureAnd(std::move(val)).patch(); }
   P& operator*() { return patch(); }
   P* operator->() { return &patch(); }
 
@@ -112,7 +112,7 @@ class OptionalPatch : public BaseEnsurePatch<Patch, OptionalPatch<Patch>> {
       }
       val = *data_.ensure();
     }
-    data_.patchAfter()->apply(val);
+    data_.patch()->apply(val);
   }
 
   template <typename U>

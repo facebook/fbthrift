@@ -330,8 +330,8 @@
   "name" : "MyData"
 }
           },
-          "patchAfter" : {
-            "name" : "patchAfter",
+          "patch" : {
+            "name" : "patch",
             "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,
@@ -379,8 +379,8 @@
   "name" : "MyData"
 }
           },
-          "patchAfter" : {
-            "name" : "patchAfter",
+          "patch" : {
+            "name" : "patch",
             "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,
@@ -457,8 +457,8 @@
   "name" : "InnerUnion"
 }
           },
-          "patchAfter" : {
-            "name" : "patchAfter",
+          "patch" : {
+            "name" : "patch",
             "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,
@@ -506,8 +506,8 @@
   "name" : "InnerUnion"
 }
           },
-          "patchAfter" : {
-            "name" : "patchAfter",
+          "patch" : {
+            "name" : "patch",
             "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,
@@ -604,8 +604,8 @@
   "name" : "MyUnion"
 }
           },
-          "patchAfter" : {
-            "name" : "patchAfter",
+          "patch" : {
+            "name" : "patch",
             "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,
@@ -653,8 +653,8 @@
   "name" : "MyUnion"
 }
           },
-          "patchAfter" : {
-            "name" : "patchAfter",
+          "patch" : {
+            "name" : "patch",
             "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,
@@ -999,8 +999,8 @@
   "inner_type" : "i16"
 }
           },
-          "patchAfter" : {
-            "name" : "patchAfter",
+          "patch" : {
+            "name" : "patch",
             "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,
@@ -1097,8 +1097,8 @@
   "inner_type" : "string"
 }
           },
-          "patchAfter" : {
-            "name" : "patchAfter",
+          "patch" : {
+            "name" : "patch",
             "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,
@@ -1199,8 +1199,8 @@
   "value_type" : "string"
 }
           },
-          "patchAfter" : {
-            "name" : "patchAfter",
+          "patch" : {
+            "name" : "patch",
             "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,
@@ -1259,8 +1259,8 @@
   "name" : "MyStruct"
 }
           },
-          "patchAfter" : {
-            "name" : "patchAfter",
+          "patch" : {
+            "name" : "patch",
             "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,
@@ -1308,8 +1308,8 @@
   "name" : "MyStruct"
 }
           },
-          "patchAfter" : {
-            "name" : "patchAfter",
+          "patch" : {
+            "name" : "patch",
             "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,

@@ -29,7 +29,7 @@ public class OptionalInnerUnionPatch implements TBase, java.io.Serializable, Clo
   private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
   private static final TField PATCH_PRIOR_FIELD_DESC = new TField("patchPrior", TType.STRUCT, (short)3);
   private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.STRUCT, (short)4);
-  private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)6);
+  private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)6);
 
   /**
    * Clears any set value. Applies first.
@@ -46,11 +46,11 @@ public class OptionalInnerUnionPatch implements TBase, java.io.Serializable, Clo
   /**
    * Patches any set value, including newly set values. Applies last.
    */
-  public InnerUnionPatch patchAfter;
+  public InnerUnionPatch patch;
   public static final int CLEAR = 2;
   public static final int PATCHPRIOR = 3;
   public static final int ENSURE = 4;
-  public static final int PATCHAFTER = 6;
+  public static final int PATCH = 6;
 
   // isset id assignments
   private static final int __CLEAR_ISSET_ID = 0;
@@ -66,7 +66,7 @@ public class OptionalInnerUnionPatch implements TBase, java.io.Serializable, Clo
         new StructMetaData(TType.STRUCT, InnerUnionPatch.class)));
     tmpMetaDataMap.put(ENSURE, new FieldMetaData("ensure", TFieldRequirementType.OPTIONAL, 
         new StructMetaData(TType.STRUCT, InnerUnion.class)));
-    tmpMetaDataMap.put(PATCHAFTER, new FieldMetaData("patchAfter", TFieldRequirementType.DEFAULT, 
+    tmpMetaDataMap.put(PATCH, new FieldMetaData("patch", TFieldRequirementType.DEFAULT, 
         new StructMetaData(TType.STRUCT, InnerUnionPatch.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
@@ -81,32 +81,32 @@ public class OptionalInnerUnionPatch implements TBase, java.io.Serializable, Clo
   public OptionalInnerUnionPatch(
       boolean clear,
       InnerUnionPatch patchPrior,
-      InnerUnionPatch patchAfter) {
+      InnerUnionPatch patch) {
     this();
     this.clear = clear;
     setClearIsSet(true);
     this.patchPrior = patchPrior;
-    this.patchAfter = patchAfter;
+    this.patch = patch;
   }
 
   public OptionalInnerUnionPatch(
       boolean clear,
       InnerUnionPatch patchPrior,
       InnerUnion ensure,
-      InnerUnionPatch patchAfter) {
+      InnerUnionPatch patch) {
     this();
     this.clear = clear;
     setClearIsSet(true);
     this.patchPrior = patchPrior;
     this.ensure = ensure;
-    this.patchAfter = patchAfter;
+    this.patch = patch;
   }
 
   public static class Builder {
     private boolean clear;
     private InnerUnionPatch patchPrior;
     private InnerUnion ensure;
-    private InnerUnionPatch patchAfter;
+    private InnerUnionPatch patch;
 
     BitSet __optional_isset = new BitSet(1);
 
@@ -129,8 +129,8 @@ public class OptionalInnerUnionPatch implements TBase, java.io.Serializable, Clo
       return this;
     }
 
-    public Builder setPatchAfter(final InnerUnionPatch patchAfter) {
-      this.patchAfter = patchAfter;
+    public Builder setPatch(final InnerUnionPatch patch) {
+      this.patch = patch;
       return this;
     }
 
@@ -141,7 +141,7 @@ public class OptionalInnerUnionPatch implements TBase, java.io.Serializable, Clo
       }
       result.setPatchPrior(this.patchPrior);
       result.setEnsure(this.ensure);
-      result.setPatchAfter(this.patchAfter);
+      result.setPatch(this.patch);
       return result;
     }
   }
@@ -163,8 +163,8 @@ public class OptionalInnerUnionPatch implements TBase, java.io.Serializable, Clo
     if (other.isSetEnsure()) {
       this.ensure = TBaseHelper.deepCopy(other.ensure);
     }
-    if (other.isSetPatchAfter()) {
-      this.patchAfter = TBaseHelper.deepCopy(other.patchAfter);
+    if (other.isSetPatch()) {
+      this.patch = TBaseHelper.deepCopy(other.patch);
     }
   }
 
@@ -264,30 +264,30 @@ public class OptionalInnerUnionPatch implements TBase, java.io.Serializable, Clo
   /**
    * Patches any set value, including newly set values. Applies last.
    */
-  public InnerUnionPatch getPatchAfter() {
-    return this.patchAfter;
+  public InnerUnionPatch getPatch() {
+    return this.patch;
   }
 
   /**
    * Patches any set value, including newly set values. Applies last.
    */
-  public OptionalInnerUnionPatch setPatchAfter(InnerUnionPatch patchAfter) {
-    this.patchAfter = patchAfter;
+  public OptionalInnerUnionPatch setPatch(InnerUnionPatch patch) {
+    this.patch = patch;
     return this;
   }
 
-  public void unsetPatchAfter() {
-    this.patchAfter = null;
+  public void unsetPatch() {
+    this.patch = null;
   }
 
-  // Returns true if field patchAfter is set (has been assigned a value) and false otherwise
-  public boolean isSetPatchAfter() {
-    return this.patchAfter != null;
+  // Returns true if field patch is set (has been assigned a value) and false otherwise
+  public boolean isSetPatch() {
+    return this.patch != null;
   }
 
-  public void setPatchAfterIsSet(boolean __value) {
+  public void setPatchIsSet(boolean __value) {
     if (!__value) {
-      this.patchAfter = null;
+      this.patch = null;
     }
   }
 
@@ -317,11 +317,11 @@ public class OptionalInnerUnionPatch implements TBase, java.io.Serializable, Clo
       }
       break;
 
-    case PATCHAFTER:
+    case PATCH:
       if (__value == null) {
-        unsetPatchAfter();
+        unsetPatch();
       } else {
-        setPatchAfter((InnerUnionPatch)__value);
+        setPatch((InnerUnionPatch)__value);
       }
       break;
 
@@ -341,8 +341,8 @@ public class OptionalInnerUnionPatch implements TBase, java.io.Serializable, Clo
     case ENSURE:
       return getEnsure();
 
-    case PATCHAFTER:
-      return getPatchAfter();
+    case PATCH:
+      return getPatch();
 
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -365,14 +365,14 @@ public class OptionalInnerUnionPatch implements TBase, java.io.Serializable, Clo
 
     if (!TBaseHelper.equalsNobinary(this.isSetEnsure(), that.isSetEnsure(), this.ensure, that.ensure)) { return false; }
 
-    if (!TBaseHelper.equalsNobinary(this.isSetPatchAfter(), that.isSetPatchAfter(), this.patchAfter, that.patchAfter)) { return false; }
+    if (!TBaseHelper.equalsNobinary(this.isSetPatch(), that.isSetPatch(), this.patch, that.patch)) { return false; }
 
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {clear, patchPrior, ensure, patchAfter});
+    return Arrays.deepHashCode(new Object[] {clear, patchPrior, ensure, patch});
   }
 
   @Override
@@ -411,11 +411,11 @@ public class OptionalInnerUnionPatch implements TBase, java.io.Serializable, Clo
     if (lastComparison != 0) { 
       return lastComparison;
     }
-    lastComparison = Boolean.valueOf(isSetPatchAfter()).compareTo(other.isSetPatchAfter());
+    lastComparison = Boolean.valueOf(isSetPatch()).compareTo(other.isSetPatch());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    lastComparison = TBaseHelper.compareTo(patchAfter, other.patchAfter);
+    lastComparison = TBaseHelper.compareTo(patch, other.patch);
     if (lastComparison != 0) { 
       return lastComparison;
     }
@@ -457,10 +457,10 @@ public class OptionalInnerUnionPatch implements TBase, java.io.Serializable, Clo
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
-        case PATCHAFTER:
+        case PATCH:
           if (__field.type == TType.STRUCT) {
-            this.patchAfter = new InnerUnionPatch();
-            this.patchAfter.read(iprot);
+            this.patch = new InnerUnionPatch();
+            this.patch.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
@@ -497,9 +497,9 @@ public class OptionalInnerUnionPatch implements TBase, java.io.Serializable, Clo
         oprot.writeFieldEnd();
       }
     }
-    if (this.patchAfter != null) {
-      oprot.writeFieldBegin(PATCH_AFTER_FIELD_DESC);
-      this.patchAfter.write(oprot);
+    if (this.patch != null) {
+      oprot.writeFieldBegin(PATCH_FIELD_DESC);
+      this.patch.write(oprot);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -555,13 +555,13 @@ public class OptionalInnerUnionPatch implements TBase, java.io.Serializable, Clo
     }
     if (!first) sb.append("," + newLine);
     sb.append(indentStr);
-    sb.append("patchAfter");
+    sb.append("patch");
     sb.append(space);
     sb.append(":").append(space);
-    if (this.getPatchAfter() == null) {
+    if (this.getPatch() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this.getPatchAfter(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getPatch(), indent + 1, prettyPrint));
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

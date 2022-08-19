@@ -27,7 +27,7 @@ public class OptionalBytePatch implements TBase, java.io.Serializable, Cloneable
   private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
   private static final TField PATCH_PRIOR_FIELD_DESC = new TField("patchPrior", TType.STRUCT, (short)3);
   private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.BYTE, (short)4);
-  private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)6);
+  private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)6);
 
   /**
    * Clears any set value. Applies first.
@@ -44,21 +44,21 @@ public class OptionalBytePatch implements TBase, java.io.Serializable, Cloneable
   /**
    * Patches any set value, including newly set values. Applies last.
    */
-  public final BytePatch patchAfter;
+  public final BytePatch patch;
   public static final int CLEAR = 2;
   public static final int PATCHPRIOR = 3;
   public static final int ENSURE = 4;
-  public static final int PATCHAFTER = 6;
+  public static final int PATCH = 6;
 
   public OptionalBytePatch(
       Boolean clear,
       BytePatch patchPrior,
       Byte ensure,
-      BytePatch patchAfter) {
+      BytePatch patch) {
     this.clear = clear;
     this.patchPrior = patchPrior;
     this.ensure = ensure;
-    this.patchAfter = patchAfter;
+    this.patch = patch;
   }
 
   /**
@@ -80,10 +80,10 @@ public class OptionalBytePatch implements TBase, java.io.Serializable, Cloneable
     } else {
       this.ensure = null;
     }
-    if (other.isSetPatchAfter()) {
-      this.patchAfter = TBaseHelper.deepCopy(other.patchAfter);
+    if (other.isSetPatch()) {
+      this.patch = TBaseHelper.deepCopy(other.patch);
     } else {
-      this.patchAfter = null;
+      this.patch = null;
     }
   }
 
@@ -130,13 +130,13 @@ public class OptionalBytePatch implements TBase, java.io.Serializable, Cloneable
   /**
    * Patches any set value, including newly set values. Applies last.
    */
-  public BytePatch getPatchAfter() {
-    return this.patchAfter;
+  public BytePatch getPatch() {
+    return this.patch;
   }
 
-  // Returns true if field patchAfter is set (has been assigned a value) and false otherwise
-  public boolean isSetPatchAfter() {
-    return this.patchAfter != null;
+  // Returns true if field patch is set (has been assigned a value) and false otherwise
+  public boolean isSetPatch() {
+    return this.patch != null;
   }
 
   @Override
@@ -155,14 +155,14 @@ public class OptionalBytePatch implements TBase, java.io.Serializable, Cloneable
 
     if (!TBaseHelper.equalsNobinary(this.isSetEnsure(), that.isSetEnsure(), this.ensure, that.ensure)) { return false; }
 
-    if (!TBaseHelper.equalsNobinary(this.isSetPatchAfter(), that.isSetPatchAfter(), this.patchAfter, that.patchAfter)) { return false; }
+    if (!TBaseHelper.equalsNobinary(this.isSetPatch(), that.isSetPatch(), this.patch, that.patch)) { return false; }
 
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {clear, patchPrior, ensure, patchAfter});
+    return Arrays.deepHashCode(new Object[] {clear, patchPrior, ensure, patch});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -174,7 +174,7 @@ public class OptionalBytePatch implements TBase, java.io.Serializable, Cloneable
     Boolean tmp_clear = null;
     BytePatch tmp_patchPrior = null;
     Byte tmp_ensure = null;
-    BytePatch tmp_patchAfter = null;
+    BytePatch tmp_patch = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -206,9 +206,9 @@ public class OptionalBytePatch implements TBase, java.io.Serializable, Cloneable
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
-        case PATCHAFTER:
+        case PATCH:
           if (__field.type == TType.STRUCT) {
-            tmp_patchAfter = BytePatch.deserialize(iprot);
+            tmp_patch = BytePatch.deserialize(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
@@ -226,7 +226,7 @@ public class OptionalBytePatch implements TBase, java.io.Serializable, Cloneable
       tmp_clear
       ,tmp_patchPrior
       ,tmp_ensure
-      ,tmp_patchAfter
+      ,tmp_patch
     );
     _that.validate();
     return _that;
@@ -253,9 +253,9 @@ public class OptionalBytePatch implements TBase, java.io.Serializable, Cloneable
         oprot.writeFieldEnd();
       }
     }
-    if (this.patchAfter != null) {
-      oprot.writeFieldBegin(PATCH_AFTER_FIELD_DESC);
-      this.patchAfter.write(oprot);
+    if (this.patch != null) {
+      oprot.writeFieldBegin(PATCH_FIELD_DESC);
+      this.patch.write(oprot);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();

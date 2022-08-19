@@ -357,8 +357,8 @@
             "required" : "optional",
             "type" : "bool"
           },
-          "patchAfter" : {
-            "name" : "patchAfter",
+          "patch" : {
+            "name" : "patch",
             "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,
@@ -403,8 +403,8 @@
             "required" : "optional",
             "type" : "byte"
           },
-          "patchAfter" : {
-            "name" : "patchAfter",
+          "patch" : {
+            "name" : "patch",
             "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,
@@ -449,8 +449,8 @@
             "required" : "optional",
             "type" : "i16"
           },
-          "patchAfter" : {
-            "name" : "patchAfter",
+          "patch" : {
+            "name" : "patch",
             "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,
@@ -495,8 +495,8 @@
             "required" : "optional",
             "type" : "i32"
           },
-          "patchAfter" : {
-            "name" : "patchAfter",
+          "patch" : {
+            "name" : "patch",
             "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,
@@ -541,8 +541,8 @@
             "required" : "optional",
             "type" : "i64"
           },
-          "patchAfter" : {
-            "name" : "patchAfter",
+          "patch" : {
+            "name" : "patch",
             "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,
@@ -587,8 +587,8 @@
             "required" : "optional",
             "type" : "float"
           },
-          "patchAfter" : {
-            "name" : "patchAfter",
+          "patch" : {
+            "name" : "patch",
             "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,
@@ -633,8 +633,8 @@
             "required" : "optional",
             "type" : "double"
           },
-          "patchAfter" : {
-            "name" : "patchAfter",
+          "patch" : {
+            "name" : "patch",
             "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,
@@ -679,8 +679,8 @@
             "required" : "optional",
             "type" : "string"
           },
-          "patchAfter" : {
-            "name" : "patchAfter",
+          "patch" : {
+            "name" : "patch",
             "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,
@@ -725,8 +725,8 @@
             "required" : "optional",
             "type" : "binary"
           },
-          "patchAfter" : {
-            "name" : "patchAfter",
+          "patch" : {
+            "name" : "patch",
             "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,

@@ -29,7 +29,7 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
   private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
   private static final TField PATCH_PRIOR_FIELD_DESC = new TField("patchPrior", TType.STRUCT, (short)3);
   private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.SET, (short)4);
-  private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)6);
+  private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)6);
 
   /**
    * Clears any set value. Applies first.
@@ -46,11 +46,11 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
   /**
    * Patches any set value, including newly set values. Applies last.
    */
-  public MyStructField22Patch patchAfter;
+  public MyStructField22Patch patch;
   public static final int CLEAR = 2;
   public static final int PATCHPRIOR = 3;
   public static final int ENSURE = 4;
-  public static final int PATCHAFTER = 6;
+  public static final int PATCH = 6;
 
   // isset id assignments
   private static final int __CLEAR_ISSET_ID = 0;
@@ -67,7 +67,7 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
     tmpMetaDataMap.put(ENSURE, new FieldMetaData("ensure", TFieldRequirementType.OPTIONAL, 
         new SetMetaData(TType.SET, 
             new FieldValueMetaData(TType.STRING))));
-    tmpMetaDataMap.put(PATCHAFTER, new FieldMetaData("patchAfter", TFieldRequirementType.DEFAULT, 
+    tmpMetaDataMap.put(PATCH, new FieldMetaData("patch", TFieldRequirementType.DEFAULT, 
         new StructMetaData(TType.STRUCT, MyStructField22Patch.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
@@ -82,32 +82,32 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
   public OptionalMyStructField22Patch(
       boolean clear,
       MyStructField22Patch patchPrior,
-      MyStructField22Patch patchAfter) {
+      MyStructField22Patch patch) {
     this();
     this.clear = clear;
     setClearIsSet(true);
     this.patchPrior = patchPrior;
-    this.patchAfter = patchAfter;
+    this.patch = patch;
   }
 
   public OptionalMyStructField22Patch(
       boolean clear,
       MyStructField22Patch patchPrior,
       Set<String> ensure,
-      MyStructField22Patch patchAfter) {
+      MyStructField22Patch patch) {
     this();
     this.clear = clear;
     setClearIsSet(true);
     this.patchPrior = patchPrior;
     this.ensure = ensure;
-    this.patchAfter = patchAfter;
+    this.patch = patch;
   }
 
   public static class Builder {
     private boolean clear;
     private MyStructField22Patch patchPrior;
     private Set<String> ensure;
-    private MyStructField22Patch patchAfter;
+    private MyStructField22Patch patch;
 
     BitSet __optional_isset = new BitSet(1);
 
@@ -130,8 +130,8 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
       return this;
     }
 
-    public Builder setPatchAfter(final MyStructField22Patch patchAfter) {
-      this.patchAfter = patchAfter;
+    public Builder setPatch(final MyStructField22Patch patch) {
+      this.patch = patch;
       return this;
     }
 
@@ -142,7 +142,7 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
       }
       result.setPatchPrior(this.patchPrior);
       result.setEnsure(this.ensure);
-      result.setPatchAfter(this.patchAfter);
+      result.setPatch(this.patch);
       return result;
     }
   }
@@ -164,8 +164,8 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
     if (other.isSetEnsure()) {
       this.ensure = TBaseHelper.deepCopy(other.ensure);
     }
-    if (other.isSetPatchAfter()) {
-      this.patchAfter = TBaseHelper.deepCopy(other.patchAfter);
+    if (other.isSetPatch()) {
+      this.patch = TBaseHelper.deepCopy(other.patch);
     }
   }
 
@@ -265,30 +265,30 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
   /**
    * Patches any set value, including newly set values. Applies last.
    */
-  public MyStructField22Patch getPatchAfter() {
-    return this.patchAfter;
+  public MyStructField22Patch getPatch() {
+    return this.patch;
   }
 
   /**
    * Patches any set value, including newly set values. Applies last.
    */
-  public OptionalMyStructField22Patch setPatchAfter(MyStructField22Patch patchAfter) {
-    this.patchAfter = patchAfter;
+  public OptionalMyStructField22Patch setPatch(MyStructField22Patch patch) {
+    this.patch = patch;
     return this;
   }
 
-  public void unsetPatchAfter() {
-    this.patchAfter = null;
+  public void unsetPatch() {
+    this.patch = null;
   }
 
-  // Returns true if field patchAfter is set (has been assigned a value) and false otherwise
-  public boolean isSetPatchAfter() {
-    return this.patchAfter != null;
+  // Returns true if field patch is set (has been assigned a value) and false otherwise
+  public boolean isSetPatch() {
+    return this.patch != null;
   }
 
-  public void setPatchAfterIsSet(boolean __value) {
+  public void setPatchIsSet(boolean __value) {
     if (!__value) {
-      this.patchAfter = null;
+      this.patch = null;
     }
   }
 
@@ -319,11 +319,11 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
       }
       break;
 
-    case PATCHAFTER:
+    case PATCH:
       if (__value == null) {
-        unsetPatchAfter();
+        unsetPatch();
       } else {
-        setPatchAfter((MyStructField22Patch)__value);
+        setPatch((MyStructField22Patch)__value);
       }
       break;
 
@@ -343,8 +343,8 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
     case ENSURE:
       return getEnsure();
 
-    case PATCHAFTER:
-      return getPatchAfter();
+    case PATCH:
+      return getPatch();
 
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -367,14 +367,14 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
 
     if (!TBaseHelper.equalsNobinary(this.isSetEnsure(), that.isSetEnsure(), this.ensure, that.ensure)) { return false; }
 
-    if (!TBaseHelper.equalsNobinary(this.isSetPatchAfter(), that.isSetPatchAfter(), this.patchAfter, that.patchAfter)) { return false; }
+    if (!TBaseHelper.equalsNobinary(this.isSetPatch(), that.isSetPatch(), this.patch, that.patch)) { return false; }
 
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {clear, patchPrior, ensure, patchAfter});
+    return Arrays.deepHashCode(new Object[] {clear, patchPrior, ensure, patch});
   }
 
   @Override
@@ -413,11 +413,11 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
     if (lastComparison != 0) { 
       return lastComparison;
     }
-    lastComparison = Boolean.valueOf(isSetPatchAfter()).compareTo(other.isSetPatchAfter());
+    lastComparison = Boolean.valueOf(isSetPatch()).compareTo(other.isSetPatch());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    lastComparison = TBaseHelper.compareTo(patchAfter, other.patchAfter);
+    lastComparison = TBaseHelper.compareTo(patch, other.patch);
     if (lastComparison != 0) { 
       return lastComparison;
     }
@@ -470,10 +470,10 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
-        case PATCHAFTER:
+        case PATCH:
           if (__field.type == TType.STRUCT) {
-            this.patchAfter = new MyStructField22Patch();
-            this.patchAfter.read(iprot);
+            this.patch = new MyStructField22Patch();
+            this.patch.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
@@ -516,9 +516,9 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
         oprot.writeFieldEnd();
       }
     }
-    if (this.patchAfter != null) {
-      oprot.writeFieldBegin(PATCH_AFTER_FIELD_DESC);
-      this.patchAfter.write(oprot);
+    if (this.patch != null) {
+      oprot.writeFieldBegin(PATCH_FIELD_DESC);
+      this.patch.write(oprot);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -574,13 +574,13 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
     }
     if (!first) sb.append("," + newLine);
     sb.append(indentStr);
-    sb.append("patchAfter");
+    sb.append("patch");
     sb.append(space);
     sb.append(":").append(space);
-    if (this.getPatchAfter() == null) {
+    if (this.getPatch() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this.getPatchAfter(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getPatch(), indent + 1, prettyPrint));
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

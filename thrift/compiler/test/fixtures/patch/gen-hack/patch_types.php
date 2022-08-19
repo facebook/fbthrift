@@ -1826,7 +1826,7 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
       'type' => \TType::BOOL,
     ),
     6 => shape(
-      'var' => 'patchAfter',
+      'var' => 'patch',
       'type' => \TType::STRUCT,
       'class' => \thrift\op\BoolPatch::class,
     ),
@@ -1835,24 +1835,24 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
     'clear' => 2,
     'patchPrior' => 3,
     'ensure' => 4,
-    'patchAfter' => 6,
+    'patch' => 6,
   ];
 
   const type TConstructorShape = shape(
     ?'clear' => ?bool,
     ?'patchPrior' => ?\thrift\op\BoolPatch,
     ?'ensure' => ?bool,
-    ?'patchAfter' => ?\thrift\op\BoolPatch,
+    ?'patch' => ?\thrift\op\BoolPatch,
   );
 
   const type TShape = shape(
     'clear' => bool,
     ?'patchPrior' => ?\thrift\op\BoolPatch::TShape,
     ?'ensure' => ?bool,
-    ?'patchAfter' => ?\thrift\op\BoolPatch::TShape,
+    ?'patch' => ?\thrift\op\BoolPatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 1037979282734846196;
+  const int STRUCTURAL_ID = 5970728508838259493;
   /**
    * Clears any set value. Applies first.
    * 
@@ -1878,15 +1878,15 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
    * Patches any set value, including newly set values. Applies last.
    * 
    * Original thrift field:-
-   * 6: struct patch.BoolPatch patchAfter
+   * 6: struct patch.BoolPatch patch
    */
-  public ?\thrift\op\BoolPatch $patchAfter;
+  public ?\thrift\op\BoolPatch $patch;
 
-  public function __construct(?bool $clear = null, ?\thrift\op\BoolPatch $patchPrior = null, ?bool $ensure = null, ?\thrift\op\BoolPatch $patchAfter = null)[] {
+  public function __construct(?bool $clear = null, ?\thrift\op\BoolPatch $patchPrior = null, ?bool $ensure = null, ?\thrift\op\BoolPatch $patch = null)[] {
     $this->clear = $clear ?? false;
     $this->patchPrior = $patchPrior;
     $this->ensure = $ensure;
-    $this->patchAfter = $patchAfter;
+    $this->patch = $patch;
   }
 
   public static function withDefaultValues()[]: this {
@@ -1898,7 +1898,7 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
       Shapes::idx($shape, 'clear'),
       Shapes::idx($shape, 'patchPrior'),
       Shapes::idx($shape, 'ensure'),
-      Shapes::idx($shape, 'patchAfter'),
+      Shapes::idx($shape, 'patch'),
     );
   }
 
@@ -1961,7 +1961,7 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
                   ),
                 )
               ),
-              "name" => "patchAfter",
+              "name" => "patch",
             )
           ),
         ],
@@ -1998,7 +1998,7 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
             ),
           ],
         ),
-        'patchAfter' => shape(
+        'patch' => shape(
           'field' => dict[],
           'type' => dict[
             '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -2023,7 +2023,7 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
       $shape['clear'],
       Shapes::idx($shape, 'patchPrior') === null ? null : (\thrift\op\BoolPatch::__fromShape($shape['patchPrior'])),
       Shapes::idx($shape, 'ensure'),
-      Shapes::idx($shape, 'patchAfter') === null ? null : (\thrift\op\BoolPatch::__fromShape($shape['patchAfter'])),
+      Shapes::idx($shape, 'patch') === null ? null : (\thrift\op\BoolPatch::__fromShape($shape['patch'])),
     );
   }
 
@@ -2032,7 +2032,7 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
       'clear' => $this->clear,
       'patchPrior' => $this->patchPrior?->__toShape(),
       'ensure' => $this->ensure,
-      'patchAfter' => $this->patchAfter?->__toShape(),
+      'patch' => $this->patch?->__toShape(),
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -2058,11 +2058,11 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
     if (idx($parsed, 'ensure') !== null) {
       $this->ensure = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['ensure']);
     }
-    if (idx($parsed, 'patchAfter') !== null) {
-      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\BoolPatch>($parsed['patchAfter']));
+    if (idx($parsed, 'patch') !== null) {
+      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\BoolPatch>($parsed['patch']));
       $_tmp3 = \thrift\op\BoolPatch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
-      $this->patchAfter = $_tmp3;
+      $this->patch = $_tmp3;
     }
   }
 
@@ -2091,7 +2091,7 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
       'type' => \TType::BYTE,
     ),
     6 => shape(
-      'var' => 'patchAfter',
+      'var' => 'patch',
       'type' => \TType::STRUCT,
       'class' => \thrift\op\BytePatch::class,
     ),
@@ -2100,24 +2100,24 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
     'clear' => 2,
     'patchPrior' => 3,
     'ensure' => 4,
-    'patchAfter' => 6,
+    'patch' => 6,
   ];
 
   const type TConstructorShape = shape(
     ?'clear' => ?bool,
     ?'patchPrior' => ?\thrift\op\BytePatch,
     ?'ensure' => ?int,
-    ?'patchAfter' => ?\thrift\op\BytePatch,
+    ?'patch' => ?\thrift\op\BytePatch,
   );
 
   const type TShape = shape(
     'clear' => bool,
     ?'patchPrior' => ?\thrift\op\BytePatch::TShape,
     ?'ensure' => ?int,
-    ?'patchAfter' => ?\thrift\op\BytePatch::TShape,
+    ?'patch' => ?\thrift\op\BytePatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 4222003986571113764;
+  const int STRUCTURAL_ID = 4178832588145864018;
   /**
    * Clears any set value. Applies first.
    * 
@@ -2143,15 +2143,15 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
    * Patches any set value, including newly set values. Applies last.
    * 
    * Original thrift field:-
-   * 6: struct patch.BytePatch patchAfter
+   * 6: struct patch.BytePatch patch
    */
-  public ?\thrift\op\BytePatch $patchAfter;
+  public ?\thrift\op\BytePatch $patch;
 
-  public function __construct(?bool $clear = null, ?\thrift\op\BytePatch $patchPrior = null, ?int $ensure = null, ?\thrift\op\BytePatch $patchAfter = null)[] {
+  public function __construct(?bool $clear = null, ?\thrift\op\BytePatch $patchPrior = null, ?int $ensure = null, ?\thrift\op\BytePatch $patch = null)[] {
     $this->clear = $clear ?? false;
     $this->patchPrior = $patchPrior;
     $this->ensure = $ensure;
-    $this->patchAfter = $patchAfter;
+    $this->patch = $patch;
   }
 
   public static function withDefaultValues()[]: this {
@@ -2163,7 +2163,7 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
       Shapes::idx($shape, 'clear'),
       Shapes::idx($shape, 'patchPrior'),
       Shapes::idx($shape, 'ensure'),
-      Shapes::idx($shape, 'patchAfter'),
+      Shapes::idx($shape, 'patch'),
     );
   }
 
@@ -2226,7 +2226,7 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
                   ),
                 )
               ),
-              "name" => "patchAfter",
+              "name" => "patch",
             )
           ),
         ],
@@ -2263,7 +2263,7 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
             ),
           ],
         ),
-        'patchAfter' => shape(
+        'patch' => shape(
           'field' => dict[],
           'type' => dict[
             '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -2288,7 +2288,7 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
       $shape['clear'],
       Shapes::idx($shape, 'patchPrior') === null ? null : (\thrift\op\BytePatch::__fromShape($shape['patchPrior'])),
       Shapes::idx($shape, 'ensure'),
-      Shapes::idx($shape, 'patchAfter') === null ? null : (\thrift\op\BytePatch::__fromShape($shape['patchAfter'])),
+      Shapes::idx($shape, 'patch') === null ? null : (\thrift\op\BytePatch::__fromShape($shape['patch'])),
     );
   }
 
@@ -2297,7 +2297,7 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
       'clear' => $this->clear,
       'patchPrior' => $this->patchPrior?->__toShape(),
       'ensure' => $this->ensure,
-      'patchAfter' => $this->patchAfter?->__toShape(),
+      'patch' => $this->patch?->__toShape(),
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -2328,11 +2328,11 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
         $this->ensure = (int)$_tmp2;
       }
     }
-    if (idx($parsed, 'patchAfter') !== null) {
-      $_tmp3 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\BytePatch>($parsed['patchAfter']));
+    if (idx($parsed, 'patch') !== null) {
+      $_tmp3 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\BytePatch>($parsed['patch']));
       $_tmp4 = \thrift\op\BytePatch::withDefaultValues();
       $_tmp4->readFromJson($_tmp3);
-      $this->patchAfter = $_tmp4;
+      $this->patch = $_tmp4;
     }
   }
 
@@ -2361,7 +2361,7 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
       'type' => \TType::I16,
     ),
     6 => shape(
-      'var' => 'patchAfter',
+      'var' => 'patch',
       'type' => \TType::STRUCT,
       'class' => \thrift\op\I16Patch::class,
     ),
@@ -2370,24 +2370,24 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
     'clear' => 2,
     'patchPrior' => 3,
     'ensure' => 4,
-    'patchAfter' => 6,
+    'patch' => 6,
   ];
 
   const type TConstructorShape = shape(
     ?'clear' => ?bool,
     ?'patchPrior' => ?\thrift\op\I16Patch,
     ?'ensure' => ?int,
-    ?'patchAfter' => ?\thrift\op\I16Patch,
+    ?'patch' => ?\thrift\op\I16Patch,
   );
 
   const type TShape = shape(
     'clear' => bool,
     ?'patchPrior' => ?\thrift\op\I16Patch::TShape,
     ?'ensure' => ?int,
-    ?'patchAfter' => ?\thrift\op\I16Patch::TShape,
+    ?'patch' => ?\thrift\op\I16Patch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 2227053592242892818;
+  const int STRUCTURAL_ID = 619389808295037415;
   /**
    * Clears any set value. Applies first.
    * 
@@ -2413,15 +2413,15 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
    * Patches any set value, including newly set values. Applies last.
    * 
    * Original thrift field:-
-   * 6: struct patch.I16Patch patchAfter
+   * 6: struct patch.I16Patch patch
    */
-  public ?\thrift\op\I16Patch $patchAfter;
+  public ?\thrift\op\I16Patch $patch;
 
-  public function __construct(?bool $clear = null, ?\thrift\op\I16Patch $patchPrior = null, ?int $ensure = null, ?\thrift\op\I16Patch $patchAfter = null)[] {
+  public function __construct(?bool $clear = null, ?\thrift\op\I16Patch $patchPrior = null, ?int $ensure = null, ?\thrift\op\I16Patch $patch = null)[] {
     $this->clear = $clear ?? false;
     $this->patchPrior = $patchPrior;
     $this->ensure = $ensure;
-    $this->patchAfter = $patchAfter;
+    $this->patch = $patch;
   }
 
   public static function withDefaultValues()[]: this {
@@ -2433,7 +2433,7 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
       Shapes::idx($shape, 'clear'),
       Shapes::idx($shape, 'patchPrior'),
       Shapes::idx($shape, 'ensure'),
-      Shapes::idx($shape, 'patchAfter'),
+      Shapes::idx($shape, 'patch'),
     );
   }
 
@@ -2496,7 +2496,7 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
                   ),
                 )
               ),
-              "name" => "patchAfter",
+              "name" => "patch",
             )
           ),
         ],
@@ -2533,7 +2533,7 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
             ),
           ],
         ),
-        'patchAfter' => shape(
+        'patch' => shape(
           'field' => dict[],
           'type' => dict[
             '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -2558,7 +2558,7 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
       $shape['clear'],
       Shapes::idx($shape, 'patchPrior') === null ? null : (\thrift\op\I16Patch::__fromShape($shape['patchPrior'])),
       Shapes::idx($shape, 'ensure'),
-      Shapes::idx($shape, 'patchAfter') === null ? null : (\thrift\op\I16Patch::__fromShape($shape['patchAfter'])),
+      Shapes::idx($shape, 'patch') === null ? null : (\thrift\op\I16Patch::__fromShape($shape['patch'])),
     );
   }
 
@@ -2567,7 +2567,7 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
       'clear' => $this->clear,
       'patchPrior' => $this->patchPrior?->__toShape(),
       'ensure' => $this->ensure,
-      'patchAfter' => $this->patchAfter?->__toShape(),
+      'patch' => $this->patch?->__toShape(),
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -2598,11 +2598,11 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
         $this->ensure = (int)$_tmp2;
       }
     }
-    if (idx($parsed, 'patchAfter') !== null) {
-      $_tmp3 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\I16Patch>($parsed['patchAfter']));
+    if (idx($parsed, 'patch') !== null) {
+      $_tmp3 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\I16Patch>($parsed['patch']));
       $_tmp4 = \thrift\op\I16Patch::withDefaultValues();
       $_tmp4->readFromJson($_tmp3);
-      $this->patchAfter = $_tmp4;
+      $this->patch = $_tmp4;
     }
   }
 
@@ -2631,7 +2631,7 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
       'type' => \TType::I32,
     ),
     6 => shape(
-      'var' => 'patchAfter',
+      'var' => 'patch',
       'type' => \TType::STRUCT,
       'class' => \thrift\op\I32Patch::class,
     ),
@@ -2640,24 +2640,24 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
     'clear' => 2,
     'patchPrior' => 3,
     'ensure' => 4,
-    'patchAfter' => 6,
+    'patch' => 6,
   ];
 
   const type TConstructorShape = shape(
     ?'clear' => ?bool,
     ?'patchPrior' => ?\thrift\op\I32Patch,
     ?'ensure' => ?int,
-    ?'patchAfter' => ?\thrift\op\I32Patch,
+    ?'patch' => ?\thrift\op\I32Patch,
   );
 
   const type TShape = shape(
     'clear' => bool,
     ?'patchPrior' => ?\thrift\op\I32Patch::TShape,
     ?'ensure' => ?int,
-    ?'patchAfter' => ?\thrift\op\I32Patch::TShape,
+    ?'patch' => ?\thrift\op\I32Patch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 2099351440837474336;
+  const int STRUCTURAL_ID = 705741916380779985;
   /**
    * Clears any set value. Applies first.
    * 
@@ -2683,15 +2683,15 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
    * Patches any set value, including newly set values. Applies last.
    * 
    * Original thrift field:-
-   * 6: struct patch.I32Patch patchAfter
+   * 6: struct patch.I32Patch patch
    */
-  public ?\thrift\op\I32Patch $patchAfter;
+  public ?\thrift\op\I32Patch $patch;
 
-  public function __construct(?bool $clear = null, ?\thrift\op\I32Patch $patchPrior = null, ?int $ensure = null, ?\thrift\op\I32Patch $patchAfter = null)[] {
+  public function __construct(?bool $clear = null, ?\thrift\op\I32Patch $patchPrior = null, ?int $ensure = null, ?\thrift\op\I32Patch $patch = null)[] {
     $this->clear = $clear ?? false;
     $this->patchPrior = $patchPrior;
     $this->ensure = $ensure;
-    $this->patchAfter = $patchAfter;
+    $this->patch = $patch;
   }
 
   public static function withDefaultValues()[]: this {
@@ -2703,7 +2703,7 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
       Shapes::idx($shape, 'clear'),
       Shapes::idx($shape, 'patchPrior'),
       Shapes::idx($shape, 'ensure'),
-      Shapes::idx($shape, 'patchAfter'),
+      Shapes::idx($shape, 'patch'),
     );
   }
 
@@ -2766,7 +2766,7 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
                   ),
                 )
               ),
-              "name" => "patchAfter",
+              "name" => "patch",
             )
           ),
         ],
@@ -2803,7 +2803,7 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
             ),
           ],
         ),
-        'patchAfter' => shape(
+        'patch' => shape(
           'field' => dict[],
           'type' => dict[
             '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -2828,7 +2828,7 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
       $shape['clear'],
       Shapes::idx($shape, 'patchPrior') === null ? null : (\thrift\op\I32Patch::__fromShape($shape['patchPrior'])),
       Shapes::idx($shape, 'ensure'),
-      Shapes::idx($shape, 'patchAfter') === null ? null : (\thrift\op\I32Patch::__fromShape($shape['patchAfter'])),
+      Shapes::idx($shape, 'patch') === null ? null : (\thrift\op\I32Patch::__fromShape($shape['patch'])),
     );
   }
 
@@ -2837,7 +2837,7 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
       'clear' => $this->clear,
       'patchPrior' => $this->patchPrior?->__toShape(),
       'ensure' => $this->ensure,
-      'patchAfter' => $this->patchAfter?->__toShape(),
+      'patch' => $this->patch?->__toShape(),
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -2868,11 +2868,11 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
         $this->ensure = (int)$_tmp2;
       }
     }
-    if (idx($parsed, 'patchAfter') !== null) {
-      $_tmp3 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\I32Patch>($parsed['patchAfter']));
+    if (idx($parsed, 'patch') !== null) {
+      $_tmp3 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\I32Patch>($parsed['patch']));
       $_tmp4 = \thrift\op\I32Patch::withDefaultValues();
       $_tmp4->readFromJson($_tmp3);
-      $this->patchAfter = $_tmp4;
+      $this->patch = $_tmp4;
     }
   }
 
@@ -2901,7 +2901,7 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
       'type' => \TType::I64,
     ),
     6 => shape(
-      'var' => 'patchAfter',
+      'var' => 'patch',
       'type' => \TType::STRUCT,
       'class' => \thrift\op\I64Patch::class,
     ),
@@ -2910,24 +2910,24 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
     'clear' => 2,
     'patchPrior' => 3,
     'ensure' => 4,
-    'patchAfter' => 6,
+    'patch' => 6,
   ];
 
   const type TConstructorShape = shape(
     ?'clear' => ?bool,
     ?'patchPrior' => ?\thrift\op\I64Patch,
     ?'ensure' => ?int,
-    ?'patchAfter' => ?\thrift\op\I64Patch,
+    ?'patch' => ?\thrift\op\I64Patch,
   );
 
   const type TShape = shape(
     'clear' => bool,
     ?'patchPrior' => ?\thrift\op\I64Patch::TShape,
     ?'ensure' => ?int,
-    ?'patchAfter' => ?\thrift\op\I64Patch::TShape,
+    ?'patch' => ?\thrift\op\I64Patch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 419436536070412130;
+  const int STRUCTURAL_ID = 8723392942656751661;
   /**
    * Clears any set value. Applies first.
    * 
@@ -2953,15 +2953,15 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
    * Patches any set value, including newly set values. Applies last.
    * 
    * Original thrift field:-
-   * 6: struct patch.I64Patch patchAfter
+   * 6: struct patch.I64Patch patch
    */
-  public ?\thrift\op\I64Patch $patchAfter;
+  public ?\thrift\op\I64Patch $patch;
 
-  public function __construct(?bool $clear = null, ?\thrift\op\I64Patch $patchPrior = null, ?int $ensure = null, ?\thrift\op\I64Patch $patchAfter = null)[] {
+  public function __construct(?bool $clear = null, ?\thrift\op\I64Patch $patchPrior = null, ?int $ensure = null, ?\thrift\op\I64Patch $patch = null)[] {
     $this->clear = $clear ?? false;
     $this->patchPrior = $patchPrior;
     $this->ensure = $ensure;
-    $this->patchAfter = $patchAfter;
+    $this->patch = $patch;
   }
 
   public static function withDefaultValues()[]: this {
@@ -2973,7 +2973,7 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
       Shapes::idx($shape, 'clear'),
       Shapes::idx($shape, 'patchPrior'),
       Shapes::idx($shape, 'ensure'),
-      Shapes::idx($shape, 'patchAfter'),
+      Shapes::idx($shape, 'patch'),
     );
   }
 
@@ -3036,7 +3036,7 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
                   ),
                 )
               ),
-              "name" => "patchAfter",
+              "name" => "patch",
             )
           ),
         ],
@@ -3073,7 +3073,7 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
             ),
           ],
         ),
-        'patchAfter' => shape(
+        'patch' => shape(
           'field' => dict[],
           'type' => dict[
             '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -3098,7 +3098,7 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
       $shape['clear'],
       Shapes::idx($shape, 'patchPrior') === null ? null : (\thrift\op\I64Patch::__fromShape($shape['patchPrior'])),
       Shapes::idx($shape, 'ensure'),
-      Shapes::idx($shape, 'patchAfter') === null ? null : (\thrift\op\I64Patch::__fromShape($shape['patchAfter'])),
+      Shapes::idx($shape, 'patch') === null ? null : (\thrift\op\I64Patch::__fromShape($shape['patch'])),
     );
   }
 
@@ -3107,7 +3107,7 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
       'clear' => $this->clear,
       'patchPrior' => $this->patchPrior?->__toShape(),
       'ensure' => $this->ensure,
-      'patchAfter' => $this->patchAfter?->__toShape(),
+      'patch' => $this->patch?->__toShape(),
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -3133,11 +3133,11 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
     if (idx($parsed, 'ensure') !== null) {
       $this->ensure = HH\FIXME\UNSAFE_CAST<mixed, int>($parsed['ensure']);
     }
-    if (idx($parsed, 'patchAfter') !== null) {
-      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\I64Patch>($parsed['patchAfter']));
+    if (idx($parsed, 'patch') !== null) {
+      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\I64Patch>($parsed['patch']));
       $_tmp3 = \thrift\op\I64Patch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
-      $this->patchAfter = $_tmp3;
+      $this->patch = $_tmp3;
     }
   }
 
@@ -3166,7 +3166,7 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
       'type' => \TType::FLOAT,
     ),
     6 => shape(
-      'var' => 'patchAfter',
+      'var' => 'patch',
       'type' => \TType::STRUCT,
       'class' => \thrift\op\FloatPatch::class,
     ),
@@ -3175,24 +3175,24 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
     'clear' => 2,
     'patchPrior' => 3,
     'ensure' => 4,
-    'patchAfter' => 6,
+    'patch' => 6,
   ];
 
   const type TConstructorShape = shape(
     ?'clear' => ?bool,
     ?'patchPrior' => ?\thrift\op\FloatPatch,
     ?'ensure' => ?float,
-    ?'patchAfter' => ?\thrift\op\FloatPatch,
+    ?'patch' => ?\thrift\op\FloatPatch,
   );
 
   const type TShape = shape(
     'clear' => bool,
     ?'patchPrior' => ?\thrift\op\FloatPatch::TShape,
     ?'ensure' => ?float,
-    ?'patchAfter' => ?\thrift\op\FloatPatch::TShape,
+    ?'patch' => ?\thrift\op\FloatPatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 8428158533994512575;
+  const int STRUCTURAL_ID = 3190125567736108403;
   /**
    * Clears any set value. Applies first.
    * 
@@ -3218,15 +3218,15 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
    * Patches any set value, including newly set values. Applies last.
    * 
    * Original thrift field:-
-   * 6: struct patch.FloatPatch patchAfter
+   * 6: struct patch.FloatPatch patch
    */
-  public ?\thrift\op\FloatPatch $patchAfter;
+  public ?\thrift\op\FloatPatch $patch;
 
-  public function __construct(?bool $clear = null, ?\thrift\op\FloatPatch $patchPrior = null, ?float $ensure = null, ?\thrift\op\FloatPatch $patchAfter = null)[] {
+  public function __construct(?bool $clear = null, ?\thrift\op\FloatPatch $patchPrior = null, ?float $ensure = null, ?\thrift\op\FloatPatch $patch = null)[] {
     $this->clear = $clear ?? false;
     $this->patchPrior = $patchPrior;
     $this->ensure = $ensure;
-    $this->patchAfter = $patchAfter;
+    $this->patch = $patch;
   }
 
   public static function withDefaultValues()[]: this {
@@ -3238,7 +3238,7 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
       Shapes::idx($shape, 'clear'),
       Shapes::idx($shape, 'patchPrior'),
       Shapes::idx($shape, 'ensure'),
-      Shapes::idx($shape, 'patchAfter'),
+      Shapes::idx($shape, 'patch'),
     );
   }
 
@@ -3301,7 +3301,7 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
                   ),
                 )
               ),
-              "name" => "patchAfter",
+              "name" => "patch",
             )
           ),
         ],
@@ -3338,7 +3338,7 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
             ),
           ],
         ),
-        'patchAfter' => shape(
+        'patch' => shape(
           'field' => dict[],
           'type' => dict[
             '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -3363,7 +3363,7 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
       $shape['clear'],
       Shapes::idx($shape, 'patchPrior') === null ? null : (\thrift\op\FloatPatch::__fromShape($shape['patchPrior'])),
       Shapes::idx($shape, 'ensure'),
-      Shapes::idx($shape, 'patchAfter') === null ? null : (\thrift\op\FloatPatch::__fromShape($shape['patchAfter'])),
+      Shapes::idx($shape, 'patch') === null ? null : (\thrift\op\FloatPatch::__fromShape($shape['patch'])),
     );
   }
 
@@ -3372,7 +3372,7 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
       'clear' => $this->clear,
       'patchPrior' => $this->patchPrior?->__toShape(),
       'ensure' => $this->ensure,
-      'patchAfter' => $this->patchAfter?->__toShape(),
+      'patch' => $this->patch?->__toShape(),
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -3398,11 +3398,11 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
     if (idx($parsed, 'ensure') !== null) {
       $this->ensure = HH\FIXME\UNSAFE_CAST<mixed, float>($parsed['ensure']);
     }
-    if (idx($parsed, 'patchAfter') !== null) {
-      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\FloatPatch>($parsed['patchAfter']));
+    if (idx($parsed, 'patch') !== null) {
+      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\FloatPatch>($parsed['patch']));
       $_tmp3 = \thrift\op\FloatPatch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
-      $this->patchAfter = $_tmp3;
+      $this->patch = $_tmp3;
     }
   }
 
@@ -3431,7 +3431,7 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
       'type' => \TType::DOUBLE,
     ),
     6 => shape(
-      'var' => 'patchAfter',
+      'var' => 'patch',
       'type' => \TType::STRUCT,
       'class' => \thrift\op\DoublePatch::class,
     ),
@@ -3440,24 +3440,24 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
     'clear' => 2,
     'patchPrior' => 3,
     'ensure' => 4,
-    'patchAfter' => 6,
+    'patch' => 6,
   ];
 
   const type TConstructorShape = shape(
     ?'clear' => ?bool,
     ?'patchPrior' => ?\thrift\op\DoublePatch,
     ?'ensure' => ?float,
-    ?'patchAfter' => ?\thrift\op\DoublePatch,
+    ?'patch' => ?\thrift\op\DoublePatch,
   );
 
   const type TShape = shape(
     'clear' => bool,
     ?'patchPrior' => ?\thrift\op\DoublePatch::TShape,
     ?'ensure' => ?float,
-    ?'patchAfter' => ?\thrift\op\DoublePatch::TShape,
+    ?'patch' => ?\thrift\op\DoublePatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 5598061817157788050;
+  const int STRUCTURAL_ID = 559246202549086289;
   /**
    * Clears any set value. Applies first.
    * 
@@ -3483,15 +3483,15 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
    * Patches any set value, including newly set values. Applies last.
    * 
    * Original thrift field:-
-   * 6: struct patch.DoublePatch patchAfter
+   * 6: struct patch.DoublePatch patch
    */
-  public ?\thrift\op\DoublePatch $patchAfter;
+  public ?\thrift\op\DoublePatch $patch;
 
-  public function __construct(?bool $clear = null, ?\thrift\op\DoublePatch $patchPrior = null, ?float $ensure = null, ?\thrift\op\DoublePatch $patchAfter = null)[] {
+  public function __construct(?bool $clear = null, ?\thrift\op\DoublePatch $patchPrior = null, ?float $ensure = null, ?\thrift\op\DoublePatch $patch = null)[] {
     $this->clear = $clear ?? false;
     $this->patchPrior = $patchPrior;
     $this->ensure = $ensure;
-    $this->patchAfter = $patchAfter;
+    $this->patch = $patch;
   }
 
   public static function withDefaultValues()[]: this {
@@ -3503,7 +3503,7 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
       Shapes::idx($shape, 'clear'),
       Shapes::idx($shape, 'patchPrior'),
       Shapes::idx($shape, 'ensure'),
-      Shapes::idx($shape, 'patchAfter'),
+      Shapes::idx($shape, 'patch'),
     );
   }
 
@@ -3566,7 +3566,7 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
                   ),
                 )
               ),
-              "name" => "patchAfter",
+              "name" => "patch",
             )
           ),
         ],
@@ -3603,7 +3603,7 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
             ),
           ],
         ),
-        'patchAfter' => shape(
+        'patch' => shape(
           'field' => dict[],
           'type' => dict[
             '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -3628,7 +3628,7 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
       $shape['clear'],
       Shapes::idx($shape, 'patchPrior') === null ? null : (\thrift\op\DoublePatch::__fromShape($shape['patchPrior'])),
       Shapes::idx($shape, 'ensure'),
-      Shapes::idx($shape, 'patchAfter') === null ? null : (\thrift\op\DoublePatch::__fromShape($shape['patchAfter'])),
+      Shapes::idx($shape, 'patch') === null ? null : (\thrift\op\DoublePatch::__fromShape($shape['patch'])),
     );
   }
 
@@ -3637,7 +3637,7 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
       'clear' => $this->clear,
       'patchPrior' => $this->patchPrior?->__toShape(),
       'ensure' => $this->ensure,
-      'patchAfter' => $this->patchAfter?->__toShape(),
+      'patch' => $this->patch?->__toShape(),
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -3663,11 +3663,11 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
     if (idx($parsed, 'ensure') !== null) {
       $this->ensure = HH\FIXME\UNSAFE_CAST<mixed, float>($parsed['ensure']);
     }
-    if (idx($parsed, 'patchAfter') !== null) {
-      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\DoublePatch>($parsed['patchAfter']));
+    if (idx($parsed, 'patch') !== null) {
+      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\DoublePatch>($parsed['patch']));
       $_tmp3 = \thrift\op\DoublePatch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
-      $this->patchAfter = $_tmp3;
+      $this->patch = $_tmp3;
     }
   }
 
@@ -3696,7 +3696,7 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
       'type' => \TType::STRING,
     ),
     6 => shape(
-      'var' => 'patchAfter',
+      'var' => 'patch',
       'type' => \TType::STRUCT,
       'class' => \thrift\op\StringPatch::class,
     ),
@@ -3705,24 +3705,24 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
     'clear' => 2,
     'patchPrior' => 3,
     'ensure' => 4,
-    'patchAfter' => 6,
+    'patch' => 6,
   ];
 
   const type TConstructorShape = shape(
     ?'clear' => ?bool,
     ?'patchPrior' => ?\thrift\op\StringPatch,
     ?'ensure' => ?string,
-    ?'patchAfter' => ?\thrift\op\StringPatch,
+    ?'patch' => ?\thrift\op\StringPatch,
   );
 
   const type TShape = shape(
     'clear' => bool,
     ?'patchPrior' => ?\thrift\op\StringPatch::TShape,
     ?'ensure' => ?string,
-    ?'patchAfter' => ?\thrift\op\StringPatch::TShape,
+    ?'patch' => ?\thrift\op\StringPatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 8909557343610018791;
+  const int STRUCTURAL_ID = 9145296182371217249;
   /**
    * Clears any set value. Applies first.
    * 
@@ -3748,15 +3748,15 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
    * Patches any set value, including newly set values. Applies last.
    * 
    * Original thrift field:-
-   * 6: struct patch.StringPatch patchAfter
+   * 6: struct patch.StringPatch patch
    */
-  public ?\thrift\op\StringPatch $patchAfter;
+  public ?\thrift\op\StringPatch $patch;
 
-  public function __construct(?bool $clear = null, ?\thrift\op\StringPatch $patchPrior = null, ?string $ensure = null, ?\thrift\op\StringPatch $patchAfter = null)[] {
+  public function __construct(?bool $clear = null, ?\thrift\op\StringPatch $patchPrior = null, ?string $ensure = null, ?\thrift\op\StringPatch $patch = null)[] {
     $this->clear = $clear ?? false;
     $this->patchPrior = $patchPrior;
     $this->ensure = $ensure;
-    $this->patchAfter = $patchAfter;
+    $this->patch = $patch;
   }
 
   public static function withDefaultValues()[]: this {
@@ -3768,7 +3768,7 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
       Shapes::idx($shape, 'clear'),
       Shapes::idx($shape, 'patchPrior'),
       Shapes::idx($shape, 'ensure'),
-      Shapes::idx($shape, 'patchAfter'),
+      Shapes::idx($shape, 'patch'),
     );
   }
 
@@ -3831,7 +3831,7 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
                   ),
                 )
               ),
-              "name" => "patchAfter",
+              "name" => "patch",
             )
           ),
         ],
@@ -3868,7 +3868,7 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
             ),
           ],
         ),
-        'patchAfter' => shape(
+        'patch' => shape(
           'field' => dict[],
           'type' => dict[
             '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
@@ -3893,7 +3893,7 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
       $shape['clear'],
       Shapes::idx($shape, 'patchPrior') === null ? null : (\thrift\op\StringPatch::__fromShape($shape['patchPrior'])),
       Shapes::idx($shape, 'ensure'),
-      Shapes::idx($shape, 'patchAfter') === null ? null : (\thrift\op\StringPatch::__fromShape($shape['patchAfter'])),
+      Shapes::idx($shape, 'patch') === null ? null : (\thrift\op\StringPatch::__fromShape($shape['patch'])),
     );
   }
 
@@ -3902,7 +3902,7 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
       'clear' => $this->clear,
       'patchPrior' => $this->patchPrior?->__toShape(),
       'ensure' => $this->ensure,
-      'patchAfter' => $this->patchAfter?->__toShape(),
+      'patch' => $this->patch?->__toShape(),
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -3928,11 +3928,11 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
     if (idx($parsed, 'ensure') !== null) {
       $this->ensure = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['ensure']);
     }
-    if (idx($parsed, 'patchAfter') !== null) {
-      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\StringPatch>($parsed['patchAfter']));
+    if (idx($parsed, 'patch') !== null) {
+      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\StringPatch>($parsed['patch']));
       $_tmp3 = \thrift\op\StringPatch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
-      $this->patchAfter = $_tmp3;
+      $this->patch = $_tmp3;
     }
   }
 
@@ -3961,7 +3961,7 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
       'type' => \TType::STRING,
     ),
     6 => shape(
-      'var' => 'patchAfter',
+      'var' => 'patch',
       'type' => \TType::STRUCT,
       'class' => \thrift\op\BinaryPatch::class,
     ),
@@ -3970,24 +3970,24 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
     'clear' => 2,
     'patchPrior' => 3,
     'ensure' => 4,
-    'patchAfter' => 6,
+    'patch' => 6,
   ];
 
   const type TConstructorShape = shape(
     ?'clear' => ?bool,
     ?'patchPrior' => ?\thrift\op\BinaryPatch,
     ?'ensure' => ?string,
-    ?'patchAfter' => ?\thrift\op\BinaryPatch,
+    ?'patch' => ?\thrift\op\BinaryPatch,
   );
 
   const type TShape = shape(
     'clear' => bool,
     ?'patchPrior' => ?\thrift\op\BinaryPatch::TShape,
     ?'ensure' => ?string,
-    ?'patchAfter' => ?\thrift\op\BinaryPatch::TShape,
+    ?'patch' => ?\thrift\op\BinaryPatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 2653344628984647951;
+  const int STRUCTURAL_ID = 2891389540098318350;
   /**
    * Clears any set value. Applies first.
    * 
@@ -4013,15 +4013,15 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
    * Patches any set value, including newly set values. Applies last.
    * 
    * Original thrift field:-
-   * 6: struct patch.BinaryPatch patchAfter
+   * 6: struct patch.BinaryPatch patch
    */
-  public ?\thrift\op\BinaryPatch $patchAfter;
+  public ?\thrift\op\BinaryPatch $patch;
 
-  public function __construct(?bool $clear = null, ?\thrift\op\BinaryPatch $patchPrior = null, ?string $ensure = null, ?\thrift\op\BinaryPatch $patchAfter = null)[] {
+  public function __construct(?bool $clear = null, ?\thrift\op\BinaryPatch $patchPrior = null, ?string $ensure = null, ?\thrift\op\BinaryPatch $patch = null)[] {
     $this->clear = $clear ?? false;
     $this->patchPrior = $patchPrior;
     $this->ensure = $ensure;
-    $this->patchAfter = $patchAfter;
+    $this->patch = $patch;
   }
 
   public static function withDefaultValues()[]: this {
@@ -4033,7 +4033,7 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
       Shapes::idx($shape, 'clear'),
       Shapes::idx($shape, 'patchPrior'),
       Shapes::idx($shape, 'ensure'),
-      Shapes::idx($shape, 'patchAfter'),
+      Shapes::idx($shape, 'patch'),
     );
   }
 
@@ -4096,7 +4096,7 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
                   ),
                 )
               ),
-              "name" => "patchAfter",
+              "name" => "patch",
             )
           ),
         ],
@@ -4133,7 +4133,7 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
             ),
           ],
         ),
-        'patchAfter' => shape(
+        'patch' => shape(
           'field' => dict[],
           'type' => dict[
             '\thrift\op\GenerateOptionalPatch' => \thrift\op\GenerateOptionalPatch::fromShape(
@@ -4158,7 +4158,7 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
       $shape['clear'],
       Shapes::idx($shape, 'patchPrior') === null ? null : (\thrift\op\BinaryPatch::__fromShape($shape['patchPrior'])),
       Shapes::idx($shape, 'ensure'),
-      Shapes::idx($shape, 'patchAfter') === null ? null : (\thrift\op\BinaryPatch::__fromShape($shape['patchAfter'])),
+      Shapes::idx($shape, 'patch') === null ? null : (\thrift\op\BinaryPatch::__fromShape($shape['patch'])),
     );
   }
 
@@ -4167,7 +4167,7 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
       'clear' => $this->clear,
       'patchPrior' => $this->patchPrior?->__toShape(),
       'ensure' => $this->ensure,
-      'patchAfter' => $this->patchAfter?->__toShape(),
+      'patch' => $this->patch?->__toShape(),
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -4193,11 +4193,11 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
     if (idx($parsed, 'ensure') !== null) {
       $this->ensure = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['ensure']);
     }
-    if (idx($parsed, 'patchAfter') !== null) {
-      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\BinaryPatch>($parsed['patchAfter']));
+    if (idx($parsed, 'patch') !== null) {
+      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, \thrift\op\BinaryPatch>($parsed['patch']));
       $_tmp3 = \thrift\op\BinaryPatch::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
-      $this->patchAfter = $_tmp3;
+      $this->patch = $_tmp3;
     }
   }
 

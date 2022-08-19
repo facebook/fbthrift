@@ -115,8 +115,7 @@ class StructPatch : public BaseClearValuePatch<Patch, StructPatch<Patch>> {
   using Base::apply;
   using Base::Base;
   using Base::operator=;
-  using patch_type =
-      std::decay_t<decltype(*std::declval<Patch>().patchAfter())>;
+  using patch_type = std::decay_t<decltype(*std::declval<Patch>().patch())>;
 
   // Convert to a patch, if needed, and return the
   // patch object.
@@ -164,7 +163,7 @@ class StructPatch : public BaseClearValuePatch<Patch, StructPatch<Patch>> {
 //   bool clear;
 //   P patchPrior;
 //   T ensure;
-//   P patchAfter;
+//   P patch;
 // Where P is the patch type for the union type T.
 template <typename Patch>
 class UnionPatch : public BaseEnsurePatch<Patch, UnionPatch<Patch>> {
@@ -184,8 +183,8 @@ class UnionPatch : public BaseEnsurePatch<Patch, UnionPatch<Patch>> {
     return patch;
   }
   T& ensure() { return *data_.ensure(); }
-  P& ensure(const T& val) { return *ensureAnd(val).patchAfter(); }
-  P& ensure(T&& val) { return *ensureAnd(std::move(val)).patchAfter(); }
+  P& ensure(const T& val) { return *ensureAnd(val).patch(); }
+  P& ensure(T&& val) { return *ensureAnd(std::move(val)).patch(); }
 
   void apply(T& val) const { applyEnsure(val); }
 
