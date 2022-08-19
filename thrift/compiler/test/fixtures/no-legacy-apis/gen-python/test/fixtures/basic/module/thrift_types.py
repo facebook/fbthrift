@@ -111,6 +111,7 @@ _fbthrift_all_structs = [
 _fbthrift_python_types.fill_specs(*_fbthrift_all_structs)
 
 
+
 class _fbthrift_MyService_query_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -137,7 +138,9 @@ class _fbthrift_MyService_query_result(metaclass=_fbthrift_python_types.StructMe
     )
 
 
+
 _fbthrift_python_types.fill_specs(
     _fbthrift_MyService_query_args,
     _fbthrift_MyService_query_result,
+    
 )

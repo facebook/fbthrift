@@ -23,25 +23,24 @@ import test.fixtures.basic.module.thrift_types
 import test.fixtures.basic.module.thrift_metadata
 import facebook.thrift.annotation.thrift.thrift_types
 
-
 class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.MyService"
-
+    
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return test.fixtures.basic.module.thrift_metadata.gen_metadata_service_MyService()
-
+    
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.MyService"
-
+    
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return test.fixtures.basic.module.thrift_metadata.gen_metadata_service_MyService()
-
+    
         async def query(
             self,
             u: test.fixtures.basic.module.thrift_types.MyUnion
@@ -60,16 +59,16 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
+    
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.MyService"
-
+    
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return test.fixtures.basic.module.thrift_metadata.gen_metadata_service_MyService()
-
+    
         def query(
             self,
             u: test.fixtures.basic.module.thrift_types.MyUnion
@@ -88,3 +87,5 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
+    
+

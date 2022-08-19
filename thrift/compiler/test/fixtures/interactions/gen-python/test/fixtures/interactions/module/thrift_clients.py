@@ -22,25 +22,24 @@ import thrift.python.types as _fbthrift_python_types
 import test.fixtures.interactions.module.thrift_types
 import test.fixtures.interactions.module.thrift_metadata
 
-
 class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.MyService"
-
+    
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return test.fixtures.interactions.module.thrift_metadata.gen_metadata_service_MyService()
-
+    
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.MyService"
-
+    
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return test.fixtures.interactions.module.thrift_metadata.gen_metadata_service_MyService()
-
+    
         async def foo(
             self
         ) -> None:
@@ -50,7 +49,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 test.fixtures.interactions.module.thrift_types._fbthrift_MyService_foo_args(),
                 test.fixtures.interactions.module.thrift_types._fbthrift_MyService_foo_result,
             )
-
+    
         async def interact(
             self,
             arg: int
@@ -65,7 +64,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
             # shortcut to success path for non-void returns
             if _fbthrift_resp.success is not None:
                 return _fbthrift_resp.success
-
+    
         async def interactFast(
             self
         ) -> int:
@@ -82,7 +81,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
+    
         async def serialize(
             self
         ) -> _typing.Tuple[int, _typing.AsyncGenerator[int, None]]:
@@ -99,31 +98,31 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
+    
         def createMyInteraction(
-          self #MyService
+            self #MyService
         ) -> MyService.Async:
             return self._create_interaction("MyInteraction", MyService.Async)  # type: ignore
-
+    
         def createMyInteractionFast(
-          self #MyService
+            self #MyService
         ) -> MyService.Async:
             return self._create_interaction("MyInteractionFast", MyService.Async)  # type: ignore
-
+    
         def createSerialInteraction(
-          self #MyService
+            self #MyService
         ) -> MyService.Async:
             return self._create_interaction("SerialInteraction", MyService.Async)  # type: ignore
-
+    
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.MyService"
-
+    
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return test.fixtures.interactions.module.thrift_metadata.gen_metadata_service_MyService()
-
+    
         def foo(
             self
         ) -> None:
@@ -133,7 +132,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 test.fixtures.interactions.module.thrift_types._fbthrift_MyService_foo_args(),
                 test.fixtures.interactions.module.thrift_types._fbthrift_MyService_foo_result,
             )
-
+    
         def interact(
             self,
             arg: int
@@ -145,7 +144,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                     arg=arg,),
                 test.fixtures.interactions.module.thrift_types._fbthrift_MyService_interact_result,
             )
-
+    
         def interactFast(
             self
         ) -> int:
@@ -162,3 +161,5 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
+    
+

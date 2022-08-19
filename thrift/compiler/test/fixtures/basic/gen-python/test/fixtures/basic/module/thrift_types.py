@@ -363,6 +363,7 @@ _fbthrift_all_structs = [
 _fbthrift_python_types.fill_specs(*_fbthrift_all_structs)
 
 
+
 class _fbthrift_FooService_simple_rpc_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
     )
@@ -371,6 +372,8 @@ class _fbthrift_FooService_simple_rpc_args(metaclass=_fbthrift_python_types.Stru
 class _fbthrift_FooService_simple_rpc_result(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
     )
+
+
 
 
 class _fbthrift_FB303Service_simple_rpc_args(metaclass=_fbthrift_python_types.StructMeta):
@@ -397,6 +400,8 @@ class _fbthrift_FB303Service_simple_rpc_result(metaclass=_fbthrift_python_types.
             None,  # adapter class
         ),
     )
+
+
 
 
 class _fbthrift_MyService_ping_args(metaclass=_fbthrift_python_types.StructMeta):
@@ -590,6 +595,8 @@ class _fbthrift_MyService_rpc_skipped_codegen_result(metaclass=_fbthrift_python_
     )
 
 
+
+
 class _fbthrift_DbMixedStackArguments_getDataByKey0_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -642,11 +649,14 @@ class _fbthrift_DbMixedStackArguments_getDataByKey1_result(metaclass=_fbthrift_p
     )
 
 
+
 _fbthrift_python_types.fill_specs(
     _fbthrift_FooService_simple_rpc_args,
     _fbthrift_FooService_simple_rpc_result,
+    
     _fbthrift_FB303Service_simple_rpc_args,
     _fbthrift_FB303Service_simple_rpc_result,
+    
     _fbthrift_MyService_ping_args,
     _fbthrift_MyService_ping_result,
     _fbthrift_MyService_getRandomData_args,
@@ -666,8 +676,10 @@ _fbthrift_python_types.fill_specs(
     _fbthrift_MyService_invalid_return_for_hack_result,
     _fbthrift_MyService_rpc_skipped_codegen_args,
     _fbthrift_MyService_rpc_skipped_codegen_result,
+    
     _fbthrift_DbMixedStackArguments_getDataByKey0_args,
     _fbthrift_DbMixedStackArguments_getDataByKey0_result,
     _fbthrift_DbMixedStackArguments_getDataByKey1_args,
     _fbthrift_DbMixedStackArguments_getDataByKey1_result,
+    
 )

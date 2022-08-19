@@ -23,6 +23,7 @@ _fbthrift_all_structs = [
 ]
 
 
+
 class _fbthrift_ExtendTestService_check_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -49,7 +50,9 @@ class _fbthrift_ExtendTestService_check_result(metaclass=_fbthrift_python_types.
     )
 
 
+
 _fbthrift_python_types.fill_specs(
     _fbthrift_ExtendTestService_check_args,
     _fbthrift_ExtendTestService_check_result,
+    
 )

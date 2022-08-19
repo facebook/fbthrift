@@ -384,6 +384,7 @@ _fbthrift_all_structs = [
 _fbthrift_python_types.fill_specs(*_fbthrift_all_structs)
 
 
+
 class _fbthrift_Raiser_doBland_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
     )
@@ -488,6 +489,7 @@ class _fbthrift_Raiser_get500_result(metaclass=_fbthrift_python_types.StructMeta
     )
 
 
+
 _fbthrift_python_types.fill_specs(
     _fbthrift_Raiser_doBland_args,
     _fbthrift_Raiser_doBland_result,
@@ -497,4 +499,5 @@ _fbthrift_python_types.fill_specs(
     _fbthrift_Raiser_get200_result,
     _fbthrift_Raiser_get500_args,
     _fbthrift_Raiser_get500_result,
+    
 )

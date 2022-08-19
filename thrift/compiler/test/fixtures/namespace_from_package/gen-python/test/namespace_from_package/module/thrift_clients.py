@@ -22,25 +22,24 @@ import thrift.python.types as _fbthrift_python_types
 import test.namespace_from_package.module.thrift_types
 import test.namespace_from_package.module.thrift_metadata
 
-
 class TestService(_fbthrift_python_Client["TestService.Async", "TestService.Sync"]):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.TestService"
-
+    
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return test.namespace_from_package.module.thrift_metadata.gen_metadata_service_TestService()
-
+    
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.TestService"
-
+    
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return test.namespace_from_package.module.thrift_metadata.gen_metadata_service_TestService()
-
+    
         async def init(
             self,
             int1: int
@@ -59,16 +58,16 @@ class TestService(_fbthrift_python_Client["TestService.Async", "TestService.Sync
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
+    
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.TestService"
-
+    
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return test.namespace_from_package.module.thrift_metadata.gen_metadata_service_TestService()
-
+    
         def init(
             self,
             int1: int
@@ -87,3 +86,5 @@ class TestService(_fbthrift_python_Client["TestService.Async", "TestService.Sync
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
+    
+

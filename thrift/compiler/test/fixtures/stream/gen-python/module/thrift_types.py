@@ -92,6 +92,7 @@ _fbthrift_all_structs = [
 _fbthrift_python_types.fill_specs(*_fbthrift_all_structs)
 
 
+
 class _fbthrift_PubSubStreamingService_returnstream_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -444,6 +445,7 @@ class _fbthrift_PubSubStreamingService_returnstreamFast_result_stream(metaclass=
     )
 
 
+
 _fbthrift_python_types.fill_specs(
     _fbthrift_PubSubStreamingService_returnstream_args,
     _fbthrift_PubSubStreamingService_returnstream_result,
@@ -469,4 +471,5 @@ _fbthrift_python_types.fill_specs(
     _fbthrift_PubSubStreamingService_returnstreamFast_args,
     _fbthrift_PubSubStreamingService_returnstreamFast_result,
     _fbthrift_PubSubStreamingService_returnstreamFast_result_stream,
+    
 )

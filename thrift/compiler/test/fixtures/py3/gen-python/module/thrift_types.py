@@ -508,6 +508,7 @@ IOBuf = _fbthrift_iobuf.IOBuf
 foo_bar = bytes
 
 
+
 class _fbthrift_SimpleService_get_five_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
     )
@@ -1558,6 +1559,8 @@ class _fbthrift_SimpleService_get_binary_union_struct_result(metaclass=_fbthrift
     )
 
 
+
+
 class _fbthrift_DerivedService_get_six_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
     )
@@ -1576,6 +1579,8 @@ class _fbthrift_DerivedService_get_six_result(metaclass=_fbthrift_python_types.S
     )
 
 
+
+
 class _fbthrift_RederivedService_get_seven_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
     )
@@ -1592,6 +1597,7 @@ class _fbthrift_RederivedService_get_seven_result(metaclass=_fbthrift_python_typ
             None,  # adapter class
         ),
     )
+
 
 
 _fbthrift_python_types.fill_specs(
@@ -1677,8 +1683,11 @@ _fbthrift_python_types.fill_specs(
     _fbthrift_SimpleService_contain_enum_result,
     _fbthrift_SimpleService_get_binary_union_struct_args,
     _fbthrift_SimpleService_get_binary_union_struct_result,
+    
     _fbthrift_DerivedService_get_six_args,
     _fbthrift_DerivedService_get_six_result,
+    
     _fbthrift_RederivedService_get_seven_args,
     _fbthrift_RederivedService_get_seven_result,
+    
 )

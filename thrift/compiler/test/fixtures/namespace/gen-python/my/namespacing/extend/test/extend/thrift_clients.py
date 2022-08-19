@@ -24,25 +24,24 @@ import python_module_root.my.namespacing.extend.test.extend.thrift_metadata
 import python_module_root.my.namespacing.test.hsmodule.thrift_types
 import python_module_root.my.namespacing.test.hsmodule.thrift_clients
 
-
 class ExtendTestService(_fbthrift_python_Client["ExtendTestService.Async", "ExtendTestService.Sync"]):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "extend.ExtendTestService"
-
+    
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return python_module_root.my.namespacing.extend.test.extend.thrift_metadata.gen_metadata_service_ExtendTestService()
-
+    
     class Async(python_module_root.my.namespacing.test.hsmodule.thrift_clients.HsTestService.Async):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "extend.ExtendTestService"
-
+    
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return python_module_root.my.namespacing.extend.test.extend.thrift_metadata.gen_metadata_service_ExtendTestService()
-
+    
         async def check(
             self,
             struct1: python_module_root.my.namespacing.test.hsmodule.thrift_types.HsFoo
@@ -61,16 +60,16 @@ class ExtendTestService(_fbthrift_python_Client["ExtendTestService.Async", "Exte
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
+    
     class Sync(python_module_root.my.namespacing.test.hsmodule.thrift_clients.HsTestService.Sync):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "extend.ExtendTestService"
-
+    
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return python_module_root.my.namespacing.extend.test.extend.thrift_metadata.gen_metadata_service_ExtendTestService()
-
+    
         def check(
             self,
             struct1: python_module_root.my.namespacing.test.hsmodule.thrift_types.HsFoo
@@ -89,3 +88,5 @@ class ExtendTestService(_fbthrift_python_Client["ExtendTestService.Async", "Exte
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
+    
+

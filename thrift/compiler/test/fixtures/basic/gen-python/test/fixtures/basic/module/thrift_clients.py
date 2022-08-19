@@ -23,25 +23,24 @@ import test.fixtures.basic.module.thrift_types
 import test.fixtures.basic.module.thrift_metadata
 import facebook.thrift.annotation.hack.thrift_types
 
-
 class FooService(_fbthrift_python_Client["FooService.Async", "FooService.Sync"]):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.FooService"
-
+    
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return test.fixtures.basic.module.thrift_metadata.gen_metadata_service_FooService()
-
+    
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.FooService"
-
+    
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return test.fixtures.basic.module.thrift_metadata.gen_metadata_service_FooService()
-
+    
         async def simple_rpc(
             self
         ) -> None:
@@ -51,16 +50,16 @@ class FooService(_fbthrift_python_Client["FooService.Async", "FooService.Sync"])
                 test.fixtures.basic.module.thrift_types._fbthrift_FooService_simple_rpc_args(),
                 test.fixtures.basic.module.thrift_types._fbthrift_FooService_simple_rpc_result,
             )
-
+    
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.FooService"
-
+    
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return test.fixtures.basic.module.thrift_metadata.gen_metadata_service_FooService()
-
+    
         def simple_rpc(
             self
         ) -> None:
@@ -70,26 +69,27 @@ class FooService(_fbthrift_python_Client["FooService.Async", "FooService.Sync"])
                 test.fixtures.basic.module.thrift_types._fbthrift_FooService_simple_rpc_args(),
                 test.fixtures.basic.module.thrift_types._fbthrift_FooService_simple_rpc_result,
             )
+    
 
 
 class FB303Service(_fbthrift_python_Client["FB303Service.Async", "FB303Service.Sync"]):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.FB303Service"
-
+    
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return test.fixtures.basic.module.thrift_metadata.gen_metadata_service_FB303Service()
-
+    
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.FB303Service"
-
+    
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return test.fixtures.basic.module.thrift_metadata.gen_metadata_service_FB303Service()
-
+    
         async def simple_rpc(
             self,
             int_parameter: int
@@ -108,16 +108,16 @@ class FB303Service(_fbthrift_python_Client["FB303Service.Async", "FB303Service.S
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
+    
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.FB303Service"
-
+    
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return test.fixtures.basic.module.thrift_metadata.gen_metadata_service_FB303Service()
-
+    
         def simple_rpc(
             self,
             int_parameter: int
@@ -136,26 +136,27 @@ class FB303Service(_fbthrift_python_Client["FB303Service.Async", "FB303Service.S
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
+    
 
 
 class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.MyService"
-
+    
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return test.fixtures.basic.module.thrift_metadata.gen_metadata_service_MyService()
-
+    
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.MyService"
-
+    
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return test.fixtures.basic.module.thrift_metadata.gen_metadata_service_MyService()
-
+    
         async def ping(
             self
         ) -> None:
@@ -165,7 +166,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 test.fixtures.basic.module.thrift_types._fbthrift_MyService_ping_args(),
                 test.fixtures.basic.module.thrift_types._fbthrift_MyService_ping_result,
             )
-
+    
         async def getRandomData(
             self
         ) -> str:
@@ -182,7 +183,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
+    
         async def sink(
             self,
             sink: int
@@ -194,7 +195,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                     sink=sink,),
                 test.fixtures.basic.module.thrift_types._fbthrift_MyService_sink_result,
             )
-
+    
         async def putDataById(
             self,
             id: int,
@@ -208,7 +209,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                     data=data,),
                 test.fixtures.basic.module.thrift_types._fbthrift_MyService_putDataById_result,
             )
-
+    
         async def hasDataById(
             self,
             id: int
@@ -227,7 +228,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
+    
         async def getDataById(
             self,
             id: int
@@ -246,7 +247,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
+    
         async def deleteDataById(
             self,
             id: int
@@ -258,7 +259,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                     id=id,),
                 test.fixtures.basic.module.thrift_types._fbthrift_MyService_deleteDataById_result,
             )
-
+    
         async def lobDataById(
             self,
             id: int,
@@ -272,7 +273,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                     data=data,),
                 None,
             )
-
+    
         async def invalid_return_for_hack(
             self
         ) -> _typing.AbstractSet[float]:
@@ -289,7 +290,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
+    
         async def rpc_skipped_codegen(
             self
         ) -> None:
@@ -299,16 +300,16 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 test.fixtures.basic.module.thrift_types._fbthrift_MyService_rpc_skipped_codegen_args(),
                 test.fixtures.basic.module.thrift_types._fbthrift_MyService_rpc_skipped_codegen_result,
             )
-
+    
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.MyService"
-
+    
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return test.fixtures.basic.module.thrift_metadata.gen_metadata_service_MyService()
-
+    
         def ping(
             self
         ) -> None:
@@ -318,7 +319,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 test.fixtures.basic.module.thrift_types._fbthrift_MyService_ping_args(),
                 test.fixtures.basic.module.thrift_types._fbthrift_MyService_ping_result,
             )
-
+    
         def getRandomData(
             self
         ) -> str:
@@ -335,7 +336,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
+    
         def sink(
             self,
             sink: int
@@ -347,7 +348,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                     sink=sink,),
                 test.fixtures.basic.module.thrift_types._fbthrift_MyService_sink_result,
             )
-
+    
         def putDataById(
             self,
             id: int,
@@ -361,7 +362,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                     data=data,),
                 test.fixtures.basic.module.thrift_types._fbthrift_MyService_putDataById_result,
             )
-
+    
         def hasDataById(
             self,
             id: int
@@ -380,7 +381,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
+    
         def getDataById(
             self,
             id: int
@@ -399,7 +400,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
+    
         def deleteDataById(
             self,
             id: int
@@ -411,7 +412,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                     id=id,),
                 test.fixtures.basic.module.thrift_types._fbthrift_MyService_deleteDataById_result,
             )
-
+    
         def lobDataById(
             self,
             id: int,
@@ -425,7 +426,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                     data=data,),
                 None,
             )
-
+    
         def invalid_return_for_hack(
             self
         ) -> _typing.AbstractSet[float]:
@@ -442,7 +443,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
+    
         def rpc_skipped_codegen(
             self
         ) -> None:
@@ -452,26 +453,27 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 test.fixtures.basic.module.thrift_types._fbthrift_MyService_rpc_skipped_codegen_args(),
                 test.fixtures.basic.module.thrift_types._fbthrift_MyService_rpc_skipped_codegen_result,
             )
+    
 
 
 class DbMixedStackArguments(_fbthrift_python_Client["DbMixedStackArguments.Async", "DbMixedStackArguments.Sync"]):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.DbMixedStackArguments"
-
+    
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return test.fixtures.basic.module.thrift_metadata.gen_metadata_service_DbMixedStackArguments()
-
+    
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.DbMixedStackArguments"
-
+    
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return test.fixtures.basic.module.thrift_metadata.gen_metadata_service_DbMixedStackArguments()
-
+    
         async def getDataByKey0(
             self,
             key: str
@@ -490,7 +492,7 @@ class DbMixedStackArguments(_fbthrift_python_Client["DbMixedStackArguments.Async
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
+    
         async def getDataByKey1(
             self,
             key: str
@@ -509,16 +511,16 @@ class DbMixedStackArguments(_fbthrift_python_Client["DbMixedStackArguments.Async
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
+    
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.DbMixedStackArguments"
-
+    
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return test.fixtures.basic.module.thrift_metadata.gen_metadata_service_DbMixedStackArguments()
-
+    
         def getDataByKey0(
             self,
             key: str
@@ -537,7 +539,7 @@ class DbMixedStackArguments(_fbthrift_python_Client["DbMixedStackArguments.Async
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
+    
         def getDataByKey1(
             self,
             key: str
@@ -556,3 +558,5 @@ class DbMixedStackArguments(_fbthrift_python_Client["DbMixedStackArguments.Async
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
+    
+

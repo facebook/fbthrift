@@ -22,30 +22,31 @@ import thrift.python.types as _fbthrift_python_types
 import empty.thrift_types
 import empty.thrift_metadata
 
-
 class NullService(_fbthrift_python_Client["NullService.Async", "NullService.Sync"]):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "empty.NullService"
-
+    
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return empty.thrift_metadata.gen_metadata_service_NullService()
-
+    
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "empty.NullService"
-
+    
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return empty.thrift_metadata.gen_metadata_service_NullService()
-
+    
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "empty.NullService"
-
+    
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return empty.thrift_metadata.gen_metadata_service_NullService()
+    
+

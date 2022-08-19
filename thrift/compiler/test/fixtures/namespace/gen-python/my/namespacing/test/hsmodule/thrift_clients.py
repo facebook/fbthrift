@@ -22,25 +22,24 @@ import thrift.python.types as _fbthrift_python_types
 import python_module_root.my.namespacing.test.hsmodule.thrift_types
 import python_module_root.my.namespacing.test.hsmodule.thrift_metadata
 
-
 class HsTestService(_fbthrift_python_Client["HsTestService.Async", "HsTestService.Sync"]):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "hsmodule.HsTestService"
-
+    
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return python_module_root.my.namespacing.test.hsmodule.thrift_metadata.gen_metadata_service_HsTestService()
-
+    
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "hsmodule.HsTestService"
-
+    
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return python_module_root.my.namespacing.test.hsmodule.thrift_metadata.gen_metadata_service_HsTestService()
-
+    
         async def init(
             self,
             int1: int
@@ -59,16 +58,16 @@ class HsTestService(_fbthrift_python_Client["HsTestService.Async", "HsTestServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
+    
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "hsmodule.HsTestService"
-
+    
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return python_module_root.my.namespacing.test.hsmodule.thrift_metadata.gen_metadata_service_HsTestService()
-
+    
         def init(
             self,
             int1: int
@@ -87,3 +86,5 @@ class HsTestService(_fbthrift_python_Client["HsTestService.Async", "HsTestServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
+    
+

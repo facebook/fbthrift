@@ -65,6 +65,7 @@ _fbthrift_all_structs = [
 _fbthrift_python_types.fill_specs(*_fbthrift_all_structs)
 
 
+
 class _fbthrift_MyService_foo_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
     )
@@ -142,6 +143,7 @@ class _fbthrift_MyService_serialize_result_stream(metaclass=_fbthrift_python_typ
     )
 
 
+
 _fbthrift_python_types.fill_specs(
     _fbthrift_MyService_foo_args,
     _fbthrift_MyService_foo_result,
@@ -152,4 +154,5 @@ _fbthrift_python_types.fill_specs(
     _fbthrift_MyService_serialize_args,
     _fbthrift_MyService_serialize_result,
     _fbthrift_MyService_serialize_result_stream,
+    
 )

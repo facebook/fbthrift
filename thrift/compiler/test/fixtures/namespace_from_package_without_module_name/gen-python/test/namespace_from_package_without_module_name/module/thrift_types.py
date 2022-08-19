@@ -65,6 +65,7 @@ _fbthrift_all_structs = [
 _fbthrift_python_types.fill_specs(*_fbthrift_all_structs)
 
 
+
 class _fbthrift_TestService_init_args(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -91,7 +92,9 @@ class _fbthrift_TestService_init_result(metaclass=_fbthrift_python_types.StructM
     )
 
 
+
 _fbthrift_python_types.fill_specs(
     _fbthrift_TestService_init_args,
     _fbthrift_TestService_init_result,
+    
 )

@@ -23,25 +23,24 @@ import module.thrift_types
 import module.thrift_metadata
 import facebook.thrift.annotation.thrift.thrift_types
 
-
 class Raiser(_fbthrift_python_Client["Raiser.Async", "Raiser.Sync"]):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.Raiser"
-
+    
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return module.thrift_metadata.gen_metadata_service_Raiser()
-
+    
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.Raiser"
-
+    
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return module.thrift_metadata.gen_metadata_service_Raiser()
-
+    
         async def doBland(
             self
         ) -> None:
@@ -51,7 +50,7 @@ class Raiser(_fbthrift_python_Client["Raiser.Async", "Raiser.Sync"]):
                 module.thrift_types._fbthrift_Raiser_doBland_args(),
                 module.thrift_types._fbthrift_Raiser_doBland_result,
             )
-
+    
         async def doRaise(
             self
         ) -> None:
@@ -67,7 +66,7 @@ class Raiser(_fbthrift_python_Client["Raiser.Async", "Raiser.Sync"]):
                 raise _fbthrift_resp.f
             if _fbthrift_resp.s is not None:
                 raise _fbthrift_resp.s
-
+    
         async def get200(
             self
         ) -> str:
@@ -84,7 +83,7 @@ class Raiser(_fbthrift_python_Client["Raiser.Async", "Raiser.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
+    
         async def get500(
             self
         ) -> str:
@@ -107,16 +106,16 @@ class Raiser(_fbthrift_python_Client["Raiser.Async", "Raiser.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
+    
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.Raiser"
-
+    
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return module.thrift_metadata.gen_metadata_service_Raiser()
-
+    
         def doBland(
             self
         ) -> None:
@@ -126,7 +125,7 @@ class Raiser(_fbthrift_python_Client["Raiser.Async", "Raiser.Sync"]):
                 module.thrift_types._fbthrift_Raiser_doBland_args(),
                 module.thrift_types._fbthrift_Raiser_doBland_result,
             )
-
+    
         def doRaise(
             self
         ) -> None:
@@ -142,7 +141,7 @@ class Raiser(_fbthrift_python_Client["Raiser.Async", "Raiser.Sync"]):
                 raise _fbthrift_resp.f
             if _fbthrift_resp.s is not None:
                 raise _fbthrift_resp.s
-
+    
         def get200(
             self
         ) -> str:
@@ -159,7 +158,7 @@ class Raiser(_fbthrift_python_Client["Raiser.Async", "Raiser.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
+    
         def get500(
             self
         ) -> str:
@@ -182,3 +181,5 @@ class Raiser(_fbthrift_python_Client["Raiser.Async", "Raiser.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
+    
+

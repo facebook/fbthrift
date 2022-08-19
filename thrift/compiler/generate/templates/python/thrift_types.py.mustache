@@ -168,93 +168,16 @@ _fbthrift_python_types.fill_specs(*_fbthrift_all_structs)
 {{/program:typedefs?}}
 {{#program:services?}}
 {{#program:services}}
-{{#service:supported_functions}}
 
+{{> types/service_arg_types }}
 
-class {{> types/function_args_type}}(metaclass=_fbthrift_python_types.StructMeta):
-    _fbthrift_SPEC = (
-        {{#function:args}}
-        (
-            {{field:key}},  # id
-            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
-            "{{field:py_name}}",  # name
-            {{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }}{{/field:type}},  # typeinfo
-            None,  # default value
-            {{> fields/adapter_class }},  # adapter class
-        ),
-        {{/function:args}}
-    )
-{{^function:oneway?}}
-
-
-class _fbthrift_{{service:name}}_{{function:name}}_result(metaclass=_fbthrift_python_types.StructMeta):
-    _fbthrift_SPEC = (
-        {{#function:regular_response_type}}
-        {{^type:void?}}
-        (
-            0,  # id
-            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
-            "success",  # name
-            {{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }},  # typeinfo
-            None,  # default value
-            {{> fields/adapter_class }},  # adapter class
-        ),
-        {{/type:void?}}
-        {{/function:regular_response_type}}
-        {{#function:exceptions}}
-        (
-            {{field:key}},  # id
-            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
-            "{{field:py_name}}",  # name
-            {{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }}{{/field:type}},  # typeinfo
-            None,  # default value
-            {{> fields/adapter_class }},  # adapter class
-        ),
-        {{/function:exceptions}}
-    )
-{{/function:oneway?}}
-{{#function:returns_stream?}}
-
-
-class _fbthrift_{{service:name}}_{{function:name}}_result_stream(metaclass=_fbthrift_python_types.StructMeta):
-    _fbthrift_SPEC = (
-        {{#function:return_stream_elem_type}}
-        (
-            0,  # id
-            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
-            "success",  # name
-            {{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }},  # typeinfo
-            None,  # default value
-            {{> fields/adapter_class }},  # adapter class
-        ),
-        {{/function:return_stream_elem_type}}
-        {{#function:stream_exceptions}}
-        (
-            {{field:key}},  # id
-            _fbthrift_python_types.FieldQualifier.Optional, # qualifier
-            "{{field:py_name}}",  # name
-            {{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }}{{/field:type}},  # typeinfo
-            None,  # default value
-            {{> fields/adapter_class }},  # adapter class
-        ),
-        {{/function:stream_exceptions}}
-    )
-{{/function:returns_stream?}}
-{{/service:supported_functions}}
 {{/program:services}}
 
 
 _fbthrift_python_types.fill_specs(
     {{#program:services}}
-    {{#service:supported_functions}}
-    {{> types/function_args_type}},
-    {{^function:oneway?}}
-    _fbthrift_{{service:name}}_{{function:name}}_result,
-    {{/function:oneway?}}
-    {{#function:returns_stream?}}
-    _fbthrift_{{service:name}}_{{function:name}}_result_stream,
-    {{/function:returns_stream?}}
-    {{/service:supported_functions}}
+    {{> types/service_arg_type_list}}
+
     {{/program:services}}
 )
 {{/program:services?}}
