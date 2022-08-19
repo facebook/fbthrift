@@ -226,6 +226,14 @@ class BitRef {
   const uint8_t bit_index_;
   const bool is_atomic_ = false;
 };
+
+template <typename value_type>
+using EnableIfConst =
+    std::enable_if_t<std::is_const<value_type>::value, value_type>;
+
+template <typename value_type>
+using EnableIfNonConst =
+    std::enable_if_t<!std::is_const<value_type>::value, value_type>;
 } // namespace detail
 
 // A reference to an unqualified field of the possibly const-qualified type
@@ -318,7 +326,21 @@ class field_ref {
     return static_cast<reference_type>(value_);
   }
 
-  FOLLY_ERASE value_type* operator->() const noexcept { return &value_; }
+  template <typename U = value_type>
+  [[deprecated(
+      "Please use `foo.value().bar()` instead of `foo->bar()` "
+      "since const is not propagated correctly in `operator->` API")]] FOLLY_ERASE
+      detail::EnableIfNonConst<U>*
+      operator->() const noexcept {
+    return &value_;
+  }
+
+  template <typename U = value_type>
+  FOLLY_ERASE detail::EnableIfConst<U>* operator->() const noexcept {
+    return &value_;
+  }
+
+  FOLLY_ERASE value_type* operator->() noexcept { return &value_; }
 
   FOLLY_ERASE reference_type ensure() noexcept {
     bitref_ = true;
@@ -613,7 +635,23 @@ class optional_field_ref {
 
   FOLLY_ERASE reference_type operator*() const { return value(); }
 
-  FOLLY_ERASE value_type* operator->() const {
+  template <typename U = value_type>
+  [[deprecated(
+      "Please use `foo.value().bar()` instead of `foo->bar()` "
+      "since const is not propagated correctly in `operator->` API")]] FOLLY_ERASE
+      detail::EnableIfNonConst<U>*
+      operator->() const {
+    throw_if_unset();
+    return &value_;
+  }
+
+  template <typename U = value_type>
+  FOLLY_ERASE detail::EnableIfConst<U>* operator->() const {
+    throw_if_unset();
+    return &value_;
+  }
+
+  FOLLY_ERASE value_type* operator->() {
     throw_if_unset();
     return &value_;
   }
@@ -915,7 +953,23 @@ class optional_boxed_field_ref {
 
   FOLLY_ERASE reference_type operator*() const { return value(); }
 
-  FOLLY_ERASE value_type* operator->() const {
+  template <typename U = value_type>
+  [[deprecated(
+      "Please use `foo.value().bar()` instead of `foo->bar()` "
+      "since const is not propagated correctly in `operator->` API")]] FOLLY_ERASE
+      detail::EnableIfNonConst<U>*
+      operator->() const {
+    throw_if_unset();
+    return &*value_;
+  }
+
+  template <typename U = value_type>
+  FOLLY_ERASE detail::EnableIfConst<U>* operator->() const {
+    throw_if_unset();
+    return &*value_;
+  }
+
+  FOLLY_ERASE value_type* operator->() {
     throw_if_unset();
     return &*value_;
   }
@@ -1233,7 +1287,21 @@ class required_field_ref {
     return static_cast<reference_type>(value_);
   }
 
-  FOLLY_ERASE value_type* operator->() const noexcept { return &value_; }
+  template <typename U = value_type>
+  [[deprecated(
+      "Please use `foo.value().bar()` instead of `foo->bar()` "
+      "since const is not propagated correctly in `operator->` API")]] FOLLY_ERASE
+      detail::EnableIfNonConst<U>*
+      operator->() const noexcept {
+    return &value_;
+  }
+
+  template <typename U = value_type>
+  FOLLY_ERASE detail::EnableIfConst<U>* operator->() const noexcept {
+    return &value_;
+  }
+
+  FOLLY_ERASE value_type* operator->() noexcept { return &value_; }
 
   FOLLY_ERASE reference_type ensure() noexcept {
     return static_cast<reference_type>(value_);
@@ -1465,7 +1533,23 @@ class union_field_ref {
 
   FOLLY_ERASE reference_type operator*() const { return value(); }
 
-  FOLLY_ERASE value_type* operator->() const {
+  template <typename U = value_type>
+  [[deprecated(
+      "Please use `foo.value().bar()` instead of `foo->bar()` "
+      "since const is not propagated correctly in `operator->` API")]] FOLLY_ERASE
+      detail::EnableIfNonConst<U>*
+      operator->() const {
+    throw_if_unset();
+    return &get_value();
+  }
+
+  template <typename U = value_type>
+  FOLLY_ERASE detail::EnableIfConst<U>* operator->() const {
+    throw_if_unset();
+    return &get_value();
+  }
+
+  FOLLY_ERASE value_type* operator->() {
     throw_if_unset();
     return &get_value();
   }
@@ -1707,7 +1791,21 @@ class terse_field_ref {
     return static_cast<reference_type>(value_);
   }
 
-  FOLLY_ERASE value_type* operator->() const noexcept { return &value_; }
+  template <typename U = value_type>
+  [[deprecated(
+      "Please use `foo.value().bar()` instead of `foo->bar()` "
+      "since const is not propagated correctly in `operator->` API")]] FOLLY_ERASE
+      detail::EnableIfNonConst<U>*
+      operator->() const noexcept {
+    return &value_;
+  }
+
+  template <typename U = value_type>
+  FOLLY_ERASE detail::EnableIfConst<U>* operator->() const noexcept {
+    return &value_;
+  }
+
+  FOLLY_ERASE value_type* operator->() noexcept { return &value_; }
 
   template <typename Index>
   FOLLY_ERASE auto operator[](const Index& index) const -> decltype(auto) {
