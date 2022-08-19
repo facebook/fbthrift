@@ -357,6 +357,8 @@ void OmniClient::sendImpl(
 
   SerializedRequest serializedRequest(std::move(args));
 
+  setInteraction(rpcOptions);
+
   // Send the request!
   switch (rpcKind) {
     case RpcKind::SINK:
@@ -404,6 +406,52 @@ void OmniClient::sendImpl(
 
 uint16_t OmniClient::getChannelProtocolId() {
   return channel_->getProtocolId();
+}
+
+OmniInteractionClient::OmniInteractionClient(
+    std::shared_ptr<apache::thrift::RequestChannel> channel,
+    const std::string& methodName)
+    : OmniClient(channel), methodName_(methodName) {
+  DCHECK(
+      !channel->getEventBase() ||
+      channel->getEventBase()->isInEventBaseThread());
+  this->interactionId_ = channel->createInteraction(methodName_);
+}
+
+OmniInteractionClient::~OmniInteractionClient() {
+  terminate();
+}
+
+OmniInteractionClient& OmniInteractionClient::operator=(
+    OmniInteractionClient&& other) {
+  if (this != &other) {
+    terminate();
+  }
+  channel_ = std::move(other.channel_);
+  interactionId_ = std::move(other.interactionId_);
+  return *this;
+}
+
+void OmniInteractionClient::terminate() {
+  if (!channel_ || !interactionId_) {
+    return;
+  }
+  auto* eb = channel_->getEventBase();
+  if (eb) {
+    folly::getKeepAliveToken(eb).add(
+        [channel = channel_, id = std::move(interactionId_)](auto&&) mutable {
+          channel->terminateInteraction(std::move(id));
+        });
+  } else {
+    channel_->terminateInteraction(std::move(interactionId_));
+  }
+}
+
+void OmniInteractionClient::setInteraction(
+    apache::thrift::RpcOptions& rpcOptions) {
+  DCHECK(interactionId_);
+  DCHECK(rpcOptions.getInteractionId() == 0);
+  rpcOptions.setInteractionId(interactionId_);
 }
 
 } // namespace client

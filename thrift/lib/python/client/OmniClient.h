@@ -23,6 +23,7 @@
 #include <thrift/lib/cpp/EventHandlerBase.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/ClientBufferedStream.h>
+#include <thrift/lib/cpp2/async/Interaction.h>
 #include <thrift/lib/cpp2/async/RequestCallback.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
@@ -51,6 +52,8 @@ struct OmniClientResponseWithHeaders {
 class OmniClient : public apache::thrift::TClientBase {
  public:
   explicit OmniClient(RequestChannel_ptr channel);
+  explicit OmniClient(std::shared_ptr<apache::thrift::RequestChannel> channel)
+      : channel_(std::move(channel)) {}
   ~OmniClient();
 
   OmniClientResponseWithHeaders sync_send(
@@ -113,7 +116,32 @@ class OmniClient : public apache::thrift::TClientBase {
       std::unique_ptr<apache::thrift::RequestCallback> callback,
       const apache::thrift::RpcKind rpcKind);
 
+ protected:
+  // RpcOptions unused in base OmniClient since no interaction support
+  virtual void setInteraction(apache::thrift::RpcOptions&) {}
+
   std::shared_ptr<apache::thrift::RequestChannel> channel_;
+};
+
+class OmniInteractionClient : public OmniClient {
+ public:
+  OmniInteractionClient(
+      std::shared_ptr<apache::thrift::RequestChannel> channel,
+      const std::string& methodName);
+  ~OmniInteractionClient() override;
+  OmniInteractionClient(OmniInteractionClient&&) noexcept = default;
+  OmniInteractionClient& operator=(OmniInteractionClient&&);
+
+ protected:
+  void setInteraction(apache::thrift::RpcOptions& rpcOptions) override;
+
+ private:
+  void terminate();
+
+  std::string methodName_;
+  apache::thrift::InteractionId interactionId_;
+
+  friend class OmniClient;
 };
 
 } // namespace client
