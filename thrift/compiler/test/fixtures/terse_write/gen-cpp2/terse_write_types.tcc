@@ -2696,9 +2696,9 @@ _readField_field1:
       [&](auto& field) { ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, my::Adapter::toThrift(field), _readState); },
       [&](auto&) {})(this->__fbthrift_field_field1);
     if (!hasInplaceToThrift) {
-    ::std::int32_t tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, tvalue, _readState);
-    this->__fbthrift_field_field1 = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter, 1>(::std::move(tvalue), *this);
+      ::std::int32_t tvalue;
+      ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, tvalue, _readState);
+      this->__fbthrift_field_field1 = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter, 1>(::std::move(tvalue), *this);
     }
     
   }

@@ -168,9 +168,9 @@ _readField_setField:
       [&](auto& field) { ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::string>, ::std::set<::std::string>>::readWithContext(*iprot, my::Adapter2::toThrift(field), _readState); },
       [&](auto&) {})(this->__fbthrift_field_setField);
     if (!hasInplaceToThrift) {
-    ::std::set<::std::string> tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::string>, ::std::set<::std::string>>::readWithContext(*iprot, tvalue, _readState);
-    this->__fbthrift_field_setField = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter2, 4>(::std::move(tvalue), *this);
+      ::std::set<::std::string> tvalue;
+      ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::string>, ::std::set<::std::string>>::readWithContext(*iprot, tvalue, _readState);
+      this->__fbthrift_field_setField = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter2, 4>(::std::move(tvalue), *this);
     }
     _readState.afterSubobject(iprot);
     
@@ -192,9 +192,9 @@ _readField_optionalSetField:
       [&](auto& field) { ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::string>, ::std::set<::std::string>>::readWithContext(*iprot, my::Adapter2::toThrift(field), _readState); },
       [&](auto&) {})(this->__fbthrift_field_optionalSetField);
     if (!hasInplaceToThrift) {
-    ::std::set<::std::string> tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::string>, ::std::set<::std::string>>::readWithContext(*iprot, tvalue, _readState);
-    this->__fbthrift_field_optionalSetField = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter2, 5>(::std::move(tvalue), *this);
+      ::std::set<::std::string> tvalue;
+      ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::string>, ::std::set<::std::string>>::readWithContext(*iprot, tvalue, _readState);
+      this->__fbthrift_field_optionalSetField = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter2, 5>(::std::move(tvalue), *this);
     }
     _readState.afterSubobject(iprot);
     
@@ -267,9 +267,9 @@ _readField_longField:
       [&](auto& field) { ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, my::Adapter1::toThrift(field), _readState); },
       [&](auto&) {})(this->__fbthrift_field_longField);
     if (!hasInplaceToThrift) {
-    ::std::int64_t tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, tvalue, _readState);
-    this->__fbthrift_field_longField = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter1, 9>(::std::move(tvalue), *this);
+      ::std::int64_t tvalue;
+      ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, tvalue, _readState);
+      this->__fbthrift_field_longField = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter1, 9>(::std::move(tvalue), *this);
     }
     
   }
@@ -305,9 +305,9 @@ _readField_doubleAdaptedField:
       [&](auto& field) { ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, my::Adapter1::toThrift(field), _readState); },
       [&](auto&) {})(this->__fbthrift_field_doubleAdaptedField);
     if (!hasInplaceToThrift) {
-    ::std::int64_t tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, tvalue, _readState);
-    this->__fbthrift_field_doubleAdaptedField = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter1, 11>(::std::move(tvalue), *this);
+      ::std::int64_t tvalue;
+      ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, tvalue, _readState);
+      this->__fbthrift_field_doubleAdaptedField = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter1, 11>(::std::move(tvalue), *this);
     }
     
   }
@@ -680,9 +680,9 @@ void Baz::readNoXfer(Protocol_* iprot) {
             [&](auto& field) { ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::string>, ::std::set<::std::string>>::readWithContext(*iprot, my::Adapter2::toThrift(field), _readState); },
             [&](auto&) {})(value_.setField);
           if (!hasInplaceToThrift) {
-          ::std::set<::std::string> tvalue;
-          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::string>, ::std::set<::std::string>>::readWithContext(*iprot, tvalue, _readState);
-          value_.setField = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter2, 4>(::std::move(tvalue), *this);
+            ::std::set<::std::string> tvalue;
+            ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::string>, ::std::set<::std::string>>::readWithContext(*iprot, tvalue, _readState);
+            value_.setField = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter2, 4>(::std::move(tvalue), *this);
           }
           _readState.afterSubobject(iprot);
           
@@ -728,9 +728,9 @@ void Baz::readNoXfer(Protocol_* iprot) {
             [&](auto& field) { ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, my::Adapter1::toThrift(field), _readState); },
             [&](auto&) {})(value_.longField);
           if (!hasInplaceToThrift) {
-          ::std::int64_t tvalue;
-          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, tvalue, _readState);
-          value_.longField = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter1, 9>(::std::move(tvalue), *this);
+            ::std::int64_t tvalue;
+            ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, tvalue, _readState);
+            value_.longField = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter1, 9>(::std::move(tvalue), *this);
           }
           
         } else {
@@ -1149,9 +1149,9 @@ _readField_adaptedStructField:
       [&](auto& field) { ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::facebook::thrift::test::detail::DirectlyAdapted>::readWithContext(*iprot, my::Adapter::toThrift(field), _readState); },
       [&](auto&) {})(this->__fbthrift_field_adaptedStructField);
     if (!hasInplaceToThrift) {
-    ::facebook::thrift::test::detail::DirectlyAdapted tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::facebook::thrift::test::detail::DirectlyAdapted>::readWithContext(*iprot, tvalue, _readState);
-    this->__fbthrift_field_adaptedStructField = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter, 7>(::std::move(tvalue), *this);
+      ::facebook::thrift::test::detail::DirectlyAdapted tvalue;
+      ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::facebook::thrift::test::detail::DirectlyAdapted>::readWithContext(*iprot, tvalue, _readState);
+      this->__fbthrift_field_adaptedStructField = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter, 7>(::std::move(tvalue), *this);
     }
     _readState.afterSubobject(iprot);
     
@@ -1953,9 +1953,9 @@ _readField_a:
       [&](auto& field) { ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::facebook::thrift::test::A>::readWithContext(*iprot, my::Adapter::toThrift(field), _readState); },
       [&](auto&) {})(this->__fbthrift_field_a);
     if (!hasInplaceToThrift) {
-    ::facebook::thrift::test::A tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::facebook::thrift::test::A>::readWithContext(*iprot, tvalue, _readState);
-    this->__fbthrift_field_a = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter, 1>(::std::move(tvalue), *this);
+      ::facebook::thrift::test::A tvalue;
+      ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::facebook::thrift::test::A>::readWithContext(*iprot, tvalue, _readState);
+      this->__fbthrift_field_a = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter, 1>(::std::move(tvalue), *this);
     }
     _readState.afterSubobject(iprot);
     
@@ -2213,9 +2213,9 @@ _readField_set_string:
       [&](auto& field) { ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::string>, ::std::set<::std::string>>::readWithContext(*iprot, my::Adapter2::toThrift(field), _readState); },
       [&](auto&) {})(this->__fbthrift_field_set_string);
     if (!hasInplaceToThrift) {
-    ::std::set<::std::string> tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::string>, ::std::set<::std::string>>::readWithContext(*iprot, tvalue, _readState);
-    this->__fbthrift_field_set_string = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter2, 2>(::std::move(tvalue), *this);
+      ::std::set<::std::string> tvalue;
+      ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::string>, ::std::set<::std::string>>::readWithContext(*iprot, tvalue, _readState);
+      this->__fbthrift_field_set_string = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter2, 2>(::std::move(tvalue), *this);
     }
     _readState.afterSubobject(iprot);
     
