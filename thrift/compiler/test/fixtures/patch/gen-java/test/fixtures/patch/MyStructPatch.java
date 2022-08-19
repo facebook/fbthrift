@@ -27,13 +27,13 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
     public MyStructPatch(
         @com.facebook.swift.codec.ThriftField(value=1, name="assign", requiredness=Requiredness.OPTIONAL) final test.fixtures.patch.MyStruct assign,
         @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE) final boolean clear,
-        @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE) final test.fixtures.patch.MyStructFieldPatch patch,
+        @com.facebook.swift.codec.ThriftField(value=3, name="patchPrior", requiredness=Requiredness.NONE) final test.fixtures.patch.MyStructFieldPatch patchPrior,
         @com.facebook.swift.codec.ThriftField(value=5, name="ensure", requiredness=Requiredness.NONE) final test.fixtures.patch.MyStruct ensure,
         @com.facebook.swift.codec.ThriftField(value=6, name="patchAfter", requiredness=Requiredness.NONE) final test.fixtures.patch.MyStructFieldPatch patchAfter
     ) {
         this.assign = assign;
         this.clear = clear;
-        this.patch = patch;
+        this.patchPrior = patchPrior;
         this.ensure = ensure;
         this.patchAfter = patchAfter;
     }
@@ -42,7 +42,7 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
     protected MyStructPatch() {
       this.assign = null;
       this.clear = false;
-      this.patch = null;
+      this.patchPrior = null;
       this.ensure = null;
       this.patchAfter = null;
     }
@@ -51,7 +51,7 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
     
         private test.fixtures.patch.MyStruct assign = null;
         private boolean clear = false;
-        private test.fixtures.patch.MyStructFieldPatch patch = null;
+        private test.fixtures.patch.MyStructFieldPatch patchPrior = null;
         private test.fixtures.patch.MyStruct ensure = null;
         private test.fixtures.patch.MyStructFieldPatch patchAfter = null;
     
@@ -71,13 +71,13 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
     
         public boolean isClear() { return clear; }
     
-            @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE)
-        public Builder setPatch(test.fixtures.patch.MyStructFieldPatch patch) {
-            this.patch = patch;
+            @com.facebook.swift.codec.ThriftField(value=3, name="patchPrior", requiredness=Requiredness.NONE)
+        public Builder setPatchPrior(test.fixtures.patch.MyStructFieldPatch patchPrior) {
+            this.patchPrior = patchPrior;
             return this;
         }
     
-        public test.fixtures.patch.MyStructFieldPatch getPatch() { return patch; }
+        public test.fixtures.patch.MyStructFieldPatch getPatchPrior() { return patchPrior; }
     
             @com.facebook.swift.codec.ThriftField(value=5, name="ensure", requiredness=Requiredness.NONE)
         public Builder setEnsure(test.fixtures.patch.MyStruct ensure) {
@@ -99,7 +99,7 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
         public Builder(MyStructPatch other) {
             this.assign = other.assign;
             this.clear = other.clear;
-            this.patch = other.patch;
+            this.patchPrior = other.patchPrior;
             this.ensure = other.ensure;
             this.patchAfter = other.patchAfter;
         }
@@ -109,7 +109,7 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
             MyStructPatch result = new MyStructPatch (
                 this.assign,
                 this.clear,
-                this.patch,
+                this.patchPrior,
                 this.ensure,
                 this.patchAfter
             );
@@ -126,9 +126,9 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
         private final boolean clear;
     public static final int _CLEAR = 2;
     private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
-        private final test.fixtures.patch.MyStructFieldPatch patch;
-    public static final int _PATCH = 3;
-    private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
+        private final test.fixtures.patch.MyStructFieldPatch patchPrior;
+    public static final int _PATCHPRIOR = 3;
+    private static final TField PATCH_PRIOR_FIELD_DESC = new TField("patchPrior", TType.STRUCT, (short)3);
         private final test.fixtures.patch.MyStruct ensure;
     public static final int _ENSURE = 5;
     private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.STRUCT, (short)5);
@@ -142,9 +142,9 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
       NAMES_TO_IDS.put("clear", 2);
       THRIFT_NAMES_TO_IDS.put("clear", 2);
       FIELD_METADATA.put(2, CLEAR_FIELD_DESC);
-      NAMES_TO_IDS.put("patch", 3);
-      THRIFT_NAMES_TO_IDS.put("patch", 3);
-      FIELD_METADATA.put(3, PATCH_FIELD_DESC);
+      NAMES_TO_IDS.put("patchPrior", 3);
+      THRIFT_NAMES_TO_IDS.put("patchPrior", 3);
+      FIELD_METADATA.put(3, PATCH_PRIOR_FIELD_DESC);
       NAMES_TO_IDS.put("ensure", 5);
       THRIFT_NAMES_TO_IDS.put("ensure", 5);
       FIELD_METADATA.put(5, ENSURE_FIELD_DESC);
@@ -167,8 +167,8 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE)
-    public test.fixtures.patch.MyStructFieldPatch getPatch() { return patch; }
+    @com.facebook.swift.codec.ThriftField(value=3, name="patchPrior", requiredness=Requiredness.NONE)
+    public test.fixtures.patch.MyStructFieldPatch getPatchPrior() { return patchPrior; }
     
     
     @Nullable
@@ -185,7 +185,7 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
         ToStringHelper helper = toStringHelper(this);
         helper.add("assign", assign);
         helper.add("clear", clear);
-        helper.add("patch", patch);
+        helper.add("patchPrior", patchPrior);
         helper.add("ensure", ensure);
         helper.add("patchAfter", patchAfter);
         return helper.toString();
@@ -205,7 +205,7 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
         return
             Objects.equals(assign, other.assign) &&
     Objects.equals(clear, other.clear) &&
-    Objects.equals(patch, other.patch) &&
+    Objects.equals(patchPrior, other.patchPrior) &&
     Objects.equals(ensure, other.ensure) &&
     Objects.equals(patchAfter, other.patchAfter) &&
             true;
@@ -216,7 +216,7 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
         return Arrays.deepHashCode(new java.lang.Object[] {
             assign,
             clear,
-            patch,
+            patchPrior,
             ensure,
             patchAfter
         });
@@ -251,10 +251,10 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
-        case _PATCH:
+        case _PATCHPRIOR:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.patch.MyStructFieldPatch patch = test.fixtures.patch.MyStructFieldPatch.read0(oprot);
-            builder.setPatch(patch);
+            test.fixtures.patch.MyStructFieldPatch patchPrior = test.fixtures.patch.MyStructFieldPatch.read0(oprot);
+            builder.setPatchPrior(patchPrior);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
@@ -295,9 +295,9 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
       oprot.writeFieldBegin(CLEAR_FIELD_DESC);
       oprot.writeBool(this.clear);
       oprot.writeFieldEnd();
-      if (this.patch != null) {
-        oprot.writeFieldBegin(PATCH_FIELD_DESC);
-        this.patch.write0(oprot);
+      if (this.patchPrior != null) {
+        oprot.writeFieldBegin(PATCH_PRIOR_FIELD_DESC);
+        this.patchPrior.write0(oprot);
         oprot.writeFieldEnd();
       }
       if (this.ensure != null) {

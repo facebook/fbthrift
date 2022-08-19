@@ -275,7 +275,7 @@ class BaseClearValuePatch : public BaseValuePatch<Patch, Derived> {
 
 // Patch must have the following fields:
 //   bool clear;
-//   P patch;
+//   P patchPrior;
 //   (optional) T ensure;
 //   P patchAfter;
 template <typename Patch, typename Derived>
@@ -286,7 +286,7 @@ class BaseEnsurePatch : public BasePatch<Patch, Derived> {
   using value_type =
       folly::remove_cvref_t<decltype(*std::declval<Patch>().ensure())>;
   using value_patch_type =
-      folly::remove_cvref_t<decltype(*std::declval<Patch>().patch())>;
+      folly::remove_cvref_t<decltype(*std::declval<Patch>().patchAfter())>;
   using Base::assign;
   using Base::operator=;
   using Base::Base;
@@ -321,7 +321,7 @@ class BaseEnsurePatch : public BasePatch<Patch, Derived> {
     } else if (*data_.clear()) {
       folly::throw_exception<bad_patch_access>();
     }
-    return *data_.patch();
+    return *data_.patchPrior();
   }
 
  protected:
@@ -341,7 +341,7 @@ class BaseEnsurePatch : public BasePatch<Patch, Derived> {
   }
 
   bool emptyEnsure() const {
-    return !*data_.clear() && data_.patch()->empty() &&
+    return !*data_.clear() && data_.patchPrior()->empty() &&
         !hasValue(data_.ensure()) && data_.patchAfter()->empty();
   }
 
@@ -350,7 +350,7 @@ class BaseEnsurePatch : public BasePatch<Patch, Derived> {
     if (*next.toThrift().clear()) {
       if (hasValue(next.toThrift().ensure())) {
         data_.clear() = true;
-        data_.patch()->reset(); // We can ignore next.patch.
+        data_.patchPrior()->reset(); // We can ignore next.patch.
         data_.ensure() = *std::forward<U>(next).toThrift().ensure();
         data_.patchAfter() = *std::forward<U>(next).toThrift().patchAfter();
       } else {
@@ -363,13 +363,13 @@ class BaseEnsurePatch : public BasePatch<Patch, Derived> {
       // All values will be set before next, so ignore next.ensure and
       // merge next.patch and next.patchAfter into this.patchAfter.
       auto temp = *std::forward<U>(next).toThrift().patchAfter();
-      data_.patchAfter()->merge(*std::forward<U>(next).toThrift().patch());
+      data_.patchAfter()->merge(*std::forward<U>(next).toThrift().patchPrior());
       data_.patchAfter()->merge(std::move(temp));
     } else { // Both this.ensure and next.clear are known to be empty.
       // Merge anything (oddly) in patchAfter into patch.
-      data_.patch()->merge(std::move(*data_.patchAfter()));
+      data_.patchPrior()->merge(std::move(*data_.patchAfter()));
       // Merge in next.patch into patch.
-      data_.patch()->merge(*std::forward<U>(next).toThrift().patch());
+      data_.patchPrior()->merge(*std::forward<U>(next).toThrift().patchPrior());
       // Consume next.ensure, if any.
       if (hasValue(next.toThrift().ensure())) {
         data_.ensure() = *std::forward<U>(next).toThrift().ensure();
@@ -386,7 +386,7 @@ class BaseEnsurePatch : public BasePatch<Patch, Derived> {
     if (*data_.clear()) {
       clearValue(val);
     } else {
-      data_.patch()->apply(val);
+      data_.patchPrior()->apply(val);
     }
     // Ensure if needed.
     if (hasValue(data_.ensure()) && !sameType(data_.ensure(), val)) {

@@ -34,7 +34,7 @@ namespace detail {
 //
 // Patch must have the following fields:
 //   bool clear;
-//   P patch;
+//   P patchPrior;
 //   optional T ensure;
 //   P patchAfter;
 // Where P is the patch type for a non-optional value.

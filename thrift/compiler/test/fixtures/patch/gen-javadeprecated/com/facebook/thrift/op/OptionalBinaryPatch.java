@@ -27,7 +27,7 @@ import com.facebook.thrift.protocol.*;
 public class OptionalBinaryPatch implements TBase, java.io.Serializable, Cloneable, Comparable<OptionalBinaryPatch> {
   private static final TStruct STRUCT_DESC = new TStruct("OptionalBinaryPatch");
   private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
-  private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
+  private static final TField PATCH_PRIOR_FIELD_DESC = new TField("patchPrior", TType.STRUCT, (short)3);
   private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.STRING, (short)4);
   private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)6);
 
@@ -38,7 +38,7 @@ public class OptionalBinaryPatch implements TBase, java.io.Serializable, Cloneab
   /**
    * Patches any previously set values. Applies second.
    */
-  public BinaryPatch patch;
+  public BinaryPatch patchPrior;
   /**
    * Assigns the value, if not already set to the same field. Applies third.
    */
@@ -48,7 +48,7 @@ public class OptionalBinaryPatch implements TBase, java.io.Serializable, Cloneab
    */
   public BinaryPatch patchAfter;
   public static final int CLEAR = 2;
-  public static final int PATCH = 3;
+  public static final int PATCHPRIOR = 3;
   public static final int ENSURE = 4;
   public static final int PATCHAFTER = 6;
 
@@ -62,7 +62,7 @@ public class OptionalBinaryPatch implements TBase, java.io.Serializable, Cloneab
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(CLEAR, new FieldMetaData("clear", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.BOOL)));
-    tmpMetaDataMap.put(PATCH, new FieldMetaData("patch", TFieldRequirementType.DEFAULT, 
+    tmpMetaDataMap.put(PATCHPRIOR, new FieldMetaData("patchPrior", TFieldRequirementType.DEFAULT, 
         new StructMetaData(TType.STRUCT, BinaryPatch.class)));
     tmpMetaDataMap.put(ENSURE, new FieldMetaData("ensure", TFieldRequirementType.OPTIONAL, 
         new FieldValueMetaData(TType.STRING)));
@@ -80,31 +80,31 @@ public class OptionalBinaryPatch implements TBase, java.io.Serializable, Cloneab
 
   public OptionalBinaryPatch(
       boolean clear,
-      BinaryPatch patch,
+      BinaryPatch patchPrior,
       BinaryPatch patchAfter) {
     this();
     this.clear = clear;
     setClearIsSet(true);
-    this.patch = patch;
+    this.patchPrior = patchPrior;
     this.patchAfter = patchAfter;
   }
 
   public OptionalBinaryPatch(
       boolean clear,
-      BinaryPatch patch,
+      BinaryPatch patchPrior,
       byte[] ensure,
       BinaryPatch patchAfter) {
     this();
     this.clear = clear;
     setClearIsSet(true);
-    this.patch = patch;
+    this.patchPrior = patchPrior;
     this.ensure = ensure;
     this.patchAfter = patchAfter;
   }
 
   public static class Builder {
     private boolean clear;
-    private BinaryPatch patch;
+    private BinaryPatch patchPrior;
     private byte[] ensure;
     private BinaryPatch patchAfter;
 
@@ -119,8 +119,8 @@ public class OptionalBinaryPatch implements TBase, java.io.Serializable, Cloneab
       return this;
     }
 
-    public Builder setPatch(final BinaryPatch patch) {
-      this.patch = patch;
+    public Builder setPatchPrior(final BinaryPatch patchPrior) {
+      this.patchPrior = patchPrior;
       return this;
     }
 
@@ -139,7 +139,7 @@ public class OptionalBinaryPatch implements TBase, java.io.Serializable, Cloneab
       if (__optional_isset.get(__CLEAR_ISSET_ID)) {
         result.setClear(this.clear);
       }
-      result.setPatch(this.patch);
+      result.setPatchPrior(this.patchPrior);
       result.setEnsure(this.ensure);
       result.setPatchAfter(this.patchAfter);
       return result;
@@ -157,8 +157,8 @@ public class OptionalBinaryPatch implements TBase, java.io.Serializable, Cloneab
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
     this.clear = TBaseHelper.deepCopy(other.clear);
-    if (other.isSetPatch()) {
-      this.patch = TBaseHelper.deepCopy(other.patch);
+    if (other.isSetPatchPrior()) {
+      this.patchPrior = TBaseHelper.deepCopy(other.patchPrior);
     }
     if (other.isSetEnsure()) {
       this.ensure = TBaseHelper.deepCopy(other.ensure);
@@ -204,30 +204,30 @@ public class OptionalBinaryPatch implements TBase, java.io.Serializable, Cloneab
   /**
    * Patches any previously set values. Applies second.
    */
-  public BinaryPatch getPatch() {
-    return this.patch;
+  public BinaryPatch getPatchPrior() {
+    return this.patchPrior;
   }
 
   /**
    * Patches any previously set values. Applies second.
    */
-  public OptionalBinaryPatch setPatch(BinaryPatch patch) {
-    this.patch = patch;
+  public OptionalBinaryPatch setPatchPrior(BinaryPatch patchPrior) {
+    this.patchPrior = patchPrior;
     return this;
   }
 
-  public void unsetPatch() {
-    this.patch = null;
+  public void unsetPatchPrior() {
+    this.patchPrior = null;
   }
 
-  // Returns true if field patch is set (has been assigned a value) and false otherwise
-  public boolean isSetPatch() {
-    return this.patch != null;
+  // Returns true if field patchPrior is set (has been assigned a value) and false otherwise
+  public boolean isSetPatchPrior() {
+    return this.patchPrior != null;
   }
 
-  public void setPatchIsSet(boolean __value) {
+  public void setPatchPriorIsSet(boolean __value) {
     if (!__value) {
-      this.patch = null;
+      this.patchPrior = null;
     }
   }
 
@@ -301,11 +301,11 @@ public class OptionalBinaryPatch implements TBase, java.io.Serializable, Cloneab
       }
       break;
 
-    case PATCH:
+    case PATCHPRIOR:
       if (__value == null) {
-        unsetPatch();
+        unsetPatchPrior();
       } else {
-        setPatch((BinaryPatch)__value);
+        setPatchPrior((BinaryPatch)__value);
       }
       break;
 
@@ -335,8 +335,8 @@ public class OptionalBinaryPatch implements TBase, java.io.Serializable, Cloneab
     case CLEAR:
       return new Boolean(isClear());
 
-    case PATCH:
-      return getPatch();
+    case PATCHPRIOR:
+      return getPatchPrior();
 
     case ENSURE:
       return getEnsure();
@@ -361,7 +361,7 @@ public class OptionalBinaryPatch implements TBase, java.io.Serializable, Cloneab
 
     if (!TBaseHelper.equalsNobinary(this.clear, that.clear)) { return false; }
 
-    if (!TBaseHelper.equalsNobinary(this.isSetPatch(), that.isSetPatch(), this.patch, that.patch)) { return false; }
+    if (!TBaseHelper.equalsNobinary(this.isSetPatchPrior(), that.isSetPatchPrior(), this.patchPrior, that.patchPrior)) { return false; }
 
     if (!TBaseHelper.equalsSlow(this.isSetEnsure(), that.isSetEnsure(), this.ensure, that.ensure)) { return false; }
 
@@ -372,7 +372,7 @@ public class OptionalBinaryPatch implements TBase, java.io.Serializable, Cloneab
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {clear, patch, ensure, patchAfter});
+    return Arrays.deepHashCode(new Object[] {clear, patchPrior, ensure, patchAfter});
   }
 
   @Override
@@ -395,11 +395,11 @@ public class OptionalBinaryPatch implements TBase, java.io.Serializable, Cloneab
     if (lastComparison != 0) { 
       return lastComparison;
     }
-    lastComparison = Boolean.valueOf(isSetPatch()).compareTo(other.isSetPatch());
+    lastComparison = Boolean.valueOf(isSetPatchPrior()).compareTo(other.isSetPatchPrior());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    lastComparison = TBaseHelper.compareTo(patch, other.patch);
+    lastComparison = TBaseHelper.compareTo(patchPrior, other.patchPrior);
     if (lastComparison != 0) { 
       return lastComparison;
     }
@@ -441,10 +441,10 @@ public class OptionalBinaryPatch implements TBase, java.io.Serializable, Cloneab
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
-        case PATCH:
+        case PATCHPRIOR:
           if (__field.type == TType.STRUCT) {
-            this.patch = new BinaryPatch();
-            this.patch.read(iprot);
+            this.patchPrior = new BinaryPatch();
+            this.patchPrior.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
@@ -484,9 +484,9 @@ public class OptionalBinaryPatch implements TBase, java.io.Serializable, Cloneab
     oprot.writeFieldBegin(CLEAR_FIELD_DESC);
     oprot.writeBool(this.clear);
     oprot.writeFieldEnd();
-    if (this.patch != null) {
-      oprot.writeFieldBegin(PATCH_FIELD_DESC);
-      this.patch.write(oprot);
+    if (this.patchPrior != null) {
+      oprot.writeFieldBegin(PATCH_PRIOR_FIELD_DESC);
+      this.patchPrior.write(oprot);
       oprot.writeFieldEnd();
     }
     if (this.ensure != null) {
@@ -529,13 +529,13 @@ public class OptionalBinaryPatch implements TBase, java.io.Serializable, Cloneab
     first = false;
     if (!first) sb.append("," + newLine);
     sb.append(indentStr);
-    sb.append("patch");
+    sb.append("patchPrior");
     sb.append(space);
     sb.append(":").append(space);
-    if (this.getPatch() == null) {
+    if (this.getPatchPrior() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this.getPatch(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getPatchPrior(), indent + 1, prettyPrint));
     }
     first = false;
     if (isSetEnsure())

@@ -100,7 +100,7 @@ TEST(StructPatchTest, AssignSplit) {
   patch.patch();
   EXPECT_FALSE(patch.toThrift().assign().has_value());
   EXPECT_TRUE(*patch.toThrift().clear());
-  EXPECT_NE(*patch.toThrift().patch(), MyStructFieldPatch{});
+  EXPECT_NE(*patch.toThrift().patchPrior(), MyStructFieldPatch{});
   test::expectPatch(patch, {}, testValue());
 }
 

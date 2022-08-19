@@ -1173,7 +1173,7 @@ class MyDataPatch:
   Attributes:
    - assign: Assigns a value. If set, all other operations are ignored.
    - clear: Clears a value. Applies first.
-   - patch: Patches any previously set values. Applies second.
+   - patchPrior: Patches any previously set values. Applies second.
    - ensure: Initlaize fields, using the given defaults. Applies third.
    - patchAfter: Patches any set value, including newly set values. Applies last.
   """
@@ -1211,8 +1211,8 @@ class MyDataPatch:
           iprot.skip(ftype)
       elif fid == 3:
         if ftype == TType.STRUCT:
-          self.patch = MyDataFieldPatch()
-          self.patch.read(iprot)
+          self.patchPrior = MyDataFieldPatch()
+          self.patchPrior.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 5:
@@ -1248,9 +1248,9 @@ class MyDataPatch:
       oprot.writeFieldBegin('clear', TType.BOOL, 2)
       oprot.writeBool(self.clear)
       oprot.writeFieldEnd()
-    if self.patch != None:
-      oprot.writeFieldBegin('patch', TType.STRUCT, 3)
-      self.patch.write(oprot)
+    if self.patchPrior != None:
+      oprot.writeFieldBegin('patchPrior', TType.STRUCT, 3)
+      self.patchPrior.write(oprot)
       oprot.writeFieldEnd()
     if self.ensure != None:
       oprot.writeFieldBegin('ensure', TType.STRUCT, 5)
@@ -1280,9 +1280,9 @@ class MyDataPatch:
       self.assign.readFromJson(json_obj['assign'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'clear' in json_obj and json_obj['clear'] is not None:
       self.clear = json_obj['clear']
-    if 'patch' in json_obj and json_obj['patch'] is not None:
-      self.patch = MyDataFieldPatch()
-      self.patch.readFromJson(json_obj['patch'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'patchPrior' in json_obj and json_obj['patchPrior'] is not None:
+      self.patchPrior = MyDataFieldPatch()
+      self.patchPrior.readFromJson(json_obj['patchPrior'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'ensure' in json_obj and json_obj['ensure'] is not None:
       self.ensure = MyData()
       self.ensure.readFromJson(json_obj['ensure'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
@@ -1301,10 +1301,10 @@ class MyDataPatch:
       value = pprint.pformat(self.clear, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    clear=%s' % (value))
-    if self.patch is not None:
-      value = pprint.pformat(self.patch, indent=0)
+    if self.patchPrior is not None:
+      value = pprint.pformat(self.patchPrior, indent=0)
       value = padding.join(value.splitlines(True))
-      L.append('    patch=%s' % (value))
+      L.append('    patchPrior=%s' % (value))
     if self.ensure is not None:
       value = pprint.pformat(self.ensure, indent=0)
       value = padding.join(value.splitlines(True))
@@ -1328,7 +1328,7 @@ class MyDataPatch:
     return (
       'assign',
       'clear',
-      'patch',
+      'patchPrior',
       'ensure',
       'patchAfter',
     )
@@ -1355,7 +1355,7 @@ class OptionalMyDataPatch:
   """
   Attributes:
    - clear: Clears any set value. Applies first.
-   - patch: Patches any previously set values. Applies second.
+   - patchPrior: Patches any previously set values. Applies second.
    - ensure: Assigns the value, if not already set to the same field. Applies third.
    - patchAfter: Patches any set value, including newly set values. Applies last.
   """
@@ -1387,8 +1387,8 @@ class OptionalMyDataPatch:
           iprot.skip(ftype)
       elif fid == 3:
         if ftype == TType.STRUCT:
-          self.patch = MyDataPatch()
-          self.patch.read(iprot)
+          self.patchPrior = MyDataPatch()
+          self.patchPrior.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 4:
@@ -1420,9 +1420,9 @@ class OptionalMyDataPatch:
       oprot.writeFieldBegin('clear', TType.BOOL, 2)
       oprot.writeBool(self.clear)
       oprot.writeFieldEnd()
-    if self.patch != None:
-      oprot.writeFieldBegin('patch', TType.STRUCT, 3)
-      self.patch.write(oprot)
+    if self.patchPrior != None:
+      oprot.writeFieldBegin('patchPrior', TType.STRUCT, 3)
+      self.patchPrior.write(oprot)
       oprot.writeFieldEnd()
     if self.ensure != None:
       oprot.writeFieldBegin('ensure', TType.STRUCT, 4)
@@ -1449,9 +1449,9 @@ class OptionalMyDataPatch:
       json_obj = loads(json)
     if 'clear' in json_obj and json_obj['clear'] is not None:
       self.clear = json_obj['clear']
-    if 'patch' in json_obj and json_obj['patch'] is not None:
-      self.patch = MyDataPatch()
-      self.patch.readFromJson(json_obj['patch'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'patchPrior' in json_obj and json_obj['patchPrior'] is not None:
+      self.patchPrior = MyDataPatch()
+      self.patchPrior.readFromJson(json_obj['patchPrior'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'ensure' in json_obj and json_obj['ensure'] is not None:
       self.ensure = MyData()
       self.ensure.readFromJson(json_obj['ensure'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
@@ -1466,10 +1466,10 @@ class OptionalMyDataPatch:
       value = pprint.pformat(self.clear, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    clear=%s' % (value))
-    if self.patch is not None:
-      value = pprint.pformat(self.patch, indent=0)
+    if self.patchPrior is not None:
+      value = pprint.pformat(self.patchPrior, indent=0)
       value = padding.join(value.splitlines(True))
-      L.append('    patch=%s' % (value))
+      L.append('    patchPrior=%s' % (value))
     if self.ensure is not None:
       value = pprint.pformat(self.ensure, indent=0)
       value = padding.join(value.splitlines(True))
@@ -1492,7 +1492,7 @@ class OptionalMyDataPatch:
   def __dir__(self):
     return (
       'clear',
-      'patch',
+      'patchPrior',
       'ensure',
       'patchAfter',
     )
@@ -1629,7 +1629,7 @@ class InnerUnionPatch:
   Attributes:
    - assign: Assigns a value. If set, all other operations are ignored.
    - clear: Clears any set value. Applies first.
-   - patch: Patches any previously set values. Applies second.
+   - patchPrior: Patches any previously set values. Applies second.
    - ensure: Assigns the value, if not already set to the same field. Applies third.
    - patchAfter: Patches any set value, including newly set values. Applies last.
   """
@@ -1667,8 +1667,8 @@ class InnerUnionPatch:
           iprot.skip(ftype)
       elif fid == 3:
         if ftype == TType.STRUCT:
-          self.patch = InnerUnionFieldPatch()
-          self.patch.read(iprot)
+          self.patchPrior = InnerUnionFieldPatch()
+          self.patchPrior.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 4:
@@ -1704,9 +1704,9 @@ class InnerUnionPatch:
       oprot.writeFieldBegin('clear', TType.BOOL, 2)
       oprot.writeBool(self.clear)
       oprot.writeFieldEnd()
-    if self.patch != None:
-      oprot.writeFieldBegin('patch', TType.STRUCT, 3)
-      self.patch.write(oprot)
+    if self.patchPrior != None:
+      oprot.writeFieldBegin('patchPrior', TType.STRUCT, 3)
+      self.patchPrior.write(oprot)
       oprot.writeFieldEnd()
     if self.ensure != None:
       oprot.writeFieldBegin('ensure', TType.STRUCT, 4)
@@ -1736,9 +1736,9 @@ class InnerUnionPatch:
       self.assign.readFromJson(json_obj['assign'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'clear' in json_obj and json_obj['clear'] is not None:
       self.clear = json_obj['clear']
-    if 'patch' in json_obj and json_obj['patch'] is not None:
-      self.patch = InnerUnionFieldPatch()
-      self.patch.readFromJson(json_obj['patch'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'patchPrior' in json_obj and json_obj['patchPrior'] is not None:
+      self.patchPrior = InnerUnionFieldPatch()
+      self.patchPrior.readFromJson(json_obj['patchPrior'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'ensure' in json_obj and json_obj['ensure'] is not None:
       self.ensure = InnerUnion()
       self.ensure.readFromJson(json_obj['ensure'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
@@ -1757,10 +1757,10 @@ class InnerUnionPatch:
       value = pprint.pformat(self.clear, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    clear=%s' % (value))
-    if self.patch is not None:
-      value = pprint.pformat(self.patch, indent=0)
+    if self.patchPrior is not None:
+      value = pprint.pformat(self.patchPrior, indent=0)
       value = padding.join(value.splitlines(True))
-      L.append('    patch=%s' % (value))
+      L.append('    patchPrior=%s' % (value))
     if self.ensure is not None:
       value = pprint.pformat(self.ensure, indent=0)
       value = padding.join(value.splitlines(True))
@@ -1784,7 +1784,7 @@ class InnerUnionPatch:
     return (
       'assign',
       'clear',
-      'patch',
+      'patchPrior',
       'ensure',
       'patchAfter',
     )
@@ -1811,7 +1811,7 @@ class OptionalInnerUnionPatch:
   """
   Attributes:
    - clear: Clears any set value. Applies first.
-   - patch: Patches any previously set values. Applies second.
+   - patchPrior: Patches any previously set values. Applies second.
    - ensure: Assigns the value, if not already set to the same field. Applies third.
    - patchAfter: Patches any set value, including newly set values. Applies last.
   """
@@ -1843,8 +1843,8 @@ class OptionalInnerUnionPatch:
           iprot.skip(ftype)
       elif fid == 3:
         if ftype == TType.STRUCT:
-          self.patch = InnerUnionPatch()
-          self.patch.read(iprot)
+          self.patchPrior = InnerUnionPatch()
+          self.patchPrior.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 4:
@@ -1876,9 +1876,9 @@ class OptionalInnerUnionPatch:
       oprot.writeFieldBegin('clear', TType.BOOL, 2)
       oprot.writeBool(self.clear)
       oprot.writeFieldEnd()
-    if self.patch != None:
-      oprot.writeFieldBegin('patch', TType.STRUCT, 3)
-      self.patch.write(oprot)
+    if self.patchPrior != None:
+      oprot.writeFieldBegin('patchPrior', TType.STRUCT, 3)
+      self.patchPrior.write(oprot)
       oprot.writeFieldEnd()
     if self.ensure != None:
       oprot.writeFieldBegin('ensure', TType.STRUCT, 4)
@@ -1905,9 +1905,9 @@ class OptionalInnerUnionPatch:
       json_obj = loads(json)
     if 'clear' in json_obj and json_obj['clear'] is not None:
       self.clear = json_obj['clear']
-    if 'patch' in json_obj and json_obj['patch'] is not None:
-      self.patch = InnerUnionPatch()
-      self.patch.readFromJson(json_obj['patch'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'patchPrior' in json_obj and json_obj['patchPrior'] is not None:
+      self.patchPrior = InnerUnionPatch()
+      self.patchPrior.readFromJson(json_obj['patchPrior'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'ensure' in json_obj and json_obj['ensure'] is not None:
       self.ensure = InnerUnion()
       self.ensure.readFromJson(json_obj['ensure'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
@@ -1922,10 +1922,10 @@ class OptionalInnerUnionPatch:
       value = pprint.pformat(self.clear, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    clear=%s' % (value))
-    if self.patch is not None:
-      value = pprint.pformat(self.patch, indent=0)
+    if self.patchPrior is not None:
+      value = pprint.pformat(self.patchPrior, indent=0)
       value = padding.join(value.splitlines(True))
-      L.append('    patch=%s' % (value))
+      L.append('    patchPrior=%s' % (value))
     if self.ensure is not None:
       value = pprint.pformat(self.ensure, indent=0)
       value = padding.join(value.splitlines(True))
@@ -1948,7 +1948,7 @@ class OptionalInnerUnionPatch:
   def __dir__(self):
     return (
       'clear',
-      'patch',
+      'patchPrior',
       'ensure',
       'patchAfter',
     )
@@ -2123,7 +2123,7 @@ class MyUnionPatch:
   Attributes:
    - assign: Assigns a value. If set, all other operations are ignored.
    - clear: Clears any set value. Applies first.
-   - patch: Patches any previously set values. Applies second.
+   - patchPrior: Patches any previously set values. Applies second.
    - ensure: Assigns the value, if not already set to the same field. Applies third.
    - patchAfter: Patches any set value, including newly set values. Applies last.
   """
@@ -2161,8 +2161,8 @@ class MyUnionPatch:
           iprot.skip(ftype)
       elif fid == 3:
         if ftype == TType.STRUCT:
-          self.patch = MyUnionFieldPatch()
-          self.patch.read(iprot)
+          self.patchPrior = MyUnionFieldPatch()
+          self.patchPrior.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 4:
@@ -2198,9 +2198,9 @@ class MyUnionPatch:
       oprot.writeFieldBegin('clear', TType.BOOL, 2)
       oprot.writeBool(self.clear)
       oprot.writeFieldEnd()
-    if self.patch != None:
-      oprot.writeFieldBegin('patch', TType.STRUCT, 3)
-      self.patch.write(oprot)
+    if self.patchPrior != None:
+      oprot.writeFieldBegin('patchPrior', TType.STRUCT, 3)
+      self.patchPrior.write(oprot)
       oprot.writeFieldEnd()
     if self.ensure != None:
       oprot.writeFieldBegin('ensure', TType.STRUCT, 4)
@@ -2230,9 +2230,9 @@ class MyUnionPatch:
       self.assign.readFromJson(json_obj['assign'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'clear' in json_obj and json_obj['clear'] is not None:
       self.clear = json_obj['clear']
-    if 'patch' in json_obj and json_obj['patch'] is not None:
-      self.patch = MyUnionFieldPatch()
-      self.patch.readFromJson(json_obj['patch'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'patchPrior' in json_obj and json_obj['patchPrior'] is not None:
+      self.patchPrior = MyUnionFieldPatch()
+      self.patchPrior.readFromJson(json_obj['patchPrior'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'ensure' in json_obj and json_obj['ensure'] is not None:
       self.ensure = MyUnion()
       self.ensure.readFromJson(json_obj['ensure'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
@@ -2251,10 +2251,10 @@ class MyUnionPatch:
       value = pprint.pformat(self.clear, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    clear=%s' % (value))
-    if self.patch is not None:
-      value = pprint.pformat(self.patch, indent=0)
+    if self.patchPrior is not None:
+      value = pprint.pformat(self.patchPrior, indent=0)
       value = padding.join(value.splitlines(True))
-      L.append('    patch=%s' % (value))
+      L.append('    patchPrior=%s' % (value))
     if self.ensure is not None:
       value = pprint.pformat(self.ensure, indent=0)
       value = padding.join(value.splitlines(True))
@@ -2278,7 +2278,7 @@ class MyUnionPatch:
     return (
       'assign',
       'clear',
-      'patch',
+      'patchPrior',
       'ensure',
       'patchAfter',
     )
@@ -2305,7 +2305,7 @@ class OptionalMyUnionPatch:
   """
   Attributes:
    - clear: Clears any set value. Applies first.
-   - patch: Patches any previously set values. Applies second.
+   - patchPrior: Patches any previously set values. Applies second.
    - ensure: Assigns the value, if not already set to the same field. Applies third.
    - patchAfter: Patches any set value, including newly set values. Applies last.
   """
@@ -2337,8 +2337,8 @@ class OptionalMyUnionPatch:
           iprot.skip(ftype)
       elif fid == 3:
         if ftype == TType.STRUCT:
-          self.patch = MyUnionPatch()
-          self.patch.read(iprot)
+          self.patchPrior = MyUnionPatch()
+          self.patchPrior.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 4:
@@ -2370,9 +2370,9 @@ class OptionalMyUnionPatch:
       oprot.writeFieldBegin('clear', TType.BOOL, 2)
       oprot.writeBool(self.clear)
       oprot.writeFieldEnd()
-    if self.patch != None:
-      oprot.writeFieldBegin('patch', TType.STRUCT, 3)
-      self.patch.write(oprot)
+    if self.patchPrior != None:
+      oprot.writeFieldBegin('patchPrior', TType.STRUCT, 3)
+      self.patchPrior.write(oprot)
       oprot.writeFieldEnd()
     if self.ensure != None:
       oprot.writeFieldBegin('ensure', TType.STRUCT, 4)
@@ -2399,9 +2399,9 @@ class OptionalMyUnionPatch:
       json_obj = loads(json)
     if 'clear' in json_obj and json_obj['clear'] is not None:
       self.clear = json_obj['clear']
-    if 'patch' in json_obj and json_obj['patch'] is not None:
-      self.patch = MyUnionPatch()
-      self.patch.readFromJson(json_obj['patch'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'patchPrior' in json_obj and json_obj['patchPrior'] is not None:
+      self.patchPrior = MyUnionPatch()
+      self.patchPrior.readFromJson(json_obj['patchPrior'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'ensure' in json_obj and json_obj['ensure'] is not None:
       self.ensure = MyUnion()
       self.ensure.readFromJson(json_obj['ensure'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
@@ -2416,10 +2416,10 @@ class OptionalMyUnionPatch:
       value = pprint.pformat(self.clear, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    clear=%s' % (value))
-    if self.patch is not None:
-      value = pprint.pformat(self.patch, indent=0)
+    if self.patchPrior is not None:
+      value = pprint.pformat(self.patchPrior, indent=0)
       value = padding.join(value.splitlines(True))
-      L.append('    patch=%s' % (value))
+      L.append('    patchPrior=%s' % (value))
     if self.ensure is not None:
       value = pprint.pformat(self.ensure, indent=0)
       value = padding.join(value.splitlines(True))
@@ -2442,7 +2442,7 @@ class OptionalMyUnionPatch:
   def __dir__(self):
     return (
       'clear',
-      'patch',
+      'patchPrior',
       'ensure',
       'patchAfter',
     )
@@ -3224,7 +3224,7 @@ class OptionalMyStructField21Patch:
   """
   Attributes:
    - clear: Clears any set value. Applies first.
-   - patch: Patches any previously set values. Applies second.
+   - patchPrior: Patches any previously set values. Applies second.
    - ensure: Assigns the value, if not already set to the same field. Applies third.
    - patchAfter: Patches any set value, including newly set values. Applies last.
   """
@@ -3256,8 +3256,8 @@ class OptionalMyStructField21Patch:
           iprot.skip(ftype)
       elif fid == 3:
         if ftype == TType.STRUCT:
-          self.patch = MyStructField21Patch()
-          self.patch.read(iprot)
+          self.patchPrior = MyStructField21Patch()
+          self.patchPrior.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 4:
@@ -3298,9 +3298,9 @@ class OptionalMyStructField21Patch:
       oprot.writeFieldBegin('clear', TType.BOOL, 2)
       oprot.writeBool(self.clear)
       oprot.writeFieldEnd()
-    if self.patch != None:
-      oprot.writeFieldBegin('patch', TType.STRUCT, 3)
-      self.patch.write(oprot)
+    if self.patchPrior != None:
+      oprot.writeFieldBegin('patchPrior', TType.STRUCT, 3)
+      self.patchPrior.write(oprot)
       oprot.writeFieldEnd()
     if self.ensure != None:
       oprot.writeFieldBegin('ensure', TType.LIST, 4)
@@ -3330,9 +3330,9 @@ class OptionalMyStructField21Patch:
       json_obj = loads(json)
     if 'clear' in json_obj and json_obj['clear'] is not None:
       self.clear = json_obj['clear']
-    if 'patch' in json_obj and json_obj['patch'] is not None:
-      self.patch = MyStructField21Patch()
-      self.patch.readFromJson(json_obj['patch'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'patchPrior' in json_obj and json_obj['patchPrior'] is not None:
+      self.patchPrior = MyStructField21Patch()
+      self.patchPrior.readFromJson(json_obj['patchPrior'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'ensure' in json_obj and json_obj['ensure'] is not None:
       self.ensure = []
       for _tmp_e67 in json_obj['ensure']:
@@ -3350,10 +3350,10 @@ class OptionalMyStructField21Patch:
       value = pprint.pformat(self.clear, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    clear=%s' % (value))
-    if self.patch is not None:
-      value = pprint.pformat(self.patch, indent=0)
+    if self.patchPrior is not None:
+      value = pprint.pformat(self.patchPrior, indent=0)
       value = padding.join(value.splitlines(True))
-      L.append('    patch=%s' % (value))
+      L.append('    patchPrior=%s' % (value))
     if self.ensure is not None:
       value = pprint.pformat(self.ensure, indent=0)
       value = padding.join(value.splitlines(True))
@@ -3376,7 +3376,7 @@ class OptionalMyStructField21Patch:
   def __dir__(self):
     return (
       'clear',
-      'patch',
+      'patchPrior',
       'ensure',
       'patchAfter',
     )
@@ -3606,7 +3606,7 @@ class OptionalMyStructField22Patch:
   """
   Attributes:
    - clear: Clears any set value. Applies first.
-   - patch: Patches any previously set values. Applies second.
+   - patchPrior: Patches any previously set values. Applies second.
    - ensure: Assigns the value, if not already set to the same field. Applies third.
    - patchAfter: Patches any set value, including newly set values. Applies last.
   """
@@ -3638,8 +3638,8 @@ class OptionalMyStructField22Patch:
           iprot.skip(ftype)
       elif fid == 3:
         if ftype == TType.STRUCT:
-          self.patch = MyStructField22Patch()
-          self.patch.read(iprot)
+          self.patchPrior = MyStructField22Patch()
+          self.patchPrior.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 4:
@@ -3680,9 +3680,9 @@ class OptionalMyStructField22Patch:
       oprot.writeFieldBegin('clear', TType.BOOL, 2)
       oprot.writeBool(self.clear)
       oprot.writeFieldEnd()
-    if self.patch != None:
-      oprot.writeFieldBegin('patch', TType.STRUCT, 3)
-      self.patch.write(oprot)
+    if self.patchPrior != None:
+      oprot.writeFieldBegin('patchPrior', TType.STRUCT, 3)
+      self.patchPrior.write(oprot)
       oprot.writeFieldEnd()
     if self.ensure != None:
       oprot.writeFieldBegin('ensure', TType.SET, 4)
@@ -3712,9 +3712,9 @@ class OptionalMyStructField22Patch:
       json_obj = loads(json)
     if 'clear' in json_obj and json_obj['clear'] is not None:
       self.clear = json_obj['clear']
-    if 'patch' in json_obj and json_obj['patch'] is not None:
-      self.patch = MyStructField22Patch()
-      self.patch.readFromJson(json_obj['patch'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'patchPrior' in json_obj and json_obj['patchPrior'] is not None:
+      self.patchPrior = MyStructField22Patch()
+      self.patchPrior.readFromJson(json_obj['patchPrior'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'ensure' in json_obj and json_obj['ensure'] is not None:
       self.ensure = set_cls()
       for _tmp_e103 in json_obj['ensure']:
@@ -3730,10 +3730,10 @@ class OptionalMyStructField22Patch:
       value = pprint.pformat(self.clear, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    clear=%s' % (value))
-    if self.patch is not None:
-      value = pprint.pformat(self.patch, indent=0)
+    if self.patchPrior is not None:
+      value = pprint.pformat(self.patchPrior, indent=0)
       value = padding.join(value.splitlines(True))
-      L.append('    patch=%s' % (value))
+      L.append('    patchPrior=%s' % (value))
     if self.ensure is not None:
       value = pprint.pformat(self.ensure, indent=0)
       value = padding.join(value.splitlines(True))
@@ -3756,7 +3756,7 @@ class OptionalMyStructField22Patch:
   def __dir__(self):
     return (
       'clear',
-      'patch',
+      'patchPrior',
       'ensure',
       'patchAfter',
     )
@@ -3998,7 +3998,7 @@ class OptionalMyStructField23Patch:
   """
   Attributes:
    - clear: Clears any set value. Applies first.
-   - patch: Patches any previously set values. Applies second.
+   - patchPrior: Patches any previously set values. Applies second.
    - ensure: Assigns the value, if not already set to the same field. Applies third.
    - patchAfter: Patches any set value, including newly set values. Applies last.
   """
@@ -4030,8 +4030,8 @@ class OptionalMyStructField23Patch:
           iprot.skip(ftype)
       elif fid == 3:
         if ftype == TType.STRUCT:
-          self.patch = MyStructField23Patch()
-          self.patch.read(iprot)
+          self.patchPrior = MyStructField23Patch()
+          self.patchPrior.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 4:
@@ -4074,9 +4074,9 @@ class OptionalMyStructField23Patch:
       oprot.writeFieldBegin('clear', TType.BOOL, 2)
       oprot.writeBool(self.clear)
       oprot.writeFieldEnd()
-    if self.patch != None:
-      oprot.writeFieldBegin('patch', TType.STRUCT, 3)
-      self.patch.write(oprot)
+    if self.patchPrior != None:
+      oprot.writeFieldBegin('patchPrior', TType.STRUCT, 3)
+      self.patchPrior.write(oprot)
       oprot.writeFieldEnd()
     if self.ensure != None:
       oprot.writeFieldBegin('ensure', TType.MAP, 4)
@@ -4107,9 +4107,9 @@ class OptionalMyStructField23Patch:
       json_obj = loads(json)
     if 'clear' in json_obj and json_obj['clear'] is not None:
       self.clear = json_obj['clear']
-    if 'patch' in json_obj and json_obj['patch'] is not None:
-      self.patch = MyStructField23Patch()
-      self.patch.readFromJson(json_obj['patch'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'patchPrior' in json_obj and json_obj['patchPrior'] is not None:
+      self.patchPrior = MyStructField23Patch()
+      self.patchPrior.readFromJson(json_obj['patchPrior'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'ensure' in json_obj and json_obj['ensure'] is not None:
       self.ensure = dict_cls()
       for _tmp_k157, _tmp_v158 in json_obj['ensure'].items():
@@ -4126,10 +4126,10 @@ class OptionalMyStructField23Patch:
       value = pprint.pformat(self.clear, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    clear=%s' % (value))
-    if self.patch is not None:
-      value = pprint.pformat(self.patch, indent=0)
+    if self.patchPrior is not None:
+      value = pprint.pformat(self.patchPrior, indent=0)
       value = padding.join(value.splitlines(True))
-      L.append('    patch=%s' % (value))
+      L.append('    patchPrior=%s' % (value))
     if self.ensure is not None:
       value = pprint.pformat(self.ensure, indent=0)
       value = padding.join(value.splitlines(True))
@@ -4152,7 +4152,7 @@ class OptionalMyStructField23Patch:
   def __dir__(self):
     return (
       'clear',
-      'patch',
+      'patchPrior',
       'ensure',
       'patchAfter',
     )
@@ -4180,7 +4180,7 @@ class MyStructPatch:
   Attributes:
    - assign: Assigns a value. If set, all other operations are ignored.
    - clear: Clears a value. Applies first.
-   - patch: Patches any previously set values. Applies second.
+   - patchPrior: Patches any previously set values. Applies second.
    - ensure: Initlaize fields, using the given defaults. Applies third.
    - patchAfter: Patches any set value, including newly set values. Applies last.
   """
@@ -4218,8 +4218,8 @@ class MyStructPatch:
           iprot.skip(ftype)
       elif fid == 3:
         if ftype == TType.STRUCT:
-          self.patch = MyStructFieldPatch()
-          self.patch.read(iprot)
+          self.patchPrior = MyStructFieldPatch()
+          self.patchPrior.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 5:
@@ -4255,9 +4255,9 @@ class MyStructPatch:
       oprot.writeFieldBegin('clear', TType.BOOL, 2)
       oprot.writeBool(self.clear)
       oprot.writeFieldEnd()
-    if self.patch != None:
-      oprot.writeFieldBegin('patch', TType.STRUCT, 3)
-      self.patch.write(oprot)
+    if self.patchPrior != None:
+      oprot.writeFieldBegin('patchPrior', TType.STRUCT, 3)
+      self.patchPrior.write(oprot)
       oprot.writeFieldEnd()
     if self.ensure != None:
       oprot.writeFieldBegin('ensure', TType.STRUCT, 5)
@@ -4287,9 +4287,9 @@ class MyStructPatch:
       self.assign.readFromJson(json_obj['assign'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'clear' in json_obj and json_obj['clear'] is not None:
       self.clear = json_obj['clear']
-    if 'patch' in json_obj and json_obj['patch'] is not None:
-      self.patch = MyStructFieldPatch()
-      self.patch.readFromJson(json_obj['patch'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'patchPrior' in json_obj and json_obj['patchPrior'] is not None:
+      self.patchPrior = MyStructFieldPatch()
+      self.patchPrior.readFromJson(json_obj['patchPrior'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'ensure' in json_obj and json_obj['ensure'] is not None:
       self.ensure = MyStruct()
       self.ensure.readFromJson(json_obj['ensure'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
@@ -4308,10 +4308,10 @@ class MyStructPatch:
       value = pprint.pformat(self.clear, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    clear=%s' % (value))
-    if self.patch is not None:
-      value = pprint.pformat(self.patch, indent=0)
+    if self.patchPrior is not None:
+      value = pprint.pformat(self.patchPrior, indent=0)
       value = padding.join(value.splitlines(True))
-      L.append('    patch=%s' % (value))
+      L.append('    patchPrior=%s' % (value))
     if self.ensure is not None:
       value = pprint.pformat(self.ensure, indent=0)
       value = padding.join(value.splitlines(True))
@@ -4335,7 +4335,7 @@ class MyStructPatch:
     return (
       'assign',
       'clear',
-      'patch',
+      'patchPrior',
       'ensure',
       'patchAfter',
     )
@@ -4362,7 +4362,7 @@ class OptionalMyStructPatch:
   """
   Attributes:
    - clear: Clears any set value. Applies first.
-   - patch: Patches any previously set values. Applies second.
+   - patchPrior: Patches any previously set values. Applies second.
    - ensure: Assigns the value, if not already set to the same field. Applies third.
    - patchAfter: Patches any set value, including newly set values. Applies last.
   """
@@ -4394,8 +4394,8 @@ class OptionalMyStructPatch:
           iprot.skip(ftype)
       elif fid == 3:
         if ftype == TType.STRUCT:
-          self.patch = MyStructPatch()
-          self.patch.read(iprot)
+          self.patchPrior = MyStructPatch()
+          self.patchPrior.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 4:
@@ -4427,9 +4427,9 @@ class OptionalMyStructPatch:
       oprot.writeFieldBegin('clear', TType.BOOL, 2)
       oprot.writeBool(self.clear)
       oprot.writeFieldEnd()
-    if self.patch != None:
-      oprot.writeFieldBegin('patch', TType.STRUCT, 3)
-      self.patch.write(oprot)
+    if self.patchPrior != None:
+      oprot.writeFieldBegin('patchPrior', TType.STRUCT, 3)
+      self.patchPrior.write(oprot)
       oprot.writeFieldEnd()
     if self.ensure != None:
       oprot.writeFieldBegin('ensure', TType.STRUCT, 4)
@@ -4456,9 +4456,9 @@ class OptionalMyStructPatch:
       json_obj = loads(json)
     if 'clear' in json_obj and json_obj['clear'] is not None:
       self.clear = json_obj['clear']
-    if 'patch' in json_obj and json_obj['patch'] is not None:
-      self.patch = MyStructPatch()
-      self.patch.readFromJson(json_obj['patch'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'patchPrior' in json_obj and json_obj['patchPrior'] is not None:
+      self.patchPrior = MyStructPatch()
+      self.patchPrior.readFromJson(json_obj['patchPrior'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'ensure' in json_obj and json_obj['ensure'] is not None:
       self.ensure = MyStruct()
       self.ensure.readFromJson(json_obj['ensure'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
@@ -4473,10 +4473,10 @@ class OptionalMyStructPatch:
       value = pprint.pformat(self.clear, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    clear=%s' % (value))
-    if self.patch is not None:
-      value = pprint.pformat(self.patch, indent=0)
+    if self.patchPrior is not None:
+      value = pprint.pformat(self.patchPrior, indent=0)
       value = padding.join(value.splitlines(True))
-      L.append('    patch=%s' % (value))
+      L.append('    patchPrior=%s' % (value))
     if self.ensure is not None:
       value = pprint.pformat(self.ensure, indent=0)
       value = padding.join(value.splitlines(True))
@@ -4499,7 +4499,7 @@ class OptionalMyStructPatch:
   def __dir__(self):
     return (
       'clear',
-      'patch',
+      'patchPrior',
       'ensure',
       'patchAfter',
     )
@@ -4729,7 +4729,7 @@ MyDataPatch.thrift_spec = (
   None, # 0
   (1, TType.STRUCT, 'assign', [MyData, MyData.thrift_spec, False], None, 1, ), # 1
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [MyDataFieldPatch, MyDataFieldPatch.thrift_spec, False], None, 2, ), # 3
+  (3, TType.STRUCT, 'patchPrior', [MyDataFieldPatch, MyDataFieldPatch.thrift_spec, False], None, 2, ), # 3
   None, # 4
   (5, TType.STRUCT, 'ensure', [MyData, MyData.thrift_spec, False], None, 2, ), # 5
   (6, TType.STRUCT, 'patchAfter', [MyDataFieldPatch, MyDataFieldPatch.thrift_spec, False], None, 2, ), # 6
@@ -4743,10 +4743,10 @@ MyDataPatch.thrift_field_annotations = {
   },
 }
 
-def MyDataPatch__init__(self, assign=None, clear=None, patch=None, ensure=None, patchAfter=None,):
+def MyDataPatch__init__(self, assign=None, clear=None, patchPrior=None, ensure=None, patchAfter=None,):
   self.assign = assign
   self.clear = clear
-  self.patch = patch
+  self.patchPrior = patchPrior
   self.ensure = ensure
   self.patchAfter = patchAfter
 
@@ -4755,7 +4755,7 @@ MyDataPatch.__init__ = MyDataPatch__init__
 def MyDataPatch__setstate__(self, state):
   state.setdefault('assign', None)
   state.setdefault('clear', None)
-  state.setdefault('patch', None)
+  state.setdefault('patchPrior', None)
   state.setdefault('ensure', None)
   state.setdefault('patchAfter', None)
   self.__dict__ = state
@@ -4768,7 +4768,7 @@ OptionalMyDataPatch.thrift_spec = (
   None, # 0
   None, # 1
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [MyDataPatch, MyDataPatch.thrift_spec, False], None, 2, ), # 3
+  (3, TType.STRUCT, 'patchPrior', [MyDataPatch, MyDataPatch.thrift_spec, False], None, 2, ), # 3
   (4, TType.STRUCT, 'ensure', [MyData, MyData.thrift_spec, False], None, 1, ), # 4
   None, # 5
   (6, TType.STRUCT, 'patchAfter', [MyDataPatch, MyDataPatch.thrift_spec, False], None, 2, ), # 6
@@ -4782,9 +4782,9 @@ OptionalMyDataPatch.thrift_field_annotations = {
   },
 }
 
-def OptionalMyDataPatch__init__(self, clear=None, patch=None, ensure=None, patchAfter=None,):
+def OptionalMyDataPatch__init__(self, clear=None, patchPrior=None, ensure=None, patchAfter=None,):
   self.clear = clear
-  self.patch = patch
+  self.patchPrior = patchPrior
   self.ensure = ensure
   self.patchAfter = patchAfter
 
@@ -4792,7 +4792,7 @@ OptionalMyDataPatch.__init__ = OptionalMyDataPatch__init__
 
 def OptionalMyDataPatch__setstate__(self, state):
   state.setdefault('clear', None)
-  state.setdefault('patch', None)
+  state.setdefault('patchPrior', None)
   state.setdefault('ensure', None)
   state.setdefault('patchAfter', None)
   self.__dict__ = state
@@ -4828,7 +4828,7 @@ InnerUnionPatch.thrift_spec = (
   None, # 0
   (1, TType.STRUCT, 'assign', [InnerUnion, InnerUnion.thrift_spec, True], None, 2, ), # 1
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [InnerUnionFieldPatch, InnerUnionFieldPatch.thrift_spec, False], None, 2, ), # 3
+  (3, TType.STRUCT, 'patchPrior', [InnerUnionFieldPatch, InnerUnionFieldPatch.thrift_spec, False], None, 2, ), # 3
   (4, TType.STRUCT, 'ensure', [InnerUnion, InnerUnion.thrift_spec, True], None, 2, ), # 4
   None, # 5
   (6, TType.STRUCT, 'patchAfter', [InnerUnionFieldPatch, InnerUnionFieldPatch.thrift_spec, False], None, 2, ), # 6
@@ -4839,10 +4839,10 @@ InnerUnionPatch.thrift_struct_annotations = {
 InnerUnionPatch.thrift_field_annotations = {
 }
 
-def InnerUnionPatch__init__(self, assign=None, clear=None, patch=None, ensure=None, patchAfter=None,):
+def InnerUnionPatch__init__(self, assign=None, clear=None, patchPrior=None, ensure=None, patchAfter=None,):
   self.assign = assign
   self.clear = clear
-  self.patch = patch
+  self.patchPrior = patchPrior
   self.ensure = ensure
   self.patchAfter = patchAfter
 
@@ -4851,7 +4851,7 @@ InnerUnionPatch.__init__ = InnerUnionPatch__init__
 def InnerUnionPatch__setstate__(self, state):
   state.setdefault('assign', None)
   state.setdefault('clear', None)
-  state.setdefault('patch', None)
+  state.setdefault('patchPrior', None)
   state.setdefault('ensure', None)
   state.setdefault('patchAfter', None)
   self.__dict__ = state
@@ -4864,7 +4864,7 @@ OptionalInnerUnionPatch.thrift_spec = (
   None, # 0
   None, # 1
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [InnerUnionPatch, InnerUnionPatch.thrift_spec, False], None, 2, ), # 3
+  (3, TType.STRUCT, 'patchPrior', [InnerUnionPatch, InnerUnionPatch.thrift_spec, False], None, 2, ), # 3
   (4, TType.STRUCT, 'ensure', [InnerUnion, InnerUnion.thrift_spec, True], None, 1, ), # 4
   None, # 5
   (6, TType.STRUCT, 'patchAfter', [InnerUnionPatch, InnerUnionPatch.thrift_spec, False], None, 2, ), # 6
@@ -4878,9 +4878,9 @@ OptionalInnerUnionPatch.thrift_field_annotations = {
   },
 }
 
-def OptionalInnerUnionPatch__init__(self, clear=None, patch=None, ensure=None, patchAfter=None,):
+def OptionalInnerUnionPatch__init__(self, clear=None, patchPrior=None, ensure=None, patchAfter=None,):
   self.clear = clear
-  self.patch = patch
+  self.patchPrior = patchPrior
   self.ensure = ensure
   self.patchAfter = patchAfter
 
@@ -4888,7 +4888,7 @@ OptionalInnerUnionPatch.__init__ = OptionalInnerUnionPatch__init__
 
 def OptionalInnerUnionPatch__setstate__(self, state):
   state.setdefault('clear', None)
-  state.setdefault('patch', None)
+  state.setdefault('patchPrior', None)
   state.setdefault('ensure', None)
   state.setdefault('patchAfter', None)
   self.__dict__ = state
@@ -4930,7 +4930,7 @@ MyUnionPatch.thrift_spec = (
   None, # 0
   (1, TType.STRUCT, 'assign', [MyUnion, MyUnion.thrift_spec, True], None, 2, ), # 1
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [MyUnionFieldPatch, MyUnionFieldPatch.thrift_spec, False], None, 2, ), # 3
+  (3, TType.STRUCT, 'patchPrior', [MyUnionFieldPatch, MyUnionFieldPatch.thrift_spec, False], None, 2, ), # 3
   (4, TType.STRUCT, 'ensure', [MyUnion, MyUnion.thrift_spec, True], None, 2, ), # 4
   None, # 5
   (6, TType.STRUCT, 'patchAfter', [MyUnionFieldPatch, MyUnionFieldPatch.thrift_spec, False], None, 2, ), # 6
@@ -4941,10 +4941,10 @@ MyUnionPatch.thrift_struct_annotations = {
 MyUnionPatch.thrift_field_annotations = {
 }
 
-def MyUnionPatch__init__(self, assign=None, clear=None, patch=None, ensure=None, patchAfter=None,):
+def MyUnionPatch__init__(self, assign=None, clear=None, patchPrior=None, ensure=None, patchAfter=None,):
   self.assign = assign
   self.clear = clear
-  self.patch = patch
+  self.patchPrior = patchPrior
   self.ensure = ensure
   self.patchAfter = patchAfter
 
@@ -4953,7 +4953,7 @@ MyUnionPatch.__init__ = MyUnionPatch__init__
 def MyUnionPatch__setstate__(self, state):
   state.setdefault('assign', None)
   state.setdefault('clear', None)
-  state.setdefault('patch', None)
+  state.setdefault('patchPrior', None)
   state.setdefault('ensure', None)
   state.setdefault('patchAfter', None)
   self.__dict__ = state
@@ -4966,7 +4966,7 @@ OptionalMyUnionPatch.thrift_spec = (
   None, # 0
   None, # 1
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [MyUnionPatch, MyUnionPatch.thrift_spec, False], None, 2, ), # 3
+  (3, TType.STRUCT, 'patchPrior', [MyUnionPatch, MyUnionPatch.thrift_spec, False], None, 2, ), # 3
   (4, TType.STRUCT, 'ensure', [MyUnion, MyUnion.thrift_spec, True], None, 1, ), # 4
   None, # 5
   (6, TType.STRUCT, 'patchAfter', [MyUnionPatch, MyUnionPatch.thrift_spec, False], None, 2, ), # 6
@@ -4980,9 +4980,9 @@ OptionalMyUnionPatch.thrift_field_annotations = {
   },
 }
 
-def OptionalMyUnionPatch__init__(self, clear=None, patch=None, ensure=None, patchAfter=None,):
+def OptionalMyUnionPatch__init__(self, clear=None, patchPrior=None, ensure=None, patchAfter=None,):
   self.clear = clear
-  self.patch = patch
+  self.patchPrior = patchPrior
   self.ensure = ensure
   self.patchAfter = patchAfter
 
@@ -4990,7 +4990,7 @@ OptionalMyUnionPatch.__init__ = OptionalMyUnionPatch__init__
 
 def OptionalMyUnionPatch__setstate__(self, state):
   state.setdefault('clear', None)
-  state.setdefault('patch', None)
+  state.setdefault('patchPrior', None)
   state.setdefault('ensure', None)
   state.setdefault('patchAfter', None)
   self.__dict__ = state
@@ -5138,7 +5138,7 @@ OptionalMyStructField21Patch.thrift_spec = (
   None, # 0
   None, # 1
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [MyStructField21Patch, MyStructField21Patch.thrift_spec, False], None, 2, ), # 3
+  (3, TType.STRUCT, 'patchPrior', [MyStructField21Patch, MyStructField21Patch.thrift_spec, False], None, 2, ), # 3
   (4, TType.LIST, 'ensure', (TType.I16,None), None, 1, ), # 4
   None, # 5
   (6, TType.STRUCT, 'patchAfter', [MyStructField21Patch, MyStructField21Patch.thrift_spec, False], None, 2, ), # 6
@@ -5149,9 +5149,9 @@ OptionalMyStructField21Patch.thrift_struct_annotations = {
 OptionalMyStructField21Patch.thrift_field_annotations = {
 }
 
-def OptionalMyStructField21Patch__init__(self, clear=None, patch=None, ensure=None, patchAfter=None,):
+def OptionalMyStructField21Patch__init__(self, clear=None, patchPrior=None, ensure=None, patchAfter=None,):
   self.clear = clear
-  self.patch = patch
+  self.patchPrior = patchPrior
   self.ensure = ensure
   self.patchAfter = patchAfter
 
@@ -5159,7 +5159,7 @@ OptionalMyStructField21Patch.__init__ = OptionalMyStructField21Patch__init__
 
 def OptionalMyStructField21Patch__setstate__(self, state):
   state.setdefault('clear', None)
-  state.setdefault('patch', None)
+  state.setdefault('patchPrior', None)
   state.setdefault('ensure', None)
   state.setdefault('patchAfter', None)
   self.__dict__ = state
@@ -5208,7 +5208,7 @@ OptionalMyStructField22Patch.thrift_spec = (
   None, # 0
   None, # 1
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [MyStructField22Patch, MyStructField22Patch.thrift_spec, False], None, 2, ), # 3
+  (3, TType.STRUCT, 'patchPrior', [MyStructField22Patch, MyStructField22Patch.thrift_spec, False], None, 2, ), # 3
   (4, TType.SET, 'ensure', (TType.STRING,True), None, 1, ), # 4
   None, # 5
   (6, TType.STRUCT, 'patchAfter', [MyStructField22Patch, MyStructField22Patch.thrift_spec, False], None, 2, ), # 6
@@ -5219,9 +5219,9 @@ OptionalMyStructField22Patch.thrift_struct_annotations = {
 OptionalMyStructField22Patch.thrift_field_annotations = {
 }
 
-def OptionalMyStructField22Patch__init__(self, clear=None, patch=None, ensure=None, patchAfter=None,):
+def OptionalMyStructField22Patch__init__(self, clear=None, patchPrior=None, ensure=None, patchAfter=None,):
   self.clear = clear
-  self.patch = patch
+  self.patchPrior = patchPrior
   self.ensure = ensure
   self.patchAfter = patchAfter
 
@@ -5229,7 +5229,7 @@ OptionalMyStructField22Patch.__init__ = OptionalMyStructField22Patch__init__
 
 def OptionalMyStructField22Patch__setstate__(self, state):
   state.setdefault('clear', None)
-  state.setdefault('patch', None)
+  state.setdefault('patchPrior', None)
   state.setdefault('ensure', None)
   state.setdefault('patchAfter', None)
   self.__dict__ = state
@@ -5279,7 +5279,7 @@ OptionalMyStructField23Patch.thrift_spec = (
   None, # 0
   None, # 1
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [MyStructField23Patch, MyStructField23Patch.thrift_spec, False], None, 2, ), # 3
+  (3, TType.STRUCT, 'patchPrior', [MyStructField23Patch, MyStructField23Patch.thrift_spec, False], None, 2, ), # 3
   (4, TType.MAP, 'ensure', (TType.STRING,True,TType.STRING,True), None, 1, ), # 4
   None, # 5
   (6, TType.STRUCT, 'patchAfter', [MyStructField23Patch, MyStructField23Patch.thrift_spec, False], None, 2, ), # 6
@@ -5290,9 +5290,9 @@ OptionalMyStructField23Patch.thrift_struct_annotations = {
 OptionalMyStructField23Patch.thrift_field_annotations = {
 }
 
-def OptionalMyStructField23Patch__init__(self, clear=None, patch=None, ensure=None, patchAfter=None,):
+def OptionalMyStructField23Patch__init__(self, clear=None, patchPrior=None, ensure=None, patchAfter=None,):
   self.clear = clear
-  self.patch = patch
+  self.patchPrior = patchPrior
   self.ensure = ensure
   self.patchAfter = patchAfter
 
@@ -5300,7 +5300,7 @@ OptionalMyStructField23Patch.__init__ = OptionalMyStructField23Patch__init__
 
 def OptionalMyStructField23Patch__setstate__(self, state):
   state.setdefault('clear', None)
-  state.setdefault('patch', None)
+  state.setdefault('patchPrior', None)
   state.setdefault('ensure', None)
   state.setdefault('patchAfter', None)
   self.__dict__ = state
@@ -5313,7 +5313,7 @@ MyStructPatch.thrift_spec = (
   None, # 0
   (1, TType.STRUCT, 'assign', [MyStruct, MyStruct.thrift_spec, False], None, 1, ), # 1
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [MyStructFieldPatch, MyStructFieldPatch.thrift_spec, False], None, 2, ), # 3
+  (3, TType.STRUCT, 'patchPrior', [MyStructFieldPatch, MyStructFieldPatch.thrift_spec, False], None, 2, ), # 3
   None, # 4
   (5, TType.STRUCT, 'ensure', [MyStruct, MyStruct.thrift_spec, False], None, 2, ), # 5
   (6, TType.STRUCT, 'patchAfter', [MyStructFieldPatch, MyStructFieldPatch.thrift_spec, False], None, 2, ), # 6
@@ -5327,10 +5327,10 @@ MyStructPatch.thrift_field_annotations = {
   },
 }
 
-def MyStructPatch__init__(self, assign=None, clear=None, patch=None, ensure=None, patchAfter=None,):
+def MyStructPatch__init__(self, assign=None, clear=None, patchPrior=None, ensure=None, patchAfter=None,):
   self.assign = assign
   self.clear = clear
-  self.patch = patch
+  self.patchPrior = patchPrior
   self.ensure = ensure
   self.patchAfter = patchAfter
 
@@ -5339,7 +5339,7 @@ MyStructPatch.__init__ = MyStructPatch__init__
 def MyStructPatch__setstate__(self, state):
   state.setdefault('assign', None)
   state.setdefault('clear', None)
-  state.setdefault('patch', None)
+  state.setdefault('patchPrior', None)
   state.setdefault('ensure', None)
   state.setdefault('patchAfter', None)
   self.__dict__ = state
@@ -5352,7 +5352,7 @@ OptionalMyStructPatch.thrift_spec = (
   None, # 0
   None, # 1
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [MyStructPatch, MyStructPatch.thrift_spec, False], None, 2, ), # 3
+  (3, TType.STRUCT, 'patchPrior', [MyStructPatch, MyStructPatch.thrift_spec, False], None, 2, ), # 3
   (4, TType.STRUCT, 'ensure', [MyStruct, MyStruct.thrift_spec, False], None, 1, ), # 4
   None, # 5
   (6, TType.STRUCT, 'patchAfter', [MyStructPatch, MyStructPatch.thrift_spec, False], None, 2, ), # 6
@@ -5366,9 +5366,9 @@ OptionalMyStructPatch.thrift_field_annotations = {
   },
 }
 
-def OptionalMyStructPatch__init__(self, clear=None, patch=None, ensure=None, patchAfter=None,):
+def OptionalMyStructPatch__init__(self, clear=None, patchPrior=None, ensure=None, patchAfter=None,):
   self.clear = clear
-  self.patch = patch
+  self.patchPrior = patchPrior
   self.ensure = ensure
   self.patchAfter = patchAfter
 
@@ -5376,7 +5376,7 @@ OptionalMyStructPatch.__init__ = OptionalMyStructPatch__init__
 
 def OptionalMyStructPatch__setstate__(self, state):
   state.setdefault('clear', None)
-  state.setdefault('patch', None)
+  state.setdefault('patchPrior', None)
   state.setdefault('ensure', None)
   state.setdefault('patchAfter', None)
   self.__dict__ = state

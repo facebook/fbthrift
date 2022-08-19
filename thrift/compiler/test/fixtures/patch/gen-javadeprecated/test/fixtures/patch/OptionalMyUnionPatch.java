@@ -27,7 +27,7 @@ import com.facebook.thrift.protocol.*;
 public class OptionalMyUnionPatch implements TBase, java.io.Serializable, Cloneable, Comparable<OptionalMyUnionPatch> {
   private static final TStruct STRUCT_DESC = new TStruct("OptionalMyUnionPatch");
   private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
-  private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
+  private static final TField PATCH_PRIOR_FIELD_DESC = new TField("patchPrior", TType.STRUCT, (short)3);
   private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.STRUCT, (short)4);
   private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)6);
 
@@ -38,7 +38,7 @@ public class OptionalMyUnionPatch implements TBase, java.io.Serializable, Clonea
   /**
    * Patches any previously set values. Applies second.
    */
-  public MyUnionPatch patch;
+  public MyUnionPatch patchPrior;
   /**
    * Assigns the value, if not already set to the same field. Applies third.
    */
@@ -48,7 +48,7 @@ public class OptionalMyUnionPatch implements TBase, java.io.Serializable, Clonea
    */
   public MyUnionPatch patchAfter;
   public static final int CLEAR = 2;
-  public static final int PATCH = 3;
+  public static final int PATCHPRIOR = 3;
   public static final int ENSURE = 4;
   public static final int PATCHAFTER = 6;
 
@@ -62,7 +62,7 @@ public class OptionalMyUnionPatch implements TBase, java.io.Serializable, Clonea
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(CLEAR, new FieldMetaData("clear", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.BOOL)));
-    tmpMetaDataMap.put(PATCH, new FieldMetaData("patch", TFieldRequirementType.DEFAULT, 
+    tmpMetaDataMap.put(PATCHPRIOR, new FieldMetaData("patchPrior", TFieldRequirementType.DEFAULT, 
         new StructMetaData(TType.STRUCT, MyUnionPatch.class)));
     tmpMetaDataMap.put(ENSURE, new FieldMetaData("ensure", TFieldRequirementType.OPTIONAL, 
         new StructMetaData(TType.STRUCT, MyUnion.class)));
@@ -80,31 +80,31 @@ public class OptionalMyUnionPatch implements TBase, java.io.Serializable, Clonea
 
   public OptionalMyUnionPatch(
       boolean clear,
-      MyUnionPatch patch,
+      MyUnionPatch patchPrior,
       MyUnionPatch patchAfter) {
     this();
     this.clear = clear;
     setClearIsSet(true);
-    this.patch = patch;
+    this.patchPrior = patchPrior;
     this.patchAfter = patchAfter;
   }
 
   public OptionalMyUnionPatch(
       boolean clear,
-      MyUnionPatch patch,
+      MyUnionPatch patchPrior,
       MyUnion ensure,
       MyUnionPatch patchAfter) {
     this();
     this.clear = clear;
     setClearIsSet(true);
-    this.patch = patch;
+    this.patchPrior = patchPrior;
     this.ensure = ensure;
     this.patchAfter = patchAfter;
   }
 
   public static class Builder {
     private boolean clear;
-    private MyUnionPatch patch;
+    private MyUnionPatch patchPrior;
     private MyUnion ensure;
     private MyUnionPatch patchAfter;
 
@@ -119,8 +119,8 @@ public class OptionalMyUnionPatch implements TBase, java.io.Serializable, Clonea
       return this;
     }
 
-    public Builder setPatch(final MyUnionPatch patch) {
-      this.patch = patch;
+    public Builder setPatchPrior(final MyUnionPatch patchPrior) {
+      this.patchPrior = patchPrior;
       return this;
     }
 
@@ -139,7 +139,7 @@ public class OptionalMyUnionPatch implements TBase, java.io.Serializable, Clonea
       if (__optional_isset.get(__CLEAR_ISSET_ID)) {
         result.setClear(this.clear);
       }
-      result.setPatch(this.patch);
+      result.setPatchPrior(this.patchPrior);
       result.setEnsure(this.ensure);
       result.setPatchAfter(this.patchAfter);
       return result;
@@ -157,8 +157,8 @@ public class OptionalMyUnionPatch implements TBase, java.io.Serializable, Clonea
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
     this.clear = TBaseHelper.deepCopy(other.clear);
-    if (other.isSetPatch()) {
-      this.patch = TBaseHelper.deepCopy(other.patch);
+    if (other.isSetPatchPrior()) {
+      this.patchPrior = TBaseHelper.deepCopy(other.patchPrior);
     }
     if (other.isSetEnsure()) {
       this.ensure = TBaseHelper.deepCopy(other.ensure);
@@ -204,30 +204,30 @@ public class OptionalMyUnionPatch implements TBase, java.io.Serializable, Clonea
   /**
    * Patches any previously set values. Applies second.
    */
-  public MyUnionPatch getPatch() {
-    return this.patch;
+  public MyUnionPatch getPatchPrior() {
+    return this.patchPrior;
   }
 
   /**
    * Patches any previously set values. Applies second.
    */
-  public OptionalMyUnionPatch setPatch(MyUnionPatch patch) {
-    this.patch = patch;
+  public OptionalMyUnionPatch setPatchPrior(MyUnionPatch patchPrior) {
+    this.patchPrior = patchPrior;
     return this;
   }
 
-  public void unsetPatch() {
-    this.patch = null;
+  public void unsetPatchPrior() {
+    this.patchPrior = null;
   }
 
-  // Returns true if field patch is set (has been assigned a value) and false otherwise
-  public boolean isSetPatch() {
-    return this.patch != null;
+  // Returns true if field patchPrior is set (has been assigned a value) and false otherwise
+  public boolean isSetPatchPrior() {
+    return this.patchPrior != null;
   }
 
-  public void setPatchIsSet(boolean __value) {
+  public void setPatchPriorIsSet(boolean __value) {
     if (!__value) {
-      this.patch = null;
+      this.patchPrior = null;
     }
   }
 
@@ -301,11 +301,11 @@ public class OptionalMyUnionPatch implements TBase, java.io.Serializable, Clonea
       }
       break;
 
-    case PATCH:
+    case PATCHPRIOR:
       if (__value == null) {
-        unsetPatch();
+        unsetPatchPrior();
       } else {
-        setPatch((MyUnionPatch)__value);
+        setPatchPrior((MyUnionPatch)__value);
       }
       break;
 
@@ -335,8 +335,8 @@ public class OptionalMyUnionPatch implements TBase, java.io.Serializable, Clonea
     case CLEAR:
       return new Boolean(isClear());
 
-    case PATCH:
-      return getPatch();
+    case PATCHPRIOR:
+      return getPatchPrior();
 
     case ENSURE:
       return getEnsure();
@@ -361,7 +361,7 @@ public class OptionalMyUnionPatch implements TBase, java.io.Serializable, Clonea
 
     if (!TBaseHelper.equalsNobinary(this.clear, that.clear)) { return false; }
 
-    if (!TBaseHelper.equalsNobinary(this.isSetPatch(), that.isSetPatch(), this.patch, that.patch)) { return false; }
+    if (!TBaseHelper.equalsNobinary(this.isSetPatchPrior(), that.isSetPatchPrior(), this.patchPrior, that.patchPrior)) { return false; }
 
     if (!TBaseHelper.equalsNobinary(this.isSetEnsure(), that.isSetEnsure(), this.ensure, that.ensure)) { return false; }
 
@@ -372,7 +372,7 @@ public class OptionalMyUnionPatch implements TBase, java.io.Serializable, Clonea
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {clear, patch, ensure, patchAfter});
+    return Arrays.deepHashCode(new Object[] {clear, patchPrior, ensure, patchAfter});
   }
 
   @Override
@@ -395,11 +395,11 @@ public class OptionalMyUnionPatch implements TBase, java.io.Serializable, Clonea
     if (lastComparison != 0) { 
       return lastComparison;
     }
-    lastComparison = Boolean.valueOf(isSetPatch()).compareTo(other.isSetPatch());
+    lastComparison = Boolean.valueOf(isSetPatchPrior()).compareTo(other.isSetPatchPrior());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    lastComparison = TBaseHelper.compareTo(patch, other.patch);
+    lastComparison = TBaseHelper.compareTo(patchPrior, other.patchPrior);
     if (lastComparison != 0) { 
       return lastComparison;
     }
@@ -441,10 +441,10 @@ public class OptionalMyUnionPatch implements TBase, java.io.Serializable, Clonea
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
-        case PATCH:
+        case PATCHPRIOR:
           if (__field.type == TType.STRUCT) {
-            this.patch = new MyUnionPatch();
-            this.patch.read(iprot);
+            this.patchPrior = new MyUnionPatch();
+            this.patchPrior.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
@@ -485,9 +485,9 @@ public class OptionalMyUnionPatch implements TBase, java.io.Serializable, Clonea
     oprot.writeFieldBegin(CLEAR_FIELD_DESC);
     oprot.writeBool(this.clear);
     oprot.writeFieldEnd();
-    if (this.patch != null) {
-      oprot.writeFieldBegin(PATCH_FIELD_DESC);
-      this.patch.write(oprot);
+    if (this.patchPrior != null) {
+      oprot.writeFieldBegin(PATCH_PRIOR_FIELD_DESC);
+      this.patchPrior.write(oprot);
       oprot.writeFieldEnd();
     }
     if (this.ensure != null) {
@@ -530,13 +530,13 @@ public class OptionalMyUnionPatch implements TBase, java.io.Serializable, Clonea
     first = false;
     if (!first) sb.append("," + newLine);
     sb.append(indentStr);
-    sb.append("patch");
+    sb.append("patchPrior");
     sb.append(space);
     sb.append(":").append(space);
-    if (this.getPatch() == null) {
+    if (this.getPatchPrior() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this.getPatch(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getPatchPrior(), indent + 1, prettyPrint));
     }
     first = false;
     if (isSetEnsure())

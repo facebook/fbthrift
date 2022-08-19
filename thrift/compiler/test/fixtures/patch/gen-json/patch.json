@@ -523,7 +523,7 @@
             }
           }
         },
-        "patch" : {
+        "patchPrior" : {
           "type_enum" : "STRUCT",
           "spec_args" : "BoolPatch",
           "required" : true,
@@ -600,7 +600,7 @@
             }
           }
         },
-        "patch" : {
+        "patchPrior" : {
           "type_enum" : "STRUCT",
           "spec_args" : "BytePatch",
           "required" : true,
@@ -677,7 +677,7 @@
             }
           }
         },
-        "patch" : {
+        "patchPrior" : {
           "type_enum" : "STRUCT",
           "spec_args" : "I16Patch",
           "required" : true,
@@ -754,7 +754,7 @@
             }
           }
         },
-        "patch" : {
+        "patchPrior" : {
           "type_enum" : "STRUCT",
           "spec_args" : "I32Patch",
           "required" : true,
@@ -831,7 +831,7 @@
             }
           }
         },
-        "patch" : {
+        "patchPrior" : {
           "type_enum" : "STRUCT",
           "spec_args" : "I64Patch",
           "required" : true,
@@ -908,7 +908,7 @@
             }
           }
         },
-        "patch" : {
+        "patchPrior" : {
           "type_enum" : "STRUCT",
           "spec_args" : "FloatPatch",
           "required" : true,
@@ -985,7 +985,7 @@
             }
           }
         },
-        "patch" : {
+        "patchPrior" : {
           "type_enum" : "STRUCT",
           "spec_args" : "DoublePatch",
           "required" : true,
@@ -1062,7 +1062,7 @@
             }
           }
         },
-        "patch" : {
+        "patchPrior" : {
           "type_enum" : "STRUCT",
           "spec_args" : "StringPatch",
           "required" : true,
@@ -1139,7 +1139,7 @@
             }
           }
         },
-        "patch" : {
+        "patchPrior" : {
           "type_enum" : "STRUCT",
           "spec_args" : "BinaryPatch",
           "required" : true,

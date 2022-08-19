@@ -27,7 +27,7 @@ import com.facebook.thrift.protocol.*;
 public class OptionalMyStructField22Patch implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("OptionalMyStructField22Patch");
   private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
-  private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
+  private static final TField PATCH_PRIOR_FIELD_DESC = new TField("patchPrior", TType.STRUCT, (short)3);
   private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.SET, (short)4);
   private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)6);
 
@@ -38,7 +38,7 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
   /**
    * Patches any previously set values. Applies second.
    */
-  public final MyStructField22Patch patch;
+  public final MyStructField22Patch patchPrior;
   /**
    * Assigns the value, if not already set to the same field. Applies third.
    */
@@ -48,17 +48,17 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
    */
   public final MyStructField22Patch patchAfter;
   public static final int CLEAR = 2;
-  public static final int PATCH = 3;
+  public static final int PATCHPRIOR = 3;
   public static final int ENSURE = 4;
   public static final int PATCHAFTER = 6;
 
   public OptionalMyStructField22Patch(
       Boolean clear,
-      MyStructField22Patch patch,
+      MyStructField22Patch patchPrior,
       Set<String> ensure,
       MyStructField22Patch patchAfter) {
     this.clear = clear;
-    this.patch = patch;
+    this.patchPrior = patchPrior;
     this.ensure = ensure;
     this.patchAfter = patchAfter;
   }
@@ -72,10 +72,10 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
     } else {
       this.clear = null;
     }
-    if (other.isSetPatch()) {
-      this.patch = TBaseHelper.deepCopy(other.patch);
+    if (other.isSetPatchPrior()) {
+      this.patchPrior = TBaseHelper.deepCopy(other.patchPrior);
     } else {
-      this.patch = null;
+      this.patchPrior = null;
     }
     if (other.isSetEnsure()) {
       this.ensure = TBaseHelper.deepCopy(other.ensure);
@@ -108,13 +108,13 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
   /**
    * Patches any previously set values. Applies second.
    */
-  public MyStructField22Patch getPatch() {
-    return this.patch;
+  public MyStructField22Patch getPatchPrior() {
+    return this.patchPrior;
   }
 
-  // Returns true if field patch is set (has been assigned a value) and false otherwise
-  public boolean isSetPatch() {
-    return this.patch != null;
+  // Returns true if field patchPrior is set (has been assigned a value) and false otherwise
+  public boolean isSetPatchPrior() {
+    return this.patchPrior != null;
   }
 
   /**
@@ -153,7 +153,7 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
 
     if (!TBaseHelper.equalsNobinary(this.isSetClear(), that.isSetClear(), this.clear, that.clear)) { return false; }
 
-    if (!TBaseHelper.equalsNobinary(this.isSetPatch(), that.isSetPatch(), this.patch, that.patch)) { return false; }
+    if (!TBaseHelper.equalsNobinary(this.isSetPatchPrior(), that.isSetPatchPrior(), this.patchPrior, that.patchPrior)) { return false; }
 
     if (!TBaseHelper.equalsNobinary(this.isSetEnsure(), that.isSetEnsure(), this.ensure, that.ensure)) { return false; }
 
@@ -164,7 +164,7 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {clear, patch, ensure, patchAfter});
+    return Arrays.deepHashCode(new Object[] {clear, patchPrior, ensure, patchAfter});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -174,7 +174,7 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
 
   public static OptionalMyStructField22Patch deserialize(TProtocol iprot) throws TException {
     Boolean tmp_clear = null;
-    MyStructField22Patch tmp_patch = null;
+    MyStructField22Patch tmp_patchPrior = null;
     Set<String> tmp_ensure = null;
     MyStructField22Patch tmp_patchAfter = null;
     TField __field;
@@ -194,9 +194,9 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
-        case PATCH:
+        case PATCHPRIOR:
           if (__field.type == TType.STRUCT) {
-            tmp_patch = MyStructField22Patch.deserialize(iprot);
+            tmp_patchPrior = MyStructField22Patch.deserialize(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
@@ -238,7 +238,7 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
     OptionalMyStructField22Patch _that;
     _that = new OptionalMyStructField22Patch(
       tmp_clear
-      ,tmp_patch
+      ,tmp_patchPrior
       ,tmp_ensure
       ,tmp_patchAfter
     );
@@ -255,9 +255,9 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
       oprot.writeBool(this.clear);
       oprot.writeFieldEnd();
     }
-    if (this.patch != null) {
-      oprot.writeFieldBegin(PATCH_FIELD_DESC);
-      this.patch.write(oprot);
+    if (this.patchPrior != null) {
+      oprot.writeFieldBegin(PATCH_PRIOR_FIELD_DESC);
+      this.patchPrior.write(oprot);
       oprot.writeFieldEnd();
     }
     if (this.ensure != null) {

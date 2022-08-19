@@ -308,8 +308,8 @@
             "required" : "opt-in-req-out",
             "type" : "bool"
           },
-          "patch" : {
-            "name" : "patch",
+          "patchPrior" : {
+            "name" : "patchPrior",
             "docstring" : "Patches any previously set values. Applies second.\n",
             "key" : 3,
             "lineno" : 0,
@@ -357,8 +357,8 @@
             "required" : "opt-in-req-out",
             "type" : "bool"
           },
-          "patch" : {
-            "name" : "patch",
+          "patchPrior" : {
+            "name" : "patchPrior",
             "docstring" : "Patches any previously set values. Applies second.\n",
             "key" : 3,
             "lineno" : 0,
@@ -435,8 +435,8 @@
             "required" : "opt-in-req-out",
             "type" : "bool"
           },
-          "patch" : {
-            "name" : "patch",
+          "patchPrior" : {
+            "name" : "patchPrior",
             "docstring" : "Patches any previously set values. Applies second.\n",
             "key" : 3,
             "lineno" : 0,
@@ -484,8 +484,8 @@
             "required" : "opt-in-req-out",
             "type" : "bool"
           },
-          "patch" : {
-            "name" : "patch",
+          "patchPrior" : {
+            "name" : "patchPrior",
             "docstring" : "Patches any previously set values. Applies second.\n",
             "key" : 3,
             "lineno" : 0,
@@ -582,8 +582,8 @@
             "required" : "opt-in-req-out",
             "type" : "bool"
           },
-          "patch" : {
-            "name" : "patch",
+          "patchPrior" : {
+            "name" : "patchPrior",
             "docstring" : "Patches any previously set values. Applies second.\n",
             "key" : 3,
             "lineno" : 0,
@@ -631,8 +631,8 @@
             "required" : "opt-in-req-out",
             "type" : "bool"
           },
-          "patch" : {
-            "name" : "patch",
+          "patchPrior" : {
+            "name" : "patchPrior",
             "docstring" : "Patches any previously set values. Applies second.\n",
             "key" : 3,
             "lineno" : 0,
@@ -977,8 +977,8 @@
             "required" : "opt-in-req-out",
             "type" : "bool"
           },
-          "patch" : {
-            "name" : "patch",
+          "patchPrior" : {
+            "name" : "patchPrior",
             "docstring" : "Patches any previously set values. Applies second.\n",
             "key" : 3,
             "lineno" : 0,
@@ -1075,8 +1075,8 @@
             "required" : "opt-in-req-out",
             "type" : "bool"
           },
-          "patch" : {
-            "name" : "patch",
+          "patchPrior" : {
+            "name" : "patchPrior",
             "docstring" : "Patches any previously set values. Applies second.\n",
             "key" : 3,
             "lineno" : 0,
@@ -1176,8 +1176,8 @@
             "required" : "opt-in-req-out",
             "type" : "bool"
           },
-          "patch" : {
-            "name" : "patch",
+          "patchPrior" : {
+            "name" : "patchPrior",
             "docstring" : "Patches any previously set values. Applies second.\n",
             "key" : 3,
             "lineno" : 0,
@@ -1237,8 +1237,8 @@
             "required" : "opt-in-req-out",
             "type" : "bool"
           },
-          "patch" : {
-            "name" : "patch",
+          "patchPrior" : {
+            "name" : "patchPrior",
             "docstring" : "Patches any previously set values. Applies second.\n",
             "key" : 3,
             "lineno" : 0,
@@ -1286,8 +1286,8 @@
             "required" : "opt-in-req-out",
             "type" : "bool"
           },
-          "patch" : {
-            "name" : "patch",
+          "patchPrior" : {
+            "name" : "patchPrior",
             "docstring" : "Patches any previously set values. Applies second.\n",
             "key" : 3,
             "lineno" : 0,

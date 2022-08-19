@@ -85,7 +85,7 @@ pub struct MyDataPatch {
     #[doc = "Clears a value. Applies first."]
     pub clear: ::std::primitive::bool,
     #[doc = "Patches any previously set values. Applies second."]
-    pub patch: crate::types::MyDataFieldPatch,
+    pub patchPrior: crate::types::MyDataFieldPatch,
     #[doc = "Initlaize fields, using the given defaults. Applies third."]
     pub ensure: crate::types::MyData,
     #[doc = "Patches any set value, including newly set values. Applies last."]
@@ -103,7 +103,7 @@ pub struct OptionalMyDataPatch {
     #[doc = "Clears any set value. Applies first."]
     pub clear: ::std::primitive::bool,
     #[doc = "Patches any previously set values. Applies second."]
-    pub patch: crate::types::MyDataPatch,
+    pub patchPrior: crate::types::MyDataPatch,
     #[doc = "Assigns the value, if not already set to the same field. Applies third."]
     pub ensure: ::std::option::Option<::std::boxed::Box<crate::types::MyData>>,
     #[doc = "Patches any set value, including newly set values. Applies last."]
@@ -134,7 +134,7 @@ pub struct InnerUnionPatch {
     #[doc = "Clears any set value. Applies first."]
     pub clear: ::std::primitive::bool,
     #[doc = "Patches any previously set values. Applies second."]
-    pub patch: crate::types::InnerUnionFieldPatch,
+    pub patchPrior: crate::types::InnerUnionFieldPatch,
     #[doc = "Assigns the value, if not already set to the same field. Applies third."]
     pub ensure: crate::types::InnerUnion,
     #[doc = "Patches any set value, including newly set values. Applies last."]
@@ -152,7 +152,7 @@ pub struct OptionalInnerUnionPatch {
     #[doc = "Clears any set value. Applies first."]
     pub clear: ::std::primitive::bool,
     #[doc = "Patches any previously set values. Applies second."]
-    pub patch: crate::types::InnerUnionPatch,
+    pub patchPrior: crate::types::InnerUnionPatch,
     #[doc = "Assigns the value, if not already set to the same field. Applies third."]
     pub ensure: ::std::option::Option<::std::boxed::Box<crate::types::InnerUnion>>,
     #[doc = "Patches any set value, including newly set values. Applies last."]
@@ -185,7 +185,7 @@ pub struct MyUnionPatch {
     #[doc = "Clears any set value. Applies first."]
     pub clear: ::std::primitive::bool,
     #[doc = "Patches any previously set values. Applies second."]
-    pub patch: crate::types::MyUnionFieldPatch,
+    pub patchPrior: crate::types::MyUnionFieldPatch,
     #[doc = "Assigns the value, if not already set to the same field. Applies third."]
     pub ensure: crate::types::MyUnion,
     #[doc = "Patches any set value, including newly set values. Applies last."]
@@ -203,7 +203,7 @@ pub struct OptionalMyUnionPatch {
     #[doc = "Clears any set value. Applies first."]
     pub clear: ::std::primitive::bool,
     #[doc = "Patches any previously set values. Applies second."]
-    pub patch: crate::types::MyUnionPatch,
+    pub patchPrior: crate::types::MyUnionPatch,
     #[doc = "Assigns the value, if not already set to the same field. Applies third."]
     pub ensure: ::std::option::Option<::std::boxed::Box<crate::types::MyUnion>>,
     #[doc = "Patches any set value, including newly set values. Applies last."]
@@ -273,7 +273,7 @@ pub struct OptionalMyStructField21Patch {
     #[doc = "Clears any set value. Applies first."]
     pub clear: ::std::primitive::bool,
     #[doc = "Patches any previously set values. Applies second."]
-    pub patch: crate::types::MyStructField21Patch,
+    pub patchPrior: crate::types::MyStructField21Patch,
     #[doc = "Assigns the value, if not already set to the same field. Applies third."]
     pub ensure: ::std::option::Option<::std::vec::Vec<::std::primitive::i16>>,
     #[doc = "Patches any set value, including newly set values. Applies last."]
@@ -309,7 +309,7 @@ pub struct OptionalMyStructField22Patch {
     #[doc = "Clears any set value. Applies first."]
     pub clear: ::std::primitive::bool,
     #[doc = "Patches any previously set values. Applies second."]
-    pub patch: crate::types::MyStructField22Patch,
+    pub patchPrior: crate::types::MyStructField22Patch,
     #[doc = "Assigns the value, if not already set to the same field. Applies third."]
     pub ensure: ::std::option::Option<::std::collections::BTreeSet<::std::string::String>>,
     #[doc = "Patches any set value, including newly set values. Applies last."]
@@ -345,7 +345,7 @@ pub struct OptionalMyStructField23Patch {
     #[doc = "Clears any set value. Applies first."]
     pub clear: ::std::primitive::bool,
     #[doc = "Patches any previously set values. Applies second."]
-    pub patch: crate::types::MyStructField23Patch,
+    pub patchPrior: crate::types::MyStructField23Patch,
     #[doc = "Assigns the value, if not already set to the same field. Applies third."]
     pub ensure: ::std::option::Option<::std::collections::BTreeMap<::std::string::String, ::std::string::String>>,
     #[doc = "Patches any set value, including newly set values. Applies last."]
@@ -365,7 +365,7 @@ pub struct MyStructPatch {
     #[doc = "Clears a value. Applies first."]
     pub clear: ::std::primitive::bool,
     #[doc = "Patches any previously set values. Applies second."]
-    pub patch: crate::types::MyStructFieldPatch,
+    pub patchPrior: crate::types::MyStructFieldPatch,
     #[doc = "Initlaize fields, using the given defaults. Applies third."]
     pub ensure: crate::types::MyStruct,
     #[doc = "Patches any set value, including newly set values. Applies last."]
@@ -383,7 +383,7 @@ pub struct OptionalMyStructPatch {
     #[doc = "Clears any set value. Applies first."]
     pub clear: ::std::primitive::bool,
     #[doc = "Patches any previously set values. Applies second."]
-    pub patch: crate::types::MyStructPatch,
+    pub patchPrior: crate::types::MyStructPatch,
     #[doc = "Assigns the value, if not already set to the same field. Applies third."]
     pub ensure: ::std::option::Option<::std::boxed::Box<crate::types::MyStruct>>,
     #[doc = "Patches any set value, including newly set values. Applies last."]
@@ -1041,7 +1041,7 @@ impl ::std::default::Default for self::MyDataPatch {
         Self {
             assign: ::std::option::Option::None,
             clear: ::std::default::Default::default(),
-            patch: ::std::default::Default::default(),
+            patchPrior: ::std::default::Default::default(),
             ensure: ::std::default::Default::default(),
             patchAfter: ::std::default::Default::default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
@@ -1055,7 +1055,7 @@ impl ::std::fmt::Debug for self::MyDataPatch {
             .debug_struct("MyDataPatch")
             .field("assign", &self.assign)
             .field("clear", &self.clear)
-            .field("patch", &self.patch)
+            .field("patchPrior", &self.patchPrior)
             .field("ensure", &self.ensure)
             .field("patchAfter", &self.patchAfter)
             .finish()
@@ -1089,8 +1089,8 @@ where
         p.write_field_begin("clear", ::fbthrift::TType::Bool, 2);
         ::fbthrift::Serialize::write(&self.clear, p);
         p.write_field_end();
-        p.write_field_begin("patch", ::fbthrift::TType::Struct, 3);
-        ::fbthrift::Serialize::write(&self.patch, p);
+        p.write_field_begin("patchPrior", ::fbthrift::TType::Struct, 3);
+        ::fbthrift::Serialize::write(&self.patchPrior, p);
         p.write_field_end();
         p.write_field_begin("ensure", ::fbthrift::TType::Struct, 5);
         ::fbthrift::Serialize::write(&self.ensure, p);
@@ -1112,12 +1112,12 @@ where
             ::fbthrift::Field::new("assign", ::fbthrift::TType::Struct, 1),
             ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
             ::fbthrift::Field::new("ensure", ::fbthrift::TType::Struct, 5),
-            ::fbthrift::Field::new("patch", ::fbthrift::TType::Struct, 3),
             ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 6),
+            ::fbthrift::Field::new("patchPrior", ::fbthrift::TType::Struct, 3),
         ];
         let mut field_assign = ::std::option::Option::None;
         let mut field_clear = ::std::option::Option::None;
-        let mut field_patch = ::std::option::Option::None;
+        let mut field_patchPrior = ::std::option::Option::None;
         let mut field_ensure = ::std::option::Option::None;
         let mut field_patchAfter = ::std::option::Option::None;
         let _ = p.read_struct_begin(|_| ())?;
@@ -1127,7 +1127,7 @@ where
                 (::fbthrift::TType::Stop, _) => break,
                 (::fbthrift::TType::Struct, 1) => field_assign = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                (::fbthrift::TType::Struct, 3) => field_patch = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::Struct, 3) => field_patchPrior = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 5) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 6) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (fty, _) => p.skip(fty)?,
@@ -1138,7 +1138,7 @@ where
         ::std::result::Result::Ok(Self {
             assign: field_assign,
             clear: field_clear.unwrap_or_default(),
-            patch: field_patch.unwrap_or_default(),
+            patchPrior: field_patchPrior.unwrap_or_default(),
             ensure: field_ensure.unwrap_or_default(),
             patchAfter: field_patchAfter.unwrap_or_default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
@@ -1152,7 +1152,7 @@ impl ::std::default::Default for self::OptionalMyDataPatch {
     fn default() -> Self {
         Self {
             clear: ::std::default::Default::default(),
-            patch: ::std::default::Default::default(),
+            patchPrior: ::std::default::Default::default(),
             ensure: ::std::option::Option::None,
             patchAfter: ::std::default::Default::default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
@@ -1165,7 +1165,7 @@ impl ::std::fmt::Debug for self::OptionalMyDataPatch {
         formatter
             .debug_struct("OptionalMyDataPatch")
             .field("clear", &self.clear)
-            .field("patch", &self.patch)
+            .field("patchPrior", &self.patchPrior)
             .field("ensure", &self.ensure)
             .field("patchAfter", &self.patchAfter)
             .finish()
@@ -1194,8 +1194,8 @@ where
         p.write_field_begin("clear", ::fbthrift::TType::Bool, 2);
         ::fbthrift::Serialize::write(&self.clear, p);
         p.write_field_end();
-        p.write_field_begin("patch", ::fbthrift::TType::Struct, 3);
-        ::fbthrift::Serialize::write(&self.patch, p);
+        p.write_field_begin("patchPrior", ::fbthrift::TType::Struct, 3);
+        ::fbthrift::Serialize::write(&self.patchPrior, p);
         p.write_field_end();
         if let ::std::option::Option::Some(some) = &self.ensure {
             p.write_field_begin("ensure", ::fbthrift::TType::Struct, 4);
@@ -1218,11 +1218,11 @@ where
         static FIELDS: &[::fbthrift::Field] = &[
             ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
             ::fbthrift::Field::new("ensure", ::fbthrift::TType::Struct, 4),
-            ::fbthrift::Field::new("patch", ::fbthrift::TType::Struct, 3),
             ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 6),
+            ::fbthrift::Field::new("patchPrior", ::fbthrift::TType::Struct, 3),
         ];
         let mut field_clear = ::std::option::Option::None;
-        let mut field_patch = ::std::option::Option::None;
+        let mut field_patchPrior = ::std::option::Option::None;
         let mut field_ensure = ::std::option::Option::None;
         let mut field_patchAfter = ::std::option::Option::None;
         let _ = p.read_struct_begin(|_| ())?;
@@ -1231,7 +1231,7 @@ where
             match (fty, fid as ::std::primitive::i32) {
                 (::fbthrift::TType::Stop, _) => break,
                 (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                (::fbthrift::TType::Struct, 3) => field_patch = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::Struct, 3) => field_patchPrior = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 4) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 6) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (fty, _) => p.skip(fty)?,
@@ -1241,7 +1241,7 @@ where
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
             clear: field_clear.unwrap_or_default(),
-            patch: field_patch.unwrap_or_default(),
+            patchPrior: field_patchPrior.unwrap_or_default(),
             ensure: field_ensure,
             patchAfter: field_patchAfter.unwrap_or_default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
@@ -1330,7 +1330,7 @@ impl ::std::default::Default for self::InnerUnionPatch {
         Self {
             assign: ::std::default::Default::default(),
             clear: ::std::default::Default::default(),
-            patch: ::std::default::Default::default(),
+            patchPrior: ::std::default::Default::default(),
             ensure: ::std::default::Default::default(),
             patchAfter: ::std::default::Default::default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
@@ -1344,7 +1344,7 @@ impl ::std::fmt::Debug for self::InnerUnionPatch {
             .debug_struct("InnerUnionPatch")
             .field("assign", &self.assign)
             .field("clear", &self.clear)
-            .field("patch", &self.patch)
+            .field("patchPrior", &self.patchPrior)
             .field("ensure", &self.ensure)
             .field("patchAfter", &self.patchAfter)
             .finish()
@@ -1376,8 +1376,8 @@ where
         p.write_field_begin("clear", ::fbthrift::TType::Bool, 2);
         ::fbthrift::Serialize::write(&self.clear, p);
         p.write_field_end();
-        p.write_field_begin("patch", ::fbthrift::TType::Struct, 3);
-        ::fbthrift::Serialize::write(&self.patch, p);
+        p.write_field_begin("patchPrior", ::fbthrift::TType::Struct, 3);
+        ::fbthrift::Serialize::write(&self.patchPrior, p);
         p.write_field_end();
         p.write_field_begin("ensure", ::fbthrift::TType::Struct, 4);
         ::fbthrift::Serialize::write(&self.ensure, p);
@@ -1399,12 +1399,12 @@ where
             ::fbthrift::Field::new("assign", ::fbthrift::TType::Struct, 1),
             ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
             ::fbthrift::Field::new("ensure", ::fbthrift::TType::Struct, 4),
-            ::fbthrift::Field::new("patch", ::fbthrift::TType::Struct, 3),
             ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 6),
+            ::fbthrift::Field::new("patchPrior", ::fbthrift::TType::Struct, 3),
         ];
         let mut field_assign = ::std::option::Option::None;
         let mut field_clear = ::std::option::Option::None;
-        let mut field_patch = ::std::option::Option::None;
+        let mut field_patchPrior = ::std::option::Option::None;
         let mut field_ensure = ::std::option::Option::None;
         let mut field_patchAfter = ::std::option::Option::None;
         let _ = p.read_struct_begin(|_| ())?;
@@ -1414,7 +1414,7 @@ where
                 (::fbthrift::TType::Stop, _) => break,
                 (::fbthrift::TType::Struct, 1) => field_assign = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                (::fbthrift::TType::Struct, 3) => field_patch = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::Struct, 3) => field_patchPrior = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 4) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 6) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (fty, _) => p.skip(fty)?,
@@ -1425,7 +1425,7 @@ where
         ::std::result::Result::Ok(Self {
             assign: field_assign.unwrap_or_default(),
             clear: field_clear.unwrap_or_default(),
-            patch: field_patch.unwrap_or_default(),
+            patchPrior: field_patchPrior.unwrap_or_default(),
             ensure: field_ensure.unwrap_or_default(),
             patchAfter: field_patchAfter.unwrap_or_default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
@@ -1439,7 +1439,7 @@ impl ::std::default::Default for self::OptionalInnerUnionPatch {
     fn default() -> Self {
         Self {
             clear: ::std::default::Default::default(),
-            patch: ::std::default::Default::default(),
+            patchPrior: ::std::default::Default::default(),
             ensure: ::std::option::Option::None,
             patchAfter: ::std::default::Default::default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
@@ -1452,7 +1452,7 @@ impl ::std::fmt::Debug for self::OptionalInnerUnionPatch {
         formatter
             .debug_struct("OptionalInnerUnionPatch")
             .field("clear", &self.clear)
-            .field("patch", &self.patch)
+            .field("patchPrior", &self.patchPrior)
             .field("ensure", &self.ensure)
             .field("patchAfter", &self.patchAfter)
             .finish()
@@ -1481,8 +1481,8 @@ where
         p.write_field_begin("clear", ::fbthrift::TType::Bool, 2);
         ::fbthrift::Serialize::write(&self.clear, p);
         p.write_field_end();
-        p.write_field_begin("patch", ::fbthrift::TType::Struct, 3);
-        ::fbthrift::Serialize::write(&self.patch, p);
+        p.write_field_begin("patchPrior", ::fbthrift::TType::Struct, 3);
+        ::fbthrift::Serialize::write(&self.patchPrior, p);
         p.write_field_end();
         if let ::std::option::Option::Some(some) = &self.ensure {
             p.write_field_begin("ensure", ::fbthrift::TType::Struct, 4);
@@ -1505,11 +1505,11 @@ where
         static FIELDS: &[::fbthrift::Field] = &[
             ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
             ::fbthrift::Field::new("ensure", ::fbthrift::TType::Struct, 4),
-            ::fbthrift::Field::new("patch", ::fbthrift::TType::Struct, 3),
             ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 6),
+            ::fbthrift::Field::new("patchPrior", ::fbthrift::TType::Struct, 3),
         ];
         let mut field_clear = ::std::option::Option::None;
-        let mut field_patch = ::std::option::Option::None;
+        let mut field_patchPrior = ::std::option::Option::None;
         let mut field_ensure = ::std::option::Option::None;
         let mut field_patchAfter = ::std::option::Option::None;
         let _ = p.read_struct_begin(|_| ())?;
@@ -1518,7 +1518,7 @@ where
             match (fty, fid as ::std::primitive::i32) {
                 (::fbthrift::TType::Stop, _) => break,
                 (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                (::fbthrift::TType::Struct, 3) => field_patch = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::Struct, 3) => field_patchPrior = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 4) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 6) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (fty, _) => p.skip(fty)?,
@@ -1528,7 +1528,7 @@ where
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
             clear: field_clear.unwrap_or_default(),
-            patch: field_patch.unwrap_or_default(),
+            patchPrior: field_patchPrior.unwrap_or_default(),
             ensure: field_ensure,
             patchAfter: field_patchAfter.unwrap_or_default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
@@ -1635,7 +1635,7 @@ impl ::std::default::Default for self::MyUnionPatch {
         Self {
             assign: ::std::default::Default::default(),
             clear: ::std::default::Default::default(),
-            patch: ::std::default::Default::default(),
+            patchPrior: ::std::default::Default::default(),
             ensure: ::std::default::Default::default(),
             patchAfter: ::std::default::Default::default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
@@ -1649,7 +1649,7 @@ impl ::std::fmt::Debug for self::MyUnionPatch {
             .debug_struct("MyUnionPatch")
             .field("assign", &self.assign)
             .field("clear", &self.clear)
-            .field("patch", &self.patch)
+            .field("patchPrior", &self.patchPrior)
             .field("ensure", &self.ensure)
             .field("patchAfter", &self.patchAfter)
             .finish()
@@ -1681,8 +1681,8 @@ where
         p.write_field_begin("clear", ::fbthrift::TType::Bool, 2);
         ::fbthrift::Serialize::write(&self.clear, p);
         p.write_field_end();
-        p.write_field_begin("patch", ::fbthrift::TType::Struct, 3);
-        ::fbthrift::Serialize::write(&self.patch, p);
+        p.write_field_begin("patchPrior", ::fbthrift::TType::Struct, 3);
+        ::fbthrift::Serialize::write(&self.patchPrior, p);
         p.write_field_end();
         p.write_field_begin("ensure", ::fbthrift::TType::Struct, 4);
         ::fbthrift::Serialize::write(&self.ensure, p);
@@ -1704,12 +1704,12 @@ where
             ::fbthrift::Field::new("assign", ::fbthrift::TType::Struct, 1),
             ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
             ::fbthrift::Field::new("ensure", ::fbthrift::TType::Struct, 4),
-            ::fbthrift::Field::new("patch", ::fbthrift::TType::Struct, 3),
             ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 6),
+            ::fbthrift::Field::new("patchPrior", ::fbthrift::TType::Struct, 3),
         ];
         let mut field_assign = ::std::option::Option::None;
         let mut field_clear = ::std::option::Option::None;
-        let mut field_patch = ::std::option::Option::None;
+        let mut field_patchPrior = ::std::option::Option::None;
         let mut field_ensure = ::std::option::Option::None;
         let mut field_patchAfter = ::std::option::Option::None;
         let _ = p.read_struct_begin(|_| ())?;
@@ -1719,7 +1719,7 @@ where
                 (::fbthrift::TType::Stop, _) => break,
                 (::fbthrift::TType::Struct, 1) => field_assign = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                (::fbthrift::TType::Struct, 3) => field_patch = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::Struct, 3) => field_patchPrior = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 4) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 6) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (fty, _) => p.skip(fty)?,
@@ -1730,7 +1730,7 @@ where
         ::std::result::Result::Ok(Self {
             assign: field_assign.unwrap_or_default(),
             clear: field_clear.unwrap_or_default(),
-            patch: field_patch.unwrap_or_default(),
+            patchPrior: field_patchPrior.unwrap_or_default(),
             ensure: field_ensure.unwrap_or_default(),
             patchAfter: field_patchAfter.unwrap_or_default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
@@ -1744,7 +1744,7 @@ impl ::std::default::Default for self::OptionalMyUnionPatch {
     fn default() -> Self {
         Self {
             clear: ::std::default::Default::default(),
-            patch: ::std::default::Default::default(),
+            patchPrior: ::std::default::Default::default(),
             ensure: ::std::option::Option::None,
             patchAfter: ::std::default::Default::default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
@@ -1757,7 +1757,7 @@ impl ::std::fmt::Debug for self::OptionalMyUnionPatch {
         formatter
             .debug_struct("OptionalMyUnionPatch")
             .field("clear", &self.clear)
-            .field("patch", &self.patch)
+            .field("patchPrior", &self.patchPrior)
             .field("ensure", &self.ensure)
             .field("patchAfter", &self.patchAfter)
             .finish()
@@ -1786,8 +1786,8 @@ where
         p.write_field_begin("clear", ::fbthrift::TType::Bool, 2);
         ::fbthrift::Serialize::write(&self.clear, p);
         p.write_field_end();
-        p.write_field_begin("patch", ::fbthrift::TType::Struct, 3);
-        ::fbthrift::Serialize::write(&self.patch, p);
+        p.write_field_begin("patchPrior", ::fbthrift::TType::Struct, 3);
+        ::fbthrift::Serialize::write(&self.patchPrior, p);
         p.write_field_end();
         if let ::std::option::Option::Some(some) = &self.ensure {
             p.write_field_begin("ensure", ::fbthrift::TType::Struct, 4);
@@ -1810,11 +1810,11 @@ where
         static FIELDS: &[::fbthrift::Field] = &[
             ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
             ::fbthrift::Field::new("ensure", ::fbthrift::TType::Struct, 4),
-            ::fbthrift::Field::new("patch", ::fbthrift::TType::Struct, 3),
             ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 6),
+            ::fbthrift::Field::new("patchPrior", ::fbthrift::TType::Struct, 3),
         ];
         let mut field_clear = ::std::option::Option::None;
-        let mut field_patch = ::std::option::Option::None;
+        let mut field_patchPrior = ::std::option::Option::None;
         let mut field_ensure = ::std::option::Option::None;
         let mut field_patchAfter = ::std::option::Option::None;
         let _ = p.read_struct_begin(|_| ())?;
@@ -1823,7 +1823,7 @@ where
             match (fty, fid as ::std::primitive::i32) {
                 (::fbthrift::TType::Stop, _) => break,
                 (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                (::fbthrift::TType::Struct, 3) => field_patch = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::Struct, 3) => field_patchPrior = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 4) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 6) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (fty, _) => p.skip(fty)?,
@@ -1833,7 +1833,7 @@ where
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
             clear: field_clear.unwrap_or_default(),
-            patch: field_patch.unwrap_or_default(),
+            patchPrior: field_patchPrior.unwrap_or_default(),
             ensure: field_ensure,
             patchAfter: field_patchAfter.unwrap_or_default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
@@ -2231,7 +2231,7 @@ impl ::std::default::Default for self::OptionalMyStructField21Patch {
     fn default() -> Self {
         Self {
             clear: ::std::default::Default::default(),
-            patch: ::std::default::Default::default(),
+            patchPrior: ::std::default::Default::default(),
             ensure: ::std::option::Option::None,
             patchAfter: ::std::default::Default::default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
@@ -2244,7 +2244,7 @@ impl ::std::fmt::Debug for self::OptionalMyStructField21Patch {
         formatter
             .debug_struct("OptionalMyStructField21Patch")
             .field("clear", &self.clear)
-            .field("patch", &self.patch)
+            .field("patchPrior", &self.patchPrior)
             .field("ensure", &self.ensure)
             .field("patchAfter", &self.patchAfter)
             .finish()
@@ -2273,8 +2273,8 @@ where
         p.write_field_begin("clear", ::fbthrift::TType::Bool, 2);
         ::fbthrift::Serialize::write(&self.clear, p);
         p.write_field_end();
-        p.write_field_begin("patch", ::fbthrift::TType::Struct, 3);
-        ::fbthrift::Serialize::write(&self.patch, p);
+        p.write_field_begin("patchPrior", ::fbthrift::TType::Struct, 3);
+        ::fbthrift::Serialize::write(&self.patchPrior, p);
         p.write_field_end();
         if let ::std::option::Option::Some(some) = &self.ensure {
             p.write_field_begin("ensure", ::fbthrift::TType::List, 4);
@@ -2297,11 +2297,11 @@ where
         static FIELDS: &[::fbthrift::Field] = &[
             ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
             ::fbthrift::Field::new("ensure", ::fbthrift::TType::List, 4),
-            ::fbthrift::Field::new("patch", ::fbthrift::TType::Struct, 3),
             ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 6),
+            ::fbthrift::Field::new("patchPrior", ::fbthrift::TType::Struct, 3),
         ];
         let mut field_clear = ::std::option::Option::None;
-        let mut field_patch = ::std::option::Option::None;
+        let mut field_patchPrior = ::std::option::Option::None;
         let mut field_ensure = ::std::option::Option::None;
         let mut field_patchAfter = ::std::option::Option::None;
         let _ = p.read_struct_begin(|_| ())?;
@@ -2310,7 +2310,7 @@ where
             match (fty, fid as ::std::primitive::i32) {
                 (::fbthrift::TType::Stop, _) => break,
                 (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                (::fbthrift::TType::Struct, 3) => field_patch = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::Struct, 3) => field_patchPrior = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::List, 4) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 6) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (fty, _) => p.skip(fty)?,
@@ -2320,7 +2320,7 @@ where
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
             clear: field_clear.unwrap_or_default(),
-            patch: field_patch.unwrap_or_default(),
+            patchPrior: field_patchPrior.unwrap_or_default(),
             ensure: field_ensure,
             patchAfter: field_patchAfter.unwrap_or_default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
@@ -2437,7 +2437,7 @@ impl ::std::default::Default for self::OptionalMyStructField22Patch {
     fn default() -> Self {
         Self {
             clear: ::std::default::Default::default(),
-            patch: ::std::default::Default::default(),
+            patchPrior: ::std::default::Default::default(),
             ensure: ::std::option::Option::None,
             patchAfter: ::std::default::Default::default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
@@ -2450,7 +2450,7 @@ impl ::std::fmt::Debug for self::OptionalMyStructField22Patch {
         formatter
             .debug_struct("OptionalMyStructField22Patch")
             .field("clear", &self.clear)
-            .field("patch", &self.patch)
+            .field("patchPrior", &self.patchPrior)
             .field("ensure", &self.ensure)
             .field("patchAfter", &self.patchAfter)
             .finish()
@@ -2479,8 +2479,8 @@ where
         p.write_field_begin("clear", ::fbthrift::TType::Bool, 2);
         ::fbthrift::Serialize::write(&self.clear, p);
         p.write_field_end();
-        p.write_field_begin("patch", ::fbthrift::TType::Struct, 3);
-        ::fbthrift::Serialize::write(&self.patch, p);
+        p.write_field_begin("patchPrior", ::fbthrift::TType::Struct, 3);
+        ::fbthrift::Serialize::write(&self.patchPrior, p);
         p.write_field_end();
         if let ::std::option::Option::Some(some) = &self.ensure {
             p.write_field_begin("ensure", ::fbthrift::TType::Set, 4);
@@ -2503,11 +2503,11 @@ where
         static FIELDS: &[::fbthrift::Field] = &[
             ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
             ::fbthrift::Field::new("ensure", ::fbthrift::TType::Set, 4),
-            ::fbthrift::Field::new("patch", ::fbthrift::TType::Struct, 3),
             ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 6),
+            ::fbthrift::Field::new("patchPrior", ::fbthrift::TType::Struct, 3),
         ];
         let mut field_clear = ::std::option::Option::None;
-        let mut field_patch = ::std::option::Option::None;
+        let mut field_patchPrior = ::std::option::Option::None;
         let mut field_ensure = ::std::option::Option::None;
         let mut field_patchAfter = ::std::option::Option::None;
         let _ = p.read_struct_begin(|_| ())?;
@@ -2516,7 +2516,7 @@ where
             match (fty, fid as ::std::primitive::i32) {
                 (::fbthrift::TType::Stop, _) => break,
                 (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                (::fbthrift::TType::Struct, 3) => field_patch = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::Struct, 3) => field_patchPrior = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Set, 4) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 6) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (fty, _) => p.skip(fty)?,
@@ -2526,7 +2526,7 @@ where
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
             clear: field_clear.unwrap_or_default(),
-            patch: field_patch.unwrap_or_default(),
+            patchPrior: field_patchPrior.unwrap_or_default(),
             ensure: field_ensure,
             patchAfter: field_patchAfter.unwrap_or_default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
@@ -2643,7 +2643,7 @@ impl ::std::default::Default for self::OptionalMyStructField23Patch {
     fn default() -> Self {
         Self {
             clear: ::std::default::Default::default(),
-            patch: ::std::default::Default::default(),
+            patchPrior: ::std::default::Default::default(),
             ensure: ::std::option::Option::None,
             patchAfter: ::std::default::Default::default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
@@ -2656,7 +2656,7 @@ impl ::std::fmt::Debug for self::OptionalMyStructField23Patch {
         formatter
             .debug_struct("OptionalMyStructField23Patch")
             .field("clear", &self.clear)
-            .field("patch", &self.patch)
+            .field("patchPrior", &self.patchPrior)
             .field("ensure", &self.ensure)
             .field("patchAfter", &self.patchAfter)
             .finish()
@@ -2685,8 +2685,8 @@ where
         p.write_field_begin("clear", ::fbthrift::TType::Bool, 2);
         ::fbthrift::Serialize::write(&self.clear, p);
         p.write_field_end();
-        p.write_field_begin("patch", ::fbthrift::TType::Struct, 3);
-        ::fbthrift::Serialize::write(&self.patch, p);
+        p.write_field_begin("patchPrior", ::fbthrift::TType::Struct, 3);
+        ::fbthrift::Serialize::write(&self.patchPrior, p);
         p.write_field_end();
         if let ::std::option::Option::Some(some) = &self.ensure {
             p.write_field_begin("ensure", ::fbthrift::TType::Map, 4);
@@ -2709,11 +2709,11 @@ where
         static FIELDS: &[::fbthrift::Field] = &[
             ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
             ::fbthrift::Field::new("ensure", ::fbthrift::TType::Map, 4),
-            ::fbthrift::Field::new("patch", ::fbthrift::TType::Struct, 3),
             ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 6),
+            ::fbthrift::Field::new("patchPrior", ::fbthrift::TType::Struct, 3),
         ];
         let mut field_clear = ::std::option::Option::None;
-        let mut field_patch = ::std::option::Option::None;
+        let mut field_patchPrior = ::std::option::Option::None;
         let mut field_ensure = ::std::option::Option::None;
         let mut field_patchAfter = ::std::option::Option::None;
         let _ = p.read_struct_begin(|_| ())?;
@@ -2722,7 +2722,7 @@ where
             match (fty, fid as ::std::primitive::i32) {
                 (::fbthrift::TType::Stop, _) => break,
                 (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                (::fbthrift::TType::Struct, 3) => field_patch = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::Struct, 3) => field_patchPrior = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Map, 4) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 6) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (fty, _) => p.skip(fty)?,
@@ -2732,7 +2732,7 @@ where
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
             clear: field_clear.unwrap_or_default(),
-            patch: field_patch.unwrap_or_default(),
+            patchPrior: field_patchPrior.unwrap_or_default(),
             ensure: field_ensure,
             patchAfter: field_patchAfter.unwrap_or_default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
@@ -2747,7 +2747,7 @@ impl ::std::default::Default for self::MyStructPatch {
         Self {
             assign: ::std::option::Option::None,
             clear: ::std::default::Default::default(),
-            patch: ::std::default::Default::default(),
+            patchPrior: ::std::default::Default::default(),
             ensure: ::std::default::Default::default(),
             patchAfter: ::std::default::Default::default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
@@ -2761,7 +2761,7 @@ impl ::std::fmt::Debug for self::MyStructPatch {
             .debug_struct("MyStructPatch")
             .field("assign", &self.assign)
             .field("clear", &self.clear)
-            .field("patch", &self.patch)
+            .field("patchPrior", &self.patchPrior)
             .field("ensure", &self.ensure)
             .field("patchAfter", &self.patchAfter)
             .finish()
@@ -2795,8 +2795,8 @@ where
         p.write_field_begin("clear", ::fbthrift::TType::Bool, 2);
         ::fbthrift::Serialize::write(&self.clear, p);
         p.write_field_end();
-        p.write_field_begin("patch", ::fbthrift::TType::Struct, 3);
-        ::fbthrift::Serialize::write(&self.patch, p);
+        p.write_field_begin("patchPrior", ::fbthrift::TType::Struct, 3);
+        ::fbthrift::Serialize::write(&self.patchPrior, p);
         p.write_field_end();
         p.write_field_begin("ensure", ::fbthrift::TType::Struct, 5);
         ::fbthrift::Serialize::write(&self.ensure, p);
@@ -2818,12 +2818,12 @@ where
             ::fbthrift::Field::new("assign", ::fbthrift::TType::Struct, 1),
             ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
             ::fbthrift::Field::new("ensure", ::fbthrift::TType::Struct, 5),
-            ::fbthrift::Field::new("patch", ::fbthrift::TType::Struct, 3),
             ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 6),
+            ::fbthrift::Field::new("patchPrior", ::fbthrift::TType::Struct, 3),
         ];
         let mut field_assign = ::std::option::Option::None;
         let mut field_clear = ::std::option::Option::None;
-        let mut field_patch = ::std::option::Option::None;
+        let mut field_patchPrior = ::std::option::Option::None;
         let mut field_ensure = ::std::option::Option::None;
         let mut field_patchAfter = ::std::option::Option::None;
         let _ = p.read_struct_begin(|_| ())?;
@@ -2833,7 +2833,7 @@ where
                 (::fbthrift::TType::Stop, _) => break,
                 (::fbthrift::TType::Struct, 1) => field_assign = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                (::fbthrift::TType::Struct, 3) => field_patch = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::Struct, 3) => field_patchPrior = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 5) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 6) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (fty, _) => p.skip(fty)?,
@@ -2844,7 +2844,7 @@ where
         ::std::result::Result::Ok(Self {
             assign: field_assign,
             clear: field_clear.unwrap_or_default(),
-            patch: field_patch.unwrap_or_default(),
+            patchPrior: field_patchPrior.unwrap_or_default(),
             ensure: field_ensure.unwrap_or_default(),
             patchAfter: field_patchAfter.unwrap_or_default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
@@ -2858,7 +2858,7 @@ impl ::std::default::Default for self::OptionalMyStructPatch {
     fn default() -> Self {
         Self {
             clear: ::std::default::Default::default(),
-            patch: ::std::default::Default::default(),
+            patchPrior: ::std::default::Default::default(),
             ensure: ::std::option::Option::None,
             patchAfter: ::std::default::Default::default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
@@ -2871,7 +2871,7 @@ impl ::std::fmt::Debug for self::OptionalMyStructPatch {
         formatter
             .debug_struct("OptionalMyStructPatch")
             .field("clear", &self.clear)
-            .field("patch", &self.patch)
+            .field("patchPrior", &self.patchPrior)
             .field("ensure", &self.ensure)
             .field("patchAfter", &self.patchAfter)
             .finish()
@@ -2900,8 +2900,8 @@ where
         p.write_field_begin("clear", ::fbthrift::TType::Bool, 2);
         ::fbthrift::Serialize::write(&self.clear, p);
         p.write_field_end();
-        p.write_field_begin("patch", ::fbthrift::TType::Struct, 3);
-        ::fbthrift::Serialize::write(&self.patch, p);
+        p.write_field_begin("patchPrior", ::fbthrift::TType::Struct, 3);
+        ::fbthrift::Serialize::write(&self.patchPrior, p);
         p.write_field_end();
         if let ::std::option::Option::Some(some) = &self.ensure {
             p.write_field_begin("ensure", ::fbthrift::TType::Struct, 4);
@@ -2924,11 +2924,11 @@ where
         static FIELDS: &[::fbthrift::Field] = &[
             ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
             ::fbthrift::Field::new("ensure", ::fbthrift::TType::Struct, 4),
-            ::fbthrift::Field::new("patch", ::fbthrift::TType::Struct, 3),
             ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 6),
+            ::fbthrift::Field::new("patchPrior", ::fbthrift::TType::Struct, 3),
         ];
         let mut field_clear = ::std::option::Option::None;
-        let mut field_patch = ::std::option::Option::None;
+        let mut field_patchPrior = ::std::option::Option::None;
         let mut field_ensure = ::std::option::Option::None;
         let mut field_patchAfter = ::std::option::Option::None;
         let _ = p.read_struct_begin(|_| ())?;
@@ -2937,7 +2937,7 @@ where
             match (fty, fid as ::std::primitive::i32) {
                 (::fbthrift::TType::Stop, _) => break,
                 (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                (::fbthrift::TType::Struct, 3) => field_patch = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                (::fbthrift::TType::Struct, 3) => field_patchPrior = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 4) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (::fbthrift::TType::Struct, 6) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                 (fty, _) => p.skip(fty)?,
@@ -2947,7 +2947,7 @@ where
         p.read_struct_end()?;
         ::std::result::Result::Ok(Self {
             clear: field_clear.unwrap_or_default(),
-            patch: field_patch.unwrap_or_default(),
+            patchPrior: field_patchPrior.unwrap_or_default(),
             ensure: field_ensure,
             patchAfter: field_patchAfter.unwrap_or_default(),
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),

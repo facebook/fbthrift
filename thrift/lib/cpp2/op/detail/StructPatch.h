@@ -115,7 +115,8 @@ class StructPatch : public BaseClearValuePatch<Patch, StructPatch<Patch>> {
   using Base::apply;
   using Base::Base;
   using Base::operator=;
-  using patch_type = std::decay_t<decltype(*std::declval<Patch>().patch())>;
+  using patch_type =
+      std::decay_t<decltype(*std::declval<Patch>().patchAfter())>;
 
   // Convert to a patch, if needed, and return the
   // patch object.
@@ -129,13 +130,13 @@ class StructPatch : public BaseClearValuePatch<Patch, StructPatch<Patch>> {
     if (*data_.clear()) {
       thrift::clear(val);
     }
-    data_.patch()->apply(val);
+    data_.patchPrior()->apply(val);
   }
 
   template <typename U>
   void merge(U&& next) {
     if (!mergeAssignAndClear(std::forward<U>(next))) {
-      data_.patch()->merge(*std::forward<U>(next).toThrift().patch());
+      data_.patchPrior()->merge(*std::forward<U>(next).toThrift().patchPrior());
     }
   }
 
@@ -150,10 +151,10 @@ class StructPatch : public BaseClearValuePatch<Patch, StructPatch<Patch>> {
       *data_.clear() = true;
 
       // Split the assignment patch into a patch of assignments.
-      data_.patch()->assignFrom(std::move(*data_.assign()));
+      data_.patchPrior()->assignFrom(std::move(*data_.assign()));
       data_.assign().reset();
     }
-    return *data_.patch();
+    return *data_.patchPrior();
   }
 };
 
@@ -161,7 +162,7 @@ class StructPatch : public BaseClearValuePatch<Patch, StructPatch<Patch>> {
 //
 // Patch must have the following fields:
 //   bool clear;
-//   P patch;
+//   P patchPrior;
 //   T ensure;
 //   P patchAfter;
 // Where P is the patch type for the union type T.

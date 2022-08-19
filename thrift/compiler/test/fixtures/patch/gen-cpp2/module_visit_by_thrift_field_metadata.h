@@ -142,7 +142,7 @@ struct VisitByFieldId<::test::fixtures::patch::MyDataPatchStruct> {
     case 2:
       return f(1, static_cast<T&&>(t).clear_ref());
     case 3:
-      return f(2, static_cast<T&&>(t).patch_ref());
+      return f(2, static_cast<T&&>(t).patchPrior_ref());
     case 5:
       return f(3, static_cast<T&&>(t).ensure_ref());
     case 6:
@@ -161,7 +161,7 @@ struct VisitByFieldId<::test::fixtures::patch::OptionalMyDataPatchStruct> {
     case 2:
       return f(0, static_cast<T&&>(t).clear_ref());
     case 3:
-      return f(1, static_cast<T&&>(t).patch_ref());
+      return f(1, static_cast<T&&>(t).patchPrior_ref());
     case 4:
       return f(2, static_cast<T&&>(t).ensure_ref());
     case 6:
@@ -195,7 +195,7 @@ struct VisitByFieldId<::test::fixtures::patch::InnerUnionPatchStruct> {
     case 2:
       return f(1, static_cast<T&&>(t).clear_ref());
     case 3:
-      return f(2, static_cast<T&&>(t).patch_ref());
+      return f(2, static_cast<T&&>(t).patchPrior_ref());
     case 4:
       return f(3, static_cast<T&&>(t).ensure_ref());
     case 6:
@@ -214,7 +214,7 @@ struct VisitByFieldId<::test::fixtures::patch::OptionalInnerUnionPatchStruct> {
     case 2:
       return f(0, static_cast<T&&>(t).clear_ref());
     case 3:
-      return f(1, static_cast<T&&>(t).patch_ref());
+      return f(1, static_cast<T&&>(t).patchPrior_ref());
     case 4:
       return f(2, static_cast<T&&>(t).ensure_ref());
     case 6:
@@ -252,7 +252,7 @@ struct VisitByFieldId<::test::fixtures::patch::MyUnionPatchStruct> {
     case 2:
       return f(1, static_cast<T&&>(t).clear_ref());
     case 3:
-      return f(2, static_cast<T&&>(t).patch_ref());
+      return f(2, static_cast<T&&>(t).patchPrior_ref());
     case 4:
       return f(3, static_cast<T&&>(t).ensure_ref());
     case 6:
@@ -271,7 +271,7 @@ struct VisitByFieldId<::test::fixtures::patch::OptionalMyUnionPatchStruct> {
     case 2:
       return f(0, static_cast<T&&>(t).clear_ref());
     case 3:
-      return f(1, static_cast<T&&>(t).patch_ref());
+      return f(1, static_cast<T&&>(t).patchPrior_ref());
     case 4:
       return f(2, static_cast<T&&>(t).ensure_ref());
     case 6:
@@ -309,7 +309,7 @@ struct VisitByFieldId<::test::fixtures::patch::OptionalMyStructField21PatchStruc
     case 2:
       return f(0, static_cast<T&&>(t).clear_ref());
     case 3:
-      return f(1, static_cast<T&&>(t).patch_ref());
+      return f(1, static_cast<T&&>(t).patchPrior_ref());
     case 4:
       return f(2, static_cast<T&&>(t).ensure_ref());
     case 6:
@@ -347,7 +347,7 @@ struct VisitByFieldId<::test::fixtures::patch::OptionalMyStructField22PatchStruc
     case 2:
       return f(0, static_cast<T&&>(t).clear_ref());
     case 3:
-      return f(1, static_cast<T&&>(t).patch_ref());
+      return f(1, static_cast<T&&>(t).patchPrior_ref());
     case 4:
       return f(2, static_cast<T&&>(t).ensure_ref());
     case 6:
@@ -385,7 +385,7 @@ struct VisitByFieldId<::test::fixtures::patch::OptionalMyStructField23PatchStruc
     case 2:
       return f(0, static_cast<T&&>(t).clear_ref());
     case 3:
-      return f(1, static_cast<T&&>(t).patch_ref());
+      return f(1, static_cast<T&&>(t).patchPrior_ref());
     case 4:
       return f(2, static_cast<T&&>(t).ensure_ref());
     case 6:
@@ -465,7 +465,7 @@ struct VisitByFieldId<::test::fixtures::patch::MyStructPatchStruct> {
     case 2:
       return f(1, static_cast<T&&>(t).clear_ref());
     case 3:
-      return f(2, static_cast<T&&>(t).patch_ref());
+      return f(2, static_cast<T&&>(t).patchPrior_ref());
     case 5:
       return f(3, static_cast<T&&>(t).ensure_ref());
     case 6:
@@ -484,7 +484,7 @@ struct VisitByFieldId<::test::fixtures::patch::OptionalMyStructPatchStruct> {
     case 2:
       return f(0, static_cast<T&&>(t).clear_ref());
     case 3:
-      return f(1, static_cast<T&&>(t).patch_ref());
+      return f(1, static_cast<T&&>(t).patchPrior_ref());
     case 4:
       return f(2, static_cast<T&&>(t).ensure_ref());
     case 6:

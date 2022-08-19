@@ -26,12 +26,12 @@ public final class OptionalMyStructField23Patch implements com.facebook.thrift.p
     @ThriftConstructor
     public OptionalMyStructField23Patch(
         @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE) final boolean clear,
-        @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE) final test.fixtures.patch.MyStructField23Patch patch,
+        @com.facebook.swift.codec.ThriftField(value=3, name="patchPrior", requiredness=Requiredness.NONE) final test.fixtures.patch.MyStructField23Patch patchPrior,
         @com.facebook.swift.codec.ThriftField(value=4, name="ensure", requiredness=Requiredness.OPTIONAL) final Map<String, String> ensure,
         @com.facebook.swift.codec.ThriftField(value=6, name="patchAfter", requiredness=Requiredness.NONE) final test.fixtures.patch.MyStructField23Patch patchAfter
     ) {
         this.clear = clear;
-        this.patch = patch;
+        this.patchPrior = patchPrior;
         this.ensure = ensure;
         this.patchAfter = patchAfter;
     }
@@ -39,7 +39,7 @@ public final class OptionalMyStructField23Patch implements com.facebook.thrift.p
     @ThriftConstructor
     protected OptionalMyStructField23Patch() {
       this.clear = false;
-      this.patch = null;
+      this.patchPrior = null;
       this.ensure = null;
       this.patchAfter = null;
     }
@@ -47,7 +47,7 @@ public final class OptionalMyStructField23Patch implements com.facebook.thrift.p
     public static class Builder {
     
         private boolean clear = false;
-        private test.fixtures.patch.MyStructField23Patch patch = null;
+        private test.fixtures.patch.MyStructField23Patch patchPrior = null;
         private Map<String, String> ensure = null;
         private test.fixtures.patch.MyStructField23Patch patchAfter = null;
     
@@ -59,13 +59,13 @@ public final class OptionalMyStructField23Patch implements com.facebook.thrift.p
     
         public boolean isClear() { return clear; }
     
-            @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE)
-        public Builder setPatch(test.fixtures.patch.MyStructField23Patch patch) {
-            this.patch = patch;
+            @com.facebook.swift.codec.ThriftField(value=3, name="patchPrior", requiredness=Requiredness.NONE)
+        public Builder setPatchPrior(test.fixtures.patch.MyStructField23Patch patchPrior) {
+            this.patchPrior = patchPrior;
             return this;
         }
     
-        public test.fixtures.patch.MyStructField23Patch getPatch() { return patch; }
+        public test.fixtures.patch.MyStructField23Patch getPatchPrior() { return patchPrior; }
     
             @com.facebook.swift.codec.ThriftField(value=4, name="ensure", requiredness=Requiredness.OPTIONAL)
         public Builder setEnsure(Map<String, String> ensure) {
@@ -86,7 +86,7 @@ public final class OptionalMyStructField23Patch implements com.facebook.thrift.p
         public Builder() { }
         public Builder(OptionalMyStructField23Patch other) {
             this.clear = other.clear;
-            this.patch = other.patch;
+            this.patchPrior = other.patchPrior;
             this.ensure = other.ensure;
             this.patchAfter = other.patchAfter;
         }
@@ -95,7 +95,7 @@ public final class OptionalMyStructField23Patch implements com.facebook.thrift.p
         public OptionalMyStructField23Patch build() {
             OptionalMyStructField23Patch result = new OptionalMyStructField23Patch (
                 this.clear,
-                this.patch,
+                this.patchPrior,
                 this.ensure,
                 this.patchAfter
             );
@@ -109,9 +109,9 @@ public final class OptionalMyStructField23Patch implements com.facebook.thrift.p
     private final boolean clear;
     public static final int _CLEAR = 2;
     private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
-        private final test.fixtures.patch.MyStructField23Patch patch;
-    public static final int _PATCH = 3;
-    private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
+        private final test.fixtures.patch.MyStructField23Patch patchPrior;
+    public static final int _PATCHPRIOR = 3;
+    private static final TField PATCH_PRIOR_FIELD_DESC = new TField("patchPrior", TType.STRUCT, (short)3);
         private final Map<String, String> ensure;
     public static final int _ENSURE = 4;
     private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.MAP, (short)4);
@@ -122,9 +122,9 @@ public final class OptionalMyStructField23Patch implements com.facebook.thrift.p
       NAMES_TO_IDS.put("clear", 2);
       THRIFT_NAMES_TO_IDS.put("clear", 2);
       FIELD_METADATA.put(2, CLEAR_FIELD_DESC);
-      NAMES_TO_IDS.put("patch", 3);
-      THRIFT_NAMES_TO_IDS.put("patch", 3);
-      FIELD_METADATA.put(3, PATCH_FIELD_DESC);
+      NAMES_TO_IDS.put("patchPrior", 3);
+      THRIFT_NAMES_TO_IDS.put("patchPrior", 3);
+      FIELD_METADATA.put(3, PATCH_PRIOR_FIELD_DESC);
       NAMES_TO_IDS.put("ensure", 4);
       THRIFT_NAMES_TO_IDS.put("ensure", 4);
       FIELD_METADATA.put(4, ENSURE_FIELD_DESC);
@@ -142,8 +142,8 @@ public final class OptionalMyStructField23Patch implements com.facebook.thrift.p
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE)
-    public test.fixtures.patch.MyStructField23Patch getPatch() { return patch; }
+    @com.facebook.swift.codec.ThriftField(value=3, name="patchPrior", requiredness=Requiredness.NONE)
+    public test.fixtures.patch.MyStructField23Patch getPatchPrior() { return patchPrior; }
     
     
     @Nullable
@@ -159,7 +159,7 @@ public final class OptionalMyStructField23Patch implements com.facebook.thrift.p
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         helper.add("clear", clear);
-        helper.add("patch", patch);
+        helper.add("patchPrior", patchPrior);
         helper.add("ensure", ensure);
         helper.add("patchAfter", patchAfter);
         return helper.toString();
@@ -178,7 +178,7 @@ public final class OptionalMyStructField23Patch implements com.facebook.thrift.p
     
         return
             Objects.equals(clear, other.clear) &&
-    Objects.equals(patch, other.patch) &&
+    Objects.equals(patchPrior, other.patchPrior) &&
     Objects.equals(ensure, other.ensure) &&
     Objects.equals(patchAfter, other.patchAfter) &&
             true;
@@ -188,7 +188,7 @@ public final class OptionalMyStructField23Patch implements com.facebook.thrift.p
     public int hashCode() {
         return Arrays.deepHashCode(new java.lang.Object[] {
             clear,
-            patch,
+            patchPrior,
             ensure,
             patchAfter
         });
@@ -215,10 +215,10 @@ public final class OptionalMyStructField23Patch implements com.facebook.thrift.p
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
-        case _PATCH:
+        case _PATCHPRIOR:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.patch.MyStructField23Patch patch = test.fixtures.patch.MyStructField23Patch.read0(oprot);
-            builder.setPatch(patch);
+            test.fixtures.patch.MyStructField23Patch patchPrior = test.fixtures.patch.MyStructField23Patch.read0(oprot);
+            builder.setPatchPrior(patchPrior);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
@@ -265,9 +265,9 @@ public final class OptionalMyStructField23Patch implements com.facebook.thrift.p
       oprot.writeFieldBegin(CLEAR_FIELD_DESC);
       oprot.writeBool(this.clear);
       oprot.writeFieldEnd();
-      if (this.patch != null) {
-        oprot.writeFieldBegin(PATCH_FIELD_DESC);
-        this.patch.write0(oprot);
+      if (this.patchPrior != null) {
+        oprot.writeFieldBegin(PATCH_PRIOR_FIELD_DESC);
+        this.patchPrior.write0(oprot);
         oprot.writeFieldEnd();
       }
       if (this.ensure != null) {

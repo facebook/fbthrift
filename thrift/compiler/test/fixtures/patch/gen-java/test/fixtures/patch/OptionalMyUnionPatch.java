@@ -26,12 +26,12 @@ public final class OptionalMyUnionPatch implements com.facebook.thrift.payload.T
     @ThriftConstructor
     public OptionalMyUnionPatch(
         @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE) final boolean clear,
-        @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE) final test.fixtures.patch.MyUnionPatch patch,
+        @com.facebook.swift.codec.ThriftField(value=3, name="patchPrior", requiredness=Requiredness.NONE) final test.fixtures.patch.MyUnionPatch patchPrior,
         @com.facebook.swift.codec.ThriftField(value=4, name="ensure", requiredness=Requiredness.OPTIONAL) final test.fixtures.patch.MyUnion ensure,
         @com.facebook.swift.codec.ThriftField(value=6, name="patchAfter", requiredness=Requiredness.NONE) final test.fixtures.patch.MyUnionPatch patchAfter
     ) {
         this.clear = clear;
-        this.patch = patch;
+        this.patchPrior = patchPrior;
         this.ensure = ensure;
         this.patchAfter = patchAfter;
     }
@@ -39,7 +39,7 @@ public final class OptionalMyUnionPatch implements com.facebook.thrift.payload.T
     @ThriftConstructor
     protected OptionalMyUnionPatch() {
       this.clear = false;
-      this.patch = null;
+      this.patchPrior = null;
       this.ensure = null;
       this.patchAfter = null;
     }
@@ -47,7 +47,7 @@ public final class OptionalMyUnionPatch implements com.facebook.thrift.payload.T
     public static class Builder {
     
         private boolean clear = false;
-        private test.fixtures.patch.MyUnionPatch patch = null;
+        private test.fixtures.patch.MyUnionPatch patchPrior = null;
         private test.fixtures.patch.MyUnion ensure = null;
         private test.fixtures.patch.MyUnionPatch patchAfter = null;
     
@@ -59,13 +59,13 @@ public final class OptionalMyUnionPatch implements com.facebook.thrift.payload.T
     
         public boolean isClear() { return clear; }
     
-            @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE)
-        public Builder setPatch(test.fixtures.patch.MyUnionPatch patch) {
-            this.patch = patch;
+            @com.facebook.swift.codec.ThriftField(value=3, name="patchPrior", requiredness=Requiredness.NONE)
+        public Builder setPatchPrior(test.fixtures.patch.MyUnionPatch patchPrior) {
+            this.patchPrior = patchPrior;
             return this;
         }
     
-        public test.fixtures.patch.MyUnionPatch getPatch() { return patch; }
+        public test.fixtures.patch.MyUnionPatch getPatchPrior() { return patchPrior; }
     
             @com.facebook.swift.codec.ThriftField(value=4, name="ensure", requiredness=Requiredness.OPTIONAL)
         public Builder setEnsure(test.fixtures.patch.MyUnion ensure) {
@@ -86,7 +86,7 @@ public final class OptionalMyUnionPatch implements com.facebook.thrift.payload.T
         public Builder() { }
         public Builder(OptionalMyUnionPatch other) {
             this.clear = other.clear;
-            this.patch = other.patch;
+            this.patchPrior = other.patchPrior;
             this.ensure = other.ensure;
             this.patchAfter = other.patchAfter;
         }
@@ -95,7 +95,7 @@ public final class OptionalMyUnionPatch implements com.facebook.thrift.payload.T
         public OptionalMyUnionPatch build() {
             OptionalMyUnionPatch result = new OptionalMyUnionPatch (
                 this.clear,
-                this.patch,
+                this.patchPrior,
                 this.ensure,
                 this.patchAfter
             );
@@ -109,9 +109,9 @@ public final class OptionalMyUnionPatch implements com.facebook.thrift.payload.T
     private final boolean clear;
     public static final int _CLEAR = 2;
     private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
-        private final test.fixtures.patch.MyUnionPatch patch;
-    public static final int _PATCH = 3;
-    private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
+        private final test.fixtures.patch.MyUnionPatch patchPrior;
+    public static final int _PATCHPRIOR = 3;
+    private static final TField PATCH_PRIOR_FIELD_DESC = new TField("patchPrior", TType.STRUCT, (short)3);
         private final test.fixtures.patch.MyUnion ensure;
     public static final int _ENSURE = 4;
     private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.STRUCT, (short)4);
@@ -122,9 +122,9 @@ public final class OptionalMyUnionPatch implements com.facebook.thrift.payload.T
       NAMES_TO_IDS.put("clear", 2);
       THRIFT_NAMES_TO_IDS.put("clear", 2);
       FIELD_METADATA.put(2, CLEAR_FIELD_DESC);
-      NAMES_TO_IDS.put("patch", 3);
-      THRIFT_NAMES_TO_IDS.put("patch", 3);
-      FIELD_METADATA.put(3, PATCH_FIELD_DESC);
+      NAMES_TO_IDS.put("patchPrior", 3);
+      THRIFT_NAMES_TO_IDS.put("patchPrior", 3);
+      FIELD_METADATA.put(3, PATCH_PRIOR_FIELD_DESC);
       NAMES_TO_IDS.put("ensure", 4);
       THRIFT_NAMES_TO_IDS.put("ensure", 4);
       FIELD_METADATA.put(4, ENSURE_FIELD_DESC);
@@ -142,8 +142,8 @@ public final class OptionalMyUnionPatch implements com.facebook.thrift.payload.T
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE)
-    public test.fixtures.patch.MyUnionPatch getPatch() { return patch; }
+    @com.facebook.swift.codec.ThriftField(value=3, name="patchPrior", requiredness=Requiredness.NONE)
+    public test.fixtures.patch.MyUnionPatch getPatchPrior() { return patchPrior; }
     
     
     @Nullable
@@ -159,7 +159,7 @@ public final class OptionalMyUnionPatch implements com.facebook.thrift.payload.T
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         helper.add("clear", clear);
-        helper.add("patch", patch);
+        helper.add("patchPrior", patchPrior);
         helper.add("ensure", ensure);
         helper.add("patchAfter", patchAfter);
         return helper.toString();
@@ -178,7 +178,7 @@ public final class OptionalMyUnionPatch implements com.facebook.thrift.payload.T
     
         return
             Objects.equals(clear, other.clear) &&
-    Objects.equals(patch, other.patch) &&
+    Objects.equals(patchPrior, other.patchPrior) &&
     Objects.equals(ensure, other.ensure) &&
     Objects.equals(patchAfter, other.patchAfter) &&
             true;
@@ -188,7 +188,7 @@ public final class OptionalMyUnionPatch implements com.facebook.thrift.payload.T
     public int hashCode() {
         return Arrays.deepHashCode(new java.lang.Object[] {
             clear,
-            patch,
+            patchPrior,
             ensure,
             patchAfter
         });
@@ -215,10 +215,10 @@ public final class OptionalMyUnionPatch implements com.facebook.thrift.payload.T
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
-        case _PATCH:
+        case _PATCHPRIOR:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.patch.MyUnionPatch patch = test.fixtures.patch.MyUnionPatch.read0(oprot);
-            builder.setPatch(patch);
+            test.fixtures.patch.MyUnionPatch patchPrior = test.fixtures.patch.MyUnionPatch.read0(oprot);
+            builder.setPatchPrior(patchPrior);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
@@ -254,9 +254,9 @@ public final class OptionalMyUnionPatch implements com.facebook.thrift.payload.T
       oprot.writeFieldBegin(CLEAR_FIELD_DESC);
       oprot.writeBool(this.clear);
       oprot.writeFieldEnd();
-      if (this.patch != null) {
-        oprot.writeFieldBegin(PATCH_FIELD_DESC);
-        this.patch.write0(oprot);
+      if (this.patchPrior != null) {
+        oprot.writeFieldBegin(PATCH_PRIOR_FIELD_DESC);
+        this.patchPrior.write0(oprot);
         oprot.writeFieldEnd();
       }
       if (this.ensure != null) {

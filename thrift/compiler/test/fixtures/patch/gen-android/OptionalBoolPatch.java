@@ -25,7 +25,7 @@ import com.facebook.thrift.protocol.*;
 public class OptionalBoolPatch implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("OptionalBoolPatch");
   private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
-  private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
+  private static final TField PATCH_PRIOR_FIELD_DESC = new TField("patchPrior", TType.STRUCT, (short)3);
   private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.BOOL, (short)4);
   private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)6);
 
@@ -36,7 +36,7 @@ public class OptionalBoolPatch implements TBase, java.io.Serializable, Cloneable
   /**
    * Patches any previously set values. Applies second.
    */
-  public final BoolPatch patch;
+  public final BoolPatch patchPrior;
   /**
    * Assigns the value, if not already set to the same field. Applies third.
    */
@@ -46,17 +46,17 @@ public class OptionalBoolPatch implements TBase, java.io.Serializable, Cloneable
    */
   public final BoolPatch patchAfter;
   public static final int CLEAR = 2;
-  public static final int PATCH = 3;
+  public static final int PATCHPRIOR = 3;
   public static final int ENSURE = 4;
   public static final int PATCHAFTER = 6;
 
   public OptionalBoolPatch(
       Boolean clear,
-      BoolPatch patch,
+      BoolPatch patchPrior,
       Boolean ensure,
       BoolPatch patchAfter) {
     this.clear = clear;
-    this.patch = patch;
+    this.patchPrior = patchPrior;
     this.ensure = ensure;
     this.patchAfter = patchAfter;
   }
@@ -70,10 +70,10 @@ public class OptionalBoolPatch implements TBase, java.io.Serializable, Cloneable
     } else {
       this.clear = null;
     }
-    if (other.isSetPatch()) {
-      this.patch = TBaseHelper.deepCopy(other.patch);
+    if (other.isSetPatchPrior()) {
+      this.patchPrior = TBaseHelper.deepCopy(other.patchPrior);
     } else {
-      this.patch = null;
+      this.patchPrior = null;
     }
     if (other.isSetEnsure()) {
       this.ensure = TBaseHelper.deepCopy(other.ensure);
@@ -106,13 +106,13 @@ public class OptionalBoolPatch implements TBase, java.io.Serializable, Cloneable
   /**
    * Patches any previously set values. Applies second.
    */
-  public BoolPatch getPatch() {
-    return this.patch;
+  public BoolPatch getPatchPrior() {
+    return this.patchPrior;
   }
 
-  // Returns true if field patch is set (has been assigned a value) and false otherwise
-  public boolean isSetPatch() {
-    return this.patch != null;
+  // Returns true if field patchPrior is set (has been assigned a value) and false otherwise
+  public boolean isSetPatchPrior() {
+    return this.patchPrior != null;
   }
 
   /**
@@ -151,7 +151,7 @@ public class OptionalBoolPatch implements TBase, java.io.Serializable, Cloneable
 
     if (!TBaseHelper.equalsNobinary(this.isSetClear(), that.isSetClear(), this.clear, that.clear)) { return false; }
 
-    if (!TBaseHelper.equalsNobinary(this.isSetPatch(), that.isSetPatch(), this.patch, that.patch)) { return false; }
+    if (!TBaseHelper.equalsNobinary(this.isSetPatchPrior(), that.isSetPatchPrior(), this.patchPrior, that.patchPrior)) { return false; }
 
     if (!TBaseHelper.equalsNobinary(this.isSetEnsure(), that.isSetEnsure(), this.ensure, that.ensure)) { return false; }
 
@@ -162,7 +162,7 @@ public class OptionalBoolPatch implements TBase, java.io.Serializable, Cloneable
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {clear, patch, ensure, patchAfter});
+    return Arrays.deepHashCode(new Object[] {clear, patchPrior, ensure, patchAfter});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -172,7 +172,7 @@ public class OptionalBoolPatch implements TBase, java.io.Serializable, Cloneable
 
   public static OptionalBoolPatch deserialize(TProtocol iprot) throws TException {
     Boolean tmp_clear = null;
-    BoolPatch tmp_patch = null;
+    BoolPatch tmp_patchPrior = null;
     Boolean tmp_ensure = null;
     BoolPatch tmp_patchAfter = null;
     TField __field;
@@ -192,9 +192,9 @@ public class OptionalBoolPatch implements TBase, java.io.Serializable, Cloneable
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
-        case PATCH:
+        case PATCHPRIOR:
           if (__field.type == TType.STRUCT) {
-            tmp_patch = BoolPatch.deserialize(iprot);
+            tmp_patchPrior = BoolPatch.deserialize(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
@@ -224,7 +224,7 @@ public class OptionalBoolPatch implements TBase, java.io.Serializable, Cloneable
     OptionalBoolPatch _that;
     _that = new OptionalBoolPatch(
       tmp_clear
-      ,tmp_patch
+      ,tmp_patchPrior
       ,tmp_ensure
       ,tmp_patchAfter
     );
@@ -241,9 +241,9 @@ public class OptionalBoolPatch implements TBase, java.io.Serializable, Cloneable
       oprot.writeBool(this.clear);
       oprot.writeFieldEnd();
     }
-    if (this.patch != null) {
-      oprot.writeFieldBegin(PATCH_FIELD_DESC);
-      this.patch.write(oprot);
+    if (this.patchPrior != null) {
+      oprot.writeFieldBegin(PATCH_PRIOR_FIELD_DESC);
+      this.patchPrior.write(oprot);
       oprot.writeFieldEnd();
     }
     if (this.ensure != null) {

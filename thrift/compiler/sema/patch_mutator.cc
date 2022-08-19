@@ -197,7 +197,7 @@ struct PatchGen : StructGen {
   t_field& patchPrior(t_type_ref patch_type) {
     return doc(
         "Patches any previously set values. Applies second.",
-        field(kPatchPriorId, patch_type, "patch"));
+        field(kPatchPriorId, patch_type, "patchPrior"));
   }
 
   // {kRemoveId}: {type} remove;
