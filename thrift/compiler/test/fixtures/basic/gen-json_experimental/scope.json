@@ -96,25 +96,25 @@
         "name" : "Structured",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 100
+        "lineno" : 96
       },
       "Interface" : {
         "name" : "Interface",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 105
+        "lineno" : 102
       },
       "RootDefinition" : {
         "name" : "RootDefinition",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 113
+        "lineno" : 107
       },
       "Definition" : {
         "name" : "Definition",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 120
+        "lineno" : 115
       }
       },
   "source_path" : "thrift/annotation/scope",

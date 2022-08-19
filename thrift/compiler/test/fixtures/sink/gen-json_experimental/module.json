@@ -188,7 +188,7 @@
   "name" : "FinalResponse"
 }
 },
-            "lineno" : 57
+            "lineno" : 54
           },
           "methodFinalThrow" : {
             "name" : "methodFinalThrow",
@@ -203,7 +203,7 @@
   "name" : "FinalResponse"
 }
 },
-            "lineno" : 61
+            "lineno" : 58
           },
           "methodBothThrow" : {
             "name" : "methodBothThrow",
@@ -218,7 +218,7 @@
   "name" : "FinalResponse"
 }
 },
-            "lineno" : 65
+            "lineno" : 62
           },
           "methodFast" : {
             "name" : "methodFast",

@@ -26,6 +26,13 @@ namespace thrift {
 namespace compiler {
 namespace {
 
+int get_lineno(const t_node& node, source_manager& sm) {
+  auto loc = node.src_range().begin;
+  return loc != source_location()
+      ? resolved_location(node.src_range().begin, sm).line()
+      : 0;
+}
+
 class t_json_experimental_generator : public t_mstch_generator {
  public:
   using t_mstch_generator::t_mstch_generator;
@@ -53,7 +60,7 @@ class json_experimental_program : public mstch_program {
             {"program:namespaces", &json_experimental_program::namespaces},
             {"program:docstring?", &json_experimental_program::has_docstring},
             {"program:docstring", &json_experimental_program::get_docstring},
-            {"program:normalizedIncludePrefix",
+            {"program:normalized_include_prefix",
              &json_experimental_program::include_prefix},
         });
   }
@@ -85,8 +92,11 @@ class json_experimental_program : public mstch_program {
 class json_experimental_service : public mstch_service {
  public:
   json_experimental_service(
-      const t_service* s, mstch_context& ctx, mstch_element_position pos)
-      : mstch_service(s, ctx, pos) {
+      const t_service* s,
+      mstch_context& ctx,
+      mstch_element_position pos,
+      source_manager* sm)
+      : mstch_service(s, ctx, pos), source_mgr_(*sm) {
     register_methods(
         this,
         {
@@ -95,16 +105,24 @@ class json_experimental_service : public mstch_service {
             {"service:docstring", &json_experimental_service::get_docstring},
         });
   }
-  mstch::node get_lineno() { return service_->get_lineno(); }
+  mstch::node get_lineno() {
+    return compiler::get_lineno(*service_, source_mgr_);
+  }
   mstch::node has_docstring() { return service_->has_doc(); }
   mstch::node get_docstring() { return json_quote_ascii(service_->get_doc()); }
+
+ private:
+  source_manager& source_mgr_;
 };
 
 class json_experimental_function : public mstch_function {
  public:
   json_experimental_function(
-      const t_function* f, mstch_context& ctx, mstch_element_position pos)
-      : mstch_function(f, ctx, pos) {
+      const t_function* f,
+      mstch_context& ctx,
+      mstch_element_position pos,
+      source_manager* sm)
+      : mstch_function(f, ctx, pos), source_mgr_(*sm) {
     register_methods(
         this,
         {
@@ -114,19 +132,27 @@ class json_experimental_function : public mstch_function {
             {"function:args?", &json_experimental_function::has_args},
         });
   }
-  mstch::node get_lineno() { return function_->get_lineno(); }
+  mstch::node get_lineno() {
+    return compiler::get_lineno(*function_, source_mgr_);
+  }
   mstch::node has_docstring() { return function_->has_doc(); }
   mstch::node get_docstring() { return json_quote_ascii(function_->get_doc()); }
   mstch::node has_args() {
     return !function_->get_paramlist()->get_members().empty();
   }
+
+ private:
+  source_manager& source_mgr_;
 };
 
 class json_experimental_struct : public mstch_struct {
  public:
   json_experimental_struct(
-      const t_struct* s, mstch_context& ctx, mstch_element_position pos)
-      : mstch_struct(s, ctx, pos) {
+      const t_struct* s,
+      mstch_context& ctx,
+      mstch_element_position pos,
+      source_manager* sm)
+      : mstch_struct(s, ctx, pos), source_mgr_(*sm) {
     register_methods(
         this,
         {
@@ -135,9 +161,14 @@ class json_experimental_struct : public mstch_struct {
             {"struct:docstring", &json_experimental_struct::get_docstring},
         });
   }
-  mstch::node get_lineno() { return struct_->get_lineno(); }
+  mstch::node get_lineno() {
+    return compiler::get_lineno(*struct_, source_mgr_);
+  }
   mstch::node has_docstring() { return struct_->has_doc(); }
   mstch::node get_docstring() { return json_quote_ascii(struct_->get_doc()); }
+
+ private:
+  source_manager& source_mgr_;
 };
 
 class json_experimental_field : public mstch_field {
@@ -146,8 +177,9 @@ class json_experimental_field : public mstch_field {
       const t_field* f,
       mstch_context& ctx,
       mstch_element_position pos,
-      const field_generator_context* field_context)
-      : mstch_field(f, ctx, pos, field_context) {
+      const field_generator_context* field_context,
+      source_manager* sm)
+      : mstch_field(f, ctx, pos, field_context), source_mgr_(*sm) {
     register_methods(
         this,
         {
@@ -156,16 +188,24 @@ class json_experimental_field : public mstch_field {
             {"field:docstring", &json_experimental_field::get_docstring},
         });
   }
-  mstch::node get_lineno() { return field_->get_lineno(); }
+  mstch::node get_lineno() {
+    return compiler::get_lineno(*field_, source_mgr_);
+  }
   mstch::node has_docstring() { return field_->has_doc(); }
   mstch::node get_docstring() { return json_quote_ascii(field_->get_doc()); }
+
+ private:
+  source_manager& source_mgr_;
 };
 
 class json_experimental_enum : public mstch_enum {
  public:
   json_experimental_enum(
-      const t_enum* e, mstch_context& ctx, mstch_element_position pos)
-      : mstch_enum(e, ctx, pos) {
+      const t_enum* e,
+      mstch_context& ctx,
+      mstch_element_position pos,
+      source_manager* sm)
+      : mstch_enum(e, ctx, pos), source_mgr_(*sm) {
     register_methods(
         this,
         {
@@ -176,16 +216,22 @@ class json_experimental_enum : public mstch_enum {
         });
   }
   mstch::node is_empty() { return enum_->get_enum_values().empty(); }
-  mstch::node get_lineno() { return enum_->get_lineno(); }
+  mstch::node get_lineno() { return compiler::get_lineno(*enum_, source_mgr_); }
   mstch::node has_docstring() { return enum_->has_doc(); }
   mstch::node get_docstring() { return json_quote_ascii(enum_->get_doc()); }
+
+ private:
+  source_manager& source_mgr_;
 };
 
 class json_experimental_enum_value : public mstch_enum_value {
  public:
   json_experimental_enum_value(
-      const t_enum_value* ev, mstch_context& ctx, mstch_element_position pos)
-      : mstch_enum_value(ev, ctx, pos) {
+      const t_enum_value* ev,
+      mstch_context& ctx,
+      mstch_element_position pos,
+      source_manager* sm)
+      : mstch_enum_value(ev, ctx, pos), source_mgr_(*sm) {
     register_methods(
         this,
         {
@@ -196,11 +242,16 @@ class json_experimental_enum_value : public mstch_enum_value {
              &json_experimental_enum_value::get_docstring},
         });
   }
-  mstch::node get_lineno() { return enum_value_->get_lineno(); }
+  mstch::node get_lineno() {
+    return compiler::get_lineno(*enum_value_, source_mgr_);
+  }
   mstch::node has_docstring() { return enum_value_->has_doc(); }
   mstch::node get_docstring() {
     return json_quote_ascii(enum_value_->get_doc());
   }
+
+ private:
+  source_manager& source_mgr_;
 };
 
 // Trim all white spaces and commas from end (in place).
@@ -262,30 +313,37 @@ class json_experimental_const_value : public mstch_const_value {
       mstch_context& ctx,
       mstch_element_position pos,
       const t_const* current_const,
-      const t_type* expected_type)
-      : mstch_const_value(cv, ctx, pos, current_const, expected_type) {
+      const t_type* expected_type,
+      source_manager* sm)
+      : mstch_const_value(cv, ctx, pos, current_const, expected_type),
+        source_mgr_(*sm) {
     register_methods(
         this,
         {
             {"value:lineno", &json_experimental_const_value::get_lineno},
-            {"value:typeName", &json_experimental_const_value::get_typename},
-            {"value:stringValueAny",
+            {"value:type_name", &json_experimental_const_value::get_type_name},
+            {"value:string_value_any",
              &json_experimental_const_value::string_value_any},
             {"value:docstring?", &json_experimental_const_value::has_docstring},
             {"value:docstring", &json_experimental_const_value::get_docstring},
         });
   }
-  mstch::node get_lineno() { return current_const_->get_lineno(); }
+  mstch::node get_lineno() {
+    return compiler::get_lineno(*current_const_, source_mgr_);
+  }
   mstch::node has_docstring() { return current_const_->has_doc(); }
   mstch::node get_docstring() {
     return json_quote_ascii(current_const_->get_doc());
   }
 
-  mstch::node get_typename() {
+  mstch::node get_type_name() {
     return current_const_->get_type()->get_true_type()->get_full_name();
   }
 
   mstch::node string_value_any() { return to_string(const_value_); }
+
+ private:
+  source_manager& source_mgr_;
 };
 
 void t_json_experimental_generator::generate_program() {
@@ -299,13 +357,13 @@ void t_json_experimental_generator::generate_program() {
 
 void t_json_experimental_generator::set_mstch_factories() {
   mstch_context_.add<json_experimental_program>();
-  mstch_context_.add<json_experimental_service>();
-  mstch_context_.add<json_experimental_function>();
-  mstch_context_.add<json_experimental_struct>();
-  mstch_context_.add<json_experimental_field>();
-  mstch_context_.add<json_experimental_enum>();
-  mstch_context_.add<json_experimental_enum_value>();
-  mstch_context_.add<json_experimental_const_value>();
+  mstch_context_.add<json_experimental_service>(&source_mgr_);
+  mstch_context_.add<json_experimental_function>(&source_mgr_);
+  mstch_context_.add<json_experimental_struct>(&source_mgr_);
+  mstch_context_.add<json_experimental_field>(&source_mgr_);
+  mstch_context_.add<json_experimental_enum>(&source_mgr_);
+  mstch_context_.add<json_experimental_enum_value>(&source_mgr_);
+  mstch_context_.add<json_experimental_const_value>(&source_mgr_);
 }
 
 THRIFT_REGISTER_GENERATOR(json_experimental, "JSON_EXPERIMENTAL", "");

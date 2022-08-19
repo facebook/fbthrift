@@ -22,7 +22,7 @@
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 36
+        "lineno" : 35
       },
       "Wrapper" : {
         "name" : "Wrapper",
@@ -52,7 +52,7 @@
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 52
+        "lineno" : 49
       },
       "Adapter" : {
         "name" : "Adapter",
@@ -67,7 +67,7 @@
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 76
+        "lineno" : 74
       },
       "SkipCodegen" : {
         "name" : "SkipCodegen",
@@ -82,7 +82,7 @@
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 83
+        "lineno" : 81
       },
       "Name" : {
         "name" : "Name",
@@ -122,7 +122,7 @@
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 98
+        "lineno" : 97
       },
       "StructTrait" : {
         "name" : "StructTrait",
@@ -137,7 +137,7 @@
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 104
+        "lineno" : 103
       },
       "Attributes" : {
         "name" : "Attributes",
@@ -161,7 +161,7 @@
         "name" : "StructAsTrait",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 114
+        "lineno" : 113
       }
       },
   "source_path" : "thrift/annotation/hack",

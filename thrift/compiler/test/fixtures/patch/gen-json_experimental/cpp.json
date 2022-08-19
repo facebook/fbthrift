@@ -49,7 +49,7 @@
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 34
+        "lineno" : 33
       },
       "Lazy" : {
         "name" : "Lazy",
@@ -65,13 +65,13 @@
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 39
+        "lineno" : 38
       },
       "DisableLazyChecksum" : {
         "name" : "DisableLazyChecksum",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 45
+        "lineno" : 44
       },
       "Adapter" : {
         "name" : "Adapter",
@@ -120,7 +120,7 @@
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 68
+        "lineno" : 64
       },
       "PackIsset" : {
         "name" : "PackIsset",
@@ -136,32 +136,32 @@
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 116
+        "lineno" : 115
       },
       "MinimizePadding" : {
         "name" : "MinimizePadding",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 121
+        "lineno" : 120
       },
       "TriviallyRelocatable" : {
         "name" : "TriviallyRelocatable",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 124
+        "lineno" : 123
       },
       "ScopedEnumAsUnionType" : {
         "name" : "ScopedEnumAsUnionType",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 127
+        "lineno" : 126
       },
       "StrongType" : {
         "name" : "StrongType",
         "docstring" : "Indicates a typedef should be 'strong', and require an explicit cast to\nthe underlying type.\n\nCurrently only works for integer typedefs, for example:\n\n    @cpp.StrongType\n    typedef i32 MyId;\n\nWill cause an enum class to be used instead of a typedef in the genearte code, for example:\n\n    enum class MyId : ::std::int32_t {};\n\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 145
+        "lineno" : 143
       },
       "FieldInterceptor" : {
         "name" : "FieldInterceptor",
@@ -186,7 +186,7 @@
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 163
+        "lineno" : 161
       }
       },
   "source_path" : "thrift/annotation/cpp",

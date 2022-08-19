@@ -71,12 +71,12 @@
           },
           "Unspecified" : {
             "name" : "Unspecified",
-            "lineno" : -1,
+            "lineno" : 0,
             "value" : 0
           }
         },
         "docstring" : "The meaning of the patch op field ids, in all properly formulated patch\ndefinitions.\n\nPatch field ids are interpreted at runtime, as a dynamic patch protocol,\nwithout any additional schema derived from IDL patch definitions.\n",
-        "lineno" : 227
+        "lineno" : 226
       }
       },
   "structs" :
@@ -86,13 +86,13 @@
         "docstring" : "An annotation that indicates a patch representation\nshould be generated for the associated definition.\n",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 40
+        "lineno" : 38
       },
       "GenerateOptionalPatch" : {
         "name" : "GenerateOptionalPatch",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 43
+        "lineno" : 42
       },
       "BoolPatch" : {
         "name" : "BoolPatch",
@@ -117,7 +117,7 @@
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 52
+        "lineno" : 46
       },
       "BytePatch" : {
         "name" : "BytePatch",
@@ -142,7 +142,7 @@
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 71
+        "lineno" : 65
       },
       "I16Patch" : {
         "name" : "I16Patch",
@@ -167,7 +167,7 @@
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 90
+        "lineno" : 84
       },
       "I32Patch" : {
         "name" : "I32Patch",
@@ -192,7 +192,7 @@
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 109
+        "lineno" : 103
       },
       "I64Patch" : {
         "name" : "I64Patch",
@@ -217,7 +217,7 @@
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 128
+        "lineno" : 122
       },
       "FloatPatch" : {
         "name" : "FloatPatch",
@@ -242,7 +242,7 @@
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 147
+        "lineno" : 141
       },
       "DoublePatch" : {
         "name" : "DoublePatch",
@@ -267,7 +267,7 @@
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 166
+        "lineno" : 160
       },
       "StringPatch" : {
         "name" : "StringPatch",
@@ -308,7 +308,7 @@
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 185
+        "lineno" : 179
       },
       "BinaryPatch" : {
         "name" : "BinaryPatch",
@@ -325,7 +325,7 @@
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 210
+        "lineno" : 204
       },
       "OptionalBoolPatch" : {
         "name" : "OptionalBoolPatch",

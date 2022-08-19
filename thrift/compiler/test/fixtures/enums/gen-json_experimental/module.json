@@ -33,7 +33,7 @@
           },
           "Unspecified" : {
             "name" : "Unspecified",
-            "lineno" : -1,
+            "lineno" : 0,
             "value" : 0
           }
         },
@@ -69,11 +69,11 @@
           },
           "ME1_0" : {
             "name" : "ME1_0",
-            "lineno" : -1,
+            "lineno" : 0,
             "value" : 0
           }
         },
-        "lineno" : 41
+        "lineno" : 40
       },
       "MyEnum2" : {
         "name" : "MyEnum2",
@@ -94,7 +94,7 @@
             "value" : 2
           }
         },
-        "lineno" : 50
+        "lineno" : 49
       },
       "MyEnum3" : {
         "name" : "MyEnum3",
@@ -157,7 +157,7 @@
           },
           "Unspecified" : {
             "name" : "Unspecified",
-            "lineno" : -1,
+            "lineno" : 0,
             "value" : 0
           }
         },
@@ -183,7 +183,7 @@
           },
           "Unspecified" : {
             "name" : "Unspecified",
-            "lineno" : -1,
+            "lineno" : 0,
             "value" : 0
           }
         },
@@ -209,11 +209,11 @@
           },
           "Unspecified" : {
             "name" : "Unspecified",
-            "lineno" : -1,
+            "lineno" : 0,
             "value" : 0
           }
         },
-        "lineno" : 86
+        "lineno" : 85
       }
       },
   "structs" :

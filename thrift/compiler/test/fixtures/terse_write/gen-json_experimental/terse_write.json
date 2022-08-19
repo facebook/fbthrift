@@ -150,7 +150,7 @@
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 34
+        "lineno" : 33
       },
       "FieldLevelTerseStruct" : {
         "name" : "FieldLevelTerseStruct",
@@ -158,61 +158,61 @@
           "terse_bool_field" : {
             "name" : "terse_bool_field",
             "key" : 1,
-            "lineno" : 54,
+            "lineno" : 53,
             "type" : "bool"
           },
           "terse_byte_field" : {
             "name" : "terse_byte_field",
             "key" : 2,
-            "lineno" : 56,
+            "lineno" : 55,
             "type" : "byte"
           },
           "terse_short_field" : {
             "name" : "terse_short_field",
             "key" : 3,
-            "lineno" : 58,
+            "lineno" : 57,
             "type" : "i16"
           },
           "terse_int_field" : {
             "name" : "terse_int_field",
             "key" : 4,
-            "lineno" : 60,
+            "lineno" : 59,
             "type" : "i32"
           },
           "terse_long_field" : {
             "name" : "terse_long_field",
             "key" : 5,
-            "lineno" : 62,
+            "lineno" : 61,
             "type" : "i64"
           },
           "terse_float_field" : {
             "name" : "terse_float_field",
             "key" : 6,
-            "lineno" : 64,
+            "lineno" : 63,
             "type" : "float"
           },
           "terse_double_field" : {
             "name" : "terse_double_field",
             "key" : 7,
-            "lineno" : 66,
+            "lineno" : 65,
             "type" : "double"
           },
           "terse_string_field" : {
             "name" : "terse_string_field",
             "key" : 8,
-            "lineno" : 68,
+            "lineno" : 67,
             "type" : "string"
           },
           "terse_binary_field" : {
             "name" : "terse_binary_field",
             "key" : 9,
-            "lineno" : 70,
+            "lineno" : 69,
             "type" : "binary"
           },
           "terse_enum_field" : {
             "name" : "terse_enum_field",
             "key" : 10,
-            "lineno" : 72,
+            "lineno" : 71,
             "type" : {
   "type" : "enum",
   "name" : "MyEnum"
@@ -221,7 +221,7 @@
           "terse_list_field" : {
             "name" : "terse_list_field",
             "key" : 11,
-            "lineno" : 74,
+            "lineno" : 73,
             "type" : {
   "type" : "list",
   "inner_type" : "i16"
@@ -230,7 +230,7 @@
           "terse_set_field" : {
             "name" : "terse_set_field",
             "key" : 12,
-            "lineno" : 76,
+            "lineno" : 75,
             "type" : {
   "type" : "set",
   "inner_type" : "i16"
@@ -239,7 +239,7 @@
           "terse_map_field" : {
             "name" : "terse_map_field",
             "key" : 13,
-            "lineno" : 78,
+            "lineno" : 77,
             "type" : {
   "type" : "map",
   "key_type" : "i16",
@@ -249,7 +249,7 @@
           "terse_struct_field" : {
             "name" : "terse_struct_field",
             "key" : 14,
-            "lineno" : 80,
+            "lineno" : 79,
             "type" : {
   "type" : "struct",
   "name" : "MyStruct"
@@ -493,7 +493,7 @@
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 100
+        "lineno" : 99
       },
       "AdaptedFields" : {
         "name" : "AdaptedFields",
@@ -507,19 +507,19 @@
           "field2" : {
             "name" : "field2",
             "key" : 2,
-            "lineno" : 124,
+            "lineno" : 123,
             "type" : "i32"
           },
           "field3" : {
             "name" : "field3",
             "key" : 3,
-            "lineno" : 126,
+            "lineno" : 125,
             "type" : "i32"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 121
+        "lineno" : 120
       },
       "TerseException" : {
         "name" : "TerseException",
@@ -533,7 +533,7 @@
         },
         "is_exception" : true,
         "is_union" : false,
-        "lineno" : 130
+        "lineno" : 129
       }
       },
   "source_path" : "src/terse_write",
