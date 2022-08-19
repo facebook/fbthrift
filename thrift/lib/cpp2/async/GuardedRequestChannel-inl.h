@@ -17,35 +17,127 @@
 #pragma once
 
 #include <folly/ExceptionWrapper.h>
+#include <thrift/lib/cpp2/async/RequestCallback.h>
+#include <thrift/lib/cpp2/async/StreamCallbacks.h>
 
 namespace apache::thrift {
 
 template <class RequestGuardType>
 class GuardedRequestClientCallback : public RequestClientCallback {
  public:
-  GuardedRequestClientCallback(RequestClientCallback::Ptr cb)
-      : cb_(std::move(cb)) {}
+  explicit GuardedRequestClientCallback(RequestClientCallback::Ptr cb)
+      : clientCallback_(std::move(cb)) {}
 
-  bool isInlineSafe() const override { return cb_->isInlineSafe(); }
+  bool isInlineSafe() const override { return clientCallback_->isInlineSafe(); }
 
-  bool isSync() const override { return cb_->isSync(); }
+  bool isSync() const override { return clientCallback_->isSync(); }
 
   folly::Executor::KeepAlive<> getExecutor() const override {
-    return cb_->getExecutor();
+    return clientCallback_->getExecutor();
   }
 
   void onResponse(ClientReceiveState&& state) noexcept override {
-    cb_.release()->onResponse(std::move(state));
+    clientCallback_.release()->onResponse(std::move(state));
     delete this;
   }
 
   void onResponseError(folly::exception_wrapper ex) noexcept override {
-    cb_.release()->onResponseError(std::move(ex));
+    clientCallback_.release()->onResponseError(std::move(ex));
     delete this;
   }
 
  private:
-  RequestClientCallback::Ptr cb_;
+  RequestClientCallback::Ptr clientCallback_;
+  RequestGuardType guard_;
+};
+
+template <class RequestGuardType>
+class GuardedStreamCallback : public StreamClientCallback,
+                              public StreamServerCallback {
+ public:
+  explicit GuardedStreamCallback(StreamClientCallback* callback)
+      : clientCallback_(std::move(callback)) {}
+
+  ~GuardedStreamCallback() override {
+    DCHECK(!!clientCallback_ == !!serverCallback_);
+    if (clientCallback_ && serverCallback_) {
+      clientCallback_->resetServerCallback(*serverCallback_);
+      serverCallback_->resetClientCallback(*clientCallback_);
+    }
+  }
+
+  bool onFirstResponse(
+      FirstResponsePayload&& firstResponsePayload,
+      folly::EventBase* evb,
+      StreamServerCallback* serverCallback) override {
+    DCHECK(clientCallback_);
+    DCHECK(!serverCallback_);
+    serverCallback_ = serverCallback;
+    return clientCallback_->onFirstResponse(
+        std::move(firstResponsePayload), evb, this);
+  }
+
+  void onFirstResponseError(folly::exception_wrapper ew) override {
+    DCHECK(clientCallback_);
+    DCHECK(!serverCallback_);
+    std::exchange(clientCallback_, nullptr)
+        ->onFirstResponseError(std::move(ew));
+    delete this;
+  }
+
+  bool onStreamNext(StreamPayload&& payload) override {
+    DCHECK(clientCallback_);
+    return clientCallback_->onStreamNext(std::move(payload));
+  }
+
+  bool onStreamHeaders(apache::thrift::HeadersPayload&& payload) override {
+    DCHECK(clientCallback_);
+    return clientCallback_->onStreamHeaders(std::move(payload));
+  }
+
+  void onStreamError(folly::exception_wrapper ex) override {
+    DCHECK(clientCallback_);
+    serverCallback_ = nullptr;
+    std::exchange(clientCallback_, nullptr)->onStreamError(std::move(ex));
+    delete this;
+  }
+
+  void onStreamComplete() override {
+    DCHECK(clientCallback_);
+    serverCallback_ = nullptr;
+    std::exchange(clientCallback_, nullptr)->onStreamComplete();
+    delete this;
+  }
+
+  void resetServerCallback(StreamServerCallback& callback) override {
+    serverCallback_ = &callback;
+  }
+
+  bool onStreamRequestN(uint64_t n) override {
+    DCHECK(serverCallback_);
+    return serverCallback_->onStreamRequestN(n);
+  }
+
+  void onStreamCancel() override {
+    DCHECK(serverCallback_);
+    clientCallback_ = nullptr;
+    std::exchange(serverCallback_, nullptr)->onStreamCancel();
+    delete this;
+  }
+
+  bool onSinkHeaders(apache::thrift::HeadersPayload&& payload) override {
+    DCHECK(serverCallback_);
+    return serverCallback_->onSinkHeaders(std::move(payload));
+  }
+
+  void resetClientCallback(
+      apache::thrift::StreamClientCallback& clientCallback) override {
+    clientCallback_ = &clientCallback;
+  }
+
+ private:
+  StreamClientCallback* clientCallback_{nullptr};
+  StreamServerCallback* serverCallback_{nullptr};
   RequestGuardType guard_;
 };
 
@@ -85,6 +177,24 @@ void GuardedRequestChannel<RequestGuardType, ChannelGuardType>::
       std::move(serializedRequest),
       std::move(header),
       std::move(wrappedCb));
+}
+
+template <class RequestGuardType, class ChannelGuardType>
+void GuardedRequestChannel<RequestGuardType, ChannelGuardType>::
+    sendRequestStream(
+        RpcOptions&& rpcOptions,
+        MethodMetadata&& methodMetadata,
+        SerializedRequest&& serializedRequest,
+        std::shared_ptr<transport::THeader> header,
+        StreamClientCallback* cob) {
+  auto wrappedCb = new GuardedStreamCallback<RequestGuardType>(std::move(cob));
+
+  impl_->sendRequestStream(
+      std::move(rpcOptions),
+      std::move(methodMetadata),
+      std::move(serializedRequest),
+      std::move(header),
+      wrappedCb);
 }
 
 } // namespace apache::thrift

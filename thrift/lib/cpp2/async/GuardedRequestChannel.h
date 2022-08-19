@@ -47,6 +47,13 @@ class GuardedRequestChannel : public RequestChannel {
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr cb) override;
 
+  void sendRequestStream(
+      RpcOptions&& options,
+      MethodMetadata&& methodMetadata,
+      SerializedRequest&& serializedRequest,
+      std::shared_ptr<transport::THeader> header,
+      StreamClientCallback* cob) override;
+
  private:
   GuardedRequestChannel(ImplPtr impl) : impl_{std::move(impl)} {}
   ImplPtr impl_;
