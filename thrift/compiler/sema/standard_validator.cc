@@ -488,6 +488,17 @@ void validate_ref_field_attributes(
   }
 }
 
+void validate_required_field(diagnostic_context& ctx, const t_field& field) {
+  if (field.qualifier() == t_field_qualifier::required) {
+    ctx.report(
+        field,
+        ctx.has(context_type::no_legacy) ? diagnostic_level::error
+                                         : diagnostic_level::warning,
+        "Required field is deprecated: `{}`.",
+        field.name());
+  }
+}
+
 void validate_enum_value_name_uniqueness(
     diagnostic_context& ctx, const t_enum& node) {
   redef_checker(ctx, "Enum value", node).check_all(node.values());
@@ -974,6 +985,7 @@ ast_validator standard_validator() {
   validator.add_field_visitor(&validate_cpp_field_adapter_annotation);
   validator.add_field_visitor(&validate_hack_field_adapter_annotation);
   validator.add_field_visitor(&validate_cpp_field_interceptor_annotation);
+  validator.add_field_visitor(&validate_required_field);
 
   validator.add_enum_visitor(&validate_enum_value_name_uniqueness);
   validator.add_enum_visitor(&validate_enum_value_uniqueness);

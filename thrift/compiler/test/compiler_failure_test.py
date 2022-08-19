@@ -2015,7 +2015,9 @@ class CompilerFailureTest(unittest.TestCase):
             "`@internal.InjectMetadataFields` can be only used with a struct type.\n"
             "[ERROR:bar.thrift:42] Field id `-1` does not mapped to valid internal id.\n"
             "[ERROR:bar.thrift:42] Field id `1000` does not mapped to valid internal id.\n"
-            "[ERROR:bar.thrift:11] Field `field1` is already defined for `Injected5`.\n",
+            "[WARNING:bar.thrift:13] Required field is deprecated: `field3`.\n"
+            "[ERROR:bar.thrift:11] Field `field1` is already defined for `Injected5`.\n"
+            "[WARNING:bar.thrift:13] Required field is deprecated: `field3`.\n",
         )
 
     def test_set_invalid_elem_type(self):
@@ -2324,4 +2326,27 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             "[ERROR:foo.thrift:6] `@cpp.FieldInterceptor` cannot be used without `name` specified in `field2`.\n",
+        )
+
+    def test_no_required_field(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                include "thrift/annotation/thrift.thrift"
+
+                @thrift.NoLegacy
+                struct Fields {
+                    1: i64 field1;
+                    2: optional i64 field2;
+                    3: required i64 field3;
+                }
+                """
+            ),
+        )
+        ret, out, err = self.run_thrift("foo.thrift")
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[ERROR:foo.thrift:7] Required field is deprecated: `field3`.\n",
         )

@@ -349,6 +349,7 @@ TEST_F(StandardValidatorTest, UnionFieldAttributes) {
           error(
               3,
               "Unions cannot contain qualified fields. Remove `optional` qualifier from field `op`."),
+          warning(2, "Required field is deprecated: `req`."),
           // Fields with cpp.mixing have errors.
           error(5, "Union `Union` cannot contain mixin field `mixin`.")));
 }
