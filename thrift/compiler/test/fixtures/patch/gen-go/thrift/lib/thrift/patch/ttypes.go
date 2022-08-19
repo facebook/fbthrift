@@ -44,7 +44,6 @@ const (
   PatchOp_Remove PatchOp = 7
   PatchOp_Add PatchOp = 8
   PatchOp_Put PatchOp = 9
-  PatchOp_Prepend PatchOp = 10
   PatchOp_Unspecified PatchOp = 0
 )
 
@@ -58,7 +57,6 @@ var PatchOpToName = map[PatchOp]string {
   PatchOp_Remove: "Remove",
   PatchOp_Add: "Add",
   PatchOp_Put: "Put",
-  PatchOp_Prepend: "Prepend",
   PatchOp_Unspecified: "Unspecified",
 }
 
@@ -72,7 +70,6 @@ var PatchOpToValue = map[string]PatchOp {
   "Remove": PatchOp_Remove,
   "Add": PatchOp_Add,
   "Put": PatchOp_Put,
-  "Prepend": PatchOp_Prepend,
   "Unspecified": PatchOp_Unspecified,
 }
 
@@ -86,7 +83,6 @@ var PatchOpNames = []string {
   "Remove",
   "Add",
   "Put",
-  "Prepend",
   "Unspecified",
 }
 
@@ -100,7 +96,6 @@ var PatchOpValues = []PatchOp {
   PatchOp_Remove,
   PatchOp_Add,
   PatchOp_Put,
-  PatchOp_Prepend,
   PatchOp_Unspecified,
 }
 
@@ -1465,14 +1460,14 @@ func (p *DoublePatch) String() string {
 // 
 // If set, all other patch operations are ignored.
 //  - Clear: Clear a given string.
-//  - Append: Append to a given value.
 //  - Prepend: Prepend to a given value.
+//  - Append: Append to a given value.
 type StringPatch struct {
   Assign *string `thrift:"assign,1,optional" db:"assign" json:"assign,omitempty"`
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
-  // unused fields # 3 to 8
+  // unused fields # 3 to 7
+  Prepend string `thrift:"prepend,8" db:"prepend" json:"prepend"`
   Append string `thrift:"append,9" db:"append" json:"append"`
-  Prepend string `thrift:"prepend,10" db:"prepend" json:"prepend"`
 }
 
 func NewStringPatch() *StringPatch {
@@ -1491,12 +1486,12 @@ func (p *StringPatch) GetClear() bool {
   return p.Clear
 }
 
-func (p *StringPatch) GetAppend() string {
-  return p.Append
-}
-
 func (p *StringPatch) GetPrepend() string {
   return p.Prepend
+}
+
+func (p *StringPatch) GetAppend() string {
+  return p.Append
 }
 func (p *StringPatch) IsSetAssign() bool {
   return p != nil && p.Assign != nil
@@ -1516,8 +1511,8 @@ func (p StringPatchBuilder) Emit() *StringPatch{
   return &StringPatch{
     Assign: p.obj.Assign,
     Clear: p.obj.Clear,
-    Append: p.obj.Append,
     Prepend: p.obj.Prepend,
+    Append: p.obj.Append,
   }
 }
 
@@ -1531,13 +1526,13 @@ func (s *StringPatchBuilder) Clear(clear bool) *StringPatchBuilder {
   return s
 }
 
-func (s *StringPatchBuilder) Append(append string) *StringPatchBuilder {
-  s.obj.Append = append
+func (s *StringPatchBuilder) Prepend(prepend string) *StringPatchBuilder {
+  s.obj.Prepend = prepend
   return s
 }
 
-func (s *StringPatchBuilder) Prepend(prepend string) *StringPatchBuilder {
-  s.obj.Prepend = prepend
+func (s *StringPatchBuilder) Append(append string) *StringPatchBuilder {
+  s.obj.Append = append
   return s
 }
 
@@ -1551,13 +1546,13 @@ func (s *StringPatch) SetClear(clear bool) *StringPatch {
   return s
 }
 
-func (s *StringPatch) SetAppend(append string) *StringPatch {
-  s.Append = append
+func (s *StringPatch) SetPrepend(prepend string) *StringPatch {
+  s.Prepend = prepend
   return s
 }
 
-func (s *StringPatch) SetPrepend(prepend string) *StringPatch {
-  s.Prepend = prepend
+func (s *StringPatch) SetAppend(append string) *StringPatch {
+  s.Append = append
   return s
 }
 
@@ -1582,12 +1577,12 @@ func (p *StringPatch) Read(iprot thrift.Protocol) error {
       if err := p.ReadField2(iprot); err != nil {
         return err
       }
-    case 9:
-      if err := p.ReadField9(iprot); err != nil {
+    case 8:
+      if err := p.ReadField8(iprot); err != nil {
         return err
       }
-    case 10:
-      if err := p.ReadField10(iprot); err != nil {
+    case 9:
+      if err := p.ReadField9(iprot); err != nil {
         return err
       }
     default:
@@ -1623,6 +1618,15 @@ func (p *StringPatch)  ReadField2(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *StringPatch)  ReadField8(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 8: ", err)
+  } else {
+    p.Prepend = v
+  }
+  return nil
+}
+
 func (p *StringPatch)  ReadField9(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
     return thrift.PrependError("error reading field 9: ", err)
@@ -1632,22 +1636,13 @@ func (p *StringPatch)  ReadField9(iprot thrift.Protocol) error {
   return nil
 }
 
-func (p *StringPatch)  ReadField10(iprot thrift.Protocol) error {
-  if v, err := iprot.ReadString(); err != nil {
-    return thrift.PrependError("error reading field 10: ", err)
-  } else {
-    p.Prepend = v
-  }
-  return nil
-}
-
 func (p *StringPatch) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("StringPatch"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
   if err := p.writeField2(oprot); err != nil { return err }
+  if err := p.writeField8(oprot); err != nil { return err }
   if err := p.writeField9(oprot); err != nil { return err }
-  if err := p.writeField10(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -1677,6 +1672,16 @@ func (p *StringPatch) writeField2(oprot thrift.Protocol) (err error) {
   return err
 }
 
+func (p *StringPatch) writeField8(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("prepend", thrift.STRING, 8); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 8:prepend: ", p), err) }
+  if err := oprot.WriteString(string(p.Prepend)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.prepend (8) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 8:prepend: ", p), err) }
+  return err
+}
+
 func (p *StringPatch) writeField9(oprot thrift.Protocol) (err error) {
   if err := oprot.WriteFieldBegin("append", thrift.STRING, 9); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 9:append: ", p), err) }
@@ -1684,16 +1689,6 @@ func (p *StringPatch) writeField9(oprot thrift.Protocol) (err error) {
   return thrift.PrependError(fmt.Sprintf("%T.append (9) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field end error 9:append: ", p), err) }
-  return err
-}
-
-func (p *StringPatch) writeField10(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("prepend", thrift.STRING, 10); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 10:prepend: ", p), err) }
-  if err := oprot.WriteString(string(p.Prepend)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.prepend (10) field write error: ", p), err) }
-  if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 10:prepend: ", p), err) }
   return err
 }
 
@@ -1709,9 +1704,9 @@ func (p *StringPatch) String() string {
     assignVal = fmt.Sprintf("%v", *p.Assign)
   }
   clearVal := fmt.Sprintf("%v", p.Clear)
-  appendVal := fmt.Sprintf("%v", p.Append)
   prependVal := fmt.Sprintf("%v", p.Prepend)
-  return fmt.Sprintf("StringPatch({Assign:%s Clear:%s Append:%s Prepend:%s})", assignVal, clearVal, appendVal, prependVal)
+  appendVal := fmt.Sprintf("%v", p.Append)
+  return fmt.Sprintf("StringPatch({Assign:%s Clear:%s Prepend:%s Append:%s})", assignVal, clearVal, prependVal, appendVal)
 }
 
 // A patch for a binary value.
@@ -1838,9 +1833,9 @@ func (p *BinaryPatch) String() string {
 
 // Attributes:
 //  - Clear: Clears any set value. Applies first.
-//  - Patch: Patches any set value. Applies second.
-//  - Ensure: Assigns the value, if not already set. Applies third.
-//  - PatchAfter: Patches any set value, including newly set values. Applies fourth.
+//  - Patch: Patches any previously set values. Applies second.
+//  - Ensure: Assigns the value, if not already set to the same field. Applies third.
+//  - PatchAfter: Patches any set value, including newly set values. Applies last.
 type OptionalBoolPatch struct {
   // unused field # 1
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
@@ -2118,9 +2113,9 @@ func (p *OptionalBoolPatch) String() string {
 
 // Attributes:
 //  - Clear: Clears any set value. Applies first.
-//  - Patch: Patches any set value. Applies second.
-//  - Ensure: Assigns the value, if not already set. Applies third.
-//  - PatchAfter: Patches any set value, including newly set values. Applies fourth.
+//  - Patch: Patches any previously set values. Applies second.
+//  - Ensure: Assigns the value, if not already set to the same field. Applies third.
+//  - PatchAfter: Patches any set value, including newly set values. Applies last.
 type OptionalBytePatch struct {
   // unused field # 1
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
@@ -2399,9 +2394,9 @@ func (p *OptionalBytePatch) String() string {
 
 // Attributes:
 //  - Clear: Clears any set value. Applies first.
-//  - Patch: Patches any set value. Applies second.
-//  - Ensure: Assigns the value, if not already set. Applies third.
-//  - PatchAfter: Patches any set value, including newly set values. Applies fourth.
+//  - Patch: Patches any previously set values. Applies second.
+//  - Ensure: Assigns the value, if not already set to the same field. Applies third.
+//  - PatchAfter: Patches any set value, including newly set values. Applies last.
 type OptionalI16Patch struct {
   // unused field # 1
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
@@ -2679,9 +2674,9 @@ func (p *OptionalI16Patch) String() string {
 
 // Attributes:
 //  - Clear: Clears any set value. Applies first.
-//  - Patch: Patches any set value. Applies second.
-//  - Ensure: Assigns the value, if not already set. Applies third.
-//  - PatchAfter: Patches any set value, including newly set values. Applies fourth.
+//  - Patch: Patches any previously set values. Applies second.
+//  - Ensure: Assigns the value, if not already set to the same field. Applies third.
+//  - PatchAfter: Patches any set value, including newly set values. Applies last.
 type OptionalI32Patch struct {
   // unused field # 1
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
@@ -2959,9 +2954,9 @@ func (p *OptionalI32Patch) String() string {
 
 // Attributes:
 //  - Clear: Clears any set value. Applies first.
-//  - Patch: Patches any set value. Applies second.
-//  - Ensure: Assigns the value, if not already set. Applies third.
-//  - PatchAfter: Patches any set value, including newly set values. Applies fourth.
+//  - Patch: Patches any previously set values. Applies second.
+//  - Ensure: Assigns the value, if not already set to the same field. Applies third.
+//  - PatchAfter: Patches any set value, including newly set values. Applies last.
 type OptionalI64Patch struct {
   // unused field # 1
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
@@ -3239,9 +3234,9 @@ func (p *OptionalI64Patch) String() string {
 
 // Attributes:
 //  - Clear: Clears any set value. Applies first.
-//  - Patch: Patches any set value. Applies second.
-//  - Ensure: Assigns the value, if not already set. Applies third.
-//  - PatchAfter: Patches any set value, including newly set values. Applies fourth.
+//  - Patch: Patches any previously set values. Applies second.
+//  - Ensure: Assigns the value, if not already set to the same field. Applies third.
+//  - PatchAfter: Patches any set value, including newly set values. Applies last.
 type OptionalFloatPatch struct {
   // unused field # 1
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
@@ -3519,9 +3514,9 @@ func (p *OptionalFloatPatch) String() string {
 
 // Attributes:
 //  - Clear: Clears any set value. Applies first.
-//  - Patch: Patches any set value. Applies second.
-//  - Ensure: Assigns the value, if not already set. Applies third.
-//  - PatchAfter: Patches any set value, including newly set values. Applies fourth.
+//  - Patch: Patches any previously set values. Applies second.
+//  - Ensure: Assigns the value, if not already set to the same field. Applies third.
+//  - PatchAfter: Patches any set value, including newly set values. Applies last.
 type OptionalDoublePatch struct {
   // unused field # 1
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
@@ -3799,9 +3794,9 @@ func (p *OptionalDoublePatch) String() string {
 
 // Attributes:
 //  - Clear: Clears any set value. Applies first.
-//  - Patch: Patches any set value. Applies second.
-//  - Ensure: Assigns the value, if not already set. Applies third.
-//  - PatchAfter: Patches any set value, including newly set values. Applies fourth.
+//  - Patch: Patches any previously set values. Applies second.
+//  - Ensure: Assigns the value, if not already set to the same field. Applies third.
+//  - PatchAfter: Patches any set value, including newly set values. Applies last.
 type OptionalStringPatch struct {
   // unused field # 1
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
@@ -4079,9 +4074,9 @@ func (p *OptionalStringPatch) String() string {
 
 // Attributes:
 //  - Clear: Clears any set value. Applies first.
-//  - Patch: Patches any set value. Applies second.
-//  - Ensure: Assigns the value, if not already set. Applies third.
-//  - PatchAfter: Patches any set value, including newly set values. Applies fourth.
+//  - Patch: Patches any previously set values. Applies second.
+//  - Ensure: Assigns the value, if not already set to the same field. Applies third.
+//  - PatchAfter: Patches any set value, including newly set values. Applies last.
 type OptionalBinaryPatch struct {
   // unused field # 1
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`

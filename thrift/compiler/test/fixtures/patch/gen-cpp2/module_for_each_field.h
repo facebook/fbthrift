@@ -87,6 +87,8 @@ struct ForEachField<::test::fixtures::patch::MyDataPatchStruct> {
     f(0, static_cast<T&&>(t).assign_ref()...);
     f(1, static_cast<T&&>(t).clear_ref()...);
     f(2, static_cast<T&&>(t).patch_ref()...);
+    f(3, static_cast<T&&>(t).ensure_ref()...);
+    f(4, static_cast<T&&>(t).patchAfter_ref()...);
   }
 };
 
@@ -113,10 +115,11 @@ template <>
 struct ForEachField<::test::fixtures::patch::InnerUnionPatchStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    f(0, static_cast<T&&>(t).clear_ref()...);
-    f(1, static_cast<T&&>(t).patch_ref()...);
-    f(2, static_cast<T&&>(t).ensure_ref()...);
-    f(3, static_cast<T&&>(t).patchAfter_ref()...);
+    f(0, static_cast<T&&>(t).assign_ref()...);
+    f(1, static_cast<T&&>(t).clear_ref()...);
+    f(2, static_cast<T&&>(t).patch_ref()...);
+    f(3, static_cast<T&&>(t).ensure_ref()...);
+    f(4, static_cast<T&&>(t).patchAfter_ref()...);
   }
 };
 
@@ -145,10 +148,11 @@ template <>
 struct ForEachField<::test::fixtures::patch::MyUnionPatchStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    f(0, static_cast<T&&>(t).clear_ref()...);
-    f(1, static_cast<T&&>(t).patch_ref()...);
-    f(2, static_cast<T&&>(t).ensure_ref()...);
-    f(3, static_cast<T&&>(t).patchAfter_ref()...);
+    f(0, static_cast<T&&>(t).assign_ref()...);
+    f(1, static_cast<T&&>(t).clear_ref()...);
+    f(2, static_cast<T&&>(t).patch_ref()...);
+    f(3, static_cast<T&&>(t).ensure_ref()...);
+    f(4, static_cast<T&&>(t).patchAfter_ref()...);
   }
 };
 
@@ -213,7 +217,8 @@ struct ForEachField<::test::fixtures::patch::MyStructField23PatchStruct> {
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).assign_ref()...);
     f(1, static_cast<T&&>(t).clear_ref()...);
-    f(2, static_cast<T&&>(t).put_ref()...);
+    f(2, static_cast<T&&>(t).add_ref()...);
+    f(3, static_cast<T&&>(t).put_ref()...);
   }
 };
 
@@ -266,6 +271,8 @@ struct ForEachField<::test::fixtures::patch::MyStructPatchStruct> {
     f(0, static_cast<T&&>(t).assign_ref()...);
     f(1, static_cast<T&&>(t).clear_ref()...);
     f(2, static_cast<T&&>(t).patch_ref()...);
+    f(3, static_cast<T&&>(t).ensure_ref()...);
+    f(4, static_cast<T&&>(t).patchAfter_ref()...);
   }
 };
 

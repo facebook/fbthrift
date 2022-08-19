@@ -27,11 +27,15 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
     public MyStructPatch(
         @com.facebook.swift.codec.ThriftField(value=1, name="assign", requiredness=Requiredness.OPTIONAL) final test.fixtures.patch.MyStruct assign,
         @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE) final boolean clear,
-        @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE) final test.fixtures.patch.MyStructFieldPatch patch
+        @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE) final test.fixtures.patch.MyStructFieldPatch patch,
+        @com.facebook.swift.codec.ThriftField(value=5, name="ensure", requiredness=Requiredness.NONE) final test.fixtures.patch.MyStruct ensure,
+        @com.facebook.swift.codec.ThriftField(value=6, name="patchAfter", requiredness=Requiredness.NONE) final test.fixtures.patch.MyStructFieldPatch patchAfter
     ) {
         this.assign = assign;
         this.clear = clear;
         this.patch = patch;
+        this.ensure = ensure;
+        this.patchAfter = patchAfter;
     }
     
     @ThriftConstructor
@@ -39,6 +43,8 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
       this.assign = null;
       this.clear = false;
       this.patch = null;
+      this.ensure = null;
+      this.patchAfter = null;
     }
     
     public static class Builder {
@@ -46,6 +52,8 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
         private test.fixtures.patch.MyStruct assign = null;
         private boolean clear = false;
         private test.fixtures.patch.MyStructFieldPatch patch = null;
+        private test.fixtures.patch.MyStruct ensure = null;
+        private test.fixtures.patch.MyStructFieldPatch patchAfter = null;
     
         @com.facebook.swift.codec.ThriftField(value=1, name="assign", requiredness=Requiredness.OPTIONAL)
         public Builder setAssign(test.fixtures.patch.MyStruct assign) {
@@ -71,11 +79,29 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
     
         public test.fixtures.patch.MyStructFieldPatch getPatch() { return patch; }
     
+            @com.facebook.swift.codec.ThriftField(value=5, name="ensure", requiredness=Requiredness.NONE)
+        public Builder setEnsure(test.fixtures.patch.MyStruct ensure) {
+            this.ensure = ensure;
+            return this;
+        }
+    
+        public test.fixtures.patch.MyStruct getEnsure() { return ensure; }
+    
+            @com.facebook.swift.codec.ThriftField(value=6, name="patchAfter", requiredness=Requiredness.NONE)
+        public Builder setPatchAfter(test.fixtures.patch.MyStructFieldPatch patchAfter) {
+            this.patchAfter = patchAfter;
+            return this;
+        }
+    
+        public test.fixtures.patch.MyStructFieldPatch getPatchAfter() { return patchAfter; }
+    
         public Builder() { }
         public Builder(MyStructPatch other) {
             this.assign = other.assign;
             this.clear = other.clear;
             this.patch = other.patch;
+            this.ensure = other.ensure;
+            this.patchAfter = other.patchAfter;
         }
     
         @ThriftConstructor
@@ -83,12 +109,14 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
             MyStructPatch result = new MyStructPatch (
                 this.assign,
                 this.clear,
-                this.patch
+                this.patch,
+                this.ensure,
+                this.patchAfter
             );
             return result;
         }
     }
-                public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                        public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStructPatch");
@@ -101,6 +129,12 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
         private final test.fixtures.patch.MyStructFieldPatch patch;
     public static final int _PATCH = 3;
     private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
+        private final test.fixtures.patch.MyStruct ensure;
+    public static final int _ENSURE = 5;
+    private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.STRUCT, (short)5);
+        private final test.fixtures.patch.MyStructFieldPatch patchAfter;
+    public static final int _PATCHAFTER = 6;
+    private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)6);
     static {
       NAMES_TO_IDS.put("assign", 1);
       THRIFT_NAMES_TO_IDS.put("assign", 1);
@@ -111,6 +145,12 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
       NAMES_TO_IDS.put("patch", 3);
       THRIFT_NAMES_TO_IDS.put("patch", 3);
       FIELD_METADATA.put(3, PATCH_FIELD_DESC);
+      NAMES_TO_IDS.put("ensure", 5);
+      THRIFT_NAMES_TO_IDS.put("ensure", 5);
+      FIELD_METADATA.put(5, ENSURE_FIELD_DESC);
+      NAMES_TO_IDS.put("patchAfter", 6);
+      THRIFT_NAMES_TO_IDS.put("patchAfter", 6);
+      FIELD_METADATA.put(6, PATCH_AFTER_FIELD_DESC);
       com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
         new com.facebook.thrift.type.UniversalName("test.dev/fixtures/patch/MyStructPatch"), 
         MyStructPatch.class, MyStructPatch::read0));
@@ -130,12 +170,24 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
     @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE)
     public test.fixtures.patch.MyStructFieldPatch getPatch() { return patch; }
     
+    
+    @Nullable
+    @com.facebook.swift.codec.ThriftField(value=5, name="ensure", requiredness=Requiredness.NONE)
+    public test.fixtures.patch.MyStruct getEnsure() { return ensure; }
+    
+    
+    @Nullable
+    @com.facebook.swift.codec.ThriftField(value=6, name="patchAfter", requiredness=Requiredness.NONE)
+    public test.fixtures.patch.MyStructFieldPatch getPatchAfter() { return patchAfter; }
+    
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         helper.add("assign", assign);
         helper.add("clear", clear);
         helper.add("patch", patch);
+        helper.add("ensure", ensure);
+        helper.add("patchAfter", patchAfter);
         return helper.toString();
     }
     
@@ -154,6 +206,8 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
             Objects.equals(assign, other.assign) &&
     Objects.equals(clear, other.clear) &&
     Objects.equals(patch, other.patch) &&
+    Objects.equals(ensure, other.ensure) &&
+    Objects.equals(patchAfter, other.patchAfter) &&
             true;
     }
     
@@ -162,7 +216,9 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
         return Arrays.deepHashCode(new java.lang.Object[] {
             assign,
             clear,
-            patch
+            patch,
+            ensure,
+            patchAfter
         });
     }
     
@@ -203,6 +259,22 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
+        case _ENSURE:
+          if (__field.type == TType.STRUCT) {
+            test.fixtures.patch.MyStruct ensure = test.fixtures.patch.MyStruct.read0(oprot);
+            builder.setEnsure(ensure);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _PATCHAFTER:
+          if (__field.type == TType.STRUCT) {
+            test.fixtures.patch.MyStructFieldPatch patchAfter = test.fixtures.patch.MyStructFieldPatch.read0(oprot);
+            builder.setPatchAfter(patchAfter);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(oprot, __field.type);
           break;
@@ -226,6 +298,16 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
       if (this.patch != null) {
         oprot.writeFieldBegin(PATCH_FIELD_DESC);
         this.patch.write0(oprot);
+        oprot.writeFieldEnd();
+      }
+      if (this.ensure != null) {
+        oprot.writeFieldBegin(ENSURE_FIELD_DESC);
+        this.ensure.write0(oprot);
+        oprot.writeFieldEnd();
+      }
+      if (this.patchAfter != null) {
+        oprot.writeFieldBegin(PATCH_AFTER_FIELD_DESC);
+        this.patchAfter.write0(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

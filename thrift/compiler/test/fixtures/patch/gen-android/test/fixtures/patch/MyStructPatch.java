@@ -29,6 +29,8 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
   private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.STRUCT, (short)1);
   private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
   private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
+  private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.STRUCT, (short)5);
+  private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)6);
 
   /**
    * Assigns a value. If set, all other operations are ignored.
@@ -39,20 +41,34 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
    */
   public final Boolean clear;
   /**
-   * Patches a value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public final MyStructFieldPatch patch;
+  /**
+   * Initlaize fields, using the given defaults. Applies third.
+   */
+  public final MyStruct ensure;
+  /**
+   * Patches any set value, including newly set values. Applies last.
+   */
+  public final MyStructFieldPatch patchAfter;
   public static final int ASSIGN = 1;
   public static final int CLEAR = 2;
   public static final int PATCH = 3;
+  public static final int ENSURE = 5;
+  public static final int PATCHAFTER = 6;
 
   public MyStructPatch(
       MyStruct assign,
       Boolean clear,
-      MyStructFieldPatch patch) {
+      MyStructFieldPatch patch,
+      MyStruct ensure,
+      MyStructFieldPatch patchAfter) {
     this.assign = assign;
     this.clear = clear;
     this.patch = patch;
+    this.ensure = ensure;
+    this.patchAfter = patchAfter;
   }
 
   /**
@@ -73,6 +89,16 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
       this.patch = TBaseHelper.deepCopy(other.patch);
     } else {
       this.patch = null;
+    }
+    if (other.isSetEnsure()) {
+      this.ensure = TBaseHelper.deepCopy(other.ensure);
+    } else {
+      this.ensure = null;
+    }
+    if (other.isSetPatchAfter()) {
+      this.patchAfter = TBaseHelper.deepCopy(other.patchAfter);
+    } else {
+      this.patchAfter = null;
     }
   }
 
@@ -105,7 +131,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
   }
 
   /**
-   * Patches a value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public MyStructFieldPatch getPatch() {
     return this.patch;
@@ -114,6 +140,30 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
   // Returns true if field patch is set (has been assigned a value) and false otherwise
   public boolean isSetPatch() {
     return this.patch != null;
+  }
+
+  /**
+   * Initlaize fields, using the given defaults. Applies third.
+   */
+  public MyStruct getEnsure() {
+    return this.ensure;
+  }
+
+  // Returns true if field ensure is set (has been assigned a value) and false otherwise
+  public boolean isSetEnsure() {
+    return this.ensure != null;
+  }
+
+  /**
+   * Patches any set value, including newly set values. Applies last.
+   */
+  public MyStructFieldPatch getPatchAfter() {
+    return this.patchAfter;
+  }
+
+  // Returns true if field patchAfter is set (has been assigned a value) and false otherwise
+  public boolean isSetPatchAfter() {
+    return this.patchAfter != null;
   }
 
   @Override
@@ -132,12 +182,16 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
 
     if (!TBaseHelper.equalsNobinary(this.isSetPatch(), that.isSetPatch(), this.patch, that.patch)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetEnsure(), that.isSetEnsure(), this.ensure, that.ensure)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetPatchAfter(), that.isSetPatchAfter(), this.patchAfter, that.patchAfter)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {assign, clear, patch});
+    return Arrays.deepHashCode(new Object[] {assign, clear, patch, ensure, patchAfter});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -149,6 +203,8 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
     MyStruct tmp_assign = null;
     Boolean tmp_clear = null;
     MyStructFieldPatch tmp_patch = null;
+    MyStruct tmp_ensure = null;
+    MyStructFieldPatch tmp_patchAfter = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -180,6 +236,20 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case ENSURE:
+          if (__field.type == TType.STRUCT) {
+            tmp_ensure = MyStruct.deserialize(iprot);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case PATCHAFTER:
+          if (__field.type == TType.STRUCT) {
+            tmp_patchAfter = MyStructFieldPatch.deserialize(iprot);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -193,6 +263,8 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
       tmp_assign
       ,tmp_clear
       ,tmp_patch
+      ,tmp_ensure
+      ,tmp_patchAfter
     );
     _that.validate();
     return _that;
@@ -217,6 +289,16 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
     if (this.patch != null) {
       oprot.writeFieldBegin(PATCH_FIELD_DESC);
       this.patch.write(oprot);
+      oprot.writeFieldEnd();
+    }
+    if (this.ensure != null) {
+      oprot.writeFieldBegin(ENSURE_FIELD_DESC);
+      this.ensure.write(oprot);
+      oprot.writeFieldEnd();
+    }
+    if (this.patchAfter != null) {
+      oprot.writeFieldBegin(PATCH_AFTER_FIELD_DESC);
+      this.patchAfter.write(oprot);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();

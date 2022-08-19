@@ -59,21 +59,15 @@
           },
           "Add" : {
             "name" : "Add",
-            "docstring" : "Add if not present.\n\nA key/value-based add for set/list and 'saturating add' for numeric/'counting'\ntypes.\n",
+            "docstring" : "Add/prepend a value,with the following semantics:\n- Key/value-based 'add' for set;\n- 'prepend' for list, string, or binary; and\n- saturating 'add' for numeric/counting types.\n",
             "lineno" : 280,
             "value" : 8
           },
           "Put" : {
             "name" : "Put",
-            "docstring" : "Add even if present.\n\nIdentical to 'add' for set, 'append' for list, overwriting\n'update or insert' for maps, 'invert' for boolean.\n",
-            "lineno" : 288,
+            "docstring" : "Put/append/invert a value, with the following semantics:\n- Identical to 'add' for set;\n- 'update or insert' for maps;\n- 'append' for list, string or binary; and\n- 'invert' for boolean.\n",
+            "lineno" : 289,
             "value" : 9
-          },
-          "Prepend" : {
-            "name" : "Prepend",
-            "docstring" : "Add to the beginning of a list, string, or binary value.\n",
-            "lineno" : 291,
-            "value" : 10
           },
           "Unspecified" : {
             "name" : "Unspecified",
@@ -295,18 +289,18 @@
             "required" : "opt-in-req-out",
             "type" : "bool"
           },
-          "append" : {
-            "name" : "append",
-            "docstring" : "Append to a given value.\n",
-            "key" : 9,
+          "prepend" : {
+            "name" : "prepend",
+            "docstring" : "Prepend to a given value.\n",
+            "key" : 8,
             "lineno" : 197,
             "required" : "opt-in-req-out",
             "type" : "string"
           },
-          "prepend" : {
-            "name" : "prepend",
-            "docstring" : "Prepend to a given value.\n",
-            "key" : 10,
+          "append" : {
+            "name" : "append",
+            "docstring" : "Append to a given value.\n",
+            "key" : 9,
             "lineno" : 200,
             "required" : "opt-in-req-out",
             "type" : "string"
@@ -346,7 +340,7 @@
           },
           "patch" : {
             "name" : "patch",
-            "docstring" : "Patches any set value. Applies second.\n",
+            "docstring" : "Patches any previously set values. Applies second.\n",
             "key" : 3,
             "lineno" : 0,
             "required" : "opt-in-req-out",
@@ -357,7 +351,7 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "Assigns the value, if not already set. Applies third.\n",
+            "docstring" : "Assigns the value, if not already set to the same field. Applies third.\n",
             "key" : 4,
             "lineno" : 0,
             "required" : "optional",
@@ -365,7 +359,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
+            "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,
             "required" : "opt-in-req-out",
@@ -392,7 +386,7 @@
           },
           "patch" : {
             "name" : "patch",
-            "docstring" : "Patches any set value. Applies second.\n",
+            "docstring" : "Patches any previously set values. Applies second.\n",
             "key" : 3,
             "lineno" : 0,
             "required" : "opt-in-req-out",
@@ -403,7 +397,7 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "Assigns the value, if not already set. Applies third.\n",
+            "docstring" : "Assigns the value, if not already set to the same field. Applies third.\n",
             "key" : 4,
             "lineno" : 0,
             "required" : "optional",
@@ -411,7 +405,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
+            "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,
             "required" : "opt-in-req-out",
@@ -438,7 +432,7 @@
           },
           "patch" : {
             "name" : "patch",
-            "docstring" : "Patches any set value. Applies second.\n",
+            "docstring" : "Patches any previously set values. Applies second.\n",
             "key" : 3,
             "lineno" : 0,
             "required" : "opt-in-req-out",
@@ -449,7 +443,7 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "Assigns the value, if not already set. Applies third.\n",
+            "docstring" : "Assigns the value, if not already set to the same field. Applies third.\n",
             "key" : 4,
             "lineno" : 0,
             "required" : "optional",
@@ -457,7 +451,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
+            "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,
             "required" : "opt-in-req-out",
@@ -484,7 +478,7 @@
           },
           "patch" : {
             "name" : "patch",
-            "docstring" : "Patches any set value. Applies second.\n",
+            "docstring" : "Patches any previously set values. Applies second.\n",
             "key" : 3,
             "lineno" : 0,
             "required" : "opt-in-req-out",
@@ -495,7 +489,7 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "Assigns the value, if not already set. Applies third.\n",
+            "docstring" : "Assigns the value, if not already set to the same field. Applies third.\n",
             "key" : 4,
             "lineno" : 0,
             "required" : "optional",
@@ -503,7 +497,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
+            "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,
             "required" : "opt-in-req-out",
@@ -530,7 +524,7 @@
           },
           "patch" : {
             "name" : "patch",
-            "docstring" : "Patches any set value. Applies second.\n",
+            "docstring" : "Patches any previously set values. Applies second.\n",
             "key" : 3,
             "lineno" : 0,
             "required" : "opt-in-req-out",
@@ -541,7 +535,7 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "Assigns the value, if not already set. Applies third.\n",
+            "docstring" : "Assigns the value, if not already set to the same field. Applies third.\n",
             "key" : 4,
             "lineno" : 0,
             "required" : "optional",
@@ -549,7 +543,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
+            "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,
             "required" : "opt-in-req-out",
@@ -576,7 +570,7 @@
           },
           "patch" : {
             "name" : "patch",
-            "docstring" : "Patches any set value. Applies second.\n",
+            "docstring" : "Patches any previously set values. Applies second.\n",
             "key" : 3,
             "lineno" : 0,
             "required" : "opt-in-req-out",
@@ -587,7 +581,7 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "Assigns the value, if not already set. Applies third.\n",
+            "docstring" : "Assigns the value, if not already set to the same field. Applies third.\n",
             "key" : 4,
             "lineno" : 0,
             "required" : "optional",
@@ -595,7 +589,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
+            "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,
             "required" : "opt-in-req-out",
@@ -622,7 +616,7 @@
           },
           "patch" : {
             "name" : "patch",
-            "docstring" : "Patches any set value. Applies second.\n",
+            "docstring" : "Patches any previously set values. Applies second.\n",
             "key" : 3,
             "lineno" : 0,
             "required" : "opt-in-req-out",
@@ -633,7 +627,7 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "Assigns the value, if not already set. Applies third.\n",
+            "docstring" : "Assigns the value, if not already set to the same field. Applies third.\n",
             "key" : 4,
             "lineno" : 0,
             "required" : "optional",
@@ -641,7 +635,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
+            "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,
             "required" : "opt-in-req-out",
@@ -668,7 +662,7 @@
           },
           "patch" : {
             "name" : "patch",
-            "docstring" : "Patches any set value. Applies second.\n",
+            "docstring" : "Patches any previously set values. Applies second.\n",
             "key" : 3,
             "lineno" : 0,
             "required" : "opt-in-req-out",
@@ -679,7 +673,7 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "Assigns the value, if not already set. Applies third.\n",
+            "docstring" : "Assigns the value, if not already set to the same field. Applies third.\n",
             "key" : 4,
             "lineno" : 0,
             "required" : "optional",
@@ -687,7 +681,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
+            "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,
             "required" : "opt-in-req-out",
@@ -714,7 +708,7 @@
           },
           "patch" : {
             "name" : "patch",
-            "docstring" : "Patches any set value. Applies second.\n",
+            "docstring" : "Patches any previously set values. Applies second.\n",
             "key" : 3,
             "lineno" : 0,
             "required" : "opt-in-req-out",
@@ -725,7 +719,7 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "Assigns the value, if not already set. Applies third.\n",
+            "docstring" : "Assigns the value, if not already set to the same field. Applies third.\n",
             "key" : 4,
             "lineno" : 0,
             "required" : "optional",
@@ -733,7 +727,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
+            "docstring" : "Patches any set value, including newly set values. Applies last.\n",
             "key" : 6,
             "lineno" : 0,
             "required" : "opt-in-req-out",

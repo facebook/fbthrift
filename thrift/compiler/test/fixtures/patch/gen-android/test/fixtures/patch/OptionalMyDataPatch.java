@@ -36,15 +36,15 @@ public class OptionalMyDataPatch implements TBase, java.io.Serializable, Cloneab
    */
   public final Boolean clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public final MyDataPatch patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public final MyData ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public final MyDataPatch patchAfter;
   public static final int CLEAR = 2;
@@ -106,7 +106,7 @@ public class OptionalMyDataPatch implements TBase, java.io.Serializable, Cloneab
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public MyDataPatch getPatch() {
     return this.patch;
@@ -118,7 +118,7 @@ public class OptionalMyDataPatch implements TBase, java.io.Serializable, Cloneab
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public MyData getEnsure() {
     return this.ensure;
@@ -130,7 +130,7 @@ public class OptionalMyDataPatch implements TBase, java.io.Serializable, Cloneab
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public MyDataPatch getPatchAfter() {
     return this.patchAfter;

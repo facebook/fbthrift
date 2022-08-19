@@ -355,12 +355,12 @@ TEST_F(PatchTest, List) {
         expected.end(),
         value.listValue_ref()->begin(),
         value.listValue_ref()->end());
-    Object patchObj = makePatch(op::PatchOp::Prepend, patchValue);
+    Object patchObj = makePatch(op::PatchOp::Add, patchValue);
     EXPECT_EQ(expected, *applyContainerPatch(patchObj, value).listValue_ref());
     EXPECT_EQ(extractMaskFromPatch(patchObj), allMask());
   }
   {
-    Object patchObj = makePatch(op::PatchOp::Prepend, emptyValue);
+    Object patchObj = makePatch(op::PatchOp::Add, emptyValue);
     expectNoop(patchObj);
   }
 
@@ -418,29 +418,6 @@ TEST_F(PatchTest, List) {
   {
     Object patchObj = makePatch(op::PatchOp::Add, emptySet);
     expectNoop(patchObj);
-  }
-
-  // Combination
-  {
-    auto patchObj = patchAddOperation(
-        patchAddOperation(
-            patchAddOperation(
-                makePatch(
-                    op::PatchOp::Add,
-                    asValueStruct<type::set<type::binary_t>>(std::set{"best"})),
-                op::PatchOp::Remove,
-                asValueStruct<type::set<type::binary_t>>(std::set{"test"})),
-            op::PatchOp::Put,
-            value),
-        op::PatchOp::Prepend,
-        asValueStruct<type::list<type::binary_t>>(std::vector{"the"}));
-
-    auto expected = asValueStruct<type::list<type::binary_t>>(
-        std::vector{"the", "best", "test"});
-    EXPECT_EQ(
-        *expected.listValue_ref(),
-        *applyContainerPatch(patchObj, value).listValue_ref());
-    EXPECT_EQ(extractMaskFromPatch(patchObj), allMask());
   }
 }
 

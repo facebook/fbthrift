@@ -60,23 +60,20 @@ public enum PatchOp implements com.facebook.thrift.TEnum {
    */
   Remove(7),
   /**
-   * Add if not present.
-   * 
-   * A key/value-based add for set/list and 'saturating add' for numeric/'counting'
-   * types.
+   * Add/prepend a value,with the following semantics:
+   * - Key/value-based 'add' for set;
+   * - 'prepend' for list, string, or binary; and
+   * - saturating 'add' for numeric/counting types.
    */
   Add(8),
   /**
-   * Add even if present.
-   * 
-   * Identical to 'add' for set, 'append' for list, overwriting
-   * 'update or insert' for maps, 'invert' for boolean.
+   * Put/append/invert a value, with the following semantics:
+   * - Identical to 'add' for set;
+   * - 'update or insert' for maps;
+   * - 'append' for list, string or binary; and
+   * - 'invert' for boolean.
    */
   Put(9),
-  /**
-   * Add to the beginning of a list, string, or binary value.
-   */
-  Prepend(10),
   Unspecified(0);
 
   private final int value;
@@ -116,8 +113,6 @@ public enum PatchOp implements com.facebook.thrift.TEnum {
         return Add;
       case 9:
         return Put;
-      case 10:
-        return Prepend;
       case 0:
         return Unspecified;
       default:

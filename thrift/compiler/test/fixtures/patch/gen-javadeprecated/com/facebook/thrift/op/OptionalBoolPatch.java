@@ -36,15 +36,15 @@ public class OptionalBoolPatch implements TBase, java.io.Serializable, Cloneable
    */
   public boolean clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public BoolPatch patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public boolean ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public BoolPatch patchAfter;
   public static final int CLEAR = 2;
@@ -205,14 +205,14 @@ public class OptionalBoolPatch implements TBase, java.io.Serializable, Cloneable
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public BoolPatch getPatch() {
     return this.patch;
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public OptionalBoolPatch setPatch(BoolPatch patch) {
     this.patch = patch;
@@ -235,14 +235,14 @@ public class OptionalBoolPatch implements TBase, java.io.Serializable, Cloneable
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public boolean isEnsure() {
     return this.ensure;
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public OptionalBoolPatch setEnsure(boolean ensure) {
     this.ensure = ensure;
@@ -264,14 +264,14 @@ public class OptionalBoolPatch implements TBase, java.io.Serializable, Cloneable
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public BoolPatch getPatchAfter() {
     return this.patchAfter;
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public OptionalBoolPatch setPatchAfter(BoolPatch patchAfter) {
     this.patchAfter = patchAfter;

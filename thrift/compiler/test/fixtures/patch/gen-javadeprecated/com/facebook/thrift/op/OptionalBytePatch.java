@@ -36,15 +36,15 @@ public class OptionalBytePatch implements TBase, java.io.Serializable, Cloneable
    */
   public boolean clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public BytePatch patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public byte ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public BytePatch patchAfter;
   public static final int CLEAR = 2;
@@ -205,14 +205,14 @@ public class OptionalBytePatch implements TBase, java.io.Serializable, Cloneable
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public BytePatch getPatch() {
     return this.patch;
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public OptionalBytePatch setPatch(BytePatch patch) {
     this.patch = patch;
@@ -235,14 +235,14 @@ public class OptionalBytePatch implements TBase, java.io.Serializable, Cloneable
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public byte getEnsure() {
     return this.ensure;
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public OptionalBytePatch setEnsure(byte ensure) {
     this.ensure = ensure;
@@ -264,14 +264,14 @@ public class OptionalBytePatch implements TBase, java.io.Serializable, Cloneable
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public BytePatch getPatchAfter() {
     return this.patchAfter;
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public OptionalBytePatch setPatchAfter(BytePatch patchAfter) {
     this.patchAfter = patchAfter;

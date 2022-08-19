@@ -36,15 +36,15 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
    */
   public boolean clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public MyStructField22Patch patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public Set<String> ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public MyStructField22Patch patchAfter;
   public static final int CLEAR = 2;
@@ -203,14 +203,14 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public MyStructField22Patch getPatch() {
     return this.patch;
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public OptionalMyStructField22Patch setPatch(MyStructField22Patch patch) {
     this.patch = patch;
@@ -233,14 +233,14 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public Set<String> getEnsure() {
     return this.ensure;
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public OptionalMyStructField22Patch setEnsure(Set<String> ensure) {
     this.ensure = ensure;
@@ -263,14 +263,14 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public MyStructField22Patch getPatchAfter() {
     return this.patchAfter;
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public OptionalMyStructField22Patch setPatchAfter(MyStructField22Patch patchAfter) {
     this.patchAfter = patchAfter;

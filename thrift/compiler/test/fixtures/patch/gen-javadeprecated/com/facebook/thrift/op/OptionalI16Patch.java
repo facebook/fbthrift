@@ -36,15 +36,15 @@ public class OptionalI16Patch implements TBase, java.io.Serializable, Cloneable,
    */
   public boolean clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public I16Patch patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public short ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public I16Patch patchAfter;
   public static final int CLEAR = 2;
@@ -205,14 +205,14 @@ public class OptionalI16Patch implements TBase, java.io.Serializable, Cloneable,
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public I16Patch getPatch() {
     return this.patch;
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public OptionalI16Patch setPatch(I16Patch patch) {
     this.patch = patch;
@@ -235,14 +235,14 @@ public class OptionalI16Patch implements TBase, java.io.Serializable, Cloneable,
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public short getEnsure() {
     return this.ensure;
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public OptionalI16Patch setEnsure(short ensure) {
     this.ensure = ensure;
@@ -264,14 +264,14 @@ public class OptionalI16Patch implements TBase, java.io.Serializable, Cloneable,
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public I16Patch getPatchAfter() {
     return this.patchAfter;
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public OptionalI16Patch setPatchAfter(I16Patch patchAfter) {
     this.patchAfter = patchAfter;

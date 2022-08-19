@@ -459,6 +459,22 @@ class MyDataPatch(metaclass=_fbthrift_python_types.StructMeta):
             None,  # default value
             None,  # adapter class
         ),
+        (
+            5,  # id
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
+            "ensure",  # name
+            lambda: _fbthrift_python_types.StructTypeInfo(MyData),  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+        (
+            6,  # id
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
+            "patchAfter",  # name
+            lambda: _fbthrift_python_types.StructTypeInfo(MyDataFieldPatch),  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
     )
 
     @staticmethod
@@ -595,6 +611,14 @@ class InnerUnionFieldPatch(metaclass=_fbthrift_python_types.StructMeta):
 
 class InnerUnionPatch(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
+        (
+            1,  # id
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
+            "assign",  # name
+            lambda: _fbthrift_python_types.StructTypeInfo(InnerUnion),  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
         (
             2,  # id
             _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
@@ -779,6 +803,14 @@ class MyUnionFieldPatch(metaclass=_fbthrift_python_types.StructMeta):
 
 class MyUnionPatch(metaclass=_fbthrift_python_types.StructMeta):
     _fbthrift_SPEC = (
+        (
+            1,  # id
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
+            "assign",  # name
+            lambda: _fbthrift_python_types.StructTypeInfo(MyUnion),  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
         (
             2,  # id
             _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
@@ -1148,17 +1180,17 @@ class MyStructField21Patch(metaclass=_fbthrift_python_types.StructMeta):
             None,  # adapter class
         ),
         (
-            9,  # id
+            8,  # id
             _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
-            "append",  # name
+            "prepend",  # name
             lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.typeinfo_i16),  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
-            10,  # id
+            9,  # id
             _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
-            "prepend",  # name
+            "append",  # name
             lambda: _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.typeinfo_i16),  # typeinfo
             None,  # default value
             None,  # adapter class
@@ -1404,6 +1436,14 @@ class MyStructField23Patch(metaclass=_fbthrift_python_types.StructMeta):
             None,  # adapter class
         ),
         (
+            5,  # id
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
+            "add",  # name
+            lambda: _fbthrift_python_types.MapTypeInfo(_fbthrift_python_types.typeinfo_string, _fbthrift_python_types.typeinfo_string),  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+        (
             9,  # id
             _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "put",  # name
@@ -1527,6 +1567,22 @@ class MyStructPatch(metaclass=_fbthrift_python_types.StructMeta):
             3,  # id
             _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "patch",  # name
+            lambda: _fbthrift_python_types.StructTypeInfo(MyStructFieldPatch),  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+        (
+            5,  # id
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
+            "ensure",  # name
+            lambda: _fbthrift_python_types.StructTypeInfo(MyStruct),  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+        (
+            6,  # id
+            _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
+            "patchAfter",  # name
             lambda: _fbthrift_python_types.StructTypeInfo(MyStructFieldPatch),  # typeinfo
             None,  # default value
             None,  # adapter class

@@ -46,16 +46,16 @@ class patch_generator {
   //
   // The fields in the generated struct have the same id and name as the
   // original field, but the type is replaced with an associated patch type. For
-  // example:
-  //
-  //   struct BarPatch {
-  //     1: FooPatch myFoo;
-  //   }
-  //
-  // would be generated for the struct:
+  // example, for
   //
   //   struct Bar {
   //     1: Foo myFoo;
+  //   }
+  //
+  // the following struct is generated:
+  //
+  //   struct BarPatch {
+  //     1: FooPatch myFoo;
   //   }
   //
   t_struct& add_field_patch(const t_const& annot, t_structured& node);
@@ -72,8 +72,14 @@ class patch_generator {
   //     // Clears a value. Applies first.
   //     bool clear;
   //
-  //     // Patches a value. Applies second.
+  //     // Patches any set value. Applies second.
   //     Patch patch;
+  //
+  //     // The value to use for each field, if not present.
+  //     Value ensure;
+  //
+  //     // Patches any set value, including newly set values. Applies fourth.
+  //     Patch patchAfter;
   //   }
   //
   t_struct& add_struct_patch(
@@ -101,6 +107,8 @@ class patch_generator {
   t_struct& add_union_patch(
       const t_node& annot, t_union& value_type, t_type_ref patch_type);
 
+  // TODO(afuller): This is no longer needed, migrate all usage and remove.
+  //
   // Add an optional patch representation for the patch type, and return a
   // reference to it.
   //

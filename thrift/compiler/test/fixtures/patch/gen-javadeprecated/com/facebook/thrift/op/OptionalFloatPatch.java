@@ -36,15 +36,15 @@ public class OptionalFloatPatch implements TBase, java.io.Serializable, Cloneabl
    */
   public boolean clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public FloatPatch patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public float ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public FloatPatch patchAfter;
   public static final int CLEAR = 2;
@@ -205,14 +205,14 @@ public class OptionalFloatPatch implements TBase, java.io.Serializable, Cloneabl
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public FloatPatch getPatch() {
     return this.patch;
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public OptionalFloatPatch setPatch(FloatPatch patch) {
     this.patch = patch;
@@ -235,14 +235,14 @@ public class OptionalFloatPatch implements TBase, java.io.Serializable, Cloneabl
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public float getEnsure() {
     return this.ensure;
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public OptionalFloatPatch setEnsure(float ensure) {
     this.ensure = ensure;
@@ -264,14 +264,14 @@ public class OptionalFloatPatch implements TBase, java.io.Serializable, Cloneabl
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public FloatPatch getPatchAfter() {
     return this.patchAfter;
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public OptionalFloatPatch setPatchAfter(FloatPatch patchAfter) {
     this.patchAfter = patchAfter;

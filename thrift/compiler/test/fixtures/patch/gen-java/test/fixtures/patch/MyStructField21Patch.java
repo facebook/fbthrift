@@ -27,7 +27,7 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
     public MyStructField21Patch(
         @com.facebook.swift.codec.ThriftField(value=1, name="assign", requiredness=Requiredness.OPTIONAL) final List<Short> assign,
         @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE) final boolean clear,
-        @com.facebook.swift.codec.ThriftField(value=10, name="prepend", requiredness=Requiredness.NONE) final List<Short> prepend,
+        @com.facebook.swift.codec.ThriftField(value=8, name="prepend", requiredness=Requiredness.NONE) final List<Short> prepend,
         @com.facebook.swift.codec.ThriftField(value=9, name="append", requiredness=Requiredness.NONE) final List<Short> append
     ) {
         this.assign = assign;
@@ -67,7 +67,7 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
     
         public boolean isClear() { return clear; }
     
-            @com.facebook.swift.codec.ThriftField(value=10, name="prepend", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=8, name="prepend", requiredness=Requiredness.NONE)
         public Builder setPrepend(List<Short> prepend) {
             this.prepend = prepend;
             return this;
@@ -113,8 +113,8 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
     public static final int _CLEAR = 2;
     private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
         private final List<Short> prepend;
-    public static final int _PREPEND = 10;
-    private static final TField PREPEND_FIELD_DESC = new TField("prepend", TType.LIST, (short)10);
+    public static final int _PREPEND = 8;
+    private static final TField PREPEND_FIELD_DESC = new TField("prepend", TType.LIST, (short)8);
         private final List<Short> append;
     public static final int _APPEND = 9;
     private static final TField APPEND_FIELD_DESC = new TField("append", TType.LIST, (short)9);
@@ -125,9 +125,9 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
       NAMES_TO_IDS.put("clear", 2);
       THRIFT_NAMES_TO_IDS.put("clear", 2);
       FIELD_METADATA.put(2, CLEAR_FIELD_DESC);
-      NAMES_TO_IDS.put("prepend", 10);
-      THRIFT_NAMES_TO_IDS.put("prepend", 10);
-      FIELD_METADATA.put(10, PREPEND_FIELD_DESC);
+      NAMES_TO_IDS.put("prepend", 8);
+      THRIFT_NAMES_TO_IDS.put("prepend", 8);
+      FIELD_METADATA.put(8, PREPEND_FIELD_DESC);
       NAMES_TO_IDS.put("append", 9);
       THRIFT_NAMES_TO_IDS.put("append", 9);
       FIELD_METADATA.put(9, APPEND_FIELD_DESC);
@@ -147,7 +147,7 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=10, name="prepend", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=8, name="prepend", requiredness=Requiredness.NONE)
     public List<Short> getPrepend() { return prepend; }
     
     

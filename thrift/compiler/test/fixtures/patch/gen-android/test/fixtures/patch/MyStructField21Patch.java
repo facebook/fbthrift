@@ -28,7 +28,7 @@ public class MyStructField21Patch implements TBase, java.io.Serializable, Clonea
   private static final TStruct STRUCT_DESC = new TStruct("MyStructField21Patch");
   private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.LIST, (short)1);
   private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
-  private static final TField PREPEND_FIELD_DESC = new TField("prepend", TType.LIST, (short)10);
+  private static final TField PREPEND_FIELD_DESC = new TField("prepend", TType.LIST, (short)8);
   private static final TField APPEND_FIELD_DESC = new TField("append", TType.LIST, (short)9);
 
   /**
@@ -49,7 +49,7 @@ public class MyStructField21Patch implements TBase, java.io.Serializable, Clonea
   public final List<Short> append;
   public static final int ASSIGN = 1;
   public static final int CLEAR = 2;
-  public static final int PREPEND = 10;
+  public static final int PREPEND = 8;
   public static final int APPEND = 9;
 
   public MyStructField21Patch(
@@ -292,22 +292,22 @@ public class MyStructField21Patch implements TBase, java.io.Serializable, Clonea
       oprot.writeBool(this.clear);
       oprot.writeFieldEnd();
     }
-    if (this.append != null) {
-      oprot.writeFieldBegin(APPEND_FIELD_DESC);
+    if (this.prepend != null) {
+      oprot.writeFieldBegin(PREPEND_FIELD_DESC);
       {
-        oprot.writeListBegin(new TList(TType.I16, this.append.size()));
-        for (Short _iter23 : this.append)        {
+        oprot.writeListBegin(new TList(TType.I16, this.prepend.size()));
+        for (Short _iter23 : this.prepend)        {
           oprot.writeI16(_iter23);
         }
         oprot.writeListEnd();
       }
       oprot.writeFieldEnd();
     }
-    if (this.prepend != null) {
-      oprot.writeFieldBegin(PREPEND_FIELD_DESC);
+    if (this.append != null) {
+      oprot.writeFieldBegin(APPEND_FIELD_DESC);
       {
-        oprot.writeListBegin(new TList(TType.I16, this.prepend.size()));
-        for (Short _iter24 : this.prepend)        {
+        oprot.writeListBegin(new TList(TType.I16, this.append.size()));
+        for (Short _iter24 : this.append)        {
           oprot.writeI16(_iter24);
         }
         oprot.writeListEnd();

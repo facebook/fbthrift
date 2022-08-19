@@ -36,15 +36,15 @@ public class OptionalMyStructPatch implements TBase, java.io.Serializable, Clone
    */
   public boolean clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public MyStructPatch patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public MyStruct ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public MyStructPatch patchAfter;
   public static final int CLEAR = 2;
@@ -202,14 +202,14 @@ public class OptionalMyStructPatch implements TBase, java.io.Serializable, Clone
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public MyStructPatch getPatch() {
     return this.patch;
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public OptionalMyStructPatch setPatch(MyStructPatch patch) {
     this.patch = patch;
@@ -232,14 +232,14 @@ public class OptionalMyStructPatch implements TBase, java.io.Serializable, Clone
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public MyStruct getEnsure() {
     return this.ensure;
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public OptionalMyStructPatch setEnsure(MyStruct ensure) {
     this.ensure = ensure;
@@ -262,14 +262,14 @@ public class OptionalMyStructPatch implements TBase, java.io.Serializable, Clone
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public MyStructPatch getPatchAfter() {
     return this.patchAfter;
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public OptionalMyStructPatch setPatchAfter(MyStructPatch patchAfter) {
     this.patchAfter = patchAfter;

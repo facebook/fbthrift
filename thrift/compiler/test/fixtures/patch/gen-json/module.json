@@ -616,6 +616,36 @@
               "column" : 0
             }
           }
+        },
+        "ensure" : {
+          "type_enum" : "STRUCT",
+          "spec_args" : "MyData",
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 0,
+              "column" : 0
+            },
+            "end" : {
+              "line" : 0,
+              "column" : 0
+            }
+          }
+        },
+        "patchAfter" : {
+          "type_enum" : "STRUCT",
+          "spec_args" : "MyDataFieldPatch",
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 0,
+              "column" : 0
+            },
+            "end" : {
+              "line" : 0,
+              "column" : 0
+            }
+          }
         }
       },
       "source_range" : {
@@ -743,6 +773,21 @@
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
+        "assign" : {
+          "type_enum" : "STRUCT",
+          "spec_args" : "InnerUnion",
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 0,
+              "column" : 0
+            },
+            "end" : {
+              "line" : 0,
+              "column" : 0
+            }
+          }
+        },
         "clear" : {
           "type_enum" : "BOOL",
           "spec_args" : null,
@@ -959,6 +1004,21 @@
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
+        "assign" : {
+          "type_enum" : "STRUCT",
+          "spec_args" : "MyUnion",
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 0,
+              "column" : 0
+            },
+            "end" : {
+              "line" : 0,
+              "column" : 0
+            }
+          }
+        },
         "clear" : {
           "type_enum" : "BOOL",
           "spec_args" : null,
@@ -1828,6 +1888,21 @@
             }
           }
         },
+        "add" : {
+          "type_enum" : "MAP",
+          "spec_args" : { "key_type" : { "type_enum" : "STRING", "spec_args" : null }, "val_type" : { "type_enum" : "STRING", "spec_args" : null} } ,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 0,
+              "column" : 0
+            },
+            "end" : {
+              "line" : 0,
+              "column" : 0
+            }
+          }
+        },
         "put" : {
           "type_enum" : "MAP",
           "spec_args" : { "key_type" : { "type_enum" : "STRING", "spec_args" : null }, "val_type" : { "type_enum" : "STRING", "spec_args" : null} } ,
@@ -1968,6 +2043,36 @@
           }
         },
         "patch" : {
+          "type_enum" : "STRUCT",
+          "spec_args" : "MyStructFieldPatch",
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 0,
+              "column" : 0
+            },
+            "end" : {
+              "line" : 0,
+              "column" : 0
+            }
+          }
+        },
+        "ensure" : {
+          "type_enum" : "STRUCT",
+          "spec_args" : "MyStruct",
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 0,
+              "column" : 0
+            },
+            "end" : {
+              "line" : 0,
+              "column" : 0
+            }
+          }
+        },
+        "patchAfter" : {
           "type_enum" : "STRUCT",
           "spec_args" : "MyStructFieldPatch",
           "required" : true,

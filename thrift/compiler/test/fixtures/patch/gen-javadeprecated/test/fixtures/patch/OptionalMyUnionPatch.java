@@ -36,15 +36,15 @@ public class OptionalMyUnionPatch implements TBase, java.io.Serializable, Clonea
    */
   public boolean clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public MyUnionPatch patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public MyUnion ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public MyUnionPatch patchAfter;
   public static final int CLEAR = 2;
@@ -202,14 +202,14 @@ public class OptionalMyUnionPatch implements TBase, java.io.Serializable, Clonea
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public MyUnionPatch getPatch() {
     return this.patch;
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public OptionalMyUnionPatch setPatch(MyUnionPatch patch) {
     this.patch = patch;
@@ -232,14 +232,14 @@ public class OptionalMyUnionPatch implements TBase, java.io.Serializable, Clonea
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public MyUnion getEnsure() {
     return this.ensure;
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public OptionalMyUnionPatch setEnsure(MyUnion ensure) {
     this.ensure = ensure;
@@ -262,14 +262,14 @@ public class OptionalMyUnionPatch implements TBase, java.io.Serializable, Clonea
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public MyUnionPatch getPatchAfter() {
     return this.patchAfter;
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public OptionalMyUnionPatch setPatchAfter(MyUnionPatch patchAfter) {
     this.patchAfter = patchAfter;

@@ -55,7 +55,6 @@ class PatchOp:
   Remove = 7
   Add = 8
   Put = 9
-  Prepend = 10
   Unspecified = 0
 
   _VALUES_TO_NAMES = {
@@ -68,7 +67,6 @@ class PatchOp:
     7: "Remove",
     8: "Add",
     9: "Put",
-    10: "Prepend",
     0: "Unspecified",
   }
 
@@ -82,7 +80,6 @@ class PatchOp:
     "Remove": 7,
     "Add": 8,
     "Put": 9,
-    "Prepend": 10,
     "Unspecified": 0,
   }
 
@@ -1179,8 +1176,8 @@ class StringPatch:
   
   If set, all other patch operations are ignored.
    - clear: Clear a given string.
-   - append: Append to a given value.
    - prepend: Prepend to a given value.
+   - append: Append to a given value.
   """
 
   thrift_spec = None
@@ -1213,14 +1210,14 @@ class StringPatch:
           self.clear = iprot.readBool()
         else:
           iprot.skip(ftype)
+      elif fid == 8:
+        if ftype == TType.STRING:
+          self.prepend = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
       elif fid == 9:
         if ftype == TType.STRING:
           self.append = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
-        else:
-          iprot.skip(ftype)
-      elif fid == 10:
-        if ftype == TType.STRING:
-          self.prepend = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
         else:
           iprot.skip(ftype)
       else:
@@ -1244,13 +1241,13 @@ class StringPatch:
       oprot.writeFieldBegin('clear', TType.BOOL, 2)
       oprot.writeBool(self.clear)
       oprot.writeFieldEnd()
+    if self.prepend != None:
+      oprot.writeFieldBegin('prepend', TType.STRING, 8)
+      oprot.writeString(self.prepend.encode('utf-8')) if UTF8STRINGS and not isinstance(self.prepend, bytes) else oprot.writeString(self.prepend)
+      oprot.writeFieldEnd()
     if self.append != None:
       oprot.writeFieldBegin('append', TType.STRING, 9)
       oprot.writeString(self.append.encode('utf-8')) if UTF8STRINGS and not isinstance(self.append, bytes) else oprot.writeString(self.append)
-      oprot.writeFieldEnd()
-    if self.prepend != None:
-      oprot.writeFieldBegin('prepend', TType.STRING, 10)
-      oprot.writeString(self.prepend.encode('utf-8')) if UTF8STRINGS and not isinstance(self.prepend, bytes) else oprot.writeString(self.prepend)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
@@ -1271,10 +1268,10 @@ class StringPatch:
       self.assign = json_obj['assign']
     if 'clear' in json_obj and json_obj['clear'] is not None:
       self.clear = json_obj['clear']
-    if 'append' in json_obj and json_obj['append'] is not None:
-      self.append = json_obj['append']
     if 'prepend' in json_obj and json_obj['prepend'] is not None:
       self.prepend = json_obj['prepend']
+    if 'append' in json_obj and json_obj['append'] is not None:
+      self.append = json_obj['append']
 
   def __repr__(self):
     L = []
@@ -1287,14 +1284,14 @@ class StringPatch:
       value = pprint.pformat(self.clear, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    clear=%s' % (value))
-    if self.append is not None:
-      value = pprint.pformat(self.append, indent=0)
-      value = padding.join(value.splitlines(True))
-      L.append('    append=%s' % (value))
     if self.prepend is not None:
       value = pprint.pformat(self.prepend, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    prepend=%s' % (value))
+    if self.append is not None:
+      value = pprint.pformat(self.append, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    append=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -1310,8 +1307,8 @@ class StringPatch:
     return (
       'assign',
       'clear',
-      'append',
       'prepend',
+      'append',
     )
 
   # Override the __hash__ function for Python3 - t10434117
@@ -1447,9 +1444,9 @@ class OptionalBoolPatch:
   """
   Attributes:
    - clear: Clears any set value. Applies first.
-   - patch: Patches any set value. Applies second.
-   - ensure: Assigns the value, if not already set. Applies third.
-   - patchAfter: Patches any set value, including newly set values. Applies fourth.
+   - patch: Patches any previously set values. Applies second.
+   - ensure: Assigns the value, if not already set to the same field. Applies third.
+   - patchAfter: Patches any set value, including newly set values. Applies last.
   """
 
   thrift_spec = None
@@ -1609,9 +1606,9 @@ class OptionalBytePatch:
   """
   Attributes:
    - clear: Clears any set value. Applies first.
-   - patch: Patches any set value. Applies second.
-   - ensure: Assigns the value, if not already set. Applies third.
-   - patchAfter: Patches any set value, including newly set values. Applies fourth.
+   - patch: Patches any previously set values. Applies second.
+   - ensure: Assigns the value, if not already set to the same field. Applies third.
+   - patchAfter: Patches any set value, including newly set values. Applies last.
   """
 
   thrift_spec = None
@@ -1773,9 +1770,9 @@ class OptionalI16Patch:
   """
   Attributes:
    - clear: Clears any set value. Applies first.
-   - patch: Patches any set value. Applies second.
-   - ensure: Assigns the value, if not already set. Applies third.
-   - patchAfter: Patches any set value, including newly set values. Applies fourth.
+   - patch: Patches any previously set values. Applies second.
+   - ensure: Assigns the value, if not already set to the same field. Applies third.
+   - patchAfter: Patches any set value, including newly set values. Applies last.
   """
 
   thrift_spec = None
@@ -1937,9 +1934,9 @@ class OptionalI32Patch:
   """
   Attributes:
    - clear: Clears any set value. Applies first.
-   - patch: Patches any set value. Applies second.
-   - ensure: Assigns the value, if not already set. Applies third.
-   - patchAfter: Patches any set value, including newly set values. Applies fourth.
+   - patch: Patches any previously set values. Applies second.
+   - ensure: Assigns the value, if not already set to the same field. Applies third.
+   - patchAfter: Patches any set value, including newly set values. Applies last.
   """
 
   thrift_spec = None
@@ -2101,9 +2098,9 @@ class OptionalI64Patch:
   """
   Attributes:
    - clear: Clears any set value. Applies first.
-   - patch: Patches any set value. Applies second.
-   - ensure: Assigns the value, if not already set. Applies third.
-   - patchAfter: Patches any set value, including newly set values. Applies fourth.
+   - patch: Patches any previously set values. Applies second.
+   - ensure: Assigns the value, if not already set to the same field. Applies third.
+   - patchAfter: Patches any set value, including newly set values. Applies last.
   """
 
   thrift_spec = None
@@ -2263,9 +2260,9 @@ class OptionalFloatPatch:
   """
   Attributes:
    - clear: Clears any set value. Applies first.
-   - patch: Patches any set value. Applies second.
-   - ensure: Assigns the value, if not already set. Applies third.
-   - patchAfter: Patches any set value, including newly set values. Applies fourth.
+   - patch: Patches any previously set values. Applies second.
+   - ensure: Assigns the value, if not already set to the same field. Applies third.
+   - patchAfter: Patches any set value, including newly set values. Applies last.
   """
 
   thrift_spec = None
@@ -2425,9 +2422,9 @@ class OptionalDoublePatch:
   """
   Attributes:
    - clear: Clears any set value. Applies first.
-   - patch: Patches any set value. Applies second.
-   - ensure: Assigns the value, if not already set. Applies third.
-   - patchAfter: Patches any set value, including newly set values. Applies fourth.
+   - patch: Patches any previously set values. Applies second.
+   - ensure: Assigns the value, if not already set to the same field. Applies third.
+   - patchAfter: Patches any set value, including newly set values. Applies last.
   """
 
   thrift_spec = None
@@ -2587,9 +2584,9 @@ class OptionalStringPatch:
   """
   Attributes:
    - clear: Clears any set value. Applies first.
-   - patch: Patches any set value. Applies second.
-   - ensure: Assigns the value, if not already set. Applies third.
-   - patchAfter: Patches any set value, including newly set values. Applies fourth.
+   - patch: Patches any previously set values. Applies second.
+   - ensure: Assigns the value, if not already set to the same field. Applies third.
+   - patchAfter: Patches any set value, including newly set values. Applies last.
   """
 
   thrift_spec = None
@@ -2749,9 +2746,9 @@ class OptionalBinaryPatch:
   """
   Attributes:
    - clear: Clears any set value. Applies first.
-   - patch: Patches any set value. Applies second.
-   - ensure: Assigns the value, if not already set. Applies third.
-   - patchAfter: Patches any set value, including newly set values. Applies fourth.
+   - patch: Patches any previously set values. Applies second.
+   - ensure: Assigns the value, if not already set to the same field. Applies third.
+   - patchAfter: Patches any set value, including newly set values. Applies last.
   """
 
   thrift_spec = None
@@ -3160,9 +3157,8 @@ StringPatch.thrift_spec = (
   None, # 5
   None, # 6
   None, # 7
-  None, # 8
+  (8, TType.STRING, 'prepend', True, None, 2, ), # 8
   (9, TType.STRING, 'append', True, None, 2, ), # 9
-  (10, TType.STRING, 'prepend', True, None, 2, ), # 10
 )
 
 StringPatch.thrift_struct_annotations = {
@@ -3170,19 +3166,19 @@ StringPatch.thrift_struct_annotations = {
 StringPatch.thrift_field_annotations = {
 }
 
-def StringPatch__init__(self, assign=None, clear=None, append=None, prepend=None,):
+def StringPatch__init__(self, assign=None, clear=None, prepend=None, append=None,):
   self.assign = assign
   self.clear = clear
-  self.append = append
   self.prepend = prepend
+  self.append = append
 
 StringPatch.__init__ = StringPatch__init__
 
 def StringPatch__setstate__(self, state):
   state.setdefault('assign', None)
   state.setdefault('clear', None)
-  state.setdefault('append', None)
   state.setdefault('prepend', None)
+  state.setdefault('append', None)
   self.__dict__ = state
 
 StringPatch.__getstate__ = lambda self: self.__dict__.copy()

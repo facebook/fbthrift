@@ -29,6 +29,8 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
   private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.STRUCT, (short)1);
   private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
   private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
+  private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.STRUCT, (short)5);
+  private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)6);
 
   /**
    * Assigns a value. If set, all other operations are ignored.
@@ -39,12 +41,22 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
    */
   public boolean clear;
   /**
-   * Patches a value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public MyDataFieldPatch patch;
+  /**
+   * Initlaize fields, using the given defaults. Applies third.
+   */
+  public MyData ensure;
+  /**
+   * Patches any set value, including newly set values. Applies last.
+   */
+  public MyDataFieldPatch patchAfter;
   public static final int ASSIGN = 1;
   public static final int CLEAR = 2;
   public static final int PATCH = 3;
+  public static final int ENSURE = 5;
+  public static final int PATCHAFTER = 6;
 
   // isset id assignments
   private static final int __CLEAR_ISSET_ID = 0;
@@ -60,6 +72,10 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
         new FieldValueMetaData(TType.BOOL)));
     tmpMetaDataMap.put(PATCH, new FieldMetaData("patch", TFieldRequirementType.DEFAULT, 
         new StructMetaData(TType.STRUCT, MyDataFieldPatch.class)));
+    tmpMetaDataMap.put(ENSURE, new FieldMetaData("ensure", TFieldRequirementType.DEFAULT, 
+        new StructMetaData(TType.STRUCT, MyData.class)));
+    tmpMetaDataMap.put(PATCHAFTER, new FieldMetaData("patchAfter", TFieldRequirementType.DEFAULT, 
+        new StructMetaData(TType.STRUCT, MyDataFieldPatch.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -72,28 +88,38 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
 
   public MyDataPatch(
       boolean clear,
-      MyDataFieldPatch patch) {
+      MyDataFieldPatch patch,
+      MyData ensure,
+      MyDataFieldPatch patchAfter) {
     this();
     this.clear = clear;
     setClearIsSet(true);
     this.patch = patch;
+    this.ensure = ensure;
+    this.patchAfter = patchAfter;
   }
 
   public MyDataPatch(
       MyData assign,
       boolean clear,
-      MyDataFieldPatch patch) {
+      MyDataFieldPatch patch,
+      MyData ensure,
+      MyDataFieldPatch patchAfter) {
     this();
     this.assign = assign;
     this.clear = clear;
     setClearIsSet(true);
     this.patch = patch;
+    this.ensure = ensure;
+    this.patchAfter = patchAfter;
   }
 
   public static class Builder {
     private MyData assign;
     private boolean clear;
     private MyDataFieldPatch patch;
+    private MyData ensure;
+    private MyDataFieldPatch patchAfter;
 
     BitSet __optional_isset = new BitSet(1);
 
@@ -116,6 +142,16 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
       return this;
     }
 
+    public Builder setEnsure(final MyData ensure) {
+      this.ensure = ensure;
+      return this;
+    }
+
+    public Builder setPatchAfter(final MyDataFieldPatch patchAfter) {
+      this.patchAfter = patchAfter;
+      return this;
+    }
+
     public MyDataPatch build() {
       MyDataPatch result = new MyDataPatch();
       result.setAssign(this.assign);
@@ -123,6 +159,8 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
         result.setClear(this.clear);
       }
       result.setPatch(this.patch);
+      result.setEnsure(this.ensure);
+      result.setPatchAfter(this.patchAfter);
       return result;
     }
   }
@@ -143,6 +181,12 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
     this.clear = TBaseHelper.deepCopy(other.clear);
     if (other.isSetPatch()) {
       this.patch = TBaseHelper.deepCopy(other.patch);
+    }
+    if (other.isSetEnsure()) {
+      this.ensure = TBaseHelper.deepCopy(other.ensure);
+    }
+    if (other.isSetPatchAfter()) {
+      this.patchAfter = TBaseHelper.deepCopy(other.patchAfter);
     }
   }
 
@@ -210,14 +254,14 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
   }
 
   /**
-   * Patches a value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public MyDataFieldPatch getPatch() {
     return this.patch;
   }
 
   /**
-   * Patches a value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public MyDataPatch setPatch(MyDataFieldPatch patch) {
     this.patch = patch;
@@ -236,6 +280,66 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
   public void setPatchIsSet(boolean __value) {
     if (!__value) {
       this.patch = null;
+    }
+  }
+
+  /**
+   * Initlaize fields, using the given defaults. Applies third.
+   */
+  public MyData getEnsure() {
+    return this.ensure;
+  }
+
+  /**
+   * Initlaize fields, using the given defaults. Applies third.
+   */
+  public MyDataPatch setEnsure(MyData ensure) {
+    this.ensure = ensure;
+    return this;
+  }
+
+  public void unsetEnsure() {
+    this.ensure = null;
+  }
+
+  // Returns true if field ensure is set (has been assigned a value) and false otherwise
+  public boolean isSetEnsure() {
+    return this.ensure != null;
+  }
+
+  public void setEnsureIsSet(boolean __value) {
+    if (!__value) {
+      this.ensure = null;
+    }
+  }
+
+  /**
+   * Patches any set value, including newly set values. Applies last.
+   */
+  public MyDataFieldPatch getPatchAfter() {
+    return this.patchAfter;
+  }
+
+  /**
+   * Patches any set value, including newly set values. Applies last.
+   */
+  public MyDataPatch setPatchAfter(MyDataFieldPatch patchAfter) {
+    this.patchAfter = patchAfter;
+    return this;
+  }
+
+  public void unsetPatchAfter() {
+    this.patchAfter = null;
+  }
+
+  // Returns true if field patchAfter is set (has been assigned a value) and false otherwise
+  public boolean isSetPatchAfter() {
+    return this.patchAfter != null;
+  }
+
+  public void setPatchAfterIsSet(boolean __value) {
+    if (!__value) {
+      this.patchAfter = null;
     }
   }
 
@@ -265,6 +369,22 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
       }
       break;
 
+    case ENSURE:
+      if (__value == null) {
+        unsetEnsure();
+      } else {
+        setEnsure((MyData)__value);
+      }
+      break;
+
+    case PATCHAFTER:
+      if (__value == null) {
+        unsetPatchAfter();
+      } else {
+        setPatchAfter((MyDataFieldPatch)__value);
+      }
+      break;
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -280,6 +400,12 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
 
     case PATCH:
       return getPatch();
+
+    case ENSURE:
+      return getEnsure();
+
+    case PATCHAFTER:
+      return getPatchAfter();
 
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -302,12 +428,16 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
 
     if (!TBaseHelper.equalsNobinary(this.isSetPatch(), that.isSetPatch(), this.patch, that.patch)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetEnsure(), that.isSetEnsure(), this.ensure, that.ensure)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetPatchAfter(), that.isSetPatchAfter(), this.patchAfter, that.patchAfter)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {assign, clear, patch});
+    return Arrays.deepHashCode(new Object[] {assign, clear, patch, ensure, patchAfter});
   }
 
   @Override
@@ -343,6 +473,22 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(patch, other.patch);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetEnsure()).compareTo(other.isSetEnsure());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(ensure, other.ensure);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetPatchAfter()).compareTo(other.isSetPatchAfter());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(patchAfter, other.patchAfter);
     if (lastComparison != 0) { 
       return lastComparison;
     }
@@ -384,6 +530,22 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case ENSURE:
+          if (__field.type == TType.STRUCT) {
+            this.ensure = new MyData();
+            this.ensure.read(iprot);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case PATCHAFTER:
+          if (__field.type == TType.STRUCT) {
+            this.patchAfter = new MyDataFieldPatch();
+            this.patchAfter.read(iprot);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -414,6 +576,16 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
     if (this.patch != null) {
       oprot.writeFieldBegin(PATCH_FIELD_DESC);
       this.patch.write(oprot);
+      oprot.writeFieldEnd();
+    }
+    if (this.ensure != null) {
+      oprot.writeFieldBegin(ENSURE_FIELD_DESC);
+      this.ensure.write(oprot);
+      oprot.writeFieldEnd();
+    }
+    if (this.patchAfter != null) {
+      oprot.writeFieldBegin(PATCH_AFTER_FIELD_DESC);
+      this.patchAfter.write(oprot);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -465,6 +637,28 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
       sb.append("null");
     } else {
       sb.append(TBaseHelper.toString(this.getPatch(), indent + 1, prettyPrint));
+    }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("ensure");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getEnsure() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getEnsure(), indent + 1, prettyPrint));
+    }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("patchAfter");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getPatchAfter() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getPatchAfter(), indent + 1, prettyPrint));
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

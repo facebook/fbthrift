@@ -26,27 +26,33 @@ import com.facebook.thrift.protocol.*;
 @SuppressWarnings({ "unused", "serial" })
 public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable, Comparable<InnerUnionPatch> {
   private static final TStruct STRUCT_DESC = new TStruct("InnerUnionPatch");
+  private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.STRUCT, (short)1);
   private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
   private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
   private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.STRUCT, (short)4);
   private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)6);
 
   /**
+   * Assigns a value. If set, all other operations are ignored.
+   */
+  public InnerUnion assign;
+  /**
    * Clears any set value. Applies first.
    */
   public boolean clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public InnerUnionFieldPatch patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public InnerUnion ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public InnerUnionFieldPatch patchAfter;
+  public static final int ASSIGN = 1;
   public static final int CLEAR = 2;
   public static final int PATCH = 3;
   public static final int ENSURE = 4;
@@ -60,6 +66,8 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable, 
 
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
+    tmpMetaDataMap.put(ASSIGN, new FieldMetaData("assign", TFieldRequirementType.DEFAULT, 
+        new StructMetaData(TType.STRUCT, InnerUnion.class)));
     tmpMetaDataMap.put(CLEAR, new FieldMetaData("clear", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.BOOL)));
     tmpMetaDataMap.put(PATCH, new FieldMetaData("patch", TFieldRequirementType.DEFAULT, 
@@ -79,11 +87,13 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable, 
   }
 
   public InnerUnionPatch(
+      InnerUnion assign,
       boolean clear,
       InnerUnionFieldPatch patch,
       InnerUnion ensure,
       InnerUnionFieldPatch patchAfter) {
     this();
+    this.assign = assign;
     this.clear = clear;
     setClearIsSet(true);
     this.patch = patch;
@@ -92,6 +102,7 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable, 
   }
 
   public static class Builder {
+    private InnerUnion assign;
     private boolean clear;
     private InnerUnionFieldPatch patch;
     private InnerUnion ensure;
@@ -100,6 +111,11 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable, 
     BitSet __optional_isset = new BitSet(1);
 
     public Builder() {
+    }
+
+    public Builder setAssign(final InnerUnion assign) {
+      this.assign = assign;
+      return this;
     }
 
     public Builder setClear(final boolean clear) {
@@ -125,6 +141,7 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable, 
 
     public InnerUnionPatch build() {
       InnerUnionPatch result = new InnerUnionPatch();
+      result.setAssign(this.assign);
       if (__optional_isset.get(__CLEAR_ISSET_ID)) {
         result.setClear(this.clear);
       }
@@ -145,6 +162,9 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable, 
   public InnerUnionPatch(InnerUnionPatch other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
+    if (other.isSetAssign()) {
+      this.assign = TBaseHelper.deepCopy(other.assign);
+    }
     this.clear = TBaseHelper.deepCopy(other.clear);
     if (other.isSetPatch()) {
       this.patch = TBaseHelper.deepCopy(other.patch);
@@ -159,6 +179,36 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable, 
 
   public InnerUnionPatch deepCopy() {
     return new InnerUnionPatch(this);
+  }
+
+  /**
+   * Assigns a value. If set, all other operations are ignored.
+   */
+  public InnerUnion getAssign() {
+    return this.assign;
+  }
+
+  /**
+   * Assigns a value. If set, all other operations are ignored.
+   */
+  public InnerUnionPatch setAssign(InnerUnion assign) {
+    this.assign = assign;
+    return this;
+  }
+
+  public void unsetAssign() {
+    this.assign = null;
+  }
+
+  // Returns true if field assign is set (has been assigned a value) and false otherwise
+  public boolean isSetAssign() {
+    return this.assign != null;
+  }
+
+  public void setAssignIsSet(boolean __value) {
+    if (!__value) {
+      this.assign = null;
+    }
   }
 
   /**
@@ -191,14 +241,14 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable, 
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public InnerUnionFieldPatch getPatch() {
     return this.patch;
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public InnerUnionPatch setPatch(InnerUnionFieldPatch patch) {
     this.patch = patch;
@@ -221,14 +271,14 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable, 
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public InnerUnion getEnsure() {
     return this.ensure;
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public InnerUnionPatch setEnsure(InnerUnion ensure) {
     this.ensure = ensure;
@@ -251,14 +301,14 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable, 
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public InnerUnionFieldPatch getPatchAfter() {
     return this.patchAfter;
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public InnerUnionPatch setPatchAfter(InnerUnionFieldPatch patchAfter) {
     this.patchAfter = patchAfter;
@@ -282,6 +332,14 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable, 
 
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
+    case ASSIGN:
+      if (__value == null) {
+        unsetAssign();
+      } else {
+        setAssign((InnerUnion)__value);
+      }
+      break;
+
     case CLEAR:
       if (__value == null) {
         unsetClear();
@@ -321,6 +379,9 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable, 
 
   public Object getFieldValue(int fieldID) {
     switch (fieldID) {
+    case ASSIGN:
+      return getAssign();
+
     case CLEAR:
       return new Boolean(isClear());
 
@@ -348,6 +409,8 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable, 
       return false;
     InnerUnionPatch that = (InnerUnionPatch)_that;
 
+    if (!TBaseHelper.equalsNobinary(this.isSetAssign(), that.isSetAssign(), this.assign, that.assign)) { return false; }
+
     if (!TBaseHelper.equalsNobinary(this.clear, that.clear)) { return false; }
 
     if (!TBaseHelper.equalsNobinary(this.isSetPatch(), that.isSetPatch(), this.patch, that.patch)) { return false; }
@@ -361,7 +424,7 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable, 
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {clear, patch, ensure, patchAfter});
+    return Arrays.deepHashCode(new Object[] {assign, clear, patch, ensure, patchAfter});
   }
 
   @Override
@@ -376,6 +439,14 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable, 
     }
     int lastComparison = 0;
 
+    lastComparison = Boolean.valueOf(isSetAssign()).compareTo(other.isSetAssign());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(assign, other.assign);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
     lastComparison = Boolean.valueOf(isSetClear()).compareTo(other.isSetClear());
     if (lastComparison != 0) {
       return lastComparison;
@@ -422,6 +493,14 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable, 
       }
       switch (__field.id)
       {
+        case ASSIGN:
+          if (__field.type == TType.STRUCT) {
+            this.assign = new InnerUnion();
+            this.assign.read(iprot);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         case CLEAR:
           if (__field.type == TType.BOOL) {
             this.clear = iprot.readBool();
@@ -471,6 +550,11 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable, 
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
+    if (this.assign != null) {
+      oprot.writeFieldBegin(ASSIGN_FIELD_DESC);
+      this.assign.write(oprot);
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldBegin(CLEAR_FIELD_DESC);
     oprot.writeBool(this.clear);
     oprot.writeFieldEnd();
@@ -509,6 +593,17 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable, 
     sb.append(newLine);
     boolean first = true;
 
+    sb.append(indentStr);
+    sb.append("assign");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getAssign() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getAssign(), indent + 1, prettyPrint));
+    }
+    first = false;
+    if (!first) sb.append("," + newLine);
     sb.append(indentStr);
     sb.append("clear");
     sb.append(space);

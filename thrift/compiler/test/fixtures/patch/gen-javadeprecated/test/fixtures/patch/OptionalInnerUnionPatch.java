@@ -36,15 +36,15 @@ public class OptionalInnerUnionPatch implements TBase, java.io.Serializable, Clo
    */
   public boolean clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public InnerUnionPatch patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public InnerUnion ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public InnerUnionPatch patchAfter;
   public static final int CLEAR = 2;
@@ -202,14 +202,14 @@ public class OptionalInnerUnionPatch implements TBase, java.io.Serializable, Clo
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public InnerUnionPatch getPatch() {
     return this.patch;
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public OptionalInnerUnionPatch setPatch(InnerUnionPatch patch) {
     this.patch = patch;
@@ -232,14 +232,14 @@ public class OptionalInnerUnionPatch implements TBase, java.io.Serializable, Clo
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public InnerUnion getEnsure() {
     return this.ensure;
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public OptionalInnerUnionPatch setEnsure(InnerUnion ensure) {
     this.ensure = ensure;
@@ -262,14 +262,14 @@ public class OptionalInnerUnionPatch implements TBase, java.io.Serializable, Clo
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public InnerUnionPatch getPatchAfter() {
     return this.patchAfter;
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public OptionalInnerUnionPatch setPatchAfter(InnerUnionPatch patchAfter) {
     this.patchAfter = patchAfter;

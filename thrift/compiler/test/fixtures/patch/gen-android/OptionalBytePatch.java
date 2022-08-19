@@ -34,15 +34,15 @@ public class OptionalBytePatch implements TBase, java.io.Serializable, Cloneable
    */
   public final Boolean clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public final BytePatch patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public final Byte ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public final BytePatch patchAfter;
   public static final int CLEAR = 2;
@@ -104,7 +104,7 @@ public class OptionalBytePatch implements TBase, java.io.Serializable, Cloneable
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public BytePatch getPatch() {
     return this.patch;
@@ -116,7 +116,7 @@ public class OptionalBytePatch implements TBase, java.io.Serializable, Cloneable
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public Byte getEnsure() {
     return this.ensure;
@@ -128,7 +128,7 @@ public class OptionalBytePatch implements TBase, java.io.Serializable, Cloneable
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public BytePatch getPatchAfter() {
     return this.patchAfter;

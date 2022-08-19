@@ -36,15 +36,15 @@ public class OptionalI32Patch implements TBase, java.io.Serializable, Cloneable,
    */
   public boolean clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public I32Patch patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public int ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public I32Patch patchAfter;
   public static final int CLEAR = 2;
@@ -205,14 +205,14 @@ public class OptionalI32Patch implements TBase, java.io.Serializable, Cloneable,
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public I32Patch getPatch() {
     return this.patch;
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public OptionalI32Patch setPatch(I32Patch patch) {
     this.patch = patch;
@@ -235,14 +235,14 @@ public class OptionalI32Patch implements TBase, java.io.Serializable, Cloneable,
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public int getEnsure() {
     return this.ensure;
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public OptionalI32Patch setEnsure(int ensure) {
     this.ensure = ensure;
@@ -264,14 +264,14 @@ public class OptionalI32Patch implements TBase, java.io.Serializable, Cloneable,
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public I32Patch getPatchAfter() {
     return this.patchAfter;
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public OptionalI32Patch setPatchAfter(I32Patch patchAfter) {
     this.patchAfter = patchAfter;

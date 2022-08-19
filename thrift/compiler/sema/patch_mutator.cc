@@ -151,31 +151,37 @@ struct StructGen {
 struct PatchGen : StructGen {
   // Standardized patch field ids.
   enum t_patch_field_id : t_field_id {
-    // All values.
+    // Common ops.
     kAssignId = 1,
     kClearId = 2,
 
-    // Optional, Union, Struct
-    kPatchId = 3,
-    kEnsureId = 4,
-    kPatchAfterId = 6,
+    // Patch ops.
+    kPatchPriorId = 3, // Union, Struct, Map, List
+    kPatchAfterId = 6, // Union, Struct, Map, List
 
-    // Set, Map, Number
-    kRemoveId = 7,
-    kAddId = 8,
-    kPutId = 9,
+    // Initalizaiton ops.
+    kEnsureUnionId = 4, // Union
+    kEnsureStructId = 5, // Struct
 
-    // List, String, Binary
-    kAppendId = 9,
-    kPrependId = 10,
+    // Container ops.
+    kRemoveId = 7, // Set, Map, List
+    kAddSetId = 8, // Set
+    kAddMapId = 5, // Map
+    kPutId = 9, // Map(, Set)
+
+    // Sequence operators.
+    kPrependId = 8, // List, String, Binary
+    kAppendId = 9, // List, String, Binary
   };
 
-  // {kAssignId}: optional {type} assign (thrift.box);
-  t_field& assign(t_type_ref type) {
+  // {kAssignId}: {type} assign;
+  t_field& assignUnion(t_type_ref type) {
     return doc(
         "Assigns a value. If set, all other operations are ignored.",
-        box(field(kAssignId, type, "assign")));
+        field(kAssignId, type, "assign"));
   }
+  // {kAssignId}: optional {type} assign (thrift.box);
+  t_field& assign(t_type_ref type) { return box(assignUnion(type)); }
 
   // {kClearId}: bool clear;
   t_field& clear() {
@@ -183,45 +189,15 @@ struct PatchGen : StructGen {
         "Clears a value. Applies first.",
         field(kClearId, t_base_type::t_bool(), "clear"));
   }
-  t_field& clearOpt() {
+  t_field& clearUnion() {
     return doc("Clears any set value. Applies first.", clear());
   }
 
-  // {kPatchId}: {patch_type} patch;
-  t_field& patch(t_type_ref patch_type) {
+  // {kPatchPriorId}: {patch_type} patch;
+  t_field& patchPrior(t_type_ref patch_type) {
     return doc(
-        "Patches a value. Applies second.",
-        field(kPatchId, patch_type, "patch"));
-  }
-  t_field& patchOpt(t_type_ref patch_type) {
-    return doc("Patches any set value. Applies second.", patch(patch_type));
-  }
-
-  // {kEnsureId}: {type} ensure;
-  t_field& ensure(t_type_ref type) {
-    return doc(
-        "Assigns the value, if not already set. Applies third.",
-        field(kEnsureId, type, "ensure"));
-  }
-
-  // {kPatchAfterId}: {patch_type} patchAfter;
-  t_field& patchAfter(t_type_ref patch_type) {
-    return doc(
-        "Patches any set value, including newly set values. Applies fourth.",
-        field(kPatchAfterId, patch_type, "patchAfter"));
-  }
-
-  // {kPrependId}: {type} prepend;
-  t_field& prepend(t_type_ref type) {
-    return doc(
-        "Prepends to the front of a given list.",
-        field(kPrependId, type, "prepend"));
-  }
-  // {kAppendId}: {type} append;
-  t_field& append(t_type_ref type) {
-    return doc(
-        "Appends to the back of a given list.",
-        field(kAppendId, type, "append"));
+        "Patches any previously set values. Applies second.",
+        field(kPatchPriorId, patch_type, "patch"));
   }
 
   // {kRemoveId}: {type} remove;
@@ -230,18 +206,61 @@ struct PatchGen : StructGen {
         "Removes entries, if present. Applies thrid.",
         field(kRemoveId, type, "remove"));
   }
+
+  // {kEnsureUnionId}: {type} ensure;
+  t_field& ensureUnion(t_type_ref type) {
+    return doc(
+        "Assigns the value, if not already set to the same field. Applies third.",
+        field(kEnsureUnionId, type, "ensure"));
+  }
+
+  // {kEnsureStructId}: {type} ensure;
+  t_field& ensureStruct(t_type_ref type) {
+    return doc(
+        "Initlaize fields, using the given defaults. Applies third.",
+        field(kEnsureStructId, type, "ensure"));
+  }
+
+  // {kAddMapId}: {type} ensure;
+  t_field& addMap(t_type_ref type) {
+    return doc(
+        "Add the given values, if the keys are not already present. Applies forth.",
+        field(kAddMapId, type, "add"));
+  }
+
   // {kAddId}: {type} add;
-  t_field& add(t_type_ref type) {
+  t_field& addSet(t_type_ref type) {
     return doc(
         "Adds entries, if not already present. Applies fourth.",
-        field(kAddId, type, "add"));
+        field(kAddSetId, type, "add"));
   }
 
   // {kPutId}: {type} put;
   t_field& put(t_type_ref type) {
     return doc(
-        "Adds or replaces the given key/value pairs. Applies Second.",
+        "Adds or replaces the given key/value pairs. Applies fifth.",
         field(kPutId, type, "put"));
+  }
+
+  // {kPrependId}: {type} prepend;
+  t_field& prepend(t_type_ref type) {
+    return doc(
+        "Prepends to the front of a given list.",
+        field(kPrependId, type, "prepend"));
+  }
+
+  // {kAppendId}: {type} append;
+  t_field& append(t_type_ref type) {
+    return doc(
+        "Appends to the back of a given list.",
+        field(kAppendId, type, "append"));
+  }
+
+  // {kPatchAfterId}: {patch_type} patch;
+  t_field& patchAfter(t_type_ref patch_type) {
+    return doc(
+        "Patches any set value, including newly set values. Applies last.",
+        field(kPatchAfterId, patch_type, "patchAfter"));
   }
 };
 
@@ -324,9 +343,9 @@ patch_generator& patch_generator::get_for(
 t_struct& patch_generator::add_optional_patch(
     const t_node& annot, t_type_ref value_type, t_struct& patch_type) {
   PatchGen gen{{annot, gen_prefix_struct(annot, patch_type, "Optional")}};
-  gen.clearOpt();
-  gen.patchOpt(patch_type);
-  box(gen.ensure(value_type));
+  gen.clearUnion();
+  gen.patchPrior(patch_type);
+  box(gen.ensureUnion(value_type));
   gen.patchAfter(patch_type);
   gen.set_adapter("OptionalPatchAdapter", program_);
   return gen;
@@ -349,11 +368,10 @@ t_struct& patch_generator::add_field_patch(
 t_struct& patch_generator::add_union_patch(
     const t_node& annot, t_union& value_type, t_type_ref patch_type) {
   PatchGen gen{{annot, gen_suffix_struct(annot, value_type, "Patch")}};
-  // TODO(afuller): Add 'assign`.
-  gen.clearOpt();
-  gen.patchOpt(patch_type);
-  gen.ensure(value_type);
-  // TODO(afuller): Add 'maybeEnsure'.
+  gen.assignUnion(value_type);
+  gen.clearUnion();
+  gen.patchPrior(patch_type);
+  gen.ensureUnion(value_type);
   gen.patchAfter(patch_type);
   gen.set_adapter("UnionPatchAdapter", program_);
   return gen;
@@ -364,7 +382,9 @@ t_struct& patch_generator::add_struct_patch(
   PatchGen gen{{annot, gen_suffix_struct(annot, value_type, "Patch")}};
   gen.assign(value_type);
   gen.clear();
-  gen.patch(patch_type);
+  gen.patchPrior(patch_type);
+  gen.ensureStruct(value_type);
+  gen.patchAfter(patch_type);
   gen.set_adapter("StructPatchAdapter", program_);
   return gen;
 }
@@ -451,8 +471,8 @@ t_type_ref patch_generator::find_patch_type(
     switch (container->container_type()) {
       case t_container::type::t_list:
         // TODO(afuller): support 'patch'.
+        // TODO(afuller): support 'remove' op.
         // TODO(afuller): support 'replace' op.
-        // TODO(afuller): support 'removeIf' op.
         gen.prepend(field.type());
         gen.append(field.type());
         gen.set_adapter("ListPatchAdapter", program_);
@@ -460,16 +480,16 @@ t_type_ref patch_generator::find_patch_type(
       case t_container::type::t_set:
         // TODO(afuller): support 'replace' op.
         gen.remove(field.type());
-        gen.add(field.type());
+        gen.addSet(field.type());
         gen.set_adapter("SetPatchAdapter", program_);
         break;
       case t_container::type::t_map:
         // TODO(afuller): support 'patch' op.
         // TODO(afuller): support 'remove' op.
-        // TODO(afuller): support 'replace' op.
         // TODO(afuller): support 'removeIf' op.
+        // TODO(afuller): support 'replace' op.
+        gen.addMap(field.type());
         gen.put(field.type());
-        // TODO(afuller): support 'add' op.
         gen.set_adapter("MapPatchAdapter", program_);
         break;
     }

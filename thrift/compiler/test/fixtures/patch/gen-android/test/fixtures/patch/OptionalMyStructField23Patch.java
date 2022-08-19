@@ -36,15 +36,15 @@ public class OptionalMyStructField23Patch implements TBase, java.io.Serializable
    */
   public final Boolean clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public final MyStructField23Patch patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public final Map<String,String> ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public final MyStructField23Patch patchAfter;
   public static final int CLEAR = 2;
@@ -106,7 +106,7 @@ public class OptionalMyStructField23Patch implements TBase, java.io.Serializable
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public MyStructField23Patch getPatch() {
     return this.patch;
@@ -118,7 +118,7 @@ public class OptionalMyStructField23Patch implements TBase, java.io.Serializable
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public Map<String,String> getEnsure() {
     return this.ensure;
@@ -130,7 +130,7 @@ public class OptionalMyStructField23Patch implements TBase, java.io.Serializable
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public MyStructField23Patch getPatchAfter() {
     return this.patchAfter;
@@ -204,17 +204,17 @@ public class OptionalMyStructField23Patch implements TBase, java.io.Serializable
         case ENSURE:
           if (__field.type == TType.MAP) {
             {
-              TMap _map55 = iprot.readMapBegin();
-              tmp_ensure = new HashMap<String,String>(Math.max(0, 2*_map55.size));
-              for (int _i56 = 0; 
-                   (_map55.size < 0) ? iprot.peekMap() : (_i56 < _map55.size); 
-                   ++_i56)
+              TMap _map60 = iprot.readMapBegin();
+              tmp_ensure = new HashMap<String,String>(Math.max(0, 2*_map60.size));
+              for (int _i61 = 0; 
+                   (_map60.size < 0) ? iprot.peekMap() : (_i61 < _map60.size); 
+                   ++_i61)
               {
-                String _key57;
-                String _val58;
-                _key57 = iprot.readString();
-                _val58 = iprot.readString();
-                tmp_ensure.put(_key57, _val58);
+                String _key62;
+                String _val63;
+                _key62 = iprot.readString();
+                _val63 = iprot.readString();
+                tmp_ensure.put(_key62, _val63);
               }
               iprot.readMapEnd();
             }
@@ -267,9 +267,9 @@ public class OptionalMyStructField23Patch implements TBase, java.io.Serializable
         oprot.writeFieldBegin(ENSURE_FIELD_DESC);
         {
           oprot.writeMapBegin(new TMap(TType.STRING, TType.STRING, this.ensure.size()));
-          for (Map.Entry<String, String> _iter59 : this.ensure.entrySet())          {
-            oprot.writeString(_iter59.getKey());
-            oprot.writeString(_iter59.getValue());
+          for (Map.Entry<String, String> _iter64 : this.ensure.entrySet())          {
+            oprot.writeString(_iter64.getKey());
+            oprot.writeString(_iter64.getValue());
           }
           oprot.writeMapEnd();
         }

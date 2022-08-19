@@ -36,15 +36,15 @@ public class OptionalMyStructField21Patch implements TBase, java.io.Serializable
    */
   public final Boolean clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public final MyStructField21Patch patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public final List<Short> ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public final MyStructField21Patch patchAfter;
   public static final int CLEAR = 2;
@@ -106,7 +106,7 @@ public class OptionalMyStructField21Patch implements TBase, java.io.Serializable
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public MyStructField21Patch getPatch() {
     return this.patch;
@@ -118,7 +118,7 @@ public class OptionalMyStructField21Patch implements TBase, java.io.Serializable
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public List<Short> getEnsure() {
     return this.ensure;
@@ -130,7 +130,7 @@ public class OptionalMyStructField21Patch implements TBase, java.io.Serializable
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public MyStructField21Patch getPatchAfter() {
     return this.patchAfter;

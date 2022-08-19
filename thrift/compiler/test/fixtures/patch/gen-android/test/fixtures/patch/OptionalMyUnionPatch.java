@@ -36,15 +36,15 @@ public class OptionalMyUnionPatch implements TBase, java.io.Serializable, Clonea
    */
   public final Boolean clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public final MyUnionPatch patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public final MyUnion ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public final MyUnionPatch patchAfter;
   public static final int CLEAR = 2;
@@ -106,7 +106,7 @@ public class OptionalMyUnionPatch implements TBase, java.io.Serializable, Clonea
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public MyUnionPatch getPatch() {
     return this.patch;
@@ -118,7 +118,7 @@ public class OptionalMyUnionPatch implements TBase, java.io.Serializable, Clonea
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public MyUnion getEnsure() {
     return this.ensure;
@@ -130,7 +130,7 @@ public class OptionalMyUnionPatch implements TBase, java.io.Serializable, Clonea
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public MyUnionPatch getPatchAfter() {
     return this.patchAfter;

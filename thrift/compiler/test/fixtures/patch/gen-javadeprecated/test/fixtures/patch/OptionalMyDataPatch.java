@@ -36,15 +36,15 @@ public class OptionalMyDataPatch implements TBase, java.io.Serializable, Cloneab
    */
   public boolean clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public MyDataPatch patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public MyData ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public MyDataPatch patchAfter;
   public static final int CLEAR = 2;
@@ -202,14 +202,14 @@ public class OptionalMyDataPatch implements TBase, java.io.Serializable, Cloneab
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public MyDataPatch getPatch() {
     return this.patch;
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public OptionalMyDataPatch setPatch(MyDataPatch patch) {
     this.patch = patch;
@@ -232,14 +232,14 @@ public class OptionalMyDataPatch implements TBase, java.io.Serializable, Cloneab
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public MyData getEnsure() {
     return this.ensure;
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public OptionalMyDataPatch setEnsure(MyData ensure) {
     this.ensure = ensure;
@@ -262,14 +262,14 @@ public class OptionalMyDataPatch implements TBase, java.io.Serializable, Cloneab
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public MyDataPatch getPatchAfter() {
     return this.patchAfter;
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public OptionalMyDataPatch setPatchAfter(MyDataPatch patchAfter) {
     this.patchAfter = patchAfter;

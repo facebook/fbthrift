@@ -26,37 +26,45 @@ import com.facebook.thrift.protocol.*;
 @SuppressWarnings({ "unused", "serial" })
 public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("InnerUnionPatch");
+  private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.STRUCT, (short)1);
   private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
   private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
   private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.STRUCT, (short)4);
   private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)6);
 
   /**
+   * Assigns a value. If set, all other operations are ignored.
+   */
+  public final InnerUnion assign;
+  /**
    * Clears any set value. Applies first.
    */
   public final Boolean clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public final InnerUnionFieldPatch patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public final InnerUnion ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public final InnerUnionFieldPatch patchAfter;
+  public static final int ASSIGN = 1;
   public static final int CLEAR = 2;
   public static final int PATCH = 3;
   public static final int ENSURE = 4;
   public static final int PATCHAFTER = 6;
 
   public InnerUnionPatch(
+      InnerUnion assign,
       Boolean clear,
       InnerUnionFieldPatch patch,
       InnerUnion ensure,
       InnerUnionFieldPatch patchAfter) {
+    this.assign = assign;
     this.clear = clear;
     this.patch = patch;
     this.ensure = ensure;
@@ -67,6 +75,11 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable {
    * Performs a deep copy on <i>other</i>.
    */
   public InnerUnionPatch(InnerUnionPatch other) {
+    if (other.isSetAssign()) {
+      this.assign = TBaseHelper.deepCopy(other.assign);
+    } else {
+      this.assign = null;
+    }
     if (other.isSetClear()) {
       this.clear = TBaseHelper.deepCopy(other.clear);
     } else {
@@ -94,6 +107,18 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable {
   }
 
   /**
+   * Assigns a value. If set, all other operations are ignored.
+   */
+  public InnerUnion getAssign() {
+    return this.assign;
+  }
+
+  // Returns true if field assign is set (has been assigned a value) and false otherwise
+  public boolean isSetAssign() {
+    return this.assign != null;
+  }
+
+  /**
    * Clears any set value. Applies first.
    */
   public Boolean isClear() {
@@ -106,7 +131,7 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable {
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public InnerUnionFieldPatch getPatch() {
     return this.patch;
@@ -118,7 +143,7 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable {
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public InnerUnion getEnsure() {
     return this.ensure;
@@ -130,7 +155,7 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable {
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public InnerUnionFieldPatch getPatchAfter() {
     return this.patchAfter;
@@ -151,6 +176,8 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable {
       return false;
     InnerUnionPatch that = (InnerUnionPatch)_that;
 
+    if (!TBaseHelper.equalsNobinary(this.isSetAssign(), that.isSetAssign(), this.assign, that.assign)) { return false; }
+
     if (!TBaseHelper.equalsNobinary(this.isSetClear(), that.isSetClear(), this.clear, that.clear)) { return false; }
 
     if (!TBaseHelper.equalsNobinary(this.isSetPatch(), that.isSetPatch(), this.patch, that.patch)) { return false; }
@@ -164,7 +191,7 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable {
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {clear, patch, ensure, patchAfter});
+    return Arrays.deepHashCode(new Object[] {assign, clear, patch, ensure, patchAfter});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -173,6 +200,7 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable {
   }
 
   public static InnerUnionPatch deserialize(TProtocol iprot) throws TException {
+    InnerUnion tmp_assign = null;
     Boolean tmp_clear = null;
     InnerUnionFieldPatch tmp_patch = null;
     InnerUnion tmp_ensure = null;
@@ -187,6 +215,14 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable {
       }
       switch (__field.id)
       {
+        case ASSIGN:
+          if (__field.type == TType.STRUCT) {
+            tmp_assign = new InnerUnion();
+            tmp_assign.read(iprot);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         case CLEAR:
           if (__field.type == TType.BOOL) {
             tmp_clear = iprot.readBool();
@@ -226,7 +262,8 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable {
 
     InnerUnionPatch _that;
     _that = new InnerUnionPatch(
-      tmp_clear
+      tmp_assign
+      ,tmp_clear
       ,tmp_patch
       ,tmp_ensure
       ,tmp_patchAfter
@@ -239,6 +276,11 @@ public class InnerUnionPatch implements TBase, java.io.Serializable, Cloneable {
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
+    if (this.assign != null) {
+      oprot.writeFieldBegin(ASSIGN_FIELD_DESC);
+      this.assign.write(oprot);
+      oprot.writeFieldEnd();
+    }
     if (this.clear != null) {
       oprot.writeFieldBegin(CLEAR_FIELD_DESC);
       oprot.writeBool(this.clear);

@@ -36,15 +36,15 @@ public class OptionalInnerUnionPatch implements TBase, java.io.Serializable, Clo
    */
   public final Boolean clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public final InnerUnionPatch patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public final InnerUnion ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public final InnerUnionPatch patchAfter;
   public static final int CLEAR = 2;
@@ -106,7 +106,7 @@ public class OptionalInnerUnionPatch implements TBase, java.io.Serializable, Clo
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public InnerUnionPatch getPatch() {
     return this.patch;
@@ -118,7 +118,7 @@ public class OptionalInnerUnionPatch implements TBase, java.io.Serializable, Clo
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public InnerUnion getEnsure() {
     return this.ensure;
@@ -130,7 +130,7 @@ public class OptionalInnerUnionPatch implements TBase, java.io.Serializable, Clo
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public InnerUnionPatch getPatchAfter() {
     return this.patchAfter;

@@ -440,17 +440,17 @@ class StringPatch(metaclass=_fbthrift_python_types.StructMeta):
             None,  # adapter class
         ),
         (
-            9,  # id
+            8,  # id
             _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
-            "append",  # name
+            "prepend",  # name
             _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
         ),
         (
-            10,  # id
+            9,  # id
             _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
-            "prepend",  # name
+            "append",  # name
             _fbthrift_python_types.typeinfo_string,  # typeinfo
             None,  # default value
             None,  # adapter class
@@ -1113,7 +1113,6 @@ class PatchOp(_fbthrift_python_types.Enum, enum.Enum):
     Remove = 7
     Add = 8
     Put = 9
-    Prepend = 10
     Unspecified = 0
     @staticmethod
     def __get_thrift_name__() -> str:

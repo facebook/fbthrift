@@ -67,23 +67,20 @@ enum PatchOp: int {
    */
   Remove = 7;
   /**
-   * Add if not present.
-   * 
-   * A key/value-based add for set/list and 'saturating add' for numeric/'counting'
-   * types.
+   * Add/prepend a value,with the following semantics:
+   * - Key/value-based 'add' for set;
+   * - 'prepend' for list, string, or binary; and
+   * - saturating 'add' for numeric/counting types.
    */
   Add = 8;
   /**
-   * Add even if present.
-   * 
-   * Identical to 'add' for set, 'append' for list, overwriting
-   * 'update or insert' for maps, 'invert' for boolean.
+   * Put/append/invert a value, with the following semantics:
+   * - Identical to 'add' for set;
+   * - 'update or insert' for maps;
+   * - 'append' for list, string or binary; and
+   * - 'invert' for boolean.
    */
   Put = 9;
-  /**
-   * Add to the beginning of a list, string, or binary value.
-   */
-  Prepend = 10;
   Unspecified = 0;
 }
 
@@ -102,7 +99,6 @@ class PatchOp_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
           7 => "Remove",
           8 => "Add",
           9 => "Put",
-          10 => "Prepend",
           0 => "Unspecified",
         ],
       )
@@ -1472,37 +1468,37 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'var' => 'clear',
       'type' => \TType::BOOL,
     ),
-    9 => shape(
-      'var' => 'append',
+    8 => shape(
+      'var' => 'prepend',
       'type' => \TType::STRING,
     ),
-    10 => shape(
-      'var' => 'prepend',
+    9 => shape(
+      'var' => 'append',
       'type' => \TType::STRING,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'assign' => 1,
     'clear' => 2,
+    'prepend' => 8,
     'append' => 9,
-    'prepend' => 10,
   ];
 
   const type TConstructorShape = shape(
     ?'assign' => ?string,
     ?'clear' => ?bool,
-    ?'append' => ?string,
     ?'prepend' => ?string,
+    ?'append' => ?string,
   );
 
   const type TShape = shape(
     ?'assign' => ?string,
     'clear' => bool,
-    'append' => string,
     'prepend' => string,
+    'append' => string,
     ...
   );
-  const int STRUCTURAL_ID = 1321079092065590228;
+  const int STRUCTURAL_ID = 5212135444748250232;
   /**
    * Assign to a given value.
    * 
@@ -1520,25 +1516,25 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    */
   public bool $clear;
   /**
+   * Prepend to a given value.
+   * 
+   * Original thrift field:-
+   * 8: string prepend
+   */
+  public string $prepend;
+  /**
    * Append to a given value.
    * 
    * Original thrift field:-
    * 9: string append
    */
   public string $append;
-  /**
-   * Prepend to a given value.
-   * 
-   * Original thrift field:-
-   * 10: string prepend
-   */
-  public string $prepend;
 
-  public function __construct(?string $assign = null, ?bool $clear = null, ?string $append = null, ?string $prepend = null)[] {
+  public function __construct(?string $assign = null, ?bool $clear = null, ?string $prepend = null, ?string $append = null)[] {
     $this->assign = $assign;
     $this->clear = $clear ?? false;
-    $this->append = $append ?? '';
     $this->prepend = $prepend ?? '';
+    $this->append = $append ?? '';
   }
 
   public static function withDefaultValues()[]: this {
@@ -1549,8 +1545,8 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     return new static(
       Shapes::idx($shape, 'assign'),
       Shapes::idx($shape, 'clear'),
-      Shapes::idx($shape, 'append'),
       Shapes::idx($shape, 'prepend'),
+      Shapes::idx($shape, 'append'),
     );
   }
 
@@ -1588,6 +1584,17 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           ),
           \tmeta_ThriftField::fromShape(
             shape(
+              "id" => 8,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "prepend",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
               "id" => 9,
               "type" => \tmeta_ThriftType::fromShape(
                 shape(
@@ -1595,17 +1602,6 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
                 )
               ),
               "name" => "append",
-            )
-          ),
-          \tmeta_ThriftField::fromShape(
-            shape(
-              "id" => 10,
-              "type" => \tmeta_ThriftType::fromShape(
-                shape(
-                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
-                )
-              ),
-              "name" => "prepend",
             )
           ),
         ],
@@ -1638,8 +1634,8 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     return new static(
       Shapes::idx($shape, 'assign'),
       $shape['clear'],
-      $shape['append'],
       $shape['prepend'],
+      $shape['append'],
     );
   }
 
@@ -1647,8 +1643,8 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     return shape(
       'assign' => $this->assign,
       'clear' => $this->clear,
-      'append' => $this->append,
       'prepend' => $this->prepend,
+      'append' => $this->append,
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -1668,11 +1664,11 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     if (idx($parsed, 'clear') !== null) {
       $this->clear = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['clear']);
     }
-    if (idx($parsed, 'append') !== null) {
-      $this->append = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['append']);
-    }
     if (idx($parsed, 'prepend') !== null) {
       $this->prepend = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['prepend']);
+    }
+    if (idx($parsed, 'append') !== null) {
+      $this->append = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['append']);
     }
   }
 
@@ -1865,21 +1861,21 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
    */
   public bool $clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    * 
    * Original thrift field:-
    * 3: struct patch.BoolPatch patch
    */
   public ?\thrift\op\BoolPatch $patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    * 
    * Original thrift field:-
    * 4: bool ensure
    */
   public ?bool $ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    * 
    * Original thrift field:-
    * 6: struct patch.BoolPatch patchAfter
@@ -2130,21 +2126,21 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
    */
   public bool $clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    * 
    * Original thrift field:-
    * 3: struct patch.BytePatch patch
    */
   public ?\thrift\op\BytePatch $patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    * 
    * Original thrift field:-
    * 4: byte ensure
    */
   public ?int $ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    * 
    * Original thrift field:-
    * 6: struct patch.BytePatch patchAfter
@@ -2400,21 +2396,21 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
    */
   public bool $clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    * 
    * Original thrift field:-
    * 3: struct patch.I16Patch patch
    */
   public ?\thrift\op\I16Patch $patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    * 
    * Original thrift field:-
    * 4: i16 ensure
    */
   public ?int $ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    * 
    * Original thrift field:-
    * 6: struct patch.I16Patch patchAfter
@@ -2670,21 +2666,21 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
    */
   public bool $clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    * 
    * Original thrift field:-
    * 3: struct patch.I32Patch patch
    */
   public ?\thrift\op\I32Patch $patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    * 
    * Original thrift field:-
    * 4: i32 ensure
    */
   public ?int $ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    * 
    * Original thrift field:-
    * 6: struct patch.I32Patch patchAfter
@@ -2940,21 +2936,21 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
    */
   public bool $clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    * 
    * Original thrift field:-
    * 3: struct patch.I64Patch patch
    */
   public ?\thrift\op\I64Patch $patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    * 
    * Original thrift field:-
    * 4: i64 ensure
    */
   public ?int $ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    * 
    * Original thrift field:-
    * 6: struct patch.I64Patch patchAfter
@@ -3205,21 +3201,21 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
    */
   public bool $clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    * 
    * Original thrift field:-
    * 3: struct patch.FloatPatch patch
    */
   public ?\thrift\op\FloatPatch $patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    * 
    * Original thrift field:-
    * 4: float ensure
    */
   public ?float $ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    * 
    * Original thrift field:-
    * 6: struct patch.FloatPatch patchAfter
@@ -3470,21 +3466,21 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
    */
   public bool $clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    * 
    * Original thrift field:-
    * 3: struct patch.DoublePatch patch
    */
   public ?\thrift\op\DoublePatch $patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    * 
    * Original thrift field:-
    * 4: double ensure
    */
   public ?float $ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    * 
    * Original thrift field:-
    * 6: struct patch.DoublePatch patchAfter
@@ -3735,21 +3731,21 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
    */
   public bool $clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    * 
    * Original thrift field:-
    * 3: struct patch.StringPatch patch
    */
   public ?\thrift\op\StringPatch $patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    * 
    * Original thrift field:-
    * 4: string ensure
    */
   public ?string $ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    * 
    * Original thrift field:-
    * 6: struct patch.StringPatch patchAfter
@@ -4000,21 +3996,21 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
    */
   public bool $clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    * 
    * Original thrift field:-
    * 3: struct patch.BinaryPatch patch
    */
   public ?\thrift\op\BinaryPatch $patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    * 
    * Original thrift field:-
    * 4: binary ensure
    */
   public ?string $ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    * 
    * Original thrift field:-
    * 6: struct patch.BinaryPatch patchAfter

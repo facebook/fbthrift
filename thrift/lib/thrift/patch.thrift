@@ -193,11 +193,11 @@ struct StringPatch {
   /** Clear a given string. */
   2: bool clear;
 
+  /** Prepend to a given value. */
+  8: string prepend;
+
   /** Append to a given value. */
   9: string append;
-
-  /** Prepend to a given value. */
-  10: string prepend;
 }
 
 /** A patch for a binary value. */
@@ -272,21 +272,19 @@ enum PatchOp {
   Remove = 7,
 
   /**
-   * Add if not present.
-   *
-   * A key/value-based add for set/list and 'saturating add' for numeric/'counting'
-   * types.
+   * Add/prepend a value,with the following semantics:
+   * - Key/value-based 'add' for set;
+   * - 'prepend' for list, string, or binary; and
+   * - saturating 'add' for numeric/counting types.
    */
   Add = 8,
 
   /**
-   * Add even if present.
-   *
-   * Identical to 'add' for set, 'append' for list, overwriting
-   * 'update or insert' for maps, 'invert' for boolean.
+   * Put/append/invert a value, with the following semantics:
+   * - Identical to 'add' for set;
+   * - 'update or insert' for maps;
+   * - 'append' for list, string or binary; and
+   * - 'invert' for boolean.
    */
   Put = 9,
-
-  /** Add to the beginning of a list, string, or binary value. */
-  Prepend = 10,
 }

@@ -36,15 +36,15 @@ public class OptionalBinaryPatch implements TBase, java.io.Serializable, Cloneab
    */
   public boolean clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public BinaryPatch patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public byte[] ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public BinaryPatch patchAfter;
   public static final int CLEAR = 2;
@@ -202,14 +202,14 @@ public class OptionalBinaryPatch implements TBase, java.io.Serializable, Cloneab
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public BinaryPatch getPatch() {
     return this.patch;
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public OptionalBinaryPatch setPatch(BinaryPatch patch) {
     this.patch = patch;
@@ -232,14 +232,14 @@ public class OptionalBinaryPatch implements TBase, java.io.Serializable, Cloneab
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public byte[] getEnsure() {
     return this.ensure;
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public OptionalBinaryPatch setEnsure(byte[] ensure) {
     this.ensure = ensure;
@@ -262,14 +262,14 @@ public class OptionalBinaryPatch implements TBase, java.io.Serializable, Cloneab
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public BinaryPatch getPatchAfter() {
     return this.patchAfter;
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public OptionalBinaryPatch setPatchAfter(BinaryPatch patchAfter) {
     this.patchAfter = patchAfter;

@@ -36,15 +36,15 @@ public class OptionalMyStructPatch implements TBase, java.io.Serializable, Clone
    */
   public final Boolean clear;
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public final MyStructPatch patch;
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public final MyStruct ensure;
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public final MyStructPatch patchAfter;
   public static final int CLEAR = 2;
@@ -106,7 +106,7 @@ public class OptionalMyStructPatch implements TBase, java.io.Serializable, Clone
   }
 
   /**
-   * Patches any set value. Applies second.
+   * Patches any previously set values. Applies second.
    */
   public MyStructPatch getPatch() {
     return this.patch;
@@ -118,7 +118,7 @@ public class OptionalMyStructPatch implements TBase, java.io.Serializable, Clone
   }
 
   /**
-   * Assigns the value, if not already set. Applies third.
+   * Assigns the value, if not already set to the same field. Applies third.
    */
   public MyStruct getEnsure() {
     return this.ensure;
@@ -130,7 +130,7 @@ public class OptionalMyStructPatch implements TBase, java.io.Serializable, Clone
   }
 
   /**
-   * Patches any set value, including newly set values. Applies fourth.
+   * Patches any set value, including newly set values. Applies last.
    */
   public MyStructPatch getPatchAfter() {
     return this.patchAfter;

@@ -186,7 +186,7 @@ void ApplyPatch::operator()(const Object& patch, folly::IOBuf& value) const {
   checkOps(
       patch,
       Value::Type::binaryValue,
-      {PatchOp::Assign, PatchOp::Clear, PatchOp::Put, PatchOp::Prepend});
+      {PatchOp::Assign, PatchOp::Clear, PatchOp::Add, PatchOp::Put});
   if (applyAssign<type::cpp_type<folly::IOBuf, type::binary_t>>(patch, value)) {
     return; // Ignore all other ops.
   }
@@ -197,9 +197,8 @@ void ApplyPatch::operator()(const Object& patch, folly::IOBuf& value) const {
     }
   }
 
-  // Put is Append for string/binary
+  auto* prepend = findOp(patch, PatchOp::Add);
   auto* append = findOp(patch, PatchOp::Put);
-  auto* prepend = findOp(patch, PatchOp::Prepend);
   if (append || prepend) {
     folly::IOBufQueue queue;
     if (prepend) {
@@ -223,7 +222,6 @@ void ApplyPatch::operator()(
        PatchOp::Patch,
        PatchOp::Add,
        PatchOp::Put,
-       PatchOp::Prepend,
        PatchOp::Remove});
   if (applyAssign<type::list_c>(patch, value)) {
     return; // Ignore all other ops.
@@ -264,17 +262,17 @@ void ApplyPatch::operator()(
   }
 
   if (auto* add = findOp(patch, PatchOp::Add)) {
-    auto& to_add = *add->setValue_ref();
-    for (const auto& element : to_add) {
-      if (std::find(value.begin(), value.end(), element) == value.end()) {
-        value.push_back(element);
+    if (add->setValue_ref().has_value()) {
+      auto& to_add = *add->setValue_ref();
+      for (const auto& element : to_add) {
+        if (std::find(value.begin(), value.end(), element) == value.end()) {
+          value.push_back(element);
+        }
       }
+    } else {
+      auto& prependVector = *add->listValue_ref();
+      value.insert(value.begin(), prependVector.begin(), prependVector.end());
     }
-  }
-
-  if (auto* prepend = findOp(patch, PatchOp::Prepend)) {
-    auto& prependVector = *prepend->listValue_ref();
-    value.insert(value.begin(), prependVector.begin(), prependVector.end());
   }
 
   if (auto* append = findOp(patch, PatchOp::Put)) {
@@ -445,8 +443,7 @@ Mask extractMaskFromPatch(const protocol::Object& patch) {
   // Add, Prepend, Put, and Remove should return allMask if it is not a map
   // patch. If it's a map patch, only add modified fields.
   // TODO: handle map type.
-  for (auto op :
-       {PatchOp::Add, PatchOp::Prepend, PatchOp::Put, PatchOp::Remove}) {
+  for (auto op : {PatchOp::Add, PatchOp::Put, PatchOp::Remove}) {
     if (auto* value = findOp(patch, op)) {
       return allMask();
     }
