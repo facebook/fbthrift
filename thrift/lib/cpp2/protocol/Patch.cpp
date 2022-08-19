@@ -424,6 +424,38 @@ void ApplyPatch::operator()(const Object& patch, Object& value) const {
   }
 }
 
+// Returns the map mask for the given key.
+Mask& getMapMaskByValue(Mask& mask, const Value& newKey) {
+  if (mask.includes_map_ref()) {
+    // Need to check if mask has the same key already.
+    for (auto& [key, next] : mask.includes_map_ref().value()) {
+      if (*(reinterpret_cast<Value*>(key)) == newKey) {
+        return next;
+      }
+    }
+  }
+  return mask.includes_map_ref().ensure()[reinterpret_cast<int64_t>(&newKey)];
+}
+
+// if recursive, it constructs the mask from the patch object for the field.
+void insertFieldsToMask(Mask& mask, const Value& patchFields, bool recursive) {
+  if (auto* obj = patchFields.if_object()) {
+    for (const auto& [id, value] : *obj) {
+      Mask& next = mask.includes_ref().ensure()[id];
+      next = recursive ? extractMaskFromPatch(value.as_object()) : allMask();
+    }
+  } else if (auto* map = patchFields.if_map()) {
+    for (const auto& [key, value] : *map) {
+      Mask& next = getMapMaskByValue(mask, key);
+      next = recursive ? extractMaskFromPatch(value.as_object()) : allMask();
+    }
+  } else { // set of map keys (Remove)
+    for (const auto& key : patchFields.as_set()) {
+      getMapMaskByValue(mask, key) = allMask();
+    }
+  }
+}
+
 // TODO: Handle EnsureUnion
 Mask extractMaskFromPatch(const protocol::Object& patch) {
   // If Assign, it is modified.
@@ -434,23 +466,39 @@ Mask extractMaskFromPatch(const protocol::Object& patch) {
   if (isIntrinsicDefault(patch)) {
     return noneMask();
   }
-  // If Clear, it is modified if true.
-  if (auto* clear = findOp(patch, PatchOp::Clear)) {
-    return allMask();
-  }
-
-  Mask mask = noneMask();
-  // Add, Prepend, Put, and Remove should return allMask if it is not a map
-  // patch. If it's a map patch, only add modified fields.
-  // TODO: handle map type.
-  for (auto op : {PatchOp::Add, PatchOp::Put, PatchOp::Remove}) {
-    if (auto* value = findOp(patch, op)) {
+  // If Clear or Add, it is modified if not intristic default.
+  for (auto op : {PatchOp::Clear, PatchOp::Add}) {
+    if (findOp(patch, op)) {
       return allMask();
     }
   }
-  // TODO: handle Patch, Ensure, PatchAfter for map and object types.
-  if (findOp(patch, PatchOp::Patch)) {
-    return allMask();
+
+  Mask mask;
+  // Put should return allMask if not a map patch. Otherwise add keys to mask.
+  if (auto* value = findOp(patch, PatchOp::Put)) {
+    if (!value->mapValue_ref()) {
+      return allMask();
+    }
+    insertFieldsToMask(mask, *value, false);
+  }
+  // Remove always adds keys to map mask. All types (list, set, and map) use
+  // a set for Remove, so they are indistinguishable.
+  if (auto* value = findOp(patch, PatchOp::Remove)) {
+    insertFieldsToMask(mask, *value, false);
+  }
+
+  // If EnsureStruct, add the fields/ keys to mask
+  if (auto* ensureStruct = findOp(patch, PatchOp::EnsureStruct)) {
+    insertFieldsToMask(mask, *ensureStruct, false);
+  }
+
+  // If Patch or PatchAfter, recursively constructs the mask for the fields.
+  // Note that list also supports Patch, but since it is indistinguishable from
+  // map (both uses a map), we just treat it as a map patch.
+  for (auto op : {PatchOp::Patch, PatchOp::PatchAfter}) {
+    if (auto* patchFields = findOp(patch, op)) {
+      insertFieldsToMask(mask, *patchFields, true);
+    }
   }
 
   return mask;

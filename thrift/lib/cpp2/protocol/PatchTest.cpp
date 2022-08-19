@@ -112,6 +112,12 @@ class PatchTest : public testing::Test {
     applyPatch(patchObj, value);
     return value;
   }
+
+  static bool isBinaryEqual(Value& value, std::string_view expected) {
+    const auto buf =
+        folly::IOBuf::wrapBufferAsValue(expected.data(), expected.size());
+    return folly::IOBufEqualTo{}(value.as_binary(), buf);
+  }
 };
 
 TEST_F(PatchTest, Bool) {
@@ -332,14 +338,19 @@ TEST_F(PatchTest, List) {
     fieldPatchValue.objectValue_ref() =
         makePatch(op::PatchOp::Put, elementPatchValue);
     Value listElementPatch;
+    int32_t zigZag = apache::thrift::util::i32ToZigzag(
+        static_cast<int32_t>(type::toOrdinal(0)));
     listElementPatch.mapValue_ref()
-        .ensure()[asValueStruct<type::i32_t>(apache::thrift::util::i32ToZigzag(
-            static_cast<int32_t>(type::toOrdinal(0))))] = fieldPatchValue;
+        .ensure()[asValueStruct<type::i32_t>(zigZag)] = fieldPatchValue;
     auto patchObj = makePatch(op::PatchOp::Patch, listElementPatch);
     auto patched = *applyContainerPatch(patchObj, value).listValue_ref();
     EXPECT_EQ(
         std::vector<Value>{asValueStruct<type::binary_t>("testbest")}, patched);
-    EXPECT_EQ(extractMaskFromPatch(patchObj), allMask());
+    // It is a map mask as Patch can't distinguish between list and map.
+    auto mask = extractMaskFromPatch(patchObj).includes_map_ref().value();
+    EXPECT_EQ(mask.size(), 1);
+    EXPECT_EQ(((Value*)mask.begin()->first)->as_i32(), zigZag);
+    EXPECT_EQ(mask.begin()->second, allMask());
   }
   {
     auto emptyMapValue = asValueStruct<type::map<type::i32_t, type::binary_t>>(
@@ -388,7 +399,11 @@ TEST_F(PatchTest, List) {
     EXPECT_EQ(
         std::vector<Value>{},
         *applyContainerPatch(patchObj, value).listValue_ref());
-    EXPECT_EQ(extractMaskFromPatch(patchObj), allMask());
+    // It is a map mask as Remove can't distinguish between list, set, and map.
+    auto mask = extractMaskFromPatch(patchObj).includes_map_ref().value();
+    EXPECT_EQ(mask.size(), 1);
+    isBinaryEqual(*((Value*)mask.begin()->first), "test");
+    EXPECT_EQ(mask.begin()->second, allMask());
   }
   {
     Object patchObj = makePatch(op::PatchOp::Remove, emptySet);
@@ -487,7 +502,11 @@ TEST_F(PatchTest, Set) {
     EXPECT_EQ(
         std::set<Value>{},
         *applyContainerPatch(patchObj, value).setValue_ref());
-    EXPECT_EQ(extractMaskFromPatch(patchObj), allMask());
+    // It is a map mask as Remove can't distinguish between list, set, and map.
+    auto mask = extractMaskFromPatch(patchObj).includes_map_ref().value();
+    EXPECT_EQ(mask.size(), 1);
+    isBinaryEqual(*((Value*)mask.begin()->first), "test");
+    EXPECT_EQ(mask.begin()->second, allMask());
   }
   {
     Object patchObj = makePatch(op::PatchOp::Remove, emptySet);
@@ -557,7 +576,23 @@ TEST_F(PatchTest, Map) {
     EXPECT_EQ(
         *value.mapValue_ref(),
         *applyContainerPatch(patchObj, value).mapValue_ref());
+    EXPECT_EQ(extractMaskFromPatch(patchObj), noneMask());
   };
+
+  // Checks if the map mask generated from patchObj contains the expectedKeys.
+  auto checkMapMask =
+      [&](auto&& patchObj,
+          const std::unordered_set<std::string_view>& expectKeys) {
+        auto mask = extractMaskFromPatch(patchObj).includes_map_ref().value();
+        EXPECT_EQ(mask.size(), expectKeys.size());
+        for (auto& kv : mask) {
+          EXPECT_TRUE(std::any_of(
+              expectKeys.begin(), expectKeys.end(), [&](auto& expectKey) {
+                return isBinaryEqual(*((Value*)kv.first), expectKey);
+              }));
+          EXPECT_EQ(kv.second, allMask());
+        }
+      };
 
   // Noop
   {
@@ -571,6 +606,7 @@ TEST_F(PatchTest, Map) {
     EXPECT_EQ(
         *patchValue.mapValue_ref(),
         *applyContainerPatch(patchObj, value).mapValue_ref());
+    EXPECT_EQ(extractMaskFromPatch(patchObj), allMask());
   }
 
   // Clear
@@ -578,6 +614,7 @@ TEST_F(PatchTest, Map) {
     Object patchObj =
         makePatch(op::PatchOp::Clear, asValueStruct<type::bool_t>(true));
     EXPECT_EQ(emptyMap, *applyContainerPatch(patchObj, value).mapValue_ref());
+    EXPECT_EQ(extractMaskFromPatch(patchObj), allMask());
   }
   {
     Object patchObj =
@@ -591,6 +628,7 @@ TEST_F(PatchTest, Map) {
         op::PatchOp::Remove,
         asValueStruct<type::set<type::binary_t>>(std::set{"key"}));
     EXPECT_EQ(emptyMap, *applyContainerPatch(patchObj, value).mapValue_ref());
+    checkMapMask(patchObj, {"key"});
   }
   {
     Object patchObj = makePatch(op::PatchOp::Remove, emptySet);
@@ -607,6 +645,7 @@ TEST_F(PatchTest, Map) {
         *value.mapValue_ref(),
         *applyContainerPatch(patchObj, value).mapValue_ref())
         << "Shuold insert nothing";
+    checkMapMask(patchObj, {"key"});
   }
   {
     auto expected = *value.mapValue_ref();
@@ -619,6 +658,7 @@ TEST_F(PatchTest, Map) {
             std::map<std::string, std::string>{{"new key", "new value"}}));
     auto patchResult = *applyContainerPatch(patchObj, value).mapValue_ref();
     EXPECT_EQ(expected, patchResult);
+    checkMapMask(patchObj, {"new key"});
   }
   {
     Object patchObj = makePatch(op::PatchOp::EnsureStruct, emptyValue);
@@ -635,6 +675,7 @@ TEST_F(PatchTest, Map) {
         asValueStruct<type::map<type::binary_t, type::binary_t>>(
             std::map<std::string, std::string>{{"key", "key updated value"}}));
     EXPECT_EQ(expected, *applyContainerPatch(patchObj, value).mapValue_ref());
+    checkMapMask(patchObj, {"key"});
   }
   {
     Object patchObj = makePatch(op::PatchOp::Put, emptyValue);
@@ -661,6 +702,7 @@ TEST_F(PatchTest, Map) {
     EXPECT_EQ(
         *expected.mapValue_ref(),
         *applyContainerPatch(patchObj, value).mapValue_ref());
+    checkMapMask(patchObj, {"key", "new key", "added key"});
   }
 
   // Patch
@@ -685,6 +727,8 @@ TEST_F(PatchTest, Map) {
     EXPECT_EQ(
         *expected.mapValue_ref(),
         *applyContainerPatch(patchObj, value).mapValue_ref());
+
+    checkMapMask(patchObj, {"key"});
   }
   {
     Object patchObj = makePatch(op::PatchOp::Patch, emptyValue);
@@ -721,6 +765,7 @@ TEST_F(PatchTest, Map) {
     EXPECT_EQ(
         *expected.mapValue_ref(),
         *applyContainerPatch(patchObj, value).mapValue_ref());
+    checkMapMask(patchObj, {"new key"});
   }
   {
     Object patchObj = makePatch(op::PatchOp::PatchAfter, emptyValue);
@@ -742,6 +787,7 @@ TEST_F(PatchTest, Struct) {
     EXPECT_EQ(
         *value.objectValue_ref(),
         *applyContainerPatch(patchObj, value).objectValue_ref());
+    EXPECT_EQ(extractMaskFromPatch(patchObj), noneMask());
   };
 
   // Noop
@@ -756,6 +802,7 @@ TEST_F(PatchTest, Struct) {
     EXPECT_EQ(
         *patchValue.objectValue_ref(),
         *applyContainerPatch(patchObj, value).objectValue_ref());
+    EXPECT_EQ(extractMaskFromPatch(patchObj), allMask());
   }
 
   // Clear
@@ -766,6 +813,7 @@ TEST_F(PatchTest, Struct) {
                     .objectValue_ref()
                     ->members()
                     ->empty());
+    EXPECT_EQ(extractMaskFromPatch(patchObj), allMask());
   }
   {
     Object patchObj =
@@ -788,6 +836,10 @@ TEST_F(PatchTest, Struct) {
             .objectValue_ref()
             ->members()
             .ensure()[1]);
+
+    Mask expectedMask;
+    expectedMask.includes_ref().emplace()[1] = allMask();
+    EXPECT_EQ(extractMaskFromPatch(patchObj), expectedMask);
   };
 
   applyFieldPatchTest(
@@ -828,6 +880,9 @@ TEST_F(PatchTest, Struct) {
             .objectValue_ref()
             ->members()
             .ensure()[1]);
+    Mask expectedMask;
+    expectedMask.includes_ref().emplace()[1] = allMask();
+    EXPECT_EQ(extractMaskFromPatch(patchObj), expectedMask);
   }
   {
     Value fieldPatch;
@@ -835,6 +890,61 @@ TEST_F(PatchTest, Struct) {
     expectNoop(makePatch(op::PatchOp::Patch, fieldPatch));
     expectNoop(makePatch(op::PatchOp::EnsureStruct, fieldPatch));
     expectNoop(makePatch(op::PatchOp::PatchAfter, fieldPatch));
+  }
+}
+
+TEST_F(PatchTest, ExtractMaskFromPatchNested) {
+  // patch = Patch{"key": Put{"string"},
+  //               "key2": Patch{"a": BoolPatch = true,
+  //                             "b": Patch{1: BytePatch - 1}}}
+  Value fieldPatchValue;
+  fieldPatchValue.objectValue_ref() =
+      makePatch(op::PatchOp::Put, asValueStruct<type::binary_t>("foo"));
+  Value mapPatch;
+  mapPatch.mapValue_ref().ensure()[asValueStruct<type::binary_t>("key")] =
+      fieldPatchValue;
+  Value fieldPatchValue2, bytePatchValue;
+  bytePatchValue.objectValue_ref() = convertToObject(op::BytePatch{} - 1);
+  fieldPatchValue2.objectValue_ref().ensure().members().ensure()[1] =
+      bytePatchValue;
+  Value objectPatchValue;
+  objectPatchValue.objectValue_ref() =
+      makePatch(op::PatchOp::Patch, fieldPatchValue2);
+  Value nestedPatchValue, boolPatchValue, fieldPatchValue3;
+  boolPatchValue.objectValue_ref() = convertToObject(op::BoolPatch{} = true);
+  fieldPatchValue3.mapValue_ref().ensure()[asValueStruct<type::binary_t>("a")] =
+      boolPatchValue;
+  fieldPatchValue3.mapValue_ref().ensure()[asValueStruct<type::binary_t>("b")] =
+      objectPatchValue;
+  nestedPatchValue.objectValue_ref() =
+      makePatch(op::PatchOp::Patch, fieldPatchValue3);
+  mapPatch.mapValue_ref().ensure()[asValueStruct<type::binary_t>("key2")] =
+      nestedPatchValue;
+  auto patchObj = makePatch(op::PatchOp::PatchAfter, mapPatch);
+
+  // mask = includes_map{"key": allMask()
+  //                     "key2": includes_map{"a": allMask()
+  //                                          "b": includes{1: allMask()}}}
+  auto mask = extractMaskFromPatch(patchObj).includes_map_ref().value();
+  EXPECT_EQ(mask.size(), 2);
+  for (auto& [key, value] : mask) {
+    if (isBinaryEqual(*((Value*)key), "key")) {
+      EXPECT_EQ(value, allMask());
+      continue;
+    }
+    EXPECT_TRUE(isBinaryEqual(*((Value*)key), "key2"));
+    auto& nestedMask = value.includes_map_ref().value();
+    EXPECT_EQ(nestedMask.size(), 2);
+    for (auto& [key, value] : nestedMask) {
+      if (isBinaryEqual(*((Value*)key), "a")) {
+        EXPECT_EQ(value, allMask());
+        continue;
+      }
+      isBinaryEqual(*((Value*)key), "b");
+      Mask expectedMask;
+      expectedMask.includes_ref().emplace()[1] = allMask();
+      EXPECT_EQ(value, expectedMask);
+    }
   }
 }
 } // namespace
