@@ -51,10 +51,15 @@ struct t_annotations {
   std::map<std::string, annotation_value> strings;
   std::map<std::string, std::shared_ptr<const t_const>> objects;
 };
-using t_doc = boost::optional<std::string>;
+
+struct doc {
+  std::string text;
+  source_location loc;
+};
+
 // TODO (partisan): Rename to t_stmt_attrs.
 struct t_def_attrs {
-  t_doc doc;
+  boost::optional<compiler::doc> doc;
   std::unique_ptr<node_list<t_const>> struct_annotations;
 };
 
@@ -126,17 +131,12 @@ class parsing_driver {
   /**
    * The last parsed doctext comment.
    */
-  t_doc doctext;
-
-  /**
-   * The location of the last parsed doctext comment.
-   */
-  int doctext_lineno;
+  boost::optional<doc> doctext;
 
   /**
    * The parsing pass that we are on. We do different things on each pass.
    */
-  parsing_mode mode;
+  parsing_mode mode = parsing_mode::INCLUDES;
 
   /**
    * The master program parse tree. This is accessed from within the parser code
@@ -219,15 +219,16 @@ class parsing_driver {
    */
   void clear_doctext();
 
-  /** Return any doctext previously push-ed */
-  t_doc pop_doctext();
+  /** Returns any doctext previously pushed. */
+  boost::optional<doc> pop_doctext();
 
-  /** Strip comment chars and align leading whitespace on multiline doctext
+  /**
+   * Strips comment chars and aligns leading whitespace on multiline doctext.
    */
-  t_doc strip_doctext(fmt::string_view text);
+  std::string strip_doctext(fmt::string_view text);
 
-  /** update doctext of given node */
-  void set_doctext(t_node& node, t_doc doctext) const;
+  /** Updates doctext of given node. */
+  void set_doctext(t_node& node, boost::optional<doc> doctext) const;
 
   /**
    * Cleans up text commonly found in doxygen-like comments.
@@ -235,7 +236,7 @@ class parsing_driver {
    * Warning: if you mix tabs and spaces in a non-uniform way,
    * you will get what you deserve.
    */
-  t_doc clean_up_doctext(std::string docstring);
+  std::string clean_up_doctext(std::string docstring);
 
   // Populate the annotation on the given node.
   static void set_annotations(

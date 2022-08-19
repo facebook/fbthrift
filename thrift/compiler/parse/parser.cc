@@ -271,10 +271,11 @@ class parser {
   }
 
   // inline_doc_optional: inline_doc | /* empty */
-  boost::optional<std::string> parse_inline_doc_optional() {
+  boost::optional<doc> parse_inline_doc_optional() {
+    auto loc = token_.range.begin;
     return token_.kind == tok::inline_doc
-        ? actions_.on_inline_doc(consume_token().string_value())
-        : boost::none;
+        ? actions_.on_inline_doc(loc, consume_token().string_value())
+        : boost::optional<doc>();
   }
 
   // structured_annotation:

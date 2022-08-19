@@ -55,8 +55,7 @@ class parsing_driver::lex_handler_impl : public lex_handler {
   // "pop-ing" it on the node as needed.
   void on_doc_comment(fmt::string_view text, source_location loc) override {
     driver_.clear_doctext();
-    driver_.doctext = driver_.strip_doctext(text);
-    driver_.doctext_lineno = driver_.get_lineno(loc);
+    driver_.doctext = doc{driver_.strip_doctext(text), loc};
   }
 };
 
@@ -69,9 +68,6 @@ parsing_driver::parsing_driver(
       lex_handler_(std::make_unique<lex_handler_impl>(*this)),
       lexer_(std::make_unique<lexer>(*lex_handler_, ctx, source())),
       params(std::move(parse_params)),
-      doctext(boost::none),
-      doctext_lineno(0),
-      mode(parsing_mode::INCLUDES),
       ctx_(ctx) {
   program_bundle =
       std::make_unique<t_program_bundle>(std::make_unique<t_program>(path));
@@ -259,21 +255,17 @@ void parsing_driver::validate_not_ambiguous_enum(
 
 void parsing_driver::clear_doctext() {
   if (doctext && mode == parsing_mode::PROGRAM) {
-    ctx_.warning_legacy_strict(
-        location(), "uncaptured doctext on line {}", doctext_lineno);
+    ctx_.warning_legacy_strict(doctext->loc, "uncaptured doctext");
   }
-
   doctext = boost::none;
 }
 
-t_doc parsing_driver::pop_doctext() {
-  if (mode != parsing_mode::PROGRAM) {
-    return boost::none;
-  }
-  return std::exchange(doctext, boost::none);
+boost::optional<doc> parsing_driver::pop_doctext() {
+  return mode == parsing_mode::PROGRAM ? std::exchange(doctext, boost::none)
+                                       : boost::none;
 }
 
-t_doc parsing_driver::clean_up_doctext(std::string docstring) {
+std::string parsing_driver::clean_up_doctext(std::string docstring) {
   // Convert to C++ string, and remove Windows's carriage returns.
   docstring.erase(
       remove(docstring.begin(), docstring.end(), '\r'), docstring.end());
@@ -299,7 +291,7 @@ t_doc parsing_driver::clean_up_doctext(std::string docstring) {
 
   // A very profound docstring.
   if (lines.empty()) {
-    return boost::none;
+    return {};
   }
 
   // Clear leading whitespace from the first line.
@@ -433,7 +425,7 @@ void parsing_driver::set_attributes(
   node.set_src_range(range);
   if (attrs != nullptr) {
     if (attrs->doc) {
-      node.set_doc(std::move(*attrs->doc));
+      node.set_doc(std::move(attrs->doc->text));
     }
     if (attrs->struct_annotations != nullptr) {
       for (auto& an : *attrs->struct_annotations) {
@@ -444,15 +436,14 @@ void parsing_driver::set_attributes(
   set_annotations(&node, std::move(annots));
 }
 
-void parsing_driver::set_doctext(t_node& node, t_doc doctext) const {
-  if (node.has_doc() && doctext) {
-    /* concatenating prefix doctext + inline doctext with a newline
-     * However, this syntax should be strongly discouraged */
-    std::string new_doc = node.doc() + "\n" + std::move(*doctext);
-    node.set_doc(std::move(new_doc));
-  } else if (doctext) {
-    node.set_doc(std::move(*doctext));
+void parsing_driver::set_doctext(t_node& node, boost::optional<doc> doc) const {
+  if (!doc) {
+    return;
   }
+  // Concatenate prefix doctext with inline doctext via a newline (discouraged).
+  node.set_doc(
+      node.has_doc() ? node.doc() + "\n" + std::move(doc->text)
+                     : std::move(doc->text));
 }
 
 std::unique_ptr<t_const> parsing_driver::new_struct_annotation(
@@ -749,9 +740,9 @@ int64_t parsing_driver::to_int(uint64_t val, bool negative) {
   return val;
 }
 
-t_doc parsing_driver::strip_doctext(fmt::string_view text) {
+std::string parsing_driver::strip_doctext(fmt::string_view text) {
   if (mode != apache::thrift::compiler::parsing_mode::PROGRAM) {
-    return boost::none;
+    return {};
   }
 
   std::string str(text.data(), text.size());

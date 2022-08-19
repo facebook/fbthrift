@@ -99,19 +99,19 @@ class parser_actions {
         def, std::move(attrs), std::move(annotations), range);
   }
 
-  boost::optional<std::string> on_doctext() { return driver_.pop_doctext(); }
+  boost::optional<doc> on_doctext() { return driver_.pop_doctext(); }
 
   void on_program_doctext() {
     // When there is any doctext, assign it to the top-level program.
     driver_.set_doctext(*driver_.program, driver_.pop_doctext());
   }
 
-  boost::optional<std::string> on_inline_doc(boost::optional<std::string> doc) {
-    return driver_.strip_doctext(doc->c_str());
+  doc on_inline_doc(source_location loc, std::string text) {
+    return {driver_.strip_doctext(text), loc};
   }
 
   std::unique_ptr<t_def_attrs> on_statement_attrs(
-      boost::optional<std::string> doc,
+      boost::optional<doc> doc,
       std::unique_ptr<t_struct_annotations> annotations) {
     return doc || annotations ? std::make_unique<t_def_attrs>(t_def_attrs{
                                     std::move(doc), std::move(annotations)})
@@ -297,7 +297,7 @@ class parser_actions {
       std::string name,
       std::unique_ptr<t_const_value> value,
       std::unique_ptr<t_annotations> annotations,
-      boost::optional<std::string> doc) {
+      boost::optional<doc> doc) {
     auto field = std::make_unique<t_field>(
         std::move(type),
         std::move(name),
@@ -344,7 +344,7 @@ class parser_actions {
       std::string name,
       int64_t* value,
       std::unique_ptr<t_annotations> annotations,
-      boost::optional<std::string> doc) {
+      boost::optional<doc> doc) {
     auto enum_value = std::make_unique<t_enum_value>(std::move(name));
     driver_.set_attributes(
         *enum_value, std::move(attrs), std::move(annotations), range);

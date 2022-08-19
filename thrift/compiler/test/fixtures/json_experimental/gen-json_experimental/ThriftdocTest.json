@@ -337,6 +337,7 @@
       },
       "EmptyStruct" : {
         "name" : "EmptyStruct",
+        "docstring" : "",
         "is_exception" : false,
         "is_union" : false,
         "lineno" : 117
