@@ -386,7 +386,7 @@ template <class TT>
 }
 
 template <typename TT>
-Test createCompatibilityTest(const Protocol& protocol) {
+Test createCompatibilityTestWithTypeTag(const Protocol& protocol) {
   Test test;
   test.name() = protocol.name();
 
@@ -398,6 +398,26 @@ Test createCompatibilityTest(const Protocol& protocol) {
 
   addToTest({addFieldTestCase<TT>(protocol)});
   addToTest(removeFieldTestCase<TT>(protocol));
+  addToTest({addFieldWithCustomDefaultTestCase<TT>(protocol)});
+  addToTest({addOptionalFieldWithCustomDefaultTestCase<TT>(protocol)});
+  addToTest(changeStructType<TT>(protocol));
+
+  addToTest({changeFieldCustomDefaultTestCase<TT, false>(protocol)});
+  addToTest({changeFieldCustomDefaultTestCase<TT, true>(protocol)});
+
+  return test;
+}
+
+Test createCompatibilityTest(const Protocol& protocol) {
+  Test test;
+  test.name() = protocol.name();
+
+  auto addToTest = [&](std::vector<TestCase>&& tests) {
+    for (auto& t : tests) {
+      test.testCases()->push_back(std::move(t));
+    }
+  };
+
   addToTest(changeFieldTypeTestCase<type::i32_t, type::i16_t, false>(protocol));
   addToTest(changeFieldTypeTestCase<type::i32_t, type::i64_t, false>(protocol));
   addToTest(
@@ -437,12 +457,6 @@ Test createCompatibilityTest(const Protocol& protocol) {
             mod_set<FieldModifier::Optional>>(protocol));
 
   addToTest(changeEnumValueTestCases(protocol));
-  addToTest({addFieldWithCustomDefaultTestCase<TT>(protocol)});
-  addToTest({addOptionalFieldWithCustomDefaultTestCase<TT>(protocol)});
-  addToTest(changeStructType<TT>(protocol));
-
-  addToTest({changeFieldCustomDefaultTestCase<TT, false>(protocol)});
-  addToTest({changeFieldCustomDefaultTestCase<TT, true>(protocol)});
 
   return test;
 }
@@ -452,9 +466,10 @@ TestSuite createCompatibilitySuite() {
   TestSuite suite;
   suite.name() = "CompatibilityTest";
   for (const auto& protocol : detail::toProtocols(detail::kDefaultProtocols)) {
+    suite.tests()->emplace_back(createCompatibilityTest(protocol));
     mp11::mp_for_each<detail::PrimaryTypeTags>([&](auto t) {
       suite.tests()->emplace_back(
-          createCompatibilityTest<decltype(t)>(protocol));
+          createCompatibilityTestWithTypeTag<decltype(t)>(protocol));
     });
   }
   return suite;

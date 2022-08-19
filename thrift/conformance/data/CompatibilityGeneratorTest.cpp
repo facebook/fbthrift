@@ -31,12 +31,16 @@ TEST(TestGeneratorTest, RoundTripSuite) {
   constexpr size_t kNumProtocols = 2;
   constexpr size_t kNumTypes = 8;
   EXPECT_EQ(suite.name(), "CompatibilityTest");
-  ASSERT_EQ(suite.tests()->size(), kNumProtocols * kNumTypes);
 
-  EXPECT_EQ(suite.tests()->at(0 * kNumTypes).name(), "Binary");
-  EXPECT_EQ(suite.tests()->at(1 * kNumTypes).name(), "Compact");
+  // type tag dependent tests (kNumProtocols * kNumTypes) + type tag independent
+  // tests (kNumProtocols)
+  constexpr size_t kTestCount = kNumProtocols * kNumTypes + kNumProtocols;
+  ASSERT_EQ(suite.tests()->size(), kTestCount);
 
-  const auto& test = suite.tests()->at(1);
+  EXPECT_EQ(suite.tests()->at(0).name(), "Binary");
+  EXPECT_EQ(suite.tests()->at(1 * kNumTypes + 1).name(), "Compact");
+
+  const auto& test = suite.tests()->at(2);
   EXPECT_EQ(test.name(), "Binary");
 
   {
