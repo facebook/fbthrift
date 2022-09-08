@@ -123,6 +123,19 @@ CMake options:
 * `enable_tests`:
   specifies whether to enable tests
 
+### Installing and building via vcpkg
+
+You can download and install fbthrift using the [vcpkg](https://github.com/Microsoft/vcpkg) dependency manager:
+
+```
+git clone https://github.com/Microsoft/vcpkg.git
+cd vcpkg
+./bootstrap-vcpkg.sh
+./vcpkg integrate install
+vcpkg install fbthrift
+```
+The fbthrift port in vcpkg is kept up to date by Microsoft team members and community contributors. If the version is out of date, please [create an issue or pull request](https://github.com/Microsoft/vcpkg) on the vcpkg repository.
+
 ### Thrift Files
 
 When using thrift and the CMake build system, include: `ThriftLibrary.cmake` in
