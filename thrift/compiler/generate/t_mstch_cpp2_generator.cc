@@ -1101,6 +1101,8 @@ class cpp_mstch_typedef : public mstch_typedef {
 };
 
 class cpp_mstch_struct : public mstch_struct {
+  static bool is_trivially_destructible_helper(const t_struct& obj);
+
  public:
   cpp_mstch_struct(
       const t_struct* s,
@@ -1110,73 +1112,68 @@ class cpp_mstch_struct : public mstch_struct {
       : mstch_struct(s, ctx, pos), cpp_context_(std::move(cpp_ctx)) {
     register_methods(
         this,
-        {
-            {"struct:fields_size", &cpp_mstch_struct::fields_size},
-            {"struct:explicitly_constructed_fields",
-             &cpp_mstch_struct::explicitly_constructed_fields},
-            {"struct:fields_in_key_order",
-             &cpp_mstch_struct::fields_in_key_order},
-            {"struct:fields_in_layout_order",
-             &cpp_mstch_struct::fields_in_layout_order},
-            {"struct:is_struct_orderable?",
-             &cpp_mstch_struct::is_struct_orderable},
-            {"struct:nondefault_copy_ctor_and_assignment?",
-             &cpp_mstch_struct::nondefault_copy_ctor_and_assignment},
-            {"struct:cpp_underlying_name",
-             &cpp_mstch_struct::cpp_underlying_name},
-            {"struct:cpp_underlying_type",
-             &cpp_mstch_struct::cpp_underlying_type},
-            {"struct:is_directly_adapted?",
-             &cpp_mstch_struct::is_directly_adapted},
-            {"struct:dependent_direct_adapter?",
-             &cpp_mstch_struct::dependent_direct_adapter},
-            {"struct:cpp_name", &cpp_mstch_struct::cpp_name},
-            {"struct:cpp_fullname", &cpp_mstch_struct::cpp_fullname},
-            {"struct:cpp_methods", &cpp_mstch_struct::cpp_methods},
-            {"struct:cpp_declare_hash", &cpp_mstch_struct::cpp_declare_hash},
-            {"struct:cpp_declare_equal_to",
-             &cpp_mstch_struct::cpp_declare_equal_to},
-            {"struct:cpp_noncopyable", &cpp_mstch_struct::cpp_noncopyable},
-            {"struct:cpp_noncomparable", &cpp_mstch_struct::cpp_noncomparable},
-            {"struct:cpp_trivially_relocatable",
-             &cpp_mstch_struct::cpp_trivially_relocatable},
-            {"struct:is_eligible_for_constexpr?",
-             &cpp_mstch_struct::is_eligible_for_constexpr},
-            {"struct:virtual", &cpp_mstch_struct::cpp_virtual},
-            {"struct:message", &cpp_mstch_struct::message},
-            {"struct:isset_fields?", &cpp_mstch_struct::has_isset_fields},
-            {"struct:isset_fields", &cpp_mstch_struct::isset_fields},
-            {"struct:isset_fields_size", &cpp_mstch_struct::isset_fields_size},
-            {"struct:isset_bitset_option",
-             &cpp_mstch_struct::isset_bitset_option},
-            {"struct:lazy_fields?", &cpp_mstch_struct::has_lazy_fields},
-            {"struct:indexing?", &cpp_mstch_struct::indexing},
-            {"struct:write_lazy_field_checksum",
-             &cpp_mstch_struct::write_lazy_field_checksum},
-            {"struct:is_large?", &cpp_mstch_struct::is_large},
-            {"struct:fatal_annotations?",
-             &cpp_mstch_struct::has_fatal_annotations},
-            {"struct:fatal_annotations", &cpp_mstch_struct::fatal_annotations},
-            {"struct:legacy_type_id", &cpp_mstch_struct::get_legacy_type_id},
-            {"struct:legacy_api?", &cpp_mstch_struct::legacy_api},
-            {"struct:metadata_name", &cpp_mstch_struct::metadata_name},
-            {"struct:mixin_fields", &cpp_mstch_struct::mixin_fields},
-            {"struct:num_union_members",
-             &cpp_mstch_struct::get_num_union_members},
-            {"struct:cpp_allocator", &cpp_mstch_struct::cpp_allocator},
-            {"struct:cpp_allocator_via", &cpp_mstch_struct::cpp_allocator_via},
-            {"struct:cpp_data_method?", &cpp_mstch_struct::cpp_data_method},
-            {"struct:cpp_frozen2_exclude?",
-             &cpp_mstch_struct::cpp_frozen2_exclude},
-            {"struct:has_non_optional_and_non_terse_field?",
-             &cpp_mstch_struct::has_non_optional_and_non_terse_field},
-            {"struct:any?", &cpp_mstch_struct::any},
-            {"struct:scoped_enum_as_union_type?",
-             &cpp_mstch_struct::scoped_enum_as_union_type},
-            {"struct:extra_namespace", &cpp_mstch_struct::extra_namespace},
-            {"struct:type_tag", &cpp_mstch_struct::type_tag},
-            {"struct:patch?", &cpp_mstch_struct::patch},
-        });
+        {{"struct:fields_size", &cpp_mstch_struct::fields_size},
+         {"struct:explicitly_constructed_fields",
+          &cpp_mstch_struct::explicitly_constructed_fields},
+         {"struct:fields_in_key_order", &cpp_mstch_struct::fields_in_key_order},
+         {"struct:fields_in_layout_order",
+          &cpp_mstch_struct::fields_in_layout_order},
+         {"struct:is_struct_orderable?",
+          &cpp_mstch_struct::is_struct_orderable},
+         {"struct:nondefault_copy_ctor_and_assignment?",
+          &cpp_mstch_struct::nondefault_copy_ctor_and_assignment},
+         {"struct:cpp_underlying_name", &cpp_mstch_struct::cpp_underlying_name},
+         {"struct:cpp_underlying_type", &cpp_mstch_struct::cpp_underlying_type},
+         {"struct:is_directly_adapted?",
+          &cpp_mstch_struct::is_directly_adapted},
+         {"struct:dependent_direct_adapter?",
+          &cpp_mstch_struct::dependent_direct_adapter},
+         {"struct:cpp_name", &cpp_mstch_struct::cpp_name},
+         {"struct:cpp_fullname", &cpp_mstch_struct::cpp_fullname},
+         {"struct:cpp_methods", &cpp_mstch_struct::cpp_methods},
+         {"struct:cpp_declare_hash", &cpp_mstch_struct::cpp_declare_hash},
+         {"struct:cpp_declare_equal_to",
+          &cpp_mstch_struct::cpp_declare_equal_to},
+         {"struct:cpp_noncopyable", &cpp_mstch_struct::cpp_noncopyable},
+         {"struct:cpp_noncomparable", &cpp_mstch_struct::cpp_noncomparable},
+         {"struct:cpp_trivially_relocatable",
+          &cpp_mstch_struct::cpp_trivially_relocatable},
+         {"struct:is_eligible_for_constexpr?",
+          &cpp_mstch_struct::is_eligible_for_constexpr},
+         {"struct:virtual", &cpp_mstch_struct::cpp_virtual},
+         {"struct:message", &cpp_mstch_struct::message},
+         {"struct:isset_fields?", &cpp_mstch_struct::has_isset_fields},
+         {"struct:isset_fields", &cpp_mstch_struct::isset_fields},
+         {"struct:isset_fields_size", &cpp_mstch_struct::isset_fields_size},
+         {"struct:isset_bitset_option", &cpp_mstch_struct::isset_bitset_option},
+         {"struct:lazy_fields?", &cpp_mstch_struct::has_lazy_fields},
+         {"struct:indexing?", &cpp_mstch_struct::indexing},
+         {"struct:write_lazy_field_checksum",
+          &cpp_mstch_struct::write_lazy_field_checksum},
+         {"struct:is_large?", &cpp_mstch_struct::is_large},
+         {"struct:fatal_annotations?",
+          &cpp_mstch_struct::has_fatal_annotations},
+         {"struct:fatal_annotations", &cpp_mstch_struct::fatal_annotations},
+         {"struct:legacy_type_id", &cpp_mstch_struct::get_legacy_type_id},
+         {"struct:legacy_api?", &cpp_mstch_struct::legacy_api},
+         {"struct:metadata_name", &cpp_mstch_struct::metadata_name},
+         {"struct:mixin_fields", &cpp_mstch_struct::mixin_fields},
+         {"struct:num_union_members", &cpp_mstch_struct::get_num_union_members},
+         {"struct:cpp_allocator", &cpp_mstch_struct::cpp_allocator},
+         {"struct:cpp_allocator_via", &cpp_mstch_struct::cpp_allocator_via},
+         {"struct:cpp_data_method?", &cpp_mstch_struct::cpp_data_method},
+         {"struct:cpp_frozen2_exclude?",
+          &cpp_mstch_struct::cpp_frozen2_exclude},
+         {"struct:has_non_optional_and_non_terse_field?",
+          &cpp_mstch_struct::has_non_optional_and_non_terse_field},
+         {"struct:any?", &cpp_mstch_struct::any},
+         {"struct:scoped_enum_as_union_type?",
+          &cpp_mstch_struct::scoped_enum_as_union_type},
+         {"struct:extra_namespace", &cpp_mstch_struct::extra_namespace},
+         {"struct:type_tag", &cpp_mstch_struct::type_tag},
+         {"struct:patch?", &cpp_mstch_struct::patch},
+         {"struct:is_trivially_destructible?",
+          &cpp_mstch_struct::is_trivially_destructible}});
   }
   mstch::node fields_size() { return std::to_string(struct_->fields().size()); }
   mstch::node explicitly_constructed_fields() {
@@ -1650,11 +1647,28 @@ class cpp_mstch_struct : public mstch_struct {
             *struct_, kGeneratePatchUri) != nullptr;
   }
 
+  mstch::node is_trivially_destructible() {
+    return is_trivially_destructible_helper(*struct_);
+  }
+
   std::shared_ptr<cpp2_generator_context> cpp_context_;
 
   std::vector<const t_field*> fields_in_layout_order_;
   cpp2::is_eligible_for_constexpr is_eligible_for_constexpr_;
 };
+
+/*static*/ bool cpp_mstch_struct::is_trivially_destructible_helper(
+    const t_struct& obj) {
+  // Basic coverage of all primitive types.
+  // TODO: support nested trivially destructuble structs
+  for (const auto& field : obj.fields()) {
+    const t_type* type = field.get_type()->get_true_type();
+    if (cpp2::is_custom_type(field) || !type->is_scalar()) {
+      return false;
+    }
+  }
+  return true;
+}
 
 class cpp_mstch_field : public mstch_field {
  public:
