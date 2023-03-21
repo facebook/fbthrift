@@ -65,3 +65,10 @@ struct Adapter {
   // will use `fbthrift_adapters::DurationSecondsAdapter<i64>` as the adapter.
   1: string name;
 } (thrift.uri = "facebook.com/thrift/annotation/rust/Adapter")
+
+@scope.Exception
+@scope.Field
+@scope.Struct
+struct Attributes{
+    1: list<string> attributes;
+}

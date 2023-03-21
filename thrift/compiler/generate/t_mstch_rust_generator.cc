@@ -923,6 +923,7 @@ class rust_mstch_struct : public mstch_struct {
              &rust_mstch_struct::is_exception_message_optional},
             {"struct:exception_message", &rust_mstch_struct::exception_message},
             {"struct:serde?", &rust_mstch_struct::rust_serde},
+            {"struct:rust_attributes", &rust_mstch_struct::rust_attributes},
         });
   }
   mstch::node rust_name() { return struct_rust_name(struct_); }
@@ -977,6 +978,21 @@ class rust_mstch_struct : public mstch_struct {
   }
   mstch::node exception_message() { return struct_->get_annotation("message"); }
   mstch::node rust_serde() { return rust_serde_enabled(options_, *struct_); }
+  mstch::node rust_attributes() {
+    if (auto annotation = struct_->find_structured_annotation_or_null(kRustAttributeUri)) {
+      std::vector<mstch::node> attributes;
+      for (const auto& item : annotation->value()->get_map()) {
+        if (item.first->get_string() == "attributes") {
+          for (const auto& attribute: item.second->get_list()) {
+            attributes.push_back(attribute->get_string());
+          }
+        }
+      }
+      return attributes;
+    }
+
+    return nullptr;
+  }
 
  private:
   const rust_codegen_options& options_;
@@ -1577,6 +1593,7 @@ class rust_mstch_field : public mstch_field {
             {"field:docs?", &rust_mstch_field::rust_has_docs},
             {"field:docs", &rust_mstch_field::rust_docs},
             {"field:has_adapter?", &rust_mstch_field::has_adapter},
+            {"field:rust_attributes", &rust_mstch_field::rust_attributes},
         });
   }
   mstch::node rust_name() {
@@ -1606,6 +1623,21 @@ class rust_mstch_field : public mstch_field {
   mstch::node rust_is_arc() { return field_kind(*field_) == FieldKind::Arc; }
   mstch::node rust_has_docs() { return field_->has_doc(); }
   mstch::node rust_docs() { return quoted_rust_doc(field_); }
+  mstch::node rust_attributes() {
+    if (auto annotation = field_->find_structured_annotation_or_null(kRustAttributeUri)) {
+      std::vector<mstch::node> attributes;
+      for (const auto& item : annotation->value()->get_map()) {
+        if (item.first->get_string() == "attributes") {
+          for (const auto& attribute: item.second->get_list()) {
+            attributes.push_back(attribute->get_string());
+          }
+        }
+      }
+      return attributes;
+    }
+
+    return nullptr;
+  }
   mstch::node has_adapter() {
     return adapter_node(
         adapter_annotation_, field_->get_type(), context_, pos_);

@@ -79,6 +79,17 @@ thrift_generate(
 )
 
 thrift_generate(
+  "rust" #file_name
+  "" #services
+  "cpp2" #language
+  "templates,no_metadata" #options
+  "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
+  "${CMAKE_CURRENT_BINARY_DIR}" #output_path
+  "thrift/annotation" #include_prefix
+  THRIFT_INCLUDE_DIRECTORIES ${THRIFT_SOURCE_DIR}
+)
+
+thrift_generate(
   "scope" #file_name
   "" #services
   "cpp2" #language
@@ -106,5 +117,6 @@ set_property(GLOBAL PROPERTY hack-cpp2-SOURCES ${hack-cpp2-SOURCES})
 set_property(GLOBAL PROPERTY java-cpp2-SOURCES ${java-cpp2-SOURCES})
 set_property(GLOBAL PROPERTY meta-cpp2-SOURCES ${meta-cpp2-SOURCES})
 set_property(GLOBAL PROPERTY python-cpp2-SOURCES ${python-cpp2-SOURCES})
+set_property(GLOBAL PROPERTY rust-cpp2-SOURCES ${rust-cpp2-SOURCES})
 set_property(GLOBAL PROPERTY scope-cpp2-SOURCES ${scope-cpp2-SOURCES})
 set_property(GLOBAL PROPERTY thrift-cpp2-SOURCES ${thrift-cpp2-SOURCES})
