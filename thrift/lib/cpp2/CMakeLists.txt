@@ -250,6 +250,7 @@ add_library(
   server/ParallelConcurrencyController.cpp
   server/TokenBucketConcurrencyController.cpp
   server/StandardConcurrencyController.cpp
+  server/TMConcurrencyController.cpp
   server/ThreadManagerLoggingWrapper.cpp
   server/RequestDebugLog.cpp
   server/RequestPileBase.cpp
