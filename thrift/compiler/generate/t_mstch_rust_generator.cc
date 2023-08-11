@@ -887,8 +887,7 @@ class rust_mstch_function : public mstch_function {
       mstch_element_position pos,
       const std::unordered_multiset<std::string>& function_upcamel_names)
       : mstch_function(function, ctx, pos),
-        function_upcamel_names_(function_upcamel_names),
-        success_return(function->get_returntype(), "Success", 0) {
+        function_upcamel_names_(function_upcamel_names) {
     register_methods(
         this,
         {{"function:rust_name", &rust_mstch_function::rust_name},
@@ -964,14 +963,67 @@ class rust_mstch_function : public mstch_function {
     });
     return make_mstch_fields(params);
   }
+
   mstch::node rust_returns_by_name() {
-    auto returns = function_->get_xceptions()->fields().copy();
-    returns.push_back(&success_return);
-    std::sort(returns.begin(), returns.end(), [](auto a, auto b) {
-      return a->get_name() < b->get_name();
-    });
-    return make_mstch_fields(returns);
+    auto returns = std::vector<std::string>();
+    auto add_return =
+        [&](fmt::string_view name, fmt::string_view type, int id) {
+          returns.push_back(fmt::format(
+              "::fbthrift::Field::new(\"{}\", ::fbthrift::TType::{}, {})",
+              name,
+              type,
+              id));
+        };
+    auto get_ttype = [](const t_type& type) {
+      switch (type.get_true_type()->get_type_value()) {
+        case t_type::type::t_void:
+          return "Void";
+        case t_type::type::t_bool:
+          return "Bool";
+        case t_type::type::t_byte:
+          return "Byte";
+        case t_type::type::t_i16:
+          return "I16";
+        case t_type::type::t_i32:
+          return "I32";
+        case t_type::type::t_i64:
+          return "I64";
+        case t_type::type::t_float:
+          return "Float";
+        case t_type::type::t_double:
+          return "Double";
+        case t_type::type::t_string:
+          return "String";
+        case t_type::type::t_binary:
+          return "String";
+        case t_type::type::t_list:
+          return "List";
+        case t_type::type::t_set:
+          return "Set";
+        case t_type::type::t_map:
+          return "Map";
+        case t_type::type::t_enum:
+          return "I32";
+        case t_type::type::t_struct:
+          return "Struct";
+        default:
+          return "";
+      }
+    };
+    for (const t_field& field : function_->get_xceptions()->fields()) {
+      add_return(field.name(), get_ttype(*field.type()), field.id());
+    }
+    auto ttype = function_->stream() ? "Stream"
+                                     : get_ttype(*function_->get_returntype());
+    add_return("Success", ttype, 0);
+    std::sort(returns.begin(), returns.end());
+    auto array = mstch::array();
+    for (const std::string& ret : returns) {
+      array.push_back(ret);
+    }
+    return array;
   }
+
   mstch::node rust_has_doc() { return function_->has_doc(); }
   mstch::node rust_doc() { return quoted_rust_doc(function_); }
   mstch::node rust_interaction_name() {
@@ -1008,7 +1060,6 @@ class rust_mstch_function : public mstch_function {
 
  private:
   const std::unordered_multiset<std::string>& function_upcamel_names_;
-  t_field success_return;
 };
 
 class mstch_rust_value;
@@ -1606,14 +1657,14 @@ class mstch_rust_struct_field : public mstch_base {
  public:
   mstch_rust_struct_field(
       const t_field* field,
-      const t_const_value* value,
+      const t_const_value* explicit_value,
       unsigned depth,
       mstch_context& ctx,
       mstch_element_position pos,
       const rust_codegen_options& options)
       : mstch_base(ctx, pos),
         field_(field),
-        value_(value),
+        explicit_value_(explicit_value),
         depth_(depth),
         options_(options),
         adapter_annotation_(find_structured_adapter_annotation(*field)) {
@@ -1623,7 +1674,8 @@ class mstch_rust_struct_field : public mstch_base {
             {"field:key", &mstch_rust_struct_field::key},
             {"field:rust_name", &mstch_rust_struct_field::rust_name},
             {"field:optional?", &mstch_rust_struct_field::is_optional},
-            {"field:value", &mstch_rust_struct_field::value},
+            {"field:explicit_value", &mstch_rust_struct_field::explicit_value},
+            {"field:default", &mstch_rust_struct_field::rust_default},
             {"field:type", &mstch_rust_struct_field::type},
             {"field:box?", &mstch_rust_struct_field::is_boxed},
             {"field:arc?", &mstch_rust_struct_field::is_arc},
@@ -1642,11 +1694,18 @@ class mstch_rust_struct_field : public mstch_base {
   mstch::node is_optional() {
     return field_->get_req() == t_field::e_req::optional;
   }
-  mstch::node value() {
-    if (value_) {
+  mstch::node explicit_value() {
+    if (explicit_value_) {
       auto type = field_->get_type();
       return std::make_shared<mstch_rust_value>(
-          value_, type, depth_, context_, pos_, options_);
+          explicit_value_, type, depth_, context_, pos_, options_);
+    }
+    return mstch::node();
+  }
+  mstch::node rust_default() {
+    if (auto default_value = field_->get_value()) {
+      return std::make_shared<mstch_rust_value>(
+          default_value, field_->get_type(), depth_, context_, pos_, options_);
     }
     return mstch::node();
   }
@@ -1670,7 +1729,7 @@ class mstch_rust_struct_field : public mstch_base {
 
  private:
   const t_field* field_;
-  const t_const_value* value_;
+  const t_const_value* explicit_value_;
   unsigned depth_;
   const rust_codegen_options& options_;
   const t_const* adapter_annotation_;
@@ -1715,12 +1774,9 @@ mstch::node mstch_rust_value::struct_fields() {
 
   mstch::array fields;
   for (auto&& field : struct_type->fields()) {
-    auto value = map_entries[field.name()];
-    if (!value) {
-      value = field.default_value();
-    }
+    auto explicit_value = map_entries[field.name()];
     fields.push_back(std::make_shared<mstch_rust_struct_field>(
-        &field, value, depth_ + 1, context_, pos_, options_));
+        &field, explicit_value, depth_ + 1, context_, pos_, options_));
   }
   return fields;
 }

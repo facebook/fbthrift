@@ -173,57 +173,6 @@ mstch::node mstch_type::get_typedef() {
   return mstch::node();
 }
 
-mstch::node mstch_type::get_sink_elem_type() {
-  if (type_->is_sink()) {
-    return context_.type_factory->make_mstch_object(
-        dynamic_cast<const t_sink*>(type_)->get_sink_type(), context_, pos_);
-  }
-  return mstch::node();
-}
-
-mstch::node mstch_type::get_sink_final_reponse_type() {
-  if (type_->is_sink()) {
-    return context_.type_factory->make_mstch_object(
-        dynamic_cast<const t_sink*>(type_)->get_final_response_type(),
-        context_,
-        pos_);
-  }
-  return mstch::node();
-}
-
-mstch::node mstch_type::get_sink_first_response_type() {
-  if (type_->is_sink()) {
-    if (const auto sinkresponse =
-            dynamic_cast<const t_sink*>(type_)->get_first_response_type()) {
-      return context_.type_factory->make_mstch_object(
-          sinkresponse, context_, pos_);
-    }
-  }
-  return mstch::node();
-}
-
-mstch::node mstch_type::get_stream_elem_type() {
-  if (type_->is_streamresponse()) {
-    return context_.type_factory->make_mstch_object(
-        dynamic_cast<const t_stream_response*>(type_)->get_elem_type(),
-        context_,
-        pos_);
-  }
-  return mstch::node();
-}
-
-mstch::node mstch_type::get_stream_first_response_type() {
-  if (resolved_type_->is_streamresponse()) {
-    if (const auto streamresponse =
-            dynamic_cast<const t_stream_response*>(resolved_type_)
-                ->get_first_response_type()) {
-      return context_.type_factory->make_mstch_object(
-          streamresponse, context_, pos_);
-    }
-  }
-  return mstch::node();
-}
-
 mstch::node mstch_field::value() {
   if (!field_->get_value()) {
     return mstch::node();
@@ -512,19 +461,43 @@ const std::vector<const t_field*>& mstch_struct::get_members_in_key_order() {
 
 mstch::node mstch_function::return_type() {
   return context_.type_factory->make_mstch_object(
-      function_->get_returntype(), context_, pos_);
+      function_->get_return_type(), context_, pos_);
+}
+
+mstch::node mstch_function::arg_list() {
+  return make_mstch_fields(function_->get_paramlist()->get_members());
 }
 
 mstch::node mstch_function::exceptions() {
   return make_mstch_fields(function_->get_xceptions()->get_members());
 }
 
-mstch::node mstch_function::stream_exceptions() {
-  return make_mstch_fields(function_->get_stream_xceptions()->get_members());
+mstch::node mstch_function::sink_first_response_type() {
+  const t_sink* sink = function_->sink();
+  if (!sink) {
+    return {};
+  }
+  const t_type* type = sink->get_first_response_type();
+  return type ? context_.type_factory->make_mstch_object(type, context_, pos_)
+              : mstch::node();
+}
+
+mstch::node mstch_function::sink_elem_type() {
+  const t_sink* sink = function_->sink();
+  return sink ? context_.type_factory->make_mstch_object(
+                    sink->get_elem_type(), context_, pos_)
+              : mstch::node();
 }
 
 mstch::node mstch_function::sink_exceptions() {
   return make_mstch_fields(function_->get_sink_xceptions()->get_members());
+}
+
+mstch::node mstch_function::sink_final_reponse_type() {
+  const t_sink* sink = function_->sink();
+  return sink ? context_.type_factory->make_mstch_object(
+                    sink->get_final_response_type(), context_, pos_)
+              : mstch::node();
 }
 
 mstch::node mstch_function::sink_final_response_exceptions() {
@@ -532,12 +505,25 @@ mstch::node mstch_function::sink_final_response_exceptions() {
       function_->get_sink_final_response_xceptions()->get_members());
 }
 
-mstch::node mstch_function::arg_list() {
-  return make_mstch_fields(function_->get_paramlist()->get_members());
+mstch::node mstch_function::stream_elem_type() {
+  const t_stream_response* stream = function_->stream();
+  return stream ? context_.type_factory->make_mstch_object(
+                      stream->get_elem_type(), context_, pos_)
+                : mstch::node();
 }
 
-mstch::node mstch_function::returns_stream() {
-  return function_->returns_stream();
+mstch::node mstch_function::stream_first_response_type() {
+  const t_stream_response* stream = function_->stream();
+  if (!stream) {
+    return {};
+  }
+  const t_type* type = stream->get_first_response_type();
+  return type ? context_.type_factory->make_mstch_object(type, context_, pos_)
+              : mstch::node();
+}
+
+mstch::node mstch_function::stream_exceptions() {
+  return make_mstch_fields(function_->get_stream_xceptions()->get_members());
 }
 
 mstch::node mstch_service::functions() {

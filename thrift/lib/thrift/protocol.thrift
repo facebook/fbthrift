@@ -30,7 +30,6 @@ package "facebook.com/thrift/protocol"
 namespace cpp2 apache.thrift.protocol
 namespace py3 apache.thrift.protocol
 namespace php apache_thrift_protocol
-namespace java com.facebook.thrift.protocol
 namespace java.swift com.facebook.thrift.protocol_swift
 namespace py.asyncio apache_thrift_asyncio.protocol
 namespace go thrift.lib.thrift.protocol
@@ -38,15 +37,6 @@ namespace py thrift.lib.thrift.protocol
 
 typedef protocol_detail.Object Object (thrift.uri = "")
 typedef protocol_detail.Value Value (thrift.uri = "")
-
-@cpp.Adapter{
-  name = "::apache::thrift::type::detail::StrongIntegerAdapter<::apache::thrift::protocol::PathSegmentId>",
-}
-typedef id.ExternId PathSegmentId
-
-struct Path {
-  1: list<PathSegmentId> path;
-} (py3.hidden)
 
 // Represents serialized data of unmasked fields.
 union MaskedData {

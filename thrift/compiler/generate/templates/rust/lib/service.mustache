@@ -23,12 +23,12 @@ pub mod {{service:snake}} {{>lib/block}}{{!
     }}{{#service:docs?}}
     #![doc = {{service:docs}}]
     {{/service:docs?}}{{!
-    }}{{#service:rustFunctions}}{{^function:starts_interaction?}}{{#function:returns_stream?}}
+    }}{{#service:rustFunctions}}{{^function:starts_interaction?}}{{#function:stream?}}
 
     #[derive(Clone, Debug)]
     pub enum {{function:upcamel}}StreamExn {
         #[doc(hidden)]
-        Success({{#function:return_type}}{{#type:stream_elem_type}}{{>lib/type}}{{/type:stream_elem_type}}{{/function:return_type}}),{{!
+        Success({{#function:stream_elem_type}}{{>lib/type}}{{/function:stream_elem_type}}),{{!
         }}{{#function:stream_exceptions}}
         {{field:rust_name}}({{#field:type}}{{>lib/type}}{{/field:type}}),{{!
         }}{{/function:stream_exceptions}}
@@ -136,7 +136,7 @@ pub mod {{service:snake}} {{>lib/block}}{{!
                 Self::Success(inner) => {
                     p.write_field_begin(
                         "Success",
-                        {{#function:return_type}}{{#type:stream_elem_type}}{{>lib/ttype}}{{/type:stream_elem_type}}{{/function:return_type}},
+                        {{#function:stream_elem_type}}{{>lib/ttype}}{{/function:stream_elem_type}},
                         0i16,
                     );
                     inner.write(p);
@@ -167,7 +167,7 @@ pub mod {{service:snake}} {{>lib/block}}{{!
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static RETURNS: &[::fbthrift::Field] = &[
                 {{#function:returns_by_name}}
-                ::fbthrift::Field::new("{{field:name}}", {{#field:type}}{{>lib/ttype}}{{/field:type}}, {{field:key}}),
+                {{.}},
                 {{/function:returns_by_name}}
             ];
             let _ = p.read_struct_begin(|_| ())?;
@@ -185,7 +185,7 @@ pub mod {{service:snake}} {{>lib/block}}{{!
                         p.read_field_end()?;
                         break;
                     }
-                    (({{#function:return_type}}{{#type:stream_elem_type}}{{>lib/ttype}}{{/type:stream_elem_type}}{{/function:return_type}}, 0i32), false) => {
+                    (({{#function:stream_elem_type}}{{>lib/ttype}}{{/function:stream_elem_type}}, 0i32), false) => {
                         once = true;
                         alt = {{!
                             }}{{^function:void_excluding_interaction?}}::std::option::Option::Some({{/function:void_excluding_interaction?}}{{!
@@ -238,7 +238,7 @@ pub mod {{service:snake}} {{>lib/block}}{{!
     pub enum {{function:upcamel}}ResponseExn {
         #[doc(hidden)]
         {{#function:stream_has_first_response?}}
-        Success({{#function:return_type}}{{#type:stream_first_response_type}}{{>lib/type}}{{/type:stream_first_response_type}}{{/function:return_type}}),
+        Success({{#function:return_type}}{{#function:stream_first_response_type}}{{>lib/type}}{{/function:stream_first_response_type}}{{/function:return_type}}),
         {{/function:stream_has_first_response?}}
         {{^function:stream_has_first_response?}}
         Success(()),
@@ -357,7 +357,7 @@ pub mod {{service:snake}} {{>lib/block}}{{!
                     p.write_field_begin(
                         "Success",
                         {{#function:stream_has_first_response?}}
-                        {{#function:return_type}}{{#type:stream_first_response_type}}{{>lib/ttype}}{{/type:stream_first_response_type}}{{/function:return_type}},
+                        {{#function:return_type}}{{#function:stream_first_response_type}}{{>lib/ttype}}{{/function:stream_first_response_type}}{{/function:return_type}},
                         {{/function:stream_has_first_response?}}
                         {{^function:stream_has_first_response?}}
                         ::fbthrift::TType::Void,
@@ -394,7 +394,7 @@ pub mod {{service:snake}} {{>lib/block}}{{!
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static RETURNS: &[::fbthrift::Field] = &[
                 {{#function:returns_by_name}}
-                ::fbthrift::Field::new("{{field:name}}", {{#field:type}}{{>lib/ttype}}{{/field:type}}, {{field:key}}),
+                {{.}},
                 {{/function:returns_by_name}}
             ];
             let _ = p.read_struct_begin(|_| ())?;
@@ -413,7 +413,7 @@ pub mod {{service:snake}} {{>lib/block}}{{!
                         break;
                     }
                     (({{^function:stream_has_first_response?}}::fbthrift::TType::Void{{/function:stream_has_first_response?}}{{!
-                      }}{{#function:stream_has_first_response?}}{{#function:return_type}}{{#type:stream_first_response_type}}{{>lib/ttype}}{{/type:stream_first_response_type}}{{/function:return_type}}{{/function:stream_has_first_response?}}{{!
+                      }}{{#function:stream_has_first_response?}}{{#function:return_type}}{{#function:stream_first_response_type}}{{>lib/ttype}}{{/function:stream_first_response_type}}{{/function:return_type}}{{/function:stream_has_first_response?}}{{!
                       }}, 0i32), false) => {
                         once = true;
                         alt = {{!
@@ -462,11 +462,11 @@ pub mod {{service:snake}} {{>lib/block}}{{!
             }}{{/function:stream_has_first_response?}}
         }
     }
-    {{/function:returns_stream?}}
+    {{/function:stream?}}
 
-    {{^function:returns_stream?}}
+    {{^function:stream?}}
     #[derive(Clone, Debug)]
-    {{/function:returns_stream?}}
+    {{/function:stream?}}
     pub enum {{function:upcamel}}Exn {
         #[doc(hidden)]
         Success({{>lib/server_ok_type}}),{{!
@@ -579,7 +579,7 @@ pub mod {{service:snake}} {{>lib/block}}{{!
         const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
     }
 
-    {{^function:returns_streams?}}
+    {{^function:stream?}}
     impl<P> ::fbthrift::Serialize<P> for {{function:upcamel}}Exn
     where
         P: ::fbthrift::ProtocolWriter,
@@ -618,9 +618,9 @@ pub mod {{service:snake}} {{>lib/block}}{{!
             p.write_struct_end();
         }
     }
-    {{/function:returns_streams?}}
+    {{/function:stream?}}
 
-    {{^function:returns_streams?}}
+    {{^function:stream?}}
     impl<P> ::fbthrift::Deserialize<P> for {{function:upcamel}}Exn
     where
         P: ::fbthrift::ProtocolReader,
@@ -628,7 +628,7 @@ pub mod {{service:snake}} {{>lib/block}}{{!
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static RETURNS: &[::fbthrift::Field] = &[
                 {{#function:returns_by_name}}
-                ::fbthrift::Field::new("{{field:name}}", {{#field:type}}{{>lib/ttype}}{{/field:type}}, {{field:key}}),
+                {{.}},
                 {{/function:returns_by_name}}
             ];
             let _ = p.read_struct_begin(|_| ())?;
@@ -694,7 +694,7 @@ pub mod {{service:snake}} {{>lib/block}}{{!
             }}{{/function:void_excluding_interaction?}}
         }
     }
-    {{/function:returns_streams?}}{{!
+    {{/function:stream?}}{{!
     }}{{/function:starts_interaction?}}{{/service:rustFunctions}}
 }
 {{!newline}}

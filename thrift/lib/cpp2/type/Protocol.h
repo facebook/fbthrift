@@ -115,7 +115,10 @@ class Protocol : public detail::Wrap<ProtocolUnion, union_t<ProtocolUnion>> {
 // Raises std::invalid_argument on failure.
 void validateProtocol(const Protocol& protocol);
 
+FOLLY_PUSH_WARNING
+FOLLY_CLANG_DISABLE_WARNING("-Wglobal-constructors")
 inline const Protocol kNoProtocol = {};
+FOLLY_POP_WARNING
 
 } // namespace apache::thrift::type
 

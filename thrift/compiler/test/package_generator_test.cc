@@ -116,4 +116,49 @@ TEST(PackageGeneratorTest, ns_with_language_identifiers) {
   namespaces["python"] = "foo.test_cpp2.baz_python_cpp2.python";
   EXPECT_EQ(get_common_pkg(), "meta.com/foo/test_cpp2/baz_cpp2");
 }
+
+TEST(PackageGeneratorTest, common_identifiers) {
+  std::map<std::string, std::string> namespaces = {
+      {"cpp2", "apache.xyz.foo.abc"},
+      {"hack", "abc.apache.xyz.foo"},
+      {"py3", "apache.foo"}};
+  auto get_pkg_from_common_identifiers = [&]() {
+    return codemod::package_name_generator_util::from_namespaces(namespaces)
+        .get_package_from_common_identifiers();
+  };
+
+  // For above namespaces, common identifiers = {"foo"}
+  // which doesn't meet minimum length requirement
+  EXPECT_EQ(get_pkg_from_common_identifiers(), "");
+
+  namespaces["py3"] = "meta.foo.abc.xyz";
+  // common identifiers = {"foo", "xyz"}
+  // Since the order of common identifiers is different in all three namespaces,
+  // choosing the order from first namespace.
+
+  // Since there are 2 different domains in cpp2 and py3 ns, choosing the first
+  // domain
+  EXPECT_EQ(get_pkg_from_common_identifiers(), "apache.org/xyz/foo");
+}
+
+TEST(PackageGeneratorTest, longest_package) {
+  std::map<std::string, std::string> namespaces = {
+      {"cpp2", "apache.abcdef.ghij"}, {"hack", "xyz.abc.foo"}, {"py3", "foo"}};
+
+  auto get_longest_pkg = [&]() {
+    return codemod::package_name_generator_util::from_namespaces(namespaces)
+        .get_longest_package();
+  };
+
+  // Since domain is present in one of the namespaces,
+  // the domain from that namespace is used for generating the package.
+  // Package from cpp2 namespace is the longest one.
+  EXPECT_EQ(get_longest_pkg(), "apache.org/abcdef/ghij");
+
+  // Since py3 namespaces has a domain, that domain will be used for generating
+  // the package from py3 namespace.
+  // "facebook.com/abcdef.ghi" (len = 23) > "apache.org/abcdef/ghij" (len = 22)
+  namespaces["py3"] = "facebook.abcdef.ghi";
+  EXPECT_EQ(get_longest_pkg(), "facebook.com/abcdef/ghi");
+}
 } // namespace apache::thrift::compiler

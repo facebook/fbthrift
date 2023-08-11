@@ -1050,7 +1050,7 @@ class t_hack_generator : public t_concat_generator {
   }
 
   bool is_client_only_function(const t_function* func) {
-    return func->returns_stream() || func->returns_sink();
+    return func->sink_or_stream();
   }
 
   std::vector<const t_service*> get_interactions(
@@ -2362,7 +2362,7 @@ std::unique_ptr<t_const_value> t_hack_generator::type_to_tmeta(
     tsink_tmeta->set_map();
     tsink_tmeta->add_map(
         std::make_unique<t_const_value>("elemType"),
-        type_to_tmeta(tsink->get_sink_type()));
+        type_to_tmeta(tsink->get_elem_type()));
     tsink_tmeta->add_map(
         std::make_unique<t_const_value>("finalResponseType"),
         type_to_tmeta(tsink->get_final_response_type()));
@@ -4858,7 +4858,7 @@ std::string t_hack_generator::render_service_metadata_response(
     } else if (const auto* ttypedef = dynamic_cast<const t_typedef*>(type)) {
       queue.push(ttypedef->get_type());
     } else if (const auto* tsink = dynamic_cast<const t_sink*>(type)) {
-      queue.push(tsink->get_sink_type());
+      queue.push(tsink->get_elem_type());
       queue.push(tsink->get_first_response_type());
       queue.push(tsink->get_final_response_type());
     } else if (
@@ -6052,10 +6052,10 @@ void t_hack_generator::generate_service_interactions(
 void t_hack_generator::generate_php_function_helpers(
     const t_service* tservice, const t_function* tfunction) {
   const std::string& service_name = tservice->name();
-  if (tfunction->returns_stream()) {
+  if (tfunction->stream()) {
     generate_php_stream_function_helpers(tfunction, service_name);
     return;
-  } else if (tfunction->returns_sink()) {
+  } else if (tfunction->sink()) {
     generate_php_sink_function_helpers(tfunction, service_name);
     return;
   }
@@ -6173,7 +6173,7 @@ void t_hack_generator::generate_php_sink_function_helpers(
 
   generate_php_function_result_helpers(
       tfunction,
-      tsink->get_sink_type(),
+      tsink->get_elem_type(),
       tfunction->get_sink_xceptions(),
       prefix,
       "_SinkPayload",
@@ -6196,10 +6196,10 @@ void t_hack_generator::generate_php_interaction_function_helpers(
     const t_service* interaction,
     const t_function* tfunction) {
   const std::string& prefix = tservice->name() + "_" + interaction->name();
-  if (tfunction->returns_stream()) {
+  if (tfunction->stream()) {
     generate_php_stream_function_helpers(tfunction, prefix);
     return;
-  } else if (tfunction->returns_sink()) {
+  } else if (tfunction->sink()) {
     generate_php_sink_function_helpers(tfunction, prefix);
     return;
   }
@@ -6287,7 +6287,7 @@ void t_hack_generator::generate_php_docstring(
     } else {
       out << "void, ";
     }
-    out << "sink<" << thrift_type_name(tsink->get_sink_type());
+    out << "sink<" << thrift_type_name(tsink->get_elem_type());
     generate_php_docstring_stream_exceptions(out, tsink->sink_exceptions());
 
     out << ", " << thrift_type_name(tsink->get_final_response_type());
@@ -6711,7 +6711,7 @@ std::string t_hack_generator::get_stream_function_return_typehint(
 std::string t_hack_generator::get_sink_function_return_typehint(
     const t_sink* tsink) {
   // Finally, the function declaration.
-  std::string return_typehint = type_to_typehint(tsink->get_sink_type()) +
+  std::string return_typehint = type_to_typehint(tsink->get_elem_type()) +
       ", " + type_to_typehint(tsink->get_final_response_type()) + ">";
 
   if (tsink->sink_has_first_response()) {
@@ -7194,13 +7194,13 @@ void t_hack_generator::_generate_service_client_child_fn(
     const t_service* tservice,
     const t_function* tfunction,
     bool legacy_arrays) {
-  if (tfunction->returns_stream()) {
+  if (tfunction->stream()) {
     _generate_service_client_stream_child_fn(
         out, tservice, tfunction, legacy_arrays);
     return;
   }
 
-  if (tfunction->returns_sink()) {
+  if (tfunction->sink()) {
     _generate_service_client_sink_child_fn(
         out, tservice, tfunction, legacy_arrays);
     return;

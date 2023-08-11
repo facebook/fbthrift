@@ -69,11 +69,24 @@ class add_package {
       auto ns = prog_.namespaces().begin();
       return package_name_generator(ns->first, ns->second).generate();
     }
+    auto gen = package_name_generator_util::from_namespaces(prog_.namespaces());
 
     // If there are multiple namespaces, then find the one that works with
     // most namespaces.
-    return package_name_generator_util::from_namespaces(prog_.namespaces())
-        .find_common_package();
+    auto pkg = gen.find_common_package();
+    if (!pkg.empty()) {
+      return pkg;
+    }
+    pkg = gen.get_package_from_common_identifiers();
+
+    if (!pkg.empty()) {
+      return pkg;
+    }
+
+    // If there are no common identifiers,
+    // then prioritize the longest package as it is more likely to be
+    // unique
+    return gen.get_longest_package();
   }
 
   std::string get_replacement_content(const std::string& pkg) const {

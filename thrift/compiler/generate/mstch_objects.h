@@ -549,14 +549,14 @@ class mstch_service : public mstch_base {
   mstch::node has_streams() {
     auto& funcs = get_functions();
     return std::any_of(funcs.cbegin(), funcs.cend(), [](const auto& func) {
-      return func->returns_stream();
+      return func->stream() != nullptr;
     });
   }
 
   mstch::node has_sinks() {
     auto& funcs = get_functions();
     return std::any_of(funcs.cbegin(), funcs.cend(), [](const auto& func) {
-      return func->returns_sink();
+      return func->sink() != nullptr;
     });
   }
 
@@ -609,25 +609,11 @@ class mstch_function : public mstch_base {
             {"function:oneway?", &mstch_function::oneway},
             {"function:return_type", &mstch_function::return_type},
             {"function:exceptions", &mstch_function::exceptions},
-            {"function:stream_exceptions", &mstch_function::stream_exceptions},
-            {"function:sink_exceptions", &mstch_function::sink_exceptions},
-            {"function:sink_final_response_exceptions",
-             &mstch_function::sink_final_response_exceptions},
             {"function:exceptions?", &mstch_function::has_exceptions},
-            {"function:stream_exceptions?",
-             &mstch_function::has_streamexceptions},
-            {"function:sink_exceptions?", &mstch_function::has_sinkexceptions},
-            {"function:sink_final_response_exceptions?",
-             &mstch_function::has_sink_final_response_exceptions},
             {"function:args", &mstch_function::arg_list},
             {"function:args?", &mstch_function::has_args},
             {"function:comma", &mstch_function::arg_comma},
             {"function:priority", &mstch_function::priority},
-            {"function:returns_sink?", &mstch_function::returns_sink},
-            {"function:returns_streams?", &mstch_function::returns_stream},
-            {"function:returns_stream?", &mstch_function::returns_stream},
-            {"function:stream_has_first_response?",
-             &mstch_function::stream_has_first_response},
             {"function:annotations", &mstch_function::annotations},
             {"function:starts_interaction?",
              &mstch_function::starts_interaction},
@@ -641,6 +627,33 @@ class mstch_function : public mstch_base {
             {"function:in_or_creates_interaction?",
              &mstch_function::in_or_creates_interaction},
             {"function:void?", &mstch_function::is_void},
+
+            // Sink methods:
+            {"function:sink?", &mstch_function::has_sink},
+            {"function:sink_has_first_response?",
+             &mstch_function::sink_has_first_response},
+            {"function:sink_first_response_type",
+             &mstch_function::sink_first_response_type},
+            {"function:sink_elem_type", &mstch_function::sink_elem_type},
+            {"function:sink_exceptions?", &mstch_function::has_sink_exceptions},
+            {"function:sink_exceptions", &mstch_function::sink_exceptions},
+            {"function:sink_final_response_type",
+             &mstch_function::sink_final_reponse_type},
+            {"function:sink_final_response_exceptions?",
+             &mstch_function::has_sink_final_response_exceptions},
+            {"function:sink_final_response_exceptions",
+             &mstch_function::sink_final_response_exceptions},
+
+            // Stream methods:
+            {"function:stream?", &mstch_function::has_stream},
+            {"function:stream_has_first_response?",
+             &mstch_function::stream_has_first_response},
+            {"function:stream_first_response_type",
+             &mstch_function::stream_first_response_type},
+            {"function:stream_elem_type", &mstch_function::stream_elem_type},
+            {"function:stream_exceptions?",
+             &mstch_function::has_stream_exceptions},
+            {"function:stream_exceptions", &mstch_function::stream_exceptions},
         });
   }
 
@@ -651,20 +664,6 @@ class mstch_function : public mstch_base {
   mstch::node has_exceptions() {
     return function_->get_xceptions()->has_fields();
   }
-  mstch::node has_streamexceptions() {
-    return function_->get_stream_xceptions()->has_fields();
-  }
-  mstch::node has_sinkexceptions() {
-    return function_->get_sink_xceptions()->has_fields();
-  }
-  mstch::node has_sink_final_response_exceptions() {
-    return function_->get_sink_final_response_xceptions()->has_fields();
-  }
-  mstch::node stream_has_first_response() {
-    const auto& rettype = *function_->return_type();
-    auto stream = dynamic_cast<const t_stream_response*>(&rettype);
-    return stream && !stream->first_response_type().empty();
-  }
   mstch::node has_args() { return has_args_(); }
   mstch::node arg_comma() {
     return has_args_() ? std::string(", ") : std::string();
@@ -672,16 +671,12 @@ class mstch_function : public mstch_base {
   mstch::node priority() {
     return function_->get_annotation("priority", "NORMAL");
   }
-  mstch::node returns_sink() { return function_->returns_sink(); }
   mstch::node annotations() { return mstch_base::annotations(function_); }
 
   mstch::node return_type();
   mstch::node exceptions();
-  mstch::node stream_exceptions();
-  mstch::node sink_exceptions();
-  mstch::node sink_final_response_exceptions();
+
   mstch::node arg_list();
-  mstch::node returns_stream();
   mstch::node starts_interaction() {
     return function_->get_returntype()->is_service();
   }
@@ -718,6 +713,35 @@ class mstch_function : public mstch_base {
         !function_->returned_interaction();
   }
 
+  mstch::node has_sink() { return function_->sink() != nullptr; }
+  mstch::node sink_has_first_response() {
+    const t_sink* sink = function_->sink();
+    return sink && sink->sink_has_first_response();
+  }
+  mstch::node sink_first_response_type();
+  mstch::node sink_elem_type();
+  mstch::node has_sink_exceptions() {
+    return function_->get_sink_xceptions()->has_fields();
+  }
+  mstch::node sink_exceptions();
+  mstch::node sink_final_reponse_type();
+  mstch::node has_sink_final_response_exceptions() {
+    return function_->get_sink_final_response_xceptions()->has_fields();
+  }
+  mstch::node sink_final_response_exceptions();
+
+  mstch::node has_stream() { return function_->stream() != nullptr; }
+  mstch::node stream_elem_type();
+  mstch::node stream_has_first_response() {
+    const t_stream_response* stream = function_->stream();
+    return stream && !stream->first_response_type().empty();
+  }
+  mstch::node stream_first_response_type();
+  mstch::node has_stream_exceptions() {
+    return function_->get_stream_xceptions()->has_fields();
+  }
+  mstch::node stream_exceptions();
+
  protected:
   const t_function* function_;
 
@@ -749,13 +773,6 @@ class mstch_type : public mstch_base {
             {"type:struct?", &mstch_type::is_struct},
             {"type:union?", &mstch_type::is_union},
             {"type:enum?", &mstch_type::is_enum},
-            {"type:sink?", &mstch_type::is_sink},
-            {"type:sink_has_first_response?",
-             &mstch_type::sink_has_first_response},
-            {"type:stream_or_sink?", &mstch_type::is_stream_or_sink},
-            {"type:streamresponse?", &mstch_type::is_streamresponse},
-            {"type:stream_has_first_response?",
-             &mstch_type::stream_has_first_response},
             {"type:service?", &mstch_type::is_service},
             {"type:base?", &mstch_type::is_base},
             {"type:container?", &mstch_type::is_container},
@@ -767,14 +784,6 @@ class mstch_type : public mstch_base {
             {"type:enum", &mstch_type::get_enum},
             {"type:list_elem_type", &mstch_type::get_list_type},
             {"type:set_elem_type", &mstch_type::get_set_type},
-            {"type:sink_elem_type", &mstch_type::get_sink_elem_type},
-            {"type:sink_final_response_type",
-             &mstch_type::get_sink_final_reponse_type},
-            {"type:sink_first_response_type",
-             &mstch_type::get_sink_first_response_type},
-            {"type:stream_elem_type", &mstch_type::get_stream_elem_type},
-            {"type:stream_first_response_type",
-             &mstch_type::get_stream_first_response_type},
             {"type:key_type", &mstch_type::get_key_type},
             {"type:value_type", &mstch_type::get_value_type},
             {"type:typedef_type", &mstch_type::get_typedef_type},
@@ -807,23 +816,6 @@ class mstch_type : public mstch_base {
   }
   mstch::node is_union() { return resolved_type_->is_union(); }
   mstch::node is_enum() { return resolved_type_->is_enum(); }
-  mstch::node is_sink() { return resolved_type_->is_sink(); }
-  mstch::node sink_has_first_response() {
-    return resolved_type_->is_sink() &&
-        dynamic_cast<const t_sink*>(resolved_type_)->sink_has_first_response();
-  }
-  mstch::node is_stream_or_sink() {
-    return resolved_type_->is_streamresponse() || resolved_type_->is_sink();
-  }
-  mstch::node is_streamresponse() {
-    return resolved_type_->is_streamresponse();
-  }
-  mstch::node stream_has_first_response() {
-    return resolved_type_->is_streamresponse() &&
-        !dynamic_cast<const t_stream_response*>(resolved_type_)
-             ->first_response_type()
-             .empty();
-  }
   mstch::node is_service() { return resolved_type_->is_service(); }
   mstch::node is_base() { return resolved_type_->is_base_type(); }
   mstch::node is_container() { return resolved_type_->is_container(); }
@@ -840,11 +832,6 @@ class mstch_type : public mstch_base {
   mstch::node get_value_type();
   mstch::node get_typedef_type();
   mstch::node get_typedef();
-  mstch::node get_sink_first_response_type();
-  mstch::node get_sink_elem_type();
-  mstch::node get_sink_final_reponse_type();
-  mstch::node get_stream_elem_type();
-  mstch::node get_stream_first_response_type();
   mstch::node is_interaction() { return type_->is_service(); }
 
  protected:

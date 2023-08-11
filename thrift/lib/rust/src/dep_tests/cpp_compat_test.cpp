@@ -137,18 +137,22 @@ TEST(JsonTest, needCommasContainers) {
       std::exception);
 }
 
-TEST(JsonTest, nullStuff) {
+TEST(JsonTest, nullStuffDeser) {
+  // NOTE: Keep in sync with `test_null_stuff_deser` test in simplejson.rs
+
   SubStruct stru;
   stru.bin() = "1234";
 
-  SubStruct outStruct;
+  const std::string_view inputs[] = {
+      R"({                "req_def": "IAMREQ", "bin": "MTIzNA" })",
+      R"({"optDef": null, "req_def": "IAMREQ", "bin": "MTIzNA" })",
+  };
 
-  std::string input(
-      "{\"optDef\":null,"
-      "\"req_def\":\"IAMREQ\",\"bin\":\"MTIzNA\"}");
-
-  apache::thrift::SimpleJSONSerializer::deserialize(input, outStruct);
-  ASSERT_EQ(stru, outStruct);
+  for (const auto& input : inputs) {
+    SubStruct outStruct;
+    apache::thrift::SimpleJSONSerializer::deserialize(input, outStruct);
+    EXPECT_EQ(stru, outStruct) << input;
+  }
 }
 
 TEST(JsonTest, unknownUnion) {
@@ -158,7 +162,19 @@ TEST(JsonTest, unknownUnion) {
   ASSERT_EQ(t, "{}");
 }
 
+TEST(DefaultsTest, defaults) {
+  // NOTE: Keep in sync with `test_defaults` test in defaults.rs
+
+  SubStruct stru;
+  ASSERT_FALSE(stru.optDef().has_value());
+  ASSERT_EQ("IAMREQ", stru.req_def());
+  ASSERT_FALSE(stru.key_map().has_value());
+  ASSERT_TRUE(stru.bin()->empty());
+}
+
 TEST(ConstsTest, consts) {
+  // NOTE: Keep in sync with `test_consts` test in consts.rs
+
   const auto def = test_thrift_constants::DEFAULT_SUBSTRUCT();
   ASSERT_EQ(SubStruct(), def);
 

@@ -49,8 +49,7 @@ bool is_type_iobuf(std::string_view name) {
 }
 
 bool is_type_iobuf(const t_type* type) {
-  return type->has_annotation("py3.iobuf") ||
-      is_type_iobuf(cpp2::get_type(type));
+  return is_type_iobuf(cpp2::get_type(type));
 }
 
 const t_const_value* structured_type_override(
@@ -169,8 +168,7 @@ mstch::node adapter_node(
   }
   bool is_transitive = (transitive_adapter_annotation != nullptr);
   mstch::map node{
-      {"adapter:name",
-       std::string(get_annotation_property(adapter_annotation, "name"))},
+      {"adapter:name", get_annotation_property(adapter_annotation, "name")},
       {"adapter:type_hint", std::string(type_hint)},
       {"adapter:is_generic?", is_generic},
       {"adapter:is_transitive?", is_transitive},
@@ -622,7 +620,7 @@ class python_mstch_program : public mstch_program {
       const std::unordered_set<std::string_view>& modules) {
     mstch::array a;
     for (const auto& m : modules) {
-      a.push_back(mstch::map{{"module_path", std::string(m)}});
+      a.push_back(mstch::map{{"module_path", m}});
     }
     return a;
   }
@@ -682,14 +680,14 @@ class python_mstch_service : public mstch_service {
   mstch::node supported_functions() {
     return make_mstch_functions(
         get_supported_functions([](const t_function* func) -> bool {
-          return !func->returns_sink() && !func->get_returntype()->is_service();
+          return !func->sink() && !func->get_returntype()->is_service();
         }));
   }
 
   mstch::node supported_service_functions() {
     return make_mstch_functions(
         get_supported_functions([](const t_function* func) -> bool {
-          return !func->returns_stream() && !func->returns_sink() &&
+          return !func->sink_or_stream() &&
               !func->get_returntype()->is_service();
         }));
   }
@@ -755,8 +753,6 @@ class python_mstch_function : public mstch_function {
              &python_mstch_function::early_client_return},
             {"function:regular_response_type",
              &python_mstch_function::regular_response_type},
-            {"function:return_stream_elem_type",
-             &python_mstch_function::return_stream_elem_type},
             {"function:async_only?", &python_mstch_function::async_only},
         });
   }
@@ -798,22 +794,8 @@ class python_mstch_function : public mstch_function {
     return context_.type_factory->make_mstch_object(rettype, context_, pos_);
   }
 
-  mstch::node return_stream_elem_type() {
-    if (function_->is_oneway()) {
-      return {};
-    }
-    const t_type* rettype = function_->return_type()->get_true_type();
-    if (!rettype->is_streamresponse()) {
-      return {};
-    }
-    return context_.type_factory->make_mstch_object(
-        dynamic_cast<const t_stream_response*>(rettype)->get_elem_type(),
-        context_,
-        pos_);
-  }
-
   mstch::node async_only() {
-    return function_->returns_stream() || function_->returns_sink() ||
+    return function_->sink_or_stream() ||
         function_->get_returntype()->is_service() ||
         function_->is_interaction_member() ||
         !function_->returned_interaction().empty();
@@ -893,7 +875,6 @@ class python_mstch_type : public mstch_type {
 
   mstch::node is_integer() { return type_->is_any_int() || type_->is_byte(); }
 
-  // Supporting legacy py3 cpp.type iobuf declaration here
   mstch::node is_iobuf() { return is_type_iobuf(type_); }
 
   mstch::node adapter() {
@@ -997,7 +978,7 @@ class python_mstch_struct : public mstch_struct {
     }
     return mstch::map{
         {"cpp_adapter:name",
-         std::string(get_annotation_property(adapter_annotation, "name"))},
+         get_annotation_property(adapter_annotation, "name")},
     };
   }
 
@@ -1258,12 +1239,11 @@ class python_mstch_const : public mstch_const {
   mstch::node has_adapter() { return adapter_annotation_ != nullptr; }
 
   mstch::node adapter_name() {
-    return std::string(get_annotation_property(adapter_annotation_, "name"));
+    return get_annotation_property(adapter_annotation_, "name");
   }
 
   mstch::node adapter_type_hint() {
-    return std::string(
-        get_annotation_property(adapter_annotation_, "typeHint"));
+    return get_annotation_property(adapter_annotation_, "typeHint");
   }
 
   mstch::node is_adapter_transitive() {

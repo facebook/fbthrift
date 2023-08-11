@@ -1,0 +1,34 @@
+<%={{ }}=%>
+{{#function:return_type}}{{!
+}}{{> type}}{{!
+}}{{#function:sink?}}{
+  "type" : "sink",
+{{#function:sink_elem_type}}
+  "inner_type" : {{> type}},
+{{/function:sink_elem_type}}
+{{#function:sink_has_first_response?}}
+{{#function:sink_first_response_type}}
+  "first_response_type" : {{> type}},
+{{/function:sink_first_response_type}}
+{{/function:sink_has_first_response?}}
+{{#function:sink_final_response_type}}
+  "final_response_type" : {{> type}}
+{{/function:sink_final_response_type}}
+}{{/function:sink?}}{{!
+}}{{#function:stream?}}{
+  "type" : "streamresponse",
+{{#function:stream_elem_type}}
+  "inner_type" : {{> type}}{{!
+}}{{/function:stream_elem_type}}{{!
+}}{{#function:stream_has_first_response?}},
+{{#function:stream_first_response_type}}
+  "first_response_type" : {{> type}}
+{{/function:stream_first_response_type}}
+{{/function:stream_has_first_response?}}
+}{{/function:stream?}}{{!
+}}{{#type:service?}}{
+  "type" : "service",
+  "name" : "{{type:name}}"{{#type:external?}},
+  "path" : "{{type:file_name}}"{{/type:external?}}
+}{{/type:service?}}{{!
+}}{{/function:return_type}}
