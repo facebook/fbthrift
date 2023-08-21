@@ -19,7 +19,7 @@ package thrift
 import "testing"
 
 func TestNewSocket(t *testing.T) {
-	socket, err := NewSocket(SocketTimeout(10), SocketAddr("localhost6:1234"))
+	socket, err := NewSocket(SocketTimeout(10), SocketAddr("localhost:1234"))
 	if err != nil {
 		t.Error(err)
 	}
