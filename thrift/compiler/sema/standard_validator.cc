@@ -844,8 +844,7 @@ void validate_function_return_type(
 
   if (ctx.has(context_type::no_legacy)) {
     ctx.check(
-        node.return_type().get_type() != nullptr &&
-            node.return_type().get_type()->is_struct(),
+        node.return_type() && node.return_type()->is_struct(),
         "Function `{}`'s return type must be a thrift struct.",
         node.name());
   }
@@ -857,8 +856,7 @@ void validate_oneway_function(diagnostic_context& ctx, const t_function& node) {
   }
 
   ctx.check(
-      node.return_type().get_type() != nullptr &&
-          node.return_type().get_type()->is_void() &&
+      node.return_type() && node.return_type()->is_void() &&
           !node.returned_interaction(),
       "Oneway methods must have void return type: {}",
       node.name());
@@ -1173,22 +1171,6 @@ struct ValidateAnnotationPositions {
   }
 };
 
-void validate_struct_names_uniqueness(
-    diagnostic_context& ctx, const t_program& p) {
-  std::unordered_set<std::string> seen;
-  for (auto* object : p.objects()) {
-    if (!seen.emplace(object->name()).second) {
-      ctx.error(*object, "Redefinition of type `{}`.", object->name());
-    }
-  }
-  for (auto* interaction : p.interactions()) {
-    if (!seen.emplace(interaction->name()).second) {
-      ctx.error(
-          *interaction, "Redefinition of type `{}`.", interaction->name());
-    }
-  }
-}
-
 void validate_performs(diagnostic_context& ctx, const t_service& s) {
   for (auto* func : s.get_functions()) {
     auto ret = func->get_returntype();
@@ -1269,7 +1251,6 @@ ast_validator standard_validator() {
   validator.add_const_visitor(&validate_const_type_and_value);
   validator.add_const_visitor(ValidateAnnotationPositions());
   validator.add_program_visitor(&validate_uri_uniqueness);
-  validator.add_program_visitor(&validate_struct_names_uniqueness);
   return validator;
 }
 

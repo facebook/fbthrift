@@ -31,6 +31,7 @@
 #include <thrift/compiler/ast/t_field.h>
 #include <thrift/compiler/ast/t_service.h>
 #include <thrift/compiler/detail/mustache/mstch.h>
+#include <thrift/compiler/gen/cpp/type_resolver.h>
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/mstch_objects.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
@@ -107,8 +108,9 @@ std::string_view get_cpp_template(const t_node& node) {
   return "";
 }
 
-const t_const* find_structured_adapter_annotation(const t_named& node) {
-  return node.find_structured_annotation_or_null(kPythonAdapterUri);
+const t_const* find_structured_adapter_annotation(
+    const t_named& node, const char* uri = kPythonAdapterUri) {
+  return node.find_structured_annotation_or_null(uri);
 }
 
 const t_const* find_structured_adapter_annotation(
@@ -263,10 +265,34 @@ std::string format_map_type(
 }
 
 // Assumes t_node is a t_field or t_type
+std::string format_marshal_type_unadapted(
+    const t_node& node, std::string_view type_override);
+
+std::string format_adapted(const t_const* adapter, const t_type* type) {
+  auto adaptedType = get_annotation_property(adapter, "adaptedType");
+  if (adaptedType.empty()) {
+    return fmt::format(
+        "::apache::thrift::python::capi::AdaptedThrift<{}, {}>",
+        get_annotation_property(adapter, "name"),
+        format_marshal_type_unadapted(*type, ""));
+  }
+  return fmt::format(
+      "::apache::thrift::python::capi::CircularlyAdaptedThrift<{}, {}>",
+      get_annotation_property(adapter, "name"),
+      adaptedType);
+}
+
 std::string format_marshal_type(
     const t_node& node, std::string_view type_override) {
-  const t_type* maybe_typedef = type_of_node(node);
-  const t_type* true_type = maybe_typedef->get_true_type();
+  if (auto adapter = find_structured_annotation(node, kCppAdapterUri)) {
+    return format_adapted(adapter, type_of_node(node));
+  }
+  return format_marshal_type_unadapted(node, type_override);
+}
+
+std::string format_marshal_type_unadapted(
+    const t_node& node, std::string_view type_override) {
+  const t_type* true_type = type_of_node(node)->get_true_type();
   std::string_view t_override = cpp_type_override(node);
   auto override_or = [&](const char* default_) {
     return t_override.empty() ? std::string(default_) : std::string(t_override);
@@ -286,7 +312,7 @@ std::string format_marshal_type(
   } else if (true_type->is_double()) {
     return override_or("double");
   } else if (true_type->is_binary() && is_type_iobuf(t_override)) {
-    return override_or("Bytes");
+    return std::string(t_override);
   } else if (true_type->is_string_or_binary()) {
     // unicode's internal_data representation is binary
     return "Bytes";
@@ -822,18 +848,18 @@ class python_mstch_function : public mstch_function {
 
   mstch::node returns_tuple() {
     // TOOD add in sinks, etc
-    const auto& rettype = *function_->return_type();
-    auto stream = dynamic_cast<const t_stream_response*>(&rettype);
+    const t_stream_response* stream = function_->stream();
     return (stream && !stream->first_response_type().empty()) ||
-        (!function_->returned_interaction().empty() && !rettype.is_void());
+        (!function_->returned_interaction().empty() &&
+         !function_->return_type()->is_void());
   }
 
   mstch::node early_client_return() {
     // TOOD add in sinks, etc
-    const auto& rettype = *function_->return_type();
-    auto stream = dynamic_cast<const t_stream_response*>(&rettype);
+    const t_stream_response* stream = function_->stream();
     return !(
-        rettype.is_void() || (stream && stream->first_response_type().empty()));
+        function_->return_type()->is_void() ||
+        (stream && stream->first_response_type().empty()));
   }
 
   mstch::node regular_response_type() {
@@ -1039,11 +1065,15 @@ class python_mstch_struct : public mstch_struct {
     return ::apache::thrift::compiler::generate_legacy_api(*struct_);
   }
 
-  mstch::node cpp_name() { return cpp2::get_name(struct_); }
+  mstch::node cpp_name() {
+    return cpp_resolver_.get_underlying_namespaced_name(*struct_);
+  }
+
   mstch::node fields_size() { return std::to_string(struct_->fields().size()); }
 
  private:
   const t_const* adapter_annotation_;
+  gen::cpp::type_resolver cpp_resolver_;
 };
 
 class python_mstch_field : public mstch_field {

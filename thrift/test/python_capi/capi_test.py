@@ -20,7 +20,8 @@ from typing import Generator
 import thrift.python_capi.fixture as fixture
 
 from folly.iobuf import IOBuf
-from thrift.test.python_capi.module.thrift_types import (  # @manual=:test_module-python-types
+from thrift.test.python_capi.module.thrift_types import (
+    AdaptedFields,
     AnnoyingEnum,
     ComposeStruct,
     DoubledPair,
@@ -30,7 +31,6 @@ from thrift.test.python_capi.module.thrift_types import (  # @manual=:test_modul
     MyDataItem,
     MyEnum,
     MyStruct,
-    MyStructPatch,  # this import breaks autodeps w/o manual
     Onion as MyUnion,
     PrimitiveStruct,
     SetStruct,
@@ -100,9 +100,12 @@ class PythonCapiFixture(unittest.TestCase):
             # leave optional `floaty` `dubby`, `stringy`, `bytey` unset
         )
 
-    def struct_patch(self) -> MyStructPatch:
-        return MyStructPatch(
-            assign=self.my_struct(),
+    def adapted_fields(self) -> AdaptedFields:
+        return AdaptedFields(
+            adapted_int=4247,
+            list_adapted_int=[1, 1, 2, 3, 5, 8],
+            set_adapted_int={2, 3, 5, 7, 11, 13},
+            inline_adapted_int=47,
         )
 
     def list_struct(self) -> ListStruct:
@@ -216,13 +219,6 @@ class PythonCapiRoundtrip(PythonCapiFixture):
     def test_roundtrip_enum(self) -> None:
         self.assertEqual(MyEnum.MyValue1, fixture.roundtrip_MyEnum(MyEnum.MyValue1))
         self.assertEqual(MyEnum.MyValue2, fixture.roundtrip_MyEnum(MyEnum.MyValue2))
-
-    def test_roundtrip_struct_patch(self) -> None:
-        self.assertEqual(
-            self.struct_patch(), fixture.roundtrip_MyStructPatch(self.struct_patch())
-        )
-        empty_patch = MyStructPatch(assign=MyStruct())
-        self.assertEqual(empty_patch, fixture.roundtrip_MyStructPatch(empty_patch))
 
     def test_roundtrip_field_adapted(self) -> None:
         a, b = ("TacosSalad", "DaLassoCat")
@@ -369,6 +365,15 @@ class PythonCapiRoundtrip(PythonCapiFixture):
             self.composed(), fixture.roundtrip_ComposeStruct(self.composed())
         )
 
+    def test_roundtrip_marshal_AdaptedFields(self) -> None:
+        self.assertEqual(
+            AdaptedFields(), fixture.roundtrip_AdaptedFields(AdaptedFields())
+        )
+        self.assertEqual(
+            self.adapted_fields(),
+            fixture.roundtrip_AdaptedFields(self.adapted_fields()),
+        )
+
 
 class PythonCapiTypeCheck(PythonCapiFixture):
     def test_typeCheck_struct(self) -> None:
@@ -384,11 +389,6 @@ class PythonCapiTypeCheck(PythonCapiFixture):
             self.assertTrue(fixture.check_MyUnion(u))
         self.assertFalse(fixture.check_MyUnion(self.my_struct()))
         self.assertFalse(fixture.check_MyUnion(MyEnum.MyValue1))
-
-    def test_typeCheck_struct_patch(self) -> None:
-        self.assertTrue(fixture.check_MyStructPatch(self.struct_patch()))
-        self.assertFalse(fixture.check_MyStructPatch(self.my_struct()))
-        self.assertFalse(fixture.check_MyStructPatch(MyEnum.MyValue1))
 
     def test_typeCheck_enum(self) -> None:
         self.assertTrue(fixture.check_MyEnum(MyEnum.MyValue1))

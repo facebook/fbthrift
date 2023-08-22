@@ -16,6 +16,7 @@ from libcpp cimport bool as cbool
 
 
 cdef extern from "thrift/test/python_capi/gen-cpp2/module_types.h" namespace "thrift::test::python_capi":
+    cppclass AdaptedFields
     cppclass ComposeStruct
     cppclass DoubledPair
     cppclass ListStruct
@@ -23,7 +24,6 @@ cdef extern from "thrift/test/python_capi/gen-cpp2/module_types.h" namespace "th
     cppclass MyDataItem
     cppclass MyEnum
     cppclass MyStruct
-    cppclass MyStructPatch
     cppclass Shallot
     cppclass PrimitiveStruct
     cppclass SetStruct
@@ -50,9 +50,6 @@ def roundtrip_MyEnum(object x):
 def roundtrip_EmptyStruct(object x):
     return __shim__roundtrip[VapidStruct](x)
 
-def roundtrip_MyStructPatch(object x):
-    return __shim__roundtrip[MyStructPatch](x)
-
 def roundtrip_StringPair(object x):
     return __shim__roundtrip[StringPair](x)
 
@@ -74,6 +71,9 @@ def roundtrip_MapStruct(object x):
 def roundtrip_ComposeStruct(object x):
     return __shim__roundtrip[ComposeStruct](x)
 
+def roundtrip_AdaptedFields(object x):
+    return __shim__roundtrip[AdaptedFields](x)
+
 def check_MyStruct(object x):
     return bool(__shim__typeCheck[MyStruct](x))
 
@@ -85,9 +85,6 @@ def check_MyUnion(object x):
 
 def check_MyEnum(object x):
     return bool(__shim__typeCheck[MyEnum](x))
-
-def check_MyStructPatch(object x):
-    return bool(__shim__typeCheck[MyStructPatch](x))
 
 def check_StringPair(object x):
     return __shim__typeCheck[StringPair](x)
