@@ -67,6 +67,8 @@ jobs:
       run: python3 build/fbcode_builder/getdeps.py fetch --no-tests fizz
     - name: Fetch wangle
       run: python3 build/fbcode_builder/getdeps.py fetch --no-tests wangle
+    - name: Fetch mvfst
+      run: python3 build/fbcode_builder/getdeps.py fetch --no-tests mvfst
     - name: Build ninja
       run: python3 build/fbcode_builder/getdeps.py build --no-tests ninja
     - name: Build cmake
@@ -119,6 +121,8 @@ jobs:
       run: python3 build/fbcode_builder/getdeps.py build --no-tests fizz
     - name: Build wangle
       run: python3 build/fbcode_builder/getdeps.py build --no-tests wangle
+    - name: Build mvfst
+      run: python3 build/fbcode_builder/getdeps.py build --no-tests mvfst
     - name: Build fbthrift
       run: python3 build/fbcode_builder/getdeps.py build --src-dir=. fbthrift  --project-install-prefix fbthrift:/usr/local
     - name: Copy artifacts

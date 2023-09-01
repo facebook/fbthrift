@@ -23,6 +23,7 @@ fmt
 folly
 googletest
 libsodium
+mvfst
 python-six
 wangle
 zstd
