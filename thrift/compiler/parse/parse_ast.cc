@@ -22,7 +22,6 @@
 #include <limits>
 #include <set>
 
-#include <boost/filesystem.hpp>
 #include <boost/optional.hpp>
 #include <fmt/format.h>
 
@@ -211,50 +210,13 @@ std::string find_include_file(
     const t_program& program,
     const std::vector<std::string>& search_paths,
     diagnostics_engine& diags) {
-  // Absolute path? Just try that.
-  boost::filesystem::path path(filename);
-  if (path.has_root_directory()) {
-    try {
-      return boost::filesystem::canonical(path).string();
-    } catch (const boost::filesystem::filesystem_error& e) {
-      diags.error(
-          loc, "Could not find file: {}. Error: {}", filename, e.what());
-      end_parsing();
-    }
+  try {
+    return source_manager::find_include_file(
+        filename, program.path(), search_paths);
+  } catch (const std::exception& ex) {
+    diags.error(loc, "{}", ex.what());
+    end_parsing();
   }
-
-  // Relative path, start searching
-  // new search path with current dir global
-  std::vector<std::string> sp = search_paths;
-  auto dir = boost::filesystem::path(program.path()).parent_path().string();
-  dir = dir.empty() ? "." : dir;
-  sp.insert(sp.begin(), std::move(dir));
-  // Iterate through paths.
-  std::vector<std::string>::iterator it;
-  for (it = sp.begin(); it != sp.end(); it++) {
-    boost::filesystem::path sfilename = filename;
-    if ((*it) != "." && (*it) != "") {
-      sfilename = boost::filesystem::path(*(it)) / filename;
-    }
-    if (boost::filesystem::exists(sfilename)) {
-      return sfilename.string();
-    }
-#ifdef _WIN32
-    // On Windows, handle files found at potentially long paths.
-    sfilename = R"(\\?\)" +
-        boost::filesystem::absolute(sfilename)
-            .make_preferred()
-            .lexically_normal()
-            .string();
-    if (boost::filesystem::exists(sfilename)) {
-      return sfilename.string();
-    }
-#endif
-    diags.report(loc, diagnostic_level::debug, "Could not find: {}.", filename);
-  }
-  // File was not found.
-  diags.error(loc, "Could not find include file {}", filename);
-  end_parsing();
 }
 
 // A semantic analyzer and AST builder for a single Thrift program.
@@ -647,11 +609,11 @@ class ast_builder : public parser_actions {
       node_list<t_function> functions) override {
     auto find_base_service = [&]() -> const t_service* {
       if (base.str.size() != 0) {
-        auto base_name = fmt::to_string(base.str);
-        if (auto* result = scope_->find_service(base_name)) {
+        auto base_name = base.str;
+        if (const t_service* result = scope_->find_service(base_name)) {
           return result;
         }
-        if (auto* result =
+        if (const t_service* result =
                 scope_->find_service(program_.scope_name(base_name))) {
           return result;
         }
@@ -664,7 +626,7 @@ class ast_builder : public parser_actions {
         &program_, fmt::to_string(name.str), find_base_service());
     set_attributes(*service, std::move(attrs), range);
     service->set_functions(std::move(functions));
-    scope_->add_service(program_.scope_name(*service), service.get());
+    scope_->add_definition(program_.scope_name(*service), service.get());
     add_definition(std::move(service));
   }
 
@@ -686,13 +648,23 @@ class ast_builder : public parser_actions {
       source_range range,
       std::unique_ptr<attributes> attrs,
       t_function_qualifier qual,
-      return_type ret,
+      return_clause ret,
       const identifier& name,
       t_field_list params,
       std::unique_ptr<t_throws> throws) override {
+    auto types = std::vector<t_type_ref>();
+    auto return_name = ret.name.str;
+    if (size_t size = return_name.size()) {
+      // Handle an interaction or return type name.
+      types.push_back(
+          on_type({ret.name.loc, ret.name.loc + size}, ret.name.str, {}));
+    }
+    if (ret.type) {
+      types.push_back(t_type_ref::from_ptr(ret.type));
+    }
     auto function = std::make_unique<t_function>(
         &program_,
-        std::move(ret.types),
+        std::move(types),
         std::move(ret.sink_or_stream),
         fmt::to_string(name.str));
     function->set_qualifier(qual);
@@ -1061,12 +1033,14 @@ std::unique_ptr<t_program_bundle> parse_ast(
     source_manager& sm,
     diagnostics_engine& diags,
     const std::string& path,
-    const parsing_params& params) {
-  auto programs =
-      std::make_unique<t_program_bundle>(std::make_unique<t_program>(path));
+    const parsing_params& params,
+    t_program_bundle* already_parsed) {
+  auto programs = std::make_unique<t_program_bundle>(
+      std::make_unique<t_program>(
+          path, already_parsed ? already_parsed->get_root_program() : nullptr),
+      already_parsed);
+  assert(!already_parsed || !already_parsed->find_program(path));
 
-  // A map from paths to corresponding programs.
-  auto parsed_programs = std::map<std::string, t_program*>{};
   auto circular_deps = std::set<std::string>{path};
 
   // Always enable allow_neg_field_keys when parsing included files.
@@ -1091,9 +1065,14 @@ std::unique_ptr<t_program_bundle> parse_ast(
     // Should have thrown an exception if not found.
     assert(!include_path.empty());
 
-    auto it = parsed_programs.find(include_path);
-    if (it != parsed_programs.end()) {
-      return it->second; // Skip already parsed files.
+    // Skip already parsed files.
+    if (auto program = programs->find_program(include_path)) {
+      if (program == programs->get_root_program()) {
+        // If we're including the root program we must have a dependency cycle.
+        assert(circular_deps.count(include_path));
+      } else {
+        return program;
+      }
     }
 
     // Fail on circular dependencies.
@@ -1111,7 +1090,6 @@ std::unique_ptr<t_program_bundle> parse_ast(
     auto included_program = std::make_unique<t_program>(include_path, &parent);
     t_program* program = included_program.get();
     programs->add_program(std::move(included_program));
-    parsed_programs[include_path] = program;
 
     try {
       ast_builder(diags, *program, include_params, on_include)

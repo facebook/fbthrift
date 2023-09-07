@@ -46,7 +46,16 @@ class AstGeneratorTest(unittest.TestCase):
         self.maxDiff = None
 
     def run_thrift(self, file):
-        argsx = [thrift2ast, "--gen", "ast:protocol=compact", "-o", self.tmp, file]
+        argsx = [
+            thrift2ast,
+            "--gen",
+            "ast:protocol=compact",
+            "-o",
+            self.tmp,
+            "-I",
+            resources.path(__package__, "implicit_includes"),
+            file,
+        ]
         p = subprocess.run(argsx, capture_output=True)
         print("exit status:", p.returncode)
         print("stdout:", p.stdout.decode())
@@ -242,5 +251,38 @@ class AstGeneratorTest(unittest.TestCase):
         self.assertEqual(ast.sources[1].fileName, "foo.thrift")
         self.assertEqual(
             ast.values[ast.sources[1].namespaces["cpp2"] - 1].stringValue,
-            "facebook.foo",
+            b"facebook.foo",
+        )
+
+    def test_annotation(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """
+                struct Annot {}
+                @Annot
+                struct S {
+                    @Annot
+                    1: i32 field;
+                }
+                """
+            ),
+        )
+
+        ast = self.run_thrift("foo.thrift")
+        annot_id = next(iter(ast.definitions[1].structDef.attrs.annotations))
+        annot = ast.values[annot_id - 1]
+        # If standard library is not loaded this will have mapValue instead of objectValue
+        self.assertEqual(
+            annot.objectValue.members[1].objectValue.members[3].stringValue, "foo.Annot"
+        )
+        self.assertEqual(
+            annot.objectValue.type, "facebook.com/thrift/type/StructuredAnnotation"
+        )
+
+        # Field annot
+        annot_id = next(iter(ast.definitions[1].structDef.fields[0].attrs.annotations))
+        annot = ast.values[annot_id - 1]
+        self.assertEqual(
+            annot.objectValue.members[1].objectValue.members[3].stringValue, "foo.Annot"
         )

@@ -17,10 +17,6 @@
 }}{{!
 This is the struct that wraps function return
 }}{{#function:oneway?}}None{{/function:oneway?}}{{!!
-}}{{^function:oneway?}}{{^function:stream?}}{{!
+}}{{^function:oneway?}}{{!
   }}{{program:module_path}}.thrift_types._fbthrift_{{service:name}}_{{function:name}}_result{{!
-}}{{/function:stream?}}{{!
-}}{{#function:stream?}}({{!
-  }}{{program:module_path}}.thrift_types._fbthrift_{{service:name}}_{{function:name}}_result, {{!
-  }}{{program:module_path}}.thrift_types._fbthrift_{{service:name}}_{{function:name}}_result_stream{{!
-}}){{/function:stream?}}{{/function:oneway?}}
+}}{{/function:oneway?}}

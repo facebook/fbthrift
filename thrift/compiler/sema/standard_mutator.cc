@@ -237,49 +237,6 @@ void set_generated(diagnostic_context&, mutator_context&, t_named& node) {
   }
 }
 
-const char* get_release_state_uri(t_release_state state) {
-  switch (state) {
-    case t_release_state::testing:
-      return "facebook.com/thrift/annotation/Testing";
-    case t_release_state::experimental:
-      return "facebook.com/thrift/annotation/Experimental";
-    case t_release_state::beta:
-      return "facebook.com/thrift/annotation/Beta";
-    case t_release_state::released:
-      return "facebook.com/thrift/annotation/Released";
-    default:
-      break;
-  }
-  return "";
-}
-
-void set_release_state(diagnostic_context&, mutator_context&, t_named& node) {
-  for (t_release_state state :
-       {t_release_state::testing,
-        t_release_state::experimental,
-        t_release_state::beta,
-        t_release_state::released}) {
-    if (node.find_structured_annotation_or_null(get_release_state_uri(state))) {
-      node.set_release_state(state);
-      return;
-    }
-  }
-}
-
-void inherit_release_state(
-    diagnostic_context& ctx, mutator_context&, t_named& node) {
-  if (node.release_state() != t_release_state::unspecified) {
-    return;
-  }
-  for (int pos = ctx.nodes().size() - 1; pos >= 0; --pos) {
-    const auto* parent = dynamic_cast<const t_named*>(ctx.nodes().at(pos));
-    if (parent != nullptr &&
-        parent->release_state() != t_release_state::unspecified) {
-      node.set_release_state(parent->release_state());
-    }
-  }
-}
-
 void normalize_return_type(
     diagnostic_context& ctx, mutator_context&, t_function& node) {
   auto& types = node.return_types();
@@ -374,56 +331,56 @@ void generate_runtime_schema(
 void generate_struct_schema(
     diagnostic_context& ctx, mutator_context& mCtx, t_struct& node) {
   generate_runtime_schema<t_struct&>(
-      ctx, mCtx, true, "facebook.com/thrift/type/Struct", node, [&node]() {
-        return schematizer().gen_schema(node);
+      ctx, mCtx, true, "facebook.com/thrift/type/Struct", node, [&]() {
+        return schematizer(mCtx.bundle).gen_schema(node);
       });
 }
 
 void generate_union_schema(
     diagnostic_context& ctx, mutator_context& mCtx, t_union& node) {
   generate_runtime_schema<t_union&>(
-      ctx, mCtx, true, "facebook.com/thrift/type/Union", node, [&node]() {
-        return schematizer().gen_schema(node);
+      ctx, mCtx, true, "facebook.com/thrift/type/Union", node, [&]() {
+        return schematizer(mCtx.bundle).gen_schema(node);
       });
 }
 
 void generate_exception_schema(
     diagnostic_context& ctx, mutator_context& mCtx, t_exception& node) {
   generate_runtime_schema<t_exception&>(
-      ctx, mCtx, true, "facebook.com/thrift/type/Exception", node, [&node]() {
-        return schematizer().gen_schema(node);
+      ctx, mCtx, true, "facebook.com/thrift/type/Exception", node, [&]() {
+        return schematizer(mCtx.bundle).gen_schema(node);
       });
 }
 
 void generate_service_schema(
     diagnostic_context& ctx, mutator_context& mCtx, t_service& node) {
   generate_runtime_schema<t_service&>(
-      ctx, mCtx, true, "facebook.com/thrift/type/Schema", node, [&node]() {
-        return schematizer().gen_full_schema(node);
+      ctx, mCtx, true, "facebook.com/thrift/type/Schema", node, [&]() {
+        return schematizer(mCtx.bundle).gen_full_schema(node);
       });
 }
 
 void generate_const_schema(
     diagnostic_context& ctx, mutator_context& mCtx, t_const& node) {
   generate_runtime_schema<t_const&>(
-      ctx, mCtx, true, "facebook.com/thrift/type/Const", node, [&node]() {
-        return schematizer().gen_schema(node);
+      ctx, mCtx, true, "facebook.com/thrift/type/Const", node, [&]() {
+        return schematizer(mCtx.bundle).gen_schema(node);
       });
 }
 
 void generate_typedef_schema(
     diagnostic_context& ctx, mutator_context& mCtx, t_typedef& node) {
   generate_runtime_schema<t_typedef&>(
-      ctx, mCtx, true, "facebook.com/thrift/type/Typedef", node, [&node]() {
-        return schematizer().gen_schema(node);
+      ctx, mCtx, true, "facebook.com/thrift/type/Typedef", node, [&]() {
+        return schematizer(mCtx.bundle).gen_schema(node);
       });
 }
 
 void generate_enum_schema(
     diagnostic_context& ctx, mutator_context& mCtx, t_enum& node) {
   generate_runtime_schema<t_enum&>(
-      ctx, mCtx, true, "facebook.com/thrift/type/Enum", node, [&node]() {
-        return schematizer().gen_schema(node);
+      ctx, mCtx, true, "facebook.com/thrift/type/Enum", node, [&]() {
+        return schematizer(mCtx.bundle).gen_schema(node);
       });
 }
 
@@ -504,12 +461,10 @@ ast_mutators standard_mutators() {
         &propagate_process_in_event_base_annotation);
     initial.add_function_visitor(&normalize_return_type);
     initial.add_definition_visitor(&set_generated);
-    initial.add_definition_visitor(&set_release_state);
   }
 
   {
     auto& main = mutators[standard_mutator_stage::main];
-    main.add_definition_visitor(&inherit_release_state);
     main.add_struct_visitor(&mutate_terse_write_annotation_structured);
     main.add_exception_visitor(&mutate_terse_write_annotation_structured);
     main.add_struct_visitor(&mutate_inject_metadata_fields);
