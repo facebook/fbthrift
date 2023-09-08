@@ -31,6 +31,18 @@ try:
 except ImportError:
   pass
 
+def __EXPAND_THRIFT_SPEC(spec):
+    next_id = 0
+    for item in spec:
+        if next_id >= 0 and item[0] < 0:
+            next_id = item[0]
+        if item[0] != next_id:
+            for _ in range(next_id, item[0]):
+                yield None
+        yield item
+        next_id = item[0] + 1
+
+
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
@@ -140,8 +152,8 @@ class ping_args:
   __hash__ = object.__hash__
 
 all_structs.append(ping_args)
-ping_args.thrift_spec = (
-)
+ping_args.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
+)))
 
 ping_args.thrift_struct_annotations = {
 }
@@ -219,8 +231,8 @@ class ping_result:
   __hash__ = object.__hash__
 
 all_structs.append(ping_result)
-ping_result.thrift_spec = (
-)
+ping_result.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
+)))
 
 ping_result.thrift_struct_annotations = {
 }
@@ -298,8 +310,8 @@ class pong_args:
   __hash__ = object.__hash__
 
 all_structs.append(pong_args)
-pong_args.thrift_spec = (
-)
+pong_args.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
+)))
 
 pong_args.thrift_struct_annotations = {
 }
@@ -377,8 +389,8 @@ class pong_result:
   __hash__ = object.__hash__
 
 all_structs.append(pong_result)
-pong_result.thrift_spec = (
-)
+pong_result.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
+)))
 
 pong_result.thrift_struct_annotations = {
 }

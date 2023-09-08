@@ -31,6 +31,18 @@ try:
 except ImportError:
   pass
 
+def __EXPAND_THRIFT_SPEC(spec):
+    next_id = 0
+    for item in spec:
+        if next_id >= 0 and item[0] < 0:
+            next_id = item[0]
+        if item[0] != next_id:
+            for _ in range(next_id, item[0]):
+                yield None
+        yield item
+        next_id = item[0] + 1
+
+
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
@@ -126,8 +138,8 @@ class simple_rpc_args:
   __hash__ = object.__hash__
 
 all_structs.append(simple_rpc_args)
-simple_rpc_args.thrift_spec = (
-)
+simple_rpc_args.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
+)))
 
 simple_rpc_args.thrift_struct_annotations = {
 }
@@ -205,8 +217,8 @@ class simple_rpc_result:
   __hash__ = object.__hash__
 
 all_structs.append(simple_rpc_result)
-simple_rpc_result.thrift_spec = (
-)
+simple_rpc_result.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
+)))
 
 simple_rpc_result.thrift_struct_annotations = {
 }

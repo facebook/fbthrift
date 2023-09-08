@@ -31,6 +31,18 @@ try:
 except ImportError:
   pass
 
+def __EXPAND_THRIFT_SPEC(spec):
+    next_id = 0
+    for item in spec:
+        if next_id >= 0 and item[0] < 0:
+            next_id = item[0]
+        if item[0] != next_id:
+            for _ in range(next_id, item[0]):
+                yield None
+        yield item
+        next_id = item[0] + 1
+
+
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
@@ -134,8 +146,8 @@ class bar_args:
   __hash__ = object.__hash__
 
 all_structs.append(bar_args)
-bar_args.thrift_spec = (
-)
+bar_args.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
+)))
 
 bar_args.thrift_struct_annotations = {
 }
@@ -236,9 +248,9 @@ class bar_result:
   __hash__ = object.__hash__
 
 all_structs.append(bar_result)
-bar_result.thrift_spec = (
+bar_result.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (0, TType.I32, 'success', None, None, 2, ), # 0
-)
+)))
 
 bar_result.thrift_struct_annotations = {
 }

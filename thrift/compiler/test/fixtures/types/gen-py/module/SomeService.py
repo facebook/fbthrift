@@ -29,6 +29,18 @@ try:
 except ImportError:
   pass
 
+def __EXPAND_THRIFT_SPEC(spec):
+    next_id = 0
+    for item in spec:
+        if next_id >= 0 and item[0] < 0:
+            next_id = item[0]
+        if item[0] != next_id:
+            for _ in range(next_id, item[0]):
+                yield None
+        yield item
+        next_id = item[0] + 1
+
+
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
@@ -168,10 +180,9 @@ class bounce_map_args:
   __hash__ = object.__hash__
 
 all_structs.append(bounce_map_args)
-bounce_map_args.thrift_spec = (
-  None, # 0
+bounce_map_args.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.MAP, 'm', (TType.I32,None,TType.STRING,True), None, 2, ), # 1
-)
+)))
 
 bounce_map_args.thrift_struct_annotations = {
 }
@@ -283,9 +294,9 @@ class bounce_map_result:
   __hash__ = object.__hash__
 
 all_structs.append(bounce_map_result)
-bounce_map_result.thrift_spec = (
+bounce_map_result.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (0, TType.MAP, 'success', (TType.I32,None,TType.STRING,True), None, 2, ), # 0
-)
+)))
 
 bounce_map_result.thrift_struct_annotations = {
 }
@@ -394,10 +405,9 @@ class binary_keyed_map_args:
   __hash__ = object.__hash__
 
 all_structs.append(binary_keyed_map_args)
-binary_keyed_map_args.thrift_spec = (
-  None, # 0
+binary_keyed_map_args.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.LIST, 'r', (TType.I64,None), None, 2, ), # 1
-)
+)))
 
 binary_keyed_map_args.thrift_struct_annotations = {
 }
@@ -509,9 +519,9 @@ class binary_keyed_map_result:
   __hash__ = object.__hash__
 
 all_structs.append(binary_keyed_map_result)
-binary_keyed_map_result.thrift_spec = (
+binary_keyed_map_result.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (0, TType.MAP, 'success', (TType.STRING,False,TType.I64,None), None, 2, ), # 0
-)
+)))
 
 binary_keyed_map_result.thrift_struct_annotations = {
 }

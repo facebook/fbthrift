@@ -25,6 +25,18 @@ try:
   from thrift.protocol import fastproto
 except ImportError:
   pass
+
+def __EXPAND_THRIFT_SPEC(spec):
+    next_id = 0
+    for item in spec:
+        if next_id >= 0 and item[0] < 0:
+            next_id = item[0]
+        if item[0] != next_id:
+            for _ in range(next_id, item[0]):
+                yield None
+        yield item
+        next_id = item[0] + 1
+
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
@@ -1151,14 +1163,13 @@ MyStringIdentifier = UnimplementedTypedef()
 MyIntIdentifier = UnimplementedTypedef()
 MyMapIdentifier = UnimplementedTypedef()
 all_structs.append(Internship)
-Internship.thrift_spec = (
-  None, # 0
+Internship.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.I32, 'weeks', None, None, 0, ), # 1
   (2, TType.STRING, 'title', True, None, 2, ), # 2
   (3, TType.I32, 'employer', Company, None, 1, ), # 3
   (4, TType.DOUBLE, 'compensation', None, None, 1, ), # 4
   (5, TType.STRING, 'school', True, None, 1, ), # 5
-)
+)))
 
 Internship.thrift_struct_annotations = {
 }
@@ -1186,11 +1197,10 @@ Internship.__getstate__ = lambda self: self.__dict__.copy()
 Internship.__setstate__ = Internship__setstate__
 
 all_structs.append(Range)
-Range.thrift_spec = (
-  None, # 0
+Range.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.I32, 'min', None, None, 0, ), # 1
   (2, TType.I32, 'max', None, None, 0, ), # 2
-)
+)))
 
 Range.thrift_struct_annotations = {
 }
@@ -1212,11 +1222,10 @@ Range.__getstate__ = lambda self: self.__dict__.copy()
 Range.__setstate__ = Range__setstate__
 
 all_structs.append(struct1)
-struct1.thrift_spec = (
-  None, # 0
+struct1.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.I32, 'a', None, 1234567, 2, ), # 1
   (2, TType.STRING, 'b', True, "<uninitialized>", 2, ), # 2
-)
+)))
 
 struct1.thrift_struct_annotations = {
 }
@@ -1238,13 +1247,12 @@ struct1.__getstate__ = lambda self: self.__dict__.copy()
 struct1.__setstate__ = struct1__setstate__
 
 all_structs.append(struct2)
-struct2.thrift_spec = (
-  None, # 0
+struct2.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.I32, 'a', None, None, 2, ), # 1
   (2, TType.STRING, 'b', True, None, 2, ), # 2
   (3, TType.STRUCT, 'c', [struct1, struct1.thrift_spec, False], None, 2, ), # 3
   (4, TType.LIST, 'd', (TType.I32,None), None, 2, ), # 4
-)
+)))
 
 struct2.thrift_struct_annotations = {
 }
@@ -1270,12 +1278,11 @@ struct2.__getstate__ = lambda self: self.__dict__.copy()
 struct2.__setstate__ = struct2__setstate__
 
 all_structs.append(struct3)
-struct3.thrift_spec = (
-  None, # 0
+struct3.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.STRING, 'a', True, None, 2, ), # 1
   (2, TType.I32, 'b', None, None, 2, ), # 2
   (3, TType.STRUCT, 'c', [struct2, struct2.thrift_spec, False], None, 2, ), # 3
-)
+)))
 
 struct3.thrift_struct_annotations = {
 }
@@ -1299,12 +1306,11 @@ struct3.__getstate__ = lambda self: self.__dict__.copy()
 struct3.__setstate__ = struct3__setstate__
 
 all_structs.append(struct4)
-struct4.thrift_spec = (
-  None, # 0
+struct4.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.I32, 'a', None, None, 2, ), # 1
   (2, TType.DOUBLE, 'b', None, None, 1, ), # 2
   (3, TType.BYTE, 'c', None, None, 1, ), # 3
-)
+)))
 
 struct4.thrift_struct_annotations = {
 }
@@ -1328,11 +1334,10 @@ struct4.__getstate__ = lambda self: self.__dict__.copy()
 struct4.__setstate__ = struct4__setstate__
 
 all_structs.append(union1)
-union1.thrift_spec = (
-  None, # 0
+union1.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.I32, 'i', None, None, 2, ), # 1
   (2, TType.DOUBLE, 'd', None, None, 2, ), # 2
-)
+)))
 
 union1.thrift_struct_annotations = {
 }
@@ -1354,13 +1359,12 @@ def union1__init__(self, i=None, d=None,):
 union1.__init__ = union1__init__
 
 all_structs.append(union2)
-union2.thrift_spec = (
-  None, # 0
+union2.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.I32, 'i', None, None, 2, ), # 1
   (2, TType.DOUBLE, 'd', None, None, 2, ), # 2
   (3, TType.STRUCT, 's', [struct1, struct1.thrift_spec, False], None, 2, ), # 3
   (4, TType.STRUCT, 'u', [union1, union1.thrift_spec, True], None, 2, ), # 4
-)
+)))
 
 union2.thrift_struct_annotations = {
 }

@@ -31,6 +31,18 @@ try:
 except ImportError:
   pass
 
+def __EXPAND_THRIFT_SPEC(spec):
+    next_id = 0
+    for item in spec:
+        if next_id >= 0 and item[0] < 0:
+            next_id = item[0]
+        if item[0] != next_id:
+            for _ in range(next_id, item[0]):
+                yield None
+        yield item
+        next_id = item[0] + 1
+
+
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
@@ -161,10 +173,9 @@ class global_args:
   __hash__ = object.__hash__
 
 all_structs.append(global_args)
-global_args.thrift_spec = (
-  None, # 0
+global_args.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.I64, 'raise_PY_RESERVED_KEYWORD', None, None, 2, ), # 1
-)
+)))
 
 global_args.thrift_struct_annotations = {
 }
@@ -275,9 +286,9 @@ class global_PY_RESERVED_KEYWORD_result:
   __hash__ = object.__hash__
 
 all_structs.append(global_PY_RESERVED_KEYWORD_result)
-global_PY_RESERVED_KEYWORD_result.thrift_spec = (
+global_PY_RESERVED_KEYWORD_result.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (0, TType.BOOL, 'success', None, None, 2, ), # 0
-)
+)))
 
 global_PY_RESERVED_KEYWORD_result.thrift_struct_annotations = {
 }
@@ -367,8 +378,8 @@ class import_args:
   __hash__ = object.__hash__
 
 all_structs.append(import_args)
-import_args.thrift_spec = (
-)
+import_args.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
+)))
 
 import_args.thrift_struct_annotations = {
 }
@@ -469,9 +480,9 @@ class import_PY_RESERVED_KEYWORD_result:
   __hash__ = object.__hash__
 
 all_structs.append(import_PY_RESERVED_KEYWORD_result)
-import_PY_RESERVED_KEYWORD_result.thrift_spec = (
+import_PY_RESERVED_KEYWORD_result.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (0, TType.STRUCT, 'success', [def_PY_RESERVED_KEYWORD, def_PY_RESERVED_KEYWORD.thrift_spec, False], None, 2, ), # 0
-)
+)))
 
 import_PY_RESERVED_KEYWORD_result.thrift_struct_annotations = {
 }

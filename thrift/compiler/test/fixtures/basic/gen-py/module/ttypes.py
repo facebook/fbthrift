@@ -29,6 +29,18 @@ try:
   from thrift.protocol import fastproto
 except ImportError:
   pass
+
+def __EXPAND_THRIFT_SPEC(spec):
+    next_id = 0
+    for item in spec:
+        if next_id >= 0 and item[0] < 0:
+            next_id = item[0]
+        if item[0] != next_id:
+            for _ in range(next_id, item[0]):
+                yield None
+        yield item
+        next_id = item[0] + 1
+
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
@@ -883,8 +895,7 @@ class UnionToBeRenamed(object):
     return self
 
 all_structs.append(MyStruct)
-MyStruct.thrift_spec = (
-  None, # 0
+MyStruct.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.I64, 'MyIntField', None, None, 2, ), # 1
   (2, TType.STRING, 'MyStringField', True, None, 2, ), # 2
   (3, TType.STRUCT, 'MyDataField', [MyDataItem, MyDataItem.thrift_spec, False], None, 2, ), # 3
@@ -894,7 +905,7 @@ MyStruct.thrift_spec = (
   (7, TType.BOOL, 'idempotent', None, None, 2, ), # 7
   (8, TType.SET, 'floatSet', (TType.FLOAT,None), None, 2, ), # 8
   (9, TType.STRING, 'no_hack_codegen_field', True, None, 2, ), # 9
-)
+)))
 
 MyStruct.thrift_struct_annotations = {
 }
@@ -930,8 +941,8 @@ MyStruct.__getstate__ = lambda self: self.__dict__.copy()
 MyStruct.__setstate__ = MyStruct__setstate__
 
 all_structs.append(MyDataItem)
-MyDataItem.thrift_spec = (
-)
+MyDataItem.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
+)))
 
 MyDataItem.thrift_struct_annotations = {
 }
@@ -939,13 +950,12 @@ MyDataItem.thrift_field_annotations = {
 }
 
 all_structs.append(MyUnion)
-MyUnion.thrift_spec = (
-  None, # 0
+MyUnion.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.I32, 'myEnum', MyEnum, None, 2, ), # 1
   (2, TType.STRUCT, 'myStruct', [MyStruct, MyStruct.thrift_spec, False], None, 2, ), # 2
   (3, TType.STRUCT, 'myDataItem', [MyDataItem, MyDataItem.thrift_spec, False], None, 2, ), # 3
   (4, TType.SET, 'floatSet', (TType.FLOAT,None), None, 2, ), # 4
-)
+)))
 
 MyUnion.thrift_struct_annotations = {
 }
@@ -975,10 +985,9 @@ def MyUnion__init__(self, myEnum=None, myStruct=None, myDataItem=None, floatSet=
 MyUnion.__init__ = MyUnion__init__
 
 all_structs.append(ReservedKeyword)
-ReservedKeyword.thrift_spec = (
-  None, # 0
+ReservedKeyword.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.I32, 'reserved_field', None, None, 2, ), # 1
-)
+)))
 
 ReservedKeyword.thrift_struct_annotations = {
 }
@@ -998,10 +1007,9 @@ ReservedKeyword.__getstate__ = lambda self: self.__dict__.copy()
 ReservedKeyword.__setstate__ = ReservedKeyword__setstate__
 
 all_structs.append(UnionToBeRenamed)
-UnionToBeRenamed.thrift_spec = (
-  None, # 0
+UnionToBeRenamed.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.I32, 'reserved_field', None, None, 2, ), # 1
-)
+)))
 
 UnionToBeRenamed.thrift_struct_annotations = {
 }

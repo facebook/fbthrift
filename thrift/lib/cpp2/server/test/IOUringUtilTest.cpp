@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-namespace java thrift.test.includer
+#include <gtest/gtest.h>
+#include <thrift/lib/cpp2/server/IOUringUtil.h>
 
-include "TestIncluded.thrift"
+using namespace ::testing;
+using namespace apache::thrift;
 
-struct TestIncluderType {
-  1: string local;
-  2: TestIncluded.IncludedType included;
+TEST(IOUringUtilTest, test_default_io_uring_executor) {
+  auto threadPool = io_uring_util::getDefaultIOUringExecutor();
+  EXPECT_TRUE(io_uring_util::validateExecutorSupportsIOUring(threadPool));
 }

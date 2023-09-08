@@ -29,6 +29,18 @@ try:
   from thrift.protocol import fastproto
 except ImportError:
   pass
+
+def __EXPAND_THRIFT_SPEC(spec):
+    next_id = 0
+    for item in spec:
+        if next_id >= 0 and item[0] < 0:
+            next_id = item[0]
+        if item[0] != next_id:
+            for _ in range(next_id, item[0]):
+                yield None
+        yield item
+        next_id = item[0] + 1
+
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
@@ -332,10 +344,9 @@ class NewType:
     return self
 
 all_structs.append(Name)
-Name.thrift_spec = (
-  None, # 0
+Name.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.STRING, 'name', True, None, 2, ), # 1
-)
+)))
 
 Name.thrift_struct_annotations = {
 }
@@ -355,10 +366,9 @@ Name.__getstate__ = lambda self: self.__dict__.copy()
 Name.__setstate__ = Name__setstate__
 
 all_structs.append(Tag)
-Tag.thrift_spec = (
-  None, # 0
+Tag.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.STRING, 'tag', True, None, 2, ), # 1
-)
+)))
 
 Tag.thrift_struct_annotations = {
 }
@@ -378,8 +388,8 @@ Tag.__getstate__ = lambda self: self.__dict__.copy()
 Tag.__setstate__ = Tag__setstate__
 
 all_structs.append(NewType)
-NewType.thrift_spec = (
-)
+NewType.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
+)))
 
 NewType.thrift_struct_annotations = {
 }

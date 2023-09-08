@@ -29,6 +29,18 @@ try:
   from thrift.protocol import fastproto
 except ImportError:
   pass
+
+def __EXPAND_THRIFT_SPEC(spec):
+    next_id = 0
+    for item in spec:
+        if next_id >= 0 and item[0] < 0:
+            next_id = item[0]
+        if item[0] != next_id:
+            for _ in range(next_id, item[0]):
+                yield None
+        yield item
+        next_id = item[0] + 1
+
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
@@ -334,8 +346,7 @@ class def_PY_RESERVED_KEYWORD:
     return self
 
 all_structs.append(def_PY_RESERVED_KEYWORD)
-def_PY_RESERVED_KEYWORD.thrift_spec = (
-  None, # 0
+def_PY_RESERVED_KEYWORD.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.I64, 'from_PY_RESERVED_KEYWORD', None, None, 2, ), # 1
   (2, TType.STRING, 'in_PY_RESERVED_KEYWORD', True, None, 2, ), # 2
   (3, TType.I32, 'as_PY_RESERVED_KEYWORD', None, None, 2, ), # 3
@@ -347,7 +358,7 @@ def_PY_RESERVED_KEYWORD.thrift_spec = (
   (9, TType.BOOL, 'break_PY_RESERVED_KEYWORD', None, None, 2, ), # 9
   (10, TType.BOOL, 'await_PY_RESERVED_KEYWORD', None, None, 2, ), # 10
   (11, TType.BOOL, 'return_PY_RESERVED_KEYWORD', None, None, 2, ), # 11
-)
+)))
 
 def_PY_RESERVED_KEYWORD.thrift_struct_annotations = {
 }

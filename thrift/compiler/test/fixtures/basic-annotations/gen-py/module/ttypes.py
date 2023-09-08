@@ -29,6 +29,18 @@ try:
   from thrift.protocol import fastproto
 except ImportError:
   pass
+
+def __EXPAND_THRIFT_SPEC(spec):
+    next_id = 0
+    for item in spec:
+        if next_id >= 0 and item[0] < 0:
+            next_id = item[0]
+        if item[0] != next_id:
+            for _ in range(next_id, item[0]):
+                yield None
+        yield item
+        next_id = item[0] + 1
+
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
@@ -730,10 +742,9 @@ class SecretStruct:
 AwesomeStruct = MyStruct
 FantasticStruct = MyStruct
 all_structs.append(MyStructNestedAnnotation)
-MyStructNestedAnnotation.thrift_spec = (
-  None, # 0
+MyStructNestedAnnotation.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.STRING, 'name', True, None, 2, ), # 1
-)
+)))
 
 MyStructNestedAnnotation.thrift_struct_annotations = {
 }
@@ -753,8 +764,8 @@ MyStructNestedAnnotation.__getstate__ = lambda self: self.__dict__.copy()
 MyStructNestedAnnotation.__setstate__ = MyStructNestedAnnotation__setstate__
 
 all_structs.append(MyUnion)
-MyUnion.thrift_spec = (
-)
+MyUnion.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
+)))
 
 MyUnion.thrift_struct_annotations = {
   "cpp.name": "YourUnion",
@@ -763,8 +774,8 @@ MyUnion.thrift_field_annotations = {
 }
 
 all_structs.append(MyException)
-MyException.thrift_spec = (
-)
+MyException.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
+)))
 
 MyException.thrift_struct_annotations = {
   "cpp.name": "YourException",
@@ -773,8 +784,7 @@ MyException.thrift_field_annotations = {
 }
 
 all_structs.append(MyStruct)
-MyStruct.thrift_spec = (
-  None, # 0
+MyStruct.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.STRING, 'package', True, None, 2, ), # 1
   (2, TType.I64, 'major', None, None, 2, ), # 2
   (3, TType.STRING, 'annotation_with_quote', True, None, 2, ), # 3
@@ -784,7 +794,7 @@ MyStruct.thrift_spec = (
   (7, TType.I32, 'my_enum', MyEnum, None, 2, ), # 7
   (8, TType.LIST, 'cpp_type_annotation', (TType.STRING,True), None, 2, ), # 8
   (9, TType.STRUCT, 'my_union', [MyUnion, MyUnion.thrift_spec, True], None, 2, ), # 9
-)
+)))
 
 MyStruct.thrift_struct_annotations = {
   "android.generate_builder": "1",
@@ -841,11 +851,10 @@ MyStruct.__getstate__ = lambda self: self.__dict__.copy()
 MyStruct.__setstate__ = MyStruct__setstate__
 
 all_structs.append(SecretStruct)
-SecretStruct.thrift_spec = (
-  None, # 0
+SecretStruct.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.I64, 'id', None, None, 2, ), # 1
   (2, TType.STRING, 'password', True, None, 2, ), # 2
-)
+)))
 
 SecretStruct.thrift_struct_annotations = {
 }

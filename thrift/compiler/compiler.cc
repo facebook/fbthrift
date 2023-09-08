@@ -539,13 +539,23 @@ compile_result compile(
   }
 
   // Load standard library if available.
-  try {
-    auto path = source_manager::find_include_file(
-        "thrift/lib/thrift/schema.thrift", "", pparams.incl_searchpath);
+  auto path_or_error = source_manager::find_include_file(
+      "thrift/lib/thrift/schema.thrift", "", pparams.incl_searchpath);
+  if (path_or_error.index() == 0) {
+    auto& path = std::get<0>(path_or_error);
     if (!programs->find_program(path)) {
+      diagnostic_context stdlib_ctx(
+          source_mgr,
+          [&](diagnostic&& d) {
+            ctx.warning(
+                source_location{},
+                "Could not load Thrift standard libraries: {}",
+                d.str());
+          },
+          diagnostic_params::only_errors());
       auto inc = parse_and_mutate_program(
           source_mgr,
-          ctx,
+          stdlib_ctx,
           path,
           pparams,
           true /* return_nullptr_on_failure */,
@@ -554,11 +564,11 @@ compile_result compile(
         programs->add_implicit_includes(std::move(inc));
       }
     }
-  } catch (const std::runtime_error& ex) {
+  } else {
     ctx.warning(
         source_location{},
         "Could not load Thrift standard libraries: {}",
-        ex.what());
+        std::get<1>(path_or_error));
   }
 
   programs->root_program()->set_include_prefix(

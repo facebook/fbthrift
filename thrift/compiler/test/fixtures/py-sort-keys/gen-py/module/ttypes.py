@@ -25,6 +25,18 @@ try:
   from thrift.protocol import fastproto
 except ImportError:
   pass
+
+def __EXPAND_THRIFT_SPEC(spec):
+    next_id = 0
+    for item in spec:
+        if next_id >= 0 and item[0] < 0:
+            next_id = item[0]
+        if item[0] != next_id:
+            for _ in range(next_id, item[0]):
+                yield None
+        yield item
+        next_id = item[0] + 1
+
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
@@ -289,11 +301,10 @@ class NegativeId:
     return self
 
 all_structs.append(Foo)
-Foo.thrift_spec = (
-  None, # 0
+Foo.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.MAP, 'mymap', (TType.STRING,True,TType.STRING,True), None, 2, ), # 1
   (2, TType.SET, 'myset', (TType.STRING,True), None, 2, ), # 2
-)
+)))
 
 Foo.thrift_struct_annotations = {
 }
@@ -315,12 +326,11 @@ Foo.__getstate__ = lambda self: self.__dict__.copy()
 Foo.__setstate__ = Foo__setstate__
 
 all_structs.append(NegativeId)
-NegativeId.thrift_spec = (
+NegativeId.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (-2, TType.I32, 'field2', None, 2, 2, ), # -2
   (-1, TType.I32, 'field1', None, 1, 2, ), # -1
-  None, # 0
   (1, TType.I32, 'field3', None, 3, 2, ), # 1
-)
+)))
 
 NegativeId.thrift_struct_annotations = {
 }

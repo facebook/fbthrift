@@ -29,6 +29,18 @@ try:
   from thrift.protocol import fastproto
 except ImportError:
   pass
+
+def __EXPAND_THRIFT_SPEC(spec):
+    next_id = 0
+    for item in spec:
+        if next_id >= 0 and item[0] < 0:
+            next_id = item[0]
+        if item[0] != next_id:
+            for _ in range(next_id, item[0]):
+                yield None
+        yield item
+        next_id = item[0] + 1
+
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
@@ -551,14 +563,13 @@ class MyStruct:
     return self
 
 all_structs.append(SomeStruct)
-SomeStruct.thrift_spec = (
-  None, # 0
+SomeStruct.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.I32, 'reasonable', Metasyntactic,   1, 2, ), # 1
   (2, TType.I32, 'fine', Metasyntactic,   2, 2, ), # 2
   (3, TType.I32, 'questionable', Metasyntactic,   -1, 2, ), # 3
   (4, TType.SET, 'tags', (TType.I32,None), set([
   ]), 2, ), # 4
-)
+)))
 
 SomeStruct.thrift_struct_annotations = {
 }
@@ -588,15 +599,12 @@ SomeStruct.__getstate__ = lambda self: self.__dict__.copy()
 SomeStruct.__setstate__ = SomeStruct__setstate__
 
 all_structs.append(MyStruct)
-MyStruct.thrift_spec = (
-  None, # 0
+MyStruct.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.I32, 'me2_3', MyEnum2,   3, 2, ), # 1
   (2, TType.I32, 'me3_n3', MyEnum3,   -3, 2, ), # 2
-  None, # 3
   (4, TType.I32, 'me1_t1', MyEnum1,   1, 2, ), # 4
-  None, # 5
   (6, TType.I32, 'me1_t2', MyEnum1,   1, 2, ), # 6
-)
+)))
 
 MyStruct.thrift_struct_annotations = {
 }

@@ -14,8 +14,13 @@
  * limitations under the License.
  */
 
-namespace hyperthrift thrift.test.included
+package "apache.org/thrift/test"
 
-struct IncludedType {
-  1: string message;
+service Foo {
+  void foo();
+}
+
+service Bar {
+  void bar1();
+  void bar2();
 }

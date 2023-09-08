@@ -29,6 +29,18 @@ try:
   from thrift.protocol import fastproto
 except ImportError:
   pass
+
+def __EXPAND_THRIFT_SPEC(spec):
+    next_id = 0
+    for item in spec:
+        if next_id >= 0 and item[0] < 0:
+            next_id = item[0]
+        if item[0] != next_id:
+            for _ in range(next_id, item[0]):
+                yield None
+        yield item
+        next_id = item[0] + 1
+
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
@@ -519,8 +531,8 @@ class MarshalCapi:
     return self
 
 all_structs.append(Py3Hidden)
-Py3Hidden.thrift_spec = (
-)
+Py3Hidden.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
+)))
 
 Py3Hidden.thrift_struct_annotations = {
 }
@@ -528,8 +540,8 @@ Py3Hidden.thrift_field_annotations = {
 }
 
 all_structs.append(Flags)
-Flags.thrift_spec = (
-)
+Flags.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
+)))
 
 Flags.thrift_struct_annotations = {
 }
@@ -537,10 +549,9 @@ Flags.thrift_field_annotations = {
 }
 
 all_structs.append(Name)
-Name.thrift_spec = (
-  None, # 0
+Name.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.STRING, 'name', True, None, 2, ), # 1
-)
+)))
 
 Name.thrift_struct_annotations = {
 }
@@ -560,11 +571,10 @@ Name.__getstate__ = lambda self: self.__dict__.copy()
 Name.__setstate__ = Name__setstate__
 
 all_structs.append(Adapter)
-Adapter.thrift_spec = (
-  None, # 0
+Adapter.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.STRING, 'name', True, None, 2, ), # 1
   (2, TType.STRING, 'typeHint', True, None, 2, ), # 2
-)
+)))
 
 Adapter.thrift_struct_annotations = {
   "thrift.uri": "facebook.com/thrift/annotation/python/Adapter",
@@ -587,8 +597,8 @@ Adapter.__getstate__ = lambda self: self.__dict__.copy()
 Adapter.__setstate__ = Adapter__setstate__
 
 all_structs.append(MarshalCapi)
-MarshalCapi.thrift_spec = (
-)
+MarshalCapi.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
+)))
 
 MarshalCapi.thrift_struct_annotations = {
   "thrift.uri": "facebook.com/thrift/annotation/python/MarshalCapi",

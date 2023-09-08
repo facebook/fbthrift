@@ -29,6 +29,18 @@ try:
   from thrift.protocol import fastproto
 except ImportError:
   pass
+
+def __EXPAND_THRIFT_SPEC(spec):
+    next_id = 0
+    for item in spec:
+        if next_id >= 0 and item[0] < 0:
+            next_id = item[0]
+        if item[0] != next_id:
+            for _ in range(next_id, item[0]):
+                yield None
+        yield item
+        next_id = item[0] + 1
+
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
@@ -557,8 +569,8 @@ class Wrapper:
     return self
 
 all_structs.append(Mutable)
-Mutable.thrift_spec = (
-)
+Mutable.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
+)))
 
 Mutable.thrift_struct_annotations = {
 }
@@ -566,10 +578,9 @@ Mutable.thrift_field_annotations = {
 }
 
 all_structs.append(Annotation)
-Annotation.thrift_spec = (
-  None, # 0
+Annotation.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.STRING, 'java_annotation', True, None, 2, ), # 1
-)
+)))
 
 Annotation.thrift_struct_annotations = {
 }
@@ -589,8 +600,8 @@ Annotation.__getstate__ = lambda self: self.__dict__.copy()
 Annotation.__setstate__ = Annotation__setstate__
 
 all_structs.append(BinaryString)
-BinaryString.thrift_spec = (
-)
+BinaryString.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
+)))
 
 BinaryString.thrift_struct_annotations = {
 }
@@ -598,11 +609,10 @@ BinaryString.thrift_field_annotations = {
 }
 
 all_structs.append(Adapter)
-Adapter.thrift_spec = (
-  None, # 0
+Adapter.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.STRING, 'adapterClassName', True, None, 2, ), # 1
   (2, TType.STRING, 'typeClassName', True, None, 2, ), # 2
-)
+)))
 
 Adapter.thrift_struct_annotations = {
   "thrift.uri": "facebook.com/thrift/annotation/java/Adapter",
@@ -625,11 +635,10 @@ Adapter.__getstate__ = lambda self: self.__dict__.copy()
 Adapter.__setstate__ = Adapter__setstate__
 
 all_structs.append(Wrapper)
-Wrapper.thrift_spec = (
-  None, # 0
+Wrapper.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.STRING, 'wrapperClassName', True, None, 2, ), # 1
   (2, TType.STRING, 'typeClassName', True, None, 2, ), # 2
-)
+)))
 
 Wrapper.thrift_struct_annotations = {
   "thrift.uri": "facebook.com/thrift/annotation/java/Wrapper",

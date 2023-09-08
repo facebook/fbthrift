@@ -29,6 +29,18 @@ try:
   from thrift.protocol import fastproto
 except ImportError:
   pass
+
+def __EXPAND_THRIFT_SPEC(spec):
+    next_id = 0
+    for item in spec:
+        if next_id >= 0 and item[0] < 0:
+            next_id = item[0]
+        if item[0] != next_id:
+            for _ in range(next_id, item[0]):
+                yield None
+        yield item
+        next_id = item[0] + 1
+
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
@@ -1134,10 +1146,9 @@ class ModuleInternal:
     return self
 
 all_structs.append(FieldWrapper)
-FieldWrapper.thrift_spec = (
-  None, # 0
+FieldWrapper.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.STRING, 'name', True, None, 2, ), # 1
-)
+)))
 
 FieldWrapper.thrift_struct_annotations = {
 }
@@ -1157,12 +1168,11 @@ FieldWrapper.__getstate__ = lambda self: self.__dict__.copy()
 FieldWrapper.__setstate__ = FieldWrapper__setstate__
 
 all_structs.append(Wrapper)
-Wrapper.thrift_spec = (
-  None, # 0
+Wrapper.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.STRING, 'name', True, None, 2, ), # 1
   (2, TType.STRING, 'underlyingName', True, None, 2, ), # 2
   (3, TType.STRING, 'extraNamespace', True, "thrift_adapted_types", 2, ), # 3
-)
+)))
 
 Wrapper.thrift_struct_annotations = {
   "thrift.uri": "facebook.com/thrift/annotation/hack/Wrapper",
@@ -1187,10 +1197,9 @@ Wrapper.__getstate__ = lambda self: self.__dict__.copy()
 Wrapper.__setstate__ = Wrapper__setstate__
 
 all_structs.append(Adapter)
-Adapter.thrift_spec = (
-  None, # 0
+Adapter.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.STRING, 'name', True, None, 2, ), # 1
-)
+)))
 
 Adapter.thrift_struct_annotations = {
 }
@@ -1210,10 +1219,9 @@ Adapter.__getstate__ = lambda self: self.__dict__.copy()
 Adapter.__setstate__ = Adapter__setstate__
 
 all_structs.append(SkipCodegen)
-SkipCodegen.thrift_spec = (
-  None, # 0
+SkipCodegen.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.STRING, 'reason', True, None, 2, ), # 1
-)
+)))
 
 SkipCodegen.thrift_struct_annotations = {
 }
@@ -1233,11 +1241,10 @@ SkipCodegen.__getstate__ = lambda self: self.__dict__.copy()
 SkipCodegen.__setstate__ = SkipCodegen__setstate__
 
 all_structs.append(Name)
-Name.thrift_spec = (
-  None, # 0
+Name.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.STRING, 'name', True, None, 2, ), # 1
   (2, TType.STRING, 'reason', True, None, 2, ), # 2
-)
+)))
 
 Name.thrift_struct_annotations = {
 }
@@ -1259,10 +1266,9 @@ Name.__getstate__ = lambda self: self.__dict__.copy()
 Name.__setstate__ = Name__setstate__
 
 all_structs.append(UnionEnumAttributes)
-UnionEnumAttributes.thrift_spec = (
-  None, # 0
+UnionEnumAttributes.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.LIST, 'attributes', (TType.STRING,True), None, 2, ), # 1
-)
+)))
 
 UnionEnumAttributes.thrift_struct_annotations = {
 }
@@ -1282,10 +1288,9 @@ UnionEnumAttributes.__getstate__ = lambda self: self.__dict__.copy()
 UnionEnumAttributes.__setstate__ = UnionEnumAttributes__setstate__
 
 all_structs.append(StructTrait)
-StructTrait.thrift_spec = (
-  None, # 0
+StructTrait.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.STRING, 'name', True, None, 2, ), # 1
-)
+)))
 
 StructTrait.thrift_struct_annotations = {
 }
@@ -1305,10 +1310,9 @@ StructTrait.__getstate__ = lambda self: self.__dict__.copy()
 StructTrait.__setstate__ = StructTrait__setstate__
 
 all_structs.append(Attributes)
-Attributes.thrift_spec = (
-  None, # 0
+Attributes.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.LIST, 'attributes', (TType.STRING,True), None, 2, ), # 1
-)
+)))
 
 Attributes.thrift_struct_annotations = {
 }
@@ -1328,8 +1332,8 @@ Attributes.__getstate__ = lambda self: self.__dict__.copy()
 Attributes.__setstate__ = Attributes__setstate__
 
 all_structs.append(StructAsTrait)
-StructAsTrait.thrift_spec = (
-)
+StructAsTrait.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
+)))
 
 StructAsTrait.thrift_struct_annotations = {
 }
@@ -1337,8 +1341,8 @@ StructAsTrait.thrift_field_annotations = {
 }
 
 all_structs.append(ModuleInternal)
-ModuleInternal.thrift_spec = (
-)
+ModuleInternal.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
+)))
 
 ModuleInternal.thrift_struct_annotations = {
 }

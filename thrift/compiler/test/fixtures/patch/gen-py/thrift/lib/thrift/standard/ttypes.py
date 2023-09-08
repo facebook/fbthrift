@@ -29,6 +29,18 @@ try:
   from thrift.protocol import fastproto
 except ImportError:
   pass
+
+def __EXPAND_THRIFT_SPEC(spec):
+    next_id = 0
+    for item in spec:
+        if next_id >= 0 and item[0] < 0:
+            next_id = item[0]
+        if item[0] != next_id:
+            for _ in range(next_id, item[0]):
+                yield None
+        yield item
+        next_id = item[0] + 1
+
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
@@ -934,12 +946,11 @@ ByteString = UnimplementedTypedef()
 ByteBuffer = UnimplementedTypedef()
 Uri = UnimplementedTypedef()
 all_structs.append(TypeUri)
-TypeUri.thrift_spec = (
-  None, # 0
+TypeUri.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.STRING, 'uri', True, None, 2, ), # 1
   (2, TType.STRING, 'typeHashPrefixSha2_256', False, None, 2, ), # 2
   (3, TType.STRING, 'scopedName', True, None, 2, ), # 3
-)
+)))
 
 TypeUri.thrift_struct_annotations = {
 }
@@ -965,8 +976,7 @@ def TypeUri__init__(self, uri=None, typeHashPrefixSha2_256=None, scopedName=None
 TypeUri.__init__ = TypeUri__init__
 
 all_structs.append(TypeName)
-TypeName.thrift_spec = (
-  None, # 0
+TypeName.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.I32, 'boolType', Void, None, 2, ), # 1
   (2, TType.I32, 'byteType', Void, None, 2, ), # 2
   (3, TType.I32, 'i16Type', Void, None, 2, ), # 3
@@ -984,7 +994,7 @@ TypeName.thrift_spec = (
   (15, TType.I32, 'setType', Void, None, 2, ), # 15
   (16, TType.I32, 'mapType', Void, None, 2, ), # 16
   (17, TType.STRUCT, 'typedefType', [TypeUri, TypeUri.thrift_spec, True], None, 2, ), # 17
-)
+)))
 
 TypeName.thrift_struct_annotations = {
   "rust.ord": "1",

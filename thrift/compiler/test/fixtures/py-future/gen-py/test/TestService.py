@@ -27,6 +27,18 @@ try:
 except ImportError:
   pass
 
+def __EXPAND_THRIFT_SPEC(spec):
+    next_id = 0
+    for item in spec:
+        if next_id >= 0 and item[0] < 0:
+            next_id = item[0]
+        if item[0] != next_id:
+            for _ in range(next_id, item[0]):
+                yield None
+        yield item
+        next_id = item[0] + 1
+
+
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
@@ -143,8 +155,8 @@ class sleep_args:
   __hash__ = object.__hash__
 
 all_structs.append(sleep_args)
-sleep_args.thrift_spec = (
-)
+sleep_args.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
+)))
 
 sleep_args.thrift_struct_annotations = {
 }
@@ -209,8 +221,8 @@ class sleep_result:
   __hash__ = object.__hash__
 
 all_structs.append(sleep_result)
-sleep_result.thrift_spec = (
-)
+sleep_result.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
+)))
 
 sleep_result.thrift_struct_annotations = {
 }
@@ -294,9 +306,9 @@ class isPrime_args:
   __hash__ = object.__hash__
 
 all_structs.append(isPrime_args)
-isPrime_args.thrift_spec = (
+isPrime_args.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (-1, TType.I64, 'num', None, None, 2, ), # -1
-)
+)))
 
 isPrime_args.thrift_struct_annotations = {
 }
@@ -392,9 +404,9 @@ class isPrime_result:
   __hash__ = object.__hash__
 
 all_structs.append(isPrime_result)
-isPrime_result.thrift_spec = (
+isPrime_result.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (0, TType.BOOL, 'success', None, None, 2, ), # 0
-)
+)))
 
 isPrime_result.thrift_struct_annotations = {
 }
@@ -471,8 +483,8 @@ class getResult_args:
   __hash__ = object.__hash__
 
 all_structs.append(getResult_args)
-getResult_args.thrift_spec = (
-)
+getResult_args.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
+)))
 
 getResult_args.thrift_struct_annotations = {
 }
@@ -557,9 +569,9 @@ class getResult_result:
   __hash__ = object.__hash__
 
 all_structs.append(getResult_result)
-getResult_result.thrift_spec = (
+getResult_result.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (0, TType.STRUCT, 'success', [TestStruct, TestStruct.thrift_spec, False], None, 2, ), # 0
-)
+)))
 
 getResult_result.thrift_struct_annotations = {
 }

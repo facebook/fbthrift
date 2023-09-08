@@ -879,7 +879,25 @@ string t_py_generator::render_fastproto_includes() {
          "try:\n"
          "  from thrift.protocol import fastproto\n"
          "except ImportError:\n"
-         "  pass\n";
+         "  pass\n"
+         "\n"
+         /*
+    Given a sparse thrift_spec generate a full thrift_spec as expected by fastproto.
+    The old form is a tuple where every position is the same as the thrift field id.
+    The new form is just a tuple of the used field ids without all the None padding, but its cheaper bytecode wise.
+    There is a bug in python 3.10 that causes large tuples to use more memory and generate larger .pyc than <=3.9.
+    See: https://github.com/python/cpython/issues/109036
+          */
+         "def __EXPAND_THRIFT_SPEC(spec):\n"
+         "    next_id = 0\n"
+         "    for item in spec:\n"
+         "        if next_id >= 0 and item[0] < 0:\n"
+         "            next_id = item[0]\n"
+         "        if item[0] != next_id:\n"
+         "            for _ in range(next_id, item[0]):\n"
+         "                yield None\n"
+         "        yield item\n"
+         "        next_id = item[0] + 1\n\n";
 }
 
 /**
@@ -1452,34 +1470,23 @@ void t_py_generator::generate_py_thrift_spec(
   indent(out) << "all_structs.append("
               << rename_reserved_keywords(tstruct->get_name()) << ")" << endl
               << rename_reserved_keywords(tstruct->get_name())
-              << ".thrift_spec = (" << endl;
+              << ".thrift_spec = tuple(__EXPAND_THRIFT_SPEC((" << endl;
 
   indent_up();
 
-  int sorted_keys_pos = 0;
   for (m_iter = sorted_members.begin(); m_iter != sorted_members.end();
        ++m_iter) {
-    if (sorted_keys_pos >= 0 && (*m_iter)->get_key() < 0) {
-      sorted_keys_pos = (*m_iter)->get_key();
-    }
-
-    for (; sorted_keys_pos != (*m_iter)->get_key(); sorted_keys_pos++) {
-      indent(out) << "None, # " << sorted_keys_pos << endl;
-    }
-
     indent(out) << "(" << (*m_iter)->get_key() << ", "
                 << type_to_enum((*m_iter)->get_type()) << ", "
                 << "'" << rename_reserved_keywords((*m_iter)->get_name()) << "'"
                 << ", " << type_to_spec_args((*m_iter)->get_type()) << ", "
                 << render_field_default_value(*m_iter) << ", "
                 << static_cast<int>((*m_iter)->get_req()) << ", ),"
-                << " # " << sorted_keys_pos << endl;
-
-    sorted_keys_pos++;
+                << " # " << (*m_iter)->get_key() << endl;
   }
 
   indent_down();
-  indent(out) << ")" << endl << endl;
+  indent(out) << ")))" << endl << endl;
 
   generate_py_annotations(out, tstruct);
 

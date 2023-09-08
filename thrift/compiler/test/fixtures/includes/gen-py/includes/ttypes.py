@@ -27,6 +27,18 @@ try:
   from thrift.protocol import fastproto
 except ImportError:
   pass
+
+def __EXPAND_THRIFT_SPEC(spec):
+    next_id = 0
+    for item in spec:
+        if next_id >= 0 and item[0] < 0:
+            next_id = item[0]
+        if item[0] != next_id:
+            for _ in range(next_id, item[0]):
+                yield None
+        yield item
+        next_id = item[0] + 1
+
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
@@ -142,13 +154,12 @@ class Included:
 IncludedInt64 = UnimplementedTypedef()
 TransitiveFoo = transitive.ttypes.Foo
 all_structs.append(Included)
-Included.thrift_spec = (
-  None, # 0
+Included.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.I64, 'MyIntField', None, 0, 2, ), # 1
   (2, TType.STRUCT, 'MyTransitiveField', [transitive.ttypes.Foo, transitive.ttypes.Foo.thrift_spec, False], transitive.ttypes.Foo(**{
     "a" : 2,
   }), 2, ), # 2
-)
+)))
 
 Included.thrift_struct_annotations = {
 }

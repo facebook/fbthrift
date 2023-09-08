@@ -31,6 +31,18 @@ try:
 except ImportError:
   pass
 
+def __EXPAND_THRIFT_SPEC(spec):
+    next_id = 0
+    for item in spec:
+        if next_id >= 0 and item[0] < 0:
+            next_id = item[0]
+        if item[0] != next_id:
+            for _ in range(next_id, item[0]):
+                yield None
+        yield item
+        next_id = item[0] + 1
+
+
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
@@ -169,10 +181,9 @@ class getDataByKey0_args:
   __hash__ = object.__hash__
 
 all_structs.append(getDataByKey0_args)
-getDataByKey0_args.thrift_spec = (
-  None, # 0
+getDataByKey0_args.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.STRING, 'key', True, None, 2, ), # 1
-)
+)))
 
 getDataByKey0_args.thrift_struct_annotations = {
 }
@@ -283,9 +294,9 @@ class getDataByKey0_result:
   __hash__ = object.__hash__
 
 all_structs.append(getDataByKey0_result)
-getDataByKey0_result.thrift_spec = (
+getDataByKey0_result.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (0, TType.STRING, 'success', False, None, 2, ), # 0
-)
+)))
 
 getDataByKey0_result.thrift_struct_annotations = {
 }
@@ -396,10 +407,9 @@ class getDataByKey1_args:
   __hash__ = object.__hash__
 
 all_structs.append(getDataByKey1_args)
-getDataByKey1_args.thrift_spec = (
-  None, # 0
+getDataByKey1_args.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.STRING, 'key', True, None, 2, ), # 1
-)
+)))
 
 getDataByKey1_args.thrift_struct_annotations = {
 }
@@ -510,9 +520,9 @@ class getDataByKey1_result:
   __hash__ = object.__hash__
 
 all_structs.append(getDataByKey1_result)
-getDataByKey1_result.thrift_spec = (
+getDataByKey1_result.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (0, TType.STRING, 'success', False, None, 2, ), # 0
-)
+)))
 
 getDataByKey1_result.thrift_struct_annotations = {
 }

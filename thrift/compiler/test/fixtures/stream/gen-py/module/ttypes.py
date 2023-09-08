@@ -29,6 +29,18 @@ try:
   from thrift.protocol import fastproto
 except ImportError:
   pass
+
+def __EXPAND_THRIFT_SPEC(spec):
+    next_id = 0
+    for item in spec:
+        if next_id >= 0 and item[0] < 0:
+            next_id = item[0]
+        if item[0] != next_id:
+            for _ in range(next_id, item[0]):
+                yield None
+        yield item
+        next_id = item[0] + 1
+
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
@@ -311,8 +323,8 @@ class FooEx2(TException):
     return self
 
 all_structs.append(FooStreamEx)
-FooStreamEx.thrift_spec = (
-)
+FooStreamEx.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
+)))
 
 FooStreamEx.thrift_struct_annotations = {
 }
@@ -320,8 +332,8 @@ FooStreamEx.thrift_field_annotations = {
 }
 
 all_structs.append(FooEx)
-FooEx.thrift_spec = (
-)
+FooEx.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
+)))
 
 FooEx.thrift_struct_annotations = {
 }
@@ -329,8 +341,8 @@ FooEx.thrift_field_annotations = {
 }
 
 all_structs.append(FooEx2)
-FooEx2.thrift_spec = (
-)
+FooEx2.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
+)))
 
 FooEx2.thrift_struct_annotations = {
 }

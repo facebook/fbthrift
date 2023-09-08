@@ -25,6 +25,18 @@ try:
   from thrift.protocol import fastproto
 except ImportError:
   pass
+
+def __EXPAND_THRIFT_SPEC(spec):
+    next_id = 0
+    for item in spec:
+        if next_id >= 0 and item[0] < 0:
+            next_id = item[0]
+        if item[0] != next_id:
+            for _ in range(next_id, item[0]):
+                yield None
+        yield item
+        next_id = item[0] + 1
+
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
@@ -773,10 +785,9 @@ class Banal(TException):
     return self
 
 all_structs.append(Fiery)
-Fiery.thrift_spec = (
-  None, # 0
+Fiery.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.STRING, 'message', True, None, 0, ), # 1
-)
+)))
 
 Fiery.thrift_struct_annotations = {
   "message": "message",
@@ -797,10 +808,9 @@ Fiery.__getstate__ = lambda self: self.__dict__.copy()
 Fiery.__setstate__ = Fiery__setstate__
 
 all_structs.append(Serious)
-Serious.thrift_spec = (
-  None, # 0
+Serious.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.STRING, 'sonnet', True, None, 1, ), # 1
-)
+)))
 
 Serious.thrift_struct_annotations = {
   "message": "sonnet",
@@ -821,11 +831,10 @@ Serious.__getstate__ = lambda self: self.__dict__.copy()
 Serious.__setstate__ = Serious__setstate__
 
 all_structs.append(ComplexFieldNames)
-ComplexFieldNames.thrift_spec = (
-  None, # 0
+ComplexFieldNames.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.STRING, 'error_message', True, None, 2, ), # 1
   (2, TType.STRING, 'internal_error_message', True, None, 2, ), # 2
-)
+)))
 
 ComplexFieldNames.thrift_struct_annotations = {
   "message": "internal_error_message",
@@ -848,11 +857,10 @@ ComplexFieldNames.__getstate__ = lambda self: self.__dict__.copy()
 ComplexFieldNames.__setstate__ = ComplexFieldNames__setstate__
 
 all_structs.append(CustomFieldNames)
-CustomFieldNames.thrift_spec = (
-  None, # 0
+CustomFieldNames.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.STRING, 'error_message', True, None, 2, ), # 1
   (2, TType.STRING, 'internal_error_message', True, None, 2, ), # 2
-)
+)))
 
 CustomFieldNames.thrift_struct_annotations = {
   "message": "internal_error_message",
@@ -878,11 +886,10 @@ CustomFieldNames.__getstate__ = lambda self: self.__dict__.copy()
 CustomFieldNames.__setstate__ = CustomFieldNames__setstate__
 
 all_structs.append(ExceptionWithPrimitiveField)
-ExceptionWithPrimitiveField.thrift_spec = (
-  None, # 0
+ExceptionWithPrimitiveField.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.STRING, 'message', True, None, 2, ), # 1
   (2, TType.I32, 'error_code', None, None, 2, ), # 2
-)
+)))
 
 ExceptionWithPrimitiveField.thrift_struct_annotations = {
   "message": "message",
@@ -905,11 +912,10 @@ ExceptionWithPrimitiveField.__getstate__ = lambda self: self.__dict__.copy()
 ExceptionWithPrimitiveField.__setstate__ = ExceptionWithPrimitiveField__setstate__
 
 all_structs.append(ExceptionWithStructuredAnnotation)
-ExceptionWithStructuredAnnotation.thrift_spec = (
-  None, # 0
+ExceptionWithStructuredAnnotation.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.STRING, 'message_field', True, None, 2, ), # 1
   (2, TType.I32, 'error_code', None, None, 2, ), # 2
-)
+)))
 
 ExceptionWithStructuredAnnotation.thrift_struct_annotations = {
 }
@@ -931,8 +937,8 @@ ExceptionWithStructuredAnnotation.__getstate__ = lambda self: self.__dict__.copy
 ExceptionWithStructuredAnnotation.__setstate__ = ExceptionWithStructuredAnnotation__setstate__
 
 all_structs.append(Banal)
-Banal.thrift_spec = (
-)
+Banal.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
+)))
 
 Banal.thrift_struct_annotations = {
 }
