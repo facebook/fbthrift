@@ -22,17 +22,17 @@ namespace apache {
 namespace thrift {
 
 [[noreturn]] void CompactProtocolReader::throwBadProtocolIdentifier() {
-  throw TProtocolException(
+  throw protocol::TProtocolException(
       TProtocolException::BAD_VERSION, "Bad protocol identifier");
 }
 
 [[noreturn]] void CompactProtocolReader::throwBadProtocolVersion() {
-  throw TProtocolException(
+  throw protocol::TProtocolException(
       TProtocolException::BAD_VERSION, "Bad protocol version");
 }
 
 [[noreturn]] void CompactProtocolReader::throwBadType(const uint8_t type) {
-  throw TProtocolException(
+  throw protocol::TProtocolException(
       folly::to<std::string>("don't know what type: ", type));
 }
 
