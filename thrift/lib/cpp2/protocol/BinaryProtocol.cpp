@@ -17,16 +17,6 @@
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 
 #include <folly/Conv.h>
-#include <folly/portability/GFlags.h>
-
-FOLLY_GFLAGS_DEFINE_int32(
-    thrift_cpp2_protocol_reader_string_limit,
-    0,
-    "Limit on string size when deserializing thrift, 0 is no limit");
-FOLLY_GFLAGS_DEFINE_int32(
-    thrift_cpp2_protocol_reader_container_limit,
-    0,
-    "Limit on container size when deserializing thrift, 0 is no limit");
 
 namespace apache {
 namespace thrift {

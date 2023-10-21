@@ -20,14 +20,11 @@
 #include <fmt/core.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
-#include <folly/portability/GFlags.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
+#include <thrift/lib/cpp2/protocol/ProtocolGFlags.h>
 #include <thrift/lib/cpp2/type/NativeType.h>
-
-FOLLY_GFLAGS_DECLARE_bool(thrift_cpp2_debug_skip_list_indices);
-FOLLY_GFLAGS_DECLARE_int64(thrift_cpp2_debug_string_limit);
 
 namespace apache {
 namespace thrift {

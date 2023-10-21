@@ -16,12 +16,7 @@
 
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
-#include <folly/portability/GFlags.h>
-
-FOLLY_GFLAGS_DEFINE_int32(
-    thrift_protocol_max_depth,
-    15000,
-    "How many nested struct/list/set/map are allowed");
+#include <thrift/lib/cpp2/protocol/ProtocolGFlags.h>
 
 namespace apache {
 namespace thrift {

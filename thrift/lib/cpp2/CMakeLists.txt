@@ -51,6 +51,7 @@ target_link_libraries(
   thriftmetadata
   PUBLIC
     Folly::folly
+    thriftprotocolflags
 )
 
 bypass_source_check("${frozen-cpp2-SOURCES}")
@@ -153,6 +154,21 @@ target_link_libraries(
   rpcmetadata
   PUBLIC
     Folly::folly
+    thriftprotocolflags
+)
+
+# Some of the thriftprotocol sources are duplicated in other libraries.
+# This fails when those sources contain gflags. This library contains
+# the definitions of all the gflags used by thriftprotocol sources.
+add_library(
+  thriftprotocolflags
+
+  protocol/ProtocolGFlags.cpp
+)
+target_link_libraries(
+  thriftprotocolflags
+  PUBLIC
+    Folly::folly
 )
 
 bypass_source_check("${reflection-cpp2-SOURCES}")
@@ -189,6 +205,7 @@ target_link_libraries(
     wangle::wangle
     ${GLOG_LIBRARIES}
     thrift-core
+    thriftprotocolflags
 )
 
 bypass_source_check("${RocketUpgrade-cpp2-SOURCES}")
@@ -329,6 +346,7 @@ target_link_libraries(
     thriftmetadata
     thriftfrozen2
     thriftprotocol
+    thriftprotocolflags
     thrifttyperep
     thrifttype
     thriftanyrep
@@ -370,7 +388,8 @@ install(
 
 if (BUILD_SHARED_LIBS)
   set_target_properties(rpcmetadata thriftannotation thriftmetadata
-    thriftfrozen2 thriftprotocol thriftcpp2 thrifttyperep thrifttype
+    thriftfrozen2 thriftprotocol thriftprotocolflags thriftcpp2 thrifttyperep
+    thrifttype
     PROPERTIES VERSION ${PACKAGE_VERSION}
     )
 endif()
@@ -384,6 +403,7 @@ install(
     thrifttype
     thriftanyrep
     thriftprotocol
+    thriftprotocolflags
     thriftcpp2
   EXPORT fbthrift-exports
   DESTINATION ${LIB_INSTALL_DIR}

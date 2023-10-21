@@ -19,15 +19,6 @@
 #include <folly/Conv.h>
 #include <folly/String.h>
 
-FOLLY_GFLAGS_DEFINE_bool(
-    thrift_cpp2_debug_skip_list_indices,
-    false,
-    "Wether to skip indices when debug-printing lists (unless overridden)");
-FOLLY_GFLAGS_DEFINE_int64(
-    thrift_cpp2_debug_string_limit,
-    256,
-    "Limit on string size when debug-printing thrift, 0 is no limit");
-
 namespace apache {
 namespace thrift {
 

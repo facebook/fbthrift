@@ -21,12 +21,9 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
 #include <folly/lang/Bits.h>
-#include <folly/portability/GFlags.h>
 #include <thrift/lib/cpp/protocol/TProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
-
-FOLLY_GFLAGS_DECLARE_int32(thrift_cpp2_protocol_reader_string_limit);
-FOLLY_GFLAGS_DECLARE_int32(thrift_cpp2_protocol_reader_container_limit);
+#include <thrift/lib/cpp2/protocol/ProtocolGFlags.h>
 
 namespace apache {
 namespace thrift {

@@ -28,11 +28,9 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
 #include <folly/json.h>
-#include <folly/portability/GFlags.h>
 #include <thrift/lib/cpp/protocol/TBase64Utils.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
-
-FOLLY_GFLAGS_DECLARE_bool(thrift_cpp2_simple_json_base64_allow_padding);
+#include <thrift/lib/cpp2/protocol/ProtocolGFlags.h>
 
 namespace apache {
 namespace thrift {
