@@ -220,7 +220,8 @@ class TSocketBase(TTransportBase):
 class TSocket(TSocketBase):
     """Connection Socket implementation of TTransport base."""
 
-    def __init__(self, host="localhost", port=9090, unix_socket=None, family=None):
+    def __init__(self, host="localhost", port=9090, unix_socket=None, family=None,
+        bind_intf=None):
         """Initialize a TSocket
 
         @param host(str)  The host to connect to.
@@ -229,12 +230,14 @@ class TSocket(TSocketBase):
                                  (host and port will be ignored.)
         @param family(int)  Address family for connection. Ignored if
                             unix_socket is specified.
+        @param bind_intf(bytes)  The interface to bind to
         """
         TSocketBase.__init__(self)
         self.host = host
         self.port = port
         self.handle = None
         self.family = family
+        self._bind_intf = bind_intf
         self._unix_socket = unix_socket
         self._timeout = None
         self.close_on_exec = True
@@ -287,6 +290,8 @@ class TSocket(TSocketBase):
             for res in res0:
                 address = res[4]
                 handle = socket.socket(res[0], res[1])
+                if self._bind_intf:
+                    handle.setsockopt(socket.SOL_SOCKET, socket.SO_BINDTODEVICE, self._bind_intf)
                 self.setHandle(handle)
                 handle.settimeout(self._timeout)
                 self.setCloseOnExec(self.close_on_exec)
