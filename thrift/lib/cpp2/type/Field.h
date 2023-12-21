@@ -16,26 +16,35 @@
 
 #pragma once
 
+#include <type_traits>
+
 #include <thrift/lib/cpp2/FieldRef.h>
+#include <thrift/lib/cpp2/FieldRefTraits.h>
+#include <thrift/lib/cpp2/Thrift.h>
+#include <thrift/lib/cpp2/op/Get.h>
 
 namespace apache {
 namespace thrift {
 namespace type {
 
-// Helpers for detecting compatible optional types.
-template <typename T>
-struct is_optional_field : std::false_type {};
-template <typename T>
-struct is_optional_field<optional_field_ref<T>> : std::true_type {};
-template <typename T>
-struct is_optional_field<optional_boxed_field_ref<T>> : std::true_type {};
+// Helpers for detecting compatible optional field.
+template <typename T, typename Id>
+inline constexpr bool is_optional_field_v =
+    ::apache::thrift::detail::is_optional_or_union_field_ref_v<
+        op::get_field_ref<T, Id>> ||
+    ::apache::thrift::detail::qualifier::
+        is_cpp_ref_field_optional<T, op::get_field_id<T, Id>>::value;
 
 template <typename U, typename R = void>
-using if_optional_field =
-    std::enable_if_t<is_optional_field<folly::remove_cvref_t<U>>::value, R>;
+using if_optional_field = std::enable_if_t<
+    ::apache::thrift::detail::is_optional_or_union_field_ref_v<
+        folly::remove_cvref_t<U>>,
+    R>;
 template <typename U, typename R = void>
-using if_not_optional_field =
-    std::enable_if_t<!is_optional_field<folly::remove_cvref_t<U>>::value, R>;
+using if_not_optional_field = std::enable_if_t<
+    !::apache::thrift::detail::is_optional_or_union_field_ref_v<
+        folly::remove_cvref_t<U>>,
+    R>;
 
 } // namespace type
 } // namespace thrift
