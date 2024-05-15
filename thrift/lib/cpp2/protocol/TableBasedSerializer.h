@@ -117,9 +117,16 @@ struct UnionExt {
   int (*getActiveId)(const void* /* object */);
   void (*setActiveId)(void* /* object */, int /* fieldId */);
 
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wc99-extensions"
+#endif
   // Value initialized using placement new into the member.
   // Generated code should order this list by fields key order.
   VoidFuncPtr initMember[];
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
 };
 
 // Templatized version to const initialize with the exact array length.
@@ -149,6 +156,10 @@ struct StructInfo {
   // Use for other languages to pass in additional information.
   const void* customExt;
 
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wc99-extensions"
+#endif
   /**
    * Holds `numFields` entries.
    *
@@ -156,6 +167,9 @@ struct StructInfo {
    * `StructInfo`, so this field MUST be the last in this struct.
    */
   FieldInfo fieldInfos[];
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
 };
 
 // Templatized version to const initialize with the exact array length.
