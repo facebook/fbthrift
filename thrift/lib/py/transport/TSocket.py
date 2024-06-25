@@ -208,6 +208,11 @@ class TSocketBase(TTransportBase):
         if fcntl is None:
             return
 
+        # pyodide doesn't support fcntl, so we need to skip in this case, too.
+        # ref: https://github.com/pyodide/pyodide/discussions/4150
+        if sys.platform == 'emscripten':
+            return
+
         flags = fcntl.fcntl(handle, fcntl.F_GETFD, 0)
         if flags < 0:
             raise IOError("Error in retrieving file options")
