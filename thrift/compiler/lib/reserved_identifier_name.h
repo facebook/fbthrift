@@ -17,28 +17,22 @@
 #pragma once
 
 #include <string>
-
-// The use of boost::regex results in CLANGTIDY warnings.
-// https://fburl.com/cxxRegexes describes performance issues in production
-// with boost::regex as well as std::regex. The thrift compiler
-// does not run in production. Therefore, we can safely ignore these warnings
-// with @lint-ignore CLANGTIDY facebook-... (see below)
-
-#define BOOST_REGEX_NO_W32
-// @lint-ignore CLANGTIDY facebook-hte-BadInclude-regex
-#include <boost/regex.hpp>
+#include <boost/algorithm/string.hpp>
 
 namespace apache::thrift::compiler {
 
 inline bool is_reserved_identifier_name(std::string_view name) {
-  // @lint-ignore CLANGTIDY facebook-hte-BoostRegexRisky
-  static const boost::regex reserved_pattern(
-      "^_*fbthrift", boost::regex::icase);
-  return boost::regex_search(
-      std::begin(name),
-      std::end(name),
-      // @lint-ignore CLANGTIDY facebook-hte-BoostRegexRisky
-      reserved_pattern);
+  auto pos = name.find_first_not_of("_");
+  if (pos == std::string_view::npos) {
+    return false;
+  }
+
+  auto after_underscores = std::string_view(name.begin() + pos, name.end());
+  static const std::string prefix = "fbthrift";
+  std::locale utf8_locale("en_US.UTF-8");
+
+  return boost::algorithm::istarts_with(
+      after_underscores, std::string_view(prefix), utf8_locale);
 }
 
 } // namespace apache::thrift::compiler
