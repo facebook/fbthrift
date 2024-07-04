@@ -114,6 +114,7 @@ target_compile_definitions(
 target_link_libraries(
   compiler_base
   compiler_ast
+  Boost::regex
   fmt::fmt
   ${FBTHRIFT_COMPILER_LINK_CXXFS}
 )
