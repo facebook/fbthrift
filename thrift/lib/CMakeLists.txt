@@ -38,3 +38,9 @@ foreach(dir ${LIB_DIRS})
           PATTERN "*.tcc"
           PATTERN CMakeFiles EXCLUDE)
 endforeach()
+
+install(
+  DIRECTORY thrift "${CMAKE_CURRENT_SOURCE_DIR}/thrift"
+  DESTINATION include/thrift/lib
+  FILES_MATCHING PATTERN *.thrift
+)
