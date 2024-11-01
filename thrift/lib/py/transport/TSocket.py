@@ -208,9 +208,8 @@ class TSocketBase(TTransportBase):
         if fcntl is None:
             return
 
-        # pyodide doesn't support fcntl, so we need to skip in this case, too.
-        # ref: https://github.com/pyodide/pyodide/discussions/4150
-        if sys.platform == 'emscripten':
+        # Skip if fcntl.fcntl is not available (this can happen in env like Pyodide)
+        if not hasattr(fcntl, "fcntl"):
             return
 
         flags = fcntl.fcntl(handle, fcntl.F_GETFD, 0)
