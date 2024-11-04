@@ -48,9 +48,8 @@ set(ADDITIONAL_SOURCE_FILES ../../thrift/detail/protocol.cpp ../../thrift/TypeTo
 
 # generate conformance thrift files
 foreach(conf_name "protocol" "type" "any" "serialization" "patch_data" "conformance")
-  thrift_generate_named(
-    "${conf_name}conformance" #file_name
-    "${conf_name}"
+  thrift_generate(
+    "${conf_name}" #file_name
     "" #services
     "cpp2" #language
     "frozen2" #options
@@ -58,6 +57,7 @@ foreach(conf_name "protocol" "type" "any" "serialization" "patch_data" "conforma
     "${CMAKE_CURRENT_BINARY_DIR}/../../../conformance/if" #output_path
     "thrift/conformance/if" #include_prefix
     THRIFT_INCLUDE_DIRECTORIES ${THRIFT_SOURCE_DIR}
+    TARGET_NAME_BASE "${conf_name}conformance"
   )
   set(GENERATED_THRIFT_SOURCES
     ${GENERATED_THRIFT_SOURCES}
