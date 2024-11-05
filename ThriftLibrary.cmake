@@ -117,7 +117,7 @@ endmacro()
 #     #include_prefix
 #   )
 #   add_library(somelib ...)
-#   target_link_libraries(somelibe ${file_name}-${language} ...)
+#   target_link_libraries(somelib ${file_name}-${language} ...)
 #
 
 macro(thrift_library
@@ -166,10 +166,12 @@ endmacro()
 
 #
 # thrift_generate
-# Supports libary names that differ from the file name (two handle two libraries with the same filename on disk (in different folders))
+# Supports libary names that differ from the file name (to handle two libraries
+# with the same filename on disk (in different folders))
 # This is used to codegen thrift files using the thrift compiler
 # Params:
-#   @file_name - The name of the library that is generated (without the language suffix)
+#   @file_name - Input file name. Will be used for naming the CMake
+#       target if TARGET_NAME_BASE is not specified.
 #   @services  - A list of services that are declared in the thrift file
 #   @language  - The generator to use (cpp, cpp2 or py3)
 #   @options   - Extra options to pass to the generator
@@ -179,7 +181,7 @@ endmacro()
 #   @THRIFT_INCLUDE_DIRECTORIES - (optional) path to thrift include directories
 #
 # Output:
-#  file-language-target     - A custom target to add a dependenct
+#  file-language-target     - A custom target to add a dependency
 #  ${file-language-HEADERS} - The generated Header Files.
 #  ${file-language-SOURCES} - The generated Source Files.
 #
@@ -211,7 +213,8 @@ macro(thrift_generate
   foreach(dir ${THRIFT_GENERATE_THRIFT_INCLUDE_DIRECTORIES})
     list(APPEND thrift_include_directories "-I" "${dir}")
   endforeach()
-  if(DEFINED THRIFT_GENERATE_TARGET_NAME_BASE AND NOT THRIFT_GENERATE_TARGET_NAME_BASE STREQUAL "")
+  if(DEFINED THRIFT_GENERATE_TARGET_NAME_BASE
+     AND NOT THRIFT_GENERATE_TARGET_NAME_BASE STREQUAL "")
     set(target_file_name ${THRIFT_GENERATE_TARGET_NAME_BASE})
   endif()
 
