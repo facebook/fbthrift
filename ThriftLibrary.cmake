@@ -166,9 +166,9 @@ endmacro()
 
 #
 # thrift_generate
-# Supports libary names that differ from the file name (to handle two libraries
-# with the same filename on disk (in different folders))
 # This is used to codegen thrift files using the thrift compiler
+# Supports library names that differ from the file name (to handle two libraries
+# with the same filename on disk (in different folders))
 # Params:
 #   @file_name - Input file name. Will be used for naming the CMake
 #       target if TARGET_NAME_BASE is not specified.
