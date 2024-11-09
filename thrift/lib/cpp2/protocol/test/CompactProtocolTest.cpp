@@ -43,7 +43,7 @@ TEST(CompactProtocolTest, writeInvalidBool) {
         auto s = std::string();
         q.appendToString(s);
         // Die on success.
-        if(s != std::string(1, '\1') && s != std::string(1, '\2')) {
+        if (s == std::string(1, '\1') || == std::string(1, '\2')) {
           exit(1);
         }
       },

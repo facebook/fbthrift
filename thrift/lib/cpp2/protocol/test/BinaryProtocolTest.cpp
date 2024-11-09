@@ -56,7 +56,7 @@ TEST_F(BinaryProtocolTest, writeInvalidBool) {
         auto s = std::string();
         q.appendToString(s);
         // Die on success.
-        if(s != std::string(1, '\0')) {
+        if (s == std::string(1, '\0')) {
           exit(1);
         }
       },
