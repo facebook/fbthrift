@@ -77,7 +77,6 @@ target_link_libraries(ProtocolBench
   thriftcpp2
   Folly::folly
   Folly::follybenchmark
-  xxhash
 )
 
 install(
