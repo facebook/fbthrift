@@ -121,7 +121,7 @@ final class UpdateUniverseContextHandlerTest extends WWWTest {
 
   public async function testUniverseContextPropKillswitch(): Awaitable<void> {
     $mock = self::mockClassStaticMethodUNSAFE(
-      ThriftContextPropUpdateUniverseHandler::class,
+      UpdateUniverseContextHandler::class,
       'getUniverseForPropagation',
     );
 
