@@ -1,5 +1,6 @@
 /*
  * Copyright (c) Meta Platforms, Inc. and affiliates.
+ * Copyright (c) 2024, NVIDIA CORPORATION. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +17,13 @@
 
 #pragma once
 
+#include <cuchar>
+#include <iostream>
+#include <folly/Unicode.h>
 #include <folly/Utility.h>
+#ifdef __ARM_NEON
+#include <arm_neon.h>
+#endif /* __ARM_NEON */
 
 namespace apache {
 namespace thrift {
@@ -261,8 +268,124 @@ inline uint32_t JSONProtocolWriterCommon::writeJSONEscapeChar(uint8_t ch) {
   return 6;
 }
 
+inline uint32_t JSONProtocolWriterCommon::writeJSONChar(uint8_t ch) {
+  if (ch >= 32) {
+    // Only special character >= 32 is '\' and '='
+    if (ch == apache::thrift::detail::json::kJSONStringDelimiter) {
+      constexpr uint16_t res = apache::thrift::detail::json::kJSONBackslash |
+        ((uint16_t)apache::thrift::detail::json::kJSONStringDelimiter << 8);
+      out_.write(res);
+    } else if (ch == apache::thrift::detail::json::kJSONBackslash) {
+      constexpr uint16_t res = apache::thrift::detail::json::kJSONBackslash |
+          ((uint16_t)apache::thrift::detail::json::kJSONBackslash << 8);
+      out_.write(res);
+      return 2;
+    } else {
+      out_.write(ch);
+      return 1;
+    }
+  } else {
+    uint8_t outCh = kJSONCharTable[ch];
+    // Check if regular character, backslash escaped, or JSON escaped
+    if (outCh != 0) {
+      uint16_t res{0};
+      res |= apache::thrift::detail::json::kJSONBackslash;
+      res |= ((uint16_t)outCh << 8);
+      out_.write(res);
+      return 2;
+    } else {
+      return writeJSONEscapeChar(ch);
+    }
+  }
+}
+
 inline uint32_t JSONProtocolWriterCommon::writeJSONString(
     folly::StringPiece str) {
+  uint32_t ret = 2;
+#ifdef __ARM_NEON
+  if (str.empty()) {
+    // for an empty string
+    constexpr uint16_t res =
+        apache::thrift::detail::json::kJSONStringDelimiter |
+        ((uint16_t)apache::thrift::detail::json::kJSONStringDelimiter << 8);
+    out_.write(res);
+    return ret;
+  }
+  out_.write(apache::thrift::detail::json::kJSONStringDelimiter);
+  int i = 0;
+
+  static const uint8x16_t backslashx16 = vdupq_n_u8('\\');
+  static const uint8x16_t specialCharsx16 = vdupq_n_u8(0x30);
+  static const uint8x8_t backslashx8 = vdup_n_u8('\\');
+  static const uint8x8_t specialCharsx8 = vdup_n_u8(0x30);
+  for (; i + 15 < str.size(); i += 16) {
+    // load 16 bytes per chunk, if available
+    uint8x16_t val = vld1q_u8((uint8_t*)&str[i]);
+
+    uint8x16_t lteMask = vcleq_u8(val, specialCharsx16); // non-zero for every char that is below 0x30 / '0'.
+    uint8x16_t backslashMask = vceqq_u8(val, backslashx16); // non-zero for every char that equals to '\'
+    uint8x16_t mask = vorrq_u8(lteMask, backslashMask); // non-zero for every char that requires escape check
+    uint64_t lowEscaped = vgetq_lane_u64(vreinterpretq_u64_u8(mask), 0); // if true, any char in the lower half (byte 0..7) needs escape check
+    uint64_t highEscaped = vgetq_lane_u64(vreinterpretq_u64_u8(mask), 1); // if true, any char in the upper half (byte 8..15) needs escape check
+    if (FOLLY_UNLIKELY(lowEscaped || highEscaped)) {
+
+      if (lowEscaped) {
+        for (int j = i; j < i + 8; ++j) {
+          ret += writeJSONChar(str[j]);
+        }
+      } else {
+        out_.push((const uint8_t*)&val, sizeof(uint8x8_t));
+        ret += 8;
+      }
+
+      if (highEscaped) {
+        for (int j = i + 8; j < i + 16; ++j) {
+          ret += writeJSONChar(str[j]);
+        }
+      } else {
+        out_.push((const uint8_t*)&val + sizeof(uint8x8_t), sizeof(uint8x8_t));
+        ret += 8;
+      }
+
+    } else {
+      out_.push((const uint8_t*)&val, sizeof(uint8x16_t));
+      ret += 16;
+    }
+  } // end 16 byte per iteration loop
+
+  for (; i + 7 < str.size(); i += 8) {
+    // load 16 bytes per chunk, if available
+    uint8x8_t val = vld1_u8((uint8_t*)&str[i]);
+
+    uint8x8_t lteMask = vcle_u8(val, specialCharsx8); // non-zero for every char that is below 0x30 / '0'.
+    uint8x8_t backslashMask = vceq_u8(val, backslashx8); // non-zero for every char that equals to '\'
+    uint8x8_t mask = vorr_u8(lteMask, backslashMask); // non-zero for every char that requires escape check
+    uint64_t escaped = vget_lane_u64(vreinterpret_u64_u8(mask), 0); // if true, any char needs escape check
+    if (FOLLY_UNLIKELY(escaped)) {
+      auto firstEscapeIdx = __builtin_ctzl(escaped) / 8;
+      auto lastEscapeIdx = 7 - __builtin_clzl(escaped) / 8;
+      for (int j = i; j < i + firstEscapeIdx; ++j) {
+        out_.write(str[j]);
+      }
+      for (int j = i + firstEscapeIdx; j <= i + lastEscapeIdx; ++j) {
+        ret += writeJSONChar(str[j]);
+      }
+      for (int j = i + lastEscapeIdx + 1; j < i + 8; ++j) {
+        out_.write(str[j]);
+      }
+    } else {
+      out_.push((const uint8_t*)&val, sizeof(uint8x8_t));
+      ret += 8;
+    }
+  } // end 8 byte per iteration loop
+
+  // remainder loop
+#pragma unroll
+  for (; i < str.size(); ++i) {
+    ret += writeJSONChar(str[i]);
+  }
+  out_.write(apache::thrift::detail::json::kJSONStringDelimiter);
+#else // __ARM_NEON
   out_.write(apache::thrift::detail::json::kJSONStringDelimiter);
   uint32_t ret = 2;
   for (uint8_t ch : str) {
@@ -288,8 +411,48 @@ inline uint32_t JSONProtocolWriterCommon::writeJSONString(
     }
   }
   out_.write(apache::thrift::detail::json::kJSONStringDelimiter);
-
+#endif
   return ret;
+}
+
+inline uint64_t pack_uint64(const uint32_t i0, const uint32_t i1) {
+  uint64_t ret{0};
+  ret |= ((uint64_t)i1) << 32;
+  ret |= i0;
+  return ret;
+}
+
+inline uint32_t pack_uint32(
+    const uint8_t c0, const uint8_t c1, const uint8_t c2, const uint8_t c3) {
+  uint32_t ret{0};
+  ret |= c3 << 24;
+  ret |= c2 << 16;
+  ret |= c1 << 8;
+  ret |= c0;
+  return ret;
+}
+
+inline uint16_t pack_uint16(const uint8_t c0, const uint8_t c1) {
+  uint16_t ret{0};
+  ret |= c1 << 8;
+  ret |= c0;
+  return ret;
+}
+
+static const uint8_t* kBase64EncodeTable =
+   reinterpret_cast<const uint8_t*>("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
+
+inline uint32_t base64_encode_3_inline(
+    const uint8_t in0, const uint8_t in1, const uint8_t in2) {
+  return pack_uint32(
+      // 6 bits of in0
+      kBase64EncodeTable[(in0 >> 2) & 0x3f],
+      // 2 bits of in0 and 4 bits of in1
+      kBase64EncodeTable[((in0 << 4) & 0x30) | ((in1 >> 4) & 0x0f)],
+      // 4 bits of in 1 and 2 bits of in2
+      kBase64EncodeTable[((in1 << 2) & 0x3c) | ((in2 >> 6) & 0x03)],
+      // 6 bits of in2
+      kBase64EncodeTable[in2 & 0x3f]);
 }
 
 inline uint32_t JSONProtocolWriterCommon::writeJSONBase64(folly::ByteRange v) {
@@ -298,24 +461,36 @@ inline uint32_t JSONProtocolWriterCommon::writeJSONBase64(folly::ByteRange v) {
   out_.write(apache::thrift::detail::json::kJSONStringDelimiter);
   auto bytes = v.data();
   uint32_t len = folly::to_narrow(v.size());
-  uint8_t b[4];
+  while (len >= 6) {
+    // encode 6 bytes at a time
+    out_.write(pack_uint64(
+        base64_encode_3_inline(bytes[0], bytes[1], bytes[2]),
+        base64_encode_3_inline(bytes[3], bytes[4], bytes[5])));
+    ret += 8;
+    bytes += 6;
+    len -= 6;
+  }
   while (len >= 3) {
     // Encode 3 bytes at a time
-    base64_encode(bytes, 3, b);
-    for (int i = 0; i < 4; i++) {
-      out_.write(b[i]);
-    }
+    out_.write(base64_encode_3_inline(bytes[0], bytes[1], bytes[2]));
     ret += 4;
     bytes += 3;
     len -= 3;
   }
-  if (len) { // Handle remainder
+  if (len == 2) {
     DCHECK_LE(len, folly::to_unsigned(std::numeric_limits<int>::max()));
-    base64_encode(bytes, folly::to_narrow(len), b);
-    for (uint32_t i = 0; i < len + 1; i++) {
-      out_.write(b[i]);
-    }
-    ret += len + 1;
+    out_.write(pack_uint32(
+        kBase64EncodeTable[(bytes[0] >> 2) & 0x3f],
+        kBase64EncodeTable[((bytes[0] << 4) & 0x30) | ((bytes[1] >> 4) & 0x0f)],
+        kBase64EncodeTable[(bytes[1] << 2) & 0x3c],
+        apache::thrift::detail::json::kJSONStringDelimiter));
+    return ret + 3;
+  } else if (len == 1) {
+    DCHECK_LE(len, folly::to_unsigned(std::numeric_limits<int>::max()));
+    out_.write(pack_uint16(
+        kBase64EncodeTable[(bytes[0] >> 2) & 0x3f],
+        kBase64EncodeTable[(bytes[0] << 4) & 0x30]));
+    ret += 2;
   }
   out_.write(apache::thrift::detail::json::kJSONStringDelimiter);
 
@@ -406,19 +581,21 @@ inline void JSONProtocolReaderCommon::readBinary(StrType& str) {
 
 inline void JSONProtocolReaderCommon::readBinary(
     std::unique_ptr<folly::IOBuf>& str) {
-  std::string tmp;
+  folly::IOBufQueue queue;
+  folly::io::QueueAppender a(&queue, 1000);
   bool keyish;
   ensureAndReadContext(keyish);
-  readJSONBase64(tmp);
-  str = folly::IOBuf::copyBuffer(tmp);
+  readJSONBase64(a);
+  str = queue.move();
 }
 
 inline void JSONProtocolReaderCommon::readBinary(folly::IOBuf& str) {
-  std::string tmp;
+  folly::IOBufQueue queue;
+  folly::io::QueueAppender a(&queue, 1000);
   bool keyish;
   ensureAndReadContext(keyish);
-  readJSONBase64(tmp);
-  str.appendChain(folly::IOBuf::copyBuffer(tmp));
+  readJSONBase64(a);
+  str.appendChain(queue.move());
 }
 
 /**
@@ -687,13 +864,353 @@ inline void JSONProtocolReaderCommon::readJSONEscapeChar(uint8_t& out) {
   out = static_cast<uint8_t>((hexVal(b1) << 4) + hexVal(b2));
 }
 
+#ifdef __ARM_NEON
+static inline uint8_t hexVal_inl(uint8_t ch) {
+  if ((ch >= '0') && (ch <= '9')) {
+    return ch - '0';
+  } else if ((ch >= 'a') && (ch <= 'f')) {
+    return ch - 'a' + 10;
+  } else if ((ch >= 'A') && (ch <= 'F')) {
+    return ch - 'A' + 10;
+  } else {
+    return '\0';
+  }
+}
+
+inline uint8_t readOrFallback(
+    const folly::ByteRange& input,
+    folly::io::Cursor& fallBackInput,
+    unsigned& inIdx,
+    unsigned& skipped) {
+  if (inIdx < input.size()) {
+    ++skipped;
+    return input[inIdx++];
+  } else {
+    if (skipped > 0) {
+      fallBackInput.skip(skipped);
+      skipped = 0;
+    }
+    return fallBackInput.read<uint8_t>();
+  }
+}
+
+inline char lookupJSONEscapeChar(char ch) {
+  switch (ch) {
+    case '"': [[fallthrough]];
+    case '\\': [[fallthrough]];
+    case '/':
+      return ch;
+    case 'b':
+      return '\b';
+    case 'f':
+      return '\f';
+    case 'n':
+      return '\n';
+    case 'r':
+      return '\r';
+    case 't':
+      return '\t';
+    default:
+      throw TProtocolException(
+          TProtocolException::INVALID_DATA,
+          "Invalid escaped char " + std::to_string(ch));
+  }
+}
+
+inline char16_t hexToChar16(uint8_t c0, uint8_t c1, uint8_t c2, uint8_t c3) {
+  uint16_t result = 0;
+
+  // Convert each character to its numerical equivalent
+  result |= hexVal_inl(c0) << 12;
+  result |= hexVal_inl(c1) << 8;
+  result |= hexVal_inl(c2) << 4;
+  result |= hexVal_inl(c3);
+
+  return result;
+}
+
+template <typename StrType>
+inline void appendChar32ToString(StrType& s, char32_t wc) {
+  if (wc < 0x80) {
+    s += static_cast<char>(wc);
+  } else if (wc < 0x800) {
+    s += static_cast<char>((wc >> 6) | 0xC0);
+    s += static_cast<char>((wc & 0x3F) | 0x80);
+  } else if (wc < 0x10000) {
+    s += static_cast<char>((wc >> 12) | 0xE0);
+    s += static_cast<char>(((wc >> 6) & 0x3F) | 0x80);
+    s += static_cast<char>((wc & 0x3F) | 0x80);
+  } else {
+    s += static_cast<char>((wc >> 18) | 0xF0);
+    s += static_cast<char>(((wc >> 12) & 0x3F) | 0x80);
+    s += static_cast<char>(((wc >> 6) & 0x3F) | 0x80);
+    s += static_cast<char>((wc & 0x3F) | 0x80);
+  }
+}
+
+template <bool allowDecodeUTF8, typename StrType>
+inline bool decodeJSONStringSequentially(
+    const folly::ByteRange& input,
+    folly::io::Cursor& fallBackInput,
+    StrType& output,
+    unsigned& inIdx,
+    unsigned& skipped,
+    unsigned limit,
+    char16_t& highSurrogate) {
+  unsigned t = inIdx + limit;
+  while ((limit == 0 || inIdx < t) && inIdx < input.size()) {
+    uint8_t ch = readOrFallback(input, fallBackInput, inIdx, skipped);
+    if (ch == '"') {
+      return true;
+    }
+    if (ch == '\\') {
+      ch = readOrFallback(input, fallBackInput, inIdx, skipped);
+      if (ch == 'u') {
+        // skip first to chars (expected to be zero) and parse hex chars into
+        // single char
+        const uint8_t c0 = readOrFallback(input, fallBackInput, inIdx, skipped);
+        if constexpr (!allowDecodeUTF8) {
+          if (c0 != '0') {
+            throw TProtocolException(
+                TProtocolException::INVALID_DATA,
+                "Expected ASCII char but got unicode char");
+          }
+        }
+        const uint8_t c1 = readOrFallback(input, fallBackInput, inIdx, skipped);
+        if constexpr (!allowDecodeUTF8) {
+          if (c1 != '0') {
+            throw TProtocolException(
+                TProtocolException::INVALID_DATA,
+                "Expected ASCII char but got unicode char");
+          }
+        }
+        const uint8_t c2 = readOrFallback(input, fallBackInput, inIdx, skipped);
+        const uint8_t c3 = readOrFallback(input, fallBackInput, inIdx, skipped);
+        // do not inline this lookup into the function call, evaluation order of
+        // args is undefined
+        const char16_t ch1 = hexToChar16(c0, c1, c2, c3);
+
+        if constexpr (allowDecodeUTF8) {
+          if (highSurrogate != 0 &&
+              folly::utf16_code_unit_is_low_surrogate(ch1)) {
+            appendChar32ToString(
+                output,
+                folly::unicode_code_point_from_utf16_surrogate_pair(
+                    highSurrogate, ch1));
+            highSurrogate = 0;
+          } else if (
+              folly::utf16_code_unit_is_high_surrogate(ch1) &&
+              inIdx < input.size()) {
+            highSurrogate = ch1;
+          } else {
+            appendChar32ToString(output, ch1);
+          }
+        } else {
+          appendChar32ToString(output, ch1);
+        }
+        continue;
+      } else {
+        ch = lookupJSONEscapeChar(ch);
+      }
+    }
+    if constexpr (allowDecodeUTF8) {
+      if (highSurrogate != 0) {
+        appendChar32ToString(output, highSurrogate);
+        highSurrogate = 0;
+      }
+    }
+    output += (char)ch;
+  }
+  return false;
+}
+
+template <bool allowDecodeUTF8, typename StrType>
+inline void decodeJSONStringRemainder(
+    folly::io::Cursor& fallBackInput,
+    StrType& output,
+    char16_t& highSurrogate) {
+  while (true) {
+    auto ch = fallBackInput.read<uint8_t>();
+    if (ch == '"') {
+      return;
+    }
+    if (ch == '\\') {
+      ch = fallBackInput.read<uint8_t>();
+      if (ch == 'u') {
+        auto peek = fallBackInput.peek();
+        if (peek.size() < 4) {
+          throw TProtocolException(
+              TProtocolException::INVALID_DATA,
+              "Read beginning of escaped unicode char, expected unicode hex but reached end of stream instead");
+        }
+        if constexpr (!allowDecodeUTF8) {
+          if (peek[0] != '0' || peek[1] != '0') {
+            throw TProtocolException(
+                TProtocolException::INVALID_DATA,
+                "Expected ASCII char but got unicode char");
+          }
+        }
+        char16_t ch1 = hexToChar16(peek[0], peek[1], peek[2], peek[3]);
+        fallBackInput.skip(4);
+
+        if constexpr (allowDecodeUTF8) {
+          if (highSurrogate != 0 &&
+              folly::utf16_code_unit_is_low_surrogate(ch1)) {
+            appendChar32ToString(
+                output,
+                folly::unicode_code_point_from_utf16_surrogate_pair(
+                    highSurrogate, ch1));
+            highSurrogate = 0;
+          } else if (folly::utf16_code_unit_is_high_surrogate(ch1)) {
+            if (highSurrogate != 0) {
+              appendChar32ToString(output, highSurrogate);
+            }
+            highSurrogate = ch1;
+          } else {
+            appendChar32ToString(output, ch1);
+          }
+        } else {
+          appendChar32ToString(output, ch1);
+        }
+        continue;
+      } else {
+        ch = lookupJSONEscapeChar(ch);
+      }
+    }
+    if constexpr (allowDecodeUTF8) {
+      if (highSurrogate != 0) {
+        appendChar32ToString(output, highSurrogate);
+        highSurrogate = 0;
+      }
+    }
+    output += (char)ch;
+  }
+}
+
+template <bool allowDecodeUTF8, typename StrType>
+bool decodeJSONStringPeek(
+    const folly::ByteRange& input,
+    folly::io::Cursor& fallBackInput,
+    StrType& output,
+    bool& dataConsumed,
+    char16_t& highSurrogate) {
+  if (input.empty()) {
+    throw TProtocolException(
+        TProtocolException::INVALID_DATA,
+        "Got empty input stream while decoding JSON String");
+  }
+
+  unsigned int i = 0;
+  unsigned int skipped = 0;
+
+  static const uint8x16_t endMask = vdupq_n_u8('"');
+  static const uint8x16_t escapeMask = vdupq_n_u8('\\');
+  uint8_t buf[16] ;
+
+  bool stringTerminated{false};
+
+  while (i + 15 < input.size()) {
+    unsigned int j = 0;
+    // load 16 consecutive chars into a vector register
+    uint8x16_t val = vld1q_u8((uint8_t*)&input[i]);
+    // check each char for equality to termination character
+    uint8x16_t endRes = vceqq_u8(val, endMask); // holds 0 or 1 for each char
+    // check each char for equality to the escape character
+    uint8x16_t escRes = vceqq_u8(val, escapeMask);
+
+    uint8x16_t res = vorrq_u8(endRes, escRes);
+    uint64x2_t cmp = vreinterpretq_u64_u8(res);
+
+
+    bool firstHalfRequiresSeqProcessing =
+        vgetq_lane_u64(cmp, 0) != 0;
+    bool secondHalfRequiresSeqProcessing =
+        vgetq_lane_u64(cmp, 1) != 0;
+    if constexpr (allowDecodeUTF8) {
+      if (highSurrogate != 0 && !firstHalfRequiresSeqProcessing) {
+        appendChar32ToString(output, highSurrogate);
+        highSurrogate = 0;
+      }
+    }
+    if (FOLLY_UNLIKELY(firstHalfRequiresSeqProcessing || secondHalfRequiresSeqProcessing)) {
+      // the 16 char contains a JSON escape or termination character - we cannot
+      // copy the input
+      // If the first lane of the uint64x2_t is zero, the first 8 chars do not
+      // contain a termination
+      uint8_t limit = 16;
+      if (!firstHalfRequiresSeqProcessing) {
+        // Only the second half requires special processing, we can trivially
+        // copy the first half and process the second half sequentially
+        vst1_u8(buf, vget_low_u8(val));
+        output.append((const char*)buf, 8);
+        i += 8;
+        skipped += 8;
+        limit = 8;
+      }
+      stringTerminated |= decodeJSONStringSequentially<allowDecodeUTF8>(
+          input, fallBackInput, output, i, skipped, limit, highSurrogate);
+      if (stringTerminated) {
+        goto done;
+      }
+    } else {
+      // no escaping required. just copy the input
+
+      /*
+       * vst1q_u8(buf, val);
+       * output.append((char*)&buf, 16);
+       */
+      output.append((char*)&val, 16);
+
+      i += 16;
+      skipped += 16;
+    }
+  }
+
+done:
+  if (skipped > 0) {
+    fallBackInput.skip(skipped);
+    skipped = 0;
+    dataConsumed = true;
+  } else {
+    dataConsumed = false;
+  }
+  return stringTerminated;
+}
+
+template <bool allowDecodeUTF8, typename StrType>
+inline void readJSONStringNeon(folly::io::Cursor& in_, StrType& out) {
+  try {
+    bool dataConsumed{true};
+    char16_t highSurrogate{0};
+    for (auto peek = in_.peekBytes(); !peek.empty() && dataConsumed;
+         peek = in_.peekBytes()) {
+      if (decodeJSONStringPeek<allowDecodeUTF8>(
+          peek, in_, out, dataConsumed, highSurrogate)) {
+        return;
+      }
+    }
+    decodeJSONStringRemainder<allowDecodeUTF8>(in_, out, highSurrogate);
+  } catch (std::out_of_range& ex) {
+    throw TProtocolException(
+        TProtocolException::INVALID_DATA,
+        "Reached preliminary end of input stream");
+  }
+}
+#endif // __ARM_NEON
+
 template <typename StrType>
 inline void JSONProtocolReaderCommon::readJSONString(StrType& val) {
   ensureChar(apache::thrift::detail::json::kJSONStringDelimiter);
-
+  val.clear();
+#ifdef __ARM_NEON
+  if (allowDecodeUTF8_) {
+    readJSONStringNeon<true>(in_, val);
+  } else {
+    readJSONStringNeon<false>(in_, val);
+  }
+#else // __ARM_NEON
   std::string json = "\"";
   bool fullDecodeRequired = false;
-  val.clear();
   while (true) {
     auto ch = in_.read<uint8_t>();
     if (ch == apache::thrift::detail::json::kJSONStringDelimiter) {
@@ -740,16 +1257,19 @@ inline void JSONProtocolReaderCommon::readJSONString(StrType& val) {
       throwUnrecognizableAsString(json, e);
     }
   }
+#endif // __ARM_NEON
 }
 
-template <typename StrType>
-inline void JSONProtocolReaderCommon::readJSONBase64(StrType& str) {
+inline void JSONProtocolReaderCommon::readJSONBase64(
+    folly::io::QueueAppender& s) {
+#ifdef __ARM_NEON
+  readJSONBase64Neon(s);
+#else // __ARM_NEON
   std::string tmp;
   readJSONString(tmp);
 
   uint8_t* b = (uint8_t*)tmp.c_str();
   uint32_t len = folly::to_narrow(tmp.length());
-  str.clear();
 
   // Allow optional trailing '=' as padding
   while (len > 0 && b[len - 1] == '=') {
@@ -758,7 +1278,7 @@ inline void JSONProtocolReaderCommon::readJSONBase64(StrType& str) {
 
   while (len >= 4) {
     base64_decode(b, 4);
-    str.append((const char*)b, 3);
+    s.push(b, 3);
     b += 4;
     len -= 4;
   }
@@ -766,8 +1286,9 @@ inline void JSONProtocolReaderCommon::readJSONBase64(StrType& str) {
   // base64 but legal for skip of regular string type)
   if (len > 1) {
     base64_decode(b, len);
-    str.append((const char*)b, len - 1);
+    s.push(b, len - 1);
   }
+#endif
 }
 
 // Return the integer value of a hex character ch.

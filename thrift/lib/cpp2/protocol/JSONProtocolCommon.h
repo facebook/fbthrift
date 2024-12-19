@@ -255,8 +255,18 @@ class JSONProtocolReaderCommon : public detail::ProtocolBase {
   void readJSONEscapeChar(uint8_t& out);
   template <typename StrType>
   void readJSONString(StrType& val);
+  void readJSONBase64(folly::io::QueueAppender& s);
+#ifdef __ARM_NEON
+  void readJSONBase64Neon(folly::io::QueueAppender& s);
+#endif // __ARM_NEON
   template <typename StrType>
-  void readJSONBase64(StrType& s);
+  inline void readJSONBase64(StrType& s) {
+    folly::IOBufQueue queue;
+    folly::io::QueueAppender a(&queue, 1000);
+    readJSONBase64(a);
+    folly::IOBuf b = queue.moveAsValue();
+    s.append((const char *) b.data(), b.length());
+  }
 
   // This string's characters must match up with the elements in kEscapeCharVals
   // I don't have '/' on this list even though it appears on www.json.org --
@@ -318,3 +328,4 @@ class JSONProtocolReaderCommon : public detail::ProtocolBase {
 } // namespace apache::thrift
 
 #include <thrift/lib/cpp2/protocol/JSONProtocolCommon-inl.h>
+#include <thrift/lib/cpp2/protocol/JSONProtocolCommon-ext-inl.h>
