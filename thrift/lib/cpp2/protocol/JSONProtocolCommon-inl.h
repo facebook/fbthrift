@@ -387,7 +387,6 @@ inline uint32_t JSONProtocolWriterCommon::writeJSONString(
   out_.write(apache::thrift::detail::json::kJSONStringDelimiter);
 #else // __ARM_NEON
   out_.write(apache::thrift::detail::json::kJSONStringDelimiter);
-  uint32_t ret = 2;
   for (uint8_t ch : str) {
     // Only special characters >= 32 are '\' and '"'
     if (ch == apache::thrift::detail::json::kJSONBackslash ||
