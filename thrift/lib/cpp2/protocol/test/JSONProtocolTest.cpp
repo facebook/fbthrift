@@ -1,5 +1,6 @@
 /*
  * Copyright (c) Meta Platforms, Inc. and affiliates.
+ * Copyright (c) 2024, NVIDIA CORPORATION. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -191,11 +192,48 @@ TEST_F(JSONProtocolTest, writeFloat) {
   }
 }
 
+TEST_F(JSONProtocolTest, writeEmptyString) {
+  EXPECT_EQ("\"\"",writing_cpp2([](W& p) { p.writeString(""); }));
+}
+
+
 TEST_F(JSONProtocolTest, writeString) {
   auto expected = R"("foobar")";
   EXPECT_EQ(
       expected, writing_cpp2([](W& p) { p.writeString(string("foobar")); }));
   EXPECT_EQ(expected, writing_cpp2([](W& p) { p.writeString("foobar"); }));
+}
+TEST_F(JSONProtocolTest, writeStringLastEscaped) {
+  for (int i = 1; i <= 64; ++i) {
+    std::string input = std::string(i - 1, 'a') + '\\';
+    std::string expected = "\"" + std::string(i - 1, 'a') + "\\\\\"";
+    EXPECT_EQ(expected, writing_cpp2([input](W& p) { p.writeString(input); }))
+            << "Failed to handle escape at index " << i;
+  }
+}
+TEST_F(JSONProtocolTest, writeStringFullyEscaped) {
+  for (int i = 1; i <= 64; ++i) {
+    std::string input = std::string(i, '\\');
+    std::string expected = "\"" + input + input + "\"";
+    EXPECT_EQ(expected, writing_cpp2([input](W& p) { p.writeString(input); }))
+          << "Failed to handle fully escaped string of length " << i;
+  }
+}
+TEST_F(JSONProtocolTest, writeStringPairEscaped) {
+  std::string input = "aaaa\\aaabbb\\bbbb";
+  std::string expected = "\"aaaa\\\\aaabbb\\\\bbbb\"";
+  EXPECT_EQ(expected, writing_cpp2([input](W& p) { p.writeString(input); }));
+}
+TEST_F(JSONProtocolTest, writeString_large) {
+  auto expected = R"("eigccbbunjfhnhgehbljlrvjjicebnievrnedgvhrhit")";
+  EXPECT_EQ(
+      expected, writing_cpp2([](W& p) {
+        p.writeString(string("eigccbbunjfhnhgehbljlrvjjicebnievrnedgvhrhit"));
+      })
+  );
+  EXPECT_EQ(expected, writing_cpp2([](W& p) {
+    p.writeString("eigccbbunjfhnhgehbljlrvjjicebnievrnedgvhrhit");
+  }));
 }
 
 TEST_F(JSONProtocolTest, writeBinary) {
@@ -210,6 +248,23 @@ TEST_F(JSONProtocolTest, writeBinary) {
       expected, writing_cpp2([](W& p) {
         p.writeBinary(*IOBuf::wrapBuffer(ByteRange(StringPiece("foobar"))));
       }));
+
+
+  // Test different remainder lengths
+  EXPECT_EQ(
+    "\"TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNldGV0dXIgc2FkaXBzY2luZyBlbGl0cg\"",
+    writing_cpp2([](W& p) { p.writeBinary(string("Lorem ipsum dolor sit amet, consetetur sadipscing elitr"));})
+  );
+  EXPECT_EQ("\"TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNldGV0dXIgc2FkaXBzY2luZyBlbGl0\"",
+    writing_cpp2([](W& p) { p.writeBinary(string("Lorem ipsum dolor sit amet, consetetur sadipscing elit")); })
+  );
+  EXPECT_EQ("\"TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNldGV0dXIgc2FkaXBzY2luZyBlbGk\"",
+    writing_cpp2([](W& p) { p.writeBinary(string("Lorem ipsum dolor sit amet, consetetur sadipscing eli")); })
+  );
+  EXPECT_EQ("\"Zm9vYg\"", writing_cpp2([](W& p) { p.writeBinary(string("foob")); }));
+  EXPECT_EQ("\"Zm9v\"", writing_cpp2([](W& p) { p.writeBinary(string("foo")); }));
+  EXPECT_EQ("\"Zm8\"", writing_cpp2([](W& p) { p.writeBinary(string("fo")); }));
+  EXPECT_EQ("\"Zg\"", writing_cpp2([](W& p) { p.writeBinary(string("f")); }));
 }
 
 TEST_F(JSONProtocolTest, writeMessage) {
@@ -447,38 +502,96 @@ TEST_F(JSONProtocolTest, readFloat_numeric_limits) {
       }));
 }
 
+#define STR_TEST_CASE(expected, input) \
+    EXPECT_EQ(expected, reading_cpp2<string>(input, [](R& p) { \
+        return returning([&](string& _) { p.readString(_); }); }));
+
+#define STR_TEST_CASE_INVALID(input) \
+    EXPECT_ANY_THROW(reading_cpp2<string>(input, [](R& p) { \
+        return returning([&](string& _) { p.readString(_); }); }));
+
+#define STR_TEST_CASE_NO_UTF8(expected, input) \
+    EXPECT_EQ(expected, reading_cpp2<string>(input, [](R& p) { \
+        p.setAllowDecodeUTF8(false); \
+        return returning([&](string& _) { p.readString(_); }); }));
+
+TEST_F(JSONProtocolTest, readStringEmpty) {
+    STR_TEST_CASE("", "\"\"");
+}
+
+TEST_F(JSONProtocolTest, readStringTerminated) {
+  STR_TEST_CASE("abcdefgh\\asddffff", "\"abcdefgh\\\\asddffff\"");
+}
 TEST_F(JSONProtocolTest, readString) {
-  auto input = R"("foobar")";
-  auto expected = "foobar";
-  EXPECT_EQ(expected, reading_cpp2<string>(input, [](R& p) {
-              return returning([&](string& _) { p.readString(_); });
-            }));
+  STR_TEST_CASE("foobar", "\"foobar\"");
+  STR_TEST_CASE("0123456789abcdef", "\"0123456789abcdef\"");
+  STR_TEST_CASE("0123456789abcdefm", "\"0123456789abcdefm\"");
+  STR_TEST_CASE("0123456789abcdef0123456789abcde", "\"0123456789abcdef0123456789abcde\"");
+  STR_TEST_CASE("0123456789abcdef0123456789abcdef", "\"0123456789abcdef0123456789abcdef\"");
+  STR_TEST_CASE("0123456789abcdef0123456789abcdefm", "\"0123456789abcdef0123456789abcdefm\"");
+  STR_TEST_CASE("0123456789abcdef012345\\789abcdef", "\"0123456789abcdef012345\\\\789abcdef\"");
+  STR_TEST_CASE("foobar\u263A", "\"foobar\\u263A\"");
+  STR_TEST_CASE("foobaf\U0007263A", "\"foobaf\\uD989\\uDE3A\"");
 }
 
 TEST_F(JSONProtocolTest, readString_raw) {
   auto input = R"("\u0019\u0002\u0000\u0000")";
   auto expected = string("\x19\x02\x00\x00", 4);
-  EXPECT_EQ(expected, reading_cpp2<string>(input, [](R& p) {
-              p.setAllowDecodeUTF8(false);
-              return returning([&](string& _) { p.readString(_); });
-            }));
-  EXPECT_EQ(expected, reading_cpp2<string>(input, [](R& p) {
-              return returning([&](string& _) { p.readString(_); });
-            }));
+  STR_TEST_CASE_NO_UTF8(expected, input);
+  STR_TEST_CASE(expected, input);
 }
 
 TEST_F(JSONProtocolTest, readString_utf8) {
-  auto input = R"("\u263A")";
-  EXPECT_EQ("\u263A", reading_cpp2<string>(input, [](R& p) {
-              return returning([&](string& _) { p.readString(_); });
-            }));
+    STR_TEST_CASE("\u263A", R"("\u263A")");
+    STR_TEST_CASE("\u263A\u263A", R"("\u263A\u263A")"); // do not falsely treat as surrogate pair
+}
+TEST_F(JSONProtocolTest, readString_utf8_offset) {
+    STR_TEST_CASE("01234567890\u263A", R"("01234567890\u263A")");
+    STR_TEST_CASE("01234567890abc\u263A", R"("01234567890abc\u263A")");
+    STR_TEST_CASE("01234567890abcdef\u263A", R"("01234567890abcdef\u263A")");
+    STR_TEST_CASE("01234567890abcdefg\u263A", R"("01234567890abcdefg\u263A")");
+    STR_TEST_CASE("\u263A01234567890", R"("\u263A01234567890")");
 }
 
 TEST_F(JSONProtocolTest, readString_utf8_surrogate_pair) {
-  auto input = R"("\uD989\uDE3A")";
-  EXPECT_EQ("\U0007263A", reading_cpp2<string>(input, [](R& p) {
-              return returning([&](string& _) { p.readString(_); });
-            }));
+    STR_TEST_CASE("\U0007263A", R"("\uD989\uDE3A")");
+    // surrogate pair on edge between 16-byte chunk and remainder
+    STR_TEST_CASE("0123456789\U0007263A", R"("0123456789\uD989\uDE3A")");
+    STR_TEST_CASE("0123456789a\U0007263A", R"("0123456789a\uD989\uDE3A")");
+    STR_TEST_CASE("0123456789abcdef\U0007263A0123456789abcdef", R"("0123456789abcdef\uD989\uDE3A0123456789abcdef")");
+}
+TEST_F(JSONProtocolTest, readString_invalid_incompleteUnicode) {
+    STR_TEST_CASE_INVALID(R"("\u")");
+}
+TEST_F(JSONProtocolTest, readString_invalid_incompleteSurrogatePair) {
+    STR_TEST_CASE_INVALID(R"("\uD989\uDE3")");
+}
+TEST_F(JSONProtocolTest, readString_invalid_incompleteEscape) {
+    STR_TEST_CASE_INVALID(R"("\")");
+}
+TEST_F(JSONProtocolTest, readString_invalid_invalidEscape) {
+    STR_TEST_CASE_INVALID(R"("\L")");
+}
+TEST_F(JSONProtocolTest, readString_invalid_unterminated) {
+    STR_TEST_CASE_INVALID("\"");
+}
+
+TEST_F(JSONProtocolTest, readBinary_large) {
+
+    auto input = R"("TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNldGV0dXIgc2FkaXBzY2luZyBlbGl0ciwgc2VkIGRpYW0gbm9udW15IGVpcm1vZCB0ZW1wb3IgaW52aWR1bnQgdXQgbA")";
+    auto expected = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut l";
+    EXPECT_EQ(expected, reading_cpp2<string>(input, [](R& p) {
+        return returning([&](string& _) { p.readBinary(_); });
+    }));
+}
+
+TEST_F(JSONProtocolTest, readBinary_large_remainder) {
+
+    auto input = R"("TG9yZW0gaXBzdW0gZG9sb3I============")";
+    auto expected = "Lorem ipsum dolor";
+    EXPECT_EQ(expected, reading_cpp2<string>(input, [](R& p) {
+        return returning([&](string& _) { p.readBinary(_); });
+    }));
 }
 
 TEST_F(JSONProtocolTest, readBinary) {
