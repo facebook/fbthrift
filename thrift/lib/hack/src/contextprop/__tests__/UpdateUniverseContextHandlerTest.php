@@ -4,6 +4,8 @@
 <<Oncalls('xdc_artillery')>>
 final class UpdateUniverseContextHandlerTest extends WWWTest {
 
+  use ClassLevelTest;
+
   <<__Override>>
   public async function beforeEach(): Awaitable<void> {
     clear_class_memoization(PrivacyLibKS::class, 'isKilled');
@@ -173,7 +175,7 @@ final class UpdateUniverseContextHandlerTest extends WWWTest {
 
   private async function genInitPZ2(): Awaitable<void> {
     await MockPZ2::genInitRequest(
-      PZ2StaticCodeAnnotation::get()->withPolicy(
+      PZ2CodeAnnotationStatic::get()->withPolicy(
         PZ2XSUPolicy::create(PZ2XSUStates::FACEBOOK),
       ),
     );
