@@ -619,8 +619,7 @@ inline bool BinaryProtocolReader::advanceToNextField(
     if (in_.length() >= 3) {
       uint8_t type = *in_.data();
       if (nextFieldType == type) {
-        int16_t fieldId =
-            folly::Endian::big(folly::loadUnaligned<int16_t>(in_.data() + 1));
+        int16_t fieldId = folly::Endian::big(folly::loadUnaligned<int16_t>(in_.data() + 1));
         in_.skipNoAdvance(3);
         if (nextFieldId == fieldId) {
           return true;
