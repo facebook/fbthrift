@@ -14,7 +14,7 @@
 
 include(FindFolly)
 include(FindPackageHandleStandardArgs)
-find_package(Boost MODULE REQUIRED)
+find_package(Boost REQUIRED)
 
 set(LIB_HOME ${CMAKE_CURRENT_SOURCE_DIR})
 
