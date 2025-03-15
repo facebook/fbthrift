@@ -15,6 +15,7 @@
  */
 
 #include "thrift/compiler/ast/t_const_value.h"
+#include <thrift/compiler/portability.h>
 
 namespace apache::thrift::compiler {
 

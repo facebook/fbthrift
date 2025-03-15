@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <thrift/compiler/portability.h>
 #include <thrift/compiler/whisker/ast.h>
 #include <thrift/compiler/whisker/detail/overload.h>
 #include <thrift/compiler/whisker/detail/string.h>
@@ -115,6 +116,7 @@ std::string_view pragma_statement::to_string() const {
     case pragma_statement::pragmas::ignore_newlines:
       return "ignore-newlines";
   }
+  apache::thrift::compiler::assume_unreachable();
 }
 
 } // namespace whisker::ast

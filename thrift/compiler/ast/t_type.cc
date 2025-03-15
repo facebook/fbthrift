@@ -25,6 +25,7 @@
 
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/ast/t_typedef.h>
+#include <thrift/compiler/portability.h>
 
 namespace apache::thrift::compiler {
 
@@ -159,6 +160,7 @@ std::optional<t_type::value_type> t_type::as_value_type() const {
     case type::t_void:
       return std::nullopt;
   }
+  assume_unreachable();
 }
 
 } // namespace apache::thrift::compiler

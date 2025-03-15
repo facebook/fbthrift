@@ -28,6 +28,7 @@
 #include <thrift/compiler/ast/t_structured.h>
 #include <thrift/compiler/ast/t_type.h>
 #include <thrift/compiler/detail/overload.h>
+#include <thrift/compiler/portability.h>
 
 namespace apache::thrift::compiler::detail {
 
@@ -71,6 +72,7 @@ decltype(auto) visit_type(const t_type& ty, Visitors&&... visitors) {
     case t_type::type::t_service:
       return std::invoke(f, dynamic_cast<const t_service&>(ty));
   }
+  assume_unreachable();
 }
 
 } // namespace apache::thrift::compiler::detail

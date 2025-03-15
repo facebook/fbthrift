@@ -42,6 +42,7 @@
 #include <thrift/compiler/generate/cpp/name_resolver.h>
 #include <thrift/compiler/generate/cpp/reference_type.h>
 #include <thrift/compiler/generate/cpp/util.h>
+#include <thrift/compiler/portability.h>
 #include <thrift/compiler/sema/explicit_include_validator.h>
 #include <thrift/compiler/sema/reserved_identifier.h>
 
@@ -669,6 +670,7 @@ std::string_view field_qualifier_to_string(t_field_qualifier qualifier) {
     case t_field_qualifier::terse:
       return "terse";
   }
+  assume_unreachable();
 }
 
 void validate_field_default_value(sema_context& ctx, const t_field& field) {

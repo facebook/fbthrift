@@ -27,6 +27,7 @@
 #include <thrift/compiler/ast/t_primitive_type.h>
 #include <thrift/compiler/ast/t_type.h>
 #include <thrift/compiler/ast/t_union.h>
+#include <thrift/compiler/portability.h>
 #include <thrift/compiler/sema/sema_context.h>
 
 namespace apache::thrift::compiler {
@@ -198,6 +199,7 @@ class compatibility_checker {
       case t_primitive_type::type::t_float:
         return check_float<float>(value, type);
     }
+    assume_unreachable();
   }
 
   bool check_enum(const t_enum* type, const t_const_value* value) {
@@ -407,6 +409,7 @@ class default_value_checker final {
         // Should never be called for void
         throw std::logic_error("t_void does not have a default value.");
     }
+    assume_unreachable();
   }
 
   static bool check_enum(const t_const_value& value) {
