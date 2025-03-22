@@ -1,5 +1,6 @@
 /*
  * Copyright (c) Meta Platforms, Inc. and affiliates.
+ * Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -594,18 +595,25 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
         // resizeWithoutInitialization first, then resize.
         if constexpr (should_resize_without_initialization) {
           folly::resizeWithoutInitialization(out, list_size);
-          auto outIt = out.begin();
-          const auto outEnd = out.end();
-          try {
-            for (; outIt != outEnd; ++outIt) {
-              elem_methods::read(protocol, *outIt);
+          // Check if we can do a fast path (memcpy that reverses byte order) instead of processing elements sequentially
+          if constexpr (std::is_fundamental_v<elem_type>
+                  && has_kSupportsFundamentalVectors<Protocol>::value) {
+            protocol.readFundamentalVector(out);
+          } else {
+            // fallback: process element by element
+            auto outIt = out.begin();
+            const auto outEnd = out.end();
+            try {
+		          for (; outIt != outEnd; ++outIt) {
+			          elem_methods::read(protocol, *outIt);
+		          }
+            } catch (...) {
+              // For behaviour parity, initialize the leftover elements when
+              // exceptions happen
+              std::fill(outIt, outEnd, elem_type());
+              throw;
             }
-          } catch (...) {
-            // For behaviour parity, initialize the leftover elements when
-            // exceptions happen
-            std::fill(outIt, outEnd, elem_type());
-            throw;
-          }
+	        }
         } else if constexpr (should_resize) {
           out.resize(list_size);
           for (auto&& elem : out) {
@@ -627,6 +635,13 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
     read(protocol, out);
   }
 
+  template <typename Protocol, typename = void>
+  struct has_kSupportsFundamentalVectors : std::false_type {};
+
+  template <typename Protocol>
+  struct has_kSupportsFundamentalVectors<Protocol, std::void_t<decltype(Protocol::kSupportsFundamentalVectors())>>
+          : std::bool_constant<Protocol::kSupportsFundamentalVectors()> {};
+
   template <typename Protocol>
   static std::size_t write(Protocol& protocol, const Type& out) {
     std::size_t xfer = 0;
@@ -634,8 +649,15 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
     xfer += protocol.writeListBegin(
         elem_ttype::value, checked_container_size(out.size()));
 
-    for (const auto& elem : out) {
-      xfer += elem_methods::write(protocol, elem);
+    if constexpr (std::is_fundamental_v<elem_type>
+        && has_kSupportsFundamentalVectors<Protocol>::value) {
+      if (out.size() > 0) {
+        xfer += protocol.template writeFundamentalVector<elem_type>(out);
+      }
+    } else {
+      for (const auto& elem : out) {
+        xfer += elem_methods::write(protocol, elem);
+      }
     }
     xfer += protocol.writeListEnd();
     return xfer;
