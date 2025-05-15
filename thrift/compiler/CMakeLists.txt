@@ -141,8 +141,9 @@ target_link_libraries(
 add_library(
   compiler
 
-  generate/cpp/reference_type.cc
   generate/cpp/name_resolver.cc
+  generate/cpp/orderable_type_utils.cc
+  generate/cpp/reference_type.cc
   generate/cpp/util.cc
   generate/go/util.cc
   generate/java/util.cc
