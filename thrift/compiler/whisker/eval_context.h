@@ -140,6 +140,19 @@ class eval_name_already_bound_error {
   std::string name_;
 };
 
+namespace detail {
+
+/**
+ * Try resolve a property on a Whisker object.
+ * Returns std::nullopt if the property is not found.
+ */
+std::optional<object> find_property(
+    diagnostics_engine& diags,
+    const object& self,
+    const ast::variable_component& component);
+
+} // namespace detail
+
 /**
  * An eval_context is responsible for name resolution within Whisker templates
  * and maintains necessary state to achieve when a template is rendered (aka
@@ -324,7 +337,7 @@ class eval_context {
      *     throws
      */
     std::optional<object> lookup_property(
-        diagnostics_engine& diags, const ast::identifier& identifier);
+        diagnostics_engine& diags, const ast::variable_component& component);
 
     // Before C++20, std::unordered_map does not support heterogenous lookups
     using locals_map = std::map<std::string, object, std::less<>>;
