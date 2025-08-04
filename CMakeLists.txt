@@ -14,6 +14,11 @@
 
 cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 
+if (MSVC)
+  set(CMAKE_CXX20_STANDARD_COMPILE_OPTION "-std:c++20")
+  set(CMAKE_CXX20_EXTENSION_COMPILE_OPTION "-std:c++20")
+endif()
+
 # Package information.
 if (NOT DEFINED PACKAGE_VERSION)
   set(PACKAGE_VERSION 1.0.0)
