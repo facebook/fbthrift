@@ -18,15 +18,25 @@ import sys
 
 from cpython cimport bool as pbool
 from cython.operator cimport dereference
+from libcpp.memory cimport unique_ptr
+from libcpp.optional cimport optional
 from libcpp.utility cimport move as cmove
 
-from folly.iobuf cimport IOBuf
+from folly cimport cFollyPromise
+from folly.iobuf cimport (
+    IOBuf,
+    cIOBuf,
+)
 
 from thrift.python.exceptions cimport (
     ApplicationError,
+    cTApplicationException,
     cTApplicationExceptionType__UNKNOWN,
 )
-from thrift.python.streaming.python_user_exception cimport PythonUserException
+from thrift.python.streaming.python_user_exception cimport (
+    PythonUserException,
+    cPythonUserException,
+)
 
 
 cdef class Promise_Py:
@@ -146,7 +156,7 @@ cdef void genNextStreamValue(object generator, cFollyPromise[optional[unique_ptr
         )
     )
 
-cdef void genNextSinkValue(object generator, cFollyPromise[optional[unique_ptr[cIOBuf]]] promise) noexcept:
+cdef api void genNextSinkValue(object generator, cFollyPromise[optional[unique_ptr[cIOBuf]]] promise) noexcept:
     cdef Promise_Optional_IOBuf __promise = Promise_Optional_IOBuf.create(cmove(promise))
     asyncio.get_event_loop().create_task(
         runGenerator(

@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from thrift.python.server_impl.python_async_processor cimport SerializedRequest
+
 import asyncio
 import sys
 import traceback
@@ -20,16 +22,17 @@ from cpython.ref cimport PyObject
 cimport cython
 from cython.operator cimport dereference
 from libcpp.map cimport map as cmap
-from libcpp.memory cimport make_unique, make_shared, static_pointer_cast
+from libcpp.memory cimport make_unique, make_shared, static_pointer_cast, unique_ptr
 from libcpp.optional cimport optional
 from libcpp.pair cimport pair
+from libcpp.string cimport string
 from libcpp.unordered_set cimport unordered_set
 from libcpp.utility cimport move as cmove
 from libcpp.vector cimport vector as cvector
 
 from folly cimport cFollyPromise, cFollyUnit, c_unit
 from folly.executor cimport get_executor
-from folly.iobuf cimport IOBuf, from_unique_ptr
+from folly.iobuf cimport IOBuf, cIOBuf, from_unique_ptr
 
 from thrift.py3.stream cimport (
     cServerStream,
@@ -43,13 +46,12 @@ from thrift.python.exceptions cimport (
     cTApplicationException,
     cTApplicationExceptionType__UNKNOWN,
 )
-from thrift.python.protocol cimport Protocol
+from thrift.python.protocol cimport Protocol, RpcKind
 from thrift.python.serializer import serialize_iobuf
 from thrift.python.server_impl.request_context cimport (
     Cpp2RequestContext,
     handleAddressCallback,
     RequestContext,
-    SocketAddress,
     THRIFT_REQUEST_CONTEXT,
 )
 from thrift.python.streaming.py_promise cimport (
@@ -71,14 +73,8 @@ from thrift.python.streaming.sink cimport (
 from thrift.python.types cimport ServiceInterface as cServiceInterface
 
 
-ctypedef unique_ptr[cIOBuf] UniqueIOBuf
-ctypedef cResponseAndServerStream[UniqueIOBuf, UniqueIOBuf] StreamResponse
-ctypedef cResponseAndSinkConsumer[UniqueIOBuf, UniqueIOBuf, UniqueIOBuf] SinkResponse
-
 @cython.final
 cdef class ServerSink_IOBuf:
-    cdef unique_ptr[cSinkConsumer[UniqueIOBuf, UniqueIOBuf]] _cSink
-
     @staticmethod
     cdef _fbthrift_create(object sink_callback):
         cdef ServerSink_IOBuf inst = ServerSink_IOBuf.__new__(ServerSink_IOBuf)
@@ -88,8 +84,6 @@ cdef class ServerSink_IOBuf:
         return inst
 
 cdef class ResponseAndSinkConsumer:
-    cdef unique_ptr[SinkResponse] _cResponseSink
-
     @staticmethod
     cdef _fbthrift_create(object val, object sink):
         cdef ResponseAndSinkConsumer inst = ResponseAndSinkConsumer.__new__(ResponseAndSinkConsumer)
@@ -103,8 +97,6 @@ cdef class ResponseAndSinkConsumer:
 
 
 cdef class Promise_Sink(Promise_Py):
-    cdef cFollyPromise[SinkResponse]* _cPromise
-
     def __cinit__(self):
         self._cPromise = new cFollyPromise[SinkResponse](cFollyPromise[SinkResponse].makeEmpty())
 
@@ -129,8 +121,6 @@ cdef class Promise_Sink(Promise_Py):
         return inst
 
 cdef class Promise_Stream(Promise_Py):
-    cdef cFollyPromise[StreamResponse]* cPromise
-
     def __cinit__(self):
         self.cPromise = new cFollyPromise[StreamResponse](cFollyPromise[StreamResponse].makeEmpty())
 
@@ -154,8 +144,6 @@ cdef class Promise_Stream(Promise_Py):
 
 
 cdef class Promise_cFollyUnit(Promise_Py):
-    cdef cFollyPromise[cFollyUnit]* cPromise
-
     def __cinit__(self):
         self.cPromise = new cFollyPromise[cFollyUnit](cFollyPromise[cFollyUnit].makeEmpty())
 
@@ -178,8 +166,6 @@ cdef class Promise_cFollyUnit(Promise_Py):
         return inst
 
 cdef class ServerStream_IOBuf(ServerStream):
-    cdef unique_ptr[cServerStream[UniqueIOBuf]] cStream
-
     @staticmethod
     cdef _fbthrift_create(object stream):
         cdef ServerStream_IOBuf inst = ServerStream_IOBuf.__new__(ServerStream_IOBuf)
@@ -193,8 +179,6 @@ cdef class ServerStream_IOBuf(ServerStream):
         return inst
 
 cdef class ResponseAndServerStream:
-    cdef unique_ptr[StreamResponse] cResponseStream
-
     @staticmethod
     cdef _fbthrift_create(object val, object stream):
         cdef ResponseAndServerStream inst = ResponseAndServerStream.__new__(ResponseAndServerStream)
