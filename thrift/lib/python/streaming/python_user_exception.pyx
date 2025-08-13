@@ -12,12 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from thrift.python.streaming.python_user_exception cimport cPythonUserException
+
 from cython.operator cimport dereference as deref
-from libcpp.memory cimport make_unique
+from libcpp.memory cimport make_unique, unique_ptr
 from libcpp.string cimport string
 from libcpp.utility cimport move as cmove
 
-from folly.iobuf cimport from_unique_ptr
+from folly cimport cFollyExceptionWrapper
+from folly.iobuf cimport IOBuf, cIOBuf, from_unique_ptr
 
 
 cdef class PythonUserException(Exception):
