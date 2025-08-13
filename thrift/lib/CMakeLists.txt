@@ -26,11 +26,17 @@ if(thriftpy)
 endif()
 
 if(thriftpy3)
+  include(FBPythonWrapper)
+  find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
+
   set(_cybld "${CMAKE_CURRENT_BINARY_DIR}/cybld")
   file(MAKE_DIRECTORY "${_cybld}/thrift/python/")
   file(MAKE_DIRECTORY "${_cybld}/thrift/python/client/")
   file(MAKE_DIRECTORY "${_cybld}/thrift/python/server/")
   file(MAKE_DIRECTORY "${_cybld}/thrift/python/server/flagged/")
+  file(MAKE_DIRECTORY "${_cybld}/thrift/python/server_impl/")
+  file(MAKE_DIRECTORY "${_cybld}/thrift/python/server_impl/interceptor/")
+  file(MAKE_DIRECTORY "${_cybld}/thrift/python/streaming/")
   file(MAKE_DIRECTORY "${_cybld}/thrift/py3/")
 
   # So that cython includes work correctly
@@ -110,6 +116,8 @@ if(thriftpy3)
       ${CMAKE_COMMAND} -E create_symlink "${_cybld}/thrift/python/server/server.pyx" "${_cybld}/thrift/python/server.pyx"
   )
 
+  ########################################################################
+  # Symlink files that get mapped directly
   add_custom_target(create_binding_symlink_python ALL)
   file(GLOB BindingFiles
     "python/client/async_client_factory.pxd"
@@ -133,6 +141,10 @@ if(thriftpy3)
     "python/server/server.pxd"
     "python/std_libcpp.pxd"
     "python/stream.pxd"
+    "python/streaming/py_promise.pxd"
+    "python/streaming/python_user_exception.pxd"
+    "python/streaming/sink.pxd"
+    "python/streaming/stream.pxd"
     "python/types.pxd"
     "python/util.pxd"
 
@@ -156,8 +168,13 @@ if(thriftpy3)
     "python/mutable_types.pyx"
     "python/protocol.pyx"
     "python/serializer.pyx"
+    "python/server/request_context.pyx"
     "python/server/server.pyx"
     "python/stream.pyx"
+    "python/streaming/py_promise.pyx"
+    "python/streaming/python_user_exception.pyx"
+    "python/streaming/sink.pyx"
+    "python/streaming/stream.pyx"
     "python/util.pyx"
 
     "python/abstract_types.py"
@@ -169,14 +186,15 @@ if(thriftpy3)
     "python/Serializer.h"
     "python/types.h"
 
-    "python/server/flagged/EnableResourcePoolsForPython.cpp"
     "python/server/PythonAsyncProcessor.cpp"
     "python/server/PythonAsyncProcessorFactory.cpp"
+    "python/streaming/PythonUserException.cpp"
+    "python/streaming/Sink.cpp"
+    "python/streaming/StreamElementEncoder.cpp"
   )
 
   foreach(_src ${BindingFiles})
     file(RELATIVE_PATH _filerelpath ${CMAKE_CURRENT_SOURCE_DIR} ${_src})
-    get_filename_component(_target_file "${_src}" NAME)
 
     message(
       STATUS
@@ -192,6 +210,40 @@ if(thriftpy3)
     )
   endforeach()
 
+
+  ########################################################################
+  # Symlink files that get mapped server -> server_impl
+  file(GLOB BindingFiles
+    "python/server/async_processor.pxd"
+    "python/server/event_handler.pxd"
+    "python/server/interceptor/server_module.pxd"
+    "python/server/python_async_processor.pxd"
+    "python/server/request_context.pxd"
+
+    "python/server/python_async_processor.pyx"
+
+    "python/server/PythonAsyncProcessor.cpp"
+    "python/server/PythonAsyncProcessorFactory.cpp"
+  )
+  foreach(_src ${BindingFiles})
+    file(RELATIVE_PATH _filerelpath ${CMAKE_CURRENT_SOURCE_DIR}/python/server ${_src})
+
+    message(
+      STATUS
+      "Linking ${_src} to ${_cybld}/thrift/python/server_impl/${_filerelpath}"
+    )
+
+    add_custom_command(
+      TARGET
+      create_binding_symlink_python
+      PRE_BUILD
+        COMMAND
+        ${CMAKE_COMMAND} -E create_symlink "${_src}" "${_cybld}/thrift/python/server_impl/${_filerelpath}"
+    )
+  endforeach()
+
+  ########################################################################
+  # Symlink all the py3 files
   add_custom_target(create_binding_symlink_py3 ALL)
   file(GLOB BindingFiles
     "${CMAKE_CURRENT_SOURCE_DIR}/py3/*.pxd"
@@ -227,16 +279,28 @@ if(thriftpy3)
       thriftcpp2
     WORKING_DIRECTORY ${_cybld}
   )
+
+  set(_folly_site_packages "${CMAKE_INSTALL_PREFIX}/../folly/lib/python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}/site-packages")
+  # FIXME: For some reason, FOLLY_VERSION is not defined
+  set(_folly_version "0.0.1")
+  set(_folly_PYTHONPATH "${_folly_site_packages}/folly-${_folly_version}-py${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}-linux-x86_64.egg")
+  
   add_custom_command(TARGET thrift_python_types_bindings
     COMMAND ${CMAKE_COMMAND} -E env
-      "CFLAGS=${CMAKE_C_FLAGS}"
-      "CXXFLAGS=${CMAKE_CXX_FLAGS}"
+      "CFLAGS=${CMAKE_C_FLAGS} ${FBTHRIFT_CXX_OPTIONS}"
+      "CXXFLAGS=${CMAKE_CXX_FLAGS} ${FBTHRIFT_CXX_OPTIONS}"
       "CXX=${CMAKE_CXX_COMPILER}"
-      python3 ${CMAKE_CURRENT_SOURCE_DIR}/setup.py -v --api-only
+      "PYTHONPATH=${_cybld}/lib:${_cybld}:${_folly_PYTHONPATH}:$ENV{PYTHONPATH}"
+      ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/setup.py -v --api-only
     BYPRODUCTS
-      ${_cybld}/thrift/python/types_api.h
+      ${_cybld}/thrift/python/_types_api.h
       ${_cybld}/thrift/python/server/server_api.h
-      ${_cybld}/thrift/python/util_api.h
+      ${_cybld}/thrift/python/server_impl/python_async_processor_api.h
+      ${_cybld}/thrift/python/streaming/sink_api.h
+      ${_cybld}/thrift/python/_stream_api.h
+    DEPENDS
+      ${CMAKE_CURRENT_SOURCE_DIR}/setup.py
+      # FIXME: add .pxd/.pyx files here
     WORKING_DIRECTORY ${_cybld}
   )
 
@@ -247,6 +311,7 @@ if(thriftpy3)
     WORKING_DIRECTORY ${_cybld})
   file(MAKE_DIRECTORY "${_cybld}/thrift/lib/python/")
   file(MAKE_DIRECTORY "${_cybld}/thrift/lib/python/server")
+  file(MAKE_DIRECTORY "${_cybld}/thrift/lib/python/streaming")
   file(MAKE_DIRECTORY "${_cybld}/thrift/lib/py3/")
 
   add_custom_command(
@@ -271,13 +336,13 @@ if(thriftpy3)
     TARGET
     create_cython_types_api_symlink
       COMMAND
-      ${CMAKE_COMMAND} -E create_symlink "${_cybld}/thrift/python/_util_api.h" "${_cybld}/thrift/lib/python/util_api.h"
+      ${CMAKE_COMMAND} -E create_symlink "${_cybld}/thrift/python/server_impl/python_async_processor_api.h" "${_cybld}/thrift/lib/python/server/python_async_processor_api.h"
   )
   add_custom_command(
     TARGET
     create_cython_types_api_symlink
       COMMAND
-      ${CMAKE_COMMAND} -E create_symlink "${_cybld}/thrift/python/_util.h" "${_cybld}/thrift/lib/python/_util.h"
+      ${CMAKE_COMMAND} -E create_symlink "${_cybld}/thrift/python/streaming/sink_api.h" "${_cybld}/thrift/lib/python/streaming/sink_api.h"
   )
   add_custom_command(
     TARGET
@@ -296,8 +361,9 @@ if(thriftpy3)
       python/client/OmniClient.cpp
       python/client/RequestChannel.cpp
       python/client/ssl.cpp
+      python/streaming/PythonUserException.cpp
+      python/streaming/StreamElementEncoder.cpp
       python/types.cpp
-      python/util.cpp
       python/Serializer.cpp
       py3/stream.cpp
   )
@@ -306,20 +372,32 @@ if(thriftpy3)
   target_compile_definitions(thrift_python_cpp PRIVATE BOOST_NO_AUTO_PTR)
   target_compile_definitions(thrift_python_cpp PRIVATE THRIFT_NO_HTTP_CLIENT_CHANNEL)
   target_include_directories(thrift_python_cpp PRIVATE "${_cybld}")
+  target_include_directories(thrift_python_cpp PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
+  target_include_directories(thrift_python_cpp PRIVATE Folly::folly_python_cpp)
   target_link_libraries(
     thrift_python_cpp
     PUBLIC
       thriftcpp2
       Folly::folly
       Folly::folly_python_cpp
+    PRIVATE
+      Python3::Python
     )
   install(
     TARGETS thrift_python_cpp
-    EXPORT thrift
+    EXPORT fbthrift-exports
+    # FIXME: Consider DESTINATION ${LIB_INSTALL_DIR}
   )
   install(
     TARGETS thrift_python_cpp
     DESTINATION ${py_install_dir}
+  )
+
+  wrap_non_fb_python_library(thrift_python_cpp thrift)
+  install(
+    TARGETS thrift_python_cpp.py_lib
+    EXPORT fbthrift-exports
+    DESTINATION ${LIB_INSTALL_DIR}
   )
 
   #####
@@ -332,8 +410,10 @@ if(thriftpy3)
       generate_apache_thrift_metadata_python
       create_binding_symlink_python
       create_binding_symlink_py3
+      Folly::folly_python_cpp
       thriftcpp2
       thrift_python_cpp
+      thrift_python_types_bindings
     WORKING_DIRECTORY ${_cybld}
   )
 
@@ -357,29 +437,38 @@ if(thriftpy3)
 
   add_custom_command(TARGET thrift_python_and_py3_bindings
     COMMAND ${CMAKE_COMMAND} -E env
-      "CFLAGS=${CMAKE_C_FLAGS}"
-      "CXXFLAGS=${CMAKE_CXX_FLAGS}"
+      "CFLAGS=${CMAKE_C_FLAGS} ${FBTHRIFT_CXX_OPTIONS}"
+      "CXXFLAGS=${CMAKE_CXX_FLAGS} ${FBTHRIFT_CXX_OPTIONS}"
       "CXX=${CMAKE_CXX_COMPILER}"
+      "PYTHONPATH=${_cybld}/lib:${_cybld}:${_folly_PYTHONPATH}:$ENV{PYTHONPATH}"
       python3 ${CMAKE_CURRENT_SOURCE_DIR}/setup.py -v
       build_ext -f ${incs} ${libs} --libpython ${python_libname}
+    DEPENDS
+      ${CMAKE_CURRENT_SOURCE_DIR}/setup.py
     WORKING_DIRECTORY ${_cybld}
   )
   add_custom_command(TARGET thrift_python_and_py3_bindings
     COMMAND ${CMAKE_COMMAND} -E env
-      "CFLAGS=${CMAKE_C_FLAGS}"
-      "CXXFLAGS=${CMAKE_CXX_FLAGS}"
+      "CFLAGS=${CMAKE_C_FLAGS} ${FBTHRIFT_CXX_OPTIONS}"
+      "CXXFLAGS=${CMAKE_CXX_FLAGS} ${FBTHRIFT_CXX_OPTIONS}"
       "CXX=${CMAKE_CXX_COMPILER}"
+      "PYTHONPATH=${_cybld}/lib:${_cybld}:${_folly_PYTHONPATH}:$ENV{PYTHONPATH}"
       python3 ${CMAKE_CURRENT_SOURCE_DIR}/setup.py -v
       bdist_wheel --libpython ${python_libname}
+    DEPENDS
+      ${CMAKE_CURRENT_SOURCE_DIR}/setup.py
     WORKING_DIRECTORY ${_cybld}
   )
   add_custom_command(TARGET thrift_python_and_py3_bindings POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E env
-      "CFLAGS=${CMAKE_C_FLAGS}"
-      "CXXFLAGS=${CMAKE_CXX_FLAGS}"
+      "CFLAGS=${CMAKE_C_FLAGS} ${FBTHRIFT_CXX_OPTIONS}"
+      "CXXFLAGS=${CMAKE_CXX_FLAGS} ${FBTHRIFT_CXX_OPTIONS}"
       "CXX=${CMAKE_CXX_COMPILER}"
+      "PYTHONPATH=${_cybld}/lib:${_cybld}:${_folly_PYTHONPATH}:$ENV{PYTHONPATH}"
       python3 ${CMAKE_CURRENT_SOURCE_DIR}/setup.py -v
       install --prefix ${CMAKE_INSTALL_PREFIX} --libpython ${python_libname}
+    DEPENDS
+      ${CMAKE_CURRENT_SOURCE_DIR}/setup.py
     WORKING_DIRECTORY ${_cybld}
   )
 
@@ -390,8 +479,8 @@ if(thriftpy3)
   install(CODE "
     execute_process(
       COMMAND ${CMAKE_COMMAND} -E env
-        \"CFLAGS=${CMAKE_C_FLAGS}\"
-        \"CXXFLAGS=${CMAKE_CXX_FLAGS}\"
+        \"CFLAGS=${CMAKE_C_FLAGS} ${FBTHRIFT_CXX_OPTIONS}\"
+        \"CXXFLAGS=${CMAKE_CXX_FLAGS} ${FBTHRIFT_CXX_OPTIONS}\"
         python3 ${CMAKE_CURRENT_SOURCE_DIR}/setup.py install -v
         --prefix ${py_install_dir} --libpython ${python_libname}
       COMMAND_ECHO STDOUT

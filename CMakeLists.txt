@@ -67,11 +67,13 @@ if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD_REQUIRED ON)
   message(STATUS "setting C++ standard to C++${CMAKE_CXX_STANDARD}")
 endif()
+set(FBTHRIFT_CXX_OPTIONS "-std=c++${CMAKE_CXX_STANDARD}")
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Explicitly enable coroutine support, since GCC does not enable it
 # by default when targeting C++17.
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  set(FBTHRIFT_CXX_OPTIONS "${FBTHRIFT_CXX_OPTIONS} -fcoroutines")
   add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-fcoroutines>)
 endif()
 
