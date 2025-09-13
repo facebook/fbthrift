@@ -59,6 +59,7 @@ set(CMAKE_MODULE_PATH
 # Find required dependencies.
 find_package(Boost REQUIRED filesystem)
 find_package(fmt CONFIG REQUIRED)
+find_package(folly CONFIG REQUIRED)
 find_package(OpenSSL REQUIRED)
 
 if(NOT CMAKE_CXX_STANDARD)
@@ -93,8 +94,6 @@ option(thriftpy3
   "Include thrift-py3 library and extensions in the build, requires Cython"
   OFF
 )
-
-find_package(folly CONFIG REQUIRED)
 
 # Find required dependencies for the Thrift compiler.
 if (THRIFT_COMPILER_ONLY OR build_all)

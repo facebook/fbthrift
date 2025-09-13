@@ -17,8 +17,10 @@ from libcpp.optional cimport optional
 
 from folly cimport cFollyPromise
 from folly.iobuf cimport cIOBuf, IOBuf
+
 from thrift.python.exceptions cimport cTApplicationException
 from thrift.python.streaming.python_user_exception cimport cPythonUserException
+
 
 cdef class Promise_Py:
     cdef error_ta(Promise_Py self, cTApplicationException err)

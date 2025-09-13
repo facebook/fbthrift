@@ -12,15 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from cpython cimport bool as pbool
-from cython.operator cimport dereference
-from libcpp.utility cimport move as cmove
-
 import asyncio
 import traceback
 import sys
 
+from cpython cimport bool as pbool
+from cython.operator cimport dereference
+from libcpp.utility cimport move as cmove
+
 from folly.iobuf cimport IOBuf
+
 from thrift.python.exceptions cimport (
     ApplicationError,
     cTApplicationExceptionType__UNKNOWN,
