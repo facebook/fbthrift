@@ -13,22 +13,23 @@
 # limitations under the License.
 
 from cpython.ref cimport PyObject
-from libcpp.memory cimport unique_ptr
-from libcpp.string cimport string
+from libcpp cimport bool as cbool
 from libcpp.map cimport map as cmap
+from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.pair cimport pair
+from libcpp.string cimport string
 from libcpp.vector cimport vector as cvector
+
+from folly.executor cimport cAsyncioExecutor
 from folly.iobuf cimport cIOBuf
+
+from thrift.python.exceptions cimport cException
 from thrift.python.protocol cimport RpcKind
-from thrift.python.types cimport ServiceInterface as cServiceInterface
 from thrift.python.server_impl.async_processor cimport (
     cAsyncProcessorFactory,
     AsyncProcessorFactory,
 )
-from thrift.python.exceptions cimport cException
-from libcpp.memory cimport shared_ptr
-from libcpp cimport bool as cbool
-from folly.executor cimport cAsyncioExecutor
+from thrift.python.types cimport ServiceInterface as cServiceInterface
 
 # cython doesn't support * in template parameters
 # Make a typedef to workaround this.

@@ -13,9 +13,9 @@
 # limitations under the License.
 
 from cython.operator cimport dereference as deref
+from libcpp.memory cimport make_unique
 from libcpp.string cimport string
 from libcpp.utility cimport move as cmove
-from libcpp.memory cimport make_unique
 
 from folly.iobuf cimport from_unique_ptr
 

@@ -112,10 +112,6 @@ if(thriftpy3)
 
   add_custom_target(create_binding_symlink_python ALL)
   file(GLOB BindingFiles
-    "python/abstract_types.py"
-    "python/client/client_wrapper.py"
-    "python/client/__init__.py"
-    "python/metadata.py"
     "python/client/async_client_factory.pxd"
     "python/client/async_client.pxd"
     "python/client/omni_client.pxd"
@@ -139,6 +135,7 @@ if(thriftpy3)
     "python/stream.pxd"
     "python/types.pxd"
     "python/util.pxd"
+
     "python/adapter.pyx"
     "python/client/async_client_factory.pyx"
     "python/client/async_client.pyx"
@@ -159,15 +156,22 @@ if(thriftpy3)
     "python/mutable_types.pyx"
     "python/protocol.pyx"
     "python/serializer.pyx"
-    "python/stream.pyx"
     "python/server/server.pyx"
+    "python/stream.pyx"
     "python/util.pyx"
+
+    "python/abstract_types.py"
+    "python/client/__init__.py"
+    "python/client/client_wrapper.py"
+    "python/metadata.py"
+
     "python/flags.h"
-    "python/types.h"
     "python/Serializer.h"
+    "python/types.h"
+
+    "python/server/flagged/EnableResourcePoolsForPython.cpp"
     "python/server/PythonAsyncProcessor.cpp"
     "python/server/PythonAsyncProcessorFactory.cpp"
-    "python/server/flagged/EnableResourcePoolsForPython.cpp"
   )
 
   foreach(_src ${BindingFiles})
