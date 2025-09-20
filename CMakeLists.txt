@@ -59,6 +59,7 @@ set(CMAKE_MODULE_PATH
 # Find required dependencies.
 find_package(Boost REQUIRED filesystem)
 find_package(fmt CONFIG REQUIRED)
+find_package(folly CONFIG REQUIRED)
 find_package(OpenSSL REQUIRED)
 
 if(NOT CMAKE_CXX_STANDARD)
@@ -66,11 +67,13 @@ if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD_REQUIRED ON)
   message(STATUS "setting C++ standard to C++${CMAKE_CXX_STANDARD}")
 endif()
+set(FBTHRIFT_CXX_OPTIONS "-std=c++${CMAKE_CXX_STANDARD}")
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Explicitly enable coroutine support, since GCC does not enable it
 # by default when targeting C++17.
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  set(FBTHRIFT_CXX_OPTIONS "${FBTHRIFT_CXX_OPTIONS} -fcoroutines")
   add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-fcoroutines>)
 endif()
 
@@ -93,8 +96,6 @@ option(thriftpy3
   "Include thrift-py3 library and extensions in the build, requires Cython"
   OFF
 )
-
-find_package(folly CONFIG REQUIRED)
 
 # Find required dependencies for the Thrift compiler.
 if (THRIFT_COMPILER_ONLY OR build_all)

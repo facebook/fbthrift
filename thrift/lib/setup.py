@@ -37,20 +37,8 @@ if "--api-only" in sys.argv:
         language_level=3,
     )
     Cython.Compiler.Main.compile(
-        "thrift/python/server.pyx",
-        full_module_name="thrift.python.server",
-        cplus=True,
-        language_level=3,
-    )
-    Cython.Compiler.Main.compile(
-        "thrift/python/_util.pyx",
-        full_module_name="thrift.python.util",
-        cplus=True,
-        language_level=3,
-    )
-    Cython.Compiler.Main.compile(
-        "thrift/py3/_stream.pyx",
-        full_module_name="thrift.py3.stream",
+        "thrift/python/server_impl/python_async_processor.pyx",
+        full_module_name="thrift.python.server_impl.python_async_processor",
         cplus=True,
         language_level=3,
     )
@@ -85,7 +73,6 @@ else:
     }
 
     exts = [
-        # thrift.python extension modules
         Extension(
             "thrift.python.adapter",
             sources=["thrift/python/adapter.pyx"],
@@ -188,18 +175,40 @@ else:
         ),
         Extension(
             "thrift.python.server",
-            sources=[
-                "thrift/python/server.pyx",
-                "thrift/python/server/PythonAsyncProcessor.cpp",
-                "thrift/python/server/PythonAsyncProcessorFactory.cpp",
-                "thrift/python/server/flagged/EnableResourcePoolsForPython.cpp",
+            sources=["thrift/python/server.pyx"],
+             **common_options,
+         ),
+         Extension(
+             "thrift.python.server_impl.python_async_processor",
+             sources=[
+                 "thrift/python/server_impl/python_async_processor.pyx",
+                 "thrift/python/server_impl/PythonAsyncProcessor.cpp",
+                 "thrift/python/server_impl/PythonAsyncProcessorFactory.cpp",
             ],
             define_macros=[("__PYX_ENUM_CLASS_DECL", "")],
             **common_options,
         ),
         Extension(
-            "thrift.python.stream",
-            sources=["thrift/python/stream.pyx"],
+            "thrift.python.streaming.py_promise",
+            sources=["thrift/python/streaming/py_promise.pyx"],
+            **common_options,
+        ),
+        Extension(
+            "thrift.python.streaming.python_user_exception",
+            sources=["thrift/python/streaming/python_user_exception.pyx"],
+            **common_options,
+        ),
+        Extension(
+            "thrift.python.streaming.sink",
+            sources=[
+                "thrift/python/streaming/sink.pyx",
+                "thrift/python/streaming/Sink.cpp",
+            ],
+            **common_options,
+        ),
+        Extension(
+            "thrift.python.streaming.stream",
+            sources=["thrift/python/streaming/stream.pyx"],
             **common_options,
         ),
         Extension(
@@ -207,12 +216,6 @@ else:
             sources=["thrift/python/_types.pyx"],
             **common_options,
         ),
-        Extension(
-            "thrift.python.util",
-            sources=["thrift/python/_util.pyx"],
-            **common_options,
-        ),
-        # thrift.py3 extension modules
         Extension(
             "thrift.py3.common",
             sources=["thrift/py3/common.pyx"],
