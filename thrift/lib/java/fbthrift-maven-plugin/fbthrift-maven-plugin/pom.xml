@@ -49,7 +49,7 @@
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-plugin-api</artifactId>
-            <version>3.8.7</version>
+            <version>3.9.9</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -66,7 +66,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-plugin-plugin</artifactId>
                 <configuration>
-                    <mojoDependencies />
+                    <mojoDependencies/>
                     <goalPrefix>thrift</goalPrefix>
                 </configuration>
                 <executions>
