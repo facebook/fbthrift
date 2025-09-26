@@ -22,11 +22,14 @@ from libcpp.utility cimport move as cmove
 from folly cimport cFollyTry
 from folly.coro cimport bridgeCoroTaskWith
 from folly.executor cimport get_executor
-from folly.iobuf cimport from_unique_ptr
+from folly.iobuf cimport cIOBuf, from_unique_ptr
 from folly.optional cimport cOptional
 
 from thrift.python.exceptions cimport create_py_exception
+from thrift.python.protocol cimport Protocol
 from thrift.python.serializer import deserialize
+
+from thrift.python.streaming.stream cimport cIOBufClientBufferedStream
 
 
 cdef void client_stream_callback(
