@@ -19,8 +19,10 @@ from folly cimport cFollyExecutor, cFollyPromise
 from folly.async_generator cimport cAsyncGenerator
 from folly.coro cimport cFollyCoroTask
 from folly.iobuf cimport cIOBuf
+
 from thrift.python.protocol cimport Protocol
 from thrift.python.streaming.stream cimport ClientBufferedStream, cIOBufClientBufferedStream
+
 
 cdef extern from "folly/OperationCancelled.h":
     cdef cppclass cFollyOperationCancelled "folly::OperationCancelled"
@@ -81,6 +83,16 @@ cdef class ClientSink:
 
 cdef class ResponseAndClientSink:
     pass
+
+cdef class ServerSinkGenerator:
+    cdef cIOBufSinkGenerator _cpp_gen
+    cdef cFollyExecutor* _executor
+
+    @staticmethod
+    cdef _fbthrift_create(
+        cIOBufSinkGenerator cpp_gen,
+        cFollyExecutor* executor,
+    )
 
 cdef api void cancelAsyncGenerator(object generator)
 

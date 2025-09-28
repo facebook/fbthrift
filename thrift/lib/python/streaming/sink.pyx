@@ -16,6 +16,11 @@ import asyncio
 import sys
 import traceback
 
+from cython.operator import dereference
+from cpython.ref cimport PyObject
+from libcpp.memory cimport make_shared, make_unique, shared_ptr, unique_ptr
+from libcpp.utility cimport move as cmove
+
 from folly cimport cFollyPromise, cFollyTry
 from folly.coro cimport (
     bridgeCoroTaskWith,
@@ -24,25 +29,20 @@ from folly.coro cimport (
     cFollyCoroTask,
 )
 from folly.executor cimport get_executor
-
-from cython.operator import dereference
-from cpython.ref cimport PyObject
-from libcpp.memory cimport make_shared, make_unique, shared_ptr
-from libcpp.utility cimport move as cmove
-from thrift.python.serializer import deserialize
-from thrift.python.mutable_serializer import (
-    deserialize as deserialize_mutable,
-)
 from folly.iobuf cimport IOBuf, from_unique_ptr as iobuf_from_unique_ptr
+
 from thrift.python.exceptions cimport (
     ApplicationError,
     cTApplicationException,
     cTApplicationExceptionType__UNKNOWN,
     create_py_exception,
 )
-from thrift.python.types import Struct
+from thrift.python.mutable_serializer import (
+    deserialize as deserialize_mutable,
+)
 from thrift.python.mutable_types import MutableStruct
-
+from thrift.python.protocol cimport Protocol
+from thrift.python.serializer import deserialize
 from thrift.python.streaming.py_promise cimport (
     genNextSinkValue,
     Promise_IOBuf,
@@ -52,9 +52,9 @@ from thrift.python.streaming.python_user_exception cimport (
     extractPyUserExceptionIOBuf,
     PythonUserException,
 )
+from thrift.python.streaming.sink cimport cIOBufClientSink, cIOBufSinkGenerator
 from thrift.python.streaming.stream cimport cIOBufClientBufferedStream
-
-
+from thrift.python.types import Struct
 
 cdef class ClientSink:
     @staticmethod
@@ -134,7 +134,7 @@ cdef raise_first_exception_field(response_struct):
 cdef void sink_final_resp_callback(
     cFollyTry[unique_ptr[cIOBuf]]&& res,
     PyObject* user_data,
-):
+) noexcept:
     future, final_resp_cls, sink_elem_cls, protocol = <object> user_data
     try:
         if res.hasException():
@@ -229,9 +229,6 @@ async def invokeCallbackWithGenerator(
 
 
 cdef class ServerSinkGenerator:
-    cdef cIOBufSinkGenerator _cpp_gen
-    cdef cFollyExecutor* _executor
-
     @staticmethod
     cdef _fbthrift_create(
         cIOBufSinkGenerator cpp_gen,
