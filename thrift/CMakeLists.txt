@@ -38,6 +38,11 @@ install(
   FILES ${CMAKE_CURRENT_BINARY_DIR}/FBThriftConfig.cmake
   DESTINATION ${CMAKE_INSTALL_DIR}
 )
+# This is used in FBThriftConfig.cmake.
+install(
+  FILES ${CMAKE_CURRENT_SOURCE_DIR}/../build/fbcode_builder/CMake/FindXxhash.cmake
+  DESTINATION ${CMAKE_INSTALL_DIR}
+)
 install(
   EXPORT fbthrift-exports
   FILE FBThriftTargets.cmake
