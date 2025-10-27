@@ -37,28 +37,30 @@ import (
 type RSocketClient interface {
 	SendSetup(ctx context.Context) error
 	FireAndForget(
+		ctx context.Context,
 		messageName string,
-		protoID types.ProtocolID,
 		headers map[string]string,
 		dataBytes []byte,
 	) error
 	RequestResponse(
 		ctx context.Context,
 		messageName string,
-		protoID types.ProtocolID,
 		headers map[string]string,
 		dataBytes []byte,
 	) (map[string]string, []byte, error)
 	RequestStream(
 		ctx context.Context,
 		messageName string,
-		protoID types.ProtocolID,
 		headers map[string]string,
 		dataBytes []byte,
 		onStreamNextFn func([]byte) error,
 		onStreamErrorFn func(error),
 		onStreamComplete func(),
 	) (map[string]string, []byte, error)
+	MetadataPush(
+		ctx context.Context,
+		metadata *rpcmetadata.ClientPushMetadata,
+	) error
 	Close() error
 }
 
@@ -165,14 +167,14 @@ func (r *rsocketClient) resetDeadline() {
 func (r *rsocketClient) RequestResponse(
 	ctx context.Context,
 	messageName string,
-	protoID types.ProtocolID,
 	headers map[string]string,
 	dataBytes []byte,
 ) (map[string]string, []byte, error) {
 	r.resetDeadline()
 	request, err := rocket.EncodeRequestPayload(
+		ctx,
 		messageName,
-		protoID,
+		r.protoID,
 		rpcmetadata.RpcKind_SINGLE_REQUEST_SINGLE_RESPONSE,
 		headers,
 		rpcmetadata.CompressionAlgorithm_NONE,
@@ -193,11 +195,12 @@ func (r *rsocketClient) RequestResponse(
 	return nil, nil, err
 }
 
-func (r *rsocketClient) FireAndForget(messageName string, protoID types.ProtocolID, headers map[string]string, dataBytes []byte) error {
+func (r *rsocketClient) FireAndForget(_ context.Context, messageName string, headers map[string]string, dataBytes []byte) error {
 	r.resetDeadline()
 	request, err := rocket.EncodeRequestPayload(
+		context.Background(),
 		messageName,
-		protoID,
+		r.protoID,
 		rpcmetadata.RpcKind_SINGLE_REQUEST_NO_RESPONSE,
 		headers,
 		rpcmetadata.CompressionAlgorithm_NONE,
@@ -213,7 +216,6 @@ func (r *rsocketClient) FireAndForget(messageName string, protoID types.Protocol
 func (r *rsocketClient) RequestStream(
 	ctx context.Context,
 	messageName string,
-	protoID types.ProtocolID,
 	headers map[string]string,
 	dataBytes []byte,
 	onStreamNextFn func([]byte) error,
@@ -223,8 +225,9 @@ func (r *rsocketClient) RequestStream(
 	r.resetDeadline()
 
 	request, err := rocket.EncodeRequestPayload(
+		ctx,
 		messageName,
-		protoID,
+		r.protoID,
 		rpcmetadata.RpcKind_SINGLE_REQUEST_STREAMING_RESPONSE,
 		headers,
 		rpcmetadata.CompressionAlgorithm_NONE,
@@ -278,6 +281,16 @@ func (r *rsocketClient) RequestStream(
 	}()
 
 	return firstResponse.Headers(), firstResponse.Data(), nil
+}
+
+func (r *rsocketClient) MetadataPush(_ context.Context, metadata *rpcmetadata.ClientPushMetadata) error {
+	r.resetDeadline()
+	payload, err := rocket.EncodePayloadMetadataAndData(metadata, nil, 0)
+	if err != nil {
+		return err
+	}
+	r.client.MetadataPush(payload)
+	return nil
 }
 
 func (r *rsocketClient) Close() error {

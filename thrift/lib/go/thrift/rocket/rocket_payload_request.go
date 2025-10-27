@@ -17,31 +17,27 @@
 package rocket
 
 import (
+	"context"
 	"fmt"
 	"maps"
 
-	"github.com/facebook/fbthrift/thrift/lib/go/thrift/types"
 	"github.com/facebook/fbthrift/thrift/lib/thrift/rpcmetadata"
 	"github.com/rsocket/rsocket-go/payload"
 )
 
 // EncodeRequestPayload encodes a request payload.
 func EncodeRequestPayload(
+	_ context.Context,
 	name string,
-	protoID types.ProtocolID,
+	protoID rpcmetadata.ProtocolId,
 	rpcKind rpcmetadata.RpcKind,
 	headers map[string]string,
 	compression rpcmetadata.CompressionAlgorithm,
 	dataBytes []byte,
 ) (payload.Payload, error) {
-	rpcProtocolID, err := protocolIDToRPCProtocolID(protoID)
-	if err != nil {
-		return nil, err
-	}
-
 	metadata := rpcmetadata.NewRequestRpcMetadata().
 		SetName(&name).
-		SetProtocol(&rpcProtocolID).
+		SetProtocol(&protoID).
 		SetKind(&rpcKind).
 		SetCompression(&compression).
 		SetOtherMetadata(maps.Clone(headers))
@@ -62,26 +58,6 @@ func GetRequestRpcMetadataHeaders(metadata *rpcmetadata.RequestRpcMetadata) map[
 		headersMap["client_timeout"] = fmt.Sprintf("%d", metadata.GetClientTimeoutMs())
 	}
 	return headersMap
-}
-
-func protocolIDToRPCProtocolID(protocolID types.ProtocolID) (rpcmetadata.ProtocolId, error) {
-	switch protocolID {
-	case types.ProtocolIDBinary:
-		return rpcmetadata.ProtocolId_BINARY, nil
-	case types.ProtocolIDCompact:
-		return rpcmetadata.ProtocolId_COMPACT, nil
-	}
-	return 0, fmt.Errorf("unsupported ProtocolID %v", protocolID)
-}
-
-func rpcProtocolIDToProtocolID(protocolID rpcmetadata.ProtocolId) (types.ProtocolID, error) {
-	switch protocolID {
-	case rpcmetadata.ProtocolId_BINARY:
-		return types.ProtocolIDBinary, nil
-	case rpcmetadata.ProtocolId_COMPACT:
-		return types.ProtocolIDCompact, nil
-	}
-	return 0, fmt.Errorf("unsupported ProtocolId %v", protocolID)
 }
 
 func CompressionAlgorithmFromCompressionConfig(compressionConfig *rpcmetadata.CompressionConfig) rpcmetadata.CompressionAlgorithm {

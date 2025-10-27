@@ -218,7 +218,7 @@ CO_TEST_F(BiDiServiceE2ETest, SinkThrowsDeclaredException) {
 
   auto streamTask = folly::coro::co_invoke(
       [&, streamGen = std::move(stream.stream).toAsyncGenerator()]() mutable
-      -> folly::coro::Task<void> {
+          -> folly::coro::Task<void> {
         for (int64_t i = 0; i < kTestLimit; ++i) {
           auto next = co_await streamGen.next();
           if (!next) {
@@ -278,7 +278,7 @@ CO_TEST_F(BiDiServiceE2ETest, SinkThrowsUndeclaredException) {
 
   auto streamTask = folly::coro::co_invoke(
       [&, streamGen = std::move(stream.stream).toAsyncGenerator()]() mutable
-      -> folly::coro::Task<void> {
+          -> folly::coro::Task<void> {
         for (int64_t i = 0; i < kTestLimit; ++i) {
           auto next = co_await streamGen.next();
           if (!next) {
@@ -289,6 +289,108 @@ CO_TEST_F(BiDiServiceE2ETest, SinkThrowsUndeclaredException) {
           }
         }
         EXPECT_FALSE(co_await streamGen.next());
+      });
+  co_await folly::coro::collectAll(std::move(sinkTask), std::move(streamTask));
+}
+
+CO_TEST_F(BiDiServiceE2ETest, StreamThrowsDeclaredException) {
+  constexpr int64_t kStreamItemsUntilThrow = 500;
+
+  struct Handler : public ServiceHandler<detail::test::TestBiDiService> {
+    folly::coro::Task<StreamTransformation<int64_t, int64_t>> co_canThrow()
+        override {
+      co_return StreamTransformation<int64_t, int64_t>{
+          [](folly::coro::AsyncGenerator<int64_t&&>)
+              -> folly::coro::AsyncGenerator<int64_t&&> {
+            for (std::size_t i = 0; i < kStreamItemsUntilThrow; ++i) {
+              co_yield int64_t(i);
+            }
+            throw detail::test::BiDiStreamException{"For test"};
+          }};
+    }
+  };
+
+  testConfig({std::make_shared<Handler>()});
+  auto client = makeClient<detail::test::TestBiDiService>();
+  BidirectionalStream<int64_t, int64_t> stream = co_await client->co_canThrow();
+
+  auto sinkGen =
+      folly::coro::co_invoke([]() -> folly::coro::AsyncGenerator<int64_t&&> {
+        for (int64_t i = 0; i < 1000; ++i) {
+          co_yield int64_t(i);
+        }
+      });
+  auto sinkTask = folly::coro::co_invoke(
+      [clientSink = std::move(stream.sink),
+       sinkGen = std::move(sinkGen)]() mutable -> folly::coro::Task<void> {
+        co_await std::move(clientSink).sink(std::move(sinkGen));
+      });
+
+  auto streamTask = folly::coro::co_invoke(
+      [&, streamGen = std::move(stream.stream).toAsyncGenerator()]() mutable
+          -> folly::coro::Task<void> {
+        for (int64_t i = 0; i < kStreamItemsUntilThrow; ++i) {
+          auto next = co_await streamGen.next();
+          if (!next) {
+            CO_FAIL() << fmt::format(
+                "Did not receive all stream elements, expected {} but got {}",
+                kStreamItemsUntilThrow,
+                i);
+          }
+        }
+        EXPECT_THROW(
+            co_await streamGen.next(), detail::test::BiDiStreamException);
+      });
+  co_await folly::coro::collectAll(std::move(sinkTask), std::move(streamTask));
+}
+
+CO_TEST_F(BiDiServiceE2ETest, StreamThrowsUndeclaredException) {
+  constexpr int64_t kStreamItemsUntilThrow = 500;
+
+  struct Handler : public ServiceHandler<detail::test::TestBiDiService> {
+    folly::coro::Task<StreamTransformation<int64_t, int64_t>> co_canThrow()
+        override {
+      co_return StreamTransformation<int64_t, int64_t>{
+          [](folly::coro::AsyncGenerator<int64_t&&>)
+              -> folly::coro::AsyncGenerator<int64_t&&> {
+            for (std::size_t i = 0; i < kStreamItemsUntilThrow; ++i) {
+              co_yield int64_t(i);
+            }
+            throw std::runtime_error{"For test"};
+          }};
+    }
+  };
+
+  testConfig({std::make_shared<Handler>()});
+  auto client = makeClient<detail::test::TestBiDiService>();
+  BidirectionalStream<int64_t, int64_t> stream = co_await client->co_canThrow();
+
+  auto sinkGen =
+      folly::coro::co_invoke([]() -> folly::coro::AsyncGenerator<int64_t&&> {
+        for (int64_t i = 0; i < 1000; ++i) {
+          co_yield int64_t(i);
+        }
+      });
+  auto sinkTask = folly::coro::co_invoke(
+      [clientSink = std::move(stream.sink),
+       sinkGen = std::move(sinkGen)]() mutable -> folly::coro::Task<void> {
+        co_await std::move(clientSink).sink(std::move(sinkGen));
+      });
+
+  auto streamTask = folly::coro::co_invoke(
+      [&, streamGen = std::move(stream.stream).toAsyncGenerator()]() mutable
+          -> folly::coro::Task<void> {
+        for (int64_t i = 0; i < kStreamItemsUntilThrow; ++i) {
+          auto next = co_await streamGen.next();
+          if (!next) {
+            CO_FAIL() << fmt::format(
+                "Did not receive all stream elements, expected {} but got {}",
+                kStreamItemsUntilThrow,
+                i);
+          }
+        }
+        EXPECT_THROW(
+            co_await streamGen.next(), apache::thrift::TApplicationException);
       });
   co_await folly::coro::collectAll(std::move(sinkTask), std::move(streamTask));
 }
@@ -325,7 +427,7 @@ CO_TEST_F(BiDiServiceE2ETest, IgnoreInputProduceOutput) {
 
   auto streamTask = folly::coro::co_invoke(
       [&, streamGen = std::move(stream.stream).toAsyncGenerator()]() mutable
-      -> folly::coro::Task<void> {
+          -> folly::coro::Task<void> {
         for (int64_t i = 0; i < kTestLimit; ++i) {
           auto next = co_await streamGen.next();
           if (!next) {
