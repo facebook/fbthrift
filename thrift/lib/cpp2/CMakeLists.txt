@@ -440,6 +440,7 @@ add_library(
   transport/rocket/framing/Util.cpp
   transport/rocket/payload/DefaultPayloadSerializerStrategy.cpp
   transport/rocket/payload/PayloadSerializer.cpp
+  transport/rocket/server/BidirectionalStreamState.cpp
   transport/rocket/server/InteractionOverload.cpp
   transport/rocket/server/RocketRoutingHandler.cpp
   transport/rocket/server/RocketServerConnection.cpp
