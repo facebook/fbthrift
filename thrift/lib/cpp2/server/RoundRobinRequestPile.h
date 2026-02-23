@@ -21,6 +21,8 @@
 #include <limits>
 #include <memory>
 
+#include <fmt/ranges.h>
+
 #include <folly/Executor.h>
 #include <folly/concurrency/UnboundedQueue.h>
 #include <folly/io/async/AtomicNotificationQueue.h>
