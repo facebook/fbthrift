@@ -29,7 +29,16 @@ else()
   set_and_check(FBTHRIFT_COMPILER "@PACKAGE_BIN_INSTALL_DIR@/thrift1")
 endif()
 
+# Use bundled FindXxhash.cmake to find xxHash.
+if (DEFINED CMAKE_MODULE_PATH)
+  set(FBTHRIFT_CMAKE_MODULE_PATH_OLD ${CMAKE_MODULE_PATH})
+else()
+  set(FBTHRIFT_CMAKE_MODULE_PATH_OLD)
+endif()
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
 find_dependency(Xxhash REQUIRED)
+set(CMAKE_MODULE_PATH ${FBTHRIFT_CMAKE_MODULE_PATH_OLD})
+
 find_dependency(ZLIB REQUIRED)
 find_package(mvfst CONFIG REQUIRED)
 
