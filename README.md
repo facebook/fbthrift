@@ -1,7 +1,6 @@
 Facebook Thrift
 ---------------
 
-[![Support Ukraine](https://img.shields.io/badge/Support-Ukraine-FFD500?style=flat&labelColor=005BBB)](https://opensource.fb.com/support-ukraine)
 [![Linux Build Status](
   https://github.com/facebook/fbthrift/actions/workflows/getdeps_linux.yml/badge.svg)](
   https://github.com/facebook/fbthrift/actions/workflows/getdeps_linux.yml)
