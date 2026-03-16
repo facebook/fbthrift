@@ -250,6 +250,30 @@ class t_mstch_java_generator : public t_mstch_generator {
       }
       return false;
     });
+    def.property("skipEnumNameMap?", [](const t_enum& self) {
+      return self.has_unstructured_annotation("java.swift.skip_enum_name_map");
+    });
+    def.property("numValues", [](const t_enum& self) {
+      return static_cast<int64_t>(self.values().size());
+    });
+    def.property("useIntrinsicDefault?", [](const t_enum& self) {
+      if (self.has_structured_annotation(kJavaUseIntrinsicDefaultUri)) {
+        if (self.find_value(0) == nullptr) {
+          throw std::runtime_error(
+              "Enum " + self.name() +
+              " does not have a value for 0! You have to have value for 0 to use intrinsic default annotation.");
+        }
+        return true;
+      }
+      return false;
+    });
+    def.property("findValueZero", [](const t_enum& self) -> whisker::object {
+      if (self.has_structured_annotation(kJavaUseIntrinsicDefaultUri)) {
+        return whisker::make::string(
+            java::mangle_java_constant_name(self.find_value(0)->name()));
+      }
+      return whisker::make::null;
+    });
     return std::move(def).make();
   }
 
@@ -1526,45 +1550,6 @@ class mstch_java_field : public mstch_field {
   }
 };
 
-class mstch_java_enum : public mstch_enum {
- public:
-  mstch_java_enum(
-      const t_enum* e, mstch_context& ctx, mstch_element_position pos)
-      : mstch_enum(e, ctx, pos) {
-    register_methods(
-        this,
-        {
-            {"enum:skipEnumNameMap?",
-             &mstch_java_enum::java_skip_enum_name_map},
-            {"enum:numValues", &mstch_java_enum::num_values},
-            {"enum:useIntrinsicDefault?",
-             &mstch_java_enum::use_intrinsic_default},
-            {"enum:findValueZero", &mstch_java_enum::find_value_zero},
-        });
-  }
-  mstch::node java_skip_enum_name_map() {
-    return enum_->has_unstructured_annotation("java.swift.skip_enum_name_map");
-  }
-  mstch::node num_values() { return enum_->values().size(); }
-  mstch::node use_intrinsic_default() {
-    if (enum_->has_structured_annotation(kJavaUseIntrinsicDefaultUri)) {
-      if (enum_->find_value(0) == nullptr) {
-        throw std::runtime_error(
-            "Enum " + enum_->name() +
-            " does not have a value for 0! You have to have value for 0 to use intrinsic default annotation.");
-      }
-      return true;
-    }
-    return false;
-  }
-  mstch::node find_value_zero() {
-    if (enum_->has_structured_annotation(kJavaUseIntrinsicDefaultUri)) {
-      return java::mangle_java_constant_name(enum_->find_value(0)->name());
-    }
-    return mstch::node();
-  }
-};
-
 class mstch_java_type : public mstch_type {
  public:
   mstch_java_type(
@@ -1717,7 +1702,6 @@ void t_mstch_java_generator::set_mstch_factories() {
   mstch_context_.add<mstch_java_type>();
   mstch_context_.add<mstch_java_struct>();
   mstch_context_.add<mstch_java_field>();
-  mstch_context_.add<mstch_java_enum>();
 }
 
 } // namespace
