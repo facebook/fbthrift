@@ -19,11 +19,11 @@
 {{struct:cpp_underlying_name}}()
 {{#each (array.enumerate struct:explicitly_constructed_fields with_first=true with_last=true) as |i field first? last?|}}
 {{> common/colon_newline}}    {{field.cpp_storage_name}}(
-{{#if field.cpp_ref_not_boxed?}}{{#field}}{{#field.type}}{{> module_types_h/smart_ptr_constructor}}{{/field.type}}{{/field}}{{/if}}
-{{#if field.boxed_ref?}}{{#field}}{{#field.type}}{{> field/default}}{{/field.type}}{{/field}}{{/if}}
+{{#if field.cpp_ref_not_boxed?}}{{#partial module_types.smart_ptr_constructor field=field}}
+{{#else if field.boxed_ref?}}{{#partial fields.default_value field=field}}
   {{! TODO(dokwon): Support custom default for intern boxed field. }}
-{{#if field.intern_boxed_ref?}}{{field.cpp_storage_type}}::fromStaticConstant(&::apache::thrift::op::getDefault<{{#partial fields.tag field=field struct=struct:self}}>()){{/if}}
+{{#else if field.intern_boxed_ref?}}{{field.cpp_storage_type}}::fromStaticConstant(&::apache::thrift::op::getDefault<{{#partial fields.tag field=field struct=struct:self}}>())
   {{! Use value initialization when no custom default is provided. }}
-{{#if (not field.cpp_ref?)}}{{#field}}{{#field.type}}{{#field.default_value}}{{> field/default}}{{/field.default_value}}{{/field.type}}{{/field}}{{/if}}
+{{#else if (and (not field.cpp_ref?) (object.notnull? field.default_value))}}{{#partial fields.default_value field=field}}{{/if field.cpp_ref_not_boxed?}}
 ){{> common/comma_newline}}
 {{/each}}

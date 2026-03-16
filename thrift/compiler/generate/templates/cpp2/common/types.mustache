@@ -34,3 +34,13 @@
 {{#else if type.structured?}}T_STRUCT
 {{/if type.void?}}
 {{/let partial}}
+
+{{#let export partial adapter_pre |type|}}
+{{#pragma ignore-newlines}}
+{{#if type.cpp_adapter}}{{type.cpp_adapter}}::fromThrift({{/if}}
+{{/let partial}}
+
+{{#let export partial adapter_post |type|}}
+{{#pragma ignore-newlines}}
+{{#if type.cpp_adapter}}){{/if}}
+{{/let partial}}

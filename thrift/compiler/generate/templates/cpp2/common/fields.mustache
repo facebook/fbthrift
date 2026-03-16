@@ -15,6 +15,8 @@
   limitations under the License.
 
 }}
+{{#import "common/const_value" as const_value}}
+{{#import "common/types" as types}}
 
 {{! Note: All adapted fields need to use field tag. }}
 {{#let export partial tag |field struct|}}
@@ -24,4 +26,32 @@
   {{#else}}
 {{field.type_tag}}
   {{/if field.cpp_adapter}}
+{{/let partial}}
+
+{{! Returns the intrinsic default value for base or enum fields. }}
+{{#let export partial intrinsic_default |field| captures |types|}}
+{{#pragma ignore-newlines}}
+  {{#if field.type.string_or_binary?}}
+apache::thrift::StringTraits<{{field.cpp_standard_type}}>::fromStringLiteral("")
+  {{#else}}
+{{field.cpp_standard_type}}()
+  {{/if field.type.string_or_binary?}}
+{{/let partial}}
+
+{{! The default value for a field. }}
+{{#let export partial default_value |field| captures |const_value types intrinsic_default|}}
+{{#pragma ignore-newlines}}
+  {{#if field.cpp_first_adapter}}
+::apache::thrift::adapt_detail::fromThriftField<{{field.cpp_first_adapter}}, {{field.id}}>(
+{{#if field.cpp_exactly_one_adapter?}}{{field.cpp_standard_type}}({{#else}}{{#partial types.adapter_pre type=field.type}}{{/if}}
+  {{/if field.cpp_first_adapter}}
+  {{#if (object.notnull? field.default_value)}}
+{{#partial const_value.iterate_const_values value=field.default_value root_const=null}}
+  {{#else}}
+{{#partial intrinsic_default field=field}}
+  {{/if (object.notnull? field.default_value)}}
+  {{#if field.cpp_first_adapter}}
+{{#if field.cpp_exactly_one_adapter?}}){{#else}}{{#partial types.adapter_post type=field.type}}{{/if}}
+, *this)
+  {{/if field.cpp_first_adapter}}
 {{/let partial}}

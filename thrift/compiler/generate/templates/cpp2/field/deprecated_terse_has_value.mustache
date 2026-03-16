@@ -38,7 +38,7 @@
     // TODO(afuller): As with containers, binary, and string above, this should check for
     // the 'intrinsic' default so the behavior does not change when IDL-specified defaults
     // change.
-    }}{{> field/field_ref }} != {{> field/default}}{{!
+    }}{{> field/field_ref }} != {{#partial fields.default_value field=field:self}}{{!
   }}{{/field:cpp_first_adapter}}{{!
 }}{{/field:raw_string_or_binary?}}{{/type:container?}}{{/field:cpp_ref?}}{{!
 }}

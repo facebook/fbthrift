@@ -15,6 +15,7 @@
   limitations under the License.
 
 }}
+{{#import "common/fields" as fields}}
 
 {{#let export partial forward_declare |program|}}
 // BEGIN forward_declare
@@ -32,4 +33,17 @@ class {{struct.cpp_underlying_name}};
 } // namespace {{program.cpp_qualified_namespace}}
   {{/if program.structs?}}
 // END forward_declare
+{{/let partial}}
+
+{{#let export partial smart_ptr_constructor |field| captures |fields|}}
+{{#pragma ignore-newlines}}
+  {{#if field.cpp_ref_unique?}}
+{{#if field.type.cpp_use_allocator?}}folly::allocate_unique{{#else}}std::make_unique{{/if field.type.cpp_use_allocator?}}
+  {{#else}}
+{{#if field.type.cpp_use_allocator?}}std::allocate_shared{{#else}}std::make_shared{{/if field.type.cpp_use_allocator?}}
+  {{/if field.cpp_ref_unique?}}
+<{{field.cpp_type}}>(
+{{#if field.type.cpp_use_allocator?}}__fbthrift_alloc{{/if}}
+{{#if (object.notnull? field.default_value)}}{{#partial fields.default_value field=field}}{{/if}}
+)
 {{/let partial}}

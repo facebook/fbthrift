@@ -21,7 +21,7 @@
     }}{{/field:cpp_first_adapter}}{{!
     }}{{^field:cpp_first_adapter}}{{!
       }}  {{> field/member}} = {{!
-      }}{{#if (has_compiler_option? "deprecated_clear")}}{{> field/default}};{{#else}}{{> field/intrinsic_default}};{{/if}}{{!
+      }}{{#if (has_compiler_option? "deprecated_clear")}}{{#partial fields.default_value field=field:self}};{{#else}}{{#partial fields.intrinsic_default field=field:self}};{{/if}}{{!
     }}{{/field:cpp_first_adapter}}{{!
   }}{{/field:cpp_ref?}}{{!
   }}{{#field:cpp_ref?}}{{!
@@ -34,7 +34,7 @@
           }}  ::apache::thrift::adapt_detail::clear<{{field:cpp_first_adapter}}, {{field:id}}>(*{{field:cpp_storage_name}}, *this);{{!
         }}{{/field:cpp_first_adapter}}{{!
         }}{{^field:cpp_first_adapter}}{{!
-          }}  {{> field/member}} = {{> field/default}};{{!
+          }}  {{> field/member}} = {{#partial fields.default_value field=field:self}};{{!
         }}{{/field:cpp_first_adapter}}{{!
       }}{{/field:boxed_ref?}}{{!
       }}{{#field:intern_boxed_ref?}}{{!
@@ -61,7 +61,7 @@
   ::apache::thrift::adapt_detail::clear<{{field:cpp_first_adapter}}, {{field:id}}>(*{{field:cpp_storage_name}}, *this);
 {{/field:cpp_first_adapter}}
 {{^field:cpp_first_adapter}}
-  {{> field/member}} = {{> field/default}};
+  {{> field/member}} = {{#partial fields.default_value field=field:self}};
 {{/field:cpp_first_adapter}}
 {{/field:boxed_ref?}}
 {{#field:intern_boxed_ref?}}
@@ -100,7 +100,7 @@
   ::apache::thrift::adapt_detail::clear<{{field:cpp_first_adapter}}, {{field:id}}>(*{{field:cpp_storage_name}}, *this);
 {{/field:cpp_first_adapter}}
 {{^field:cpp_first_adapter}}
-  {{> field/member}} = {{> field/default}};
+  {{> field/member}} = {{#partial fields.default_value field=field:self}};
 {{/field:cpp_first_adapter}}
 {{/field:boxed_ref?}}
 {{#field:intern_boxed_ref?}}

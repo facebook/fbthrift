@@ -40,7 +40,7 @@ if constexpr(::apache::thrift::adapt_detail::has_inplace_toThrift<{{field:cpp_fi
 }
 {{/field:cpp_exactly_one_adapter?}}
 {{^field:cpp_exactly_one_adapter?}}
-{{> module_types_custom_protocol_h/member_or_ptr}} = ::apache::thrift::adapt_detail::fromThriftField<{{field:cpp_first_adapter}}, {{field:id}}>({{> types/adapter_pre}}::std::move(tvalue){{> types/adapter_post}}, *this);
+{{> module_types_custom_protocol_h/member_or_ptr}} = ::apache::thrift::adapt_detail::fromThriftField<{{field:cpp_first_adapter}}, {{field:id}}>({{#partial types.adapter_pre type=field:self.type}}::std::move(tvalue){{#partial types.adapter_post type=field:self.type}}, *this);
 {{/field:cpp_exactly_one_adapter?}}
 {{/field:cpp_first_adapter}}
 {{^field:cpp_first_adapter}}
