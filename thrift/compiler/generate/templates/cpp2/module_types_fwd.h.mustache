@@ -15,22 +15,22 @@
   limitations under the License.
 
 }}
+{{#import "common/module_types" as module_types}}
 {{> Autogen}}
 #pragma once
-{{#program:enums?}}
+{{#if program.enums?}}
 
 #include <cstdint>
-{{/program:enums?}}
+{{/if program.enums?}}
 
-{{> module_types_h/forward_declare}}
-
-{{#program:enums?}}
+{{#partial module_types.forward_declare program=program}}
+{{#if program.enums?}}
 
 // BEGIN forward_declare_enums
-namespace {{program:cpp_qualified_namespace}} {
-{{#program:enums}}
-enum {{^enum:cpp_is_unscoped}}class {{/enum:cpp_is_unscoped}}{{enum:cpp_name}}{{#enum:cpp_enum_type}} : {{enum:cpp_enum_type}}{{/enum:cpp_enum_type}};
-{{/program:enums}}
-} // namespace {{program:cpp_qualified_namespace}}
+namespace {{program.cpp_qualified_namespace}} {
+  {{#each program.enums as |enum|}}
+enum {{#if (not enum.cpp_is_unscoped)}}class {{/if}}{{enum.cpp_name}}{{#if enum.cpp_enum_type}} : {{enum.cpp_enum_type}}{{/if}};
+  {{/each}}
+} // namespace {{program.cpp_qualified_namespace}}
 // END forward_declare_enums
-{{/program:enums?}}
+{{/if program.enums?}}

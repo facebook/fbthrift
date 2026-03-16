@@ -17,6 +17,7 @@
 }}
 {{#import "common/const_value" as const_value}}
 {{#import "common/fields" as fields}}
+{{#import "common/module_types" as module_types}}
 {{#import "types/schema_association" as schema_association}}
 {{> Autogen}}
 
@@ -63,8 +64,7 @@ APACHE_THRIFT_DEFINE_ACCESSOR({{field:cpp_name}});
 {{/program:structs?}}
 {{> module_types_h/declare_enums}}
 
-{{> module_types_h/forward_declare}}
-
+{{#partial module_types.forward_declare program=program:self}}
 namespace apache::thrift::detail::annotation {
 {{#program:structs}}
 {{#struct:fields_with_runtime_annotation?}}

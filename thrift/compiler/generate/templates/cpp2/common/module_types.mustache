@@ -15,18 +15,21 @@
   limitations under the License.
 
 }}
+
+{{#let export partial forward_declare |program|}}
 // BEGIN forward_declare
-{{#program:structs?}}
-namespace {{program:cpp_qualified_namespace}} {
-{{#program:structs}}
-{{#struct:extra_namespace}}
-namespace {{struct:extra_namespace}} {
-{{/struct:extra_namespace}}
-class {{struct:cpp_underlying_name}};
-{{#struct:extra_namespace}}
-} // namespace {{struct:extra_namespace}}
-{{/struct:extra_namespace}}
-{{/program:structs}}
-} // namespace {{program:cpp_qualified_namespace}}
-{{/program:structs?}}
+  {{#if program.structs?}}
+namespace {{program.cpp_qualified_namespace}} {
+    {{#each program.structured_definitions as |struct|}}
+      {{#if struct.extra_namespace}}
+namespace {{struct.extra_namespace}} {
+      {{/if struct.extra_namespace}}
+class {{struct.cpp_underlying_name}};
+      {{#if struct.extra_namespace}}
+} // namespace {{struct.extra_namespace}}
+      {{/if struct.extra_namespace}}
+    {{/each}}
+} // namespace {{program.cpp_qualified_namespace}}
+  {{/if program.structs?}}
 // END forward_declare
+{{/let partial}}

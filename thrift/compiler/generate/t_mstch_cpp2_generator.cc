@@ -2191,7 +2191,8 @@ void t_mstch_cpp2_generator::generate_structs(const t_program* program) {
   render_to_file(prog, "module_types.h", name + "_types.h");
   cpp_enable_same_program_const_referencing_ = true;
 
-  render_to_file(prog, "module_types_fwd.h", name + "_types_fwd.h");
+  render_whisker_file(
+      "module_types_fwd.h", fmt::format("{}_types_fwd.h", name));
   render_whisker_file("module_types.tcc", fmt::format("{}_types.tcc", name));
 
   if (int split_count = get_split_count(options())) {
