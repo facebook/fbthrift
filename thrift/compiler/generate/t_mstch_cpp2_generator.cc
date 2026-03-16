@@ -2210,8 +2210,7 @@ void t_mstch_cpp2_generator::generate_structs(const t_program* program) {
       render_whisker_file(
           "module_types_compact.cpp",
           fmt::format("{}_types_compact.{}", name, split_suffix));
-      render_to_file(
-          prog,
+      render_whisker_file(
           "module_types_serialization.cpp",
           fmt::format("{}_types_serialization.{}", name, split_suffix));
     }
@@ -2222,10 +2221,9 @@ void t_mstch_cpp2_generator::generate_structs(const t_program* program) {
         "module_types_binary.cpp", fmt::format("{}_types_binary.cpp", name));
     render_whisker_file(
         "module_types_compact.cpp", fmt::format("{}_types_compact.cpp", name));
-    render_to_file(
-        prog,
+    render_whisker_file(
         "module_types_serialization.cpp",
-        name + "_types_serialization.cpp");
+        fmt::format("{}_types_serialization.cpp", name));
   }
 
   render_to_file(
