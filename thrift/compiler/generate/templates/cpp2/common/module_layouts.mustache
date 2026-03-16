@@ -14,4 +14,16 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{#field:terse?}}_REQ{{/field:terse?}}{{#field:required?}}_REQ{{/field:required?}}{{#field:cpp_ref?}}_REF{{/field:cpp_ref?}}{{#field:optional?}}{{^field:cpp_ref?}}_OPT{{/field:cpp_ref?}}{{/field:optional?}}
+}}
+
+{{#let export partial field_suffix |field|}}
+{{#pragma ignore-newlines}}
+{{#if (or field.terse? field.required?)}}_REQ
+{{#else if field.cpp_ref?}}_REF
+{{#else if field.optional?}}_OPT{{/if (or field.terse? field.required?)}}
+{{/let partial}}
+
+{{#let export partial frozen2_union_field_suffix |field|}}
+{{#pragma ignore-newlines}}
+{{#if field.cpp_ref?}}_REF{{/if field.cpp_ref?}}
+{{/let partial}}

@@ -2232,7 +2232,7 @@ void t_mstch_cpp2_generator::generate_structs(const t_program* program) {
       "module_types_custom_protocol.h",
       name + "_types_custom_protocol.h");
   if (has_option("frozen2")) {
-    render_to_file(prog, "module_layouts.h", name + "_layouts.h");
+    render_whisker_file("module_layouts.h", fmt::format("{}_layouts.h", name));
     render_to_file(prog, "module_layouts.cpp", name + "_layouts.cpp");
   }
 }

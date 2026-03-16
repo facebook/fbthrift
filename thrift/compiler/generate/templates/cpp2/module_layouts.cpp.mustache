@@ -15,6 +15,7 @@
   limitations under the License.
 
 }}
+{{#import "common/module_layouts" as module_layouts}}
 {{> Autogen}}
 #include "{{program:include_prefix}}{{program:name}}_layouts.h"
 
@@ -25,7 +26,7 @@ namespace apache { namespace thrift { namespace frozen {
 {{^struct:union?}}
 FROZEN_CTOR({{struct:cpp_fullname}},{{!
 }}{{#struct:fields}}
-  FROZEN_CTOR_FIELD{{> common/field_suffix}}({{field:cpp_name}}, {{field:id}}){{!
+  FROZEN_CTOR_FIELD{{#partial module_layouts.field_suffix field=field:self}}({{field:cpp_name}}, {{field:id}}){{!
 }}{{/struct:fields}})
 FROZEN_MAXIMIZE({{struct:cpp_fullname}},{{!
 }}{{#struct:fields}}
@@ -33,15 +34,15 @@ FROZEN_MAXIMIZE({{struct:cpp_fullname}},{{!
 )
 FROZEN_LAYOUT({{struct:cpp_fullname}},{{!
 }}{{#struct:fields}}
-  FROZEN_LAYOUT_FIELD{{> common/field_suffix}}({{field:cpp_name}}){{!
+  FROZEN_LAYOUT_FIELD{{#partial module_layouts.field_suffix field=field:self}}({{field:cpp_name}}){{!
 }}{{/struct:fields}})
 FROZEN_FREEZE({{struct:cpp_fullname}},{{!
 }}{{#struct:fields}}
-  FROZEN_FREEZE_FIELD{{> common/field_suffix}}({{field:cpp_name}}){{!
+  FROZEN_FREEZE_FIELD{{#partial module_layouts.field_suffix field=field:self}}({{field:cpp_name}}){{!
 }}{{/struct:fields}})
 FROZEN_THAW({{struct:cpp_fullname}},{{!
 }}{{#struct:fields}}
-  FROZEN_THAW_FIELD{{> common/field_suffix}}({{field:cpp_name}}){{!
+  FROZEN_THAW_FIELD{{#partial module_layouts.field_suffix field=field:self}}({{field:cpp_name}}){{!
 }}{{/struct:fields}})
 FROZEN_DEBUG({{struct:cpp_fullname}},{{!
 }}{{#struct:fields}}
@@ -58,7 +59,7 @@ FROZEN_CTOR({{struct:cpp_fullname}},{{!
 }}
   FROZEN_CTOR_FIELD(fbthrift_type_, 0){{!
 }}{{#struct:fields}}
-  FROZEN_CTOR_FIELD{{> common/frozen2_union_field_suffix}}({{field:cpp_name}}, {{field:id}}){{!
+  FROZEN_CTOR_FIELD{{#partial module_layouts.frozen2_union_field_suffix field=field:self}}({{field:cpp_name}}, {{field:id}}){{!
 }}{{/struct:fields}})
 
 FROZEN_MAXIMIZE({{struct:cpp_fullname}},{{!
