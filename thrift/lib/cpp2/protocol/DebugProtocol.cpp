@@ -22,7 +22,7 @@
 FOLLY_GFLAGS_DEFINE_bool(
     thrift_cpp2_debug_skip_list_indices,
     false,
-    "Wether to skip indices when debug-printing lists (unless overridden)");
+    "Whether to skip indices when debug-printing lists (unless overridden)");
 FOLLY_GFLAGS_DEFINE_int64(
     thrift_cpp2_debug_string_limit,
     256,
