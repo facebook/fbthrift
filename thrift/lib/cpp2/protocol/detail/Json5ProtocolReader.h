@@ -75,9 +75,11 @@
 
 #include <fmt/core.h>
 #include <folly/Conv.h>
+#include <folly/Exception.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 #include <thrift/lib/cpp/protocol/TProtocol.h>
+#include <thrift/lib/cpp/util/EnumUtils.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/detail/CompoundTypeTracker.h>
 #include <thrift/lib/cpp2/protocol/detail/JsonReader.h>
@@ -211,29 +213,81 @@ class Json5ProtocolReader final {
 
 template <typename EnumType>
 void Json5ProtocolReader::readEnum(EnumType& value) {
-  auto [name, intValue] = readEnumImpl();
+  auto [providedName, providedIntValue] = readEnumImpl();
+  std::optional<EnumType> providedValue;
+  std::string_view localSchemaName;
+  std::optional<EnumType> localSchemaValue;
 
-  if (name.empty()) {
-    value = folly::to<EnumType>(intValue.value());
+  if (providedIntValue.has_value()) {
+    providedValue = folly::to<EnumType>(*providedIntValue);
+    if (auto p = util::enumName(*providedValue)) {
+      localSchemaName = p;
+    }
+  }
+
+  if (!providedName.empty()) {
+    if (!util::tryParseEnum(providedName, &localSchemaValue.emplace())) {
+      localSchemaValue.reset();
+    }
+  }
+
+  auto typeName = folly::pretty_name<EnumType>();
+
+  if (providedName.empty() && providedValue.has_value()) {
+    // Enum is "(enum-value)", use provided enum value directly.
+    value = providedValue.value();
     return;
   }
 
-  if (!TEnumTraits<EnumType>::findValue(name, &value)) {
-    throwError(
-        fmt::format(
-            "unknown enum name '{}' for type {}",
-            name,
-            TEnumTraits<EnumType>::typeName()));
+  if (!providedName.empty() && !providedValue.has_value()) {
+    // Enum is "enum-name", use the value found in local schema.
+    if (!localSchemaValue.has_value()) {
+      throwError(
+          fmt::format(
+              "enum name '{}' does not exist in type `{}`",
+              providedName,
+              typeName));
+    }
+    value = localSchemaValue.value();
+    return;
   }
 
-  if (intValue.has_value() && intValue != folly::to<std::int32_t>(value)) {
+  CHECK_THROW(
+      !providedName.empty() && providedValue.has_value(), std::logic_error);
+
+  // Enum is "enum-name (enum-value)" since both provided name and provided
+  // value has value.
+  if (localSchemaName.empty() && !localSchemaValue.has_value()) {
+    // Both provided name and value can't be found from the local schema.
+    // Accept by considering this to be a newly added enum value that reader's
+    // schema is not up to date yet.
+    value = providedValue.value();
+    return;
+  }
+
+  if (!localSchemaName.empty() && localSchemaName != providedName) {
     throwError(
         fmt::format(
-            "enum '{} ({})' does not match IDL value: {}",
-            name,
-            intValue.value(),
-            folly::to<std::int32_t>(value)));
+            "enum '{} ({})' does not match IDL name {} for type {}",
+            providedName,
+            folly::to_underlying(*providedValue),
+            localSchemaName,
+            typeName));
   }
+
+  if (localSchemaValue.has_value() &&
+      localSchemaValue != providedValue.value()) {
+    throwError(
+        fmt::format(
+            "enum '{} ({})' does not match IDL value {} for type {}",
+            providedName,
+            folly::to_underlying(*providedValue),
+            folly::to_underlying(*localSchemaValue),
+            typeName));
+  }
+
+  // both provided name and value found in local schema and match.
+  value = providedValue.value();
 }
 
 } // namespace apache::thrift::json5::detail

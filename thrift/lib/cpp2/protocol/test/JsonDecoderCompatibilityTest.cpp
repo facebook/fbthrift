@@ -135,6 +135,7 @@ TEST(JsonDecoderCompatibilityTest, EnumFormats) {
 
   for (auto json : {
            R"_({"enumValue": "(-5)"})_",
+           R"_({"enumValue": "SomeName (-5)"})_",
            R"_({"enumValue": -5})_",
        }) {
     EXPECT_EQ(
