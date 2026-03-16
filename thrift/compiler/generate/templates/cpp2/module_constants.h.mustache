@@ -16,45 +16,42 @@
 
 }}
 {{#import "common/const_value" as const_value}}
+{{#import "common/glean" as glean}}
 {{> Autogen}}
 #pragma once
 
 #include <thrift/lib/cpp2/gen/module_constants_h.h>
 
-#include "{{program:include_prefix}}{{program:name}}_types.h"
+#include "{{program.include_prefix}}{{program.name}}_types.h"
 
-namespace {{program:cpp_qualified_namespace}} {
-{{> common/program_docblock}}
-namespace {{program:name}}_constants {
+namespace {{program.cpp_qualified_namespace}} {
+{{#partial glean.program_docblock}}
+namespace {{program.name}}_constants {
 
-{{#program:constants}}{{#constant:type}}{{#constant:value}}
-{{^constant:outline_init?}}
-{{! The generated constants check is intended to cover the schema constant, where the _sinit.cpp target has to use external linkage to break a dependency cycle. }}
-{{^constant:generated?}}
-  {{#if (not type:binary?)}}
-{{> common/const_docblock}}  constexpr {{> types/const_value_type}} const {{constant:name}}_ = {{#partial const_value.primitive value=constant:self.value}};
-  {{#else}}
-{{> common/const_docblock}}  constexpr ::std::string_view {{constant:name}}_{"{{value:string_value}}", {{value:string_length}}};
-  {{/if (not type:binary?)}}
-{{> common/const_docblock}}  constexpr {{> types/const_value_type}} {{constant:name}}() {
-    return {{constant:name}}_;
+  {{#each program.consts as |const|}}
+    {{#if const.outline_init?}}
+  {{#partial glean.const_docblock const=const}}  {{const.cpp_type}} const& {{const.name}}();
+    {{#else if const.generated?}}
+      {{! The generated constants check is intended to cover the schema constant, where the _sinit.cpp target has to use external linkage to break a dependency cycle. }}
+  FOLLY_EXPORT {{#partial const_value.const_value_type const=const}} {{const.name}}();
+    {{#else}}
+      {{#if const.type.binary?}}
+  {{#partial glean.const_docblock const=const}}  constexpr ::std::string_view {{const.name}}_{"{{const.value.string_value}}", {{const.value.string_length}}};
+      {{#else}}
+  {{#partial glean.const_docblock const=const}}  constexpr {{#partial const_value.const_value_type const=const}} const {{const.name}}_ = {{#partial const_value.primitive value=const.value}};
+      {{/if const.type.binary?}}
+  {{#partial glean.const_docblock const=const}}  constexpr {{#partial const_value.const_value_type const=const}} {{const.name}}() {
+    return {{const.name}}_;
   }
-{{/constant:generated?}}
-{{#constant:generated?}}
-  FOLLY_EXPORT {{> types/const_value_type}} {{constant:name}}();
-{{/constant:generated?}}
-{{/constant:outline_init?}}
-{{#constant:outline_init?}}
-{{> common/const_docblock}}  {{constant:cpp_type}} const& {{constant:name}}();
-{{/constant:outline_init?}}
+    {{/if const.outline_init?}}
 
-{{/constant:value}}{{/constant:type}}{{/program:constants}}
+  {{/each}}
 {{! Generate empty schema const if none was injected. }}
-{{^program:has_schema?}}
-  FOLLY_EXPORT ::std::string_view {{program:schema_name}}();
-{{/program:has_schema?}}
-  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> {{program:schema_name}}_includes();
-  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> {{program:schema_name}}_uris();
+  {{#if (not program.has_schema?)}}
+  FOLLY_EXPORT ::std::string_view {{program.schema_name}}();
+  {{/if (not program.has_schema?)}}
+  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> {{program.schema_name}}_includes();
+  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> {{program.schema_name}}_uris();
 
-} // namespace {{program:name}}_constants
-} // namespace {{program:cpp_qualified_namespace}}
+} // namespace {{program.name}}_constants
+} // namespace {{program.cpp_qualified_namespace}}

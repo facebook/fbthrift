@@ -14,7 +14,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{#type:string?}}char const *{{/type:string?}}{{!
-}}{{#type:binary?}}::std::string_view{{/type:binary?}}{{!
-}}{{^type:string?}}{{^type:binary?}}{{constant:cpp_type}}{{/type:binary?}}{{/type:string?}}{{!
 }}
+
+{{! Program docblock - Glean annotation for identifying thrift sources }}
+{{#let export partial program_docblock}}
+/** Glean {"file": "{{root_program.autogen_path}}"} */
+{{/let partial}}
+
+{{! Constant docblock - Glean annotation for mapping generated constants to thrift constants }}
+{{#let export partial const_docblock |const|}}
+/** Glean {"constant": "{{const.name}}"} */
+{{/let partial}}

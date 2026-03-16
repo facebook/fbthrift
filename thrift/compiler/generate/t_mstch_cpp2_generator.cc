@@ -2138,9 +2138,9 @@ void t_mstch_cpp2_generator::set_mstch_factories() {
 
 void t_mstch_cpp2_generator::generate_constants(const t_program* program) {
   const auto& name = program->name();
-  const auto& prog = cached_program(program);
 
-  render_to_file(prog, "module_constants.h", name + "_constants.h");
+  render_whisker_file(
+      "module_constants.h", fmt::format("{}_constants.h", name));
   render_whisker_file(
       "module_constants.cpp", fmt::format("{}_constants.cpp", name));
 }
