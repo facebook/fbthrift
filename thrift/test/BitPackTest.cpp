@@ -16,7 +16,7 @@
 
 #include <random>
 #include <gtest/gtest.h>
-#include <thrift/test/gen-cpp2/Bitpack_for_each_field.h>
+#include <thrift/lib/cpp2/op/Get.h>
 #include <thrift/test/gen-cpp2/Bitpack_types.h>
 
 namespace apache::thrift::test {
@@ -238,8 +238,10 @@ TEST(AtomicBitpack, multithread) {
     t.join();
   }
 
-  apache::thrift::for_each_field(
-      obj, [](auto&&, auto&& ref) { EXPECT_TRUE(ref.has_value()); });
+  apache::thrift::op::for_each_field_id<cpp2::AtomicBitpack>([&]<class Id>(Id) {
+    auto ref = apache::thrift::op::get<Id>(obj);
+    EXPECT_TRUE(ref.has_value());
+  });
 }
 
 } // namespace apache::thrift::test
