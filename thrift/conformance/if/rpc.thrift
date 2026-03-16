@@ -828,7 +828,7 @@ service RPCConformanceService {
 
   // =================== Interactions ===================
   performs BasicInteraction;
-  BasicInteraction basicInteractionFactoryFunction(i32 initialSum);
+  BasicInteraction basicInteractionFactoryFunction(-1: i32 initialSum);
 
   // =================== BiDi Streaming ===================
   // @lint-ignore THRIFTCHECKS new unreleased feature

@@ -28,6 +28,6 @@ struct OverflowResult {
 }
 
 service Sleep {
-  string echo(string message, double delay);
-  OverflowResult overflow(i32 value);
+  string echo(-1: string message, -2: double delay);
+  OverflowResult overflow(-1: i32 value);
 }
