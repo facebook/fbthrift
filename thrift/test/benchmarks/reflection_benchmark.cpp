@@ -21,7 +21,6 @@
 #include <folly/init/Init.h>
 #include <folly/lang/Pretty.h>
 #include <thrift/lib/cpp2/op/Get.h>
-#include <thrift/test/testset/gen-cpp2/testset_for_each_field.h>
 #include <thrift/test/testset/gen-cpp2/testset_types.h>
 
 namespace apache::thrift::test {
@@ -52,7 +51,8 @@ void add_benchmark() {
   {
     static Struct s;
     folly::addBenchmark(__FILE__, name + "_value_visitation", [] {
-      for_each_field(s, [](auto&&, auto ref) {
+      apache::thrift::op::for_each_field_id<Struct>([](auto id) {
+        auto ref = apache::thrift::op::get<decltype(id)>(s);
         ref = "a";
         folly::doNotOptimizeAway(ref);
       });
@@ -87,8 +87,9 @@ void add_benchmark() {
     static Struct s;
     folly::addBenchmark(__FILE__, name + "_name_visitation", [] {
       int k = 0;
-      for_each_field(s, [&k](auto&& meta, auto&&) {
-        for (char c : *meta.name_ref()) {
+      apache::thrift::op::for_each_field_id<Struct>([&k](auto id) {
+        auto name = apache::thrift::op::get_name_v<Struct, decltype(id)>;
+        for (char c : std::string_view(name)) {
           k += c;
         }
       });

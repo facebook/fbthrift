@@ -19,7 +19,7 @@
 #include <folly/Demangle.h>
 #include <folly/Traits.h>
 #include <folly/init/Init.h>
-#include <thrift/test/testset/gen-cpp2/testset_for_each_field.h>
+#include <thrift/test/testset/gen-cpp2/testset_types.h>
 
 namespace apache::thrift::test {
 namespace {
