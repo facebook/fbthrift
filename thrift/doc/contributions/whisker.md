@@ -157,6 +157,10 @@ There are four categories of `template`s:
   * All statements are of the form `{{# ...}}`. Unlike blocks, there is no closing tag.
 * [***Macros***](#macros) — `{{> foo}}` — for reusable templates.
 
+:::note
+Whisker also supports Mustache-compatible *section blocks*: `{{#variable}}...{{/variable}}` and inverted sections `{{^variable}}...{{/variable}}`. These are retained for backwards compatibility with [`mstch`](https://github.com/no1msd/mstch). New templates should prefer `{{#if}}` and `{{#each}}` for clarity.
+:::
+
 <Grammar>
 
 ```
@@ -268,11 +272,12 @@ keyword → {
   "pragma"   |
 }
 id_prefix → { alpha |        | '_' | '$' }
-id_suffix → { alpha | digits | '_' | '$' | '-' | '+' | ':' | '?' | '/' }
+id_suffix → { alpha | digits | '_' | '$' | '-' | '+' | '?' }
 
 builtin-call → {
   ("not" ~ expression) |
-  (("and" | "or") ~ expression ~ expression+) }
+  (("and" | "or") ~ expression ~ expression+) |
+  ("if" ~ expression ~ expression ~ expression) }
 
 user-defined-call → {
   user-defined-call-lookup ~
@@ -631,6 +636,10 @@ Whisker `{{#pragma}}` statements allow modifying rendering behavior for the curr
 
 Currently the only pragma supported is `ignore-newlines`, which suppresses all newlines in the current source file.
 
+:::note
+Pragma statements may appear in both the [header](#file-structure) and the body of a template.
+:::
+
 <Example>
 
 ```whisker
@@ -652,7 +661,7 @@ This is all one line.
 <Grammar>
 
 ```
-pragma-statement → { "{{" ~ "#" ~ "pragma" ~ ( "single-line" ) ~ "}}" }
+pragma-statement → { "{{" ~ "#" ~ "pragma" ~ ( "ignore-newlines" ) ~ "}}" }
 ```
 
 </Grammar>
@@ -947,7 +956,7 @@ partial-block-open      → { "{{#" ~ "let" ~
                             "}}" }
 partial-name-spec       → { "export"? ~ "partial" ~ identifier }
 partial-block-arguments → { "|" ~ identifier+ ~ "|" }
-partial-block-captures  → { "as" ~ "|" ~ identifier+ ~ "|" }
+partial-block-captures  → { "captures" ~ "|" ~ identifier+ ~ "|" }
 partial-block-close     → { "{{/" ~ "let" ~ "partial" ~ "}}" }
 
 partial-statement → { "{{" ~ "#" ~ "partial" ~ expression ~ partial-argument* ~ "}}" }
@@ -2165,7 +2174,7 @@ false
 ---
 
 #### `string.len`
-Produces the length of a string.
+Produces the length of a string in bytes (not Unicode codepoints).
 
 **Positional Arguments**:
 - `string` - The string to find length of.
