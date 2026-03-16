@@ -26,6 +26,6 @@ struct TestStruct {
 
 service TestService {
   void sleep();
-  bool isPrime(i64 num);
+  bool isPrime(-1: i64 num);
   TestStruct getResult();
 }

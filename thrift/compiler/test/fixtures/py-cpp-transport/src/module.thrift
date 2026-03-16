@@ -18,5 +18,5 @@ namespace py test.fixtures.py_cpp_transport
 
 service MyService {
   void ping();
-  string echo(string input);
+  string echo(-1: string input);
 }
