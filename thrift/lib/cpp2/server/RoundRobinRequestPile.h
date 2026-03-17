@@ -27,7 +27,7 @@
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/server/RequestExpirationDelegate.h>
 #include <thrift/lib/cpp2/server/RequestPileBase.h>
-#include <thrift/lib/cpp2/server/WeightedRequestPileQueue.h>
+#include <thrift/lib/cpp2/server/SingleBucketRequestPileQueue.h>
 
 namespace apache::thrift {
 
@@ -168,7 +168,7 @@ class RoundRobinRequestPile : public RequestPileBase {
   // This is a temporary solution to single bucket case
   // because ReqeustQueue is a MPSC queue
   using SingleBucketRequestQueue =
-      server::WeightedRequestPileQueue<ServerRequest>;
+      server::SingleBucketRequestPileQueue<ServerRequest>;
 
   using BucketEventLoggingFunction = std::function<void(Priority, Bucket)>;
   using DequeueObserver = std::function<void(const ServerRequest& request)>;

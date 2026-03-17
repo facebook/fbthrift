@@ -163,14 +163,8 @@ RoundRobinRequestPile::RoundRobinRequestPile(Options opts)
   for (unsigned i = 0; i < numBucketsPerPriority.size(); ++i) {
     DCHECK(numBucketsPerPriority.at(i));
 
-    if (auto limit = opts_.getNumMaxRequestsForPriority(i)) {
-      singleBucketRequestQueues_[i] =
-          std::make_unique<SingleBucketRequestQueue>(true);
-      singleBucketRequestQueues_[i]->setLimit(limit);
-    } else {
-      singleBucketRequestQueues_[i] =
-          std::make_unique<SingleBucketRequestQueue>(false);
-    }
+    singleBucketRequestQueues_[i] = std::make_unique<SingleBucketRequestQueue>(
+        opts_.getNumMaxRequestsForPriority(i));
 
     requestQueues_[i] =
         std::make_unique<RequestQueue[]>(numBucketsPerPriority.at(i));
