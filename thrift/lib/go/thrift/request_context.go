@@ -82,7 +82,7 @@ func (c ConnInfo) TLS() *tls.ConnectionState {
 // Not all options are guaranteed to be implemented by a client
 type RequestContext struct {
 	RequestTimeout time.Duration
-	Method         string
+	MethodName     string
 	SequenceID     int32
 	InteractionID  int64
 	Priority       Priority

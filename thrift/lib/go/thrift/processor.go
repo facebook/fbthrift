@@ -133,7 +133,7 @@ func process(
 	// Step 1c: Use Protocol interface to retrieve headers.
 	requestHeaders := prot.getResponseHeaders()
 	reqCtx := RequestContext{
-		Method:     name,
+		MethodName: name,
 		SequenceID: seqID,
 	}
 	if connInfoOk {
