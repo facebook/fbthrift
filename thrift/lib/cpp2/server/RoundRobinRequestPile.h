@@ -31,8 +31,7 @@
 
 namespace apache::thrift {
 
-class RoundRobinRequestPile : public RequestPileBase {
- public:
+struct RoundRobinRequestPileOptions {
   using Priority = uint32_t;
   using Bucket = uint32_t;
   // Function to specify priority and bucket for a request. The priority must be
@@ -42,111 +41,90 @@ class RoundRobinRequestPile : public RequestPileBase {
   using PileSelectionFunction =
       std::function<std::pair<Priority, Bucket>(const ServerRequest&)>;
 
-  struct Options {
-    inline constexpr static unsigned int kDefaultNumPriorities = 1;
-    inline constexpr static unsigned int kDefaultNumBuckets = 1;
+  inline constexpr static unsigned int kDefaultNumPriorities = 1;
+  inline constexpr static unsigned int kDefaultNumBuckets = 1;
 
-    std::string name;
+  std::string name;
 
-    // numBucket = numBuckets_[priority]
-    std::vector<uint32_t> numBucketsPerPriority;
+  // numBucket = numBuckets_[priority]
+  std::vector<uint32_t> numBucketsPerPriority;
 
-    // 0 means no limit
-    // this is a per bucket limit
-    uint64_t numMaxRequests{0};
+  // 0 means no limit
+  // this is a per bucket limit
+  uint64_t numMaxRequests{0};
 
-    // Per-priority per-bucket limits. When set for a given priority,
-    // overrides numMaxRequests for that priority. 0 means no limit.
-    // If empty, numMaxRequests is used for all priorities.
-    std::vector<uint32_t> numMaxRequestsPerPriority;
+  // Per-priority per-bucket limits. When set for a given priority,
+  // overrides numMaxRequests for that priority. 0 means no limit.
+  // If empty, numMaxRequests is used for all priorities.
+  std::vector<uint32_t> numMaxRequestsPerPriority;
 
-    // Function to route requests to priority/bucket
-    PileSelectionFunction pileSelectionFunction;
+  // Function to route requests to priority/bucket
+  PileSelectionFunction pileSelectionFunction;
 
-    // Pre-enqueue filter for custom rejection logic.
-    // Called after priority is determined, before enqueue.
-    // Return rejection to reject the request, nullopt to allow.
-    using PreEnqueueFilter =
-        std::function<std::optional<ServerRequestRejection>(
-            const ServerRequest& request)>;
+  // Pre-enqueue filter for custom rejection logic.
+  // Called after priority is determined, before enqueue.
+  // Return rejection to reject the request, nullopt to allow.
+  using PreEnqueueFilter = std::function<std::optional<ServerRequestRejection>(
+      const ServerRequest& request)>;
 
-    PreEnqueueFilter preEnqueueFilter;
+  PreEnqueueFilter preEnqueueFilter;
 
-    void setPreEnqueueFilter(PreEnqueueFilter fn) {
-      preEnqueueFilter = std::move(fn);
-    }
+  void setPreEnqueueFilter(PreEnqueueFilter fn);
 
-    Options() {
-      numBucketsPerPriority.reserve(kDefaultNumPriorities);
-      for (unsigned i = 0; i < kDefaultNumPriorities; ++i) {
-        numBucketsPerPriority.emplace_back(kDefaultNumBuckets);
-      }
-    }
+  RoundRobinRequestPileOptions();
 
-    Options(
-        std::vector<uint32_t> shape,
-        PileSelectionFunction pileSelectionFunction)
-        : numBucketsPerPriority(std::move(shape)),
-          pileSelectionFunction(std::move(pileSelectionFunction)) {}
+  RoundRobinRequestPileOptions(
+      std::vector<uint32_t> shape, PileSelectionFunction pileSelectionFunction);
 
-    void setName(std::string rName) { name = std::move(rName); }
+  void setName(std::string rName);
 
-    // Set the number of priority levels to provide. By default the number of
-    // buckets per priority will be set to 1.
-    void setNumPriorities(unsigned int numPri) {
-      numBucketsPerPriority.clear();
-      numBucketsPerPriority.resize(numPri, kDefaultNumBuckets);
-    }
+  // Set the number of priority levels to provide. By default the number of
+  // buckets per priority will be set to 1.
+  void setNumPriorities(unsigned int numPri);
 
-    void setNumBucketsPerPriority(Priority priority, unsigned int numBucket) {
-      numBucketsPerPriority.at(priority) = numBucket;
-    }
+  void setNumBucketsPerPriority(Priority priority, unsigned int numBucket);
 
-    // This function sets the shape of the RequestPile
-    // e.g. This is setting the number of buckets per priority
-    // If your RequestPile has 3 priorities and each has 2 buckets
-    // you should pass in {2,2,2}
-    void setShape(std::vector<unsigned int> shape) {
-      numBucketsPerPriority = std::move(shape);
-    }
+  // This function sets the shape of the RequestPile
+  // e.g. This is setting the number of buckets per priority
+  // If your RequestPile has 3 priorities and each has 2 buckets
+  // you should pass in {2,2,2}
+  void setShape(std::vector<unsigned int> shape);
 
-    void setPileSelectionFunction(PileSelectionFunction func) {
-      pileSelectionFunction = std::move(func);
-    }
+  void setPileSelectionFunction(PileSelectionFunction func);
 
-    // Set per-priority per-bucket limits. The vector size must match the
-    // number of priorities. A value of 0 means no limit for that priority.
-    void setNumMaxRequestsPerPriority(std::vector<uint32_t> limits) {
-      numMaxRequestsPerPriority = std::move(limits);
-    }
+  // Set per-priority per-bucket limits. The vector size must match the
+  // number of priorities. A value of 0 means no limit for that priority.
+  void setNumMaxRequestsPerPriority(std::vector<uint32_t> limits);
 
-    // Get the effective per-bucket limit for a given priority.
-    // Returns the per-priority limit if set, otherwise the global limit.
-    uint32_t getNumMaxRequestsForPriority(unsigned priority) const {
-      if (!numMaxRequestsPerPriority.empty()) {
-        return numMaxRequestsPerPriority.at(priority);
-      }
-      return numMaxRequests;
-    }
+  // Get the effective per-bucket limit for a given priority.
+  // Returns the per-priority limit if set, otherwise the global limit.
+  uint32_t getNumMaxRequestsForPriority(unsigned priority) const;
 
-    // emulating PriorityQueueThreadManager
-    PileSelectionFunction getDefaultPileSelectionFunc(
-        unsigned defaultPriority = static_cast<unsigned>(concurrency::NORMAL));
+  // emulating PriorityQueueThreadManager
+  PileSelectionFunction getDefaultPileSelectionFunc(
+      unsigned defaultPriority = static_cast<unsigned>(concurrency::NORMAL));
 
-    std::string describe() const;
+  std::string describe() const;
 
-    /*
-     * addInternalPriorities updates Options to work with internal priorities.
-     * It does this by doubling the number of priorities while keeping the
-     * number of buckets per priority the same. For example, if the original
-     * shape was {1, 2} (high priority with 1 bucket and low priority with 2
-     * buckets), the new shape will be {1, 1, 2, 2}. Requests with LO_PRI
-     * internal priority will be placed in the second corresponding priority.
-     * Internal priority is used by interactions to prioritize requests for
-     * existing interactions over other requests.
-     */
-    Options addInternalPriorities() const;
-  };
+  /*
+   * addInternalPriorities updates Options to work with internal priorities.
+   * It does this by doubling the number of priorities while keeping the
+   * number of buckets per priority the same. For example, if the original
+   * shape was {1, 2} (high priority with 1 bucket and low priority with 2
+   * buckets), the new shape will be {1, 1, 2, 2}. Requests with LO_PRI
+   * internal priority will be placed in the second corresponding priority.
+   * Internal priority is used by interactions to prioritize requests for
+   * existing interactions over other requests.
+   */
+  RoundRobinRequestPileOptions addInternalPriorities() const;
+};
+
+class RoundRobinRequestPile : public RequestPileBase {
+ public:
+  using Options = RoundRobinRequestPileOptions;
+  using Priority = Options::Priority;
+  using Bucket = Options::Bucket;
+  using PileSelectionFunction = Options::PileSelectionFunction;
 
   // The default number of buckets for each priority is 1
   explicit RoundRobinRequestPile(Options opts);

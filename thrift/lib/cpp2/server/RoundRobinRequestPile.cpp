@@ -24,7 +24,59 @@
 
 namespace apache::thrift {
 
-std::string RoundRobinRequestPile::Options::describe() const {
+RoundRobinRequestPileOptions::RoundRobinRequestPileOptions() {
+  numBucketsPerPriority.reserve(kDefaultNumPriorities);
+  for (unsigned i = 0; i < kDefaultNumPriorities; ++i) {
+    numBucketsPerPriority.emplace_back(kDefaultNumBuckets);
+  }
+}
+
+RoundRobinRequestPileOptions::RoundRobinRequestPileOptions(
+    std::vector<uint32_t> shape, PileSelectionFunction pileSelectionFunction)
+    : numBucketsPerPriority(std::move(shape)),
+      pileSelectionFunction(std::move(pileSelectionFunction)) {}
+
+void RoundRobinRequestPileOptions::setPreEnqueueFilter(PreEnqueueFilter fn) {
+  preEnqueueFilter = std::move(fn);
+}
+
+void RoundRobinRequestPileOptions::setName(std::string rName) {
+  name = std::move(rName);
+}
+
+void RoundRobinRequestPileOptions::setNumPriorities(unsigned int numPri) {
+  numBucketsPerPriority.clear();
+  numBucketsPerPriority.resize(numPri, kDefaultNumBuckets);
+}
+
+void RoundRobinRequestPileOptions::setNumBucketsPerPriority(
+    uint32_t priority, unsigned int numBucket) {
+  numBucketsPerPriority.at(priority) = numBucket;
+}
+
+void RoundRobinRequestPileOptions::setShape(std::vector<unsigned int> shape) {
+  numBucketsPerPriority = std::move(shape);
+}
+
+void RoundRobinRequestPileOptions::setPileSelectionFunction(
+    PileSelectionFunction func) {
+  pileSelectionFunction = std::move(func);
+}
+
+void RoundRobinRequestPileOptions::setNumMaxRequestsPerPriority(
+    std::vector<uint32_t> limits) {
+  numMaxRequestsPerPriority = std::move(limits);
+}
+
+uint32_t RoundRobinRequestPileOptions::getNumMaxRequestsForPriority(
+    unsigned priority) const {
+  if (!numMaxRequestsPerPriority.empty()) {
+    return numMaxRequestsPerPriority.at(priority);
+  }
+  return numMaxRequests;
+}
+
+std::string RoundRobinRequestPileOptions::describe() const {
   return fmt::format(
       "{{Options name={} numBucketsPerPriority={{{}}} numMaxRequests={} numMaxRequestsPerPriority={{{}}}}}",
       name,
@@ -33,8 +85,8 @@ std::string RoundRobinRequestPile::Options::describe() const {
       fmt::join(numMaxRequestsPerPriority, ","));
 }
 
-RoundRobinRequestPile::PileSelectionFunction
-RoundRobinRequestPile::Options::getDefaultPileSelectionFunc(
+RoundRobinRequestPileOptions::PileSelectionFunction
+RoundRobinRequestPileOptions::getDefaultPileSelectionFunc(
     unsigned defaultPriority) {
   DCHECK(numBucketsPerPriority.size());
   unsigned priorityLimit = numBucketsPerPriority.size() - 1;
@@ -358,8 +410,8 @@ RoundRobinRequestPile::PileSelectionFunction augmentWithInternalPriorities(
 }
 } // namespace
 
-RoundRobinRequestPile::Options
-RoundRobinRequestPile::Options::addInternalPriorities() const {
+RoundRobinRequestPileOptions
+RoundRobinRequestPileOptions::addInternalPriorities() const {
   auto opts = *this;
   if (opts.numBucketsPerPriority.size() >
       std::numeric_limits<RoundRobinRequestPile::Priority>::max() / 2) {
