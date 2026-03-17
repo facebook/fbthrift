@@ -34,6 +34,22 @@
 using namespace ::testing;
 
 namespace apache::thrift {
+
+struct AsyncPoolComponents {
+  std::unique_ptr<RoundRobinRequestPile> requestPile;
+  std::shared_ptr<folly::CPUThreadPoolExecutor> executor;
+  std::unique_ptr<ParallelConcurrencyController> concurrencyController;
+
+  explicit AsyncPoolComponents(int numThreads = 1)
+      : requestPile(
+            std::make_unique<RoundRobinRequestPile>(
+                RoundRobinRequestPile::Options())),
+        executor(std::make_shared<folly::CPUThreadPoolExecutor>(numThreads)),
+        concurrencyController(
+            std::make_unique<ParallelConcurrencyController>(
+                *requestPile, *executor)) {}
+};
+
 TEST(ResourcePoolSetTest, testDefaultPoolsOverride_overrideSync_expectCrash) {
   ResourcePoolSet set;
 
@@ -186,4 +202,350 @@ TEST(
   // Verify the set is in a valid state
   EXPECT_TRUE(locked.load());
 }
+
+// Phase 2: Lock Semantics
+
+TEST(ResourcePoolSetTest, LockSemantics_setResourcePoolAfterLock_throws) {
+  ResourcePoolSet set;
+  set.setResourcePool(
+      ResourcePoolHandle::defaultAsync(), nullptr, nullptr, nullptr);
+  set.lock();
+  EXPECT_THROW(
+      set.setResourcePool(
+          ResourcePoolHandle::defaultSync(), nullptr, nullptr, nullptr),
+      std::logic_error);
+}
+
+TEST(ResourcePoolSetTest, LockSemantics_addResourcePoolAfterLock_throws) {
+  ResourcePoolSet set;
+  set.setResourcePool(
+      ResourcePoolHandle::defaultAsync(), nullptr, nullptr, nullptr);
+  set.lock();
+  EXPECT_THROW(
+      set.addResourcePool("extra", nullptr, nullptr, nullptr),
+      std::logic_error);
+}
+
+// Phase 3: Pool Lookup
+
+TEST(
+    ResourcePoolSetTest,
+    FindResourcePool_existingDefaultSync_returnsDefaultSyncHandle) {
+  ResourcePoolSet set;
+  set.setResourcePool(
+      ResourcePoolHandle::defaultSync(), nullptr, nullptr, nullptr);
+  set.lock();
+
+  auto handle = set.findResourcePool("DefaultSync");
+  ASSERT_TRUE(handle.has_value());
+  EXPECT_EQ(handle->index(), ResourcePoolHandle::kDefaultSyncIndex);
+}
+
+TEST(
+    ResourcePoolSetTest,
+    FindResourcePool_existingDefaultAsync_returnsDefaultAsyncHandle) {
+  ResourcePoolSet set;
+  AsyncPoolComponents pool;
+  set.setResourcePool(
+      ResourcePoolHandle::defaultAsync(),
+      std::move(pool.requestPile),
+      pool.executor,
+      std::move(pool.concurrencyController));
+  set.lock();
+
+  auto handle = set.findResourcePool("DefaultAsync");
+  ASSERT_TRUE(handle.has_value());
+  EXPECT_EQ(handle->index(), ResourcePoolHandle::kDefaultAsyncIndex);
+}
+
+TEST(ResourcePoolSetTest, FindResourcePool_customPool_returnsMakeHandle) {
+  ResourcePoolSet set;
+  set.setResourcePool(
+      ResourcePoolHandle::defaultAsync(), nullptr, nullptr, nullptr);
+  AsyncPoolComponents pool;
+  set.addResourcePool(
+      "MyCustomPool",
+      std::move(pool.requestPile),
+      pool.executor,
+      std::move(pool.concurrencyController));
+  set.lock();
+
+  auto handle = set.findResourcePool("MyCustomPool");
+  ASSERT_TRUE(handle.has_value());
+  EXPECT_GT(handle->index(), ResourcePoolHandle::kMaxReservedIndex);
+}
+
+TEST(ResourcePoolSetTest, FindResourcePool_nonExistent_returnsNullopt) {
+  ResourcePoolSet set;
+  set.setResourcePool(
+      ResourcePoolHandle::defaultAsync(), nullptr, nullptr, nullptr);
+  set.lock();
+
+  EXPECT_FALSE(set.findResourcePool("DoesNotExist").has_value());
+}
+
+TEST(ResourcePoolSetTest, HasResourcePool_outOfRange_returnsFalse) {
+  ResourcePoolSet set;
+  set.setResourcePool(
+      ResourcePoolHandle::defaultAsync(), nullptr, nullptr, nullptr);
+  set.lock();
+
+  auto farHandle = ResourcePoolHandle::makeHandle("far", 999);
+  EXPECT_FALSE(set.hasResourcePool(farHandle));
+}
+
+// Phase 4: Pool Access & Component Accessors
+
+TEST(ResourcePoolSetTest, ResourcePoolAccess_asyncPoolComponents_allPresent) {
+  ResourcePoolSet set;
+  AsyncPoolComponents pool;
+  set.setResourcePool(
+      ResourcePoolHandle::defaultAsync(),
+      std::move(pool.requestPile),
+      pool.executor,
+      std::move(pool.concurrencyController));
+  set.lock();
+
+  auto& rp = set.resourcePool(ResourcePoolHandle::defaultAsync());
+  EXPECT_TRUE(rp.requestPile().has_value());
+  EXPECT_TRUE(rp.executor().has_value());
+  EXPECT_TRUE(rp.concurrencyController().has_value());
+  EXPECT_EQ(rp.name(), "DefaultAsync");
+}
+
+TEST(ResourcePoolSetTest, ResourcePoolAccess_syncPoolComponents_allAbsent) {
+  ResourcePoolSet set;
+  set.setResourcePool(
+      ResourcePoolHandle::defaultSync(), nullptr, nullptr, nullptr);
+  set.lock();
+
+  auto& rp = set.resourcePool(ResourcePoolHandle::defaultSync());
+  EXPECT_FALSE(rp.requestPile().has_value());
+  EXPECT_FALSE(rp.executor().has_value());
+  EXPECT_FALSE(rp.concurrencyController().has_value());
+  EXPECT_EQ(rp.name(), "DefaultSync");
+}
+
+TEST(
+    ResourcePoolSetTest, AddResourcePool_handleCorrectness_indexAboveReserved) {
+  ResourcePoolSet set;
+  set.setResourcePool(
+      ResourcePoolHandle::defaultAsync(), nullptr, nullptr, nullptr);
+
+  AsyncPoolComponents pool1;
+  auto h1 = set.addResourcePool(
+      "first",
+      std::move(pool1.requestPile),
+      pool1.executor,
+      std::move(pool1.concurrencyController));
+
+  AsyncPoolComponents pool2;
+  auto h2 = set.addResourcePool(
+      "second",
+      std::move(pool2.requestPile),
+      pool2.executor,
+      std::move(pool2.concurrencyController));
+
+  EXPECT_EQ(h1.index(), ResourcePoolHandle::kMaxReservedIndex + 1);
+  EXPECT_EQ(h2.index(), ResourcePoolHandle::kMaxReservedIndex + 2);
+}
+
+// Phase 5: Statistics
+
+TEST(ResourcePoolSetTest, Statistics_beforeLock_allReturnZero) {
+  ResourcePoolSet set;
+  AsyncPoolComponents pool;
+  set.setResourcePool(
+      ResourcePoolHandle::defaultAsync(),
+      std::move(pool.requestPile),
+      pool.executor,
+      std::move(pool.concurrencyController));
+
+  EXPECT_EQ(set.numQueued(), 0);
+  EXPECT_EQ(set.numInExecution(), 0);
+  EXPECT_EQ(set.numPendingDeque(), 0);
+  EXPECT_EQ(set.workerCount(), 0);
+  EXPECT_EQ(set.idleWorkerCount(), 0);
+}
+
+TEST(ResourcePoolSetTest, Statistics_afterLock_workerAndIdleCounts) {
+  ResourcePoolSet set;
+  AsyncPoolComponents pool(4);
+  set.setResourcePool(
+      ResourcePoolHandle::defaultAsync(),
+      std::move(pool.requestPile),
+      pool.executor,
+      std::move(pool.concurrencyController));
+  set.lock();
+
+  EXPECT_EQ(set.workerCount(), 4);
+  EXPECT_EQ(set.idleWorkerCount(), 4);
+}
+
+// Phase 6: Priority Mapping
+// These tests exercise resourcePoolByPriority_deprecated() which is the only
+// public API to verify calculatePriorityMapping() — the non-deprecated internal
+// logic that maps concurrency::PRIORITY values to resource pools.
+
+TEST(
+    ResourcePoolSetTest,
+    PriorityMapping_defaultAsyncOnly_allPrioritiesRouteToAsync) {
+  ResourcePoolSet set;
+  AsyncPoolComponents pool;
+  set.setResourcePool(
+      ResourcePoolHandle::defaultAsync(),
+      std::move(pool.requestPile),
+      pool.executor,
+      std::move(pool.concurrencyController));
+  set.lock();
+
+  auto& asyncPool = set.resourcePool(ResourcePoolHandle::defaultAsync());
+  for (int p = 0; p < concurrency::N_PRIORITIES; ++p) {
+    auto priority = static_cast<concurrency::PRIORITY>(p);
+// Suppress -Wdeprecated-declarations: this deprecated method is the only
+// public API that exposes the priority→pool mapping for verification.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    auto& routed = set.resourcePoolByPriority_deprecated(priority);
+#pragma clang diagnostic pop
+    EXPECT_EQ(&routed, &asyncPool)
+        << "priority " << p << " should route to defaultAsync";
+  }
+}
+
+TEST(ResourcePoolSetTest, PriorityMapping_customPriorityHint_routesCorrectly) {
+  ResourcePoolSet set;
+  AsyncPoolComponents defaultPool;
+  set.setResourcePool(
+      ResourcePoolHandle::defaultAsync(),
+      std::move(defaultPool.requestPile),
+      defaultPool.executor,
+      std::move(defaultPool.concurrencyController));
+
+  AsyncPoolComponents importantPool;
+  auto importantHandle = set.addResourcePool(
+      "ImportantPool",
+      std::move(importantPool.requestPile),
+      importantPool.executor,
+      std::move(importantPool.concurrencyController),
+      concurrency::PRIORITY::IMPORTANT);
+  set.lock();
+
+  auto& impPool = set.resourcePool(importantHandle);
+
+// Suppress -Wdeprecated-declarations: see comment on the test above.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+  EXPECT_EQ(
+      &set.resourcePoolByPriority_deprecated(concurrency::IMPORTANT), &impPool);
+  EXPECT_EQ(
+      &set.resourcePoolByPriority_deprecated(concurrency::HIGH), &impPool);
+  EXPECT_EQ(
+      &set.resourcePoolByPriority_deprecated(concurrency::HIGH_IMPORTANT),
+      &impPool);
+
+  auto& asyncPool = set.resourcePool(ResourcePoolHandle::defaultAsync());
+  EXPECT_EQ(
+      &set.resourcePoolByPriority_deprecated(concurrency::NORMAL), &asyncPool);
+  EXPECT_EQ(
+      &set.resourcePoolByPriority_deprecated(concurrency::BEST_EFFORT),
+      &asyncPool);
+#pragma clang diagnostic pop
+}
+
+// Phase 7: Empty, Size, Describe & Debug
+
+TEST(ResourcePoolSetTest, EmptyAndSize_freshSet_emptyAndZero) {
+  ResourcePoolSet set;
+  EXPECT_TRUE(set.empty());
+  EXPECT_EQ(set.size(), 0);
+}
+
+TEST(
+    ResourcePoolSetTest, EmptyAndSize_afterAddingPools_notEmptyAndCorrectSize) {
+  ResourcePoolSet set;
+  set.setResourcePool(
+      ResourcePoolHandle::defaultSync(), nullptr, nullptr, nullptr);
+  AsyncPoolComponents asyncPool;
+  set.setResourcePool(
+      ResourcePoolHandle::defaultAsync(),
+      std::move(asyncPool.requestPile),
+      asyncPool.executor,
+      std::move(asyncPool.concurrencyController));
+  AsyncPoolComponents customPool;
+  set.addResourcePool(
+      "custom",
+      std::move(customPool.requestPile),
+      customPool.executor,
+      std::move(customPool.concurrencyController));
+
+  EXPECT_FALSE(set.empty());
+  EXPECT_EQ(set.size(), 3);
+}
+
+TEST(ResourcePoolSetTest, Describe_afterLock_returnsNonEmptyString) {
+  ResourcePoolSet set;
+  AsyncPoolComponents pool;
+  set.setResourcePool(
+      ResourcePoolHandle::defaultAsync(),
+      std::move(pool.requestPile),
+      pool.executor,
+      std::move(pool.concurrencyController));
+  set.lock();
+
+  auto desc = set.describe();
+  EXPECT_NE(desc.find("ResourcePoolSet"), std::string::npos);
+}
+
+TEST(ResourcePoolSetTest, PoolsDescriptions_matchesSize) {
+  ResourcePoolSet set;
+  set.setResourcePool(
+      ResourcePoolHandle::defaultSync(), nullptr, nullptr, nullptr);
+  AsyncPoolComponents asyncPool;
+  set.setResourcePool(
+      ResourcePoolHandle::defaultAsync(),
+      std::move(asyncPool.requestPile),
+      asyncPool.executor,
+      std::move(asyncPool.concurrencyController));
+  set.lock();
+
+  auto descriptions = set.poolsDescriptions();
+  EXPECT_EQ(descriptions.size(), set.size());
+}
+
+// Phase 8: ForEachResourcePool
+
+TEST(ResourcePoolSetTest, ForEachResourcePool_iteratesAllPools) {
+  ResourcePoolSet set;
+  set.setResourcePool(
+      ResourcePoolHandle::defaultSync(), nullptr, nullptr, nullptr);
+  AsyncPoolComponents asyncPool;
+  set.setResourcePool(
+      ResourcePoolHandle::defaultAsync(),
+      std::move(asyncPool.requestPile),
+      asyncPool.executor,
+      std::move(asyncPool.concurrencyController));
+  AsyncPoolComponents custom1;
+  set.addResourcePool(
+      "custom1",
+      std::move(custom1.requestPile),
+      custom1.executor,
+      std::move(custom1.concurrencyController));
+  AsyncPoolComponents custom2;
+  set.addResourcePool(
+      "custom2",
+      std::move(custom2.requestPile),
+      custom2.executor,
+      std::move(custom2.concurrencyController));
+  set.lock();
+
+  std::size_t count = 0;
+  set.forEachResourcePool([&](const ResourcePool* pool) {
+    if (pool) {
+      ++count;
+    }
+  });
+  EXPECT_EQ(count, 4);
+}
+
 } // namespace apache::thrift

@@ -36,33 +36,78 @@ class BlockingCallTestService : public ServiceHandler<TestService> {
   }
 };
 
-TEST(ResourcePoolsTest, testConcurrencyLimit) {
-  THRIFT_FLAG_SET_MOCK(experimental_use_resource_pools, true);
-  if (!apache::thrift::useResourcePoolsFlagsSet()) {
-    GTEST_SKIP() << "Invalid resource pools mode";
+class ResourcePoolsTest : public Test {
+ protected:
+  void SetUp() override {
+    THRIFT_FLAG_SET_MOCK(experimental_use_resource_pools, true);
+    if (!apache::thrift::useResourcePoolsFlagsSet()) {
+      GTEST_SKIP() << "Invalid resource pools mode";
+    }
+
+    runner_ = std::make_unique<ScopedServerInterfaceThread>(
+        std::make_shared<BlockingCallTestService>());
+
+    auto& thriftServer = runner_->getThriftServer();
+    pools_ = &thriftServer.resourcePoolSet();
+    auto& asyncRP = pools_->resourcePool(ResourcePoolHandle::defaultAsync());
+    cc_ = &asyncRP.concurrencyController()->get();
+    cc_->setExecutionLimitRequests(0);
+
+    client_ = runner_->newClient<Client<TestService>>();
   }
 
-  ScopedServerInterfaceThread runner(
-      std::make_shared<BlockingCallTestService>());
+  std::vector<folly::SemiFuture<int32_t>> sendRequests(int count) {
+    std::vector<folly::SemiFuture<int32_t>> futures;
+    futures.reserve(count);
+    for (int i = 0; i < count; ++i) {
+      futures.push_back(client_->semifuture_echoInt(i));
+    }
+    return futures;
+  }
 
-  auto& thriftServer = runner.getThriftServer();
+  std::unique_ptr<ScopedServerInterfaceThread> runner_;
+  ResourcePoolSet* pools_ = nullptr;
+  ConcurrencyControllerInterface* cc_ = nullptr;
+  std::unique_ptr<Client<TestService>> client_;
+};
 
-  // grab the resource pool
-  // and set the number to 0
-  auto& pools = thriftServer.resourcePoolSet();
-  auto& asyncRP = pools.resourcePool(ResourcePoolHandle::defaultAsync());
-  auto& cc = asyncRP.concurrencyController()->get();
-  // block request
-  cc.setExecutionLimitRequests(0);
+TEST_F(ResourcePoolsTest, testConcurrencyLimit) {
+  client_->semifuture_echoInt(0);
 
-  auto client = runner.newClient<Client<TestService>>();
-  client->semifuture_echoInt(0);
+  /* sleep override */ usleep(2000000);
 
-  usleep(2000000);
+  EXPECT_EQ(cc_->getExecutionLimitRequests(), 0);
+  EXPECT_EQ(pools_->numQueued(), 1);
 
-  EXPECT_EQ(cc.getExecutionLimitRequests(), 0);
-  EXPECT_EQ(pools.numQueued(), 1);
+  cc_->setExecutionLimitRequests(1);
+}
 
-  // let request through
-  cc.setExecutionLimitRequests(1);
+TEST_F(ResourcePoolsTest, MultipleRequestsQueued_whenBlocked_allQueued) {
+  constexpr int kNumRequests = 5;
+  auto futures = sendRequests(kNumRequests);
+
+  /* sleep override */ usleep(2000000);
+
+  EXPECT_EQ(pools_->numQueued(), kNumRequests);
+
+  cc_->setExecutionLimitRequests(kNumRequests);
+  for (auto& f : futures) {
+    std::move(f).get();
+  }
+}
+
+TEST_F(
+    ResourcePoolsTest, ConcurrencyLimit_requestsProcessedAfterLimitIncrease) {
+  constexpr int kNumRequests = 5;
+  auto futures = sendRequests(kNumRequests);
+
+  /* sleep override */ usleep(2000000);
+
+  EXPECT_EQ(cc_->getExecutionLimitRequests(), 0);
+  EXPECT_EQ(pools_->numQueued(), kNumRequests);
+
+  cc_->setExecutionLimitRequests(kNumRequests);
+  for (auto& f : futures) {
+    EXPECT_EQ(std::move(f).get(), 1);
+  }
 }
