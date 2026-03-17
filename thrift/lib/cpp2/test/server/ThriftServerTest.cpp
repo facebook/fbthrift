@@ -1980,6 +1980,9 @@ TEST_P(HeaderOrRocket, ResponseWriteTimeout) {
     void readZeroCopyDataAvailable(
         std::unique_ptr<IOBuf>&& zeroCopyData,
         size_t additionalBytes) noexcept override {
+      if (sleepMsPerLoop_ > std::chrono::milliseconds::zero()) {
+        std::this_thread::sleep_for(sleepMsPerLoop_);
+      }
       wrapped_->readZeroCopyDataAvailable(
           std::move(zeroCopyData), additionalBytes);
     }
@@ -1988,6 +1991,9 @@ TEST_P(HeaderOrRocket, ResponseWriteTimeout) {
     }
     size_t maxBufferSize() const override { return wrapped_->maxBufferSize(); }
     void readBufferAvailable(std::unique_ptr<IOBuf> readBuf) noexcept override {
+      if (sleepMsPerLoop_ > std::chrono::milliseconds::zero()) {
+        std::this_thread::sleep_for(sleepMsPerLoop_);
+      }
       wrapped_->readBufferAvailable(std::move(readBuf));
     }
     void readEOF() noexcept override {
