@@ -341,7 +341,7 @@ class JSONProtocolReaderCommon : public detail::ProtocolBase {
 // JSON has fewer types than Thrift, so multiple Thrift types map to the same
 // JSON representation (e.g., all numeric types are JSON numbers).
 inline bool isJsonTypeCompatible(
-    protocol::TType peeked, protocol::TType expected) {
+    protocol::TType peeked, protocol::TType expected, bool isMapKey = false) {
   if (peeked == expected) {
     return true;
   }
@@ -372,12 +372,24 @@ inline bool isJsonTypeCompatible(
       // JSON arrays can be lists or sets
       return expected == protocol::TType::T_LIST ||
           expected == protocol::TType::T_SET;
-    case protocol::TType::T_STOP:
-    case protocol::TType::T_BOOL:
-    case protocol::TType::T_U64:
     case protocol::TType::T_STRING:
     case protocol::TType::T_UTF8:
     case protocol::TType::T_UTF16:
+      // In JSON, map keys are always strings regardless of the Thrift key
+      // type. The underlying read functions (readI32, readI64, etc.) handle
+      // the string-to-type conversion correctly.
+      if (isMapKey) {
+        return expected == protocol::TType::T_DOUBLE ||
+            expected == protocol::TType::T_BYTE ||
+            expected == protocol::TType::T_I16 ||
+            expected == protocol::TType::T_I32 ||
+            expected == protocol::TType::T_I64 ||
+            expected == protocol::TType::T_FLOAT;
+      }
+      return false;
+    case protocol::TType::T_STOP:
+    case protocol::TType::T_BOOL:
+    case protocol::TType::T_U64:
     case protocol::TType::T_STREAM:
     default:
       return false;

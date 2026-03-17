@@ -374,4 +374,21 @@ TEST_F(JSONProtocolCommonTest, isJsonTypeCompatible) {
   EXPECT_FALSE(isJsonTypeCompatible(TType::T_STRING, TType::T_BOOL));
   EXPECT_FALSE(isJsonTypeCompatible(TType::T_BOOL, TType::T_STRING));
   EXPECT_FALSE(isJsonTypeCompatible(TType::T_BOOL, TType::T_I32));
+
+  // Map key: JSON map keys are always strings, so T_STRING is compatible
+  // with numeric types when isMapKey=true
+  EXPECT_TRUE(isJsonTypeCompatible(TType::T_STRING, TType::T_BYTE, true));
+  EXPECT_TRUE(isJsonTypeCompatible(TType::T_STRING, TType::T_I16, true));
+  EXPECT_TRUE(isJsonTypeCompatible(TType::T_STRING, TType::T_I32, true));
+  EXPECT_TRUE(isJsonTypeCompatible(TType::T_STRING, TType::T_I64, true));
+  EXPECT_TRUE(isJsonTypeCompatible(TType::T_STRING, TType::T_FLOAT, true));
+  EXPECT_TRUE(isJsonTypeCompatible(TType::T_STRING, TType::T_DOUBLE, true));
+
+  // Map key: T_STRING still not compatible with non-numeric types
+  EXPECT_FALSE(isJsonTypeCompatible(TType::T_STRING, TType::T_BOOL, true));
+  EXPECT_FALSE(isJsonTypeCompatible(TType::T_STRING, TType::T_LIST, true));
+  EXPECT_FALSE(isJsonTypeCompatible(TType::T_STRING, TType::T_STRUCT, true));
+
+  // Non-map-key: T_STRING still incompatible with numeric types
+  EXPECT_FALSE(isJsonTypeCompatible(TType::T_STRING, TType::T_I32, false));
 }

@@ -1201,5 +1201,29 @@ TEST_F(ValidationCallbacksTest, DefaultBehaviorPreserved) {
       std::runtime_error);
 }
 
+TEST(DynamicValueTest, SimpleJSONMapWithIntegerKeys) {
+  static type_system::detail::ContainerTypeCache mapCache;
+  auto mapType = type_system::TypeRef::Map::of(
+      type_system::TypeSystem::I32(), type_system::TypeSystem::I32(), mapCache);
+
+  // Simulate JSON input where integer map keys are encoded as strings,
+  // e.g. {"1": 2, "3": 4}. This is the standard JSON representation since
+  // JSON object keys must be strings.
+  std::string json = R"({"1":2,"3":4})";
+  auto buf = folly::IOBuf::copyBuffer(json);
+
+  SimpleJSONProtocolReader reader;
+  reader.setInput(buf.get());
+  auto deserMap = deserialize(reader, mapType, nullptr);
+
+  EXPECT_EQ(deserMap.size(), 2);
+  auto val1 = deserMap.get(DynamicValue::makeI32(1));
+  ASSERT_TRUE(val1.has_value());
+  EXPECT_EQ(val1->asI32(), 2);
+  auto val3 = deserMap.get(DynamicValue::makeI32(3));
+  ASSERT_TRUE(val3.has_value());
+  EXPECT_EQ(val3->asI32(), 4);
+}
+
 } // namespace
 } // namespace apache::thrift::dynamic

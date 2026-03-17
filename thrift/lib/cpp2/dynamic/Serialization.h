@@ -376,7 +376,8 @@ Map deserialize(
       // For protocols without wire type info, peek at the key's JSON type.
       if constexpr (ProtocolReader::kOmitsContainerElemTypes()) {
         auto peekedKey = reader.peekValueTType();
-        if (!isJsonTypeCompatible(peekedKey, expectedKeyTType)) {
+        if (!isJsonTypeCompatible(
+                peekedKey, expectedKeyTType, /*isMapKey=*/true)) {
           callbacks.onTypeMismatch("map key", expectedKeyTType, peekedKey);
           reader.skip(protocol::TType::T_VOID); // skip key
           // Still check value type before skipping it
