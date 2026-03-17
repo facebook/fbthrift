@@ -45,6 +45,70 @@ THRIFT_PLUGGABLE_FUNC_DECLARE(
     CPULoadSource cpuLoadSource);
 } // namespace detail
 
+/**
+ * CPUConcurrencyController — adaptive load shedding for Thrift servers.
+ *
+ * Runs a periodic feedback control loop (every `refreshPeriodMs`, default 50ms)
+ * that reads CPU utilization and adjusts a server concurrency/rate limit to
+ * keep CPU near a configurable target (`cpuTarget`, default 90%).
+ *
+ * The controller has three phases:
+ *
+ * 1. Bootstrap (stable-estimate collection)
+ *    While CPU < target and outside the refractory period, the controller
+ *    collects `collectionSampleSize` (default 500) estimates of the concurrency
+ *    that would yield `cpuTarget` CPU:
+ *        estimate = (currentUsage / cpuLoad) * cpuTarget
+ *    Once enough samples are collected, the `initialEstimatePercentile`-th
+ *    percentile (default 75th) is chosen as the "stable estimate" and applied
+ *    as the limit. This gives the controller a reasonable starting point.
+ *
+ * 2. Overload (CPU >= cpuTarget)
+ *    The limit is decreased by `decreaseMultiplier` (default 5%), at least 1
+ *    unit, clamped to `concurrencyLowerBound`. The timestamp is recorded for
+ *    the refractory-period check.
+ *
+ * 3. Underload (CPU < cpuTarget, bootstrap complete)
+ *    The limit is increased by `additiveMultiplier` (default 5%), at least 1
+ *    unit, clamped to `concurrencyUpperBound`, when any of:
+ *      - Current usage is near the limit (within `increaseDistanceRatio`), or
+ *      - `bumpOnError` is set and a load-shed event occurred recently, or
+ *      - We are outside the refractory period and below the stable estimate.
+ *
+ * Control loop (runs every refreshPeriodMs):
+ *
+ * // clang-format off
+ *   cycleOnce()
+ *       |
+ *       v
+ *   load >= cpuTarget? --YES--> decrease limit, record overload
+ *       |NO
+ *       v
+ *   usage==0 or load<=0? --YES--> (no-op)
+ *       |NO
+ *       v
+ *   bootstrap incomplete? --YES--> collect sample,
+ *       |NO                        set stable estimate when full
+ *       v
+ *   near limit or shed
+ *   or below estimate? --YES--> increase limit
+ *       |NO
+ *       v
+ *     (no-op)
+ * // clang-format on
+ *
+ * This produces AIMD-like (Additive Increase, Multiplicative Decrease) behavior
+ * with a refractory period (`refractoryPeriodMs`, default 1s) that suppresses
+ * sample collection and stable-estimate convergence right after overload.
+ *
+ * The enforcement method (`Config::method`) selects which server knob is
+ * controlled: MAX_REQUESTS, MAX_QPS, CONCURRENCY_LIMIT, or EXECUTION_RATE.
+ * In DRY_RUN mode the controller tracks limits without enforcing them.
+ *
+ * Config is delivered via `folly::observer::Observer<Config>` and can change at
+ * runtime. A config change fully resets the controller (clears the stable
+ * estimate and re-enters the bootstrap phase).
+ */
 class CPUConcurrencyController {
  public:
   using LoadFunc =
