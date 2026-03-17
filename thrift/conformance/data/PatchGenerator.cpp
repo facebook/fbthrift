@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include <algorithm>
+#include <cmath>
 #include <iterator>
 #include <limits>
 #include <string>
@@ -189,9 +191,31 @@ Test createNumericPatchTest(
 
     using ValueType = decltype(value.value);
     auto addAddTestCase = [&](ValueType toAdd) {
+      // Skip test cases where the addition would overflow (UB for
+      // integers, caught by UBSAN) or produce NaN (uncomparable).
+      // The saturating result differs from plain addition at overflow
+      // boundaries; detect these cases without performing the UB.
+      if constexpr (std::is_integral_v<ValueType>) {
+        if ((toAdd > 0 &&
+             value.value > std::numeric_limits<ValueType>::max() - toAdd) ||
+            (toAdd < 0 &&
+             value.value < std::numeric_limits<ValueType>::lowest() - toAdd)) {
+          return;
+        }
+      } else if constexpr (std::is_floating_point_v<ValueType>) {
+        if (std::isnan(makeAddExpectedResult<TT>(value.value, toAdd))) {
+          return;
+        }
+      }
+
+      // Replace '-' with 'n' in the formatted toAdd value to avoid
+      // conflicting with gtest's filter syntax where '-' separates
+      // positive from negative filter patterns.
+      auto addStr = fmt::format("{}", toAdd);
+      std::replace(addStr.begin(), addStr.end(), '-', 'n');
       auto& addCase = test.testCases()->emplace_back();
       addCase.name() =
-          fmt::format("{}/add.{}_{}", type::getName<TT>(), value.name, toAdd);
+          fmt::format("{}/add.{}_{}", type::getName<TT>(), value.name, addStr);
       auto& tadcase = addCase.test().emplace().objectPatch().emplace();
       tadcase = makeAddTest<TT>(value, registry, protocol, toAdd);
     };
@@ -199,7 +223,7 @@ Test createNumericPatchTest(
     addAddTestCase(1);
     if constexpr (!std::is_same_v<TT, type::bool_t>) {
       addAddTestCase(-1);
-      if (value.value > 0) {
+      if (value.value > 0 && value.value != 1) {
         addAddTestCase(-value.value);
       }
     }
@@ -222,7 +246,8 @@ Test createStringLikePatchTest(
     tascase = makeAssignTest<TT>(value, registry, protocol);
 
     auto& clearCase = test.testCases()->emplace_back();
-    clearCase.name() = fmt::format("{}/clear", type::getName<TT>());
+    clearCase.name() =
+        fmt::format("{}/clear.{}", type::getName<TT>(), value.name);
     auto& tclcase = clearCase.test().emplace().objectPatch().emplace();
     tclcase = makeClearTest<TT>(value, registry, protocol);
 
