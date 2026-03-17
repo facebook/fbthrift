@@ -96,7 +96,7 @@ func process(
 	// Step 1: Decode message only using Decoder interface and GetResponseHeaders method on the protocol.
 
 	// Step 1a: find the processor function for the message.
-	name, messageType, seqID, readErr := prot.ReadMessageBegin()
+	methodName, messageType, seqID, readErr := prot.ReadMessageBegin()
 	if readErr != nil {
 		// close connection on read failure
 		return nil, readErr
@@ -104,7 +104,7 @@ func process(
 	var argStruct types.ReadableStruct
 	var appException *types.ApplicationException
 
-	pfunc, pfuncErr := getProcessorFunction(processor, messageType, name)
+	pfunc, pfuncErr := getProcessorFunction(processor, messageType, methodName)
 	if pfuncErr != nil {
 		appException = NewApplicationException(types.UNKNOWN_METHOD, pfuncErr.Error())
 	}
@@ -132,9 +132,11 @@ func process(
 	connInfo, connInfoOk := connInfoFromContext(ctx)
 	// Step 1c: Use Protocol interface to retrieve headers.
 	requestHeaders := prot.getResponseHeaders()
+	serviceName := processor.FunctionServiceMap()[methodName]
 	reqCtx := RequestContext{
-		MethodName: name,
-		SequenceID: seqID,
+		ServiceName: serviceName,
+		MethodName:  methodName,
+		SequenceID:  seqID,
 	}
 	if connInfoOk {
 		reqCtx.ConnInfo = connInfo
@@ -149,11 +151,11 @@ func process(
 		pfuncStartTime := time.Now()
 		result, runError = pfunc.RunContext(ctx, argStruct)
 		pfuncDuration := time.Since(pfuncStartTime)
-		if timingSeries := processorStats[name]; timingSeries != nil {
+		if timingSeries := processorStats[methodName]; timingSeries != nil {
 			timingSeries.RecordWithStatus(pfuncDuration, runError == nil)
 		}
 		// Record function-level process timing for stats collection
-		observer.TimeProcessUsForFunction(name, pfuncDuration)
+		observer.TimeProcessUsForFunction(methodName, pfuncDuration)
 		if runError != nil {
 			appException = maybeWrapApplicationException(runError)
 		}
@@ -181,22 +183,22 @@ func process(
 	// Step 3b: Write the message using only the Decoder interface on the protocol.
 	if appException != nil {
 		// it's an application generated error, so serialize it to the client
-		if writeErr := sendWritableStruct(prot, name, types.EXCEPTION, seqID, appException); writeErr != nil {
+		if writeErr := sendWritableStruct(prot, methodName, types.EXCEPTION, seqID, appException); writeErr != nil {
 			// close connection on write failure
 			return nil, writeErr
 		}
 		// Track undeclared exception only after successful write
 		observer.UndeclaredException()
-		observer.AnyExceptionForFunction(name)
+		observer.AnyExceptionForFunction(methodName)
 	} else {
-		if writeErr := sendWritableStruct(prot, name, types.REPLY, seqID, result); writeErr != nil {
+		if writeErr := sendWritableStruct(prot, methodName, types.REPLY, seqID, result); writeErr != nil {
 			// close connection on write failure
 			return nil, writeErr
 		}
 		// Track declared exceptions
 		if wr, ok := result.(types.WritableResult); ok && wr.Exception() != nil {
 			observer.DeclaredException()
-			observer.AnyExceptionForFunction(name)
+			observer.AnyExceptionForFunction(methodName)
 		}
 	}
 	// if we got here, we successfully processed the message
