@@ -231,7 +231,6 @@ target_link_libraries(
     common
     Folly::folly
     thriftannotation
-    thriftanyrep
     thrifttyperep
     thriftprotocol
 )
