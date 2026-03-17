@@ -37,8 +37,7 @@ TEST(InternalPriorityTest, AddInternalPriorities) {
 
   // Default case
   {
-    auto opts = RoundRobinRequestPile::addInternalPriorities(
-        RoundRobinRequestPile::Options());
+    auto opts = RoundRobinRequestPile::Options().addInternalPriorities();
     EXPECT_EQ((std::vector<unsigned int>{1, 1}), opts.numBucketsPerPriority);
     EXPECT_EQ(1, opts.pileSelectionFunction(reqNoPri).first);
     EXPECT_EQ(1, opts.pileSelectionFunction(reqLowPri).first);
@@ -50,7 +49,7 @@ TEST(InternalPriorityTest, AddInternalPriorities) {
   {
     auto opts = RoundRobinRequestPile::Options();
     opts.setShape({1, 2, 3});
-    opts = RoundRobinRequestPile::addInternalPriorities(std::move(opts));
+    opts = opts.addInternalPriorities();
     EXPECT_EQ(
         (std::vector<unsigned int>{1, 1, 2, 2, 3, 3}),
         opts.numBucketsPerPriority);
@@ -71,7 +70,7 @@ TEST(InternalPriorityTest, AddInternalPriorities) {
           // always choose lowest priority
           return {2, 0};
         });
-    opts = RoundRobinRequestPile::addInternalPriorities(std::move(opts));
+    opts = opts.addInternalPriorities();
     EXPECT_EQ(
         (std::vector<unsigned int>{1, 1, 2, 2, 3, 3}),
         opts.numBucketsPerPriority);

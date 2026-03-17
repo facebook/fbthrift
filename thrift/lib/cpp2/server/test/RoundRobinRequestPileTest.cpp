@@ -1023,7 +1023,7 @@ TEST(
   opts.setShape({2, 3});
   opts.setNumMaxRequestsPerPriority({10, 20});
 
-  auto newOpts = RoundRobinRequestPile::addInternalPriorities(opts);
+  auto newOpts = opts.addInternalPriorities();
 
   // Shape should be doubled: {2, 2, 3, 3}
   EXPECT_EQ(newOpts.numBucketsPerPriority, (std::vector<uint32_t>{2, 2, 3, 3}));

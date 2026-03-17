@@ -358,9 +358,9 @@ RoundRobinRequestPile::PileSelectionFunction augmentWithInternalPriorities(
 }
 } // namespace
 
-/*static*/ RoundRobinRequestPile::Options
-RoundRobinRequestPile::addInternalPriorities(
-    RoundRobinRequestPile::Options opts) {
+RoundRobinRequestPile::Options
+RoundRobinRequestPile::Options::addInternalPriorities() const {
+  auto opts = *this;
   if (opts.numBucketsPerPriority.size() >
       std::numeric_limits<RoundRobinRequestPile::Priority>::max() / 2) {
     LOG(WARNING) << "Too many priorities, additional internal priorities "

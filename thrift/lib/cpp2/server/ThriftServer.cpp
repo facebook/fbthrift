@@ -343,7 +343,7 @@ void ThriftServer::initializeDefaults() {
 std::unique_ptr<RequestPileInterface> ThriftServer::makeStandardRequestPile(
     RoundRobinRequestPile::Options options) {
   if (runtimeServerActions_.interactionInService) {
-    options = RoundRobinRequestPile::addInternalPriorities(std::move(options));
+    options = options.addInternalPriorities();
   }
   return std::make_unique<RoundRobinRequestPile>(std::move(options));
 }
