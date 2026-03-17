@@ -45,13 +45,13 @@ if constexpr(::apache::thrift::adapt_detail::has_inplace_toThrift<{{field:cpp_fi
 {{/field:cpp_first_adapter}}
 {{^field:cpp_first_adapter}}
 {{^field:cpp_ref?}}{{#type:container?}}
-{{> field/member}} = {{field:cpp_type}}({{#type:cpp_use_allocator?}}this->get_allocator(){{/type:cpp_use_allocator?}});
+{{#partial fields.member field=field:self struct=struct:self}} = {{field:cpp_type}}({{#type:cpp_use_allocator?}}this->get_allocator(){{/type:cpp_use_allocator?}});
 {{/type:container?}}{{/field:cpp_ref?}}
 {{> module_types_custom_protocol_h/pm}}::readWithContext(*iprot, {{> module_types_custom_protocol_h/member_or_ptr}}, _readState);
 {{/field:cpp_first_adapter}}
 {{/field:use_op_encode?}}
 {{#field:cpp_ref?}}
-{{> field/member}} = std::move(ptr);
+{{#partial fields.member field=field:self struct=struct:self}} = std::move(ptr);
 {{/field:cpp_ref?}}
 {{#if (or type:container? type:structured?)}}
 _readState.afterSubobject(iprot);

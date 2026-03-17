@@ -37,17 +37,17 @@ are cleared to their instrinic default values.
 {{> module_types_cpp/clear_fields}}
 {{/type:union?}}
 {{^type:union?}}
-  ::apache::thrift::detail::st::clear_terse_fields({{> field/member}});
+  ::apache::thrift::detail::st::clear_terse_fields({{#partial fields.member field=field:self struct=struct:self}});
 {{/type:union?}}
 {{/field:cpp_first_adapter}}
 {{/field:cpp_ref?}}
 {{#field:cpp_ref?}}
 {{#field:cpp_ref_unique?}}
-  if ({{> field/member}}) ::apache::thrift::detail::st::clear_terse_fields(*{{> field/member}});
+  if ({{#partial fields.member field=field:self struct=struct:self}}) ::apache::thrift::detail::st::clear_terse_fields(*{{#partial fields.member field=field:self struct=struct:self}});
 {{/field:cpp_ref_unique?}}
 {{^field:cpp_ref_unique?}}
 {{#field:cpp_ref_not_boxed?}}
-  if ({{> field/member}}) {{> field/member}} = ::apache::thrift::detail::make_mutable_smart_ptr<{{field:cpp_storage_type}}>({{#type:cpp_use_allocator?}}this->get_allocator(){{/type:cpp_use_allocator?}});
+  if ({{#partial fields.member field=field:self struct=struct:self}}) {{#partial fields.member field=field:self struct=struct:self}} = ::apache::thrift::detail::make_mutable_smart_ptr<{{field:cpp_storage_type}}>({{#type:cpp_use_allocator?}}this->get_allocator(){{/type:cpp_use_allocator?}});
 {{/field:cpp_ref_not_boxed?}}
 {{^field:cpp_ref_not_boxed?}}
 {{> module_types_cpp/clear_fields}}

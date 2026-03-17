@@ -18,7 +18,7 @@
 {{#field:type}}
 {{> module_types_custom_protocol_h/if_should_write}}
     constexpr int16_t kPrevFieldId = {{#if (and first? struct:indexing?)}}::apache::thrift::detail::kSizeField.id{{#else if first?}}0{{#else}}{{field:serialization_prev_field.id}}{{/if}};
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::{{> common/struct_type}}, {{field:id}}, kPrevFieldId>(*prot_, "{{field:name}}", {{^struct:union?}}previousFieldHasValue{{/struct:union?}}{{#struct:union?}}false{{/struct:union?}});
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::{{#partial types.protocol_type type=type:self}}, {{field:id}}, kPrevFieldId>(*prot_, "{{field:name}}", {{^struct:union?}}previousFieldHasValue{{/struct:union?}}{{#struct:union?}}false{{/struct:union?}});
 {{^struct:union?}}
     previousFieldHasValue = true;
 {{/struct:union?}}
@@ -31,16 +31,16 @@
 {{/field:lazy?}}
 {{^field:non_opt_cpp_ref?}}
 {{#field:use_op_encode?}}
-    xfer += ::apache::thrift::op::encode<{{field:type_tag}}>(*prot_, {{#field:cpp_ref?}}*{{/field:cpp_ref?}}{{> field/member}});
+    xfer += ::apache::thrift::op::encode<{{field:type_tag}}>(*prot_, {{#field:cpp_ref?}}*{{/field:cpp_ref?}}{{#partial fields.member field=field:self struct=struct:self}});
 {{/field:use_op_encode?}}
 {{^field:use_op_encode?}}
     xfer += {{> module_types_custom_protocol_h/pm}}::write(*prot_, {{> module_types_custom_protocol_h/pm_value}});
 {{/field:use_op_encode?}}
 {{/field:non_opt_cpp_ref?}}
 {{#field:non_opt_cpp_ref?}}
-    if ({{> field/member}}) {
+    if ({{#partial fields.member field=field:self struct=struct:self}}) {
 {{#field:use_op_encode?}}
-      xfer += ::apache::thrift::op::encode<{{field:type_tag}}>(*prot_, {{#field:cpp_ref?}}*{{/field:cpp_ref?}}{{> field/member}});
+      xfer += ::apache::thrift::op::encode<{{field:type_tag}}>(*prot_, {{#field:cpp_ref?}}*{{/field:cpp_ref?}}{{#partial fields.member field=field:self struct=struct:self}});
 {{/field:use_op_encode?}}
 {{^field:use_op_encode?}}
       xfer += {{> module_types_custom_protocol_h/pm}}::write(*prot_, {{> module_types_custom_protocol_h/pm_value}});

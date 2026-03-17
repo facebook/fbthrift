@@ -17,28 +17,28 @@
 }}{{!
 // Must not be null.
 }}{{#field:cpp_ref?}}{{!
-  }}{{> field/member}}{{!
+  }}{{#partial fields.member field=field:self struct=struct:self}}{{!
 }}{{/field:cpp_ref?}}{{!
 
 // Must not be empty.
 }}{{#type:container?}}{{!
-  }}{{#field:cpp_ref?}} && {{/field:cpp_ref?}}!::apache::thrift::op::isEmpty<{{> field/tag}}>({{#field:cpp_ref?}}*{{/field:cpp_ref?}}{{> field/member}}){{!
+  }}{{#field:cpp_ref?}} && {{/field:cpp_ref?}}!::apache::thrift::op::isEmpty<{{> field/tag}}>({{#field:cpp_ref?}}*{{/field:cpp_ref?}}{{#partial fields.member field=field:self struct=struct:self}}){{!
 }}{{/type:container?}}{{!
 }}{{#field:raw_string_or_binary?}}{{!
-  }}{{#field:cpp_ref?}} && {{/field:cpp_ref?}}!::apache::thrift::op::isEmpty<{{> field/tag}}>({{#field:cpp_ref?}}*{{/field:cpp_ref?}}{{> field/member}}){{!
+  }}{{#field:cpp_ref?}} && {{/field:cpp_ref?}}!::apache::thrift::op::isEmpty<{{> field/tag}}>({{#field:cpp_ref?}}*{{/field:cpp_ref?}}{{#partial fields.member field=field:self struct=struct:self}}){{!
 }}{{/field:raw_string_or_binary?}}{{!
 
 }}{{^field:cpp_ref?}}{{^type:container?}}{{^field:raw_string_or_binary?}}{{!
   }}{{#field:cpp_first_adapter}}{{!
     // Must check against the default constructor (ignoring any IDL-specified default).
-    }}!::apache::thrift::op::equal<{{> field/tag}}>({{> field/member}}, {{field:cpp_type}}()){{!
+    }}!::apache::thrift::op::equal<{{> field/tag}}>({{#partial fields.member field=field:self struct=struct:self}}, {{field:cpp_type}}()){{!
   }}{{/field:cpp_first_adapter}}{{!
   }}{{^field:cpp_first_adapter}}{{!
     // For all other cases, must not equal the default.
     // TODO(afuller): As with containers, binary, and string above, this should check for
     // the 'intrinsic' default so the behavior does not change when IDL-specified defaults
     // change.
-    }}{{> field/field_ref }} != {{#partial fields.default_value field=field:self}}{{!
+    }}{{#partial fields.field_ref field=field:self struct=struct:self}} != {{#partial fields.default_value field=field:self}}{{!
   }}{{/field:cpp_first_adapter}}{{!
 }}{{/field:raw_string_or_binary?}}{{/type:container?}}{{/field:cpp_ref?}}{{!
 }}

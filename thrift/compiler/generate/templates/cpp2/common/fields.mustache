@@ -55,3 +55,14 @@ apache::thrift::StringTraits<{{field.cpp_standard_type}}>::fromStringLiteral("")
 , *this)
   {{/if field.cpp_first_adapter}}
 {{/let partial}}
+
+{{#let export partial member |field struct|}}
+{{#pragma ignore-newlines}}
+{{#if struct.union?}}value_.{{#else}}this->{{/if}}{{field.cpp_storage_name}}
+{{/let partial}}
+
+{{! A reference to the field's value. Dereferences pointers and wraps in (). }}
+{{#let export partial field_ref |field struct| captures |member|}}
+{{#pragma ignore-newlines}}
+{{#if field.cpp_ref?}}(*{{#partial member field=field struct=struct}}){{#else}}{{#partial member field=field struct=struct}}{{/if}}
+{{/let partial}}

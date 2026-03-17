@@ -17,7 +17,7 @@
 }}
 {{#field:type}}
 {{> module_types_custom_protocol_h/if_should_write}}
-    xfer += prot_->serializedFieldSize("{{field:name}}", apache::thrift::protocol::{{> common/struct_type}}, {{field:id}});
+    xfer += prot_->serializedFieldSize("{{field:name}}", apache::thrift::protocol::{{#partial types.protocol_type type=type:self}}, {{field:id}});
 {{#field:lazy?}}
     if constexpr (Protocol_::kHasIndexSupport()) {
       if (prot_->protocolType() == __fbthrift_protocol_) {
@@ -32,28 +32,28 @@
 {{/field:lazy?}}
 {{^field:non_opt_cpp_ref?}}
 {{#field:use_op_encode?}}
-    xfer += ::apache::thrift::op::serialized_size<false, {{field:type_tag}}>(*prot_, {{#field:cpp_ref?}}*{{/field:cpp_ref?}}{{> field/member}});
+    xfer += ::apache::thrift::op::serialized_size<false, {{field:type_tag}}>(*prot_, {{#field:cpp_ref?}}*{{/field:cpp_ref?}}{{#partial fields.member field=field:self struct=struct:self}});
 {{/field:use_op_encode?}}
 {{^field:use_op_encode?}}
 {{^field:cpp_exactly_one_adapter?}}
     xfer += {{> module_types_custom_protocol_h/pm}}::serializedSize<false>(*prot_, {{> module_types_custom_protocol_h/pm_value}});
 {{/field:cpp_exactly_one_adapter?}}
 {{#field:cpp_exactly_one_adapter?}}
-    xfer += ::apache::thrift::adapt_detail::serializedSize<false, {{field:type_tag}}, {{field:cpp_first_adapter}}>(*prot_, {{#field:cpp_ref?}}*{{/field:cpp_ref?}}{{> field/member}}, [&] {return {{> module_types_custom_protocol_h/pm}}::serializedSize<false>(*prot_, {{> module_types_custom_protocol_h/pm_value}});});
+    xfer += ::apache::thrift::adapt_detail::serializedSize<false, {{field:type_tag}}, {{field:cpp_first_adapter}}>(*prot_, {{#field:cpp_ref?}}*{{/field:cpp_ref?}}{{#partial fields.member field=field:self struct=struct:self}}, [&] {return {{> module_types_custom_protocol_h/pm}}::serializedSize<false>(*prot_, {{> module_types_custom_protocol_h/pm_value}});});
 {{/field:cpp_exactly_one_adapter?}}
 {{/field:use_op_encode?}}
 {{/field:non_opt_cpp_ref?}}
 {{#field:non_opt_cpp_ref?}}
-    if ({{> field/member}}) {
+    if ({{#partial fields.member field=field:self struct=struct:self}}) {
 {{#field:use_op_encode?}}
-      xfer += ::apache::thrift::op::serialized_size<false, {{field:type_tag}}>(*prot_, {{#field:cpp_ref?}}*{{/field:cpp_ref?}}{{> field/member}});
+      xfer += ::apache::thrift::op::serialized_size<false, {{field:type_tag}}>(*prot_, {{#field:cpp_ref?}}*{{/field:cpp_ref?}}{{#partial fields.member field=field:self struct=struct:self}});
 {{/field:use_op_encode?}}
 {{^field:use_op_encode?}}
 {{^field:cpp_exactly_one_adapter?}}
       xfer += {{> module_types_custom_protocol_h/pm}}::serializedSize<false>(*prot_, {{> module_types_custom_protocol_h/pm_value}});
 {{/field:cpp_exactly_one_adapter?}}
 {{#field:cpp_exactly_one_adapter?}}
-      xfer += ::apache::thrift::adapt_detail::serializedSize<false, {{field:type_tag}}, {{field:cpp_first_adapter}}>(*prot_, {{#field:cpp_ref?}}*{{/field:cpp_ref?}}{{> field/member}}, [&] {return {{> module_types_custom_protocol_h/pm}}::serializedSize<false>(*prot_, {{> module_types_custom_protocol_h/pm_value}});});
+      xfer += ::apache::thrift::adapt_detail::serializedSize<false, {{field:type_tag}}, {{field:cpp_first_adapter}}>(*prot_, {{#field:cpp_ref?}}*{{/field:cpp_ref?}}{{#partial fields.member field=field:self struct=struct:self}}, [&] {return {{> module_types_custom_protocol_h/pm}}::serializedSize<false>(*prot_, {{> module_types_custom_protocol_h/pm_value}});});
 {{/field:cpp_exactly_one_adapter?}}
 {{/field:use_op_encode?}}
 {{#if (or type:container? type:enum?)}}
