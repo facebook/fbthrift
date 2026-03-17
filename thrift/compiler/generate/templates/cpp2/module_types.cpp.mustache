@@ -68,7 +68,7 @@ FOLLY_POP_WARNING
 }}} // apache::thrift::detail
 {{/if (has_compiler_option? "tablebased")}}
 {{#program:split_structs}}{{!
-}}
+}}{{#let struct = struct:self}}
 
 {{> module_types_cpp/frozen}}
 {{#struct:union?}}
@@ -126,6 +126,7 @@ std::string_view {{struct:cpp_underlying_name}}::__fbthrift_get_class_name() {
 {{/struct:legacy_api?}}
 
 {{> module_types_cpp/swap}}
+
 {{/struct:union?}}
 {{#struct:union?}}
 {{> module_types_cpp/union_declare_members}}

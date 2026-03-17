@@ -14,53 +14,49 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{struct:cpp_underlying_name}}::{{struct:cpp_underlying_name}}(const {{struct:cpp_underlying_name}}& srcObj){{!
-}}{{^struct:fields?}}{}{{/struct:fields?}}{{!
-}}{{#struct:fields?}} :
-{{#struct:cpp_allocator}}
-{{^struct:cpp_allocator_via}}
+}}
+{{struct.cpp_underlying_name}}::{{struct.cpp_underlying_name}}(const {{struct.cpp_underlying_name}}& srcObj){{!
+}}{{#if struct.fields?}} :
+  {{#if (and struct.cpp_allocator (not struct.cpp_allocator_via))}}
     __fbthrift_alloc(srcObj.__fbthrift_alloc),
-{{/struct:cpp_allocator_via}}
-{{/struct:cpp_allocator}}
-{{#struct:fields_in_layout_order}}
-{{^field:transitively_refers_to_unique?}}
-    {{field:cpp_storage_name}}(srcObj.{{field:cpp_storage_name}}){{^last?}},
-{{/last?}}{{!
-}}{{/field:transitively_refers_to_unique?}}
-{{#field:transitively_refers_to_unique?}}
-    {{field:cpp_storage_name}}(::apache::thrift::detail::st::copy_field<
-          {{#field:type}}{{type:type_class}}{{/field:type}}>(srcObj.{{field:cpp_storage_name}})){{^last?}},
-{{/last?}}{{!
-}}{{/field:transitively_refers_to_unique?}}{{!
-      }}{{#last?}}{{#struct:isset_fields?}},{{/struct:isset_fields?}}{{/last?}}{{!
-}}{{/struct:fields_in_layout_order}}{{!
-}}{{#struct:isset_fields?}}
+  {{/if (and struct.cpp_allocator (not struct.cpp_allocator_via))}}
+  {{#each (array.enumerate struct.fields_in_layout_order with_last=true) as |i field is_last?|}}
+    {{#if field.transitively_refers_to_unique?}}
+    {{field.cpp_storage_name}}(::apache::thrift::detail::st::copy_field<
+          {{field.type.type_class}}>(srcObj.{{field.cpp_storage_name}})){{#if (not is_last?)}},
+{{/if (not is_last?)}}{{!
+    }}{{#else}}
+    {{field.cpp_storage_name}}(srcObj.{{field.cpp_storage_name}}){{#if (not is_last?)}},
+{{/if (not is_last?)}}{{!
+    }}{{/if field.transitively_refers_to_unique?}}{{!
+      }}{{#if (and is_last? struct.isset_fields?)}},{{/if}}{{!
+  }}{{/each}}{{!
+}}{{#if struct.isset_fields?}}
     __isset(srcObj.__isset){{!
-}}{{/struct:isset_fields?}} {
-{{#struct:lazy_fields?}}
+}}{{/if struct.isset_fields?}} {
+  {{#if struct.lazy_fields?}}
   const auto relaxed = std::memory_order_relaxed;
   auto lock = std::shared_lock(srcObj.__fbthrift_deserializationMutex_);
   __fbthrift_protocol_ = srcObj.__fbthrift_protocol_;
-{{/struct:lazy_fields?}}
-{{#struct:fields}}
-{{#field:lazy?}}
+  {{/if struct.lazy_fields?}}
+  {{#each struct.fields as |field|}}
+    {{#if field.lazy?}}
   {
-    const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.{{field:cpp_name}}.load(relaxed);
-    __fbthrift_isDeserialized_.{{field:cpp_name}}.store(isDeserialized, relaxed);
-    {{^field:lazy_ref?}}
-    __fbthrift_serializedData_.{{field:cpp_name}} = srcObj.__fbthrift_serializedData_.{{field:cpp_name}};
-    {{/field:lazy_ref?}}
-    {{#field:lazy_ref?}}
-    if (const auto& src = srcObj.__fbthrift_serializedData_.{{field:cpp_name}}) {
-      __fbthrift_serializedData_.{{field:cpp_name}} = src->clone();
+    const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.{{field.cpp_name}}.load(relaxed);
+    __fbthrift_isDeserialized_.{{field.cpp_name}}.store(isDeserialized, relaxed);
+      {{#if field.lazy_ref?}}
+    if (const auto& src = srcObj.__fbthrift_serializedData_.{{field.cpp_name}}) {
+      __fbthrift_serializedData_.{{field.cpp_name}} = src->clone();
     }
-    {{/field:lazy_ref?}}
+      {{#else}}
+    __fbthrift_serializedData_.{{field.cpp_name}} = srcObj.__fbthrift_serializedData_.{{field.cpp_name}};
+      {{/if field.lazy_ref?}}
   }
-{{/field:lazy?}}
-{{/struct:fields}}
-{{#struct:fields}}
-{{#field:cpp_first_adapter}}
-  {{#field:opt_cpp_ref?}}if ({{field:cpp_storage_name}}) {{/field:opt_cpp_ref?}}::apache::thrift::adapt_detail::construct<{{field:cpp_first_adapter}}, {{field:id}}>({{#field:cpp_ref?}}*{{/field:cpp_ref?}}{{field:cpp_storage_name}}, *this);
-{{/field:cpp_first_adapter}}
-{{/struct:fields}}
-}{{/struct:fields?}}
+    {{/if field.lazy?}}
+  {{/each}}
+  {{#each struct.fields as |field|}}
+    {{#if field.cpp_first_adapter}}
+  {{#if field.opt_cpp_ref?}}if ({{field.cpp_storage_name}}) {{/if}}::apache::thrift::adapt_detail::construct<{{field.cpp_first_adapter}}, {{field.id}}>({{#if field.cpp_ref?}}*{{/if}}{{field.cpp_storage_name}}, *this);
+    {{/if field.cpp_first_adapter}}
+  {{/each}}
+}{{#else}}{}{{/if struct.fields?}}

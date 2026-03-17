@@ -15,60 +15,53 @@
   limitations under the License.
 
 }}
-{{^struct:cpp_noncopyable}}
-  {{struct:cpp_underlying_name}}::{{struct:cpp_underlying_name}}(const {{struct:cpp_underlying_name}}& rhs)
+  {{#if (not struct.cpp_noncopyable)}}
+  {{struct.cpp_underlying_name}}::{{struct.cpp_underlying_name}}(const {{struct.cpp_underlying_name}}& rhs)
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {
     switch (rhs.getType()) {
       case Type::__EMPTY__:
         return;
-{{#struct:fields}}
-      case Type::{{field:cpp_name}}:
-{{^field:transitively_refers_to_unique?}}
-  {{#field:cpp_ref?}}
-        set_{{field:cpp_name}}(*rhs.value_.{{field:cpp_name}});
-  {{/field:cpp_ref?}}
-  {{^field:cpp_ref?}}
-        set_{{field:cpp_name}}(rhs.value_.{{field:cpp_name}});
-  {{/field:cpp_ref?}}
-{{/field:transitively_refers_to_unique?}}
-{{#field:transitively_refers_to_unique?}}
-        set_{{field:cpp_name}}(::apache::thrift::detail::st::copy_field<
-          {{#field:type}}{{type:type_class}}{{/field:type}}>(rhs.value_.{{field:cpp_name}}));
-{{/field:transitively_refers_to_unique?}}
+    {{#each struct.fields as |field|}}
+      case Type::{{field.cpp_name}}:
+      {{#if field.transitively_refers_to_unique?}}
+        set_{{field.cpp_name}}(::apache::thrift::detail::st::copy_field<
+          {{field.type.type_class}}>(rhs.value_.{{field.cpp_name}}));
+      {{#else if field.cpp_ref?}}
+        set_{{field.cpp_name}}(*rhs.value_.{{field.cpp_name}});
+      {{#else}}
+        set_{{field.cpp_name}}(rhs.value_.{{field.cpp_name}});
+      {{/if field.transitively_refers_to_unique?}}
         break;
-{{/struct:fields}}
+    {{/each}}
       default:
         assert(false);
     }
   }
 
-    {{struct:cpp_underlying_name}}&{{struct:cpp_underlying_name}}::operator=(const {{struct:cpp_underlying_name}}& rhs) {
+    {{struct.cpp_underlying_name}}&{{struct.cpp_underlying_name}}::operator=(const {{struct.cpp_underlying_name}}& rhs) {
     {{! a bunch of code relies on the self-assignment check even though it should not be needed }}
     if (this == &rhs) { return *this; }
     switch (rhs.getType()) {
       case Type::__EMPTY__:
         __fbthrift_clear();
         return *this;
-{{#struct:fields}}
-      case Type::{{field:cpp_name}}:
-{{^field:transitively_refers_to_unique?}}
-  {{#field:cpp_ref?}}
-        set_{{field:cpp_name}}(*rhs.value_.{{field:cpp_name}});
-  {{/field:cpp_ref?}}
-  {{^field:cpp_ref?}}
-        set_{{field:cpp_name}}(rhs.value_.{{field:cpp_name}});
-  {{/field:cpp_ref?}}
-{{/field:transitively_refers_to_unique?}}
-{{#field:transitively_refers_to_unique?}}
-        set_{{field:cpp_name}}(::apache::thrift::detail::st::copy_field<
-          {{#field:type}}{{type:type_class}}{{/field:type}}>(rhs.value_.{{field:cpp_name}}));
-{{/field:transitively_refers_to_unique?}}
+    {{#each struct.fields as |field|}}
+      case Type::{{field.cpp_name}}:
+      {{#if field.transitively_refers_to_unique?}}
+        set_{{field.cpp_name}}(::apache::thrift::detail::st::copy_field<
+          {{field.type.type_class}}>(rhs.value_.{{field.cpp_name}}));
+      {{#else if field.cpp_ref?}}
+        set_{{field.cpp_name}}(*rhs.value_.{{field.cpp_name}});
+      {{#else}}
+        set_{{field.cpp_name}}(rhs.value_.{{field.cpp_name}});
+      {{/if field.transitively_refers_to_unique?}}
         break;
-{{/struct:fields}}
+    {{/each}}
       default:
         __fbthrift_clear();
         assert(false);
     }
     return *this;
   }
-{{/struct:cpp_noncopyable}}
+  {{/if (not struct.cpp_noncopyable)}}
+

@@ -14,64 +14,54 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{#if (has_compiler_option? "frozen")}}
+}}
+  {{#if (has_compiler_option? "frozen")}}
 namespace apache { namespace thrift {
 template<>
-size_t Freezer<{{struct:cpp_fullname}}, void>::extraSizeImpl(
-    [[maybe_unused]] const Freezer<{{struct:cpp_fullname}}, void>::ThawedType& src) {
+size_t Freezer<{{struct.cpp_fullname}}, void>::extraSizeImpl(
+    [[maybe_unused]] const Freezer<{{struct.cpp_fullname}}, void>::ThawedType& src) {
   return 0{{!
-}}{{#struct:fields}}{{!
-}}{{#field:type}}{{!
-}}{{^type:bool?}}
-    + extraSize(src.{{#partial module_types.field_value_ref field=field:self}}){{!
-}}{{/type:bool?}}{{!
-}}{{/field:type}}{{!
-}}{{/struct:fields}};
+}}{{#each struct.fields as |field|}}{{!
+}}{{#if (not field.type.bool?)}}
+    + extraSize(src.{{#partial module_types.field_value_ref field=field}}){{!
+}}{{/if (not field.type.bool?)}}{{!
+}}{{/each}};
 }
 
 template<>
-void Freezer<{{struct:cpp_fullname}}, void>::freezeImpl(
-    [[maybe_unused]] const Freezer<{{struct:cpp_fullname}}, void>::ThawedType& src,
-    [[maybe_unused]] Freezer<{{struct:cpp_fullname}}, void>::FrozenType& dst,
+void Freezer<{{struct.cpp_fullname}}, void>::freezeImpl(
+    [[maybe_unused]] const Freezer<{{struct.cpp_fullname}}, void>::ThawedType& src,
+    [[maybe_unused]] Freezer<{{struct.cpp_fullname}}, void>::FrozenType& dst,
     [[maybe_unused]] byte*& buffer) {
-{{#struct:fields}}
-{{#field:type}}
-{{#type:bool?}}
-  dst.{{field:cpp_name}} = src.{{#partial module_types.field_value_ref field=field:self}};
-{{/type:bool?}}
-{{^type:bool?}}
-  freeze(src.{{#partial module_types.field_value_ref field=field:self}}, dst.{{field:cpp_name}}, buffer);
-{{/type:bool?}}
-{{^field:required?}}
-{{^field:cpp_ref?}}
-  dst.__isset.{{field:cpp_name}} = src.{{field:cpp_name}}_ref().has_value();
-{{/field:cpp_ref?}}
-{{/field:required?}}
-{{/field:type}}
-{{/struct:fields}}
+    {{#each struct.fields as |field|}}
+        {{#if field.type.bool?}}
+  dst.{{field.cpp_name}} = src.{{#partial module_types.field_value_ref field=field}};
+        {{#else}}
+  freeze(src.{{#partial module_types.field_value_ref field=field}}, dst.{{field.cpp_name}}, buffer);
+        {{/if field.type.bool?}}
+        {{#if (and (not field.required?) (not field.cpp_ref?))}}
+  dst.__isset.{{field.cpp_name}} = src.{{field.cpp_name}}_ref().has_value();
+        {{/if (and (not field.required?) (not field.cpp_ref?))}}
+    {{/each}}
 }
 
 template<>
-void Freezer<{{struct:cpp_fullname}}, void>::thawImpl(
-    [[maybe_unused]] const Freezer<{{struct:cpp_fullname}}, void>::FrozenType& src,
-    [[maybe_unused]] Freezer<{{struct:cpp_fullname}}, void>::ThawedType& dst) {
-{{#struct:fields}}
-{{#field:type}}
-{{#type:bool?}}
-  dst.{{field:cpp_name}}_ref() = src.{{field:cpp_name}};
-{{/type:bool?}}
-{{^type:bool?}}
-  thaw(src.{{field:cpp_name}}, dst.{{field:cpp_name}}_ref(){{^field:cpp_ref?}}.ensure(){{/field:cpp_ref?}});
-{{/type:bool?}}
-{{^field:required?}}
-{{^field:cpp_ref?}}
-  if (!src.__isset.{{field:cpp_name}}) {
-    ::apache::thrift::unset_unsafe_deprecated(dst.{{field:cpp_name}}_ref());
+void Freezer<{{struct.cpp_fullname}}, void>::thawImpl(
+    [[maybe_unused]] const Freezer<{{struct.cpp_fullname}}, void>::FrozenType& src,
+    [[maybe_unused]] Freezer<{{struct.cpp_fullname}}, void>::ThawedType& dst) {
+    {{#each struct.fields as |field|}}
+        {{#if field.type.bool?}}
+  dst.{{field.cpp_name}}_ref() = src.{{field.cpp_name}};
+        {{#else}}
+  thaw(src.{{field.cpp_name}}, dst.{{field.cpp_name}}_ref(){{#if (not field.cpp_ref?)}}.ensure(){{/if}});
+        {{/if field.type.bool?}}
+        {{#if (and (not field.required?) (not field.cpp_ref?))}}
+  if (!src.__isset.{{field.cpp_name}}) {
+    ::apache::thrift::unset_unsafe_deprecated(dst.{{field.cpp_name}}_ref());
   }
-{{/field:cpp_ref?}}
-{{/field:required?}}
-{{/field:type}}
-{{/struct:fields}}
+        {{/if (and (not field.required?) (not field.cpp_ref?))}}
+    {{/each}}
 }
 }} // apache::thrift
-{{/if (has_compiler_option? "frozen")}}
+  {{/if (has_compiler_option? "frozen")}}
+
