@@ -93,12 +93,12 @@ void {{struct:cpp_underlying_name}}::__fbthrift_clear_terse_fields() {
 bool {{struct:cpp_underlying_name}}::__fbthrift_is_empty() const {
 {{^struct:has_non_optional_and_non_terse_field?}}
 {{#struct:fields?}}
-  return{{#struct:fields}}{{#field:type}}{{!
-  }}{{#field:optional?}} !({{> field/optional_has_value}}){{^last?}} &&{{/last?}}{{/field:optional?}}{{!
-  }}{{#field:deprecated_terse_writes?}} !({{> field/deprecated_terse_has_value }}){{^last?}} &&{{/last?}}{{/field:deprecated_terse_writes?}}{{!
-  }}{{#field:terse?}} {{> field/terse_has_no_value }}{{^last?}} &&{{/last?}}{{/field:terse?}}{{!
+  return{{#struct:fields}}{{!
+  }}{{#if field:optional?}} !({{#partial fields.optional_has_value field=field:self struct=struct:self}}){{^last?}} &&{{/last?}}{{!
+  }}{{#else if field:deprecated_terse_writes?}} !({{#partial fields.deprecated_terse_has_value field=field:self struct=struct:self}}){{^last?}} &&{{/last?}}{{!
+  }}{{#else if field:terse?}} {{#partial fields.terse_has_no_value field=field:self struct=struct:self}}{{^last?}} &&{{/last?}}{{/if field:optional?}}{{!
   }}{{#last?}};{{/last?}}
-{{/field:type}}{{/struct:fields}}
+{{/struct:fields}}
 {{/struct:fields?}}
 {{^struct:fields?}}
   return true;

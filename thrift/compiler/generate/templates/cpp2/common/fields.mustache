@@ -66,3 +66,46 @@ apache::thrift::StringTraits<{{field.cpp_standard_type}}>::fromStringLiteral("")
 {{#pragma ignore-newlines}}
 {{#if field.cpp_ref?}}(*{{#partial member field=field struct=struct}}){{#else}}{{#partial member field=field struct=struct}}{{/if}}
 {{/let partial}}
+
+{{! If an optional field is set. }}
+{{#let export partial optional_has_value |field struct| captures |member|}}
+{{#if field.cpp_ref?}}{{!
+}}{{#if field.lazy?}}!(__fbthrift_isDeserialized_.{{field.cpp_name}} & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) ||
+    {{/if field.lazy?}}{{#partial member field=field struct=struct}}{{!
+}}{{#else}}this->__isset.get({{field.isset_index}}){{/if field.cpp_ref?}}{{!
+}}{{/let partial}}
+
+{{! Whether a terse field has no value (is empty/default). }}
+{{#let export partial terse_has_no_value |field struct| captures |member tag|}}
+{{#pragma ignore-newlines}}
+  {{#if field.intern_boxed_ref?}}
+({{#partial member field=field struct=struct}}.get() == &::apache::thrift::op::getIntrinsicDefault<{{#partial tag field=field struct=struct}}>() || ::apache::thrift::op::isEmpty<{{#partial tag field=field struct=struct}}>(*{{#partial member field=field struct=struct}}))
+  {{#else}}
+{{#if field.cpp_ref?}}{{#partial member field=field struct=struct}} && {{/if}}::apache::thrift::op::isEmpty<{{#partial tag field=field struct=struct}}>({{#if field.cpp_ref?}}*{{/if}}{{#partial member field=field struct=struct}})
+  {{/if field.intern_boxed_ref?}}
+{{/let partial}}
+
+{{! Whether a deprecated terse field has a value. }}
+{{#let export partial deprecated_terse_has_value |field struct| captures |member tag field_ref default_value|}}
+{{#pragma ignore-newlines}}
+{{! Must not be null. }}
+  {{#if field.cpp_ref?}}
+{{#partial member field=field struct=struct}}
+  {{/if field.cpp_ref?}}
+{{! Must not be empty. }}
+  {{#if field.type.container?}}
+{{#if field.cpp_ref?}} && {{/if}}!::apache::thrift::op::isEmpty<{{#partial tag field=field struct=struct}}>({{#if field.cpp_ref?}}*{{/if}}{{#partial member field=field struct=struct}})
+  {{/if field.type.container?}}
+  {{#if field.raw_string_or_binary?}}
+{{#if field.cpp_ref?}} && {{/if}}!::apache::thrift::op::isEmpty<{{#partial tag field=field struct=struct}}>({{#if field.cpp_ref?}}*{{/if}}{{#partial member field=field struct=struct}})
+  {{/if field.raw_string_or_binary?}}
+  {{#if (and (not field.cpp_ref?) (not field.type.container?) (not field.raw_string_or_binary?))}}
+    {{#if field.cpp_first_adapter}}
+{{! Must check against the default constructor (ignoring any IDL-specified default). }}
+!::apache::thrift::op::equal<{{#partial tag field=field struct=struct}}>({{#partial member field=field struct=struct}}, {{field.cpp_type}}())
+    {{#else}}
+{{! For all other cases, must not equal the default. }}
+{{#partial field_ref field=field struct=struct}} != {{#partial default_value field=field}}
+    {{/if field.cpp_first_adapter}}
+  {{/if (and (not field.cpp_ref?) (not field.type.container?) (not field.raw_string_or_binary?))}}
+{{/let partial}}
