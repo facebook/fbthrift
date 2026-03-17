@@ -190,7 +190,9 @@ There are three types of `expression`s in Whisker:
   * `boolean-literal` — either `true` or `false`.
   * `null-literal` — *exactly* `null`.
 * ***Variable*** — values interpolated from the *context*, like `{{ person.name }}`. Variables allow scoped access into the context using a series of *components* separated by dots (`.`).
-  * A *component* is consists of an optional *qualifier* (an *identifier*), followed by a required *identifier* (*property*).
+  * A *component* consists of an optional *qualifier* (an *identifier*), followed by a required *identifier* (*property*). When the qualifier is present, the syntax is `qualifier:property` (e.g., `{{ person.Base:name }}`).
+  * Qualifiers are used to disambiguate property access on [`native_handle`](#data-model) objects with prototype chains. When a `native_handle`'s prototype inherits from a parent prototype, a child property may *shadow* a parent property of the same name. The qualifier allows explicitly accessing the parent's property by matching the parent prototype's registered name.
+  * For [`map`](#data-model) objects, the qualifier and property are treated as a single key (e.g., `Base:name` looks up the key `"Base:name"`).
   * Additionally, the special *implicit context* variable, `{{ . }}` or `{{ this }}`, refers to the *context* object itself.
 * ***Function call*** — [lisp-like](https://en.wikipedia.org/wiki/Lisp_(programming_language)#Syntax_and_semantics) syntax for invoking functions, often referred to as [S-expressions](https://en.wikipedia.org/wiki/S-expression). Functions are defined in the [*data model*](#data-model). Examples:
   * `{{ (uppercase "hello") }}`
@@ -1175,15 +1177,45 @@ A Whisker `object` is one of the following types:
 
 The following types are *printable*: `i64`, `string`.
 
-### Native Function
-
 :::note
-This section is incomplete.
+There is no literal syntax for `f64` values in Whisker templates. Values of type `f64` can only originate from the native runtime (e.g., as context variables or return values from `native_function`s).
 :::
+
+#### Strict Rendering Modes
+
+Whisker's rendering behavior can be configured with the following strictness options, which are set by the native runtime:
+
+* **Strict boolean conditionals** (default: *enabled*) — When enabled, the condition in `{{#if}}` blocks **must** evaluate to a `boolean`. When disabled, non-boolean values are coerced to boolean using [truthiness rules](#truthiness-coercion).
+* **Strict printable types** (default: *enabled*) — When enabled, only `i64` and `string` values can be interpolated. When disabled, `f64` is rendered as its decimal representation, `boolean` is rendered as `"true"` or `"false"`, and `null` is rendered as an empty string. `array`, `map`, `native_function`, and `native_handle` are *never* printable.
+* **Strict undefined variables** (default: *enabled*) — When enabled, referencing an undefined variable is a fatal error. When disabled, undefined variables silently resolve to `null`.
+
+#### Truthiness Coercion
+
+When strict boolean conditionals are disabled, or when using [section blocks](#templates) (which always use coercion), Whisker coerces values to booleans as follows:
+
+| Type | Falsy | Truthy |
+| --- | --- | --- |
+| `boolean` | `false` | `true` |
+| `null` | always | never |
+| `i64` | `0` | non-zero |
+| `f64` | `0.0`, `-0.0`, `NaN` | all other values |
+| `string` | `""` (empty) | non-empty |
+| `array` | `[]` (empty) | non-empty |
+| `map` | never | always |
+| `native_function` | never | always |
+| `native_handle` | never | always |
+
+### Native Function
 
 A `native_function` represents a native runtime (e.g. C++) function implementation that is callable from Whisker templates via [function call expressions](#interpolations--expressions).
 
-A `native_function` accepts arguments of type `object` with arbitrary arity, and produces exactly one value of type `object`.
+A `native_function` accepts two kinds of arguments:
+* **Positional arguments** — an ordered list of `object`s. Example: `{{ (add 1 2) }}`.
+* **Named arguments** — an unordered set of key-value pairs, where keys are identifiers and values are `object`s. Named arguments must follow all positional arguments. Example: `{{ (array.enumerate items with_first=true) }}`.
+
+A `native_function` produces exactly one value of type `object`.
+
+When a function is accessed as a property of an object (e.g., `{{ (obj.method arg) }}`), the parent object (`obj`) is implicitly passed to the function as a `self` reference. This enables method-call semantics on [`native_handle`](#data-model) objects.
 
 ## Evaluation Context
 
