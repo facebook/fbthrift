@@ -125,7 +125,16 @@ func (s *rocketServer) ServeContext(ctx context.Context) error {
 	// TODO: support graceful shutdown and track with thrift.task_killed
 
 	transporter := func(context.Context) (transport.ServerTransport, error) {
-		return newRocketServerTransport(s.listener, s.connContext, s.proc, s.transportID, s.log, s.stats, s.pstats, s.observer), nil
+		return newRocketServerTransport(
+			s.listener,
+			s.connContext,
+			s.proc,
+			s.transportID,
+			s.log,
+			s.stats,
+			s.pstats,
+			s.observer,
+		), nil
 	}
 
 	// Request scheduler must be elastic to ensure that we can quickly peek at

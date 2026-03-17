@@ -86,7 +86,13 @@ func sendWritableStruct(prot types.Encoder, name string, messageType types.Messa
 // 1. Read the message from the protocol.
 // 2. Process the message.
 // 3. Write the message to the protocol.
-func process(ctx context.Context, processor Processor, prot Protocol, processorStats map[string]*stats.TimingSeries, observer ServerObserver) (*ApplicationException, error) {
+func process(
+	ctx context.Context,
+	processor Processor,
+	prot Protocol,
+	processorStats map[string]*stats.TimingSeries,
+	observer ServerObserver,
+) (*ApplicationException, error) {
 	// Step 1: Decode message only using Decoder interface and GetResponseHeaders method on the protocol.
 
 	// Step 1a: find the processor function for the message.
