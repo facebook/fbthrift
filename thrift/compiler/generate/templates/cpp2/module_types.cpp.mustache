@@ -72,8 +72,9 @@ FOLLY_POP_WARNING
 
 {{> module_types_cpp/frozen}}
 {{#struct:union?}}
-{{> module_types_cpp/declare_union_types}}
-{{/struct:union?}}
+
+{{#partial module_types.declare_union_types struct=struct:self}}{{!
+}}{{/struct:union?}}
 
 namespace {{program:cpp_qualified_namespace}} {
 {{#struct:extra_namespace}}
@@ -100,7 +101,7 @@ std::string_view {{struct:cpp_underlying_name}}::__fbthrift_get_class_name() {
 {{> module_types_cpp/copy_ctor}}
 
 
-{{> module_types_cpp/assign_overload}}
+{{#partial module_types.assign_overload struct=struct:self}}
 
 
 {{/struct:nondefault_copy_ctor_and_assignment?}}
@@ -109,12 +110,12 @@ std::string_view {{struct:cpp_underlying_name}}::__fbthrift_get_class_name() {
 
 
 {{^struct:cpp_noncomparable}}
-{{> module_types_cpp/eq_overload}}
+{{#partial module_types.eq_overload struct=struct:self}}
 {{#struct:is_struct_orderable?}}
 
 
 {{^struct:cpp_nonorderable?}}
-{{> module_types_cpp/struct_operator_less}}
+{{#partial module_types.struct_operator_less struct=struct:self}}
 {{/struct:cpp_nonorderable?}}
 {{/struct:is_struct_orderable?}}
 {{/struct:cpp_noncomparable}}
@@ -132,19 +133,21 @@ std::string_view {{struct:cpp_underlying_name}}::__fbthrift_get_class_name() {
 {{> module_types_cpp/union_copy_ctor}}
 
 {{^struct:cpp_noncomparable}}
-{{> module_types_cpp/union_eq_overload}}
-{{#struct:is_struct_orderable?}}
+
+{{#partial module_types.union_eq_overload struct=struct:self}}{{!
+}}{{#struct:is_struct_orderable?}}
 
 
 {{^struct:cpp_nonorderable?}}
-{{> module_types_cpp/union_operator_less}}
-{{/struct:cpp_nonorderable?}}
+{{#partial module_types.union_operator_less struct=struct:self}}{{!
+}}{{/struct:cpp_nonorderable?}}
 {{/struct:is_struct_orderable?}}
 {{/struct:cpp_noncomparable}}
 
 {{> module_types_cpp/union_setters}}
-{{> module_types_cpp/union_swap}}
-{{/struct:union?}}
+
+{{#partial module_types.union_swap struct=struct:self}}{{!
+}}{{/struct:union?}}
 
 {{#if (has_compiler_option? "tablebased")}}
 {{#struct:union?}}

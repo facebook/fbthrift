@@ -15,7 +15,7 @@
   limitations under the License.
 
 }}{{#struct:is_large?}}
-{{struct:cpp_underlying_name}}::{{> module_types_h/base_ctor}}
+{{struct:cpp_underlying_name}}::{{#partial module_types.base_ctor struct=struct:self}}
   {{#if (and struct:exception? (object.notnull? exception:message_field))}}
 
 {{struct:cpp_underlying_name}}::{{struct:cpp_underlying_name}}(std::string __message) : {{struct:cpp_underlying_name}}() {
