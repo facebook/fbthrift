@@ -79,15 +79,25 @@ struct Example {
 // be shared between different languages.
 // --
 
-const Example primitiveExample = Example{
-  i64Value = 42,
-  stringValue = "hello",
-  binaryValue = "?~",
-  floatValue = 0.10000000894069671630859375,
-  doubleValue = 0.10000000000000001942890293094,
-  enumValue = Enum.ONE,
-};
-const string primitiveJson = "{
+struct TestCase {
+  1: string name;
+  2: Example example;
+  3: string json;
+  4: string json5;
+}
+
+const list<TestCase> testCases = [
+  TestCase{
+    name = "Primitive",
+    example = Example{
+      i64Value = 42,
+      stringValue = "hello",
+      binaryValue = "?~",
+      floatValue = 0.10000000894069671630859375,
+      doubleValue = 0.10000000000000001942890293094,
+      enumValue = Enum.ONE,
+    },
+    json = "{
   \"i64Value\": 42,
   \"stringValue\": \"hello\",
   \"binaryValue\": {
@@ -96,8 +106,8 @@ const string primitiveJson = "{
   \"floatValue\": 0.10000001,
   \"doubleValue\": 0.10000000000000002,
   \"enumValue\": \"ONE (1)\"
-}";
-const string primitiveJson5 = "{
+}",
+    json5 = "{
   i64Value: 42,
   stringValue: \"hello\",
   binaryValue: {
@@ -106,30 +116,30 @@ const string primitiveJson5 = "{
   floatValue: 0.10000001,
   doubleValue: 0.10000000000000002,
   enumValue: \"ONE (1)\",
-}";
-
-const Example listValueExample = Example{
-  listValue = [Nested{nested = "item1"}],
-};
-const string listValueJson = "{
+}",
+  },
+  TestCase{
+    name = "ListValue",
+    example = Example{listValue = [Nested{nested = "item1"}]},
+    json = "{
   \"listValue\": [
     {
       \"nested\": \"item1\"
     }
   ]
-}";
-const string listValueJson5 = "{
+}",
+    json5 = "{
   listValue: [
     {
       nested: \"item1\",
     },
   ],
-}";
-
-const Example multiElementListExample = Example{
-  listValue = [Nested{nested = "a"}, Nested{nested = "b"}],
-};
-const string multiElementListJson = "{
+}",
+  },
+  TestCase{
+    name = "MultiElementList",
+    example = Example{listValue = [Nested{nested = "a"}, Nested{nested = "b"}]},
+    json = "{
   \"listValue\": [
     {
       \"nested\": \"a\"
@@ -138,8 +148,8 @@ const string multiElementListJson = "{
       \"nested\": \"b\"
     }
   ]
-}";
-const string multiElementListJson5 = "{
+}",
+    json5 = "{
   listValue: [
     {
       nested: \"a\",
@@ -148,28 +158,32 @@ const string multiElementListJson5 = "{
       nested: \"b\",
     },
   ],
-}";
-
-const Example setValueExample = Example{setValue = [Nested{nested = "item1"}]};
-const string setValueJson = "{
+}",
+  },
+  TestCase{
+    name = "SetValue",
+    example = Example{setValue = [Nested{nested = "item1"}]},
+    json = "{
   \"setValue\": [
     {
       \"nested\": \"item1\"
     }
   ]
-}";
-const string setValueJson5 = "{
+}",
+    json5 = "{
   setValue: [
     {
       nested: \"item1\",
     },
   ],
-}";
-
-const Example multiElementSetExample = Example{
-  setValue = [Nested{nested = "item2"}, Nested{nested = "item1"}],
-};
-const string multiElementSetJson = "{
+}",
+  },
+  TestCase{
+    name = "MultiElementSet",
+    example = Example{
+      setValue = [Nested{nested = "item2"}, Nested{nested = "item1"}],
+    },
+    json = "{
   \"setValue\": [
     {
       \"nested\": \"item1\"
@@ -178,8 +192,8 @@ const string multiElementSetJson = "{
       \"nested\": \"item2\"
     }
   ]
-}";
-const string multiElementSetJson5 = "{
+}",
+    json5 = "{
   setValue: [
     {
       nested: \"item1\",
@@ -188,46 +202,52 @@ const string multiElementSetJson5 = "{
       nested: \"item2\",
     },
   ],
-}";
-
-const Example boolAsKeyExample = Example{boolAsKey = {1: 1}};
-const string boolAsKeyJson = "{
+}",
+  },
+  TestCase{
+    name = "BoolAsKey",
+    example = Example{boolAsKey = {1: 1}},
+    json = "{
   \"boolAsKey\": [
     {
       \"key\": true,
       \"value\": 1
     }
   ]
-}";
-const string boolAsKeyJson5 = "{
+}",
+    json5 = "{
   boolAsKey: [
     {
       key: true,
       value: 1,
     },
   ],
-}";
-
-const Example i32AsKeyExample = Example{i32AsKey = {1: 2}};
-const string i32AsKeyJson = "{
+}",
+  },
+  TestCase{
+    name = "I32AsKey",
+    example = Example{i32AsKey = {1: 2}},
+    json = "{
   \"i32AsKey\": [
     {
       \"key\": 1,
       \"value\": 2
     }
   ]
-}";
-const string i32AsKeyJson5 = "{
+}",
+    json5 = "{
   i32AsKey: [
     {
       key: 1,
       value: 2,
     },
   ],
-}";
-
-const Example binaryAsKeyExample = Example{binaryAsKey = {"?~": 1}};
-const string binaryAsKeyJson = "{
+}",
+  },
+  TestCase{
+    name = "BinaryAsKey",
+    example = Example{binaryAsKey = {"?~": 1}},
+    json = "{
   \"binaryAsKey\": [
     {
       \"key\": {
@@ -236,8 +256,8 @@ const string binaryAsKeyJson = "{
       \"value\": 1
     }
   ]
-}";
-const string binaryAsKeyJson5 = "{
+}",
+    json5 = "{
   binaryAsKey: [
     {
       key: {
@@ -246,22 +266,26 @@ const string binaryAsKeyJson5 = "{
       value: 1,
     },
   ],
-}";
-
-const Example enumAsKeyExample = Example{enumAsKey = {1: 2}};
-const string enumAsKeyJson = "{
+}",
+  },
+  TestCase{
+    name = "EnumAsKey",
+    example = Example{enumAsKey = {1: 2}},
+    json = "{
   \"enumAsKey\": {
     \"ONE (1)\": \"TWO (2)\"
   }
-}";
-const string enumAsKeyJson5 = "{
+}",
+    json5 = "{
   enumAsKey: {
     \"ONE (1)\": \"TWO (2)\",
   },
-}";
-
-const Example listAsKeyExample = Example{listAsKey = {[2, 1]: 3}};
-const string listAsKeyJson = "{
+}",
+  },
+  TestCase{
+    name = "ListAsKey",
+    example = Example{listAsKey = {[2, 1]: 3}},
+    json = "{
   \"listAsKey\": [
     {
       \"key\": [
@@ -271,8 +295,8 @@ const string listAsKeyJson = "{
       \"value\": 3
     }
   ]
-}";
-const string listAsKeyJson5 = "{
+}",
+    json5 = "{
   listAsKey: [
     {
       key: [
@@ -282,10 +306,12 @@ const string listAsKeyJson5 = "{
       value: 3,
     },
   ],
-}";
-
-const Example setAsKeyExample = Example{setAsKey = {[2, 1]: 3}};
-const string setAsKeyJson = "{
+}",
+  },
+  TestCase{
+    name = "SetAsKey",
+    example = Example{setAsKey = {[2, 1]: 3}},
+    json = "{
   \"setAsKey\": [
     {
       \"key\": [
@@ -295,8 +321,8 @@ const string setAsKeyJson = "{
       \"value\": 3
     }
   ]
-}";
-const string setAsKeyJson5 = "{
+}",
+    json5 = "{
   setAsKey: [
     {
       key: [
@@ -306,10 +332,12 @@ const string setAsKeyJson5 = "{
       value: 3,
     },
   ],
-}";
-
-const Example mapAsKeyExample = Example{mapAsKey = {{1: 2}: 3}};
-const string mapAsKeyJson = "{
+}",
+  },
+  TestCase{
+    name = "MapAsKey",
+    example = Example{mapAsKey = {{1: 2}: 3}},
+    json = "{
   \"mapAsKey\": [
     {
       \"key\": [
@@ -321,8 +349,8 @@ const string mapAsKeyJson = "{
       \"value\": 3
     }
   ]
-}";
-const string mapAsKeyJson5 = "{
+}",
+    json5 = "{
   mapAsKey: [
     {
       key: [
@@ -334,12 +362,12 @@ const string mapAsKeyJson5 = "{
       value: 3,
     },
   ],
-}";
-
-const Example nestedMapAsKeyExample = Example{
-  nestedMapAsKey = {{{1: 2}: 3}: 4},
-};
-const string nestedMapAsKeyJson = "{
+}",
+  },
+  TestCase{
+    name = "NestedMapAsKey",
+    example = Example{nestedMapAsKey = {{{1: 2}: 3}: 4}},
+    json = "{
   \"nestedMapAsKey\": [
     {
       \"key\": [
@@ -356,8 +384,8 @@ const string nestedMapAsKeyJson = "{
       \"value\": 4
     }
   ]
-}";
-const string nestedMapAsKeyJson5 = "{
+}",
+    json5 = "{
   nestedMapAsKey: [
     {
       key: [
@@ -374,15 +402,17 @@ const string nestedMapAsKeyJson5 = "{
       value: 4,
     },
   ],
-}";
-
-const Example structAsKeyExample = Example{
-  structAsKey = {
-    Nested{nested = "key2"}: Nested{nested = "value2"},
-    Nested{nested = "key1"}: Nested{nested = "value1"},
+}",
   },
-};
-const string structAsKeyJson = "{
+  TestCase{
+    name = "StructAsKey",
+    example = Example{
+      structAsKey = {
+        Nested{nested = "key2"}: Nested{nested = "value2"},
+        Nested{nested = "key1"}: Nested{nested = "value1"},
+      },
+    },
+    json = "{
   \"structAsKey\": [
     {
       \"key\": {
@@ -401,8 +431,8 @@ const string structAsKeyJson = "{
       }
     }
   ]
-}";
-const string structAsKeyJson5 = "{
+}",
+    json5 = "{
   structAsKey: [
     {
       key: {
@@ -421,34 +451,38 @@ const string structAsKeyJson5 = "{
       },
     },
   ],
-}";
-
-const Example binaryBase64Example = Example{binaryValue = "\xde\xad\xbe\xef"};
-const string binaryBase64Json = "{
+}",
+  },
+  TestCase{
+    name = "BinaryBase64",
+    example = Example{binaryValue = "\xde\xad\xbe\xef"},
+    json = "{
   \"binaryValue\": {
     \"base64url\": \"3q2-7w\"
   }
-}";
-const string binaryBase64Json5 = "{
+}",
+    json5 = "{
   binaryValue: {
     base64url: \"3q2-7w\",
   },
-}";
-
-const Example outOfOrderFieldsExample = Example{
-  outOfOrderFieldsInSet = [
-    OutOfOrderFields{Three = 0, One = 0, Two = 0},
-    OutOfOrderFields{Three = 1, One = 1, Two = 1},
-    OutOfOrderFields{Three = 0, One = 0, Two = 1},
-    OutOfOrderFields{Three = 0, One = 1, Two = 0},
-    OutOfOrderFields{Three = 1, One = 0, Two = 0},
-    OutOfOrderFields{Three = 1, One = 1, Two = 0},
-    OutOfOrderFields{Three = 1, One = 0, Two = 1},
-    OutOfOrderFields{Three = 0, One = 1, Two = 1},
-    OutOfOrderFields{Three = 0, One = 0, Two = 2},
-  ],
-};
-const string outOfOrderFieldsJson = "{
+}",
+  },
+  TestCase{
+    name = "OutOfOrderFields",
+    example = Example{
+      outOfOrderFieldsInSet = [
+        OutOfOrderFields{Three = 0, One = 0, Two = 0},
+        OutOfOrderFields{Three = 1, One = 1, Two = 1},
+        OutOfOrderFields{Three = 0, One = 0, Two = 1},
+        OutOfOrderFields{Three = 0, One = 1, Two = 0},
+        OutOfOrderFields{Three = 1, One = 0, Two = 0},
+        OutOfOrderFields{Three = 1, One = 1, Two = 0},
+        OutOfOrderFields{Three = 1, One = 0, Two = 1},
+        OutOfOrderFields{Three = 0, One = 1, Two = 1},
+        OutOfOrderFields{Three = 0, One = 0, Two = 2},
+      ],
+    },
+    json = "{
   \"outOfOrderFieldsInSet\": [
     {
       \"One\": 0,
@@ -496,8 +530,8 @@ const string outOfOrderFieldsJson = "{
       \"Three\": 1
     }
   ]
-}";
-const string outOfOrderFieldsJson5 = "{
+}",
+    json5 = "{
   outOfOrderFieldsInSet: [
     {
       One: 0,
@@ -545,22 +579,24 @@ const string outOfOrderFieldsJson5 = "{
       Three: 1,
     },
   ],
-}";
-
-const Example outOfOrderFieldsInMapExample = Example{
-  outOfOrderFieldsInMap = {
-    OutOfOrderFields{Three = 0, One = 0, Two = 0}: 0,
-    OutOfOrderFields{Three = 1, One = 1, Two = 1}: 1,
-    OutOfOrderFields{Three = 0, One = 0, Two = 1}: 2,
-    OutOfOrderFields{Three = 0, One = 1, Two = 0}: 3,
-    OutOfOrderFields{Three = 1, One = 0, Two = 0}: 4,
-    OutOfOrderFields{Three = 1, One = 1, Two = 0}: 5,
-    OutOfOrderFields{Three = 1, One = 0, Two = 1}: 6,
-    OutOfOrderFields{Three = 0, One = 1, Two = 1}: 7,
-    OutOfOrderFields{Three = 0, One = 0, Two = 2}: 8,
+}",
   },
-};
-const string outOfOrderFieldsInMapJson = "{
+  TestCase{
+    name = "OutOfOrderFieldsInMap",
+    example = Example{
+      outOfOrderFieldsInMap = {
+        OutOfOrderFields{Three = 0, One = 0, Two = 0}: 0,
+        OutOfOrderFields{Three = 1, One = 1, Two = 1}: 1,
+        OutOfOrderFields{Three = 0, One = 0, Two = 1}: 2,
+        OutOfOrderFields{Three = 0, One = 1, Two = 0}: 3,
+        OutOfOrderFields{Three = 1, One = 0, Two = 0}: 4,
+        OutOfOrderFields{Three = 1, One = 1, Two = 0}: 5,
+        OutOfOrderFields{Three = 1, One = 0, Two = 1}: 6,
+        OutOfOrderFields{Three = 0, One = 1, Two = 1}: 7,
+        OutOfOrderFields{Three = 0, One = 0, Two = 2}: 8,
+      },
+    },
+    json = "{
   \"outOfOrderFieldsInMap\": [
     {
       \"key\": {
@@ -635,8 +671,8 @@ const string outOfOrderFieldsInMapJson = "{
       \"value\": 1
     }
   ]
-}";
-const string outOfOrderFieldsInMapJson5 = "{
+}",
+    json5 = "{
   outOfOrderFieldsInMap: [
     {
       key: {
@@ -711,4 +747,6 @@ const string outOfOrderFieldsInMapJson5 = "{
       value: 1,
     },
   ],
-}";
+}",
+  },
+];

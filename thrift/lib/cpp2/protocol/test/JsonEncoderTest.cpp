@@ -24,10 +24,32 @@
 #include <thrift/lib/cpp2/protocol/test/gen-cpp2/json5_test_types.h>
 
 namespace apache::thrift {
-namespace {
 
-using namespace facebook::thrift::json5::json5_test_constants;
 using facebook::thrift::json5::Example;
+using facebook::thrift::json5::TestCase;
+using namespace facebook::thrift::json5::json5_test_constants;
+
+// ── Struct encoding tests driven by thrift test data ─────────────────────────
+
+class Json5EncoderStructTest : public ::testing::TestWithParam<TestCase> {};
+
+TEST_P(Json5EncoderStructTest, Encode) {
+  EXPECT_EQ(
+      Json5ProtocolUtils::toBasicJson(*GetParam().example()),
+      *GetParam().json());
+  EXPECT_EQ(
+      Json5ProtocolUtils::toJson5(*GetParam().example()), *GetParam().json5());
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    Encode,
+    Json5EncoderStructTest,
+    ::testing::ValuesIn(testCases()),
+    [](const auto& info) { return *info.param.name(); });
+
+// ── Primitive type encoding tests ────────────────────────────────────────────
+
+namespace {
 
 enum class JsonFormat { Json, Json5 };
 
@@ -163,12 +185,6 @@ TEST_P(Json5EncoderTest, StringValueInvalidUtf8) {
   EXPECT_THROW((void)encode(data), std::runtime_error);
 }
 
-TEST_P(Json5EncoderTest, PrimitiveStructExample) {
-  EXPECT_EQ(
-      encode(primitiveExample()),
-      !isJson5() ? primitiveJson() : primitiveJson5());
-}
-
 TEST_P(Json5EncoderTest, NaNInf) {
   Example data;
   data.infValue() = std::numeric_limits<double>::infinity();
@@ -205,98 +221,6 @@ TEST_P(Json5EncoderTest, NegativeNaNInf) {
 })RAW";
   }
   EXPECT_EQ(encode(data), expected);
-}
-
-TEST_P(Json5EncoderTest, ListValue) {
-  EXPECT_EQ(
-      encode(listValueExample()),
-      !isJson5() ? listValueJson() : listValueJson5());
-}
-
-TEST_P(Json5EncoderTest, MultiElementList) {
-  EXPECT_EQ(
-      encode(multiElementListExample()),
-      !isJson5() ? multiElementListJson() : multiElementListJson5());
-}
-
-TEST_P(Json5EncoderTest, SetValue) {
-  EXPECT_EQ(
-      encode(setValueExample()), !isJson5() ? setValueJson() : setValueJson5());
-}
-
-TEST_P(Json5EncoderTest, MultiElementSet) {
-  EXPECT_EQ(
-      encode(multiElementSetExample()),
-      !isJson5() ? multiElementSetJson() : multiElementSetJson5());
-}
-
-TEST_P(Json5EncoderTest, BoolAsKey) {
-  EXPECT_EQ(
-      encode(boolAsKeyExample()),
-      !isJson5() ? boolAsKeyJson() : boolAsKeyJson5());
-}
-
-TEST_P(Json5EncoderTest, I32AsKey) {
-  EXPECT_EQ(
-      encode(i32AsKeyExample()), !isJson5() ? i32AsKeyJson() : i32AsKeyJson5());
-}
-
-TEST_P(Json5EncoderTest, BinaryBase64urlEncoding) {
-  EXPECT_EQ(
-      encode(binaryBase64Example()),
-      !isJson5() ? binaryBase64Json() : binaryBase64Json5());
-}
-
-TEST_P(Json5EncoderTest, BinaryAsKey) {
-  EXPECT_EQ(
-      encode(binaryAsKeyExample()),
-      !isJson5() ? binaryAsKeyJson() : binaryAsKeyJson5());
-}
-
-TEST_P(Json5EncoderTest, EnumAsKey) {
-  EXPECT_EQ(
-      encode(enumAsKeyExample()),
-      !isJson5() ? enumAsKeyJson() : enumAsKeyJson5());
-}
-
-TEST_P(Json5EncoderTest, ListAsKey) {
-  EXPECT_EQ(
-      encode(listAsKeyExample()),
-      !isJson5() ? listAsKeyJson() : listAsKeyJson5());
-}
-
-TEST_P(Json5EncoderTest, SetAsKey) {
-  EXPECT_EQ(
-      encode(setAsKeyExample()), !isJson5() ? setAsKeyJson() : setAsKeyJson5());
-}
-
-TEST_P(Json5EncoderTest, MapAsKey) {
-  EXPECT_EQ(
-      encode(mapAsKeyExample()), !isJson5() ? mapAsKeyJson() : mapAsKeyJson5());
-}
-
-TEST_P(Json5EncoderTest, NestedMapAsKey) {
-  EXPECT_EQ(
-      encode(nestedMapAsKeyExample()),
-      !isJson5() ? nestedMapAsKeyJson() : nestedMapAsKeyJson5());
-}
-
-TEST_P(Json5EncoderTest, StructAsKey) {
-  EXPECT_EQ(
-      encode(structAsKeyExample()),
-      !isJson5() ? structAsKeyJson() : structAsKeyJson5());
-}
-
-TEST_P(Json5EncoderTest, StructWithOutOfOrderFieldIds) {
-  EXPECT_EQ(
-      encode(outOfOrderFieldsExample()),
-      !isJson5() ? outOfOrderFieldsJson() : outOfOrderFieldsJson5());
-}
-
-TEST_P(Json5EncoderTest, StructWithOutOfOrderFieldIdsInMap) {
-  EXPECT_EQ(
-      encode(outOfOrderFieldsInMapExample()),
-      !isJson5() ? outOfOrderFieldsInMapJson() : outOfOrderFieldsInMapJson5());
 }
 
 } // namespace
