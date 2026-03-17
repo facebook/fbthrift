@@ -15,75 +15,57 @@
   limitations under the License.
 
 }}
-{{#field:type}}
-{{#partial custom_protocol.if_should_write field=field:self struct=struct:self}}
-    constexpr int16_t kPrevFieldId = {{#if (and first? struct:indexing?)}}::apache::thrift::detail::kSizeField.id{{#else if first?}}0{{#else}}{{field:serialization_prev_field.id}}{{/if}};
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::{{#partial types.protocol_type type=type:self}}, {{field:id}}, kPrevFieldId>(*prot_, "{{field:name}}", {{^struct:union?}}previousFieldHasValue{{/struct:union?}}{{#struct:union?}}false{{/struct:union?}});
-{{^struct:union?}}
+  {{#let type = field.type}}
+{{#partial custom_protocol.if_should_write field=field struct=struct}}
+    constexpr int16_t kPrevFieldId = {{#if (and first? struct.indexing?)}}::apache::thrift::detail::kSizeField.id{{#else if first?}}0{{#else}}{{field.serialization_prev_field.id}}{{/if}};
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::{{#partial types.protocol_type type=field.type}}, {{field.id}}, kPrevFieldId>(*prot_, "{{field.name}}", {{#if struct.union?}}false{{#else}}previousFieldHasValue{{/if}});
+    {{#if (not struct.union?)}}
     previousFieldHasValue = true;
-{{/struct:union?}}
-{{#field:lazy?}}
+    {{/if (not struct.union?)}}
+    {{#if field.lazy?}}
     indexWriter.recordFieldStart();
-    if (auto read_ = __fbthrift_try_write_lazy_field(folly::tag<::apache::thrift::ident::{{field:cpp_name}}>, prot_)) {
+    if (auto read_ = __fbthrift_try_write_lazy_field(folly::tag<::apache::thrift::ident::{{field.cpp_name}}>, prot_)) {
       xfer += *read_;
-      goto written_lazy_field_{{field:cpp_name}};
+      goto written_lazy_field_{{field.cpp_name}};
     }
-{{/field:lazy?}}
-{{^field:non_opt_cpp_ref?}}
-{{#field:use_op_encode?}}
-    xfer += ::apache::thrift::op::encode<{{field:type_tag}}>(*prot_, {{#field:cpp_ref?}}*{{/field:cpp_ref?}}{{#partial fields.member field=field:self struct=struct:self}});
-{{/field:use_op_encode?}}
-{{^field:use_op_encode?}}
-    xfer += {{#partial custom_protocol.protocol_methods field=field:self}}::write(*prot_, {{#partial custom_protocol.protocol_methods_value field=field:self struct=struct:self}});
-{{/field:use_op_encode?}}
-{{/field:non_opt_cpp_ref?}}
-{{#field:non_opt_cpp_ref?}}
-    if ({{#partial fields.member field=field:self struct=struct:self}}) {
-{{#field:use_op_encode?}}
-      xfer += ::apache::thrift::op::encode<{{field:type_tag}}>(*prot_, {{#field:cpp_ref?}}*{{/field:cpp_ref?}}{{#partial fields.member field=field:self struct=struct:self}});
-{{/field:use_op_encode?}}
-{{^field:use_op_encode?}}
-      xfer += {{#partial custom_protocol.protocol_methods field=field:self}}::write(*prot_, {{#partial custom_protocol.protocol_methods_value field=field:self struct=struct:self}});
-{{/field:use_op_encode?}}
-{{#if (or type:container? type:enum?)}}
+    {{/if field.lazy?}}
+    {{#if field.non_opt_cpp_ref?}}
+    if ({{#partial fields.member field=field struct=struct}}) {
+      {{#if field.use_op_encode?}}
+      xfer += ::apache::thrift::op::encode<{{field.type_tag}}>(*prot_, {{#if field.cpp_ref?}}*{{/if}}{{#partial fields.member field=field struct=struct}});
+      {{#else}}
+      xfer += {{#partial custom_protocol.protocol_methods field=field}}::write(*prot_, {{#partial custom_protocol.protocol_methods_value field=field struct=struct}});
+      {{/if field.use_op_encode?}}
+      {{#if (or field.type.container? field.type.enum?)}}
     } else {
-      xfer += prot_->write{{#partial custom_protocol.struct_field_type type=type:self}}Begin({{#partial custom_protocol.container_struct_type type=type:self}}, 0);
-      xfer += prot_->write{{#partial custom_protocol.struct_field_type type=type:self}}End();
-{{/if (or type:container? type:enum?)}}
-{{#type:structured?}}
+      xfer += prot_->write{{#partial custom_protocol.struct_field_type type=type}}Begin({{#partial custom_protocol.container_struct_type type=type}}, 0);
+      xfer += prot_->write{{#partial custom_protocol.struct_field_type type=type}}End();
+      {{/if (or field.type.container? field.type.enum?)}}
+      {{#if field.type.structured?}}
     } else {
-      xfer += prot_->writeStructBegin("{{type:name}}");
+      xfer += prot_->writeStructBegin("{{field.type.name}}");
       xfer += prot_->writeFieldStop();
       xfer += prot_->writeStructEnd();
-{{/type:structured?}}
+      {{/if field.type.structured?}}
     }
-{{/field:non_opt_cpp_ref?}}
-{{#field:lazy?}}
-    written_lazy_field_{{field:cpp_name}}:
-    indexWriter.template recordFieldEnd<decltype({{#partial custom_protocol.protocol_methods_value field=field:self struct=struct:self}})>({{type:type_class}}{}, {{field:id}});
-{{/field:lazy?}}
+    {{#else if field.use_op_encode?}}
+    xfer += ::apache::thrift::op::encode<{{field.type_tag}}>(*prot_, {{#if field.cpp_ref?}}*{{/if}}{{#partial fields.member field=field struct=struct}});
+    {{#else}}
+    xfer += {{#partial custom_protocol.protocol_methods field=field}}::write(*prot_, {{#partial custom_protocol.protocol_methods_value field=field struct=struct}});
+    {{/if field.non_opt_cpp_ref?}}
+    {{#if field.lazy?}}
+    written_lazy_field_{{field.cpp_name}}:
+    indexWriter.template recordFieldEnd<decltype({{#partial custom_protocol.protocol_methods_value field=field struct=struct}})>({{field.type.type_class}}{}, {{field.id}});
+    {{/if field.lazy?}}
     xfer += prot_->writeFieldEnd();
-{{#struct:union?}}
-{{#partial custom_protocol.if_should_write_end struct=struct:self}}
-{{/struct:union?}}
-{{^struct:union?}}
-{{#field:optional?}}
+    {{#if struct.union?}}
+{{#partial custom_protocol.if_should_write_end struct=struct}}
+    {{#else}}
+      {{#if (or field.optional? field.deprecated_terse_writes? field.terse?)}}
   } else {
     previousFieldHasValue = false;
   }
-{{/field:optional?}}
-{{#field:deprecated_terse_writes?}}
-  } else {
-    previousFieldHasValue = false;
+      {{#else}}
   }
-{{/field:deprecated_terse_writes?}}
-{{#field:terse?}}
-  } else {
-    previousFieldHasValue = false;
-  }
-{{/field:terse?}}
-{{^field:optional?}}{{^field:deprecated_terse_writes?}}{{^field:terse?}}
-  }
-{{/field:terse?}}{{/field:deprecated_terse_writes?}}{{/field:optional?}}
-{{/struct:union?}}
-{{/field:type}}
+      {{/if (or field.optional? field.deprecated_terse_writes? field.terse?)}}
+    {{/if struct.union?}}

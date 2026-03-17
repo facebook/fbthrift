@@ -15,58 +15,58 @@
   limitations under the License.
 
 }}template <class Protocol_>
-uint32_t {{struct:cpp_underlying_name}}::serializedSize(Protocol_ const* prot_) const {
+uint32_t {{struct.cpp_underlying_name}}::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
-  xfer += prot_->serializedStructSize("{{struct:name}}");
-{{#struct:fields_in_serialization_order}}
+  xfer += prot_->serializedStructSize("{{struct.name}}");
+  {{#each struct.fields_in_serialization_order as |field|}}
 {{> module_types_custom_protocol_h/serialize_field_size}}
-{{/struct:fields_in_serialization_order}}
+  {{/each}}
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t {{struct:cpp_underlying_name}}::serializedSizeZC(Protocol_ const* prot_) const {
+uint32_t {{struct.cpp_underlying_name}}::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
-  xfer += prot_->serializedStructSize("{{struct:name}}");
-{{#struct:fields_in_serialization_order}}
+  xfer += prot_->serializedStructSize("{{struct.name}}");
+  {{#each struct.fields_in_serialization_order as |field|}}
 {{> module_types_custom_protocol_h/serialize_field_size_zc}}
-{{/struct:fields_in_serialization_order}}
+  {{/each}}
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
-{{#if (not (has_compiler_option? "tablebased"))}}
+  {{#if (not (has_compiler_option? "tablebased"))}}
 template <class Protocol_>
-uint32_t {{struct:cpp_underlying_name}}::write(Protocol_* prot_) const {
+uint32_t {{struct.cpp_underlying_name}}::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
-  xfer += prot_->writeStructBegin("{{struct:name}}");
-{{#struct:indexing?}}
-  ::apache::thrift::detail::IndexWriter<Protocol_> indexWriter(prot_, xfer, {{#if struct:write_lazy_field_checksum?}}true{{#else}}false{{/if}});
-{{/struct:indexing?}}
-{{#struct:fields?}}
+  xfer += prot_->writeStructBegin("{{struct.name}}");
+    {{#if struct.indexing?}}
+  ::apache::thrift::detail::IndexWriter<Protocol_> indexWriter(prot_, xfer, {{#if struct.write_lazy_field_checksum?}}true{{#else}}false{{/if}});
+    {{/if struct.indexing?}}
+    {{#if struct.fields?}}
   bool previousFieldHasValue = true;
-{{/struct:fields?}}
-{{#struct:fields_in_serialization_order}}
+    {{/if struct.fields?}}
+    {{#each (array.enumerate struct.fields_in_serialization_order with_first=true) as |i field first?|}}
 {{> module_types_custom_protocol_h/serialize_field}}
-{{/struct:fields_in_serialization_order}}
-{{#struct:indexing?}}
+    {{/each}}
+    {{#if struct.indexing?}}
   indexWriter.finalize();
-{{/struct:indexing?}}
+    {{/if struct.indexing?}}
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
 }
-{{#else}}
+  {{#else}}
 template <class Protocol_>
-uint32_t {{struct:cpp_underlying_name}}::write(Protocol_* iprot) const {
+uint32_t {{struct.cpp_underlying_name}}::write(Protocol_* iprot) const {
   return ::apache::thrift::detail::write(
     iprot,
     ::apache::thrift::detail::toStructInfo(
-      ::{{program:cpp_qualified_namespace}}::__fbthrift_struct_info_{{struct:cpp_underlying_name}}
+      ::{{program.cpp_qualified_namespace}}::__fbthrift_struct_info_{{struct.cpp_underlying_name}}
     ),
     this);
 }
-{{/if (not (has_compiler_option? "tablebased"))}}
+  {{/if (not (has_compiler_option? "tablebased"))}}
 {{!
 }}

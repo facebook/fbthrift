@@ -2227,10 +2227,9 @@ void t_mstch_cpp2_generator::generate_structs(const t_program* program) {
         fmt::format("{}_types_serialization.cpp", name));
   }
 
-  render_to_file(
-      prog,
+  render_whisker_file(
       "module_types_custom_protocol.h",
-      name + "_types_custom_protocol.h");
+      fmt::format("{}_types_custom_protocol.h", name));
   if (has_option("frozen2")) {
     render_whisker_file("module_layouts.h", fmt::format("{}_layouts.h", name));
     render_whisker_file(

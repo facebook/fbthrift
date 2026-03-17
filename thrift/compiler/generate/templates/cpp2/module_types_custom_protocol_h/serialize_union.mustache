@@ -15,14 +15,14 @@
   limitations under the License.
 
 }}template <class Protocol_>
-uint32_t {{struct:cpp_underlying_name}}::serializedSize(Protocol_ const* prot_) const {
+uint32_t {{struct.cpp_underlying_name}}::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
-  xfer += prot_->serializedStructSize("{{struct:name}}");
+  xfer += prot_->serializedStructSize("{{struct.name}}");
   switch(this->getType()) {
-  {{#struct:fields}}
+  {{#each struct.fields as |field|}}
   {{> module_types_custom_protocol_h/serialize_field_size}}
-  {{/struct:fields}}
-    case {{struct:cpp_underlying_name}}::Type::__EMPTY__:
+  {{/each}}
+    case {{struct.cpp_underlying_name}}::Type::__EMPTY__:
       break;
     default:
       break;
@@ -32,14 +32,14 @@ uint32_t {{struct:cpp_underlying_name}}::serializedSize(Protocol_ const* prot_) 
 }
 
 template <class Protocol_>
-uint32_t {{struct:cpp_underlying_name}}::serializedSizeZC(Protocol_ const* prot_) const {
+uint32_t {{struct.cpp_underlying_name}}::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
-  xfer += prot_->serializedStructSize("{{struct:name}}");
+  xfer += prot_->serializedStructSize("{{struct.name}}");
   switch(this->getType()) {
-  {{#struct:fields}}
+  {{#each struct.fields as |field|}}
   {{> module_types_custom_protocol_h/serialize_field_size_zc}}
-  {{/struct:fields}}
-    case {{struct:cpp_underlying_name}}::Type::__EMPTY__:;
+  {{/each}}
+    case {{struct.cpp_underlying_name}}::Type::__EMPTY__:;
       break;
     default:
       break;
@@ -48,16 +48,16 @@ uint32_t {{struct:cpp_underlying_name}}::serializedSizeZC(Protocol_ const* prot_
   return xfer;
 }
 
-{{#if (not (has_compiler_option? "tablebased"))}}
+  {{#if (not (has_compiler_option? "tablebased"))}}
 template <class Protocol_>
-uint32_t {{struct:cpp_underlying_name}}::write(Protocol_* prot_) const {
+uint32_t {{struct.cpp_underlying_name}}::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
-  xfer += prot_->writeStructBegin("{{struct:name}}");
+  xfer += prot_->writeStructBegin("{{struct.name}}");
   switch(this->getType()) {
-  {{#struct:fields}}
+    {{#each (array.enumerate struct.fields with_first=true) as |i field first?|}}
   {{> module_types_custom_protocol_h/serialize_field}}
-  {{/struct:fields}}
-    case {{struct:cpp_underlying_name}}::Type::__EMPTY__:;
+    {{/each}}
+    case {{struct.cpp_underlying_name}}::Type::__EMPTY__:;
       break;
     default:
       break;
@@ -66,16 +66,16 @@ uint32_t {{struct:cpp_underlying_name}}::write(Protocol_* prot_) const {
   xfer += prot_->writeStructEnd();
   return xfer;
 }
-{{#else}}
+  {{#else}}
 template <class Protocol_>
-uint32_t {{struct:cpp_underlying_name}}::write(Protocol_* iprot) const {
+uint32_t {{struct.cpp_underlying_name}}::write(Protocol_* iprot) const {
   return ::apache::thrift::detail::write(
     iprot,
     ::apache::thrift::detail::toStructInfo(
-      ::{{program:cpp_qualified_namespace}}::__fbthrift_struct_info_{{struct:cpp_underlying_name}}
+      ::{{program.cpp_qualified_namespace}}::__fbthrift_struct_info_{{struct.cpp_underlying_name}}
     ),
     this);
 }
-{{/if (not (has_compiler_option? "tablebased"))}}
+  {{/if (not (has_compiler_option? "tablebased"))}}
 {{!
 }}

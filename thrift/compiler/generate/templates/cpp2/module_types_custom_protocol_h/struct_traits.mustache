@@ -20,15 +20,15 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-{{#program:structs}}
+{{#each program.structured_definitions as |struct|}}
 template <>
-struct TccStructTraits<{{struct:cpp_fullname}}> {
+struct TccStructTraits<{{struct.cpp_fullname}}> {
   static void translateFieldName(
       std::string_view _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype) noexcept;
 };
-{{/program:structs}}
+{{/each}}
 
 } // namespace detail
 } // namespace thrift

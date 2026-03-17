@@ -14,45 +14,41 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 }}
-{{#if (or type:container? type:structured?)}}
+  {{#let type = field.type}}
+  {{#if (or field.type.container? field.type.structured?)}}
 _readState.beforeSubobject(iprot);
-{{/if (or type:container? type:structured?)}}
-{{#field:cpp_ref?}}
-auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<{{field:cpp_storage_type}}>({{#type:cpp_use_allocator?}}this->get_allocator(){{/type:cpp_use_allocator?}});
-{{/field:cpp_ref?}}
-{{#field:use_op_encode?}}
-::apache::thrift::op::decode<{{> field/tag}}>(*iprot, {{#partial custom_protocol.member_or_ptr field=field:self struct=struct:self}}{{#field:cpp_adapter}}, *this{{/field:cpp_adapter}});
-{{/field:use_op_encode?}}
-{{^field:use_op_encode?}}
-{{#field:cpp_first_adapter}}
-{{#field:cpp_exactly_one_adapter?}}
-if constexpr(::apache::thrift::adapt_detail::has_inplace_toThrift<{{field:cpp_first_adapter}}, {{field:cpp_type}}>::value) {
-  {{^field:cpp_ref?}}{{#type:container?}}
-  ::apache::thrift::adapt_detail::clear<{{field:cpp_first_adapter}}, {{field:id}}>({{#partial custom_protocol.member_or_ptr field=field:self struct=struct:self}}, *this);
-  {{/type:container?}}{{/field:cpp_ref?}}
-  {{#partial custom_protocol.protocol_methods field=field:self}}::readWithContext(*iprot, {{field:cpp_first_adapter}}::toThrift({{#partial custom_protocol.member_or_ptr field=field:self struct=struct:self}}), _readState);
+  {{/if (or field.type.container? field.type.structured?)}}
+  {{#if field.cpp_ref?}}
+auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<{{field.cpp_storage_type}}>({{#if field.type.cpp_use_allocator?}}this->get_allocator(){{/if}});
+  {{/if field.cpp_ref?}}
+  {{#if field.use_op_encode?}}
+::apache::thrift::op::decode<{{#partial fields.tag field=field struct=struct}}>(*iprot, {{#partial custom_protocol.member_or_ptr field=field struct=struct}}{{#if field.cpp_adapter}}, *this{{/if}});
+  {{#else if field.cpp_first_adapter}}
+    {{#if field.cpp_exactly_one_adapter?}}
+if constexpr(::apache::thrift::adapt_detail::has_inplace_toThrift<{{field.cpp_first_adapter}}, {{field.cpp_type}}>::value) {
+      {{#if (and (not field.cpp_ref?) field.type.container?)}}
+  ::apache::thrift::adapt_detail::clear<{{field.cpp_first_adapter}}, {{field.id}}>({{#partial custom_protocol.member_or_ptr field=field struct=struct}}, *this);
+      {{/if (and (not field.cpp_ref?) field.type.container?)}}
+  {{#partial custom_protocol.protocol_methods field=field}}::readWithContext(*iprot, {{field.cpp_first_adapter}}::toThrift({{#partial custom_protocol.member_or_ptr field=field struct=struct}}), _readState);
 } else {
-{{/field:cpp_exactly_one_adapter?}}
-{{#field:cpp_exactly_one_adapter?}}  {{/field:cpp_exactly_one_adapter?}}{{field:cpp_standard_type}} tvalue{{#type:container?}}{{#type:cpp_use_allocator?}}(this->get_allocator()){{/type:cpp_use_allocator?}}{{/type:container?}};
-{{#field:cpp_exactly_one_adapter?}}  {{/field:cpp_exactly_one_adapter?}}{{#partial custom_protocol.protocol_methods field=field:self}}::readWithContext(*iprot, tvalue, _readState);
-{{#field:cpp_exactly_one_adapter?}}
-  {{#partial custom_protocol.member_or_ptr field=field:self struct=struct:self}} = ::apache::thrift::adapt_detail::fromThriftField<{{field:cpp_first_adapter}}, {{field:id}}>(::std::move(tvalue), *this);
+    {{/if field.cpp_exactly_one_adapter?}}
+{{#if field.cpp_exactly_one_adapter?}}  {{/if field.cpp_exactly_one_adapter?}}{{field.cpp_standard_type}} tvalue{{#if (and field.type.container? field.type.cpp_use_allocator?)}}(this->get_allocator()){{/if}};
+{{#if field.cpp_exactly_one_adapter?}}  {{/if field.cpp_exactly_one_adapter?}}{{#partial custom_protocol.protocol_methods field=field}}::readWithContext(*iprot, tvalue, _readState);
+    {{#if field.cpp_exactly_one_adapter?}}
+  {{#partial custom_protocol.member_or_ptr field=field struct=struct}} = ::apache::thrift::adapt_detail::fromThriftField<{{field.cpp_first_adapter}}, {{field.id}}>(::std::move(tvalue), *this);
 }
-{{/field:cpp_exactly_one_adapter?}}
-{{^field:cpp_exactly_one_adapter?}}
-{{#partial custom_protocol.member_or_ptr field=field:self struct=struct:self}} = ::apache::thrift::adapt_detail::fromThriftField<{{field:cpp_first_adapter}}, {{field:id}}>({{#partial types.adapter_pre type=field:self.type}}::std::move(tvalue){{#partial types.adapter_post type=field:self.type}}, *this);
-{{/field:cpp_exactly_one_adapter?}}
-{{/field:cpp_first_adapter}}
-{{^field:cpp_first_adapter}}
-{{^field:cpp_ref?}}{{#type:container?}}
-{{#partial fields.member field=field:self struct=struct:self}} = {{field:cpp_type}}({{#type:cpp_use_allocator?}}this->get_allocator(){{/type:cpp_use_allocator?}});
-{{/type:container?}}{{/field:cpp_ref?}}
-{{#partial custom_protocol.protocol_methods field=field:self}}::readWithContext(*iprot, {{#partial custom_protocol.member_or_ptr field=field:self struct=struct:self}}, _readState);
-{{/field:cpp_first_adapter}}
-{{/field:use_op_encode?}}
-{{#field:cpp_ref?}}
-{{#partial fields.member field=field:self struct=struct:self}} = std::move(ptr);
-{{/field:cpp_ref?}}
-{{#if (or type:container? type:structured?)}}
+    {{#else}}
+{{#partial custom_protocol.member_or_ptr field=field struct=struct}} = ::apache::thrift::adapt_detail::fromThriftField<{{field.cpp_first_adapter}}, {{field.id}}>({{#partial types.adapter_pre type=field.type}}::std::move(tvalue){{#partial types.adapter_post type=field.type}}, *this);
+    {{/if field.cpp_exactly_one_adapter?}}
+  {{#else}}
+    {{#if (and (not field.cpp_ref?) field.type.container?)}}
+{{#partial fields.member field=field struct=struct}} = {{field.cpp_type}}({{#if field.type.cpp_use_allocator?}}this->get_allocator(){{/if}});
+    {{/if (and (not field.cpp_ref?) field.type.container?)}}
+{{#partial custom_protocol.protocol_methods field=field}}::readWithContext(*iprot, {{#partial custom_protocol.member_or_ptr field=field struct=struct}}, _readState);
+  {{/if field.use_op_encode?}}
+  {{#if field.cpp_ref?}}
+{{#partial fields.member field=field struct=struct}} = std::move(ptr);
+  {{/if field.cpp_ref?}}
+  {{#if (or field.type.container? field.type.structured?)}}
 _readState.afterSubobject(iprot);
-{{/if (or type:container? type:structured?)}}
+  {{/if (or field.type.container? field.type.structured?)}}

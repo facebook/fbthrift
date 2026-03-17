@@ -14,95 +14,99 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{#if (not (has_compiler_option? "tablebased"))}}
+}}
+  {{#if (not (has_compiler_option? "tablebased"))}}
 template <class Protocol_>
-void {{struct:cpp_underlying_name}}::readNoXfer(Protocol_* iprot) {
+void {{struct.cpp_underlying_name}}::readNoXfer(Protocol_* iprot) {
   {{!
     Terse fields are cleared to their intrinsic default values so that when fields are missing during
     deserialization, it will be still set to intrinsic default even if the field has the custom default in IDL.
   }}
   __fbthrift_clear_terse_fields();
 
-  apache::thrift::detail::ProtocolReaderStructReadState{{#struct:indexing?}}WithIndex{{/struct:indexing?}}<Protocol_> _readState;
+  apache::thrift::detail::ProtocolReaderStructReadState{{#if struct.indexing?}}WithIndex{{/if}}<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
 
   using apache::thrift::TProtocolException;
 
-{{#if (has_compiler_option? "deprecated_enforce_required")}}{{#struct:fields_in_serialization_order}}{{#field:required?}}
-  bool isset_{{field:cpp_name}} = false;
-{{/field:required?}}{{/struct:fields_in_serialization_order}}{{/if (has_compiler_option? "deprecated_enforce_required")}}
-{{#struct:lazy_fields?}}
+    {{#if (has_compiler_option? "deprecated_enforce_required")}}
+      {{#each struct.fields_in_serialization_order as |field|}}
+        {{#if field.required?}}
+  bool isset_{{field.cpp_name}} = false;
+        {{/if field.required?}}
+      {{/each}}
+    {{/if (has_compiler_option? "deprecated_enforce_required")}}
+    {{#if struct.lazy_fields?}}
   if (__fbthrift_protocol_ != iprot->protocolType()) {
-{{! Deserialize all lazy fields if new protocol is different that last deserialization protocol }}
-{{#struct:fields_in_serialization_order}}{{#field:lazy?}}
-    std::as_const(*this).__fbthrift_read_field_{{field:cpp_name}}();
-{{/field:lazy?}}{{/struct:fields_in_serialization_order}}
+  {{! Deserialize all lazy fields if new protocol is different that last deserialization protocol }}
+      {{#each struct.fields_in_serialization_order as |field|}}
+        {{#if field.lazy?}}
+    std::as_const(*this).__fbthrift_read_field_{{field.cpp_name}}();
+        {{/if field.lazy?}}
+      {{/each}}
     __fbthrift_protocol_ = iprot->protocolType();
   }
-{{/struct:lazy_fields?}}
+    {{/if struct.lazy_fields?}}
 
-{{#struct:fields?}}
-{{#struct:fields_in_serialization_order}}
-{{#field:type}}
-{{#first?}}
+    {{#if struct.fields?}}
+      {{#each (array.enumerate struct.fields_in_serialization_order with_first=true with_last=true) as |i field is_first? is_last?|}}
+        {{#if is_first?}}
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           0,
-          {{field:id}},
-          apache::thrift::protocol::{{#partial types.protocol_type type=type:self}}))) {
+          {{field.id}},
+          apache::thrift::protocol::{{#partial types.protocol_type type=field.type}}))) {
     goto _advance_failure;
   }
-{{/first?}}
-_readField_{{field:cpp_name}}:
-{{#field:lazy?}}
-  std::as_const(*this).__fbthrift_read_field_{{field:cpp_name}}();
+        {{/if is_first?}}
+_readField_{{field.cpp_name}}:
+        {{#if field.lazy?}}
+  std::as_const(*this).__fbthrift_read_field_{{field.cpp_name}}();
   if (auto iobuf = _readState.template tryFastSkip<
-          {{type:type_class}},
-          {{type:cpp_type}}
+          {{field.type.type_class}},
+          {{field.type.cpp_type}}
       >(iprot,
-        {{field:id}},
-        apache::thrift::protocol::{{#partial types.protocol_type type=type:self}})) {
-    const auto isDeserialized = __fbthrift_isDeserialized_.{{field:cpp_name}}.load();
-    __fbthrift_serializedData_.{{field:cpp_name}} = {{!
-    }}{{^field:lazy_ref?}}std::move(*iobuf);{{/field:lazy_ref?}}{{!
-    }}{{#field:lazy_ref?}}std::make_unique<folly::IOBuf>(std::move(*iobuf));{{/field:lazy_ref?}}
-    __fbthrift_isDeserialized_.{{field:cpp_name}} = isDeserialized & ~::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
+        {{field.id}},
+        apache::thrift::protocol::{{#partial types.protocol_type type=field.type}})) {
+    const auto isDeserialized = __fbthrift_isDeserialized_.{{field.cpp_name}}.load();
+    __fbthrift_serializedData_.{{field.cpp_name}} = {{!
+    }}{{#if field.lazy_ref?}}std::make_unique<folly::IOBuf>(std::move(*iobuf));{{#else}}std::move(*iobuf);{{/if}}
+    __fbthrift_isDeserialized_.{{field.cpp_name}} = isDeserialized & ~::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
   } else {
-{{/field:lazy?}}
-{{^field:lazy?}}
+        {{#else}}
   {
-{{/field:lazy?}}
+        {{/if field.lazy?}}
     {{> module_types_custom_protocol_h/deserialize_field}}
   }
-{{#if (has_compiler_option? "deprecated_enforce_required")}}{{#field:required?}}
-  isset_{{field:cpp_name}} = true;
-{{/field:required?}}{{/if (has_compiler_option? "deprecated_enforce_required")}}
-{{#field:has_isset?}}
- this->__isset.set({{field:isset_index}}, true);
-{{/field:has_isset?}}
+        {{#if (has_compiler_option? "deprecated_enforce_required")}}
+          {{#if field.required?}}
+  isset_{{field.cpp_name}} = true;
+          {{/if field.required?}}
+        {{/if (has_compiler_option? "deprecated_enforce_required")}}
+        {{#if field.has_isset?}}
+ this->__isset.set({{field.isset_index}}, true);
+        {{/if field.has_isset?}}
 
-  {{#if last?}}
+        {{#if is_last?}}
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
-          {{field:id}},
+          {{field.id}},
           0,
           apache::thrift::protocol::T_STOP))) {
     goto _advance_failure;
   }
-  {{#else if (object.notnull? field:serialization_next_field)}}
+        {{#else if (object.notnull? field.serialization_next_field)}}
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
-          {{field:id}},
-          {{field:serialization_next_field.id}},
-          apache::thrift::protocol::{{#partial types.protocol_type type=field:serialization_next_field.type}}))) {
+          {{field.id}},
+          {{field.serialization_next_field.id}},
+          apache::thrift::protocol::{{#partial types.protocol_type type=field.serialization_next_field.type}}))) {
     goto _advance_failure;
   }
-  {{/if last?}}
-{{/field:type}}
-{{/struct:fields_in_serialization_order}}
-{{/struct:fields?}}
-{{^struct:fields?}}
+        {{/if is_last?}}
+      {{/each}}
+    {{#else}}
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           0,
@@ -110,16 +114,20 @@ _readField_{{field:cpp_name}}:
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
   }
-{{/struct:fields?}}
+    {{/if struct.fields?}}
 
 _end:
   _readState.readStructEnd(iprot);
 
-  {{#if (has_compiler_option? "deprecated_enforce_required")}}{{#struct:fields_in_serialization_order}}{{#field:required?}}
-  if (!isset_{{field:cpp_name}}) {
-    TProtocolException::throwMissingRequiredField("{{field:name}}", "{{struct:name}}");
+    {{#if (has_compiler_option? "deprecated_enforce_required")}}
+      {{#each struct.fields_in_serialization_order as |field|}}
+        {{#if field.required?}}
+  if (!isset_{{field.cpp_name}}) {
+    TProtocolException::throwMissingRequiredField("{{field.name}}", "{{struct.name}}");
   }
-  {{/field:required?}}{{/struct:fields_in_serialization_order}}{{/if (has_compiler_option? "deprecated_enforce_required")}}
+        {{/if field.required?}}
+      {{/each}}
+    {{/if (has_compiler_option? "deprecated_enforce_required")}}
   return;
 
   goto _advance_failure; // Avoid compiler warnings about unused labels.
@@ -130,25 +138,25 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<{{struct:cpp_underlying_name}}>>();
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<{{struct.cpp_underlying_name}}>>();
   }
 
   switch (_readState.fieldId) {
-{{#struct:fields_in_serialization_order}}{{#field:type}}
-    case {{field:id}}:
+    {{#each struct.fields_in_serialization_order as |field|}}
+    case {{field.id}}:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::{{#partial types.protocol_type type=type:self}}))) {
-        goto _readField_{{field:cpp_name}};
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::{{#partial types.protocol_type type=field.type}}))) {
+        goto _readField_{{field.cpp_name}};
       } else {
         goto _skip;
       }
     }
-{{/field:type}}{{/struct:fields_in_serialization_order}}
+    {{/each}}
     default:
     {
-{{#struct:fields?}}
+    {{#if struct.fields?}}
 _skip:
-{{/struct:fields?}}
+    {{/if struct.fields?}}
       _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
@@ -156,30 +164,28 @@ _skip:
     }
   }
 }
-{{#struct:fields_in_serialization_order}}
-{{#field:type}}
-{{#field:lazy?}}
+    {{#each struct.fields_in_serialization_order as |field|}}
+      {{#if field.lazy?}}
 template<class ProtocolReader>
-void {{struct:cpp_underlying_name}}::__fbthrift_read_field_{{field:cpp_name}}_impl() const {
+void {{struct.cpp_underlying_name}}::__fbthrift_read_field_{{field.cpp_name}}_impl() const {
   ProtocolReader reader;
-  reader.setInput(&{{#field:lazy_ref?}}*{{/field:lazy_ref?}}__fbthrift_serializedData_.{{field:cpp_name}});
+  reader.setInput(&{{#if field.lazy_ref?}}*{{/if}}__fbthrift_serializedData_.{{field.cpp_name}});
   ProtocolReader *iprot = &reader;
   [[maybe_unused]] apache::thrift::detail::ProtocolReaderStructReadState<ProtocolReader> _readState;
   {{> module_types_custom_protocol_h/deserialize_field}}
 }
-{{/field:lazy?}}
-{{/field:type}}
-{{/struct:fields_in_serialization_order}}
-{{#else}}
+      {{/if field.lazy?}}
+    {{/each}}
+  {{#else}}
 template <class Protocol_>
-void {{struct:cpp_underlying_name}}::readNoXfer(Protocol_* iprot) {
+void {{struct.cpp_underlying_name}}::readNoXfer(Protocol_* iprot) {
   ::apache::thrift::detail::read(
     iprot,
     ::apache::thrift::detail::toStructInfo(
-      ::{{program:cpp_qualified_namespace}}::__fbthrift_struct_info_{{struct:cpp_underlying_name}}
+      ::{{program.cpp_qualified_namespace}}::__fbthrift_struct_info_{{struct.cpp_underlying_name}}
     ),
     this);
 }
-{{/if (not (has_compiler_option? "tablebased"))}}
+  {{/if (not (has_compiler_option? "tablebased"))}}
 {{!
 }}
