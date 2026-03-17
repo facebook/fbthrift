@@ -18,6 +18,6 @@
 {{> Autogen}}
 #pragma once
 
-{{#services}}
-#include "{{service:program.include_prefix}}{{service:name}}AsyncClient.h"
-{{/services}}
+  {{#each program.services as |service|}}
+#include "{{service.program.include_prefix}}{{service.name}}AsyncClient.h"
+  {{/each}}

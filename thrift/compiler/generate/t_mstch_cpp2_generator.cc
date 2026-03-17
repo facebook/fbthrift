@@ -697,6 +697,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
 
  private:
   void set_mstch_factories();
+  /** Render a template with only the current program as context. */
   void render_whisker_file(
       std::string_view template_name, const std::filesystem::path& output) {
     whisker::object context = whisker::make::map({
@@ -707,14 +708,27 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
     t_whisker_generator::render_to_file(output, template_name, context);
   }
 
+  /** Render a template for a single service. */
+  void render_whisker_service_file(
+      const t_service& service,
+      std::string_view template_name,
+      const std::filesystem::path& output) {
+    whisker::object context = whisker::make::map({
+        {"service",
+         whisker::make::native_handle(
+             render_state().prototypes->create<t_service>(service))},
+    });
+    t_whisker_generator::render_to_file(output, template_name, context);
+  }
+
   void generate_sinit(const t_program* program);
   void generate_visitation();
   void generate_constants(const t_program* program);
   void generate_metadata(const t_program* program);
   void generate_structs(const t_program* program);
   void generate_out_of_line_service(const t_service* service);
-  void generate_out_of_line_services(const std::vector<t_service*>& services);
-  void generate_inline_services(const std::vector<t_service*>& services);
+  void generate_out_of_line_services();
+  void generate_inline_services();
 
   void initialize_context(context_visitor& visitor) override {
     cpp_context_ = std::make_unique<cpp2_generator_context>(
@@ -2121,9 +2135,9 @@ void t_mstch_cpp2_generator::generate_program() {
   generate_structs(program);
   generate_constants(program);
   if (has_option("single_file_service")) {
-    generate_inline_services(program->services());
+    generate_inline_services();
   } else {
-    generate_out_of_line_services(program->services());
+    generate_out_of_line_services();
   }
   generate_metadata(program);
   generate_visitation();
@@ -2252,8 +2266,10 @@ void t_mstch_cpp2_generator::generate_out_of_line_service(
   render_to_file(context, "service.cpp", name + ".cpp");
   render_to_file(mstch_service, "service.h", name + ".h");
   render_to_file(mstch_service, "service.tcc", name + ".tcc");
-  render_to_file(
-      mstch_service, "types_custom_protocol.h", name + "_custom_protocol.h");
+  render_whisker_service_file(
+      *service,
+      "types_custom_protocol.h",
+      fmt::format("{}_custom_protocol.h", name));
 
   auto iter = client_name_to_split_count_.find(name);
   if (iter != client_name_to_split_count_.end()) {
@@ -2286,39 +2302,30 @@ void t_mstch_cpp2_generator::generate_out_of_line_service(
   }
 
   for (const char* protocol : {"binary", "compact"}) {
-    render_to_file(
-        mstch_service,
+    render_whisker_service_file(
+        *service,
         "service_processmap_protocol.cpp",
-        name + "_processmap_" + protocol + ".cpp");
+        fmt::format("{}_processmap_{}.cpp", name, protocol));
   }
 }
 
-void t_mstch_cpp2_generator::generate_out_of_line_services(
-    const std::vector<t_service*>& services) {
-  for (const auto* service : services) {
+void t_mstch_cpp2_generator::generate_out_of_line_services() {
+  for (const t_service* service : program_->services()) {
     generate_out_of_line_service(service);
   }
 
-  mstch::array mstch_services;
-  mstch_services.reserve(services.size());
-  for (const t_service* service : services) {
-    mstch_services.emplace_back(
-        make_mstch_service_cached(get_program(), service, mstch_context_));
-  }
-  mstch::map context{
-      {"services", std::move(mstch_services)},
-  };
   const auto& module_name = get_program()->name();
-  render_to_file(
-      context, "module_handlers_out_of_line.h", module_name + "_handlers.h");
-  render_to_file(
-      context, "module_clients_out_of_line.h", module_name + "_clients.h");
-  render_to_file(
-      context, "module_clients_fwd.h", module_name + "_clients_fwd.h");
+  render_whisker_file(
+      "module_handlers_out_of_line.h",
+      fmt::format("{}_handlers.h", module_name));
+  render_whisker_file(
+      "module_clients_out_of_line.h", fmt::format("{}_clients.h", module_name));
+  render_whisker_file(
+      "module_clients_fwd.h", fmt::format("{}_clients_fwd.h", module_name));
 }
 
-void t_mstch_cpp2_generator::generate_inline_services(
-    const std::vector<t_service*>& services) {
+void t_mstch_cpp2_generator::generate_inline_services() {
+  const std::vector<t_service*>& services = program_->services();
   mstch::array mstch_services;
   mstch_services.reserve(services.size());
   for (const t_service* service : services) {
@@ -2356,8 +2363,8 @@ void t_mstch_cpp2_generator::generate_inline_services(
   };
   const auto& module_name = get_program()->name();
   render_to_file(context, "module_clients.h", module_name + "_clients.h");
-  render_to_file(
-      context, "module_clients_fwd.h", module_name + "_clients_fwd.h");
+  render_whisker_file(
+      "module_clients_fwd.h", fmt::format("{}_clients_fwd.h", module_name));
   render_to_file(context, "module_clients.cpp", module_name + "_clients.cpp");
   render_to_file(
       context, "module_handlers-inl.h", module_name + "_handlers-inl.h");
