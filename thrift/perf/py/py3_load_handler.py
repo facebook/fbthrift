@@ -18,7 +18,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import time
 
-from apache.thrift.test.load.ttypes import LoadError
+from thrift.perf.load.thrift_types import LoadError
 
 
 def us_to_sec(microseconds):

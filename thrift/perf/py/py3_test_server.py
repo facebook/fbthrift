@@ -17,7 +17,7 @@
 import optparse
 import sys
 
-from apache.thrift.test.load import LoadTest
+from thrift.perf.load.thrift_services import LoadTestInterface
 from thrift.perf.py.py3_load_handler import LoadHandler
 from thrift.protocol.TBinaryProtocol import TBinaryProtocolAcceleratedFactory
 from thrift.protocol.THeaderProtocol import THeaderProtocolFactory
@@ -69,7 +69,7 @@ def main():
         op.error("trailing arguments: " + " ".join(args))
 
     handler = LoadHandler()
-    processor = LoadTest.Processor(handler)
+    processor = LoadTestInterface.Processor(handler)
 
     if options.header:
         pfactory = THeaderProtocolFactory(
