@@ -50,7 +50,7 @@ void validateThriftTypeInfo(const ThriftTypeInfo& type) {
   }
   type.uri() = std::string{*itr++};
   for (; itr != iend; ++itr) {
-    type.altUris()->emplace(std::string{*itr++});
+    type.altUris()->emplace(*itr++);
   }
   return type;
 }
