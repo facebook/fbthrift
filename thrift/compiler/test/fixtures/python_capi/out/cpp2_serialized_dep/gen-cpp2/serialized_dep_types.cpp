@@ -70,9 +70,6 @@ void SerializedStruct::__fbthrift_clear() {
   __isset = {};
 }
 
-void SerializedStruct::__fbthrift_clear_terse_fields() {
-}
-
 bool SerializedStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -271,9 +268,6 @@ void SerializedError::__fbthrift_clear() {
   __isset = {};
 }
 
-void SerializedError::__fbthrift_clear_terse_fields() {
-}
-
 bool SerializedError::__fbthrift_is_empty() const {
   return false;
 }
@@ -361,9 +355,6 @@ void MarshalStruct::__fbthrift_clear() {
   this->__fbthrift_field_os = apache::thrift::StringTraits<::std::string>::fromStringLiteral("");
   this->__fbthrift_field_rs = apache::thrift::StringTraits<::std::string>::fromStringLiteral("");
   __isset = {};
-}
-
-void MarshalStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool MarshalStruct::__fbthrift_is_empty() const {
@@ -562,9 +553,6 @@ void MarshalError::__fbthrift_clear() {
   this->__fbthrift_field_os = apache::thrift::StringTraits<::std::string>::fromStringLiteral("");
   this->__fbthrift_field_rs = apache::thrift::StringTraits<::std::string>::fromStringLiteral("");
   __isset = {};
-}
-
-void MarshalError::__fbthrift_clear_terse_fields() {
 }
 
 bool MarshalError::__fbthrift_is_empty() const {

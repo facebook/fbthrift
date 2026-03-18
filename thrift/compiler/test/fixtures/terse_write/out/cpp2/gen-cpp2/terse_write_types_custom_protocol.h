@@ -80,8 +80,6 @@ namespace facebook::thrift::test::fixtures::terse_write {
 
 template <class Protocol_>
 void MyStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -675,8 +673,6 @@ extern template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::CompactProt
 
 template <class Protocol_>
 void MyStructWithCustomDefault::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -794,8 +790,6 @@ extern template uint32_t MyStructWithCustomDefault::serializedSizeZC<>(apache::t
 
 template <class Protocol_>
 void StructLevelTerseStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1445,8 +1439,6 @@ extern template uint32_t StructLevelTerseStruct::serializedSizeZC<>(apache::thri
 
 template <class Protocol_>
 void FieldLevelTerseStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2649,8 +2641,6 @@ extern template uint32_t FieldLevelTerseStruct::serializedSizeZC<>(apache::thrif
 
 template <class Protocol_>
 void AdaptedFields::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2843,8 +2833,6 @@ extern template uint32_t AdaptedFields::serializedSizeZC<>(apache::thrift::Compa
 
 template <class Protocol_>
 void TerseException::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

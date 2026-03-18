@@ -119,9 +119,6 @@ void MyAnnotation::__fbthrift_clear() {
   __isset = {};
 }
 
-void MyAnnotation::__fbthrift_clear_terse_fields() {
-}
-
 bool MyAnnotation::__fbthrift_is_empty() const {
   return false;
 }
@@ -338,9 +335,6 @@ void Foo::__fbthrift_clear() {
   this->__fbthrift_field_adapted_map.clear();
   this->__fbthrift_field_adapted_list_nested.clear();
   __isset = {};
-}
-
-void Foo::__fbthrift_clear_terse_fields() {
 }
 
 bool Foo::__fbthrift_is_empty() const {
@@ -657,9 +651,6 @@ void Bar::__fbthrift_clear() {
   __isset = {};
 }
 
-void Bar::__fbthrift_clear_terse_fields() {
-}
-
 bool Bar::__fbthrift_is_empty() const {
   return false;
 }
@@ -773,9 +764,6 @@ void DirectlyAdapted::__fbthrift_clear() {
   __isset = {};
 }
 
-void DirectlyAdapted::__fbthrift_clear_terse_fields() {
-}
-
 bool DirectlyAdapted::__fbthrift_is_empty() const {
   return false;
 }
@@ -830,9 +818,6 @@ void IndependentDirectlyAdapted::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_field = ::std::int32_t();
   __isset = {};
-}
-
-void IndependentDirectlyAdapted::__fbthrift_clear_terse_fields() {
 }
 
 bool IndependentDirectlyAdapted::__fbthrift_is_empty() const {
@@ -950,9 +935,6 @@ void StructWithFieldAdapter::__fbthrift_clear() {
   __isset = {};
 }
 
-void StructWithFieldAdapter::__fbthrift_clear_terse_fields() {
-}
-
 bool StructWithFieldAdapter::__fbthrift_is_empty() const {
   return false;
 }
@@ -1048,12 +1030,6 @@ void TerseAdaptedFields::__fbthrift_clear() {
   ::apache::thrift::adapt_detail::clear<::my::Adapter1, 3>(__fbthrift_field_set_field, *this);
 }
 
-void TerseAdaptedFields::__fbthrift_clear_terse_fields() {
-  ::apache::thrift::adapt_detail::clear<::my::Adapter1, 1>(__fbthrift_field_int_field, *this);
-  ::apache::thrift::adapt_detail::clear<::my::Adapter1, 2>(__fbthrift_field_string_field, *this);
-  ::apache::thrift::adapt_detail::clear<::my::Adapter1, 3>(__fbthrift_field_set_field, *this);
-}
-
 bool TerseAdaptedFields::__fbthrift_is_empty() const {
   return ::apache::thrift::op::isEmpty<::apache::thrift::op::get_field_tag<TerseAdaptedFields, ::apache::thrift::field_id<1>>>(this->__fbthrift_field_int_field) &&
  ::apache::thrift::op::isEmpty<::apache::thrift::op::get_field_tag<TerseAdaptedFields, ::apache::thrift::field_id<2>>>(this->__fbthrift_field_string_field) &&
@@ -1127,9 +1103,6 @@ void B::__fbthrift_clear() {
   __isset = {};
 }
 
-void B::__fbthrift_clear_terse_fields() {
-}
-
 bool B::__fbthrift_is_empty() const {
   return false;
 }
@@ -1174,9 +1147,6 @@ A::A(apache::thrift::FragileConstructor) {}
 
 void A::__fbthrift_clear() {
   // clear all fields
-}
-
-void A::__fbthrift_clear_terse_fields() {
 }
 
 bool A::__fbthrift_is_empty() const {
@@ -1239,9 +1209,6 @@ void Config::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_path = apache::thrift::StringTraits<::std::string>::fromStringLiteral("");
   __isset = {};
-}
-
-void Config::__fbthrift_clear_terse_fields() {
 }
 
 bool Config::__fbthrift_is_empty() const {
@@ -1327,9 +1294,6 @@ void MyStruct::__fbthrift_clear() {
   this->__fbthrift_field_field = ::std::int32_t();
   ::apache::thrift::adapt_detail::clear<::my::Adapter2, 2>(__fbthrift_field_set_string, *this);
   __isset = {};
-}
-
-void MyStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool MyStruct::__fbthrift_is_empty() const {
@@ -1509,9 +1473,6 @@ void AdaptTestStruct::__fbthrift_clear() {
   ::apache::thrift::adapt_detail::clear<::apache::thrift::test::AdapterWithContext, 9>(__fbthrift_field_double_wrapped_integer, *this);
   ::apache::thrift::adapt_detail::clear<::apache::thrift::test::AdapterWithContext, 10>(__fbthrift_field_binary_data, *this);
   __isset = {};
-}
-
-void AdaptTestStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool AdaptTestStruct::__fbthrift_is_empty() const {
@@ -1829,9 +1790,6 @@ void AdaptTemplatedTestStruct::__fbthrift_clear() {
   __isset = {};
 }
 
-void AdaptTemplatedTestStruct::__fbthrift_clear_terse_fields() {
-}
-
 bool AdaptTemplatedTestStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -1909,9 +1867,6 @@ void AdaptTemplatedNestedTestStruct::__fbthrift_clear() {
   // clear all fields
   ::apache::thrift::clear(this->__fbthrift_field_adaptedStruct);
   __isset = {};
-}
-
-void AdaptTemplatedNestedTestStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool AdaptTemplatedNestedTestStruct::__fbthrift_is_empty() const {
@@ -2078,9 +2033,6 @@ void ThriftAdaptedStruct::__fbthrift_clear() {
   __isset = {};
 }
 
-void ThriftAdaptedStruct::__fbthrift_clear_terse_fields() {
-}
-
 bool ThriftAdaptedStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -2134,9 +2086,6 @@ void DirectlyAdaptedStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_data = ::std::int64_t();
   __isset = {};
-}
-
-void DirectlyAdaptedStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool DirectlyAdaptedStruct::__fbthrift_is_empty() const {
@@ -2247,9 +2196,6 @@ void StructFieldAdaptedStruct::__fbthrift_clear() {
   __isset = {};
 }
 
-void StructFieldAdaptedStruct::__fbthrift_clear_terse_fields() {
-}
-
 bool StructFieldAdaptedStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -2333,9 +2279,6 @@ void CircularAdaptee::__fbthrift_clear() {
   // clear all fields
   ::apache::thrift::clear(this->__fbthrift_field_field);
   __isset = {};
-}
-
-void CircularAdaptee::__fbthrift_clear_terse_fields() {
 }
 
 bool CircularAdaptee::__fbthrift_is_empty() const {
@@ -2425,9 +2368,6 @@ void CircularStruct::__fbthrift_clear() {
   this->__fbthrift_field_field.reset();
 }
 
-void CircularStruct::__fbthrift_clear_terse_fields() {
-}
-
 bool CircularStruct::__fbthrift_is_empty() const {
   return !(this->__fbthrift_field_field);
 }
@@ -2507,9 +2447,6 @@ void ReorderedStruct::__fbthrift_clear() {
   // clear all fields
 }
 
-void ReorderedStruct::__fbthrift_clear_terse_fields() {
-}
-
 bool ReorderedStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -2556,9 +2493,6 @@ void DeclaredAfterStruct::__fbthrift_clear() {
   // clear all fields
 }
 
-void DeclaredAfterStruct::__fbthrift_clear_terse_fields() {
-}
-
 bool DeclaredAfterStruct::__fbthrift_is_empty() const {
   return true;
 }
@@ -2601,9 +2535,6 @@ void UnderlyingRenamedStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_data = ::std::int64_t();
   __isset = {};
-}
-
-void UnderlyingRenamedStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool UnderlyingRenamedStruct::__fbthrift_is_empty() const {
@@ -2660,9 +2591,6 @@ void UnderlyingSameNamespaceStruct::__fbthrift_clear() {
   __isset = {};
 }
 
-void UnderlyingSameNamespaceStruct::__fbthrift_clear_terse_fields() {
-}
-
 bool UnderlyingSameNamespaceStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -2711,9 +2639,6 @@ HeapAllocated::HeapAllocated(apache::thrift::FragileConstructor) {}
 
 void HeapAllocated::__fbthrift_clear() {
   // clear all fields
-}
-
-void HeapAllocated::__fbthrift_clear_terse_fields() {
 }
 
 bool HeapAllocated::__fbthrift_is_empty() const {
@@ -2771,9 +2696,6 @@ MoveOnly::MoveOnly(apache::thrift::FragileConstructor, ::facebook::thrift::test:
 void MoveOnly::__fbthrift_clear() {
   // clear all fields
   __isset = {};
-}
-
-void MoveOnly::__fbthrift_clear_terse_fields() {
 }
 
 bool MoveOnly::__fbthrift_is_empty() const {
@@ -2841,9 +2763,6 @@ void AlsoMoveOnly::__fbthrift_clear() {
   __isset = {};
 }
 
-void AlsoMoveOnly::__fbthrift_clear_terse_fields() {
-}
-
 bool AlsoMoveOnly::__fbthrift_is_empty() const {
   return false;
 }
@@ -2884,9 +2803,6 @@ void ApplyAdapter::__fbthrift_clear() {
   // clear all fields
 }
 
-void ApplyAdapter::__fbthrift_clear_terse_fields() {
-}
-
 bool ApplyAdapter::__fbthrift_is_empty() const {
   return true;
 }
@@ -2924,9 +2840,6 @@ TransitiveAdapted::TransitiveAdapted(apache::thrift::FragileConstructor) {}
 
 void TransitiveAdapted::__fbthrift_clear() {
   // clear all fields
-}
-
-void TransitiveAdapted::__fbthrift_clear_terse_fields() {
 }
 
 bool TransitiveAdapted::__fbthrift_is_empty() const {
@@ -3028,9 +2941,6 @@ void CountingStruct::__fbthrift_clear() {
   __isset = {};
 }
 
-void CountingStruct::__fbthrift_clear_terse_fields() {
-}
-
 bool CountingStruct::__fbthrift_is_empty() const {
   return !(this->__isset.get(0)) &&
  !(this->__isset.get(1)) &&
@@ -3099,9 +3009,6 @@ void Person::__fbthrift_clear() {
   __isset = {};
 }
 
-void Person::__fbthrift_clear_terse_fields() {
-}
-
 bool Person::__fbthrift_is_empty() const {
   return false;
 }
@@ -3166,9 +3073,6 @@ void Person2::__fbthrift_clear() {
   __isset = {};
 }
 
-void Person2::__fbthrift_clear_terse_fields() {
-}
-
 bool Person2::__fbthrift_is_empty() const {
   return false;
 }
@@ -3226,9 +3130,6 @@ void Renamed::__fbthrift_clear() {
   // clear all fields
   ::apache::thrift::adapt_detail::clear<::apache::thrift::test::FieldAdapter, 1>(__fbthrift_field_field, *this);
   __isset = {};
-}
-
-void Renamed::__fbthrift_clear_terse_fields() {
 }
 
 bool Renamed::__fbthrift_is_empty() const {

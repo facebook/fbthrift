@@ -2403,7 +2403,6 @@ class structA final  {
     ::apache::thrift::type::string_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3140,7 +3139,6 @@ class structB final  {
     ::apache::thrift::type::bool_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3377,7 +3375,6 @@ class structC final  {
     ::apache::thrift::type::map<::apache::thrift::type::struct_t<::test_cpp2::cpp_reflection::structA>, ::apache::thrift::type::struct_t<::test_cpp2::cpp_reflection::structB>>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -5058,7 +5055,6 @@ class struct1 final  {
     ::apache::thrift::type::union_t<::test_cpp2::cpp_reflection::union2>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -5461,7 +5457,6 @@ class struct2 final  {
     ::apache::thrift::type::struct_t<::test_cpp2::cpp_reflection::struct1>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -5940,7 +5935,6 @@ class struct3 final  {
     ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::struct_t<::test_cpp2::cpp_reflection::structB>>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -6985,7 +6979,6 @@ class struct4 final  {
     ::apache::thrift::type::struct_t<::test_cpp2::cpp_reflection::structA>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -7268,7 +7261,6 @@ class struct5 final  {
     ::apache::thrift::type::struct_t<::test_cpp2::cpp_reflection::structB>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -7611,7 +7603,6 @@ class struct_binary final  {
     ::apache::thrift::type::binary_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -7760,7 +7751,6 @@ class dep_A_struct final  {
     ::apache::thrift::type::i32_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -8004,7 +7994,6 @@ class dep_B_struct final  {
     ::apache::thrift::type::i32_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -8244,7 +8233,6 @@ class annotated final  {
     ::apache::thrift::type::i32_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -10705,7 +10693,6 @@ class struct_with_special_names final  {
     ::apache::thrift::type::i32_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:

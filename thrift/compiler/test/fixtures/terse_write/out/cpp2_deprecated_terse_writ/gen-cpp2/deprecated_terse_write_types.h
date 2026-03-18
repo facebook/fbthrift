@@ -510,7 +510,6 @@ class MyStruct final  {
   using __fbthrift_reflection_type_tags = folly::tag_t<
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -742,7 +741,6 @@ class StructLevelTerseStruct final  {
     ::apache::thrift::type::union_t<::facebook::thrift::test::fixtures::terse_write::deprecated::MyUnion>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1456,7 +1454,6 @@ class FieldLevelTerseStruct final  {
     ::apache::thrift::type::cpp_type<std::unique_ptr<folly::IOBuf>, ::apache::thrift::type::byte_t>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2934,7 +2931,6 @@ class CppRefStructFields final  {
     ::apache::thrift::type::struct_t<::facebook::thrift::test::fixtures::terse_write::deprecated::MyStruct>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3129,7 +3125,6 @@ class DeprecatedTerseWriteWithCustomDefault final  {
     ::apache::thrift::type::map<::apache::thrift::type::i16_t, ::apache::thrift::type::i16_t>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3939,7 +3934,6 @@ class DeprecatedTerseWriteWithRedundantCustomDefault final  {
     ::apache::thrift::type::map<::apache::thrift::type::i16_t, ::apache::thrift::type::i16_t>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:

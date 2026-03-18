@@ -64,7 +64,6 @@ class Empty final  {
   using __fbthrift_reflection_type_tags = folly::tag_t<
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:

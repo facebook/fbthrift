@@ -80,8 +80,6 @@ namespace cpp2 {
 
 template <class Protocol_>
 void Fiery::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -198,8 +196,6 @@ extern template uint32_t Fiery::serializedSizeZC<>(apache::thrift::CompactProtoc
 
 template <class Protocol_>
 void Serious::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -319,8 +315,6 @@ extern template uint32_t Serious::serializedSizeZC<>(apache::thrift::CompactProt
 
 template <class Protocol_>
 void ComplexFieldNames::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -474,8 +468,6 @@ extern template uint32_t ComplexFieldNames::serializedSizeZC<>(apache::thrift::C
 
 template <class Protocol_>
 void CustomFieldNames::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -629,8 +621,6 @@ extern template uint32_t CustomFieldNames::serializedSizeZC<>(apache::thrift::Co
 
 template <class Protocol_>
 void ExceptionWithPrimitiveField::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -784,8 +774,6 @@ extern template uint32_t ExceptionWithPrimitiveField::serializedSizeZC<>(apache:
 
 template <class Protocol_>
 void ExceptionWithStructuredAnnotation::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -939,8 +927,6 @@ extern template uint32_t ExceptionWithStructuredAnnotation::serializedSizeZC<>(a
 
 template <class Protocol_>
 void Banal::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

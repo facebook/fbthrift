@@ -164,9 +164,6 @@ void Internship::__fbthrift_clear() {
   __isset = {};
 }
 
-void Internship::__fbthrift_clear_terse_fields() {
-}
-
 bool Internship::__fbthrift_is_empty() const {
   return false;
 }
@@ -259,9 +256,6 @@ void Range::__fbthrift_clear() {
   this->__fbthrift_field_max = ::std::int32_t();
 }
 
-void Range::__fbthrift_clear_terse_fields() {
-}
-
 bool Range::__fbthrift_is_empty() const {
   return false;
 }
@@ -349,9 +343,6 @@ void struct1::__fbthrift_clear() {
   this->__fbthrift_field_a = ::std::int32_t();
   this->__fbthrift_field_b = apache::thrift::StringTraits<::std::string>::fromStringLiteral("");
   __isset = {};
-}
-
-void struct1::__fbthrift_clear_terse_fields() {
 }
 
 bool struct1::__fbthrift_is_empty() const {
@@ -442,9 +433,6 @@ void struct2::__fbthrift_clear() {
   ::apache::thrift::clear(this->__fbthrift_field_c);
   this->__fbthrift_field_d.clear();
   __isset = {};
-}
-
-void struct2::__fbthrift_clear_terse_fields() {
 }
 
 bool struct2::__fbthrift_is_empty() const {
@@ -556,9 +544,6 @@ void struct3::__fbthrift_clear() {
   __isset = {};
 }
 
-void struct3::__fbthrift_clear_terse_fields() {
-}
-
 bool struct3::__fbthrift_is_empty() const {
   return false;
 }
@@ -650,9 +635,6 @@ void struct4::__fbthrift_clear() {
   this->__fbthrift_field_b = double();
   this->__fbthrift_field_c = ::std::int8_t();
   __isset = {};
-}
-
-void struct4::__fbthrift_clear_terse_fields() {
 }
 
 bool struct4::__fbthrift_is_empty() const {

@@ -276,9 +276,6 @@ void SomeStruct::__fbthrift_clear() {
   __isset = {};
 }
 
-void SomeStruct::__fbthrift_clear_terse_fields() {
-}
-
 bool SomeStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -369,9 +366,6 @@ void MyStruct::__fbthrift_clear() {
   this->__fbthrift_field_me1_t1 = ::test::fixtures::enums::MyEnum1();
   this->__fbthrift_field_me1_t2 = ::test::fixtures::enums::MyEnum1();
   __isset = {};
-}
-
-void MyStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool MyStruct::__fbthrift_is_empty() const {

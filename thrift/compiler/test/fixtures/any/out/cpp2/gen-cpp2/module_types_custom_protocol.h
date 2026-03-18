@@ -53,8 +53,6 @@ namespace detail {
 
 template <class Protocol_>
 void MyStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -286,8 +284,6 @@ extern template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::CompactProt
 
 template <class Protocol_>
 void MyException::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

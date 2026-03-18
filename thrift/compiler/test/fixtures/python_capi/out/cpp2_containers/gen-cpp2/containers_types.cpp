@@ -75,9 +75,6 @@ void TemplateLists::__fbthrift_clear() {
   __isset = {};
 }
 
-void TemplateLists::__fbthrift_clear_terse_fields() {
-}
-
 bool TemplateLists::__fbthrift_is_empty() const {
   return false;
 }
@@ -208,9 +205,6 @@ void TemplateSets::__fbthrift_clear() {
   this->__fbthrift_field_folly_vector.clear();
   this->__fbthrift_field_folly_sorted_vector.clear();
   __isset = {};
-}
-
-void TemplateSets::__fbthrift_clear_terse_fields() {
 }
 
 bool TemplateSets::__fbthrift_is_empty() const {
@@ -369,9 +363,6 @@ void TemplateMaps::__fbthrift_clear() {
   __isset = {};
 }
 
-void TemplateMaps::__fbthrift_clear_terse_fields() {
-}
-
 bool TemplateMaps::__fbthrift_is_empty() const {
   return false;
 }
@@ -503,9 +494,6 @@ void TWrapped::__fbthrift_clear() {
   __isset = {};
 }
 
-void TWrapped::__fbthrift_clear_terse_fields() {
-}
-
 bool TWrapped::__fbthrift_is_empty() const {
   return false;
 }
@@ -569,9 +557,6 @@ void IndirectionA::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_lst.clear();
   __isset = {};
-}
-
-void IndirectionA::__fbthrift_clear_terse_fields() {
 }
 
 bool IndirectionA::__fbthrift_is_empty() const {
@@ -652,9 +637,6 @@ void IndirectionB::__fbthrift_clear() {
   __isset = {};
 }
 
-void IndirectionB::__fbthrift_clear_terse_fields() {
-}
-
 bool IndirectionB::__fbthrift_is_empty() const {
   return false;
 }
@@ -731,9 +713,6 @@ void IndirectionC::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_lst.clear();
   __isset = {};
-}
-
-void IndirectionC::__fbthrift_clear_terse_fields() {
 }
 
 bool IndirectionC::__fbthrift_is_empty() const {

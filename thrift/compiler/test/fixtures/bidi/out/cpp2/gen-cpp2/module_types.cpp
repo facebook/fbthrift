@@ -55,9 +55,6 @@ void BiDiSinkException::__fbthrift_clear() {
   __isset = {};
 }
 
-void BiDiSinkException::__fbthrift_clear_terse_fields() {
-}
-
 bool BiDiSinkException::__fbthrift_is_empty() const {
   return false;
 }
@@ -122,9 +119,6 @@ void BiDiStreamException::__fbthrift_clear() {
   __isset = {};
 }
 
-void BiDiStreamException::__fbthrift_clear_terse_fields() {
-}
-
 bool BiDiStreamException::__fbthrift_is_empty() const {
   return false;
 }
@@ -187,9 +181,6 @@ void BiDiMethodException::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_message = apache::thrift::StringTraits<::std::string>::fromStringLiteral("");
   __isset = {};
-}
-
-void BiDiMethodException::__fbthrift_clear_terse_fields() {
 }
 
 bool BiDiMethodException::__fbthrift_is_empty() const {

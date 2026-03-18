@@ -746,7 +746,6 @@ class Foo final  {
     ::apache::thrift::type::list<::apache::thrift::type::list<::apache::thrift::type::map<::apache::thrift::type::i32_t, ::apache::thrift::type::i32_t>>>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2035,7 +2034,6 @@ class DirectlyAdapted final  {
     ::apache::thrift::type::i32_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2193,7 +2191,6 @@ class Bar final  {
     ::apache::thrift::type::list<::apache::thrift::type::struct_t<::facebook::thrift::test::fixtures::adapter::Foo>>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2636,7 +2633,6 @@ class A final  {
   using __fbthrift_reflection_type_tags = folly::tag_t<
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2750,7 +2746,6 @@ class ThriftAdaptedStruct final  {
     ::apache::thrift::type::i64_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2886,7 +2881,6 @@ class DirectlyAdaptedStruct final  {
     ::apache::thrift::type::i64_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3034,7 +3028,6 @@ class MyAnnotation final  {
     ::apache::thrift::type::enum_t<::facebook::thrift::test::fixtures::adapter::Color>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3227,7 +3220,6 @@ class IndependentDirectlyAdapted final  {
     ::apache::thrift::type::i32_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3367,7 +3359,6 @@ class StructWithFieldAdapter final  {
     ::apache::thrift::type::adapted<::my::Adapter1, ::apache::thrift::type::i32_t>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3616,7 +3607,6 @@ class TerseAdaptedFields final  {
     ::apache::thrift::type::adapted<::my::Adapter1, ::apache::thrift::type::set<::apache::thrift::type::i32_t>>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3815,7 +3805,6 @@ class B final  {
     ::apache::thrift::type::adapted<::my::Adapter, ::apache::thrift::type::struct_t<::facebook::thrift::test::fixtures::adapter::A>>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3938,7 +3927,6 @@ class Config final  {
     ::apache::thrift::type::string_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -4086,7 +4074,6 @@ class MyStruct final  {
     ::apache::thrift::type::adapted<::my::Adapter2, ::apache::thrift::type::set<::apache::thrift::type::string_t>>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -4275,7 +4262,6 @@ class AdaptTestStruct final  {
     ::apache::thrift::type::adapted<::apache::thrift::test::AdapterWithContext, ::apache::thrift::type::binary_t>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -4804,7 +4790,6 @@ class AdaptTemplatedTestStruct final  {
     ::apache::thrift::type::adapted<::apache::thrift::test::TemplatedTestAdapter, ::apache::thrift::type::bool_t>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -5727,7 +5712,6 @@ class AdaptTemplatedNestedTestStruct final  {
     ::apache::thrift::type::struct_t<::facebook::thrift::test::fixtures::adapter::AdaptTemplatedTestStruct>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -6168,7 +6152,6 @@ class StructFieldAdaptedStruct final  {
     ::apache::thrift::type::adapted<::apache::thrift::test::TemplatedTestAdapter, ::apache::thrift::type::struct_t<::facebook::thrift::test::fixtures::adapter::detail::DirectlyAdaptedStruct>>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -6408,7 +6391,6 @@ class CircularStruct final  {
     ::apache::thrift::type::adapted<::apache::thrift::test::MemberAccessAdapter, ::apache::thrift::type::struct_t<::facebook::thrift::test::fixtures::adapter::CircularAdaptee>>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -6534,7 +6516,6 @@ class CircularAdaptee final  {
     ::apache::thrift::type::struct_t<::facebook::thrift::test::fixtures::adapter::CircularStruct>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -6672,7 +6653,6 @@ class DeclaredAfterStruct final  {
   using __fbthrift_reflection_type_tags = folly::tag_t<
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -6759,7 +6739,6 @@ class ReorderedStruct final  {
     ::apache::thrift::type::adapted<::apache::thrift::test::IdentityAdapter<detail::DeclaredAfterStruct>, ::apache::thrift::type::struct_t<::facebook::thrift::test::fixtures::adapter::detail::DeclaredAfterStruct>>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -6885,7 +6864,6 @@ class UnderlyingRenamedStruct final  {
     ::apache::thrift::type::i64_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -7020,7 +6998,6 @@ class UnderlyingSameNamespaceStruct final  {
     ::apache::thrift::type::i64_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -7154,7 +7131,6 @@ class HeapAllocated final  {
   using __fbthrift_reflection_type_tags = folly::tag_t<
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -7241,7 +7217,6 @@ class MoveOnly final  {
     ::apache::thrift::type::adapted<::apache::thrift::test::MoveOnlyAdapter, ::apache::thrift::type::struct_t<::facebook::thrift::test::fixtures::adapter::detail::HeapAllocated>>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -7364,7 +7339,6 @@ class AlsoMoveOnly final  {
     ::apache::thrift::type::adapted<::apache::thrift::test::MoveOnlyAdapter, ::apache::thrift::type::i64_t>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -7486,7 +7460,6 @@ class ApplyAdapter final  {
   using __fbthrift_reflection_type_tags = folly::tag_t<
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -7569,7 +7542,6 @@ class TransitiveAdapted final  {
   using __fbthrift_reflection_type_tags = folly::tag_t<
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -7660,7 +7632,6 @@ class CountingStruct final  {
     ::apache::thrift::type::adapted<::apache::thrift::test::CountingAdapter<false, std::string>, ::apache::thrift::type::string_t>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -7861,7 +7832,6 @@ class Person final  {
     ::apache::thrift::type::string_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -8007,7 +7977,6 @@ class Person2 final  {
     ::apache::thrift::type::string_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -8153,7 +8122,6 @@ class Renamed final  {
     ::apache::thrift::type::adapted<::apache::thrift::test::FieldAdapter, ::apache::thrift::type::i32_t>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:

@@ -45,8 +45,6 @@ namespace a::different::ns {
 
 template <class Protocol_>
 void AStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -168,8 +166,6 @@ extern template uint32_t AStruct::serializedSizeZC<>(apache::thrift::SimpleJSONP
 
 template <class Protocol_>
 void AStructB::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

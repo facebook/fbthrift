@@ -55,9 +55,6 @@ void Fiery::__fbthrift_clear() {
   this->__fbthrift_field_message = apache::thrift::StringTraits<::std::string>::fromStringLiteral("");
 }
 
-void Fiery::__fbthrift_clear_terse_fields() {
-}
-
 bool Fiery::__fbthrift_is_empty() const {
   return false;
 }
@@ -123,9 +120,6 @@ void Serious::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_sonnet = apache::thrift::StringTraits<::std::string>::fromStringLiteral("");
   __isset = {};
-}
-
-void Serious::__fbthrift_clear_terse_fields() {
 }
 
 bool Serious::__fbthrift_is_empty() const {
@@ -209,9 +203,6 @@ void ComplexFieldNames::__fbthrift_clear() {
   __isset = {};
 }
 
-void ComplexFieldNames::__fbthrift_clear_terse_fields() {
-}
-
 bool ComplexFieldNames::__fbthrift_is_empty() const {
   return false;
 }
@@ -284,9 +275,6 @@ void CustomFieldNames::__fbthrift_clear() {
   this->__fbthrift_field_error_message = apache::thrift::StringTraits<::std::string>::fromStringLiteral("");
   this->__fbthrift_field_internal_error_message = apache::thrift::StringTraits<::std::string>::fromStringLiteral("");
   __isset = {};
-}
-
-void CustomFieldNames::__fbthrift_clear_terse_fields() {
 }
 
 bool CustomFieldNames::__fbthrift_is_empty() const {
@@ -362,9 +350,6 @@ void ExceptionWithPrimitiveField::__fbthrift_clear() {
   this->__fbthrift_field_message = apache::thrift::StringTraits<::std::string>::fromStringLiteral("");
   this->__fbthrift_field_error_code = ::std::int32_t();
   __isset = {};
-}
-
-void ExceptionWithPrimitiveField::__fbthrift_clear_terse_fields() {
 }
 
 bool ExceptionWithPrimitiveField::__fbthrift_is_empty() const {
@@ -451,9 +436,6 @@ void ExceptionWithStructuredAnnotation::__fbthrift_clear() {
   __isset = {};
 }
 
-void ExceptionWithStructuredAnnotation::__fbthrift_clear_terse_fields() {
-}
-
 bool ExceptionWithStructuredAnnotation::__fbthrift_is_empty() const {
   return false;
 }
@@ -515,9 +497,6 @@ Banal::Banal(apache::thrift::FragileConstructor) {}
 
 void Banal::__fbthrift_clear() {
   // clear all fields
-}
-
-void Banal::__fbthrift_clear_terse_fields() {
 }
 
 bool Banal::__fbthrift_is_empty() const {

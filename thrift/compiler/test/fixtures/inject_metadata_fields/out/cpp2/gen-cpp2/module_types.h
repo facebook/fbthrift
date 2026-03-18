@@ -124,7 +124,6 @@ class Fields final  {
     ::apache::thrift::type::string_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -269,7 +268,6 @@ class FieldsInjectedToEmptyStruct final  {
     ::apache::thrift::type::string_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -416,7 +414,6 @@ class FieldsInjectedToStruct final  {
     ::apache::thrift::type::string_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -625,7 +622,6 @@ class FieldsInjectedWithIncludedStruct final  {
     ::apache::thrift::type::string_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -906,7 +902,6 @@ class FieldsInjectedWithFieldsWithIncludedStruct final  {
     ::apache::thrift::type::struct_t<::cpp2::InjectedField>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:

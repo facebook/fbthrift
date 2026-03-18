@@ -45,8 +45,6 @@ namespace apache::thrift::test {
 
 template <class Protocol_>
 void A::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -169,8 +167,6 @@ extern template uint32_t A::serializedSizeZC<>(apache::thrift::CompactProtocolWr
 
 template <class Protocol_>
 void B::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

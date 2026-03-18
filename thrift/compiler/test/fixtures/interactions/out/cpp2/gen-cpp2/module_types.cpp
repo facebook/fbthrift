@@ -55,9 +55,6 @@ void CustomException::__fbthrift_clear() {
   __isset = {};
 }
 
-void CustomException::__fbthrift_clear_terse_fields() {
-}
-
 bool CustomException::__fbthrift_is_empty() const {
   return false;
 }
@@ -120,9 +117,6 @@ void ShouldBeBoxed::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_sessionId = apache::thrift::StringTraits<::std::string>::fromStringLiteral("");
   __isset = {};
-}
-
-void ShouldBeBoxed::__fbthrift_clear_terse_fields() {
 }
 
 bool ShouldBeBoxed::__fbthrift_is_empty() const {

@@ -65,9 +65,6 @@ void Foo::__fbthrift_clear() {
   __isset = {};
 }
 
-void Foo::__fbthrift_clear_terse_fields() {
-}
-
 bool Foo::__fbthrift_is_empty() const {
   return false;
 }
@@ -139,9 +136,6 @@ void Bar::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_list_field.clear();
   __isset = {};
-}
-
-void Bar::__fbthrift_clear_terse_fields() {
 }
 
 bool Bar::__fbthrift_is_empty() const {
@@ -219,9 +213,6 @@ void Baz::__fbthrift_clear() {
   this->__fbthrift_field_list_field.clear();
   this->__fbthrift_field_nested_list_field.clear();
   __isset = {};
-}
-
-void Baz::__fbthrift_clear_terse_fields() {
 }
 
 bool Baz::__fbthrift_is_empty() const {
@@ -388,9 +379,6 @@ void OpEncodeStruct::__fbthrift_clear() {
   ::apache::thrift::clear(this->__fbthrift_field_bar_field);
   ::apache::thrift::adapt_detail::clear<::FieldAdapter, 12>(__fbthrift_field_adapted_list_field, *this);
   __isset = {};
-}
-
-void OpEncodeStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool OpEncodeStruct::__fbthrift_is_empty() const {

@@ -77,7 +77,6 @@ class IncludedA final  {
     ::apache::thrift::type::string_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:

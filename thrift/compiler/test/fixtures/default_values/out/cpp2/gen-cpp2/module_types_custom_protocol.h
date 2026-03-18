@@ -66,8 +66,6 @@ namespace facebook::thrift::compiler::test::fixtures::default_values {
 
 template <class Protocol_>
 void TrivialStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -185,8 +183,6 @@ extern template uint32_t TrivialStruct::serializedSizeZC<>(apache::thrift::Compa
 
 template <class Protocol_>
 void TrivialStructWithDefault::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -340,8 +336,6 @@ extern template uint32_t TrivialStructWithDefault::serializedSizeZC<>(apache::th
 
 template <class Protocol_>
 void StructWithNoCustomDefaultValues::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -647,8 +641,6 @@ extern template uint32_t StructWithNoCustomDefaultValues::serializedSizeZC<>(apa
 
 template <class Protocol_>
 void StructWithCustomDefaultValues::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1030,8 +1022,6 @@ extern template uint32_t StructWithCustomDefaultValues::serializedSizeZC<>(apach
 
 template <class Protocol_>
 void StructWithCollectionDefaultValues::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

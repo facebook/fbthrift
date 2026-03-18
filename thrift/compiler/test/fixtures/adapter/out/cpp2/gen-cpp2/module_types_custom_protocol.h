@@ -269,8 +269,6 @@ namespace facebook::thrift::test::fixtures::adapter {
 
 template <class Protocol_>
 void MyAnnotation::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -424,8 +422,6 @@ extern template uint32_t MyAnnotation::serializedSizeZC<>(apache::thrift::Compac
 
 template <class Protocol_>
 void Foo::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1310,8 +1306,6 @@ extern template uint32_t Baz::serializedSizeZC<>(apache::thrift::CompactProtocol
 
 template <class Protocol_>
 void Bar::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1705,8 +1699,6 @@ namespace detail {
 
 template <class Protocol_>
 void DirectlyAdapted::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1826,8 +1818,6 @@ namespace detail {
 
 template <class Protocol_>
 void IndependentDirectlyAdapted::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1946,8 +1936,6 @@ extern template uint32_t IndependentDirectlyAdapted::serializedSizeZC<>(apache::
 
 template <class Protocol_>
 void StructWithFieldAdapter::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2186,8 +2174,6 @@ extern template uint32_t StructWithFieldAdapter::serializedSizeZC<>(apache::thri
 
 template <class Protocol_>
 void TerseAdaptedFields::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2382,8 +2368,6 @@ extern template uint32_t TerseAdaptedFields::serializedSizeZC<>(apache::thrift::
 
 template <class Protocol_>
 void B::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2503,8 +2487,6 @@ extern template uint32_t B::serializedSizeZC<>(apache::thrift::CompactProtocolWr
 
 template <class Protocol_>
 void A::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2584,8 +2566,6 @@ extern template uint32_t A::serializedSizeZC<>(apache::thrift::CompactProtocolWr
 
 template <class Protocol_>
 void Config::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2703,8 +2683,6 @@ extern template uint32_t Config::serializedSizeZC<>(apache::thrift::CompactProto
 
 template <class Protocol_>
 void MyStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2860,8 +2838,6 @@ extern template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactPro
 
 template <class Protocol_>
 void AdaptTestStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -3303,8 +3279,6 @@ extern template uint32_t AdaptTestStruct::serializedSizeZC<>(apache::thrift::Com
 
 template <class Protocol_>
 void AdaptTemplatedTestStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -4190,8 +4164,6 @@ extern template uint32_t AdaptTemplatedTestStruct::serializedSizeZC<>(apache::th
 
 template <class Protocol_>
 void AdaptTemplatedNestedTestStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -4454,8 +4426,6 @@ extern template uint32_t ThriftAdaptTestUnion::serializedSizeZC<>(apache::thrift
 
 template <class Protocol_>
 void ThriftAdaptedStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -4574,8 +4544,6 @@ namespace detail {
 
 template <class Protocol_>
 void DirectlyAdaptedStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -4694,8 +4662,6 @@ extern template uint32_t DirectlyAdaptedStruct::serializedSizeZC<>(apache::thrif
 
 template <class Protocol_>
 void StructFieldAdaptedStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -4929,8 +4895,6 @@ extern template uint32_t StructFieldAdaptedStruct::serializedSizeZC<>(apache::th
 
 template <class Protocol_>
 void CircularAdaptee::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -5050,8 +5014,6 @@ extern template uint32_t CircularAdaptee::serializedSizeZC<>(apache::thrift::Com
 
 template <class Protocol_>
 void CircularStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -5174,8 +5136,6 @@ extern template uint32_t CircularStruct::serializedSizeZC<>(apache::thrift::Comp
 
 template <class Protocol_>
 void ReorderedStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -5313,8 +5273,6 @@ namespace detail {
 
 template <class Protocol_>
 void DeclaredAfterStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -5395,8 +5353,6 @@ extern template uint32_t DeclaredAfterStruct::serializedSizeZC<>(apache::thrift:
 
 template <class Protocol_>
 void UnderlyingRenamedStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -5514,8 +5470,6 @@ extern template uint32_t UnderlyingRenamedStruct::serializedSizeZC<>(apache::thr
 
 template <class Protocol_>
 void UnderlyingSameNamespaceStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -5634,8 +5588,6 @@ namespace detail {
 
 template <class Protocol_>
 void HeapAllocated::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -5716,8 +5668,6 @@ extern template uint32_t HeapAllocated::serializedSizeZC<>(apache::thrift::Compa
 
 template <class Protocol_>
 void MoveOnly::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -5837,8 +5787,6 @@ extern template uint32_t MoveOnly::serializedSizeZC<>(apache::thrift::CompactPro
 
 template <class Protocol_>
 void AlsoMoveOnly::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -5956,8 +5904,6 @@ extern template uint32_t AlsoMoveOnly::serializedSizeZC<>(apache::thrift::Compac
 
 template <class Protocol_>
 void ApplyAdapter::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -6038,8 +5984,6 @@ namespace detail {
 
 template <class Protocol_>
 void TransitiveAdapted::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -6120,8 +6064,6 @@ extern template uint32_t TransitiveAdapted::serializedSizeZC<>(apache::thrift::C
 
 template <class Protocol_>
 void CountingStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -6317,8 +6259,6 @@ extern template uint32_t CountingStruct::serializedSizeZC<>(apache::thrift::Comp
 
 template <class Protocol_>
 void Person::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -6436,8 +6376,6 @@ extern template uint32_t Person::serializedSizeZC<>(apache::thrift::CompactProto
 
 template <class Protocol_>
 void Person2::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -6555,8 +6493,6 @@ extern template uint32_t Person2::serializedSizeZC<>(apache::thrift::CompactProt
 
 template <class Protocol_>
 void Renamed::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

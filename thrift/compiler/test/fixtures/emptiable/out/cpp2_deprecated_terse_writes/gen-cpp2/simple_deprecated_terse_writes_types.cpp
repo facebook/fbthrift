@@ -60,9 +60,6 @@ void MyStruct::__fbthrift_clear() {
   // clear all fields
 }
 
-void MyStruct::__fbthrift_clear_terse_fields() {
-}
-
 bool MyStruct::__fbthrift_is_empty() const {
   return true;
 }
@@ -195,9 +192,6 @@ void EmptiableStruct::__fbthrift_clear() {
   this->__fbthrift_field_set_field.clear();
   this->__fbthrift_field_map_field.clear();
   __isset = {};
-}
-
-void EmptiableStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool EmptiableStruct::__fbthrift_is_empty() const {
@@ -470,9 +464,6 @@ void NotEmptiableStruct::__fbthrift_clear() {
   this->__fbthrift_field_set_field.clear();
   this->__fbthrift_field_map_field.clear();
   __isset = {};
-}
-
-void NotEmptiableStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool NotEmptiableStruct::__fbthrift_is_empty() const {

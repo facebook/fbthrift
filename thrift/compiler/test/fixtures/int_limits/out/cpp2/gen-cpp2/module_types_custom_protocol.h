@@ -38,8 +38,6 @@ namespace cpp2 {
 
 template <class Protocol_>
 void Limits::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

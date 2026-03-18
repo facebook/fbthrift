@@ -36,9 +36,6 @@ void TrivialStruct::__fbthrift_clear() {
   __isset = {};
 }
 
-void TrivialStruct::__fbthrift_clear_terse_fields() {
-}
-
 bool TrivialStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -94,9 +91,6 @@ void TrivialStructWithDefault::__fbthrift_clear() {
   this->__fbthrift_field_int_value_1 = ::std::int32_t();
   this->__fbthrift_field_int_value_2 = ::std::int32_t();
   __isset = {};
-}
-
-void TrivialStructWithDefault::__fbthrift_clear_terse_fields() {
 }
 
 bool TrivialStructWithDefault::__fbthrift_is_empty() const {
@@ -174,9 +168,6 @@ void StructWithNoCustomDefaultValues::__fbthrift_clear() {
   ::apache::thrift::clear(this->__fbthrift_field_optional_struct);
   ::apache::thrift::clear(this->__fbthrift_field_required_struct);
   __isset = {};
-}
-
-void StructWithNoCustomDefaultValues::__fbthrift_clear_terse_fields() {
 }
 
 bool StructWithNoCustomDefaultValues::__fbthrift_is_empty() const {
@@ -319,9 +310,6 @@ void StructWithCustomDefaultValues::__fbthrift_clear() {
   ::apache::thrift::clear(this->__fbthrift_field_struct_with_default_unspecified);
   ::apache::thrift::clear(this->__fbthrift_field_struct_with_default_specified);
   __isset = {};
-}
-
-void StructWithCustomDefaultValues::__fbthrift_clear_terse_fields() {
 }
 
 bool StructWithCustomDefaultValues::__fbthrift_is_empty() const {
@@ -519,9 +507,6 @@ void StructWithCollectionDefaultValues::__fbthrift_clear() {
   this->__fbthrift_field_set_with_map_value.clear();
   this->__fbthrift_field_map_with_list_value.clear();
   __isset = {};
-}
-
-void StructWithCollectionDefaultValues::__fbthrift_clear_terse_fields() {
 }
 
 bool StructWithCollectionDefaultValues::__fbthrift_is_empty() const {

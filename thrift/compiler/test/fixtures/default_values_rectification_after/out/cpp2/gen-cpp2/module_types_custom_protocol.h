@@ -45,8 +45,6 @@ namespace facebook::thrift::compiler::test::fixtures::default_values_rectificati
 
 template <class Protocol_>
 void EmptyStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -126,8 +124,6 @@ extern template uint32_t EmptyStruct::serializedSizeZC<>(apache::thrift::Compact
 
 template <class Protocol_>
 void TestStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

@@ -100,9 +100,6 @@ void MyStruct::__fbthrift_clear() {
   __isset = {};
 }
 
-void MyStruct::__fbthrift_clear_terse_fields() {
-}
-
 bool MyStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -176,9 +173,6 @@ MyDataItem::MyDataItem(apache::thrift::FragileConstructor) {}
 
 void MyDataItem::__fbthrift_clear() {
   // clear all fields
-}
-
-void MyDataItem::__fbthrift_clear_terse_fields() {
 }
 
 bool MyDataItem::__fbthrift_is_empty() const {

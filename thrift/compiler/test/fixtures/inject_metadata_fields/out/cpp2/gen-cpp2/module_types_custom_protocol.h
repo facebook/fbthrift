@@ -67,8 +67,6 @@ namespace cpp2 {
 
 template <class Protocol_>
 void Fields::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -186,8 +184,6 @@ extern template uint32_t Fields::serializedSizeZC<>(apache::thrift::CompactProto
 
 template <class Protocol_>
 void FieldsInjectedToEmptyStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -305,8 +301,6 @@ extern template uint32_t FieldsInjectedToEmptyStruct::serializedSizeZC<>(apache:
 
 template <class Protocol_>
 void FieldsInjectedToStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -460,8 +454,6 @@ extern template uint32_t FieldsInjectedToStruct::serializedSizeZC<>(apache::thri
 
 template <class Protocol_>
 void FieldsInjectedWithIncludedStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -693,8 +685,6 @@ extern template uint32_t FieldsInjectedWithIncludedStruct::serializedSizeZC<>(ap
 
 template <class Protocol_>
 void FieldsInjectedWithFieldsWithIncludedStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

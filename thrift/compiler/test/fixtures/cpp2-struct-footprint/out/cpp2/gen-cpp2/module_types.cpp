@@ -36,9 +36,6 @@ void SimpleStruct::__fbthrift_clear() {
   __isset = {};
 }
 
-void SimpleStruct::__fbthrift_clear_terse_fields() {
-}
-
 bool SimpleStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -91,9 +88,6 @@ void ComplexStruct::__fbthrift_clear() {
   // clear all fields
   ::apache::thrift::clear(this->__fbthrift_field_nested);
   __isset = {};
-}
-
-void ComplexStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool ComplexStruct::__fbthrift_is_empty() const {
@@ -150,9 +144,6 @@ void Struct1::__fbthrift_clear() {
   // clear all fields
 }
 
-void Struct1::__fbthrift_clear_terse_fields() {
-}
-
 bool Struct1::__fbthrift_is_empty() const {
   return true;
 }
@@ -189,9 +180,6 @@ Struct2::Struct2(apache::thrift::FragileConstructor) {}
 
 void Struct2::__fbthrift_clear() {
   // clear all fields
-}
-
-void Struct2::__fbthrift_clear_terse_fields() {
 }
 
 bool Struct2::__fbthrift_is_empty() const {
@@ -232,9 +220,6 @@ void Struct3::__fbthrift_clear() {
   // clear all fields
 }
 
-void Struct3::__fbthrift_clear_terse_fields() {
-}
-
 bool Struct3::__fbthrift_is_empty() const {
   return true;
 }
@@ -273,9 +258,6 @@ void Struct4::__fbthrift_clear() {
   // clear all fields
 }
 
-void Struct4::__fbthrift_clear_terse_fields() {
-}
-
 bool Struct4::__fbthrift_is_empty() const {
   return true;
 }
@@ -312,9 +294,6 @@ Struct5::Struct5(apache::thrift::FragileConstructor) {}
 
 void Struct5::__fbthrift_clear() {
   // clear all fields
-}
-
-void Struct5::__fbthrift_clear_terse_fields() {
 }
 
 bool Struct5::__fbthrift_is_empty() const {
@@ -377,9 +356,6 @@ void ExStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_message = apache::thrift::StringTraits<::std::string>::fromStringLiteral("");
   __isset = {};
-}
-
-void ExStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool ExStruct::__fbthrift_is_empty() const {

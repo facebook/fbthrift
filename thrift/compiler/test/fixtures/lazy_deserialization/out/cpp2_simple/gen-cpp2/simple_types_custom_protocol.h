@@ -94,8 +94,6 @@ namespace apache::thrift::test {
 
 template <class Protocol_>
 void Foo::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -333,8 +331,6 @@ extern template uint32_t Foo::serializedSizeZC<>(apache::thrift::CompactProtocol
 
 template <class Protocol_>
 void LazyFoo::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadStateWithIndex<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -677,8 +673,6 @@ extern template uint32_t LazyFoo::serializedSizeZC<>(apache::thrift::CompactProt
 
 template <class Protocol_>
 void OptionalFoo::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -924,8 +918,6 @@ extern template uint32_t OptionalFoo::serializedSizeZC<>(apache::thrift::Compact
 
 template <class Protocol_>
 void OptionalLazyFoo::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadStateWithIndex<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1276,8 +1268,6 @@ extern template uint32_t OptionalLazyFoo::serializedSizeZC<>(apache::thrift::Com
 
 template <class Protocol_>
 void OptionalBoxedLazyFoo::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadStateWithIndex<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1636,8 +1626,6 @@ extern template uint32_t OptionalBoxedLazyFoo::serializedSizeZC<>(apache::thrift
 
 template <class Protocol_>
 void LazyCppRef::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadStateWithIndex<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2114,8 +2102,6 @@ extern template uint32_t LazyCppRef::serializedSizeZC<>(apache::thrift::CompactP
 
 template <class Protocol_>
 void IndexedFoo::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2428,8 +2414,6 @@ extern template uint32_t IndexedFoo::serializedSizeZC<>(apache::thrift::CompactP
 
 template <class Protocol_>
 void OptionalIndexedFoo::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2750,8 +2734,6 @@ extern template uint32_t OptionalIndexedFoo::serializedSizeZC<>(apache::thrift::
 
 template <class Protocol_>
 void Empty::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

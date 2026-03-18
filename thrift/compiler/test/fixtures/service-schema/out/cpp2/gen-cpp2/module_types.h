@@ -130,7 +130,6 @@ class FOLLY_EXPORT CustomException : public virtual apache::thrift::TException {
     ::apache::thrift::type::enum_t<::facebook::thrift::test::fixtures::service_schema::Result>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
          ::apache::thrift::ExceptionKind::UNSPECIFIED;

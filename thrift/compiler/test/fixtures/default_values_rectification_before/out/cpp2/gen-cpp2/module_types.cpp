@@ -31,9 +31,6 @@ void EmptyStruct::__fbthrift_clear() {
   // clear all fields
 }
 
-void EmptyStruct::__fbthrift_clear_terse_fields() {
-}
-
 bool EmptyStruct::__fbthrift_is_empty() const {
   return true;
 }
@@ -133,9 +130,6 @@ void TestStruct::__fbthrift_clear() {
   this->__fbthrift_field_optional_bool_field = bool();
   this->__fbthrift_field_optional_list_field.clear();
   __isset = {};
-}
-
-void TestStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool TestStruct::__fbthrift_is_empty() const {

@@ -45,8 +45,6 @@ namespace cpp2 {
 
 template <class Protocol_>
 void SmallStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -200,8 +198,6 @@ extern template uint32_t SmallStruct::serializedSizeZC<>(apache::thrift::Compact
 
 template <class Protocol_>
 void containerStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

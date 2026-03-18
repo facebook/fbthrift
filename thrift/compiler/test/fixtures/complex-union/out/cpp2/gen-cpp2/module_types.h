@@ -1482,7 +1482,6 @@ class Val final  {
     ::apache::thrift::type::map<::apache::thrift::type::i16_t, ::apache::thrift::type::string_t>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2353,7 +2352,6 @@ class NonCopyableStruct final  {
     ::apache::thrift::type::i64_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:

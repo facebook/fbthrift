@@ -204,7 +204,6 @@ class ModuleA final  {
     ::apache::thrift::type::struct_t<::some::ns::IncludedB>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -613,7 +612,6 @@ class ModuleB final  {
     ::apache::thrift::type::enum_t<::some::ns::EnumB>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -793,7 +791,6 @@ class DirectlyAdapted final  {
     ::apache::thrift::type::i32_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -936,7 +933,6 @@ class CppRef final  {
     ::apache::thrift::type::i32_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:

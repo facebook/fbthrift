@@ -627,7 +627,6 @@ class empty_struct final  {
   using __fbthrift_reflection_type_tags = folly::tag_t<
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -711,7 +710,6 @@ class decorated_struct final  {
     ::apache::thrift::type::string_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -871,7 +869,6 @@ class ContainerStruct final  {
     ::apache::thrift::type::cpp_type<std::unordered_map<::std::int32_t, ::std::string>, ::apache::thrift::type::map<::apache::thrift::type::i32_t, ::apache::thrift::type::string_t>>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1391,7 +1388,6 @@ class CppTypeStruct final  {
     ::apache::thrift::type::cpp_type<std::list<int32_t>, ::apache::thrift::type::list<::apache::thrift::type::i32_t>>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1533,7 +1529,6 @@ class VirtualStruct  {
     ::apache::thrift::type::i64_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1670,7 +1665,6 @@ class MyStructWithForwardRefEnum final  {
     ::apache::thrift::type::enum_t<::apache::thrift::fixtures::types::MyForwardRefEnum>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1852,7 +1846,6 @@ class TrivialNumeric final  {
     ::apache::thrift::type::bool_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2034,7 +2027,6 @@ class TrivialNestedWithDefault final  {
     ::apache::thrift::type::struct_t<::apache::thrift::fixtures::types::TrivialNumeric>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2224,7 +2216,6 @@ class ComplexString final  {
     ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::i32_t>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2426,7 +2417,6 @@ class ComplexNestedWithDefault final  {
     ::apache::thrift::type::struct_t<::apache::thrift::fixtures::types::ComplexString>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2634,7 +2624,6 @@ class MinPadding final  {
     ::apache::thrift::type::byte_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2960,7 +2949,6 @@ class MinPaddingWithCustomType final  {
     ::apache::thrift::type::byte_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3236,7 +3224,6 @@ class MyDataItem final  {
   using __fbthrift_reflection_type_tags = folly::tag_t<
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3323,7 +3310,6 @@ class MyStruct final  {
     ::apache::thrift::type::struct_t<::apache::thrift::fixtures::types::MyDataItem>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3612,7 +3598,6 @@ class Renamed final  {
     ::apache::thrift::type::i64_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3747,7 +3732,6 @@ class AnnotatedTypes final  {
     ::apache::thrift::type::list<::apache::thrift::type::cpp_type<std::unordered_map<::std::int32_t, ::std::string>, ::apache::thrift::type::map<::apache::thrift::type::i32_t, ::apache::thrift::type::string_t>>>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3947,7 +3931,6 @@ class ForwardUsageStruct final  {
     ::apache::thrift::type::struct_t<::apache::thrift::fixtures::types::ForwardUsageRoot>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -4075,7 +4058,6 @@ class ForwardUsageRoot final  {
     ::apache::thrift::type::struct_t<::apache::thrift::fixtures::types::ForwardUsageByRef>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -4259,7 +4241,6 @@ class ForwardUsageByRef final  {
     ::apache::thrift::type::struct_t<::apache::thrift::fixtures::types::ForwardUsageRoot>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -4385,7 +4366,6 @@ class IncompleteMap final  {
     ::apache::thrift::type::map<::apache::thrift::type::i32_t, ::apache::thrift::type::struct_t<::apache::thrift::fixtures::types::IncompleteMapDep>>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -4527,7 +4507,6 @@ class IncompleteMapDep final  {
   using __fbthrift_reflection_type_tags = folly::tag_t<
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -4609,7 +4588,6 @@ class CompleteMapDep final  {
   using __fbthrift_reflection_type_tags = folly::tag_t<
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -4693,7 +4671,6 @@ class CompleteMap final  {
     ::apache::thrift::type::cpp_type<std::unordered_map<::std::int32_t, ::apache::thrift::fixtures::types::CompleteMapDep>, ::apache::thrift::type::map<::apache::thrift::type::i32_t, ::apache::thrift::type::struct_t<::apache::thrift::fixtures::types::CompleteMapDep>>>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -4837,7 +4814,6 @@ class IncompleteList final  {
     ::apache::thrift::type::cpp_type<::std::list<::apache::thrift::fixtures::types::IncompleteListDep>, ::apache::thrift::type::list<::apache::thrift::type::struct_t<::apache::thrift::fixtures::types::IncompleteListDep>>>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -4979,7 +4955,6 @@ class IncompleteListDep final  {
   using __fbthrift_reflection_type_tags = folly::tag_t<
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -5061,7 +5036,6 @@ class CompleteListDep final  {
   using __fbthrift_reflection_type_tags = folly::tag_t<
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -5145,7 +5119,6 @@ class CompleteList final  {
     ::apache::thrift::type::cpp_type<folly::small_vector<::apache::thrift::fixtures::types::CompleteListDep>, ::apache::thrift::type::list<::apache::thrift::type::struct_t<::apache::thrift::fixtures::types::CompleteListDep>>>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -5289,7 +5262,6 @@ class AdaptedList final  {
     ::apache::thrift::type::list<::apache::thrift::type::adapted<IdentityAdapter<detail::AdaptedListDep>, ::apache::thrift::type::struct_t<::apache::thrift::fixtures::types::detail::AdaptedListDep>>>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -5434,7 +5406,6 @@ class AdaptedListDep final  {
     ::apache::thrift::type::struct_t<::apache::thrift::fixtures::types::AdaptedList>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -5575,7 +5546,6 @@ class DependentAdaptedListDep final  {
     ::apache::thrift::type::i16_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -5702,7 +5672,6 @@ class DependentAdaptedList final  {
     ::apache::thrift::type::list<::apache::thrift::type::adapted<IdentityAdapter<detail::DependentAdaptedListDep>, ::apache::thrift::type::struct_t<::apache::thrift::fixtures::types::detail::DependentAdaptedListDep>>>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -5858,7 +5827,6 @@ class AllocatorAware final  {
     ::apache::thrift::type::i32_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -6304,7 +6272,6 @@ class AllocatorAware2 final  {
     ::apache::thrift::type::i32_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -6488,7 +6455,6 @@ class TypedefStruct final  {
     ::apache::thrift::type::cpp_type<std::uint32_t, ::apache::thrift::type::i32_t>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -6714,7 +6680,6 @@ class StructWithDoubleUnderscores final  {
     ::apache::thrift::type::i32_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:

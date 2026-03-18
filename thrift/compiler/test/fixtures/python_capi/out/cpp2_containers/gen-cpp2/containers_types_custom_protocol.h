@@ -80,8 +80,6 @@ namespace test::fixtures::python_capi {
 
 template <class Protocol_>
 void TemplateLists::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -360,8 +358,6 @@ extern template uint32_t TemplateLists::serializedSizeZC<>(apache::thrift::Compa
 
 template <class Protocol_>
 void TemplateSets::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -716,8 +712,6 @@ extern template uint32_t TemplateSets::serializedSizeZC<>(apache::thrift::Compac
 
 template <class Protocol_>
 void TemplateMaps::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1072,8 +1066,6 @@ extern template uint32_t TemplateMaps::serializedSizeZC<>(apache::thrift::Compac
 
 template <class Protocol_>
 void TWrapped::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1227,8 +1219,6 @@ extern template uint32_t TWrapped::serializedSizeZC<>(apache::thrift::CompactPro
 
 template <class Protocol_>
 void IndirectionA::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1349,8 +1339,6 @@ extern template uint32_t IndirectionA::serializedSizeZC<>(apache::thrift::Compac
 
 template <class Protocol_>
 void IndirectionB::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1471,8 +1459,6 @@ extern template uint32_t IndirectionB::serializedSizeZC<>(apache::thrift::Compac
 
 template <class Protocol_>
 void IndirectionC::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

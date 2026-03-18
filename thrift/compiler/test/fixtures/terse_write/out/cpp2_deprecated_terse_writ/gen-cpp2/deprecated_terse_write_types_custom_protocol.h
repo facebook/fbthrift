@@ -80,8 +80,6 @@ namespace facebook::thrift::test::fixtures::terse_write::deprecated {
 
 template <class Protocol_>
 void MyStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -244,8 +242,6 @@ extern template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::CompactProt
 
 template <class Protocol_>
 void StructLevelTerseStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -895,8 +891,6 @@ extern template uint32_t StructLevelTerseStruct::serializedSizeZC<>(apache::thri
 
 template <class Protocol_>
 void FieldLevelTerseStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2124,8 +2118,6 @@ extern template uint32_t FieldLevelTerseStruct::serializedSizeZC<>(apache::thrif
 
 template <class Protocol_>
 void CppRefStructFields::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2309,8 +2301,6 @@ extern template uint32_t CppRefStructFields::serializedSizeZC<>(apache::thrift::
 
 template <class Protocol_>
 void DeprecatedTerseWriteWithCustomDefault::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2895,8 +2885,6 @@ extern template uint32_t DeprecatedTerseWriteWithCustomDefault::serializedSizeZC
 
 template <class Protocol_>
 void DeprecatedTerseWriteWithRedundantCustomDefault::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

@@ -70,9 +70,6 @@ void Foo::__fbthrift_clear() {
   __isset = {};
 }
 
-void Foo::__fbthrift_clear_terse_fields() {
-}
-
 bool Foo::__fbthrift_is_empty() const {
   return false;
 }
@@ -244,9 +241,6 @@ void LazyFoo::__fbthrift_clear() {
   __isset = {};
 }
 
-void LazyFoo::__fbthrift_clear_terse_fields() {
-}
-
 bool LazyFoo::__fbthrift_is_empty() const {
   return false;
 }
@@ -348,9 +342,6 @@ void OptionalFoo::__fbthrift_clear() {
   this->__fbthrift_field_field3.clear();
   this->__fbthrift_field_field4.clear();
   __isset = {};
-}
-
-void OptionalFoo::__fbthrift_clear_terse_fields() {
 }
 
 bool OptionalFoo::__fbthrift_is_empty() const {
@@ -525,9 +516,6 @@ void OptionalLazyFoo::__fbthrift_clear() {
   __isset = {};
 }
 
-void OptionalLazyFoo::__fbthrift_clear_terse_fields() {
-}
-
 bool OptionalLazyFoo::__fbthrift_is_empty() const {
   return !(this->__isset.get(0)) &&
  !(this->__isset.get(1)) &&
@@ -679,9 +667,6 @@ void OptionalBoxedLazyFoo::__fbthrift_clear() {
   __fbthrift_serializedData_ = {};
   __fbthrift_isDeserialized_.~__fbthrift_IsDeserialized();
   new (&__fbthrift_isDeserialized_) __fbthrift_IsDeserialized();
-}
-
-void OptionalBoxedLazyFoo::__fbthrift_clear_terse_fields() {
 }
 
 bool OptionalBoxedLazyFoo::__fbthrift_is_empty() const {
@@ -855,9 +840,6 @@ void LazyCppRef::__fbthrift_clear() {
   new (&__fbthrift_isDeserialized_) __fbthrift_IsDeserialized();
 }
 
-void LazyCppRef::__fbthrift_clear_terse_fields() {
-}
-
 bool LazyCppRef::__fbthrift_is_empty() const {
   return false;
 }
@@ -955,9 +937,6 @@ void IndexedFoo::__fbthrift_clear() {
   this->__fbthrift_field_field4.clear();
   this->__fbthrift_field_field_id_to_size.clear();
   __isset = {};
-}
-
-void IndexedFoo::__fbthrift_clear_terse_fields() {
 }
 
 bool IndexedFoo::__fbthrift_is_empty() const {
@@ -1104,9 +1083,6 @@ void OptionalIndexedFoo::__fbthrift_clear() {
   __isset = {};
 }
 
-void OptionalIndexedFoo::__fbthrift_clear_terse_fields() {
-}
-
 bool OptionalIndexedFoo::__fbthrift_is_empty() const {
   return false;
 }
@@ -1199,9 +1175,6 @@ Empty::Empty(apache::thrift::FragileConstructor) {}
 
 void Empty::__fbthrift_clear() {
   // clear all fields
-}
-
-void Empty::__fbthrift_clear_terse_fields() {
 }
 
 bool Empty::__fbthrift_is_empty() const {

@@ -73,9 +73,6 @@ void Default::__fbthrift_clear() {
   __isset = {};
 }
 
-void Default::__fbthrift_clear_terse_fields() {
-}
-
 bool Default::__fbthrift_is_empty() const {
   return !(this->__isset.get(0)) &&
  !(this->__isset.get(1)) &&
@@ -209,9 +206,6 @@ void NonAtomic::__fbthrift_clear() {
   this->__fbthrift_field_field3 = apache::thrift::StringTraits<::std::string>::fromStringLiteral("");
   this->__fbthrift_field_field4 = double();
   __isset = {};
-}
-
-void NonAtomic::__fbthrift_clear_terse_fields() {
 }
 
 bool NonAtomic::__fbthrift_is_empty() const {
@@ -349,9 +343,6 @@ void Atomic::__fbthrift_clear() {
   __isset = {};
 }
 
-void Atomic::__fbthrift_clear_terse_fields() {
-}
-
 bool Atomic::__fbthrift_is_empty() const {
   return !(this->__isset.get(0)) &&
  !(this->__isset.get(1)) &&
@@ -485,9 +476,6 @@ void AtomicFoo::__fbthrift_clear() {
   this->__fbthrift_field_field3 = apache::thrift::StringTraits<::std::string>::fromStringLiteral("");
   this->__fbthrift_field_field4 = double();
   __isset = {};
-}
-
-void AtomicFoo::__fbthrift_clear_terse_fields() {
 }
 
 bool AtomicFoo::__fbthrift_is_empty() const {

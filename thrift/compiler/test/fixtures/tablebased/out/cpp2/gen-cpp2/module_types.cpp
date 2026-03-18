@@ -183,9 +183,6 @@ void TrivialTypesStruct::__fbthrift_clear() {
   __isset = {};
 }
 
-void TrivialTypesStruct::__fbthrift_clear_terse_fields() {
-}
-
 bool TrivialTypesStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -383,9 +380,6 @@ void ContainerStruct::__fbthrift_clear() {
   this->__fbthrift_field_fieldG.clear();
   this->__fbthrift_field_fieldH.clear();
   __isset = {};
-}
-
-void ContainerStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool ContainerStruct::__fbthrift_is_empty() const {

@@ -129,9 +129,6 @@ void containerStruct2::__fbthrift_clear() {
   __isset = {};
 }
 
-void containerStruct2::__fbthrift_clear_terse_fields() {
-}
-
 bool containerStruct2::__fbthrift_is_empty() const {
   return false;
 }

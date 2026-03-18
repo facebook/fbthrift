@@ -154,7 +154,6 @@ class Default final  {
     ::apache::thrift::type::double_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -459,7 +458,6 @@ class NonAtomic final  {
     ::apache::thrift::type::double_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -764,7 +762,6 @@ class Atomic final  {
     ::apache::thrift::type::double_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1069,7 +1066,6 @@ class AtomicFoo final  {
     ::apache::thrift::type::double_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:

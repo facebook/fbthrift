@@ -55,9 +55,6 @@ void EchoRequest::__fbthrift_clear() {
   __isset = {};
 }
 
-void EchoRequest::__fbthrift_clear_terse_fields() {
-}
-
 bool EchoRequest::__fbthrift_is_empty() const {
   return false;
 }
@@ -120,9 +117,6 @@ void EchoResponse::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_text = apache::thrift::StringTraits<::std::string>::fromStringLiteral("");
   __isset = {};
-}
-
-void EchoResponse::__fbthrift_clear_terse_fields() {
 }
 
 bool EchoResponse::__fbthrift_is_empty() const {

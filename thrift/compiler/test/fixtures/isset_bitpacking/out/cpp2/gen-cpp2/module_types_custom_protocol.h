@@ -59,8 +59,6 @@ namespace cpp2 {
 
 template <class Protocol_>
 void Default::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -294,8 +292,6 @@ extern template uint32_t Default::serializedSizeZC<>(apache::thrift::CompactProt
 
 template <class Protocol_>
 void NonAtomic::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -529,8 +525,6 @@ extern template uint32_t NonAtomic::serializedSizeZC<>(apache::thrift::CompactPr
 
 template <class Protocol_>
 void Atomic::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -764,8 +758,6 @@ extern template uint32_t Atomic::serializedSizeZC<>(apache::thrift::CompactProto
 
 template <class Protocol_>
 void AtomicFoo::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

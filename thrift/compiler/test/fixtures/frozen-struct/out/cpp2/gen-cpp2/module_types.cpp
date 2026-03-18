@@ -110,9 +110,6 @@ void ModuleA::__fbthrift_clear() {
   __isset = {};
 }
 
-void ModuleA::__fbthrift_clear_terse_fields() {
-}
-
 bool ModuleA::__fbthrift_is_empty() const {
   return false;
 }
@@ -219,9 +216,6 @@ void ModuleB::__fbthrift_clear() {
   __isset = {};
 }
 
-void ModuleB::__fbthrift_clear_terse_fields() {
-}
-
 bool ModuleB::__fbthrift_is_empty() const {
   return false;
 }
@@ -285,9 +279,6 @@ void DirectlyAdapted::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_field = ::std::int32_t();
   __isset = {};
-}
-
-void DirectlyAdapted::__fbthrift_clear_terse_fields() {
 }
 
 bool DirectlyAdapted::__fbthrift_is_empty() const {
@@ -376,9 +367,6 @@ void CppRef::__fbthrift_clear() {
   this->__fbthrift_field_opt_shared_field.reset();
   this->__fbthrift_field_opt_shared_const_field.reset();
   this->__fbthrift_field_boxed_field.reset();
-}
-
-void CppRef::__fbthrift_clear_terse_fields() {
 }
 
 bool CppRef::__fbthrift_is_empty() const {

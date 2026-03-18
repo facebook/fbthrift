@@ -52,8 +52,6 @@ namespace cpp2 {
 
 template <class Protocol_>
 void Request::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -172,8 +170,6 @@ namespace detail {
 
 template <class Protocol_>
 void AdaptedRequest::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -292,8 +288,6 @@ extern template uint32_t AdaptedRequest::serializedSizeZC<>(apache::thrift::Comp
 
 template <class Protocol_>
 void Response::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

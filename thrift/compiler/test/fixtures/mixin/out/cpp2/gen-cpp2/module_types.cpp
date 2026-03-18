@@ -55,9 +55,6 @@ void Mixin1::__fbthrift_clear() {
   __isset = {};
 }
 
-void Mixin1::__fbthrift_clear_terse_fields() {
-}
-
 bool Mixin1::__fbthrift_is_empty() const {
   return false;
 }
@@ -125,9 +122,6 @@ void Mixin2::__fbthrift_clear() {
   ::apache::thrift::clear(this->__fbthrift_field_m1);
   this->__fbthrift_field_field2 = apache::thrift::StringTraits<::std::string>::fromStringLiteral("");
   __isset = {};
-}
-
-void Mixin2::__fbthrift_clear_terse_fields() {
 }
 
 bool Mixin2::__fbthrift_is_empty() const {
@@ -217,9 +211,6 @@ void Mixin3Base::__fbthrift_clear() {
   __isset = {};
 }
 
-void Mixin3Base::__fbthrift_clear_terse_fields() {
-}
-
 bool Mixin3Base::__fbthrift_is_empty() const {
   return false;
 }
@@ -292,9 +283,6 @@ void Foo::__fbthrift_clear() {
   ::apache::thrift::clear(this->__fbthrift_field_m2);
   ::apache::thrift::clear(this->__fbthrift_field_m3);
   __isset = {};
-}
-
-void Foo::__fbthrift_clear_terse_fields() {
 }
 
 bool Foo::__fbthrift_is_empty() const {

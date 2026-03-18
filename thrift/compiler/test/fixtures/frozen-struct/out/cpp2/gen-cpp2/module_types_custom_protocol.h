@@ -61,8 +61,6 @@ namespace some::ns {
 
 template <class Protocol_>
 void ModuleA::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -370,8 +368,6 @@ extern template uint32_t ModuleA::serializedSizeZC<>(apache::thrift::CompactProt
 
 template <class Protocol_>
 void ModuleB::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -526,8 +522,6 @@ namespace detail {
 
 template <class Protocol_>
 void DirectlyAdapted::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -646,8 +640,6 @@ extern template uint32_t DirectlyAdapted::serializedSizeZC<>(apache::thrift::Com
 
 template <class Protocol_>
 void CppRef::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

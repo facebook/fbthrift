@@ -105,7 +105,6 @@ class EmptyStruct final  {
   using __fbthrift_reflection_type_tags = folly::tag_t<
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -203,7 +202,6 @@ class TestStruct final  {
     ::apache::thrift::type::struct_t<::facebook::thrift::compiler::test::fixtures::default_values_rectification_after::EmptyStruct>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:

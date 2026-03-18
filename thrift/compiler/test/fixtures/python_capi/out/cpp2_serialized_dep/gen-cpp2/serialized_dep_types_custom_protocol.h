@@ -73,8 +73,6 @@ namespace test::fixtures::python_capi {
 
 template <class Protocol_>
 void SerializedStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -444,8 +442,6 @@ extern template uint32_t SerializedUnion::serializedSizeZC<>(apache::thrift::Com
 
 template <class Protocol_>
 void SerializedError::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -636,8 +632,6 @@ extern template uint32_t SerializedError::serializedSizeZC<>(apache::thrift::Com
 
 template <class Protocol_>
 void MarshalStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1007,8 +1001,6 @@ extern template uint32_t MarshalUnion::serializedSizeZC<>(apache::thrift::Compac
 
 template <class Protocol_>
 void MarshalError::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

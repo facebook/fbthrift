@@ -60,9 +60,6 @@ void MyDataItem::__fbthrift_clear() {
   // clear all fields
 }
 
-void MyDataItem::__fbthrift_clear_terse_fields() {
-}
-
 bool MyDataItem::__fbthrift_is_empty() const {
   return true;
 }

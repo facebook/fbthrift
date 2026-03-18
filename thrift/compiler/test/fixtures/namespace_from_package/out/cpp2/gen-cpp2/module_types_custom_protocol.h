@@ -38,8 +38,6 @@ namespace test::namespace_from_package::module {
 
 template <class Protocol_>
 void Foo::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

@@ -157,9 +157,6 @@ void MyStruct::__fbthrift_clear() {
   __isset = {};
 }
 
-void MyStruct::__fbthrift_clear_terse_fields() {
-}
-
 bool MyStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -309,9 +306,6 @@ void Containers::__fbthrift_clear() {
   __isset = {};
 }
 
-void Containers::__fbthrift_clear_terse_fields() {
-}
-
 bool Containers::__fbthrift_is_empty() const {
   return false;
 }
@@ -376,9 +370,6 @@ MyDataItem::MyDataItem(apache::thrift::FragileConstructor) {}
 
 void MyDataItem::__fbthrift_clear() {
   // clear all fields
-}
-
-void MyDataItem::__fbthrift_clear_terse_fields() {
 }
 
 bool MyDataItem::__fbthrift_is_empty() const {
@@ -594,9 +585,6 @@ void MyException::__fbthrift_clear() {
   __isset = {};
 }
 
-void MyException::__fbthrift_clear_terse_fields() {
-}
-
 bool MyException::__fbthrift_is_empty() const {
   return false;
 }
@@ -721,9 +709,6 @@ void MyExceptionWithMessage::__fbthrift_clear() {
   __isset = {};
 }
 
-void MyExceptionWithMessage::__fbthrift_clear_terse_fields() {
-}
-
 bool MyExceptionWithMessage::__fbthrift_is_empty() const {
   return false;
 }
@@ -807,9 +792,6 @@ void ReservedKeyword::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_reserved_field = ::std::int32_t();
   __isset = {};
-}
-
-void ReservedKeyword::__fbthrift_clear_terse_fields() {
 }
 
 bool ReservedKeyword::__fbthrift_is_empty() const {

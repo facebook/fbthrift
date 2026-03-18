@@ -43,10 +43,6 @@ void MyStruct::__fbthrift_clear() {
   __isset = {};
 }
 
-void MyStruct::__fbthrift_clear_terse_fields() {
-  this->__fbthrift_field_terse_field = ::std::int32_t();
-}
-
 bool MyStruct::__fbthrift_is_empty() const {
   return false;
 }

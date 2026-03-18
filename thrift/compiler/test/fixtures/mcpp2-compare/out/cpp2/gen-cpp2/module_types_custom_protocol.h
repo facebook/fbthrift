@@ -137,8 +137,6 @@ namespace some::valid::ns {
 
 template <class Protocol_>
 void Empty::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -222,8 +220,6 @@ extern template uint32_t Empty::serializedSizeZC<>(apache::thrift::SimpleJSONPro
 
 template <class Protocol_>
 void ASimpleStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -347,8 +343,6 @@ extern template uint32_t ASimpleStruct::serializedSizeZC<>(apache::thrift::Simpl
 
 template <class Protocol_>
 void ASimpleStructNoexcept::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -472,8 +466,6 @@ extern template uint32_t ASimpleStructNoexcept::serializedSizeZC<>(apache::thrif
 
 template <class Protocol_>
 void MyStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2132,8 +2124,6 @@ extern template uint32_t ComplexUnion::serializedSizeZC<>(apache::thrift::Simple
 
 template <class Protocol_>
 void AnException::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2883,8 +2873,6 @@ extern template uint32_t AnException::serializedSizeZC<>(apache::thrift::SimpleJ
 
 template <class Protocol_>
 void AnotherException::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -3081,8 +3069,6 @@ extern template uint32_t AnotherException::serializedSizeZC<>(apache::thrift::Si
 
 template <class Protocol_>
 void ContainerStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -4893,8 +4879,6 @@ extern template uint32_t ContainerStruct::serializedSizeZC<>(apache::thrift::Sim
 
 template <class Protocol_>
 void MyIncludedStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -5150,8 +5134,6 @@ extern template uint32_t MyIncludedStruct::serializedSizeZC<>(apache::thrift::Si
 
 template <class Protocol_>
 void AnnotatedStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -6907,8 +6889,6 @@ extern template uint32_t AnnotatedStruct::serializedSizeZC<>(apache::thrift::Sim
 
 template <class Protocol_>
 void ComplexContainerStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -7076,8 +7056,6 @@ extern template uint32_t ComplexContainerStruct::serializedSizeZC<>(apache::thri
 
 template <class Protocol_>
 void FloatStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -7386,8 +7364,6 @@ extern template uint32_t FloatUnion::serializedSizeZC<>(apache::thrift::SimpleJS
 
 template <class Protocol_>
 void AllRequiredNoExceptMoveCtrStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

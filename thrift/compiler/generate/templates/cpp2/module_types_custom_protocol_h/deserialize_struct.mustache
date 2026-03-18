@@ -18,12 +18,6 @@
   {{#if (not (has_compiler_option? "tablebased"))}}
 template <class Protocol_>
 void {{struct.cpp_underlying_name}}::readNoXfer(Protocol_* iprot) {
-  {{!
-    Terse fields are cleared to their intrinsic default values so that when fields are missing during
-    deserialization, it will be still set to intrinsic default even if the field has the custom default in IDL.
-  }}
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState{{#if struct.indexing?}}WithIndex{{/if}}<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

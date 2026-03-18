@@ -1018,7 +1018,6 @@ class MyField final  {
     ::apache::thrift::type::string_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1475,7 +1474,6 @@ class MyStruct final  {
     ::apache::thrift::type::struct_t<::cpp2::MyField>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1686,7 +1684,6 @@ class StructWithUnion final  {
     ::apache::thrift::type::struct_t<::cpp2::MyField>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1908,7 +1905,6 @@ class RecursiveStruct final  {
     ::apache::thrift::type::list<::apache::thrift::type::struct_t<::cpp2::RecursiveStruct>>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2061,7 +2057,6 @@ class StructWithContainers final  {
     ::apache::thrift::type::list<::apache::thrift::type::i32_t>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2395,7 +2390,6 @@ class StructWithSharedConst final  {
     ::apache::thrift::type::struct_t<::cpp2::MyField>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2601,7 +2595,6 @@ class Empty final  {
   using __fbthrift_reflection_type_tags = folly::tag_t<
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2688,7 +2681,6 @@ class StructWithRef final  {
     ::apache::thrift::type::struct_t<::cpp2::Empty>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2899,7 +2891,6 @@ class StructWithBox final  {
     ::apache::thrift::type::struct_t<::cpp2::StructWithRef>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3100,7 +3091,6 @@ class StructWithInternBox final  {
     ::apache::thrift::type::struct_t<::cpp2::MyField>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3265,7 +3255,6 @@ class StructWithTerseInternBox final  {
     ::apache::thrift::type::struct_t<::cpp2::MyField>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3428,7 +3417,6 @@ class AdaptedStructWithInternBox final  {
     ::apache::thrift::type::adapted<::my::Adapter1, ::apache::thrift::type::struct_t<::cpp2::MyField>>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3592,7 +3580,6 @@ class AdaptedStructWithTerseInternBox final  {
     ::apache::thrift::type::adapted<::my::Adapter1, ::apache::thrift::type::struct_t<::cpp2::MyField>>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3756,7 +3743,6 @@ class StructWithRefTypeUnique final  {
     ::apache::thrift::type::struct_t<::cpp2::Empty>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3967,7 +3953,6 @@ class StructWithRefTypeShared final  {
     ::apache::thrift::type::struct_t<::cpp2::Empty>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -4179,7 +4164,6 @@ class StructWithRefTypeSharedConst final  {
     ::apache::thrift::type::struct_t<::cpp2::Empty>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -4387,7 +4371,6 @@ class StructWithRefAndAnnotCppNoexceptMoveCtor final  {
     ::apache::thrift::type::struct_t<::cpp2::Empty>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -4520,7 +4503,6 @@ class StructWithString final  {
     ::apache::thrift::type::string_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:

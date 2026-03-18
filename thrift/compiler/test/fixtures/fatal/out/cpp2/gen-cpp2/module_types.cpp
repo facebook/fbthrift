@@ -546,9 +546,6 @@ void structA::__fbthrift_clear() {
   __isset = {};
 }
 
-void structA::__fbthrift_clear_terse_fields() {
-}
-
 bool structA::__fbthrift_is_empty() const {
   return false;
 }
@@ -743,9 +740,6 @@ void structB::__fbthrift_clear() {
   this->__fbthrift_field_c = double();
   this->__fbthrift_field_d = bool();
   __isset = {};
-}
-
-void structB::__fbthrift_clear_terse_fields() {
 }
 
 bool structB::__fbthrift_is_empty() const {
@@ -979,9 +973,6 @@ void structC::__fbthrift_clear() {
   this->__fbthrift_field_o2.clear();
   this->__fbthrift_field_o3.clear();
   __isset = {};
-}
-
-void structC::__fbthrift_clear_terse_fields() {
 }
 
 bool structC::__fbthrift_is_empty() const {
@@ -1406,9 +1397,6 @@ void struct1::__fbthrift_clear() {
   __isset = {};
 }
 
-void struct1::__fbthrift_clear_terse_fields() {
-}
-
 bool struct1::__fbthrift_is_empty() const {
   return false;
 }
@@ -1572,9 +1560,6 @@ void struct2::__fbthrift_clear() {
   ::apache::thrift::clear(this->__fbthrift_field_fieldF);
   ::apache::thrift::clear(this->__fbthrift_field_fieldG);
   __isset = {};
-}
-
-void struct2::__fbthrift_clear_terse_fields() {
 }
 
 bool struct2::__fbthrift_is_empty() const {
@@ -1801,10 +1786,6 @@ void struct3::__fbthrift_clear() {
   this->__fbthrift_field_fieldQ.clear();
   this->__fbthrift_field_fieldR.clear();
   __isset = {};
-}
-
-void struct3::__fbthrift_clear_terse_fields() {
-  this->__fbthrift_field_fieldA = ::std::int32_t();
 }
 
 bool struct3::__fbthrift_is_empty() const {
@@ -2096,9 +2077,6 @@ void struct4::__fbthrift_clear() {
   __isset = {};
 }
 
-void struct4::__fbthrift_clear_terse_fields() {
-}
-
 bool struct4::__fbthrift_is_empty() const {
   return false;
 }
@@ -2217,9 +2195,6 @@ void struct5::__fbthrift_clear() {
   ::apache::thrift::clear(this->__fbthrift_field_field3);
   ::apache::thrift::clear(this->__fbthrift_field_field4);
   __isset = {};
-}
-
-void struct5::__fbthrift_clear_terse_fields() {
 }
 
 bool struct5::__fbthrift_is_empty() const {
@@ -2344,9 +2319,6 @@ void struct_binary::__fbthrift_clear() {
   __isset = {};
 }
 
-void struct_binary::__fbthrift_clear_terse_fields() {
-}
-
 bool struct_binary::__fbthrift_is_empty() const {
   return false;
 }
@@ -2396,9 +2368,6 @@ void dep_A_struct::__fbthrift_clear() {
   ::apache::thrift::clear(this->__fbthrift_field_c);
   this->__fbthrift_field_i_a = ::std::int32_t();
   __isset = {};
-}
-
-void dep_A_struct::__fbthrift_clear_terse_fields() {
 }
 
 bool dep_A_struct::__fbthrift_is_empty() const {
@@ -2491,9 +2460,6 @@ void dep_B_struct::__fbthrift_clear() {
   __isset = {};
 }
 
-void dep_B_struct::__fbthrift_clear_terse_fields() {
-}
-
 bool dep_B_struct::__fbthrift_is_empty() const {
   return false;
 }
@@ -2576,9 +2542,6 @@ void annotated::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_a = ::std::int32_t();
   __isset = {};
-}
-
-void annotated::__fbthrift_clear_terse_fields() {
 }
 
 bool annotated::__fbthrift_is_empty() const {
@@ -3052,9 +3015,6 @@ void struct_with_special_names::__fbthrift_clear() {
   __isset = {};
 }
 
-void struct_with_special_names::__fbthrift_clear_terse_fields() {
-}
-
 bool struct_with_special_names::__fbthrift_is_empty() const {
   return false;
 }
@@ -3391,9 +3351,6 @@ void StructWithFieldAdapter::__fbthrift_clear() {
   // clear all fields
   ::apache::thrift::adapt_detail::clear<::my::Adapter1, 1>(__fbthrift_field_field, *this);
   __isset = {};
-}
-
-void StructWithFieldAdapter::__fbthrift_clear_terse_fields() {
 }
 
 bool StructWithFieldAdapter::__fbthrift_is_empty() const {

@@ -59,8 +59,6 @@ namespace facebook::thrift::test::fixtures::encode {
 
 template <class Protocol_>
 void Foo::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -178,8 +176,6 @@ extern template uint32_t Foo::serializedSizeZC<>(apache::thrift::CompactProtocol
 
 template <class Protocol_>
 void Bar::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -299,8 +295,6 @@ extern template uint32_t Bar::serializedSizeZC<>(apache::thrift::CompactProtocol
 
 template <class Protocol_>
 void Baz::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -458,8 +452,6 @@ extern template uint32_t Baz::serializedSizeZC<>(apache::thrift::CompactProtocol
 
 template <class Protocol_>
 void OpEncodeStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

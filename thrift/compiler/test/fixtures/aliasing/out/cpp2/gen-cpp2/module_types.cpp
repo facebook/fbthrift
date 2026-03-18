@@ -54,9 +54,6 @@ void Foo::__fbthrift_clear() {
   __isset = {};
 }
 
-void Foo::__fbthrift_clear_terse_fields() {
-}
-
 bool Foo::__fbthrift_is_empty() const {
   return false;
 }

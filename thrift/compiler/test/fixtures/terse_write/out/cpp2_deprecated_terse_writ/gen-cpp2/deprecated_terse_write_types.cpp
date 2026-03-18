@@ -60,9 +60,6 @@ void MyStruct::__fbthrift_clear() {
   // clear all fields
 }
 
-void MyStruct::__fbthrift_clear_terse_fields() {
-}
-
 bool MyStruct::__fbthrift_is_empty() const {
   return true;
 }
@@ -252,22 +249,6 @@ StructLevelTerseStruct::StructLevelTerseStruct(apache::thrift::FragileConstructo
 
 void StructLevelTerseStruct::__fbthrift_clear() {
   // clear all fields
-  this->__fbthrift_field_bool_field = bool();
-  this->__fbthrift_field_byte_field = ::std::int8_t();
-  this->__fbthrift_field_short_field = ::std::int16_t();
-  this->__fbthrift_field_int_field = ::std::int32_t();
-  this->__fbthrift_field_long_field = ::std::int64_t();
-  this->__fbthrift_field_float_field = float();
-  this->__fbthrift_field_double_field = double();
-  this->__fbthrift_field_string_field = apache::thrift::StringTraits<::std::string>::fromStringLiteral("");
-  this->__fbthrift_field_binary_field = apache::thrift::StringTraits<::std::string>::fromStringLiteral("");
-  this->__fbthrift_field_enum_field = ::facebook::thrift::test::fixtures::terse_write::deprecated::MyEnum();
-  this->__fbthrift_field_list_field.clear();
-  this->__fbthrift_field_set_field.clear();
-  this->__fbthrift_field_map_field.clear();
-}
-
-void StructLevelTerseStruct::__fbthrift_clear_terse_fields() {
   this->__fbthrift_field_bool_field = bool();
   this->__fbthrift_field_byte_field = ::std::int8_t();
   this->__fbthrift_field_short_field = ::std::int16_t();
@@ -531,22 +512,6 @@ void FieldLevelTerseStruct::__fbthrift_clear() {
   __isset = {};
 }
 
-void FieldLevelTerseStruct::__fbthrift_clear_terse_fields() {
-  this->__fbthrift_field_terse_bool_field = bool();
-  this->__fbthrift_field_terse_byte_field = ::std::int8_t();
-  this->__fbthrift_field_terse_short_field = ::std::int16_t();
-  this->__fbthrift_field_terse_int_field = ::std::int32_t();
-  this->__fbthrift_field_terse_long_field = ::std::int64_t();
-  this->__fbthrift_field_terse_float_field = float();
-  this->__fbthrift_field_terse_double_field = double();
-  this->__fbthrift_field_terse_string_field = apache::thrift::StringTraits<::std::string>::fromStringLiteral("");
-  this->__fbthrift_field_terse_binary_field = apache::thrift::StringTraits<::std::string>::fromStringLiteral("");
-  this->__fbthrift_field_terse_enum_field = ::facebook::thrift::test::fixtures::terse_write::deprecated::MyEnum();
-  this->__fbthrift_field_terse_list_field.clear();
-  this->__fbthrift_field_terse_set_field.clear();
-  this->__fbthrift_field_terse_map_field.clear();
-}
-
 bool FieldLevelTerseStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -792,9 +757,6 @@ void CppRefStructFields::__fbthrift_clear() {
   this->__fbthrift_field_primitive_ref_field = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::int32_t>>();
 }
 
-void CppRefStructFields::__fbthrift_clear_terse_fields() {
-}
-
 bool CppRefStructFields::__fbthrift_is_empty() const {
   return !(this->__fbthrift_field_primitive_ref_field) &&
  !(this->__fbthrift_field_struct_ref_field);
@@ -937,9 +899,6 @@ void DeprecatedTerseWriteWithCustomDefault::__fbthrift_clear() {
   this->__fbthrift_field_set_field.clear();
   this->__fbthrift_field_map_field.clear();
   __isset = {};
-}
-
-void DeprecatedTerseWriteWithCustomDefault::__fbthrift_clear_terse_fields() {
 }
 
 bool DeprecatedTerseWriteWithCustomDefault::__fbthrift_is_empty() const {
@@ -1194,9 +1153,6 @@ void DeprecatedTerseWriteWithRedundantCustomDefault::__fbthrift_clear() {
   this->__fbthrift_field_set_field.clear();
   this->__fbthrift_field_map_field.clear();
   __isset = {};
-}
-
-void DeprecatedTerseWriteWithRedundantCustomDefault::__fbthrift_clear_terse_fields() {
 }
 
 bool DeprecatedTerseWriteWithRedundantCustomDefault::__fbthrift_is_empty() const {

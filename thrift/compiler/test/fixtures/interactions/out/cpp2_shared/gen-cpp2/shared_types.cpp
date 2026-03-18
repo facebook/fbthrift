@@ -61,9 +61,6 @@ void DoSomethingResult::__fbthrift_clear() {
   __isset = {};
 }
 
-void DoSomethingResult::__fbthrift_clear_terse_fields() {
-}
-
 bool DoSomethingResult::__fbthrift_is_empty() const {
   return false;
 }

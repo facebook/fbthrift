@@ -218,7 +218,6 @@ class Color final  {
     ::apache::thrift::type::double_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -499,7 +498,6 @@ class Vehicle final  {
     ::apache::thrift::type::bool_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -878,7 +876,6 @@ class Person final  {
     ::apache::thrift::type::list<::apache::thrift::type::struct_t<::cpp2::Vehicle>>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:

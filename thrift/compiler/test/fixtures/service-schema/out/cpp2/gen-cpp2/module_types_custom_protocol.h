@@ -40,8 +40,6 @@ namespace facebook::thrift::test::fixtures::service_schema {
 
 template <class Protocol_>
 void CustomException::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

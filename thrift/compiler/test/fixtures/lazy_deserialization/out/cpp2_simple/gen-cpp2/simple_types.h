@@ -273,7 +273,6 @@ class Foo final  {
     ::apache::thrift::type::list<::apache::thrift::type::i32_t>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -582,7 +581,6 @@ class LazyFoo final  {
     ::apache::thrift::type::list<::apache::thrift::type::i32_t>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -906,7 +904,6 @@ class OptionalFoo final  {
     ::apache::thrift::type::list<::apache::thrift::type::i32_t>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1223,7 +1220,6 @@ class OptionalLazyFoo final  {
     ::apache::thrift::type::list<::apache::thrift::type::i32_t>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1551,7 +1547,6 @@ class OptionalBoxedLazyFoo final  {
     ::apache::thrift::type::list<::apache::thrift::type::i32_t>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1841,7 +1836,6 @@ class LazyCppRef final  {
     ::apache::thrift::type::list<::apache::thrift::type::i32_t>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2185,7 +2179,6 @@ class IndexedFoo final  {
     ::apache::thrift::type::map<::apache::thrift::type::i16_t, ::apache::thrift::type::i64_t>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -2598,7 +2591,6 @@ class OptionalIndexedFoo final  {
     ::apache::thrift::type::map<::apache::thrift::type::i16_t, ::apache::thrift::type::i64_t>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -3007,7 +2999,6 @@ class Empty final  {
   using __fbthrift_reflection_type_tags = folly::tag_t<
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:

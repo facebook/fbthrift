@@ -154,7 +154,6 @@ class TerseFoo final  {
     ::apache::thrift::type::list<::apache::thrift::type::i32_t>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -479,7 +478,6 @@ class TerseLazyFoo final  {
     ::apache::thrift::type::list<::apache::thrift::type::i32_t>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -819,7 +817,6 @@ class TerseOptionalFoo final  {
     ::apache::thrift::type::list<::apache::thrift::type::i32_t>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1136,7 +1133,6 @@ class TerseOptionalLazyFoo final  {
     ::apache::thrift::type::list<::apache::thrift::type::i32_t>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:

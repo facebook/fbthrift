@@ -73,9 +73,6 @@ void MyAnnotation::__fbthrift_clear() {
   // clear all fields
 }
 
-void MyAnnotation::__fbthrift_clear_terse_fields() {
-}
-
 bool MyAnnotation::__fbthrift_is_empty() const {
   return true;
 }
@@ -117,9 +114,6 @@ void MyStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_field = ::std::int32_t();
   __isset = {};
-}
-
-void MyStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool MyStruct::__fbthrift_is_empty() const {
@@ -174,9 +168,6 @@ void MyUnion::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_field = ::std::int32_t();
   __isset = {};
-}
-
-void MyUnion::__fbthrift_clear_terse_fields() {
 }
 
 bool MyUnion::__fbthrift_is_empty() const {
@@ -251,9 +242,6 @@ void MyException::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_field = ::std::int32_t();
   __isset = {};
-}
-
-void MyException::__fbthrift_clear_terse_fields() {
 }
 
 bool MyException::__fbthrift_is_empty() const {

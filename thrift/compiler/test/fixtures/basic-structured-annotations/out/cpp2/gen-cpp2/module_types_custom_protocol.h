@@ -96,8 +96,6 @@ namespace test::fixtures::basic_structured_annotations {
 
 template <class Protocol_>
 void runtime_annotation::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -177,8 +175,6 @@ extern template uint32_t runtime_annotation::serializedSizeZC<>(apache::thrift::
 
 template <class Protocol_>
 void structured_annotation_inline::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -332,8 +328,6 @@ extern template uint32_t structured_annotation_inline::serializedSizeZC<>(apache
 
 template <class Protocol_>
 void structured_annotation_with_default::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -451,8 +445,6 @@ extern template uint32_t structured_annotation_with_default::serializedSizeZC<>(
 
 template <class Protocol_>
 void structured_annotation_recursive::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -649,8 +641,6 @@ extern template uint32_t structured_annotation_recursive::serializedSizeZC<>(apa
 
 template <class Protocol_>
 void structured_annotation_forward::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -768,8 +758,6 @@ extern template uint32_t structured_annotation_forward::serializedSizeZC<>(apach
 
 template <class Protocol_>
 void structured_annotation_nested::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -925,8 +913,6 @@ extern template uint32_t structured_annotation_nested::serializedSizeZC<>(apache
 
 template <class Protocol_>
 void MyStruct::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1152,8 +1138,6 @@ extern template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactPro
 
 template <class Protocol_>
 void MyException::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

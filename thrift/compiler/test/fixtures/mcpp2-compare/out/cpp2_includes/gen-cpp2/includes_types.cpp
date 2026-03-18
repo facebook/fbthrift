@@ -65,9 +65,6 @@ void AStruct::__fbthrift_clear() {
   __isset = {};
 }
 
-void AStruct::__fbthrift_clear_terse_fields() {
-}
-
 bool AStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -136,9 +133,6 @@ AStructB::AStructB(apache::thrift::FragileConstructor, ::std::shared_ptr<const :
 void AStructB::__fbthrift_clear() {
   // clear all fields
   if (this->__fbthrift_field_FieldA) this->__fbthrift_field_FieldA = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::a::different::ns::AStruct>>();
-}
-
-void AStructB::__fbthrift_clear_terse_fields() {
 }
 
 bool AStructB::__fbthrift_is_empty() const {

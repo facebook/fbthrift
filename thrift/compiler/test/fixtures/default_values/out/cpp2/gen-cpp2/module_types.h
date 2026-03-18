@@ -185,7 +185,6 @@ class TrivialStruct final  {
     ::apache::thrift::type::i32_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -320,7 +319,6 @@ class TrivialStructWithDefault final  {
     ::apache::thrift::type::i32_t
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -510,7 +508,6 @@ class StructWithNoCustomDefaultValues final  {
     ::apache::thrift::type::struct_t<::facebook::thrift::compiler::test::fixtures::default_values::TrivialStruct>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -921,7 +918,6 @@ class StructWithCustomDefaultValues final  {
     ::apache::thrift::type::struct_t<::facebook::thrift::compiler::test::fixtures::default_values::TrivialStructWithDefault>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -1440,7 +1436,6 @@ class StructWithCollectionDefaultValues final  {
     ::apache::thrift::type::map<::apache::thrift::type::i32_t, ::apache::thrift::type::i32_t>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:

@@ -39,8 +39,6 @@ namespace extra::svc {
 
 template <class Protocol_>
 void containerStruct2::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

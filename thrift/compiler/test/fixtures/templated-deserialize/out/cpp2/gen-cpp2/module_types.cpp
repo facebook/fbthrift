@@ -68,9 +68,6 @@ void SmallStruct::__fbthrift_clear() {
   __isset = {};
 }
 
-void SmallStruct::__fbthrift_clear_terse_fields() {
-}
-
 bool SmallStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -289,9 +286,6 @@ void containerStruct::__fbthrift_clear() {
   if (this->__fbthrift_field_fieldU) this->__fbthrift_field_fieldU = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::cpp2::SmallStruct>>();
   if (this->__fbthrift_field_fieldX) ::apache::thrift::clear(*this->__fbthrift_field_fieldX);
   __isset = {};
-}
-
-void containerStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool containerStruct::__fbthrift_is_empty() const {

@@ -52,8 +52,6 @@ namespace cpp2 {
 
 template <class Protocol_>
 void Color::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -279,8 +277,6 @@ extern template uint32_t Color::serializedSizeZC<>(apache::thrift::CompactProtoc
 
 template <class Protocol_>
 void Vehicle::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -552,8 +548,6 @@ extern template uint32_t Vehicle::serializedSizeZC<>(apache::thrift::CompactProt
 
 template <class Protocol_>
 void Person::readNoXfer(Protocol_* iprot) {
-  __fbthrift_clear_terse_fields();
-
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);

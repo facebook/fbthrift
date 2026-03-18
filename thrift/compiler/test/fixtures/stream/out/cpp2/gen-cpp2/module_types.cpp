@@ -44,9 +44,6 @@ void FooStreamEx::__fbthrift_clear() {
   // clear all fields
 }
 
-void FooStreamEx::__fbthrift_clear_terse_fields() {
-}
-
 bool FooStreamEx::__fbthrift_is_empty() const {
   return true;
 }
@@ -98,9 +95,6 @@ void FooEx::__fbthrift_clear() {
   // clear all fields
 }
 
-void FooEx::__fbthrift_clear_terse_fields() {
-}
-
 bool FooEx::__fbthrift_is_empty() const {
   return true;
 }
@@ -150,9 +144,6 @@ FooEx2::FooEx2(apache::thrift::FragileConstructor) {}
 
 void FooEx2::__fbthrift_clear() {
   // clear all fields
-}
-
-void FooEx2::__fbthrift_clear_terse_fields() {
 }
 
 bool FooEx2::__fbthrift_is_empty() const {

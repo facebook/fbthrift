@@ -61,9 +61,6 @@ void NonOrderableStruct::__fbthrift_clear() {
   __isset = {};
 }
 
-void NonOrderableStruct::__fbthrift_clear_terse_fields() {
-}
-
 bool NonOrderableStruct::__fbthrift_is_empty() const {
   return false;
 }
@@ -243,9 +240,6 @@ void OrderableStruct::__fbthrift_clear() {
   this->__fbthrift_field_field1 = ::std::int32_t();
   this->__fbthrift_field_field2 = apache::thrift::StringTraits<::std::string>::fromStringLiteral("");
   __isset = {};
-}
-
-void OrderableStruct::__fbthrift_clear_terse_fields() {
 }
 
 bool OrderableStruct::__fbthrift_is_empty() const {

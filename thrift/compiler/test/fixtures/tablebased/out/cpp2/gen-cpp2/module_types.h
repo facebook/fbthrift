@@ -199,7 +199,6 @@ class TrivialTypesStruct final  {
     ::apache::thrift::type::enum_t<::test::fixtures::tablebased::ExampleEnum>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:
@@ -567,7 +566,6 @@ class ContainerStruct final  {
     ::apache::thrift::type::list<::apache::thrift::type::struct_t<::test::fixtures::tablebased::TrivialTypesStruct>>
   >;
   void __fbthrift_clear();
-  void __fbthrift_clear_terse_fields();
   bool __fbthrift_is_empty() const;
 
  public:

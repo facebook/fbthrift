@@ -55,9 +55,6 @@ void A::__fbthrift_clear() {
   __isset = {};
 }
 
-void A::__fbthrift_clear_terse_fields() {
-}
-
 bool A::__fbthrift_is_empty() const {
   return !(this->__isset.get(0));
 }
@@ -111,9 +108,6 @@ void B::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_field = ::std::int32_t();
   __isset = {};
-}
-
-void B::__fbthrift_clear_terse_fields() {
 }
 
 bool B::__fbthrift_is_empty() const {
