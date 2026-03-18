@@ -24,6 +24,8 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/replace.hpp>
 
+#include <fmt/core.h>
+
 #include <openssl/evp.h>
 #include <thrift/compiler/ast/t_typedef.h>
 #include <thrift/compiler/ast/uri.h>
@@ -163,6 +165,18 @@ bool is_annotation_map_field_equal(
   return annotation->value()->get_map().empty();
 }
 
+void validate_java_enum_intrinsic_default(
+    sema_context& ctx, const t_enum& enm) {
+  if (enm.has_structured_annotation(kJavaUseIntrinsicDefaultUri) &&
+      enm.find_value(0) == nullptr) {
+    ctx.error(
+        enm,
+        "Enum {} does not have a value for 0! You have to have value for 0 "
+        "to use intrinsic default annotation.",
+        enm.name());
+  }
+}
+
 class t_mstch_java_generator : public t_mstch_generator {
  public:
   using t_mstch_generator::t_mstch_generator;
@@ -180,6 +194,10 @@ class t_mstch_java_generator : public t_mstch_generator {
   std::string template_prefix() const override { return "java"; }
 
   void generate_program() override;
+
+  void fill_validator_visitors(ast_validator& validator) const override {
+    validator.add_enum_visitor(validate_java_enum_intrinsic_default);
+  }
 
  private:
   void set_mstch_factories();
@@ -252,9 +270,6 @@ class t_mstch_java_generator : public t_mstch_generator {
     });
     def.property("skipEnumNameMap?", [](const t_enum& self) {
       return self.has_unstructured_annotation("java.swift.skip_enum_name_map");
-    });
-    def.property("numValues", [](const t_enum& self) {
-      return static_cast<int64_t>(self.values().size());
     });
     def.property("useIntrinsicDefault?", [](const t_enum& self) {
       if (self.has_structured_annotation(kJavaUseIntrinsicDefaultUri)) {

@@ -44,7 +44,7 @@ public class {{enum:javaCapitalName}} extends ThriftEnum<{{enum:javaCapitalName}
 {{#each (array.enumerate enum:values) as |index enum_value|}}
     hm.put({{enum_value.value}}, new Value({{index}}, "{{enum_value.javaConstantName}}", {{enum_value.javaConstantName}}));
 {{/each}}
-    hm.put(UNRECOGNIZED_VALUE, new Value({{enum:numValues}}, "UNRECOGNIZED", null));
+    hm.put(UNRECOGNIZED_VALUE, new Value({{(array.len enum:values)}}, "UNRECOGNIZED", null));
   }
 
   static {
