@@ -25,3 +25,8 @@
 {{#let export partial const_docblock |const|}}
 /** Glean {"constant": "{{const.name}}"} */
 {{/let partial}}
+
+{{! Field docblock - Glean annotation for mapping generated methods to thrift fields }}
+{{#let export partial field_docblock |field|}}
+/** Glean { "field": "{{field.cpp_name}}" } */
+{{/let partial}}

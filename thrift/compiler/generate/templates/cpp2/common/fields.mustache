@@ -38,6 +38,11 @@ apache::thrift::StringTraits<{{field.cpp_standard_type}}>::fromStringLiteral("")
   {{/if field.type.string_or_binary?}}
 {{/let partial}}
 
+{{#let export partial field_value |field|}}
+{{#pragma ignore-newlines}}
+{{#if field.lazy?}}__fbthrift_read_field_{{field.cpp_name}}(){{#else}}{{field.cpp_storage_name}}{{/if}}
+{{/let partial}}
+
 {{! The default value for a field. }}
 {{#let export partial default_value |field| captures |const_value types intrinsic_default|}}
 {{#pragma ignore-newlines}}

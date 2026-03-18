@@ -18,6 +18,7 @@
 {{#program:enums?}}
 namespace {{program:cpp_qualified_namespace}} {
 {{#program:enums}}
+{{#let enum = enum:self}}
 
 {{> common/enum_docblock }}
 enum {{^enum:cpp_is_unscoped}}class {{/enum:cpp_is_unscoped}}{{enum:cpp_name}}{{#enum:cpp_enum_type}} : {{enum:cpp_enum_type}}{{/enum:cpp_enum_type}} {

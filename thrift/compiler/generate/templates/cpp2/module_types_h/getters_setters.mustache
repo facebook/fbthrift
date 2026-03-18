@@ -17,11 +17,11 @@
 }}{{#struct:fields}}{{#field:type}}{{#field:has_deprecated_accessors?}}
 {{#if field:optional?}}
 
-  {{> common/field_docblock}}
+  {{#partial glean.field_docblock field=field:self}}
   [[deprecated("Use `FOO.{{field:cpp_name}}().value()` instead of `FOO.get_{{field:cpp_name}}()`")]]
   const {{field:cpp_storage_type}}* get_{{field:cpp_name}}() const&;
 
-  {{> common/field_docblock}}
+  {{#partial glean.field_docblock field=field:self}}
   [[deprecated("Use `FOO.{{field:cpp_name}}().value()` instead of `FOO.get_{{field:cpp_name}}()`")]]
   {{field:cpp_storage_type}}* get_{{field:cpp_name}}() &;
 
@@ -29,27 +29,27 @@
 {{#else}}
   {{#if type:resolves_to_fixed_size?}}
 
-  {{> common/field_docblock}}
+  {{#partial glean.field_docblock field=field:self}}
   [[deprecated("Use `FOO.{{field:cpp_name}}().value()` instead of `FOO.get_{{field:cpp_name}}()`")]]
   {{field:cpp_storage_type}} get_{{field:cpp_name}}() const;
   {{#else if (or type:container? type:structured?)}}
 
-  {{> common/field_docblock}}
+  {{#partial glean.field_docblock field=field:self}}
   [[deprecated("Use `FOO.{{field:cpp_name}}().value()` instead of `FOO.get_{{field:cpp_name}}()`")]]
   const {{field:cpp_storage_type}}& get_{{field:cpp_name}}() const&;
 
-  {{> common/field_docblock}}
+  {{#partial glean.field_docblock field=field:self}}
   [[deprecated("Use `FOO.{{field:cpp_name}}().value()` instead of `FOO.get_{{field:cpp_name}}()`")]]
   {{field:cpp_storage_type}} get_{{field:cpp_name}}() &&;
   {{#else}}
 
-  {{> common/field_docblock}}
+  {{#partial glean.field_docblock field=field:self}}
   [[deprecated("Use `FOO.{{field:cpp_name}}().value()` instead of `FOO.get_{{field:cpp_name}}()`")]]
   const {{field:cpp_storage_type}}& get_{{field:cpp_name}}() const& {
     return {{field:cpp_storage_name}};
   }
 
-  {{> common/field_docblock}}
+  {{#partial glean.field_docblock field=field:self}}
   [[deprecated("Use `FOO.{{field:cpp_name}}().value()` instead of `FOO.get_{{field:cpp_name}}()`")]]
   {{field:cpp_storage_type}} get_{{field:cpp_name}}() && {
     return static_cast<{{field:cpp_storage_type}}&&>({{field:cpp_storage_name}});
@@ -58,11 +58,11 @@
 {{/if field:optional?}}
 
 {{#if type:resolves_to_fixed_size?}}
-  {{> common/field_docblock}}
+  {{#partial glean.field_docblock field=field:self}}
   [[deprecated("Use `FOO.{{field:cpp_name}}() = BAR` instead of `FOO.set_{{field:cpp_name}}(BAR)`")]]
   {{field:cpp_storage_type}}& set_{{field:cpp_name}}({{field:cpp_storage_type}} {{field:cpp_name}}_);
 {{#else}}
-  {{> common/field_docblock}}
+  {{#partial glean.field_docblock field=field:self}}
   template <typename T_{{struct:cpp_underlying_name}}_{{field:cpp_name}}_struct_setter = {{field:cpp_storage_type}}>
   [[deprecated("Use `FOO.{{field:cpp_name}}() = BAR` instead of `FOO.set_{{field:cpp_name}}(BAR)`")]]
   {{field:cpp_storage_type}}& set_{{field:cpp_name}}(T_{{struct:cpp_underlying_name}}_{{field:cpp_name}}_struct_setter&& {{field:cpp_name}}_) {

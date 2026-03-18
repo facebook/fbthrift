@@ -15,21 +15,21 @@
   limitations under the License.
 
 }}// BEGIN hash_and_equal_to
-{{#program:cpp_declare_hash?}}
+  {{#if program.cpp_declare_hash?}}
 namespace std {
-{{#program:structs}}
-{{#struct:cpp_declare_hash}}
+    {{#each program.structured_definitions as |struct|}}
+      {{#if struct.cpp_declare_hash}}
 
-template<> struct hash<typename {{struct:cpp_fullname}}> {
-  size_t operator()(const {{struct:cpp_fullname}}&) const;
+template<> struct hash<typename {{struct.cpp_fullname}}> {
+  size_t operator()(const {{struct.cpp_fullname}}&) const;
 };
-{{#struct:cpp_declare_equal_to}}
-template<> struct equal_to<typename {{struct:cpp_fullname}}> {
-  bool operator()(const {{struct:cpp_fullname}}&,const {{struct:cpp_fullname}}&) const;
+        {{#if struct.cpp_declare_equal_to}}
+template<> struct equal_to<typename {{struct.cpp_fullname}}> {
+  bool operator()(const {{struct.cpp_fullname}}&,const {{struct.cpp_fullname}}&) const;
 };
-{{/struct:cpp_declare_equal_to}}
-{{/struct:cpp_declare_hash}}
-{{/program:structs}}
+        {{/if struct.cpp_declare_equal_to}}
+      {{/if struct.cpp_declare_hash}}
+    {{/each}}
 } // std
-{{/program:cpp_declare_hash?}}
+  {{/if program.cpp_declare_hash?}}
 // END hash_and_equal_to

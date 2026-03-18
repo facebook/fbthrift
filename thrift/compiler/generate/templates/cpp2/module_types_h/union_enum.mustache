@@ -16,7 +16,7 @@
 
 }}  enum class Type : int {
     __EMPTY__ = 0,
-{{#struct:fields}}
-    {{field:cpp_name}} = {{field:id}},
-{{/struct:fields}}
+  {{#each struct.fields as |field|}}
+    {{field.cpp_name}} = {{field.id}},
+  {{/each}}
   } ;

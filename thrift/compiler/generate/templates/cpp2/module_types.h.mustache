@@ -17,6 +17,7 @@
 }}
 {{#import "common/const_value" as const_value}}
 {{#import "common/fields" as fields}}
+{{#import "common/glean" as glean}}
 {{#import "common/module_types" as module_types}}
 {{#import "types/schema_association" as schema_association}}
 {{> Autogen}}
@@ -97,6 +98,7 @@ struct is_deprecated_terse_writes_with_custom_default_field<{{struct:cpp_fullnam
 {{/program:structs}}
 } // namespace apache::thrift::detail::qualifier
 
+{{#let program = program:self}}
 {{> module_types_h/hash_and_equal_to}}
 
 namespace {{program:cpp_qualified_namespace}} {
@@ -117,6 +119,7 @@ using ::apache::thrift::detail::operator>=;
 {{> common/typedef_docblock }}
 using {{typedef:name}} = {{typedef:cpp_underlying_type}};
 {{#else}}
+{{#let struct = struct:self}}
 
 {{#struct:extra_namespace}}
 namespace {{struct:extra_namespace}} {

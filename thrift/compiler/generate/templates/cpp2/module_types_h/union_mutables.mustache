@@ -14,10 +14,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{#struct:legacy_api?}}{{#struct:fields}}
-  {{!deprecated}}{{field:cpp_storage_type}}& mutable_{{field:cpp_name}}() {
-    assert(getType() == Type::{{field:cpp_name}});
-    return value_.{{field:cpp_name}};
+}}
+{{#if struct.legacy_api?}}
+  {{#each struct.fields as |field|}}
+  {{!deprecated}}{{field.cpp_storage_type}}& mutable_{{field.cpp_name}}() {
+    assert(getType() == Type::{{field.cpp_name}});
+    return value_.{{field.cpp_name}};
   }
 
-{{/struct:fields}}{{/struct:legacy_api?}}
+  {{/each}}
+{{/if struct.legacy_api?}}

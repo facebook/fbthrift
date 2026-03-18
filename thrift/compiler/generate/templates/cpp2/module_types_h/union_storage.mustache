@@ -15,12 +15,12 @@
   limitations under the License.
 
 }}  union storage_type {
-{{#struct:fields}}
-    {{field:cpp_storage_type}} {{field:cpp_name}};
-{{/struct:fields}}
+  {{#each struct.fields as |field|}}
+    {{field.cpp_storage_type}} {{field.cpp_name}};
+  {{/each}}
 
-{{^struct:is_trivially_destructible?}}
+  {{#if (not struct.is_trivially_destructible?)}}
     storage_type() {}
     ~storage_type() {}
-{{/struct:is_trivially_destructible?}}
+  {{/if (not struct.is_trivially_destructible?)}}
   } ;

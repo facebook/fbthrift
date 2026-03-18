@@ -190,3 +190,18 @@ bool TEnumTraits<{{struct.cpp_fullname}}::Type>::findValue(std::string_view name
 {{field.cpp_name}}_ref().value()
   {{/if field.cpp_ref?}}
 {{/let partial}}
+
+
+{{#let export partial field_ref_args |field struct| captures |fields|}}
+{{#pragma ignore-newlines}}
+{{#if field.intern_boxed_ref?}}, ::apache::thrift::op::getDefault<{{#partial fields.tag field=field struct=struct}}>{{/if}}
+{{#if field.has_isset?}}, __isset.at({{field.isset_index}}), __isset.bit({{field.isset_index}}){{/if}}
+{{/let partial}}
+
+
+{{#let export partial field_interceptor |field| captures |fields|}}
+  {{#if field.cpp_field_interceptor}}
+    {{field.cpp_field_interceptor}}::interceptThriftFieldAccess(this->{{#partial fields.field_value field=field}}, {{!
+}}::apache::thrift::FieldContext<std::remove_reference<decltype(*this)>::type, {{field.id}}>{*this});
+  {{/if field.cpp_field_interceptor}}
+{{/let partial}}
