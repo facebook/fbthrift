@@ -264,8 +264,7 @@ ClientRunner::ClientRunner(const ClientConfig& config)
     for (auto& ct : clientThreads_) {
       evbs.push_back(ct->getEventBase());
     }
-    if (!folly::setupIoUringBufferPoolSharing(
-            evbs, FLAGS_io_zcrx_hw_queues, FLAGS_io_zcrx_queue_id)) {
+    if (!folly::setupIoUringBufferPoolSharing(evbs, FLAGS_io_zcrx_hw_queues)) {
       LOG(FATAL) << "Failed to set up buffer pool sharing";
     }
   }
