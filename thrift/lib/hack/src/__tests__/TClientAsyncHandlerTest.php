@@ -200,6 +200,51 @@ final class TestStreamExceptionHandler extends TClientAsyncHandler {
   }
 }
 
+/**
+ * Handler that tracks genAfterStream calls for testing.
+ * Wraps a transport handler to provide stream I/O while recording chunks.
+ */
+<<Oncalls('thrift_hack')>>
+final class TestStreamChunkTrackingHandler extends TClientAsyncHandler {
+
+  private vec<string> $afterStreamChunks = vec[];
+  private vec<string> $beforeStreamFuncNames = vec[];
+
+  public function __construct(
+    private TestStreamSinkAsyncHandler $transportHandler,
+  ) {}
+
+  <<__Override>>
+  public async function genWaitStream(
+    int $sequence_id,
+  )[zoned_local]: Awaitable<HH\AsyncGenerator<null, string, void>> {
+    return await $this->transportHandler->genWaitStream($sequence_id);
+  }
+
+  <<__Override>>
+  public async function genBeforeStream(string $func_name): Awaitable<void> {
+    $this->beforeStreamFuncNames[] = $func_name;
+  }
+
+  <<__Override>>
+  public async function genAfterStream<<<__Explicit>> TResponse>(
+    string $func_name,
+    TResponse $response,
+  )[zoned_local]: Awaitable<void> {
+    if ($response is string) {
+      $this->afterStreamChunks[] = $response;
+    }
+  }
+
+  public function getAfterStreamChunks(): vec<string> {
+    return $this->afterStreamChunks;
+  }
+
+  public function getBeforeStreamFuncNames(): vec<string> {
+    return $this->beforeStreamFuncNames;
+  }
+}
+
 <<Oncalls('thrift_hack')>>
 final class TClientAsyncHandlerIntegrationTest extends WWWTest {
 
@@ -307,6 +352,92 @@ final class TClientAsyncHandlerIntegrationTest extends WWWTest {
     $sink_fn = $response_and_sink->genSink;
     $final_response = await $sink_fn($payload_gen);
     expect($final_response->text)->toEqual('a,b,c');
+  }
+
+  // Stream: verifies genAfterStream is called per chunk
+  public async function testGenAfterStreamCalledPerChunk(): Awaitable<void> {
+    MockJustKnobs::setBool('www/thrift:use_stream_async_handler_hooks', true);
+
+    $recv_protocol = new TCompactProtocolAccelerated(new TMemoryBuffer());
+    $send_protocol = new TCompactProtocolAccelerated(new TMemoryBuffer());
+
+    $transport_handler = new TestStreamSinkAsyncHandler(
+      $recv_protocol,
+      $send_protocol,
+      meta\thrift\example\ResponseStruct::fromShape(shape('text' => 'hello')),
+    );
+    $transport_handler->setStreamPayloads(vec['chunk1', 'chunk2', 'chunk3']);
+
+    $tracking_handler = new TestStreamChunkTrackingHandler($transport_handler);
+
+    $client = new meta\thrift\example\ExampleStreamingServiceAsyncClient(
+      $recv_protocol,
+      $send_protocol,
+    );
+    $client->setAsyncHandler($tracking_handler);
+
+    $response_and_stream = await $client->testStream(
+      meta\thrift\example\RequestStruct::fromShape(shape('text' => 'req')),
+    );
+
+    expect($response_and_stream->response?->text)->toEqual('hello');
+
+    // genAfterStream should not have been called yet (stream not consumed)
+    expect($tracking_handler->getAfterStreamChunks())->toEqual(vec[]);
+
+    $received = vec[];
+    foreach ($response_and_stream->stream await as $chunk) {
+      $received[] = $chunk;
+    }
+
+    expect($received)->toEqual(vec['chunk1', 'chunk2', 'chunk3']);
+    expect($tracking_handler->getAfterStreamChunks())
+      ->toEqual(vec['chunk1', 'chunk2', 'chunk3']);
+
+    // genBeforeStream should have been called before each chunk + once for the
+    // terminal next() that returns null (4 calls total for 3 chunks)
+    expect(C\count($tracking_handler->getBeforeStreamFuncNames()))->toEqual(4);
+  }
+
+  // Multi-handler: genAfterStream is delegated to all handlers
+  public async function testMultiHandlerGenAfterStreamDelegation(
+  ): Awaitable<void> {
+    MockJustKnobs::setBool('www/thrift:use_stream_async_handler_hooks', true);
+
+    $recv_protocol = new TCompactProtocolAccelerated(new TMemoryBuffer());
+    $send_protocol = new TCompactProtocolAccelerated(new TMemoryBuffer());
+
+    $transport_handler = new TestStreamSinkAsyncHandler(
+      $recv_protocol,
+      $send_protocol,
+      meta\thrift\example\ResponseStruct::fromShape(shape('text' => 'multi')),
+    );
+    $transport_handler->setStreamPayloads(vec['a', 'b']);
+
+    $tracking_handler = new TestStreamChunkTrackingHandler($transport_handler);
+
+    $multi_handler = new TClientMultiAsyncHandler();
+    $multi_handler->addHandler('transport', $tracking_handler);
+
+    $client = new meta\thrift\example\ExampleStreamingServiceAsyncClient(
+      $recv_protocol,
+      $send_protocol,
+    );
+    $client->setAsyncHandler($multi_handler);
+
+    $response_and_stream = await $client->testStream(
+      meta\thrift\example\RequestStruct::fromShape(shape('text' => 'req')),
+    );
+
+    expect($response_and_stream->response?->text)->toEqual('multi');
+
+    $received = vec[];
+    foreach ($response_and_stream->stream await as $chunk) {
+      $received[] = $chunk;
+    }
+
+    expect($received)->toEqual(vec['a', 'b']);
+    expect($tracking_handler->getAfterStreamChunks())->toEqual(vec['a', 'b']);
   }
 
   // Multi-handler: stream payloads from multiple handlers are concatenated

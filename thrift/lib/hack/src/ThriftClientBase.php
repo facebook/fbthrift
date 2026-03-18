@@ -457,11 +457,34 @@ abstract class ThriftClientBase implements IThriftClient {
       $expectedsequenceid,
       $options,
     );
+
     await $this->asyncHandler_
       ->genAfter<TFirstType>($name, $first_response);
+
+    $handler = $this->asyncHandler_;
+    $use_stream_hooks =
+      JustKnobs::eval('www/thrift:use_stream_async_handler_hooks');
+    $wrapped_stream = $use_stream_hooks
+      ? (
+          async function() use ($stream_gen, $handler, $name) {
+            do {
+              // @lint-ignore-every AWAIT_IN_LOOP chunks are processed
+              // sequentially from the stream
+              await $handler->genBeforeStream($name);
+              $next = await $stream_gen->next();
+              if ($next !== null) {
+                list($_, $chunk) = $next;
+                await $handler->genAfterStream<TStreamType>($name, $chunk);
+                yield $chunk;
+              }
+            } while ($next !== null);
+          }
+        )()
+      : $stream_gen;
+
     return new \ResponseAndStream<TFirstType, TStreamType>(
       $first_response,
-      $stream_gen,
+      $wrapped_stream,
     );
   }
 

@@ -83,6 +83,26 @@ final class TClientMultiAsyncHandler extends TClientAsyncHandler {
   }
 
   <<__Override>>
+  public async function genBeforeStream(string $func_name): Awaitable<void> {
+    await Vec\map_async(
+      $this->handlers,
+      async $handler ==> await $handler->genBeforeStream($func_name),
+    );
+  }
+
+  <<__Override>>
+  public async function genAfterStream<<<__Explicit>> TStreamResponse>(
+    string $func_name,
+    TStreamResponse $response,
+  )[zoned_local]: Awaitable<void> {
+    await Vec\map_async(
+      $this->handlers,
+      async ($handler)[zoned_local] ==>
+        await $handler->genAfterStream<TStreamResponse>($func_name, $response),
+    );
+  }
+
+  <<__Override>>
   public async function genWaitStream(
     int $sequence_id,
   )[zoned_local]: Awaitable<HH\AsyncGenerator<null, string, void>> {

@@ -78,6 +78,19 @@ class TClientAsyncHandler {
     };
   }
 
+  // Called before stream consumption begins in streaming gen_methodName() calls
+  public async function genBeforeStream(string $func_name): Awaitable<void> {
+    // Do nothing
+  }
+
+  // Called per stream chunk in streaming gen_methodName() calls
+  public async function genAfterStream<<<__Explicit>> TStreamResponse>(
+    string $func_name,
+    TStreamResponse $response,
+  )[zoned_local]: Awaitable<void> {
+    // Do nothing
+  }
+
   protected static async function genEmptyStream(
   )[zoned_local]: HH\AsyncGenerator<null, string, void> {
     foreach (vec[] as $item) {
