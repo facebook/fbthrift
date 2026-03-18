@@ -2215,10 +2215,8 @@ void t_mstch_cpp2_generator::generate_structs(const t_program* program) {
       cpp_context_->set_program_split(split_id);
       std::string split_suffix =
           fmt::format("{:0{}}.split.cpp", split_id, split_id_width);
-      render_to_file(
-          prog,
-          "module_types.cpp",
-          fmt::format("{}_types.{}", name, split_suffix));
+      render_whisker_file(
+          "module_types.cpp", fmt::format("{}_types.{}", name, split_suffix));
       render_whisker_file(
           "module_types_binary.cpp",
           fmt::format("{}_types_binary.{}", name, split_suffix));
@@ -2231,7 +2229,7 @@ void t_mstch_cpp2_generator::generate_structs(const t_program* program) {
     }
     cpp_context_->clear_program_split();
   } else {
-    render_to_file(prog, "module_types.cpp", name + "_types.cpp");
+    render_whisker_file("module_types.cpp", fmt::format("{}_types.cpp", name));
     render_whisker_file(
         "module_types_binary.cpp", fmt::format("{}_types_binary.cpp", name));
     render_whisker_file(
