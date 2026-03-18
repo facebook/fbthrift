@@ -15,36 +15,35 @@
   limitations under the License.
 
 }}// BEGIN declare_enums
-{{#program:enums?}}
-namespace {{program:cpp_qualified_namespace}} {
-{{#program:enums}}
-{{#let enum = enum:self}}
+  {{#if program.enums?}}
+namespace {{program.cpp_qualified_namespace}} {
+    {{#each program.enums as |enum|}}
 
-{{> common/enum_docblock }}
-enum {{^enum:cpp_is_unscoped}}class {{/enum:cpp_is_unscoped}}{{enum:cpp_name}}{{#enum:cpp_enum_type}} : {{enum:cpp_enum_type}}{{/enum:cpp_enum_type}} {
-{{#enum:values}}
-  {{enum_value:cpp_name}} = {{enum_value:value}},
-{{/enum:values}}
+{{#partial glean.enum_docblock enum=enum}}
+enum {{#if (not enum.cpp_is_unscoped)}}class {{/if}}{{enum.cpp_name}}{{#if enum.cpp_enum_type}} : {{enum.cpp_enum_type}}{{/if}} {
+      {{#each enum.values as |enum_value|}}
+  {{enum_value.cpp_name}} = {{enum_value.value}},
+      {{/each}}
 };
-{{#enum:cpp_declare_bitwise_ops}}
+      {{#if enum.cpp_declare_bitwise_ops}}
 {{> module_types_h/enum_bitwise_ops}}
-{{/enum:cpp_declare_bitwise_ops}}
-{{/program:enums}}
+      {{/if enum.cpp_declare_bitwise_ops}}
+    {{/each}}
 
-} // namespace {{program:cpp_qualified_namespace}}
+} // namespace {{program.cpp_qualified_namespace}}
 
-{{#program:enums}}
-template<> struct std::hash<::{{program:cpp_qualified_namespace}}::{{enum:cpp_name}}> :
-  ::apache::thrift::detail::enum_hash<::{{program:cpp_qualified_namespace}}::{{enum:cpp_name}}> {};
-{{/program:enums}}
+    {{#each program.enums as |enum|}}
+template<> struct std::hash<::{{program.cpp_qualified_namespace}}::{{enum.cpp_name}}> :
+  ::apache::thrift::detail::enum_hash<::{{program.cpp_qualified_namespace}}::{{enum.cpp_name}}> {};
+    {{/each}}
 
 namespace apache::thrift {
-{{#program:enums}}
+    {{#each program.enums as |enum|}}
 
-template <> struct TEnumTraits<::{{program:cpp_qualified_namespace}}::{{enum:cpp_name}}> {
-  using type = ::{{program:cpp_qualified_namespace}}::{{enum:cpp_name}};
+template <> struct TEnumTraits<::{{program.cpp_qualified_namespace}}::{{enum.cpp_name}}> {
+  using type = ::{{program.cpp_qualified_namespace}}::{{enum.cpp_name}};
 
-  static constexpr std::size_t const size = {{(array.len enum:values)}};
+  static constexpr std::size_t const size = {{(array.len enum.values)}};
   static folly::Range<type const*> const values;
   static folly::Range<std::string_view const*> const names;
   static const std::string_view __fbthrift_module_name_internal_do_not_use;
@@ -53,32 +52,32 @@ template <> struct TEnumTraits<::{{program:cpp_qualified_namespace}}::{{enum:cpp
   static bool findValue(std::string_view name, type* out) noexcept;
 
   FOLLY_ERASE static std::string_view typeName() noexcept {
-    return "{{enum:name}}";
+    return "{{enum.name}}";
   }
 
   FOLLY_ERASE static constexpr std::string_view moduleName() noexcept {
-    return "{{program:name}}";
+    return "{{program.name}}";
   }
 
-  {{#enum:uri}}
-  static constexpr folly::cstring_view __fbthrift_thrift_uri = "{{enum:uri}}";
+      {{#if enum.uri}}
+  static constexpr folly::cstring_view __fbthrift_thrift_uri = "{{enum.uri}}";
 
-  {{/enum:uri}}
+      {{/if enum.uri}}
   static char const* findName(type value) noexcept {
     std::string_view ret;
     (void)findName(value, &ret);
     return ret.data();
   }
-  {{#if (not (array.empty? enum:values))}}
-  static constexpr type min() { return type::{{enum:cpp_min}}; }
-  static constexpr type max() { return type::{{enum:cpp_max}}; }
-  {{/if (not (array.empty? enum:values))}}
+      {{#if (not (array.empty? enum.values))}}
+  static constexpr type min() { return type::{{enum.cpp_min}}; }
+  static constexpr type max() { return type::{{enum.cpp_max}}; }
+      {{/if (not (array.empty? enum.values))}}
 
   static const std::vector<std::any>& annotations() noexcept;
-  static const std::vector<std::any>& enumValueAnnotations(::{{program:cpp_qualified_namespace}}::{{enum:cpp_name}}) noexcept;
+  static const std::vector<std::any>& enumValueAnnotations(::{{program.cpp_qualified_namespace}}::{{enum.cpp_name}}) noexcept;
 };
-{{/program:enums}}
+    {{/each}}
 
 } // namespace apache::thrift
-{{/program:enums?}}
+  {{/if program.enums?}}
 // END declare_enums

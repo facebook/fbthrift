@@ -21,142 +21,170 @@ is emitted as a template or regular function.
 
 If the code-generator or template implementation changes which accessors are
 emitted as templates, gen::cpp::is_field_accessor_template must be kept in sync.
-}}{{#struct:fields}}
-{{#field:use_field_ref?}}
+}}
+  {{#each struct.fields as |field|}}
+    {{#if field.use_field_ref?}}
 
-{{^struct:legacy_api?}}
+      {{#if (not struct.legacy_api?)}}
  private:
-{{/struct:legacy_api?}}
-  {{#partial glean.field_docblock field=field:self}}
-  template <typename..., typename fbthrift_T = {{field:cpp_storage_type}}>
-  {{#field:deprecated?}}[[deprecated("{{field:deprecation_message}}")]]
-  {{/field:deprecated?}}{{field:cpp_accessor_attribute}} {{field:field_ref_type}}<const fbthrift_T&> {{field:cpp_name}}_ref() const& {
-{{#partial module_types.field_interceptor field=field:self}}
-    return {{^field:has_isset?}}{{field:field_ref_type}}<const fbthrift_T&>{{/field:has_isset?}}{this->{{#partial fields.field_value field=field:self}}{{#partial module_types.field_ref_args field=field:self struct=struct:self}}};
+      {{/if (not struct.legacy_api?)}}
+  {{#partial glean.field_docblock field=field}}
+  template <typename..., typename fbthrift_T = {{field.cpp_storage_type}}>
+      {{#if field.deprecated?}}
+  [[deprecated("{{field.deprecation_message}}")]]
+      {{/if field.deprecated?}}
+  {{field.cpp_accessor_attribute}} {{field.field_ref_type}}<const fbthrift_T&> {{field.cpp_name}}_ref() const& {
+{{#partial module_types.field_interceptor field=field}}
+    return {{#if (not field.has_isset?)}}{{field.field_ref_type}}<const fbthrift_T&>{{/if}}{this->{{#partial fields.field_value field=field}}{{#partial module_types.field_ref_args field=field struct=struct}}};
   }
 
-  {{#partial glean.field_docblock field=field:self}}
-  template <typename..., typename fbthrift_T = {{field:cpp_storage_type}}>
-  {{#field:deprecated?}}[[deprecated("{{field:deprecation_message}}")]]
-  {{/field:deprecated?}}{{field:cpp_accessor_attribute}} {{field:field_ref_type}}<fbthrift_T&> {{field:cpp_name}}_ref() & {
-{{#partial module_types.field_interceptor field=field:self}}
-    return {{^field:has_isset?}}{{field:field_ref_type}}<fbthrift_T&>{{/field:has_isset?}}{this->{{#partial fields.field_value field=field:self}}{{#partial module_types.field_ref_args field=field:self struct=struct:self}}};
+  {{#partial glean.field_docblock field=field}}
+  template <typename..., typename fbthrift_T = {{field.cpp_storage_type}}>
+      {{#if field.deprecated?}}
+  [[deprecated("{{field.deprecation_message}}")]]
+      {{/if field.deprecated?}}
+  {{field.cpp_accessor_attribute}} {{field.field_ref_type}}<fbthrift_T&> {{field.cpp_name}}_ref() & {
+{{#partial module_types.field_interceptor field=field}}
+    return {{#if (not field.has_isset?)}}{{field.field_ref_type}}<fbthrift_T&>{{/if}}{this->{{#partial fields.field_value field=field}}{{#partial module_types.field_ref_args field=field struct=struct}}};
   }
 
-  {{#partial glean.field_docblock field=field:self}}
-  template <typename..., typename fbthrift_T = {{field:cpp_storage_type}}>
-  {{#field:deprecated?}}[[deprecated("{{field:deprecation_message}}")]]
-  {{/field:deprecated?}}{{field:cpp_accessor_attribute}} {{field:field_ref_type}}<fbthrift_T&&> {{field:cpp_name}}_ref() && {
-{{#partial module_types.field_interceptor field=field:self}}
-    return {{^field:has_isset?}}{{field:field_ref_type}}<fbthrift_T&&>{{/field:has_isset?}}{static_cast<fbthrift_T&&>(this->{{#partial fields.field_value field=field:self}}){{#partial module_types.field_ref_args field=field:self struct=struct:self}}};
+  {{#partial glean.field_docblock field=field}}
+  template <typename..., typename fbthrift_T = {{field.cpp_storage_type}}>
+      {{#if field.deprecated?}}
+  [[deprecated("{{field.deprecation_message}}")]]
+      {{/if field.deprecated?}}
+  {{field.cpp_accessor_attribute}} {{field.field_ref_type}}<fbthrift_T&&> {{field.cpp_name}}_ref() && {
+{{#partial module_types.field_interceptor field=field}}
+    return {{#if (not field.has_isset?)}}{{field.field_ref_type}}<fbthrift_T&&>{{/if}}{static_cast<fbthrift_T&&>(this->{{#partial fields.field_value field=field}}){{#partial module_types.field_ref_args field=field struct=struct}}};
   }
-{{^struct:legacy_api?}}
+      {{#if (not struct.legacy_api?)}}
  public:
-{{/struct:legacy_api?}}
-{{#field:eligible_for_storage_name_mangling?}}
+      {{/if (not struct.legacy_api?)}}
+      {{#if field.eligible_for_storage_name_mangling?}}
 
-  {{#partial glean.field_docblock field=field:self}}
-  template <typename..., typename fbthrift_T = {{field:cpp_storage_type}}>
-  {{#field:deprecated?}}[[deprecated("{{field:deprecation_message}}")]]
-  {{/field:deprecated?}}{{field:cpp_accessor_attribute}} {{field:field_ref_type}}<const fbthrift_T&> {{field:cpp_name}}() const& {
-{{#partial module_types.field_interceptor field=field:self}}
-    return {{^field:has_isset?}}{{field:field_ref_type}}<const fbthrift_T&>{{/field:has_isset?}}{this->{{#partial fields.field_value field=field:self}}{{#partial module_types.field_ref_args field=field:self struct=struct:self}}};
+  {{#partial glean.field_docblock field=field}}
+  template <typename..., typename fbthrift_T = {{field.cpp_storage_type}}>
+      {{#if field.deprecated?}}
+  [[deprecated("{{field.deprecation_message}}")]]
+      {{/if field.deprecated?}}
+  {{field.cpp_accessor_attribute}} {{field.field_ref_type}}<const fbthrift_T&> {{field.cpp_name}}() const& {
+{{#partial module_types.field_interceptor field=field}}
+    return {{#if (not field.has_isset?)}}{{field.field_ref_type}}<const fbthrift_T&>{{/if}}{this->{{#partial fields.field_value field=field}}{{#partial module_types.field_ref_args field=field struct=struct}}};
   }
 
-  {{#partial glean.field_docblock field=field:self}}
-  template <typename..., typename fbthrift_T = {{field:cpp_storage_type}}>
-  {{#field:deprecated?}}[[deprecated("{{field:deprecation_message}}")]]
-  {{/field:deprecated?}}{{field:cpp_accessor_attribute}} {{field:field_ref_type}}<fbthrift_T&> {{field:cpp_name}}() & {
-{{#partial module_types.field_interceptor field=field:self}}
-    return {{^field:has_isset?}}{{field:field_ref_type}}<fbthrift_T&>{{/field:has_isset?}}{this->{{#partial fields.field_value field=field:self}}{{#partial module_types.field_ref_args field=field:self struct=struct:self}}};
+  {{#partial glean.field_docblock field=field}}
+  template <typename..., typename fbthrift_T = {{field.cpp_storage_type}}>
+      {{#if field.deprecated?}}
+  [[deprecated("{{field.deprecation_message}}")]]
+      {{/if field.deprecated?}}
+  {{field.cpp_accessor_attribute}} {{field.field_ref_type}}<fbthrift_T&> {{field.cpp_name}}() & {
+{{#partial module_types.field_interceptor field=field}}
+    return {{#if (not field.has_isset?)}}{{field.field_ref_type}}<fbthrift_T&>{{/if}}{this->{{#partial fields.field_value field=field}}{{#partial module_types.field_ref_args field=field struct=struct}}};
   }
 
-  {{#partial glean.field_docblock field=field:self}}
-  template <typename..., typename fbthrift_T = {{field:cpp_storage_type}}>
-  {{#field:deprecated?}}[[deprecated("{{field:deprecation_message}}")]]
-  {{/field:deprecated?}}{{field:cpp_accessor_attribute}} {{field:field_ref_type}}<fbthrift_T&&> {{field:cpp_name}}() && {
-{{#partial module_types.field_interceptor field=field:self}}
-    return {{^field:has_isset?}}{{field:field_ref_type}}<fbthrift_T&&>{{/field:has_isset?}}{static_cast<fbthrift_T&&>(this->{{#partial fields.field_value field=field:self}}){{#partial module_types.field_ref_args field=field:self struct=struct:self}}};
+  {{#partial glean.field_docblock field=field}}
+  template <typename..., typename fbthrift_T = {{field.cpp_storage_type}}>
+      {{#if field.deprecated?}}
+  [[deprecated("{{field.deprecation_message}}")]]
+      {{/if field.deprecated?}}
+  {{field.cpp_accessor_attribute}} {{field.field_ref_type}}<fbthrift_T&&> {{field.cpp_name}}() && {
+{{#partial module_types.field_interceptor field=field}}
+    return {{#if (not field.has_isset?)}}{{field.field_ref_type}}<fbthrift_T&&>{{/if}}{static_cast<fbthrift_T&&>(this->{{#partial fields.field_value field=field}}){{#partial module_types.field_ref_args field=field struct=struct}}};
   }
-{{/field:eligible_for_storage_name_mangling?}}
-{{/field:use_field_ref?}}
-{{^field:use_field_ref?}}
-{{^struct:legacy_api?}}
+      {{/if field.eligible_for_storage_name_mangling?}}
+    {{#else}}
+      {{#if (not struct.legacy_api?)}}
  private:
-{{/struct:legacy_api?}}
-  {{#partial glean.field_docblock field=field:self}}
-  {{#field:deprecated?}}[[deprecated("{{field:deprecation_message}}")]]
-  {{/field:deprecated?}}{{field:cpp_accessor_attribute}} {{field:cpp_storage_type}}& {{field:cpp_name}}_ref() & {
-{{#partial module_types.field_interceptor field=field:self}}
-    return {{#partial fields.field_value field=field:self}};
+      {{/if (not struct.legacy_api?)}}
+  {{#partial glean.field_docblock field=field}}
+      {{#if field.deprecated?}}
+  [[deprecated("{{field.deprecation_message}}")]]
+      {{/if field.deprecated?}}
+  {{field.cpp_accessor_attribute}} {{field.cpp_storage_type}}& {{field.cpp_name}}_ref() & {
+{{#partial module_types.field_interceptor field=field}}
+    return {{#partial fields.field_value field=field}};
   }
 
-  {{#partial glean.field_docblock field=field:self}}
-  {{#field:deprecated?}}[[deprecated("{{field:deprecation_message}}")]]
-  {{/field:deprecated?}}{{field:cpp_accessor_attribute}} const {{field:cpp_storage_type}}& {{field:cpp_name}}_ref() const& {
-{{#partial module_types.field_interceptor field=field:self}}
-    return {{#partial fields.field_value field=field:self}};
+  {{#partial glean.field_docblock field=field}}
+      {{#if field.deprecated?}}
+  [[deprecated("{{field.deprecation_message}}")]]
+      {{/if field.deprecated?}}
+  {{field.cpp_accessor_attribute}} const {{field.cpp_storage_type}}& {{field.cpp_name}}_ref() const& {
+{{#partial module_types.field_interceptor field=field}}
+    return {{#partial fields.field_value field=field}};
   }
 
-  {{#partial glean.field_docblock field=field:self}}
-  {{#field:deprecated?}}[[deprecated("{{field:deprecation_message}}")]]
-  {{/field:deprecated?}}{{field:cpp_accessor_attribute}} {{field:cpp_storage_type}}&& {{field:cpp_name}}_ref() && {
-{{#partial module_types.field_interceptor field=field:self}}
-    return static_cast<{{field:cpp_storage_type}}&&>({{#partial fields.field_value field=field:self}});
+  {{#partial glean.field_docblock field=field}}
+      {{#if field.deprecated?}}
+  [[deprecated("{{field.deprecation_message}}")]]
+      {{/if field.deprecated?}}
+  {{field.cpp_accessor_attribute}} {{field.cpp_storage_type}}&& {{field.cpp_name}}_ref() && {
+{{#partial module_types.field_interceptor field=field}}
+    return static_cast<{{field.cpp_storage_type}}&&>({{#partial fields.field_value field=field}});
   }
 
-  {{#partial glean.field_docblock field=field:self}}
-  {{#field:deprecated?}}[[deprecated("{{field:deprecation_message}}")]]
-  {{/field:deprecated?}}{{field:cpp_accessor_attribute}} const {{field:cpp_storage_type}}&& {{field:cpp_name}}_ref() const&& {
-{{#partial module_types.field_interceptor field=field:self}}
-    return static_cast<const {{field:cpp_storage_type}}&&>({{#partial fields.field_value field=field:self}});
+  {{#partial glean.field_docblock field=field}}
+      {{#if field.deprecated?}}
+  [[deprecated("{{field.deprecation_message}}")]]
+      {{/if field.deprecated?}}
+  {{field.cpp_accessor_attribute}} const {{field.cpp_storage_type}}&& {{field.cpp_name}}_ref() const&& {
+{{#partial module_types.field_interceptor field=field}}
+    return static_cast<const {{field.cpp_storage_type}}&&>({{#partial fields.field_value field=field}});
   }
-{{^struct:legacy_api?}}
+      {{#if (not struct.legacy_api?)}}
  public:
-{{/struct:legacy_api?}}
-{{#field:eligible_for_storage_name_mangling?}}
+      {{/if (not struct.legacy_api?)}}
+      {{#if field.eligible_for_storage_name_mangling?}}
 
-  {{#partial glean.field_docblock field=field:self}}
-  {{#field:deprecated?}}[[deprecated("{{field:deprecation_message}}")]]
-  {{/field:deprecated?}}FOLLY_ERASE {{field:cpp_storage_type}}& {{field:cpp_name}}() & {
-{{#partial module_types.field_interceptor field=field:self}}
-    return {{#partial fields.field_value field=field:self}};
+  {{#partial glean.field_docblock field=field}}
+      {{#if field.deprecated?}}
+  [[deprecated("{{field.deprecation_message}}")]]
+      {{/if field.deprecated?}}
+  FOLLY_ERASE {{field.cpp_storage_type}}& {{field.cpp_name}}() & {
+{{#partial module_types.field_interceptor field=field}}
+    return {{#partial fields.field_value field=field}};
   }
 
-  {{#partial glean.field_docblock field=field:self}}
-  {{#field:deprecated?}}[[deprecated("{{field:deprecation_message}}")]]
-  {{/field:deprecated?}}FOLLY_ERASE const {{field:cpp_storage_type}}& {{field:cpp_name}}() const& {
-{{#partial module_types.field_interceptor field=field:self}}
-    return {{#partial fields.field_value field=field:self}};
+  {{#partial glean.field_docblock field=field}}
+      {{#if field.deprecated?}}
+  [[deprecated("{{field.deprecation_message}}")]]
+      {{/if field.deprecated?}}
+  FOLLY_ERASE const {{field.cpp_storage_type}}& {{field.cpp_name}}() const& {
+{{#partial module_types.field_interceptor field=field}}
+    return {{#partial fields.field_value field=field}};
   }
 
-  {{#partial glean.field_docblock field=field:self}}
-  {{#field:deprecated?}}[[deprecated("{{field:deprecation_message}}")]]
-  {{/field:deprecated?}}FOLLY_ERASE {{field:cpp_storage_type}}&& {{field:cpp_name}}() && {
-{{#partial module_types.field_interceptor field=field:self}}
-    return static_cast<{{field:cpp_storage_type}}&&>({{#partial fields.field_value field=field:self}});
+  {{#partial glean.field_docblock field=field}}
+      {{#if field.deprecated?}}
+  [[deprecated("{{field.deprecation_message}}")]]
+      {{/if field.deprecated?}}
+  FOLLY_ERASE {{field.cpp_storage_type}}&& {{field.cpp_name}}() && {
+{{#partial module_types.field_interceptor field=field}}
+    return static_cast<{{field.cpp_storage_type}}&&>({{#partial fields.field_value field=field}});
   }
 
-  {{#partial glean.field_docblock field=field:self}}
-  {{#field:deprecated?}}[[deprecated("{{field:deprecation_message}}")]]
-  {{/field:deprecated?}}FOLLY_ERASE const {{field:cpp_storage_type}}&& {{field:cpp_name}}() const&& {
-{{#partial module_types.field_interceptor field=field:self}}
-    return static_cast<const {{field:cpp_storage_type}}&&>({{#partial fields.field_value field=field:self}});
+  {{#partial glean.field_docblock field=field}}
+      {{#if field.deprecated?}}
+  [[deprecated("{{field.deprecation_message}}")]]
+      {{/if field.deprecated?}}
+  FOLLY_ERASE const {{field.cpp_storage_type}}&& {{field.cpp_name}}() const&& {
+{{#partial module_types.field_interceptor field=field}}
+    return static_cast<const {{field.cpp_storage_type}}&&>({{#partial fields.field_value field=field}});
   }
-{{/field:eligible_for_storage_name_mangling?}}
-{{/field:use_field_ref?}}
-{{/struct:fields}}
-  {{#each struct:mixin_fields as |mixin|}}
-    {{#if (not struct:legacy_api?)}}
+      {{/if field.eligible_for_storage_name_mangling?}}
+    {{/if field.use_field_ref?}}
+  {{/each}}
+  {{#each struct.mixin_fields as |mixin|}}
+    {{#if (not struct.legacy_api?)}}
  public:
-    {{/if (not struct:legacy_api?)}}
+    {{/if (not struct.legacy_api?)}}
   FOLLY_ERASE auto {{mixin.field_name}}() &           { return {{mixin.mixin_name}}_ref()->{{mixin.field_name}}_ref(); }
   FOLLY_ERASE auto {{mixin.field_name}}() const&      { return {{mixin.mixin_name}}_ref()->{{mixin.field_name}}_ref(); }
   FOLLY_ERASE auto {{mixin.field_name}}() &&          { return std::move(*{{mixin.mixin_name}}_ref()).{{mixin.field_name}}_ref(); }
   FOLLY_ERASE auto {{mixin.field_name}}() const&&     { return std::move(*{{mixin.mixin_name}}_ref()).{{mixin.field_name}}_ref(); }
-    {{#if (not struct:legacy_api?)}}
+    {{#if (not struct.legacy_api?)}}
  private:
-    {{/if (not struct:legacy_api?)}}
+    {{/if (not struct.legacy_api?)}}
   [[deprecated("{{mixin.field_name}}_ref() is deprecated, use {{mixin.field_name}}() instead.")]]
   FOLLY_ERASE auto {{mixin.field_name}}_ref() &       { return {{mixin.field_name}}(); }
   [[deprecated("{{mixin.field_name}}_ref() is deprecated, use {{mixin.field_name}}() instead.")]]

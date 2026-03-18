@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}  {{struct:cpp_underlying_name}}& operator=({{struct:cpp_underlying_name}}&& rhs) noexcept {
+}}  {{struct.cpp_underlying_name}}& operator=({{struct.cpp_underlying_name}}&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     switch (rhs.getType()) {
       case Type::__EMPTY__:
@@ -22,18 +22,13 @@
         __fbthrift_clear();
         return *this;
       }
-{{#struct:fields}}
-      case Type::{{field:cpp_name}}:
+  {{#each struct.fields as |field|}}
+      case Type::{{field.cpp_name}}:
       {
-{{#field:cpp_ref?}}
-        set_{{field:cpp_name}}(std::move(*rhs.value_.{{field:cpp_name}}));
-{{/field:cpp_ref?}}
-{{^field:cpp_ref?}}
-        set_{{field:cpp_name}}(std::move(rhs.value_.{{field:cpp_name}}));
-{{/field:cpp_ref?}}
+        set_{{field.cpp_name}}(std::move({{#if field.cpp_ref?}}*{{/if}}rhs.value_.{{field.cpp_name}}));
         break;
       }
-{{/struct:fields}}
+  {{/each}}
       default:
       {
         assert(false);
@@ -43,7 +38,7 @@
     apache::thrift::clear(rhs);
     return *this;
   }
-{{^struct:cpp_noncopyable}}
+  {{#if (not struct.cpp_noncopyable)}}
 
-  {{struct:cpp_underlying_name}}& operator=(const {{struct:cpp_underlying_name}}& rhs);
-{{/struct:cpp_noncopyable}}
+  {{struct.cpp_underlying_name}}& operator=(const {{struct.cpp_underlying_name}}& rhs);
+  {{/if (not struct.cpp_noncopyable)}}

@@ -63,6 +63,7 @@ APACHE_THRIFT_DEFINE_ACCESSOR({{field:cpp_name}});
 } // namespace apache::thrift
 
 {{/program:structs?}}
+{{#let program = program:self}}
 {{> module_types_h/declare_enums}}
 
 {{#partial module_types.forward_declare program=program:self}}
@@ -98,7 +99,6 @@ struct is_deprecated_terse_writes_with_custom_default_field<{{struct:cpp_fullnam
 {{/program:structs}}
 } // namespace apache::thrift::detail::qualifier
 
-{{#let program = program:self}}
 {{> module_types_h/hash_and_equal_to}}
 
 namespace {{program:cpp_qualified_namespace}} {

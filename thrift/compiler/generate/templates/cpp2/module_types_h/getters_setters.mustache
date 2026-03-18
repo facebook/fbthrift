@@ -14,60 +14,60 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{#struct:fields}}{{#field:type}}{{#field:has_deprecated_accessors?}}
-{{#if field:optional?}}
+}}{{#each struct.fields as |field|}}
+    {{#if field.has_deprecated_accessors?}}
+      {{#if field.optional?}}
 
-  {{#partial glean.field_docblock field=field:self}}
-  [[deprecated("Use `FOO.{{field:cpp_name}}().value()` instead of `FOO.get_{{field:cpp_name}}()`")]]
-  const {{field:cpp_storage_type}}* get_{{field:cpp_name}}() const&;
+  {{#partial glean.field_docblock field=field}}
+  [[deprecated("Use `FOO.{{field.cpp_name}}().value()` instead of `FOO.get_{{field.cpp_name}}()`")]]
+  const {{field.cpp_storage_type}}* get_{{field.cpp_name}}() const&;
 
-  {{#partial glean.field_docblock field=field:self}}
-  [[deprecated("Use `FOO.{{field:cpp_name}}().value()` instead of `FOO.get_{{field:cpp_name}}()`")]]
-  {{field:cpp_storage_type}}* get_{{field:cpp_name}}() &;
+  {{#partial glean.field_docblock field=field}}
+  [[deprecated("Use `FOO.{{field.cpp_name}}().value()` instead of `FOO.get_{{field.cpp_name}}()`")]]
+  {{field.cpp_storage_type}}* get_{{field.cpp_name}}() &;
 
-  {{field:cpp_storage_type}}* get_{{field:cpp_name}}() && = delete;
-{{#else}}
-  {{#if type:resolves_to_fixed_size?}}
+  {{field.cpp_storage_type}}* get_{{field.cpp_name}}() && = delete;
+      {{#else if field.type.resolves_to_fixed_size?}}
 
-  {{#partial glean.field_docblock field=field:self}}
-  [[deprecated("Use `FOO.{{field:cpp_name}}().value()` instead of `FOO.get_{{field:cpp_name}}()`")]]
-  {{field:cpp_storage_type}} get_{{field:cpp_name}}() const;
-  {{#else if (or type:container? type:structured?)}}
+  {{#partial glean.field_docblock field=field}}
+  [[deprecated("Use `FOO.{{field.cpp_name}}().value()` instead of `FOO.get_{{field.cpp_name}}()`")]]
+  {{field.cpp_storage_type}} get_{{field.cpp_name}}() const;
+      {{#else if (or field.type.container? field.type.structured?)}}
 
-  {{#partial glean.field_docblock field=field:self}}
-  [[deprecated("Use `FOO.{{field:cpp_name}}().value()` instead of `FOO.get_{{field:cpp_name}}()`")]]
-  const {{field:cpp_storage_type}}& get_{{field:cpp_name}}() const&;
+  {{#partial glean.field_docblock field=field}}
+  [[deprecated("Use `FOO.{{field.cpp_name}}().value()` instead of `FOO.get_{{field.cpp_name}}()`")]]
+  const {{field.cpp_storage_type}}& get_{{field.cpp_name}}() const&;
 
-  {{#partial glean.field_docblock field=field:self}}
-  [[deprecated("Use `FOO.{{field:cpp_name}}().value()` instead of `FOO.get_{{field:cpp_name}}()`")]]
-  {{field:cpp_storage_type}} get_{{field:cpp_name}}() &&;
-  {{#else}}
+  {{#partial glean.field_docblock field=field}}
+  [[deprecated("Use `FOO.{{field.cpp_name}}().value()` instead of `FOO.get_{{field.cpp_name}}()`")]]
+  {{field.cpp_storage_type}} get_{{field.cpp_name}}() &&;
+      {{#else}}
 
-  {{#partial glean.field_docblock field=field:self}}
-  [[deprecated("Use `FOO.{{field:cpp_name}}().value()` instead of `FOO.get_{{field:cpp_name}}()`")]]
-  const {{field:cpp_storage_type}}& get_{{field:cpp_name}}() const& {
-    return {{field:cpp_storage_name}};
+  {{#partial glean.field_docblock field=field}}
+  [[deprecated("Use `FOO.{{field.cpp_name}}().value()` instead of `FOO.get_{{field.cpp_name}}()`")]]
+  const {{field.cpp_storage_type}}& get_{{field.cpp_name}}() const& {
+    return {{field.cpp_storage_name}};
   }
 
-  {{#partial glean.field_docblock field=field:self}}
-  [[deprecated("Use `FOO.{{field:cpp_name}}().value()` instead of `FOO.get_{{field:cpp_name}}()`")]]
-  {{field:cpp_storage_type}} get_{{field:cpp_name}}() && {
-    return static_cast<{{field:cpp_storage_type}}&&>({{field:cpp_storage_name}});
+  {{#partial glean.field_docblock field=field}}
+  [[deprecated("Use `FOO.{{field.cpp_name}}().value()` instead of `FOO.get_{{field.cpp_name}}()`")]]
+  {{field.cpp_storage_type}} get_{{field.cpp_name}}() && {
+    return static_cast<{{field.cpp_storage_type}}&&>({{field.cpp_storage_name}});
   }
-  {{/if type:resolves_to_fixed_size?}}
-{{/if field:optional?}}
+      {{/if field.optional?}}
 
-{{#if type:resolves_to_fixed_size?}}
-  {{#partial glean.field_docblock field=field:self}}
-  [[deprecated("Use `FOO.{{field:cpp_name}}() = BAR` instead of `FOO.set_{{field:cpp_name}}(BAR)`")]]
-  {{field:cpp_storage_type}}& set_{{field:cpp_name}}({{field:cpp_storage_type}} {{field:cpp_name}}_);
-{{#else}}
-  {{#partial glean.field_docblock field=field:self}}
-  template <typename T_{{struct:cpp_underlying_name}}_{{field:cpp_name}}_struct_setter = {{field:cpp_storage_type}}>
-  [[deprecated("Use `FOO.{{field:cpp_name}}() = BAR` instead of `FOO.set_{{field:cpp_name}}(BAR)`")]]
-  {{field:cpp_storage_type}}& set_{{field:cpp_name}}(T_{{struct:cpp_underlying_name}}_{{field:cpp_name}}_struct_setter&& {{field:cpp_name}}_) {
-    {{field:cpp_name}}_ref() = std::forward<T_{{struct:cpp_underlying_name}}_{{field:cpp_name}}_struct_setter>({{field:cpp_name}}_);
-    return {{field:cpp_storage_name}};
+      {{#if field.type.resolves_to_fixed_size?}}
+  {{#partial glean.field_docblock field=field}}
+  [[deprecated("Use `FOO.{{field.cpp_name}}() = BAR` instead of `FOO.set_{{field.cpp_name}}(BAR)`")]]
+  {{field.cpp_storage_type}}& set_{{field.cpp_name}}({{field.cpp_storage_type}} {{field.cpp_name}}_);
+      {{#else}}
+  {{#partial glean.field_docblock field=field}}
+  template <typename T_{{struct.cpp_underlying_name}}_{{field.cpp_name}}_struct_setter = {{field.cpp_storage_type}}>
+  [[deprecated("Use `FOO.{{field.cpp_name}}() = BAR` instead of `FOO.set_{{field.cpp_name}}(BAR)`")]]
+  {{field.cpp_storage_type}}& set_{{field.cpp_name}}(T_{{struct.cpp_underlying_name}}_{{field.cpp_name}}_struct_setter&& {{field.cpp_name}}_) {
+    {{field.cpp_name}}_ref() = std::forward<T_{{struct.cpp_underlying_name}}_{{field.cpp_name}}_struct_setter>({{field.cpp_name}}_);
+    return {{field.cpp_storage_name}};
   }
-{{/if type:resolves_to_fixed_size?}}
-{{/field:has_deprecated_accessors?}}{{/field:type}}{{/struct:fields}}
+      {{/if field.type.resolves_to_fixed_size?}}
+    {{/if field.has_deprecated_accessors?}}
+{{/each}}

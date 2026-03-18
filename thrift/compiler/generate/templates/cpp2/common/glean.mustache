@@ -30,3 +30,8 @@
 {{#let export partial field_docblock |field|}}
 /** Glean { "field": "{{field.cpp_name}}" } */
 {{/let partial}}
+
+{{! Glean annotation to map generated functions to thrift enums. }}
+{{#let export partial enum_docblock |enum|}}
+/** Glean {"file": "{{enum.program.autogen_path}}", "name": "{{enum.cpp_name}}", "kind": "enum" } */
+{{/let partial}}
