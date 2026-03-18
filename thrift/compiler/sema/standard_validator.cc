@@ -2079,6 +2079,12 @@ void deprecate_annotations(sema_context& ctx, const t_named& node) {
         ctx.error("invalid annotation {}", k);
         continue;
       }
+      if (k == "deprecated") {
+        ctx.warning(
+            "The unstructured annotation `deprecated` has no effect."
+            " Use `@thrift.Deprecated` or a comment instead.");
+        continue;
+      }
       if (v.from == deprecated_annotation_value::origin::unstructured &&
           ctx.sema_parameters().forbid_unstructured_annotations) {
         ctx.error("Unstructured annotations are not allowed: `{}`.", k);

@@ -104,6 +104,16 @@ TEST(StandardValidatorTest, ValidateExceptionMessage) {
   )");
 }
 
+TEST(StandardValidatorTest, DeprecatedAnnotationHasNoEffect) {
+  check_compile(R"(
+    package "facebook.com/thrift/test"
+
+    struct Foo { # expected-warning: The unstructured annotation `deprecated` has no effect. Use `@thrift.Deprecated` or a comment instead.
+      1: i32 bar (deprecated = "use baz instead"); # expected-warning: The unstructured annotation `deprecated` has no effect. Use `@thrift.Deprecated` or a comment instead.
+    } (deprecated = "")
+  )");
+}
+
 TEST(StandardValidatorTest, ValidatePy3EnableCppAdapter) {
   check_compile(R"(
     package "facebook.com/thrift/test"
