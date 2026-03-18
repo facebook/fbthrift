@@ -606,31 +606,241 @@ namespace Test.Fixtures.Basic
         }
     }
 
-    /// <summary>
-    /// Placeholder for union type MyUnion (full codegen pending).
-    /// </summary>
-    public class @MyUnion : IThriftSerializable
-    {
-        public bool __fbthrift_is_empty() => true;
-
-        public void __fbthrift_read(IThriftProtocolReader reader)
+        /// <summary>
+        /// Auto-generated union from MyUnion
+        /// </summary>
+        public class @MyUnion : IThriftSerializable
         {
-            while (true)
+            /// <summary>The Thrift URI for this type, used for type registration.</summary>
+            public static readonly string __fbthrift_uri = "test.dev/fixtures/basic/MyUnion";
+            /// <summary>
+            /// Enum indicating which field is currently set in this union
+            /// </summary>
+            public enum Type
             {
-                var (fieldType, _) = reader.ReadFieldBegin();
-                if (fieldType == ThriftWireType.Stop)
+                Empty = 0,
+                @myEnum = 1,
+                @myStruct = 2,
+                @myDataItem = 3,
+                @floatSet = 4,
+            }
+    
+            private Type _type = Type.Empty;
+            private object? _value;
+    
+            /// <summary>
+            /// Gets the type of the currently set field
+            /// </summary>
+            public Type GetUnionType() => _type;
+    
+            /// <summary>
+            /// Returns true if this union has no value set
+            /// </summary>
+            public bool __fbthrift_is_empty() => _type == Type.Empty;
+    
+            /// <summary>
+            /// Clears the union value
+            /// </summary>
+            public void __fbthrift_clear()
+            {
+                _type = Type.Empty;
+                _value = null;
+            }
+    
+            /// <summary>
+            /// Gets or sets the myEnum field.
+            /// Setting this field clears any previously set field.
+            /// Returns null if a different field is currently set.
+            /// </summary>
+            public @MyEnumAlias? @myEnum
+            {
+                get => _type == Type.@myEnum ? (@MyEnumAlias)_value! : null;
+                set
                 {
-                    break;
+                    _type = Type.@myEnum;
+                    _value = value;
                 }
-                reader.Skip(fieldType);
+            }
+    
+            /// <summary>
+            /// Gets or sets the myStruct field.
+            /// Setting this field clears any previously set field.
+            /// Returns null if a different field is currently set.
+            /// </summary>
+            public @MyStruct? @myStruct
+            {
+                get => _type == Type.@myStruct ? (@MyStruct)_value! : null;
+                set
+                {
+                    _type = Type.@myStruct;
+                    _value = value;
+                }
+            }
+    
+            /// <summary>
+            /// Gets or sets the myDataItem field.
+            /// Setting this field clears any previously set field.
+            /// Returns null if a different field is currently set.
+            /// </summary>
+            public @MyDataItem? @myDataItem
+            {
+                get => _type == Type.@myDataItem ? (@MyDataItem)_value! : null;
+                set
+                {
+                    _type = Type.@myDataItem;
+                    _value = value;
+                }
+            }
+    
+            /// <summary>
+            /// Gets or sets the floatSet field.
+            /// Setting this field clears any previously set field.
+            /// Returns null if a different field is currently set.
+            /// </summary>
+            public HashSet<float>? @floatSet
+            {
+                get => _type == Type.@floatSet ? (HashSet<float>)_value! : null;
+                set
+                {
+                    _type = Type.@floatSet;
+                    _value = value;
+                }
+            }
+    
+            public void __fbthrift_write(IThriftProtocolWriter writer)
+            {
+                switch (_type)
+                {
+                    case Type.@myEnum:
+                            writer.WriteFieldBegin(ThriftWireType.I32, 1);
+                            writer.WriteI32((int)(@MyEnumAlias)_value!);
+                        break;
+                    case Type.@myStruct:
+                        if (_value != null)
+                        {
+                            writer.WriteFieldBegin(ThriftWireType.Struct, 2);
+                            writer.WriteStruct((IThriftSerializable)_value!);
+                        }
+                        break;
+                    case Type.@myDataItem:
+                        if (_value != null)
+                        {
+                            writer.WriteFieldBegin(ThriftWireType.Struct, 3);
+                            writer.WriteStruct((IThriftSerializable)_value!);
+                        }
+                        break;
+                    case Type.@floatSet:
+                        if (_value != null)
+                        {
+                            writer.WriteFieldBegin(ThriftWireType.Set, 4);
+                            {
+                                var _set = (HashSet<float>)_value!;
+                                writer.WriteSetBegin(ThriftWireType.Float, _set.Count);
+                                foreach (var _elem in _set)
+                                {
+                                    writer.WriteFloat(_elem);
+                                }
+                            }
+                        }
+                        break;
+                }
+                writer.WriteFieldStop();
+            }
+    
+            public void __fbthrift_read(IThriftProtocolReader reader)
+            {
+                __fbthrift_clear();
+                bool _fieldSeen = false;
+                while (true)
+                {
+                    var (fieldType, fieldId) = reader.ReadFieldBegin();
+                    if (fieldType == ThriftWireType.Stop)
+                    {
+                        break;
+                    }
+            
+                    if (_fieldSeen)
+                    {
+                        throw new ThriftProtocolException("Union cannot have multiple fields set");
+                    }
+                    _fieldSeen = true;
+            
+                    switch (fieldId)
+                    {
+                        case 1: // myEnum
+                            if (fieldType == ThriftWireType.I32)
+                            {
+                                _type = Type.@myEnum;
+                                _value = (@MyEnumAlias)reader.ReadI32();
+                            }
+                            else
+                            {
+                                reader.Skip(fieldType);
+                            }
+                            break;
+                        case 2: // myStruct
+                            if (fieldType == ThriftWireType.Struct)
+                            {
+                                _type = Type.@myStruct;
+                                _value = reader.ReadStruct<@MyStruct>();
+                            }
+                            else
+                            {
+                                reader.Skip(fieldType);
+                            }
+                            break;
+                        case 3: // myDataItem
+                            if (fieldType == ThriftWireType.Struct)
+                            {
+                                _type = Type.@myDataItem;
+                                _value = reader.ReadStruct<@MyDataItem>();
+                            }
+                            else
+                            {
+                                reader.Skip(fieldType);
+                            }
+                            break;
+                        case 4: // floatSet
+                            if (fieldType == ThriftWireType.Set)
+                            {
+                                _type = Type.@floatSet;
+                                _value = reader.ReadSet<float>();
+                            }
+                            else
+                            {
+                                reader.Skip(fieldType);
+                            }
+                            break;
+                        default:
+                            reader.Skip(fieldType);
+                            break;
+                    }
+                }
+            }
+    
+            public override bool Equals(object? obj)
+            {
+                if (obj is not @MyUnion other)
+                {
+                    return false;
+                }
+                if (_type != other._type)
+                {
+                    return false;
+                }
+                return Equals(_value, other._value);
+            }
+    
+            public override int GetHashCode()
+            {
+                return HashCode.Combine(_type, _value);
+            }
+    
+            public override string ToString()
+            {
+                return $"MyUnion({_type}={_value})";
             }
         }
-
-        public void __fbthrift_write(IThriftProtocolWriter writer)
-        {
-            writer.WriteFieldStop();
-        }
-    }
 
     /// <summary>
     /// Auto-generated from MyException
@@ -1067,31 +1277,132 @@ namespace Test.Fixtures.Basic
         }
     }
 
-    /// <summary>
-    /// Placeholder for union type UnionToBeRenamed (full codegen pending).
-    /// </summary>
-    public class @UnionToBeRenamed : IThriftSerializable
-    {
-        public bool __fbthrift_is_empty() => true;
-
-        public void __fbthrift_read(IThriftProtocolReader reader)
+        /// <summary>
+        /// Auto-generated union from UnionToBeRenamed
+        /// </summary>
+        public class @UnionToBeRenamed : IThriftSerializable
         {
-            while (true)
+            /// <summary>The Thrift URI for this type, used for type registration.</summary>
+            public static readonly string __fbthrift_uri = "test.dev/fixtures/basic/UnionToBeRenamed";
+            /// <summary>
+            /// Enum indicating which field is currently set in this union
+            /// </summary>
+            public enum Type
             {
-                var (fieldType, _) = reader.ReadFieldBegin();
-                if (fieldType == ThriftWireType.Stop)
+                Empty = 0,
+                @reserved_field = 1,
+            }
+    
+            private Type _type = Type.Empty;
+            private object? _value;
+    
+            /// <summary>
+            /// Gets the type of the currently set field
+            /// </summary>
+            public Type GetUnionType() => _type;
+    
+            /// <summary>
+            /// Returns true if this union has no value set
+            /// </summary>
+            public bool __fbthrift_is_empty() => _type == Type.Empty;
+    
+            /// <summary>
+            /// Clears the union value
+            /// </summary>
+            public void __fbthrift_clear()
+            {
+                _type = Type.Empty;
+                _value = null;
+            }
+    
+            /// <summary>
+            /// Gets or sets the reserved_field field.
+            /// Setting this field clears any previously set field.
+            /// Returns null if a different field is currently set.
+            /// </summary>
+            public int? @reserved_field
+            {
+                get => _type == Type.@reserved_field ? (int)_value! : null;
+                set
                 {
-                    break;
+                    _type = Type.@reserved_field;
+                    _value = value;
                 }
-                reader.Skip(fieldType);
+            }
+    
+            public void __fbthrift_write(IThriftProtocolWriter writer)
+            {
+                switch (_type)
+                {
+                    case Type.@reserved_field:
+                            writer.WriteFieldBegin(ThriftWireType.I32, 1);
+                            writer.WriteValue((int)_value!);
+                        break;
+                }
+                writer.WriteFieldStop();
+            }
+    
+            public void __fbthrift_read(IThriftProtocolReader reader)
+            {
+                __fbthrift_clear();
+                bool _fieldSeen = false;
+                while (true)
+                {
+                    var (fieldType, fieldId) = reader.ReadFieldBegin();
+                    if (fieldType == ThriftWireType.Stop)
+                    {
+                        break;
+                    }
+            
+                    if (_fieldSeen)
+                    {
+                        throw new ThriftProtocolException("Union cannot have multiple fields set");
+                    }
+                    _fieldSeen = true;
+            
+                    switch (fieldId)
+                    {
+                        case 1: // reserved_field
+                            if (fieldType == ThriftWireType.I32)
+                            {
+                                _type = Type.@reserved_field;
+                                _value = reader.ReadI32();
+                            }
+                            else
+                            {
+                                reader.Skip(fieldType);
+                            }
+                            break;
+                        default:
+                            reader.Skip(fieldType);
+                            break;
+                    }
+                }
+            }
+    
+            public override bool Equals(object? obj)
+            {
+                if (obj is not @UnionToBeRenamed other)
+                {
+                    return false;
+                }
+                if (_type != other._type)
+                {
+                    return false;
+                }
+                return Equals(_value, other._value);
+            }
+    
+            public override int GetHashCode()
+            {
+                return HashCode.Combine(_type, _value);
+            }
+    
+            public override string ToString()
+            {
+                return $"UnionToBeRenamed({_type}={_value})";
             }
         }
-
-        public void __fbthrift_write(IThriftProtocolWriter writer)
-        {
-            writer.WriteFieldStop();
-        }
-    }
 
 
     /// <summary>

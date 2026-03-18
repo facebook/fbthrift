@@ -18,7 +18,7 @@
 {{#import "common/ttype" as ttype}}
 {{#import "common/read_expr" as read}}
 
-{{#let export partial struct_read |struct| captures |ttype read|}}
+{{#let export partial struct_read |structured| captures |ttype read|}}
 public void __fbthrift_read(IThriftProtocolReader reader)
 {
     while (true)
@@ -31,7 +31,7 @@ public void __fbthrift_read(IThriftProtocolReader reader)
 
         switch (fieldId)
         {
-{{#each struct.fields as |field|}}
+{{#each structured.fields as |field|}}
             case {{field.id}}: // {{field.name}}
                 if (fieldType == {{#partial ttype.csharp_ttype_name type=field.type}})
                 {

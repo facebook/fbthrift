@@ -87,7 +87,7 @@ class t_csharp_EXPERIMENTAL_generator : public t_whisker_generator {
       return static_cast<int64_t>(csharp::get_csharp_ttype(&self));
     });
 
-    def.property("is_nullable?", [](const t_type& self) {
+    def.property("nullable?", [](const t_type& self) {
       return csharp::is_csharp_nullable_type(&self);
     });
 

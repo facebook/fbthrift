@@ -17,12 +17,12 @@
 }}
 {{#import "common/types" as types}}
 
-{{#let export partial struct_tostring |struct| captures |types|}}
+{{#let export partial struct_tostring |structured| captures |types|}}
 public override string ToString()
 {
     var sb = new System.Text.StringBuilder();
-    sb.Append("{{struct.name}}(");
-{{#each (array.enumerate struct.fields with_first=true) as |index field first?|}}
+    sb.Append("{{structured.name}}(");
+{{#each (array.enumerate structured.fields with_first=true) as |index field first?|}}
 {{#if (not first?)}}
     sb.Append(", ");
 {{/if (not first?)}}

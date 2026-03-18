@@ -17,10 +17,10 @@
 {{#import "common/types" as types}}
 {{#import "common/constants" as constants}}
 
-{{#let export partial struct_ctor |struct| captures |types constants|}}
-public {{struct.csharp_name}}()
+{{#let export partial struct_ctor |structured| captures |types constants|}}
+public {{structured.csharp_name}}()
 {
-{{#each struct.fields as |field|}}
+{{#each structured.fields as |field|}}
   {{#if (not field.optional?)}}
     {{#if (object.notnull? field.default_value)}}
     {{field.csharp_property_name}} = {{#partial constants.csharp_const_value value=field.default_value}};

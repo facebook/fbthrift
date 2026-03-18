@@ -16,6 +16,7 @@
 }}
 {{#import "types/enum" as enum_tmpl}}
 {{#import "types/struct" as struct_tmpl}}
+{{#import "types/union" as union_tmpl}}
 {{#import "common/types" as types}}
 {{> common/file_header}}
 
@@ -49,36 +50,12 @@ namespace {{root_program.csharp_namespace}}
     {{#partial enum_tmpl.enum_type enum=enum}}
 
 {{/each}}
-{{#each root_program.structured_definitions as |struct|}}
-{{#if struct.union?}}
-    /// <summary>
-    /// Placeholder for union type {{struct.name}} (full codegen pending).
-    /// </summary>
-    public class {{struct.csharp_name}} : IThriftSerializable
-    {
-        public bool __fbthrift_is_empty() => true;
-
-        public void __fbthrift_read(IThriftProtocolReader reader)
-        {
-            while (true)
-            {
-                var (fieldType, _) = reader.ReadFieldBegin();
-                if (fieldType == ThriftWireType.Stop)
-                {
-                    break;
-                }
-                reader.Skip(fieldType);
-            }
-        }
-
-        public void __fbthrift_write(IThriftProtocolWriter writer)
-        {
-            writer.WriteFieldStop();
-        }
-    }
+{{#each root_program.structured_definitions as |structured|}}
+{{#if structured.union?}}
+    {{#partial union_tmpl.union_type structured=structured}}
 {{#else}}
-    {{#partial struct_tmpl.struct_type struct=struct}}
-{{/if struct.union?}}
+    {{#partial struct_tmpl.struct_type structured=structured}}
+{{/if structured.union?}}
 
 {{/each}}
 {{#if root_program.constants?}}

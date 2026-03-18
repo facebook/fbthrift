@@ -17,14 +17,14 @@
 }}
 {{#import "common/types" as types}}
 
-{{#let export partial struct_equals |struct| captures |types|}}
+{{#let export partial struct_equals |structured| captures |types|}}
 public override bool Equals(object? obj)
 {
-    if (obj is not {{struct.csharp_name}} other)
+    if (obj is not {{structured.csharp_name}} other)
     {
         return false;
     }
-{{#each struct.fields as |field|}}
+{{#each structured.fields as |field|}}
 {{#if field.type.binary?}}
     if (!ReferenceEquals({{field.csharp_property_name}}, other.{{field.csharp_property_name}}))
     {
@@ -76,7 +76,7 @@ public override bool Equals(object? obj)
 public override int GetHashCode()
 {
     var hashCode = new HashCode();
-{{#each struct.fields as |field|}}
+{{#each structured.fields as |field|}}
 {{#if field.type.list?}}
     if ({{field.csharp_property_name}} != null)
         foreach (var item in {{field.csharp_property_name}}) hashCode.Add(item);

@@ -17,10 +17,10 @@
 }}
 {{#import "codec/write_field" as wf}}
 
-{{#let export partial struct_write |struct| captures |wf|}}
+{{#let export partial struct_write |structured| captures |wf|}}
 public void __fbthrift_write(IThriftProtocolWriter writer)
 {
-{{#each struct.fields as |field|}}
+{{#each structured.fields as |field|}}
     {{#partial wf.write_field field=field}}
 {{/each}}
     writer.WriteFieldStop();

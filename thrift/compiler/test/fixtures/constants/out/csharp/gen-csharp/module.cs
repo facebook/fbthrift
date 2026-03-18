@@ -963,57 +963,385 @@ namespace Test.Fixtures.Constants
         }
     }
 
-    /// <summary>
-    /// Placeholder for union type union1 (full codegen pending).
-    /// </summary>
-    public class @union1 : IThriftSerializable
-    {
-        public bool __fbthrift_is_empty() => true;
-
-        public void __fbthrift_read(IThriftProtocolReader reader)
+        /// <summary>
+        /// Auto-generated union from union1
+        /// </summary>
+        public class @union1 : IThriftSerializable
         {
-            while (true)
+            /// <summary>
+            /// Enum indicating which field is currently set in this union
+            /// </summary>
+            public enum Type
             {
-                var (fieldType, _) = reader.ReadFieldBegin();
-                if (fieldType == ThriftWireType.Stop)
+                Empty = 0,
+                @i = 1,
+                @d = 2,
+            }
+    
+            private Type _type = Type.Empty;
+            private object? _value;
+    
+            /// <summary>
+            /// Gets the type of the currently set field
+            /// </summary>
+            public Type GetUnionType() => _type;
+    
+            /// <summary>
+            /// Returns true if this union has no value set
+            /// </summary>
+            public bool __fbthrift_is_empty() => _type == Type.Empty;
+    
+            /// <summary>
+            /// Clears the union value
+            /// </summary>
+            public void __fbthrift_clear()
+            {
+                _type = Type.Empty;
+                _value = null;
+            }
+    
+            /// <summary>
+            /// Gets or sets the i field.
+            /// Setting this field clears any previously set field.
+            /// Returns null if a different field is currently set.
+            /// </summary>
+            public int? @i
+            {
+                get => _type == Type.@i ? (int)_value! : null;
+                set
                 {
-                    break;
+                    _type = Type.@i;
+                    _value = value;
                 }
-                reader.Skip(fieldType);
+            }
+    
+            /// <summary>
+            /// Gets or sets the d field.
+            /// Setting this field clears any previously set field.
+            /// Returns null if a different field is currently set.
+            /// </summary>
+            public double? @d
+            {
+                get => _type == Type.@d ? (double)_value! : null;
+                set
+                {
+                    _type = Type.@d;
+                    _value = value;
+                }
+            }
+    
+            public void __fbthrift_write(IThriftProtocolWriter writer)
+            {
+                switch (_type)
+                {
+                    case Type.@i:
+                            writer.WriteFieldBegin(ThriftWireType.I32, 1);
+                            writer.WriteValue((int)_value!);
+                        break;
+                    case Type.@d:
+                            writer.WriteFieldBegin(ThriftWireType.Double, 2);
+                            writer.WriteValue((double)_value!);
+                        break;
+                }
+                writer.WriteFieldStop();
+            }
+    
+            public void __fbthrift_read(IThriftProtocolReader reader)
+            {
+                __fbthrift_clear();
+                bool _fieldSeen = false;
+                while (true)
+                {
+                    var (fieldType, fieldId) = reader.ReadFieldBegin();
+                    if (fieldType == ThriftWireType.Stop)
+                    {
+                        break;
+                    }
+            
+                    if (_fieldSeen)
+                    {
+                        throw new ThriftProtocolException("Union cannot have multiple fields set");
+                    }
+                    _fieldSeen = true;
+            
+                    switch (fieldId)
+                    {
+                        case 1: // i
+                            if (fieldType == ThriftWireType.I32)
+                            {
+                                _type = Type.@i;
+                                _value = reader.ReadI32();
+                            }
+                            else
+                            {
+                                reader.Skip(fieldType);
+                            }
+                            break;
+                        case 2: // d
+                            if (fieldType == ThriftWireType.Double)
+                            {
+                                _type = Type.@d;
+                                _value = reader.ReadDouble();
+                            }
+                            else
+                            {
+                                reader.Skip(fieldType);
+                            }
+                            break;
+                        default:
+                            reader.Skip(fieldType);
+                            break;
+                    }
+                }
+            }
+    
+            public override bool Equals(object? obj)
+            {
+                if (obj is not @union1 other)
+                {
+                    return false;
+                }
+                if (_type != other._type)
+                {
+                    return false;
+                }
+                return Equals(_value, other._value);
+            }
+    
+            public override int GetHashCode()
+            {
+                return HashCode.Combine(_type, _value);
+            }
+    
+            public override string ToString()
+            {
+                return $"union1({_type}={_value})";
             }
         }
 
-        public void __fbthrift_write(IThriftProtocolWriter writer)
+        /// <summary>
+        /// Auto-generated union from union2
+        /// </summary>
+        public class @union2 : IThriftSerializable
         {
-            writer.WriteFieldStop();
-        }
-    }
-
-    /// <summary>
-    /// Placeholder for union type union2 (full codegen pending).
-    /// </summary>
-    public class @union2 : IThriftSerializable
-    {
-        public bool __fbthrift_is_empty() => true;
-
-        public void __fbthrift_read(IThriftProtocolReader reader)
-        {
-            while (true)
+            /// <summary>
+            /// Enum indicating which field is currently set in this union
+            /// </summary>
+            public enum Type
             {
-                var (fieldType, _) = reader.ReadFieldBegin();
-                if (fieldType == ThriftWireType.Stop)
+                Empty = 0,
+                @i = 1,
+                @d = 2,
+                @s = 3,
+                @u = 4,
+            }
+    
+            private Type _type = Type.Empty;
+            private object? _value;
+    
+            /// <summary>
+            /// Gets the type of the currently set field
+            /// </summary>
+            public Type GetUnionType() => _type;
+    
+            /// <summary>
+            /// Returns true if this union has no value set
+            /// </summary>
+            public bool __fbthrift_is_empty() => _type == Type.Empty;
+    
+            /// <summary>
+            /// Clears the union value
+            /// </summary>
+            public void __fbthrift_clear()
+            {
+                _type = Type.Empty;
+                _value = null;
+            }
+    
+            /// <summary>
+            /// Gets or sets the i field.
+            /// Setting this field clears any previously set field.
+            /// Returns null if a different field is currently set.
+            /// </summary>
+            public int? @i
+            {
+                get => _type == Type.@i ? (int)_value! : null;
+                set
                 {
-                    break;
+                    _type = Type.@i;
+                    _value = value;
                 }
-                reader.Skip(fieldType);
+            }
+    
+            /// <summary>
+            /// Gets or sets the d field.
+            /// Setting this field clears any previously set field.
+            /// Returns null if a different field is currently set.
+            /// </summary>
+            public double? @d
+            {
+                get => _type == Type.@d ? (double)_value! : null;
+                set
+                {
+                    _type = Type.@d;
+                    _value = value;
+                }
+            }
+    
+            /// <summary>
+            /// Gets or sets the s field.
+            /// Setting this field clears any previously set field.
+            /// Returns null if a different field is currently set.
+            /// </summary>
+            public @struct1? @s
+            {
+                get => _type == Type.@s ? (@struct1)_value! : null;
+                set
+                {
+                    _type = Type.@s;
+                    _value = value;
+                }
+            }
+    
+            /// <summary>
+            /// Gets or sets the u field.
+            /// Setting this field clears any previously set field.
+            /// Returns null if a different field is currently set.
+            /// </summary>
+            public @union1? @u
+            {
+                get => _type == Type.@u ? (@union1)_value! : null;
+                set
+                {
+                    _type = Type.@u;
+                    _value = value;
+                }
+            }
+    
+            public void __fbthrift_write(IThriftProtocolWriter writer)
+            {
+                switch (_type)
+                {
+                    case Type.@i:
+                            writer.WriteFieldBegin(ThriftWireType.I32, 1);
+                            writer.WriteValue((int)_value!);
+                        break;
+                    case Type.@d:
+                            writer.WriteFieldBegin(ThriftWireType.Double, 2);
+                            writer.WriteValue((double)_value!);
+                        break;
+                    case Type.@s:
+                        if (_value != null)
+                        {
+                            writer.WriteFieldBegin(ThriftWireType.Struct, 3);
+                            writer.WriteStruct((IThriftSerializable)_value!);
+                        }
+                        break;
+                    case Type.@u:
+                        if (_value != null)
+                        {
+                            writer.WriteFieldBegin(ThriftWireType.Struct, 4);
+                            writer.WriteStruct((IThriftSerializable)_value!);
+                        }
+                        break;
+                }
+                writer.WriteFieldStop();
+            }
+    
+            public void __fbthrift_read(IThriftProtocolReader reader)
+            {
+                __fbthrift_clear();
+                bool _fieldSeen = false;
+                while (true)
+                {
+                    var (fieldType, fieldId) = reader.ReadFieldBegin();
+                    if (fieldType == ThriftWireType.Stop)
+                    {
+                        break;
+                    }
+            
+                    if (_fieldSeen)
+                    {
+                        throw new ThriftProtocolException("Union cannot have multiple fields set");
+                    }
+                    _fieldSeen = true;
+            
+                    switch (fieldId)
+                    {
+                        case 1: // i
+                            if (fieldType == ThriftWireType.I32)
+                            {
+                                _type = Type.@i;
+                                _value = reader.ReadI32();
+                            }
+                            else
+                            {
+                                reader.Skip(fieldType);
+                            }
+                            break;
+                        case 2: // d
+                            if (fieldType == ThriftWireType.Double)
+                            {
+                                _type = Type.@d;
+                                _value = reader.ReadDouble();
+                            }
+                            else
+                            {
+                                reader.Skip(fieldType);
+                            }
+                            break;
+                        case 3: // s
+                            if (fieldType == ThriftWireType.Struct)
+                            {
+                                _type = Type.@s;
+                                _value = reader.ReadStruct<@struct1>();
+                            }
+                            else
+                            {
+                                reader.Skip(fieldType);
+                            }
+                            break;
+                        case 4: // u
+                            if (fieldType == ThriftWireType.Struct)
+                            {
+                                _type = Type.@u;
+                                _value = reader.ReadStruct<@union1>();
+                            }
+                            else
+                            {
+                                reader.Skip(fieldType);
+                            }
+                            break;
+                        default:
+                            reader.Skip(fieldType);
+                            break;
+                    }
+                }
+            }
+    
+            public override bool Equals(object? obj)
+            {
+                if (obj is not @union2 other)
+                {
+                    return false;
+                }
+                if (_type != other._type)
+                {
+                    return false;
+                }
+                return Equals(_value, other._value);
+            }
+    
+            public override int GetHashCode()
+            {
+                return HashCode.Combine(_type, _value);
+            }
+    
+            public override string ToString()
+            {
+                return $"union2({_type}={_value})";
             }
         }
-
-        public void __fbthrift_write(IThriftProtocolWriter writer)
-        {
-            writer.WriteFieldStop();
-        }
-    }
 
 
     /// <summary>
