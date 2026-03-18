@@ -63,6 +63,13 @@ class RoundRobinRequestPileTest : public testing::Test,
                                   public RequestPileTestState,
                                   public RequestPileTestUtils {
  protected:
+  RoundRobinRequestPile::Options makeOpts(std::vector<uint32_t> shape) {
+    RoundRobinRequestPile::Options opts;
+    opts.setShape(std::move(shape));
+    opts.setPileSelectionFunction(makePileSelectionFunction());
+    return opts;
+  }
+
   // Create a ServerRequest with a MockResponseChannelRequest that reports
   // the given active state. For use in testing RequestExpirationDelegate.
   ServerRequest makeServerRequestWithActiveState(
@@ -120,8 +127,7 @@ class RoundRobinRequestPileTest : public testing::Test,
 };
 
 TEST_F(RoundRobinRequestPileTest, testRoundRobinDequeueForManyBuckets) {
-  RoundRobinRequestPile::Options opts(
-      {10, 10, 10, 10, 10}, makePileSelectionFunction());
+  auto opts = makeOpts({10, 10, 10, 10, 10});
   RoundRobinRequestPile pile(opts);
 
   pile.enqueue(makeServerRequestForBucket(0, 0));
@@ -163,7 +169,7 @@ TEST_F(RoundRobinRequestPileTest, testRoundRobinDequeueForManyBuckets) {
 }
 
 TEST_F(RoundRobinRequestPileTest, testDequeueForSingleBucket) {
-  RoundRobinRequestPile::Options opts({1}, makePileSelectionFunction());
+  auto opts = makeOpts({1});
   RoundRobinRequestPile pile(opts);
 
   pile.enqueue(makeServerRequestForBucket(0, 0));
@@ -178,8 +184,7 @@ TEST_F(RoundRobinRequestPileTest, testDequeueForSingleBucket) {
 }
 
 TEST_F(RoundRobinRequestPileTest, testBucketSizeLimitForManyBuckets) {
-  RoundRobinRequestPile::Options opts(
-      {10, 10, 10, 10, 10}, makePileSelectionFunction());
+  auto opts = makeOpts({10, 10, 10, 10, 10});
   opts.numMaxRequests = 1;
   RoundRobinRequestPile pile(opts);
 
@@ -205,7 +210,7 @@ TEST_F(RoundRobinRequestPileTest, testBucketSizeLimitForManyBuckets) {
 }
 
 TEST_F(RoundRobinRequestPileTest, testBucketSizeLimitForSingleBucket) {
-  RoundRobinRequestPile::Options opts({1}, makePileSelectionFunction());
+  auto opts = makeOpts({1});
   opts.numMaxRequests = 1;
   RoundRobinRequestPile pile(opts);
 
@@ -231,8 +236,7 @@ TEST_F(RoundRobinRequestPileTest, testBucketSizeLimitForSingleBucket) {
 }
 
 TEST_F(RoundRobinRequestPileTest, getRequestsCounts) {
-  RoundRobinRequestPile::Options opts(
-      {3, 4, 5, 6, 7}, makePileSelectionFunction());
+  auto opts = makeOpts({3, 4, 5, 6, 7});
   RoundRobinRequestPile pile(opts);
 
   // enqueue 7 requests
@@ -272,8 +276,7 @@ TEST_F(RoundRobinRequestPileTest, getRequestsCounts) {
 
 TEST_F(
     RoundRobinRequestPileTest, testPerPriorityBucketSizeLimitForManyBuckets) {
-  RoundRobinRequestPile::Options opts(
-      {10, 10, 10}, makePileSelectionFunction());
+  auto opts = makeOpts({10, 10, 10});
   // P0: no limit, P1: limit 2, P2: limit 1
   opts.setNumMaxRequestsPerPriority({0, 2, 1});
   RoundRobinRequestPile pile(opts);
@@ -313,7 +316,7 @@ TEST_F(
 
 TEST_F(
     RoundRobinRequestPileTest, testPerPriorityBucketSizeLimitForSingleBucket) {
-  RoundRobinRequestPile::Options opts({1, 1, 1}, makePileSelectionFunction());
+  auto opts = makeOpts({1, 1, 1});
   // P0: no limit, P1: limit 2, P2: limit 1
   opts.setNumMaxRequestsPerPriority({0, 2, 1});
   RoundRobinRequestPile pile(opts);
@@ -335,7 +338,7 @@ TEST_F(
 }
 
 TEST_F(RoundRobinRequestPileTest, testPreEnqueueFilter) {
-  RoundRobinRequestPile::Options opts({1, 1}, makePileSelectionFunction());
+  auto opts = makeOpts({1, 1});
   // Reject all P1 requests
   opts.setPreEnqueueFilter(
       [](const ServerRequest& request)
@@ -360,7 +363,7 @@ TEST_F(RoundRobinRequestPileTest, testPreEnqueueFilter) {
 }
 
 TEST_F(RoundRobinRequestPileTest, testPreEnqueueFilterWithRequestBytes) {
-  RoundRobinRequestPile::Options opts({1}, makePileSelectionFunction());
+  auto opts = makeOpts({1});
   std::atomic<uint64_t> totalQueuedBytes{0};
   // Reject when totalQueuedBytes exceeds 200
   opts.setPreEnqueueFilter(
@@ -420,7 +423,7 @@ TEST_F(RoundRobinRequestPileTest, testPreEnqueueFilterWithRequestBytes) {
 }
 
 TEST_F(RoundRobinRequestPileTest, testDequeueObserver) {
-  RoundRobinRequestPile::Options opts({1, 1}, makePileSelectionFunction());
+  auto opts = makeOpts({1, 1});
   RoundRobinRequestPile pile(opts);
 
   std::vector<uint64_t> observedBytes;
@@ -459,8 +462,9 @@ TEST_F(RoundRobinRequestPileTest, testDequeueObserver) {
 }
 
 TEST(RoundRobinRequestPileMiscTest, getDbgInfo) {
-  RoundRobinRequestPile::Options opts(
-      {11, 12, 13, 14, 15},
+  RoundRobinRequestPile::Options opts;
+  opts.setShape({11, 12, 13, 14, 15});
+  opts.setPileSelectionFunction(
       [](auto&) -> std::pair<uint32_t, uint32_t> { return {0, 0}; });
   RoundRobinRequestPile pile(opts);
 
@@ -479,14 +483,14 @@ TEST(RoundRobinRequestPileMiscTest, getDbgInfo) {
 TEST_F(RoundRobinRequestPileTest, dequeueFromEmptyPile) {
   // Single-bucket
   {
-    RoundRobinRequestPile::Options opts({1}, makePileSelectionFunction());
+    auto opts = makeOpts({1});
     RoundRobinRequestPile pile(opts);
     EXPECT_EQ(pile.dequeue(), std::nullopt);
     EXPECT_EQ(pile.requestCount(), 0);
   }
   // Multi-bucket
   {
-    RoundRobinRequestPile::Options opts({5, 3}, makePileSelectionFunction());
+    auto opts = makeOpts({5, 3});
     RoundRobinRequestPile pile(opts);
     EXPECT_EQ(pile.dequeue(), std::nullopt);
     EXPECT_EQ(pile.requestCount(), 0);
@@ -512,7 +516,7 @@ TEST_F(RoundRobinRequestPileTest, defaultOptionsNoPileSelectionFunction) {
 TEST_F(RoundRobinRequestPileTest, mixedShapeSingleAndMultiBucket) {
   // P0: 1 bucket (single-bucket path), P1: 3 buckets (multi-bucket path),
   // P2: 1 bucket (single-bucket path)
-  RoundRobinRequestPile::Options opts({1, 3, 1}, makePileSelectionFunction());
+  auto opts = makeOpts({1, 3, 1});
   RoundRobinRequestPile pile(opts);
 
   // Enqueue across all priorities and buckets
@@ -536,7 +540,7 @@ TEST_F(RoundRobinRequestPileTest, mixedShapeSingleAndMultiBucket) {
 }
 
 TEST_F(RoundRobinRequestPileTest, strictPriorityOrderingSingleBucket) {
-  RoundRobinRequestPile::Options opts({1, 1, 1}, makePileSelectionFunction());
+  auto opts = makeOpts({1, 1, 1});
   RoundRobinRequestPile pile(opts);
 
   // Enqueue in reverse priority order
@@ -557,7 +561,7 @@ TEST_F(RoundRobinRequestPileTest, strictPriorityOrderingSingleBucket) {
 
 TEST_F(RoundRobinRequestPileTest, requestCountTracking) {
   // Mixed shape: P0 single-bucket, P1 multi-bucket
-  RoundRobinRequestPile::Options opts({1, 3}, makePileSelectionFunction());
+  auto opts = makeOpts({1, 3});
   RoundRobinRequestPile pile(opts);
 
   EXPECT_EQ(pile.requestCount(), 0);
@@ -582,7 +586,7 @@ TEST_F(RoundRobinRequestPileTest, requestCountTracking) {
 }
 
 TEST_F(RoundRobinRequestPileTest, getRequestCountsForSingleBucket) {
-  RoundRobinRequestPile::Options opts({1, 1, 1}, makePileSelectionFunction());
+  auto opts = makeOpts({1, 1, 1});
   RoundRobinRequestPile pile(opts);
 
   pile.enqueue(makeServerRequestForBucket(0, 0));
@@ -603,7 +607,7 @@ TEST_F(RoundRobinRequestPileTest, getRequestCountsForSingleBucket) {
 }
 
 TEST_F(RoundRobinRequestPileTest, getDbgInfoWithLimitsAndQueuedRequests) {
-  RoundRobinRequestPile::Options opts({2, 3}, makePileSelectionFunction());
+  auto opts = makeOpts({2, 3});
   opts.numMaxRequests = 42;
   RoundRobinRequestPile pile(opts);
 
@@ -618,7 +622,7 @@ TEST_F(RoundRobinRequestPileTest, getDbgInfoWithLimitsAndQueuedRequests) {
 }
 
 TEST_F(RoundRobinRequestPileTest, acceptRejectCallbacksMultiBucket) {
-  RoundRobinRequestPile::Options opts({3}, makePileSelectionFunction());
+  auto opts = makeOpts({3});
   opts.numMaxRequests = 1;
   RoundRobinRequestPile pile(opts);
 
@@ -652,7 +656,7 @@ TEST_F(RoundRobinRequestPileTest, acceptRejectCallbacksMultiBucket) {
 }
 
 TEST_F(RoundRobinRequestPileTest, acceptRejectCallbacksSingleBucket) {
-  RoundRobinRequestPile::Options opts({1}, makePileSelectionFunction());
+  auto opts = makeOpts({1});
   opts.numMaxRequests = 1;
   RoundRobinRequestPile pile(opts);
 
@@ -677,7 +681,7 @@ TEST_F(RoundRobinRequestPileTest, acceptRejectCallbacksSingleBucket) {
 }
 
 TEST_F(RoundRobinRequestPileTest, preEnqueueFilterRejectTriggersCallback) {
-  RoundRobinRequestPile::Options opts({3}, makePileSelectionFunction());
+  auto opts = makeOpts({3});
   opts.setPreEnqueueFilter(
       [](const ServerRequest& request)
           -> std::optional<ServerRequestRejection> {
@@ -712,7 +716,7 @@ TEST_F(RoundRobinRequestPileTest, preEnqueueFilterRejectTriggersCallback) {
 }
 
 TEST_F(RoundRobinRequestPileTest, preEnqueueFilterMultiBucket) {
-  RoundRobinRequestPile::Options opts({3, 3}, makePileSelectionFunction());
+  auto opts = makeOpts({3, 3});
   // Reject requests to bucket 2 at any priority
   opts.setPreEnqueueFilter(
       [](const ServerRequest& request)
@@ -742,7 +746,7 @@ TEST_F(RoundRobinRequestPileTest, preEnqueueFilterMultiBucket) {
 }
 
 TEST_F(RoundRobinRequestPileTest, dequeueObserverMultiBucket) {
-  RoundRobinRequestPile::Options opts({3}, makePileSelectionFunction());
+  auto opts = makeOpts({3});
   RoundRobinRequestPile pile(opts);
 
   std::vector<std::pair<uint32_t, uint32_t>> observed;
@@ -773,7 +777,7 @@ TEST_F(RoundRobinRequestPileTest, dequeueObserverMultiBucket) {
 }
 
 TEST_F(RoundRobinRequestPileTest, reEnqueueAfterDrainMultiBucket) {
-  RoundRobinRequestPile::Options opts({3}, makePileSelectionFunction());
+  auto opts = makeOpts({3});
   RoundRobinRequestPile pile(opts);
 
   // First round
@@ -795,7 +799,7 @@ TEST_F(RoundRobinRequestPileTest, reEnqueueAfterDrainMultiBucket) {
 }
 
 TEST_F(RoundRobinRequestPileTest, reEnqueueAfterDrainSingleBucket) {
-  RoundRobinRequestPile::Options opts({1, 1}, makePileSelectionFunction());
+  auto opts = makeOpts({1, 1});
   RoundRobinRequestPile pile(opts);
 
   pile.enqueue(makeServerRequestForBucket(0, 0));
@@ -815,8 +819,10 @@ TEST_F(RoundRobinRequestPileTest, reEnqueueAfterDrainSingleBucket) {
 }
 
 TEST(RoundRobinRequestPileMiscTest, describe) {
-  RoundRobinRequestPile::Options opts(
-      {2, 3}, [](auto&) -> std::pair<uint32_t, uint32_t> { return {0, 0}; });
+  RoundRobinRequestPile::Options opts;
+  opts.setShape({2, 3});
+  opts.setPileSelectionFunction(
+      [](auto&) -> std::pair<uint32_t, uint32_t> { return {0, 0}; });
   RoundRobinRequestPile pile(opts);
 
   EXPECT_EQ(
@@ -871,7 +877,7 @@ TEST(RoundRobinRequestPileMiscTest, optionsBuilderMethods) {
 TEST_F(RoundRobinRequestPileTest, expiredRequestDiscardedWithDelegate) {
   // Multi-bucket pile with delegate set: expired requests should be discarded
   // and processExpiredRequest should be called on the delegate.
-  RoundRobinRequestPile::Options opts({3}, makePileSelectionFunction());
+  auto opts = makeOpts({3});
   RoundRobinRequestPile pile(opts);
 
   MockRequestExpirationDelegate delegate;
@@ -890,7 +896,7 @@ TEST_F(RoundRobinRequestPileTest, expiredRequestDiscardedWithDelegate) {
 TEST_F(RoundRobinRequestPileTest, activeRequestReturnedWithDelegate) {
   // Multi-bucket pile with delegate set: active requests should be
   // returned normally.
-  RoundRobinRequestPile::Options opts({3}, makePileSelectionFunction());
+  auto opts = makeOpts({3});
   RoundRobinRequestPile pile(opts);
 
   MockRequestExpirationDelegate delegate;
@@ -909,7 +915,7 @@ TEST_F(RoundRobinRequestPileTest, dequeueObserverCalledOnExpiredRequest) {
   // When a request is expired and delegate is set, the dequeue observer
   // should be called once (inside Consumer, NOT dequeueImpl) for the
   // expired request.
-  RoundRobinRequestPile::Options opts({3}, makePileSelectionFunction());
+  auto opts = makeOpts({3});
   RoundRobinRequestPile pile(opts);
 
   MockRequestExpirationDelegate delegate;
@@ -930,7 +936,7 @@ TEST_F(RoundRobinRequestPileTest, nullRequestWithDelegateConsumed) {
   // When request() is nullptr (no ResponseChannelRequest) but delegate is set,
   // the Consumer should still consume the request (the isActive check
   // short-circuits because request.request() == nullptr).
-  RoundRobinRequestPile::Options opts({3}, makePileSelectionFunction());
+  auto opts = makeOpts({3});
   RoundRobinRequestPile pile(opts);
 
   MockRequestExpirationDelegate delegate;

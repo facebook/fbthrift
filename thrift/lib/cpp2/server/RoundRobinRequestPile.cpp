@@ -31,11 +31,6 @@ RoundRobinRequestPileOptions::RoundRobinRequestPileOptions() {
   }
 }
 
-RoundRobinRequestPileOptions::RoundRobinRequestPileOptions(
-    std::vector<uint32_t> shape, PileSelectionFunction pileSelectionFunction)
-    : numBucketsPerPriority(std::move(shape)),
-      pileSelectionFunction(std::move(pileSelectionFunction)) {}
-
 void RoundRobinRequestPileOptions::setPreEnqueueFilter(PreEnqueueFilter fn) {
   preEnqueueFilter = std::move(fn);
 }

@@ -35,8 +35,11 @@ constexpr unsigned kPreFillCount = 100'000;
 constexpr unsigned kRequestCountIters = 100'000;
 
 RoundRobinRequestPile::Options makeOpts(std::vector<uint32_t> shape) {
-  return RoundRobinRequestPile::Options(
-      std::move(shape), RequestPileTestUtils::makePileSelectionFunction());
+  RoundRobinRequestPile::Options opts;
+  opts.setShape(std::move(shape));
+  opts.setPileSelectionFunction(
+      RequestPileTestUtils::makePileSelectionFunction());
+  return opts;
 }
 
 // Runs a concurrent producer/consumer benchmark.

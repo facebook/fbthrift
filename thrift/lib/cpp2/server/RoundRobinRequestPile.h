@@ -73,9 +73,6 @@ struct RoundRobinRequestPileOptions {
 
   RoundRobinRequestPileOptions();
 
-  RoundRobinRequestPileOptions(
-      std::vector<uint32_t> shape, PileSelectionFunction pileSelectionFunction);
-
   void setName(std::string rName);
 
   // Set the number of priority levels to provide. By default the number of
