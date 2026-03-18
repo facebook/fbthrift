@@ -14,97 +14,91 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{#struct:is_large?}}
-{{struct:cpp_underlying_name}}::{{#partial module_types.base_ctor struct=struct:self}}
-  {{#if (and struct:exception? (object.notnull? exception:message_field))}}
+}}
+  {{#if struct.is_large?}}
+{{struct.cpp_underlying_name}}::{{#partial module_types.base_ctor struct=struct}}
+    {{#if (and struct.exception? (object.notnull? struct.message_field))}}
 
-{{struct:cpp_underlying_name}}::{{struct:cpp_underlying_name}}(std::string __message) : {{struct:cpp_underlying_name}}() {
-  {{exception:message_field.cpp_storage_name}} = std::move(__message);
+{{struct.cpp_underlying_name}}::{{struct.cpp_underlying_name}}(std::string __message) : {{struct.cpp_underlying_name}}() {
+  {{struct.message_field.cpp_storage_name}} = std::move(__message);
 }
-  {{/if (and struct:exception? (object.notnull? exception:message_field))}}
+    {{/if (and struct.exception? (object.notnull? struct.message_field))}}
 
 
-{{struct:cpp_underlying_name}}::~{{struct:cpp_underlying_name}}() {}
+{{struct.cpp_underlying_name}}::~{{struct.cpp_underlying_name}}() {}
 
-{{/struct:is_large?}}{{!
-
-}}{{#struct:cpp_allocator}}
+  {{/if struct.is_large?}}
+  {{#if struct.cpp_allocator}}
 {{> module_types_cpp/alloc_extended_ctors}}
-{{/struct:cpp_allocator}}{{!
 
-}}{{^struct:is_eligible_for_constexpr?}}
-{{struct:cpp_underlying_name}}::{{> module_types_cpp/move_ctor}}
-{{struct:cpp_underlying_name}}& {{struct:cpp_underlying_name}}::operator=([[maybe_unused]] {{struct:cpp_underlying_name}}&& other) noexcept {
-{{#struct:lazy_fields?}}
+  {{/if struct.cpp_allocator}}
+  {{#if (not struct.is_eligible_for_constexpr?)}}
+{{struct.cpp_underlying_name}}::{{> module_types_cpp/move_ctor}}
+{{struct.cpp_underlying_name}}& {{struct.cpp_underlying_name}}::operator=([[maybe_unused]] {{struct.cpp_underlying_name}}&& other) noexcept {
+    {{#if struct.lazy_fields?}}
     const auto relaxed = std::memory_order_relaxed;
     __fbthrift_protocol_ = other.__fbthrift_protocol_;
     __fbthrift_serializedData_ = std::move(other.__fbthrift_serializedData_);
-{{/struct:lazy_fields?}}
-{{#struct:fields_in_layout_order}}
-    this->{{field:cpp_storage_name}} = std::move(other.{{field:cpp_storage_name}});
-{{#field:lazy?}}
+    {{/if struct.lazy_fields?}}
+    {{#each struct.fields_in_layout_order as |field|}}
+    this->{{field.cpp_storage_name}} = std::move(other.{{field.cpp_storage_name}});
+      {{#if field.lazy?}}
     {
-      const auto isDeserialized = other.__fbthrift_isDeserialized_.{{field:cpp_name}}.load(relaxed);
-      __fbthrift_isDeserialized_.{{field:cpp_name}}.store(isDeserialized, relaxed);
-      other.__fbthrift_isDeserialized_.{{field:cpp_name}}.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
+      const auto isDeserialized = other.__fbthrift_isDeserialized_.{{field.cpp_name}}.load(relaxed);
+      __fbthrift_isDeserialized_.{{field.cpp_name}}.store(isDeserialized, relaxed);
+      other.__fbthrift_isDeserialized_.{{field.cpp_name}}.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
     }
-{{/field:lazy?}}
-{{/struct:fields_in_layout_order}}
-{{#struct:isset_fields?}}
+      {{/if field.lazy?}}
+    {{/each}}
+    {{#if struct.isset_fields?}}
     __isset = other.__isset;
-{{/struct:isset_fields?}}
-{{#struct:cpp_allocator}}
-{{^struct:cpp_allocator_via}}
+    {{/if struct.isset_fields?}}
+    {{#if (and struct.cpp_allocator (not struct.cpp_allocator_via))}}
   ::apache::thrift::detail::move_allocator(__fbthrift_alloc, other.__fbthrift_alloc);
-{{/struct:cpp_allocator_via}}
-{{/struct:cpp_allocator}}
+    {{/if (and struct.cpp_allocator (not struct.cpp_allocator_via))}}
     return *this;
 }
 
-{{/struct:is_eligible_for_constexpr?}}
+  {{/if (not struct.is_eligible_for_constexpr?)}}
 
-{{#struct:legacy_api?}}
+  {{#if struct.legacy_api?}}
 {{> module_types_cpp/fragile_ctor}}
-{{/struct:legacy_api?}}
+  {{/if struct.legacy_api?}}
 
-void {{struct:cpp_underlying_name}}::__fbthrift_clear() {
+void {{struct.cpp_underlying_name}}::__fbthrift_clear() {
   // clear all fields
-{{#struct:fields}}
+  {{#each struct.fields as |field|}}
 {{> module_types_cpp/clear_fields}}
-{{/struct:fields}}
-{{#struct:lazy_fields?}}
+  {{/each}}
+  {{#if struct.lazy_fields?}}
   __fbthrift_serializedData_ = {};
   __fbthrift_isDeserialized_.~__fbthrift_IsDeserialized();
   new (&__fbthrift_isDeserialized_) __fbthrift_IsDeserialized();
-{{/struct:lazy_fields?}}
-{{#struct:isset_fields?}}
+  {{/if struct.lazy_fields?}}
+  {{#if struct.isset_fields?}}
   __isset = {};
-{{/struct:isset_fields?}}
+  {{/if struct.isset_fields?}}
 }
 
-void {{struct:cpp_underlying_name}}::__fbthrift_clear_terse_fields() {
-{{#struct:fields}}
-{{#field:terse?}}
+void {{struct.cpp_underlying_name}}::__fbthrift_clear_terse_fields() {
+  {{#each struct.fields as |field|}}
+    {{#if field.terse?}}
 {{> module_types_cpp/clear_terse_fields}}
-{{/field:terse?}}
-{{/struct:fields}}
+    {{/if field.terse?}}
+  {{/each}}
 }
 
-bool {{struct:cpp_underlying_name}}::__fbthrift_is_empty() const {
-{{^struct:has_non_optional_and_non_terse_field?}}
-{{#struct:fields?}}
-  return{{#struct:fields}}{{!
-  }}{{#if field:optional?}} !({{#partial fields.optional_has_value field=field:self struct=struct:self}}){{^last?}} &&{{/last?}}{{!
-  }}{{#else if field:deprecated_terse_writes?}} !({{#partial fields.deprecated_terse_has_value field=field:self struct=struct:self}}){{^last?}} &&{{/last?}}{{!
-  }}{{#else if field:terse?}} {{#partial fields.terse_has_no_value field=field:self struct=struct:self}}{{^last?}} &&{{/last?}}{{/if field:optional?}}{{!
-  }}{{#last?}};{{/last?}}
-{{/struct:fields}}
-{{/struct:fields?}}
-{{^struct:fields?}}
-  return true;
-{{/struct:fields?}}
-{{/struct:has_non_optional_and_non_terse_field?}}
-{{#struct:has_non_optional_and_non_terse_field?}}
+bool {{struct.cpp_underlying_name}}::__fbthrift_is_empty() const {
+    {{#if struct.has_non_optional_and_non_terse_field?}}
   return false;
-{{/struct:has_non_optional_and_non_terse_field?}}
+    {{#else if struct.fields?}}
+  return{{#each (array.enumerate struct.fields with_last=true) as |i field last?|}}{{!
+  }}{{#if field.optional?}} !({{#partial fields.optional_has_value field=field struct=struct}}){{#if (not last?)}} &&{{/if}}{{!
+  }}{{#else if field.deprecated_terse_writes?}} !({{#partial fields.deprecated_terse_has_value field=field struct=struct}}){{#if (not last?)}} &&{{/if}}{{!
+  }}{{#else if field.terse?}} {{#partial fields.terse_has_no_value field=field struct=struct}}{{#if (not last?)}} &&{{/if}}{{/if field.optional?}}{{!
+  }}{{#if last?}};{{/if last?}}
+{{/each}}
+    {{#else}}
+  return true;
+    {{/if struct.has_non_optional_and_non_terse_field?}}
 }

@@ -15,57 +15,46 @@
   limitations under the License.
 
 }}
-{{struct:cpp_underlying_name}}::{{struct:cpp_underlying_name}}(const allocator_type& alloc) noexcept :
-{{^struct:cpp_allocator_via}}
+{{#let partial alloc_smart_ptr_fn |field|}}
+{{#pragma ignore-newlines}}
+  {{#if field.cpp_ref_unique?}}
+{{#if field.type.cpp_use_allocator?}}folly::allocate_unique{{#else}}std::make_unique{{/if}}
+  {{#else if field.cpp_ref_shared?}}
+{{#if field.type.cpp_use_allocator?}}std::allocate_shared{{#else}}std::make_shared{{/if}}
+  {{/if field.cpp_ref_unique?}}
+<{{field.cpp_type}}>
+{{/let partial}}
+{{struct.cpp_underlying_name}}::{{struct.cpp_underlying_name}}(const allocator_type& alloc) noexcept :
+  {{#if (not struct.cpp_allocator_via)}}
     __fbthrift_alloc(alloc),
-{{/struct:cpp_allocator_via}}
-{{#struct:fields_in_layout_order}}
-    {{field:cpp_storage_name}}({{!
-      }}{{#field:type}}{{!
-    }}{{#field:cpp_ref_not_boxed?}}{{!
-}}{{#field:cpp_ref_unique?}}{{#type:cpp_use_allocator?}}folly::allocate_unique{{/type:cpp_use_allocator?}}{{^type:cpp_use_allocator?}}std::make_unique{{/type:cpp_use_allocator?}}{{/field:cpp_ref_unique?}}{{!
-}}{{#field:cpp_ref_shared?}}{{#type:cpp_use_allocator?}}std::allocate_shared{{/type:cpp_use_allocator?}}{{^type:cpp_use_allocator?}}std::make_shared{{/type:cpp_use_allocator?}}{{/field:cpp_ref_shared?}}{{!
-}}<{{field:cpp_type}}>({{#if (object.notnull? field:default_value)}}{{#partial fields.default_value field=field:self}}{{/if}}{{#if type:cpp_use_allocator?}}alloc{{/if}}){{/field:cpp_ref_not_boxed?}}{{!
-}}{{^field:cpp_ref?}}{{#type:cpp_use_allocator?}}alloc{{/type:cpp_use_allocator?}}{{/field:cpp_ref?}}{{!
-    }}){{/field:type}}{{^last?}},{{/last?}}{{#last?}} {}{{/last?}}
-{{/struct:fields_in_layout_order}}
+  {{/if (not struct.cpp_allocator_via)}}
+  {{#each (array.enumerate struct.fields_in_layout_order with_last=true) as |i field last?|}}
+    {{field.cpp_storage_name}}({{!
+    }}{{#if field.cpp_ref_not_boxed?}}{{!
+}}{{#partial alloc_smart_ptr_fn field=field}}({{#if (object.notnull? field.default_value)}}{{#partial fields.default_value field=field}}{{#else if field.type.cpp_use_allocator?}}alloc{{/if}}){{/if field.cpp_ref_not_boxed?}}{{!
+}}{{#if (and (not field.cpp_ref?) field.type.cpp_use_allocator?)}}alloc{{/if}}){{#if last?}} {}{{#else}},{{/if}}
+  {{/each}}
 
-{{struct:cpp_underlying_name}}::{{struct:cpp_underlying_name}}(const {{struct:cpp_underlying_name}}& other, const allocator_type& alloc) :
-{{^struct:cpp_allocator_via}}
+{{struct.cpp_underlying_name}}::{{struct.cpp_underlying_name}}(const {{struct.cpp_underlying_name}}& other, const allocator_type& alloc) :
+  {{#if (not struct.cpp_allocator_via)}}
     __fbthrift_alloc(alloc),
-{{/struct:cpp_allocator_via}}
-{{#struct:fields_in_layout_order}}
-    {{field:cpp_storage_name}}({{!
-      }}{{#field:type}}{{!
-    }}{{#field:cpp_ref_not_boxed?}}{{!
-}}{{#field:cpp_ref_unique?}}{{#type:cpp_use_allocator?}}folly::allocate_unique{{/type:cpp_use_allocator?}}{{^type:cpp_use_allocator?}}std::make_unique{{/type:cpp_use_allocator?}}{{/field:cpp_ref_unique?}}{{!
-}}{{#field:cpp_ref_shared?}}{{#type:cpp_use_allocator?}}std::allocate_shared{{/type:cpp_use_allocator?}}{{^type:cpp_use_allocator?}}std::make_shared{{/type:cpp_use_allocator?}}{{/field:cpp_ref_shared?}}{{!
-}}<{{field:cpp_type}}>({{#type:cpp_use_allocator?}}alloc, {{/type:cpp_use_allocator?}}*other.{{field:cpp_storage_name}}){{/field:cpp_ref_not_boxed?}}{{!
-}}{{^field:cpp_ref?}}other.{{field:cpp_storage_name}}{{#type:cpp_use_allocator?}}, alloc{{/type:cpp_use_allocator?}}{{/field:cpp_ref?}}{{!
-    }}){{/field:type}}{{^last?}},{{/last?}}{{#last?}}{{#struct:isset_fields?}},{{/struct:isset_fields?}}{{/last?}}
-{{/struct:fields_in_layout_order}}
-{{^struct:isset_fields?}} {}
-{{/struct:isset_fields?}}
-{{#struct:isset_fields?}}
-    __isset(other.__isset) {}
-{{/struct:isset_fields?}}
+  {{/if (not struct.cpp_allocator_via)}}
+  {{#each (array.enumerate struct.fields_in_layout_order with_last=true) as |i field last?|}}
+    {{field.cpp_storage_name}}({{!
+}}{{#if field.cpp_ref_not_boxed?}}{{#partial alloc_smart_ptr_fn field=field}}({{#if field.type.cpp_use_allocator?}}alloc, {{/if}}*other.{{field.cpp_storage_name}}){{!
+}}{{#else if (not field.cpp_ref?)}}other.{{field.cpp_storage_name}}{{#if field.type.cpp_use_allocator?}}, alloc{{/if}}{{/if field.cpp_ref_not_boxed?}}{{!
+    }}){{#if last?}}{{#if struct.isset_fields?}},{{/if}}{{#else}},{{/if}}
+  {{/each}}
+{{#if struct.isset_fields?}}    __isset(other.__isset){{/if}} {}
 
-{{struct:cpp_underlying_name}}::{{struct:cpp_underlying_name}}({{struct:cpp_underlying_name}}&& other, const allocator_type& alloc) :
-{{^struct:cpp_allocator_via}}
+{{struct.cpp_underlying_name}}::{{struct.cpp_underlying_name}}({{struct.cpp_underlying_name}}&& other, const allocator_type& alloc) :
+  {{#if (not struct.cpp_allocator_via)}}
     __fbthrift_alloc(alloc),
-{{/struct:cpp_allocator_via}}
-{{#struct:fields_in_layout_order}}
-    {{field:cpp_storage_name}}({{!
-      }}{{#field:type}}{{!
-    }}{{#field:cpp_ref_not_boxed?}}{{!
-}}{{#field:cpp_ref_unique?}}{{#type:cpp_use_allocator?}}folly::allocate_unique{{/type:cpp_use_allocator?}}{{^type:cpp_use_allocator?}}std::make_unique{{/type:cpp_use_allocator?}}{{/field:cpp_ref_unique?}}{{!
-}}{{#field:cpp_ref_shared?}}{{#type:cpp_use_allocator?}}std::allocate_shared{{/type:cpp_use_allocator?}}{{^type:cpp_use_allocator?}}std::make_shared{{/type:cpp_use_allocator?}}{{/field:cpp_ref_shared?}}{{!
-}}<{{field:cpp_type}}>({{#type:cpp_use_allocator?}}alloc, {{/type:cpp_use_allocator?}}std::move(*other.{{field:cpp_storage_name}})){{/field:cpp_ref_not_boxed?}}{{!
-}}{{^field:cpp_ref?}}std::move(other.{{field:cpp_storage_name}}){{#type:cpp_use_allocator?}}, alloc{{/type:cpp_use_allocator?}}{{/field:cpp_ref?}}{{!
-    }}){{/field:type}}{{^last?}},{{/last?}}{{#last?}}{{#struct:isset_fields?}},{{/struct:isset_fields?}}{{/last?}}
-{{/struct:fields_in_layout_order}}
-{{^struct:isset_fields?}} {}
-{{/struct:isset_fields?}}
-{{#struct:isset_fields?}}
-    __isset(other.__isset) {}
-{{/struct:isset_fields?}}
+  {{/if (not struct.cpp_allocator_via)}}
+  {{#each (array.enumerate struct.fields_in_layout_order with_last=true) as |i field last?|}}
+    {{field.cpp_storage_name}}({{!
+}}{{#if field.cpp_ref_not_boxed?}}{{#partial alloc_smart_ptr_fn field=field}}({{#if field.type.cpp_use_allocator?}}alloc, {{/if}}std::move(*other.{{field.cpp_storage_name}})){{!
+}}{{#else if (not field.cpp_ref?)}}std::move(other.{{field.cpp_storage_name}}){{#if field.type.cpp_use_allocator?}}, alloc{{/if}}{{/if field.cpp_ref_not_boxed?}}{{!
+    }}){{#if last?}}{{#if struct.isset_fields?}},{{/if}}{{#else}},{{/if}}
+  {{/each}}
+{{#if struct.isset_fields?}}    __isset(other.__isset){{/if}} {}

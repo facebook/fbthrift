@@ -14,21 +14,21 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{^struct:fields?}}
-{{struct:cpp_underlying_name}}::{{struct:cpp_underlying_name}}(apache::thrift::FragileConstructor) {}
-{{/struct:fields?}}
-{{#struct:fields?}}
-{{struct:cpp_underlying_name}}::{{struct:cpp_underlying_name}}(apache::thrift::FragileConstructor{{#partial module_types.fragile_ctor_param_list struct=struct:self}}) :
-{{#struct:fields_in_layout_order}}
-    {{field:cpp_storage_name}}(std::move({{field:cpp_name}}__arg)){{#last?}} { {{/last?}}{{^last?}},{{/last?}}
-{{/struct:fields_in_layout_order}}
-{{#struct:fields}}
-{{#field:cpp_first_adapter}}
-  {{#field:opt_cpp_ref?}}if ({{field:cpp_storage_name}}) {{/field:opt_cpp_ref?}}::apache::thrift::adapt_detail::construct<{{field:cpp_first_adapter}}, {{field:id}}>({{#field:cpp_ref?}}*{{/field:cpp_ref?}}{{field:cpp_storage_name}}, *this);
-{{/field:cpp_first_adapter}}
-{{/struct:fields}}
-{{#each (array.enumerate struct:isset_fields) as |field_index field|}}
+}}
+  {{#if struct.fields?}}
+{{struct.cpp_underlying_name}}::{{struct.cpp_underlying_name}}(apache::thrift::FragileConstructor{{#partial module_types.fragile_ctor_param_list struct=struct}}) :
+    {{#each (array.enumerate struct.fields_in_layout_order with_last=true) as |i field last?|}}
+    {{field.cpp_storage_name}}(std::move({{field.cpp_name}}__arg)){{#if last?}} { {{#else}},{{/if}}
+    {{/each}}
+    {{#each struct.fields as |field|}}
+      {{#if field.cpp_first_adapter}}
+  {{#if field.opt_cpp_ref?}}if ({{field.cpp_storage_name}}) {{/if}}::apache::thrift::adapt_detail::construct<{{field.cpp_first_adapter}}, {{field.id}}>({{#if field.cpp_ref?}}*{{/if}}{{field.cpp_storage_name}}, *this);
+      {{/if field.cpp_first_adapter}}
+    {{/each}}
+    {{#each (array.enumerate struct.isset_fields) as |field_index field|}}
   __isset.set(folly::index_constant<{{field_index}}>(), true);
-{{/each}}
+    {{/each}}
 }
-{{/struct:fields?}}
+  {{#else}}
+{{struct.cpp_underlying_name}}::{{struct.cpp_underlying_name}}(apache::thrift::FragileConstructor) {}
+  {{/if struct.fields?}}

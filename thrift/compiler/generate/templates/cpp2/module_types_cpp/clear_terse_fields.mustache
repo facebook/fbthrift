@@ -20,39 +20,23 @@ For all terse fields except for a terse struct field, they are cleared to their
 intrinsic default values. For a terse struct fields, only nested terse fields
 are cleared to their instrinic default values.
 
-}}{{#field:type}}
-{{#if (or type:primitive? type:enum?)}}
+}}
+  {{#if (or field.type.primitive? field.type.enum? field.type.container?)}}
 {{> module_types_cpp/clear_fields}}
-{{/if (or type:primitive? type:enum?)}}
-{{#type:container?}}
+  {{#else if field.type.non_empty_struct?}}
+    {{#if (not field.cpp_ref?)}}
+      {{#if field.cpp_first_adapter}}
+  ::apache::thrift::adapt_detail::clear<{{field.cpp_first_adapter}}, {{field.id}}>({{field.cpp_storage_name}}, *this);
+      {{#else if field.type.union?}}
 {{> module_types_cpp/clear_fields}}
-{{/type:container?}}
-{{#type:non_empty_struct?}}
-{{^field:cpp_ref?}}
-{{#field:cpp_first_adapter}}
-  ::apache::thrift::adapt_detail::clear<{{field:cpp_first_adapter}}, {{field:id}}>({{field:cpp_storage_name}}, *this);
-{{/field:cpp_first_adapter}}
-{{^field:cpp_first_adapter}}
-{{#type:union?}}
+      {{#else}}
+  ::apache::thrift::detail::st::clear_terse_fields({{#partial fields.member field=field struct=struct}});
+      {{/if field.cpp_first_adapter}}
+    {{#else if field.cpp_ref_unique?}}
+  if ({{#partial fields.member field=field struct=struct}}) ::apache::thrift::detail::st::clear_terse_fields(*{{#partial fields.member field=field struct=struct}});
+    {{#else if field.cpp_ref_not_boxed?}}
+  if ({{#partial fields.member field=field struct=struct}}) {{#partial fields.member field=field struct=struct}} = ::apache::thrift::detail::make_mutable_smart_ptr<{{field.cpp_storage_type}}>({{#if field.type.cpp_use_allocator?}}this->get_allocator(){{/if}});
+    {{#else}}
 {{> module_types_cpp/clear_fields}}
-{{/type:union?}}
-{{^type:union?}}
-  ::apache::thrift::detail::st::clear_terse_fields({{#partial fields.member field=field:self struct=struct:self}});
-{{/type:union?}}
-{{/field:cpp_first_adapter}}
-{{/field:cpp_ref?}}
-{{#field:cpp_ref?}}
-{{#field:cpp_ref_unique?}}
-  if ({{#partial fields.member field=field:self struct=struct:self}}) ::apache::thrift::detail::st::clear_terse_fields(*{{#partial fields.member field=field:self struct=struct:self}});
-{{/field:cpp_ref_unique?}}
-{{^field:cpp_ref_unique?}}
-{{#field:cpp_ref_not_boxed?}}
-  if ({{#partial fields.member field=field:self struct=struct:self}}) {{#partial fields.member field=field:self struct=struct:self}} = ::apache::thrift::detail::make_mutable_smart_ptr<{{field:cpp_storage_type}}>({{#type:cpp_use_allocator?}}this->get_allocator(){{/type:cpp_use_allocator?}});
-{{/field:cpp_ref_not_boxed?}}
-{{^field:cpp_ref_not_boxed?}}
-{{> module_types_cpp/clear_fields}}
-{{/field:cpp_ref_not_boxed?}}
-{{/field:cpp_ref_unique?}}
-{{/field:cpp_ref?}}
-{{/type:non_empty_struct?}}
-{{/field:type}}
+    {{/if (not field.cpp_ref?)}}
+  {{/if (or field.type.primitive? field.type.enum? field.type.container?)}}

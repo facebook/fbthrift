@@ -27,6 +27,7 @@
 
 [[maybe_unused]] static constexpr std::string_view kModuleName = "{{program:name}}";
 
+{{#let program=program:self}}
 {{> module_types_cpp/declare_enums}}
 {{#if (has_compiler_option? "tablebased")}}
 namespace apache {

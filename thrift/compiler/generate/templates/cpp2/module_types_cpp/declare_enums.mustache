@@ -14,38 +14,39 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{#program:split_enums}}
-{{#let empty_enum? = (array.empty? enum:values)}}
+}}
+  {{#each program.current_split_enums as |enum|}}
+    {{#let empty_enum? = (array.empty? enum.values)}}
 
 namespace apache { namespace thrift {
 
-const std::string_view TEnumTraits<::{{program:cpp_qualified_namespace}}::{{enum:cpp_name}}>::__fbthrift_module_name_internal_do_not_use = kModuleName;
-folly::Range<::{{program:cpp_qualified_namespace}}::{{enum:cpp_name}} const*> const TEnumTraits<::{{program:cpp_qualified_namespace}}::{{enum:cpp_name}}>::values = {{!
+const std::string_view TEnumTraits<::{{program.cpp_qualified_namespace}}::{{enum.cpp_name}}>::__fbthrift_module_name_internal_do_not_use = kModuleName;
+folly::Range<::{{program.cpp_qualified_namespace}}::{{enum.cpp_name}} const*> const TEnumTraits<::{{program.cpp_qualified_namespace}}::{{enum.cpp_name}}>::values = {{!
   }}{{#if empty_enum?}}{{!
     }}{};{{!
   }}{{#else}}{{!
-    }}folly::range(TEnumDataStorage<::{{program:cpp_qualified_namespace}}::{{enum:cpp_name}}>::values);{{!
+    }}folly::range(TEnumDataStorage<::{{program.cpp_qualified_namespace}}::{{enum.cpp_name}}>::values);{{!
   }}{{/if empty_enum?}}
-folly::Range<std::string_view const*> const TEnumTraits<::{{program:cpp_qualified_namespace}}::{{enum:cpp_name}}>::names = {{!
+folly::Range<std::string_view const*> const TEnumTraits<::{{program.cpp_qualified_namespace}}::{{enum.cpp_name}}>::names = {{!
   }}{{#if empty_enum?}}{{!
     }}{};{{!
   }}{{#else}}{{!
-    }}folly::range(TEnumDataStorage<::{{program:cpp_qualified_namespace}}::{{enum:cpp_name}}>::names);{{!
+    }}folly::range(TEnumDataStorage<::{{program.cpp_qualified_namespace}}::{{enum.cpp_name}}>::names);{{!
   }}{{/if empty_enum?}}
 
-bool TEnumTraits<::{{program:cpp_qualified_namespace}}::{{enum:cpp_name}}>::findName(type value, std::string_view* out) noexcept {
+bool TEnumTraits<::{{program.cpp_qualified_namespace}}::{{enum.cpp_name}}>::findName(type value, std::string_view* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_name(value, out);
 }
 
-bool TEnumTraits<::{{program:cpp_qualified_namespace}}::{{enum:cpp_name}}>::findValue(std::string_view name, type* out) noexcept {
+bool TEnumTraits<::{{program.cpp_qualified_namespace}}::{{enum.cpp_name}}>::findValue(std::string_view name, type* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 
-const std::vector<std::any>& TEnumTraits<::{{program:cpp_qualified_namespace}}::{{enum:cpp_name}}>::annotations() noexcept {
-  {{#if enum:has_runtime_annotation?}}
+const std::vector<std::any>& TEnumTraits<::{{program.cpp_qualified_namespace}}::{{enum.cpp_name}}>::annotations() noexcept {
+  {{#if enum.has_runtime_annotation?}}
   static const folly::Indestructible<std::vector<std::any>> ret = [] {
       std::vector<std::any> values;
-  {{#each enum:structured_annotations as |annot|}}
+  {{#each enum.structured_annotations as |annot|}}
     {{#if annot.is_runtime_annotation?}}
       values.emplace_back({{#partial const_value.iterate_const_values value=annot.value root_const=annot}});
     {{/if annot.is_runtime_annotation?}}
@@ -55,17 +56,17 @@ const std::vector<std::any>& TEnumTraits<::{{program:cpp_qualified_namespace}}::
   return *ret;
   {{#else}}
   return ::apache::thrift::detail::annotation::empty_annotations();
-  {{/if enum:has_runtime_annotation?}}
+  {{/if enum.has_runtime_annotation?}}
 }
 
-const std::vector<std::any>& TEnumTraits<::{{program:cpp_qualified_namespace}}::{{enum:cpp_name}}>::enumValueAnnotations(::{{program:cpp_qualified_namespace}}::{{enum:cpp_name}} value) noexcept {
+const std::vector<std::any>& TEnumTraits<::{{program.cpp_qualified_namespace}}::{{enum.cpp_name}}>::enumValueAnnotations(::{{program.cpp_qualified_namespace}}::{{enum.cpp_name}} value) noexcept {
   switch (static_cast<std::int32_t>(value)) {
-    {{#enum:values}}
-    {{#if enum_value:has_runtime_annotation?}}
-    case {{enum_value:value}}: {
+    {{#each enum.values as |enum_value|}}
+    {{#if enum_value.has_runtime_annotation?}}
+    case {{enum_value.value}}: {
       static const folly::Indestructible<std::vector<std::any>> ret = [] {
           std::vector<std::any> values;
-      {{#each enum_value:structured_annotations as |annot|}}
+      {{#each enum_value.structured_annotations as |annot|}}
         {{#if annot.is_runtime_annotation?}}
           values.emplace_back({{#partial const_value.iterate_const_values value=annot.value root_const=annot}});
         {{/if annot.is_runtime_annotation?}}
@@ -74,8 +75,8 @@ const std::vector<std::any>& TEnumTraits<::{{program:cpp_qualified_namespace}}::
         }();
       return *ret;
     }
-    {{/if enum_value:has_runtime_annotation?}}
-    {{/enum:values}}
+    {{/if enum_value.has_runtime_annotation?}}
+    {{/each}}
     default:
       return ::apache::thrift::detail::annotation::empty_annotations();
   }
@@ -84,4 +85,4 @@ const std::vector<std::any>& TEnumTraits<::{{program:cpp_qualified_namespace}}::
 
 }} // apache::thrift
 
-{{/program:split_enums}}
+  {{/each}}
