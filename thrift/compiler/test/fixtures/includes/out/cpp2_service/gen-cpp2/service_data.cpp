@@ -19,11 +19,11 @@ namespace detail {
 
 template <> struct TSchemaAssociation<::cpp2::MyService, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -9106413388409986902;
-  static constexpr ::std::string_view definitionKey = {"\xe9\x74\x7b\x90\xaa\x56\xcb\x61\x79\x6b\xc6\x40\xc3\x6a\xf1\xa7", 16};
+  static constexpr int64_t programId = 3754361525973278358;
+  static constexpr ::std::string_view definitionKey = {"\xa9\xcc\xaf\x31\xa6\x98\xb9\x9d\x5d\x47\x1e\x28\x5b\xc4\x06\x1d", 16};
 };
 ::folly::Range<const ::std::string_view*> TSchemaAssociation<::cpp2::MyService, false>::bundle() {
-    return ::cpp2::service_constants::_fbthrift_schema_819f854565f620aa_includes();
+    return ::cpp2::service_constants::_fbthrift_schema_341a2bea9a07de96_includes();
 }
 } // namespace detail
 } // namespace apache::thrift

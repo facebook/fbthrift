@@ -24,9 +24,9 @@ namespace includes_constants {
     return IncludedConstant_;
   }
 
-  FOLLY_EXPORT ::std::string_view _fbthrift_schema_eba45c6d4c6de0d();
-  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_eba45c6d4c6de0d_includes();
-  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_eba45c6d4c6de0d_uris();
+  FOLLY_EXPORT ::std::string_view _fbthrift_schema_da36d810d11e1f44();
+  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_da36d810d11e1f44_includes();
+  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_da36d810d11e1f44_uris();
 
 } // namespace includes_constants
 } // namespace cpp2

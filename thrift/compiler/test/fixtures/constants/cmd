@@ -1,5 +1,4 @@
 android: android src/module.thrift
-csharp: csharp_EXPERIMENTAL src/module.thrift
 py: py src/module.thrift
 hack: hack:typedef,hack_collections=1 src/module.thrift
 cpp2: mstch_cpp2 src/module.thrift
@@ -12,4 +11,5 @@ py3_inplace: mstch_py3:inplace_migrate src/module.thrift
 json: json src/module.thrift
 python: mstch_python src/module.thrift
 python_capi: mstch_python_capi src/module.thrift
+csharp: csharp_EXPERIMENTAL src/module.thrift
 starlark: starlark src/module.thrift

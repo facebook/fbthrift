@@ -1,6 +1,9 @@
 {
   "__fbthrift": "@generated",
   "thrift_module" : "included_enum",
+  "namespaces": {
+    "csharp": "Test.Fixtures.Enums.Included"
+  },
   "package": {
     "domain_prefix": "test",
     "domain_suffix": "dev",
@@ -15,21 +18,21 @@
         "constants" : {
           "FIRST" : {
             "name" : "FIRST",
-            "lineno" : 20,
+            "lineno" : 22,
             "value" : 1
           },
           "SECOND" : {
             "name" : "SECOND",
-            "lineno" : 21,
+            "lineno" : 23,
             "value" : 2
           },
           "THIRD" : {
             "name" : "THIRD",
-            "lineno" : 22,
+            "lineno" : 24,
             "value" : 3
           }
         },
-        "lineno" : 19
+        "lineno" : 21
       }
   },
   "source_path" : "included_enum",

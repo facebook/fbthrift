@@ -1025,47 +1025,47 @@ unsigned long MyStruct::read(Protocol_* iprot) {
 namespace apache::thrift::detail {
 template <> struct TSchemaAssociation<::test::fixtures::enums::SomeStruct, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -6261045419074521157;
-  static constexpr ::std::string_view definitionKey = {"\xec\x13\x05\xf1\x47\x79\xf1\xb5\xfc\x06\x08\x59\x72\x53\xde\x11", 16};
+  static constexpr int64_t programId = 5369088623352307774;
+  static constexpr ::std::string_view definitionKey = {"\x4c\x5e\xed\xd1\x6f\xa5\xf9\xfa\x98\x95\xa6\x1a\xd7\x86\xc0\x27", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::enums::MyStruct, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -6261045419074521157;
-  static constexpr ::std::string_view definitionKey = {"\x53\x8b\x64\xdd\x58\xbc\xf9\x5c\x7e\x74\x2b\x0d\x6d\x8e\x73\x8e", 16};
+  static constexpr int64_t programId = 5369088623352307774;
+  static constexpr ::std::string_view definitionKey = {"\xbf\x94\x21\x5c\x52\x96\xb7\x95\xff\x29\xc8\x97\xc1\x00\xec\x41", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::enums::Metasyntactic, true> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -6261045419074521157;
-  static constexpr ::std::string_view definitionKey = {"\x84\x84\x8b\xf3\xf3\x94\x95\x52\xdf\xe5\xe5\x2a\xf7\x2a\xe7\xa2", 16};
+  static constexpr int64_t programId = 5369088623352307774;
+  static constexpr ::std::string_view definitionKey = {"\xf6\xf4\xf1\xaf\xfe\xb7\x3c\x23\x92\x77\xc9\x8c\xe4\x4f\x5b\x1c", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::enums::MyEnum1, true> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -6261045419074521157;
-  static constexpr ::std::string_view definitionKey = {"\x90\xc1\x2a\x78\x8b\xb0\x3c\x1f\x77\x18\x04\xef\x78\x3e\x36\xa3", 16};
+  static constexpr int64_t programId = 5369088623352307774;
+  static constexpr ::std::string_view definitionKey = {"\x33\x77\x32\x5d\x24\x97\xdf\x00\x52\x7c\xa2\x07\x7d\x57\x22\xd0", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::enums::MyEnum2, true> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -6261045419074521157;
-  static constexpr ::std::string_view definitionKey = {"\xc3\x92\xe7\x73\x66\x60\xd0\xb7\x87\x62\xff\x50\x8a\xeb\x69\x43", 16};
+  static constexpr int64_t programId = 5369088623352307774;
+  static constexpr ::std::string_view definitionKey = {"\x37\x0f\xf2\xef\xc1\x84\xc9\x78\x4b\x1c\x9d\xfb\x19\xee\x6e\x7c", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::enums::MyEnum3, true> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -6261045419074521157;
-  static constexpr ::std::string_view definitionKey = {"\x3b\xce\x7f\xdb\xbf\x4f\xff\x7c\x92\x6d\x1c\xdc\xe1\xcd\xcf\x1d", 16};
+  static constexpr int64_t programId = 5369088623352307774;
+  static constexpr ::std::string_view definitionKey = {"\xcc\x85\x0f\xf7\x18\xa0\xbe\x45\x31\x85\x6c\x4e\xeb\x89\xca\x62", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::enums::MyEnum4, true> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -6261045419074521157;
-  static constexpr ::std::string_view definitionKey = {"\xbe\xd9\xe3\xc4\x1b\x0b\xf9\xa3\xc7\xaf\xb7\x03\x5e\x31\x71\xee", 16};
+  static constexpr int64_t programId = 5369088623352307774;
+  static constexpr ::std::string_view definitionKey = {"\x1a\x57\xf0\x48\xb9\x0b\xe4\x8b\xcf\x01\x0f\x69\x93\xcf\x19\xe0", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::enums::MyBitmaskEnum1, true> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -6261045419074521157;
-  static constexpr ::std::string_view definitionKey = {"\xe0\xb8\x1d\x0e\xcd\x7d\xcb\x1b\x31\x96\xec\xde\x8f\x5f\xf2\x42", 16};
+  static constexpr int64_t programId = 5369088623352307774;
+  static constexpr ::std::string_view definitionKey = {"\x3b\x51\x24\x77\x66\x53\x66\x67\x17\x5a\x0a\x98\x8c\x07\x97\x30", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::enums::MyBitmaskEnum2, true> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -6261045419074521157;
-  static constexpr ::std::string_view definitionKey = {"\x6d\x55\x2c\xdf\x67\x68\x6d\x26\x6a\x24\x7f\xca\x65\x25\x92\xad", 16};
+  static constexpr int64_t programId = 5369088623352307774;
+  static constexpr ::std::string_view definitionKey = {"\x9f\x14\x16\xc1\xd9\xa5\x4c\x44\x7e\xf8\xde\x47\xc1\xd7\xe0\x4f", 16};
 };
 } // namespace apache::thrift::detail

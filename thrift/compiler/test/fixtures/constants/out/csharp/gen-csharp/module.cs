@@ -21,7 +21,7 @@ using System.IO;
 using System.Linq;
 using FBThrift;
 
-namespace Test.Fixtures.Constants
+namespace test.fixtures.constants
 {
     using @MyCompany = @Company;
     using @MyMapIdentifier = Dictionary<string, string>;

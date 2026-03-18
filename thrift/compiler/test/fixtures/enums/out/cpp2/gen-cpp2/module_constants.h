@@ -14,9 +14,9 @@ namespace test::fixtures::enums {
 /** Glean {"file": "thrift/compiler/test/fixtures/enums/src/module.thrift"} */
 namespace module_constants {
 
-  FOLLY_EXPORT ::std::string_view _fbthrift_schema_a91c4c5d2179f7bb();
-  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_a91c4c5d2179f7bb_includes();
-  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_a91c4c5d2179f7bb_uris();
+  FOLLY_EXPORT ::std::string_view _fbthrift_schema_4a82d5a80281603e();
+  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_4a82d5a80281603e_includes();
+  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_4a82d5a80281603e_uris();
 
 } // namespace module_constants
 } // namespace test::fixtures::enums

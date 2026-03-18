@@ -16,6 +16,8 @@
 
 package "test.dev/fixtures/enums"
 
+namespace csharp Test.Fixtures.Enums.Included
+
 enum IncludedEnum {
   FIRST = 1,
   SECOND = 2,

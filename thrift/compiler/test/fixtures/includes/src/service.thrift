@@ -17,6 +17,7 @@
 include "module.thrift"
 include "includes.thrift"
 namespace java.swift test.fixtures.includes
+namespace csharp Test.Fixtures.Includes.Service
 
 /** This is a service-level docblock */
 service MyService {

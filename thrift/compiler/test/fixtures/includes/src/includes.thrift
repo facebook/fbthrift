@@ -22,6 +22,7 @@ package;
 
 namespace android one.two.three
 namespace java.swift test.fixtures.includes.includes
+namespace csharp Test.Fixtures.Includes.Includes
 
 struct Included {
   1: i64 MyIntField = 0;

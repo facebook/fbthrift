@@ -24,6 +24,7 @@ namespace cpp2 module1
 namespace java module1
 namespace py module1
 namespace java.swift test.fixtures.module1
+namespace csharp Test.Fixtures.Qualified.Module1
 
 struct Struct {
   1: i32 first;

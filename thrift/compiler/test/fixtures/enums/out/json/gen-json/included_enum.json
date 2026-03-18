@@ -3,7 +3,7 @@
   "thrift_module" : "included_enum",
   "enumerations" : {
     "IncludedEnum" : {
-      "lineno" : 19,
+      "lineno" : 21,
       "constants" : {
         "FIRST" : 1,
         "SECOND" : 2,
@@ -11,11 +11,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 19,
+          "line" : 21,
           "column" : 1
         },
         "end" : {
-          "line" : 23,
+          "line" : 25,
           "column" : 2
         }
       }

@@ -22,7 +22,6 @@ package "test.dev/fixtures/enums"
 namespace android test.fixtures.enums
 namespace java test.fixtures.enums
 namespace java.swift test.fixtures.enums
-
 enum Metasyntactic {
   FOO = 1,
   BAR = 2,

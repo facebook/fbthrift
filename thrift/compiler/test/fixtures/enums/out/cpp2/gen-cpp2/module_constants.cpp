@@ -15,13 +15,13 @@ namespace test::fixtures::enums {
 namespace module_constants {
 
 
-::std::string_view _fbthrift_schema_a91c4c5d2179f7bb() {
+::std::string_view _fbthrift_schema_4a82d5a80281603e() {
   return "";
 }
-::folly::Range<const ::std::string_view*> _fbthrift_schema_a91c4c5d2179f7bb_includes() {
+::folly::Range<const ::std::string_view*> _fbthrift_schema_4a82d5a80281603e_includes() {
   return {};
 }
-::folly::Range<const ::std::string_view*> _fbthrift_schema_a91c4c5d2179f7bb_uris() {
+::folly::Range<const ::std::string_view*> _fbthrift_schema_4a82d5a80281603e_uris() {
   return {};
 }
 

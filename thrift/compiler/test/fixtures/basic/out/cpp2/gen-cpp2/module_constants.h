@@ -65,9 +65,9 @@ namespace module_constants {
   /** Glean {"constant": "AMap"} */
   ::std::map<::std::string, ::std::vector<::std::int32_t>> const& AMap();
 
-  FOLLY_EXPORT ::std::string_view _fbthrift_schema_6ec2880717e198ca();
-  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_6ec2880717e198ca_includes();
-  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_6ec2880717e198ca_uris();
+  FOLLY_EXPORT ::std::string_view _fbthrift_schema_db8b8e607dc6bead();
+  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_db8b8e607dc6bead_includes();
+  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_db8b8e607dc6bead_uris();
 
 } // namespace module_constants
 } // namespace test::fixtures::basic
