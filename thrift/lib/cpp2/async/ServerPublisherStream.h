@@ -22,6 +22,8 @@
 #include <thrift/lib/cpp2/async/ServerStreamDetail.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/async/TwoWayBridge.h>
+#include <thrift/lib/cpp2/logging/ThriftEvent.h>
+#include <thrift/lib/cpp2/logging/ThriftStreamLog.h>
 
 namespace apache::thrift {
 template <typename T, bool WithHeader = false>
@@ -302,16 +304,21 @@ class ServerPublisherStream : private StreamServerCallback {
             folly::EventBase* clientEb,
             TilePtr&& interaction,
             std::shared_ptr<ContextStack> contextStack,
-            std::shared_ptr<StreamInterceptorContext>) mutable {
+            std::shared_ptr<StreamInterceptorContext>,
+            std::unique_ptr<ThriftStreamLog> streamLog) mutable {
           stream->streamClientCallback_ = callback;
           stream->clientEventBase_ = clientEb;
           stream->contextStack_ = std::move(contextStack);
+          stream->streamLog_ = std::move(streamLog);
           stream->interaction_ =
               TileStreamGuard::transferFrom(std::move(interaction));
 
           // Notify stream subscribe
           notifyStreamSubscribe(
               stream->contextStack_.get(), stream->interaction_);
+          if (stream->streamLog_) {
+            stream->streamLog_->log(detail::StreamSubscribeEvent{});
+          }
 
           std::ignore = callback->onFirstResponse(
               std::move(payload), clientEb, stream.release());
@@ -331,6 +338,10 @@ class ServerPublisherStream : private StreamServerCallback {
   bool onStreamRequestN(int32_t credits) override {
     clientEventBase_->dcheckIsInEventBaseThread();
     notifyStreamCredit(contextStack_.get(), credits);
+    if (streamLog_) {
+      streamLog_->log(
+          detail::StreamCreditEvent{static_cast<uint32_t>(credits)});
+    }
     if (!creditBuffer_.hasCredit()) {
       // we need creditBuffer_ to hold credits before calling processPayloads
       auto buffer = creditBuffer_.getBuffer();
@@ -345,6 +356,10 @@ class ServerPublisherStream : private StreamServerCallback {
 
   void onStreamCancel() override {
     clientEventBase_->dcheckIsInEventBaseThread();
+    if (streamLog_) {
+      streamLog_->log(
+          detail::StreamCompleteEvent{detail::StreamEndReason::CANCEL});
+    }
     serverExecutor_->add([ex = serverExecutor_, self = copy()] {
       self->onStreamCompleteOrCancel_.call();
     });
@@ -374,6 +389,9 @@ class ServerPublisherStream : private StreamServerCallback {
         auto payload = std::move(buffer.front());
         if (payload.hasValue()) {
           bool hasPayload = payload->payload || payload->isOrderedHeader;
+          if (hasPayload && streamLog_) {
+            streamLog_->log(detail::StreamNextEvent{});
+          }
           auto alive = hasPayload
               ? streamClientCallback_->onStreamNext(std::move(payload.value()))
               : streamClientCallback_->onStreamHeaders(
@@ -382,14 +400,25 @@ class ServerPublisherStream : private StreamServerCallback {
             return false;
           }
           if (hasPayload) {
+            if (streamLog_) {
+              streamLog_->log(detail::StreamNextSentEvent{});
+            }
             notifyStreamNext(contextStack_.get());
             creditBuffer_.addCredits(-1);
           }
         } else if (payload.hasException()) {
+          if (streamLog_) {
+            streamLog_->log(
+                detail::StreamCompleteEvent{detail::StreamEndReason::ERROR});
+          }
           streamClientCallback_->onStreamError(std::move(payload.exception()));
           close();
           return false;
         } else {
+          if (streamLog_) {
+            streamLog_->log(
+                detail::StreamCompleteEvent{detail::StreamEndReason::COMPLETE});
+          }
           streamClientCallback_->onStreamComplete();
           close();
           return false;
@@ -451,6 +480,7 @@ class ServerPublisherStream : private StreamServerCallback {
   TileStreamGuard interaction_;
 
   std::shared_ptr<ContextStack> contextStack_;
+  std::unique_ptr<ThriftStreamLog> streamLog_;
 
   //
   // Helper methods to encapsulate ContextStack usage

@@ -509,6 +509,9 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
         },
         10,
         std::chrono::milliseconds::zero(),
+        {},
+        {},
+        nullptr,
         {}};
     auto serverCallback = apache::thrift::detail::ServerSinkBridge::create(
         std::move(impl), ioEvb_, clientCallback);

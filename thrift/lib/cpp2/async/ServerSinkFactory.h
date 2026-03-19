@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <string_view>
+
 #include <folly/Portability.h>
 
 #if FOLLY_HAS_COROUTINES
@@ -35,6 +37,7 @@ class ServerSinkFactory {
       folly::EventBase*,
       TilePtr&&,
       ContextStack::UniquePtr,
+      std::unique_ptr<ThriftSinkLog>,
       FirstResponsePayload&&,
       SinkClientCallback*)>;
 
@@ -73,12 +76,24 @@ class ServerSinkFactory {
 
   void setContextStack(ContextStack::UniquePtr contextStack);
 
+  ContextStack* getContextStack() const { return contextStack_.get(); }
+
+  void setMethodName(std::string_view methodName) { methodName_ = methodName; }
+
+  std::string_view getMethodName() const { return methodName_; }
+
+  void setSinkLog(std::unique_ptr<ThriftSinkLog> sinkLog) {
+    sinkLog_ = std::move(sinkLog);
+  }
+
  private:
   StartFunction startFunction_{nullptr};
   uint64_t bufferSize_{};
   std::chrono::milliseconds chunkTimeout_{};
   TilePtr interaction_{};
   ContextStack::UniquePtr contextStack_{nullptr};
+  std::string_view methodName_;
+  std::unique_ptr<ThriftSinkLog> sinkLog_;
 };
 
 #endif

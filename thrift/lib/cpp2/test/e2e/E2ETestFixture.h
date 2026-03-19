@@ -31,6 +31,7 @@ namespace apache::thrift::test {
  */
 class E2ETestFixture : public ::testing::Test {
   using MakeChannelFunc = ScopedServerInterfaceThread::MakeChannelFunc;
+  using ServerConfigCb = ScopedServerInterfaceThread::ServerConfigCb;
 
  public:
   struct TestConfig {
@@ -39,11 +40,12 @@ class E2ETestFixture : public ::testing::Test {
         [](folly::AsyncSocket::UniquePtr socket) -> RequestChannel::Ptr {
       return RocketClientChannel::newChannel(std::move(socket));
     };
+    ServerConfigCb serverConfigCb = {};
   };
 
   void testConfig(TestConfig&& config) {
     server_ = std::make_unique<ScopedServerInterfaceThread>(
-        std::move(config.handler));
+        std::move(config.handler), std::move(config.serverConfigCb));
     channelFunc_ = std::move(config.channelFunc);
   }
 
@@ -55,6 +57,8 @@ class E2ETestFixture : public ::testing::Test {
           return channelFunc_(std::move(socket));
         });
   }
+
+  ThriftServer& getThriftServer() { return server_->getThriftServer(); }
 
  private:
   std::unique_ptr<ScopedServerInterfaceThread> server_;

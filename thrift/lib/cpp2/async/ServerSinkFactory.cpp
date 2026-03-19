@@ -16,6 +16,8 @@
 
 #include <thrift/lib/cpp2/async/ServerSinkFactory.h>
 
+#include <thrift/lib/cpp2/logging/ThriftSinkLog.h>
+
 #if FOLLY_HAS_COROUTINES
 
 namespace apache::thrift::detail {
@@ -38,6 +40,7 @@ ServerSinkFactory::ServerSinkFactory(
                        folly::EventBase* evb,
                        TilePtr&& interaction,
                        ContextStack::UniquePtr contextStack,
+                       std::unique_ptr<ThriftSinkLog> sinkLog,
                        FirstResponsePayload&& firstResponsePayload,
                        SinkClientCallback* clientCallback) mutable {
     DCHECK(evb->isInEventBaseThread());
@@ -48,6 +51,7 @@ ServerSinkFactory::ServerSinkFactory(
     sinkConsumer.executor = serverExecutor;
     sinkConsumer.interaction = std::move(interaction);
     sinkConsumer.contextStack = std::move(contextStack);
+    sinkConsumer.sinkLog = std::move(sinkLog);
 
     auto sink =
         new ServerSinkBridge(std::move(sinkConsumer), *evb, clientCallback);
@@ -72,6 +76,7 @@ void ServerSinkFactory::start(
       evb,
       std::move(interaction_),
       std::move(contextStack_),
+      std::move(sinkLog_),
       std::move(payload),
       callback);
 }
@@ -103,6 +108,7 @@ ServerSinkFactory::ServerSinkFactory(
                        folly::EventBase* evb,
                        TilePtr&& interaction,
                        ContextStack::UniquePtr contextStack,
+                       std::unique_ptr<ThriftSinkLog> sinkLog,
                        FirstResponsePayload&& firstResponsePayload,
                        SinkClientCallback* clientCallback) {
     DCHECK(evb->isInEventBaseThread());
@@ -111,6 +117,7 @@ ServerSinkFactory::ServerSinkFactory(
     sinkConsumer.chunkTimeout = chunkTimeout;
     sinkConsumer.interaction = std::move(interaction);
     sinkConsumer.contextStack = std::move(contextStack);
+    sinkConsumer.sinkLog = std::move(sinkLog);
 
     auto sink =
         new ServerSinkBridge(std::move(sinkConsumer), *evb, clientCallback);

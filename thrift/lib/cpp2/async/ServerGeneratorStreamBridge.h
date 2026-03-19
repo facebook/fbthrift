@@ -30,6 +30,8 @@
 #include <thrift/lib/cpp2/async/StreamMessage.h>
 #include <thrift/lib/cpp2/async/TwoWayBridge.h>
 #include <thrift/lib/cpp2/async/TwoWayBridgeUtil.h>
+#include <thrift/lib/cpp2/logging/ThriftEvent.h>
+#include <thrift/lib/cpp2/logging/ThriftStreamLog.h>
 #include <thrift/lib/cpp2/server/StreamInterceptorContext.h>
 
 namespace apache::thrift::detail {
@@ -97,11 +99,14 @@ class ServerGeneratorStreamBridge : public TwoWayBridge<
                                      TilePtr&& interaction,
                                      std::shared_ptr<ContextStack> contextStack,
                                      std::shared_ptr<StreamInterceptorContext>
-                                         interceptorContext) mutable {
+                                         interceptorContext,
+                                     std::unique_ptr<ThriftStreamLog>
+                                         streamLog) mutable {
         DCHECK(evb->isInEventBaseThread());
 
         auto stream =
             new ServerGeneratorStreamBridge(clientCallback, evb, contextStack);
+        stream->streamLog_ = std::move(streamLog);
         auto streamPtr = stream->copy();
         fromAsyncGeneratorImpl<WithHeader>(
             std::move(streamPtr),
@@ -170,6 +175,10 @@ class ServerGeneratorStreamBridge : public TwoWayBridge<
     };
 
     notifyStreamSubscribe(contextStack.get(), interaction);
+    auto* streamLog = stream->streamLog_.get();
+    if (streamLog) {
+      streamLog->log(detail::StreamSubscribeEvent{});
+    }
 
     if (interceptorContext) {
       co_await interceptorContext->invokeOnStreamBegin();
@@ -198,6 +207,11 @@ class ServerGeneratorStreamBridge : public TwoWayBridge<
               next,
               [&](StreamMessage::RequestN requestN) {
                 notifyStreamCredit(contextStack.get(), requestN.n);
+                if (streamLog) {
+                  streamLog->log(
+                      detail::StreamCreditEvent{
+                          static_cast<uint32_t>(requestN.n)});
+                }
                 credits += requestN.n;
                 return false;
               },
@@ -206,16 +220,28 @@ class ServerGeneratorStreamBridge : public TwoWayBridge<
                 notifyStreamPause(
                     contextStack.get(),
                     details::StreamPauseReason::EXPLICIT_PAUSE);
+                if (streamLog) {
+                  streamLog->log(
+                      detail::StreamPauseEvent{
+                          detail::StreamPauseReason::EXPLICIT_PAUSE});
+                }
                 pauseStream = true;
                 return false;
               },
               [&](StreamMessage::Resume) {
                 notifyStreamResumeReceive(contextStack.get());
+                if (streamLog) {
+                  streamLog->log(detail::StreamResumeEvent{});
+                }
                 pauseStream = false;
                 return false;
               });
           if (cancelled) {
             streamEndReason = details::STREAM_ENDING_TYPES::CANCEL;
+            if (streamLog) {
+              streamLog->log(
+                  detail::StreamCompleteEvent{detail::StreamEndReason::CANCEL});
+            }
             if (interceptorContext) {
               co_await interceptorContext->invokeOnStreamEnd(
                   streamEndReason, streamError);
@@ -239,6 +265,10 @@ class ServerGeneratorStreamBridge : public TwoWayBridge<
       if (next.hasException()) {
         streamEndReason = details::STREAM_ENDING_TYPES::ERROR;
         streamError = next.exception();
+        if (streamLog) {
+          streamLog->log(
+              detail::StreamCompleteEvent{detail::StreamEndReason::ERROR});
+        }
         // The encoding returns a Try(), but StreamElementEncode will always
         // populate this with an exception wrapper.
         stream->serverPush(
@@ -251,6 +281,10 @@ class ServerGeneratorStreamBridge : public TwoWayBridge<
         co_return;
       }
       if (!next->has_value()) {
+        if (streamLog) {
+          streamLog->log(
+              detail::StreamCompleteEvent{detail::StreamEndReason::COMPLETE});
+        }
         stream->serverPush(StreamMessage::Complete{});
         if (interceptorContext) {
           co_await interceptorContext->invokeOnStreamEnd(
@@ -289,9 +323,16 @@ class ServerGeneratorStreamBridge : public TwoWayBridge<
       }
 
       notifyStreamNext(contextStack.get());
+      if (streamLog) {
+        streamLog->log(detail::StreamNextEvent{});
+      }
       if (credits == 0) {
         notifyStreamPause(
             contextStack.get(), details::StreamPauseReason::NO_CREDITS);
+        if (streamLog) {
+          streamLog->log(
+              detail::StreamPauseEvent{detail::StreamPauseReason::NO_CREDITS});
+        }
       }
     }
   }
@@ -323,6 +364,7 @@ class ServerGeneratorStreamBridge : public TwoWayBridge<
   StreamClientCallback* clientCallback_;
   folly::EventBase* evb_;
   std::shared_ptr<ContextStack> contextStack_;
+  std::unique_ptr<ThriftStreamLog> streamLog_;
 
 #if FOLLY_HAS_COROUTINES
   folly::CancellationSource cancelSource_;

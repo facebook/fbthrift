@@ -185,6 +185,7 @@ void HandlerCallbackBase::sendReply(
   auto& stream = responseAndStream.stream;
   stream.setInteraction(std::move(interaction_));
   stream.setContextStack(std::move(this->ctx_));
+  stream.setMethodName(methodNameInfo_.methodName);
 
   // Create and set interceptor context if any interceptor supports streams.
   // We inline the null-pointer chain (instead of calling
@@ -243,6 +244,7 @@ void HandlerCallbackBase::sendReply(
   auto& sinkFactory = responseAndSinkConsumer.second;
   sinkFactory.setInteraction(std::move(interaction_));
   sinkFactory.setContextStack(std::move(this->ctx_));
+  sinkFactory.setMethodName(methodNameInfo_.methodName);
 
   if (getEventBase()->isInEventBaseThread()) {
     SinkConsumerReplyInfo(

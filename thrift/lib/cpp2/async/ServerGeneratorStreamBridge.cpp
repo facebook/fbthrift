@@ -46,9 +46,11 @@ ServerGeneratorStreamBridge::fromProducerCallback(
           folly::EventBase* clientEb,
           TilePtr&&,
           std::shared_ptr<ContextStack>,
-          std::shared_ptr<StreamInterceptorContext>) mutable {
+          std::shared_ptr<StreamInterceptorContext>,
+          std::unique_ptr<ThriftStreamLog> streamLog) mutable {
         DCHECK(clientEb->isInEventBaseThread());
         auto stream = new ServerGeneratorStreamBridge(clientCallback, clientEb);
+        stream->streamLog_ = std::move(streamLog);
         std::ignore = clientCallback->onFirstResponse(
             std::move(payload), clientEb, stream);
         producerCallback->provideStream(stream->copy());
@@ -106,6 +108,9 @@ void ServerGeneratorStreamBridge::processClientMessages() {
               if (payload->payload || payload->isOrderedHeader) {
                 alive =
                     clientCallback_->onStreamNext(std::move(payload.value()));
+                if (streamLog_) {
+                  streamLog_->log(detail::StreamNextSentEvent{});
+                }
               } else {
                 alive = clientCallback_->onStreamHeaders(
                     HeadersPayload(std::move(payload->metadata)));

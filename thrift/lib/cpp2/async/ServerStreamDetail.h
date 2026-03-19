@@ -15,6 +15,7 @@
  */
 
 #pragma once
+#include <string_view>
 #include <type_traits>
 
 #include <folly/Try.h>
@@ -22,27 +23,28 @@
 #include <thrift/lib/cpp2/async/Interaction.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 
+namespace apache::thrift {
+class ThriftStreamLog;
+} // namespace apache::thrift
+
 namespace apache::thrift::detail {
 
 class StreamInterceptorContext;
 
-// Full function signature with StreamInterceptorContext support
 using ServerStreamFactoryFn = folly::Function<void(
     FirstResponsePayload&&,
     StreamClientCallback*,
     folly::EventBase*,
     TilePtr&&,
     std::shared_ptr<ContextStack>,
-    std::shared_ptr<StreamInterceptorContext>)>;
+    std::shared_ptr<StreamInterceptorContext>,
+    std::unique_ptr<ThriftStreamLog>)>;
 
 struct ServerStreamFactory {
-  // Default constructor for empty/null factory
   ServerStreamFactory() = default;
 
-  // Constructor from nullptr
   /* implicit */ ServerStreamFactory(std::nullptr_t) : fn_(nullptr) {}
 
-  // Constructor for callables with 6-parameter signature
   template <
       typename F,
       std::enable_if_t<
@@ -53,7 +55,8 @@ struct ServerStreamFactory {
               folly::EventBase*,
               TilePtr&&,
               std::shared_ptr<ContextStack>,
-              std::shared_ptr<StreamInterceptorContext>>,
+              std::shared_ptr<StreamInterceptorContext>,
+              std::unique_ptr<ThriftStreamLog>>,
           int> = 0>
   explicit ServerStreamFactory(F&& fn) : fn_(std::forward<F>(fn)) {}
 
@@ -75,6 +78,14 @@ struct ServerStreamFactory {
     return interceptorContext_;
   }
 
+  void setMethodName(std::string_view methodName) { methodName_ = methodName; }
+
+  std::string_view getMethodName() const { return methodName_; }
+
+  void setStreamLog(std::unique_ptr<ThriftStreamLog> log) {
+    streamLog_ = std::move(log);
+  }
+
   void operator()(
       FirstResponsePayload&& payload,
       StreamClientCallback* cb,
@@ -84,7 +95,8 @@ struct ServerStreamFactory {
         eb,
         std::move(interaction_),
         std::move(contextStack_),
-        std::move(interceptorContext_));
+        std::move(interceptorContext_),
+        std::move(streamLog_));
   }
 
   explicit operator bool() { return !!fn_; }
@@ -94,6 +106,8 @@ struct ServerStreamFactory {
   TilePtr interaction_;
   std::shared_ptr<ContextStack> contextStack_;
   std::shared_ptr<StreamInterceptorContext> interceptorContext_;
+  std::string_view methodName_;
+  std::unique_ptr<ThriftStreamLog> streamLog_;
 };
 
 template <typename T>

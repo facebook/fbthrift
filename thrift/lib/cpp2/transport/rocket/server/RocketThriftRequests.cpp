@@ -28,6 +28,9 @@
 #include <thrift/lib/cpp2/SerializationSwitch.h>
 #include <thrift/lib/cpp2/async/ServerSinkBridge.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
+#include <thrift/lib/cpp2/logging/ThriftConnectionLog.h>
+#include <thrift/lib/cpp2/logging/ThriftSinkLog.h>
+#include <thrift/lib/cpp2/logging/ThriftStreamLog.h>
 #include <thrift/lib/cpp2/server/LoggingEvent.h>
 #include <thrift/lib/cpp2/transport/core/RpcMetadataUtil.h>
 #include <thrift/lib/cpp2/transport/core/SendCallbacks.h>
@@ -709,6 +712,14 @@ void ThriftServerRequestStream::sendStreamThriftResponse(
   context_.unsetMarkRequestComplete();
   clientCallback_->setProtoId(getProtoId());
   clientCallback_->setContextStack(stream.getContextStack());
+
+  // Create unified stream log if connection log is available.
+  if (auto* connLog = getRequestContext()
+                          ->getConnectionContext()
+                          ->getThriftConnectionLog()) {
+    stream.setStreamLog(connLog->createStreamLog(stream.getMethodName()));
+  }
+
   auto payload = apache::thrift::FirstResponsePayload{
       std::move(data), std::move(metadata)};
   payload.fds =
@@ -825,6 +836,13 @@ void ThriftServerRequestSink::sendSinkThriftResponse(
   context_.unsetMarkRequestComplete();
   clientCallback_->setProtoId(getProtoId());
   clientCallback_->setChunkTimeout(sinkFactory.getChunkTimeout());
+
+  // Create unified sink log if connection log is available.
+  if (auto* connLog = getRequestContext()
+                          ->getConnectionContext()
+                          ->getThriftConnectionLog()) {
+    sinkFactory.setSinkLog(connLog->createSinkLog(sinkFactory.getMethodName()));
+  }
 
   auto payload = apache::thrift::FirstResponsePayload{
       std::move(data), std::move(metadata)};

@@ -16,6 +16,8 @@
 
 #include <thrift/lib/cpp/StreamEventHandler.h>
 #include <thrift/lib/cpp2/async/ServerSinkBridge.h>
+#include <thrift/lib/cpp2/logging/ThriftEvent.h>
+#include <thrift/lib/cpp2/logging/ThriftSinkLog.h>
 
 #include <folly/Overload.h>
 
@@ -36,6 +38,7 @@ ServerSinkBridge::ServerSinkBridge(
     folly::EventBase& evb,
     SinkClientCallback* callback)
     : consumer_(std::move(sinkConsumer)),
+      sinkLog_(std::move(consumer_.sinkLog)),
       evb_(folly::getKeepAliveToken(&evb)),
       clientCallback_(callback) {
   interaction_ =
@@ -65,6 +68,9 @@ bool ServerSinkBridge::onSinkNext(StreamPayload&& payload) {
 void ServerSinkBridge::onSinkError(folly::exception_wrapper ew) {
   using apache::thrift::detail::EncodedError;
   notifySinkError(ew);
+  if (sinkLog_) {
+    sinkLog_->log(detail::SinkCompleteEvent{SinkEndReason::ERROR});
+  }
   auto rex = ew.get_mutable_exception<rocket::RocketException>();
   auto payload = rex
       ? folly::Try<StreamPayload>(EncodedError(rex->moveErrorData()))
@@ -164,11 +170,20 @@ void ServerSinkBridge::processClientMessages() {
             auto& payload = payloadOrError.streamPayloadTry;
             if (payload.hasValue()) {
               notifySinkFinally(details::SINK_ENDING_TYPES::COMPLETE);
+              if (sinkLog_) {
+                sinkLog_->log(
+                    detail::SinkCompleteEvent{SinkEndReason::COMPLETE});
+              }
               clientCallback_->onFinalResponse(std::move(payload).value());
             } else {
               notifySinkError(
                   payload.exception(),
                   details::SINK_ENDING_TYPES::COMPLETE_WITH_ERROR);
+              if (sinkLog_) {
+                sinkLog_->log(
+                    detail::SinkCompleteEvent{
+                        SinkEndReason::COMPLETE_WITH_ERROR});
+              }
               clientCallback_->onFinalResponseError(
                   std::move(payload).exception());
             }
@@ -207,11 +222,17 @@ void ServerSinkBridge::notifySinkSubscribe() {
     }
     contextStack->onSinkSubscribe(std::move(streamCtx));
   }
+  if (sinkLog_) {
+    sinkLog_->log(detail::SinkSubscribeEvent{});
+  }
 }
 
 void ServerSinkBridge::notifySinkNext() {
   if (const auto& contextStack = consumer_.contextStack) {
     contextStack->onSinkNext();
+  }
+  if (sinkLog_) {
+    sinkLog_->log(detail::SinkNextEvent{});
   }
 }
 
@@ -235,17 +256,26 @@ void ServerSinkBridge::notifySinkCredit(uint64_t credits) {
   if (const auto& contextStack = consumer_.contextStack) {
     contextStack->onSinkCredit(credits);
   }
+  if (sinkLog_) {
+    sinkLog_->log(detail::SinkCreditEvent{static_cast<uint32_t>(credits)});
+  }
 }
 
 void ServerSinkBridge::notifySinkConsumed() {
   if (const auto& contextStack = consumer_.contextStack) {
     contextStack->onSinkConsumed();
   }
+  if (sinkLog_) {
+    sinkLog_->log(detail::SinkConsumedEvent{});
+  }
 }
 
 void ServerSinkBridge::notifySinkCancel() {
   if (const auto& contextStack = consumer_.contextStack) {
     contextStack->onSinkCancel();
+  }
+  if (sinkLog_) {
+    sinkLog_->log(detail::SinkCancelEvent{});
   }
 }
 

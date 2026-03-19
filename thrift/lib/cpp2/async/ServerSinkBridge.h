@@ -31,6 +31,7 @@
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/async/StreamMessage.h>
 #include <thrift/lib/cpp2/async/TwoWayBridge.h>
+#include <thrift/lib/cpp2/logging/ThriftSinkLog.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 
 namespace apache::thrift::detail {
@@ -45,6 +46,7 @@ struct SinkConsumerImpl {
   folly::Executor::KeepAlive<> executor;
   TilePtr interaction{};
   ContextStack::UniquePtr contextStack = nullptr;
+  std::unique_ptr<ThriftSinkLog> sinkLog;
   explicit operator bool() const { return (bool)consumer; }
 #endif
 };
@@ -141,6 +143,7 @@ class ServerSinkBridge : public TwoWayBridge<
   void notifySinkCancel();
 
   SinkConsumerImpl consumer_;
+  std::unique_ptr<ThriftSinkLog> sinkLog_;
   folly::Executor::KeepAlive<folly::EventBase> evb_;
   SinkClientCallback* clientCallback_;
 
