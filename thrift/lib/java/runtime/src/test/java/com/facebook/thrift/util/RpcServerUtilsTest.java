@@ -16,15 +16,10 @@
 
 package com.facebook.thrift.util;
 
-import static com.facebook.thrift.util.NettyUtil.TransportType.EPOLL;
-import static com.facebook.thrift.util.NettyUtil.TransportType.IO_URING;
-import static com.facebook.thrift.util.NettyUtil.TransportType.NIO;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assumptions.assumeFalse;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
-import static org.mockito.Mockito.mockStatic;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeFalse;
+import static org.junit.Assume.assumeTrue;
 
 import com.facebook.nifty.core.RequestContext;
 import com.facebook.nifty.ssl.SslSession;
@@ -33,85 +28,46 @@ import com.facebook.swift.service.ThriftServerConfig;
 import com.facebook.thrift.legacy.server.ThriftOptionalSslHandler;
 import com.facebook.thrift.util.resources.RpcResources;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.epoll.EpollServerDomainSocketChannel;
 import io.netty.channel.epoll.EpollServerSocketChannel;
 import io.netty.channel.kqueue.KQueueServerDomainSocketChannel;
 import io.netty.channel.kqueue.KQueueServerSocketChannel;
+import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.unix.DomainSocketAddress;
-import io.netty.channel.uring.IoUringServerDomainSocketChannel;
-import io.netty.channel.uring.IoUringServerSocketChannel;
 import io.netty.handler.ssl.SslContext;
 import io.netty.util.AttributeKey;
-import io.netty.util.internal.PlatformDependent;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
+import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 public class RpcServerUtilsTest {
-  @Test
-  public void testGetEventLoopGroup() {
-    assertNotNull(RpcResources.getEventLoopGroup(), "EventLoopGroup should not be null");
-  }
-
-  @Test
-  public void testDomainSocketChannelLinuxJava9() {
-    assumeFalse(isMacos(), "Not Macos");
-    assumeTrue(PlatformDependent.javaVersion() >= 9, "Java 9+");
-
-    try (MockedStatic<NettyUtil> mockNettyUtil = mockStatic(NettyUtil.class)) {
-      mockNettyUtil.when(NettyUtil::getTransportType).thenReturn(IO_URING);
-
-      SocketAddress socketAddress = new DomainSocketAddress("/foo");
-      Class<?> channelClass = RpcServerUtils.getChannelClass(socketAddress);
-      assertEquals(IoUringServerDomainSocketChannel.class, channelClass);
-    }
-  }
+  @Rule public ExpectedException expectedException = ExpectedException.none();
+  private EventLoopGroup group = RpcResources.getEventLoopGroup();
 
   @Test
   public void testDomainSocketChannelLinux() {
-    assumeFalse(isMacos(), "Not Macos");
-
-    try (MockedStatic<NettyUtil> mockNettyUtil = mockStatic(NettyUtil.class)) {
-      mockNettyUtil.when(NettyUtil::getTransportType).thenReturn(EPOLL);
-
-      SocketAddress socketAddress = new DomainSocketAddress("/foo");
-      Class<?> channelClass = RpcServerUtils.getChannelClass(socketAddress);
-      assertEquals(EpollServerDomainSocketChannel.class, channelClass);
-    }
+    assumeFalse(isMacos());
+    SocketAddress socketAddress = new DomainSocketAddress("/foo");
+    Class<?> channelClass = RpcServerUtils.getChannelClass(group, socketAddress);
+    assertEquals(channelClass, EpollServerDomainSocketChannel.class);
   }
 
   @Test
   public void testEpollSocketChannel() {
     assumeFalse(isMacos());
-
-    try (MockedStatic<NettyUtil> mockNettyUtil = mockStatic(NettyUtil.class)) {
-      mockNettyUtil.when(NettyUtil::getTransportType).thenReturn(EPOLL);
-
-      SocketAddress socketAddress = new InetSocketAddress(0);
-      Class<?> channelClass = RpcServerUtils.getChannelClass(socketAddress);
-      assertEquals(EpollServerSocketChannel.class, channelClass);
-    }
-  }
-
-  @Test
-  public void testIoUringSocketChannel() {
-    assumeFalse(isMacos());
-    assumeTrue(PlatformDependent.javaVersion() >= 9, "Java 9+");
-
-    try (MockedStatic<NettyUtil> mockNettyUtil = mockStatic(NettyUtil.class)) {
-      mockNettyUtil.when(NettyUtil::getTransportType).thenReturn(IO_URING);
-
-      SocketAddress socketAddress = new InetSocketAddress(0);
-      Class<?> channelClass = RpcServerUtils.getChannelClass(socketAddress);
-      assertEquals(IoUringServerSocketChannel.class, channelClass);
-    }
+    SocketAddress socketAddress = new InetSocketAddress(0);
+    Class<?> channelClass = RpcServerUtils.getChannelClass(group, socketAddress);
+    assertEquals(channelClass, EpollServerSocketChannel.class);
   }
 
   @Test
@@ -122,8 +78,8 @@ public class RpcServerUtilsTest {
 
     assumeTrue(isMacos());
     SocketAddress socketAddress = new DomainSocketAddress("/foo");
-    Class<?> channelClass = RpcServerUtils.getChannelClass(socketAddress);
-    assertEquals(KQueueServerDomainSocketChannel.class, channelClass);
+    Class<?> channelClass = RpcServerUtils.getChannelClass(group, socketAddress);
+    assertEquals(channelClass, KQueueServerDomainSocketChannel.class);
   }
 
   @Test
@@ -134,35 +90,25 @@ public class RpcServerUtilsTest {
 
     assumeTrue(isMacos());
     SocketAddress socketAddress = new InetSocketAddress(0);
-    Class<?> channelClass = RpcServerUtils.getChannelClass(socketAddress);
-    assertEquals(KQueueServerSocketChannel.class, channelClass);
+    Class<?> channelClass = RpcServerUtils.getChannelClass(group, socketAddress);
+    assertEquals(channelClass, KQueueServerSocketChannel.class);
   }
 
   @Test
   public void testNioSocketChannel() {
-    try (MockedStatic<NettyUtil> mockNettyUtil = mockStatic(NettyUtil.class)) {
-      mockNettyUtil.when(NettyUtil::getTransportType).thenReturn(NIO);
-
-      SocketAddress socketAddress = new InetSocketAddress(0);
-      Class<?> channelClass = RpcServerUtils.getChannelClass(socketAddress);
-      assertEquals(NioServerSocketChannel.class, channelClass);
-    }
+    SocketAddress socketAddress = new InetSocketAddress(0);
+    Class<?> channelClass =
+        RpcServerUtils.getChannelClass(
+            new NioEventLoopGroup(0, new ThreadFactoryBuilder().build()), socketAddress);
+    assertEquals(channelClass, NioServerSocketChannel.class);
   }
 
   @Test
   public void testInvalidSocketGroupCombination() {
-    assumeTrue(PlatformDependent.javaVersion() < 16);
-
-    Assertions.assertThrows(
-        UnsupportedOperationException.class,
-        () -> {
-          try (MockedStatic<NettyUtil> mockNettyUtil = mockStatic(NettyUtil.class)) {
-            mockNettyUtil.when(NettyUtil::getTransportType).thenReturn(NIO);
-
-            SocketAddress socketAddress = new DomainSocketAddress("/foo");
-            RpcServerUtils.getChannelClass(socketAddress);
-          }
-        });
+    expectedException.expect(UnsupportedOperationException.class);
+    SocketAddress socketAddress = new DomainSocketAddress("/foo");
+    RpcServerUtils.getChannelClass(
+        new NioEventLoopGroup(0, new ThreadFactoryBuilder().build()), socketAddress);
   }
 
   // TODO(yuhanhao) need NettyTcNativeLoader
@@ -200,7 +146,7 @@ public class RpcServerUtilsTest {
                 (aLong, longSynchronousSink) -> {
                   RequestContext context =
                       RequestContext.fromContextView(longSynchronousSink.contextView());
-                  Assertions.assertEquals("world", context.getRequestHeader().get("hello"));
+                  Assertions.assertEquals(context.getRequestHeader().get("hello"), "world");
                   longSynchronousSink.next(aLong);
                 });
     Mono<Long> longMono = RpcServerUtils.decorateWithRequestContext(mock, count);
@@ -217,7 +163,7 @@ public class RpcServerUtilsTest {
                 (aLong, longSynchronousSink) -> {
                   RequestContext context =
                       RequestContext.fromContextView(longSynchronousSink.contextView());
-                  assertEquals("world", context.getRequestHeader().get("hello"));
+                  assertEquals(context.getRequestHeader().get("hello"), "world");
                   longSynchronousSink.next(aLong);
                 });
 

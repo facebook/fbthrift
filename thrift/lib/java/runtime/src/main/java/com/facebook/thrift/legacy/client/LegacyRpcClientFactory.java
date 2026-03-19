@@ -31,6 +31,8 @@ import com.google.common.primitives.Ints;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.EventLoopGroup;
+import io.netty.handler.ssl.SslContext;
 import java.net.SocketAddress;
 import reactor.core.publisher.Mono;
 
@@ -50,15 +52,17 @@ public final class LegacyRpcClientFactory implements RpcClientFactory {
     return Mono.defer(
         () -> {
           try {
+            final SslContext sslContext = getSslContext(nettyConfig, socketAddress);
+            final EventLoopGroup group = RpcResources.getEventLoopGroup();
             final Bootstrap bootstrap = new Bootstrap();
-            bootstrap.group(RpcResources.getEventLoopGroup());
-            bootstrap.channel(getChannelClass(socketAddress));
+            bootstrap.group(group);
+            bootstrap.channel(getChannelClass(group, socketAddress));
             bootstrap.option(
                 CONNECT_TIMEOUT_MILLIS,
                 Ints.saturatedCast(nettyConfig.getConnectTimeout().toMillis()));
             bootstrap.handler(
                 new ThriftClientInitializer(
-                    getSslContext(nettyConfig, socketAddress),
+                    sslContext,
                     nettyConfig.getTransport(),
                     TProtocolType.fromProtocolId(nettyConfig.getProtocol()),
                     nettyConfig.getMaxFrameSize(),
