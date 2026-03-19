@@ -427,6 +427,26 @@ class cpp2_generator_context {
     return root_program_has_schema_const_;
   }
 
+  bool has_sink_functions(const t_program& program) const {
+    check_root_program(program);
+    return root_program_has_sink_functions_;
+  }
+
+  bool has_stream_functions(const t_program& program) const {
+    check_root_program(program);
+    return root_program_has_stream_functions_;
+  }
+
+  bool has_interaction_functions(const t_program& program) const {
+    check_root_program(program);
+    return root_program_has_interaction_functions_;
+  }
+
+  bool has_method_decorators(const t_program& program) const {
+    check_root_program(program);
+    return root_program_has_method_decorators_;
+  }
+
   const std::vector<const t_field*>& fields_in_layout_order(
       const t_structured& strct) const {
     check_root_program(*strct.program());
@@ -541,6 +561,28 @@ class cpp2_generator_context {
         field_default_const_ref_programs_.emplace(const_program);
       }
     });
+
+    visitor.add_service_visitor(
+        [this](const context& ctx, const t_service& service) {
+          if (&ctx.program() == root_program_) {
+            root_program_has_method_decorators_ |=
+                service.has_structured_annotation(
+                    kCppGenerateServiceMethodDecorator);
+          }
+        });
+
+    visitor.add_function_visitor(
+        [this](const context& ctx, const t_function& func) {
+          if (&ctx.program() != root_program_ ||
+              dynamic_cast<const t_interaction*>(ctx.parent()) != nullptr) {
+            // Only take service functions from the root program
+            return;
+          }
+          root_program_has_sink_functions_ |= func.sink() != nullptr;
+          root_program_has_stream_functions_ |= func.stream() != nullptr;
+          root_program_has_interaction_functions_ |=
+              func.is_interaction_constructor() || !func.interaction().empty();
+        });
   }
 
  private:
@@ -548,6 +590,10 @@ class cpp2_generator_context {
   std::unordered_map<const t_type*, bool> is_orderable_memo_;
   cpp_name_resolver resolver_;
   bool root_program_has_schema_const_;
+  bool root_program_has_sink_functions_{false};
+  bool root_program_has_stream_functions_{false};
+  bool root_program_has_interaction_functions_{false};
+  bool root_program_has_method_decorators_{false};
 
   // Although generator fields can be in a different order than the IDL
   // order, field_generator_context should be always computed in the IDL order,
@@ -800,6 +846,18 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
     });
     def.property("has_schema?", [this](const t_program& self) {
       return cpp_context_->has_schema_const(self);
+    });
+    def.property("any_sink_functions?", [this](const t_program& self) {
+      return cpp_context_->has_sink_functions(self);
+    });
+    def.property("any_stream_functions?", [this](const t_program& self) {
+      return cpp_context_->has_stream_functions(self);
+    });
+    def.property("any_interaction_functions?", [this](const t_program& self) {
+      return cpp_context_->has_interaction_functions(self);
+    });
+    def.property("any_method_decorators?", [this](const t_program& self) {
+      return cpp_context_->has_method_decorators(self);
     });
     def.property("schema_includes_const?", [this](const t_program& self) {
       return cpp_context_->has_schema_const(self) &&
@@ -2321,51 +2379,21 @@ void t_mstch_cpp2_generator::generate_out_of_line_services() {
 }
 
 void t_mstch_cpp2_generator::generate_inline_services() {
-  const std::vector<t_service*>& services = program_->services();
-  mstch::array mstch_services;
-  mstch_services.reserve(services.size());
-  for (const t_service* service : services) {
-    mstch_services.emplace_back(
-        make_mstch_service_cached(get_program(), service, mstch_context_));
-  }
-  auto any_service_has_any_function = [&](auto&& predicate) -> bool {
-    return std::any_of(
-        services.cbegin(), services.cend(), [&](const t_service* service) {
-          auto funcs = service->functions();
-          return std::any_of(
-              funcs.cbegin(), funcs.cend(), [&](auto const& func) {
-                return predicate(func);
-              });
-        });
-  };
-  auto has_method_decorator = std::any_of(
-      services.cbegin(), services.cend(), [&](const t_service* service) {
-        return service->has_structured_annotation(
-            apache::thrift::compiler::kCppGenerateServiceMethodDecorator);
-      });
-
-  mstch::map context = {
-      {"program", cached_program(get_program())},
-      {"any_sinks?",
-       any_service_has_any_function(std::mem_fn(&t_function::sink))},
-      {"any_streams?",
-       any_service_has_any_function(std::mem_fn(&t_function::stream))},
-      {"any_interactions?",
-       any_service_has_any_function([](const t_function& func) {
-         return func.is_interaction_constructor() || func.interaction();
-       })},
-      {"any_method_decorators?", has_method_decorator},
-      {"services", std::move(mstch_services)},
-  };
-  const auto& module_name = get_program()->name();
-  render_to_file(context, "module_clients.h", module_name + "_clients.h");
+  const std::string& module_name = program_->name();
+  render_to_file(
+      cached_program(get_program()),
+      "module_clients.h",
+      fmt::format("{}_clients.h", module_name));
   render_whisker_file(
       "module_clients_fwd.h", fmt::format("{}_clients_fwd.h", module_name));
   render_whisker_file(
       "module_clients.cpp", fmt::format("{}_clients.cpp", module_name));
   render_whisker_file(
       "module_handlers-inl.h", fmt::format("{}_handlers-inl.h", module_name));
-  render_to_file(context, "module_handlers.h", module_name + "_handlers.h");
+  render_to_file(
+      cached_program(get_program()),
+      "module_handlers.h",
+      fmt::format("{}_handlers.h", module_name));
   render_whisker_file(
       "module_handlers.cpp", fmt::format("{}_handlers.cpp", module_name));
 }
