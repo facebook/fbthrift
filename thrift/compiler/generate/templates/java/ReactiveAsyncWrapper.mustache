@@ -22,12 +22,12 @@ package {{service:program.javaPackage}};
 
 import java.util.*;
 
-public class {{service:javaCapitalName}}ReactiveAsyncWrapper {{#service:extends}} extends {{service:program.javaPackage}}.{{service:javaCapitalName}}ReactiveAsyncWrapper{{/service:extends}}
+public class {{service:javaCapitalName}}ReactiveAsyncWrapper {{#if (object.notnull? service:extends)}} extends {{#service:extends}}{{service:java_qualified_name}}ReactiveAsyncWrapper{{/service:extends}}{{/if}}
   implements {{service:javaCapitalName}}.Async {
   private {{service:javaCapitalName}}.Reactive _delegate;
 
   public {{service:javaCapitalName}}ReactiveAsyncWrapper({{service:javaCapitalName}}.Reactive _delegate) {
-    {{#service:extends}}super(_delegate);{{/service:extends}}
+    {{#if (object.notnull? service:extends)}}super(_delegate);{{/if}}
     this._delegate = _delegate;
   }
 

@@ -34,7 +34,7 @@ import reactor.core.publisher.Mono;
 
 @SwiftGenerated
 @Deprecated
-public class {{service:javaCapitalName}}ClientImpl extends {{^service:extends}}AbstractThriftClient{{/service:extends}}{{#service:extends}}{{service:program.javaPackage}}.{{service:javaCapitalName}}ClientImpl{{/service:extends}} implements {{service:javaCapitalName}} {
+public class {{service:javaCapitalName}}ClientImpl extends {{#if (object.notnull? service:extends)}}{{#service:extends}}{{service:java_qualified_name}}ClientImpl{{/service:extends}}{{#else}}AbstractThriftClient{{/if}} implements {{service:javaCapitalName}} {
 
     // Method Handlers
     {{#service:singleRequestFunctions}}
@@ -63,7 +63,7 @@ public class {{service:javaCapitalName}}ClientImpl extends {{^service:extends}}A
         Map<String, String> headers,
         Map<String, String> persistentHeaders,
         List<? extends ThriftClientEventHandler> eventHandlers) {
-      {{^service:extends}}super(serviceName, channel, headers, persistentHeaders, eventHandlers);{{/service:extends}}{{#service:extends}}super(serviceName, channel, methods, headers, persistentHeaders, eventHandlers);{{/service:extends}}
+      {{#if (object.notnull? service:extends)}}super(serviceName, channel, methods, headers, persistentHeaders, eventHandlers);{{#else}}super(serviceName, channel, headers, persistentHeaders, eventHandlers);{{/if}}
 
       Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
       methods.forEach(

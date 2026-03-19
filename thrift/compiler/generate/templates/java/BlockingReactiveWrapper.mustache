@@ -23,12 +23,12 @@ package {{service:program.javaPackage}};
 import com.facebook.thrift.client.*;
 import java.util.*;
 
-public class {{service:javaCapitalName}}BlockingReactiveWrapper {{#service:extends}} extends {{service:program.javaPackage}}.{{service:javaCapitalName}}BlockingReactiveWrapper{{/service:extends}}
+public class {{service:javaCapitalName}}BlockingReactiveWrapper {{#if (object.notnull? service:extends)}} extends {{#service:extends}}{{service:java_qualified_name}}BlockingReactiveWrapper{{/service:extends}}{{/if}}
     implements {{service:javaCapitalName}}.Reactive {
     private final {{service:javaCapitalName}} _delegate;
 
     public {{service:javaCapitalName}}BlockingReactiveWrapper({{service:javaCapitalName}} _delegate) {
-        {{#service:extends}}super(_delegate);{{/service:extends}}
+        {{#if (object.notnull? service:extends)}}super(_delegate);{{/if}}
         this._delegate = _delegate;
     }
 

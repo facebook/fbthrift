@@ -87,10 +87,10 @@ public class {{service:javaCapitalName}}ThriftMetadataHandler implements com.fac
   private static final Map<String, ThriftStruct> STRUCTS;
   private static final Map<String, ThriftException> EXCEPTIONS;
 
-  {{#service:metaHasParent?}}
+  {{#if (object.notnull? service:extends)}}
   private static final com.facebook.thrift.server.ThriftMetadataHandler PARENT_HANDLER =
-      new {{service:metaParentPackage}}.{{service:metaParentCapitalName}}ThriftMetadataHandler();
-  {{/service:metaHasParent?}}
+      new {{#service:extends}}{{service:java_qualified_name}}ThriftMetadataHandler{{/service:extends}}();
+  {{/if (object.notnull? service:extends)}}
 
   static {
     List<ThriftFunction> functions = new ArrayList<>();
@@ -98,10 +98,10 @@ public class {{service:javaCapitalName}}ThriftMetadataHandler implements com.fac
     addFunctions_{{metaBatch:index}}(functions);
     {{/service:metaFunctionBatches}}
     THRIFT_SERVICE = new ThriftService.Builder()
-        .setName("{{service:metaFQN}}")
-        {{#service:metaHasParent?}}
-        .setParent("{{service:metaParentFQN}}")
-        {{/service:metaHasParent?}}
+        .setName("{{service:java_qualified_name}}")
+        {{#if (object.notnull? service:extends)}}
+        .setParent("{{#service:extends}}{{service:java_qualified_name}}{{/service:extends}}")
+        {{/if (object.notnull? service:extends)}}
         .setFunctions(functions)
         .build();
 
@@ -165,7 +165,7 @@ public class {{service:javaCapitalName}}ThriftMetadataHandler implements com.fac
 
   @Override
   public String getFullyQualifiedName() {
-    return "{{service:metaFQN}}";
+    return "{{service:java_qualified_name}}";
   }
 
   @Override
@@ -175,22 +175,12 @@ public class {{service:javaCapitalName}}ThriftMetadataHandler implements com.fac
 
   @Override
   public String getParentServiceName() {
-    {{#service:metaHasParent?}}
-    return "{{service:metaParentFQN}}";
-    {{/service:metaHasParent?}}
-    {{^service:metaHasParent?}}
-    return null;
-    {{/service:metaHasParent?}}
+    return {{#if (object.notnull? service:extends)}}"{{#service:extends}}{{service:java_qualified_name}}{{/service:extends}}"{{#else}}null{{/if}};
   }
 
   @Override
   public com.facebook.thrift.server.ThriftMetadataHandler getParentHandler() {
-    {{#service:metaHasParent?}}
-    return PARENT_HANDLER;
-    {{/service:metaHasParent?}}
-    {{^service:metaHasParent?}}
-    return null;
-    {{/service:metaHasParent?}}
+    return {{#if (object.notnull? service:extends)}}PARENT_HANDLER{{#else}}null{{/if}};
   }
 
   @Override

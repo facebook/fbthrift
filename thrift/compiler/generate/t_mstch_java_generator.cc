@@ -202,6 +202,24 @@ class t_mstch_java_generator : public t_mstch_generator {
  private:
   void set_mstch_factories();
 
+  prototype<t_named>::ptr make_prototype_for_named(
+      const prototype_database& proto) const override {
+    auto base = t_whisker_generator::make_prototype_for_named(proto);
+    auto def = whisker::dsl::prototype_builder<h_named>::extends(base);
+
+    def.property("java_name", [](const t_named& self) {
+      return java::mangle_java_name(self.name(), true);
+    });
+    def.property("java_qualified_name", [](const t_named& self) {
+      return fmt::format(
+          "{}.{}",
+          get_namespace_or_default(*self.program()),
+          java::mangle_java_name(self.name(), true));
+    });
+
+    return std::move(def).make();
+  }
+
   prototype<t_const>::ptr make_prototype_for_const(
       const prototype_database& proto) const override {
     auto base = t_whisker_generator::make_prototype_for_const(proto);
@@ -933,16 +951,9 @@ class mstch_java_service : public mstch_service {
             {"service:streamingFunctions",
              &mstch_java_service::get_streaming_functions},
             {"service:sinkFunctions", &mstch_java_service::get_sink_functions},
-            {"service:metaHasParent?", &mstch_java_service::meta_has_parent},
-            {"service:metaParentFQN", &mstch_java_service::meta_parent_fqn},
-            {"service:metaParentPackage",
-             &mstch_java_service::meta_parent_package},
-            {"service:metaParentCapitalName",
-             &mstch_java_service::meta_parent_capital_name},
             {"service:metaFunctions", &mstch_java_service::meta_functions},
             {"service:metaFunctionBatches",
              &mstch_java_service::meta_function_batches},
-            {"service:metaFQN", &mstch_java_service::meta_fqn},
             {"service:metaReferencedStructs",
              &mstch_java_service::meta_referenced_structs},
             {"service:metaReferencedEnums",
@@ -998,35 +1009,6 @@ class mstch_java_service : public mstch_service {
       }
     }
     return make_mstch_functions(funcs);
-  }
-
-  mstch::node meta_has_parent() { return service_->extends() != nullptr; }
-
-  mstch::node meta_parent_fqn() {
-    if (auto* parent = service_->extends()) {
-      return get_namespace_or_default(*parent->program()) + "." +
-          java::mangle_java_name(parent->name(), true);
-    }
-    return std::string();
-  }
-
-  mstch::node meta_parent_package() {
-    if (auto* parent = service_->extends()) {
-      return get_namespace_or_default(*parent->program());
-    }
-    return std::string();
-  }
-
-  mstch::node meta_parent_capital_name() {
-    if (auto* parent = service_->extends()) {
-      return java::mangle_java_name(parent->name(), true);
-    }
-    return std::string();
-  }
-
-  mstch::node meta_fqn() {
-    return get_namespace_or_default(*service_->program()) + "." +
-        java::mangle_java_name(service_->name(), true);
   }
 
   mstch::node meta_functions() {

@@ -22,12 +22,12 @@ package {{service:program.javaPackage}};
 
 import java.util.*;
 
-public class {{service:javaCapitalName}}ReactiveBlockingWrapper {{#service:extends}} extends {{service:program.javaPackage}}.{{service:javaCapitalName}}ReactiveBlockingWrapper{{/service:extends}}
+public class {{service:javaCapitalName}}ReactiveBlockingWrapper {{#if (object.notnull? service:extends)}} extends {{#service:extends}}{{service:java_qualified_name}}ReactiveBlockingWrapper{{/service:extends}}{{/if}}
   implements {{service:javaCapitalName}} {
   private final {{service:javaCapitalName}}.Reactive _delegate;
 
   public {{service:javaCapitalName}}ReactiveBlockingWrapper({{service:javaCapitalName}}.Reactive _delegate) {
-    {{#service:extends}}super(_delegate);{{/service:extends}}
+    {{#if (object.notnull? service:extends)}}super(_delegate);{{/if}}
     this._delegate = _delegate;
   }
 

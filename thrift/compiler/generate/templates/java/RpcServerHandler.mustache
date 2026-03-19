@@ -24,7 +24,7 @@ import java.util.*;
 import org.apache.thrift.protocol.*;
 import com.facebook.thrift.util.Readers;
 
-public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} extends {{service:program.javaPackage}}.{{service:javaCapitalName}}RpcServerHandler{{/service:extends}}
+public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? service:extends)}} extends {{#service:extends}}{{service:java_qualified_name}}RpcServerHandler{{/service:extends}}{{/if}}
   implements com.facebook.thrift.server.RpcServerHandler {
 
   private final java.util.Map<String, com.facebook.thrift.server.RpcServerHandler> _methodMap;
