@@ -14,12 +14,16 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{^function:cpp_recv_arg?}}{{!
-}}folly::exception_wrapper {{#partial client.client_class_name service=service:self parent_service=parent_service}}::recv_wrapped_{{function:cpp_name}}(::apache::thrift::ClientReceiveState& state) {
-{{/function:cpp_recv_arg?}}
-{{#function:cpp_recv_arg?}}
-folly::exception_wrapper {{#partial client.client_class_name service=service:self parent_service=parent_service}}::recv_wrapped_{{function:cpp_name}}({{#partial client.return_type_no_handle function=function:self}}& _return, ::apache::thrift::ClientReceiveState& state) {
-{{/function:cpp_recv_arg?}}
+}}
+{{#import "common/client" as client}}
+
+{{#let export partial received_wrapped |interface parent_service function| captures |client|}}
+  {{#let service_cpp_name=(if interface.interaction? parent_service.cpp_name interface.cpp_name)}}
+  {{#if function.cpp_recv_arg?}}
+folly::exception_wrapper {{#partial client.client_class_name service=interface parent_service=parent_service}}::recv_wrapped_{{function.cpp_name}}({{#partial client.return_type_no_handle function=function}}& _return, ::apache::thrift::ClientReceiveState& state) {
+  {{#else}}
+folly::exception_wrapper {{#partial client.client_class_name service=interface parent_service=parent_service}}::recv_wrapped_{{function.cpp_name}}(::apache::thrift::ClientReceiveState& state) {
+  {{/if function.cpp_recv_arg?}}
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -27,19 +31,19 @@ folly::exception_wrapper {{#partial client.client_class_name service=service:sel
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = ::{{service:cpp_qualified_namespace}}::{{#if service:interaction?}}{{parent_service.cpp_name}}{{#else}}{{service:cpp_name}}{{/if}}_{{function:prefixed_name}}_presult;
+  using result = ::{{interface.cpp_qualified_namespace}}::{{service_cpp_name}}_{{function.prefixed_name}}_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          &reader, state{{#function:cpp_recv_arg?}}, _return{{/function:cpp_recv_arg?}});
+          &reader, state{{#if function.cpp_recv_arg?}}, _return{{/if}});
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
-          &reader, state{{#function:cpp_recv_arg?}}, _return{{/function:cpp_recv_arg?}});
+          &reader, state{{#if function.cpp_recv_arg?}}, _return{{/if}});
     }
     default:
     {
@@ -47,3 +51,4 @@ folly::exception_wrapper {{#partial client.client_class_name service=service:sel
   }
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
+{{/let partial}}

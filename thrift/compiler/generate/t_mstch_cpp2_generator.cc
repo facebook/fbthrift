@@ -2277,31 +2277,24 @@ void t_mstch_cpp2_generator::generate_out_of_line_service(
   auto iter = client_name_to_split_count_.find(name);
   if (iter != client_name_to_split_count_.end()) {
     auto split_count = iter->second;
-    auto digit = std::to_string(split_count - 1).size();
+    size_t split_id_width = std::to_string(split_count - 1).size();
     for (int split_id = 0; split_id < split_count; ++split_id) {
-      auto s = std::to_string(split_id);
-      s = std::string(digit - s.size(), '0') + s;
       cpp_context_->set_service_split(split_id, split_count);
-      // We need to create a fresh `cpp_mstch_service` for every iteration,
-      // because properties on the base `mstch_service` get cached but we need
-      // volatile behavior for anything that calls `get_functions` because the
-      // split ID changes the functions returned.
-      // Once the relevant properties/templates are migrated to Whisker, this
-      // will no longer be necessary.
-      render_to_file(
-          std::make_shared<cpp_mstch_service>(
-              service,
-              mstch_context_,
-              mstch_element_position{},
-              cpp_context_.get(),
-              /*containing_service=*/nullptr),
+      render_whisker_service_file(
+          *service,
           "ServiceAsyncClient.cpp",
-          name + "." + s + ".async_client_split.cpp");
+          fmt::format(
+              "{}.{:0{}}.async_client_split.cpp",
+              name,
+              split_id,
+              split_id_width));
       cpp_context_->clear_service_split();
     }
   } else {
-    render_to_file(
-        mstch_service, "ServiceAsyncClient.cpp", name + "AsyncClient.cpp");
+    render_whisker_service_file(
+        *service,
+        "ServiceAsyncClient.cpp",
+        fmt::format("{}AsyncClient.cpp", name));
   }
 
   for (const char* protocol : {"binary", "compact"}) {
@@ -2368,7 +2361,8 @@ void t_mstch_cpp2_generator::generate_inline_services() {
   render_to_file(context, "module_clients.h", module_name + "_clients.h");
   render_whisker_file(
       "module_clients_fwd.h", fmt::format("{}_clients_fwd.h", module_name));
-  render_to_file(context, "module_clients.cpp", module_name + "_clients.cpp");
+  render_whisker_file(
+      "module_clients.cpp", fmt::format("{}_clients.cpp", module_name));
   render_whisker_file(
       "module_handlers-inl.h", fmt::format("{}_handlers-inl.h", module_name));
   render_to_file(context, "module_handlers.h", module_name + "_handlers.h");

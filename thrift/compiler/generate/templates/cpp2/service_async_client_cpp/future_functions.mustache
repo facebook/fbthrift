@@ -14,133 +14,136 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{!
-}}{{#let function_comma = (if function:params.fields? ", " null)}}
+}}
+{{#import "common/client" as client}}
+{{#import "common/rpc" as rpc}}
+
+{{#let export partial future_functions |interface parent_service function| captures |client rpc|}}
+  {{#let function_comma = (if function.params.fields? ", " null)}}
 template <typename CallbackType>
-folly::SemiFuture<{{#partial client.return_type_lift_unit function=function:self service=service:self}}> {{#partial client.client_class_name service=service:self parent_service=parent_service}}::fbthrift_semifuture_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{#partial client.function_param_list function=function:self}}) {
-  using CallbackHelper = apache::thrift::detail::FutureCallbackHelper<{{#partial client.return_type_no_handle_lift_unit function=function:self}}>;
+folly::SemiFuture<{{#partial client.return_type_lift_unit function=function service=interface}}> {{#partial client.client_class_name service=interface parent_service=parent_service}}::fbthrift_semifuture_{{function.cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{#partial client.function_param_list function=function}}) {
+  using CallbackHelper = apache::thrift::detail::FutureCallbackHelper<{{#partial client.return_type_no_handle_lift_unit function=function}}>;
   folly::Promise<CallbackHelper::PromiseResult> promise;
   auto semifuture = promise.getSemiFuture();
-  auto ctxAndHeader = {{function:cpp_name}}Ctx(&rpcOptions);
-{{#function:oneway?}}
+  auto ctxAndHeader = {{function.cpp_name}}Ctx(&rpcOptions);
+  {{#if function.oneway?}}
   auto wrappedCallbackAndContextStack = apache::thrift::GeneratedAsyncClient::template prepareRequestClientCallback<true /* kIsOneWay */>(
     std::make_unique<CallbackType>(std::move(promise), channel_),
     std::move(ctxAndHeader.first));
-{{/function:oneway?}}
-{{^function:oneway?}}
+  {{#else}}
   auto wrappedCallbackAndContextStack = apache::thrift::GeneratedAsyncClient::template prepareRequestClientCallback<false /* kIsOneWay */>(
-    std::make_unique<CallbackType>(std::move(promise), recv_wrapped_{{function:cpp_name}}, channel_),
+    std::make_unique<CallbackType>(std::move(promise), recv_wrapped_{{function.cpp_name}}, channel_),
     std::move(ctxAndHeader.first));
-{{/function:oneway?}}
+  {{/if function.oneway?}}
   auto header = std::move(ctxAndHeader.second);
   auto* contextStack = wrappedCallbackAndContextStack.second;
-{{#function:stream?}}
+  {{#if function.stream?}}
   auto wrappedCallback = apache::thrift::createStreamClientCallback(std::move(wrappedCallbackAndContextStack.first), rpcOptions.getBufferOptions());
-{{/function:stream?}}{{^function:stream?}}
+  {{#else}}
   auto wrappedCallback = std::move(wrappedCallbackAndContextStack.first);
-{{/function:stream?}}
-{{#function:creates_interaction?}}
-  {{function:created_interaction.cpp_name}} interactionHandle(channel_, "{{function:created_interaction.cpp_name}}", interceptors_);
-{{/function:creates_interaction?}}
+  {{/if function.stream?}}
+  {{#if function.creates_interaction?}}
+  {{function.created_interaction.cpp_name}} interactionHandle(channel_, "{{function.created_interaction.cpp_name}}", interceptors_);
+  {{/if function.creates_interaction?}}
   std::unique_ptr<folly::IOBuf> interceptorFrameworkMetadata = nullptr;
   if (contextStack != nullptr) {
-    auto argsAsRefs = std::tie({{#partial rpc.param_list function=function:self}});
+    auto argsAsRefs = std::tie({{#partial rpc.param_list function=function}});
     if (auto exTry = contextStack->processClientInterceptorsOnRequest(apache::thrift::ClientInterceptorOnRequestArguments(argsAsRefs), header.get(), rpcOptions);
         exTry.hasException()) {
-      return folly::makeSemiFuture<{{#partial client.return_type_lift_unit function=function:self service=service:self}}>(std::move(exTry).exception());
+      return folly::makeSemiFuture<{{#partial client.return_type_lift_unit function=function service=interface}}>(std::move(exTry).exception());
     }
     interceptorFrameworkMetadata = detail::ContextStackUnsafeAPI(*contextStack).getInterceptorFrameworkMetadata(rpcOptions);
   }
-  apache::thrift::SerializedRequest request = fbthrift_serialize_{{function:cpp_name}}(rpcOptions, *header, contextStack{{function_comma}}{{#partial rpc.param_list function=function:self}});
-  fbthrift_send_{{function:cpp_name}}(std::move(request), rpcOptions, std::move(header), std::move(wrappedCallback), std::move(interceptorFrameworkMetadata){{#function:creates_interaction?}}, interactionHandle{{/function:creates_interaction?}});
-{{#if (not function:creates_interaction?)}}
-  return std::move(semifuture).deferValue(CallbackHelper::processClientInterceptorsAndExtractResult);
-{{#else}}
+  apache::thrift::SerializedRequest request = fbthrift_serialize_{{function.cpp_name}}(rpcOptions, *header, contextStack{{function_comma}}{{#partial rpc.param_list function=function}});
+  fbthrift_send_{{function.cpp_name}}(std::move(request), rpcOptions, std::move(header), std::move(wrappedCallback), std::move(interceptorFrameworkMetadata){{#if function.creates_interaction?}}, interactionHandle{{/if}});
+  {{#if function.creates_interaction?}}
   return std::move(semifuture)
       .deferValue(
           [interactionHandle = std::move(interactionHandle)](CallbackHelper::PromiseResult&& result) mutable {
           auto returnValue = CallbackHelper::processClientInterceptorsAndExtractResult(std::move(result));
           returnValue.throwUnlessValue();
-          {{#if type:void?}}
-            {{#if function:stream?}}
+    {{#if (not function.return_type.void?)}}
             return std::pair{std::move(interactionHandle), std::move(*returnValue)};
-            {{#else}}
+    {{#else if function.stream?}}
+            return std::pair{std::move(interactionHandle), std::move(*returnValue)};
+    {{#else}}
             return std::move(interactionHandle);
-            {{/if function:stream?}}
-          {{#else}}
-            return std::pair{std::move(interactionHandle), std::move(*returnValue)};
-          {{/if type:void?}}
+    {{/if (not function.return_type.void?)}}
           });
-{{/if (not function:creates_interaction?)}}
+  {{#else}}
+  return std::move(semifuture).deferValue(CallbackHelper::processClientInterceptorsAndExtractResult);
+  {{/if function.creates_interaction?}}
 }
 
-{{^service:reduced_client?}}{{^function:creates_interaction?}}
-{{^function:stream?}}
-folly::Future<{{#partial client.return_type_lift_unit function=function:self service=service:self}}> {{#partial client.client_class_name service=service:self parent_service=parent_service}}::future_{{function:cpp_name}}({{#partial client.function_param_list function=function:self}}) {
+  {{#if (and (not interface.reduced_client?) (not function.creates_interaction?))}}
+    {{#if (not function.stream?)}}
+folly::Future<{{#partial client.return_type_lift_unit function=function service=interface}}> {{#partial client.client_class_name service=interface parent_service=parent_service}}::future_{{function.cpp_name}}({{#partial client.function_param_list function=function}}) {
   ::apache::thrift::RpcOptions rpcOptions;
-  return future_{{function:cpp_name}}(rpcOptions{{function_comma}}{{#partial rpc.param_list function=function:self}});
+  return future_{{function.cpp_name}}(rpcOptions{{function_comma}}{{#partial rpc.param_list function=function}});
 }
-{{/function:stream?}}
+    {{/if (not function.stream?)}}
+    {{! TODO(T260006192): Clean-up preserve whitespace behavior, flatten condition }}
 
-{{/function:creates_interaction?}}{{/service:reduced_client?}}
-folly::SemiFuture<{{#partial client.return_type_lift_unit function=function:self service=service:self}}> {{#partial client.client_class_name service=service:self parent_service=parent_service}}::semifuture_{{function:cpp_name}}({{#partial client.function_param_list function=function:self}}) {
+  {{/if (and (not interface.reduced_client?) (not function.creates_interaction?))}}
+folly::SemiFuture<{{#partial client.return_type_lift_unit function=function service=interface}}> {{#partial client.client_class_name service=interface parent_service=parent_service}}::semifuture_{{function.cpp_name}}({{#partial client.function_param_list function=function}}) {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_{{function:cpp_name}}(rpcOptions{{function_comma}}{{#partial rpc.param_list function=function:self}});
+  return semifuture_{{function.cpp_name}}(rpcOptions{{function_comma}}{{#partial rpc.param_list function=function}});
 }
-{{^service:reduced_client?}}{{^function:creates_interaction?}}
+  {{#if (and (not interface.reduced_client?) (not function.creates_interaction?))}}
 
-{{^function:stream?}}
-folly::Future<{{#partial client.return_type_lift_unit function=function:self service=service:self}}> {{#partial client.client_class_name service=service:self parent_service=parent_service}}::future_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{#partial client.function_param_list function=function:self}}) {
-{{#function:oneway?}}
+    {{! TODO(T260006192): Clean-up preserve whitespace behavior, flatten condition }}
+    {{#if (not function.stream?)}}
+folly::Future<{{#partial client.return_type_lift_unit function=function service=interface}}> {{#partial client.client_class_name service=interface parent_service=parent_service}}::future_{{function.cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{#partial client.function_param_list function=function}}) {
+      {{#if function.oneway?}}
   using CallbackType = apache::thrift::OneWayFutureCallback;
-{{/function:oneway?}}
-{{^function:oneway?}}
-  using CallbackType = apache::thrift::FutureCallback<{{#partial client.return_type_lift_unit function=function:self service=service:self}}>;
-{{/function:oneway?}}
-  return fbthrift_semifuture_{{function:cpp_name}}<CallbackType>(rpcOptions{{function_comma}}{{#partial rpc.param_list function=function:self}}).toUnsafeFuture();
+      {{#else}}
+  using CallbackType = apache::thrift::FutureCallback<{{#partial client.return_type_lift_unit function=function service=interface}}>;
+      {{/if function.oneway?}}
+  return fbthrift_semifuture_{{function.cpp_name}}<CallbackType>(rpcOptions{{function_comma}}{{#partial rpc.param_list function=function}}).toUnsafeFuture();
 }
-{{/function:stream?}}
-{{/function:creates_interaction?}}{{/service:reduced_client?}}
+    {{/if (not function.stream?)}}
+  {{/if (and (not interface.reduced_client?) (not function.creates_interaction?))}}
 
-folly::SemiFuture<{{#partial client.return_type_lift_unit function=function:self service=service:self}}> {{#partial client.client_class_name service=service:self parent_service=parent_service}}::semifuture_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{#partial client.function_param_list function=function:self}}) {
-{{#function:oneway?}}
+folly::SemiFuture<{{#partial client.return_type_lift_unit function=function service=interface}}> {{#partial client.client_class_name service=interface parent_service=parent_service}}::semifuture_{{function.cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{#partial client.function_param_list function=function}}) {
+  {{#if function.oneway?}}
   using CallbackType = apache::thrift::OneWaySemiFutureCallback;
-{{/function:oneway?}}
-{{^function:oneway?}}
-  using CallbackType = apache::thrift::SemiFutureCallback<{{#partial client.return_type_no_handle_lift_unit function=function:self}}>;
-{{/function:oneway?}}
-  return fbthrift_semifuture_{{function:cpp_name}}<CallbackType>(rpcOptions{{function_comma}}{{#partial rpc.param_list function=function:self}});
+  {{#else}}
+  using CallbackType = apache::thrift::SemiFutureCallback<{{#partial client.return_type_no_handle_lift_unit function=function}}>;
+  {{/if function.oneway?}}
+  return fbthrift_semifuture_{{function.cpp_name}}<CallbackType>(rpcOptions{{function_comma}}{{#partial rpc.param_list function=function}});
 }
 
-{{#function:creates_interaction?}}
+  {{#if function.creates_interaction?}}
 std::pair<
-  apache::thrift::Client<{{service:qualified_name}}>::{{function:created_interaction.cpp_name}},
-  folly::SemiFuture<{{#partial client.return_type_no_handle_lift_unit function=function:self}}>
-> {{#partial client.client_class_name service=service:self parent_service=parent_service}}::eager_semifuture_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{#partial client.function_param_list function=function:self}}) {
-  auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_{{function:cpp_name}}, channel_);
-  {{function:created_interaction.cpp_name}} interactionHandle(channel_, "{{function:created_interaction.cpp_name}}", interceptors_);
+  apache::thrift::Client<{{interface.qualified_name}}>::{{function.created_interaction.cpp_name}},
+  folly::SemiFuture<{{#partial client.return_type_no_handle_lift_unit function=function}}>
+> {{#partial client.client_class_name service=interface parent_service=parent_service}}::eager_semifuture_{{function.cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{#partial client.function_param_list function=function}}) {
+  auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_{{function.cpp_name}}, channel_);
+  {{function.created_interaction.cpp_name}} interactionHandle(channel_, "{{function.created_interaction.cpp_name}}", interceptors_);
   auto callback = std::move(callbackAndFuture.first);
-  {{function:cpp_name}}(rpcOptions, std::move(callback){{#function:creates_interaction?}}, interactionHandle{{/function:creates_interaction?}}{{function_comma}}{{#partial rpc.param_list function=function:self}});
+  {{function.cpp_name}}(rpcOptions, std::move(callback){{#if function.creates_interaction?}}, interactionHandle{{/if}}{{function_comma}}{{#partial rpc.param_list function=function}});
   return std::make_pair(std::move(interactionHandle), std::move(callbackAndFuture.second));
 }
 
-{{/function:creates_interaction?}}
-{{#function:has_deprecated_header_client_methods}}{{^function:oneway?}}{{#function:legacy_client_methods?}}
-{{^function:stream?}}
-folly::Future<std::pair<{{#partial client.return_type_lift_unit function=function:self service=service:self}}, std::unique_ptr<apache::thrift::transport::THeader>>> {{#partial client.client_class_name service=service:self parent_service=parent_service}}::header_future_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{#partial client.function_param_list function=function:self}}) {
-  using CallbackHelper = apache::thrift::detail::FutureCallbackHelper<std::pair<{{#partial client.return_type_lift_unit function=function:self service=service:self}}, std::unique_ptr<apache::thrift::transport::THeader>>>;
+  {{/if function.creates_interaction?}}
+  {{#if (and function.has_deprecated_header_client_methods (not function.oneway?) function.legacy_client_methods?)}}
+    {{#if (not function.stream?)}}
+folly::Future<std::pair<{{#partial client.return_type_lift_unit function=function service=interface}}, std::unique_ptr<apache::thrift::transport::THeader>>> {{#partial client.client_class_name service=interface parent_service=parent_service}}::header_future_{{function.cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{#partial client.function_param_list function=function}}) {
+  using CallbackHelper = apache::thrift::detail::FutureCallbackHelper<std::pair<{{#partial client.return_type_lift_unit function=function service=interface}}, std::unique_ptr<apache::thrift::transport::THeader>>>;
   folly::Promise<CallbackHelper::PromiseResult> promise;
   auto future = promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<{{#partial client.return_type_lift_unit function=function:self service=service:self}}>>(std::move(promise), recv_wrapped_{{function:cpp_name}}, channel_);
-  {{function:cpp_name}}(rpcOptions, std::move(callback){{function_comma}}{{#partial rpc.param_list function=function:self}});
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<{{#partial client.return_type_lift_unit function=function service=interface}}>>(std::move(promise), recv_wrapped_{{function.cpp_name}}, channel_);
+  {{function.cpp_name}}(rpcOptions, std::move(callback){{function_comma}}{{#partial rpc.param_list function=function}});
   return std::move(future).thenValue(CallbackHelper::processClientInterceptorsAndExtractResult);
 }
-{{/function:stream?}}
+    {{/if (not function.stream?)}}
 
-folly::SemiFuture<std::pair<{{#partial client.return_type_lift_unit function=function:self service=service:self}}, std::unique_ptr<apache::thrift::transport::THeader>>> {{#partial client.client_class_name service=service:self parent_service=parent_service}}::header_semifuture_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{#partial client.function_param_list function=function:self}}) {
-  auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_{{function:cpp_name}}, channel_);
+folly::SemiFuture<std::pair<{{#partial client.return_type_lift_unit function=function service=interface}}, std::unique_ptr<apache::thrift::transport::THeader>>> {{#partial client.client_class_name service=interface parent_service=parent_service}}::header_semifuture_{{function.cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{#partial client.function_param_list function=function}}) {
+  auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_{{function.cpp_name}}, channel_);
   auto callback = std::move(callbackAndFuture.first);
-  {{function:cpp_name}}(rpcOptions, std::move(callback){{function_comma}}{{#partial rpc.param_list function=function:self}});
+  {{function.cpp_name}}(rpcOptions, std::move(callback){{function_comma}}{{#partial rpc.param_list function=function}});
   return std::move(callbackAndFuture.second);
 }
-{{/function:legacy_client_methods?}}{{/function:oneway?}}{{/function:has_deprecated_header_client_methods}}
+  {{/if (and function.has_deprecated_header_client_methods (not function.oneway?) function.legacy_client_methods?)}}
+
+{{/let partial}}

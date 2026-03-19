@@ -14,29 +14,23 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{^function:sync_returns_by_outparam?}}
-{{#partial client.return_type function=function:self service=service:self}} {{#partial client.client_class_name service=service:self parent_service=parent_service}}::recv_instance_{{function:cpp_name}}(::apache::thrift::ClientReceiveState& state) {
-{{^function:cpp_recv_arg?}}
-  recv_{{function:cpp_name}}(state);
-{{/function:cpp_recv_arg?}}
-{{#function:cpp_recv_arg?}}
-  return recv_{{function:cpp_name}}(state);
-{{/function:cpp_recv_arg?}}
+}}
+  {{#if function.sync_returns_by_outparam?}}
+void {{#partial client.client_class_name service=service parent_service=null}}::recv_instance_{{function.cpp_name}}({{function.cpp_return_type}}& _return, ::apache::thrift::ClientReceiveState& state) {
+  return recv_{{function.cpp_name}}(_return, state);
 }
-{{/function:sync_returns_by_outparam?}}
-{{#function:sync_returns_by_outparam?}}
-void {{#partial client.client_class_name service=service:self parent_service=parent_service}}::recv_instance_{{function:cpp_name}}({{function:cpp_return_type}}& _return, ::apache::thrift::ClientReceiveState& state) {
-  return recv_{{function:cpp_name}}(_return, state);
+  {{#else}}
+{{#partial client.return_type function=function service=service}} {{#partial client.client_class_name service=service parent_service=null}}::recv_instance_{{function.cpp_name}}(::apache::thrift::ClientReceiveState& state) {
+  {{#if function.cpp_recv_arg?}}return {{/if}}recv_{{function.cpp_name}}(state);
 }
-{{/function:sync_returns_by_outparam?}}
+  {{/if function.sync_returns_by_outparam?}}
 
-{{^function:cpp_recv_arg?}}
-folly::exception_wrapper {{#partial client.client_class_name service=service:self parent_service=parent_service}}::recv_instance_wrapped_{{function:cpp_name}}(::apache::thrift::ClientReceiveState& state) {
-  return recv_wrapped_{{function:cpp_name}}(state);
+  {{#if function.cpp_recv_arg?}}
+folly::exception_wrapper {{#partial client.client_class_name service=service parent_service=null}}::recv_instance_wrapped_{{function.cpp_name}}({{#partial client.return_type function=function service=service}}& _return, ::apache::thrift::ClientReceiveState& state) {
+  return recv_wrapped_{{function.cpp_name}}(_return, state);
 }
-{{/function:cpp_recv_arg?}}
-{{#function:cpp_recv_arg?}}
-folly::exception_wrapper {{#partial client.client_class_name service=service:self parent_service=parent_service}}::recv_instance_wrapped_{{function:cpp_name}}({{#partial client.return_type function=function:self service=service:self}}& _return, ::apache::thrift::ClientReceiveState& state) {
-  return recv_wrapped_{{function:cpp_name}}(_return, state);
+  {{#else}}
+folly::exception_wrapper {{#partial client.client_class_name service=service parent_service=null}}::recv_instance_wrapped_{{function.cpp_name}}(::apache::thrift::ClientReceiveState& state) {
+  return recv_wrapped_{{function.cpp_name}}(state);
 }
-{{/function:cpp_recv_arg?}}
+  {{/if function.cpp_recv_arg?}}

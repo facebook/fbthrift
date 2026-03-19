@@ -15,19 +15,14 @@
   limitations under the License.
 
 }}
-{{#import "common/client" as client}}
-{{#import "common/rpc" as rpc}}
-{{#import "common/server" as server}}
 {{> Autogen}}
 
-{{#program}}
-#include "{{program:include_prefix}}{{program:name}}_clients.h"
-{{/program}}
+#include "{{program.include_prefix}}{{program.name}}_clients.h"
 
 #include <thrift/lib/cpp2/gen/client_cpp.h>
 
-{{#services}}
+  {{#each program.services as |service|}}
 {{> service_cpp/async_client_cpp}}
 
 
-{{/services}}
+  {{/each}}

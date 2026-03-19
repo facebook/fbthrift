@@ -14,57 +14,55 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{!
-}}{{#let function_comma = (if function:params.fields? ", " null)}}{{!
-}}{{#if (not function:sync_returns_by_outparam?)}}
-{{#partial client.return_type function=function:self service=service:self}} {{#partial client.client_class_name service=service:self parent_service=parent_service}}::sync_{{function:cpp_name}}({{#partial client.function_param_list function=function:self}}) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  {{#if function:void?}}
-  sync_{{function:cpp_name}}(rpcOptions{{function_comma}}{{#partial rpc.param_list function=function:self}});
-  {{#else}}
-  return sync_{{function:cpp_name}}(rpcOptions{{function_comma}}{{#partial rpc.param_list function=function:self}});
-  {{/if function:void?}}
-}
-{{#else}}
-void {{#partial client.client_class_name service=service:self parent_service=parent_service}}::sync_{{function:cpp_name}}({{function:cpp_return_type}}& _return{{function_comma}}{{#partial client.function_param_list function=function:self}}) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  sync_{{function:cpp_name}}(rpcOptions, _return{{function_comma}}{{#partial rpc.param_list function=function:self}});
-}
-{{/if (not function:sync_returns_by_outparam?)}}
+}}
+{{#import "common/client" as client}}
+{{#import "common/rpc" as rpc}}
 
-{{#if (not function:sync_returns_by_outparam?)}}
-{{#partial client.return_type function=function:self service=service:self}} {{#partial client.client_class_name service=service:self parent_service=parent_service}}::sync_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{#partial client.function_param_list function=function:self}}) {
-{{#else}}
-void {{#partial client.client_class_name service=service:self parent_service=parent_service}}::sync_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions, {{function:cpp_return_type}}& _return{{function_comma}}{{#partial client.function_param_list function=function:self}}) {
-{{/if (not function:sync_returns_by_outparam?)}}
+{{#let export partial sync_functions |interface parent_service function| captures |client rpc|}}
+  {{#let function_comma = (if function.params.fields? ", " null)}}
+  {{#if function.sync_returns_by_outparam?}}
+void {{#partial client.client_class_name service=interface parent_service=parent_service}}::sync_{{function.cpp_name}}({{function.cpp_return_type}}& _return{{function_comma}}{{#partial client.function_param_list function=function}}) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  sync_{{function.cpp_name}}(rpcOptions, _return{{function_comma}}{{#partial rpc.param_list function=function}});
+}
+
+void {{#partial client.client_class_name service=interface parent_service=parent_service}}::sync_{{function.cpp_name}}(apache::thrift::RpcOptions& rpcOptions, {{function.cpp_return_type}}& _return{{function_comma}}{{#partial client.function_param_list function=function}}) {
+  {{#else}}
+{{#partial client.return_type function=function service=interface}} {{#partial client.client_class_name service=interface parent_service=parent_service}}::sync_{{function.cpp_name}}({{#partial client.function_param_list function=function}}) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  {{#if (not function.void?)}}return {{/if}}sync_{{function.cpp_name}}(rpcOptions{{function_comma}}{{#partial rpc.param_list function=function}});
+}
+
+{{#partial client.return_type function=function service=interface}} {{#partial client.client_class_name service=interface parent_service=parent_service}}::sync_{{function.cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{#partial client.function_param_list function=function}}) {
+  {{/if function.sync_returns_by_outparam?}}
   apache::thrift::ClientReceiveState returnState;
-  apache::thrift::ClientSyncCallback<{{#if function:oneway?}}true{{#else}}false{{/if function:oneway?}}> callback(&returnState);
-{{#if (not function:oneway?)}}
+  apache::thrift::ClientSyncCallback<{{#if function.oneway?}}true{{#else}}false{{/if}}> callback(&returnState);
+  {{#if (not function.oneway?)}}
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-{{/if (not function:oneway?)}}
+  {{/if (not function.oneway?)}}
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctxAndHeader = {{function:cpp_name}}Ctx(&rpcOptions);
-{{#if (not function:stream?)}}
-  auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
-{{#else}}
+  auto ctxAndHeader = {{function.cpp_name}}Ctx(&rpcOptions);
+  {{#if function.stream?}}
   auto wrappedCallback = apache::thrift::createStreamClientCallback(
     apache::thrift::RequestClientCallback::Ptr(&callback),
     rpcOptions.getBufferOptions());
-{{/if (not function:stream?)}}
-{{#if function:creates_interaction?}}
-  {{function:created_interaction.cpp_name}} interactionHandle(channel_, "{{function:created_interaction.cpp_name}}", interceptors_);
-{{/if function:creates_interaction?}}
+  {{#else}}
+  auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
+  {{/if function.stream?}}
+  {{#if function.creates_interaction?}}
+  {{function.created_interaction.cpp_name}} interactionHandle(channel_, "{{function.created_interaction.cpp_name}}", interceptors_);
+  {{/if function.creates_interaction?}}
   auto* contextStack  = ctxAndHeader.first.get();
   if (contextStack != nullptr) {
-    auto argsAsRefs = std::tie({{#partial rpc.param_list function=function:self}});
+    auto argsAsRefs = std::tie({{#partial rpc.param_list function=function}});
     contextStack->processClientInterceptorsOnRequest(apache::thrift::ClientInterceptorOnRequestArguments(argsAsRefs), ctxAndHeader.second.get(), rpcOptions).throwUnlessValue();
   }
   callback.waitUntilDone(
     evb,
     [&] {
-      fbthrift_serialize_and_send_{{function:cpp_name}}(rpcOptions, ctxAndHeader.second, ctxAndHeader.first.get(), std::move(wrappedCallback){{#function:creates_interaction?}}, interactionHandle{{/function:creates_interaction?}}{{function_comma}}{{#partial rpc.param_list function=function:self}});
+      fbthrift_serialize_and_send_{{function.cpp_name}}(rpcOptions, ctxAndHeader.second, ctxAndHeader.first.get(), std::move(wrappedCallback){{#if function.creates_interaction?}}, interactionHandle{{/if}}{{function_comma}}{{#partial rpc.param_list function=function}});
     });
-{{#if (not function:oneway?)}}
+  {{#if (not function.oneway?)}}
   returnState.resetProtocolId(protocolId);
   returnState.resetCtx(std::move(ctxAndHeader.first));
   SCOPE_EXIT {
@@ -73,93 +71,91 @@ void {{#partial client.client_class_name service=service:self parent_service=par
     }
   };
   return folly::fibers::runInMainContext([&] {
-  {{#if (not function:sync_returns_by_outparam?)}}
+    {{#if (not function.sync_returns_by_outparam?)}}
     {{! Case 1: Stream functions }}
-    {{#if function:stream?}}
+      {{#if function.stream?}}
 auto tryObj = folly::makeTryWith([&]() {
-      return recv_{{function:self.cpp_name}}(returnState);
+      return recv_{{function.cpp_name}}(returnState);
     });
     if (contextStack != nullptr) {
       tryObj = contextStack->processClientInterceptorsOnResponse(returnState.header(), std::move(tryObj));
     }
     tryObj.throwUnlessValue();
-    {{#if function:creates_interaction?}}
+        {{#if function.creates_interaction?}}
     return std::make_pair(std::move(interactionHandle), std::move(tryObj.value()));
-    {{#else}}
+        {{#else}}
     return std::move(tryObj.value());
-    {{/if function:creates_interaction?}}
+        {{/if function.creates_interaction?}}
     {{! Case 2: Non-stream void functions }}
-    {{#else if type:void?}}
-    folly::exception_wrapper ew = recv_wrapped_{{function:self.cpp_name}}(returnState);
+      {{#else if function.return_type.void?}}
+    folly::exception_wrapper ew = recv_wrapped_{{function.cpp_name}}(returnState);
     if (contextStack != nullptr) {
       contextStack->processClientInterceptorsOnResponse(returnState.header(), ew).throwUnlessValue();
     }
     if (ew) {
       ew.throw_exception();
     }
-    {{#if function:creates_interaction?}}
+        {{#if function.creates_interaction?}}
     return std::move(interactionHandle);
-    {{/if function:creates_interaction?}}
+        {{/if function.creates_interaction?}}
     {{! Case 3: Non-stream non-void functions }}
-    {{#else}}
-    {{function:self.cpp_return_type}} _return;
-    folly::exception_wrapper ew = recv_wrapped_{{function:self.cpp_name}}(_return, returnState);
+      {{#else}}
+    {{function.cpp_return_type}} _return;
+    folly::exception_wrapper ew = recv_wrapped_{{function.cpp_name}}(_return, returnState);
     if (contextStack != nullptr) {
       contextStack->processClientInterceptorsOnResponse(returnState.header(), ew, _return).throwUnlessValue();
     }
     if (ew) {
       ew.throw_exception();
     }
-    {{#if function:creates_interaction?}}
+        {{#if function.creates_interaction?}}
     return std::make_pair(std::move(interactionHandle), std::move(_return));
-    {{#else}}
+        {{#else}}
     return _return;
-    {{/if function:creates_interaction?}}
-    {{/if function:stream?}}
-  {{#else}}
-    auto ew = recv_wrapped_{{function:cpp_name}}(_return, returnState);
+        {{/if function.creates_interaction?}}
+      {{/if function.stream?}}
+    {{#else}}
+    auto ew = recv_wrapped_{{function.cpp_name}}(_return, returnState);
     if (contextStack != nullptr) {
       contextStack->processClientInterceptorsOnResponse(returnState.header(), ew, _return).throwUnlessValue();
     }
     if (ew) {
       ew.throw_exception();
     }
-  {{/if (not function:sync_returns_by_outparam?)}}
+    {{/if (not function.sync_returns_by_outparam?)}}
   });
-{{#else}}
+  {{#else}}
   if (returnState.isException()) {
     returnState.exception().throw_exception();
   }
-{{/if (not function:oneway?)}}
+  {{/if (not function.oneway?)}}
 }
 
-{{#if (has_compiler_option? "sync_methods_return_try")}}
-{{#if (not function:oneway?)}}
-{{#if (not function:sink?)}}
-folly::Try<apache::thrift::RpcResponseComplete<{{#partial client.return_type function=function:self service=service:self}}>>
-{{#partial client.client_class_name service=service:self parent_service=parent_service}}::sync_complete_{{function:cpp_name}}(
-    apache::thrift::RpcOptions&& rpcOptions{{function_comma}} {{#partial client.function_param_list function=function:self}}) {
+  {{#if (and (has_compiler_option? "sync_methods_return_try") (not function.oneway?) (not function.sink?))}}
+folly::Try<apache::thrift::RpcResponseComplete<{{#partial client.return_type function=function service=interface}}>>
+{{#partial client.client_class_name service=interface parent_service=parent_service}}::sync_complete_{{function.cpp_name}}(
+    apache::thrift::RpcOptions&& rpcOptions{{function_comma}} {{#partial client.function_param_list function=function}}) {
   apache::thrift::ClientReceiveState returnState;
-  auto ctxAndHeader = {{function:cpp_name}}Ctx(&rpcOptions);
+  auto ctxAndHeader = {{function.cpp_name}}Ctx(&rpcOptions);
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   const auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto* const evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-{{#if (not function:stream?)}}
-  auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
-{{#else}}
+    {{#if function.stream?}}
   auto wrappedCallback = apache::thrift::createStreamClientCallback(
     apache::thrift::RequestClientCallback::Ptr(&callback),
     rpcOptions.getBufferOptions());
-{{/if (not function:stream?)}}
+    {{#else}}
+  auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
+    {{/if function.stream?}}
   callback.waitUntilDone(
     evb,
     [&] {
-      fbthrift_serialize_and_send_{{function:cpp_name}}(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback){{function_comma}}{{#partial rpc.param_list function=function:self}}, true);
+      fbthrift_serialize_and_send_{{function.cpp_name}}(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback){{function_comma}}{{#partial rpc.param_list function=function}}, true);
     });
   returnState.resetProtocolId(protocolId);
   returnState.resetCtx(std::move(ctxAndHeader.first));
 
-  folly::Try<apache::thrift::RpcResponseComplete<{{#partial client.return_type function=function:self service=service:self}}>> tryResponse;
+  folly::Try<apache::thrift::RpcResponseComplete<{{#partial client.return_type function=function service=interface}}>> tryResponse;
   if (auto* header = returnState.header()) {
     rpcOptions.setRoutingData(header->releaseRoutingData());
   }
@@ -179,15 +175,11 @@ folly::Try<apache::thrift::RpcResponseComplete<{{#partial client.return_type fun
     }
     tryResponse->response.emplace();
     auto ew = folly::fibers::runInMainContext([&] {
-      {{#if function:stream?}}
-      return recv_wrapped_{{function:cpp_name}}(tryResponse->response.value(), returnState);
-      {{#else}}
-        {{#if type:void?}}
-      return recv_wrapped_{{function:cpp_name}}(returnState);
-        {{#else}}
-      return recv_wrapped_{{function:cpp_name}}(tryResponse->response.value(), returnState);
-        {{/if type:void?}}
-      {{/if function:stream?}}
+    {{#if (and (not function.stream?) function.return_type.void?)}}
+      return recv_wrapped_{{function.cpp_name}}(returnState);
+    {{#else}}
+      return recv_wrapped_{{function.cpp_name}}(tryResponse->response.value(), returnState);
+    {{/if (and (not function.stream?) function.return_type.void?)}}
     });
     if (ew) {
       tryResponse->response.emplaceException(std::move(ew));
@@ -195,6 +187,5 @@ folly::Try<apache::thrift::RpcResponseComplete<{{#partial client.return_type fun
   }
   return tryResponse;
 }
-{{/if (not function:sink?)}}
-{{/if (not function:oneway?)}}
-{{/if (has_compiler_option? "sync_methods_return_try")}}
+  {{/if (and (has_compiler_option? "sync_methods_return_try") (not function.oneway?) (not function.sink?))}}
+{{/let partial}}

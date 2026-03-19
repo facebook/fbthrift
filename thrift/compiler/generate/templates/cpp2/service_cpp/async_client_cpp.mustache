@@ -15,78 +15,78 @@
   limitations under the License.
 
 }}
-{{#let parent_service=service:self}}
-namespace {{service:cpp_qualified_namespace}} {
-{{#partial rpc.function_param_and_result_typedefs interface=service:self parent_service=null}}
-} // namespace {{service:cpp_qualified_namespace}}
-{{> service_async_client_cpp/templated_received}}
+{{#import "common/client" as client}}
+{{#import "common/rpc" as rpc}}
+{{#import "common/server" as server}}
+{{#import "service_async_client_cpp/templated_received" as templated_received}}
+{{#import "service_async_client_cpp/function_implementation" as function_implementation}}
+{{#import "service_async_client_cpp/sync_functions" as sync_functions}}
+{{#import "service_async_client_cpp/future_functions" as future_functions}}
+{{#import "service_async_client_cpp/coroutine_functions" as coroutine_functions}}
+{{#import "service_async_client_cpp/received_wrapped" as received_wrapped}}
+{{#import "service_async_client_cpp/received" as received}}
+namespace {{service.cpp_qualified_namespace}} {
+{{#partial rpc.function_param_and_result_typedefs interface=service parent_service=null}}
+} // namespace {{service.cpp_qualified_namespace}}
+{{#partial templated_received.templated_received interface=service parent_service=null}}
 
+  {{#each service.functions as |function|}}
+    {{#if (not function.starts_interaction?)}}
+{{#partial function_implementation.function_implementation interface=service parent_service=null function=function}}
 
-{{#service:functions}}
-{{#if (not function:starts_interaction?)}}
-{{#function:return_type}}
-{{> service_async_client_cpp/function_implementation}}
+      {{#if (not function.sink?)}}
+{{#partial sync_functions.sync_functions interface=service parent_service=null function=function}}
 
-
-{{^function:sink?}}
-{{> service_async_client_cpp/sync_functions}}
-
-{{> service_async_client_cpp/future_functions}}
-
-{{#function:legacy_client_methods?}}{{^function:stream?}}{{!
-}}{{#let function_comma = (if function:params.fields? ", " null)}}
-void apache::thrift::Client<{{service:qualified_name}}>::{{function:cpp_name}}(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback{{function_comma}}{{#partial client.function_param_list function=function:self}}) {
-  {{function:cpp_name}}(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)){{function_comma}}{{#partial rpc.param_list function=function:self}});
+{{#partial future_functions.future_functions interface=service parent_service=null function=function}}
+        {{#if (and function.legacy_client_methods? (not function.stream?))}}
+          {{#let function_comma = (if function.params.fields? ", " null)}}
+void apache::thrift::Client<{{service.qualified_name}}>::{{function.cpp_name}}(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback{{function_comma}}{{#partial client.function_param_list function=function}}) {
+  {{function.cpp_name}}(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)){{function_comma}}{{#partial rpc.param_list function=function}});
 }
-{{/function:stream?}}{{/function:legacy_client_methods?}}
-{{/function:sink?}}
+        {{/if (and function.legacy_client_methods? (not function.stream?))}}
+      {{/if (not function.sink?)}}
 
-{{> service_async_client_cpp/coroutine_functions}}
+{{#partial coroutine_functions.coroutine_functions interface=service parent_service=null function=function}}
+      {{#if (not function.oneway?)}}
+{{#partial received_wrapped.received_wrapped interface=service parent_service=null function=function}}
 
-{{^function:oneway?}}
-{{> service_async_client_cpp/received_wrapped}}
+{{#partial received.received interface=service parent_service=null function=function}}
 
-
-{{> service_async_client_cpp/received}}
-
-
-{{#function:virtual_client_methods?}}
+        {{#if function.virtual_client_methods?}}
 {{> service_async_client_cpp/received_instance}}
-{{/function:virtual_client_methods?}}
+        {{/if function.virtual_client_methods?}}
 
-{{/function:oneway?}}
-{{/function:return_type}}
-{{#else}}
-apache::thrift::Client<{{service:qualified_name}}>::{{function:created_interaction.name}} apache::thrift::Client<{{service:qualified_name}}>::{{function:cpp_name}}() {
-  return {{function:created_interaction.name}}(channel_, "{{function:created_interaction.name}}", interceptors_);
+      {{/if (not function.oneway?)}}
+    {{#else}}
+apache::thrift::Client<{{service.qualified_name}}>::{{function.created_interaction.name}} apache::thrift::Client<{{service.qualified_name}}>::{{function.cpp_name}}() {
+  return {{function.created_interaction.name}}(channel_, "{{function.created_interaction.name}}", interceptors_);
 }
-{{/if (not function:starts_interaction?)}}
-{{/service:functions}}
+    {{/if (not function.starts_interaction?)}}
+  {{/each}}
 
-{{#service:interactions}}
+  {{#each service.interactions as |interaction|}}
 
-namespace {{service:cpp_qualified_namespace}} {
-{{#partial rpc.function_param_and_result_typedefs interface=service:self parent_service=parent_service}}
-} // namespace {{service:cpp_qualified_namespace}}
-{{> service_async_client_cpp/templated_received}}
+namespace {{interaction.cpp_qualified_namespace}} {
+{{#partial rpc.function_param_and_result_typedefs interface=interaction parent_service=service}}
+} // namespace {{interaction.cpp_qualified_namespace}}
+{{#partial templated_received.templated_received interface=interaction parent_service=service}}
+    {{#each interaction.functions as |function|}}
+{{#partial function_implementation.function_implementation interface=interaction parent_service=service function=function}}
+      {{#if (not function.sink?)}}
+{{#partial sync_functions.sync_functions interface=interaction parent_service=service function=function}}
 
-{{#service:functions}}{{#function:return_type}}
-{{> service_async_client_cpp/function_implementation}}
+{{#partial future_functions.future_functions interface=interaction parent_service=service function=function}}
+      {{#else}}
 
-{{^function:sink?}}
-{{> service_async_client_cpp/sync_functions}}
+      {{/if (not function.sink?)}}
+{{#partial coroutine_functions.coroutine_functions interface=interaction parent_service=service function=function}}
+      {{#if (not function.oneway?)}}
+{{#partial received_wrapped.received_wrapped interface=interaction parent_service=service function=function}}
+{{#partial received.received interface=interaction parent_service=service function=function}}
+      {{#else}}
+        {{! TODO(T260006192): Clean-up preserve whitespace behavior }}
 
-{{> service_async_client_cpp/future_functions}}
-{{/function:sink?}}
+      {{/if (not function.oneway?)}}
+    {{/each}}
 
-{{> service_async_client_cpp/coroutine_functions}}
-
-{{^function:oneway?}}
-{{> service_async_client_cpp/received_wrapped}}
-
-{{> service_async_client_cpp/received}}
-{{/function:oneway?}}
-
-{{/function:return_type}}{{/service:functions}}
-
-{{/service:interactions}}
+  {{/each}}
