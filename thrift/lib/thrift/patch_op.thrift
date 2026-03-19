@@ -68,7 +68,7 @@ enum PatchOp {
    * For maps this is an "add if key not present".
    *
    * For structs, this can be use to encodes the default state of the fields, based
-   * on thier qualifier type:
+   * on their qualifier type:
    * - optional: absent
    * - terse: intrinsic default
    * - fill: custom default
