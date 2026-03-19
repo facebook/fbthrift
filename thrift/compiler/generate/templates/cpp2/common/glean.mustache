@@ -35,3 +35,13 @@
 {{#let export partial enum_docblock |enum|}}
 /** Glean {"file": "{{enum.program.autogen_path}}", "name": "{{enum.cpp_name}}", "kind": "enum" } */
 {{/let partial}}
+
+{{! Class docblock - Glean annotation for mapping generated classes to thrift structs/unions/exceptions }}
+{{#let export partial class_docblock |struct|}}
+/** Glean {"file": "{{struct.program.autogen_path}}", "name": "{{struct.cpp_underlying_name}}", "kind": "{{#if struct.exception?}}exception{{#else if struct.union?}}union{{#else}}struct{{/if}}" } */
+{{/let partial}}
+
+{{! Typedef docblock - Glean annotation for mapping generated typedefs to thrift typedefs }}
+{{#let export partial typedef_docblock |def|}}
+/** Glean {"file": "{{def.program.autogen_path}}", "name": "{{def.name}}", "kind": "typedef" } */
+{{/let partial}}

@@ -28,206 +28,198 @@
 {{#if (has_compiler_option? "frozen")}}
 #include <thrift/lib/cpp/Frozen.h>
 {{/if (has_compiler_option? "frozen")}}
-  {{#each program:includes_for_codegen as |include|}}
+  {{#each program.includes_for_codegen as |include|}}
 #include "{{include.program.include_prefix}}{{include.program.name}}_types.h"
     {{#if include.program.const_referenced_in_field_default?}}
 #include "{{include.program.include_prefix}}{{include.program.name}}_constants.h"
     {{/if include.program.const_referenced_in_field_default?}}
   {{/each}}
-  {{#each program:cpp_includes as |cpp_include|}}
+  {{#each program.cpp_includes as |cpp_include|}}
 #include {{cpp_include}}
   {{/each}}
-  {{#each program:extra_cpp_includes as |cpp_include|}}
+  {{#each program.extra_cpp_includes as |cpp_include|}}
 #include {{cpp_include}}
   {{/each}}
 
-{{#program:structs?}}
+  {{#if program.structs?}}
 namespace apache::thrift {
 namespace ident {
-{{#program:structs}}
-{{#struct:fields}}
-struct {{field:cpp_name}};
-{{/struct:fields}}
-{{/program:structs}}
+    {{#each program.structured_definitions as |struct|}}
+      {{#each struct.fields as |field|}}
+struct {{field.cpp_name}};
+      {{/each}}
+    {{/each}}
 } // namespace ident
 namespace detail {
-{{#program:structs}}
-{{#struct:fields}}
-#ifndef APACHE_THRIFT_ACCESSOR_{{field:cpp_name}}
-#define APACHE_THRIFT_ACCESSOR_{{field:cpp_name}}
-APACHE_THRIFT_DEFINE_ACCESSOR({{field:cpp_name}});
+    {{#each program.structured_definitions as |struct|}}
+      {{#each struct.fields as |field|}}
+#ifndef APACHE_THRIFT_ACCESSOR_{{field.cpp_name}}
+#define APACHE_THRIFT_ACCESSOR_{{field.cpp_name}}
+APACHE_THRIFT_DEFINE_ACCESSOR({{field.cpp_name}});
 #endif
-{{/struct:fields}}
-{{/program:structs}}
+      {{/each}}
+    {{/each}}
 } // namespace detail
 } // namespace apache::thrift
 
-{{/program:structs?}}
-{{#let program = program:self}}
+  {{/if program.structs?}}
 {{> module_types_h/declare_enums}}
 
-{{#partial module_types.forward_declare program=program:self}}
+{{#partial module_types.forward_declare program=program}}
 namespace apache::thrift::detail::annotation {
-{{#program:structs}}
-{{#struct:fields_with_runtime_annotation?}}
+  {{#each program.structured_definitions as |struct|}}
+    {{#if struct.fields_with_runtime_annotation?}}
 template<>
-const std::vector<std::any>& field_annotation_values<{{struct:cpp_fullname}}>(FieldId);
-{{/struct:fields_with_runtime_annotation?}}
-{{#struct:has_runtime_annotation?}}
+const std::vector<std::any>& field_annotation_values<{{struct.cpp_fullname}}>(FieldId);
+    {{/if struct.fields_with_runtime_annotation?}}
+    {{#if struct.has_runtime_annotation?}}
 template<>
-const std::vector<std::any>& struct_annotation_values<{{struct:cpp_fullname}}>();
-{{/struct:has_runtime_annotation?}}
-{{/program:structs}}
+const std::vector<std::any>& struct_annotation_values<{{struct.cpp_fullname}}>();
+    {{/if struct.has_runtime_annotation?}}
+  {{/each}}
 } // namespace apache::thrift::detail::annotation
 
 namespace apache::thrift::detail::qualifier {
-{{#program:structs}}
-{{#struct:fields}}
-{{#field:opt_cpp_ref?}}
+  {{#each program.structured_definitions as |struct|}}
+    {{#each struct.fields as |field|}}
+      {{#if field.opt_cpp_ref?}}
 template<>
-struct is_cpp_ref_field_optional<{{struct:cpp_fullname}},::apache::thrift::type::field_id<{{field:id}}>> : std::true_type{};
-{{/field:opt_cpp_ref?}}
-{{#field:terse_cpp_ref?}}
+struct is_cpp_ref_field_optional<{{struct.cpp_fullname}},::apache::thrift::type::field_id<{{field.id}}>> : std::true_type{};
+      {{#else if field.terse_cpp_ref?}}
 template<>
-struct is_cpp_ref_field_terse<{{struct:cpp_fullname}},::apache::thrift::type::field_id<{{field:id}}>> : std::true_type{};
-{{/field:terse_cpp_ref?}}
-{{#if field:deprecated_terse_writes_with_non_redundant_custom_default?}}
+struct is_cpp_ref_field_terse<{{struct.cpp_fullname}},::apache::thrift::type::field_id<{{field.id}}>> : std::true_type{};
+      {{/if field.opt_cpp_ref?}}
+      {{#if field.deprecated_terse_writes_with_non_redundant_custom_default?}}
 template<>
-struct is_deprecated_terse_writes_with_custom_default_field<{{struct:cpp_fullname}},::apache::thrift::type::field_id<{{field:id}}>> : std::true_type{};
-{{/if field:deprecated_terse_writes_with_non_redundant_custom_default?}}
-{{/struct:fields}}
-{{/program:structs}}
+struct is_deprecated_terse_writes_with_custom_default_field<{{struct.cpp_fullname}},::apache::thrift::type::field_id<{{field.id}}>> : std::true_type{};
+      {{/if field.deprecated_terse_writes_with_non_redundant_custom_default?}}
+    {{/each}}
+  {{/each}}
 } // namespace apache::thrift::detail::qualifier
 
 {{> module_types_h/hash_and_equal_to}}
 
-namespace {{program:cpp_qualified_namespace}} {
-{{#program:structs}}
-{{#struct:is_directly_adapted?}}
-{{^struct:dependent_direct_adapter?}}
-using {{struct:cpp_name}} = {{struct:cpp_underlying_type}};
-{{/struct:dependent_direct_adapter?}}
-{{/struct:is_directly_adapted?}}
-{{/program:structs}}
+namespace {{program.cpp_qualified_namespace}} {
+  {{#each program.structured_definitions as |struct|}}
+    {{#if (and struct.is_directly_adapted? (not struct.dependent_direct_adapter?))}}
+using {{struct.cpp_name}} = {{struct.cpp_underlying_type}};
+    {{/if (and struct.is_directly_adapted? (not struct.dependent_direct_adapter?))}}
+  {{/each}}
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 
-{{#program:structs_and_typedefs}}
-{{#if self.typedef?}}
-{{> common/typedef_docblock }}
-using {{typedef:name}} = {{typedef:cpp_underlying_type}};
-{{#else}}
-{{#let struct = struct:self}}
+  {{#each program.type_definitions_topological_order as |def|}}
+    {{#if def.typedef?}}
+{{#partial glean.typedef_docblock def=def}}
+using {{def.name}} = {{def.cpp_underlying_type}};
+    {{#else}}
 
-{{#struct:extra_namespace}}
-namespace {{struct:extra_namespace}} {
-{{/struct:extra_namespace}}
-{{> common/class_docblock }}
-class {{#struct:exception?}}FOLLY_EXPORT {{/struct:exception?}}{{struct:cpp_underlying_name}} {{!
-}}{{^struct:exception?}}{{^struct:virtual}}final {{/struct:virtual}}{{/struct:exception?}}{{!
-}}{{#struct:exception?}}: public virtual apache::thrift::TException{{/struct:exception?}} {
+      {{#if def.extra_namespace}}
+namespace {{def.extra_namespace}} {
+      {{/if def.extra_namespace}}
+{{#partial glean.class_docblock struct=def}}
+class {{#if def.exception?}}FOLLY_EXPORT {{/if}}{{def.cpp_underlying_name}} {{!
+}}{{#if (and (not def.exception?) (not def.virtual))}}final {{/if}}{{!
+}}{{#if def.exception?}}: public virtual apache::thrift::TException{{/if}} {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = {{(has_compiler_option? "json")}};
-  static constexpr bool __fbthrift_cpp2_is_runtime_annotation = {{struct:is_runtime_annotation?}};
-  {{#struct:uri}}
-  static constexpr folly::cstring_view __fbthrift_thrift_uri = "{{struct:uri}}";
-  {{/struct:uri}}
+  static constexpr bool __fbthrift_cpp2_is_runtime_annotation = {{def.is_runtime_annotation?}};
+      {{#if def.uri}}
+  static constexpr folly::cstring_view __fbthrift_thrift_uri = "{{def.uri}}";
+      {{/if def.uri}}
   static std::string_view __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
   static std::string_view __fbthrift_get_class_name();
   template <class ...>
   FOLLY_ERASE static constexpr std::string_view __fbthrift_get_module_name() noexcept {
-    return "{{program:name}}";
+    return "{{program.name}}";
   }
-{{#struct:has_runtime_annotation?}}
+      {{#if def.has_runtime_annotation?}}
   using __fbthrift_struct_annotations = folly::tag_t<
-  {{#each (array.enumerate struct:structured_runtime_annotations with_last=true) as |i annot last_annot?|}}
+        {{#each (array.enumerate def.structured_runtime_annotations with_last=true) as |i annot last_annot?|}}
     {{annot.type.cpp_fullname}}{{#if (not last_annot?)}}, {{/if}}
-  {{/each}}
+        {{/each}}
   >;
-{{/struct:has_runtime_annotation?}}
-  {{#if struct:fields_with_runtime_annotation?}}
+      {{/if def.has_runtime_annotation?}}
+      {{#if def.fields_with_runtime_annotation?}}
   using __fbthrift_list_of_field_with_annotation = folly::tag_t<
-    {{#each (array.enumerate struct:fields_with_runtime_annotation with_last=true) as |i field last?|}}
+        {{#each (array.enumerate def.fields_with_runtime_annotation with_last=true) as |i field last?|}}
     ::apache::thrift::type::field_id<{{field.id}}>{{#if (not last?)}}, {{/if}}
-    {{/each}}
+        {{/each}}
   >;
   using __fbthrift_annotations_on_fields = folly::tag_t<
-    {{#each (array.enumerate struct:fields_with_runtime_annotation with_last=true) as |i field last?|}}
+        {{#each (array.enumerate def.fields_with_runtime_annotation with_last=true) as |i field last?|}}
     folly::tag_t<
-      {{#each (array.enumerate field.structured_runtime_annotations with_last=true) as |i annot last_annot?|}}
+          {{#each (array.enumerate field.structured_runtime_annotations with_last=true) as |i annot last_annot?|}}
       {{annot.type.cpp_fullname}}{{#if (not last_annot?)}},{{/if}}
-      {{/each}}
+          {{/each}}
     >{{#if (not last?)}},{{/if}}
-    {{/each}}
+        {{/each}}
   >;
-  {{/if struct:fields_with_runtime_annotation?}}
+      {{/if def.fields_with_runtime_annotation?}}
+      {{! Set the `struct` variable for macros }}
+      {{#let struct = def}}
 {{> module_types_h/reflection}}
 
   void __fbthrift_clear();
-{{#struct:union?}}
+      {{#if def.union?}}
   void __fbthrift_destruct();
-{{/struct:union?}}
+      {{/if def.union?}}
   bool __fbthrift_is_empty() const;
-  {{#struct:exception?}}
+      {{#if def.exception?}}
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
-         ::apache::thrift::ExceptionKind::{{exception:kind}};
+         ::apache::thrift::ExceptionKind::{{def.kind}};
   static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
-         ::apache::thrift::ExceptionSafety::{{exception:safety}};
+         ::apache::thrift::ExceptionSafety::{{def.safety}};
   static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame =
-         ::apache::thrift::ExceptionBlame::{{exception:blame}};
-  {{/struct:exception?}}
+         ::apache::thrift::ExceptionBlame::{{def.blame}};
+      {{/if def.exception?}}
 
  public:
-  using __fbthrift_cpp2_type = {{struct:cpp_underlying_name}};
+  using __fbthrift_cpp2_type = {{def.cpp_underlying_name}};
   static constexpr bool __fbthrift_cpp2_is_union =
-    {{#struct:union?}}true{{/struct:union?}}{{^struct:union?}}false{{/struct:union?}};
+    {{#if def.union?}}true{{#else}}false{{/if}};
 
-{{#struct:cpp_allocator}}
+      {{#if def.cpp_allocator}}
  public:
-  using allocator_type = {{struct:cpp_allocator}};
+  using allocator_type = {{def.cpp_allocator}};
   allocator_type get_allocator() const {
-{{#struct:cpp_allocator_via}}
-    return this->{{struct:cpp_allocator_via}}.get_allocator();
-{{/struct:cpp_allocator_via}}
-{{^struct:cpp_allocator_via}}
-    return __fbthrift_alloc;
-{{/struct:cpp_allocator_via}}
+    return {{#if def.cpp_allocator_via}}this->{{def.cpp_allocator_via}}.get_allocator(){{#else}}__fbthrift_alloc{{/if}};
   }
-{{^struct:cpp_allocator_via}}
+        {{#if (not def.cpp_allocator_via)}}
  private:
   [[FOLLY_ATTR_NO_UNIQUE_ADDRESS]] allocator_type __fbthrift_alloc;
-{{/struct:cpp_allocator_via}}
-{{/struct:cpp_allocator}}
+        {{/if (not def.cpp_allocator_via)}}
+      {{/if def.cpp_allocator}}
 
  public:
-{{#struct:union?}}
+      {{#if def.union?}}
 {{> module_types_h/union_enum}}
 
 
-  {{struct:cpp_underlying_name}}()
+  {{def.cpp_underlying_name}}()
       : fbthrift_type_(folly::to_underlying(Type::__EMPTY__)) {}
 
 {{> module_types_h/union_copy_ctor}}
 
 {{> module_types_h/union_assign_overload}}
 
-{{^struct:is_trivially_destructible?}}
-  {{#struct:virtual}}virtual {{/struct:virtual}}~{{struct:cpp_underlying_name}}();
-{{/struct:is_trivially_destructible?}}
+        {{#if (not def.is_trivially_destructible?)}}
+  {{#if def.virtual}}virtual {{/if}}~{{def.cpp_underlying_name}}();
+        {{/if (not def.is_trivially_destructible?)}}
 
 {{> module_types_h/union_storage}}
 
-{{^struct:cpp_noncomparable}}
+        {{#if (not def.cpp_noncomparable)}}
 
-  bool operator==(const {{struct:cpp_underlying_name}}&) const;
-  bool operator<(const {{struct:cpp_underlying_name}}&) const{{#struct:cpp_nonorderable?}} = delete{{/struct:cpp_nonorderable?}};
-{{/struct:cpp_noncomparable}}
+  bool operator==(const {{def.cpp_underlying_name}}&) const;
+  bool operator<(const {{def.cpp_underlying_name}}&) const{{#if def.cpp_nonorderable?}} = delete{{/if}};
+        {{/if (not def.cpp_noncomparable)}}
 {{> module_types_h/union_setters}}
 
 {{> module_types_h/union_getters}}
@@ -247,104 +239,82 @@ class {{#struct:exception?}}FOLLY_EXPORT {{/struct:exception?}}{{struct:cpp_unde
  protected:
   storage_type value_;
   std::underlying_type_t<Type> fbthrift_type_;
-{{/struct:union?}}
-{{^struct:union?}}
+      {{#else}}
 
-{{#struct:is_large?}}
-  {{struct:cpp_underlying_name}}();
-  {{#if (and struct:exception? (object.notnull? exception:message_field))}}
-  explicit {{struct:cpp_underlying_name}}(std::string __message);
-  {{/if (and struct:exception? (object.notnull? exception:message_field))}}
-{{/struct:is_large?}}
-{{^struct:is_large?}}
-  {{#partial module_types.base_ctor struct=struct:self}}
-{{/struct:is_large?}}
+        {{#if def.is_large?}}
+  {{def.cpp_underlying_name}}();
+          {{#if (and def.exception? (object.notnull? def.message_field))}}
+  explicit {{def.cpp_underlying_name}}(std::string __message);
+          {{/if (and def.exception? (object.notnull? def.message_field))}}
+        {{#else}}
+  {{#partial module_types.base_ctor struct=def}}
+        {{/if def.is_large?}}
 
-{{#struct:legacy_api?}}
+        {{#if def.legacy_api?}}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  {{struct:cpp_underlying_name}}(apache::thrift::FragileConstructor{{#partial module_types.fragile_ctor_param_list struct=struct:self}});
-{{/struct:legacy_api?}}
+  {{def.cpp_underlying_name}}(apache::thrift::FragileConstructor{{#partial module_types.fragile_ctor_param_list struct=def}});
+        {{/if def.legacy_api?}}
 
-{{#struct:is_eligible_for_constexpr?}}
-  {{struct:cpp_underlying_name}}({{struct:cpp_underlying_name}}&&) = default;
-{{/struct:is_eligible_for_constexpr?}}
-{{^struct:is_eligible_for_constexpr?}}
-  {{struct:cpp_underlying_name}}({{struct:cpp_underlying_name}}&&) noexcept;
-{{/struct:is_eligible_for_constexpr?}}
-{{^struct:cpp_noncopyable}}
-{{^struct:nondefault_copy_ctor_and_assignment?}}
-{{#struct:is_eligible_for_constexpr?}}
+  {{def.cpp_underlying_name}}({{def.cpp_underlying_name}}&&) {{#if def.is_eligible_for_constexpr?}}= default{{#else}}noexcept{{/if}};
+        {{#if (not def.cpp_noncopyable)}}
+          {{#if (not def.nondefault_copy_ctor_and_assignment?)}}
+            {{#if def.is_eligible_for_constexpr?}}
 
-  {{struct:cpp_underlying_name}}(const {{struct:cpp_underlying_name}}&) = default;
-{{/struct:is_eligible_for_constexpr?}}
-{{^struct:is_eligible_for_constexpr?}}
+  {{def.cpp_underlying_name}}(const {{def.cpp_underlying_name}}&) = default;
+            {{#else}}
 
-  {{struct:cpp_underlying_name}}(const {{struct:cpp_underlying_name}}& src);
-{{/struct:is_eligible_for_constexpr?}}
-{{/struct:nondefault_copy_ctor_and_assignment?}}
-{{#struct:nondefault_copy_ctor_and_assignment?}}
-  {{struct:cpp_underlying_name}}(const {{struct:cpp_underlying_name}}& src);
-{{/struct:nondefault_copy_ctor_and_assignment?}}
-{{/struct:cpp_noncopyable}}
+  {{! TODO(T260006192): Some branches like this one are identical except for whitespace, and can be consolidated post-migration completion }}
+  {{def.cpp_underlying_name}}(const {{def.cpp_underlying_name}}& src);
+            {{/if def.is_eligible_for_constexpr?}}
+          {{#else}}
+  {{def.cpp_underlying_name}}(const {{def.cpp_underlying_name}}& src);
+          {{/if (not def.nondefault_copy_ctor_and_assignment?)}}
+        {{/if (not def.cpp_noncopyable)}}
 
-{{#struct:cpp_allocator}}
+        {{#if def.cpp_allocator}}
 {{> module_types_h/alloc_extended_ctors_decl}}
-{{/struct:cpp_allocator}}
+        {{/if def.cpp_allocator}}
 
-{{#struct:is_eligible_for_constexpr?}}
-  {{struct:cpp_underlying_name}}& operator=({{struct:cpp_underlying_name}}&&) = default;
-{{/struct:is_eligible_for_constexpr?}}
-{{^struct:is_eligible_for_constexpr?}}
-  {{struct:cpp_underlying_name}}& operator=({{struct:cpp_underlying_name}}&&) noexcept;
-{{/struct:is_eligible_for_constexpr?}}
-{{^struct:cpp_noncopyable}}
-{{^struct:nondefault_copy_ctor_and_assignment?}}
-{{#struct:is_eligible_for_constexpr?}}
+  {{def.cpp_underlying_name}}& operator=({{def.cpp_underlying_name}}&&) {{#if def.is_eligible_for_constexpr?}}= default{{#else}}noexcept{{/if}};
+        {{#if (not def.cpp_noncopyable)}}
+          {{#if (not def.nondefault_copy_ctor_and_assignment?)}}
+            {{#if def.is_eligible_for_constexpr?}}
 
-  {{struct:cpp_underlying_name}}& operator=(const {{struct:cpp_underlying_name}}&) = default;
-{{/struct:is_eligible_for_constexpr?}}
-{{^struct:is_eligible_for_constexpr?}}
-  {{struct:cpp_underlying_name}}& operator=(const {{struct:cpp_underlying_name}}& src);
-{{/struct:is_eligible_for_constexpr?}}
-{{/struct:nondefault_copy_ctor_and_assignment?}}
-{{#struct:nondefault_copy_ctor_and_assignment?}}
-  {{struct:cpp_underlying_name}}& operator=(const {{struct:cpp_underlying_name}}& src);
-{{/struct:nondefault_copy_ctor_and_assignment?}}
-{{/struct:cpp_noncopyable}}
-{{^struct:virtual}}
-{{#struct:is_large?}}
+  {{def.cpp_underlying_name}}& operator=(const {{def.cpp_underlying_name}}&) = default;
+            {{#else}}
+  {{! TODO(T260006192): Some branches like this one are identical except for whitespace, and can be consolidated post-migration completion }}
+  {{def.cpp_underlying_name}}& operator=(const {{def.cpp_underlying_name}}& src);
+            {{/if def.is_eligible_for_constexpr?}}
+          {{#else}}
+  {{def.cpp_underlying_name}}& operator=(const {{def.cpp_underlying_name}}& src);
+          {{/if (not def.nondefault_copy_ctor_and_assignment?)}}
+        {{/if (not def.cpp_noncopyable)}}
+        {{#if def.virtual}}
 
-  ~{{struct:cpp_underlying_name}}(){{#struct:exception?}} override{{/struct:exception?}};
+  {{#if (not def.exception?)}}virtual{{/if}} ~{{def.cpp_underlying_name}}() {{#if def.exception?}} override{{/if}}{{#if def.is_large?}};{{#else}}{}{{/if}}
 
-{{/struct:is_large?}}
-{{/struct:virtual}}
-{{#struct:virtual}}
+        {{#else if def.is_large?}}
 
-{{^struct:is_large?}}
-  {{^struct:exception?}}virtual{{/struct:exception?}} ~{{struct:cpp_underlying_name}}() {{#struct:exception?}} override{{/struct:exception?}}{}
-{{/struct:is_large?}}
-{{#struct:is_large?}}
-  {{^struct:exception?}}virtual{{/struct:exception?}} ~{{struct:cpp_underlying_name}}() {{#struct:exception?}} override{{/struct:exception?}};
-{{/struct:is_large?}}
+  ~{{def.cpp_underlying_name}}(){{#if def.exception?}} override{{/if}};
 
-{{/struct:virtual}}
-{{#struct:fields?}}
+        {{/if def.virtual}}
+        {{#if def.fields?}}
 {{> module_types_h/declare_members}}
-{{/struct:fields?}}
+        {{/if def.fields?}}
 
  public:
-{{^struct:cpp_noncomparable}}
+        {{#if (not def.cpp_noncomparable)}}
 
-  bool operator==(const {{struct:cpp_underlying_name}}&) const;
-  bool operator<(const {{struct:cpp_underlying_name}}&) const{{#struct:cpp_nonorderable?}} = delete{{/struct:cpp_nonorderable?}};
-{{/struct:cpp_noncomparable}}
-{{#struct:fields?}}
+  bool operator==(const {{def.cpp_underlying_name}}&) const;
+  bool operator<(const {{def.cpp_underlying_name}}&) const{{#if def.cpp_nonorderable?}} = delete{{/if}};
+        {{/if (not def.cpp_noncomparable)}}
+        {{#if def.fields?}}
 {{> module_types_h/field_ref}}
-{{#struct:legacy_api?}}
+          {{#if def.legacy_api?}}
 {{> module_types_h/getters_setters}}
-{{/struct:legacy_api?}}
-{{/struct:fields?}}
+          {{/if def.legacy_api?}}
+        {{/if def.fields?}}
 
   template <class Protocol_>
   unsigned long read(Protocol_* iprot);
@@ -354,97 +324,96 @@ class {{#struct:exception?}}FOLLY_EXPORT {{/struct:exception?}}{{struct:cpp_unde
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
-{{#struct:exception?}}
+        {{#if def.exception?}}
 
   const char* what() const noexcept override {
-    return {{#if (object.notnull? exception:message_field)}}{{exception:message_field.cpp_storage_name}}.c_str(){{#else}}"{{struct:cpp_fullname}}"{{/if}};
+    return {{#if (object.notnull? def.message_field)}}{{def.message_field.cpp_storage_name}}.c_str(){{#else}}"{{def.cpp_fullname}}"{{/if}};
   }
-{{/struct:exception?}}
-{{/struct:union?}}
-{{#struct:cpp_methods}}
+        {{/if def.exception?}}
+      {{/if def.union?}}
+      {{#if def.cpp_methods}}
   // user defined code (cpp.methods = ...)
-  {{struct:cpp_methods}}
-{{/struct:cpp_methods}}
+  {{def.cpp_methods}}
+      {{/if def.cpp_methods}}
 
  private:
 {{> module_types_h/lazy_deserialization}}
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 {{!}}
-{{#struct:fields}}
-{{#field:deprecated_terse_writes?}}{{#field:type}}{{^type:structured?}}
+      {{#each def.fields as |field|}}
+        {{#if (and field.deprecated_terse_writes? (not field.type.structured?))}}
 
-  bool __fbthrift_should_write_deprecated_terse_field(::folly::tag_t<::apache::thrift::ident::{{field:cpp_name}}>) const {
-    return {{#partial fields.deprecated_terse_has_value field=field:self struct=struct:self}};
+  bool __fbthrift_should_write_deprecated_terse_field(::folly::tag_t<::apache::thrift::ident::{{field.cpp_name}}>) const {
+    return {{#partial fields.deprecated_terse_has_value field=field struct=def}};
   }
-{{/type:structured?}}{{/field:type}}{{/field:deprecated_terse_writes?}}
-{{/struct:fields}}
+        {{/if (and field.deprecated_terse_writes? (not field.type.structured?))}}
+      {{/each}}
 
-  friend class ::apache::thrift::Cpp2Ops<{{struct:cpp_underlying_name}}>;
-  friend void swap({{struct:cpp_underlying_name}}& a, {{struct:cpp_underlying_name}}& b);
-  {{#if (has_compiler_option? "tablebased")}}
-  {{^struct:union?}}
-  friend constexpr ptrdiff_t (::apache::thrift::detail::fieldOffset<{{struct:cpp_underlying_name}}>)(std::int16_t fieldIndex);
-  friend constexpr ptrdiff_t (::apache::thrift::detail::issetOffset<{{struct:cpp_underlying_name}}>)(std::int16_t fieldIndex);
-  {{/struct:union?}}
-  {{#struct:union?}}
-  friend constexpr ptrdiff_t (::apache::thrift::detail::unionTypeOffset<{{struct:cpp_underlying_name}}>)();
-  {{/struct:union?}}
-  {{/if (has_compiler_option? "tablebased")}}
+  friend class ::apache::thrift::Cpp2Ops<{{def.cpp_underlying_name}}>;
+  friend void swap({{def.cpp_underlying_name}}& a, {{def.cpp_underlying_name}}& b);
+      {{#if (has_compiler_option? "tablebased")}}
+        {{#if def.union?}}
+  friend constexpr ptrdiff_t (::apache::thrift::detail::unionTypeOffset<{{def.cpp_underlying_name}}>)();
+        {{#else}}
+  friend constexpr ptrdiff_t (::apache::thrift::detail::fieldOffset<{{def.cpp_underlying_name}}>)(std::int16_t fieldIndex);
+  friend constexpr ptrdiff_t (::apache::thrift::detail::issetOffset<{{def.cpp_underlying_name}}>)(std::int16_t fieldIndex);
+        {{/if def.union?}}
+      {{/if (has_compiler_option? "tablebased")}}
 };
 
 template <class Protocol_>
-unsigned long {{struct:cpp_underlying_name}}::read(Protocol_* iprot) {
+unsigned long {{def.cpp_underlying_name}}::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
-{{#struct:extra_namespace}}
-} // namespace {{struct:extra_namespace}}
-{{/struct:extra_namespace}}
-{{#struct:is_directly_adapted?}}
-{{#struct:dependent_direct_adapter?}}
+      {{#if def.extra_namespace}}
+} // namespace {{def.extra_namespace}}
+      {{/if def.extra_namespace}}
+      {{#if (and def.is_directly_adapted? def.dependent_direct_adapter?)}}
 
-using {{struct:cpp_name}} = {{struct:cpp_underlying_type}};
-{{/struct:dependent_direct_adapter?}}
-{{/struct:is_directly_adapted?}}
+using {{def.cpp_name}} = {{def.cpp_underlying_type}};
+      {{/if (and def.is_directly_adapted? def.dependent_direct_adapter?)}}
 
-{{/if self.typedef?}}
-{{/program:structs_and_typedefs}}
+    {{/if def.typedef?}}
+  {{/each}}
 
-} // namespace {{program:cpp_qualified_namespace}}
-{{#if (has_compiler_option? "frozen")}}{{#program:structs}}
+} // namespace {{program.cpp_qualified_namespace}}
+  {{#if (has_compiler_option? "frozen")}}
+    {{#each program.structured_definitions as |struct|}}
 {{> module_types_h/frozen}}
 
-{{/program:structs}}{{/if (has_compiler_option? "frozen")}}
+    {{/each}}
+  {{/if (has_compiler_option? "frozen")}}
 {{> module_types_h/declare_union_types}}
 
 namespace apache::thrift::detail {
-{{#program:structs}}
-{{#partial schema_association.declaration node=struct:self}}
-{{/program:structs}}
-{{#program:enums}}
-{{#partial schema_association.declaration node=enum:self}}
-{{/program:enums}}
+  {{#each program.structured_definitions as |struct|}}
+{{#partial schema_association.declaration node=struct}}
+  {{/each}}
+  {{#each program.enums as |enum|}}
+{{#partial schema_association.declaration node=enum}}
+  {{/each}}
 } // namespace apache::thrift::detail
-{{#if (has_compiler_option? "tablebased")}}
+  {{#if (has_compiler_option? "tablebased")}}
 
 namespace apache::thrift::detail {
-{{#program:structs}}
+    {{#each program.structured_definitions as |struct|}}
 template <>
 struct TypeToInfo<
-    ::apache::thrift::type_class::{{#struct:union?}}variant{{/struct:union?}}{{^struct:union?}}structure{{/struct:union?}},
-    {{struct:cpp_fullname}}> {
+    ::apache::thrift::type_class::{{#if struct.union?}}variant{{#else}}structure{{/if}},
+    {{struct.cpp_fullname}}> {
   static const ::apache::thrift::detail::TypeInfo typeInfo;
 };
-{{/program:structs}}
-{{#program:enums}}
+    {{/each}}
+    {{#each program.enums as |enum|}}
   template <>
     struct TypeToInfo<
         ::apache::thrift::type_class::enumeration,
-        ::{{program:cpp_qualified_namespace}}::{{enum:cpp_name}}> {
+        ::{{program.cpp_qualified_namespace}}::{{enum.cpp_name}}> {
     static const ::apache::thrift::detail::TypeInfo typeInfo;
   };
-{{/program:enums}}
+    {{/each}}
 } // namespace apache::thrift::detail
-{{/if (has_compiler_option? "tablebased")}}
+  {{/if (has_compiler_option? "tablebased")}}

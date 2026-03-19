@@ -2190,7 +2190,6 @@ void t_mstch_cpp2_generator::generate_visitation() {
 
 void t_mstch_cpp2_generator::generate_structs(const t_program* program) {
   const auto& name = program->name();
-  const auto& prog = cached_program(program);
 
   render_whisker_file("module_data.h", fmt::format("{}_data.h", name));
   render_whisker_file("module_data.cpp", fmt::format("{}_data.cpp", name));
@@ -2202,7 +2201,7 @@ void t_mstch_cpp2_generator::generate_structs(const t_program* program) {
   // program - module_types.h CAN include and reference consts from other
   // programs.
   cpp_enable_same_program_const_referencing_ = false;
-  render_to_file(prog, "module_types.h", name + "_types.h");
+  render_whisker_file("module_types.h", fmt::format("{}_types.h", name));
   cpp_enable_same_program_const_referencing_ = true;
 
   render_whisker_file(

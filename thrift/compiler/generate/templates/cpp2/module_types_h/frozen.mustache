@@ -18,30 +18,27 @@
 
 namespace apache { namespace thrift {
 
-{{#program:frozen_packed?}}#pragma pack(push, 1){{/program:frozen_packed?}}
+{{#if program.frozen_packed?}}#pragma pack(push, 1){{/if}}
 template<>
-struct Frozen<{{struct:cpp_fullname}}, void> {
-{{#struct:fields}}
-{{#field:type}}
-{{#type:bool?}}
-  bool {{field:cpp_name}} : 1;
-{{/type:bool?}}
-{{^type:bool?}}
-  typename Freezer<{{field:cpp_type}}>::FrozenType {{field:cpp_name}};
-{{/type:bool?}}
-{{/field:type}}
-{{/struct:fields}}
+struct Frozen<{{struct.cpp_fullname}}, void> {
+  {{#each struct.fields as |field|}}
+      {{#if field.type.bool?}}
+  bool {{field.cpp_name}} : 1;
+      {{#else}}
+  typename Freezer<{{field.cpp_type}}>::FrozenType {{field.cpp_name}};
+      {{/if field.type.bool?}}
+  {{/each}}
 
-{{#struct:isset_fields?}}
+  {{#if struct.isset_fields?}}
   struct __isset {
-{{#struct:isset_fields}}
-    bool {{field:cpp_name}} : 1;
-{{/struct:isset_fields}}
+    {{#each struct.isset_fields as |field|}}
+    bool {{field.cpp_name}} : 1;
+    {{/each}}
   } __isset = {};
-{{/struct:isset_fields?}}
+  {{/if struct.isset_fields?}}
 };
 
-{{#program:frozen_packed?}}#pragma pack(pop){{/program:frozen_packed?}}
+{{#if program.frozen_packed?}}#pragma pack(pop){{/if}}
 
 }} // apache::thrift
 {{/if (has_compiler_option? "frozen")}}

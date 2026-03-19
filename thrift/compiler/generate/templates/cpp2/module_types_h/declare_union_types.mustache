@@ -15,11 +15,11 @@
   limitations under the License.
 
 }}
-{{#if program:unions?}}
+  {{#if program.unions?}}
 
 namespace apache::thrift {
-  {{#each program:structured_definitions as |def|}}
-    {{#if def.union?}}
+    {{#each program.structured_definitions as |def|}}
+      {{#if def.union?}}
 
 template <> struct TEnumDataStorage<{{def.cpp_fullname}}::Type>;
 
@@ -39,12 +39,12 @@ template <> struct TEnumTraits<{{def.cpp_fullname}}::Type> {
     return ret.data();
   }
 
-  {{#if def.fields?}}
+        {{#if def.fields?}}
   static constexpr type min() { return type::{{def.min_union_member}}; }
   static constexpr type max() { return type::{{def.max_union_member}}; }
-  {{/if def.fields?}}
+        {{/if def.fields?}}
 };
-    {{/if def.union?}}
-  {{/each}}
+      {{/if def.union?}}
+    {{/each}}
 } // namespace apache::thrift
-{{/if program:unions?}}
+  {{/if program.unions?}}
