@@ -46,7 +46,6 @@ class CompactV1ProtocolWriter : protected CompactProtocolWriter {
       const std::string& name, MessageType messageType, int32_t seqid);
   using CompactProtocolWriter::writeBool;
   using CompactProtocolWriter::writeByte;
-  using CompactProtocolWriter::writeEnum;
   using CompactProtocolWriter::writeFieldBegin;
   using CompactProtocolWriter::writeFieldEnd;
   using CompactProtocolWriter::writeFieldStop;

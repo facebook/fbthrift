@@ -127,10 +127,9 @@ void testSerializedSizeBasicTypes() {
   testSerializedSize<Protocol, type::binary_t, type_class::binary>(
       folly::StringPiece("foo"));
   testSerializedSize<Protocol, type::binary_t, type_class::binary>("foo");
-  testSerializedSize<
-      Protocol,
-      type::enum_t<conformance::StandardProtocol>,
-      type_class::enumeration>(conformance::StandardProtocol::Binary);
+  enum class MyEnum { value = 1 };
+  testSerializedSize<Protocol, type::enum_t<MyEnum>, type_class::enumeration>(
+      MyEnum::value);
 }
 
 template <conformance::StandardProtocol Protocol>
@@ -327,8 +326,7 @@ void testEncodeBasicTypes() {
       folly::StringPiece("foo"), false);
   testEncode<Protocol, type::string_t>("foo", false);
   testEncode<Protocol, type::binary_t>("foo");
-  testEncode<Protocol, type::enum_t<conformance::StandardProtocol>>(
-      conformance::StandardProtocol::Binary);
+  testEncode<Protocol, type::enum_t<int>>(1);
 }
 
 template <conformance::StandardProtocol Protocol>
@@ -344,11 +342,8 @@ void testEncodeUnsignedTypes() {
 template <conformance::StandardProtocol Protocol>
 void testEncodeContainers() {
   SCOPED_TRACE(apache::thrift::util::enumNameSafe(Protocol));
-  testEncode<Protocol, type::list<type::enum_t<conformance::StandardProtocol>>>(
-      std::vector<conformance::StandardProtocol>{
-          conformance::StandardProtocol::Binary,
-          conformance::StandardProtocol::Compact,
-          conformance::StandardProtocol::SimpleJson});
+  testEncode<Protocol, type::list<type::enum_t<int>>>(
+      std::vector<int32_t>{1, 2, 3});
   testEncode<Protocol, type::set<type::bool_t>>(std::set<bool>{true, false});
   testEncode<Protocol, type::map<type::string_t, type::byte_t>>(
       std::map<std::string, int8_t>{{"foo", 1}, {"bar", 2}}, false);
@@ -539,8 +534,8 @@ void testDecodeBasicTypes() {
   testDecode<Protocol, type::double_t>(1.5);
   testDecode<Protocol, type::string_t>(std::string("foo"));
   testDecode<Protocol, type::binary_t>(std::string("foo"));
-  testDecode<Protocol, type::enum_t<conformance::StandardProtocol>>(
-      conformance::StandardProtocol::Binary);
+  enum class MyEnum { value = 1 };
+  testDecode<Protocol, type::enum_t<MyEnum>>(MyEnum::value);
 }
 
 template <conformance::StandardProtocol Protocol>
@@ -556,11 +551,8 @@ void testDecodeUnsignedTypes() {
 template <conformance::StandardProtocol Protocol>
 void testDecodeContainers() {
   SCOPED_TRACE(apache::thrift::util::enumNameSafe(Protocol));
-  testDecode<Protocol, type::list<type::enum_t<conformance::StandardProtocol>>>(
-      std::vector<conformance::StandardProtocol>{
-          conformance::StandardProtocol::Binary,
-          conformance::StandardProtocol::Compact,
-          conformance::StandardProtocol::SimpleJson});
+  testDecode<Protocol, type::list<type::enum_t<int>>>(
+      std::vector<int32_t>{1, 2, 3});
   testDecode<Protocol, type::list<type::bool_t>>(
       std::vector<bool>{true, false, true});
   testDecode<Protocol, type::set<type::bool_t>>(std::set<bool>{true, false});
