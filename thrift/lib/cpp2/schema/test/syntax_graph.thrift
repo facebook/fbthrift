@@ -30,6 +30,7 @@ struct TestRecursiveStruct {
 
 @thrift.Uri{value = "meta.com/thrift_test/ComplexAnnotation"}
 @scope.Structured
+@thrift.RuntimeAnnotation
 struct ComplexAnnotation {
   1: list<TestInnerStructuredAnnotation> l;
   2: set<string> s;
@@ -41,6 +42,7 @@ struct ComplexAnnotation {
 @scope.Field
 @scope.Enum
 @scope.EnumValue
+@thrift.RuntimeAnnotation
 struct TestStructuredAnnotation {
   1: i64 field1;
   2: TestInnerStructuredAnnotation field2;

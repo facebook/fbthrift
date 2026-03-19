@@ -16,6 +16,7 @@
 
 include "thrift/annotation/scope.thrift"
 include "thrift/annotation/cpp.thrift"
+include "thrift/annotation/thrift.thrift"
 
 package "facebook.com/thrift/test/schema/cpp2"
 
@@ -36,6 +37,7 @@ struct C {
 struct NotIncluded {}
 
 @scope.Struct
+@thrift.RuntimeAnnotation
 struct TestAnnot {
   1: string loc;
 }

@@ -905,12 +905,24 @@ type_system::SerializableRecord toTypeSystemAnnotation(
       });
 }
 
+constexpr std::string_view kThriftUriAnnotation =
+    "facebook.com/thrift/annotation/Uri";
+constexpr std::string_view kScopeAnnotationPrefix =
+    "facebook.com/thrift/annotation/scope/";
+
+bool isCompilerConsumedAnnotation(const Annotation& annotation) {
+  auto uri = annotation.type().asStruct().uri();
+  return uri == kThriftUriAnnotation || uri.starts_with(kScopeAnnotationPrefix);
+}
+
 type_system::AnnotationsMap toTypeSystemAnnotations(
     folly::span<const Annotation> annotations) {
   type_system::AnnotationsMap annotationsMap;
-  annotationsMap.reserve(annotations.size());
   // TODO(dokwon): only preserve annotations with @thrift.RuntimeAnnotation
   for (const Annotation& annotation : annotations) {
+    if (isCompilerConsumedAnnotation(annotation)) {
+      continue;
+    }
     annotationsMap.emplace(
         annotation.type().asStruct().uri(),
         toTypeSystemAnnotation(annotation.type(), annotation.value()));
