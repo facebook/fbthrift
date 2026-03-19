@@ -485,6 +485,7 @@ where
             &mut ctx_stack,
             first_result,
         )?;
+        reply_state.set_stream_method_name("SinkService.method");
         reply_state.set_stream_context_stack(ctx_stack);
         let (input_stream, final_result_callback) = reply_state.send_sink_reply(first_result_enc, buffer_size, chunk_timeout, P::PROTOCOL_ID);
         let stream =
@@ -617,6 +618,7 @@ where
             &mut ctx_stack,
             first_result,
         )?;
+        reply_state.set_stream_method_name("SinkService.methodAndReponse");
         reply_state.set_stream_context_stack(ctx_stack);
         let (input_stream, final_result_callback) = reply_state.send_sink_reply(first_result_enc, buffer_size, chunk_timeout, P::PROTOCOL_ID);
         let stream =
@@ -748,6 +750,7 @@ where
             &mut ctx_stack,
             first_result,
         )?;
+        reply_state.set_stream_method_name("SinkService.methodThrow");
         reply_state.set_stream_context_stack(ctx_stack);
         let (input_stream, final_result_callback) = reply_state.send_sink_reply(first_result_enc, buffer_size, chunk_timeout, P::PROTOCOL_ID);
         let stream =
@@ -879,6 +882,7 @@ where
             &mut ctx_stack,
             first_result,
         )?;
+        reply_state.set_stream_method_name("SinkService.methodSinkThrow");
         reply_state.set_stream_context_stack(ctx_stack);
         let (input_stream, final_result_callback) = reply_state.send_sink_reply(first_result_enc, buffer_size, chunk_timeout, P::PROTOCOL_ID);
         let stream =
@@ -1010,6 +1014,7 @@ where
             &mut ctx_stack,
             first_result,
         )?;
+        reply_state.set_stream_method_name("SinkService.methodFinalThrow");
         reply_state.set_stream_context_stack(ctx_stack);
         let (input_stream, final_result_callback) = reply_state.send_sink_reply(first_result_enc, buffer_size, chunk_timeout, P::PROTOCOL_ID);
         let stream =
@@ -1147,6 +1152,7 @@ where
             &mut ctx_stack,
             first_result,
         )?;
+        reply_state.set_stream_method_name("SinkService.methodBothThrow");
         reply_state.set_stream_context_stack(ctx_stack);
         let (input_stream, final_result_callback) = reply_state.send_sink_reply(first_result_enc, buffer_size, chunk_timeout, P::PROTOCOL_ID);
         let stream =
@@ -1284,6 +1290,7 @@ where
             &mut ctx_stack,
             first_result,
         )?;
+        reply_state.set_stream_method_name("SinkService.methodFast");
         reply_state.set_stream_context_stack(ctx_stack);
         let (input_stream, final_result_callback) = reply_state.send_sink_reply(first_result_enc, buffer_size, chunk_timeout, P::PROTOCOL_ID);
         let stream =

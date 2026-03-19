@@ -1540,6 +1540,7 @@ where
             response,
         )?;
 
+        reply_state.set_stream_method_name("MyService.streamById");
         reply_state.set_stream_context_stack(ctx_stack);
         let _ = reply_state.send_stream_reply(response, stream, P::PROTOCOL_ID);
         ::std::result::Result::Ok(())
@@ -1648,6 +1649,7 @@ where
             response,
         )?;
 
+        reply_state.set_stream_method_name("MyService.streamByIdWithException");
         reply_state.set_stream_context_stack(ctx_stack);
         let _ = reply_state.send_stream_reply(response, stream, P::PROTOCOL_ID);
         ::std::result::Result::Ok(())
@@ -1748,6 +1750,7 @@ where
             response,
         )?;
 
+        reply_state.set_stream_method_name("MyService.streamByIdWithResponse");
         reply_state.set_stream_context_stack(ctx_stack);
         let _ = reply_state.send_stream_reply(response, stream, P::PROTOCOL_ID);
         ::std::result::Result::Ok(())

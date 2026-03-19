@@ -782,6 +782,7 @@ where
             response,
         )?;
 
+        reply_state.set_stream_method_name("PubSubStreamingService.returnstream");
         reply_state.set_stream_context_stack(ctx_stack);
         let _ = reply_state.send_stream_reply(response, stream, P::PROTOCOL_ID);
         ::std::result::Result::Ok(())
@@ -889,6 +890,7 @@ where
             response,
         )?;
 
+        reply_state.set_stream_method_name("PubSubStreamingService.streamthrows");
         reply_state.set_stream_context_stack(ctx_stack);
         let _ = reply_state.send_stream_reply(response, stream, P::PROTOCOL_ID);
         ::std::result::Result::Ok(())
@@ -988,6 +990,7 @@ where
             response,
         )?;
 
+        reply_state.set_stream_method_name("PubSubStreamingService.servicethrows");
         reply_state.set_stream_context_stack(ctx_stack);
         let _ = reply_state.send_stream_reply(response, stream, P::PROTOCOL_ID);
         ::std::result::Result::Ok(())
@@ -1087,6 +1090,7 @@ where
             response,
         )?;
 
+        reply_state.set_stream_method_name("PubSubStreamingService.servicethrows2");
         reply_state.set_stream_context_stack(ctx_stack);
         let _ = reply_state.send_stream_reply(response, stream, P::PROTOCOL_ID);
         ::std::result::Result::Ok(())
@@ -1194,6 +1198,7 @@ where
             response,
         )?;
 
+        reply_state.set_stream_method_name("PubSubStreamingService.boththrows");
         reply_state.set_stream_context_stack(ctx_stack);
         let _ = reply_state.send_stream_reply(response, stream, P::PROTOCOL_ID);
         ::std::result::Result::Ok(())
@@ -1301,6 +1306,7 @@ where
             response,
         )?;
 
+        reply_state.set_stream_method_name("PubSubStreamingService.responseandstreamstreamthrows");
         reply_state.set_stream_context_stack(ctx_stack);
         let _ = reply_state.send_stream_reply(response, stream, P::PROTOCOL_ID);
         ::std::result::Result::Ok(())
@@ -1400,6 +1406,7 @@ where
             response,
         )?;
 
+        reply_state.set_stream_method_name("PubSubStreamingService.responseandstreamservicethrows");
         reply_state.set_stream_context_stack(ctx_stack);
         let _ = reply_state.send_stream_reply(response, stream, P::PROTOCOL_ID);
         ::std::result::Result::Ok(())
@@ -1507,6 +1514,7 @@ where
             response,
         )?;
 
+        reply_state.set_stream_method_name("PubSubStreamingService.responseandstreamboththrows");
         reply_state.set_stream_context_stack(ctx_stack);
         let _ = reply_state.send_stream_reply(response, stream, P::PROTOCOL_ID);
         ::std::result::Result::Ok(())
@@ -1607,6 +1615,7 @@ where
             response,
         )?;
 
+        reply_state.set_stream_method_name("PubSubStreamingService.returnstreamFast");
         reply_state.set_stream_context_stack(ctx_stack);
         let _ = reply_state.send_stream_reply(response, stream, P::PROTOCOL_ID);
         ::std::result::Result::Ok(())
