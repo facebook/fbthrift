@@ -27,8 +27,7 @@
     {{#if function.sink_has_first_response?}}
 apache::thrift::ResponseAndBidirectionalStream<{{function.return_type.cpp_type}}, {{function.sink.elem_type.cpp_type}}, {{function.stream.elem_type.cpp_type}}>
     {{#else}}
-apache::thrift::BidirectionalStream<
-{{function.sink.elem_type.cpp_type}}, {{function.stream.elem_type.cpp_type}}>
+apache::thrift::BidirectionalStream<{{function.sink.elem_type.cpp_type}}, {{function.stream.elem_type.cpp_type}}>
     {{/if function.sink_has_first_response?}}
   {{#else if function.stream?}}
     {{#if function.stream_has_first_response?}}
@@ -77,9 +76,16 @@ apache::thrift::Client<{{service.qualified_name}}>::{{function.created_interacti
 
 {{#let export partial client_class_name |service parent_service|}}
 {{#pragma ignore-newlines}}
-  {{#if service.interaction?}}
-apache::thrift::Client<{{parent_service.qualified_name}}>::{{service.name}}
-  {{#else}}
-apache::thrift::Client<{{service.qualified_name}}>
-  {{/if service.interaction?}}
+apache::thrift::Client
+{{#if service.interaction?}}<{{parent_service.qualified_name}}>::{{service.name}}{{#else}}<{{service.qualified_name}}>{{/if}}
+{{/let partial}}
+
+{{#let export partial callback_type |function|}}
+{{#pragma ignore-newlines}}
+apache::thrift::
+{{#if function.bidirectional_stream?}}BiDiClientCallback*
+{{#else if function.sink?}}SinkClientCallback*
+{{#else if function.stream?}}StreamClientCallback*
+{{#else}}RequestClientCallback::Ptr
+{{/if function.bidirectional_stream?}}
 {{/let partial}}

@@ -29,16 +29,16 @@
 //
 {{#if (not function:event_based?)}}
 
-{{#partial server.sync_return_type function=function:self service=service:self}} {{> service_common/service_class_name}}::{{function:cpp_name}}({{#partial server.sync_return_param function=function:self}}{{#partial server.function_param_list_commented_out function=function:self}}) {
+{{#partial server.sync_return_type function=function:self service=service:self}} {{#partial server.service_class_name service=service:self parent_service=parent_service}}::{{function:cpp_name}}({{#partial server.sync_return_param function=function:self}}{{#partial server.function_param_list_commented_out function=function:self}}) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("{{function:name}}");
 }
 
-{{#partial server.sync_return_type function=function:self service=service:self}} {{> service_common/service_class_name}}::sync_{{function:cpp_name}}({{#function:sync_returns_by_outparam?}}{{!}}{{function:cpp_return_type}}& _return{{function_comma}}{{!}}{{/function:sync_returns_by_outparam?}}{{#partial server.function_param_list function=function:self}}) {
-  return {{function:cpp_name}}({{#function:sync_returns_by_outparam?}}_return{{function_comma}}{{!}}{{/function:sync_returns_by_outparam?}}{{> service_common/param_list_move}});
+{{#partial server.sync_return_type function=function:self service=service:self}} {{#partial server.service_class_name service=service:self parent_service=parent_service}}::sync_{{function:cpp_name}}({{#function:sync_returns_by_outparam?}}{{!}}{{function:cpp_return_type}}& _return{{function_comma}}{{!}}{{/function:sync_returns_by_outparam?}}{{#partial server.function_param_list function=function:self}}) {
+  return {{function:cpp_name}}({{#function:sync_returns_by_outparam?}}_return{{function_comma}}{{!}}{{/function:sync_returns_by_outparam?}}{{#partial server.param_list_move function=function:self}});
 }
 
 folly::SemiFuture<{{#partial server.return_type_lift_unit function=function:self service=service:self}}>
-{{> service_common/service_class_name}}::semifuture_{{function:cpp_name}}({{#partial server.function_param_list function=function:self}}) {
+{{#partial server.service_class_name service=service:self parent_service=parent_service}}::semifuture_{{function:cpp_name}}({{#partial server.function_param_list function=function:self}}) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_{{function:cpp_name}}.compare_exchange_strong(
       expected,
@@ -46,21 +46,21 @@ folly::SemiFuture<{{#partial server.return_type_lift_unit function=function:self
       std::memory_order_relaxed);
 {{^function:sync_returns_by_outparam?}}
 {{^function:void?}}
-  return sync_{{function:cpp_name}}({{> service_common/param_list_move}});
+  return sync_{{function:cpp_name}}({{#partial server.param_list_move function=function:self}});
 {{/function:void?}}
 {{#function:void?}}
-  sync_{{function:cpp_name}}({{> service_common/param_list_move}});
+  sync_{{function:cpp_name}}({{#partial server.param_list_move function=function:self}});
   return folly::makeSemiFuture();
 {{/function:void?}}
 {{/function:sync_returns_by_outparam?}}
 {{#function:sync_returns_by_outparam?}}
 {{#function:stack_arguments?}}
   {{type:cpp_type}} ret;
-  sync_{{function:cpp_name}}(ret{{function_comma}}{{> service_common/param_list_move}});
+  sync_{{function:cpp_name}}(ret{{function_comma}}{{#partial server.param_list_move function=function:self}});
 {{/function:stack_arguments?}}
 {{^function:stack_arguments?}}
   auto ret = std::make_unique<{{type:cpp_type}}>();
-  sync_{{function:cpp_name}}(*ret{{function_comma}}{{> service_common/param_list_move}});
+  sync_{{function:cpp_name}}(*ret{{function_comma}}{{#partial server.param_list_move function=function:self}});
 {{/function:stack_arguments?}}
   return folly::makeSemiFuture(std::move(ret));
 {{/function:sync_returns_by_outparam?}}
@@ -68,55 +68,55 @@ folly::SemiFuture<{{#partial server.return_type_lift_unit function=function:self
 {{^service:interaction?}}
 
 folly::Future<{{#partial server.return_type_lift_unit function=function:self service=service:self}}>
-{{> service_common/service_class_name}}::future_{{function:cpp_name}}({{#partial server.function_param_list function=function:self}}) {
+{{#partial server.service_class_name service=service:self parent_service=parent_service}}::future_{{function:cpp_name}}({{#partial server.function_param_list function=function:self}}) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_{{function:cpp_name}}.compare_exchange_strong(
       expected,
       apache::thrift::detail::si::InvocationType::SemiFuture,
       std::memory_order_relaxed);
   return apache::thrift::detail::si::future(
-      semifuture_{{function:cpp_name}}({{> service_common/param_list_move}}),
+      semifuture_{{function:cpp_name}}({{#partial server.param_list_move function=function:self}}),
       getInternalKeepAlive());
 }
 {{/service:interaction?}}
 
 #if FOLLY_HAS_COROUTINES
 folly::coro::Task<{{#partial server.return_type function=function:self service=service:self}}>
-{{> service_common/service_class_name}}::co_{{function:cpp_name}}({{#partial server.function_param_list function=function:self}}) {
+{{#partial server.service_class_name service=service:self parent_service=parent_service}}::co_{{function:cpp_name}}({{#partial server.function_param_list function=function:self}}) {
   auto expected{apache::thrift::detail::si::InvocationType::Coro};
   __fbthrift_invocation_{{function:cpp_name}}.compare_exchange_strong(
       expected,
       apache::thrift::detail::si::InvocationType::{{^service:interaction?}}Future{{/service:interaction?}}{{#service:interaction?}}SemiFuture{{/service:interaction?}},
       std::memory_order_relaxed);
   {{#function:stack_arguments?}}
-  apache::thrift::detail::si::ignore({{> service_common/param_list_move}});
+  apache::thrift::detail::si::ignore({{#partial server.param_list_move function=function:self}});
   folly::throw_exception(apache::thrift::detail::si::UnimplementedCoroMethod::
                              withoutCapturedArgs());
   {{/function:stack_arguments?}}
   {{^function:stack_arguments?}}
   folly::throw_exception(apache::thrift::detail::si::UnimplementedCoroMethod::
-                             withCapturedArgs<{{#partial server.function_param_list_commented_out function=function:self}}>({{> service_common/param_list_move}}));
+                             withCapturedArgs<{{#partial server.function_param_list_commented_out function=function:self}}>({{#partial server.param_list_move function=function:self}}));
   {{/function:stack_arguments?}}
 }
 
-folly::coro::Task<{{#partial server.return_type function=function:self service=service:self}}> {{> service_common/service_class_name}}::co_{{function:cpp_name}}(
+folly::coro::Task<{{#partial server.return_type function=function:self service=service:self}}> {{#partial server.service_class_name service=service:self parent_service=parent_service}}::co_{{function:cpp_name}}(
     apache::thrift::RequestParams /* params */{{function_comma}}{{#partial server.function_param_list function=function:self}}) {
   auto expected{apache::thrift::detail::si::InvocationType::CoroParam};
   __fbthrift_invocation_{{function:cpp_name}}.compare_exchange_strong(
       expected,
       apache::thrift::detail::si::InvocationType::Coro,
       std::memory_order_relaxed);
-  return co_{{function:cpp_name}}({{> service_common/param_list_move}});
+  return co_{{function:cpp_name}}({{#partial server.param_list_move function=function:self}});
 }
 #endif // FOLLY_HAS_COROUTINES
 {{#function:oneway?}}
 
-void {{> service_common/service_class_name}}::async_tm_{{function:cpp_name}}(
+void {{#partial server.service_class_name service=service:self parent_service=parent_service}}::async_tm_{{function:cpp_name}}(
     apache::thrift::HandlerCallbackOneWay::Ptr callback{{function_comma}}{{#partial server.function_param_list function=function:self}}) {
 {{/function:oneway?}}
 {{^function:oneway?}}
 
-void {{> service_common/service_class_name}}::async_tm_{{function:cpp_name}}(
+void {{#partial server.service_class_name service=service:self parent_service=parent_service}}::async_tm_{{function:cpp_name}}(
     apache::thrift::HandlerCallbackPtr<{{#partial server.return_type function=function:self service=service:self}}> callback{{function_comma}}{{#partial server.function_param_list function=function:self}}) {
 {{/function:oneway?}}
   // It's possible the coroutine versions will delegate to a future-based
@@ -142,7 +142,7 @@ determineInvocationType:
             callback->getThreadManager_deprecated(),
             callback->getEventBase(),
             callback->getHandlerExecutor()};
-        auto task = co_{{function:cpp_name}}(params{{function_comma}}{{> service_common/param_list_move}});
+        auto task = co_{{function:cpp_name}}(params{{function_comma}}{{#partial server.param_list_move function=function:self}});
         apache::thrift::detail::si::async_tm_coro(
             std::move(callback), std::move(task));
         return;
@@ -164,14 +164,14 @@ determineInvocationType:
       }
 {{^service:interaction?}}
       case apache::thrift::detail::si::InvocationType::Future: {
-        auto fut = future_{{function:cpp_name}}({{> service_common/param_list_move}});
+        auto fut = future_{{function:cpp_name}}({{#partial server.param_list_move function=function:self}});
         apache::thrift::detail::si::async_tm_future(
             std::move(callback), std::move(fut));
         return;
       }
 {{/service:interaction?}}
       case apache::thrift::detail::si::InvocationType::SemiFuture: {
-        auto fut = semifuture_{{function:cpp_name}}({{> service_common/param_list_move}});
+        auto fut = semifuture_{{function:cpp_name}}({{#partial server.param_list_move function=function:self}});
         apache::thrift::detail::si::async_tm_semifuture(
             std::move(callback), std::move(fut));
         return;
@@ -183,13 +183,13 @@ determineInvocationType:
             callback->getThreadManager_deprecated(),
             callback->getEventBase(),
             callback->getHandlerExecutor()};
-        auto task = co_{{function:cpp_name}}(params{{function_comma}}{{> service_common/param_list_move}});
+        auto task = co_{{function:cpp_name}}(params{{function_comma}}{{#partial server.param_list_move function=function:self}});
         apache::thrift::detail::si::async_tm_coro(
             std::move(callback), std::move(task));
         return;
       }
       case apache::thrift::detail::si::InvocationType::Coro: {
-        auto task = co_{{function:cpp_name}}({{> service_common/param_list_move}});
+        auto task = co_{{function:cpp_name}}({{#partial server.param_list_move function=function:self}});
         apache::thrift::detail::si::async_tm_coro(
             std::move(callback), std::move(task));
         return;
@@ -198,10 +198,10 @@ determineInvocationType:
       case apache::thrift::detail::si::InvocationType::Sync: {
 {{^function:sync_returns_by_outparam?}}
 {{^function:void?}}
-        callback->result(sync_{{function:cpp_name}}({{> service_common/param_list_move}}));
+        callback->result(sync_{{function:cpp_name}}({{#partial server.param_list_move function=function:self}}));
 {{/function:void?}}
 {{#function:void?}}
-        sync_{{function:cpp_name}}({{> service_common/param_list_move}});
+        sync_{{function:cpp_name}}({{#partial server.param_list_move function=function:self}});
 {{^function:oneway?}}
         callback->done();
 {{/function:oneway?}}
@@ -209,7 +209,7 @@ determineInvocationType:
 {{/function:sync_returns_by_outparam?}}
 {{#function:sync_returns_by_outparam?}}
         {{type:cpp_type}} _return;
-        sync_{{function:cpp_name}}(_return{{function_comma}}{{> service_common/param_list_move}});
+        sync_{{function:cpp_name}}(_return{{function_comma}}{{#partial server.param_list_move function=function:self}});
         callback->result(std::move(_return));
 {{/function:sync_returns_by_outparam?}}
         return;
@@ -221,7 +221,7 @@ determineInvocationType:
 #if FOLLY_HAS_COROUTINES
   } catch (apache::thrift::detail::si::UnimplementedCoroMethod&{{^function:stack_arguments?}} ex{{/function:stack_arguments?}}) {
     {{^function:stack_arguments?}}
-    std::tie({{> service_common/param_list}}) = std::move(ex).restoreArgs<{{#partial server.function_param_list_commented_out function=function:self}}>();
+    std::tie({{#partial rpc.param_list function=function:self}}) = std::move(ex).restoreArgs<{{#partial server.function_param_list_commented_out function=function:self}}>();
     {{/function:stack_arguments?}}
     goto determineInvocationType;
 #endif // FOLLY_HAS_COROUTINES
@@ -232,14 +232,14 @@ determineInvocationType:
 {{#else}}
 {{#function:oneway?}}
 
-void {{> service_common/service_class_name}}::async_eb_{{function:cpp_name}}(
+void {{#partial server.service_class_name service=service:self parent_service=parent_service}}::async_eb_{{function:cpp_name}}(
     apache::thrift::HandlerCallbackOneWay::Ptr /*callback*/{{function_comma}}{{#partial server.function_param_list_commented_out function=function:self}}) {
   LOG(DFATAL) << "Function {{function:cpp_name}} is unimplemented";
 }
 {{/function:oneway?}}
 {{^function:oneway?}}
 
-void {{> service_common/service_class_name}}::async_eb_{{function:cpp_name}}(
+void {{#partial server.service_class_name service=service:self parent_service=parent_service}}::async_eb_{{function:cpp_name}}(
     apache::thrift::HandlerCallbackPtr<{{#partial server.return_type function=function:self service=service:self}}> callback{{function_comma}}{{#partial server.function_param_list_commented_out function=function:self}}) {
   callback->exception(
       apache::thrift::detail::si::create_app_exn_unimplemented("{{function:name}}"));
@@ -253,7 +253,7 @@ void {{> service_common/service_class_name}}::async_eb_{{function:cpp_name}}(
 {{/function:return_type}}
 {{#else}}
 
-std::unique_ptr<{{> service_common/service_class_name}}::{{function:created_interaction.name}}If> {{> service_common/service_class_name}}::{{function:cpp_name}}() {
+std::unique_ptr<{{#partial server.service_class_name service=service:self parent_service=parent_service}}::{{function:created_interaction.name}}If> {{#partial server.service_class_name service=service:self parent_service=parent_service}}::{{function:cpp_name}}() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("{{function:name}}");
 }
 //

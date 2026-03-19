@@ -20,7 +20,7 @@
 {{#if function:sink?}}
 folly::coro::Task<{{#partial client.return_type function=function:self service=service:self}}> {{#partial client.client_class_name service=service:self parent_service=parent_service}}::co_{{function:cpp_name}}({{#partial client.function_param_list function=function:self}}) {
   ::apache::thrift::RpcOptions rpcOptions;
-  co_return co_await co_{{function:cpp_name}}(rpcOptions{{function_comma}}{{> service_common/param_list}});
+  co_return co_await co_{{function:cpp_name}}(rpcOptions{{function_comma}}{{#partial rpc.param_list function=function:self}});
 }
 folly::coro::Task<{{#partial client.return_type function=function:self service=service:self}}> {{#partial client.client_class_name service=service:self parent_service=parent_service}}::co_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{#partial client.function_param_list function=function:self}}) {
   const folly::CancellationToken& cancelToken =
@@ -39,11 +39,11 @@ folly::coro::Task<{{#partial client.return_type function=function:self service=s
 {{/function:creates_interaction?}}
 
   if (ctx != nullptr) {
-    auto argsAsRefs = std::tie({{> service_common/param_list}});
+    auto argsAsRefs = std::tie({{#partial rpc.param_list function=function:self}});
     ctx->processClientInterceptorsOnRequest(apache::thrift::ClientInterceptorOnRequestArguments(argsAsRefs), header.get(), rpcOptions).throwUnlessValue();
   }
 
-  fbthrift_serialize_and_send_{{function:cpp_name}}(rpcOptions, std::move(header), ctx.get(), wrappedCallback{{#function:creates_interaction?}}, interactionHandle{{/function:creates_interaction?}}{{function_comma}}{{> service_common/param_list}});
+  fbthrift_serialize_and_send_{{function:cpp_name}}(rpcOptions, std::move(header), ctx.get(), wrappedCallback{{#function:creates_interaction?}}, interactionHandle{{/function:creates_interaction?}}{{function_comma}}{{#partial rpc.param_list function=function:self}});
 
   if (cancellable) {
     folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });

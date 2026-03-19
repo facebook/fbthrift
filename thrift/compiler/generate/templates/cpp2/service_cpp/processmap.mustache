@@ -50,8 +50,8 @@ apache::thrift::ServiceRequestInfoMap {{service:cpp_name}}ServiceInfoHolder::sta
     {{#service:functions}}{{#function:return_type}}{{^function:starts_interaction?}}
   {"{{function:name}}",
     { {{#if function:event_based?}}true{{#else}}false{{/if}},
-     {{> types/function_kind}},
-     "{{service:name}}.{{> common/function_name}}",
+     {{#partial rpc.function_kind function=function:self}},
+     "{{service:name}}.{{#partial rpc.function_name service=service:self function=function:self}}",
      std::nullopt,
      apache::thrift::concurrency::{{function:priority}},
      {{#if function:creates_interaction?}}"{{function:created_interaction.cpp_name}}"{{#else}}std::nullopt{{/if}},
@@ -60,8 +60,8 @@ apache::thrift::ServiceRequestInfoMap {{service:cpp_name}}ServiceInfoHolder::sta
 {{#service:interactions}}{{#service:functions}}{{#function:return_type}}
   {"{{service:name}}.{{function:name}}",
     { {{#if function:event_based?}}true{{#else}}false{{/if}},
-     {{> types/function_kind}},
-     "{{parent_service.name}}.{{> common/function_name}}",
+     {{#partial rpc.function_kind function=function:self}},
+     "{{parent_service.name}}.{{#partial rpc.function_name service=service:self function=function:self}}",
      "{{service:name}}",
      apache::thrift::concurrency::{{function:priority}},
      std::nullopt,

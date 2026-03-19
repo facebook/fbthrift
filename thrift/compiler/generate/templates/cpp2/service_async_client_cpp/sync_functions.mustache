@@ -20,15 +20,15 @@
 {{#partial client.return_type function=function:self service=service:self}} {{#partial client.client_class_name service=service:self parent_service=parent_service}}::sync_{{function:cpp_name}}({{#partial client.function_param_list function=function:self}}) {
   ::apache::thrift::RpcOptions rpcOptions;
   {{#if function:void?}}
-  sync_{{function:cpp_name}}(rpcOptions{{function_comma}}{{> service_common/param_list}});
+  sync_{{function:cpp_name}}(rpcOptions{{function_comma}}{{#partial rpc.param_list function=function:self}});
   {{#else}}
-  return sync_{{function:cpp_name}}(rpcOptions{{function_comma}}{{> service_common/param_list}});
+  return sync_{{function:cpp_name}}(rpcOptions{{function_comma}}{{#partial rpc.param_list function=function:self}});
   {{/if function:void?}}
 }
 {{#else}}
 void {{#partial client.client_class_name service=service:self parent_service=parent_service}}::sync_{{function:cpp_name}}({{function:cpp_return_type}}& _return{{function_comma}}{{#partial client.function_param_list function=function:self}}) {
   ::apache::thrift::RpcOptions rpcOptions;
-  sync_{{function:cpp_name}}(rpcOptions, _return{{function_comma}}{{> service_common/param_list}});
+  sync_{{function:cpp_name}}(rpcOptions, _return{{function_comma}}{{#partial rpc.param_list function=function:self}});
 }
 {{/if (not function:sync_returns_by_outparam?)}}
 
@@ -56,13 +56,13 @@ void {{#partial client.client_class_name service=service:self parent_service=par
 {{/if function:creates_interaction?}}
   auto* contextStack  = ctxAndHeader.first.get();
   if (contextStack != nullptr) {
-    auto argsAsRefs = std::tie({{> service_common/param_list}});
+    auto argsAsRefs = std::tie({{#partial rpc.param_list function=function:self}});
     contextStack->processClientInterceptorsOnRequest(apache::thrift::ClientInterceptorOnRequestArguments(argsAsRefs), ctxAndHeader.second.get(), rpcOptions).throwUnlessValue();
   }
   callback.waitUntilDone(
     evb,
     [&] {
-      fbthrift_serialize_and_send_{{function:cpp_name}}(rpcOptions, ctxAndHeader.second, ctxAndHeader.first.get(), std::move(wrappedCallback){{#function:creates_interaction?}}, interactionHandle{{/function:creates_interaction?}}{{function_comma}}{{> service_common/param_list}});
+      fbthrift_serialize_and_send_{{function:cpp_name}}(rpcOptions, ctxAndHeader.second, ctxAndHeader.first.get(), std::move(wrappedCallback){{#function:creates_interaction?}}, interactionHandle{{/function:creates_interaction?}}{{function_comma}}{{#partial rpc.param_list function=function:self}});
     });
 {{#if (not function:oneway?)}}
   returnState.resetProtocolId(protocolId);
@@ -154,7 +154,7 @@ folly::Try<apache::thrift::RpcResponseComplete<{{#partial client.return_type fun
   callback.waitUntilDone(
     evb,
     [&] {
-      fbthrift_serialize_and_send_{{function:cpp_name}}(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback){{function_comma}}{{> service_common/param_list}}, true);
+      fbthrift_serialize_and_send_{{function:cpp_name}}(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback){{function_comma}}{{#partial rpc.param_list function=function:self}}, true);
     });
   returnState.resetProtocolId(protocolId);
   returnState.resetCtx(std::move(ctxAndHeader.first));

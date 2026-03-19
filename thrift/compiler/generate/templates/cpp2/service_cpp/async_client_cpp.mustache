@@ -36,7 +36,7 @@ namespace {{service:cpp_qualified_namespace}} {
 {{#function:legacy_client_methods?}}{{^function:stream?}}{{!
 }}{{#let function_comma = (if function:params.fields? ", " null)}}
 void apache::thrift::Client<{{service:qualified_name}}>::{{function:cpp_name}}(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback{{function_comma}}{{#partial client.function_param_list function=function:self}}) {
-  {{function:cpp_name}}(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)){{function_comma}}{{> service_common/param_list}});
+  {{function:cpp_name}}(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)){{function_comma}}{{#partial rpc.param_list function=function:self}});
 }
 {{/function:stream?}}{{/function:legacy_client_methods?}}
 {{/function:sink?}}

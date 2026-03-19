@@ -16,16 +16,17 @@
 
 }}
 {{#import "method_decorators/decorator_cpp" as decorator_cpp}}
-std::unique_ptr<apache::thrift::AsyncProcessor> {{> service_common/service_class_name}}::getProcessor() {
+{{#let parent_service=service:self}}
+std::unique_ptr<apache::thrift::AsyncProcessor> {{#partial server.service_class_name service=service:self parent_service=parent_service}}::getProcessor() {
   return std::make_unique<{{service:qualified_name}}AsyncProcessor>(this);
 }
 
-{{> service_common/service_class_name}}::CreateMethodMetadataResult {{> service_common/service_class_name}}::createMethodMetadata() {
+{{#partial server.service_class_name service=service:self parent_service=parent_service}}::CreateMethodMetadataResult {{#partial server.service_class_name service=service:self parent_service=parent_service}}::createMethodMetadata() {
   return ::apache::thrift::detail::ap::createMethodMetadataMap<{{service:qualified_name}}AsyncProcessor>(getServiceRequestInfoMap().value().get());
 }
 
   {{#if service:program.has_schema?}}
-std::optional<apache::thrift::schema::DefinitionsSchema> {{> service_common/service_class_name}}::getServiceSchema() {
+std::optional<apache::thrift::schema::DefinitionsSchema> {{#partial server.service_class_name service=service:self parent_service=parent_service}}::getServiceSchema() {
 {{#program}}
 {{#program:has_schema?}}
   std::optional<apache::thrift::schema::DefinitionsSchema> ret = schema::DefinitionsSchema{};
@@ -39,21 +40,20 @@ std::optional<apache::thrift::schema::DefinitionsSchema> {{> service_common/serv
 {{/program}}
 }
 
-std::vector<folly::not_null<const apache::thrift::syntax_graph::ServiceNode*>> {{> service_common/service_class_name}}::getServiceSchemaNodes() {
+std::vector<folly::not_null<const apache::thrift::syntax_graph::ServiceNode*>> {{#partial server.service_class_name service=service:self parent_service=parent_service}}::getServiceSchemaNodes() {
   return {&apache::thrift::SchemaRegistry::get().getNode<{{service:qualified_name}}>()};
 }
   {{/if service:program.has_schema?}}
 {{#partial decorator_cpp.decorator_definitions service=service:self}}
 
-std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> {{> service_common/service_class_name}}::getServiceRequestInfoMap() const {
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> {{#partial server.service_class_name service=service:self parent_service=parent_service}}::getServiceRequestInfoMap() const {
   return __fbthrift_serviceInfoHolder.requestInfoMap();
 }
 
-{{service:qualified_name}}ServiceInfoHolder {{> service_common/service_class_name}}::__fbthrift_serviceInfoHolder;
+{{service:qualified_name}}ServiceInfoHolder {{#partial server.service_class_name service=service:self parent_service=parent_service}}::__fbthrift_serviceInfoHolder;
 
 {{> service_cpp/service_interface_impl}}
 
-{{#let parent_service=service:self}}
 {{#service:interactions}}
 {{> service_cpp/service_interface_impl}}
 {{/service:interactions}}

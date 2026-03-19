@@ -48,9 +48,7 @@
 
 {{#let export partial sync_return_param |function|}}
 {{#pragma ignore-newlines}}
-  {{#if function.sync_returns_by_outparam?}}
-{{function.cpp_return_type}}& /*_return*/{{#if function.params.fields?}}, {{/if}}
-  {{/if function.sync_returns_by_outparam?}}
+{{#if function.sync_returns_by_outparam?}}{{function.cpp_return_type}}& /*_return*/{{#if function.params.fields?}}, {{/if}}{{/if}}
 {{/let partial}}
 
 {{#let export partial function_param_list |function| captures |param_type|}}
@@ -65,4 +63,28 @@
   {{#each (array.enumerate function.params.fields with_first=true) as |i field is_first?|}}
 {{#if (not is_first?)}}, {{/if}}{{#partial param_type type=field.type function=function}} /*{{field.cpp_name}}*/
   {{/each}}
+{{/let partial}}
+
+{{#let export partial param_list_move |function| captures |param_type|}}
+{{#pragma ignore-newlines}}
+  {{#each (array.enumerate function.params.fields with_first=true) as |i field is_first?|}}
+{{#if (not is_first?)}}, {{/if}}
+{{#if (or (not field.type.resolves_to_complex_return?) function.stack_arguments?)}}p_{{field.cpp_name}}{{#else}}std::move(p_{{field.cpp_name}}){{/if}}
+  {{/each}}
+{{/let partial}}
+
+{{#let export partial service_class_name |service parent_service|}}
+{{#pragma ignore-newlines}}
+apache::thrift::ServiceHandler
+{{#if service.interaction?}}<{{parent_service.qualified_name}}>::{{service.name}}If{{#else}}<{{service.qualified_name}}>{{/if}}
+{{/let partial}}
+
+{{#let export partial field_data_return |type|}}
+{{#pragma ignore-newlines}}
+{{#if (not type.void?)}}, apache::thrift::FieldData<0, {{type.type_class}}, {{type.cpp_type}}*{{#if type.use_op_encode?}}, {{type.type_tag}}{{/if}}>{{/if}}
+{{/let partial}}
+
+{{#let export partial field_data_throws |field|}}
+{{#pragma ignore-newlines}}
+, apache::thrift::FieldData<{{field.id}}, {{field.type.type_class}}, {{field.type.cpp_type}}{{#if field.type.use_op_encode?}}, {{field.type.type_tag}}{{/if}}>
 {{/let partial}}
