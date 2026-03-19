@@ -205,7 +205,7 @@ class ServerGeneratorStreamBridge : public TwoWayBridge<
               [&](StreamMessage::Pause) {
                 notifyStreamPause(
                     contextStack.get(),
-                    details::STREAM_PAUSE_REASON::EXPLICIT_PAUSE);
+                    details::StreamPauseReason::EXPLICIT_PAUSE);
                 pauseStream = true;
                 return false;
               },
@@ -291,7 +291,7 @@ class ServerGeneratorStreamBridge : public TwoWayBridge<
       notifyStreamNext(contextStack.get());
       if (credits == 0) {
         notifyStreamPause(
-            contextStack.get(), details::STREAM_PAUSE_REASON::NO_CREDITS);
+            contextStack.get(), details::StreamPauseReason::NO_CREDITS);
       }
     }
   }
@@ -334,7 +334,7 @@ class ServerGeneratorStreamBridge : public TwoWayBridge<
   static void notifyStreamSubscribe(
       ContextStack* contextStack, const TileStreamGuard& interaction);
   static void notifyStreamPause(
-      ContextStack* contextStack, details::STREAM_PAUSE_REASON reason);
+      ContextStack* contextStack, details::StreamPauseReason reason);
   static void notifyStreamResumeReceive(ContextStack* contextStack);
   static void notifyStreamCredit(ContextStack* contextStack, int64_t credits);
   static void notifyStreamNext(ContextStack* contextStack);

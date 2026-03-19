@@ -130,7 +130,7 @@ class ServerBiDiStreamBridge : public TwoWayBridge<
       if (credits == 0) {
         notifyBiDiStreamPause(
             bridge->contextStack_.get(),
-            details::STREAM_PAUSE_REASON::NO_CREDITS);
+            details::StreamPauseReason::NO_CREDITS);
         continue;
       }
 
@@ -164,7 +164,7 @@ class ServerBiDiStreamBridge : public TwoWayBridge<
       if (credits == 0) {
         notifyBiDiStreamPause(
             bridge->contextStack_.get(),
-            details::STREAM_PAUSE_REASON::NO_CREDITS);
+            details::StreamPauseReason::NO_CREDITS);
       }
     }
   }
@@ -218,7 +218,7 @@ class ServerBiDiStreamBridge : public TwoWayBridge<
   }
 
   static void notifyBiDiStreamPause(
-      ContextStack* ctx, details::STREAM_PAUSE_REASON reason) {
+      ContextStack* ctx, details::StreamPauseReason reason) {
     if (ctx) {
       ctx->onBiDiStreamPause(reason);
     }

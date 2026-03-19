@@ -19,6 +19,7 @@
 #include <chrono>
 #include <optional>
 #include <folly/ExceptionWrapper.h>
+#include <thrift/lib/cpp2/logging/ThriftEvent.h>
 
 namespace apache::thrift {
 namespace details {
@@ -34,10 +35,7 @@ enum class SINK_ENDING_TYPES {
   ERROR = 2,
 };
 
-enum class STREAM_PAUSE_REASON {
-  NO_CREDITS = 0,
-  EXPLICIT_PAUSE = 1,
-};
+using StreamPauseReason = detail::StreamPauseReason;
 } // namespace details
 
 class StreamEventHandler {
@@ -52,7 +50,7 @@ class StreamEventHandler {
   virtual void onStreamNext(void*) {}
   virtual void onStreamNextSent(void*) {}
   virtual void onStreamCredit(void*, uint32_t) {}
-  virtual void onStreamPause(void*, details::STREAM_PAUSE_REASON) {}
+  virtual void onStreamPause(void*, details::StreamPauseReason) {}
   virtual void onStreamResumeReceive(void*) {}
   virtual void handleStreamErrorWrapped(
       void*, const folly::exception_wrapper&) {}

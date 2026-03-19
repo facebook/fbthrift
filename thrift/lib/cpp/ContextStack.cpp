@@ -421,7 +421,7 @@ void ContextStack::onStreamNextSent() {
   }
 }
 
-void ContextStack::onStreamPause(details::STREAM_PAUSE_REASON reason) {
+void ContextStack::onStreamPause(details::StreamPauseReason reason) {
   FOLLY_SDT(
       thrift,
       thrift_context_stack_on_stream_pause_receive,
@@ -670,7 +670,7 @@ void ContextStack::onBiDiStreamCredit(uint32_t credits) {
   }
 }
 
-void ContextStack::onBiDiStreamPause(details::STREAM_PAUSE_REASON reason) {
+void ContextStack::onBiDiStreamPause(details::StreamPauseReason reason) {
   FOLLY_SDT(
       thrift,
       thrift_context_stack_on_bidi_stream_pause,

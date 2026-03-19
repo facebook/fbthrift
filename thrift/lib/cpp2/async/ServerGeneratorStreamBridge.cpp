@@ -147,7 +147,7 @@ void ServerGeneratorStreamBridge::processClientMessages() {
 }
 
 /*static*/ void ServerGeneratorStreamBridge::notifyStreamPause(
-    ContextStack* contextStack, details::STREAM_PAUSE_REASON reason) {
+    ContextStack* contextStack, details::StreamPauseReason reason) {
   if (contextStack) {
     contextStack->onStreamPause(reason);
   }

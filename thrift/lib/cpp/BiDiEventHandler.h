@@ -51,7 +51,7 @@ class BiDiEventHandler {
   // Stream (from server to client) events
   virtual void onBiDiStreamNext(void*) {}
   virtual void onBiDiStreamCredit(void*, uint32_t) {}
-  virtual void onBiDiStreamPause(void*, details::STREAM_PAUSE_REASON) {}
+  virtual void onBiDiStreamPause(void*, details::StreamPauseReason) {}
 
   // Error handling for both directions
   virtual void handleBiDiSinkError(void*, const folly::exception_wrapper&) {}

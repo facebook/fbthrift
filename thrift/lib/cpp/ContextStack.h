@@ -113,7 +113,7 @@ class ContextStack {
   void onStreamNext();
   void onStreamNextSent();
   void onStreamCredit(uint32_t credits);
-  void onStreamPause(details::STREAM_PAUSE_REASON reason);
+  void onStreamPause(details::StreamPauseReason reason);
   void onStreamResumeReceive();
   void handleStreamErrorWrapped(const folly::exception_wrapper& ew);
   void onStreamFinally(details::STREAM_ENDING_TYPES endReason);
@@ -131,7 +131,7 @@ class ContextStack {
   void onBiDiSinkCredit(uint32_t credits);
   void onBiDiStreamNext();
   void onBiDiStreamCredit(uint32_t credits);
-  void onBiDiStreamPause(details::STREAM_PAUSE_REASON reason);
+  void onBiDiStreamPause(details::StreamPauseReason reason);
   void handleBiDiSinkError(const folly::exception_wrapper& ew);
   void handleBiDiStreamError(const folly::exception_wrapper& ew);
   void onBiDiFinally(details::BIDI_FINISH_REASON endReason);
