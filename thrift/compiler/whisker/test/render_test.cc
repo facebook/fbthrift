@@ -2997,7 +2997,7 @@ Recursive {{#partial inner}}
       testing::ElementsAre(
           diagnostic(
               diagnostic_level::error,
-              "Maximum recursion depth of 10000 exceeded. Backtrace of deepest 100 frames:",
+              "Maximum recursion depth of 1000 exceeded. Backtrace of deepest 100 frames:",
               path_to_file,
               7),
           error_backtrace(std::move(expected_backtrace))));

@@ -42,7 +42,7 @@ namespace {
  * Maximum allowed depth for template render stack, before rendering is aborted
  * with a fatal template stack overflow error.
  */
-constexpr size_t kRenderStackMaxDepth = 10'000;
+constexpr size_t kRenderStackMaxDepth = 1'000;
 
 /**
  * Number of the deepest frames to display in the backtrace for a template stack
