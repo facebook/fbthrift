@@ -150,14 +150,10 @@ struct Adapter3WayCompareStringAdapter {
 
   static const std::string& toThrift(const std::string& str) { return str; }
 
-  static folly::ordering compareThreeWay(
-      const std::string& lhs, const std::string& rhs) {
-    if (lhs < rhs) {
-      return folly::ordering::gt;
-    } else if (lhs > rhs) {
-      return folly::ordering::lt;
-    }
-    return folly::ordering::eq;
+  static auto compareThreeWay(const std::string& lhs, const std::string& rhs) {
+    // `lhs` and `rhs` are reversed to make sure the behavior is different from
+    // the default compareThreeWay.
+    return rhs <=> lhs;
   }
 };
 

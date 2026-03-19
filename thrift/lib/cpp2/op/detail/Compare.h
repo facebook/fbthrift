@@ -17,6 +17,7 @@
 #pragma once
 
 #include <algorithm>
+#include <compare>
 #include <functional>
 #include <memory>
 #include <unordered_map>
@@ -25,41 +26,12 @@
 #include <folly/Optional.h>
 #include <folly/functional/Invoke.h>
 #include <folly/io/IOBuf.h>
-#include <folly/lang/Ordering.h>
 #include <thrift/lib/cpp2/op/Get.h>
 #include <thrift/lib/cpp2/op/Hash.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
 
 namespace apache::thrift::op::detail {
-
-// named comparison functions, similar to c++20
-//
-// TODO(afuller): Dedupe/Merge with folly.
-inline constexpr bool is_eq(folly::ordering cmp) noexcept {
-  return cmp == folly::ordering::eq;
-}
-inline bool is_eq(folly::partial_ordering cmp) noexcept {
-  return cmp == folly::partial_ordering::equivalent;
-}
-inline constexpr bool is_neq(folly::ordering cmp) noexcept {
-  return cmp != folly::ordering::eq;
-}
-inline bool is_neq(folly::partial_ordering cmp) noexcept {
-  return cmp != folly::partial_ordering::equivalent;
-}
-inline constexpr bool is_lt(folly::ordering cmp) noexcept {
-  return cmp == folly::ordering::lt;
-}
-inline constexpr bool is_lteq(folly::ordering cmp) noexcept {
-  return cmp != folly::ordering::gt;
-}
-inline constexpr bool is_gt(folly::ordering cmp) noexcept {
-  return cmp == folly::ordering::gt;
-}
-inline constexpr bool is_gteq(folly::ordering cmp) noexcept {
-  return cmp != folly::ordering::lt;
-}
 
 // The 'equal to' operator.
 //
@@ -165,13 +137,13 @@ template <
     typename R = type::native_type<RTag>,
     typename = if_less_than_comparable<LTag, RTag>>
 struct DefaultCompareWith {
-  constexpr folly::ordering operator()(const L& lhs, const R& rhs) const {
+  constexpr std::weak_ordering operator()(const L& lhs, const R& rhs) const {
     if (equalTo(lhs, rhs)) {
-      return folly::ordering::eq;
+      return std::weak_ordering::equivalent;
     } else if (lessThan(lhs, rhs)) {
-      return folly::ordering::lt;
+      return std::weak_ordering::less;
     }
-    return folly::ordering::gt;
+    return std::weak_ordering::greater;
   }
 
  protected:
@@ -188,21 +160,21 @@ struct CompareWith : DefaultCompareWith<LTag, RTag> {}; // Delegates by default.
 template <>
 struct CompareWith<type::void_t> {
   template <typename L, typename R>
-  constexpr folly::ordering operator()(const L& lhs, const R& rhs) const {
+  constexpr std::weak_ordering operator()(const L& lhs, const R& rhs) const {
     return CompareWith<type::infer_tag<L>, type::infer_tag<R>>{}(lhs, rhs);
   }
 };
 template <typename LTag>
 struct CompareWith<LTag, type::void_t> {
   template <typename L, typename R>
-  constexpr folly::ordering operator()(const L& lhs, const R& rhs) const {
+  constexpr std::weak_ordering operator()(const L& lhs, const R& rhs) const {
     return CompareWith<LTag, type::infer_tag<R>>{}(lhs, rhs);
   }
 };
 template <typename RTag>
 struct CompareWith<type::void_t, RTag> {
   template <typename L, typename R>
-  constexpr folly::ordering operator()(const L& lhs, const R& rhs) const {
+  constexpr std::weak_ordering operator()(const L& lhs, const R& rhs) const {
     return CompareWith<type::infer_tag<L>, RTag>{}(lhs, rhs);
   }
 };
@@ -222,14 +194,14 @@ inline constexpr bool comparable_v =
 template <
     typename LTag,
     typename RTag = LTag,
-    typename R = folly::partial_ordering>
+    typename R = std::partial_ordering>
 using if_comparable = folly::type_t<R, compare_with_t<LTag, RTag>>;
 
 // Resolves to R, if the two tags *cannot* be used together in CompareWith.
 template <
     typename LTag,
     typename RTag = LTag,
-    typename R = folly::partial_ordering>
+    typename R = std::partial_ordering>
 using if_not_comparable = std::enable_if_t<!comparable_v<LTag, RTag>, R>;
 
 // An EqualTo that delegates to CompareWith.
@@ -241,7 +213,7 @@ template <
     typename R = type::native_type<RTag>>
 struct DefaultEqualTo {
   constexpr bool operator()(const L& lhs, const R& rhs) const {
-    return is_eq(compareWith(lhs, rhs));
+    return std::is_eq(compareWith(lhs, rhs));
   }
 
  protected:
@@ -257,7 +229,7 @@ template <
     typename R = type::native_type<RTag>>
 struct DefaultLessThan {
   constexpr bool operator()(const L& lhs, const R& rhs) const {
-    return is_lt(compareWith(lhs, rhs));
+    return std::is_lt(compareWith(lhs, rhs));
   }
 
  protected:
@@ -273,14 +245,14 @@ template <
 struct DefaultCompareThreeWay {
   static_assert(type::is_concrete_v<Tag>);
 
-  constexpr folly::ordering operator()(const T& lhs, const T& rhs) const {
+  constexpr std::weak_ordering operator()(const T& lhs, const T& rhs) const {
     if (EqualTo<Tag>{}(lhs, rhs)) {
-      return folly::ordering::eq;
+      return std::weak_ordering::equivalent;
     }
     if (LessThanType<Tag>{}(lhs, rhs)) {
-      return folly::ordering::lt;
+      return std::weak_ordering::less;
     }
-    return folly::ordering::gt;
+    return std::weak_ordering::greater;
   }
 };
 
@@ -336,45 +308,52 @@ struct LessThan<
     type::cpp_type<std::unique_ptr<folly::IOBuf>, RUTag>>
     : CheckIOBufOp<LUTag, RUTag>, folly::IOBufLess {};
 
+struct IOBufCompareToStd {
+  template <typename T>
+  std::weak_ordering operator()(const T& a, const T& b) const {
+    return folly::to_underlying(folly::IOBufCompare{}(a, b)) <=> 0;
+  }
+};
+
 template <typename LUTag, typename RUTag>
 struct CompareWith<
     type::cpp_type<folly::IOBuf, LUTag>,
     type::cpp_type<folly::IOBuf, RUTag>> : CheckIOBufOp<LUTag, RUTag>,
-                                           folly::IOBufCompare {};
+                                           IOBufCompareToStd {};
 template <typename LUTag, typename RUTag>
 struct CompareWith<
     type::cpp_type<std::unique_ptr<folly::IOBuf>, LUTag>,
     type::cpp_type<std::unique_ptr<folly::IOBuf>, RUTag>>
-    : CheckIOBufOp<LUTag, RUTag>, folly::IOBufCompare {};
+    : CheckIOBufOp<LUTag, RUTag>, IOBufCompareToStd {};
 
 template <typename UTag>
 struct CompareWith<type::cpp_type<folly::IOBuf, UTag>>
-    : CheckIOBufOp<UTag, UTag>, folly::IOBufCompare {};
+    : CheckIOBufOp<UTag, UTag>, IOBufCompareToStd {};
 
 template <typename UTag>
 struct CompareThreeWay<type::cpp_type<folly::IOBuf, UTag>>
-    : CheckIOBufOp<UTag, UTag>, folly::IOBufCompare {};
+    : CheckIOBufOp<UTag, UTag>, IOBufCompareToStd {};
 
 template <typename UTag>
 struct CompareThreeWay<type::cpp_type<std::unique_ptr<folly::IOBuf>, UTag>>
-    : CheckIOBufOp<UTag, UTag>, folly::IOBufCompare {};
+    : CheckIOBufOp<UTag, UTag>, IOBufCompareToStd {};
 
 template <class I1, class I2, class Cmp>
 auto lexicographicalCompareThreeWay(I1 f1, I1 l1, I2 f2, I2 l2, Cmp comp)
     -> decltype(comp(*f1, *f2)) {
   for (; f1 != l1 && f2 != l2; ++f1, ++f2) {
-    if (auto c = comp(*f1, *f2); c != folly::ordering::eq) {
+    if (auto c = comp(*f1, *f2); c != std::weak_ordering::equivalent) {
       return c;
     }
   }
 
-  return (f1 != l1) ? folly::ordering::gt
-      : (f2 != l2)  ? folly::ordering::lt
-                    : folly::ordering::eq;
+  return (f1 != l1) ? std::weak_ordering::greater
+      : (f2 != l2)  ? std::weak_ordering::less
+                    : std::weak_ordering::equivalent;
 }
 
 template <class T, class Comp>
-[[maybe_unused]] folly::ordering sortAndLexicographicalCompareThreeWay(
+[[maybe_unused]] std::weak_ordering sortAndLexicographicalCompareThreeWay(
     const T& lhs, const T& rhs, Comp&& comp) {
   std::vector<decltype(lhs.begin())> l, r;
   for (auto i = lhs.begin(); i != lhs.end(); ++i) {
@@ -384,7 +363,7 @@ template <class T, class Comp>
     r.push_back(i);
   }
   auto less = [&](auto lhsIter, auto rhsIter) {
-    return comp(*lhsIter, *rhsIter) == folly::ordering::lt;
+    return comp(*lhsIter, *rhsIter) == std::weak_ordering::less;
   };
   auto compare_three_way = [&](auto lhsIter, auto rhsIter) {
     return comp(*lhsIter, *rhsIter);
@@ -403,7 +382,7 @@ struct ListLessThan {
                l.end(),
                r.begin(),
                r.end(),
-               CompareThreeWay<E, LessThanType>{}) == folly::ordering::lt;
+               CompareThreeWay<E, LessThanType>{}) == std::weak_ordering::less;
   }
 };
 
@@ -412,7 +391,7 @@ struct SetLessThan {
   bool operator()(const T& lhs, const T& rhs) const {
     return sortAndLexicographicalCompareThreeWay(
                lhs, rhs, CompareThreeWay<E, LessThanType>{}) ==
-        folly::ordering::lt;
+        std::weak_ordering::less;
   }
 };
 
@@ -425,14 +404,14 @@ struct MapLessThan {
   bool operator()(const T& lhs, const T& rhs) const {
     auto compare_three_way = [](const auto& l, const auto& r) {
       auto ret = CompareThreeWay<K, LessThanType>{}(l.first, r.first);
-      if (ret != folly::ordering::eq) {
+      if (ret != std::weak_ordering::equivalent) {
         return ret;
       }
       return CompareThreeWay<V, LessThanType>{}(l.second, r.second);
     };
 
     return sortAndLexicographicalCompareThreeWay(lhs, rhs, compare_three_way) ==
-        folly::ordering::lt;
+        std::weak_ordering::less;
   }
 };
 
@@ -667,7 +646,7 @@ struct IdenticalTo<type::field<Tag, Context>> : IdenticalTo<Tag> {};
 template <typename VTag>
 struct CompareThreeWay<type::list<VTag>> {
   template <typename T = type::native_type<type::list<VTag>>>
-  folly::ordering operator()(const T& l, const T& r) const {
+  std::weak_ordering operator()(const T& l, const T& r) const {
     return lexicographicalCompareThreeWay(
         l.begin(), l.end(), r.begin(), r.end(), CompareThreeWay<VTag>{});
   }
@@ -676,7 +655,7 @@ struct CompareThreeWay<type::list<VTag>> {
 template <typename VTag>
 struct CompareThreeWay<type::set<VTag>> {
   template <typename T = type::native_type<type::set<VTag>>>
-  folly::ordering operator()(const T& l, const T& r) const {
+  std::weak_ordering operator()(const T& l, const T& r) const {
     return lexicographicalCompareThreeWay(
         l.begin(), l.end(), r.begin(), r.end(), CompareThreeWay<VTag>{});
   }
@@ -723,16 +702,16 @@ struct CompareThreeWay<type::adapted<Adapter, Tag>> {
   using adapted_tag = type::adapted<Adapter, Tag>;
   static_assert(type::is_concrete_v<adapted_tag>);
   template <typename T>
-  constexpr folly::ordering operator()(const T& lhs, const T& rhs) const {
+  constexpr std::weak_ordering operator()(const T& lhs, const T& rhs) const {
     if constexpr (adapt_detail::is_compare_three_way_adapter_v<Adapter, T>) {
       return Adapter::compareThreeWay(lhs, rhs);
     } else {
       if (EqualTo<adapted_tag>{}(lhs, rhs)) {
-        return folly::ordering::eq;
+        return std::weak_ordering::equivalent;
       } else if (LessThan<adapted_tag>{}(lhs, rhs)) {
-        return folly::ordering::lt;
+        return std::weak_ordering::less;
       }
-      return folly::ordering::gt;
+      return std::weak_ordering::greater;
     }
   }
 };
@@ -740,11 +719,11 @@ struct CompareThreeWay<type::adapted<Adapter, Tag>> {
 enum class FieldIterOrder { Declaration, FieldIdAscending };
 
 template <typename T, template <class...> class LessThanType = LessThan>
-folly::ordering compareStructFields(
+std::weak_ordering compareStructFields(
     const T& lhs, const T& rhs, FieldIterOrder order) {
-  folly::ordering result = folly::ordering::eq;
+  std::weak_ordering result = std::weak_ordering::equivalent;
   auto compareField = [&](auto id) {
-    if (result != folly::ordering::eq) {
+    if (result != std::weak_ordering::equivalent) {
       return;
     }
     using Id = decltype(id);
@@ -756,11 +735,11 @@ folly::ordering compareStructFields(
       return;
     }
     if (lhsValue == nullptr) {
-      result = folly::ordering::lt;
+      result = std::weak_ordering::less;
       return;
     }
     if (rhsValue == nullptr) {
-      result = folly::ordering::gt;
+      result = std::weak_ordering::greater;
       return;
     }
     result = CompareThreeWay<Tag, LessThanType>{}(*lhsValue, *rhsValue);
@@ -775,14 +754,14 @@ folly::ordering compareStructFields(
 }
 
 template <typename T, template <class...> class LessThanType = LessThan>
-folly::ordering compareStructFieldsByFieldId(const T& lhs, const T& rhs) {
+std::weak_ordering compareStructFieldsByFieldId(const T& lhs, const T& rhs) {
   return compareStructFields<T, LessThanType>(
       lhs, rhs, FieldIterOrder::FieldIdAscending);
 }
 
 template <typename T>
 struct CompareThreeWay<type::struct_t<T>> {
-  folly::ordering operator()(const T& lhs, const T& rhs) const {
+  std::weak_ordering operator()(const T& lhs, const T& rhs) const {
     return compareStructFields<T>(lhs, rhs, FieldIterOrder::FieldIdAscending);
   }
 };
@@ -792,7 +771,8 @@ struct StructLessThan {
   template <class T>
   bool operator()(const T& lhs, const T& rhs) const {
     return compareStructFields<T, LessThanType>(
-               lhs, rhs, FieldIterOrder::Declaration) == folly::ordering::lt;
+               lhs, rhs, FieldIterOrder::Declaration) ==
+        std::weak_ordering::less;
   }
 };
 
@@ -805,7 +785,7 @@ struct StructLessThanByFieldId {
   template <class T>
   bool operator()(const T& lhs, const T& rhs) const {
     return compareStructFieldsByFieldId<T, LessThanType>(lhs, rhs) ==
-        folly::ordering::lt;
+        std::weak_ordering::less;
   }
 };
 
