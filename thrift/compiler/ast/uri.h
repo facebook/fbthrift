@@ -222,6 +222,10 @@ inline constexpr auto kGoMinimizePaddingUri =
 inline constexpr auto kGoUseReflectCodecUri =
     "facebook.com/thrift/annotation/go/UseReflectCodec";
 
+// Rust:
+inline constexpr auto kRustEnumTypeUri =
+    "facebook.com/thrift/annotation/rust/EnumType";
+
 // Patch:
 inline constexpr auto kGeneratePatchNewUri =
     "facebook.com/thrift/op/GeneratePatchNew";

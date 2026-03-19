@@ -1541,6 +1541,113 @@ void validate_cpp_enum_type(sema_context& ctx, const t_enum& e) {
       recommendation);
 }
 
+// Compiler counterpart of rust.EnumUnderlyingType that avoids dependency on
+// generated code (see rust.thrift and t_mstch_rust_generator.cc).
+enum class rust_enum_underlying_type {
+  i8 = 0,
+  u8 = 1,
+  i16 = 2,
+  u16 = 3,
+  u32 = 4,
+};
+
+void validate_rust_enum_type(sema_context& ctx, const t_enum& e) {
+  const t_const* annot = e.find_structured_annotation_or_null(kRustEnumTypeUri);
+  if (!annot) {
+    return;
+  }
+
+  int64_t type_value;
+  try {
+    type_value =
+        annot->get_value_from_structured_annotation("type").get_integer();
+  } catch (const std::exception&) {
+    ctx.error(
+        "`@rust.EnumType` cannot be used without `type` specified in `{}`.",
+        e.name());
+    return;
+  }
+
+  // Range limits for each EnumUnderlyingType. Note: enum values in the AST are
+  // int32_t, so the U32 upper bound is capped at INT32_MAX. Values above that
+  // cannot be represented and will be caught by the Rust compiler.
+  int64_t min_val = 0, max_val = 0;
+  std::string_view type_name;
+  switch (static_cast<rust_enum_underlying_type>(type_value)) {
+    case rust_enum_underlying_type::i8:
+      min_val = std::numeric_limits<int8_t>::min();
+      max_val = std::numeric_limits<int8_t>::max();
+      type_name = "I8";
+      break;
+    case rust_enum_underlying_type::u8:
+      min_val = 0;
+      max_val = std::numeric_limits<uint8_t>::max();
+      type_name = "U8";
+      break;
+    case rust_enum_underlying_type::i16:
+      min_val = std::numeric_limits<int16_t>::min();
+      max_val = std::numeric_limits<int16_t>::max();
+      type_name = "I16";
+      break;
+    case rust_enum_underlying_type::u16:
+      min_val = 0;
+      max_val = std::numeric_limits<uint16_t>::max();
+      type_name = "U16";
+      break;
+    case rust_enum_underlying_type::u32:
+      min_val = 0;
+      max_val = std::numeric_limits<int32_t>::max();
+      type_name = "U32";
+      break;
+    default:
+      ctx.warning(
+          "Unknown `@rust.EnumType` type value {} in `{}`.",
+          type_value,
+          e.name());
+      return;
+  }
+
+  // Collect all out-of-range values and track the overall range needed.
+  std::vector<std::string> bad_values;
+  int32_t overall_lo = INT32_MAX, overall_hi = INT32_MIN;
+  for (const auto& enum_value : e.values()) {
+    int32_t val = enum_value.get_value();
+    if (val < min_val || val > max_val) {
+      bad_values.push_back(fmt::format("`{}` = {}", enum_value.name(), val));
+    }
+    overall_lo = std::min(overall_lo, val);
+    overall_hi = std::max(overall_hi, val);
+  }
+
+  if (bad_values.empty()) {
+    return;
+  }
+
+  // Suggest the smallest type that fits all enum values (both good and bad).
+  const char* suggested = smallest_type_for_range(overall_lo, overall_hi);
+  std::string recommendation;
+  if (suggested) {
+    recommendation = fmt::format(
+        " Consider using `@rust.EnumType{{type = "
+        "rust.EnumUnderlyingType.{}}}` to accommodate all values.",
+        suggested);
+  } else {
+    recommendation =
+        " Consider removing `@rust.EnumType` to use the default `i32`.";
+  }
+
+  ctx.error(
+      "Enum `{}` has values out of range for "
+      "`@rust.EnumType{{type = rust.EnumUnderlyingType.{}}}` "
+      "(valid range: {} to {}): {}.{}",
+      e.name(),
+      type_name,
+      min_val,
+      max_val,
+      fmt::join(bad_values, ", "),
+      recommendation);
+}
+
 void validate_cpp_field_adapter_annotation(
     sema_context& ctx, const t_field& field) {
   adapter_or_wrapper_checker(ctx).check(
@@ -2347,6 +2454,7 @@ ast_validator standard_validator() {
 
   validator.add_container_visitor(ValidateAnnotationPositions());
   validator.add_enum_visitor(&validate_cpp_enum_type);
+  validator.add_enum_visitor(&validate_rust_enum_type);
   validator.add_const_visitor(&validate_const_type_and_value);
   validator.add_const_visitor(ValidateAnnotationPositions());
   validator.add_program_visitor(&validate_uri_uniqueness);

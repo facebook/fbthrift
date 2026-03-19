@@ -6,6 +6,28 @@
       "path" : "thrift/annotation/scope.thrift"
     }
   },
+  "enumerations" : {
+    "EnumUnderlyingType" : {
+      "lineno" : 465,
+      "constants" : {
+        "I8" : 0,
+        "U8" : 1,
+        "I16" : 2,
+        "U16" : 3,
+        "U32" : 4
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 465,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 471,
+          "column" : 2
+        }
+      }
+    }
+  },
   "structs" : {
     "Name" : {
       "lineno" : 30,
@@ -354,6 +376,38 @@
         },
         "end" : {
           "line" : 443,
+          "column" : 2
+        }
+      }
+    },
+    "EnumType" : {
+      "lineno" : 473,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "type" : {
+          "type_enum" : "ENUM",
+          "spec_args" : "EnumUnderlyingType",
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 475,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 475,
+              "column" : 30
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 473,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 476,
           "column" : 2
         }
       }

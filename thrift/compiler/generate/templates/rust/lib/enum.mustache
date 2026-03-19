@@ -23,7 +23,7 @@
     }}{{#if enum:serde?}}, ::serde_derive::Serialize, ::serde_derive::Deserialize{{/if enum:serde?}}{{!
     }}{{#if program:valuable?}}, ::valuable::Valuable{{/if program:valuable?}}{{#if (not (string.empty? enum:derive))}}, {{enum:derive}}{{/if (not (string.empty? enum:derive))}}{{!
 }})]
-pub struct {{enum:rust_name}}(pub ::std::primitive::i32);
+pub struct {{enum:rust_name}}(pub ::std::primitive::{{enum:rust_underlying_or_i32}});
 
 impl {{enum:rust_name}} {{> lib/block}}{{!
     }}{{#each enum:values as |enum_value|}}
@@ -31,7 +31,7 @@ impl {{enum:rust_name}} {{> lib/block}}{{!
     #[doc = {{enum_value.docs}}]
     {{/if enum_value.docs?}}
     pub const {{enum_value.rust_name}}: Self = {{!
-        }}{{enum:rust_name}}({{enum_value.value}}i32);{{!
+        }}{{enum:rust_name}}({{enum_value.value}}{{enum:rust_underlying_or_i32}});{{!
     }}{{/each}}
 }
 
@@ -61,7 +61,7 @@ impl ::fbthrift::ThriftEnum for {{enum:rust_name}} {
     }
 
     fn inner_value(&self) -> i32 {
-        self.0
+        self.0 as i32
     }
 }
 
@@ -71,28 +71,28 @@ impl ::std::default::Default for {{enum:rust_name}} {
         {{#if (not (has_compiler_option? "deprecated_default_enum_min_i32"))}}
         Self(0)
         {{#else}}
-        Self(::std::primitive::i32::MIN)
+        Self(::std::primitive::{{enum:rust_underlying_or_i32}}::MIN)
         {{/if (not (has_compiler_option? "deprecated_default_enum_min_i32"))}}
     }
 }
 
-impl<'a> ::std::convert::From<&'a {{enum:rust_name}}> for ::std::primitive::i32 {
+impl<'a> ::std::convert::From<&'a {{enum:rust_name}}> for ::std::primitive::{{enum:rust_underlying_or_i32}} {
     #[inline]
     fn from(x: &'a {{enum:rust_name}}) -> Self {
         x.0
     }
 }
 
-impl ::std::convert::From<{{enum:rust_name}}> for ::std::primitive::i32 {
+impl ::std::convert::From<{{enum:rust_name}}> for ::std::primitive::{{enum:rust_underlying_or_i32}} {
     #[inline]
     fn from(x: {{enum:rust_name}}) -> Self {
         x.0
     }
 }
 
-impl ::std::convert::From<::std::primitive::i32> for {{enum:rust_name}} {
+impl ::std::convert::From<::std::primitive::{{enum:rust_underlying_or_i32}}> for {{enum:rust_name}} {
     #[inline]
-    fn from(x: ::std::primitive::i32) -> Self {
+    fn from(x: ::std::primitive::{{enum:rust_underlying_or_i32}}) -> Self {
         Self(x)
     }
 }
@@ -104,7 +104,7 @@ impl ::std::fmt::Display for {{enum:rust_name}} {
             ("{{variant.name}}", {{variant.value}}),
             {{/each}}
         ];
-        ::fbthrift::help::enum_display(VARIANTS_BY_NUMBER, fmt, self.0)
+        ::fbthrift::help::enum_display(VARIANTS_BY_NUMBER, fmt, self.0 as i32)
     }
 }
 
@@ -123,7 +123,7 @@ impl ::std::str::FromStr for {{enum:rust_name}} {
             ("{{variant.name}}", {{variant.value}}),
             {{/each}}
         ];
-        ::fbthrift::help::enum_from_str(VARIANTS_BY_NAME, string, "{{enum:name}}").map(Self)
+        ::fbthrift::help::enum_from_str(VARIANTS_BY_NAME, string, "{{enum:name}}").map(|v| Self(v as {{enum:rust_underlying_or_i32}}))
     }
 }
 
@@ -145,7 +145,7 @@ where
 {
     #[inline]
     fn rs_thrift_write(&self, p: &mut P) {
-        p.write_i32(self.into())
+        p.write_i32(self.0 as i32)
     }
 }
 
@@ -155,7 +155,10 @@ where
 {
     #[inline]
     fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
-        ::std::result::Result::Ok(Self::from(::anyhow::Context::context(p.read_i32(), "Expected a number indicating enum variant")?))
+        let value: ::std::primitive::i32 = ::anyhow::Context::context(p.read_i32(), "Expected a number indicating enum variant")?;
+        let underlying = ::std::convert::TryInto::<::std::primitive::{{enum:rust_underlying_or_i32}}>::try_into(value)
+            .map_err(|_| ::anyhow::anyhow!("Enum value out of range for {{enum:name}}: {}", value))?;
+        ::std::result::Result::Ok(Self::from(underlying))
     }
 }
 {{! line break }}

@@ -489,7 +489,7 @@ impl ::fbthrift::ThriftEnum for has_bitwise_ops {
     }
 
     fn inner_value(&self) -> i32 {
-        self.0
+        self.0 as i32
     }
 }
 
@@ -530,7 +530,7 @@ impl ::std::fmt::Display for has_bitwise_ops {
             ("two", 4),
             ("three", 8),
         ];
-        ::fbthrift::help::enum_display(VARIANTS_BY_NUMBER, fmt, self.0)
+        ::fbthrift::help::enum_display(VARIANTS_BY_NUMBER, fmt, self.0 as i32)
     }
 }
 
@@ -551,7 +551,7 @@ impl ::std::str::FromStr for has_bitwise_ops {
             ("two", 4),
             ("zero", 1),
         ];
-        ::fbthrift::help::enum_from_str(VARIANTS_BY_NAME, string, "has_bitwise_ops").map(Self)
+        ::fbthrift::help::enum_from_str(VARIANTS_BY_NAME, string, "has_bitwise_ops").map(|v| Self(v as i32))
     }
 }
 
@@ -571,7 +571,7 @@ where
 {
     #[inline]
     fn rs_thrift_write(&self, p: &mut P) {
-        p.write_i32(self.into())
+        p.write_i32(self.0 as i32)
     }
 }
 
@@ -581,7 +581,10 @@ where
 {
     #[inline]
     fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
-        ::std::result::Result::Ok(Self::from(::anyhow::Context::context(p.read_i32(), "Expected a number indicating enum variant")?))
+        let value: ::std::primitive::i32 = ::anyhow::Context::context(p.read_i32(), "Expected a number indicating enum variant")?;
+        let underlying = ::std::convert::TryInto::<::std::primitive::i32>::try_into(value)
+            .map_err(|_| ::anyhow::anyhow!("Enum value out of range for has_bitwise_ops: {}", value))?;
+        ::std::result::Result::Ok(Self::from(underlying))
     }
 }
 
@@ -616,7 +619,7 @@ impl ::fbthrift::ThriftEnum for is_unscoped {
     }
 
     fn inner_value(&self) -> i32 {
-        self.0
+        self.0 as i32
     }
 }
 
@@ -654,7 +657,7 @@ impl ::std::fmt::Display for is_unscoped {
             ("hello", 0),
             ("world", 1),
         ];
-        ::fbthrift::help::enum_display(VARIANTS_BY_NUMBER, fmt, self.0)
+        ::fbthrift::help::enum_display(VARIANTS_BY_NUMBER, fmt, self.0 as i32)
     }
 }
 
@@ -672,7 +675,7 @@ impl ::std::str::FromStr for is_unscoped {
             ("hello", 0),
             ("world", 1),
         ];
-        ::fbthrift::help::enum_from_str(VARIANTS_BY_NAME, string, "is_unscoped").map(Self)
+        ::fbthrift::help::enum_from_str(VARIANTS_BY_NAME, string, "is_unscoped").map(|v| Self(v as i32))
     }
 }
 
@@ -692,7 +695,7 @@ where
 {
     #[inline]
     fn rs_thrift_write(&self, p: &mut P) {
-        p.write_i32(self.into())
+        p.write_i32(self.0 as i32)
     }
 }
 
@@ -702,7 +705,10 @@ where
 {
     #[inline]
     fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
-        ::std::result::Result::Ok(Self::from(::anyhow::Context::context(p.read_i32(), "Expected a number indicating enum variant")?))
+        let value: ::std::primitive::i32 = ::anyhow::Context::context(p.read_i32(), "Expected a number indicating enum variant")?;
+        let underlying = ::std::convert::TryInto::<::std::primitive::i32>::try_into(value)
+            .map_err(|_| ::anyhow::anyhow!("Enum value out of range for is_unscoped: {}", value))?;
+        ::std::result::Result::Ok(Self::from(underlying))
     }
 }
 
@@ -737,7 +743,7 @@ impl ::fbthrift::ThriftEnum for MyForwardRefEnum {
     }
 
     fn inner_value(&self) -> i32 {
-        self.0
+        self.0 as i32
     }
 }
 
@@ -775,7 +781,7 @@ impl ::std::fmt::Display for MyForwardRefEnum {
             ("ZERO", 0),
             ("NONZERO", 12),
         ];
-        ::fbthrift::help::enum_display(VARIANTS_BY_NUMBER, fmt, self.0)
+        ::fbthrift::help::enum_display(VARIANTS_BY_NUMBER, fmt, self.0 as i32)
     }
 }
 
@@ -793,7 +799,7 @@ impl ::std::str::FromStr for MyForwardRefEnum {
             ("NONZERO", 12),
             ("ZERO", 0),
         ];
-        ::fbthrift::help::enum_from_str(VARIANTS_BY_NAME, string, "MyForwardRefEnum").map(Self)
+        ::fbthrift::help::enum_from_str(VARIANTS_BY_NAME, string, "MyForwardRefEnum").map(|v| Self(v as i32))
     }
 }
 
@@ -813,7 +819,7 @@ where
 {
     #[inline]
     fn rs_thrift_write(&self, p: &mut P) {
-        p.write_i32(self.into())
+        p.write_i32(self.0 as i32)
     }
 }
 
@@ -823,7 +829,10 @@ where
 {
     #[inline]
     fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
-        ::std::result::Result::Ok(Self::from(::anyhow::Context::context(p.read_i32(), "Expected a number indicating enum variant")?))
+        let value: ::std::primitive::i32 = ::anyhow::Context::context(p.read_i32(), "Expected a number indicating enum variant")?;
+        let underlying = ::std::convert::TryInto::<::std::primitive::i32>::try_into(value)
+            .map_err(|_| ::anyhow::anyhow!("Enum value out of range for MyForwardRefEnum: {}", value))?;
+        ::std::result::Result::Ok(Self::from(underlying))
     }
 }
 

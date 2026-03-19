@@ -13,6 +13,7 @@ namespace facebook::thrift::annotation::rust {
 ::apache::thrift::metadata::ThriftMetadata rust_getThriftModuleMetadata() {
   ::apache::thrift::metadata::ThriftServiceMetadataResponse response;
   ::apache::thrift::metadata::ThriftMetadata& metadata = *response.metadata();
+  ::apache::thrift::detail::md::EnumMetadata<EnumUnderlyingType>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Name>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Copy>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<RequestContext>::gen(metadata);
@@ -27,6 +28,7 @@ namespace facebook::thrift::annotation::rust {
   ::apache::thrift::detail::md::StructMetadata<Adapter>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Derive>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<ServiceExn>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<EnumType>::gen(metadata);
   return metadata;
 }
 } // namespace facebook::thrift::annotation::rust

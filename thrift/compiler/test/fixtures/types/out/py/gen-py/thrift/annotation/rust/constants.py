@@ -13,5 +13,5 @@ from thrift.protocol.TProtocol import TProtocolException
 
 
 
-from .ttypes import UTF8STRINGS, Name, Copy, RequestContext, Arc, Box, Exhaustive, Ord, NewType, Type, Serde, Mod, Adapter, Derive, ServiceExn
+from .ttypes import UTF8STRINGS, EnumUnderlyingType, Name, Copy, RequestContext, Arc, Box, Exhaustive, Ord, NewType, Type, Serde, Mod, Adapter, Derive, ServiceExn, EnumType
 

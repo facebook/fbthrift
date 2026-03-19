@@ -18,6 +18,17 @@ __property__ = property  # sometimes `property` is used as a field name
 UTF8STRINGS: bool
 
 
+class EnumUnderlyingType(int):
+    I8: __T.ClassVar[EnumUnderlyingType]
+    U8: __T.ClassVar[EnumUnderlyingType]
+    I16: __T.ClassVar[EnumUnderlyingType]
+    U16: __T.ClassVar[EnumUnderlyingType]
+    U32: __T.ClassVar[EnumUnderlyingType]
+
+    _VALUES_TO_NAMES: __T.ClassVar[__T.Dict[EnumUnderlyingType, str]]
+    _NAMES_TO_VALUES: __T.ClassVar[__T.Dict[str, EnumUnderlyingType]]
+
+
 class Name:
     thrift_spec: __T.Tuple[__T.Optional[__T.Tuple[int, int, str, __T.Any, __T.Optional[int], int]]]
     thrift_field_annotations: __T.Dict[int, __T.Dict[str, str]]
@@ -457,5 +468,39 @@ class ServiceExn:
     def _to_mutable_python(self) -> "facebook.thrift.annotation.rust.thrift_mutable_types.ServiceExn": ...   # type: ignore
     def _to_py3(self) -> "facebook.thrift.annotation.rust.types.ServiceExn": ...   # type: ignore
     def _to_py_deprecated(self) -> ServiceExn: ...
+
+
+class EnumType:
+    thrift_spec: __T.Tuple[__T.Optional[__T.Tuple[int, int, str, __T.Any, __T.Optional[int], int]]]
+    thrift_field_annotations: __T.Dict[int, __T.Dict[str, str]]
+    thrift_struct_annotations: __T.Dict[str, str]
+
+    def __init__(
+        self, *,
+        type: __T.Optional[EnumUnderlyingType] = ...
+    ) -> None:
+        ...
+
+    @__property__
+    def type(self) -> EnumUnderlyingType: ...
+    @type.setter
+    def type(self, value: __T.Optional[EnumUnderlyingType]) -> None: ...
+
+
+    def isUnion(self) -> bool: ...
+    def checkRequired(self) -> None: ...
+    def read(self, iprot: TProtocolBase) -> None: ...
+    @__T.overload
+    def readFromJson(self, json: __T.Dict[str, __T.Any], is_text: bool = ..., **kwargs: __T.Any) -> None: ...
+    @__T.overload
+    def readFromJson(self, json: str, is_text: bool = ..., **kwargs: __T.Any) -> None: ...
+    def write(self, oprot: TProtocolBase) -> None: ...
+    def __eq__(self, other: __T.Any) -> bool: ...
+    def __ne__(self, other: __T.Any) -> bool: ...
+    def __dir__(self) -> __T.Sequence[str]: ...
+    def _to_python(self) -> "facebook.thrift.annotation.rust.thrift_types.EnumType": ...   # type: ignore
+    def _to_mutable_python(self) -> "facebook.thrift.annotation.rust.thrift_mutable_types.EnumType": ...   # type: ignore
+    def _to_py3(self) -> "facebook.thrift.annotation.rust.types.EnumType": ...   # type: ignore
+    def _to_py_deprecated(self) -> EnumType: ...
 
 

@@ -48,7 +48,50 @@ class ThriftEnumWrapper(int):
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'Name', 'Copy', 'RequestContext', 'Arc', 'Box', 'Exhaustive', 'Ord', 'NewType', 'Type', 'Serde', 'Mod', 'Adapter', 'Derive', 'ServiceExn']
+__all__ = ['UTF8STRINGS', 'EnumUnderlyingType', 'Name', 'Copy', 'RequestContext', 'Arc', 'Box', 'Exhaustive', 'Ord', 'NewType', 'Type', 'Serde', 'Mod', 'Adapter', 'Derive', 'ServiceExn', 'EnumType']
+
+class EnumUnderlyingType:
+  r"""
+  Controls the underlying integer type of a Rust enum (newtype struct).
+  
+  By default, Thrift enums in Rust use `i32` as the underlying type. This
+  annotation allows choosing a smaller or unsigned type for memory optimization.
+  The wire format remains i32 regardless of the underlying type.
+  
+  Example:
+  
+  ```
+  @rust.EnumType{type = rust.EnumUnderlyingType.I8}
+  enum SmallEnum {
+    A = 0,
+    B = 1,
+  }
+  ```
+  
+  will result in `pub struct SmallEnum(pub i8)` instead of the default
+  `pub struct SmallEnum(pub i32)`.
+  """
+  def __getattr__(self, name): raise AttributeError(name)
+
+  _NAMES_TO_VALUES = dict(zip((
+    "I8",
+    "U8",
+    "I16",
+    "U16",
+    "U32",
+),
+(
+    0,
+    1,
+    2,
+    3,
+    4,
+  )))
+  _VALUES_TO_NAMES = {}
+
+for k, v in EnumUnderlyingType._NAMES_TO_VALUES.items():
+    setattr(EnumUnderlyingType, k, v)
+    EnumUnderlyingType._VALUES_TO_NAMES[v] = k
 
 class Name:
   r"""
@@ -1629,6 +1672,103 @@ class ServiceExn:
   def _to_py_deprecated(self):
     return self
 
+class EnumType:
+  r"""
+  Attributes:
+   - type
+  """
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  __init__ = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.I32:
+          self.type = iprot.readI32()
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('EnumType')
+    if self.type != None:
+      oprot.writeFieldBegin('type', TType.I32, 1)
+      oprot.writeI32(self.type)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    if self.type is not None:
+      value = pprint.pformat(self.type, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    type=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  def __dir__(self):
+    return (
+      'type',
+    )
+
+  __hash__ = object.__hash__
+
+  def _to_python(self):
+    import importlib
+    import thrift.python.converter
+    python_types = importlib.import_module("facebook.thrift.annotation.rust.thrift_types")
+    return thrift.python.converter.to_python_struct(python_types.EnumType, self)
+
+  def _to_mutable_python(self):
+    import importlib
+    import thrift.python.mutable_converter
+    python_mutable_types = importlib.import_module("facebook.thrift.annotation.rust.thrift_mutable_types")
+    return thrift.python.mutable_converter.to_mutable_python_struct_or_union(python_mutable_types.EnumType, self)
+
+  def _to_py3(self):
+    import importlib
+    import thrift.py3.converter
+    py3_types = importlib.import_module("facebook.thrift.annotation.rust.types")
+    return thrift.py3.converter.to_py3_struct(py3_types.EnumType, self)
+
+  def _to_py_deprecated(self):
+    return self
+
 all_structs.append(Name)
 Name.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.STRING, 'name', True, None, 2, ), # 1
@@ -1845,6 +1985,28 @@ def ServiceExn__setstate__(self, state):
 
 ServiceExn.__getstate__ = lambda self: self.__dict__.copy()
 ServiceExn.__setstate__ = ServiceExn__setstate__
+
+all_structs.append(EnumType)
+EnumType.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
+  (1, TType.I32, 'type', EnumUnderlyingType, None, 2, ), # 1
+)))
+
+EnumType.thrift_struct_annotations = {
+}
+EnumType.thrift_field_annotations = {
+}
+
+def EnumType__init__(self, type=None,):
+  self.type = type
+
+EnumType.__init__ = EnumType__init__
+
+def EnumType__setstate__(self, state):
+  state.setdefault('type', None)
+  self.__dict__ = state
+
+EnumType.__getstate__ = lambda self: self.__dict__.copy()
+EnumType.__setstate__ = EnumType__setstate__
 
 fix_spec(all_structs)
 del all_structs

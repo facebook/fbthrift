@@ -9,6 +9,63 @@
 namespace facebook\thrift\annotation\rust;
 
 /**
+ * Controls the underlying integer type of a Rust enum (newtype struct).
+ * 
+ * By default, Thrift enums in Rust use `i32` as the underlying type. This
+ * annotation allows choosing a smaller or unsigned type for memory optimization.
+ * The wire format remains i32 regardless of the underlying type.
+ * 
+ * Example:
+ * 
+ * ```
+ * @rust.EnumType{type = rust.EnumUnderlyingType.I8}
+ * enum SmallEnum {
+ *   A = 0,
+ *   B = 1,
+ * }
+ * ```
+ * 
+ * will result in `pub struct SmallEnum(pub i8)` instead of the default
+ * `pub struct SmallEnum(pub i32)`.
+ * 
+ * Original thrift enum:-
+ * EnumUnderlyingType
+ */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/rust/EnumUnderlyingType'))>>
+enum EnumUnderlyingType: int {
+  I8 = 0;
+  U8 = 1;
+  I16 = 2;
+  U16 = 3;
+  U32 = 4;
+}
+
+class EnumUnderlyingType_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getEnumMetadata()[]: \tmeta_ThriftEnum {
+    return \tmeta_ThriftEnum::fromShape(
+      shape(
+        "name" => "rust.EnumUnderlyingType",
+        "elements" => dict[
+          0 => "I8",
+          1 => "U8",
+          2 => "I16",
+          3 => "U16",
+          4 => "U32",
+        ],
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[write_props]: \TEnumAnnotations {
+    return shape(
+      'enum' => dict[],
+      'constants' => dict[
+      ],
+    );
+  }
+}
+
+/**
  * Override the Thrift identifier of the entity with the given name.
  *
  * Original thrift struct:-
@@ -1701,6 +1758,122 @@ class ServiceExn implements \IThriftSyncStruct, \IThriftStructMetadata, \IThrift
 
     if (idx($parsed, 'anyhow_to_application_exn') !== null) {
       $this->anyhow_to_application_exn = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['anyhow_to_application_exn']);
+    }
+  }
+
+}
+
+/**
+ * Original thrift struct:-
+ * EnumType
+ */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/rust/EnumType'))>>
+class EnumType implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftShapishSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const \ThriftStructTypes::TSpec SPEC = dict[
+    1 => shape(
+      'var' => 'type',
+      'type' => \TType::I32,
+      'enum' => \facebook\thrift\annotation\rust\EnumUnderlyingType::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'type' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'type' => ?\facebook\thrift\annotation\rust\EnumUnderlyingType,
+  );
+
+  const type TShape = shape(
+    ?'type' => ?\facebook\thrift\annotation\rust\EnumUnderlyingType,
+  );
+  const int STRUCTURAL_ID = 8371848154551322037;
+  /**
+   * Original thrift field:-
+   * 1: rust.EnumUnderlyingType type
+   */
+  public ?\facebook\thrift\annotation\rust\EnumUnderlyingType $type;
+
+  public function __construct(?\facebook\thrift\annotation\rust\EnumUnderlyingType $type = null)[] {
+    $this->type = $type;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'type'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'EnumType';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "rust.EnumType",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_enum" => \tmeta_ThriftEnumType::fromShape(
+                    shape(
+                      "name" => "rust.EnumUnderlyingType",
+                    )
+                  ),
+                )
+              ),
+              "name" => "type",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        '\facebook\thrift\annotation\Enum' => \facebook\thrift\annotation\Enum::withDefaultValues(),
+      ],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'type'),
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'type' => $this->type,
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'type') !== null) {
+      $this->type = \facebook\thrift\annotation\rust\EnumUnderlyingType::coerce(HH\FIXME\UNSAFE_CAST<mixed, \facebook\thrift\annotation\rust\EnumUnderlyingType>($parsed['type']));
     }
   }
 

@@ -38,6 +38,16 @@
 
 namespace apache::thrift::compiler::rust {
 
+// A compiler counterpart of rust.EnumUnderlyingType that avoids dependency on
+// the generated code and follows the compiler naming conventions.
+enum class rust_enum_underlying_type {
+  i8 = 0,
+  u8 = 1,
+  i16 = 2,
+  u16 = 3,
+  u32 = 4,
+};
+
 struct rust_codegen_options {
   // Crate names used for referring to sibling crates within the same Thrift
   // library.
@@ -886,6 +896,30 @@ class t_mstch_rust_generator : public t_mstch_generator {
     def.property("derive", [this](const t_enum& self) {
       return compute_derive_string(self, options_);
     });
+    def.property(
+        "rust_underlying_or_i32", [](const t_enum& self) -> std::string {
+          if (const auto* annot =
+                  self.find_structured_annotation_or_null(kRustEnumTypeUri)) {
+            const auto& type =
+                annot->get_value_from_structured_annotation("type");
+            switch (
+                static_cast<rust_enum_underlying_type>(type.get_integer())) {
+              case rust_enum_underlying_type::i8:
+                return "i8";
+              case rust_enum_underlying_type::u8:
+                return "u8";
+              case rust_enum_underlying_type::i16:
+                return "i16";
+              case rust_enum_underlying_type::u16:
+                return "u16";
+              case rust_enum_underlying_type::u32:
+                return "u32";
+              default:
+                throw std::runtime_error("unknown rust enum underlying type");
+            }
+          }
+          return "i32";
+        });
     return std::move(def).make();
   }
 
