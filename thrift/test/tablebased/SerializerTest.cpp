@@ -18,7 +18,7 @@
 
 #include <gtest/gtest.h>
 #include <folly/io/IOBuf.h>
-#include <folly/test/JsonTestUtil.h>
+#include <folly/json/JsonTestUtil.h>
 #include <thrift/lib/cpp2/protocol/DebugProtocol.h>
 #include <thrift/lib/cpp2/protocol/TableBasedSerializerImpl.h>
 #include <thrift/test/tablebased/gen-cpp2/frozen_tablebased_types.h>
