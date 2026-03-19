@@ -45,3 +45,8 @@
 {{#let export partial typedef_docblock |def|}}
 /** Glean {"file": "{{def.program.autogen_path}}", "name": "{{def.name}}", "kind": "typedef" } */
 {{/let partial}}
+
+{{! Function docblock - Glean annotation for mapping generated functions to thrift definitions }}
+{{#let export partial function_docblock |service function|}}
+  /** Glean {"file": "{{service.program.autogen_path}}", "service": "{{service.name}}", "function": "{{function.name}}"} */
+{{/let partial}}

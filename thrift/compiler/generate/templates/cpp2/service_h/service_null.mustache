@@ -17,6 +17,6 @@
 }}class {{service:cpp_name}}SvNull : public ::apache::thrift::ServiceHandler<{{service:cpp_name}}>{{#service:extends}}, virtual public ::apache::thrift::ServiceHandler<::{{service:cpp_qualified_namespace}}::{{service:cpp_name}}>{{/service:extends}} {
  public:
 {{#service:functions}}{{#function:return_type}}{{#if (not (or function:starts_interaction? function:creates_interaction? function:event_based? function:stream?))}}
-  {{> service_common/sync_function_return_type_server}} {{function:cpp_name}}({{> service_common/sync_function_return_param_server}}{{> service_common/function_param_list_server_commented_out}}) override;
+  {{#partial server.sync_return_type function=function:self service=service:self}} {{function:cpp_name}}({{#partial server.sync_return_param function=function:self}}{{#partial server.function_param_list_commented_out function=function:self}}) override;
 {{/if (not (or function:starts_interaction? function:creates_interaction? function:event_based? function:stream?))}}{{/function:return_type}}{{/service:functions}}
 };

@@ -18,11 +18,11 @@
 }}{{#let function_comma = (if function:params.fields? ", " null)}}
 #if FOLLY_HAS_COROUTINES
 {{#if function:sink?}}
-folly::coro::Task<{{> types/return_type_client}}> {{> service_common/client_class_name}}::co_{{function:cpp_name}}({{> service_common/function_param_list_client}}) {
+folly::coro::Task<{{#partial client.return_type function=function:self service=service:self}}> {{#partial client.client_class_name service=service:self parent_service=parent_service}}::co_{{function:cpp_name}}({{#partial client.function_param_list function=function:self}}) {
   ::apache::thrift::RpcOptions rpcOptions;
   co_return co_await co_{{function:cpp_name}}(rpcOptions{{function_comma}}{{> service_common/param_list}});
 }
-folly::coro::Task<{{> types/return_type_client}}> {{> service_common/client_class_name}}::co_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{> service_common/function_param_list_client}}) {
+folly::coro::Task<{{#partial client.return_type function=function:self service=service:self}}> {{#partial client.client_class_name service=service:self parent_service=parent_service}}::co_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{#partial client.function_param_list function=function:self}}) {
   const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
   const bool cancellable = cancelToken.canBeCancelled();

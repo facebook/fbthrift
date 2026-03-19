@@ -20,22 +20,22 @@
 {{#if (not function:starts_interaction?)}}
 {{#function:return_type}}
 {{#if (not function:event_based?)}}
-  virtual {{> service_common/sync_function_return_type_server}} sync_{{function:cpp_name}}({{> service_common/sync_function_return_param_server}}{{> service_common/function_param_list_server_commented_out}});
-  [[deprecated("Use sync_{{function:cpp_name}} instead")]] virtual {{> service_common/sync_function_return_type_server}} {{function:cpp_name}}({{> service_common/sync_function_return_param_server}}{{> service_common/function_param_list_server_commented_out}});
+  virtual {{#partial server.sync_return_type function=function:self service=service:self}} sync_{{function:cpp_name}}({{#partial server.sync_return_param function=function:self}}{{#partial server.function_param_list_commented_out function=function:self}});
+  [[deprecated("Use sync_{{function:cpp_name}} instead")]] virtual {{#partial server.sync_return_type function=function:self service=service:self}} {{function:cpp_name}}({{#partial server.sync_return_param function=function:self}}{{#partial server.function_param_list_commented_out function=function:self}});
 {{^service:interaction?}}
-  virtual folly::Future<{{> types/return_type_server_lift_unit}}> future_{{function:cpp_name}}({{> service_common/function_param_list_server}});
+  virtual folly::Future<{{#partial server.return_type_lift_unit function=function:self service=service:self}}> future_{{function:cpp_name}}({{#partial server.function_param_list function=function:self}});
 {{/service:interaction?}}
-  virtual folly::SemiFuture<{{> types/return_type_server_lift_unit}}> semifuture_{{function:cpp_name}}({{> service_common/function_param_list_server}});
+  virtual folly::SemiFuture<{{#partial server.return_type_lift_unit function=function:self service=service:self}}> semifuture_{{function:cpp_name}}({{#partial server.function_param_list function=function:self}});
 #if FOLLY_HAS_COROUTINES
-  virtual folly::coro::Task<{{> types/return_type_server}}> co_{{function:cpp_name}}({{> service_common/function_param_list_server}});
-  virtual folly::coro::Task<{{> types/return_type_server}}> co_{{function:cpp_name}}(apache::thrift::RequestParams params{{function_comma}}{{> service_common/function_param_list_server}});
+  virtual folly::coro::Task<{{#partial server.return_type function=function:self service=service:self}}> co_{{function:cpp_name}}({{#partial server.function_param_list function=function:self}});
+  virtual folly::coro::Task<{{#partial server.return_type function=function:self service=service:self}}> co_{{function:cpp_name}}(apache::thrift::RequestParams params{{function_comma}}{{#partial server.function_param_list function=function:self}});
 #endif
 {{/if (not function:event_based?)}}
 {{#function:oneway?}}
-  virtual void async_{{#if function:event_based?}}eb{{#else}}tm{{/if}}_{{function:cpp_name}}(apache::thrift::HandlerCallbackOneWay::Ptr callback{{function_comma}}{{> service_common/function_param_list_server}});
+  virtual void async_{{#if function:event_based?}}eb{{#else}}tm{{/if}}_{{function:cpp_name}}(apache::thrift::HandlerCallbackOneWay::Ptr callback{{function_comma}}{{#partial server.function_param_list function=function:self}});
 {{/function:oneway?}}
 {{^function:oneway?}}
-  virtual void async_{{#if function:event_based?}}eb{{#else}}tm{{/if}}_{{function:cpp_name}}(apache::thrift::HandlerCallbackPtr<{{> types/return_type_server}}> callback{{function_comma}}{{> service_common/function_param_list_server}});
+  virtual void async_{{#if function:event_based?}}eb{{#else}}tm{{/if}}_{{function:cpp_name}}(apache::thrift::HandlerCallbackPtr<{{#partial server.return_type function=function:self service=service:self}}> callback{{function_comma}}{{#partial server.function_param_list function=function:self}});
 {{/function:oneway?}}
 {{/function:return_type}}
 {{#else}}

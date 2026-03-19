@@ -20,7 +20,7 @@
 {{#function:return_type}}
 {{^function:starts_interaction?}}
 template <typename RpcOptions>
-void {{> service_common/client_class_name}}::fbthrift_send_{{function:cpp_name}}(apache::thrift::SerializedRequest&& request, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, {{> types/callback_type}} callback, std::unique_ptr<folly::IOBuf> interceptorFrameworkMetadata{{#function:creates_interaction?}}, const apache::thrift::InteractionHandle& handle{{/function:creates_interaction?}}) {
+void {{#partial client.client_class_name service=service:self parent_service=parent_service}}::fbthrift_send_{{function:cpp_name}}(apache::thrift::SerializedRequest&& request, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, {{> types/callback_type}} callback, std::unique_ptr<folly::IOBuf> interceptorFrameworkMetadata{{#function:creates_interaction?}}, const apache::thrift::InteractionHandle& handle{{/function:creates_interaction?}}) {
   {{#if in_or_creates_interaction?}}
   apache::thrift::RpcOptions rpcOpts(std::forward<RpcOptions>(rpcOptions));
   setInteraction({{#function:creates_interaction?}}handle, {{/function:creates_interaction?}}rpcOpts);

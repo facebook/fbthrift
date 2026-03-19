@@ -229,16 +229,16 @@ void {{#if service:interaction?}}{{parent_service.cpp_name}}{{#else}}{{service:c
       /* .methodName =*/ "{{> common/function_name}}",
       /* .qualifiedMethodName =*/ "{{#if service:interaction?}}{{parent_service.name}}{{#else}}{{service:name}}{{/if service:interaction?}}.{{> common/function_name}}"};
 {{#if service:self.interaction?}}
-  apache::thrift::HandlerCallback<{{> types/return_type_server}}>::DecoratorAfterCallback decoratorCallback{
+  apache::thrift::HandlerCallback<{{#partial server.return_type function=function:self service=service:self}}>::DecoratorAfterCallback decoratorCallback{
     static_cast<void*>(iface_),
     apache::thrift::ServiceHandler<{{#if service:interaction?}}{{parent_service.cpp_name}}{{#else}}{{service:cpp_name}}{{/if}}>::fbthrift_invoke_decorator_after_{{service:name}}_{{function:self.cpp_name}}};
 {{#else}}
-  apache::thrift::HandlerCallback<{{> types/return_type_server}}>::DecoratorAfterCallback decoratorCallback{
+  apache::thrift::HandlerCallback<{{#partial server.return_type function=function:self service=service:self}}>::DecoratorAfterCallback decoratorCallback{
     static_cast<void*>(iface_),
     apache::thrift::ServiceHandler<{{service:self.qualified_name}}>::fbthrift_invoke_decorator_after_{{function:self.cpp_name}}};
 {{/if service:self.interaction?}}
  auto callback =
-      apache::thrift::HandlerCallbackPtr<{{> types/return_type_server}}>::make(
+      apache::thrift::HandlerCallbackPtr<{{#partial server.return_type function=function:self service=service:self}}>::make(
           apache::thrift::detail::ServerRequestHelper::request(
               std::move(serverRequest)),
           std::move(ctxStack),
@@ -268,7 +268,7 @@ void {{#if service:interaction?}}{{parent_service.cpp_name}}{{#else}}{{service:c
       (void)args;
 {{#if service:self.interaction?}}
       if (ifacePtr == nullptr) {
-        cb->complete(folly::Try<{{> types/return_type_server}}>(apache::thrift::detail::si::create_app_exn_bad_interaction_state("{{service:name}}", "{{function:name}}")));
+        cb->complete(folly::Try<{{#partial server.return_type function=function:self service=service:self}}>(apache::thrift::detail::si::create_app_exn_bad_interaction_state("{{service:name}}", "{{function:name}}")));
         return;
       }
 {{/if service:self.interaction?}}

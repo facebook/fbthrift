@@ -17,7 +17,7 @@
 }}{{!
 }}{{#let function_comma = (if function:params.fields? ", " null)}}{{!
 }}{{#if (not function:sync_returns_by_outparam?)}}
-{{> types/return_type_client}} {{> service_common/client_class_name}}::sync_{{function:cpp_name}}({{> service_common/function_param_list_client}}) {
+{{#partial client.return_type function=function:self service=service:self}} {{#partial client.client_class_name service=service:self parent_service=parent_service}}::sync_{{function:cpp_name}}({{#partial client.function_param_list function=function:self}}) {
   ::apache::thrift::RpcOptions rpcOptions;
   {{#if function:void?}}
   sync_{{function:cpp_name}}(rpcOptions{{function_comma}}{{> service_common/param_list}});
@@ -26,16 +26,16 @@
   {{/if function:void?}}
 }
 {{#else}}
-void {{> service_common/client_class_name}}::sync_{{function:cpp_name}}({{function:cpp_return_type}}& _return{{function_comma}}{{> service_common/function_param_list_client}}) {
+void {{#partial client.client_class_name service=service:self parent_service=parent_service}}::sync_{{function:cpp_name}}({{function:cpp_return_type}}& _return{{function_comma}}{{#partial client.function_param_list function=function:self}}) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_{{function:cpp_name}}(rpcOptions, _return{{function_comma}}{{> service_common/param_list}});
 }
 {{/if (not function:sync_returns_by_outparam?)}}
 
 {{#if (not function:sync_returns_by_outparam?)}}
-{{> types/return_type_client}} {{> service_common/client_class_name}}::sync_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{> service_common/function_param_list_client}}) {
+{{#partial client.return_type function=function:self service=service:self}} {{#partial client.client_class_name service=service:self parent_service=parent_service}}::sync_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{#partial client.function_param_list function=function:self}}) {
 {{#else}}
-void {{> service_common/client_class_name}}::sync_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions, {{function:cpp_return_type}}& _return{{function_comma}}{{> service_common/function_param_list_client}}) {
+void {{#partial client.client_class_name service=service:self parent_service=parent_service}}::sync_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions, {{function:cpp_return_type}}& _return{{function_comma}}{{#partial client.function_param_list function=function:self}}) {
 {{/if (not function:sync_returns_by_outparam?)}}
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<{{#if function:oneway?}}true{{#else}}false{{/if function:oneway?}}> callback(&returnState);
@@ -136,9 +136,9 @@ auto tryObj = folly::makeTryWith([&]() {
 {{#if (has_compiler_option? "sync_methods_return_try")}}
 {{#if (not function:oneway?)}}
 {{#if (not function:sink?)}}
-folly::Try<apache::thrift::RpcResponseComplete<{{> types/return_type_client}}>>
-{{> service_common/client_class_name}}::sync_complete_{{function:cpp_name}}(
-    apache::thrift::RpcOptions&& rpcOptions{{function_comma}} {{> service_common/function_param_list_client}}) {
+folly::Try<apache::thrift::RpcResponseComplete<{{#partial client.return_type function=function:self service=service:self}}>>
+{{#partial client.client_class_name service=service:self parent_service=parent_service}}::sync_complete_{{function:cpp_name}}(
+    apache::thrift::RpcOptions&& rpcOptions{{function_comma}} {{#partial client.function_param_list function=function:self}}) {
   apache::thrift::ClientReceiveState returnState;
   auto ctxAndHeader = {{function:cpp_name}}Ctx(&rpcOptions);
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
@@ -159,7 +159,7 @@ folly::Try<apache::thrift::RpcResponseComplete<{{> types/return_type_client}}>>
   returnState.resetProtocolId(protocolId);
   returnState.resetCtx(std::move(ctxAndHeader.first));
 
-  folly::Try<apache::thrift::RpcResponseComplete<{{> types/return_type_client}}>> tryResponse;
+  folly::Try<apache::thrift::RpcResponseComplete<{{#partial client.return_type function=function:self service=service:self}}>> tryResponse;
   if (auto* header = returnState.header()) {
     rpcOptions.setRoutingData(header->releaseRoutingData());
   }

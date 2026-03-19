@@ -15,6 +15,7 @@
   limitations under the License.
 
 }}
+{{#let parent_service=service:self}}
 namespace {{service:cpp_qualified_namespace}} {
 {{> service_common/typedefs}}
 } // namespace {{service:cpp_qualified_namespace}}
@@ -34,7 +35,7 @@ namespace {{service:cpp_qualified_namespace}} {
 
 {{#function:legacy_client_methods?}}{{^function:stream?}}{{!
 }}{{#let function_comma = (if function:params.fields? ", " null)}}
-void apache::thrift::Client<{{service:qualified_name}}>::{{function:cpp_name}}(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback{{function_comma}}{{> service_common/function_param_list_client}}) {
+void apache::thrift::Client<{{service:qualified_name}}>::{{function:cpp_name}}(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback{{function_comma}}{{#partial client.function_param_list function=function:self}}) {
   {{function:cpp_name}}(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)){{function_comma}}{{> service_common/param_list}});
 }
 {{/function:stream?}}{{/function:legacy_client_methods?}}
@@ -62,7 +63,6 @@ apache::thrift::Client<{{service:qualified_name}}>::{{function:created_interacti
 {{/if (not function:starts_interaction?)}}
 {{/service:functions}}
 
-{{#let parent_service=service:self}}
 {{#service:interactions}}
 
 namespace {{service:cpp_qualified_namespace}} {

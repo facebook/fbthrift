@@ -18,69 +18,69 @@
 {{#service:functions}}{{!
 }}{{#let function_comma = (if function:params.fields? ", " null)}}
 {{#if function:starts_interaction?}}
-{{> common/fun_docblock}}
+{{#partial glean.function_docblock service=service:self function=function:self}}
   {{function:created_interaction.name}} {{function:cpp_name}}();
 {{#else}}
 {{#function:return_type}}
 {{^function:sink?}}{{! includes bidi }}
 {{#function:legacy_client_methods?}}
-{{> common/fun_docblock}}
-  virtual void {{function:cpp_name}}(std::unique_ptr<apache::thrift::RequestCallback> callback{{function_comma}}{{> service_common/function_param_list_client}});
+{{#partial glean.function_docblock service=service:self function=function:self}}
+  virtual void {{function:cpp_name}}(std::unique_ptr<apache::thrift::RequestCallback> callback{{function_comma}}{{#partial client.function_param_list function=function:self}});
 {{/function:legacy_client_methods?}}
-{{> common/fun_docblock}}
-  {{#if function:virtual_client_methods?}}virtual {{/if}}void {{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback{{#function:creates_interaction?}}, const apache::thrift::InteractionHandle& handle{{/function:creates_interaction?}}{{function_comma}}{{> service_common/function_param_list_client}});
+{{#partial glean.function_docblock service=service:self function=function:self}}
+  {{#if function:virtual_client_methods?}}virtual {{/if}}void {{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback{{#function:creates_interaction?}}, const apache::thrift::InteractionHandle& handle{{/function:creates_interaction?}}{{function_comma}}{{#partial client.function_param_list function=function:self}});
 {{/function:sink?}}
  protected:
-  void fbthrift_serialize_and_send_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, {{> types/callback_type}} callback{{#function:creates_interaction?}}, const apache::thrift::InteractionHandle& handle{{/function:creates_interaction?}}{{function_comma}}{{> service_common/function_param_list_client}}, bool stealRpcOptions = false);
+  void fbthrift_serialize_and_send_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, {{> types/callback_type}} callback{{#function:creates_interaction?}}, const apache::thrift::InteractionHandle& handle{{/function:creates_interaction?}}{{function_comma}}{{#partial client.function_param_list function=function:self}}, bool stealRpcOptions = false);
  public:
 {{^function:sink?}}
 
 {{^function:sync_returns_by_outparam?}}
-{{> common/fun_docblock}}
-  {{#if function:virtual_client_methods?}}virtual {{/if}}{{> types/return_type_client}} sync_{{function:cpp_name}}({{> service_common/function_param_list_client}});
-{{> common/fun_docblock}}
-  {{#if function:virtual_client_methods?}}virtual {{/if}}{{> types/return_type_client}} sync_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{> service_common/function_param_list_client}});
+{{#partial glean.function_docblock service=service:self function=function:self}}
+  {{#if function:virtual_client_methods?}}virtual {{/if}}{{#partial client.return_type function=function:self service=service:self}} sync_{{function:cpp_name}}({{#partial client.function_param_list function=function:self}});
+{{#partial glean.function_docblock service=service:self function=function:self}}
+  {{#if function:virtual_client_methods?}}virtual {{/if}}{{#partial client.return_type function=function:self service=service:self}} sync_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{#partial client.function_param_list function=function:self}});
 {{/function:sync_returns_by_outparam?}}
 {{#function:sync_returns_by_outparam?}}
-{{> common/fun_docblock}}
-  {{#if function:virtual_client_methods?}}virtual {{/if}}void sync_{{function:cpp_name}}({{function:cpp_return_type}}& _return{{function_comma}}{{> service_common/function_param_list_client}});
-{{> common/fun_docblock}}
-  {{#if function:virtual_client_methods?}}virtual {{/if}}void sync_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions, {{function:cpp_return_type}}& _return{{function_comma}}{{> service_common/function_param_list_client}});
+{{#partial glean.function_docblock service=service:self function=function:self}}
+  {{#if function:virtual_client_methods?}}virtual {{/if}}void sync_{{function:cpp_name}}({{function:cpp_return_type}}& _return{{function_comma}}{{#partial client.function_param_list function=function:self}});
+{{#partial glean.function_docblock service=service:self function=function:self}}
+  {{#if function:virtual_client_methods?}}virtual {{/if}}void sync_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions, {{function:cpp_return_type}}& _return{{function_comma}}{{#partial client.function_param_list function=function:self}});
 {{/function:sync_returns_by_outparam?}}
 
 {{#function:legacy_client_methods?}}{{^function:stream?}}
-{{> common/fun_docblock}}
-  virtual folly::Future<{{> types/return_type_client_lift_unit}}> future_{{function:cpp_name}}({{> service_common/function_param_list_client}});
+{{#partial glean.function_docblock service=service:self function=function:self}}
+  virtual folly::Future<{{#partial client.return_type_lift_unit function=function:self service=service:self}}> future_{{function:cpp_name}}({{#partial client.function_param_list function=function:self}});
 {{/function:stream?}}{{/function:legacy_client_methods?}}
-{{> common/fun_docblock}}
-  {{#if function:virtual_client_methods?}}virtual {{/if}}folly::SemiFuture<{{> types/return_type_client_lift_unit}}> semifuture_{{function:cpp_name}}({{> service_common/function_param_list_client}});
+{{#partial glean.function_docblock service=service:self function=function:self}}
+  {{#if function:virtual_client_methods?}}virtual {{/if}}folly::SemiFuture<{{#partial client.return_type_lift_unit function=function:self service=service:self}}> semifuture_{{function:cpp_name}}({{#partial client.function_param_list function=function:self}});
 {{#function:legacy_client_methods?}}{{^function:stream?}}
-{{> common/fun_docblock}}
-  virtual folly::Future<{{> types/return_type_client_lift_unit}}> future_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{> service_common/function_param_list_client}});
+{{#partial glean.function_docblock service=service:self function=function:self}}
+  virtual folly::Future<{{#partial client.return_type_lift_unit function=function:self service=service:self}}> future_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{#partial client.function_param_list function=function:self}});
 {{/function:stream?}}{{/function:legacy_client_methods?}}
-{{> common/fun_docblock}}
-  {{#if function:virtual_client_methods?}}virtual {{/if}}folly::SemiFuture<{{> types/return_type_client_lift_unit}}> semifuture_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{> service_common/function_param_list_client}});
+{{#partial glean.function_docblock service=service:self function=function:self}}
+  {{#if function:virtual_client_methods?}}virtual {{/if}}folly::SemiFuture<{{#partial client.return_type_lift_unit function=function:self service=service:self}}> semifuture_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{#partial client.function_param_list function=function:self}});
 {{#function:creates_interaction?}}
-{{> common/fun_docblock}}
+{{#partial glean.function_docblock service=service:self function=function:self}}
   std::pair<
     apache::thrift::Client<{{service:qualified_name}}>::{{function:created_interaction.cpp_name}},
-    folly::SemiFuture<{{> types/return_type_client_no_handle_lift_unit}}>
-  > eager_semifuture_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{> service_common/function_param_list_client}});
+    folly::SemiFuture<{{#partial client.return_type_no_handle_lift_unit function=function:self}}>
+  > eager_semifuture_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{#partial client.function_param_list function=function:self}});
 {{/function:creates_interaction?}}
 {{^function:oneway?}}
 {{#function:legacy_client_methods?}}
 {{#function:has_deprecated_header_client_methods}}
 {{^function:stream?}}
-{{> common/fun_docblock}}
-  virtual folly::Future<std::pair<{{> types/return_type_client_lift_unit}}, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{> service_common/function_param_list_client}});
+{{#partial glean.function_docblock service=service:self function=function:self}}
+  virtual folly::Future<std::pair<{{#partial client.return_type_lift_unit function=function:self service=service:self}}, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{#partial client.function_param_list function=function:self}});
 {{/function:stream?}}
-{{> common/fun_docblock}}
-  virtual folly::SemiFuture<std::pair<{{> types/return_type_client_lift_unit}}, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{> service_common/function_param_list_client}});
+{{#partial glean.function_docblock service=service:self function=function:self}}
+  virtual folly::SemiFuture<std::pair<{{#partial client.return_type_lift_unit function=function:self service=service:self}}, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{#partial client.function_param_list function=function:self}});
 {{/function:has_deprecated_header_client_methods}}
 {{#if (has_compiler_option? "sync_methods_return_try")}}
-{{> common/fun_docblock}}
-  [[nodiscard]] [[deprecated("To be replaced by new API soon")]] virtual folly::Try<apache::thrift::RpcResponseComplete<{{> types/return_type_client}}>> sync_complete_{{function:cpp_name}}(
-      apache::thrift::RpcOptions&& rpcOptions{{function_comma}} {{> service_common/function_param_list_client}});
+{{#partial glean.function_docblock service=service:self function=function:self}}
+  [[nodiscard]] [[deprecated("To be replaced by new API soon")]] virtual folly::Try<apache::thrift::RpcResponseComplete<{{#partial client.return_type function=function:self service=service:self}}>> sync_complete_{{function:cpp_name}}(
+      apache::thrift::RpcOptions&& rpcOptions{{function_comma}} {{#partial client.function_param_list function=function:self}});
 {{/if (has_compiler_option? "sync_methods_return_try")}}
 {{/function:legacy_client_methods?}}
 {{/function:oneway?}}
@@ -89,19 +89,19 @@
   {{!
   Coroutine functions are inline templates to prevent compile time and binary size regression
   }}
-{{> common/fun_docblock}}
+{{#partial glean.function_docblock service=service:self function=function:self}}
   template <int = 0>
-  folly::coro::Task<{{> types/return_type_client}}> co_{{function:cpp_name}}({{> service_common/function_param_list_client}}) {
+  folly::coro::Task<{{#partial client.return_type function=function:self service=service:self}}> co_{{function:cpp_name}}({{#partial client.function_param_list function=function:self}}) {
     return co_{{function:cpp_name}}<false>(nullptr{{function_comma}}{{> service_common/param_list}});
   }
-{{> common/fun_docblock}}
+{{#partial glean.function_docblock service=service:self function=function:self}}
   template <int = 0>
-  folly::coro::Task<{{> types/return_type_client}}> co_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{> service_common/function_param_list_client}}) {
+  folly::coro::Task<{{#partial client.return_type function=function:self service=service:self}}> co_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{#partial client.function_param_list function=function:self}}) {
     return co_{{function:cpp_name}}<true>(&rpcOptions{{function_comma}}{{> service_common/param_list}});
   }
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<{{> types/return_type_client}}> co_{{function:cpp_name}}(apache::thrift::RpcOptions* rpcOptions{{function_comma}}{{> service_common/function_param_list_client}}) {
+  folly::coro::Task<{{#partial client.return_type function=function:self service=service:self}}> co_{{function:cpp_name}}(apache::thrift::RpcOptions* rpcOptions{{function_comma}}{{#partial client.function_param_list function=function:self}}) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -149,7 +149,7 @@
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     {{#if (or function:stream? (not type:void?))}}
-    {{> types/return_type_client_no_handle}} _return;
+    {{#partial client.return_type_no_handle function=function:self}} _return;
     {{/if (or function:stream? (not type:void?))}}
     SCOPE_EXIT {
       if (hasRpcOptions && returnState.header()) {
@@ -217,68 +217,68 @@
 
 {{#function:legacy_client_methods?}}
 {{^function:stream?}}
-{{> common/fun_docblock}}
-  virtual void {{function:cpp_name}}(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback{{#function:creates_interaction?}}, const apache::thrift::InteractionHandle& handle{{/function:creates_interaction?}}{{function_comma}}{{> service_common/function_param_list_client}});
+{{#partial glean.function_docblock service=service:self function=function:self}}
+  virtual void {{function:cpp_name}}(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback{{#function:creates_interaction?}}, const apache::thrift::InteractionHandle& handle{{/function:creates_interaction?}}{{function_comma}}{{#partial client.function_param_list function=function:self}});
 {{/function:stream?}}
 
 {{/function:legacy_client_methods?}}
 {{/function:sink?}}{{#function:sink?}}
 #if FOLLY_HAS_COROUTINES
-{{> common/fun_docblock}}
-  folly::coro::Task<{{> types/return_type_client}}> co_{{function:cpp_name}}({{> service_common/function_param_list_client}});
-{{> common/fun_docblock}}
-  folly::coro::Task<{{> types/return_type_client}}> co_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{> service_common/function_param_list_client}});
+{{#partial glean.function_docblock service=service:self function=function:self}}
+  folly::coro::Task<{{#partial client.return_type function=function:self service=service:self}}> co_{{function:cpp_name}}({{#partial client.function_param_list function=function:self}});
+{{#partial glean.function_docblock service=service:self function=function:self}}
+  folly::coro::Task<{{#partial client.return_type function=function:self service=service:self}}> co_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{#partial client.function_param_list function=function:self}});
 #endif // FOLLY_HAS_COROUTINES
 {{/function:sink?}}
 
 {{^function:cpp_recv_arg?}}
 {{^function:oneway?}}
-{{> common/fun_docblock}}
+{{#partial glean.function_docblock service=service:self function=function:self}}
   static folly::exception_wrapper recv_wrapped_{{function:cpp_name}}(::apache::thrift::ClientReceiveState& state);
-{{> common/fun_docblock}}
+{{#partial glean.function_docblock service=service:self function=function:self}}
   static void recv_{{function:cpp_name}}(::apache::thrift::ClientReceiveState& state);
 {{#function:virtual_client_methods?}}
   // Mock friendly virtual instance method
-{{> common/fun_docblock}}
+{{#partial glean.function_docblock service=service:self function=function:self}}
   virtual void recv_instance_{{function:cpp_name}}(::apache::thrift::ClientReceiveState& state);
-{{> common/fun_docblock}}
+{{#partial glean.function_docblock service=service:self function=function:self}}
   virtual folly::exception_wrapper recv_instance_wrapped_{{function:cpp_name}}(::apache::thrift::ClientReceiveState& state);
 {{/function:virtual_client_methods?}}
 {{/function:oneway?}}
 {{/function:cpp_recv_arg?}}
 {{#function:cpp_recv_arg?}}
-{{> common/fun_docblock}}
-  static folly::exception_wrapper recv_wrapped_{{function:cpp_name}}({{> types/return_type_client_no_handle}}& _return, ::apache::thrift::ClientReceiveState& state);
+{{#partial glean.function_docblock service=service:self function=function:self}}
+  static folly::exception_wrapper recv_wrapped_{{function:cpp_name}}({{#partial client.return_type_no_handle function=function:self}}& _return, ::apache::thrift::ClientReceiveState& state);
 {{^function:sync_returns_by_outparam?}}
-{{> common/fun_docblock}}
-  static {{> types/return_type_client_no_handle}} recv_{{function:cpp_name}}(::apache::thrift::ClientReceiveState& state);
+{{#partial glean.function_docblock service=service:self function=function:self}}
+  static {{#partial client.return_type_no_handle function=function:self}} recv_{{function:cpp_name}}(::apache::thrift::ClientReceiveState& state);
 {{#function:virtual_client_methods?}}
   // Mock friendly virtual instance method
-{{> common/fun_docblock}}
-  virtual {{> types/return_type_client_no_handle}} recv_instance_{{function:cpp_name}}(::apache::thrift::ClientReceiveState& state);
+{{#partial glean.function_docblock service=service:self function=function:self}}
+  virtual {{#partial client.return_type_no_handle function=function:self}} recv_instance_{{function:cpp_name}}(::apache::thrift::ClientReceiveState& state);
 {{/function:virtual_client_methods?}}
 {{/function:sync_returns_by_outparam?}}{{#function:sync_returns_by_outparam?}}
-{{> common/fun_docblock}}
-  static void recv_{{function:cpp_name}}({{> types/return_type_client_no_handle}}& _return, ::apache::thrift::ClientReceiveState& state);
+{{#partial glean.function_docblock service=service:self function=function:self}}
+  static void recv_{{function:cpp_name}}({{#partial client.return_type_no_handle function=function:self}}& _return, ::apache::thrift::ClientReceiveState& state);
 {{#function:virtual_client_methods?}}
   // Mock friendly virtual instance method
-{{> common/fun_docblock}}
-  virtual void recv_instance_{{function:cpp_name}}({{> types/return_type_client_no_handle}}& _return, ::apache::thrift::ClientReceiveState& state);
+{{#partial glean.function_docblock service=service:self function=function:self}}
+  virtual void recv_instance_{{function:cpp_name}}({{#partial client.return_type_no_handle function=function:self}}& _return, ::apache::thrift::ClientReceiveState& state);
 {{/function:virtual_client_methods?}}
 {{/function:sync_returns_by_outparam?}}
 {{#function:virtual_client_methods?}}
-{{> common/fun_docblock}}
-  virtual folly::exception_wrapper recv_instance_wrapped_{{function:cpp_name}}({{> types/return_type_client_no_handle}}& _return, ::apache::thrift::ClientReceiveState& state);
+{{#partial glean.function_docblock service=service:self function=function:self}}
+  virtual folly::exception_wrapper recv_instance_wrapped_{{function:cpp_name}}({{#partial client.return_type_no_handle function=function:self}}& _return, ::apache::thrift::ClientReceiveState& state);
 {{/function:virtual_client_methods?}}
 {{/function:cpp_recv_arg?}}
  private:
-  apache::thrift::SerializedRequest fbthrift_serialize_{{function:cpp_name}}(const RpcOptions& rpcOptions, apache::thrift::transport::THeader& header, apache::thrift::ContextStack* contextStack{{function_comma}}{{> service_common/function_param_list_client}});
+  apache::thrift::SerializedRequest fbthrift_serialize_{{function:cpp_name}}(const RpcOptions& rpcOptions, apache::thrift::transport::THeader& header, apache::thrift::ContextStack* contextStack{{function_comma}}{{#partial client.function_param_list function=function:self}});
   template <typename RpcOptions>
   void fbthrift_send_{{function:cpp_name}}(apache::thrift::SerializedRequest&& request, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, {{> types/callback_type}} callback, std::unique_ptr<folly::IOBuf> interceptorFrameworkMetadata{{#function:creates_interaction?}}, const apache::thrift::InteractionHandle& handle{{/function:creates_interaction?}});
   std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::thrift::transport::THeader>> {{function:cpp_name}}Ctx(apache::thrift::RpcOptions* rpcOptions);
 {{^function:sink?}}
   template <typename CallbackType>
-  folly::SemiFuture<{{> types/return_type_client_lift_unit}}> fbthrift_semifuture_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{> service_common/function_param_list_client}});
+  folly::SemiFuture<{{#partial client.return_type_lift_unit function=function:self service=service:self}}> fbthrift_semifuture_{{function:cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{#partial client.function_param_list function=function:self}});
 {{/function:sink?}}
  public:
 {{/function:return_type}}

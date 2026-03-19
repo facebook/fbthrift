@@ -29,16 +29,16 @@
 //
 {{#if (not function:event_based?)}}
 
-{{> service_common/sync_function_return_type_server}} {{> service_common/service_class_name}}::{{function:cpp_name}}({{> service_common/sync_function_return_param_server}}{{> service_common/function_param_list_server_commented_out}}) {
+{{#partial server.sync_return_type function=function:self service=service:self}} {{> service_common/service_class_name}}::{{function:cpp_name}}({{#partial server.sync_return_param function=function:self}}{{#partial server.function_param_list_commented_out function=function:self}}) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("{{function:name}}");
 }
 
-{{> service_common/sync_function_return_type_server}} {{> service_common/service_class_name}}::sync_{{function:cpp_name}}({{#function:sync_returns_by_outparam?}}{{!}}{{function:cpp_return_type}}& _return{{function_comma}}{{!}}{{/function:sync_returns_by_outparam?}}{{> service_common/function_param_list_server}}) {
+{{#partial server.sync_return_type function=function:self service=service:self}} {{> service_common/service_class_name}}::sync_{{function:cpp_name}}({{#function:sync_returns_by_outparam?}}{{!}}{{function:cpp_return_type}}& _return{{function_comma}}{{!}}{{/function:sync_returns_by_outparam?}}{{#partial server.function_param_list function=function:self}}) {
   return {{function:cpp_name}}({{#function:sync_returns_by_outparam?}}_return{{function_comma}}{{!}}{{/function:sync_returns_by_outparam?}}{{> service_common/param_list_move}});
 }
 
-folly::SemiFuture<{{> types/return_type_server_lift_unit}}>
-{{> service_common/service_class_name}}::semifuture_{{function:cpp_name}}({{> service_common/function_param_list_server}}) {
+folly::SemiFuture<{{#partial server.return_type_lift_unit function=function:self service=service:self}}>
+{{> service_common/service_class_name}}::semifuture_{{function:cpp_name}}({{#partial server.function_param_list function=function:self}}) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_{{function:cpp_name}}.compare_exchange_strong(
       expected,
@@ -67,8 +67,8 @@ folly::SemiFuture<{{> types/return_type_server_lift_unit}}>
 }
 {{^service:interaction?}}
 
-folly::Future<{{> types/return_type_server_lift_unit}}>
-{{> service_common/service_class_name}}::future_{{function:cpp_name}}({{> service_common/function_param_list_server}}) {
+folly::Future<{{#partial server.return_type_lift_unit function=function:self service=service:self}}>
+{{> service_common/service_class_name}}::future_{{function:cpp_name}}({{#partial server.function_param_list function=function:self}}) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_{{function:cpp_name}}.compare_exchange_strong(
       expected,
@@ -81,8 +81,8 @@ folly::Future<{{> types/return_type_server_lift_unit}}>
 {{/service:interaction?}}
 
 #if FOLLY_HAS_COROUTINES
-folly::coro::Task<{{> types/return_type_server}}>
-{{> service_common/service_class_name}}::co_{{function:cpp_name}}({{> service_common/function_param_list_server}}) {
+folly::coro::Task<{{#partial server.return_type function=function:self service=service:self}}>
+{{> service_common/service_class_name}}::co_{{function:cpp_name}}({{#partial server.function_param_list function=function:self}}) {
   auto expected{apache::thrift::detail::si::InvocationType::Coro};
   __fbthrift_invocation_{{function:cpp_name}}.compare_exchange_strong(
       expected,
@@ -95,12 +95,12 @@ folly::coro::Task<{{> types/return_type_server}}>
   {{/function:stack_arguments?}}
   {{^function:stack_arguments?}}
   folly::throw_exception(apache::thrift::detail::si::UnimplementedCoroMethod::
-                             withCapturedArgs<{{> service_common/function_param_list_server_commented_out}}>({{> service_common/param_list_move}}));
+                             withCapturedArgs<{{#partial server.function_param_list_commented_out function=function:self}}>({{> service_common/param_list_move}}));
   {{/function:stack_arguments?}}
 }
 
-folly::coro::Task<{{> types/return_type_server}}> {{> service_common/service_class_name}}::co_{{function:cpp_name}}(
-    apache::thrift::RequestParams /* params */{{function_comma}}{{> service_common/function_param_list_server}}) {
+folly::coro::Task<{{#partial server.return_type function=function:self service=service:self}}> {{> service_common/service_class_name}}::co_{{function:cpp_name}}(
+    apache::thrift::RequestParams /* params */{{function_comma}}{{#partial server.function_param_list function=function:self}}) {
   auto expected{apache::thrift::detail::si::InvocationType::CoroParam};
   __fbthrift_invocation_{{function:cpp_name}}.compare_exchange_strong(
       expected,
@@ -112,12 +112,12 @@ folly::coro::Task<{{> types/return_type_server}}> {{> service_common/service_cla
 {{#function:oneway?}}
 
 void {{> service_common/service_class_name}}::async_tm_{{function:cpp_name}}(
-    apache::thrift::HandlerCallbackOneWay::Ptr callback{{function_comma}}{{> service_common/function_param_list_server}}) {
+    apache::thrift::HandlerCallbackOneWay::Ptr callback{{function_comma}}{{#partial server.function_param_list function=function:self}}) {
 {{/function:oneway?}}
 {{^function:oneway?}}
 
 void {{> service_common/service_class_name}}::async_tm_{{function:cpp_name}}(
-    apache::thrift::HandlerCallbackPtr<{{> types/return_type_server}}> callback{{function_comma}}{{> service_common/function_param_list_server}}) {
+    apache::thrift::HandlerCallbackPtr<{{#partial server.return_type function=function:self service=service:self}}> callback{{function_comma}}{{#partial server.function_param_list function=function:self}}) {
 {{/function:oneway?}}
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
@@ -221,7 +221,7 @@ determineInvocationType:
 #if FOLLY_HAS_COROUTINES
   } catch (apache::thrift::detail::si::UnimplementedCoroMethod&{{^function:stack_arguments?}} ex{{/function:stack_arguments?}}) {
     {{^function:stack_arguments?}}
-    std::tie({{> service_common/param_list}}) = std::move(ex).restoreArgs<{{> service_common/function_param_list_server_commented_out}}>();
+    std::tie({{> service_common/param_list}}) = std::move(ex).restoreArgs<{{#partial server.function_param_list_commented_out function=function:self}}>();
     {{/function:stack_arguments?}}
     goto determineInvocationType;
 #endif // FOLLY_HAS_COROUTINES
@@ -233,14 +233,14 @@ determineInvocationType:
 {{#function:oneway?}}
 
 void {{> service_common/service_class_name}}::async_eb_{{function:cpp_name}}(
-    apache::thrift::HandlerCallbackOneWay::Ptr /*callback*/{{function_comma}}{{> service_common/function_param_list_server_commented_out}}) {
+    apache::thrift::HandlerCallbackOneWay::Ptr /*callback*/{{function_comma}}{{#partial server.function_param_list_commented_out function=function:self}}) {
   LOG(DFATAL) << "Function {{function:cpp_name}} is unimplemented";
 }
 {{/function:oneway?}}
 {{^function:oneway?}}
 
 void {{> service_common/service_class_name}}::async_eb_{{function:cpp_name}}(
-    apache::thrift::HandlerCallbackPtr<{{> types/return_type_server}}> callback{{function_comma}}{{> service_common/function_param_list_server_commented_out}}) {
+    apache::thrift::HandlerCallbackPtr<{{#partial server.return_type function=function:self service=service:self}}> callback{{function_comma}}{{#partial server.function_param_list_commented_out function=function:self}}) {
   callback->exception(
       apache::thrift::detail::si::create_app_exn_unimplemented("{{function:name}}"));
 }
