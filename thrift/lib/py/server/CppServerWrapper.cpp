@@ -29,8 +29,10 @@
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/py/server/CppContextData.h>
+#include <thrift/lib/thrift/gen-cpp2/metadata_types.h>
 #include <wangle/ssl/SSLContextConfig.h>
 
 using namespace apache::thrift;
@@ -315,6 +317,29 @@ class PythonAsyncProcessor : public AsyncProcessor {
     LOG(FATAL)
         << "This AsyncProcessor doesn't support Thrift interactions. "
         << "Please implement processInteraction to support interactions.";
+  }
+
+  void getServiceMetadata(
+      apache::thrift::metadata::ThriftServiceMetadataResponse& response)
+      override {
+    PyGILState_STATE state = PyGILState_Ensure();
+    SCOPE_EXIT {
+      PyGILState_Release(state);
+    };
+    try {
+      object result = adapter_->attr("get_service_metadata")();
+      if (result.is_none()) {
+        return;
+      }
+      std::string serialized = extract<std::string>(result);
+      apache::thrift::BinarySerializer::deserialize<
+          apache::thrift::metadata::ThriftServiceMetadataResponse>(
+          serialized, response);
+    } catch (error_already_set&) {
+      PyErr_Clear();
+    } catch (const std::exception& e) {
+      LOG(WARNING) << "Error deserializing service metadata: " << e.what();
+    }
   }
 
   /**

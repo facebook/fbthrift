@@ -182,6 +182,45 @@ class _ProcessorAdapter(object):
             traceback.print_exc()
             return TPriority.NORMAL
 
+    def get_service_metadata(self):
+        """Return serialized ThriftServiceMetadataResponse bytes, or None."""
+        try:
+            service_iface = self._find_service_interface()
+            if service_iface is None:
+                return None
+            response = service_iface.__get_metadata_service_response__()
+            from thrift.python.serializer import Protocol, serialize
+
+            return serialize(response, protocol=Protocol.BINARY)
+        except Exception:
+            # Suppress exceptions as this is a deprecated server and users may
+            # not be importing thrift-python for metadata.
+            return None
+
+    def _find_service_interface(self):
+        """Find the thrift-python service interface for metadata."""
+        import importlib
+
+        candidates = [self.processor]
+        handler = getattr(self.processor, "_handler", None)
+        if handler is not None:
+            candidates.append(handler)
+        for obj in candidates:
+            for base in type(obj).__mro__:
+                module_name = base.__module__
+                pkg = module_name.rsplit(".", 1)[0]
+                try:
+                    mod = importlib.import_module(pkg + ".thrift_services")
+                    for name in dir(mod):
+                        cls = getattr(mod, name, None)
+                        if isinstance(cls, type) and hasattr(
+                            cls, "__get_metadata_service_response__"
+                        ):
+                            return cls
+                except (ImportError, AttributeError):
+                    continue
+        return None
+
 
 class TSSLConfig(object):
     def __init__(self):
