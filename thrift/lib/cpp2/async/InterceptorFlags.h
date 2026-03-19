@@ -56,4 +56,11 @@ THRIFT_FLAG_DECLARE_string(disabled_service_interceptors);
  */
 THRIFT_FLAG_DECLARE_bool(enable_python_client_interceptors);
 
+/**
+ * This flag controls whether Rust thrift clients use global client
+ * interceptors. Defaults to false for gradual rollout. When false, Rust
+ * clients will not invoke any global client interceptors.
+ */
+THRIFT_FLAG_DECLARE_bool(enable_rust_client_interceptors);
+
 } // namespace apache::thrift
