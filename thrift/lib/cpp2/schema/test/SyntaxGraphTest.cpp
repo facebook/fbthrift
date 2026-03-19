@@ -162,7 +162,11 @@ TEST_F(ServiceSchemaTest, Enum) {
   EXPECT_EQ(&e.definition(), testEnum.unwrap());
   EXPECT_EQ(e.uri(), "meta.com/thrift_test/TestEnum");
   EXPECT_EQ(e.definition().annotations().size(), 2);
-  EXPECT_EQ(e.definition().annotations()[1].value()["field1"], 3);
+  {
+    const auto& ann = findAnnotationOrThrow(
+        e.definition().annotations(), "TestStructuredAnnotation");
+    EXPECT_EQ(ann.value()["field1"], 3);
+  }
 
   const auto& unset = e.values()[0];
   const auto& value1 = e.values()[1];
