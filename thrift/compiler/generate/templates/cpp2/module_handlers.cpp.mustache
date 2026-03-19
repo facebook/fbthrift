@@ -15,23 +15,19 @@
   limitations under the License.
 
 }}
-{{#import "common/server" as server}}
-{{#import "common/rpc" as rpc}}
 {{> Autogen}}
 
-{{#program}}
-#include "{{program:include_prefix}}{{program:name}}_handlers.h"
-#include "{{program:include_prefix}}{{program:name}}_handlers-inl.h"
-#include "{{program:include_prefix}}{{program:name}}_types.h"
-{{#program:constants?}}
-#include "{{program:include_prefix}}{{program:name}}_constants.h"
-{{/program:constants?}}
-{{/program}}
+#include "{{program.include_prefix}}{{program.name}}_handlers.h"
+#include "{{program.include_prefix}}{{program.name}}_handlers-inl.h"
+#include "{{program.include_prefix}}{{program.name}}_types.h"
+  {{#if (not (array.empty? program.consts))}}
+#include "{{program.include_prefix}}{{program.name}}_constants.h"
+  {{/if (not (array.empty? program.consts))}}
 
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
-{{#services}}
+  {{#each program.services as |service|}}
 {{> service_cpp/handlers_cpp}}
 
 
-{{/services}}
+  {{/each}}
