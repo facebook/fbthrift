@@ -2867,7 +2867,7 @@ _readField_delay:
   }
 _readField_custom:
   {
-    ::apache::thrift::op::decode<::apache::thrift::type::adapted<::apache::thrift::test::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::folly::IOBuf, ::apache::thrift::type::binary_t>>>(*iprot, this->__fbthrift_field_custom);
+    ::apache::thrift::op::decode<::apache::thrift::type::adapted<::apache::thrift::test::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::facebook::thrift::test::fixtures::adapter::IOBuf, ::apache::thrift::type::binary_t>>>(*iprot, this->__fbthrift_field_custom);
   }
  this->__isset.set(1, true);
 
@@ -3101,7 +3101,7 @@ uint32_t AdaptTestStruct::serializedSize(Protocol_ const* prot_) const {
   }
   {
     xfer += prot_->serializedFieldSize("custom", apache::thrift::protocol::T_STRING, 2);
-    xfer += ::apache::thrift::op::serialized_size<false, ::apache::thrift::type::adapted<::apache::thrift::test::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::folly::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_custom);
+    xfer += ::apache::thrift::op::serialized_size<false, ::apache::thrift::type::adapted<::apache::thrift::test::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::facebook::thrift::test::fixtures::adapter::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_custom);
   }
   {
     xfer += prot_->serializedFieldSize("timeout", apache::thrift::protocol::T_I64, 3);
@@ -3149,7 +3149,7 @@ uint32_t AdaptTestStruct::serializedSizeZC(Protocol_ const* prot_) const {
   }
   {
     xfer += prot_->serializedFieldSize("custom", apache::thrift::protocol::T_STRING, 2);
-    xfer += ::apache::thrift::op::serialized_size<true, ::apache::thrift::type::adapted<::apache::thrift::test::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::folly::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_custom);
+    xfer += ::apache::thrift::op::serialized_size<true, ::apache::thrift::type::adapted<::apache::thrift::test::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::facebook::thrift::test::fixtures::adapter::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_custom);
   }
   {
     xfer += prot_->serializedFieldSize("timeout", apache::thrift::protocol::T_I64, 3);
@@ -3203,7 +3203,7 @@ uint32_t AdaptTestStruct::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 1;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 2, kPrevFieldId>(*prot_, "custom", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::op::encode<::apache::thrift::type::adapted<::apache::thrift::test::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::folly::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_custom);
+    xfer += ::apache::thrift::op::encode<::apache::thrift::type::adapted<::apache::thrift::test::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::facebook::thrift::test::fixtures::adapter::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_custom);
     xfer += prot_->writeFieldEnd();
   }
   {
@@ -4310,7 +4310,7 @@ void ThriftAdaptTestUnion::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING)) {
           this->custom_ref().emplace();
-          ::apache::thrift::op::decode<::apache::thrift::type::adapted<::apache::thrift::test::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::folly::IOBuf, ::apache::thrift::type::binary_t>>>(*iprot, value_.custom);
+          ::apache::thrift::op::decode<::apache::thrift::type::adapted<::apache::thrift::test::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::facebook::thrift::test::fixtures::adapter::IOBuf, ::apache::thrift::type::binary_t>>>(*iprot, value_.custom);
         } else {
           _readState.skip(iprot);
         }
@@ -4345,7 +4345,7 @@ uint32_t ThriftAdaptTestUnion::serializedSize(Protocol_ const* prot_) const {
     case ThriftAdaptTestUnion::Type::custom:
     {
       xfer += prot_->serializedFieldSize("custom", apache::thrift::protocol::T_STRING, 2);
-      xfer += ::apache::thrift::op::serialized_size<false, ::apache::thrift::type::adapted<::apache::thrift::test::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::folly::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, value_.custom);
+      xfer += ::apache::thrift::op::serialized_size<false, ::apache::thrift::type::adapted<::apache::thrift::test::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::facebook::thrift::test::fixtures::adapter::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, value_.custom);
       break;
     }
     case ThriftAdaptTestUnion::Type::__EMPTY__:
@@ -4371,7 +4371,7 @@ uint32_t ThriftAdaptTestUnion::serializedSizeZC(Protocol_ const* prot_) const {
     case ThriftAdaptTestUnion::Type::custom:
     {
       xfer += prot_->serializedFieldSize("custom", apache::thrift::protocol::T_STRING, 2);
-      xfer += ::apache::thrift::op::serialized_size<true, ::apache::thrift::type::adapted<::apache::thrift::test::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::folly::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, value_.custom);
+      xfer += ::apache::thrift::op::serialized_size<true, ::apache::thrift::type::adapted<::apache::thrift::test::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::facebook::thrift::test::fixtures::adapter::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, value_.custom);
       break;
     }
     case ThriftAdaptTestUnion::Type::__EMPTY__:;
@@ -4400,7 +4400,7 @@ uint32_t ThriftAdaptTestUnion::write(Protocol_* prot_) const {
     {
       constexpr int16_t kPrevFieldId = 1;
       xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 2, kPrevFieldId>(*prot_, "custom", false);
-      xfer += ::apache::thrift::op::encode<::apache::thrift::type::adapted<::apache::thrift::test::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::folly::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, value_.custom);
+      xfer += ::apache::thrift::op::encode<::apache::thrift::type::adapted<::apache::thrift::test::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::facebook::thrift::test::fixtures::adapter::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, value_.custom);
       xfer += prot_->writeFieldEnd();
       break;
     }

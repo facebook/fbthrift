@@ -118,17 +118,17 @@ bool container_needs_convert(const t_type* type) {
 }
 
 std::string get_cpp_template(const t_type& type) {
-  if (const auto* val = type.find_unstructured_annotation_or_null(
-          {"cpp.template", "cpp2.template"})) {
+  if (const auto* val = cpp_name_resolver::find_template(type)) {
     return *val;
   }
-  if (type.is<t_list>()) {
+  const auto* resolved = type.get_true_type();
+  if (resolved->is<t_list>()) {
     return "std::vector";
   }
-  if (type.is<t_set>()) {
+  if (resolved->is<t_set>()) {
     return "std::set";
   }
-  if (type.is<t_map>()) {
+  if (resolved->is<t_map>()) {
     return "std::map";
   }
 
@@ -320,9 +320,8 @@ class py3_generator_context {
           return;
         }
         case gen::cpp::reference_type::none: {
-          const t_type* resolved_type = field.type()->get_true_type();
           field_cpp_kinds_[&field] =
-              cpp2::get_type(resolved_type) == "std::unique_ptr<folly::IOBuf>"
+              cpp2::is_binary_iobuf_unique_ptr(&field.type().deref())
               ? field_cpp_kind::iobuf
               : field_cpp_kind::value;
           return;
@@ -466,8 +465,16 @@ std::string py3_generator_context::visit_type(
       custom_templates_.push_back(trueType);
     }
     if (!props.cpp_type().empty()) {
+      // Use the same pointer as the cache key in get_cached_type_props:
+      // - Adapter types: orig_type (cached by type)
+      // - Container true types: trueType (cached by true_type, unique per
+      //   typedef)
+      // - Non-container true types: orig_type (cached by type, avoids
+      //   polluting shared primitive nodes)
       custom_cpp_types_.push_back(
-          hasPy3EnableCppAdapterAnnot ? orig_type : trueType);
+          (!hasPy3EnableCppAdapterAnnot && trueType->is<t_container>())
+              ? trueType
+              : orig_type);
     }
   }
   return flatName;
@@ -1171,10 +1178,54 @@ py3_generator_context::get_cached_type_props(const t_type* type) const {
         .emplace(
             type,
             cached_type_properties{
-                get_cpp_template(*true_type),
+                get_cpp_template(*type),
                 name_resolver_.get_native_type(*type),
                 {}})
         .first->second;
+  }
+  // Walk the typedef chain to find @cpp.Type{name=...} or
+  // @cpp.Type{template=...}, since the annotation may be on an intermediate
+  // typedef (e.g., a re-typedef like `typedef numerics.CompactSE3F
+  // CompactSE3F` where the annotation is on numerics.CompactSE3F, not the
+  // local re-typedef).
+  //
+  // Container types (list, set, map) have unique AST nodes per typedef
+  // definition, so caching by true_type is safe. Primitive types (i32,
+  // i64, etc.) share canonical AST nodes, so caching by true_type would
+  // pollute the cache for bare primitive references. For primitives with
+  // typedef annotations, cache by `type` instead.
+  if (auto* annot = t_typedef::get_first_structured_annotation_or_null(
+          type, kCppTypeUri)) {
+    auto cache_key = true_type->is<t_container>() ? true_type : type;
+    // Extract the template value from the annotation we found (which may be
+    // on an intermediate typedef), since get_cpp_template(*type) only checks
+    // the immediate node and would miss annotations deeper in the chain.
+    auto get_template_from_annot = [&]() -> std::string {
+      if (auto* tmpl =
+              annot->get_value_from_structured_annotation_or_null("template")) {
+        return tmpl->get_string();
+      }
+      return get_cpp_template(*type);
+    };
+    if (auto* name =
+            annot->get_value_from_structured_annotation_or_null("name")) {
+      return type_properties_
+          .emplace(
+              cache_key,
+              cached_type_properties{
+                  get_template_from_annot(), name->get_string(), {}})
+          .first->second;
+    }
+    if (annot->get_value_from_structured_annotation_or_null("template")) {
+      return type_properties_
+          .emplace(
+              cache_key,
+              cached_type_properties{
+                  get_template_from_annot(),
+                  fmt::to_string(cpp2::get_type(type)),
+                  {}})
+          .first->second;
+    }
   }
   auto it = type_properties_.find(true_type);
   if (it == type_properties_.end()) {
@@ -1182,8 +1233,8 @@ py3_generator_context::get_cached_type_props(const t_type* type) const {
              .emplace(
                  true_type,
                  cached_type_properties{
-                     get_cpp_template(*true_type),
-                     fmt::to_string(cpp2::get_type(true_type)),
+                     get_cpp_template(*type),
+                     fmt::to_string(cpp2::get_type(type)),
                      {}})
              .first;
   }

@@ -427,25 +427,25 @@ Set.register(folly_sorted_vector_set__Set__i32)
 __all__.append('folly_sorted_vector_set__Set__i32')
 
 
-class Map__i32_string(thrift.py3.types.Map):
+class folly_sorted_vector_map__Map__i32_string(thrift.py3.types.Map):
     __module__ = _fbthrift__module_name__
     __slots__ = ()
 
-    _FBTHRIFT_USE_SORTED_REPR = True
+    _FBTHRIFT_USE_SORTED_REPR = False
 
     def __init__(self, items=None, private_ctor_token=None) -> None:
         if private_ctor_token is thrift.py3.types._fbthrift_map_private_ctor:
             _py_obj = items
-        elif isinstance(items, Map__i32_string):
+        elif isinstance(items, folly_sorted_vector_map__Map__i32_string):
             _py_obj = dict(items)
         elif items is None:
             _py_obj = dict()
         else:
-            check_key = Map__i32_string._check_key_type_or_raise
-            check_val = Map__i32_string._check_val_type_or_raise
+            check_key = folly_sorted_vector_map__Map__i32_string._check_key_type_or_raise
+            check_val = folly_sorted_vector_map__Map__i32_string._check_val_type_or_raise
             _py_obj = {check_key(k) : check_val(v) for k, v in items.items()}
 
-        super().__init__(_py_obj, Map__i32_string)
+        super().__init__(_py_obj, folly_sorted_vector_map__Map__i32_string)
 
     @staticmethod
     def _check_key_type_or_raise(key):
@@ -472,11 +472,11 @@ class Map__i32_string(thrift.py3.types.Map):
 
     @staticmethod
     def __get_reflection__():
-        return get_types_reflection().get_reflection__Map__i32_string()
+        return get_types_reflection().get_reflection__folly_sorted_vector_map__Map__i32_string()
 
 
-Mapping.register(Map__i32_string)
-__all__.append('Map__i32_string')
+Mapping.register(folly_sorted_vector_map__Map__i32_string)
+__all__.append('folly_sorted_vector_map__Map__i32_string')
 
 
 class std_list_int32_t__List__i32(thrift.py3.types.List):

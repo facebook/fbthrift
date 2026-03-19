@@ -19,12 +19,15 @@
 #include <stdint.h>
 #include <initializer_list>
 #include <string>
+#include <string_view>
 #include <unordered_map>
+#include <vector>
 
 #include <thrift/compiler/ast/t_container.h>
 #include <thrift/compiler/ast/t_field.h>
 #include <thrift/compiler/ast/t_primitive_type.h>
 #include <thrift/compiler/ast/t_type.h>
+#include <thrift/compiler/ast/t_typedef.h>
 #include <thrift/compiler/ast/uri.h>
 #include <thrift/compiler/generate/cpp/reference_type.h>
 
@@ -171,13 +174,13 @@ class cpp_name_resolver {
   static const t_const* find_nontransitive_adapter(const t_type& node);
 
   static const std::string* find_type(const t_type& node) {
-    return node.find_unstructured_annotation_or_null({"cpp.type", "cpp2.type"});
+    return find_cpp_type_annotation(node, {"cpp.type", "cpp2.type"}, "name");
   }
   static const std::string* find_first_adapter(const t_type& node);
   static const std::string* find_first_adapter(const t_field& node);
   static const std::string* find_template(const t_type& node) {
-    return node.find_unstructured_annotation_or_null(
-        {"cpp.template", "cpp2.template"});
+    return find_cpp_type_annotation(
+        node, {"cpp.template", "cpp2.template"}, "template");
   }
 
   static bool is_directly_adapted(const t_type& node) {
@@ -211,6 +214,31 @@ class cpp_name_resolver {
       const t_program& program, const t_named& node) {
     return get_namespace(program) + "::" + get_cpp_name(node);
   }
+  // Shared helper for find_type and find_template. Checks unstructured
+  // annotations (only for non-user-defined typedefs) then structured @cpp.Type.
+  static const std::string* find_cpp_type_annotation(
+      const t_type& node,
+      const std::vector<std::string_view>& unstructured_keys,
+      const char* structured_key) {
+    // Unstructured annotations are not supported on user-defined typedefs.
+    // They must use structured @cpp.Type. Unnamed typedefs (from field
+    // annotation lowering) still carry unstructured annotations from sema.
+    if (auto* td = node.try_as<t_typedef>();
+        !td || td->typedef_kind() != t_typedef::kind::defined) {
+      if (auto* val =
+              node.find_unstructured_annotation_or_null(unstructured_keys)) {
+        return val;
+      }
+    }
+    if (auto* annot = node.find_structured_annotation_or_null(kCppTypeUri)) {
+      if (auto* v = annot->get_value_from_structured_annotation_or_null(
+              structured_key)) {
+        return &v->get_string();
+      }
+    }
+    return nullptr;
+  }
+
   static const std::string* get_string_from_annotation_or_null(
       const t_named& node, const char* uri, const char* key);
 

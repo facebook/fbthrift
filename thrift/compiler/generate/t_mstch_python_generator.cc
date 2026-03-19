@@ -1044,7 +1044,7 @@ class t_mstch_python_prototypes_generator : public t_whisker_generator {
       return true_type.is_any_int() || true_type.is_byte();
     });
     def.property("iobuf?", [](const t_type& self) {
-      return is_type_iobuf(self.get_true_type());
+      return self.get_true_type()->is_binary() && is_type_iobuf(&self);
     });
     def.property("contains_patch?", [](const t_type& self) {
       return type_contains_patch(self.get_true_type());

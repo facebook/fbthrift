@@ -80,8 +80,8 @@ cdef object folly_small_vector__List__i32__from_cpp(const _apache_thrift_fixture
 cdef _apache_thrift_fixtures_types_module_cbindings.folly_sorted_vector_set[cint32_t] folly_sorted_vector_set__Set__i32__make_instance(object items) except *
 cdef object folly_sorted_vector_set__Set__i32__from_cpp(const _apache_thrift_fixtures_types_module_cbindings.folly_sorted_vector_set[cint32_t]&) except *
 
-cdef cmap[cint32_t,string] Map__i32_string__make_instance(object items) except *
-cdef object Map__i32_string__from_cpp(const cmap[cint32_t,string]&) except *
+cdef _apache_thrift_fixtures_types_module_cbindings.folly_sorted_vector_map[cint32_t,string] folly_sorted_vector_map__Map__i32_string__make_instance(object items) except *
+cdef object folly_sorted_vector_map__Map__i32_string__from_cpp(const _apache_thrift_fixtures_types_module_cbindings.folly_sorted_vector_map[cint32_t,string]&) except *
 
 cdef _apache_thrift_fixtures_types_module_cbindings.std_list_int32_t std_list_int32_t__List__i32__make_instance(object items) except *
 cdef object std_list_int32_t__List__i32__from_cpp(const _apache_thrift_fixtures_types_module_cbindings.std_list_int32_t&) except *
