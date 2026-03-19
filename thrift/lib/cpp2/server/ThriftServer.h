@@ -993,6 +993,10 @@ class ThriftServer : public apache::thrift::concurrency::Runnable,
   std::shared_ptr<InterceptorMetricCallback> interceptorMetricCallback_{
       std::make_shared<NoopInterceptorMetricCallback>()};
 
+  // Unified stream/sink metric backends
+  std::shared_ptr<IThriftServerCounters> thriftServerCounters_;
+  std::shared_ptr<IThriftRequestLogging> thriftRequestLogging_;
+
   //! The type of thread manager to create.
   ThreadManagerType threadManagerType_{ThreadManagerType::PRIORITY};
 
@@ -3015,6 +3019,14 @@ class ThriftServer : public apache::thrift::concurrency::Runnable,
   InterceptorMetricCallback& getInterceptorMetricCallback() const override {
     DCHECK(interceptorMetricCallback_);
     return *interceptorMetricCallback_;
+  }
+
+  IThriftServerCounters* getThriftServerCounters() const override {
+    return thriftServerCounters_.get();
+  }
+
+  IThriftRequestLogging* getThriftRequestLogging() const override {
+    return thriftRequestLogging_.get();
   }
 
   /**

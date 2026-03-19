@@ -373,6 +373,9 @@ add_library(
   async/processor/ServiceHandlerBase.cpp
   gen/module_constants_cpp.cpp
   gen/module_types_cpp.cpp
+  logging/ThriftConnectionLog.cpp
+  logging/ThriftSinkLog.cpp
+  logging/ThriftStreamLog.cpp
   security/AsyncStopTLS.cpp
   security/FizzPeeker.cpp
   security/SSLUtil.cpp

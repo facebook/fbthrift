@@ -43,6 +43,8 @@ class Cpp2RequestContext;
 class AdaptiveConcurrencyController;
 class CPUConcurrencyController;
 class ResourcePoolSet;
+class IThriftRequestLogging;
+class IThriftServerCounters;
 class TProcessorEventHandler;
 
 namespace concurrency {
@@ -258,6 +260,22 @@ class ServerConfigs {
   virtual bool hasStreamInterceptors() const { return false; }
 
   virtual InterceptorMetricCallback& getInterceptorMetricCallback() const = 0;
+
+  /**
+   * Returns the unified stream/sink counter backend, or nullptr if none
+   * is installed. Default returns nullptr (noop).
+   */
+  virtual IThriftServerCounters* getThriftServerCounters() const {
+    return nullptr;
+  }
+
+  /**
+   * Returns the unified stream/sink request logging backend, or nullptr
+   * if none is installed. Default returns nullptr (noop).
+   */
+  virtual IThriftRequestLogging* getThriftRequestLogging() const {
+    return nullptr;
+  }
 
   virtual server::DecoratorDataPerRequestBlueprint&
   getDecoratorDataPerRequestBlueprint() = 0;

@@ -31,6 +31,21 @@ class ThriftServerInternals {
     server_.interceptorMetricCallback_ = std::move(interceptorMetricCallback);
   }
 
+  void setThriftServerCounters(
+      std::shared_ptr<IThriftServerCounters> counters) {
+    DCHECK(
+        server_.internalStatus_.load(std::memory_order_relaxed) ==
+        ThriftServer::ServerStatus::NOT_RUNNING);
+    server_.thriftServerCounters_ = std::move(counters);
+  }
+
+  void setThriftRequestLogging(std::shared_ptr<IThriftRequestLogging> logging) {
+    DCHECK(
+        server_.internalStatus_.load(std::memory_order_relaxed) ==
+        ThriftServer::ServerStatus::NOT_RUNNING);
+    server_.thriftRequestLogging_ = std::move(logging);
+  }
+
   void allowDebugInterface(bool value) { server_.allowDebugInterface(value); }
 
   bool allowDebugInterface() const { return server_.allowDebugInterface(); }

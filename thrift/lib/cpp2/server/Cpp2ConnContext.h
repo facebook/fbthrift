@@ -36,6 +36,7 @@
 #include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/async/Interaction.h>
 #include <thrift/lib/cpp2/async/InterceptorFlags.h>
+#include <thrift/lib/cpp2/logging/ThriftConnectionLog.h>
 #include <thrift/lib/cpp2/server/DecoratorData.h>
 #include <thrift/lib/cpp2/server/DecoratorDataStorage.h>
 #include <thrift/lib/cpp2/server/ServiceInterceptorStorage.h>
@@ -427,6 +428,10 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     }
   }
 
+  const ThriftConnectionLog* getThriftConnectionLog() const {
+    return &thriftConnectionLog_;
+  }
+
  private:
   /**
    * Adds interaction to interaction map
@@ -466,6 +471,10 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
 
   void setTransportType(TransportType transportType) {
     transportType_ = transportType;
+  }
+
+  void setThriftConnectionLog(ThriftConnectionLog connectionLog) {
+    thriftConnectionLog_ = connectionLog;
   }
 
   void setClientType(CLIENT_TYPE clientType) { clientType_ = clientType; }
@@ -595,6 +604,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   std::vector<detail::ServiceInterceptorOnConnectionStorage>
       serviceInterceptorsStorage_;
   detail::ConnectionInternalFieldsT internalFields_;
+  ThriftConnectionLog thriftConnectionLog_{nullptr, nullptr};
 };
 
 namespace detail {

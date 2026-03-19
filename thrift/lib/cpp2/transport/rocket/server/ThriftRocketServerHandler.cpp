@@ -32,6 +32,7 @@
 #include <thrift/lib/cpp/util/EnumUtils.h>
 #include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
+#include <thrift/lib/cpp2/logging/ThriftConnectionLog.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/LoggingEvent.h>
@@ -116,7 +117,12 @@ ThriftRocketServerHandler::ThriftRocketServerHandler(
                                        ->getThriftServerConfig()
                                        .getResetConnCtxUserDataOnClose()) {
   connContext_.setTransportType(Cpp2ConnContext::TransportType::ROCKET);
-  for (const auto& handler : worker_->getServer()->getEventHandlersUnsafe()) {
+
+  auto* server = worker_->getServer();
+  connContext_.setThriftConnectionLog(ThriftConnectionLog(
+      server->getThriftServerCounters(), server->getThriftRequestLogging()));
+
+  for (const auto& handler : server->getEventHandlersUnsafe()) {
     handler->newConnection(&connContext_);
   }
 }
