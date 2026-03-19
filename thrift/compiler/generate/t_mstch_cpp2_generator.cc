@@ -2266,7 +2266,8 @@ void t_mstch_cpp2_generator::generate_out_of_line_service(
   render_to_file(mstch_service, "ServiceAsyncClient.h", name + "AsyncClient.h");
   render_to_file(context, "service.cpp", name + ".cpp");
   render_to_file(mstch_service, "service.h", name + ".h");
-  render_to_file(mstch_service, "service.tcc", name + ".tcc");
+  render_whisker_service_file(
+      *service, "service.tcc", fmt::format("{}.tcc", name));
   render_whisker_service_file(
       *service,
       "types_custom_protocol.h",
@@ -2367,8 +2368,8 @@ void t_mstch_cpp2_generator::generate_inline_services() {
   render_whisker_file(
       "module_clients_fwd.h", fmt::format("{}_clients_fwd.h", module_name));
   render_to_file(context, "module_clients.cpp", module_name + "_clients.cpp");
-  render_to_file(
-      context, "module_handlers-inl.h", module_name + "_handlers-inl.h");
+  render_whisker_file(
+      "module_handlers-inl.h", fmt::format("{}_handlers-inl.h", module_name));
   render_to_file(context, "module_handlers.h", module_name + "_handlers.h");
   render_to_file(context, "module_handlers.cpp", module_name + "_handlers.cpp");
 }

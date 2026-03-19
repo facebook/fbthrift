@@ -15,13 +15,13 @@
   limitations under the License.
 
 }}
-namespace {{service:cpp_qualified_namespace}} {
-{{> service_common/typedefs}}
-{{> service_tcc/process_and_return}}
+{{#import "service_tcc/process_and_return" as process_and_return}}
+namespace {{service.cpp_qualified_namespace}} {
+{{#partial rpc.function_param_and_result_typedefs interface=service parent_service=null}}
+{{#partial process_and_return.process_and_return interface=service parent_service=null}}
 
-{{#let parent_service=service:self}}
-{{#service:interactions}}
-{{> service_common/typedefs}}
-{{> service_tcc/process_and_return}}
-{{/service:interactions}}
-} // namespace {{service:cpp_qualified_namespace}}
+  {{#each service.interactions as |interaction|}}
+{{#partial rpc.function_param_and_result_typedefs interface=interaction parent_service=service}}
+{{#partial process_and_return.process_and_return interface=interaction parent_service=service}}
+  {{/each}}
+} // namespace {{service.cpp_qualified_namespace}}

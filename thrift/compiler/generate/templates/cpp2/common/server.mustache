@@ -88,3 +88,11 @@ apache::thrift::ServiceHandler
 {{#pragma ignore-newlines}}
 , apache::thrift::FieldData<{{field.id}}, {{field.type.type_class}}, {{field.type.cpp_type}}{{#if field.type.use_op_encode?}}, {{field.type.type_tag}}{{/if}}>
 {{/let partial}}
+
+{{#let export partial get_args_ref |function|}}
+{{#pragma ignore-newlines}}
+  {{#each function.params.fields as |param|}}
+    {{#let is_smart_ptr=(and (not function.stack_arguments?) param.type.resolves_to_complex_return?)}}
+, {{#if is_smart_ptr}}std::move(args.uarg_{{param.cpp_name}}){{#else}}args.uarg_{{param.cpp_name}}{{/if}}
+  {{/each}}
+{{/let partial}}

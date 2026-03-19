@@ -16,6 +16,7 @@
 
 }}
 {{! Partials shared between RPC client and server codegen }}
+{{#import "common/server" as server}}
 
 {{#let export partial function_name |service function|}}
 {{#pragma ignore-newlines}}
@@ -38,4 +39,48 @@ apache::thrift::RpcKind::
 {{#else if function.sink?}}SINK
 {{#else}}SINGLE_REQUEST_SINGLE_RESPONSE
 {{/if function.oneway?}}
+{{/let partial}}
+
+{{#let partial typedef_params |function service_cpp_name|}}
+{{#pragma ignore-newlines}}
+typedef apache::thrift::ThriftPresult<false
+  {{#each function.params.fields as |field|}}
+, apache::thrift::FieldData<{{field.id}}, {{field.type.type_class}}, {{field.type.cpp_type}}
+*{{#if field.type.use_op_encode?}}, {{field.type.type_tag}}{{/if}}>
+  {{/each}}
+> {{service_cpp_name}}_{{function.prefixed_name}}_pargs;
+{{/let partial}}
+
+{{#let partial typedef_result |function service_cpp_name| captures |server|}}
+  {{#if function.bidirectional_stream?}}
+typedef apache::thrift::ThriftPResultBiDi<
+    apache::thrift::ThriftPresult<true{{#partial server.field_data_return type=function.return_type}}{{#each function.exceptions as |exc|}}{{#partial server.field_data_throws field=exc}}{{/each}}>,
+    apache::thrift::ThriftPresult<true{{#partial server.field_data_return type=function.sink.elem_type}}{{#each function.sink.exceptions as |exc|}}{{#partial server.field_data_throws field=exc}}{{/each}}>,
+    apache::thrift::ThriftPresult<true{{#partial server.field_data_return type=function.stream.elem_type}}{{#each function.stream.exceptions as |exc|}}{{#partial server.field_data_throws field=exc}}{{/each}}>
+    > {{service_cpp_name}}_{{function.prefixed_name}}_presult;
+  {{#else if function.sink?}}
+typedef apache::thrift::ThriftPResultSink<
+    apache::thrift::ThriftPresult<true{{#partial server.field_data_return type=function.return_type}}{{#each function.exceptions as |exc|}}{{#partial server.field_data_throws field=exc}}{{/each}}>,
+    apache::thrift::ThriftPresult<true{{#partial server.field_data_return type=function.sink.elem_type}}{{#each function.sink.exceptions as |exc|}}{{#partial server.field_data_throws field=exc}}{{/each}}>,
+    apache::thrift::ThriftPresult<true{{#partial server.field_data_return type=function.sink.final_response_type}}{{#each function.sink.final_response_exceptions as |exc|}}{{#partial server.field_data_throws field=exc}}{{/each}}>
+    > {{service_cpp_name}}_{{function.prefixed_name}}_presult;
+  {{#else if function.stream?}}
+typedef apache::thrift::ThriftPResultStream<
+    apache::thrift::ThriftPresult<true{{#partial server.field_data_return type=function.return_type}}{{#each function.exceptions as |exc|}}{{#partial server.field_data_throws field=exc}}{{/each}}>,
+    apache::thrift::ThriftPresult<true{{#partial server.field_data_return type=function.stream.elem_type}}{{#each function.stream.exceptions as |exc|}}{{#partial server.field_data_throws field=exc}}{{/each}}>
+    > {{service_cpp_name}}_{{function.prefixed_name}}_presult;
+  {{#else if (not function.oneway?)}}
+typedef apache::thrift::ThriftPresult<true{{#partial server.field_data_return type=function.return_type}}{{#each function.exceptions as |exc|}}{{#partial server.field_data_throws field=exc}}{{/each}}> {{service_cpp_name}}_{{function.prefixed_name}}_presult;
+  {{/if function.bidirectional_stream?}}
+{{/let partial}}
+
+{{#let export partial function_param_and_result_typedefs |interface parent_service| captures |typedef_params typedef_result|}}
+  {{#let service_cpp_name=(if interface.interaction? parent_service.cpp_name interface.cpp_name)}}
+  {{#each interface.functions as |function|}}
+    {{#if (not function.starts_interaction?)}}
+{{#partial typedef_params function=function service_cpp_name=service_cpp_name}}
+
+{{#partial typedef_result function=function service_cpp_name=service_cpp_name}}
+    {{/if (not function.starts_interaction?)}}
+  {{/each}}
 {{/let partial}}

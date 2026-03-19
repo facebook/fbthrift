@@ -17,7 +17,7 @@
 }}
 {{#let parent_service=service:self}}
 namespace {{service:cpp_qualified_namespace}} {
-{{> service_common/typedefs}}
+{{#partial rpc.function_param_and_result_typedefs interface=service:self parent_service=null}}
 } // namespace {{service:cpp_qualified_namespace}}
 {{> service_async_client_cpp/templated_received}}
 
@@ -66,7 +66,7 @@ apache::thrift::Client<{{service:qualified_name}}>::{{function:created_interacti
 {{#service:interactions}}
 
 namespace {{service:cpp_qualified_namespace}} {
-{{> service_common/typedefs}}
+{{#partial rpc.function_param_and_result_typedefs interface=service:self parent_service=parent_service}}
 } // namespace {{service:cpp_qualified_namespace}}
 {{> service_async_client_cpp/templated_received}}
 

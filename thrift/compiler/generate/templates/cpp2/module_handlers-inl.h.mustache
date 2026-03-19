@@ -20,14 +20,12 @@
 {{> Autogen}}
 #pragma once
 
-{{#program}}
-#include "{{program:include_prefix}}{{program:name}}_handlers.h"
-{{/program}}
+#include "{{program.include_prefix}}{{program.name}}_handlers.h"
 
 #include <thrift/lib/cpp2/gen/service_tcc.h>
 
-{{#services}}
+  {{#each program.services as |service|}}
 {{> service_cpp/service_inl}}
 
 
-{{/services}}
+  {{/each}}
