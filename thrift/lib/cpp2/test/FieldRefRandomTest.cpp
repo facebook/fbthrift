@@ -28,7 +28,7 @@ using apache::thrift::optional_field_ref;
 using namespace std;
 
 void callRandomMethod(
-    mt19937& rng, optional_field_ref<string&>& a, optional<string>& b) {
+    mt19937& rng, optional_field_ref<string&> a, optional<string>& b) {
   auto arg = to_string(rng());
   auto methods = folly::make_array<function<void()>>(
       [&] { EXPECT_EQ(bool(a), bool(b)); },
@@ -60,8 +60,8 @@ void callRandomMethod(
 
 void comparison(
     mt19937& rng,
-    const optional_field_ref<string&>& a1,
-    const optional_field_ref<string&>& a2,
+    optional_field_ref<string&> a1,
+    optional_field_ref<string&> a2,
     const optional<string>& b1,
     const optional<string>& b2) {
   auto arg = to_string(rng());
