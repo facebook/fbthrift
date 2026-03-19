@@ -88,6 +88,15 @@ struct StructWithOptional {
   4: optional Containers optional_containers;
 }
 
+// Struct with non-optional fields followed by an optional field at the end.
+// Used to test that reading an absent trailing optional field doesn't trigger
+// a spurious "out of order" error when the cursor hits T_STOP.
+struct TrailingOptional {
+  1: i32 required_i32;
+  2: string required_string;
+  3: optional i64 trailing_opt;
+}
+
 enum E {
   UNKNOWN = 0,
   A = 1,

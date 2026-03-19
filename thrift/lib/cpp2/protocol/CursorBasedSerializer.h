@@ -502,6 +502,9 @@ class StructuredCursorReader : detail::BaseCursorReader<ProtocolReader> {
       apache::thrift::skip(*protocol_, readState_.fieldType);
       int16_t lastRead = readState_.fieldId;
       readState_.readFieldBegin(protocol_);
+      if (readState_.fieldType == TType::T_STOP) {
+        break;
+      }
       if (lastRead >= readState_.fieldId) {
         folly::throw_exception<std::runtime_error>(
             "Reading fields that were serialized out of order");

@@ -968,3 +968,51 @@ TEST(CursorSerializer, PrefixBufferThenInternalWrite) {
   EXPECT_EQ(*obj2.unq(), 200);
   EXPECT_EQ(*obj2.terse(), 300);
 }
+
+// Regression test: reading an absent optional field at the end of a struct
+// should return nullopt, not crash. Previously, beforeReadField() would throw
+// "Reading fields that were serialized out of order" when it hit T_STOP after
+// skipping all preceding fields.
+TEST(CursorSerializer, ReadAbsentTrailingOptionalField) {
+  TrailingOptional obj;
+  obj.required_i32() = 42;
+  obj.required_string() = "hello";
+  // trailing_opt is intentionally not set
+
+  CursorSerializationWrapper<TrailingOptional> wrapper(obj);
+  auto reader = wrapper.beginRead();
+  EXPECT_EQ(reader.read<ident::required_i32>(), 42);
+  EXPECT_EQ(reader.read<ident::required_string>(), "hello");
+  EXPECT_FALSE(reader.read<ident::trailing_opt>().has_value());
+  wrapper.endRead(std::move(reader));
+}
+
+TEST(CursorSerializer, ReadAbsentTrailingOptionalFieldWithSkip) {
+  // Same test but skip the preceding fields — forces beforeReadField() to skip
+  // all serialized fields before discovering the optional field is absent.
+  TrailingOptional obj;
+  obj.required_i32() = 7;
+  obj.required_string() = "world";
+
+  CursorSerializationWrapper<TrailingOptional> wrapper(obj);
+  auto reader = wrapper.beginRead();
+  // Skip directly to the trailing optional field (skips fields 1 and 2)
+  EXPECT_FALSE(reader.read<ident::trailing_opt>().has_value());
+  wrapper.endRead(std::move(reader));
+}
+
+TEST(CursorSerializer, ReadPresentTrailingOptionalField) {
+  TrailingOptional obj;
+  obj.required_i32() = 99;
+  obj.required_string() = "present";
+  obj.trailing_opt() = 12345;
+
+  CursorSerializationWrapper<TrailingOptional> wrapper(obj);
+  auto reader = wrapper.beginRead();
+  EXPECT_EQ(reader.read<ident::required_i32>(), 99);
+  EXPECT_EQ(reader.read<ident::required_string>(), "present");
+  auto val = reader.read<ident::trailing_opt>();
+  ASSERT_TRUE(val.has_value());
+  EXPECT_EQ(*val, 12345);
+  wrapper.endRead(std::move(reader));
+}
