@@ -73,6 +73,9 @@ struct StreamTransformation {
   using Func = folly::Function<OutputType(InputType)>;
 
   Func func;
+  // Maximum number of sink-direction (client-to-server) items that can be
+  // in-flight before the server grants additional credits.
+  int32_t bufferSize{100};
 };
 
 /**

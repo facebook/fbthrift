@@ -49,6 +49,7 @@ class ServerBiDiStreamFactory {
       folly::Executor::KeepAlive<> serverExecutor) {
     startFunction_ =
         [transformFn = std::move(streamTransformation.func),
+         sinkBufferSize = streamTransformation.bufferSize,
          &decoder,
          &encoder,
          serverExecutor = std::move(serverExecutor)](
@@ -71,10 +72,8 @@ class ServerBiDiStreamFactory {
       stapled->setStreamServerCallback(streamBridge);
       stapled->resetClientCallback(*clientCb);
 
-      // TODO(sazonovk): T239783814 Add the ability to specify buffer size in
-      // StreamTransformation
-      uint64_t bufferSize = 100;
-      sinkBridge->setBufferSize(bufferSize);
+      DCHECK_GT(sinkBufferSize, 0);
+      sinkBridge->setBufferSize(sinkBufferSize);
 
       auto task = ServerBiDiStreamBridge::getTask(
           streamBridge->copy(),
@@ -86,8 +85,7 @@ class ServerBiDiStreamFactory {
 
       std::ignore = clientCb->onFirstResponse(std::move(payload), evb, stapled);
 
-      sinkBridge->serverPush(
-          StreamMessage::RequestN{static_cast<int32_t>(bufferSize)});
+      sinkBridge->serverPush(StreamMessage::RequestN{sinkBufferSize});
       sinkBridge->processClientMessages();
       streamBridge->processClientMessages();
     };
