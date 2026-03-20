@@ -26,6 +26,7 @@
 #include <folly/FBString.h>
 #include <folly/Traits.h>
 #include <folly/io/Cursor.h>
+#include <thrift/lib/cpp2/Adapt.h>
 #include <thrift/lib/cpp2/FieldRefTraits.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/op/Create.h>
@@ -510,7 +511,7 @@ struct populator_methods<type::struct_t<Struct>, Struct> {
     void operator()(Ord, detail::State<Rng>& state, Struct& out) {
       DVLOG(0) << "begin writing union: " << op::get_class_name_v<Struct>;
       using methods = populator_methods<
-          op::get_type_tag<Struct, Ord>,
+          op::get_field_tag<Struct, Ord>,
           op::get_native_type<Struct, Ord>>;
 
       auto&& got = op::get<Ord>(out);
@@ -529,7 +530,7 @@ struct populator_methods<type::struct_t<Struct>, Struct> {
 
       op::ensure<Ord>(out);
       methods::populate(
-          state, detail::deref<field_ref_type>::clear_and_get(got));
+          state, detail::deref<field_ref_type>::clear_and_get(got), out);
       DVLOG(0) << "end writing union";
     }
   };
@@ -550,7 +551,6 @@ template <typename Exn>
 struct populator_methods<type::exception_t<Exn>, Exn>
     : populator_methods<type::struct_t<Exn>, Exn> {};
 
-// TODO: support field adapters too.
 template <typename Adapter, typename InnerTag, typename T>
 struct populator_methods<type::adapted<Adapter, InnerTag>, T> {
   using inner_type = std::decay_t<adapt_detail::thrift_t<Adapter, T>>;
@@ -561,6 +561,36 @@ struct populator_methods<type::adapted<Adapter, InnerTag>, T> {
     inner_type tmp;
     inner_methods::populate(state, tmp);
     out = Adapter::fromThrift(std::move(tmp));
+  }
+};
+
+template <typename Tag, typename Context, typename T>
+struct populator_methods<type::field<Tag, Context>, T> {
+  template <typename Rng, typename Struct>
+  static void populate(detail::State<Rng>& state, T& out, Struct&) {
+    populator_methods<Tag, T>::populate(state, out);
+  }
+};
+
+template <
+    typename Adapter,
+    typename InnerTag,
+    typename Struct,
+    int16_t FieldId,
+    typename T>
+struct populator_methods<
+    type::
+        field<type::adapted<Adapter, InnerTag>, FieldContext<Struct, FieldId>>,
+    T> {
+  using inner_type = type::native_type<InnerTag>;
+  using inner_methods = populator_methods<InnerTag, inner_type>;
+
+  template <typename Rng>
+  static void populate(detail::State<Rng>& state, T& out, Struct& strct) {
+    inner_type tmp;
+    inner_methods::populate(state, tmp);
+    out =
+        adapt_detail::fromThriftField<Adapter, FieldId>(std::move(tmp), strct);
   }
 };
 

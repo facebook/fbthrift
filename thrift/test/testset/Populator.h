@@ -19,21 +19,12 @@
 #include <thrift/test/testset/Testing.h>
 
 namespace apache::thrift::test {
-namespace detail {
-template <class T>
-constexpr bool has_adapter() {
-  constexpr std::string_view name = folly::pretty_name<T>();
-  return name.find("_adapted_") != name.npos;
-}
-} // namespace detail
 
 template <class T>
-T populated_if_not_adapted(
+T populated(
     std::mt19937& rng, populator::populator_opts opt = {}) {
   T result;
-  if constexpr (!detail::has_adapter<T>()) {
-    populator::populate(result, opt, rng);
-  }
+  populator::populate(result, opt, rng);
   return result;
 }
 } // namespace apache::thrift::test

@@ -154,4 +154,42 @@ TYPED_TEST(MultiProtocolTest, test_populating_recursive_type) {
   // `recursive1`s and one additonal default-initialized `recursive1` at the end
   ASSERT_EQ(opts.recursion_limit + 1, count);
 }
+
+// Populate two otherwise-identical structs (one plain, one with
+// TemplatedTestFieldAdapter on every field) using the same seed.  The inner
+// thrift values produced by the field-adapted struct must match the values
+// produced by the plain struct, ensuring the field-adapter populator path
+// consumes the RNG identically to the non-adapted path.
+TYPED_TEST(MultiProtocolTest, test_field_adapter_populator) {
+  populator_opts opts;
+  opts.random_container_size = false;
+  opts.list_len = 4;
+  opts.map_len = 4;
+  opts.str_len = 8;
+
+  for (int i = 0; i < 100; i++) {
+    std::mt19937 rng_plain(i);
+    std::mt19937 rng_adapted(i);
+
+    populator_fields_no_adapter plain;
+    populator_fields_with_adapter adapted;
+    populator::populate(plain, opts, rng_plain);
+    populator::populate(adapted, opts, rng_adapted);
+
+    // Scalar: i64
+    ASSERT_EQ(*plain.field1(), adapted.field1()->value);
+    // String
+    ASSERT_EQ(*plain.field2(), adapted.field2()->value);
+    // Container: list<i32>
+    ASSERT_EQ(*plain.field3(), adapted.field3()->value);
+    // Container: map<string, i64>
+    ASSERT_EQ(*plain.field4(), adapted.field4()->value);
+
+    // Verify TemplatedTestFieldAdapter sets the correct fieldId.
+    ASSERT_EQ(adapted.field1()->fieldId, 1);
+    ASSERT_EQ(adapted.field2()->fieldId, 2);
+    ASSERT_EQ(adapted.field3()->fieldId, 3);
+    ASSERT_EQ(adapted.field4()->fieldId, 4);
+  }
+}
 } // namespace test_cpp2::simple_cpp_reflection

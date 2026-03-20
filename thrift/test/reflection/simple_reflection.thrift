@@ -199,3 +199,25 @@ struct recursive1 {
   @thrift.Box
   1: optional recursive1 next;
 }
+
+// Pair of identical structs for testing field adapter populator support.
+// The plain version has no adapter; the adapted version has
+// TemplatedTestFieldAdapter on every field. Populating both with the same
+// seed should produce the same inner thrift values.
+struct populator_fields_no_adapter {
+  1: i64 field1;
+  2: string field2;
+  3: list<i32> field3;
+  4: map<string, i64> field4;
+}
+
+struct populator_fields_with_adapter {
+  @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestFieldAdapter"}
+  1: i64 field1;
+  @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestFieldAdapter"}
+  2: string field2;
+  @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestFieldAdapter"}
+  3: list<i32> field3;
+  @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestFieldAdapter"}
+  4: map<string, i64> field4;
+}

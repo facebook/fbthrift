@@ -35,7 +35,7 @@ TYPED_TEST_CASE_P(TestValueTest);
 
 TYPED_TEST_P(TestValueTest, RoundTrip) {
   std::mt19937 rng;
-  auto expected = test::populated_if_not_adapted<TypeParam>(rng);
+  auto expected = test::populated<TypeParam>(rng);
 
   // Convert to an EncodeValue.
   EncodeValue value = asEncodeValue(expected);
