@@ -28,10 +28,10 @@
 {{struct.cpp_underlying_name}}::~{{struct.cpp_underlying_name}}() {}
 
   {{/if struct.is_large?}}
-  {{#if struct.cpp_allocator}}
+  {{#if (object.notnull? struct.cpp_allocator)}}
 {{> module_types_cpp/alloc_extended_ctors}}
 
-  {{/if struct.cpp_allocator}}
+  {{/if (object.notnull? struct.cpp_allocator)}}
   {{#if (not struct.is_eligible_for_constexpr?)}}
 {{struct.cpp_underlying_name}}::{{> module_types_cpp/move_ctor}}
 {{struct.cpp_underlying_name}}& {{struct.cpp_underlying_name}}::operator=([[maybe_unused]] {{struct.cpp_underlying_name}}&& other) noexcept {
@@ -53,9 +53,9 @@
     {{#if struct.isset_fields?}}
     __isset = other.__isset;
     {{/if struct.isset_fields?}}
-    {{#if (and struct.cpp_allocator (not struct.cpp_allocator_via))}}
+    {{#if (and (object.notnull? struct.cpp_allocator) (object.eq? null struct.cpp_allocator_via))}}
   ::apache::thrift::detail::move_allocator(__fbthrift_alloc, other.__fbthrift_alloc);
-    {{/if (and struct.cpp_allocator (not struct.cpp_allocator_via))}}
+    {{/if (and (object.notnull? struct.cpp_allocator) (object.eq? null struct.cpp_allocator_via))}}
     return *this;
 }
 

@@ -17,9 +17,9 @@
 }}
 {{struct.cpp_underlying_name}}::{{struct.cpp_underlying_name}}(const {{struct.cpp_underlying_name}}& srcObj){{!
 }}{{#if struct.fields?}} :
-  {{#if (and struct.cpp_allocator (not struct.cpp_allocator_via))}}
+  {{#if (and (object.notnull? struct.cpp_allocator) (object.eq? null struct.cpp_allocator_via))}}
     __fbthrift_alloc(srcObj.__fbthrift_alloc),
-  {{/if (and struct.cpp_allocator (not struct.cpp_allocator_via))}}
+  {{/if (and (object.notnull? struct.cpp_allocator) (object.eq? null struct.cpp_allocator_via))}}
   {{#each (array.enumerate struct.fields_in_layout_order with_last=true) as |i field is_last?|}}
     {{#if field.transitively_refers_to_unique?}}
     {{field.cpp_storage_name}}(::apache::thrift::detail::st::copy_field<
@@ -55,8 +55,8 @@
     {{/if field.lazy?}}
   {{/each}}
   {{#each struct.fields as |field|}}
-    {{#if field.cpp_first_adapter}}
+    {{#if (object.notnull? field.cpp_first_adapter)}}
   {{#if field.opt_cpp_ref?}}if ({{field.cpp_storage_name}}) {{/if}}::apache::thrift::adapt_detail::construct<{{field.cpp_first_adapter}}, {{field.id}}>({{#if field.cpp_ref?}}*{{/if}}{{field.cpp_storage_name}}, *this);
-    {{/if field.cpp_first_adapter}}
+    {{/if (object.notnull? field.cpp_first_adapter)}}
   {{/each}}
 }{{#else}}{}{{/if struct.fields?}}

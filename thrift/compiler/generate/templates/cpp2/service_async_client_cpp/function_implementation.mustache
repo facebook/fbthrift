@@ -19,7 +19,7 @@
 {{#import "common/rpc" as rpc}}
 
 {{#let export partial function_implementation |interface parent_service function| captures |client rpc|}}
-  {{#let function_comma = (if function.params.fields? ", " null)}}
+  {{#let function_comma = (if function.params.fields? ", " "")}}
   {{#if (not function.sink?)}}
     {{#if function.legacy_client_methods?}}
 void {{#partial client.client_class_name service=interface parent_service=parent_service}}::{{function.cpp_name}}(std::unique_ptr<apache::thrift::RequestCallback> callback{{function_comma}}{{#partial client.function_param_list function=function}}) {

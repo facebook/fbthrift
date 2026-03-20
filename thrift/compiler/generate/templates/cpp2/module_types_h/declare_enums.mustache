@@ -20,14 +20,14 @@ namespace {{program.cpp_qualified_namespace}} {
     {{#each program.enums as |enum|}}
 
 {{#partial glean.enum_docblock enum=enum}}
-enum {{#if (not enum.cpp_is_unscoped)}}class {{/if}}{{enum.cpp_name}}{{#if enum.cpp_enum_type}} : {{enum.cpp_enum_type}}{{/if}} {
+enum {{#if (not enum.cpp_is_unscoped?)}}class {{/if}}{{enum.cpp_name}}{{#if (not (string.empty? enum.cpp_enum_type))}} : {{enum.cpp_enum_type}}{{/if}} {
       {{#each enum.values as |enum_value|}}
   {{enum_value.cpp_name}} = {{enum_value.value}},
       {{/each}}
 };
-      {{#if enum.cpp_declare_bitwise_ops}}
+      {{#if enum.cpp_declare_bitwise_ops?}}
 {{> module_types_h/enum_bitwise_ops}}
-      {{/if enum.cpp_declare_bitwise_ops}}
+      {{/if enum.cpp_declare_bitwise_ops?}}
     {{/each}}
 
 } // namespace {{program.cpp_qualified_namespace}}
@@ -59,10 +59,10 @@ template <> struct TEnumTraits<::{{program.cpp_qualified_namespace}}::{{enum.cpp
     return "{{program.name}}";
   }
 
-      {{#if enum.uri}}
+      {{#if (not (string.empty? enum.uri))}}
   static constexpr folly::cstring_view __fbthrift_thrift_uri = "{{enum.uri}}";
 
-      {{/if enum.uri}}
+      {{/if (not (string.empty? enum.uri))}}
   static char const* findName(type value) noexcept {
     std::string_view ret;
     (void)findName(value, &ret);

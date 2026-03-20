@@ -39,10 +39,10 @@ class ServiceHandler<{{service.qualified_name}}> : {{#if (object.notnull? servic
 
  public:
   std::string_view getGeneratedName() const override { return "{{service.name}}"; }
-  {{#if service.uri}}
+  {{#if (not (string.empty? service.uri))}}
 
   static constexpr folly::cstring_view __fbthrift_thrift_uri = "{{service.uri}}";
-  {{/if service.uri}}
+  {{/if (not (string.empty? service.uri))}}
 
   typedef {{service.qualified_name}}AsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;

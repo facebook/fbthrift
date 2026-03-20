@@ -19,7 +19,7 @@
 {{#import "common/rpc" as rpc}}
 
 {{#let export partial sync_functions |interface parent_service function| captures |client rpc|}}
-  {{#let function_comma = (if function.params.fields? ", " null)}}
+  {{#let function_comma = (if function.params.fields? ", " "")}}
   {{#if function.sync_returns_by_outparam?}}
 void {{#partial client.client_class_name service=interface parent_service=parent_service}}::sync_{{function.cpp_name}}({{function.cpp_return_type}}& _return{{function_comma}}{{#partial client.function_param_list function=function}}) {
   ::apache::thrift::RpcOptions rpcOptions;

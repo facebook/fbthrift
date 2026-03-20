@@ -25,9 +25,9 @@
 <{{field.cpp_type}}>
 {{/let partial}}
 {{struct.cpp_underlying_name}}::{{struct.cpp_underlying_name}}(const allocator_type& alloc) noexcept :
-  {{#if (not struct.cpp_allocator_via)}}
+  {{#if (object.eq? null struct.cpp_allocator_via)}}
     __fbthrift_alloc(alloc),
-  {{/if (not struct.cpp_allocator_via)}}
+  {{/if (object.eq? null struct.cpp_allocator_via)}}
   {{#each (array.enumerate struct.fields_in_layout_order with_last=true) as |i field last?|}}
     {{field.cpp_storage_name}}({{!
     }}{{#if field.cpp_ref_not_boxed?}}{{!
@@ -36,9 +36,9 @@
   {{/each}}
 
 {{struct.cpp_underlying_name}}::{{struct.cpp_underlying_name}}(const {{struct.cpp_underlying_name}}& other, const allocator_type& alloc) :
-  {{#if (not struct.cpp_allocator_via)}}
+  {{#if (object.eq? null struct.cpp_allocator_via)}}
     __fbthrift_alloc(alloc),
-  {{/if (not struct.cpp_allocator_via)}}
+  {{/if (object.eq? null struct.cpp_allocator_via)}}
   {{#each (array.enumerate struct.fields_in_layout_order with_last=true) as |i field last?|}}
     {{field.cpp_storage_name}}({{!
 }}{{#if field.cpp_ref_not_boxed?}}{{#partial alloc_smart_ptr_fn field=field}}({{#if field.type.cpp_use_allocator?}}alloc, {{/if}}*other.{{field.cpp_storage_name}}){{!
@@ -48,9 +48,9 @@
 {{#if struct.isset_fields?}}    __isset(other.__isset){{/if}} {}
 
 {{struct.cpp_underlying_name}}::{{struct.cpp_underlying_name}}({{struct.cpp_underlying_name}}&& other, const allocator_type& alloc) :
-  {{#if (not struct.cpp_allocator_via)}}
+  {{#if (object.eq? null struct.cpp_allocator_via)}}
     __fbthrift_alloc(alloc),
-  {{/if (not struct.cpp_allocator_via)}}
+  {{/if (object.eq? null struct.cpp_allocator_via)}}
   {{#each (array.enumerate struct.fields_in_layout_order with_last=true) as |i field last?|}}
     {{field.cpp_storage_name}}({{!
 }}{{#if field.cpp_ref_not_boxed?}}{{#partial alloc_smart_ptr_fn field=field}}({{#if field.type.cpp_use_allocator?}}alloc, {{/if}}std::move(*other.{{field.cpp_storage_name}})){{!

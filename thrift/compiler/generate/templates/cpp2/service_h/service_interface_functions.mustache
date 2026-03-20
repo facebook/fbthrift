@@ -18,7 +18,7 @@
 {{#import "common/server" as server}}
 {{#let export partial service_interface_functions |interface parent_service| captures |server|}}
   {{#each interface.functions as |function|}}
-    {{#let function_comma = (if function.params.fields? ", " null)}}
+    {{#let function_comma = (if function.params.fields? ", " "")}}
     {{#if function.starts_interaction?}}
   virtual std::unique_ptr<{{function.created_interaction.name}}If> {{function.cpp_name}}();
     {{#else}}

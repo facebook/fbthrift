@@ -71,9 +71,9 @@ void __fbthrift_static_init_{{struct.cpp_underlying_name}}() {
 namespace {{program.cpp_qualified_namespace}} {
   {{#each program.current_split_structured_definitions as |struct|}}
 
-    {{#if struct.extra_namespace}}
+    {{#if (object.notnull? struct.extra_namespace)}}
 namespace {{struct.extra_namespace}} {
-    {{/if struct.extra_namespace}}
+    {{/if (object.notnull? struct.extra_namespace)}}
 
     {{#if (has_compiler_option? "json")}}
 template void {{struct.cpp_underlying_name}}::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader*);
@@ -83,9 +83,9 @@ template uint32_t {{struct.cpp_underlying_name}}::serializedSizeZC<>(apache::thr
     {{/if (has_compiler_option? "json")}}
 
 {{> module_types_cpp/lazy_deserialization}}
-    {{#if struct.extra_namespace}}
+    {{#if (object.notnull? struct.extra_namespace)}}
 } // namespace {{struct.extra_namespace}}
-    {{/if struct.extra_namespace}}
+    {{/if (object.notnull? struct.extra_namespace)}}
   {{/each}}
 
 } // namespace {{program.cpp_qualified_namespace}}

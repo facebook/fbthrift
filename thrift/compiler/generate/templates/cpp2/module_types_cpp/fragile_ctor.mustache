@@ -21,9 +21,9 @@
     {{field.cpp_storage_name}}(std::move({{field.cpp_name}}__arg)){{#if last?}} { {{#else}},{{/if}}
     {{/each}}
     {{#each struct.fields as |field|}}
-      {{#if field.cpp_first_adapter}}
+      {{#if (object.notnull? field.cpp_first_adapter)}}
   {{#if field.opt_cpp_ref?}}if ({{field.cpp_storage_name}}) {{/if}}::apache::thrift::adapt_detail::construct<{{field.cpp_first_adapter}}, {{field.id}}>({{#if field.cpp_ref?}}*{{/if}}{{field.cpp_storage_name}}, *this);
-      {{/if field.cpp_first_adapter}}
+      {{/if (object.notnull? field.cpp_first_adapter)}}
     {{/each}}
     {{#each (array.enumerate struct.isset_fields) as |field_index field|}}
   __isset.set(folly::index_constant<{{field_index}}>(), true);

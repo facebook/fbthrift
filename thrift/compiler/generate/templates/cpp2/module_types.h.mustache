@@ -116,9 +116,9 @@ using ::apache::thrift::detail::operator>=;
 using {{def.name}} = {{def.cpp_underlying_type}};
     {{#else}}
 
-      {{#if def.extra_namespace}}
+      {{#if (object.notnull? def.extra_namespace)}}
 namespace {{def.extra_namespace}} {
-      {{/if def.extra_namespace}}
+      {{/if (object.notnull? def.extra_namespace)}}
 {{#partial glean.class_docblock struct=def}}
 class {{#if def.exception?}}FOLLY_EXPORT {{/if}}{{def.cpp_underlying_name}} {{!
 }}{{#if (and (not def.exception?) (not def.virtual))}}final {{/if}}{{!
@@ -128,11 +128,11 @@ class {{#if def.exception?}}FOLLY_EXPORT {{/if}}{{def.cpp_underlying_name}} {{!
   template<class> friend struct ::apache::thrift::detail::invoke_reffer;
 
   //  used by a static_assert in the corresponding source
-  static constexpr bool __fbthrift_cpp2_gen_json = {{(has_compiler_option? "json")}};
-  static constexpr bool __fbthrift_cpp2_is_runtime_annotation = {{def.is_runtime_annotation?}};
-      {{#if def.uri}}
+  static constexpr bool __fbthrift_cpp2_gen_json = {{#if (has_compiler_option? "json")}}true{{#else}}false{{/if}};
+  static constexpr bool __fbthrift_cpp2_is_runtime_annotation = {{#if def.is_runtime_annotation?}}true{{#else}}false{{/if}};
+      {{#if (not (string.empty? def.uri))}}
   static constexpr folly::cstring_view __fbthrift_thrift_uri = "{{def.uri}}";
-      {{/if def.uri}}
+      {{/if (not (string.empty? def.uri))}}
   static std::string_view __fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord);
   static std::string_view __fbthrift_get_class_name();
   template <class ...>
@@ -185,17 +185,17 @@ class {{#if def.exception?}}FOLLY_EXPORT {{/if}}{{def.cpp_underlying_name}} {{!
   static constexpr bool __fbthrift_cpp2_is_union =
     {{#if def.union?}}true{{#else}}false{{/if}};
 
-      {{#if def.cpp_allocator}}
+      {{#if (object.notnull? def.cpp_allocator)}}
  public:
   using allocator_type = {{def.cpp_allocator}};
   allocator_type get_allocator() const {
-    return {{#if def.cpp_allocator_via}}this->{{def.cpp_allocator_via}}.get_allocator(){{#else}}__fbthrift_alloc{{/if}};
+    return {{#if (object.notnull? def.cpp_allocator_via)}}this->{{def.cpp_allocator_via}}.get_allocator(){{#else}}__fbthrift_alloc{{/if}};
   }
-        {{#if (not def.cpp_allocator_via)}}
+        {{#if (object.eq? null def.cpp_allocator_via)}}
  private:
   [[FOLLY_ATTR_NO_UNIQUE_ADDRESS]] allocator_type __fbthrift_alloc;
-        {{/if (not def.cpp_allocator_via)}}
-      {{/if def.cpp_allocator}}
+        {{/if (object.eq? null def.cpp_allocator_via)}}
+      {{/if (object.notnull? def.cpp_allocator)}}
 
  public:
       {{#if def.union?}}
@@ -272,9 +272,9 @@ class {{#if def.exception?}}FOLLY_EXPORT {{/if}}{{def.cpp_underlying_name}} {{!
           {{/if (not def.nondefault_copy_ctor_and_assignment?)}}
         {{/if (not def.cpp_noncopyable)}}
 
-        {{#if def.cpp_allocator}}
+        {{#if (object.notnull? def.cpp_allocator)}}
 {{> module_types_h/alloc_extended_ctors_decl}}
-        {{/if def.cpp_allocator}}
+        {{/if (object.notnull? def.cpp_allocator)}}
 
   {{def.cpp_underlying_name}}& operator=({{def.cpp_underlying_name}}&&) {{#if def.is_eligible_for_constexpr?}}= default{{#else}}noexcept{{/if}};
         {{#if (not def.cpp_noncopyable)}}
@@ -331,10 +331,10 @@ class {{#if def.exception?}}FOLLY_EXPORT {{/if}}{{def.cpp_underlying_name}} {{!
   }
         {{/if def.exception?}}
       {{/if def.union?}}
-      {{#if def.cpp_methods}}
+      {{#if (not (string.empty? def.cpp_methods))}}
   // user defined code (cpp.methods = ...)
   {{def.cpp_methods}}
-      {{/if def.cpp_methods}}
+      {{/if (not (string.empty? def.cpp_methods))}}
 
  private:
 {{> module_types_h/lazy_deserialization}}
@@ -368,9 +368,9 @@ unsigned long {{def.cpp_underlying_name}}::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
-      {{#if def.extra_namespace}}
+      {{#if (object.notnull? def.extra_namespace)}}
 } // namespace {{def.extra_namespace}}
-      {{/if def.extra_namespace}}
+      {{/if (object.notnull? def.extra_namespace)}}
       {{#if (and def.is_directly_adapted? def.dependent_direct_adapter?)}}
 
 using {{def.cpp_name}} = {{def.cpp_underlying_type}};

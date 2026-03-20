@@ -19,7 +19,7 @@
 {{#import "common/rpc" as rpc}}
 
 {{#let export partial future_functions |interface parent_service function| captures |client rpc|}}
-  {{#let function_comma = (if function.params.fields? ", " null)}}
+  {{#let function_comma = (if function.params.fields? ", " "")}}
 template <typename CallbackType>
 folly::SemiFuture<{{#partial client.return_type_lift_unit function=function service=interface}}> {{#partial client.client_class_name service=interface parent_service=parent_service}}::fbthrift_semifuture_{{function.cpp_name}}(apache::thrift::RpcOptions& rpcOptions{{function_comma}}{{#partial client.function_param_list function=function}}) {
   using CallbackHelper = apache::thrift::detail::FutureCallbackHelper<{{#partial client.return_type_no_handle_lift_unit function=function}}>;

@@ -19,7 +19,7 @@
 {{#import "common/rpc" as rpc}}
 
 {{#let export partial coroutine_functions |interface parent_service function| captures |client rpc|}}
-  {{#let function_comma = (if function.params.fields? ", " null)}}
+  {{#let function_comma = (if function.params.fields? ", " "")}}
 #if FOLLY_HAS_COROUTINES
   {{#if function.sink?}}
 folly::coro::Task<{{#partial client.return_type function=function service=interface}}> {{#partial client.client_class_name service=interface parent_service=parent_service}}::co_{{function.cpp_name}}({{#partial client.function_param_list function=function}}) {

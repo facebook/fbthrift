@@ -21,11 +21,11 @@
 {{! Note: All adapted fields need to use field tag. }}
 {{#let export partial tag |field struct|}}
 {{#pragma ignore-newlines}}
-  {{#if field.cpp_adapter}}
+  {{#if (object.notnull? field.cpp_adapter)}}
 ::apache::thrift::op::get_field_tag<{{struct.cpp_underlying_name}}, ::apache::thrift::field_id<{{field.id}}>>
   {{#else}}
 {{field.type_tag}}
-  {{/if field.cpp_adapter}}
+  {{/if (object.notnull? field.cpp_adapter)}}
 {{/let partial}}
 
 {{! Returns the intrinsic default value for base or enum fields. }}
@@ -46,19 +46,19 @@ apache::thrift::StringTraits<{{field.cpp_standard_type}}>::fromStringLiteral("")
 {{! The default value for a field. }}
 {{#let export partial default_value |field| captures |const_value types intrinsic_default|}}
 {{#pragma ignore-newlines}}
-  {{#if field.cpp_first_adapter}}
+  {{#if (object.notnull? field.cpp_first_adapter)}}
 ::apache::thrift::adapt_detail::fromThriftField<{{field.cpp_first_adapter}}, {{field.id}}>(
 {{#if field.cpp_exactly_one_adapter?}}{{field.cpp_standard_type}}({{#else}}{{#partial types.adapter_pre type=field.type}}{{/if}}
-  {{/if field.cpp_first_adapter}}
+  {{/if (object.notnull? field.cpp_first_adapter)}}
   {{#if (object.notnull? field.default_value)}}
 {{#partial const_value.iterate_const_values value=field.default_value root_const=null}}
   {{#else}}
 {{#partial intrinsic_default field=field}}
   {{/if (object.notnull? field.default_value)}}
-  {{#if field.cpp_first_adapter}}
+  {{#if (object.notnull? field.cpp_first_adapter)}}
 {{#if field.cpp_exactly_one_adapter?}}){{#else}}{{#partial types.adapter_post type=field.type}}{{/if}}
 , *this)
-  {{/if field.cpp_first_adapter}}
+  {{/if (object.notnull? field.cpp_first_adapter)}}
 {{/let partial}}
 
 {{#let export partial member |field struct|}}
@@ -105,12 +105,12 @@ apache::thrift::StringTraits<{{field.cpp_standard_type}}>::fromStringLiteral("")
 {{#if field.cpp_ref?}} && {{/if}}!::apache::thrift::op::isEmpty<{{#partial tag field=field struct=struct}}>({{#if field.cpp_ref?}}*{{/if}}{{#partial member field=field struct=struct}})
   {{/if field.raw_string_or_binary?}}
   {{#if (and (not field.cpp_ref?) (not field.type.container?) (not field.raw_string_or_binary?))}}
-    {{#if field.cpp_first_adapter}}
+    {{#if (object.notnull? field.cpp_first_adapter)}}
 {{! Must check against the default constructor (ignoring any IDL-specified default). }}
 !::apache::thrift::op::equal<{{#partial tag field=field struct=struct}}>({{#partial member field=field struct=struct}}, {{field.cpp_type}}())
     {{#else}}
 {{! For all other cases, must not equal the default. }}
 {{#partial field_ref field=field struct=struct}} != {{#partial default_value field=field}}
-    {{/if field.cpp_first_adapter}}
+    {{/if (object.notnull? field.cpp_first_adapter)}}
   {{/if (and (not field.cpp_ref?) (not field.type.container?) (not field.raw_string_or_binary?))}}
 {{/let partial}}

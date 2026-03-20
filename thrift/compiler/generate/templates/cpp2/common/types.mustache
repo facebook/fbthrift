@@ -37,10 +37,10 @@
 
 {{#let export partial adapter_pre |type|}}
 {{#pragma ignore-newlines}}
-{{#if type.cpp_adapter}}{{type.cpp_adapter}}::fromThrift({{/if}}
+{{#if (object.notnull? type.cpp_adapter)}}{{type.cpp_adapter}}::fromThrift({{/if}}
 {{/let partial}}
 
 {{#let export partial adapter_post |type|}}
 {{#pragma ignore-newlines}}
-{{#if type.cpp_adapter}}){{/if}}
+{{#if (object.notnull? type.cpp_adapter)}}){{/if}}
 {{/let partial}}

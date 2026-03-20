@@ -20,7 +20,7 @@
 {{#import "common/rpc" as rpc}}
 
 {{#let partial client_functions_not_legacy_interaction_constructor |interface parent_service function| captures |client glean rpc|}}
-  {{#let function_comma = (if function.params.fields? ", " null)}}
+  {{#let function_comma = (if function.params.fields? ", " "")}}
   {{#if (not function.sink?)}}{{! includes bidi }}
     {{#if function.legacy_client_methods?}}
 {{#partial glean.function_docblock service=interface function=function}}

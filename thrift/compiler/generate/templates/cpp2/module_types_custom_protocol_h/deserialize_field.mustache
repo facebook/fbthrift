@@ -22,8 +22,8 @@ _readState.beforeSubobject(iprot);
 auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<{{field.cpp_storage_type}}>({{#if field.type.cpp_use_allocator?}}this->get_allocator(){{/if}});
   {{/if field.cpp_ref?}}
   {{#if field.use_op_encode?}}
-::apache::thrift::op::decode<{{#partial fields.tag field=field struct=struct}}>(*iprot, {{#partial custom_protocol.member_or_ptr field=field struct=struct}}{{#if field.cpp_adapter}}, *this{{/if}});
-  {{#else if field.cpp_first_adapter}}
+::apache::thrift::op::decode<{{#partial fields.tag field=field struct=struct}}>(*iprot, {{#partial custom_protocol.member_or_ptr field=field struct=struct}}{{#if (object.notnull? field.cpp_adapter)}}, *this{{/if}});
+  {{#else if (object.notnull? field.cpp_first_adapter)}}
     {{#if field.cpp_exactly_one_adapter?}}
 if constexpr(::apache::thrift::adapt_detail::has_inplace_toThrift<{{field.cpp_first_adapter}}, {{field.cpp_type}}>::value) {
       {{#if (and (not field.cpp_ref?) field.type.container?)}}

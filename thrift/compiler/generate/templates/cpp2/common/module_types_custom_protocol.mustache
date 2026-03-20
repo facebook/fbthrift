@@ -41,22 +41,11 @@ ptr.mut()
 {{! The field value to use with protocol methods. }}
 {{#let export partial protocol_methods_value |field struct| captures |fields|}}
 {{#pragma ignore-newlines}}
-  {{#if field.type.cpp_adapter}}
-{{field.type.cpp_adapter}}::toThrift(
-  {{/if field.type.cpp_adapter}}
-  {{#if field.cpp_adapter}}
-{{field.cpp_adapter}}::toThrift(
-  {{/if field.cpp_adapter}}
-  {{#if field.cpp_ref?}}
-*
-  {{/if field.cpp_ref?}}
-{{#partial fields.member field=field struct=struct}}
-  {{#if field.cpp_adapter}}
-)
-  {{/if field.cpp_adapter}}
-  {{#if field.type.cpp_adapter}}
-)
-  {{/if field.type.cpp_adapter}}
+{{#if (object.notnull? field.type.cpp_adapter)}}{{field.type.cpp_adapter}}::toThrift({{/if}}
+{{#if (object.notnull? field.cpp_adapter)}}{{field.cpp_adapter}}::toThrift({{/if}}
+{{#if field.cpp_ref?}}*{{/if}}{{#partial fields.member field=field struct=struct}}
+{{#if (object.notnull? field.cpp_adapter)}}){{/if}}
+{{#if (object.notnull? field.type.cpp_adapter)}}){{/if}}
 {{/let partial}}
 
 {{! The container type arguments for struct field begin/end calls. }}

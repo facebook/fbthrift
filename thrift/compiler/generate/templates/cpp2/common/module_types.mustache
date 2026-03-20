@@ -22,13 +22,13 @@
   {{#if program.structs?}}
 namespace {{program.cpp_qualified_namespace}} {
     {{#each program.structured_definitions as |struct|}}
-      {{#if struct.extra_namespace}}
+      {{#if (object.notnull? struct.extra_namespace)}}
 namespace {{struct.extra_namespace}} {
-      {{/if struct.extra_namespace}}
+      {{/if (object.notnull? struct.extra_namespace)}}
 class {{struct.cpp_underlying_name}};
-      {{#if struct.extra_namespace}}
+      {{#if (object.notnull? struct.extra_namespace)}}
 } // namespace {{struct.extra_namespace}}
-      {{/if struct.extra_namespace}}
+      {{/if (object.notnull? struct.extra_namespace)}}
     {{/each}}
 } // namespace {{program.cpp_qualified_namespace}}
   {{/if program.structs?}}
@@ -90,15 +90,15 @@ class {{struct.cpp_underlying_name}};
 
 
 {{#let export partial base_ctor |struct| captures |base_ctor_with_alloc_init_list base_ctor_no_alloc_init_list|}}
-{{#if (and struct.cpp_allocator (not struct.cpp_allocator_via))}}{{!
+{{#if (and (object.notnull? struct.cpp_allocator) (object.eq? null struct.cpp_allocator_via))}}{{!
 }}{{#partial base_ctor_with_alloc_init_list struct=struct}}{{!
 }}{{#else}}{{!
 }}{{#partial base_ctor_no_alloc_init_list struct=struct}}{{!
-}}{{/if (and struct.cpp_allocator (not struct.cpp_allocator_via))}} {
+}}{{/if (and (object.notnull? struct.cpp_allocator) (object.eq? null struct.cpp_allocator_via))}} {
   {{#each struct.fields as |field|}}
-    {{#if (and field.cpp_first_adapter (not field.opt_cpp_ref?) (not field.intern_boxed_ref?))}}
+    {{#if (and (object.notnull? field.cpp_first_adapter) (not field.opt_cpp_ref?) (not field.intern_boxed_ref?))}}
   ::apache::thrift::adapt_detail::construct<{{field.cpp_first_adapter}}, {{field.id}}>({{#if field.cpp_ref?}}*{{/if}}{{field.cpp_storage_name}}, *this);
-    {{/if (and field.cpp_first_adapter (not field.opt_cpp_ref?) (not field.intern_boxed_ref?))}}
+    {{/if (and (object.notnull? field.cpp_first_adapter) (not field.opt_cpp_ref?) (not field.intern_boxed_ref?))}}
   {{/each}}
 }{{!
 }}{{/let partial}}
@@ -151,11 +151,11 @@ void swap({{struct.cpp_underlying_name}}& a, {{struct.cpp_underlying_name}}& b) 
 {{#let export partial assign_overload |struct|}}
 static void __fbthrift_swap({{struct.cpp_underlying_name}}& lhs, {{struct.cpp_underlying_name}}& rhs) { swap(lhs, rhs); }
 {{struct.cpp_underlying_name}}& {{struct.cpp_underlying_name}}::operator=(const {{struct.cpp_underlying_name}}& other) {
-  {{struct.cpp_underlying_name}} tmp(other{{#if struct.cpp_allocator}}, get_allocator(){{/if}});
+  {{struct.cpp_underlying_name}} tmp(other{{#if (object.notnull? struct.cpp_allocator)}}, get_allocator(){{/if}});
   __fbthrift_swap(*this, tmp);
-  {{#if (and struct.cpp_allocator (not struct.cpp_allocator_via))}}
+  {{#if (and (object.notnull? struct.cpp_allocator) (object.eq? null struct.cpp_allocator_via))}}
   ::apache::thrift::detail::copy_allocator(__fbthrift_alloc, other.__fbthrift_alloc);
-  {{/if (and struct.cpp_allocator (not struct.cpp_allocator_via))}}
+  {{/if (and (object.notnull? struct.cpp_allocator) (object.eq? null struct.cpp_allocator_via))}}
   return *this;
 }{{!
 }}{{/let partial}}
@@ -200,8 +200,8 @@ bool TEnumTraits<{{struct.cpp_fullname}}::Type>::findValue(std::string_view name
 
 
 {{#let export partial field_interceptor |field| captures |fields|}}
-  {{#if field.cpp_field_interceptor}}
+  {{#if (object.notnull? field.cpp_field_interceptor)}}
     {{field.cpp_field_interceptor}}::interceptThriftFieldAccess(this->{{#partial fields.field_value field=field}}, {{!
 }}::apache::thrift::FieldContext<std::remove_reference<decltype(*this)>::type, {{field.id}}>{*this});
-  {{/if field.cpp_field_interceptor}}
+  {{/if (object.notnull? field.cpp_field_interceptor)}}
 {{/let partial}}

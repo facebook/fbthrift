@@ -28,14 +28,10 @@
 {{! Primitive Constant Value }}
 {{#let export partial primitive |value|}}
 {{#pragma ignore-newlines}}
-  {{#if value.bool?}}
-{{value.bool_value}}
-  {{#else if value.integer?}}
-static_cast<{{value.type.cpp_standard_type}}>({{value.integer_value}})
-  {{#else if value.double?}}
-static_cast<{{value.type.cpp_standard_type}}>({{value.double_value}})
-  {{#else if value.string?}}
-"{{value.string_value}}"
+{{#if value.bool?}}{{#if value.bool_value}}true{{#else}}false{{/if}}
+{{#else if value.integer?}}static_cast<{{value.type.cpp_standard_type}}>({{value.integer_value}})
+{{#else if value.double?}}static_cast<{{value.type.cpp_standard_type}}>({{(float_to_string value.double_value)}})
+{{#else if value.string?}}"{{value.string_value}}"
   {{#else if value.enum?}}
     {{#if value.enum_value?}}
  ::{{value.type.cpp_qualified_namespace}}::{{value.type.cpp_name}}::{{value.enum_value.cpp_name}}
@@ -58,9 +54,9 @@ static_cast< ::{{value.type.cpp_qualified_namespace}}::{{value.type.cpp_name}}>(
   {{! Used by list/map values }}
   {{#let partial iterate_const_values_adapted_nested |value| captures |iterate_const_values root_const|}}
 {{#pragma ignore-newlines}}
-{{#if value.type.cpp_adapter}}{{value.type.cpp_adapter}}::fromThrift({{value.type.cpp_standard_type}}({{/if}}
+{{#if (object.notnull? value.type.cpp_adapter)}}{{value.type.cpp_adapter}}::fromThrift({{value.type.cpp_standard_type}}({{/if}}
 {{#partial iterate_const_values value=value root_const=root_const}}
-{{#if value.type.cpp_adapter}})){{/if}}
+{{#if (object.notnull? value.type.cpp_adapter)}})){{/if}}
   {{/let partial}}{{! end of `iterate_const_values_adapted_nested` nested partial }}
 
   {{!
@@ -119,7 +115,7 @@ apache::thrift::StringTraits<{{value.type.cpp_standard_type}}>::fromStringLitera
     exported for use in `module_constants`. }}
 {{#let export partial iterate_const_values_adapted |value root_const| captures |iterate_const_values|}}
 {{#pragma ignore-newlines}}
-{{#if value.type.cpp_adapter}}{{value.type.cpp_adapter}}::fromThrift({{value.type.cpp_standard_type}}({{/if}}
+{{#if (object.notnull? value.type.cpp_adapter)}}{{value.type.cpp_adapter}}::fromThrift({{value.type.cpp_standard_type}}({{/if}}
 {{#partial iterate_const_values value=value root_const=root_const}}
-{{#if value.type.cpp_adapter}})){{/if}}
+{{#if (object.notnull? value.type.cpp_adapter)}})){{/if}}
 {{/let partial}}

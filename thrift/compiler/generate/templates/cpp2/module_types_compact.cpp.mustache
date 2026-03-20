@@ -21,16 +21,16 @@
 namespace {{program.cpp_qualified_namespace}} {
   {{#each program.current_split_structured_definitions as |struct|}}
 
-    {{#if struct.extra_namespace}}
+    {{#if (object.notnull? struct.extra_namespace)}}
 namespace {{struct.extra_namespace}} {
-    {{/if struct.extra_namespace}}
+    {{/if (object.notnull? struct.extra_namespace)}}
 template void {{struct.cpp_underlying_name}}::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t {{struct.cpp_underlying_name}}::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t {{struct.cpp_underlying_name}}::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t {{struct.cpp_underlying_name}}::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-    {{#if struct.extra_namespace}}
+    {{#if (object.notnull? struct.extra_namespace)}}
 } // namespace {{struct.extra_namespace}}
-    {{/if struct.extra_namespace}}
+    {{/if (object.notnull? struct.extra_namespace)}}
   {{/each}}
 
 } // namespace {{program.cpp_qualified_namespace}}

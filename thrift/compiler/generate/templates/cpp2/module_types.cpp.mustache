@@ -76,9 +76,9 @@ FOLLY_POP_WARNING
     }}{{/if struct.union?}}
 
 namespace {{program.cpp_qualified_namespace}} {
-    {{#if struct.extra_namespace}}
+    {{#if (object.notnull? struct.extra_namespace)}}
 namespace {{struct.extra_namespace}} {
-    {{/if struct.extra_namespace}}
+    {{/if (object.notnull? struct.extra_namespace)}}
 
 std::string_view {{struct.cpp_underlying_name}}::__fbthrift_get_field_name(::apache::thrift::FieldOrdinal ord) {
   if (ord == ::apache::thrift::FieldOrdinal{0}) { return {}; }
@@ -194,9 +194,9 @@ static_assert(
       {{/if field.type.transitively_refers_to_struct?}}
     {{/each}}
 
-    {{#if struct.extra_namespace}}
+    {{#if (object.notnull? struct.extra_namespace)}}
 } // namespace {{struct.extra_namespace}}
-    {{/if struct.extra_namespace}}
+    {{/if (object.notnull? struct.extra_namespace)}}
 } // namespace {{program.cpp_qualified_namespace}}
   {{/each}}
 
@@ -205,16 +205,16 @@ namespace {{program.cpp_qualified_namespace}} { namespace {
 [[maybe_unused]] FOLLY_ERASE void validateAdapters() {
   {{#each program.current_split_structured_definitions as |struct|}}
     {{#each struct.fields as |field|}}
-      {{#if field.cpp_first_adapter}}
+      {{#if (object.notnull? field.cpp_first_adapter)}}
   ::apache::thrift::adapt_detail::validateFieldAdapter<{{!
       }}{{field.cpp_first_adapter}}, {{field.id}}, {{field.cpp_standard_type}}, {{struct.cpp_fullname}}>();
-      {{/if field.cpp_first_adapter}}
+      {{/if (object.notnull? field.cpp_first_adapter)}}
     {{/each}}
   {{/each}}
   {{#each program.typedefs as |typedef|}}
-    {{#if typedef.resolved.cpp_adapter}}
+    {{#if (object.notnull? typedef.resolved.cpp_adapter)}}
   ::apache::thrift::adapt_detail::validateAdapter<{{typedef.resolved.cpp_adapter}}, {{typedef.resolved.cpp_standard_type}}>();
-    {{/if typedef.resolved.cpp_adapter}}
+    {{/if (object.notnull? typedef.resolved.cpp_adapter)}}
   {{/each}}
 }
 }} // namespace {{program.cpp_qualified_namespace}}

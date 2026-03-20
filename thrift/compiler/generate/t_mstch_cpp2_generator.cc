@@ -765,14 +765,6 @@ class t_mstch_cpp2_generator : public t_whisker_generator {
     t_whisker_generator::render_to_file(output, template_name, context);
   }
 
-  strictness_options strictness() const override {
-    return strictness_options{
-        .boolean_conditional = false,
-        .printable_types = false,
-        .undefined_variables = true,
-    };
-  }
-
   void generate_sinit();
   void generate_visitation();
   void generate_constants();
@@ -1058,7 +1050,9 @@ class t_mstch_cpp2_generator : public t_whisker_generator {
       return strct.has_unstructured_annotation({"cpp.virtual", "cpp2.virtual"});
     });
     def.property("cpp_allocator", [](const t_structured& strct) {
-      return strct.get_unstructured_annotation("cpp.allocator");
+      const std::string& value =
+          strct.get_unstructured_annotation("cpp.allocator");
+      return value.empty() ? whisker::make::null : whisker::make::string(value);
     });
     def.property("cpp_frozen2_exclude?", [this](const t_structured& strct) {
       // TODO(dokwon): Fix frozen2 compatibility with adapter.
@@ -1071,13 +1065,13 @@ class t_mstch_cpp2_generator : public t_whisker_generator {
               strct.find_unstructured_annotation_or_null("cpp.allocator_via")) {
         for (const auto& field : strct.fields()) {
           if (cpp2::get_name(&field) == *name) {
-            return mangle_field_name(*name);
+            return whisker::make::string(mangle_field_name(*name));
           }
         }
         throw std::runtime_error(
             fmt::format("No cpp.allocator_via field \"{}\"", *name));
       }
-      return whisker::string("");
+      return whisker::make::null;
     });
     def.property("lazy_fields?", [](const t_structured& strct) {
       for (const auto& field : strct.fields()) {
@@ -1396,11 +1390,11 @@ class t_mstch_cpp2_generator : public t_whisker_generator {
           : "";
     });
 
-    def.property("cpp_is_unscoped", [](const t_enum& e) {
-      return e.get_unstructured_annotation("cpp.deprecated_enum_unscoped");
+    def.property("cpp_is_unscoped?", [](const t_enum& e) {
+      return e.has_unstructured_annotation("cpp.deprecated_enum_unscoped");
     });
 
-    def.property("cpp_declare_bitwise_ops", [](const t_enum& e) {
+    def.property("cpp_declare_bitwise_ops?", [](const t_enum& e) {
       return e.has_unstructured_annotation("cpp.declare_bitwise_ops") ||
           e.has_structured_annotation(kBitmaskEnumUri);
     });

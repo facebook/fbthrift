@@ -16,9 +16,9 @@
 
 }}{{struct.cpp_underlying_name}}([[maybe_unused]] {{struct.cpp_underlying_name}}&& other) noexcept{{!
 }}{{#if struct.fields?}} :
-    {{#if (and struct.cpp_allocator (not struct.cpp_allocator_via))}}
+    {{#if (and (object.notnull? struct.cpp_allocator) (object.eq? null struct.cpp_allocator_via))}}
     __fbthrift_alloc(std::move(other.__fbthrift_alloc)),
-    {{/if (and struct.cpp_allocator (not struct.cpp_allocator_via))}}
+    {{/if (and (object.notnull? struct.cpp_allocator) (object.eq? null struct.cpp_allocator_via))}}
     {{#each (array.enumerate struct.fields_in_layout_order with_last=true) as |i field last?|}}
     {{field.cpp_storage_name}}(std::move(other.{{field.cpp_storage_name}})){{#if (not last?)}},
 {{#else if (or struct.isset_fields? struct.lazy_fields?)}},{{/if (not last?)}}{{!
@@ -31,9 +31,9 @@
     __fbthrift_protocol_(other.__fbthrift_protocol_){{!
 }}{{/if struct.lazy_fields?}} {
     {{#each struct.fields as |field|}}
-      {{#if field.cpp_first_adapter}}
+      {{#if (object.notnull? field.cpp_first_adapter)}}
   {{#if field.opt_cpp_ref?}}if ({{field.cpp_storage_name}}) {{/if}}::apache::thrift::adapt_detail::construct<{{field.cpp_first_adapter}}, {{field.id}}>({{#if field.cpp_ref?}}*{{/if}}{{field.cpp_storage_name}}, *this);
-      {{/if field.cpp_first_adapter}}
+      {{/if (object.notnull? field.cpp_first_adapter)}}
     {{/each}}
     {{#if struct.lazy_fields?}}
   const auto relaxed = std::memory_order_relaxed;
