@@ -188,7 +188,7 @@ def _get_function_arg_specs(
     #
     # The field ID numbers do not necessarily match the source code order of the
     # arguments.
-    iface_class = getattr(service_module, "Iface")
+    iface_class = service_module.Iface
     py_fn = getattr(iface_class, fn_name)
     sig = inspect.signature(py_fn)
 
@@ -238,8 +238,6 @@ def get_type_name(thrift_type: TType, extra_type_spec: Any) -> str:
             return f"{python_type.__module__}.{python_type.__qualname__}"
     elif thrift_type == TType.I64:
         return "i64"
-    elif thrift_type == TType.DOUBLE:
-        return "double"
     elif thrift_type == TType.FLOAT:
         return "float"
     elif thrift_type == TType.STRUCT:
