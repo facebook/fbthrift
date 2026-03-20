@@ -12,13 +12,13 @@
 final class TestStreamSinkAsyncHandler extends TClientAsyncHandler {
 
   private ?vec<string> $streamPayloads = null;
-  private ?(function(vec<string>): meta\thrift\example\ResponseStruct)
-    $sinkProcessor = null;
+  private ?(function(vec<string>): example_ResponseStruct) $sinkProcessor =
+    null;
 
   public function __construct(
     private TProtocol $recvProtocol,
     private TProtocol $sendProtocol,
-    private meta\thrift\example\ResponseStruct $firstResponse,
+    private example_ResponseStruct $firstResponse,
   ) {}
 
   public function setStreamPayloads(vec<string> $payloads): void {
@@ -26,7 +26,7 @@ final class TestStreamSinkAsyncHandler extends TClientAsyncHandler {
   }
 
   public function setSinkProcessor(
-    (function(vec<string>): meta\thrift\example\ResponseStruct) $processor,
+    (function(vec<string>): example_ResponseStruct) $processor,
   ): void {
     $this->sinkProcessor = $processor;
   }
@@ -54,7 +54,7 @@ final class TestStreamSinkAsyncHandler extends TClientAsyncHandler {
     int $_sequence_id,
   )[zoned_local]: Awaitable<HH\AsyncGenerator<null, string, void>> {
     $first_response_struct =
-      meta\thrift\example\ExampleStreamingService_testStream_FirstResponse::fromShape(
+      example_ExampleStreamingService_testStream_FirstResponse::fromShape(
         shape('success' => $this->firstResponse),
       );
     $this->consumeRequestAndWriteFirstResponse(
@@ -63,7 +63,7 @@ final class TestStreamSinkAsyncHandler extends TClientAsyncHandler {
 
     $payloads = $this->streamPayloads ?? vec[];
     $encoder = ThriftStreamingSerializationHelpers::encodeStreamHelper(
-      meta\thrift\example\ExampleStreamingService_testStream_StreamResponse::class,
+      example_ExampleStreamingService_testStream_StreamResponse::class,
       new TCompactProtocolAccelerated(new TMemoryBuffer()),
     );
 
@@ -82,7 +82,7 @@ final class TestStreamSinkAsyncHandler extends TClientAsyncHandler {
     (function(HH\AsyncGenerator<null, string, void>): Awaitable<string>),
   > {
     $first_response_struct =
-      meta\thrift\example\ExampleStreamingService_testSink_FirstResponse::fromShape(
+      example_ExampleStreamingService_testSink_FirstResponse::fromShape(
         shape('success' => $this->firstResponse),
       );
     $this->consumeRequestAndWriteFirstResponse(
@@ -91,13 +91,13 @@ final class TestStreamSinkAsyncHandler extends TClientAsyncHandler {
 
     $sink_processor = $this->sinkProcessor;
     $decoder = ThriftStreamingSerializationHelpers::decodeStreamHelper(
-      meta\thrift\example\ExampleStreamingService_testSink_SinkPayload::class,
+      example_ExampleStreamingService_testSink_SinkPayload::class,
       'testSink',
       new TCompactProtocolAccelerated(new TMemoryBuffer()),
     );
 
     $encoder = ThriftStreamingSerializationHelpers::encodeStreamHelper(
-      meta\thrift\example\ExampleStreamingService_testSink_FinalResponse::class,
+      example_ExampleStreamingService_testSink_FinalResponse::class,
       new TCompactProtocolAccelerated(new TMemoryBuffer()),
     );
 
@@ -106,7 +106,7 @@ final class TestStreamSinkAsyncHandler extends TClientAsyncHandler {
       foreach ($gen await as $raw_payload) {
         $received_payloads[] = $decoder($raw_payload, null);
       }
-      $final_response = meta\thrift\example\ResponseStruct::fromShape(shape(
+      $final_response = example_ResponseStruct::fromShape(shape(
         'text' => 'done',
       ));
       if ($sink_processor is nonnull) {
@@ -133,7 +133,7 @@ final class TestStreamPayloadOnlyHandler extends TClientAsyncHandler {
   )[zoned_local]: Awaitable<HH\AsyncGenerator<null, string, void>> {
     $payloads = $this->streamPayloads;
     $encoder = ThriftStreamingSerializationHelpers::encodeStreamHelper(
-      meta\thrift\example\ExampleStreamingService_testStream_StreamResponse::class,
+      example_ExampleStreamingService_testStream_StreamResponse::class,
       new TCompactProtocolAccelerated(new TMemoryBuffer()),
     );
     return (
@@ -157,7 +157,7 @@ final class TestStreamExceptionHandler extends TClientAsyncHandler {
   public function __construct(
     private TProtocol $recvProtocol,
     private TProtocol $sendProtocol,
-    private meta\thrift\example\ResponseStruct $firstResponse,
+    private example_ResponseStruct $firstResponse,
   ) {}
 
   <<__Override>>
@@ -173,7 +173,7 @@ final class TestStreamExceptionHandler extends TClientAsyncHandler {
     $transport->resetBuffer();
 
     $first_response_struct =
-      meta\thrift\example\ExampleStreamingService_testStream_FirstResponse::fromShape(
+      example_ExampleStreamingService_testStream_FirstResponse::fromShape(
         shape('success' => $this->firstResponse),
       );
     $response_bytes = TCompactSerializer::serialize($first_response_struct);
@@ -185,10 +185,10 @@ final class TestStreamExceptionHandler extends TClientAsyncHandler {
 
     // Encode a StreamException as a stream payload
     $encoder = ThriftStreamingSerializationHelpers::encodeStreamHelper(
-      meta\thrift\example\ExampleStreamingService_testStream_StreamResponse::class,
+      example_ExampleStreamingService_testStream_StreamResponse::class,
       new TCompactProtocolAccelerated(new TMemoryBuffer()),
     );
-    $ex = new meta\thrift\example\StreamException();
+    $ex = new example_StreamException();
     $ex->message = 'stream error';
 
     return (
@@ -256,18 +256,16 @@ final class TClientAsyncHandlerIntegrationTest extends WWWTest {
     $handler = new TestStreamSinkAsyncHandler(
       $recv_protocol,
       $send_protocol,
-      meta\thrift\example\ResponseStruct::fromShape(shape('text' => 'hello')),
+      example_ResponseStruct::fromShape(shape('text' => 'hello')),
     );
     $handler->setStreamPayloads(vec['chunk1', 'chunk2', 'chunk3']);
 
-    $client = new meta\thrift\example\ExampleStreamingServiceAsyncClient(
-      $recv_protocol,
-      $send_protocol,
-    );
+    $client =
+      new ExampleStreamingServiceAsyncClient($recv_protocol, $send_protocol);
     $client->setAsyncHandler($handler);
 
     $response_and_stream = await $client->testStream(
-      meta\thrift\example\RequestStruct::fromShape(shape('text' => 'req')),
+      example_RequestStruct::fromShape(shape('text' => 'req')),
     );
 
     expect($response_and_stream->response?->text)->toEqual('hello');
@@ -287,17 +285,15 @@ final class TClientAsyncHandlerIntegrationTest extends WWWTest {
     $handler = new TestStreamExceptionHandler(
       $recv_protocol,
       $send_protocol,
-      meta\thrift\example\ResponseStruct::fromShape(shape('text' => 'ok')),
+      example_ResponseStruct::fromShape(shape('text' => 'ok')),
     );
 
-    $client = new meta\thrift\example\ExampleStreamingServiceAsyncClient(
-      $recv_protocol,
-      $send_protocol,
-    );
+    $client =
+      new ExampleStreamingServiceAsyncClient($recv_protocol, $send_protocol);
     $client->setAsyncHandler($handler);
 
     $response_and_stream = await $client->testStream(
-      meta\thrift\example\RequestStruct::fromShape(shape('text' => 'req')),
+      example_RequestStruct::fromShape(shape('text' => 'req')),
     );
 
     expect($response_and_stream->response?->text)->toEqual('ok');
@@ -306,7 +302,7 @@ final class TClientAsyncHandlerIntegrationTest extends WWWTest {
       foreach ($response_and_stream->stream await as $_chunk) {
         // Should throw on first iteration
       }
-    })->toThrow(meta\thrift\example\StreamException::class, 'stream error');
+    })->toThrow(example_StreamException::class, 'stream error');
   }
 
   // Sink: verifies client payloads reach handler and final response returns
@@ -317,26 +313,22 @@ final class TClientAsyncHandlerIntegrationTest extends WWWTest {
     $handler = new TestStreamSinkAsyncHandler(
       $recv_protocol,
       $send_protocol,
-      meta\thrift\example\ResponseStruct::fromShape(
-        shape('text' => 'sink-ack'),
-      ),
+      example_ResponseStruct::fromShape(shape('text' => 'sink-ack')),
     );
     $handler->setSinkProcessor(
       (vec<string> $payloads) ==> {
-        return meta\thrift\example\ResponseStruct::fromShape(shape(
+        return example_ResponseStruct::fromShape(shape(
           'text' => Str\join($payloads, ','),
         ));
       },
     );
 
-    $client = new meta\thrift\example\ExampleStreamingServiceAsyncClient(
-      $recv_protocol,
-      $send_protocol,
-    );
+    $client =
+      new ExampleStreamingServiceAsyncClient($recv_protocol, $send_protocol);
     $client->setAsyncHandler($handler);
 
     $response_and_sink = await $client->testSink(
-      meta\thrift\example\RequestStruct::fromShape(shape('text' => 'req')),
+      example_RequestStruct::fromShape(shape('text' => 'req')),
     );
 
     expect($response_and_sink->response?->text)->toEqual('sink-ack');
@@ -364,20 +356,18 @@ final class TClientAsyncHandlerIntegrationTest extends WWWTest {
     $transport_handler = new TestStreamSinkAsyncHandler(
       $recv_protocol,
       $send_protocol,
-      meta\thrift\example\ResponseStruct::fromShape(shape('text' => 'hello')),
+      example_ResponseStruct::fromShape(shape('text' => 'hello')),
     );
     $transport_handler->setStreamPayloads(vec['chunk1', 'chunk2', 'chunk3']);
 
     $tracking_handler = new TestStreamChunkTrackingHandler($transport_handler);
 
-    $client = new meta\thrift\example\ExampleStreamingServiceAsyncClient(
-      $recv_protocol,
-      $send_protocol,
-    );
+    $client =
+      new ExampleStreamingServiceAsyncClient($recv_protocol, $send_protocol);
     $client->setAsyncHandler($tracking_handler);
 
     $response_and_stream = await $client->testStream(
-      meta\thrift\example\RequestStruct::fromShape(shape('text' => 'req')),
+      example_RequestStruct::fromShape(shape('text' => 'req')),
     );
 
     expect($response_and_stream->response?->text)->toEqual('hello');
@@ -410,7 +400,7 @@ final class TClientAsyncHandlerIntegrationTest extends WWWTest {
     $transport_handler = new TestStreamSinkAsyncHandler(
       $recv_protocol,
       $send_protocol,
-      meta\thrift\example\ResponseStruct::fromShape(shape('text' => 'multi')),
+      example_ResponseStruct::fromShape(shape('text' => 'multi')),
     );
     $transport_handler->setStreamPayloads(vec['a', 'b']);
 
@@ -419,14 +409,12 @@ final class TClientAsyncHandlerIntegrationTest extends WWWTest {
     $multi_handler = new TClientMultiAsyncHandler();
     $multi_handler->addHandler('transport', $tracking_handler);
 
-    $client = new meta\thrift\example\ExampleStreamingServiceAsyncClient(
-      $recv_protocol,
-      $send_protocol,
-    );
+    $client =
+      new ExampleStreamingServiceAsyncClient($recv_protocol, $send_protocol);
     $client->setAsyncHandler($multi_handler);
 
     $response_and_stream = await $client->testStream(
-      meta\thrift\example\RequestStruct::fromShape(shape('text' => 'req')),
+      example_RequestStruct::fromShape(shape('text' => 'req')),
     );
 
     expect($response_and_stream->response?->text)->toEqual('multi');
@@ -448,7 +436,7 @@ final class TClientAsyncHandlerIntegrationTest extends WWWTest {
     $handler1 = new TestStreamSinkAsyncHandler(
       $recv_protocol,
       $send_protocol,
-      meta\thrift\example\ResponseStruct::fromShape(shape('text' => 'multi')),
+      example_ResponseStruct::fromShape(shape('text' => 'multi')),
     );
     $handler1->setStreamPayloads(vec['a', 'b']);
 
@@ -458,14 +446,12 @@ final class TClientAsyncHandlerIntegrationTest extends WWWTest {
     $multi_handler->addHandler('h1', $handler1);
     $multi_handler->addHandler('h2', $handler2);
 
-    $client = new meta\thrift\example\ExampleStreamingServiceAsyncClient(
-      $recv_protocol,
-      $send_protocol,
-    );
+    $client =
+      new ExampleStreamingServiceAsyncClient($recv_protocol, $send_protocol);
     $client->setAsyncHandler($multi_handler);
 
     $response_and_stream = await $client->testStream(
-      meta\thrift\example\RequestStruct::fromShape(shape('text' => 'req')),
+      example_RequestStruct::fromShape(shape('text' => 'req')),
     );
 
     expect($response_and_stream->response?->text)->toEqual('multi');

@@ -64,8 +64,7 @@ final class ThriftProcessorSinkEventHandlerTest extends WWWTest {
     self::mockFunction(PerfMetadata::get<>)->mockReturn($mock_perf_metadata);
 
     // Create input for the sink test
-    $args =
-      meta\thrift\example\ExampleStreamingService_testSink_args::withDefaultValues();
+    $args = example_ExampleStreamingService_testSink_args::withDefaultValues();
     $input_buffer = new TMemoryBuffer();
     $temp_protocol = new TBinaryProtocol($input_buffer);
     $args->write($temp_protocol);
@@ -180,8 +179,7 @@ final class ThriftProcessorSinkEventHandlerTest extends WWWTest {
     self::mockFunction(PerfMetadata::get<>)->mockReturn($mock_perf_metadata);
 
     // Create input for the sink test
-    $args =
-      meta\thrift\example\ExampleStreamingService_testSink_args::withDefaultValues();
+    $args = example_ExampleStreamingService_testSink_args::withDefaultValues();
     $input_buffer = new TMemoryBuffer();
     $temp_protocol = new TBinaryProtocol($input_buffer);
     $args->write($temp_protocol);
@@ -294,31 +292,24 @@ final class TestSinkApplicationEventHandler extends TProcessorEventHandler {
 /**
  * Base interface for sink test handlers.
  */
-class TestSinkServiceAsyncIf
-  implements meta\thrift\example\ExampleStreamingServiceAsyncIf {
+class TestSinkServiceAsyncIf implements ExampleStreamingServiceAsyncIf {
 
   public async function testStream(
-    ?meta\thrift\example\RequestStruct $request,
-  ): Awaitable<ResponseAndStream<meta\thrift\example\ResponseStruct, string>> {
+    ?example_RequestStruct $request,
+  ): Awaitable<ResponseAndStream<example_ResponseStruct, string>> {
     return new ResponseAndStream(
-      meta\thrift\example\ResponseStruct::fromShape(shape('text' => 'test')),
+      example_ResponseStruct::fromShape(shape('text' => 'test')),
       $this->genEmptyStream(),
     );
   }
 
-  public async function testSink(
-    ?meta\thrift\example\RequestStruct $_request,
-  ): Awaitable<ResponseAndSink<
-    meta\thrift\example\ResponseStruct,
-    string,
-    meta\thrift\example\ResponseStruct,
-  >> {
+  public async function testSink(?example_RequestStruct $_request): Awaitable<
+    ResponseAndSink<example_ResponseStruct, string, example_ResponseStruct>,
+  > {
     return new ResponseAndSink(
-      meta\thrift\example\ResponseStruct::fromShape(shape('text' => 'test')),
+      example_ResponseStruct::fromShape(shape('text' => 'test')),
       async (HH\AsyncGenerator<null, string, void> $_gen) ==> {
-        return meta\thrift\example\ResponseStruct::fromShape(
-          shape('text' => 'done'),
-        );
+        return example_ResponseStruct::fromShape(shape('text' => 'done'));
       },
     );
   }
@@ -335,21 +326,13 @@ class TestSinkServiceAsyncIf
 final class TestSinkThriftHandler extends TestSinkServiceAsyncIf {
 
   <<__Override>>
-  public async function testSink(
-    ?meta\thrift\example\RequestStruct $_request,
-  ): Awaitable<ResponseAndSink<
-    meta\thrift\example\ResponseStruct,
-    string,
-    meta\thrift\example\ResponseStruct,
-  >> {
+  public async function testSink(?example_RequestStruct $_request): Awaitable<
+    ResponseAndSink<example_ResponseStruct, string, example_ResponseStruct>,
+  > {
     return new ResponseAndSink(
-      meta\thrift\example\ResponseStruct::fromShape(
-        shape('text' => 'sink-ack'),
-      ),
+      example_ResponseStruct::fromShape(shape('text' => 'sink-ack')),
       async (HH\AsyncGenerator<null, string, void> $_gen) ==> {
-        return meta\thrift\example\ResponseStruct::fromShape(
-          shape('text' => 'sink-final'),
-        );
+        return example_ResponseStruct::fromShape(shape('text' => 'sink-final'));
       },
     );
   }
@@ -359,6 +342,6 @@ final class TestSinkThriftHandler extends TestSinkServiceAsyncIf {
  * Test processor for sink methods.
  */
 final class TestSinkApplicationProcessor
-  extends meta\thrift\example\ExampleStreamingServiceAsyncProcessorBase {
+  extends ExampleStreamingServiceAsyncProcessorBase {
   const type TThriftIf = TestSinkServiceAsyncIf;
 }

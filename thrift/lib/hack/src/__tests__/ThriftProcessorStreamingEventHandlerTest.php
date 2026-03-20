@@ -47,7 +47,7 @@ final class ThriftProcessorStreamingEventHandlerTest extends WWWTest {
 
     // Create input for the test
     $args =
-      meta\thrift\example\ExampleStreamingService_testStream_args::withDefaultValues();
+      example_ExampleStreamingService_testStream_args::withDefaultValues();
     $input_buffer = new TMemoryBuffer();
     $temp_protocol = new \TBinaryProtocol($input_buffer);
     $args->write($temp_protocol);
@@ -209,31 +209,24 @@ final class TestStreamingApplicationEventHandler
   }
 }
 
-class TestStreamingServiceAsyncIf
-  implements meta\thrift\example\ExampleStreamingServiceAsyncIf {
+class TestStreamingServiceAsyncIf implements ExampleStreamingServiceAsyncIf {
 
   public async function testStream(
-    ?meta\thrift\example\RequestStruct $request,
-  ): Awaitable<ResponseAndStream<meta\thrift\example\ResponseStruct, string>> {
+    ?example_RequestStruct $request,
+  ): Awaitable<ResponseAndStream<example_ResponseStruct, string>> {
     return new ResponseAndStream(
-      meta\thrift\example\ResponseStruct::fromShape(shape('text' => 'test')),
+      example_ResponseStruct::fromShape(shape('text' => 'test')),
       $this->emptyStream(),
     );
   }
 
-  public async function testSink(
-    ?meta\thrift\example\RequestStruct $_request,
-  ): Awaitable<ResponseAndSink<
-    meta\thrift\example\ResponseStruct,
-    string,
-    meta\thrift\example\ResponseStruct,
-  >> {
+  public async function testSink(?example_RequestStruct $_request): Awaitable<
+    ResponseAndSink<example_ResponseStruct, string, example_ResponseStruct>,
+  > {
     return new ResponseAndSink(
-      meta\thrift\example\ResponseStruct::fromShape(shape('text' => 'test')),
+      example_ResponseStruct::fromShape(shape('text' => 'test')),
       async (HH\AsyncGenerator<null, string, void> $_gen) ==> {
-        return meta\thrift\example\ResponseStruct::fromShape(
-          shape('text' => 'done'),
-        );
+        return example_ResponseStruct::fromShape(shape('text' => 'done'));
       },
     );
   }
@@ -248,10 +241,10 @@ final class TestStreamingExampleThriftHandler
 
   <<__Override>>
   public async function testStream(
-    ?meta\thrift\example\RequestStruct $request,
-  ): Awaitable<ResponseAndStream<meta\thrift\example\ResponseStruct, string>> {
+    ?example_RequestStruct $request,
+  ): Awaitable<ResponseAndStream<example_ResponseStruct, string>> {
     return new ResponseAndStream(
-      meta\thrift\example\ResponseStruct::fromShape(shape('text' => 'test')),
+      example_ResponseStruct::fromShape(shape('text' => 'test')),
       $this->genStream(),
     );
   }
@@ -268,10 +261,10 @@ final class TestStreamingErrorThriftHandler
 
   <<__Override>>
   public async function testStream(
-    ?meta\thrift\example\RequestStruct $request,
-  ): Awaitable<ResponseAndStream<meta\thrift\example\ResponseStruct, string>> {
+    ?example_RequestStruct $request,
+  ): Awaitable<ResponseAndStream<example_ResponseStruct, string>> {
     return new ResponseAndStream(
-      meta\thrift\example\ResponseStruct::fromShape(shape('text' => 'test')),
+      example_ResponseStruct::fromShape(shape('text' => 'test')),
       $this->genStreamWithError(),
     );
   }
@@ -288,10 +281,10 @@ final class TestStreamingExceptionHandler extends TestStreamingServiceAsyncIf {
 
   <<__Override>>
   public async function testStream(
-    ?meta\thrift\example\RequestStruct $request,
-  ): Awaitable<ResponseAndStream<meta\thrift\example\ResponseStruct, string>> {
+    ?example_RequestStruct $request,
+  ): Awaitable<ResponseAndStream<example_ResponseStruct, string>> {
     return new ResponseAndStream(
-      meta\thrift\example\ResponseStruct::fromShape(shape('text' => 'test')),
+      example_ResponseStruct::fromShape(shape('text' => 'test')),
       $this->genStreamWithException(),
     );
   }
@@ -299,7 +292,7 @@ final class TestStreamingExceptionHandler extends TestStreamingServiceAsyncIf {
   private async function genStreamWithException(
   ): HH\AsyncGenerator<null, string, void> {
     yield 'item1';
-    $exception = meta\thrift\example\StreamException::fromShape(
+    $exception = example_StreamException::fromShape(
       shape('message' => 'Declared stream exception'),
     );
     throw $exception;
@@ -307,6 +300,6 @@ final class TestStreamingExceptionHandler extends TestStreamingServiceAsyncIf {
 }
 
 final class TestStreamingApplicationProcessor
-  extends meta\thrift\example\ExampleStreamingServiceAsyncProcessorBase {
+  extends ExampleStreamingServiceAsyncProcessorBase {
   const type TThriftIf = TestStreamingServiceAsyncIf;
 }

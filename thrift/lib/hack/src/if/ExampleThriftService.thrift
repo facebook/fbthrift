@@ -17,6 +17,8 @@
 
 package "meta.com/thrift/example"
 
+namespace php example
+
 struct RequestStruct {
   1: string text;
 }
@@ -30,15 +32,15 @@ exception WhisperException {
 }
 
 // Root service (grandparent) - has getMethodMetadata for sendRequest
-service ExampleService {
+service ExampleRootService {
   ResponseStruct sendRequest(1: RequestStruct request) throws (
     1: WhisperException ex,
   );
 }
 
-// Middle service (parent) - extends ExampleService
+// Middle service (parent) - extends ExampleRootService
 // getMethodMetadata for sendMiddleRequest, delegates to parent for sendRequest
-service ExampleMiddleService extends ExampleService {
+service ExampleMiddleService extends ExampleRootService {
   ResponseStruct sendMiddleRequest(1: RequestStruct request) throws (
     1: WhisperException ex,
   );

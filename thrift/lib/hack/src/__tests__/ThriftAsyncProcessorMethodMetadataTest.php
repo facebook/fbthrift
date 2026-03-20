@@ -19,7 +19,7 @@ final class ThriftAsyncProcessorMethodMetadataTest extends WWWTest {
 
   public async function testExampleServiceOwnMethod(): Awaitable<void> {
 
-    $handler = mock(meta\thrift\example\ExampleServiceAsyncIf::class);
+    $handler = mock(ExampleRootServiceAsyncIf::class);
     $processor = new TestableExampleServiceAsyncProcessor($handler);
 
     $metadata = $processor->testGetMethodMetadata('sendRequest');
@@ -30,12 +30,12 @@ final class ThriftAsyncProcessorMethodMetadataTest extends WWWTest {
     );
     $typed = $metadata as ThriftServiceRequestResponseMethod<_, _, _, _>;
     expect($typed->getArgsClass())->toEqual(
-      meta\thrift\example\ExampleService_sendRequest_args::class,
+      example_ExampleRootService_sendRequest_args::class,
     );
   }
 
   public async function testExampleMiddleServiceOwnMethod(): Awaitable<void> {
-    $handler = mock(meta\thrift\example\ExampleMiddleServiceAsyncIf::class);
+    $handler = mock(ExampleMiddleServiceAsyncIf::class);
     $processor = new TestableExampleMiddleServiceAsyncProcessor($handler);
 
     $metadata = $processor->testGetMethodMetadata('sendMiddleRequest');
@@ -46,13 +46,13 @@ final class ThriftAsyncProcessorMethodMetadataTest extends WWWTest {
     );
     $typed = $metadata as ThriftServiceRequestResponseMethod<_, _, _, _>;
     expect($typed->getArgsClass())->toEqual(
-      meta\thrift\example\ExampleMiddleService_sendMiddleRequest_args::class,
+      example_ExampleMiddleService_sendMiddleRequest_args::class,
     );
   }
 
   public async function testExampleMiddleServiceInheritedMethod(
   ): Awaitable<void> {
-    $handler = mock(meta\thrift\example\ExampleMiddleServiceAsyncIf::class);
+    $handler = mock(ExampleMiddleServiceAsyncIf::class);
     $processor = new TestableExampleMiddleServiceAsyncProcessor($handler);
 
     // sendRequest is inherited from ExampleService via parent::getMethodMetadata()
@@ -64,12 +64,12 @@ final class ThriftAsyncProcessorMethodMetadataTest extends WWWTest {
     );
     $typed = $metadata as ThriftServiceRequestResponseMethod<_, _, _, _>;
     expect($typed->getArgsClass())->toEqual(
-      meta\thrift\example\ExampleService_sendRequest_args::class,
+      example_ExampleRootService_sendRequest_args::class,
     );
   }
 
   public async function testExampleChildServiceOwnMethod(): Awaitable<void> {
-    $handler = mock(meta\thrift\example\ExampleChildServiceAsyncIf::class);
+    $handler = mock(ExampleChildServiceAsyncIf::class);
     $processor = new TestableExampleChildServiceAsyncProcessor($handler);
 
     $metadata = $processor->testGetMethodMetadata('sendChildRequest');
@@ -80,12 +80,12 @@ final class ThriftAsyncProcessorMethodMetadataTest extends WWWTest {
     );
     $typed = $metadata as ThriftServiceRequestResponseMethod<_, _, _, _>;
     expect($typed->getArgsClass())->toEqual(
-      meta\thrift\example\ExampleChildService_sendChildRequest_args::class,
+      example_ExampleChildService_sendChildRequest_args::class,
     );
   }
 
   public async function testExampleChildServiceParentMethod(): Awaitable<void> {
-    $handler = mock(meta\thrift\example\ExampleChildServiceAsyncIf::class);
+    $handler = mock(ExampleChildServiceAsyncIf::class);
     $processor = new TestableExampleChildServiceAsyncProcessor($handler);
 
     // sendMiddleRequest is inherited from ExampleMiddleService
@@ -97,7 +97,7 @@ final class ThriftAsyncProcessorMethodMetadataTest extends WWWTest {
     );
     $typed = $metadata as ThriftServiceRequestResponseMethod<_, _, _, _>;
     expect($typed->getArgsClass())->toEqual(
-      meta\thrift\example\ExampleMiddleService_sendMiddleRequest_args::class,
+      example_ExampleMiddleService_sendMiddleRequest_args::class,
     );
   }
 
@@ -111,7 +111,7 @@ final class ThriftAsyncProcessorMethodMetadataTest extends WWWTest {
    */
   public async function testExampleChildServiceGrandparentMethod(
   ): Awaitable<void> {
-    $handler = mock(meta\thrift\example\ExampleChildServiceAsyncIf::class);
+    $handler = mock(ExampleChildServiceAsyncIf::class);
     $processor = new TestableExampleChildServiceAsyncProcessor($handler);
 
     // sendRequest is inherited from ExampleService (grandparent)
@@ -123,12 +123,12 @@ final class ThriftAsyncProcessorMethodMetadataTest extends WWWTest {
     );
     $typed = $metadata as ThriftServiceRequestResponseMethod<_, _, _, _>;
     expect($typed->getArgsClass())->toEqual(
-      meta\thrift\example\ExampleService_sendRequest_args::class,
+      example_ExampleRootService_sendRequest_args::class,
     );
   }
 
   public async function testUnknownMethodReturnsNull(): Awaitable<void> {
-    $handler = mock(meta\thrift\example\ExampleChildServiceAsyncIf::class);
+    $handler = mock(ExampleChildServiceAsyncIf::class);
     $processor = new TestableExampleChildServiceAsyncProcessor($handler);
 
     $metadata = $processor->testGetMethodMetadata('unknownMethod');
@@ -138,53 +138,43 @@ final class ThriftAsyncProcessorMethodMetadataTest extends WWWTest {
 }
 
 final class TestableExampleServiceAsyncProcessor
-  extends meta\thrift\example\ExampleServiceAsyncProcessor {
+  extends ExampleRootServiceAsyncProcessor {
 
-  public function __construct(
-    meta\thrift\example\ExampleServiceAsyncIf $handler,
-  ) {
+  public function __construct(ExampleRootServiceAsyncIf $handler) {
     parent::__construct($handler);
   }
 
   public function testGetMethodMetadata(
     string $fname,
-  ): ?IThriftServiceMethodMetadata<meta\thrift\example\ExampleServiceAsyncIf> {
+  ): ?IThriftServiceMethodMetadata<ExampleRootServiceAsyncIf> {
     return static::getMethodMetadata($fname);
   }
 }
 
 final class TestableExampleMiddleServiceAsyncProcessor
-  extends meta\thrift\example\ExampleMiddleServiceAsyncProcessor {
+  extends ExampleMiddleServiceAsyncProcessor {
 
-  public function __construct(
-    meta\thrift\example\ExampleMiddleServiceAsyncIf $handler,
-  ) {
+  public function __construct(ExampleMiddleServiceAsyncIf $handler) {
     parent::__construct($handler);
   }
 
   public function testGetMethodMetadata(
     string $fname,
-  ): ?IThriftServiceMethodMetadata<
-    meta\thrift\example\ExampleMiddleServiceAsyncIf,
-  > {
+  ): ?IThriftServiceMethodMetadata<ExampleMiddleServiceAsyncIf> {
     return static::getMethodMetadata($fname);
   }
 }
 
 final class TestableExampleChildServiceAsyncProcessor
-  extends meta\thrift\example\ExampleChildServiceAsyncProcessor {
+  extends ExampleChildServiceAsyncProcessor {
 
-  public function __construct(
-    meta\thrift\example\ExampleChildServiceAsyncIf $handler,
-  ) {
+  public function __construct(ExampleChildServiceAsyncIf $handler) {
     parent::__construct($handler);
   }
 
   public function testGetMethodMetadata(
     string $fname,
-  ): ?IThriftServiceMethodMetadata<
-    meta\thrift\example\ExampleChildServiceAsyncIf,
-  > {
+  ): ?IThriftServiceMethodMetadata<ExampleChildServiceAsyncIf> {
     return static::getMethodMetadata($fname);
   }
 }
