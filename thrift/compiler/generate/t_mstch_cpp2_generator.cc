@@ -32,13 +32,15 @@
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/cpp/name_resolver.h>
 #include <thrift/compiler/generate/cpp/orderable_type_utils.h>
-#include <thrift/compiler/generate/mstch_objects.h>
-#include <thrift/compiler/generate/t_mstch_generator.h>
+#include <thrift/compiler/generate/cpp/util.h>
+#include <thrift/compiler/generate/t_whisker_generator.h>
+#include <thrift/compiler/generate/templates.h>
 #include <thrift/compiler/sema/ast_validator.h>
 #include <thrift/compiler/sema/schematizer.h>
 #include <thrift/compiler/sema/sema_context.h>
 #include <thrift/compiler/sema/standard_validator.h>
 
+using compiler_options_map = std::map<std::string, std::string, std::less<>>;
 using apache::thrift::compiler::detail::schematizer;
 
 namespace apache::thrift::compiler {
@@ -96,11 +98,10 @@ bool same_types(const t_type* a, const t_type* b) {
   if (const t_list* list_a = resolved_a->try_as<t_list>()) {
     const auto* list_b = static_cast<const t_list*>(resolved_b);
     return same_types(
-        list_a->elem_type().get_type(), list_b->elem_type().get_type());
+        &list_a->elem_type().deref(), &list_b->elem_type().deref());
   } else if (const t_set* set_a = resolved_a->try_as<t_set>()) {
     const auto* set_b = static_cast<const t_set*>(resolved_b);
-    return same_types(
-        set_a->elem_type().get_type(), set_b->elem_type().get_type());
+    return same_types(&set_a->elem_type().deref(), &set_b->elem_type().deref());
   } else if (const t_map* map_a = resolved_a->try_as<t_map>()) {
     const auto* map_b = static_cast<const t_map*>(resolved_b);
     return same_types(&map_a->key_type().deref(), &map_b->key_type().deref()) &&
@@ -109,13 +110,12 @@ bool same_types(const t_type* a, const t_type* b) {
   return true;
 }
 
-std::string get_out_dir_base(
-    const t_mstch_generator::compiler_options_map& options) {
-  return options.find("py3cpp") != options.end() ? "gen-py3cpp" : "gen-cpp2";
+std::string get_out_dir_base(const compiler_options_map& options) {
+  return options.contains("py3cpp") ? "gen-py3cpp" : "gen-cpp2";
 }
 
 std::string mangle_field_name(const std::string& name) {
-  return "__fbthrift_field_" + name;
+  return fmt::format("__fbthrift_field_{}", name);
 }
 
 bool should_mangle_field_storage_name_in_struct(const t_structured& s) {
@@ -178,12 +178,12 @@ whisker::array::ptr build_user_type_footprint(
     const auto& function = *pending.front();
     pending.erase(pending.begin());
     for (const auto& param : function.params().fields()) {
-      extract_type(param.type().get_type());
+      extract_type(&param.type().deref());
     }
     if (const auto& excs = function.exceptions();
         !t_throws::is_null_or_empty(excs)) {
       for (auto& ex : excs->fields()) {
-        extract_type(ex.type().get_type());
+        extract_type(&ex.type().deref());
       }
     }
 
@@ -636,7 +636,7 @@ int checked_stoi(const std::string& s, const std::string& msg) {
   return ret;
 }
 
-int get_split_count(const t_mstch_generator::compiler_options_map& options) {
+int get_split_count(const compiler_options_map& options) {
   auto iter = options.find("types_cpp_splits");
   if (iter == options.end()) {
     return 0;
@@ -727,26 +727,24 @@ bool type_transitively_refers_to_struct(const t_type& type) {
   return false;
 }
 
-class t_mstch_cpp2_generator : public t_mstch_generator {
+class t_mstch_cpp2_generator : public t_whisker_generator {
  public:
-  using t_mstch_generator::t_mstch_generator;
-
-  std::string template_prefix() const override { return "cpp2"; }
+  using t_whisker_generator::t_whisker_generator;
 
   void process_options(
       const std::map<std::string, std::string>& options) override {
-    t_mstch_generator::process_options(options);
+    t_whisker_generator::process_options(options);
     client_name_to_split_count_ = get_client_name_to_split_count();
-    out_dir_base_ = get_out_dir_base(this->options());
+    out_dir_base_ = get_out_dir_base(compiler_options());
   }
 
   void generate_program() override;
   void fill_validator_visitors(ast_validator&) const override;
+
   static std::string include_prefix(
       const t_program* program, const compiler_options_map& options);
 
  private:
-  void set_mstch_factories();
   /** Render a template with only the current program as context. */
   void render_whisker_file(
       std::string_view template_name, const std::filesystem::path& output) {
@@ -771,23 +769,39 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
     t_whisker_generator::render_to_file(output, template_name, context);
   }
 
-  void generate_sinit(const t_program* program);
+  strictness_options strictness() const override {
+    return strictness_options{
+        .boolean_conditional = false,
+        .printable_types = false,
+        .undefined_variables = true,
+    };
+  }
+
+  void generate_sinit();
   void generate_visitation();
-  void generate_constants(const t_program* program);
-  void generate_metadata(const t_program* program);
-  void generate_structs(const t_program* program);
+  void generate_constants();
+  void generate_metadata();
+  void generate_structs();
   void generate_out_of_line_service(const t_service* service);
   void generate_out_of_line_services();
   void generate_inline_services();
 
+  std::string template_prefix() const override { return "cpp2"; }
+
+  whisker::source_manager template_source_manager() const final {
+    return whisker::source_manager{
+        std::make_unique<in_memory_source_manager_backend>(
+            create_templates_by_path())};
+  }
+
   void initialize_context(context_visitor& visitor) override {
     cpp_context_ = std::make_unique<cpp2_generator_context>(
-        source_mgr_, program_, get_split_count(options()));
+        source_mgr_, program_, get_split_count(compiler_options()));
     cpp_context_->register_visitors(visitor);
   }
 
   whisker::map::raw globals(prototype_database& proto) const override {
-    whisker::map::raw globals = t_mstch_generator::globals(proto);
+    whisker::map::raw globals = t_whisker_generator::globals(proto);
     // Global accessor for `cpp_enable_same_program_const_referencing_`.
     // Only the template for module_types.h overrides this, setting it to FALSE,
     // it is defaulted to TRUE for all other templates.
@@ -1012,7 +1026,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
       }
       bool result = false;
       cpp2::for_each_transitive_field(&strct, [&result](const t_field* field) {
-        if (!field->type().get_type()->has_unstructured_annotation(
+        if (!field->type()->has_unstructured_annotation(
                 {"cpp.noncopyable", "cpp2.noncopyable"})) {
           return true;
         }
@@ -1522,7 +1536,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
       return whisker::make::string("FOLLY_ERASE");
     });
     def.property("cpp_noncopyable?", [](const t_field& field) {
-      return field.type().get_type()->has_unstructured_annotation(
+      return field.type()->has_unstructured_annotation(
           {"cpp.noncopyable", "cpp2.noncopyable"});
     });
     def.property("zero_copy_arg", [](const t_field& field) -> std::string {
@@ -1858,143 +1872,6 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   mutable cpp2::is_eligible_for_constexpr is_eligible_for_constexpr_;
 };
 
-class cpp_mstch_program : public mstch_program {
- public:
-  cpp_mstch_program(
-      const t_program* program,
-      mstch_context& ctx,
-      mstch_element_position pos,
-      const cpp2_generator_context* cpp_context)
-      : mstch_program(program, ctx, pos), cpp_context_(*cpp_context) {
-    register_methods(
-        this,
-        {{"program:split_structs",
-          {with_no_caching, &cpp_mstch_program::split_structs}},
-         {"program:split_enums",
-          {with_no_caching, &cpp_mstch_program::split_enums}},
-         {"program:structs_and_typedefs",
-          &cpp_mstch_program::structs_and_typedefs}});
-  }
-  std::string get_program_namespace(const t_program* program) override {
-    return cpp2::get_gen_namespace(*program);
-  }
-  mstch::node structs_and_typedefs() {
-    // Equivalent Whisker property: `type_definitions_topological_order`
-    const std::vector<const t_type*>& sorted =
-        cpp_context_.type_definitions_topological_order(*program_);
-
-    // Generate the sorted nodes
-    mstch::array ret;
-    ret.reserve(sorted.size());
-    std::string id =
-        program_cache_id(program_, get_program_namespace(program_));
-    std::transform(
-        sorted.begin(),
-        sorted.end(),
-        std::back_inserter(ret),
-        [&](const t_type* node) -> mstch::node {
-          if (auto typedf = node->try_as<t_typedef>()) {
-            return context_.typedef_factory->make_mstch_object(
-                typedf, context_);
-          }
-          return make_mstch_element_cached(
-              static_cast<const t_structured*>(node),
-              *context_.struct_factory,
-              context_.struct_cache,
-              id,
-              0,
-              0);
-        });
-    return ret;
-  }
-
-  mstch::node split_structs() {
-    // Equivalent Whisker property: `current_split_structured_definitions`
-    if (std::optional<int> split_id = cpp_context_.program_split_id()) {
-      return make_mstch_array(
-          cpp_context_.program_current_split_structured_definitions(),
-          *context_.struct_factory);
-    }
-    return make_mstch_array_cached(
-        program_->structured_definitions(),
-        *context_.struct_factory,
-        context_.struct_cache,
-        program_cache_id(program_, get_program_namespace(program_)));
-  }
-
-  mstch::node split_enums() {
-    // Equivalent Whisker property: `current_split_enums`
-    if (std::optional<int> split_id = cpp_context_.program_split_id()) {
-      return make_mstch_array(
-          cpp_context_.program_current_split_enums(), *context_.enum_factory);
-    }
-    std::string id =
-        program_cache_id(program_, get_program_namespace(program_));
-    return make_mstch_array_cached(
-        program_->enums(), *context_.enum_factory, context_.enum_cache, id);
-  }
-
- private:
-  const cpp2_generator_context& cpp_context_;
-};
-
-// Retained for `get_functions` override, which overrides mstch_service's
-// `service:functions`, during Whisker migration.
-class cpp_mstch_service : public mstch_service {
- public:
-  cpp_mstch_service(
-      const t_service* service,
-      mstch_context& ctx,
-      mstch_element_position pos,
-      const cpp2_generator_context* cpp_context,
-      const t_service* containing_service = nullptr)
-      : mstch_service(service, ctx, pos, containing_service),
-        cpp_context_(*cpp_context) {}
-
- private:
-  const std::vector<const t_function*>& get_functions() const override {
-    int split_count = cpp_context_.current_service_split_count();
-    if (split_count <= 1) {
-      return mstch_service::get_functions();
-    }
-    int split_id = cpp_context_.current_service_split_id();
-    // TODO(T256504524): This is a very temporary hack as an intermediate step
-    // of migrating to Whisker, because `get_functions()` requires the return
-    // value to be a reference. Once the cpp2 migration is complete, this and
-    // `mstch_service::get_functions` are getting nuked from orbit (this is the
-    // only override).
-    if (split_functions_.empty() || cached_split_id_ != split_id) {
-      split_functions_.clear();
-      for (size_t id = split_id; id < service_->functions().size();
-           id += split_count) {
-        split_functions_.push_back(&service_->functions()[id]);
-      }
-      cached_split_id_ = split_id;
-    }
-    return split_functions_;
-  }
-
-  const cpp2_generator_context& cpp_context_;
-  mutable std::vector<const t_function*> split_functions_;
-  mutable int32_t cached_split_id_ = -1;
-};
-
-// Retained for cpp_mstch_service's `get_functions` override, which overrides
-// mstch_service's `service:functions`, during Whisker migration.
-class cpp_mstch_interaction : public cpp_mstch_service {
- public:
-  using ast_type = t_interaction;
-
-  cpp_mstch_interaction(
-      const t_interaction* interaction,
-      mstch_context& ctx,
-      mstch_element_position pos,
-      const t_service* containing_service,
-      const cpp2_generator_context* cpp_context)
-      : cpp_mstch_service(
-            interaction, ctx, pos, cpp_context, containing_service) {}
-};
-
 bool check_container_needs_op_encode(const t_type& type) {
   const auto* true_type = type.get_true_type();
   if (auto list_container = true_type->try_as<t_list>()) {
@@ -2032,33 +1909,6 @@ bool field_needs_op_encode(const t_field& field, const t_structured& strct) {
       cpp_name_resolver::find_first_adapter(field) ||
       check_container_needs_op_encode(*field.type());
 }
-
-class cpp_mstch_struct : public mstch_struct {
- public:
-  cpp_mstch_struct(
-      const t_structured* s,
-      mstch_context& ctx,
-      mstch_element_position pos,
-      const cpp2_generator_context* cpp_context)
-      : mstch_struct(s, ctx, pos), cpp_context_(*cpp_context) {
-    register_methods(
-        this,
-        {
-            {"struct:fields_in_layout_order",
-             &cpp_mstch_struct::fields_in_layout_order},
-        });
-  }
-
- private:
-  const cpp2_generator_context& cpp_context_;
-
-  mstch::node fields_in_layout_order() {
-    // TODO(T256504524): An equivalent Whisker property has been created, but we
-    // first need to migrate templates that rely on mstch behavior like implicit
-    // `first?`/`last?` properties
-    return make_mstch_fields(cpp_context_.fields_in_layout_order(*struct_));
-  }
-};
 
 // Computes the alignment of field on the target platform.
 // Throws exception if cannot compute the alignment.
@@ -2190,51 +2040,38 @@ std::vector<const t_field*> get_structured_fields_in_layout_order(
 }
 
 void t_mstch_cpp2_generator::generate_program() {
-  const auto* program = get_program();
-  set_mstch_factories();
-
-  generate_sinit(program);
-  generate_structs(program);
-  generate_constants(program);
-  if (has_option("single_file_service")) {
+  generate_sinit();
+  generate_structs();
+  generate_constants();
+  if (has_compiler_option("single_file_service")) {
     generate_inline_services();
   } else {
     generate_out_of_line_services();
   }
-  generate_metadata(program);
+  generate_metadata();
   generate_visitation();
 }
 
-void t_mstch_cpp2_generator::set_mstch_factories() {
-  mstch_context_.add<cpp_mstch_program>(cpp_context_.get());
-  mstch_context_.add<cpp_mstch_service>(cpp_context_.get());
-  mstch_context_.add<cpp_mstch_interaction>(cpp_context_.get());
-  mstch_context_.add<cpp_mstch_struct>(cpp_context_.get());
-}
-
-void t_mstch_cpp2_generator::generate_constants(const t_program* program) {
-  const auto& name = program->name();
-
+void t_mstch_cpp2_generator::generate_constants() {
+  const std::string& name = program_->name();
   render_whisker_file(
       "module_constants.h", fmt::format("{}_constants.h", name));
   render_whisker_file(
       "module_constants.cpp", fmt::format("{}_constants.cpp", name));
 }
 
-void t_mstch_cpp2_generator::generate_metadata(const t_program* program) {
-  const auto& name = program->name();
-
+void t_mstch_cpp2_generator::generate_metadata() {
+  const std::string& name = program_->name();
   render_whisker_file("module_metadata.h", fmt::format("{}_metadata.h", name));
-  if (!has_option("no_metadata")) {
+  if (!has_compiler_option("no_metadata")) {
     render_whisker_file(
         "module_metadata.cpp", fmt::format("{}_metadata.cpp", name));
   }
 }
 
-void t_mstch_cpp2_generator::generate_sinit(const t_program* program) {
-  const auto& name = program->name();
-
-  render_whisker_file("module_sinit.cpp", fmt::format("{}_sinit.cpp", name));
+void t_mstch_cpp2_generator::generate_sinit() {
+  render_whisker_file(
+      "module_sinit.cpp", fmt::format("{}_sinit.cpp", program_->name()));
 }
 
 void t_mstch_cpp2_generator::generate_visitation() {
@@ -2250,9 +2087,8 @@ void t_mstch_cpp2_generator::generate_visitation() {
       fmt::format("{}_visit_by_thrift_field_metadata.h", name));
 }
 
-void t_mstch_cpp2_generator::generate_structs(const t_program* program) {
-  const auto& name = program->name();
-
+void t_mstch_cpp2_generator::generate_structs() {
+  const std::string& name = program_->name();
   render_whisker_file("module_data.h", fmt::format("{}_data.h", name));
   render_whisker_file("module_data.cpp", fmt::format("{}_data.cpp", name));
 
@@ -2270,7 +2106,7 @@ void t_mstch_cpp2_generator::generate_structs(const t_program* program) {
       "module_types_fwd.h", fmt::format("{}_types_fwd.h", name));
   render_whisker_file("module_types.tcc", fmt::format("{}_types.tcc", name));
 
-  if (int split_count = get_split_count(options())) {
+  if (int split_count = get_split_count(compiler_options())) {
     size_t split_id_width = std::to_string(split_count - 1).size();
     for (int split_id = 0; split_id < split_count; ++split_id) {
       cpp_context_->set_program_split(split_id);
@@ -2303,7 +2139,7 @@ void t_mstch_cpp2_generator::generate_structs(const t_program* program) {
   render_whisker_file(
       "module_types_custom_protocol.h",
       fmt::format("{}_types_custom_protocol.h", name));
-  if (has_option("frozen2")) {
+  if (has_compiler_option("frozen2")) {
     render_whisker_file("module_layouts.h", fmt::format("{}_layouts.h", name));
     render_whisker_file(
         "module_layouts.cpp", fmt::format("{}_layouts.cpp", name));
@@ -2361,7 +2197,7 @@ void t_mstch_cpp2_generator::generate_out_of_line_services() {
     generate_out_of_line_service(service);
   }
 
-  const auto& module_name = get_program()->name();
+  const std::string& module_name = program_->name();
   render_whisker_file(
       "module_handlers_out_of_line.h",
       fmt::format("{}_handlers.h", module_name));
@@ -2408,7 +2244,7 @@ std::string t_mstch_cpp2_generator::include_prefix(
   return prefix + out_dir_base + "/";
 }
 
-static auto split(const std::string& s, char delimiter) {
+static auto split(const std::string_view& s, char delimiter) {
   std::vector<std::string> ret;
   boost::algorithm::split(ret, s, [&](char c) { return c == delimiter; });
   return ret;
@@ -2416,14 +2252,15 @@ static auto split(const std::string& s, char delimiter) {
 
 std::unordered_map<std::string, int>
 t_mstch_cpp2_generator::get_client_name_to_split_count() const {
-  auto client_cpp_splits = get_option("client_cpp_splits");
+  auto client_cpp_splits = get_compiler_option("client_cpp_splits");
   if (!client_cpp_splits) {
     return {};
   }
 
-  auto map = *client_cpp_splits;
+  std::string_view map = *client_cpp_splits;
   if (map.size() < 2 || map[0] != '{' || *map.rbegin() != '}') {
-    throw std::runtime_error("Invalid client_cpp_splits value: `" + map + "`");
+    throw std::runtime_error(
+        fmt::format("Invalid client_cpp_splits value: `{}`", map));
   }
   map = map.substr(1, map.size() - 2);
   if (map.empty()) {
@@ -2434,12 +2271,13 @@ t_mstch_cpp2_generator::get_client_name_to_split_count() const {
     auto a = split(kv, ':');
     if (a.size() != 2) {
       throw std::runtime_error(
-          "Invalid pair `" + kv + "` in client_cpp_splits value: `" + map +
-          "`");
+          fmt::format(
+              "Invalid pair `{}` in client_cpp_splits value: `{}`", kv, map));
     }
     ret[a[0]] = checked_stoi(
         a[1],
-        "Invalid pair `" + kv + "` in client_cpp_splits value: `" + map + "`");
+        fmt::format(
+            "Invalid pair `{}` in client_cpp_splits value: `{}`", kv, map));
   }
   return ret;
 }
@@ -2448,7 +2286,7 @@ t_mstch_cpp2_generator::get_client_name_to_split_count() const {
 void validate_struct_annotations(
     sema_context& ctx,
     const t_structured& s,
-    const t_mstch_generator::compiler_options_map& options) {
+    const compiler_options_map& options) {
   if (cpp2::packed_isset(s)) {
     if (options.count("tablebased") != 0) {
       ctx.report(
@@ -2535,7 +2373,7 @@ class validate_splits {
 void forbid_deprecated_terse_writes_ref(
     sema_context& ctx,
     const t_structured& strct,
-    const t_mstch_generator::compiler_options_map& options) {
+    const compiler_options_map& options) {
   for (auto& field : strct.fields()) {
     const bool isUniqueRef =
         gen::cpp::find_ref_type(field) == gen::cpp::reference_type::unique;
@@ -2606,7 +2444,7 @@ void validate_lazy_fields(sema_context& ctx, const t_field& field) {
 void validate_deprecated_terse_writes(
     sema_context& ctx,
     const t_field& field,
-    const t_mstch_generator::compiler_options_map& options) {
+    const compiler_options_map& options) {
   if (options.count("deprecated_terse_writes") != 0 &&
       field.has_structured_annotation(kCppDeprecatedTerseWriteUri)) {
     ctx.error(
@@ -2621,22 +2459,22 @@ void t_mstch_cpp2_generator::fill_validator_visitors(
           validate_struct_annotations,
           std::placeholders::_1,
           std::placeholders::_2,
-          options()));
+          compiler_options()));
   validator.add_struct_visitor(
       std::bind(
           forbid_deprecated_terse_writes_ref,
           std::placeholders::_1,
           std::placeholders::_2,
-          options()));
-  validator.add_program_visitor(
-      validate_splits(get_split_count(options()), client_name_to_split_count_));
+          compiler_options()));
+  validator.add_program_visitor(validate_splits(
+      get_split_count(compiler_options()), client_name_to_split_count_));
   validator.add_field_visitor(validate_lazy_fields);
   validator.add_field_visitor(
       std::bind(
           validate_deprecated_terse_writes,
           std::placeholders::_1,
           std::placeholders::_2,
-          options()));
+          compiler_options()));
 }
 
 THRIFT_REGISTER_GENERATOR(
