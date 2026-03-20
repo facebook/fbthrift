@@ -108,7 +108,7 @@ BENCHMARK_RELATIVE(SingleBucket_WithLimit) {
   RequestPileTestState state;
 
   auto opts = makeOpts({1});
-  opts.numMaxRequests = 100'000;
+  opts.setNumMaxRequests(100'000);
   RoundRobinRequestPile pile(opts);
 
   auto numThreads = folly::available_concurrency();
@@ -155,7 +155,7 @@ BENCHMARK_RELATIVE(MultiBucket_100Buckets_WithLimit) {
   constexpr unsigned kRoundsPerBucket = kNumRounds / kBuckets;
 
   auto opts = makeOpts({kBuckets});
-  opts.numMaxRequests = 100'000;
+  opts.setNumMaxRequests(100'000);
   RoundRobinRequestPile pile(opts);
 
   auto numThreads = folly::available_concurrency();
@@ -402,7 +402,7 @@ BENCHMARK(Rejection_SingleBucket) {
   RequestPileTestState state;
 
   auto opts = makeOpts({1});
-  opts.numMaxRequests = 100;
+  opts.setNumMaxRequests(100);
   RoundRobinRequestPile pile(opts);
 
   auto numThreads = folly::available_concurrency();
@@ -432,7 +432,7 @@ BENCHMARK_RELATIVE(Rejection_MultiBucket) {
   constexpr unsigned kRoundsPerBucket = kNumRounds / kBuckets;
 
   auto opts = makeOpts({kBuckets});
-  opts.numMaxRequests = 10;
+  opts.setNumMaxRequests(10);
   RoundRobinRequestPile pile(opts);
 
   auto numThreads = folly::available_concurrency();

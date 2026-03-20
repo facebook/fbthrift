@@ -31,7 +31,8 @@
 
 namespace apache::thrift {
 
-struct RoundRobinRequestPileOptions {
+class RoundRobinRequestPileOptions {
+ public:
   using Priority = uint32_t;
   using Bucket = uint32_t;
   // Function to specify priority and bucket for a request. The priority must be
@@ -41,38 +42,18 @@ struct RoundRobinRequestPileOptions {
   using PileSelectionFunction =
       std::function<std::pair<Priority, Bucket>(const ServerRequest&)>;
 
-  inline constexpr static unsigned int kDefaultNumPriorities = 1;
-  inline constexpr static unsigned int kDefaultNumBuckets = 1;
-
-  std::string name;
-
-  // numBucket = numBuckets_[priority]
-  std::vector<uint32_t> numBucketsPerPriority;
-
-  // 0 means no limit
-  // this is a per bucket limit
-  uint64_t numMaxRequests{0};
-
-  // Per-priority per-bucket limits. When set for a given priority,
-  // overrides numMaxRequests for that priority. 0 means no limit.
-  // If empty, numMaxRequests is used for all priorities.
-  std::vector<uint32_t> numMaxRequestsPerPriority;
-
-  // Function to route requests to priority/bucket
-  PileSelectionFunction pileSelectionFunction;
-
   // Pre-enqueue filter for custom rejection logic.
   // Called after priority is determined, before enqueue.
   // Return rejection to reject the request, nullopt to allow.
   using PreEnqueueFilter = std::function<std::optional<ServerRequestRejection>(
       const ServerRequest& request)>;
 
-  PreEnqueueFilter preEnqueueFilter;
-
-  void setPreEnqueueFilter(PreEnqueueFilter fn);
+  inline constexpr static unsigned int kDefaultNumPriorities = 1;
+  inline constexpr static unsigned int kDefaultNumBuckets = 1;
 
   RoundRobinRequestPileOptions();
 
+  // Setters
   void setName(std::string rName);
 
   // Set the number of priority levels to provide. By default the number of
@@ -92,6 +73,18 @@ struct RoundRobinRequestPileOptions {
   // Set per-priority per-bucket limits. The vector size must match the
   // number of priorities. A value of 0 means no limit for that priority.
   void setNumMaxRequestsPerPriority(std::vector<uint32_t> limits);
+
+  void setNumMaxRequests(uint64_t limit);
+
+  void setPreEnqueueFilter(PreEnqueueFilter fn);
+
+  // Getters
+  const std::string& getName() const;
+  const std::vector<uint32_t>& getNumBucketsPerPriority() const;
+  uint64_t getNumMaxRequests() const;
+  const std::vector<uint32_t>& getNumMaxRequestsPerPriority() const;
+  const PileSelectionFunction& getPileSelectionFunction() const;
+  const PreEnqueueFilter& getPreEnqueueFilter() const;
 
   // Get the effective per-bucket limit for a given priority.
   // Returns the per-priority limit if set, otherwise the global limit.
@@ -114,6 +107,26 @@ struct RoundRobinRequestPileOptions {
    * existing interactions over other requests.
    */
   RoundRobinRequestPileOptions addInternalPriorities() const;
+
+ private:
+  std::string name;
+
+  // numBucket = numBuckets_[priority]
+  std::vector<uint32_t> numBucketsPerPriority;
+
+  // 0 means no limit
+  // this is a per bucket limit
+  uint64_t numMaxRequests{0};
+
+  // Per-priority per-bucket limits. When set for a given priority,
+  // overrides numMaxRequests for that priority. 0 means no limit.
+  // If empty, numMaxRequests is used for all priorities.
+  std::vector<uint32_t> numMaxRequestsPerPriority;
+
+  // Function to route requests to priority/bucket
+  PileSelectionFunction pileSelectionFunction;
+
+  PreEnqueueFilter preEnqueueFilter;
 };
 
 class RoundRobinRequestPile : public RequestPileBase {

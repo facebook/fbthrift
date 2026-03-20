@@ -4631,7 +4631,7 @@ TEST(ThriftServerTest, getResourcePoolServerDbgInfo) {
           server.requireResourcePools();
 
           auto rrOptions = RoundRobinRequestPile::Options();
-          rrOptions.numMaxRequests = 123;
+          rrOptions.setNumMaxRequests(123);
           rrOptions.setNumPriorities(3);
           auto requestPile = std::make_unique<RoundRobinRequestPile>(rrOptions);
           auto executor = std::make_shared<folly::CPUThreadPoolExecutor>(3);

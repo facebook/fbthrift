@@ -63,6 +63,38 @@ void RoundRobinRequestPileOptions::setNumMaxRequestsPerPriority(
   numMaxRequestsPerPriority = std::move(limits);
 }
 
+void RoundRobinRequestPileOptions::setNumMaxRequests(uint64_t limit) {
+  numMaxRequests = limit;
+}
+
+const std::string& RoundRobinRequestPileOptions::getName() const {
+  return name;
+}
+
+const std::vector<uint32_t>&
+RoundRobinRequestPileOptions::getNumBucketsPerPriority() const {
+  return numBucketsPerPriority;
+}
+
+uint64_t RoundRobinRequestPileOptions::getNumMaxRequests() const {
+  return numMaxRequests;
+}
+
+const std::vector<uint32_t>&
+RoundRobinRequestPileOptions::getNumMaxRequestsPerPriority() const {
+  return numMaxRequestsPerPriority;
+}
+
+const RoundRobinRequestPileOptions::PileSelectionFunction&
+RoundRobinRequestPileOptions::getPileSelectionFunction() const {
+  return pileSelectionFunction;
+}
+
+const RoundRobinRequestPileOptions::PreEnqueueFilter&
+RoundRobinRequestPileOptions::getPreEnqueueFilter() const {
+  return preEnqueueFilter;
+}
+
 uint32_t RoundRobinRequestPileOptions::getNumMaxRequestsForPriority(
     unsigned priority) const {
   if (!numMaxRequestsPerPriority.empty()) {
@@ -138,9 +170,9 @@ RoundRobinRequestPile::Consumer::operator()(
 }
 
 RoundRobinRequestPile::RoundRobinRequestPile(Options opts)
-    : RequestPileBase(std::move(opts.name)) {
+    : RequestPileBase(std::string(opts.getName())) {
   opts_ = std::move(opts);
-  const auto& numBucketsPerPriority = opts_.numBucketsPerPriority;
+  const auto& numBucketsPerPriority = opts_.getNumBucketsPerPriority();
 
   requestQueues_ = std::make_unique<std::unique_ptr<RequestQueue[]>[]>(
       numBucketsPerPriority.size());
@@ -152,8 +184,9 @@ RoundRobinRequestPile::RoundRobinRequestPile(Options opts)
           numBucketsPerPriority.size());
 
   DCHECK(
-      opts_.numMaxRequestsPerPriority.empty() ||
-      opts_.numMaxRequestsPerPriority.size() == numBucketsPerPriority.size());
+      opts_.getNumMaxRequestsPerPriority().empty() ||
+      opts_.getNumMaxRequestsPerPriority().size() ==
+          numBucketsPerPriority.size());
 
   for (unsigned i = 0; i < numBucketsPerPriority.size(); ++i) {
     DCHECK(numBucketsPerPriority.at(i));
@@ -216,17 +249,17 @@ std::optional<ServerRequestRejection> RoundRobinRequestPile::enqueue(
   info.queueBegin = std::chrono::steady_clock::now();
 
   unsigned pri = 0, bucket = 0;
-  if (opts_.pileSelectionFunction) {
-    std::tie(pri, bucket) = opts_.pileSelectionFunction(request);
+  if (opts_.getPileSelectionFunction()) {
+    std::tie(pri, bucket) = opts_.getPileSelectionFunction()(request);
   }
-  DCHECK_LT(pri, opts_.numBucketsPerPriority.size());
-  DCHECK_LT(bucket, opts_.numBucketsPerPriority[pri]);
+  DCHECK_LT(pri, opts_.getNumBucketsPerPriority().size());
+  DCHECK_LT(bucket, opts_.getNumBucketsPerPriority()[pri]);
   request.requestData().bucket = {pri, bucket};
   RequestPileBase::onEnqueued(request);
 
   // Check pre-enqueue filter before actual enqueue
-  if (opts_.preEnqueueFilter) {
-    if (auto rejection = opts_.preEnqueueFilter(request)) {
+  if (opts_.getPreEnqueueFilter()) {
+    if (auto rejection = opts_.getPreEnqueueFilter()(request)) {
       if (onRequestRejectedFunction_) {
         onRequestRejectedFunction_(pri, bucket);
       }
@@ -286,7 +319,7 @@ std::optional<ServerRequestRejection> RoundRobinRequestPile::enqueue(
 }
 
 std::optional<ServerRequest> RoundRobinRequestPile::dequeue() {
-  for (unsigned i = 0; i < opts_.numBucketsPerPriority.size(); ++i) {
+  for (unsigned i = 0; i < opts_.getNumBucketsPerPriority().size(); ++i) {
     if (!retrievalIndexQueues_[i]) {
       if (auto req = singleBucketRequestQueues_[i]->tryDequeue()) {
         if (dequeueObserver_) {
@@ -306,11 +339,11 @@ std::optional<ServerRequest> RoundRobinRequestPile::dequeue() {
 
 uint64_t RoundRobinRequestPile::requestCount() const {
   uint64_t res = 0;
-  for (size_t i = 0; i < opts_.numBucketsPerPriority.size(); ++i) {
+  for (size_t i = 0; i < opts_.getNumBucketsPerPriority().size(); ++i) {
     if (!retrievalIndexQueues_[i]) {
       res += singleBucketRequestQueues_[i]->size();
     } else if (!retrievalIndexQueues_[i]->empty()) {
-      for (size_t j = 0; j < opts_.numBucketsPerPriority[i]; ++j) {
+      for (size_t j = 0; j < opts_.getNumBucketsPerPriority()[i]; ++j) {
         res += requestQueues_[i][j].size();
       }
     }
@@ -323,10 +356,10 @@ std::string RoundRobinRequestPile::describe() const {
   std::string result;
   result = fmt::format(
       "RoundRobinRequestPile priorities:{}",
-      opts_.numBucketsPerPriority.size());
-  for (size_t i = 0; i < opts_.numBucketsPerPriority.size(); ++i) {
-    result +=
-        fmt::format(" Pri:{} Buckets:{}", i, opts_.numBucketsPerPriority[i]);
+      opts_.getNumBucketsPerPriority().size());
+  for (size_t i = 0; i < opts_.getNumBucketsPerPriority().size(); ++i) {
+    result += fmt::format(
+        " Pri:{} Buckets:{}", i, opts_.getNumBucketsPerPriority()[i]);
   }
   return result;
 }
@@ -334,13 +367,13 @@ std::string RoundRobinRequestPile::describe() const {
 serverdbginfo::RequestPileDbgInfo RoundRobinRequestPile::getDbgInfo() const {
   serverdbginfo::RequestPileDbgInfo info;
   info.name() = folly::demangle(typeid(*this));
-  info.prioritiesCount() = opts_.numBucketsPerPriority.size();
+  info.prioritiesCount() = opts_.getNumBucketsPerPriority().size();
 
-  for (size_t i = 0; i < opts_.numBucketsPerPriority.size(); ++i) {
-    info.bucketsPerPriority()->push_back(opts_.numBucketsPerPriority[i]);
+  for (size_t i = 0; i < opts_.getNumBucketsPerPriority().size(); ++i) {
+    info.bucketsPerPriority()->push_back(opts_.getNumBucketsPerPriority()[i]);
   }
 
-  info.perBucketRequestLimit() = opts_.numMaxRequests;
+  info.perBucketRequestLimit() = opts_.getNumMaxRequests();
   info.queuedRequestsCount() = requestCount();
 
   return info;
@@ -349,19 +382,19 @@ serverdbginfo::RequestPileDbgInfo RoundRobinRequestPile::getDbgInfo() const {
 std::vector<std::vector<uint64_t>> RoundRobinRequestPile::getRequestCounts()
     const {
   std::vector<std::vector<uint64_t>> res;
-  res.reserve(opts_.numBucketsPerPriority.size());
-  for (size_t i = 0; i < opts_.numBucketsPerPriority.size(); ++i) {
+  res.reserve(opts_.getNumBucketsPerPriority().size());
+  for (size_t i = 0; i < opts_.getNumBucketsPerPriority().size(); ++i) {
     if (!retrievalIndexQueues_[i]) {
       res.emplace_back(1, singleBucketRequestQueues_[i]->size());
     } else {
       std::vector<uint64_t> subRes;
       if (!retrievalIndexQueues_[i]->empty()) {
-        subRes.reserve(opts_.numBucketsPerPriority[i]);
-        for (size_t j = 0; j < opts_.numBucketsPerPriority[i]; ++j) {
+        subRes.reserve(opts_.getNumBucketsPerPriority()[i]);
+        for (size_t j = 0; j < opts_.getNumBucketsPerPriority()[i]; ++j) {
           subRes.emplace_back(requestQueues_[i][j].size());
         }
       } else {
-        subRes.resize(opts_.numBucketsPerPriority[i]);
+        subRes.resize(opts_.getNumBucketsPerPriority()[i]);
       }
       res.push_back(std::move(subRes));
     }

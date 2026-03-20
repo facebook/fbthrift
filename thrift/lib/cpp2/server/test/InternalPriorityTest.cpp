@@ -38,11 +38,12 @@ TEST(InternalPriorityTest, AddInternalPriorities) {
   // Default case
   {
     auto opts = RoundRobinRequestPile::Options().addInternalPriorities();
-    EXPECT_EQ((std::vector<unsigned int>{1, 1}), opts.numBucketsPerPriority);
-    EXPECT_EQ(1, opts.pileSelectionFunction(reqNoPri).first);
-    EXPECT_EQ(1, opts.pileSelectionFunction(reqLowPri).first);
-    EXPECT_EQ(0, opts.pileSelectionFunction(reqMidPri).first);
-    EXPECT_EQ(0, opts.pileSelectionFunction(reqHighPri).first);
+    EXPECT_EQ(
+        (std::vector<unsigned int>{1, 1}), opts.getNumBucketsPerPriority());
+    EXPECT_EQ(1, opts.getPileSelectionFunction()(reqNoPri).first);
+    EXPECT_EQ(1, opts.getPileSelectionFunction()(reqLowPri).first);
+    EXPECT_EQ(0, opts.getPileSelectionFunction()(reqMidPri).first);
+    EXPECT_EQ(0, opts.getPileSelectionFunction()(reqHighPri).first);
   }
 
   // Some priorities
@@ -52,11 +53,11 @@ TEST(InternalPriorityTest, AddInternalPriorities) {
     opts = opts.addInternalPriorities();
     EXPECT_EQ(
         (std::vector<unsigned int>{1, 1, 2, 2, 3, 3}),
-        opts.numBucketsPerPriority);
-    EXPECT_EQ(1, opts.pileSelectionFunction(reqNoPri).first);
-    EXPECT_EQ(1, opts.pileSelectionFunction(reqLowPri).first);
-    EXPECT_EQ(0, opts.pileSelectionFunction(reqMidPri).first);
-    EXPECT_EQ(0, opts.pileSelectionFunction(reqHighPri).first);
+        opts.getNumBucketsPerPriority());
+    EXPECT_EQ(1, opts.getPileSelectionFunction()(reqNoPri).first);
+    EXPECT_EQ(1, opts.getPileSelectionFunction()(reqLowPri).first);
+    EXPECT_EQ(0, opts.getPileSelectionFunction()(reqMidPri).first);
+    EXPECT_EQ(0, opts.getPileSelectionFunction()(reqHighPri).first);
   }
 
   // Some priorities with pileSelectionFunction
@@ -73,11 +74,11 @@ TEST(InternalPriorityTest, AddInternalPriorities) {
     opts = opts.addInternalPriorities();
     EXPECT_EQ(
         (std::vector<unsigned int>{1, 1, 2, 2, 3, 3}),
-        opts.numBucketsPerPriority);
-    EXPECT_EQ(5, opts.pileSelectionFunction(reqNoPri).first);
-    EXPECT_EQ(5, opts.pileSelectionFunction(reqLowPri).first);
-    EXPECT_EQ(4, opts.pileSelectionFunction(reqMidPri).first);
-    EXPECT_EQ(4, opts.pileSelectionFunction(reqHighPri).first);
+        opts.getNumBucketsPerPriority());
+    EXPECT_EQ(5, opts.getPileSelectionFunction()(reqNoPri).first);
+    EXPECT_EQ(5, opts.getPileSelectionFunction()(reqLowPri).first);
+    EXPECT_EQ(4, opts.getPileSelectionFunction()(reqMidPri).first);
+    EXPECT_EQ(4, opts.getPileSelectionFunction()(reqHighPri).first);
   }
 }
 

@@ -185,7 +185,7 @@ TEST_F(RoundRobinRequestPileTest, testDequeueForSingleBucket) {
 
 TEST_F(RoundRobinRequestPileTest, testBucketSizeLimitForManyBuckets) {
   auto opts = makeOpts({10, 10, 10, 10, 10});
-  opts.numMaxRequests = 1;
+  opts.setNumMaxRequests(1);
   RoundRobinRequestPile pile(opts);
 
   {
@@ -211,7 +211,7 @@ TEST_F(RoundRobinRequestPileTest, testBucketSizeLimitForManyBuckets) {
 
 TEST_F(RoundRobinRequestPileTest, testBucketSizeLimitForSingleBucket) {
   auto opts = makeOpts({1});
-  opts.numMaxRequests = 1;
+  opts.setNumMaxRequests(1);
   RoundRobinRequestPile pile(opts);
 
   {
@@ -608,7 +608,7 @@ TEST_F(RoundRobinRequestPileTest, getRequestCountsForSingleBucket) {
 
 TEST_F(RoundRobinRequestPileTest, getDbgInfoWithLimitsAndQueuedRequests) {
   auto opts = makeOpts({2, 3});
-  opts.numMaxRequests = 42;
+  opts.setNumMaxRequests(42);
   RoundRobinRequestPile pile(opts);
 
   pile.enqueue(makeServerRequestForBucket(0, 0));
@@ -623,7 +623,7 @@ TEST_F(RoundRobinRequestPileTest, getDbgInfoWithLimitsAndQueuedRequests) {
 
 TEST_F(RoundRobinRequestPileTest, acceptRejectCallbacksMultiBucket) {
   auto opts = makeOpts({3});
-  opts.numMaxRequests = 1;
+  opts.setNumMaxRequests(1);
   RoundRobinRequestPile pile(opts);
 
   std::vector<std::pair<uint32_t, uint32_t>> accepted;
@@ -657,7 +657,7 @@ TEST_F(RoundRobinRequestPileTest, acceptRejectCallbacksMultiBucket) {
 
 TEST_F(RoundRobinRequestPileTest, acceptRejectCallbacksSingleBucket) {
   auto opts = makeOpts({1});
-  opts.numMaxRequests = 1;
+  opts.setNumMaxRequests(1);
   RoundRobinRequestPile pile(opts);
 
   std::vector<std::pair<uint32_t, uint32_t>> accepted;
@@ -834,7 +834,7 @@ TEST(RoundRobinRequestPileMiscTest, optionsDescribe) {
   RoundRobinRequestPile::Options opts;
   opts.setName("test_pile");
   opts.setShape({2, 3});
-  opts.numMaxRequests = 5;
+  opts.setNumMaxRequests(5);
 
   EXPECT_EQ(
       opts.describe(),
@@ -849,19 +849,19 @@ TEST(RoundRobinRequestPileMiscTest, optionsDescribe) {
 TEST(RoundRobinRequestPileMiscTest, optionsBuilderMethods) {
   RoundRobinRequestPile::Options opts;
   // Default: 1 priority with 1 bucket
-  EXPECT_EQ(opts.numBucketsPerPriority, std::vector<uint32_t>{1});
+  EXPECT_EQ(opts.getNumBucketsPerPriority(), std::vector<uint32_t>{1});
 
   opts.setNumPriorities(3);
-  EXPECT_EQ(opts.numBucketsPerPriority, (std::vector<uint32_t>{1, 1, 1}));
+  EXPECT_EQ(opts.getNumBucketsPerPriority(), (std::vector<uint32_t>{1, 1, 1}));
 
   opts.setNumBucketsPerPriority(1, 5);
-  EXPECT_EQ(opts.numBucketsPerPriority, (std::vector<uint32_t>{1, 5, 1}));
+  EXPECT_EQ(opts.getNumBucketsPerPriority(), (std::vector<uint32_t>{1, 5, 1}));
 
   opts.setShape({2, 3, 4});
-  EXPECT_EQ(opts.numBucketsPerPriority, (std::vector<uint32_t>{2, 3, 4}));
+  EXPECT_EQ(opts.getNumBucketsPerPriority(), (std::vector<uint32_t>{2, 3, 4}));
 
   // getNumMaxRequestsForPriority falls back to numMaxRequests
-  opts.numMaxRequests = 10;
+  opts.setNumMaxRequests(10);
   EXPECT_EQ(opts.getNumMaxRequestsForPriority(0), 10);
   EXPECT_EQ(opts.getNumMaxRequestsForPriority(2), 10);
 
@@ -1032,11 +1032,12 @@ TEST(
   auto newOpts = opts.addInternalPriorities();
 
   // Shape should be doubled: {2, 2, 3, 3}
-  EXPECT_EQ(newOpts.numBucketsPerPriority, (std::vector<uint32_t>{2, 2, 3, 3}));
+  EXPECT_EQ(
+      newOpts.getNumBucketsPerPriority(), (std::vector<uint32_t>{2, 2, 3, 3}));
 
   // Per-priority limits should be doubled: {10, 10, 20, 20}
-  ASSERT_EQ(newOpts.numMaxRequestsPerPriority.size(), 4);
+  ASSERT_EQ(newOpts.getNumMaxRequestsPerPriority().size(), 4);
   EXPECT_EQ(
-      newOpts.numMaxRequestsPerPriority,
+      newOpts.getNumMaxRequestsPerPriority(),
       (std::vector<uint32_t>{10, 10, 20, 20}));
 }
