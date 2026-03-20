@@ -33,6 +33,8 @@ exception WhisperException {
 
 // Root service (grandparent) - has getMethodMetadata for sendRequest
 service ExampleRootService {
+  void doNothing();
+
   ResponseStruct sendRequest(1: RequestStruct request) throws (
     1: WhisperException ex,
   );
