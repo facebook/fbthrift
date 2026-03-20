@@ -246,7 +246,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
 
     cdef inline color_impl(self):
         if self.__fbthrift_cached_color is None:
-            self.__fbthrift_cached_color = Color._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).color_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_color = Color._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_module_cbindings.cColor](deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).color_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_color
 
     @property
@@ -438,7 +438,7 @@ cdef class Person(thrift.py3.types.Struct):
         if not deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).favoriteColor_ref().has_value():
             return None
         if self.__fbthrift_cached_favoriteColor is None:
-            self.__fbthrift_cached_favoriteColor = Color._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).favoriteColor_ref().ref_unchecked(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_favoriteColor = Color._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_module_cbindings.cColor](deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).favoriteColor_ref().ref_unchecked(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_favoriteColor
 
     @property

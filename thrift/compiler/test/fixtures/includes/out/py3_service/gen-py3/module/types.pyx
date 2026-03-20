@@ -101,7 +101,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     cdef inline MyIncludedField_impl(self):
         if self.__fbthrift_cached_MyIncludedField is None:
-            self.__fbthrift_cached_MyIncludedField = _includes_types.Included._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).MyIncludedField_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_MyIncludedField = _includes_types.Included._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_includes_cbindings.cIncluded](deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).MyIncludedField_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_MyIncludedField
 
     @property
@@ -110,7 +110,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     cdef inline MyOtherIncludedField_impl(self):
         if self.__fbthrift_cached_MyOtherIncludedField is None:
-            self.__fbthrift_cached_MyOtherIncludedField = _includes_types.Included._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).MyOtherIncludedField_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_MyOtherIncludedField = _includes_types.Included._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_includes_cbindings.cIncluded](deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).MyOtherIncludedField_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_MyOtherIncludedField
 
     @property

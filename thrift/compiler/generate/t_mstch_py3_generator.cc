@@ -1088,9 +1088,25 @@ class t_mstch_py3_generator : public t_whisker_generator {
     });
     def.property("need_cbinding_path?", [this](const t_type& self) {
       // Need import if in a different declaration file, or type originated in a
-      // different Thrift program
+      // different Thrift program.
+      // For non-container custom cpp types (typedefs with @cpp.Type), use
+      // the type's own program rather than the true type's program, because
+      // the ctypedef is generated in the type's (typedef's) program's
+      // cbindings. Container custom types must use get_true_type_program to
+      // preserve consistent type resolution between cbindings.pxd field_ref
+      // declarations and the from_cpp function parameter types.
+      const t_program* type_program;
+      if (!context_->get_cached_type_props(&self).cpp_type().empty() &&
+          !self.get_true_type()->is<t_container>()) {
+        type_program = self.program();
+        if (type_program == nullptr) {
+          type_program = program_;
+        }
+      } else {
+        type_program = get_true_type_program(self);
+      }
       return file_type_ != FileType::CBindingsFile ||
-          get_true_type_program(self) != get_program();
+          type_program != get_program();
     });
     def.property("cppTemplate", [this](const t_type& self) {
       return context_->get_cached_type_props(&self).cpp_template();
