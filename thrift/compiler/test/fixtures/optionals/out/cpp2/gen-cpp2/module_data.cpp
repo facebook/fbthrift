@@ -26,10 +26,10 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 4> TStructDataStora
   4,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::Color>::fields_types = { {
-  TType::T_DOUBLE,
-  TType::T_DOUBLE,
-  TType::T_DOUBLE,
-  TType::T_DOUBLE,
+  apache::thrift::protocol::TType::T_DOUBLE,
+  apache::thrift::protocol::TType::T_DOUBLE,
+  apache::thrift::protocol::TType::T_DOUBLE,
+  apache::thrift::protocol::TType::T_DOUBLE,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 4> TStructDataStorage<::cpp2::Color>::isset_indexes = { {
   0,
@@ -54,11 +54,11 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 5> TStructDataStora
   5,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 5> TStructDataStorage<::cpp2::Vehicle>::fields_types = { {
-  TType::T_STRUCT,
-  TType::T_STRING,
-  TType::T_STRING,
-  TType::T_STRING,
-  TType::T_BOOL,
+  apache::thrift::protocol::TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_BOOL,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 5> TStructDataStorage<::cpp2::Vehicle>::isset_indexes = { {
   0,
@@ -94,16 +94,16 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 10> TStructDataStor
   10,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 10> TStructDataStorage<::cpp2::Person>::fields_types = { {
-  TType::T_I64,
-  TType::T_STRING,
-  TType::T_I16,
-  TType::T_STRING,
-  TType::T_STRUCT,
-  TType::T_SET,
-  TType::T_I64,
-  TType::T_MAP,
-  TType::T_I32,
-  TType::T_LIST,
+  apache::thrift::protocol::TType::T_I64,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_I16,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_SET,
+  apache::thrift::protocol::TType::T_I64,
+  apache::thrift::protocol::TType::T_MAP,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_LIST,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 10> TStructDataStorage<::cpp2::Person>::isset_indexes = { {
   0,

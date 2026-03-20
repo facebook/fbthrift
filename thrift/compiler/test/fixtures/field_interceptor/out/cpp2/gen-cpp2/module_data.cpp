@@ -30,12 +30,12 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 6> TStructDataStora
   6,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 6> TStructDataStorage<::facebook::thrift::test::fixtures::field_interceptor::InterceptedFields>::fields_types = { {
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 6> TStructDataStorage<::facebook::thrift::test::fixtures::field_interceptor::InterceptedFields>::isset_indexes = { {
   0,

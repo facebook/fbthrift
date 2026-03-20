@@ -28,11 +28,11 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 5> TStructDataStora
   5,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 5> TStructDataStorage<::apache::thrift::test::User>::fields_types = { {
-  TType::T_I64,
-  TType::T_STRING,
-  TType::T_STRING,
-  TType::T_STRING,
-  TType::T_STRING,
+  apache::thrift::protocol::TType::T_I64,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 5> TStructDataStorage<::apache::thrift::test::User>::isset_indexes = { {
   0,
@@ -54,9 +54,9 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 3> TStructDataStora
   3,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 3> TStructDataStorage<::apache::thrift::test::ExampleUnion>::fields_types = { {
-  TType::T_STRING,
-  TType::T_I32,
-  TType::T_DOUBLE,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_DOUBLE,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 3> TStructDataStorage<::apache::thrift::test::ExampleUnion>::isset_indexes = { {
   0,

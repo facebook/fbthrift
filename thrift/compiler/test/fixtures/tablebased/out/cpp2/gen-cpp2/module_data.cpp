@@ -28,11 +28,11 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 5> TStructDataStora
   5,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 5> TStructDataStorage<::test::fixtures::tablebased::TrivialTypesStruct>::fields_types = { {
-  TType::T_I32,
-  TType::T_STRING,
-  TType::T_STRING,
-  TType::T_STRING,
-  TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_I32,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 5> TStructDataStorage<::test::fixtures::tablebased::TrivialTypesStruct>::isset_indexes = { {
   0,
@@ -64,14 +64,14 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 8> TStructDataStora
   8,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 8> TStructDataStorage<::test::fixtures::tablebased::ContainerStruct>::fields_types = { {
-  TType::T_LIST,
-  TType::T_LIST,
-  TType::T_LIST,
-  TType::T_LIST,
-  TType::T_LIST,
-  TType::T_SET,
-  TType::T_MAP,
-  TType::T_LIST,
+  apache::thrift::protocol::TType::T_LIST,
+  apache::thrift::protocol::TType::T_LIST,
+  apache::thrift::protocol::TType::T_LIST,
+  apache::thrift::protocol::TType::T_LIST,
+  apache::thrift::protocol::TType::T_LIST,
+  apache::thrift::protocol::TType::T_SET,
+  apache::thrift::protocol::TType::T_MAP,
+  apache::thrift::protocol::TType::T_LIST,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 8> TStructDataStorage<::test::fixtures::tablebased::ContainerStruct>::isset_indexes = { {
   0,
@@ -94,8 +94,8 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 2> TStructDataStora
   2,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 2> TStructDataStorage<::test::fixtures::tablebased::ExampleUnion>::fields_types = { {
-  TType::T_STRUCT,
-  TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_STRUCT,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 2> TStructDataStorage<::test::fixtures::tablebased::ExampleUnion>::isset_indexes = { {
   0,

@@ -26,10 +26,10 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 4> TStructDataStora
   4,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 4> TStructDataStorage<::test::fixtures::python_capi::SerializedStruct>::fields_types = { {
-  TType::T_STRING,
-  TType::T_I32,
-  TType::T_STRING,
-  TType::T_STRING,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 4> TStructDataStorage<::test::fixtures::python_capi::SerializedStruct>::isset_indexes = { {
   0,
@@ -48,8 +48,8 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 2> TStructDataStora
   2,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 2> TStructDataStorage<::test::fixtures::python_capi::SerializedUnion>::fields_types = { {
-  TType::T_STRING,
-  TType::T_I32,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_I32,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 2> TStructDataStorage<::test::fixtures::python_capi::SerializedUnion>::isset_indexes = { {
   0,
@@ -68,9 +68,9 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 3> TStructDataStora
   3,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 3> TStructDataStorage<::test::fixtures::python_capi::SerializedError>::fields_types = { {
-  TType::T_STRING,
-  TType::T_STRING,
-  TType::T_STRING,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 3> TStructDataStorage<::test::fixtures::python_capi::SerializedError>::isset_indexes = { {
   0,
@@ -92,10 +92,10 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 4> TStructDataStora
   4,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 4> TStructDataStorage<::test::fixtures::python_capi::MarshalStruct>::fields_types = { {
-  TType::T_STRING,
-  TType::T_I32,
-  TType::T_STRING,
-  TType::T_STRING,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 4> TStructDataStorage<::test::fixtures::python_capi::MarshalStruct>::isset_indexes = { {
   0,
@@ -114,8 +114,8 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 2> TStructDataStora
   2,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 2> TStructDataStorage<::test::fixtures::python_capi::MarshalUnion>::fields_types = { {
-  TType::T_STRING,
-  TType::T_I32,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_I32,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 2> TStructDataStorage<::test::fixtures::python_capi::MarshalUnion>::isset_indexes = { {
   0,
@@ -134,9 +134,9 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 3> TStructDataStora
   3,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 3> TStructDataStorage<::test::fixtures::python_capi::MarshalError>::fields_types = { {
-  TType::T_STRING,
-  TType::T_STRING,
-  TType::T_STRING,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 3> TStructDataStorage<::test::fixtures::python_capi::MarshalError>::isset_indexes = { {
   0,

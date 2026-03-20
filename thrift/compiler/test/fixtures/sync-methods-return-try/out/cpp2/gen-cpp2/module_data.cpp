@@ -56,7 +56,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::InitialResponse>::fields_types = { {
-  TType::T_STRING,
+  apache::thrift::protocol::TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::cpp2::InitialResponse>::isset_indexes = { {
   0,
@@ -70,7 +70,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::FinalResponse>::fields_types = { {
-  TType::T_STRING,
+  apache::thrift::protocol::TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::cpp2::FinalResponse>::isset_indexes = { {
   0,
@@ -84,7 +84,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::SinkPayload>::fields_types = { {
-  TType::T_STRING,
+  apache::thrift::protocol::TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::cpp2::SinkPayload>::isset_indexes = { {
   0,
@@ -98,7 +98,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::CompatibleWithKeywordSink>::fields_types = { {
-  TType::T_STRING,
+  apache::thrift::protocol::TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::cpp2::CompatibleWithKeywordSink>::isset_indexes = { {
   0,
@@ -112,7 +112,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::InitialException>::fields_types = { {
-  TType::T_STRING,
+  apache::thrift::protocol::TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::cpp2::InitialException>::isset_indexes = { {
   0,
@@ -126,7 +126,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::SinkException1>::fields_types = { {
-  TType::T_STRING,
+  apache::thrift::protocol::TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::cpp2::SinkException1>::isset_indexes = { {
   0,
@@ -140,7 +140,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::SinkException2>::fields_types = { {
-  TType::T_I64,
+  apache::thrift::protocol::TType::T_I64,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::cpp2::SinkException2>::isset_indexes = { {
   0,
@@ -154,7 +154,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::StreamItem>::fields_types = { {
-  TType::T_STRING,
+  apache::thrift::protocol::TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::cpp2::StreamItem>::isset_indexes = { {
   0,

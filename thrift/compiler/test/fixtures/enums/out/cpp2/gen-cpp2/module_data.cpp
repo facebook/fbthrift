@@ -26,10 +26,10 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 4> TStructDataStora
   4,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 4> TStructDataStorage<::test::fixtures::enums::SomeStruct>::fields_types = { {
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_SET,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_SET,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 4> TStructDataStorage<::test::fixtures::enums::SomeStruct>::isset_indexes = { {
   0,
@@ -52,10 +52,10 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 4> TStructDataStora
   6,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 4> TStructDataStorage<::test::fixtures::enums::MyStruct>::fields_types = { {
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 4> TStructDataStorage<::test::fixtures::enums::MyStruct>::isset_indexes = { {
   0,

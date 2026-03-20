@@ -33,7 +33,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::apache::thrift::fixtures::types::decorated_struct>::fields_types = { {
-  TType::T_STRING,
+  apache::thrift::protocol::TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::apache::thrift::fixtures::types::decorated_struct>::isset_indexes = { {
   0,
@@ -61,14 +61,14 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 8> TStructDataStora
   8,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 8> TStructDataStorage<::apache::thrift::fixtures::types::ContainerStruct>::fields_types = { {
-  TType::T_LIST,
-  TType::T_LIST,
-  TType::T_LIST,
-  TType::T_LIST,
-  TType::T_LIST,
-  TType::T_SET,
-  TType::T_MAP,
-  TType::T_MAP,
+  apache::thrift::protocol::TType::T_LIST,
+  apache::thrift::protocol::TType::T_LIST,
+  apache::thrift::protocol::TType::T_LIST,
+  apache::thrift::protocol::TType::T_LIST,
+  apache::thrift::protocol::TType::T_LIST,
+  apache::thrift::protocol::TType::T_SET,
+  apache::thrift::protocol::TType::T_MAP,
+  apache::thrift::protocol::TType::T_MAP,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 8> TStructDataStorage<::apache::thrift::fixtures::types::ContainerStruct>::isset_indexes = { {
   0,
@@ -89,7 +89,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::apache::thrift::fixtures::types::CppTypeStruct>::fields_types = { {
-  TType::T_LIST,
+  apache::thrift::protocol::TType::T_LIST,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::apache::thrift::fixtures::types::CppTypeStruct>::isset_indexes = { {
   0,
@@ -103,7 +103,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::apache::thrift::fixtures::types::VirtualStruct>::fields_types = { {
-  TType::T_I64,
+  apache::thrift::protocol::TType::T_I64,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::apache::thrift::fixtures::types::VirtualStruct>::isset_indexes = { {
   0,
@@ -119,8 +119,8 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 2> TStructDataStora
   2,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 2> TStructDataStorage<::apache::thrift::fixtures::types::MyStructWithForwardRefEnum>::fields_types = { {
-  TType::T_I32,
-  TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 2> TStructDataStorage<::apache::thrift::fixtures::types::MyStructWithForwardRefEnum>::isset_indexes = { {
   0,
@@ -137,8 +137,8 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 2> TStructDataStora
   2,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 2> TStructDataStorage<::apache::thrift::fixtures::types::TrivialNumeric>::fields_types = { {
-  TType::T_I32,
-  TType::T_BOOL,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_BOOL,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 2> TStructDataStorage<::apache::thrift::fixtures::types::TrivialNumeric>::isset_indexes = { {
   0,
@@ -155,8 +155,8 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 2> TStructDataStora
   2,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 2> TStructDataStorage<::apache::thrift::fixtures::types::TrivialNestedWithDefault>::fields_types = { {
-  TType::T_I32,
-  TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_STRUCT,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 2> TStructDataStorage<::apache::thrift::fixtures::types::TrivialNestedWithDefault>::isset_indexes = { {
   0,
@@ -173,8 +173,8 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 2> TStructDataStora
   2,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 2> TStructDataStorage<::apache::thrift::fixtures::types::ComplexString>::fields_types = { {
-  TType::T_STRING,
-  TType::T_MAP,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_MAP,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 2> TStructDataStorage<::apache::thrift::fixtures::types::ComplexString>::isset_indexes = { {
   0,
@@ -191,8 +191,8 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 2> TStructDataStora
   2,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 2> TStructDataStorage<::apache::thrift::fixtures::types::ComplexNestedWithDefault>::fields_types = { {
-  TType::T_STRING,
-  TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_STRUCT,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 2> TStructDataStorage<::apache::thrift::fixtures::types::ComplexNestedWithDefault>::isset_indexes = { {
   0,
@@ -215,11 +215,11 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 5> TStructDataStora
   5,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 5> TStructDataStorage<::apache::thrift::fixtures::types::MinPadding>::fields_types = { {
-  TType::T_BYTE,
-  TType::T_I64,
-  TType::T_I16,
-  TType::T_I32,
-  TType::T_BYTE,
+  apache::thrift::protocol::TType::T_BYTE,
+  apache::thrift::protocol::TType::T_I64,
+  apache::thrift::protocol::TType::T_I16,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_BYTE,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 5> TStructDataStorage<::apache::thrift::fixtures::types::MinPadding>::isset_indexes = { {
   -1,
@@ -245,11 +245,11 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 5> TStructDataStora
   5,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 5> TStructDataStorage<::apache::thrift::fixtures::types::MinPaddingWithCustomType>::fields_types = { {
-  TType::T_BYTE,
-  TType::T_I32,
-  TType::T_I16,
-  TType::T_I64,
-  TType::T_BYTE,
+  apache::thrift::protocol::TType::T_BYTE,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I16,
+  apache::thrift::protocol::TType::T_I64,
+  apache::thrift::protocol::TType::T_BYTE,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 5> TStructDataStorage<::apache::thrift::fixtures::types::MinPaddingWithCustomType>::isset_indexes = { {
   -1,
@@ -273,10 +273,10 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 4> TStructDataStora
   4,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 4> TStructDataStorage<::apache::thrift::fixtures::types::MyStruct>::fields_types = { {
-  TType::T_I64,
-  TType::T_STRING,
-  TType::T_I64,
-  TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_I64,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_I64,
+  apache::thrift::protocol::TType::T_STRUCT,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 4> TStructDataStorage<::apache::thrift::fixtures::types::MyStruct>::isset_indexes = { {
   0,
@@ -303,7 +303,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::apache::thrift::fixtures::types::Renamed>::fields_types = { {
-  TType::T_I64,
+  apache::thrift::protocol::TType::T_I64,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::apache::thrift::fixtures::types::Renamed>::isset_indexes = { {
   0,
@@ -319,8 +319,8 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 2> TStructDataStora
   2,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 2> TStructDataStorage<::apache::thrift::fixtures::types::AnnotatedTypes>::fields_types = { {
-  TType::T_STRING,
-  TType::T_LIST,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_LIST,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 2> TStructDataStorage<::apache::thrift::fixtures::types::AnnotatedTypes>::isset_indexes = { {
   0,
@@ -337,8 +337,8 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 2> TStructDataStora
   2,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 2> TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageRoot>::fields_types = { {
-  TType::T_STRUCT,
-  TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_STRUCT,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 2> TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageRoot>::isset_indexes = { {
   0,
@@ -353,7 +353,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageStruct>::fields_types = { {
-  TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_STRUCT,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageStruct>::isset_indexes = { {
   -1,
@@ -367,7 +367,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageByRef>::fields_types = { {
-  TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_STRUCT,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageByRef>::isset_indexes = { {
   -1,
@@ -381,7 +381,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::apache::thrift::fixtures::types::IncompleteMap>::fields_types = { {
-  TType::T_MAP,
+  apache::thrift::protocol::TType::T_MAP,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::apache::thrift::fixtures::types::IncompleteMap>::isset_indexes = { {
   0,
@@ -405,7 +405,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::apache::thrift::fixtures::types::CompleteMap>::fields_types = { {
-  TType::T_MAP,
+  apache::thrift::protocol::TType::T_MAP,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::apache::thrift::fixtures::types::CompleteMap>::isset_indexes = { {
   0,
@@ -429,7 +429,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::apache::thrift::fixtures::types::IncompleteList>::fields_types = { {
-  TType::T_LIST,
+  apache::thrift::protocol::TType::T_LIST,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::apache::thrift::fixtures::types::IncompleteList>::isset_indexes = { {
   0,
@@ -453,7 +453,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::apache::thrift::fixtures::types::CompleteList>::fields_types = { {
-  TType::T_LIST,
+  apache::thrift::protocol::TType::T_LIST,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::apache::thrift::fixtures::types::CompleteList>::isset_indexes = { {
   0,
@@ -477,7 +477,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::apache::thrift::fixtures::types::AdaptedList>::fields_types = { {
-  TType::T_LIST,
+  apache::thrift::protocol::TType::T_LIST,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::apache::thrift::fixtures::types::AdaptedList>::isset_indexes = { {
   0,
@@ -491,7 +491,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::apache::thrift::fixtures::types::detail::AdaptedListDep>::fields_types = { {
-  TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_STRUCT,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::apache::thrift::fixtures::types::detail::AdaptedListDep>::isset_indexes = { {
   0,
@@ -505,7 +505,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::apache::thrift::fixtures::types::DependentAdaptedList>::fields_types = { {
-  TType::T_LIST,
+  apache::thrift::protocol::TType::T_LIST,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::apache::thrift::fixtures::types::DependentAdaptedList>::isset_indexes = { {
   0,
@@ -519,7 +519,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::apache::thrift::fixtures::types::detail::DependentAdaptedListDep>::fields_types = { {
-  TType::T_I16,
+  apache::thrift::protocol::TType::T_I16,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::apache::thrift::fixtures::types::detail::DependentAdaptedListDep>::isset_indexes = { {
   -1,
@@ -545,13 +545,13 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 7> TStructDataStora
   7,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 7> TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware>::fields_types = { {
-  TType::T_LIST,
-  TType::T_SET,
-  TType::T_MAP,
-  TType::T_STRING,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
+  apache::thrift::protocol::TType::T_LIST,
+  apache::thrift::protocol::TType::T_SET,
+  apache::thrift::protocol::TType::T_MAP,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 7> TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware>::isset_indexes = { {
   0,
@@ -573,8 +573,8 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 2> TStructDataStora
   2,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 2> TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware2>::fields_types = { {
-  TType::T_I32,
-  TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 2> TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware2>::isset_indexes = { {
   0,
@@ -593,9 +593,9 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 3> TStructDataStora
   3,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 3> TStructDataStorage<::apache::thrift::fixtures::types::TypedefStruct>::fields_types = { {
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 3> TStructDataStorage<::apache::thrift::fixtures::types::TypedefStruct>::isset_indexes = { {
   0,
@@ -611,7 +611,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::apache::thrift::fixtures::types::StructWithDoubleUnderscores>::fields_types = { {
-  TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::apache::thrift::fixtures::types::StructWithDoubleUnderscores>::isset_indexes = { {
   0,

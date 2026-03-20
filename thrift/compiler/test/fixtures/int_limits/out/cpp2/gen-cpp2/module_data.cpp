@@ -34,14 +34,14 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 8> TStructDataStora
   8,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 8> TStructDataStorage<::cpp2::Limits>::fields_types = { {
-  TType::T_I64,
-  TType::T_I64,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I16,
-  TType::T_I16,
-  TType::T_BYTE,
-  TType::T_BYTE,
+  apache::thrift::protocol::TType::T_I64,
+  apache::thrift::protocol::TType::T_I64,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I16,
+  apache::thrift::protocol::TType::T_I16,
+  apache::thrift::protocol::TType::T_BYTE,
+  apache::thrift::protocol::TType::T_BYTE,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 8> TStructDataStorage<::cpp2::Limits>::isset_indexes = { {
   0,

@@ -15,9 +15,9 @@ namespace cpp2 {
 namespace module_constants {
 
   /** Glean {"constant": "FOO"} */
-  constexpr char const * const FOO_ = "foo";
+  constexpr const char* const FOO_ = "foo";
   /** Glean {"constant": "FOO"} */
-  constexpr char const * FOO() {
+  constexpr const char* FOO() {
     return FOO_;
   }
 

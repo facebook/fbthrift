@@ -53,7 +53,7 @@ void RefUnion::readNoXfer(Protocol_* iprot) {
     switch (_readState.fieldId) {
       case 1:
       {
-        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING)) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_STRING)) {
           this->field1_ref().emplace();
           auto ptr = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<::apache::thrift::adapt_detail::adapted_field_t<::my::Adapter1, 1, ::std::string, RefUnion>>>();
           ::apache::thrift::op::decode<::apache::thrift::op::get_field_tag<RefUnion, ::apache::thrift::field_id<1>>>(*iprot, *ptr, *this);
@@ -85,7 +85,7 @@ uint32_t RefUnion::serializedSize(Protocol_ const* prot_) const {
   switch(this->getType()) {
     case RefUnion::Type::field1:
     {
-      xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::T_STRING, 1);
+      xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::TType::T_STRING, 1);
       if (value_.field1) {
         xfer += ::apache::thrift::op::serialized_size<false, ::apache::thrift::type::adapted<::my::Adapter1, ::apache::thrift::type::string_t>>(*prot_, *value_.field1);
       }
@@ -107,7 +107,7 @@ uint32_t RefUnion::serializedSizeZC(Protocol_ const* prot_) const {
   switch(this->getType()) {
     case RefUnion::Type::field1:
     {
-      xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::T_STRING, 1);
+      xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::TType::T_STRING, 1);
       if (value_.field1) {
         xfer += ::apache::thrift::op::serialized_size<false, ::apache::thrift::type::adapted<::my::Adapter1, ::apache::thrift::type::string_t>>(*prot_, *value_.field1);
       }
@@ -130,7 +130,7 @@ uint32_t RefUnion::write(Protocol_* prot_) const {
     case RefUnion::Type::field1:
     {
       constexpr int16_t kPrevFieldId = 0;
-      xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 1, kPrevFieldId>(*prot_, "field1", false);
+      xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 1, kPrevFieldId>(*prot_, "field1", false);
       if (value_.field1) {
         xfer += ::apache::thrift::op::encode<::apache::thrift::type::adapted<::my::Adapter1, ::apache::thrift::type::string_t>>(*prot_, *value_.field1);
       }

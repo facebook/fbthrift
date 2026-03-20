@@ -23,7 +23,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::test::namespace_from_package_without_module_name::Foo>::fields_types = { {
-  TType::T_I64,
+  apache::thrift::protocol::TType::T_I64,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::test::namespace_from_package_without_module_name::Foo>::isset_indexes = { {
   0,
