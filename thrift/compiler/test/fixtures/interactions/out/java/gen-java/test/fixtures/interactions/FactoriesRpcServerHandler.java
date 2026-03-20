@@ -172,8 +172,7 @@ oprot.writeI32(_iter0);
 
           reactor.core.publisher.Mono<Void> _delegateResponse =
             _delegate
-              .foo()
-              .doFirst(() -> com.facebook.nifty.core.RequestContexts.setCurrentContext(_payload.getRequestContext()));
+              .foo();
 
           reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _internalResponse =
             _delegateResponse.map(_response -> {
@@ -260,8 +259,7 @@ oprot.writeI32(_iter0);
 
           reactor.core.publisher.Mono<Void> _delegateResponse =
             _delegate
-              .interact(arg)
-              .doFirst(() -> com.facebook.nifty.core.RequestContexts.setCurrentContext(_payload.getRequestContext()));
+              .interact(arg);
 
           reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _internalResponse =
             _delegateResponse.map(_response -> {
@@ -349,8 +347,7 @@ oprot.writeI32(_iter0);
 
           reactor.core.publisher.Mono<Integer> _delegateResponse =
             _delegate
-              .interactFast()
-              .doFirst(() -> com.facebook.nifty.core.RequestContexts.setCurrentContext(_payload.getRequestContext()));
+              .interactFast();
 
           reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _internalResponse =
             _delegateResponse.map(_response -> {
@@ -395,6 +392,8 @@ oprot.writeI32(_iter0);
   public reactor.core.publisher.Flux<com.facebook.thrift.payload.ServerResponsePayload> singleRequestStreamingResponse(com.facebook.thrift.payload.ServerRequestPayload _payload) {
     final String _name = _payload.getRequestRpcMetadata().getName();
     reactor.core.publisher.Flux<com.facebook.thrift.payload.ServerResponsePayload> _retVal = reactor.core.publisher.Flux.defer(() -> {
+    com.facebook.nifty.core.RequestContext _prevRequestContext = com.facebook.nifty.core.RequestContexts.getCurrentContext();
+    com.facebook.nifty.core.RequestContexts.setCurrentContext(_payload.getRequestContext());
     com.facebook.swift.service.ContextChain _chain;
     try {
       String qualifiedMethodName = "Factories." + _name;
@@ -402,7 +401,7 @@ oprot.writeI32(_iter0);
     } catch (Throwable _t) {
       org.apache.thrift.TApplicationException _tApplicationException = new org.apache.thrift.TApplicationException(_t.getMessage());
       com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload = com.facebook.thrift.util.RpcPayloadUtil.fromTApplicationException(_tApplicationException, _payload.getRequestRpcMetadata(), null);
-      return reactor.core.publisher.Flux.just(_serverResponsePayload);
+      return reactor.core.publisher.Flux.just(_serverResponsePayload).doFinally(__ -> com.facebook.nifty.core.RequestContexts.setCurrentContext(_prevRequestContext));
     }
 
     reactor.core.publisher.Flux<com.facebook.thrift.payload.ServerResponsePayload> _result;
@@ -415,16 +414,16 @@ oprot.writeI32(_iter0);
             _chain.preRead();
             org.apache.thrift.TApplicationException _tApplicationException = new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.UNKNOWN_METHOD, "no method found with name " + _name);
             com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload = com.facebook.thrift.util.RpcPayloadUtil.fromTApplicationException(_tApplicationException, _payload.getRequestRpcMetadata(), _chain);
-            return reactor.core.publisher.Flux.just(_serverResponsePayload);
+            return reactor.core.publisher.Flux.just(_serverResponsePayload).doFinally(__ -> com.facebook.nifty.core.RequestContexts.setCurrentContext(_prevRequestContext));
         }
       }
     } catch (org.apache.thrift.TApplicationException _tApplicationException) {
       com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload = com.facebook.thrift.util.RpcPayloadUtil.fromTApplicationException(_tApplicationException, _payload.getRequestRpcMetadata(), _chain);
-      return reactor.core.publisher.Flux.just(_serverResponsePayload);
+      return reactor.core.publisher.Flux.just(_serverResponsePayload).doFinally(__ -> com.facebook.nifty.core.RequestContexts.setCurrentContext(_prevRequestContext));
     } catch (Throwable _t) {
       _result = reactor.core.publisher.Flux.error(_t);
     }
-    return _result;
+    return _result.doFinally(__ -> com.facebook.nifty.core.RequestContexts.setCurrentContext(_prevRequestContext));
     });
     if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
       _retVal = _retVal.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
@@ -436,6 +435,8 @@ oprot.writeI32(_iter0);
   public reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> singleRequestSingleResponse(com.facebook.thrift.payload.ServerRequestPayload _payload) {
     final String _name = _payload.getRequestRpcMetadata().getName();
     reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _retVal = reactor.core.publisher.Mono.defer(() -> {
+    com.facebook.nifty.core.RequestContext _prevRequestContext = com.facebook.nifty.core.RequestContexts.getCurrentContext();
+    com.facebook.nifty.core.RequestContexts.setCurrentContext(_payload.getRequestContext());
     com.facebook.swift.service.ContextChain _chain;
     try {
       String qualifiedMethodName = "Factories." + _name;
@@ -443,7 +444,7 @@ oprot.writeI32(_iter0);
     } catch (Throwable _t) {
       org.apache.thrift.TApplicationException _tApplicationException = new org.apache.thrift.TApplicationException(_t.getMessage());
       com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload = com.facebook.thrift.util.RpcPayloadUtil.fromTApplicationException(_tApplicationException, _payload.getRequestRpcMetadata(), null);
-      return reactor.core.publisher.Mono.just(_serverResponsePayload);
+      return reactor.core.publisher.Mono.just(_serverResponsePayload).doFinally(__ -> com.facebook.nifty.core.RequestContexts.setCurrentContext(_prevRequestContext));
     }
 
     reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _result;
@@ -462,17 +463,17 @@ oprot.writeI32(_iter0);
             _chain.preRead();
             org.apache.thrift.TApplicationException _tApplicationException = new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.UNKNOWN_METHOD, "no method found with name " + _name);
             com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload = com.facebook.thrift.util.RpcPayloadUtil.fromTApplicationException(_tApplicationException, _payload.getRequestRpcMetadata(), _chain);
-            return reactor.core.publisher.Mono.just(_serverResponsePayload);
+            return reactor.core.publisher.Mono.just(_serverResponsePayload).doFinally(__ -> com.facebook.nifty.core.RequestContexts.setCurrentContext(_prevRequestContext));
         }
       }
     } catch (org.apache.thrift.TApplicationException _tApplicationException) {
       com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload = com.facebook.thrift.util.RpcPayloadUtil.fromTApplicationException(_tApplicationException, _payload.getRequestRpcMetadata(), _chain);
-      return reactor.core.publisher.Mono.just(_serverResponsePayload);
+      return reactor.core.publisher.Mono.just(_serverResponsePayload).doFinally(__ -> com.facebook.nifty.core.RequestContexts.setCurrentContext(_prevRequestContext));
     } catch (Throwable _t) {
       _result = reactor.core.publisher.Mono.error(_t);
     }
 
-    return _result;
+    return _result.doFinally(__ -> com.facebook.nifty.core.RequestContexts.setCurrentContext(_prevRequestContext));
     });
 
     if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
@@ -486,12 +487,14 @@ oprot.writeI32(_iter0);
     final String _name = _payload.getRequestRpcMetadata().getName();
 
     reactor.core.publisher.Mono<Void> _retVal = reactor.core.publisher.Mono.defer(() -> {
+    com.facebook.nifty.core.RequestContext _prevRequestContext = com.facebook.nifty.core.RequestContexts.getCurrentContext();
+    com.facebook.nifty.core.RequestContexts.setCurrentContext(_payload.getRequestContext());
     com.facebook.swift.service.ContextChain _chain;
     try {
       String qualifiedMethodName = "Factories." + _name;
       _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, qualifiedMethodName, _payload.getRequestContext());
     } catch (Throwable _t) {
-      return reactor.core.publisher.Mono.error(_t);
+      return reactor.core.publisher.Mono.<Void>error(_t).doFinally(__ -> com.facebook.nifty.core.RequestContexts.setCurrentContext(_prevRequestContext));
     }
 
     reactor.core.publisher.Mono<Void> _result;
@@ -505,7 +508,7 @@ oprot.writeI32(_iter0);
       _result = reactor.core.publisher.Mono.error(_t);
     }
 
-    return _result;
+    return _result.doFinally(__ -> com.facebook.nifty.core.RequestContexts.setCurrentContext(_prevRequestContext));
     });
 
     if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {

@@ -16,6 +16,8 @@
 
 package com.facebook.thrift.server;
 
+import com.facebook.nifty.core.RequestContext;
+import com.facebook.nifty.core.RequestContexts;
 import com.facebook.swift.service.ThriftEventHandler;
 import com.facebook.swift.service.ThriftServerConfig;
 import com.facebook.thrift.client.RpcClientFactory;
@@ -125,6 +127,109 @@ public class TestThriftEventHandlerCallback {
         transportFactory.createServerTransport(serverHandler).block();
 
     runPingTestWithDoneCallback(testDoneThriftEventHandler, rSocketTransport, false);
+  }
+
+  @Test
+  public void testLegacySingleRequestSingleResponse_RequestContextAvailableInCallbacks() {
+    RequestContextAssertingEventHandler handler = new RequestContextAssertingEventHandler();
+    RpcServerHandler serverHandler =
+        new PingServiceRpcServerHandler(new BlockingPingService(), ImmutableList.of(handler));
+
+    LegacyServerTransportFactory transportFactory =
+        new LegacyServerTransportFactory(new ThriftServerConfig().setEnableJdkSsl(false));
+    LegacyServerTransport transport = transportFactory.createServerTransport(serverHandler).block();
+
+    InetSocketAddress address = (InetSocketAddress) transport.getAddress();
+    RpcClientFactory factory =
+        RpcClientFactory.builder()
+            .setDisableLoadBalancing(true)
+            .setDisableRSocket(true)
+            .setThriftClientConfig(
+                new ThriftClientConfig()
+                    .setDisableSSL(true)
+                    .setRequestTimeout(Duration.succinctDuration(1, TimeUnit.DAYS)))
+            .build();
+
+    PingService client =
+        PingService.clientBuilder().setProtocolId(ProtocolId.BINARY).build(factory, address);
+
+    // ping() is blocking — by the time it returns, all server-side callbacks have completed
+    client.ping(PingRequest.defaultInstance());
+
+    Assertions.assertTrue(
+        handler.contextAvailableInGetContext, "RequestContext should be available in getContext()");
+    Assertions.assertTrue(
+        handler.contextAvailableInPreRead, "RequestContext should be available in preRead()");
+    Assertions.assertTrue(
+        handler.contextAvailableInPostRead, "RequestContext should be available in postRead()");
+    Assertions.assertTrue(
+        handler.contextAvailableInPreWrite, "RequestContext should be available in preWrite()");
+  }
+
+  @Test
+  public void testRSocketSingleRequestSingleResponse_RequestContextAvailableInCallbacks() {
+    RequestContextAssertingEventHandler handler = new RequestContextAssertingEventHandler();
+    RpcServerHandler serverHandler =
+        new PingServiceRpcServerHandler(new BlockingPingService(), ImmutableList.of(handler));
+
+    RSocketServerTransportFactory transportFactory =
+        new RSocketServerTransportFactory(new ThriftServerConfig().setEnableJdkSsl(false));
+    RSocketServerTransport transport =
+        transportFactory.createServerTransport(serverHandler).block();
+
+    InetSocketAddress address = (InetSocketAddress) transport.getAddress();
+    RpcClientFactory factory =
+        RpcClientFactory.builder()
+            .setDisableLoadBalancing(true)
+            .setDisableRSocket(false)
+            .setThriftClientConfig(
+                new ThriftClientConfig()
+                    .setDisableSSL(true)
+                    .setRequestTimeout(Duration.succinctDuration(1, TimeUnit.DAYS)))
+            .build();
+
+    PingService client =
+        PingService.clientBuilder().setProtocolId(ProtocolId.BINARY).build(factory, address);
+
+    // ping() is blocking — by the time it returns, all server-side callbacks have completed
+    client.ping(PingRequest.defaultInstance());
+
+    Assertions.assertTrue(
+        handler.contextAvailableInGetContext, "RequestContext should be available in getContext()");
+    Assertions.assertTrue(
+        handler.contextAvailableInPreRead, "RequestContext should be available in preRead()");
+    Assertions.assertTrue(
+        handler.contextAvailableInPostRead, "RequestContext should be available in postRead()");
+    Assertions.assertTrue(
+        handler.contextAvailableInPreWrite, "RequestContext should be available in preWrite()");
+  }
+
+  private static class RequestContextAssertingEventHandler extends ThriftEventHandler {
+    volatile boolean contextAvailableInGetContext;
+    volatile boolean contextAvailableInPreRead;
+    volatile boolean contextAvailableInPostRead;
+    volatile boolean contextAvailableInPreWrite;
+
+    @Override
+    public Object getContext(String methodName, RequestContext requestContext) {
+      contextAvailableInGetContext = RequestContexts.getCurrentContext() != null;
+      return null;
+    }
+
+    @Override
+    public void preRead(Object context, String methodName) {
+      contextAvailableInPreRead = RequestContexts.getCurrentContext() != null;
+    }
+
+    @Override
+    public void postRead(Object context, String methodName, Object[] args) {
+      contextAvailableInPostRead = RequestContexts.getCurrentContext() != null;
+    }
+
+    @Override
+    public void preWrite(Object context, String methodName, Object result) {
+      contextAvailableInPreWrite = RequestContexts.getCurrentContext() != null;
+    }
   }
 
   private static class TestDoneThriftEventHandler extends ThriftEventHandler {
