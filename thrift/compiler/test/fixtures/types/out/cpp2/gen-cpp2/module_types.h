@@ -864,9 +864,9 @@ class ContainerStruct final  {
     ::apache::thrift::type::cpp_type<std::deque<::std::int32_t>, ::apache::thrift::type::list<::apache::thrift::type::i32_t>>,
     ::apache::thrift::type::cpp_type<folly::fbvector<::std::int32_t>, ::apache::thrift::type::list<::apache::thrift::type::i32_t>>,
     ::apache::thrift::type::cpp_type<folly::small_vector<::std::int32_t>, ::apache::thrift::type::list<::apache::thrift::type::i32_t>>,
-    ::apache::thrift::type::cpp_type<::apache::thrift::fixtures::types::set_i32_7194, ::apache::thrift::type::set<::apache::thrift::type::i32_t>>,
+    ::apache::thrift::type::cpp_type<folly::sorted_vector_set<::std::int32_t>, ::apache::thrift::type::set<::apache::thrift::type::i32_t>>,
     ::apache::thrift::type::cpp_type<folly::sorted_vector_map<::std::int32_t, ::std::string>, ::apache::thrift::type::map<::apache::thrift::type::i32_t, ::apache::thrift::type::string_t>>,
-    ::apache::thrift::type::cpp_type<::apache::thrift::fixtures::types::SomeMap, ::apache::thrift::type::map<::apache::thrift::type::i32_t, ::apache::thrift::type::string_t>>
+    ::apache::thrift::type::cpp_type<std::unordered_map<::std::int32_t, ::std::string>, ::apache::thrift::type::map<::apache::thrift::type::i32_t, ::apache::thrift::type::string_t>>
   >;
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -3729,7 +3729,7 @@ class AnnotatedTypes final  {
 
   using __fbthrift_reflection_type_tags = folly::tag_t<
     ::apache::thrift::type::binary_t,
-    ::apache::thrift::type::list<::apache::thrift::type::cpp_type<::apache::thrift::fixtures::types::SomeMap, ::apache::thrift::type::map<::apache::thrift::type::i32_t, ::apache::thrift::type::string_t>>>
+    ::apache::thrift::type::list<::apache::thrift::type::cpp_type<std::unordered_map<::std::int32_t, ::std::string>, ::apache::thrift::type::map<::apache::thrift::type::i32_t, ::apache::thrift::type::string_t>>>
   >;
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -6452,7 +6452,7 @@ class TypedefStruct final  {
   using __fbthrift_reflection_type_tags = folly::tag_t<
     ::apache::thrift::type::i32_t,
     ::apache::thrift::type::i32_t,
-    ::apache::thrift::type::cpp_type<::apache::thrift::fixtures::types::UintTypedef, ::apache::thrift::type::i32_t>
+    ::apache::thrift::type::cpp_type<std::uint32_t, ::apache::thrift::type::i32_t>
   >;
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;

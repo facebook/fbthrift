@@ -261,46 +261,6 @@ cdef extern from * nogil:
         bint empty()
 
 cdef extern from * nogil:
-    cdef cppclass folly_sorted_vector_map "folly::sorted_vector_map"[T, U]:
-        ctypedef T key_type
-        ctypedef U mapped_type
-        ctypedef size_t size_type
-
-        cppclass iterator:
-            cpair[T, U]& operator*()
-            iterator operator++()
-            bint operator==(iterator)
-            bint operator!=(iterator)
-        cppclass reverse_iterator:
-            cpair[T, U]& operator*()
-            iterator operator++()
-            bint operator==(reverse_iterator)
-            bint operator!=(reverse_iterator)
-        cppclass const_iterator(iterator):
-            pass
-        cppclass const_reverse_iterator(reverse_iterator):
-            pass
-
-        folly_sorted_vector_map() except +
-        folly_sorted_vector_map(folly_sorted_vector_map&) except +
-
-        U& operator[](T&)
-        iterator find(const T&)
-        const_iterator const_find "find"(const T&)
-        size_type count(const T&)
-        size_type size()
-        iterator begin()
-        const_iterator const_begin "begin"()
-        iterator end()
-        const_iterator const_end "end"()
-        reverse_iterator rbegin()
-        const_reverse_iterator const_rbegin "rbegin"()
-        reverse_iterator rend()
-        const_reverse_iterator const_rend "rend"()
-        void clear()
-        bint empty()
-
-cdef extern from * nogil:
     cdef cppclass std_unordered_map "std::unordered_map"[T, U]:
         ctypedef T key_type
         ctypedef U mapped_type
@@ -451,8 +411,6 @@ cdef extern from * nogil:
         void clear()
         bint empty()
 
-cdef extern from *:
-    ctypedef cint32_t std_uint32_t "std::uint32_t"
 
 cdef extern from "thrift/lib/cpp2/gen/module_metadata_h.h" namespace "apache::thrift::detail::md":
     cdef cppclass EnumMetadata[T]:
@@ -516,7 +474,7 @@ cdef extern from "thrift/compiler/test/fixtures/types/gen-cpp2/module_types_cust
         __field_ref[folly_fbvector[cint32_t]] fieldD_ref "fieldD_ref" ()
         __field_ref[folly_small_vector[cint32_t]] fieldE_ref "fieldE_ref" ()
         __field_ref[folly_sorted_vector_set[cint32_t]] fieldF_ref "fieldF_ref" ()
-        __field_ref[folly_sorted_vector_map[cint32_t,string]] fieldG_ref "fieldG_ref" ()
+        __field_ref[cmap[cint32_t,string]] fieldG_ref "fieldG_ref" ()
         __field_ref[std_unordered_map[cint32_t,string]] fieldH_ref "fieldH_ref" ()
 
 
@@ -875,7 +833,7 @@ cdef extern from "thrift/compiler/test/fixtures/types/gen-cpp2/module_types_cust
         bint operator>=(cTypedefStruct&)
         __field_ref[cint32_t] i32_field_ref "i32_field_ref" ()
         __field_ref[cint32_t] IntTypedef_field_ref "IntTypedef_field_ref" ()
-        __field_ref[std_uint32_t] UintTypedef_field_ref "UintTypedef_field_ref" ()
+        __field_ref[cint32_t] UintTypedef_field_ref "UintTypedef_field_ref" ()
 
 
     cdef cppclass cStructWithDoubleUnderscores "::apache::thrift::fixtures::types::StructWithDoubleUnderscores":

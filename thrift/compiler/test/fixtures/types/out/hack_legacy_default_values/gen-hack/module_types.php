@@ -5290,7 +5290,16 @@ class TypedefStruct implements \IThriftSyncStruct, \IThriftStructMetadata {
                               "name" => "module.IntTypedef",
                               "underlyingType" => \tmeta_ThriftType::fromShape(
                                 shape(
-                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
+                                    shape(
+                                      "name" => "module.IntTypedef",
+                                      "underlyingType" => \tmeta_ThriftType::fromShape(
+                                        shape(
+                                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                        )
+                                      ),
+                                    )
+                                  ),
                                 )
                               ),
                             )

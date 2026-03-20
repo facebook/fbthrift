@@ -57,11 +57,7 @@ enum class enum_underlying_type {
 };
 
 const std::string& get_cpp_template(const t_type* type) {
-  if (const auto* val = cpp_name_resolver::find_template(*type)) {
-    return *val;
-  }
-  static const std::string empty;
-  return empty;
+  return type->get_unstructured_annotation({"cpp.template", "cpp2.template"});
 }
 
 bool is_complex_return(const t_type* type) {

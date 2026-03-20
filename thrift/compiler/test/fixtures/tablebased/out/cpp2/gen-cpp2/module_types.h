@@ -195,7 +195,7 @@ class TrivialTypesStruct final  {
     ::apache::thrift::type::i32_t,
     ::apache::thrift::type::string_t,
     ::apache::thrift::type::binary_t,
-    ::apache::thrift::type::cpp_type<::test::fixtures::tablebased::IOBufPtr, ::apache::thrift::type::binary_t>,
+    ::apache::thrift::type::cpp_type<std::unique_ptr<folly::IOBuf>, ::apache::thrift::type::binary_t>,
     ::apache::thrift::type::enum_t<::test::fixtures::tablebased::ExampleEnum>
   >;
   void __fbthrift_clear();

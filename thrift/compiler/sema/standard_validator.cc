@@ -1825,16 +1825,6 @@ void validate_custom_cpp_type_annotations(
       {"cpp.type", "cpp2.type", "cpp.template", "cpp2.template"});
   const bool hasStructuredCppType = node.has_structured_annotation(kCppTypeUri);
 
-  // For user-defined typedefs, unstructured cpp.type/cpp.template is not
-  // supported — only structured @cpp.Type is allowed.
-  if (auto t = dynamic_cast<const t_typedef*>(&node);
-      t && t->typedef_kind() == t_typedef::kind::defined && hasCppType) {
-    ctx.warning(
-        "Unstructured annotation cpp.type/cpp.template on typedef `{}` is "
-        "ignored. Use @cpp.Type instead.",
-        node.name());
-  }
-
   ctx.check(
       !(hasCppType && hasAdapter),
       "Definition `{}` cannot have both cpp.type/cpp.template and @cpp.Adapter annotations",
@@ -1859,6 +1849,11 @@ void validate_custom_cpp_type_annotations(
   bool hasUnnamedCppType = false;
   if (auto f = dynamic_cast<const t_field*>(&node)) {
     if (has_real_annotation(*f)) {
+      hasUnnamedCppType = true;
+    }
+  } else if (auto t = dynamic_cast<const t_typedef*>(&node)) {
+    if (t->typedef_kind() == t_typedef::kind::defined &&
+        has_real_annotation(*t)) {
       hasUnnamedCppType = true;
     }
   }

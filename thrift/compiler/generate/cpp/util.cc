@@ -129,24 +129,6 @@ bool container_supports_incomplete_params(const t_type& type) {
       return true;
     }
   }
-  // Also check structured @cpp.Type for template.
-  if (auto* annot = t_typedef::get_first_structured_annotation_or_null(
-          &type, kCppTypeUri)) {
-    if (auto* tmpl =
-            annot->get_value_from_structured_annotation_or_null("template")) {
-      if (template_exceptions.count(tmpl->get_string())) {
-        return true;
-      }
-    }
-    if (auto* name =
-            annot->get_value_from_structured_annotation_or_null("name")) {
-      auto cpp_template =
-          name->get_string().substr(0, name->get_string().find('<'));
-      if (template_exceptions.count(cpp_template)) {
-        return true;
-      }
-    }
-  }
   {
     auto cpp_type = t_typedef::get_first_unstructured_annotation_or_null(
         &type,
@@ -204,36 +186,7 @@ gen_dependency_graph(
           } else if (const auto* typedf = type->try_as<t_typedef>()) {
             // Transitively depend on true type if necessary, since typedefs
             // generally don't depend on their underlying types.
-            //
-            // When a typedef has @cpp.Type (structured annotation) and its
-            // true type is a container, check
-            // container_supports_incomplete_params on the typedef (which has
-            // the annotation) rather than the container (which no longer has it
-            // after removing annotation lowering). This ensures element types
-            // are added as dependencies when the container template requires
-            // complete types.
-            if (typedf->typedef_kind() == t_typedef::kind::defined &&
-                include_structured_types &&
-                typedf->find_structured_annotation_or_null(kCppTypeUri) !=
-                    nullptr) {
-              const auto* true_type = typedf->get_true_type();
-              if (true_type->try_as<t_container>() != nullptr &&
-                  !container_supports_incomplete_params(*typedf)) {
-                if (const auto* inner_map = true_type->try_as<t_map>()) {
-                  add_dependency(inner_map->key_type().get_type(), true);
-                  add_dependency(inner_map->val_type().get_type(), true);
-                } else if (const auto* inner_set = true_type->try_as<t_set>()) {
-                  add_dependency(inner_set->elem_type().get_type(), true);
-                } else if (const auto* list_t = true_type->try_as<t_list>()) {
-                  add_dependency(list_t->elem_type().get_type(), true);
-                }
-              } else {
-                add_dependency(
-                    typedf->get_true_type(), include_structured_types);
-              }
-            } else {
-              add_dependency(typedf->get_true_type(), include_structured_types);
-            }
+            add_dependency(typedf->get_true_type(), include_structured_types);
           } else if (!(type->is<t_structured>() &&
                        (include_structured_types ||
                         has_dependent_adapter(*type)))) {
@@ -254,8 +207,7 @@ gen_dependency_graph(
       // typedef or struct has an adapter annotation without adaptedType
       // specified.
       const auto* type = &*typedf->type();
-      bool include_structured = has_dependent_adapter(*typedf);
-      add_dependency(type, include_structured);
+      add_dependency(type, has_dependent_adapter(*typedf));
     } else if (auto* strct = dynamic_cast<t_structured const*>(obj)) {
       // The adjacency list of a struct is the structs and typedefs named in its
       // fields.
@@ -286,23 +238,9 @@ std::string_view get_type(const t_type* type) {
 
 bool is_binary_iobuf_unique_ptr(const t_type* type) {
   auto const* resolved_typedef = type->get_true_type();
-  if (resolved_typedef == nullptr || !resolved_typedef->is_binary()) {
-    return false;
-  }
-  // Check for cpp.type on the true type (legacy unstructured annotations)
-  // or on any typedef in the chain (structured @cpp.Type).
-  auto type_str = get_type(resolved_typedef);
-  if (type_str.empty()) {
-    if (auto* annot = t_typedef::get_first_structured_annotation_or_null(
-            type, kCppTypeUri)) {
-      if (auto* name =
-              annot->get_value_from_structured_annotation_or_null("name")) {
-        type_str = name->get_string();
-      }
-    }
-  }
-  return contains(type_str, "std::unique_ptr") &&
-      contains(type_str, "folly::IOBuf");
+  return resolved_typedef != nullptr && resolved_typedef->is_binary() &&
+      contains(get_type(resolved_typedef), "std::unique_ptr") &&
+      contains(get_type(resolved_typedef), "folly::IOBuf");
 }
 
 bool field_transitively_refers_to_unique(const t_field* field) {
@@ -322,10 +260,9 @@ bool field_transitively_refers_to_unique(const t_field* field) {
   std::queue<const t_type*> queue;
   queue.push(field->type().get_type());
   while (!queue.empty()) {
-    auto orig_type = queue.front();
-    auto type = orig_type->get_true_type();
+    auto type = queue.front()->get_true_type();
     queue.pop();
-    if (cpp2::is_binary_iobuf_unique_ptr(orig_type)) {
+    if (cpp2::is_binary_iobuf_unique_ptr(type)) {
       return true;
     }
     if (const t_list* list = type->try_as<t_list>()) {

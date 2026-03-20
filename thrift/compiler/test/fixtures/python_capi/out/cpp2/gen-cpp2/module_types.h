@@ -1825,8 +1825,8 @@ class PrimitiveStruct final  {
     ::apache::thrift::type::double_t,
     ::apache::thrift::type::string_t,
     ::apache::thrift::type::binary_t,
-    ::apache::thrift::type::cpp_type<::test::fixtures::python_capi::IOBuf, ::apache::thrift::type::binary_t>,
-    ::apache::thrift::type::cpp_type<::test::fixtures::python_capi::IOBufPtr, ::apache::thrift::type::binary_t>,
+    ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>,
+    ::apache::thrift::type::cpp_type<std::unique_ptr<folly::IOBuf>, ::apache::thrift::type::binary_t>,
     ::apache::thrift::type::struct_t<::test::fixtures::python_capi::MyStruct>,
     ::apache::thrift::type::struct_t<::test::fixtures::python_capi::VapidStruct>,
     ::apache::thrift::type::cpp_type<folly::fbstring, ::apache::thrift::type::binary_t>,
@@ -3005,7 +3005,7 @@ class ListStruct final  {
     ::apache::thrift::type::list<::apache::thrift::type::list<::apache::thrift::type::double_t>>,
     ::apache::thrift::type::cpp_type<folly::small_vector<folly::small_vector<uint8_t>>, ::apache::thrift::type::list<::apache::thrift::type::list<::apache::thrift::type::byte_t>>>,
     ::apache::thrift::type::cpp_type<folly::fbvector<folly::fbvector<folly::fbvector<uint8_t>>>, ::apache::thrift::type::list<::apache::thrift::type::list<::apache::thrift::type::list<::apache::thrift::type::byte_t>>>>,
-    ::apache::thrift::type::list<::apache::thrift::type::cpp_type<::test::fixtures::python_capi::IOBufPtr, ::apache::thrift::type::binary_t>>
+    ::apache::thrift::type::list<::apache::thrift::type::cpp_type<std::unique_ptr<folly::IOBuf>, ::apache::thrift::type::binary_t>>
   >;
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -4041,8 +4041,8 @@ class MapStruct final  {
     ::apache::thrift::type::list<::apache::thrift::type::map<::apache::thrift::type::i32_t, ::apache::thrift::type::i64_t>>,
     ::apache::thrift::type::map<::apache::thrift::type::i32_t, ::apache::thrift::type::list<::apache::thrift::type::i64_t>>,
     ::apache::thrift::type::cpp_type<folly::F14FastMap<int, folly::fbvector<double>>, ::apache::thrift::type::map<::apache::thrift::type::i32_t, ::apache::thrift::type::list<::apache::thrift::type::double_t>>>,
-    ::apache::thrift::type::map<::apache::thrift::type::binary_t, ::apache::thrift::type::cpp_type<::test::fixtures::python_capi::IOBufPtr, ::apache::thrift::type::binary_t>>,
-    ::apache::thrift::type::map<::apache::thrift::type::cpp_type<::test::fixtures::python_capi::uint64, ::apache::thrift::type::i64_t>, ::apache::thrift::type::list<::apache::thrift::type::cpp_type<::test::fixtures::python_capi::uint64, ::apache::thrift::type::i64_t>>>
+    ::apache::thrift::type::map<::apache::thrift::type::binary_t, ::apache::thrift::type::cpp_type<std::unique_ptr<folly::IOBuf>, ::apache::thrift::type::binary_t>>,
+    ::apache::thrift::type::map<::apache::thrift::type::cpp_type<uint64_t, ::apache::thrift::type::i64_t>, ::apache::thrift::type::list<::apache::thrift::type::cpp_type<uint64_t, ::apache::thrift::type::i64_t>>>
   >;
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -5962,9 +5962,9 @@ class SomeBinary final  {
   >;
 
   using __fbthrift_reflection_type_tags = folly::tag_t<
-    ::apache::thrift::type::cpp_type<::test::fixtures::python_capi::IOBuf, ::apache::thrift::type::binary_t>,
-    ::apache::thrift::type::cpp_type<::test::fixtures::python_capi::IOBufPtr, ::apache::thrift::type::binary_t>,
-    ::apache::thrift::type::cpp_type<::test::fixtures::python_capi::IOBuf, ::apache::thrift::type::binary_t>
+    ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>,
+    ::apache::thrift::type::cpp_type<std::unique_ptr<folly::IOBuf>, ::apache::thrift::type::binary_t>,
+    ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>
   >;
   void __fbthrift_clear();
   void __fbthrift_destruct();

@@ -2863,8 +2863,8 @@ void ComplexContainerStruct::__fbthrift_clear() {
 }
 
 bool ComplexContainerStruct::__fbthrift_is_empty() const {
-  return !(!::apache::thrift::op::isEmpty<::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(this->__fbthrift_field_map_of_iobufs)) &&
- !(!::apache::thrift::op::isEmpty<::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBufPtr, ::apache::thrift::type::binary_t>>>(this->__fbthrift_field_map_of_iobuf_ptrs));
+  return !(!::apache::thrift::op::isEmpty<::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(this->__fbthrift_field_map_of_iobufs)) &&
+ !(!::apache::thrift::op::isEmpty<::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::cpp_type<std::unique_ptr<folly::IOBuf>, ::apache::thrift::type::binary_t>>>(this->__fbthrift_field_map_of_iobuf_ptrs));
 }
 
 bool ComplexContainerStruct::operator==([[maybe_unused]] const ComplexContainerStruct& rhs) const {

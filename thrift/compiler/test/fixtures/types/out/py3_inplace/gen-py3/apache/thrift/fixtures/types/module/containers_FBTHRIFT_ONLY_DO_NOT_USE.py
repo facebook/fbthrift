@@ -14,7 +14,7 @@ from apache.thrift.fixtures.types.module.types_inplace_FBTHRIFT_ONLY_DO_NOT_USE 
     folly_fbvector__List__i32,
     folly_small_vector__List__i32,
     folly_sorted_vector_set__Set__i32,
-    folly_sorted_vector_map__Map__i32_string,
+    Map__i32_string,
     std_list_int32_t__List__i32,
     Map__string_i32,
     List__std_unordered_map__Map__i32_string,

@@ -28,21 +28,7 @@ bool is_type_iobuf(std::string_view name) {
 }
 
 bool is_type_iobuf(const t_type* type) {
-  // Check unstructured annotations on the type itself.
-  if (is_type_iobuf(cpp2::get_type(type))) {
-    return true;
-  }
-  // Walk typedef chain for structured @cpp.Type{name} annotation, since
-  // without annotation lowering the annotation stays on the typedef
-  // rather than being propagated to the true type.
-  if (auto* annot = t_typedef::get_first_structured_annotation_or_null(
-          type, kCppTypeUri)) {
-    if (auto* name =
-            annot->get_value_from_structured_annotation_or_null("name")) {
-      return is_type_iobuf(name->get_string());
-    }
-  }
-  return false;
+  return is_type_iobuf(cpp2::get_type(type));
 }
 
 bool is_patch_program(const t_program* prog) {

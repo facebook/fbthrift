@@ -217,9 +217,9 @@ class TemplateLists final  {
   using __fbthrift_reflection_type_tags = folly::tag_t<
     ::apache::thrift::type::cpp_type<std::vector<::std::string>, ::apache::thrift::type::list<::apache::thrift::type::string_t>>,
     ::apache::thrift::type::cpp_type<std::deque<::std::string>, ::apache::thrift::type::list<::apache::thrift::type::binary_t>>,
-    ::apache::thrift::type::cpp_type<::test::fixtures::python_capi::small_vector_iobuf, ::apache::thrift::type::list<::apache::thrift::type::cpp_type<::test::fixtures::python_capi::IOBuf, ::apache::thrift::type::binary_t>>>,
-    ::apache::thrift::type::cpp_type<folly::small_vector<::test::fixtures::python_capi::fbvector_string>, ::apache::thrift::type::list<::apache::thrift::type::cpp_type<::test::fixtures::python_capi::fbvector_string, ::apache::thrift::type::list<::apache::thrift::type::string_t>>>>,
-    ::apache::thrift::type::cpp_type<folly::fbvector<::test::fixtures::python_capi::fbvector_fbvector_string>, ::apache::thrift::type::list<::apache::thrift::type::cpp_type<::test::fixtures::python_capi::fbvector_fbvector_string, ::apache::thrift::type::list<::apache::thrift::type::cpp_type<::test::fixtures::python_capi::fbvector_string, ::apache::thrift::type::list<::apache::thrift::type::string_t>>>>>>
+    ::apache::thrift::type::cpp_type<folly::small_vector<::test::fixtures::python_capi::IOBuf>, ::apache::thrift::type::list<::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>,
+    ::apache::thrift::type::cpp_type<folly::small_vector<::test::fixtures::python_capi::fbvector_string>, ::apache::thrift::type::list<::apache::thrift::type::cpp_type<folly::fbvector<::std::string>, ::apache::thrift::type::list<::apache::thrift::type::string_t>>>>,
+    ::apache::thrift::type::cpp_type<folly::fbvector<::test::fixtures::python_capi::fbvector_fbvector_string>, ::apache::thrift::type::list<::apache::thrift::type::cpp_type<folly::fbvector<::test::fixtures::python_capi::fbvector_string>, ::apache::thrift::type::list<::apache::thrift::type::cpp_type<folly::fbvector<::std::string>, ::apache::thrift::type::list<::apache::thrift::type::string_t>>>>>>
   >;
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -1875,7 +1875,7 @@ class IndirectionB final  {
   >;
 
   using __fbthrift_reflection_type_tags = folly::tag_t<
-    ::apache::thrift::type::cpp_type<::test::fixtures::python_capi::VecOfWrapped, ::apache::thrift::type::list<::apache::thrift::type::struct_t<::test::fixtures::python_capi::TWrapped>>>
+    ::apache::thrift::type::cpp_type<std::vector<::test::fixtures::python_capi::TWrapped>, ::apache::thrift::type::list<::apache::thrift::type::struct_t<::test::fixtures::python_capi::TWrapped>>>
   >;
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;

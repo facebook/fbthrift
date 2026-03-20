@@ -322,7 +322,7 @@ class YourStruct final  {
     ::apache::thrift::type::string_t,
     ::apache::thrift::type::string_t,
     ::apache::thrift::type::enum_t<::cpp2::YourEnum>,
-    ::apache::thrift::type::cpp_type<::cpp2::list_string_6884, ::apache::thrift::type::list<::apache::thrift::type::string_t>>,
+    ::apache::thrift::type::cpp_type<std::deque<std::string>, ::apache::thrift::type::list<::apache::thrift::type::string_t>>,
     ::apache::thrift::type::adapted<::StaticCast, ::apache::thrift::type::union_t<::cpp2::detail::YourUnion>>
   >;
   void __fbthrift_clear();

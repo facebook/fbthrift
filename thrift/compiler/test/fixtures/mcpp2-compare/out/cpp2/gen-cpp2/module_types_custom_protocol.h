@@ -604,7 +604,7 @@ _readField_MyMapEnumAndInt:
   }
 _readField_MyCustomField:
   {
-    ::apache::thrift::op::decode<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(*iprot, this->__fbthrift_field_MyCustomField);
+    ::apache::thrift::op::decode<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(*iprot, this->__fbthrift_field_MyCustomField);
   }
  this->__isset.set(8, true);
 
@@ -617,7 +617,7 @@ _readField_MyCustomField:
   }
 _readField_MyOptCustomField:
   {
-    ::apache::thrift::op::decode<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(*iprot, this->__fbthrift_field_MyOptCustomField);
+    ::apache::thrift::op::decode<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(*iprot, this->__fbthrift_field_MyOptCustomField);
   }
  this->__isset.set(9, true);
 
@@ -785,13 +785,13 @@ uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("MyMapEnumAndInt", apache::thrift::protocol::T_MAP, 9);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::string>, ::std::map<::some::valid::ns::MyEnumA, ::std::string>>::serializedSize<false>(*prot_, this->__fbthrift_field_MyMapEnumAndInt);
   }
-  if (!::apache::thrift::op::equal<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(this->__fbthrift_field_MyCustomField, ::some::valid::ns::CustomProtocolType())) {
+  if (!::apache::thrift::op::equal<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(this->__fbthrift_field_MyCustomField, ::some::valid::ns::CustomProtocolType())) {
     xfer += prot_->serializedFieldSize("MyCustomField", apache::thrift::protocol::T_STRING, 10);
-    xfer += ::apache::thrift::op::serialized_size<false, ::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_MyCustomField);
+    xfer += ::apache::thrift::op::serialized_size<false, ::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_MyCustomField);
   }
   if (this->__isset.get(9)) {
     xfer += prot_->serializedFieldSize("MyOptCustomField", apache::thrift::protocol::T_STRING, 11);
-    xfer += ::apache::thrift::op::serialized_size<false, ::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_MyOptCustomField);
+    xfer += ::apache::thrift::op::serialized_size<false, ::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_MyOptCustomField);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -837,13 +837,13 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("MyMapEnumAndInt", apache::thrift::protocol::T_MAP, 9);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::string>, ::std::map<::some::valid::ns::MyEnumA, ::std::string>>::serializedSize<false>(*prot_, this->__fbthrift_field_MyMapEnumAndInt);
   }
-  if (!::apache::thrift::op::equal<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(this->__fbthrift_field_MyCustomField, ::some::valid::ns::CustomProtocolType())) {
+  if (!::apache::thrift::op::equal<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(this->__fbthrift_field_MyCustomField, ::some::valid::ns::CustomProtocolType())) {
     xfer += prot_->serializedFieldSize("MyCustomField", apache::thrift::protocol::T_STRING, 10);
-    xfer += ::apache::thrift::op::serialized_size<true, ::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_MyCustomField);
+    xfer += ::apache::thrift::op::serialized_size<true, ::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_MyCustomField);
   }
   if (this->__isset.get(9)) {
     xfer += prot_->serializedFieldSize("MyOptCustomField", apache::thrift::protocol::T_STRING, 11);
-    xfer += ::apache::thrift::op::serialized_size<true, ::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_MyOptCustomField);
+    xfer += ::apache::thrift::op::serialized_size<true, ::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_MyOptCustomField);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -933,11 +933,11 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (!::apache::thrift::op::equal<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(this->__fbthrift_field_MyCustomField, ::some::valid::ns::CustomProtocolType())) {
+  if (!::apache::thrift::op::equal<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(this->__fbthrift_field_MyCustomField, ::some::valid::ns::CustomProtocolType())) {
     constexpr int16_t kPrevFieldId = 9;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 10, kPrevFieldId>(*prot_, "MyCustomField", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::op::encode<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_MyCustomField);
+    xfer += ::apache::thrift::op::encode<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_MyCustomField);
     xfer += prot_->writeFieldEnd();
   } else {
     previousFieldHasValue = false;
@@ -946,7 +946,7 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 10;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 11, kPrevFieldId>(*prot_, "MyOptCustomField", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::op::encode<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_MyOptCustomField);
+    xfer += ::apache::thrift::op::encode<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_MyOptCustomField);
     xfer += prot_->writeFieldEnd();
   } else {
     previousFieldHasValue = false;
@@ -1452,7 +1452,7 @@ void ComplexUnion::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING)) {
           this->MyCustomField_ref().emplace();
-          ::apache::thrift::op::decode<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(*iprot, value_.MyCustomField);
+          ::apache::thrift::op::decode<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(*iprot, value_.MyCustomField);
         } else {
           _readState.skip(iprot);
         }
@@ -1653,7 +1653,7 @@ uint32_t ComplexUnion::serializedSize(Protocol_ const* prot_) const {
     case ComplexUnion::Type::MyCustomField:
     {
       xfer += prot_->serializedFieldSize("MyCustomField", apache::thrift::protocol::T_STRING, 27);
-      xfer += ::apache::thrift::op::serialized_size<false, ::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, value_.MyCustomField);
+      xfer += ::apache::thrift::op::serialized_size<false, ::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, value_.MyCustomField);
       break;
     }
     case ComplexUnion::Type::__EMPTY__:
@@ -1845,7 +1845,7 @@ uint32_t ComplexUnion::serializedSizeZC(Protocol_ const* prot_) const {
     case ComplexUnion::Type::MyCustomField:
     {
       xfer += prot_->serializedFieldSize("MyCustomField", apache::thrift::protocol::T_STRING, 27);
-      xfer += ::apache::thrift::op::serialized_size<true, ::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, value_.MyCustomField);
+      xfer += ::apache::thrift::op::serialized_size<true, ::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, value_.MyCustomField);
       break;
     }
     case ComplexUnion::Type::__EMPTY__:;
@@ -2094,7 +2094,7 @@ uint32_t ComplexUnion::write(Protocol_* prot_) const {
     {
       constexpr int16_t kPrevFieldId = 26;
       xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 27, kPrevFieldId>(*prot_, "MyCustomField", false);
-      xfer += ::apache::thrift::op::encode<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, value_.MyCustomField);
+      xfer += ::apache::thrift::op::encode<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, value_.MyCustomField);
       xfer += prot_->writeFieldEnd();
       break;
     }
@@ -2361,7 +2361,7 @@ _readField_a_union_typedef_list:
   }
 _readField_MyCustomField:
   {
-    ::apache::thrift::op::decode<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(*iprot, this->__fbthrift_field_MyCustomField);
+    ::apache::thrift::op::decode<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(*iprot, this->__fbthrift_field_MyCustomField);
   }
  this->__isset.set(12, true);
 
@@ -2374,7 +2374,7 @@ _readField_MyCustomField:
   }
 _readField_MyOptCustomField:
   {
-    ::apache::thrift::op::decode<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(*iprot, this->__fbthrift_field_MyOptCustomField);
+    ::apache::thrift::op::decode<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(*iprot, this->__fbthrift_field_MyOptCustomField);
   }
  this->__isset.set(13, true);
 
@@ -2614,13 +2614,13 @@ uint32_t AnException::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("a_union_typedef_list", apache::thrift::protocol::T_LIST, 19);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::variant>>, ::std::vector<::some::valid::ns::unionTypeDef>>::serializedSize<false>(*prot_, this->__fbthrift_field_a_union_typedef_list);
   }
-  if (!::apache::thrift::op::equal<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(this->__fbthrift_field_MyCustomField, ::some::valid::ns::CustomProtocolType())) {
+  if (!::apache::thrift::op::equal<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(this->__fbthrift_field_MyCustomField, ::some::valid::ns::CustomProtocolType())) {
     xfer += prot_->serializedFieldSize("MyCustomField", apache::thrift::protocol::T_STRING, 20);
-    xfer += ::apache::thrift::op::serialized_size<false, ::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_MyCustomField);
+    xfer += ::apache::thrift::op::serialized_size<false, ::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_MyCustomField);
   }
   if (this->__isset.get(13)) {
     xfer += prot_->serializedFieldSize("MyOptCustomField", apache::thrift::protocol::T_STRING, 21);
-    xfer += ::apache::thrift::op::serialized_size<false, ::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_MyOptCustomField);
+    xfer += ::apache::thrift::op::serialized_size<false, ::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_MyOptCustomField);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -2690,13 +2690,13 @@ uint32_t AnException::serializedSizeZC(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("a_union_typedef_list", apache::thrift::protocol::T_LIST, 19);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::variant>>, ::std::vector<::some::valid::ns::unionTypeDef>>::serializedSize<true>(*prot_, this->__fbthrift_field_a_union_typedef_list);
   }
-  if (!::apache::thrift::op::equal<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(this->__fbthrift_field_MyCustomField, ::some::valid::ns::CustomProtocolType())) {
+  if (!::apache::thrift::op::equal<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(this->__fbthrift_field_MyCustomField, ::some::valid::ns::CustomProtocolType())) {
     xfer += prot_->serializedFieldSize("MyCustomField", apache::thrift::protocol::T_STRING, 20);
-    xfer += ::apache::thrift::op::serialized_size<true, ::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_MyCustomField);
+    xfer += ::apache::thrift::op::serialized_size<true, ::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_MyCustomField);
   }
   if (this->__isset.get(13)) {
     xfer += prot_->serializedFieldSize("MyOptCustomField", apache::thrift::protocol::T_STRING, 21);
-    xfer += ::apache::thrift::op::serialized_size<true, ::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_MyOptCustomField);
+    xfer += ::apache::thrift::op::serialized_size<true, ::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_MyOptCustomField);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -2834,11 +2834,11 @@ uint32_t AnException::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (!::apache::thrift::op::equal<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(this->__fbthrift_field_MyCustomField, ::some::valid::ns::CustomProtocolType())) {
+  if (!::apache::thrift::op::equal<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(this->__fbthrift_field_MyCustomField, ::some::valid::ns::CustomProtocolType())) {
     constexpr int16_t kPrevFieldId = 19;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 20, kPrevFieldId>(*prot_, "MyCustomField", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::op::encode<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_MyCustomField);
+    xfer += ::apache::thrift::op::encode<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_MyCustomField);
     xfer += prot_->writeFieldEnd();
   } else {
     previousFieldHasValue = false;
@@ -2847,7 +2847,7 @@ uint32_t AnException::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 20;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 21, kPrevFieldId>(*prot_, "MyOptCustomField", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::op::encode<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_MyOptCustomField);
+    xfer += ::apache::thrift::op::encode<::apache::thrift::type::adapted<::CustomProtocolAdapter, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(*prot_, this->__fbthrift_field_MyOptCustomField);
     xfer += prot_->writeFieldEnd();
   } else {
     previousFieldHasValue = false;
@@ -6192,27 +6192,27 @@ uint32_t AnnotatedStruct::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("base_type", apache::thrift::protocol::T_I32, 20);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::some::valid::ns::CppFakeI32>::serializedSize<false>(*prot_, this->__fbthrift_field_base_type);
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::FollySmallVectorI64, ::apache::thrift::type::list<::apache::thrift::type::i64_t>>>(this->__fbthrift_field_list_type)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<folly::small_vector<int64_t, 8 /* maxInline */>, ::apache::thrift::type::list<::apache::thrift::type::i64_t>>>(this->__fbthrift_field_list_type)) {
     xfer += prot_->serializedFieldSize("list_type", apache::thrift::protocol::T_LIST, 21);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::some::valid::ns::FollySmallVectorI64>::serializedSize<false>(*prot_, this->__fbthrift_field_list_type);
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::SortedVectorSetString, ::apache::thrift::type::set<::apache::thrift::type::string_t>>>(this->__fbthrift_field_set_type)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<folly::sorted_vector_set<std::string>, ::apache::thrift::type::set<::apache::thrift::type::string_t>>>(this->__fbthrift_field_set_type)) {
     xfer += prot_->serializedFieldSize("set_type", apache::thrift::protocol::T_SET, 22);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::string>, ::some::valid::ns::SortedVectorSetString>::serializedSize<false>(*prot_, this->__fbthrift_field_set_type);
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::FakeMap, ::apache::thrift::type::map<::apache::thrift::type::i64_t, ::apache::thrift::type::double_t>>>(this->__fbthrift_field_map_type)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<FakeMap, ::apache::thrift::type::map<::apache::thrift::type::i64_t, ::apache::thrift::type::double_t>>>(this->__fbthrift_field_map_type)) {
     xfer += prot_->serializedFieldSize("map_type", apache::thrift::protocol::T_MAP, 23);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>, ::some::valid::ns::FakeMap>::serializedSize<false>(*prot_, this->__fbthrift_field_map_type);
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::UnorderedMapStruct, ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::struct_t<::some::valid::ns::ContainerStruct>>>>(this->__fbthrift_field_map_struct_type)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<std::unordered_map<std::string, ContainerStruct>, ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::struct_t<::some::valid::ns::ContainerStruct>>>>(this->__fbthrift_field_map_struct_type)) {
     xfer += prot_->serializedFieldSize("map_struct_type", apache::thrift::protocol::T_MAP, 24);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>, ::some::valid::ns::UnorderedMapStruct>::serializedSize<false>(*prot_, this->__fbthrift_field_map_struct_type);
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>(this->__fbthrift_field_iobuf_type)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>(this->__fbthrift_field_iobuf_type)) {
     xfer += prot_->serializedFieldSize("iobuf_type", apache::thrift::protocol::T_STRING, 25);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::some::valid::ns::IOBuf>::serializedSize<false>(*prot_, this->__fbthrift_field_iobuf_type);
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::IOBufPtr, ::apache::thrift::type::binary_t>>(this->__fbthrift_field_iobuf_ptr)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<std::unique_ptr<folly::IOBuf>, ::apache::thrift::type::binary_t>>(this->__fbthrift_field_iobuf_ptr)) {
     xfer += prot_->serializedFieldSize("iobuf_ptr", apache::thrift::protocol::T_STRING, 26);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::some::valid::ns::IOBufPtr>::serializedSize<false>(*prot_, this->__fbthrift_field_iobuf_ptr);
   }
@@ -6232,27 +6232,27 @@ uint32_t AnnotatedStruct::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("map_template", apache::thrift::protocol::T_MAP, 30);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>, folly::sorted_vector_map<::std::int64_t, ::std::string>>::serializedSize<false>(*prot_, this->__fbthrift_field_map_template);
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::std_list, ::apache::thrift::type::list<::apache::thrift::type::i32_t>>>(this->__fbthrift_field_typedef_list_template)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<std::list<::std::int32_t>, ::apache::thrift::type::list<::apache::thrift::type::i32_t>>>(this->__fbthrift_field_typedef_list_template)) {
     xfer += prot_->serializedFieldSize("typedef_list_template", apache::thrift::protocol::T_LIST, 31);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::some::valid::ns::std_list>::serializedSize<false>(*prot_, this->__fbthrift_field_typedef_list_template);
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::std_deque, ::apache::thrift::type::list<::apache::thrift::type::string_t>>>(this->__fbthrift_field_typedef_deque_template)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<std::deque<::std::string>, ::apache::thrift::type::list<::apache::thrift::type::string_t>>>(this->__fbthrift_field_typedef_deque_template)) {
     xfer += prot_->serializedFieldSize("typedef_deque_template", apache::thrift::protocol::T_LIST, 32);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::string>, ::some::valid::ns::std_deque>::serializedSize<false>(*prot_, this->__fbthrift_field_typedef_deque_template);
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::folly_set, ::apache::thrift::type::set<::apache::thrift::type::string_t>>>(this->__fbthrift_field_typedef_set_template)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<folly::sorted_vector_set<::std::string>, ::apache::thrift::type::set<::apache::thrift::type::string_t>>>(this->__fbthrift_field_typedef_set_template)) {
     xfer += prot_->serializedFieldSize("typedef_set_template", apache::thrift::protocol::T_SET, 33);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::string>, ::some::valid::ns::folly_set>::serializedSize<false>(*prot_, this->__fbthrift_field_typedef_set_template);
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::folly_map, ::apache::thrift::type::map<::apache::thrift::type::i64_t, ::apache::thrift::type::string_t>>>(this->__fbthrift_field_typedef_map_template)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<folly::sorted_vector_map<::std::int64_t, ::std::string>, ::apache::thrift::type::map<::apache::thrift::type::i64_t, ::apache::thrift::type::string_t>>>(this->__fbthrift_field_typedef_map_template)) {
     xfer += prot_->serializedFieldSize("typedef_map_template", apache::thrift::protocol::T_MAP, 34);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>, ::some::valid::ns::folly_map>::serializedSize<false>(*prot_, this->__fbthrift_field_typedef_map_template);
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>(this->__fbthrift_field_iobuf_type_val)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>(this->__fbthrift_field_iobuf_type_val)) {
     xfer += prot_->serializedFieldSize("iobuf_type_val", apache::thrift::protocol::T_STRING, 38);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::some::valid::ns::IOBuf>::serializedSize<false>(*prot_, this->__fbthrift_field_iobuf_type_val);
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::IOBufPtr, ::apache::thrift::type::binary_t>>(this->__fbthrift_field_iobuf_ptr_val)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<std::unique_ptr<folly::IOBuf>, ::apache::thrift::type::binary_t>>(this->__fbthrift_field_iobuf_ptr_val)) {
     xfer += prot_->serializedFieldSize("iobuf_ptr_val", apache::thrift::protocol::T_STRING, 39);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::some::valid::ns::IOBufPtr>::serializedSize<false>(*prot_, this->__fbthrift_field_iobuf_ptr_val);
   }
@@ -6408,27 +6408,27 @@ uint32_t AnnotatedStruct::serializedSizeZC(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("base_type", apache::thrift::protocol::T_I32, 20);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::some::valid::ns::CppFakeI32>::serializedSize<false>(*prot_, this->__fbthrift_field_base_type);
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::FollySmallVectorI64, ::apache::thrift::type::list<::apache::thrift::type::i64_t>>>(this->__fbthrift_field_list_type)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<folly::small_vector<int64_t, 8 /* maxInline */>, ::apache::thrift::type::list<::apache::thrift::type::i64_t>>>(this->__fbthrift_field_list_type)) {
     xfer += prot_->serializedFieldSize("list_type", apache::thrift::protocol::T_LIST, 21);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::some::valid::ns::FollySmallVectorI64>::serializedSize<false>(*prot_, this->__fbthrift_field_list_type);
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::SortedVectorSetString, ::apache::thrift::type::set<::apache::thrift::type::string_t>>>(this->__fbthrift_field_set_type)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<folly::sorted_vector_set<std::string>, ::apache::thrift::type::set<::apache::thrift::type::string_t>>>(this->__fbthrift_field_set_type)) {
     xfer += prot_->serializedFieldSize("set_type", apache::thrift::protocol::T_SET, 22);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::string>, ::some::valid::ns::SortedVectorSetString>::serializedSize<false>(*prot_, this->__fbthrift_field_set_type);
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::FakeMap, ::apache::thrift::type::map<::apache::thrift::type::i64_t, ::apache::thrift::type::double_t>>>(this->__fbthrift_field_map_type)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<FakeMap, ::apache::thrift::type::map<::apache::thrift::type::i64_t, ::apache::thrift::type::double_t>>>(this->__fbthrift_field_map_type)) {
     xfer += prot_->serializedFieldSize("map_type", apache::thrift::protocol::T_MAP, 23);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>, ::some::valid::ns::FakeMap>::serializedSize<false>(*prot_, this->__fbthrift_field_map_type);
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::UnorderedMapStruct, ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::struct_t<::some::valid::ns::ContainerStruct>>>>(this->__fbthrift_field_map_struct_type)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<std::unordered_map<std::string, ContainerStruct>, ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::struct_t<::some::valid::ns::ContainerStruct>>>>(this->__fbthrift_field_map_struct_type)) {
     xfer += prot_->serializedFieldSize("map_struct_type", apache::thrift::protocol::T_MAP, 24);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>, ::some::valid::ns::UnorderedMapStruct>::serializedSize<true>(*prot_, this->__fbthrift_field_map_struct_type);
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>(this->__fbthrift_field_iobuf_type)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>(this->__fbthrift_field_iobuf_type)) {
     xfer += prot_->serializedFieldSize("iobuf_type", apache::thrift::protocol::T_STRING, 25);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::some::valid::ns::IOBuf>::serializedSize<true>(*prot_, this->__fbthrift_field_iobuf_type);
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::IOBufPtr, ::apache::thrift::type::binary_t>>(this->__fbthrift_field_iobuf_ptr)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<std::unique_ptr<folly::IOBuf>, ::apache::thrift::type::binary_t>>(this->__fbthrift_field_iobuf_ptr)) {
     xfer += prot_->serializedFieldSize("iobuf_ptr", apache::thrift::protocol::T_STRING, 26);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::some::valid::ns::IOBufPtr>::serializedSize<true>(*prot_, this->__fbthrift_field_iobuf_ptr);
   }
@@ -6448,27 +6448,27 @@ uint32_t AnnotatedStruct::serializedSizeZC(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("map_template", apache::thrift::protocol::T_MAP, 30);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>, folly::sorted_vector_map<::std::int64_t, ::std::string>>::serializedSize<false>(*prot_, this->__fbthrift_field_map_template);
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::std_list, ::apache::thrift::type::list<::apache::thrift::type::i32_t>>>(this->__fbthrift_field_typedef_list_template)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<std::list<::std::int32_t>, ::apache::thrift::type::list<::apache::thrift::type::i32_t>>>(this->__fbthrift_field_typedef_list_template)) {
     xfer += prot_->serializedFieldSize("typedef_list_template", apache::thrift::protocol::T_LIST, 31);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::some::valid::ns::std_list>::serializedSize<false>(*prot_, this->__fbthrift_field_typedef_list_template);
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::std_deque, ::apache::thrift::type::list<::apache::thrift::type::string_t>>>(this->__fbthrift_field_typedef_deque_template)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<std::deque<::std::string>, ::apache::thrift::type::list<::apache::thrift::type::string_t>>>(this->__fbthrift_field_typedef_deque_template)) {
     xfer += prot_->serializedFieldSize("typedef_deque_template", apache::thrift::protocol::T_LIST, 32);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::string>, ::some::valid::ns::std_deque>::serializedSize<false>(*prot_, this->__fbthrift_field_typedef_deque_template);
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::folly_set, ::apache::thrift::type::set<::apache::thrift::type::string_t>>>(this->__fbthrift_field_typedef_set_template)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<folly::sorted_vector_set<::std::string>, ::apache::thrift::type::set<::apache::thrift::type::string_t>>>(this->__fbthrift_field_typedef_set_template)) {
     xfer += prot_->serializedFieldSize("typedef_set_template", apache::thrift::protocol::T_SET, 33);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::string>, ::some::valid::ns::folly_set>::serializedSize<false>(*prot_, this->__fbthrift_field_typedef_set_template);
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::folly_map, ::apache::thrift::type::map<::apache::thrift::type::i64_t, ::apache::thrift::type::string_t>>>(this->__fbthrift_field_typedef_map_template)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<folly::sorted_vector_map<::std::int64_t, ::std::string>, ::apache::thrift::type::map<::apache::thrift::type::i64_t, ::apache::thrift::type::string_t>>>(this->__fbthrift_field_typedef_map_template)) {
     xfer += prot_->serializedFieldSize("typedef_map_template", apache::thrift::protocol::T_MAP, 34);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>, ::some::valid::ns::folly_map>::serializedSize<false>(*prot_, this->__fbthrift_field_typedef_map_template);
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>(this->__fbthrift_field_iobuf_type_val)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>(this->__fbthrift_field_iobuf_type_val)) {
     xfer += prot_->serializedFieldSize("iobuf_type_val", apache::thrift::protocol::T_STRING, 38);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::some::valid::ns::IOBuf>::serializedSize<true>(*prot_, this->__fbthrift_field_iobuf_type_val);
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::IOBufPtr, ::apache::thrift::type::binary_t>>(this->__fbthrift_field_iobuf_ptr_val)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<std::unique_ptr<folly::IOBuf>, ::apache::thrift::type::binary_t>>(this->__fbthrift_field_iobuf_ptr_val)) {
     xfer += prot_->serializedFieldSize("iobuf_ptr_val", apache::thrift::protocol::T_STRING, 39);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::some::valid::ns::IOBufPtr>::serializedSize<true>(*prot_, this->__fbthrift_field_iobuf_ptr_val);
   }
@@ -6717,7 +6717,7 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::FollySmallVectorI64, ::apache::thrift::type::list<::apache::thrift::type::i64_t>>>(this->__fbthrift_field_list_type)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<folly::small_vector<int64_t, 8 /* maxInline */>, ::apache::thrift::type::list<::apache::thrift::type::i64_t>>>(this->__fbthrift_field_list_type)) {
     constexpr int16_t kPrevFieldId = 20;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 21, kPrevFieldId>(*prot_, "list_type", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -6726,7 +6726,7 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::SortedVectorSetString, ::apache::thrift::type::set<::apache::thrift::type::string_t>>>(this->__fbthrift_field_set_type)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<folly::sorted_vector_set<std::string>, ::apache::thrift::type::set<::apache::thrift::type::string_t>>>(this->__fbthrift_field_set_type)) {
     constexpr int16_t kPrevFieldId = 21;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_SET, 22, kPrevFieldId>(*prot_, "set_type", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -6735,7 +6735,7 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::FakeMap, ::apache::thrift::type::map<::apache::thrift::type::i64_t, ::apache::thrift::type::double_t>>>(this->__fbthrift_field_map_type)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<FakeMap, ::apache::thrift::type::map<::apache::thrift::type::i64_t, ::apache::thrift::type::double_t>>>(this->__fbthrift_field_map_type)) {
     constexpr int16_t kPrevFieldId = 22;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_MAP, 23, kPrevFieldId>(*prot_, "map_type", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -6744,7 +6744,7 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::UnorderedMapStruct, ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::struct_t<::some::valid::ns::ContainerStruct>>>>(this->__fbthrift_field_map_struct_type)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<std::unordered_map<std::string, ContainerStruct>, ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::struct_t<::some::valid::ns::ContainerStruct>>>>(this->__fbthrift_field_map_struct_type)) {
     constexpr int16_t kPrevFieldId = 23;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_MAP, 24, kPrevFieldId>(*prot_, "map_struct_type", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -6753,7 +6753,7 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>(this->__fbthrift_field_iobuf_type)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>(this->__fbthrift_field_iobuf_type)) {
     constexpr int16_t kPrevFieldId = 24;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 25, kPrevFieldId>(*prot_, "iobuf_type", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -6762,7 +6762,7 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::IOBufPtr, ::apache::thrift::type::binary_t>>(this->__fbthrift_field_iobuf_ptr)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<std::unique_ptr<folly::IOBuf>, ::apache::thrift::type::binary_t>>(this->__fbthrift_field_iobuf_ptr)) {
     constexpr int16_t kPrevFieldId = 25;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 26, kPrevFieldId>(*prot_, "iobuf_ptr", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -6807,7 +6807,7 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::std_list, ::apache::thrift::type::list<::apache::thrift::type::i32_t>>>(this->__fbthrift_field_typedef_list_template)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<std::list<::std::int32_t>, ::apache::thrift::type::list<::apache::thrift::type::i32_t>>>(this->__fbthrift_field_typedef_list_template)) {
     constexpr int16_t kPrevFieldId = 30;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 31, kPrevFieldId>(*prot_, "typedef_list_template", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -6816,7 +6816,7 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::std_deque, ::apache::thrift::type::list<::apache::thrift::type::string_t>>>(this->__fbthrift_field_typedef_deque_template)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<std::deque<::std::string>, ::apache::thrift::type::list<::apache::thrift::type::string_t>>>(this->__fbthrift_field_typedef_deque_template)) {
     constexpr int16_t kPrevFieldId = 31;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 32, kPrevFieldId>(*prot_, "typedef_deque_template", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -6825,7 +6825,7 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::folly_set, ::apache::thrift::type::set<::apache::thrift::type::string_t>>>(this->__fbthrift_field_typedef_set_template)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<folly::sorted_vector_set<::std::string>, ::apache::thrift::type::set<::apache::thrift::type::string_t>>>(this->__fbthrift_field_typedef_set_template)) {
     constexpr int16_t kPrevFieldId = 32;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_SET, 33, kPrevFieldId>(*prot_, "typedef_set_template", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -6834,7 +6834,7 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::folly_map, ::apache::thrift::type::map<::apache::thrift::type::i64_t, ::apache::thrift::type::string_t>>>(this->__fbthrift_field_typedef_map_template)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<folly::sorted_vector_map<::std::int64_t, ::std::string>, ::apache::thrift::type::map<::apache::thrift::type::i64_t, ::apache::thrift::type::string_t>>>(this->__fbthrift_field_typedef_map_template)) {
     constexpr int16_t kPrevFieldId = 33;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_MAP, 34, kPrevFieldId>(*prot_, "typedef_map_template", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -6843,7 +6843,7 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>(this->__fbthrift_field_iobuf_type_val)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>(this->__fbthrift_field_iobuf_type_val)) {
     constexpr int16_t kPrevFieldId = 34;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 38, kPrevFieldId>(*prot_, "iobuf_type_val", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -6852,7 +6852,7 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<::some::valid::ns::IOBufPtr, ::apache::thrift::type::binary_t>>(this->__fbthrift_field_iobuf_ptr_val)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::cpp_type<std::unique_ptr<folly::IOBuf>, ::apache::thrift::type::binary_t>>(this->__fbthrift_field_iobuf_ptr_val)) {
     constexpr int16_t kPrevFieldId = 38;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 39, kPrevFieldId>(*prot_, "iobuf_ptr_val", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -6984,11 +6984,11 @@ template <class Protocol_>
 uint32_t ComplexContainerStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ComplexContainerStruct");
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(this->__fbthrift_field_map_of_iobufs)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(this->__fbthrift_field_map_of_iobufs)) {
     xfer += prot_->serializedFieldSize("map_of_iobufs", apache::thrift::protocol::T_MAP, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::binary>, ::std::map<::std::string, ::some::valid::ns::IOBuf>>::serializedSize<false>(*prot_, this->__fbthrift_field_map_of_iobufs);
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBufPtr, ::apache::thrift::type::binary_t>>>(this->__fbthrift_field_map_of_iobuf_ptrs)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::cpp_type<std::unique_ptr<folly::IOBuf>, ::apache::thrift::type::binary_t>>>(this->__fbthrift_field_map_of_iobuf_ptrs)) {
     xfer += prot_->serializedFieldSize("map_of_iobuf_ptrs", apache::thrift::protocol::T_MAP, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::binary>, ::std::map<::std::string, ::some::valid::ns::IOBufPtr>>::serializedSize<false>(*prot_, this->__fbthrift_field_map_of_iobuf_ptrs);
   }
@@ -7000,11 +7000,11 @@ template <class Protocol_>
 uint32_t ComplexContainerStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ComplexContainerStruct");
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(this->__fbthrift_field_map_of_iobufs)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(this->__fbthrift_field_map_of_iobufs)) {
     xfer += prot_->serializedFieldSize("map_of_iobufs", apache::thrift::protocol::T_MAP, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::binary>, ::std::map<::std::string, ::some::valid::ns::IOBuf>>::serializedSize<true>(*prot_, this->__fbthrift_field_map_of_iobufs);
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBufPtr, ::apache::thrift::type::binary_t>>>(this->__fbthrift_field_map_of_iobuf_ptrs)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::cpp_type<std::unique_ptr<folly::IOBuf>, ::apache::thrift::type::binary_t>>>(this->__fbthrift_field_map_of_iobuf_ptrs)) {
     xfer += prot_->serializedFieldSize("map_of_iobuf_ptrs", apache::thrift::protocol::T_MAP, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::binary>, ::std::map<::std::string, ::some::valid::ns::IOBufPtr>>::serializedSize<true>(*prot_, this->__fbthrift_field_map_of_iobuf_ptrs);
   }
@@ -7017,7 +7017,7 @@ uint32_t ComplexContainerStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("ComplexContainerStruct");
   bool previousFieldHasValue = true;
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBuf, ::apache::thrift::type::binary_t>>>(this->__fbthrift_field_map_of_iobufs)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>>>(this->__fbthrift_field_map_of_iobufs)) {
     constexpr int16_t kPrevFieldId = 0;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_MAP, 1, kPrevFieldId>(*prot_, "map_of_iobufs", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -7026,7 +7026,7 @@ uint32_t ComplexContainerStruct::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::cpp_type<::some::valid::ns::IOBufPtr, ::apache::thrift::type::binary_t>>>(this->__fbthrift_field_map_of_iobuf_ptrs)) {
+  if (!::apache::thrift::op::isEmpty<::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::cpp_type<std::unique_ptr<folly::IOBuf>, ::apache::thrift::type::binary_t>>>(this->__fbthrift_field_map_of_iobuf_ptrs)) {
     constexpr int16_t kPrevFieldId = 1;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_MAP, 2, kPrevFieldId>(*prot_, "map_of_iobuf_ptrs", previousFieldHasValue);
     previousFieldHasValue = true;

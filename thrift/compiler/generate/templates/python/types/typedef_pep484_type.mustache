@@ -27,8 +27,6 @@ This is for typedef PEP484 type
 {{#partial typehints.pep484_type type=typedef.true_type.key_type}}, {{!}}
 {{#partial typehints.pep484_type type=typedef.true_type.val_type}}
 ]
-  {{#else if (and typedef.binary? typedef.iobuf?)}}
-_fbthrift_iobuf.IOBuf
   {{#else}}
 {{#partial typehints.pep484_type type=typedef.resolved}}
   {{/if (or typedef.list? typedef.set?)}}

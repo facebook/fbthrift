@@ -53,8 +53,6 @@
       {{#if typedef.has_adapter?}}
         {{#let adapter = typedef.adapter}}
 {{typedef.py_name}} = {{adapter.type_hint}}{{#if adapter.is_generic?}}[{{#partial python_type type=typedef.resolved}}]{{/if}}
-      {{#else if (and typedef.binary? typedef.iobuf?)}}
-{{typedef.py_name}} = _fbthrift_iobuf.IOBuf
       {{#else}}
 {{typedef.py_name}} = {{#partial python_type type=typedef.resolved}}
       {{/if typedef.has_adapter?}}
