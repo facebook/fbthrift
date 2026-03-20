@@ -2261,10 +2261,12 @@ class ThriftServer : public apache::thrift::concurrency::Runnable,
     THRIFT_SERVER_EVENT(addModule).log(
         *this, [=]() { return folly::dynamic::object("module_name", name); });
 
-    if (unprocessedModulesSpecification_.names.count(name)) {
+    auto [_, inserted] = unprocessedModulesSpecification_.names.insert(name);
+    if (!inserted) {
       throw std::invalid_argument(
           fmt::format("Duplicate module name: {}", name));
     }
+
     unprocessedModulesSpecification_.infos.emplace_back(
         ModulesSpecification::Info{std::move(module), std::move(name)});
   }
