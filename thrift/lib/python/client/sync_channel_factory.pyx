@@ -36,6 +36,7 @@ cdef RequestChannel create_channel(
     cProtocol protocol,
     thrift_ssl.SSLContext ssl_context,
     double ssl_timeout,
+    double channel_timeout,
 ):
     endpoint = b''
     if client_type in (ClientType.THRIFT_HTTP_CLIENT_TYPE, ClientType.THRIFT_HTTP2_CLIENT_TYPE):
@@ -48,6 +49,7 @@ cdef RequestChannel create_channel(
 
     cdef uint32_t _timeout_ms = int(timeout * 1000)
     cdef uint32_t _ssl_timeout_ms = int(ssl_timeout * 1000)
+    cdef uint32_t _channel_timeout_ms = int(channel_timeout * 1000)
     cdef DefaultChannelFactory channel_factory
 
     if host is not None and port is not None:
@@ -69,18 +71,19 @@ cdef RequestChannel create_channel(
                 port,
                 _timeout_ms,
                 _ssl_timeout_ms,
+                _channel_timeout_ms,
                 client_type,
                 protocol,
                 endpoint,
             ))
         else:
             return RequestChannel.create(channel_factory.sync_createThriftChannelTCP(
-                host, port, _timeout_ms, client_type, protocol, endpoint
+                host, port, _timeout_ms, _channel_timeout_ms, client_type, protocol, endpoint
             ))
     elif path is not None:
         fspath = os.fsencode(path)
         return RequestChannel.create(channel_factory.sync_createThriftChannelUnix(
-            cmove[string](fspath), _timeout_ms, client_type, protocol
+            cmove[string](fspath), _timeout_ms, _channel_timeout_ms, client_type, protocol
         ))
     else:
         raise ValueError("Must set path or host/port")

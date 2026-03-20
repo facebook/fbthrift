@@ -73,6 +73,7 @@ def get_client(
     protocol: Protocol = ...,
     ssl_context: Optional[SSLContext] = ...,
     ssl_timeout: float = ...,
+    channel_timeout: float = ...,
 ) -> TClient: ...
 def install_proxy_factory(
     factory: Optional[Callable[[Type[TClient]], Callable[[TClient], Any]]],

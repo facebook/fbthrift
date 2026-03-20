@@ -35,6 +35,7 @@ DefaultChannelFactory::createThriftChannelTCP(
     const std::string& host,
     uint16_t port,
     uint32_t connect_timeout,
+    uint32_t channel_timeout,
     CLIENT_TYPE client_t,
     apache::thrift::protocol::PROTOCOL_TYPES proto,
     const std::string& endpoint) {
@@ -46,6 +47,9 @@ DefaultChannelFactory::createThriftChannelTCP(
     if (client_t == THRIFT_ROCKET_CLIENT_TYPE) {
       auto chan = RocketClientChannel::newChannel(std::move(socket));
       chan->setProtocolId(proto);
+      if (channel_timeout > 0) {
+        chan->setTimeout(channel_timeout);
+      }
       return chan;
     } else if (client_t == THRIFT_HTTP2_CLIENT_TYPE) {
 #ifndef THRIFT_NO_HTTP_CLIENT_CHANNEL
@@ -69,11 +73,12 @@ RequestChannel::Ptr ChannelFactory::sync_createThriftChannelTCP(
     const std::string& host,
     uint16_t port,
     uint32_t connect_timeout,
+    uint32_t channel_timeout,
     CLIENT_TYPE client_t,
     apache::thrift::protocol::PROTOCOL_TYPES proto,
     const std::string& endpoint) {
   auto future = createThriftChannelTCP(
-      host, port, connect_timeout, client_t, proto, endpoint);
+      host, port, connect_timeout, channel_timeout, client_t, proto, endpoint);
   return std::move(future.wait().value());
 }
 
@@ -114,6 +119,7 @@ folly::Future<RequestChannel::Ptr>
 DefaultChannelFactory::createThriftChannelUnix(
     const std::string& path,
     uint32_t connect_timeout,
+    uint32_t channel_timeout,
     CLIENT_TYPE client_t,
     apache::thrift::protocol::PROTOCOL_TYPES proto) {
   auto eb = folly::getGlobalIOExecutor()->getEventBase();
@@ -131,6 +137,9 @@ DefaultChannelFactory::createThriftChannelUnix(
               auto chan = apache::thrift::RocketClientChannel::newChannel(
                   std::move(socket));
               chan->setProtocolId(proto);
+              if (channel_timeout > 0) {
+                chan->setTimeout(channel_timeout);
+              }
               return chan;
             }
             return createHeaderChannel(std::move(socket), client_t, proto);
@@ -140,9 +149,11 @@ DefaultChannelFactory::createThriftChannelUnix(
 RequestChannel::Ptr ChannelFactory::sync_createThriftChannelUnix(
     const std::string& path,
     uint32_t connect_timeout,
+    uint32_t channel_timeout,
     CLIENT_TYPE client_t,
     apache::thrift::protocol::PROTOCOL_TYPES proto) {
-  auto future = createThriftChannelUnix(path, connect_timeout, client_t, proto);
+  auto future = createThriftChannelUnix(
+      path, connect_timeout, channel_timeout, client_t, proto);
   return std::move(future.wait().value());
 }
 
@@ -153,6 +164,7 @@ DefaultChannelFactory::createThriftChannelSSL(
     const uint16_t port,
     const uint32_t connect_timeout,
     const uint32_t ssl_timeout,
+    const uint32_t channel_timeout,
     CLIENT_TYPE client_t,
     apache::thrift::protocol::PROTOCOL_TYPES proto,
     const std::string& endpoint) {
@@ -165,6 +177,7 @@ DefaultChannelFactory::createThriftChannelSSL(
        port = port,
        connect_timeout = connect_timeout,
        ssl_timeout = ssl_timeout,
+       channel_timeout = channel_timeout,
        endpoint = endpoint]() mutable {
         ConnectHandler::UniquePtr handler{new ConnectHandler(
             ctx,
@@ -173,6 +186,7 @@ DefaultChannelFactory::createThriftChannelSSL(
             port,
             connect_timeout,
             ssl_timeout,
+            channel_timeout,
             client_t,
             proto,
             endpoint)};
@@ -194,11 +208,20 @@ apache::thrift::RequestChannel::Ptr ChannelFactory::sync_createThriftChannelSSL(
     const uint16_t port,
     const uint32_t connect_timeout,
     const uint32_t ssl_timeout,
+    const uint32_t channel_timeout,
     CLIENT_TYPE client_t,
     apache::thrift::protocol::PROTOCOL_TYPES proto,
     const std::string& endpoint) {
   auto future = createThriftChannelSSL(
-      ctx, host, port, connect_timeout, ssl_timeout, client_t, proto, endpoint);
+      ctx,
+      host,
+      port,
+      connect_timeout,
+      ssl_timeout,
+      channel_timeout,
+      client_t,
+      proto,
+      endpoint);
   return std::move(future.wait().value());
 }
 

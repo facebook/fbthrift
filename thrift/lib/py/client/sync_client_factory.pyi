@@ -34,4 +34,5 @@ def get_client(
     protocol: Protocol = ...,
     ssl_context: typing.Optional[SSLContext] = ...,
     ssl_timeout: float = ...,
+    channel_timeout: float = ...,
 ) -> TClient: ...

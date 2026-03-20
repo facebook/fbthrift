@@ -173,7 +173,8 @@ def get_client(
     cClientType client_type = cClientType.THRIFT_HEADER_CLIENT_TYPE,
     protocol = Protocol.COMPACT,
     thrift_ssl.SSLContext ssl_context=None,
-    double ssl_timeout=1
+    double ssl_timeout=1,
+    double channel_timeout=0
 ):
     if not isinstance(protocol, Protocol):
         raise TypeError(f'protocol={protocol} is not a valid {Protocol}')
@@ -193,12 +194,14 @@ def get_client(
             client_type=client_type,
             protocol=protocol,
             ssl_context=ssl_context,
-            ssl_timeout=ssl_timeout
+            ssl_timeout=ssl_timeout,
+            channel_timeout=channel_timeout
         )
     assert issubclass(clientKlass, Client), "Must be a py3 thrift client"
 
     cdef uint32_t _timeout_ms = int(timeout * 1000)
     cdef uint32_t _ssl_timeout_ms = int(ssl_timeout * 1000)
+    cdef uint32_t _channel_timeout_ms = int(channel_timeout * 1000)
     cdef string cstr
 
     endpoint = b''
@@ -226,7 +229,8 @@ def get_client(
                 client_type=client_type,
                 protocol=protocol,
                 ssl_context=ssl_context,
-                ssl_timeout=ssl_timeout
+                ssl_timeout=ssl_timeout,
+                channel_timeout=channel_timeout
             )
 
     cdef DefaultChannelFactory channel_factory = DefaultChannelFactory()
@@ -239,7 +243,7 @@ def get_client(
         fspath = os.fsencode(path)
         bridgeFutureWith[cRequestChannel_ptr](
             (<Client>client)._executor,
-            channel_factory.createThriftChannelUnix(move[string](fspath), _timeout_ms, client_type, protocol),
+            channel_factory.createThriftChannelUnix(move[string](fspath), _timeout_ms, _channel_timeout_ms, client_type, protocol),
             requestchannel_callback,
             <PyObject *> client
         )
@@ -253,6 +257,7 @@ def get_client(
                 port,
                 _timeout_ms,
                 _ssl_timeout_ms,
+                _channel_timeout_ms,
                 client_type,
                 protocol,
                 move[string](endpoint)
@@ -268,6 +273,7 @@ def get_client(
                 move[string](cstr),
                 port,
                 _timeout_ms,
+                _channel_timeout_ms,
                 client_type,
                 protocol,
                 move[string](endpoint)

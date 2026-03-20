@@ -38,10 +38,11 @@ def get_client(
     cProtocol protocol = cProtocol.COMPACT,
     thrift_ssl.SSLContext ssl_context=None,
     double ssl_timeout=1,
+    double channel_timeout=0,
 ):
     try:
         channel = create_channel(
-            host, port, path, timeout, client_type, protocol, ssl_context, ssl_timeout
+            host, port, path, timeout, client_type, protocol, ssl_context, ssl_timeout, channel_timeout
         )
         return clientKlass(cpp_transport=SyncClient(channel))
     except RuntimeError as re:

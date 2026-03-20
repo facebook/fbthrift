@@ -42,4 +42,5 @@ cdef object get_client_with_channel_factory(
     cProtocol protocol = ?,
     thrift_ssl.SSLContext ssl_context = ?,
     double ssl_timeout = ?,
+    double channel_timeout = ?,
 )

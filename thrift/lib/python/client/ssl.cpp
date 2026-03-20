@@ -45,6 +45,7 @@ ConnectHandler::ConnectHandler(
     const uint16_t port,
     const uint32_t connect_timeout,
     const uint32_t ssl_timeout,
+    const uint32_t channel_timeout,
     CLIENT_TYPE client_t,
     apache::thrift::protocol::PROTOCOL_TYPES proto,
     const std::string& endpoint)
@@ -53,6 +54,7 @@ ConnectHandler::ConnectHandler(
       port_(port),
       connect_timeout_(connect_timeout),
       ssl_timeout_(ssl_timeout),
+      channel_timeout_(channel_timeout),
       client_t_(client_t),
       proto_(proto),
       endpoint_(endpoint) {}
@@ -79,6 +81,9 @@ void ConnectHandler::connectSuccess() noexcept {
       auto chan =
           apache::thrift::RocketClientChannel::newChannel(std::move(socket_));
       chan->setProtocolId(proto_);
+      if (channel_timeout_ > 0) {
+        chan->setTimeout(channel_timeout_);
+      }
       return chan;
     }
     return createHeaderChannel(

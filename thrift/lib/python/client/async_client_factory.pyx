@@ -58,6 +58,7 @@ def get_client(
     cProtocol protocol = cProtocol.COMPACT,
     thrift_ssl.SSLContext ssl_context=None,
     double ssl_timeout=1,
+    double channel_timeout=0,
 ):
     return get_client_with_channel_factory(
         clientKlass,
@@ -72,6 +73,7 @@ def get_client(
         protocol=protocol,
         ssl_context=ssl_context,
         ssl_timeout=ssl_timeout,
+        channel_timeout=channel_timeout,
     )
 
 
@@ -86,6 +88,7 @@ cdef object get_client_with_channel_factory(
     cProtocol protocol = cProtocol.COMPACT,
     thrift_ssl.SSLContext ssl_context=None,
     double ssl_timeout=1,
+    double channel_timeout=0,
 ):
     if not issubclass(clientKlass, Client):
         raise TypeError(f"{clientKlass} is not a thrift python client class")
@@ -101,6 +104,7 @@ cdef object get_client_with_channel_factory(
 
     cdef uint32_t _timeout_ms = int(timeout * 1000)
     cdef uint32_t _ssl_timeout_ms = int(ssl_timeout * 1000)
+    cdef uint32_t _channel_timeout_ms = int(channel_timeout * 1000)
     host = str(host)  # Accept ipaddress objects
     client = clientKlass.Async()
 
@@ -123,6 +127,7 @@ cdef object get_client_with_channel_factory(
                     protocol=protocol,
                     ssl_context=ssl_context,
                     ssl_timeout=ssl_timeout,
+                    channel_timeout=channel_timeout,
                 )
         else:
             host = str(host)
@@ -138,6 +143,7 @@ cdef object get_client_with_channel_factory(
                     port,
                     _timeout_ms,
                     _ssl_timeout_ms,
+                    _channel_timeout_ms,
                     client_type,
                     protocol,
                     endpoint,
@@ -149,7 +155,7 @@ cdef object get_client_with_channel_factory(
             bridgeFutureWith[cRequestChannel_ptr](
                 (<AsyncClient>client)._executor,
                 deref(channel_factory).createThriftChannelTCP(
-                    host, port, _timeout_ms, client_type, protocol, endpoint
+                    host, port, _timeout_ms, _channel_timeout_ms, client_type, protocol, endpoint
                 ),
                 requestchannel_callback,
                 <PyObject *>client,
@@ -159,7 +165,7 @@ cdef object get_client_with_channel_factory(
         bridgeFutureWith[cRequestChannel_ptr](
             (<AsyncClient>client)._executor,
             deref(channel_factory).createThriftChannelUnix(
-                cmove[string](fspath), _timeout_ms, client_type, protocol
+                cmove[string](fspath), _timeout_ms, _channel_timeout_ms, client_type, protocol
             ),
             requestchannel_callback,
             <PyObject *>client,
@@ -190,6 +196,7 @@ cdef class _AsyncResolveCtxManager:
     cdef cProtocol protocol
     cdef thrift_ssl.SSLContext ssl_context
     cdef double ssl_timeout
+    cdef double channel_timeout
 
     @staticmethod
     cdef _AsyncResolveCtxManager create(
@@ -203,6 +210,7 @@ cdef class _AsyncResolveCtxManager:
         cProtocol protocol = cProtocol.COMPACT,
         thrift_ssl.SSLContext ssl_context=None,
         double ssl_timeout=1,
+        double channel_timeout=0,
     ):
         cdef _AsyncResolveCtxManager ctx_manager = _AsyncResolveCtxManager.__new__(_AsyncResolveCtxManager)
         ctx_manager.clientKlass = clientKlass
@@ -215,6 +223,7 @@ cdef class _AsyncResolveCtxManager:
         ctx_manager.protocol = protocol
         ctx_manager.ssl_context = ssl_context
         ctx_manager.ssl_timeout = ssl_timeout
+        ctx_manager.channel_timeout = channel_timeout
         return ctx_manager
 
     async def __aenter__(self):
@@ -236,6 +245,7 @@ cdef class _AsyncResolveCtxManager:
             protocol=self.protocol,
             ssl_context=self.ssl_context,
             ssl_timeout=self.ssl_timeout,
+            channel_timeout=self.channel_timeout,
         )
         return await self.ctx.__aenter__()
 

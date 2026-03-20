@@ -57,6 +57,7 @@ cdef extern from "thrift/lib/python/client/RequestChannel.h" namespace "::apache
             const string& host,
             const uint16_t port,
             const uint32_t connect_timeout,
+            const uint32_t channel_timeout,
             ClientType,
             cProtocol,
             const string& endpoint,
@@ -66,6 +67,7 @@ cdef extern from "thrift/lib/python/client/RequestChannel.h" namespace "::apache
             const string& host,
             const uint16_t port,
             const uint32_t connect_timeout,
+            const uint32_t channel_timeout,
             ClientType,
             cProtocol,
             const string& endpoint,
@@ -74,6 +76,7 @@ cdef extern from "thrift/lib/python/client/RequestChannel.h" namespace "::apache
         cFollyFuture[cRequestChannel_ptr] createThriftChannelUnix(
             const string& path,
             const uint32_t connect_timeout,
+            const uint32_t channel_timeout,
             ClientType,
             cProtocol,
         )
@@ -81,6 +84,7 @@ cdef extern from "thrift/lib/python/client/RequestChannel.h" namespace "::apache
         cRequestChannel_ptr sync_createThriftChannelUnix(
             const string& path,
             const uint32_t connect_timeout,
+            const uint32_t channel_timeout,
             ClientType,
             cProtocol,
         ) except +
@@ -91,6 +95,7 @@ cdef extern from "thrift/lib/python/client/RequestChannel.h" namespace "::apache
             const uint16_t port,
             const uint32_t connect_timeout,
             const uint32_t ssl_timeout,
+            const uint32_t channel_timeout,
             ClientType,
             cProtocol,
             const string& endpoint,
@@ -102,6 +107,7 @@ cdef extern from "thrift/lib/python/client/RequestChannel.h" namespace "::apache
             const uint16_t port,
             const uint32_t connect_timeout,
             const uint32_t ssl_timeout,
+            const uint32_t channel_timeout,
             ClientType,
             cProtocol,
             const string& endpoint,
