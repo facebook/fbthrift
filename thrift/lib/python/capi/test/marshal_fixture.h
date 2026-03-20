@@ -24,6 +24,7 @@
 #include <folly/container/F14Set.h>
 #include <thrift/lib/python/capi/constructor.h>
 #include <thrift/lib/python/capi/extractor.h>
+#include <thrift/lib/python/capi/iobuf.h>
 #include <thrift/lib/python/capi/types.h>
 
 namespace apache::thrift::python {
@@ -164,6 +165,14 @@ inline PyObject* __make_unicode_val_map(PyObject* obj) {
     return capi::Constructor<map<int64_t, String>>{}(std::move(*cpp));
   }
   return nullptr;
+}
+
+inline void __raise_protocol_error(int type, const char* message) {
+  apache::thrift::TProtocolException ex(
+      static_cast<apache::thrift::TProtocolException::TProtocolExceptionType>(
+          type),
+      message);
+  capi::detail::handle_protocol_error(ex);
 }
 
 } // namespace apache::thrift::python

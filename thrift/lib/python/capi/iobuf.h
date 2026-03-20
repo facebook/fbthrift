@@ -114,8 +114,8 @@ T deserialize_iobuf_to_adapted(std::unique_ptr<folly::IOBuf>&& buf) {
 }
 
 /**
- * Sets a ValueError with the message from input TProtocolException.
- * Once thrift.python.ProtocolError is available, that will be raised instead.
+ * Raises a thrift.python.ProtocolError with the type and message from the
+ * input TProtocolException.
  */
 void handle_protocol_error(const apache::thrift::TProtocolException& e);
 

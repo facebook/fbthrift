@@ -22,6 +22,7 @@ from typing import Callable
 
 import thrift.python.types  # noqa: F401
 from folly.iobuf import IOBuf
+from thrift.python.exceptions import ProtocolError, ProtocolErrorType
 from thrift.python.marshal import marshal_fixture as fixture
 from thrift.python.marshal.marshal_fixture import (
     INT16_MAX,
@@ -322,3 +323,34 @@ class TestMarshalMap(MarshalFixture):
 
         with self.assertRaises(UnicodeDecodeError):
             fixture.make_unicode_val_map({-1: b"", 0: b"a", 1: b"\xe2\x82"})
+
+
+class TestProtocolError(unittest.TestCase):
+    def test_protocol_error_invalid_data(self) -> None:
+        with self.assertRaises(ProtocolError) as ctx:
+            fixture.raise_protocol_error(1, "Invalid data in field")
+        self.assertEqual(ctx.exception.type, ProtocolErrorType.INVALID_DATA)
+
+    def test_protocol_error_negative_size(self) -> None:
+        with self.assertRaises(ProtocolError) as ctx:
+            fixture.raise_protocol_error(2, "Negative size")
+        self.assertEqual(ctx.exception.type, ProtocolErrorType.NEGATIVE_SIZE)
+
+    def test_protocol_error_size_limit(self) -> None:
+        with self.assertRaises(ProtocolError) as ctx:
+            fixture.raise_protocol_error(3, "Size limit exceeded")
+        self.assertEqual(ctx.exception.type, ProtocolErrorType.SIZE_LIMIT)
+
+    def test_protocol_error_bad_version(self) -> None:
+        with self.assertRaises(ProtocolError) as ctx:
+            fixture.raise_protocol_error(4, "Bad version")
+        self.assertEqual(ctx.exception.type, ProtocolErrorType.BAD_VERSION)
+
+    def test_protocol_error_unknown(self) -> None:
+        with self.assertRaises(ProtocolError) as ctx:
+            fixture.raise_protocol_error(0, "Unknown error")
+        self.assertEqual(ctx.exception.type, ProtocolErrorType.UNKNOWN)
+
+    def test_protocol_error_unicode_decode_error(self) -> None:
+        with self.assertRaises(UnicodeDecodeError):
+            fixture.raise_protocol_error_bytes(0, b"\xe2\x82")

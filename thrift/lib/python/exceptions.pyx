@@ -187,6 +187,15 @@ cdef ProtocolError create_ProtocolError(const cTProtocolException* ex):
     return inst
 
 
+cdef public api object create_ProtocolError_from_cpp(
+    int type_int,
+    const char* message,
+):
+    type = ProtocolErrorType(type_int)
+    msg = (<bytes>message).decode('utf-8')
+    return <ProtocolError>ProtocolError.__new__(ProtocolError, type, msg)
+
+
 cdef vector[Handler] handlers
 
 
@@ -275,7 +284,7 @@ class GeneratedErrorMeta(type):
         dct["_fbthrift_struct_info"] = StructInfo(name, fields)
         for i, f in enumerate(fields):
             dct[f.py_name] = make_fget_error(i)
-        all_bases = bases if bases else (GeneratedError,) 
+        all_bases = bases if bases else (GeneratedError,)
         if "_fbthrift_abstract_base_class" in dct:
             all_bases += (dct.pop("_fbthrift_abstract_base_class"),)
         return super().__new__(cls, name, all_bases, dct)

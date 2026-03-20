@@ -16,11 +16,33 @@
 
 #include <thrift/lib/python/capi/iobuf.h>
 
+#include <folly/python/import.h>
+#include <thrift/lib/python/exceptions_api.h>
+
 namespace apache::thrift::python::capi::detail {
 
+namespace {
+
+bool ensure_module_imported() {
+  static ::folly::python::import_cache_nocapture import(
+      ::import_thrift__python__exceptions);
+  return import();
+}
+
+} // namespace
+
 void handle_protocol_error(const apache::thrift::TProtocolException& e) {
-  // TODO(T189799332): use thrift.python.ProtocolError when available
-  PyErr_SetString(PyExc_ValueError, e.what());
+  if (!ensure_module_imported()) {
+    PyErr_SetString(PyExc_ValueError, e.what());
+    return;
+  }
+  PyObject* exc =
+      create_ProtocolError_from_cpp(static_cast<int>(e.getType()), e.what());
+  if (exc) {
+    PyErr_SetObject(reinterpret_cast<PyObject*>(Py_TYPE(exc)), exc);
+    Py_DECREF(exc);
+  }
+  CHECK(PyErr_Occurred()) << "Unknown error while creating ProtocolError";
 }
 
 } // namespace apache::thrift::python::capi::detail

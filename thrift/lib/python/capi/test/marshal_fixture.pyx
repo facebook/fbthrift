@@ -52,6 +52,7 @@ cdef extern from "thrift/lib/python/capi/test/marshal_fixture.h" namespace "apac
     cdef object __roundtrip_bytes_val_map[K](object)
     cdef object __roundtrip_unicode_val_map[K](object)
     cdef object __make_unicode_val_map(object)
+    cdef void __raise_protocol_error(int, const char*) except *
 
 def roundtrip_int8(object x):
     return __roundtrip_pyobject[stdint.int8_t](x)
@@ -163,3 +164,10 @@ def roundtrip_unicode_val_map(object x):
 
 def make_unicode_val_map(object x):
     return __make_unicode_val_map(x)
+
+
+def raise_protocol_error(int error_type, str message):
+    __raise_protocol_error(error_type, message.encode('utf-8'))
+
+def raise_protocol_error_bytes(int error_type, bytes message):
+    __raise_protocol_error(error_type, message)
