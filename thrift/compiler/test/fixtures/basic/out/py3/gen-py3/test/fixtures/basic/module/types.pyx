@@ -134,7 +134,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     cdef inline MyDataField_impl(self):
         if self.__fbthrift_cached_MyDataField is None:
-            self.__fbthrift_cached_MyDataField = MyDataItem._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_test_fixtures_basic_module_cbindings.cMyDataItem](deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).MyDataField_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_MyDataField = MyDataItem._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).MyDataField_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_MyDataField
 
     @property
@@ -735,7 +735,7 @@ cdef class MyException(thrift.py3.exceptions.GeneratedError):
 
     cdef inline myStruct_impl(self):
         if self.__fbthrift_cached_myStruct is None:
-            self.__fbthrift_cached_myStruct = MyStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_test_fixtures_basic_module_cbindings.cMyStruct](deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).myStruct_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_myStruct = MyStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).myStruct_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_myStruct
 
     @property
@@ -744,7 +744,7 @@ cdef class MyException(thrift.py3.exceptions.GeneratedError):
 
     cdef inline myUnion_impl(self):
         if self.__fbthrift_cached_myUnion is None:
-            self.__fbthrift_cached_myUnion = MyUnion._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_test_fixtures_basic_module_cbindings.cMyUnion](deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).myUnion_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_myUnion = MyUnion._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).myUnion_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_myUnion
 
     @property
@@ -867,7 +867,7 @@ cdef class MyExceptionWithMessage(thrift.py3.exceptions.GeneratedError):
 
     cdef inline myStruct_impl(self):
         if self.__fbthrift_cached_myStruct is None:
-            self.__fbthrift_cached_myStruct = MyStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_test_fixtures_basic_module_cbindings.cMyStruct](deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).myStruct_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_myStruct = MyStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).myStruct_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_myStruct
 
     @property
@@ -876,7 +876,7 @@ cdef class MyExceptionWithMessage(thrift.py3.exceptions.GeneratedError):
 
     cdef inline myUnion_impl(self):
         if self.__fbthrift_cached_myUnion is None:
-            self.__fbthrift_cached_myUnion = MyUnion._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_test_fixtures_basic_module_cbindings.cMyUnion](deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).myUnion_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_myUnion = MyUnion._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).myUnion_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_myUnion
 
     @property

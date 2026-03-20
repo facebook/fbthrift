@@ -94,7 +94,7 @@ _fbthrift_iobuf.cIOBuf
     {{#else if type.iobufRef?}}
 unique_ptr[_fbthrift_iobuf.cIOBuf]
     {{#else}}
-{{#if type.need_cbinding_path?}}{{type.program.module_path_for_alias}}_cbindings.{{/if}}{{type.cythonCustomType}}
+{{#if type.need_cbinding_path?}}{{type.true_type.program.module_path_for_alias}}_cbindings.{{/if}}{{type.cythonCustomType}}
     {{/if type.iobuf?}}
 {{#else if type.void?}}cFollyUnit
 {{#else if type.bool?}}cbool
@@ -590,7 +590,7 @@ that struct. Most types can be returned directly and converted to python objects
 by Cython. Complex objects need to be wrapped or decoded appropriately. Structs
 are special because we try to memoize their wrappers on the parent handler
 if they have been previously retrieved. }}
-{{#let export partial cython_struct_getter |field| captures |cpp_obj cython_python_type container_from_cpp python_type cython_field_ref cython_cpp_type_resolved|}}
+{{#let export partial cython_struct_getter |field| captures |cpp_obj cython_python_type container_from_cpp python_type cython_field_ref|}}
   {{#if field.type.iobuf?}}
 if self.__fbthrift_cached_{{field.py_name}} is None:
     self.__fbthrift_cached_{{field.py_name}} = _fbthrift_iobuf.IOBuf.create(ptr_address(deref(self.{{#partial cpp_obj}}).{{#partial cython_field_ref field=field kind="ref"}}), self)
@@ -616,8 +616,7 @@ if self.__fbthrift_cached_{{field.py_name}} is None:
       }}{{#partial container_from_cpp type=field.type}}({{!
         }}deref(deref(self.{{#partial cpp_obj}}).{{#partial cython_field_ref field=field kind="value"}}_ref())){{!
       }}{{#else}}{{!
-      }}{{#partial cython_python_type type=field.type}}._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[{{!
-        }}{{#partial cython_cpp_type_resolved type=field.type enable_custom_type_overrides=false}}]({{!
+      }}{{#partial cython_python_type type=field.type}}._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr({{!
         }}deref(deref(self.{{#partial cpp_obj}}).{{#partial cython_field_ref field=field kind="value"}}_ref()), self.{{#partial cpp_obj}})){{!
       }}{{/if field.type.container?}}
 return self.__fbthrift_cached_{{field.py_name}}
@@ -635,8 +634,7 @@ if self.__fbthrift_cached_{{field.py_name}} is None:
       }}{{#else if field.type.container?}}{{#partial container_from_cpp type=field.type}}({{!
         }}deref(self.{{#partial cpp_obj}}).{{#partial cython_field_ref field=field kind="ref"}}){{!
       }}{{#else}}{{!
-        }}{{#partial cython_python_type type=field.type}}._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[{{!
-      }}{{#partial cython_cpp_type_resolved type=field.type enable_custom_type_overrides=false}}]({{!
+        }}{{#partial cython_python_type type=field.type}}._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr({{!
       }}deref(self.{{#partial cpp_obj}}).{{#partial cython_field_ref field=field kind="ref"}}, {{!
       }}self.{{#partial cpp_obj}}{{!
       }})){{/if field.type.enum?}}
@@ -683,7 +681,7 @@ deref(c_inst).set_{{field.py_name}}(deref((<{{#partial cython_python_type type=f
 
 {{! Included on Cython unions to retrieve the current value of the union and
     stick it in the self.py_value variable. }}
-{{#let export partial cython_union_getter |field| captures |cpp_obj cython_python_type container_from_cpp union_getter_non_reference_value cython_cpp_type_resolved|}}
+{{#let export partial cython_union_getter |field| captures |cpp_obj cython_python_type container_from_cpp union_getter_non_reference_value|}}
   {{#if field.reference?}}
 if not deref(self.{{#partial cpp_obj}}).get_{{field.py_name}}():
     self.py_value = None
@@ -693,8 +691,7 @@ else:
     {{#else}}
     {{! Use an aliasing constructor since the object we're returning is still
         managed by the top-level object, possible via a unique_ptr }}
-    self.py_value = {{#partial cython_python_type type=field.type}}._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[{{!
-      }}{{#partial cython_cpp_type_resolved type=field.type enable_custom_type_overrides=false}}]({{!
+    self.py_value = {{#partial cython_python_type type=field.type}}._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr({{!
       }}deref(deref(self.{{#partial cpp_obj}}).get_{{field.py_name}}()), self.{{#partial cpp_obj}}))
     {{/if field.type.container?}}
   {{#else}}

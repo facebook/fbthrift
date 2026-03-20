@@ -595,7 +595,7 @@ cdef class FieldsInjectedWithFieldsWithIncludedStruct(thrift.py3.types.Struct):
 
     cdef inline injected_field_impl(self):
         if self.__fbthrift_cached_injected_field is None:
-            self.__fbthrift_cached_injected_field = _injected_field_types.InjectedField._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_injected_field_cbindings.cInjectedField](deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).injected_field_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_injected_field = _injected_field_types.InjectedField._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).injected_field_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_injected_field
 
     @property

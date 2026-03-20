@@ -1005,7 +1005,7 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
 
     cdef inline n_impl(self):
         if self.__fbthrift_cached_n is None:
-            self.__fbthrift_cached_n = TrivialNumeric._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_apache_thrift_fixtures_types_module_cbindings.cTrivialNumeric](deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).n_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_n = TrivialNumeric._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).n_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_n
 
     @property
@@ -1251,7 +1251,7 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
 
     cdef inline n_impl(self):
         if self.__fbthrift_cached_n is None:
-            self.__fbthrift_cached_n = ComplexString._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_apache_thrift_fixtures_types_module_cbindings.cComplexString](deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).n_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_n = ComplexString._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).n_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_n
 
     @property
@@ -1675,7 +1675,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     cdef inline data_impl(self):
         if self.__fbthrift_cached_data is None:
-            self.__fbthrift_cached_data = MyDataItem._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_apache_thrift_fixtures_types_module_cbindings.cMyDataItem](deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).data_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_data = MyDataItem._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).data_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_data
 
     @property
@@ -2116,7 +2116,7 @@ cdef class ForwardUsageRoot(thrift.py3.types.Struct):
         if not deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).ForwardUsageStruct_ref().has_value():
             return None
         if self.__fbthrift_cached_ForwardUsageStruct is None:
-            self.__fbthrift_cached_ForwardUsageStruct = ForwardUsageStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_apache_thrift_fixtures_types_module_cbindings.cForwardUsageStruct](deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).ForwardUsageStruct_ref().ref_unchecked(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_ForwardUsageStruct = ForwardUsageStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).ForwardUsageStruct_ref().ref_unchecked(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_ForwardUsageStruct
 
     @property
@@ -2127,7 +2127,7 @@ cdef class ForwardUsageRoot(thrift.py3.types.Struct):
         if self.__fbthrift_cached_ForwardUsageByRef is None:
             if not deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).ForwardUsageByRef_ref():
                 return None
-            self.__fbthrift_cached_ForwardUsageByRef = ForwardUsageByRef._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_apache_thrift_fixtures_types_module_cbindings.cForwardUsageByRef](deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).ForwardUsageByRef_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_ForwardUsageByRef = ForwardUsageByRef._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).ForwardUsageByRef_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_ForwardUsageByRef
 
     @property
@@ -2243,7 +2243,7 @@ cdef class ForwardUsageStruct(thrift.py3.types.Struct):
         if self.__fbthrift_cached_foo is None:
             if not deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).foo_ref():
                 return None
-            self.__fbthrift_cached_foo = ForwardUsageRoot._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_apache_thrift_fixtures_types_module_cbindings.cForwardUsageRoot](deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).foo_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_foo = ForwardUsageRoot._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).foo_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_foo
 
     @property
@@ -2359,7 +2359,7 @@ cdef class ForwardUsageByRef(thrift.py3.types.Struct):
         if self.__fbthrift_cached_foo is None:
             if not deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).foo_ref():
                 return None
-            self.__fbthrift_cached_foo = ForwardUsageRoot._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_apache_thrift_fixtures_types_module_cbindings.cForwardUsageRoot](deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).foo_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_foo = ForwardUsageRoot._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).foo_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_foo
 
     @property
@@ -3615,7 +3615,7 @@ cdef class AllocatorAware(thrift.py3.types.Struct):
         if self.__fbthrift_cached_aa_unique is None:
             if not deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).aa_unique_ref():
                 return None
-            self.__fbthrift_cached_aa_unique = cint32_t._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[cint32_t](deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).aa_unique_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_aa_unique = cint32_t._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).aa_unique_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_aa_unique
 
     @property
@@ -3626,7 +3626,7 @@ cdef class AllocatorAware(thrift.py3.types.Struct):
         if self.__fbthrift_cached_aa_shared is None:
             if not deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).aa_shared_ref():
                 return None
-            self.__fbthrift_cached_aa_shared = cint32_t._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[cint32_t](deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).aa_shared_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_aa_shared = cint32_t._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).aa_shared_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_aa_shared
 
     @property

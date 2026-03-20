@@ -211,7 +211,7 @@ cdef class Mixin2(thrift.py3.types.Struct):
 
     cdef inline m1_impl(self):
         if self.__fbthrift_cached_m1 is None:
-            self.__fbthrift_cached_m1 = Mixin1._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_module_cbindings.cMixin1](deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).m1_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_m1 = Mixin1._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).m1_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_m1
 
     @property
@@ -457,7 +457,7 @@ cdef class Foo(thrift.py3.types.Struct):
 
     cdef inline m2_impl(self):
         if self.__fbthrift_cached_m2 is None:
-            self.__fbthrift_cached_m2 = Mixin2._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_module_cbindings.cMixin2](deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).m2_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_m2 = Mixin2._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).m2_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_m2
 
     @property
@@ -466,7 +466,7 @@ cdef class Foo(thrift.py3.types.Struct):
 
     cdef inline m3_impl(self):
         if self.__fbthrift_cached_m3 is None:
-            self.__fbthrift_cached_m3 = Mixin3Base._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_module_cbindings.cMixin3Base](deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).m3_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_m3 = Mixin3Base._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).m3_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_m3
 
     @property

@@ -31,7 +31,7 @@ __iobuf_cIOBuf
     {{#else if type.iobufRef?}}
 unique_ptr__iobuf_cIOBuf
     {{#else}}
-{{#if type.need_cbinding_path?}}{{type.program.module_path_for_alias}}_cbindings_{{/if}}{{type.cythonCustomType}}
+{{#if type.need_cbinding_path?}}{{type.true_type.program.module_path_for_alias}}_cbindings_{{/if}}{{type.cythonCustomType}}
     {{/if type.iobuf?}}
 {{#else if type.bool?}}cbool
 {{#else if type.void?}}cFollyUnit
