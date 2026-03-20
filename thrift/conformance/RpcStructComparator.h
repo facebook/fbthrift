@@ -51,6 +51,22 @@ inline bool equal(
       return stringContains(
           *actual.streamInitialUndeclaredException()->exceptionMessage(),
           *expected.streamInitialUndeclaredException()->exceptionMessage());
+    case ClientTestResult::Type::bidiMethodUndeclaredException:
+      if (actual.getType() !=
+          ClientTestResult::Type::bidiMethodUndeclaredException) {
+        return false;
+      }
+      return stringContains(
+          *actual.bidiMethodUndeclaredException()->exceptionMessage(),
+          *expected.bidiMethodUndeclaredException()->exceptionMessage());
+    case ClientTestResult::Type::bidiStreamUndeclaredException:
+      if (actual.getType() !=
+          ClientTestResult::Type::bidiStreamUndeclaredException) {
+        return false;
+      }
+      return stringContains(
+          *actual.bidiStreamUndeclaredException()->exceptionMessage(),
+          *expected.bidiStreamUndeclaredException()->exceptionMessage());
     default:
       return actual == expected;
   }
@@ -66,6 +82,13 @@ inline bool equal(
       auto& actualMsg = *actual.sinkUndeclaredException()->exceptionMessage();
       auto& expectedMsg =
           *expected.sinkUndeclaredException()->exceptionMessage();
+      return actualMsg.find(expectedMsg) != std::string::npos;
+    }
+    case ServerTestResult::Type::bidiSinkUndeclaredException: {
+      auto& actualMsg =
+          *actual.bidiSinkUndeclaredException()->exceptionMessage();
+      auto& expectedMsg =
+          *expected.bidiSinkUndeclaredException()->exceptionMessage();
       return actualMsg.find(expectedMsg) != std::string::npos;
     }
     default:

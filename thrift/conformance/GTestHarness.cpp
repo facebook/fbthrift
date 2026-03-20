@@ -594,11 +594,7 @@ BidiMethodUndeclaredExceptionClientTestResult runBidiMethodUndeclaredException(
     try {
       co_await client.co_bidiMethodUndeclaredException(request);
     } catch (const TApplicationException& e) {
-      // BiDi transport prefixes exception type to message
-      auto msg = e.getMessage();
-      auto pos = msg.find(": ");
-      result.exceptionMessage() =
-          (pos != std::string::npos) ? msg.substr(pos + 2) : msg;
+      result.exceptionMessage() = e.getMessage();
     }
   }());
   return result;
@@ -1020,8 +1016,11 @@ testing::AssertionResult runStatelessRpcTest(
     }
 
     if (!equal(result, *rpc.clientTestResult())) {
-      return testing::AssertionFailure();
+      return testing::AssertionFailure()
+          << "\nExpected client result: " << jsonify(*rpc.clientTestResult())
+          << "\nActual client result: " << jsonify(result);
     }
+
     return testing::AssertionSuccess();
 
   } catch (const std::exception& e) {

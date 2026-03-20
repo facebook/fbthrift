@@ -211,6 +211,7 @@ class ConformanceTest : public testing::Test {
     if (conforming_) {
       EXPECT_TRUE(conforming)
           // Most specific to least specific.
+          << conforming.message() << std::endl
           << genDescription(testCase_) << genDescription(test_)
           << genDescription(suite_) << std::endl
           << "For more detail see:" << std::endl
@@ -218,6 +219,7 @@ class ConformanceTest : public testing::Test {
           << genTagLinks(suite_);
     } else {
       EXPECT_FALSE(conforming)
+          << conforming.message() << std::endl
           << "If intentional, please remove the associated entry from:"
           << std::endl
           << "    thrift/conformance/data/nonconforming.txt" << std::endl;
