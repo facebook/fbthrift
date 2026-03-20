@@ -2321,7 +2321,8 @@ void t_mstch_cpp2_generator::generate_out_of_line_service(
       {"service", mstch_service},
   };
 
-  render_to_file(mstch_service, "ServiceAsyncClient.h", name + "AsyncClient.h");
+  render_whisker_service_file(
+      *service, "ServiceAsyncClient.h", fmt::format("{}AsyncClient.h", name));
   render_whisker_service_file(
       *service, "service.cpp", fmt::format("{}.cpp", name));
   render_to_file(mstch_service, "service.h", name + ".h");
@@ -2380,10 +2381,8 @@ void t_mstch_cpp2_generator::generate_out_of_line_services() {
 
 void t_mstch_cpp2_generator::generate_inline_services() {
   const std::string& module_name = program_->name();
-  render_to_file(
-      cached_program(get_program()),
-      "module_clients.h",
-      fmt::format("{}_clients.h", module_name));
+  render_whisker_file(
+      "module_clients.h", fmt::format("{}_clients.h", module_name));
   render_whisker_file(
       "module_clients_fwd.h", fmt::format("{}_clients_fwd.h", module_name));
   render_whisker_file(
