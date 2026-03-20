@@ -32,6 +32,7 @@ struct ServiceMethodTypesFootprint<::facebook::thrift::test::fixtures::adapter::
   ::facebook::thrift::test::fixtures::adapter::CountingStruct,
   ::facebook::thrift::test::fixtures::adapter::HeapAllocated>;
 };
+
 } // namespace detail
 
 template <>

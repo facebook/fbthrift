@@ -50,7 +50,6 @@ class ServiceHandler<::facebook::thrift::test::fixtures::adapter::Service> : pub
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
-
   virtual ::facebook::thrift::test::fixtures::adapter::MyI32_4873 sync_func(std::unique_ptr<::facebook::thrift::test::fixtures::adapter::StringWithAdapter_7208> /*arg1*/, std::unique_ptr<::facebook::thrift::test::fixtures::adapter::StringWithCppAdapter> /*arg2*/, std::unique_ptr<::facebook::thrift::test::fixtures::adapter::Foo> /*arg3*/);
   [[deprecated("Use sync_func instead")]] virtual ::facebook::thrift::test::fixtures::adapter::MyI32_4873 func(std::unique_ptr<::facebook::thrift::test::fixtures::adapter::StringWithAdapter_7208> /*arg1*/, std::unique_ptr<::facebook::thrift::test::fixtures::adapter::StringWithCppAdapter> /*arg2*/, std::unique_ptr<::facebook::thrift::test::fixtures::adapter::Foo> /*arg3*/);
   virtual folly::Future<::facebook::thrift::test::fixtures::adapter::MyI32_4873> future_func(std::unique_ptr<::facebook::thrift::test::fixtures::adapter::StringWithAdapter_7208> p_arg1, std::unique_ptr<::facebook::thrift::test::fixtures::adapter::StringWithCppAdapter> p_arg2, std::unique_ptr<::facebook::thrift::test::fixtures::adapter::Foo> p_arg3);

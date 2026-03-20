@@ -178,7 +178,7 @@ class InteractLocallyAsyncProcessor : public ::apache::thrift::GeneratedAsyncPro
   // End of Service Methods
   //
   //
-  // Service Methods
+  // Interaction SharedInteraction Methods
   //
 
   //
@@ -212,13 +212,6 @@ class InteractLocallyAsyncProcessor : public ::apache::thrift::GeneratedAsyncPro
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'do_something'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -246,13 +239,6 @@ class InteractLocallyAsyncProcessor : public ::apache::thrift::GeneratedAsyncPro
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'do_something'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -285,7 +271,7 @@ class InteractLocallyAsyncProcessor : public ::apache::thrift::GeneratedAsyncPro
   //
 
   //
-  // End of Service Methods
+  // End of Interaction SharedInteraction Methods
   //
  public:
   InteractLocallyAsyncProcessor(::apache::thrift::ServiceHandler<::thrift::shared_interactions::InteractLocally>* iface) :

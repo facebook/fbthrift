@@ -100,12 +100,11 @@ class FOLLY_EXPORT CustomException : public virtual apache::thrift::TException {
   CustomException(apache::thrift::FragileConstructor, ::std::string message__arg);
 
   CustomException(CustomException&&) noexcept;
-
   CustomException(const CustomException& src);
 
 
   CustomException& operator=(CustomException&&) noexcept;
-  CustomException& operator=(const CustomException& src);
+  CustomException& operator=(const CustomException&);
 
   ~CustomException() override;
 
@@ -248,12 +247,11 @@ class ShouldBeBoxed final  {
   ShouldBeBoxed(apache::thrift::FragileConstructor, ::std::string sessionId__arg);
 
   ShouldBeBoxed(ShouldBeBoxed&&) noexcept;
-
   ShouldBeBoxed(const ShouldBeBoxed& src);
 
 
   ShouldBeBoxed& operator=(ShouldBeBoxed&&) noexcept;
-  ShouldBeBoxed& operator=(const ShouldBeBoxed& src);
+  ShouldBeBoxed& operator=(const ShouldBeBoxed&);
 
   ~ShouldBeBoxed();
 

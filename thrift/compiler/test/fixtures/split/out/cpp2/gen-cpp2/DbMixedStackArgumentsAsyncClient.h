@@ -32,6 +32,7 @@ struct ServiceMethodTypesFootprint<::cpp2::DbMixedStackArguments> {
   ::std::string,
   ::std::string>;
 };
+
 } // namespace detail
 
 template <>

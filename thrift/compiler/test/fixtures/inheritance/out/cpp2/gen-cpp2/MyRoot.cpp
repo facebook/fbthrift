@@ -184,7 +184,7 @@ determineInvocationType:
 
 namespace cpp2 {
 
-void MyRootSvNull::do_root() { 
+void MyRootSvNull::do_root() {
 }
 
 

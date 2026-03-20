@@ -58,10 +58,9 @@ namespace {{service.cpp_qualified_namespace}} {
   {{#each service.functions as |function|}}
     {{#if (not (or function.starts_interaction? function.creates_interaction? function.event_based? function.stream?))}}
       {{#if (and function.return_type.resolves_to_complex_return? (not function.sink?))}}
-{{#partial server.sync_return_type function=function service=service}} {{service.cpp_name}}SvNull::{{function.cpp_name}}({{#partial server.sync_return_param function=function}}{{#partial server.function_param_list_commented_out function=function}}) {  }
+{{#partial server.sync_return_type function=function service=service}} {{service.cpp_name}}SvNull::{{function.cpp_name}}({{#partial server.sync_return_param function=function}}{{#partial server.function_param_list_commented_out function=function}}) {}
       {{#else}}
-{{! TODO(T260006192): Preserved trailing space at end of next line }}
-{{#partial server.sync_return_type function=function service=service}} {{service.cpp_name}}SvNull::{{function.cpp_name}}({{#partial server.sync_return_param function=function}}{{#partial server.function_param_list_commented_out function=function}}) { {{!}}
+{{#partial server.sync_return_type function=function service=service}} {{service.cpp_name}}SvNull::{{function.cpp_name}}({{#partial server.sync_return_param function=function}}{{#partial server.function_param_list_commented_out function=function}}) {
         {{#if function.sink?}}
   return {};
         {{#else if function.return_type.enum?}}
@@ -109,6 +108,6 @@ const {{service.cpp_name}}AsyncProcessor::InteractionConstructorMap {{service.cp
 std::unique_ptr<apache::thrift::Tile> {{service.cpp_name}}AsyncProcessor::createInteractionImpl(const std::string& name, int16_t) {
   auto fn = getInteractionConstructorMap().at(name);
   return (this->*fn)();
-}{{/if (not (array.empty? service.interactions))}}{{!
-  TODO(T260006192): Preserved missing newline between closing brace and end of namespace
-}}} // namespace {{service.cpp_qualified_namespace}}
+}
+  {{/if (not (array.empty? service.interactions))}}
+} // namespace {{service.cpp_qualified_namespace}}

@@ -290,12 +290,11 @@ class Foo final  {
   Foo(apache::thrift::FragileConstructor, ::std::vector<double> field1__arg, ::std::vector<::std::int32_t> field2__arg, ::std::vector<double> field3__arg, ::std::vector<::std::int32_t> field4__arg);
 
   Foo(Foo&&) noexcept;
-
   Foo(const Foo& src);
 
 
   Foo& operator=(Foo&&) noexcept;
-  Foo& operator=(const Foo& src);
+  Foo& operator=(const Foo&);
 
   ~Foo();
 
@@ -602,7 +601,7 @@ class LazyFoo final  {
 
 
   LazyFoo& operator=(LazyFoo&&) noexcept;
-  LazyFoo& operator=(const LazyFoo& src);
+  LazyFoo& operator=(const LazyFoo&);
 
   ~LazyFoo();
 
@@ -921,12 +920,11 @@ class OptionalFoo final  {
   OptionalFoo(apache::thrift::FragileConstructor, ::std::vector<double> field1__arg, ::std::vector<::std::int32_t> field2__arg, ::std::vector<double> field3__arg, ::std::vector<::std::int32_t> field4__arg);
 
   OptionalFoo(OptionalFoo&&) noexcept;
-
   OptionalFoo(const OptionalFoo& src);
 
 
   OptionalFoo& operator=(OptionalFoo&&) noexcept;
-  OptionalFoo& operator=(const OptionalFoo& src);
+  OptionalFoo& operator=(const OptionalFoo&);
 
   ~OptionalFoo();
 
@@ -1241,7 +1239,7 @@ class OptionalLazyFoo final  {
 
 
   OptionalLazyFoo& operator=(OptionalLazyFoo&&) noexcept;
-  OptionalLazyFoo& operator=(const OptionalLazyFoo& src);
+  OptionalLazyFoo& operator=(const OptionalLazyFoo&);
 
   ~OptionalLazyFoo();
 
@@ -1568,7 +1566,7 @@ class OptionalBoxedLazyFoo final  {
 
 
   OptionalBoxedLazyFoo& operator=(OptionalBoxedLazyFoo&&) noexcept;
-  OptionalBoxedLazyFoo& operator=(const OptionalBoxedLazyFoo& src);
+  OptionalBoxedLazyFoo& operator=(const OptionalBoxedLazyFoo&);
 
   ~OptionalBoxedLazyFoo();
 
@@ -1857,7 +1855,7 @@ class LazyCppRef final  {
 
 
   LazyCppRef& operator=(LazyCppRef&&) noexcept;
-  LazyCppRef& operator=(const LazyCppRef& src);
+  LazyCppRef& operator=(const LazyCppRef&);
 
   ~LazyCppRef();
 
@@ -2196,12 +2194,11 @@ class IndexedFoo final  {
   IndexedFoo(apache::thrift::FragileConstructor, double serialized_data_size__arg, ::std::vector<double> field1__arg, ::std::vector<::std::int32_t> field2__arg, ::std::vector<double> field3__arg, ::std::vector<::std::int32_t> field4__arg, ::std::map<::std::int16_t, ::std::int64_t> field_id_to_size__arg);
 
   IndexedFoo(IndexedFoo&&) noexcept;
-
   IndexedFoo(const IndexedFoo& src);
 
 
   IndexedFoo& operator=(IndexedFoo&&) noexcept;
-  IndexedFoo& operator=(const IndexedFoo& src);
+  IndexedFoo& operator=(const IndexedFoo&);
 
   ~IndexedFoo();
 
@@ -2608,12 +2605,11 @@ class OptionalIndexedFoo final  {
   OptionalIndexedFoo(apache::thrift::FragileConstructor, double serialized_data_size__arg, ::std::vector<double> field1__arg, ::std::vector<::std::int32_t> field2__arg, ::std::vector<double> field3__arg, ::std::vector<::std::int32_t> field4__arg, ::std::map<::std::int16_t, ::std::int64_t> field_id_to_size__arg);
 
   OptionalIndexedFoo(OptionalIndexedFoo&&) noexcept;
-
   OptionalIndexedFoo(const OptionalIndexedFoo& src);
 
 
   OptionalIndexedFoo& operator=(OptionalIndexedFoo&&) noexcept;
-  OptionalIndexedFoo& operator=(const OptionalIndexedFoo& src);
+  OptionalIndexedFoo& operator=(const OptionalIndexedFoo&);
 
   ~OptionalIndexedFoo();
 
@@ -3016,12 +3012,10 @@ class Empty final  {
   Empty(apache::thrift::FragileConstructor);
 
   Empty(Empty&&) = default;
-
   Empty(const Empty&) = default;
 
 
   Empty& operator=(Empty&&) = default;
-
   Empty& operator=(const Empty&) = default;
 
  public:

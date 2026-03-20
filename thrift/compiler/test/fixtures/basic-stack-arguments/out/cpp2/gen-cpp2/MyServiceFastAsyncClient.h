@@ -34,6 +34,7 @@ struct ServiceMethodTypesFootprint<::cpp2::MyServiceFast> {
   ::std::string,
   void>;
 };
+
 } // namespace detail
 
 template <>

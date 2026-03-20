@@ -184,12 +184,11 @@ class SerializedStruct final  {
   SerializedStruct(apache::thrift::FragileConstructor, ::std::string s__arg, ::std::int32_t i__arg, ::std::string os__arg, ::std::string rs__arg);
 
   SerializedStruct(SerializedStruct&&) noexcept;
-
   SerializedStruct(const SerializedStruct& src);
 
 
   SerializedStruct& operator=(SerializedStruct&&) noexcept;
-  SerializedStruct& operator=(const SerializedStruct& src);
+  SerializedStruct& operator=(const SerializedStruct&);
 
   ~SerializedStruct();
 
@@ -795,12 +794,11 @@ class FOLLY_EXPORT SerializedError : public virtual apache::thrift::TException {
   SerializedError(apache::thrift::FragileConstructor, ::std::string msg__arg, ::std::string os__arg, ::std::string rs__arg);
 
   SerializedError(SerializedError&&) noexcept;
-
   SerializedError(const SerializedError& src);
 
 
   SerializedError& operator=(SerializedError&&) noexcept;
-  SerializedError& operator=(const SerializedError& src);
+  SerializedError& operator=(const SerializedError&);
 
   ~SerializedError() override;
 
@@ -1064,12 +1062,11 @@ class MarshalStruct final  {
   MarshalStruct(apache::thrift::FragileConstructor, ::std::string s__arg, ::std::int32_t i__arg, ::std::string os__arg, ::std::string rs__arg);
 
   MarshalStruct(MarshalStruct&&) noexcept;
-
   MarshalStruct(const MarshalStruct& src);
 
 
   MarshalStruct& operator=(MarshalStruct&&) noexcept;
-  MarshalStruct& operator=(const MarshalStruct& src);
+  MarshalStruct& operator=(const MarshalStruct&);
 
   ~MarshalStruct();
 
@@ -1675,12 +1672,11 @@ class FOLLY_EXPORT MarshalError : public virtual apache::thrift::TException {
   MarshalError(apache::thrift::FragileConstructor, ::std::string msg__arg, ::std::string os__arg, ::std::string rs__arg);
 
   MarshalError(MarshalError&&) noexcept;
-
   MarshalError(const MarshalError& src);
 
 
   MarshalError& operator=(MarshalError&&) noexcept;
-  MarshalError& operator=(const MarshalError& src);
+  MarshalError& operator=(const MarshalError&);
 
   ~MarshalError() override;
 

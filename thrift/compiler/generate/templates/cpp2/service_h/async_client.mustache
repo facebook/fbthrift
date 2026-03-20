@@ -33,6 +33,7 @@ struct ServiceMethodTypesFootprint<{{service.qualified_name}}> {
   as |index type last?|}}
   {{type.cpp_type}}{{#if (not last?)}},{{/if}}{{/each}}>;
 };
+
 } // namespace detail
 
 template <>
@@ -54,15 +55,14 @@ class {{interaction.name}} final : public apache::thrift::InteractionHandle {
   using apache::thrift::InteractionHandle::InteractionHandle;
   friend class ::apache::thrift::Client<{{service.qualified_name}}>;
  public:
-
-
   std::string_view getServiceName() const noexcept override {
     return "{{service.name}}";
   }
 
-
 {{#partial async_client_functions.async_client_functions interface=interaction parent_service=service}}
-};{{/each}}{{! TODO(T260006192): Preserved missing newline }}
+};
+  {{/each}}
+
 {{#partial async_client_functions.async_client_functions interface=service parent_service=null}}
 };
 

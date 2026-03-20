@@ -228,21 +228,20 @@ folly::Future<folly::Unit> apache::thrift::Client<::test_cpp2::cpp_reflection::s
   return future_methodA(rpcOptions);
 }
 
-folly::SemiFuture<folly::Unit> apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::semifuture_methodA() {
-  ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_methodA(rpcOptions);
-}
-
 folly::Future<folly::Unit> apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::future_methodA(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
   return fbthrift_semifuture_methodA<CallbackType>(rpcOptions).toUnsafeFuture();
+}
+
+folly::SemiFuture<folly::Unit> apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::semifuture_methodA() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_methodA(rpcOptions);
 }
 
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::semifuture_methodA(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::SemiFutureCallback<folly::Unit>;
   return fbthrift_semifuture_methodA<CallbackType>(rpcOptions);
 }
-
 
 void apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::methodA(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   methodA(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -434,21 +433,20 @@ folly::Future<folly::Unit> apache::thrift::Client<::test_cpp2::cpp_reflection::s
   return future_methodB(rpcOptions, p_x, p_y, p_z);
 }
 
-folly::SemiFuture<folly::Unit> apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::semifuture_methodB(::std::int32_t p_x, const ::test_cpp2::cpp_reflection::struct1& p_y, double p_z) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_methodB(rpcOptions, p_x, p_y, p_z);
-}
-
 folly::Future<folly::Unit> apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::future_methodB(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_x, const ::test_cpp2::cpp_reflection::struct1& p_y, double p_z) {
   using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
   return fbthrift_semifuture_methodB<CallbackType>(rpcOptions, p_x, p_y, p_z).toUnsafeFuture();
+}
+
+folly::SemiFuture<folly::Unit> apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::semifuture_methodB(::std::int32_t p_x, const ::test_cpp2::cpp_reflection::struct1& p_y, double p_z) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_methodB(rpcOptions, p_x, p_y, p_z);
 }
 
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::semifuture_methodB(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_x, const ::test_cpp2::cpp_reflection::struct1& p_y, double p_z) {
   using CallbackType = apache::thrift::SemiFutureCallback<folly::Unit>;
   return fbthrift_semifuture_methodB<CallbackType>(rpcOptions, p_x, p_y, p_z);
 }
-
 
 void apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::methodB(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int32_t p_x, const ::test_cpp2::cpp_reflection::struct1& p_y, double p_z) {
   methodB(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_x, p_y, p_z);
@@ -639,21 +637,20 @@ folly::Future<::std::int32_t> apache::thrift::Client<::test_cpp2::cpp_reflection
   return future_methodC(rpcOptions);
 }
 
-folly::SemiFuture<::std::int32_t> apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::semifuture_methodC() {
-  ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_methodC(rpcOptions);
-}
-
 folly::Future<::std::int32_t> apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::future_methodC(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::FutureCallback<::std::int32_t>;
   return fbthrift_semifuture_methodC<CallbackType>(rpcOptions).toUnsafeFuture();
+}
+
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::semifuture_methodC() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_methodC(rpcOptions);
 }
 
 folly::SemiFuture<::std::int32_t> apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::semifuture_methodC(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::SemiFutureCallback<::std::int32_t>;
   return fbthrift_semifuture_methodC<CallbackType>(rpcOptions);
 }
-
 
 void apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::methodC(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   methodC(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -849,21 +846,20 @@ folly::Future<::std::int32_t> apache::thrift::Client<::test_cpp2::cpp_reflection
   return future_methodD(rpcOptions, p_i, p_j, p_k);
 }
 
-folly::SemiFuture<::std::int32_t> apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::semifuture_methodD(::std::int32_t p_i, const ::test_cpp2::cpp_reflection::struct1& p_j, double p_k) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_methodD(rpcOptions, p_i, p_j, p_k);
-}
-
 folly::Future<::std::int32_t> apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::future_methodD(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_i, const ::test_cpp2::cpp_reflection::struct1& p_j, double p_k) {
   using CallbackType = apache::thrift::FutureCallback<::std::int32_t>;
   return fbthrift_semifuture_methodD<CallbackType>(rpcOptions, p_i, p_j, p_k).toUnsafeFuture();
+}
+
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::semifuture_methodD(::std::int32_t p_i, const ::test_cpp2::cpp_reflection::struct1& p_j, double p_k) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_methodD(rpcOptions, p_i, p_j, p_k);
 }
 
 folly::SemiFuture<::std::int32_t> apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::semifuture_methodD(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_i, const ::test_cpp2::cpp_reflection::struct1& p_j, double p_k) {
   using CallbackType = apache::thrift::SemiFutureCallback<::std::int32_t>;
   return fbthrift_semifuture_methodD<CallbackType>(rpcOptions, p_i, p_j, p_k);
 }
-
 
 void apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::methodD(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int32_t p_i, const ::test_cpp2::cpp_reflection::struct1& p_j, double p_k) {
   methodD(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_i, p_j, p_k);
@@ -1054,21 +1050,20 @@ folly::Future<::test_cpp2::cpp_reflection::struct2> apache::thrift::Client<::tes
   return future_methodE(rpcOptions);
 }
 
-folly::SemiFuture<::test_cpp2::cpp_reflection::struct2> apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::semifuture_methodE() {
-  ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_methodE(rpcOptions);
-}
-
 folly::Future<::test_cpp2::cpp_reflection::struct2> apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::future_methodE(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::FutureCallback<::test_cpp2::cpp_reflection::struct2>;
   return fbthrift_semifuture_methodE<CallbackType>(rpcOptions).toUnsafeFuture();
+}
+
+folly::SemiFuture<::test_cpp2::cpp_reflection::struct2> apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::semifuture_methodE() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_methodE(rpcOptions);
 }
 
 folly::SemiFuture<::test_cpp2::cpp_reflection::struct2> apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::semifuture_methodE(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::SemiFutureCallback<::test_cpp2::cpp_reflection::struct2>;
   return fbthrift_semifuture_methodE<CallbackType>(rpcOptions);
 }
-
 
 void apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::methodE(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   methodE(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -1260,21 +1255,20 @@ folly::Future<::test_cpp2::cpp_reflection::struct2> apache::thrift::Client<::tes
   return future_methodF(rpcOptions, p_l, p_m, p_n);
 }
 
-folly::SemiFuture<::test_cpp2::cpp_reflection::struct2> apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::semifuture_methodF(::std::int32_t p_l, const ::test_cpp2::cpp_reflection::struct1& p_m, double p_n) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_methodF(rpcOptions, p_l, p_m, p_n);
-}
-
 folly::Future<::test_cpp2::cpp_reflection::struct2> apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::future_methodF(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_l, const ::test_cpp2::cpp_reflection::struct1& p_m, double p_n) {
   using CallbackType = apache::thrift::FutureCallback<::test_cpp2::cpp_reflection::struct2>;
   return fbthrift_semifuture_methodF<CallbackType>(rpcOptions, p_l, p_m, p_n).toUnsafeFuture();
+}
+
+folly::SemiFuture<::test_cpp2::cpp_reflection::struct2> apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::semifuture_methodF(::std::int32_t p_l, const ::test_cpp2::cpp_reflection::struct1& p_m, double p_n) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_methodF(rpcOptions, p_l, p_m, p_n);
 }
 
 folly::SemiFuture<::test_cpp2::cpp_reflection::struct2> apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::semifuture_methodF(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_l, const ::test_cpp2::cpp_reflection::struct1& p_m, double p_n) {
   using CallbackType = apache::thrift::SemiFutureCallback<::test_cpp2::cpp_reflection::struct2>;
   return fbthrift_semifuture_methodF<CallbackType>(rpcOptions, p_l, p_m, p_n);
 }
-
 
 void apache::thrift::Client<::test_cpp2::cpp_reflection::service2>::methodF(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int32_t p_l, const ::test_cpp2::cpp_reflection::struct1& p_m, double p_n) {
   methodF(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_l, p_m, p_n);

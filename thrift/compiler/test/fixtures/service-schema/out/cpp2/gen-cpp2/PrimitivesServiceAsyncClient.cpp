@@ -193,21 +193,20 @@ folly::Future<::std::int64_t> apache::thrift::Client<::facebook::thrift::test::f
   return future_init(rpcOptions, p_param0, p_param1);
 }
 
-folly::SemiFuture<::std::int64_t> apache::thrift::Client<::facebook::thrift::test::fixtures::service_schema::PrimitivesService>::semifuture_init(::std::int64_t p_param0, ::std::int64_t p_param1) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_init(rpcOptions, p_param0, p_param1);
-}
-
 folly::Future<::std::int64_t> apache::thrift::Client<::facebook::thrift::test::fixtures::service_schema::PrimitivesService>::future_init(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_param0, ::std::int64_t p_param1) {
   using CallbackType = apache::thrift::FutureCallback<::std::int64_t>;
   return fbthrift_semifuture_init<CallbackType>(rpcOptions, p_param0, p_param1).toUnsafeFuture();
+}
+
+folly::SemiFuture<::std::int64_t> apache::thrift::Client<::facebook::thrift::test::fixtures::service_schema::PrimitivesService>::semifuture_init(::std::int64_t p_param0, ::std::int64_t p_param1) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_init(rpcOptions, p_param0, p_param1);
 }
 
 folly::SemiFuture<::std::int64_t> apache::thrift::Client<::facebook::thrift::test::fixtures::service_schema::PrimitivesService>::semifuture_init(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_param0, ::std::int64_t p_param1) {
   using CallbackType = apache::thrift::SemiFutureCallback<::std::int64_t>;
   return fbthrift_semifuture_init<CallbackType>(rpcOptions, p_param0, p_param1);
 }
-
 
 void apache::thrift::Client<::facebook::thrift::test::fixtures::service_schema::PrimitivesService>::init(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int64_t p_param0, ::std::int64_t p_param1) {
   init(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_param0, p_param1);
@@ -400,21 +399,20 @@ folly::Future<::facebook::thrift::test::fixtures::service_schema::Result> apache
   return future_method_that_throws(rpcOptions);
 }
 
-folly::SemiFuture<::facebook::thrift::test::fixtures::service_schema::Result> apache::thrift::Client<::facebook::thrift::test::fixtures::service_schema::PrimitivesService>::semifuture_method_that_throws() {
-  ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_method_that_throws(rpcOptions);
-}
-
 folly::Future<::facebook::thrift::test::fixtures::service_schema::Result> apache::thrift::Client<::facebook::thrift::test::fixtures::service_schema::PrimitivesService>::future_method_that_throws(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::FutureCallback<::facebook::thrift::test::fixtures::service_schema::Result>;
   return fbthrift_semifuture_method_that_throws<CallbackType>(rpcOptions).toUnsafeFuture();
+}
+
+folly::SemiFuture<::facebook::thrift::test::fixtures::service_schema::Result> apache::thrift::Client<::facebook::thrift::test::fixtures::service_schema::PrimitivesService>::semifuture_method_that_throws() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_method_that_throws(rpcOptions);
 }
 
 folly::SemiFuture<::facebook::thrift::test::fixtures::service_schema::Result> apache::thrift::Client<::facebook::thrift::test::fixtures::service_schema::PrimitivesService>::semifuture_method_that_throws(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::SemiFutureCallback<::facebook::thrift::test::fixtures::service_schema::Result>;
   return fbthrift_semifuture_method_that_throws<CallbackType>(rpcOptions);
 }
-
 
 void apache::thrift::Client<::facebook::thrift::test::fixtures::service_schema::PrimitivesService>::method_that_throws(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   method_that_throws(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -607,21 +605,20 @@ folly::Future<folly::Unit> apache::thrift::Client<::facebook::thrift::test::fixt
   return future_return_void_method(rpcOptions, p_id, p_i);
 }
 
-folly::SemiFuture<folly::Unit> apache::thrift::Client<::facebook::thrift::test::fixtures::service_schema::PrimitivesService>::semifuture_return_void_method(::std::int64_t p_id, const ::cpp2::I& p_i) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_return_void_method(rpcOptions, p_id, p_i);
-}
-
 folly::Future<folly::Unit> apache::thrift::Client<::facebook::thrift::test::fixtures::service_schema::PrimitivesService>::future_return_void_method(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_id, const ::cpp2::I& p_i) {
   using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
   return fbthrift_semifuture_return_void_method<CallbackType>(rpcOptions, p_id, p_i).toUnsafeFuture();
+}
+
+folly::SemiFuture<folly::Unit> apache::thrift::Client<::facebook::thrift::test::fixtures::service_schema::PrimitivesService>::semifuture_return_void_method(::std::int64_t p_id, const ::cpp2::I& p_i) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_return_void_method(rpcOptions, p_id, p_i);
 }
 
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::facebook::thrift::test::fixtures::service_schema::PrimitivesService>::semifuture_return_void_method(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_id, const ::cpp2::I& p_i) {
   using CallbackType = apache::thrift::SemiFutureCallback<folly::Unit>;
   return fbthrift_semifuture_return_void_method<CallbackType>(rpcOptions, p_id, p_i);
 }
-
 
 void apache::thrift::Client<::facebook::thrift::test::fixtures::service_schema::PrimitivesService>::return_void_method(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int64_t p_id, const ::cpp2::I& p_i) {
   return_void_method(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_id, p_i);

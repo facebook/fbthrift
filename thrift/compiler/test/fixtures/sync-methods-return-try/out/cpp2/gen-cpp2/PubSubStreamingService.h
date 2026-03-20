@@ -49,7 +49,6 @@ class ServiceHandler<::cpp2::PubSubStreamingService> : public apache::thrift::Se
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
-
   virtual ::apache::thrift::ServerStream<::cpp2::StreamItem> sync_returnstream(std::unique_ptr<::cpp2::StreamItem> /*from*/, std::unique_ptr<::cpp2::StreamItem> /*to*/);
   [[deprecated("Use sync_returnstream instead")]] virtual ::apache::thrift::ServerStream<::cpp2::StreamItem> returnstream(std::unique_ptr<::cpp2::StreamItem> /*from*/, std::unique_ptr<::cpp2::StreamItem> /*to*/);
   virtual folly::Future<::apache::thrift::ServerStream<::cpp2::StreamItem>> future_returnstream(std::unique_ptr<::cpp2::StreamItem> p_from, std::unique_ptr<::cpp2::StreamItem> p_to);
@@ -247,13 +246,6 @@ class PubSubStreamingServiceAsyncProcessor : public ::apache::thrift::GeneratedA
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'streamthrows'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -282,13 +274,6 @@ class PubSubStreamingServiceAsyncProcessor : public ::apache::thrift::GeneratedA
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'streamthrows'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -323,13 +308,6 @@ class PubSubStreamingServiceAsyncProcessor : public ::apache::thrift::GeneratedA
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'servicethrows2'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -358,13 +336,6 @@ class PubSubStreamingServiceAsyncProcessor : public ::apache::thrift::GeneratedA
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'servicethrows2'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -399,13 +370,6 @@ class PubSubStreamingServiceAsyncProcessor : public ::apache::thrift::GeneratedA
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'responseandstreamstreamthrows'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -437,13 +401,6 @@ class PubSubStreamingServiceAsyncProcessor : public ::apache::thrift::GeneratedA
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'responseandstreamservicethrows'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -472,13 +429,6 @@ class PubSubStreamingServiceAsyncProcessor : public ::apache::thrift::GeneratedA
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'responseandstreamservicethrows'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //

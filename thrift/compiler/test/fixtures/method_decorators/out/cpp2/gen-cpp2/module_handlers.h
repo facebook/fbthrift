@@ -82,7 +82,8 @@ class LegacyPerformsIf : public apache::thrift::Tile, public apache::thrift::Ser
   virtual void async_tm_perform(apache::thrift::HandlerCallbackPtr<void> callback);
  private:
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_perform{apache::thrift::detail::si::InvocationType::AsyncTm};
-};class EchoInteractionServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
+};
+class EchoInteractionServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
   public:
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
@@ -329,13 +330,6 @@ class DecoratedServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncPr
    return iface_->createLegacyPerforms();
  }
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'noop'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -362,13 +356,6 @@ class DecoratedServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncPr
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'noop'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -402,13 +389,6 @@ class DecoratedServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncPr
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'increment'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -436,13 +416,6 @@ class DecoratedServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncPr
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'increment'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -476,13 +449,6 @@ class DecoratedServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncPr
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'withStruct'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -513,13 +479,6 @@ class DecoratedServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncPr
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'multiParam'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -547,13 +506,6 @@ class DecoratedServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncPr
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'multiParam'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -589,7 +541,7 @@ class DecoratedServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncPr
   // End of Service Methods
   //
   //
-  // Service Methods
+  // Interaction LegacyPerforms Methods
   //
 
   //
@@ -622,10 +574,10 @@ class DecoratedServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncPr
   //
 
   //
-  // End of Service Methods
+  // End of Interaction LegacyPerforms Methods
   //
   //
-  // Service Methods
+  // Interaction EchoInteraction Methods
   //
 
   //
@@ -659,7 +611,7 @@ class DecoratedServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncPr
   //
 
   //
-  // End of Service Methods
+  // End of Interaction EchoInteraction Methods
   //
  public:
   DecoratedServiceAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::DecoratedService>* iface) :
@@ -695,7 +647,6 @@ class ServiceHandler<::cpp2::UndecoratedService> : public apache::thrift::Server
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
-
   virtual void sync_noop();
   [[deprecated("Use sync_noop instead")]] virtual void noop();
   virtual folly::Future<folly::Unit> future_noop();
@@ -883,13 +834,6 @@ class UndecoratedServiceAsyncProcessor : public ::apache::thrift::GeneratedAsync
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'echo'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -917,13 +861,6 @@ class UndecoratedServiceAsyncProcessor : public ::apache::thrift::GeneratedAsync
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'echo'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -957,13 +894,6 @@ class UndecoratedServiceAsyncProcessor : public ::apache::thrift::GeneratedAsync
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'sum'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -991,13 +921,6 @@ class UndecoratedServiceAsyncProcessor : public ::apache::thrift::GeneratedAsync
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'sum'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -1031,13 +954,6 @@ class UndecoratedServiceAsyncProcessor : public ::apache::thrift::GeneratedAsync
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'multiParam'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1065,13 +981,6 @@ class UndecoratedServiceAsyncProcessor : public ::apache::thrift::GeneratedAsync
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'multiParam'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -1140,7 +1049,6 @@ class ServiceHandler<::cpp2::DecoratedService_ExtendsUndecoratedService> : virtu
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
-
   virtual void sync_extension();
   [[deprecated("Use sync_extension instead")]] virtual void extension();
   virtual folly::Future<folly::Unit> future_extension();
@@ -1312,7 +1220,6 @@ class ServiceHandler<::cpp2::DecoratedService_ExtendsDecoratedService> : virtual
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
-
   virtual void sync_extension();
   [[deprecated("Use sync_extension instead")]] virtual void extension();
   virtual folly::Future<folly::Unit> future_extension();
@@ -1500,7 +1407,6 @@ class ServiceHandler<::cpp2::UndecoratedService_ExtendsDecoratedService> : virtu
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
-
   virtual void sync_extension();
   [[deprecated("Use sync_extension instead")]] virtual void extension();
   virtual folly::Future<folly::Unit> future_extension();
@@ -1648,7 +1554,6 @@ class ServiceHandler<::cpp2::DecoratedService_ExtendsUndecoratedService_ExtendsD
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
-
   virtual void sync_secondExtension(::std::string& /*_return*/, std::unique_ptr<::std::string> /*input*/);
   [[deprecated("Use sync_secondExtension instead")]] virtual void secondExtension(::std::string& /*_return*/, std::unique_ptr<::std::string> /*input*/);
   virtual folly::Future<std::unique_ptr<::std::string>> future_secondExtension(std::unique_ptr<::std::string> p_input);

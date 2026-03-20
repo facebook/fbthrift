@@ -47,6 +47,7 @@ struct ServiceMethodTypesFootprint<::extra::svc::ExtraService> {
   ::some::valid::ns::MyStruct,
   ::std::vector<::some::valid::ns::ComplexUnion>>;
 };
+
 } // namespace detail
 
 template <>

@@ -1532,22 +1532,22 @@ determineInvocationType:
 
 namespace cpp2 {
 
-void DecoratedServiceSvNull::noop() { 
+void DecoratedServiceSvNull::noop() {
 }
 
-void DecoratedServiceSvNull::echo(::std::string& /*_return*/, std::unique_ptr<::std::string> /*text*/) {  }
+void DecoratedServiceSvNull::echo(::std::string& /*_return*/, std::unique_ptr<::std::string> /*text*/) {}
 
-::std::int64_t DecoratedServiceSvNull::increment(::std::int64_t /*num*/) { 
+::std::int64_t DecoratedServiceSvNull::increment(::std::int64_t /*num*/) {
   return 0;
 }
 
-::std::int64_t DecoratedServiceSvNull::sum(std::unique_ptr<::std::vector<::std::int64_t>> /*nums*/) { 
+::std::int64_t DecoratedServiceSvNull::sum(std::unique_ptr<::std::vector<::std::int64_t>> /*nums*/) {
   return 0;
 }
 
-void DecoratedServiceSvNull::withStruct(::cpp2::Response& /*_return*/, std::unique_ptr<::cpp2::Request> /*request*/) {  }
+void DecoratedServiceSvNull::withStruct(::cpp2::Response& /*_return*/, std::unique_ptr<::cpp2::Request> /*request*/) {}
 
-void DecoratedServiceSvNull::multiParam(::cpp2::Response& /*_return*/, std::unique_ptr<::std::string> /*text*/, ::std::int64_t /*num*/, std::unique_ptr<::cpp2::Request> /*request*/) {  }
+void DecoratedServiceSvNull::multiParam(::cpp2::Response& /*_return*/, std::unique_ptr<::std::string> /*text*/, ::std::int64_t /*num*/, std::unique_ptr<::cpp2::Request> /*request*/) {}
 
 
 std::string_view DecoratedServiceAsyncProcessor::getServiceName() {
@@ -1712,7 +1712,8 @@ const DecoratedServiceAsyncProcessor::InteractionConstructorMap DecoratedService
 std::unique_ptr<apache::thrift::Tile> DecoratedServiceAsyncProcessor::createInteractionImpl(const std::string& name, int16_t) {
   auto fn = getInteractionConstructorMap().at(name);
   return (this->*fn)();
-}} // namespace cpp2
+}
+} // namespace cpp2
 
 std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<::cpp2::UndecoratedService>::getProcessor() {
   return std::make_unique<::cpp2::UndecoratedServiceAsyncProcessor>(this);
@@ -2780,24 +2781,24 @@ determineInvocationType:
 
 namespace cpp2 {
 
-void UndecoratedServiceSvNull::noop() { 
+void UndecoratedServiceSvNull::noop() {
 }
 
-void UndecoratedServiceSvNull::echo(::std::string& /*_return*/, std::unique_ptr<::std::string> /*text*/) {  }
+void UndecoratedServiceSvNull::echo(::std::string& /*_return*/, std::unique_ptr<::std::string> /*text*/) {}
 
-::std::int64_t UndecoratedServiceSvNull::increment(::std::int64_t /*num*/) { 
+::std::int64_t UndecoratedServiceSvNull::increment(::std::int64_t /*num*/) {
   return 0;
 }
 
-::std::int64_t UndecoratedServiceSvNull::sum(std::unique_ptr<::std::vector<::std::int64_t>> /*nums*/) { 
+::std::int64_t UndecoratedServiceSvNull::sum(std::unique_ptr<::std::vector<::std::int64_t>> /*nums*/) {
   return 0;
 }
 
-void UndecoratedServiceSvNull::withStruct(::cpp2::Response& /*_return*/, std::unique_ptr<::cpp2::Request> /*request*/) {  }
+void UndecoratedServiceSvNull::withStruct(::cpp2::Response& /*_return*/, std::unique_ptr<::cpp2::Request> /*request*/) {}
 
-void UndecoratedServiceSvNull::multiParam(::cpp2::Response& /*_return*/, std::unique_ptr<::std::string> /*text*/, ::std::int64_t /*num*/, std::unique_ptr<::cpp2::Request> /*request*/) {  }
+void UndecoratedServiceSvNull::multiParam(::cpp2::Response& /*_return*/, std::unique_ptr<::std::string> /*text*/, ::std::int64_t /*num*/, std::unique_ptr<::cpp2::Request> /*request*/) {}
 
-void UndecoratedServiceSvNull::adaptedRequest(::cpp2::Response& /*_return*/, std::unique_ptr<::cpp2::AdaptedRequest> /*request*/) {  }
+void UndecoratedServiceSvNull::adaptedRequest(::cpp2::Response& /*_return*/, std::unique_ptr<::cpp2::AdaptedRequest> /*request*/) {}
 
 
 std::string_view UndecoratedServiceAsyncProcessor::getServiceName() {
@@ -3245,7 +3246,7 @@ determineInvocationType:
 
 namespace cpp2 {
 
-void DecoratedService_ExtendsUndecoratedServiceSvNull::extension() { 
+void DecoratedService_ExtendsUndecoratedServiceSvNull::extension() {
 }
 
 
@@ -3666,7 +3667,7 @@ determineInvocationType:
 
 namespace cpp2 {
 
-void DecoratedService_ExtendsDecoratedServiceSvNull::extension() { 
+void DecoratedService_ExtendsDecoratedServiceSvNull::extension() {
 }
 
 
@@ -3895,7 +3896,7 @@ determineInvocationType:
 
 namespace cpp2 {
 
-void UndecoratedService_ExtendsDecoratedServiceSvNull::extension() { 
+void UndecoratedService_ExtendsDecoratedServiceSvNull::extension() {
 }
 
 
@@ -4335,7 +4336,7 @@ determineInvocationType:
 
 namespace cpp2 {
 
-void DecoratedService_ExtendsUndecoratedService_ExtendsDecoratedServiceSvNull::secondExtension(::std::string& /*_return*/, std::unique_ptr<::std::string> /*input*/) {  }
+void DecoratedService_ExtendsUndecoratedService_ExtendsDecoratedServiceSvNull::secondExtension(::std::string& /*_return*/, std::unique_ptr<::std::string> /*input*/) {}
 
 
 std::string_view DecoratedService_ExtendsUndecoratedService_ExtendsDecoratedServiceAsyncProcessor::getServiceName() {

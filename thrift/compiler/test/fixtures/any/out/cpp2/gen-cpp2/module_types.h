@@ -103,12 +103,11 @@ class MyStruct final  {
   MyStruct(apache::thrift::FragileConstructor, ::std::string myString__arg);
 
   MyStruct(MyStruct&&) noexcept;
-
   MyStruct(const MyStruct& src);
 
 
   MyStruct& operator=(MyStruct&&) noexcept;
-  MyStruct& operator=(const MyStruct& src);
+  MyStruct& operator=(const MyStruct&);
 
   ~MyStruct();
 
@@ -476,12 +475,11 @@ class FOLLY_EXPORT MyException : public virtual apache::thrift::TException {
   MyException(apache::thrift::FragileConstructor, ::std::string myString__arg);
 
   MyException(MyException&&) noexcept;
-
   MyException(const MyException& src);
 
 
   MyException& operator=(MyException&&) noexcept;
-  MyException& operator=(const MyException& src);
+  MyException& operator=(const MyException&);
 
   ~MyException() override;
 

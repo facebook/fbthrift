@@ -37,6 +37,7 @@ struct ServiceMethodTypesFootprint<::cpp2::GoodService> {
   void,
   ::std::int32_t>;
 };
+
 } // namespace detail
 
 template <>
@@ -53,12 +54,9 @@ class BadInteraction final : public apache::thrift::InteractionHandle {
   using apache::thrift::InteractionHandle::InteractionHandle;
   friend class ::apache::thrift::Client<::cpp2::GoodService>;
  public:
-
-
   std::string_view getServiceName() const noexcept override {
     return "BadService";
   }
-
 
   /** Glean {"file": "thrift/compiler/test/fixtures/basic-annotations/src/module.thrift", "service": "BadInteraction", "function": "foo"} */
   void foo(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
@@ -161,6 +159,7 @@ class BadInteraction final : public apache::thrift::InteractionHandle {
   folly::SemiFuture<folly::Unit> fbthrift_semifuture_foo(apache::thrift::RpcOptions& rpcOptions);
  public:
 };
+
   /** Glean {"file": "thrift/compiler/test/fixtures/basic-annotations/src/module.thrift", "service": "BadService", "function": "createBadInteraction"} */
   BadInteraction createBadInteraction();
   /** Glean {"file": "thrift/compiler/test/fixtures/basic-annotations/src/module.thrift", "service": "BadService", "function": "bar"} */

@@ -32,6 +32,7 @@ struct ServiceMethodTypesFootprint<::cpp2::HeaderClientMethodsAnnotationOnFuncti
   ::cpp2::EchoRequest,
   ::cpp2::EchoResponse>;
 };
+
 } // namespace detail
 
 template <>

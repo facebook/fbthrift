@@ -34,6 +34,7 @@ struct ServiceMethodTypesFootprint<::facebook::thrift::test::fixtures::adapter::
   ::facebook::thrift::test::fixtures::adapter::Foo,
   ::facebook::thrift::test::fixtures::adapter::MyI32_4873>;
 };
+
 } // namespace detail
 
 template <>

@@ -155,12 +155,10 @@ class A final  {
   A(apache::thrift::FragileConstructor, ::std::int32_t useless_field__arg);
 
   A(A&&) = default;
-
   A(const A&) = default;
 
 
   A& operator=(A&&) = default;
-
   A& operator=(const A&) = default;
  private:
   ::std::int32_t __fbthrift_field_useless_field;
@@ -586,12 +584,11 @@ class FOLLY_EXPORT Bang : public virtual apache::thrift::TException {
   Bang(apache::thrift::FragileConstructor, ::std::string message__arg);
 
   Bang(Bang&&) noexcept;
-
   Bang(const Bang& src);
 
 
   Bang& operator=(Bang&&) noexcept;
-  Bang& operator=(const Bang& src);
+  Bang& operator=(const Bang&);
 
   ~Bang() override;
 

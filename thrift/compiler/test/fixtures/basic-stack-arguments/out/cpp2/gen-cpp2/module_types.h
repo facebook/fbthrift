@@ -141,12 +141,11 @@ class MyStruct final  {
   MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg);
 
   MyStruct(MyStruct&&) noexcept;
-
   MyStruct(const MyStruct& src);
 
 
   MyStruct& operator=(MyStruct&&) noexcept;
-  MyStruct& operator=(const MyStruct& src);
+  MyStruct& operator=(const MyStruct&);
 
   ~MyStruct();
 

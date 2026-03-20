@@ -88,12 +88,11 @@ class FOLLY_EXPORT FooStreamEx : public virtual apache::thrift::TException {
   FooStreamEx(apache::thrift::FragileConstructor);
 
   FooStreamEx(FooStreamEx&&) noexcept;
-
   FooStreamEx(const FooStreamEx& src);
 
 
   FooStreamEx& operator=(FooStreamEx&&) noexcept;
-  FooStreamEx& operator=(const FooStreamEx& src);
+  FooStreamEx& operator=(const FooStreamEx&);
 
   ~FooStreamEx() override;
 
@@ -180,12 +179,11 @@ class FOLLY_EXPORT FooEx : public virtual apache::thrift::TException {
   FooEx(apache::thrift::FragileConstructor);
 
   FooEx(FooEx&&) noexcept;
-
   FooEx(const FooEx& src);
 
 
   FooEx& operator=(FooEx&&) noexcept;
-  FooEx& operator=(const FooEx& src);
+  FooEx& operator=(const FooEx&);
 
   ~FooEx() override;
 
@@ -272,12 +270,11 @@ class FOLLY_EXPORT FooEx2 : public virtual apache::thrift::TException {
   FooEx2(apache::thrift::FragileConstructor);
 
   FooEx2(FooEx2&&) noexcept;
-
   FooEx2(const FooEx2& src);
 
 
   FooEx2& operator=(FooEx2&&) noexcept;
-  FooEx2& operator=(const FooEx2& src);
+  FooEx2& operator=(const FooEx2&);
 
   ~FooEx2() override;
 

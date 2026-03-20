@@ -2336,49 +2336,49 @@ determineInvocationType:
 
 namespace some::valid::ns {
 
-bool ReturnServiceSvNull::boolReturn() { 
+bool ReturnServiceSvNull::boolReturn() {
   return 0;
 }
 
-::std::int16_t ReturnServiceSvNull::i16Return() { 
+::std::int16_t ReturnServiceSvNull::i16Return() {
   return 0;
 }
 
-::std::int32_t ReturnServiceSvNull::i32Return() { 
+::std::int32_t ReturnServiceSvNull::i32Return() {
   return 0;
 }
 
-::std::int64_t ReturnServiceSvNull::i64Return() { 
+::std::int64_t ReturnServiceSvNull::i64Return() {
   return 0;
 }
 
-float ReturnServiceSvNull::floatReturn() { 
+float ReturnServiceSvNull::floatReturn() {
   return 0;
 }
 
-double ReturnServiceSvNull::doubleReturn() { 
+double ReturnServiceSvNull::doubleReturn() {
   return 0;
 }
 
-void ReturnServiceSvNull::binaryReturn(::std::string& /*_return*/) {  }
+void ReturnServiceSvNull::binaryReturn(::std::string& /*_return*/) {}
 
-void ReturnServiceSvNull::mapReturn(::std::map<::std::string, ::std::int64_t>& /*_return*/) {  }
+void ReturnServiceSvNull::mapReturn(::std::map<::std::string, ::std::int64_t>& /*_return*/) {}
 
-::some::valid::ns::simpleTypeDef ReturnServiceSvNull::simpleTypedefReturn() { 
+::some::valid::ns::simpleTypeDef ReturnServiceSvNull::simpleTypedefReturn() {
   return 0;
 }
 
-void ReturnServiceSvNull::complexTypedefReturn(::some::valid::ns::complexStructTypeDef& /*_return*/) {  }
+void ReturnServiceSvNull::complexTypedefReturn(::some::valid::ns::complexStructTypeDef& /*_return*/) {}
 
-void ReturnServiceSvNull::list_mostComplexTypedefReturn(::std::vector<::some::valid::ns::mostComplexTypeDef>& /*_return*/) {  }
+void ReturnServiceSvNull::list_mostComplexTypedefReturn(::std::vector<::some::valid::ns::mostComplexTypeDef>& /*_return*/) {}
 
-void ReturnServiceSvNull::structReturn(::some::valid::ns::MyStruct& /*_return*/) {  }
+void ReturnServiceSvNull::structReturn(::some::valid::ns::MyStruct& /*_return*/) {}
 
-void ReturnServiceSvNull::set_StructReturn(::std::set<::some::valid::ns::MyStruct>& /*_return*/) {  }
+void ReturnServiceSvNull::set_StructReturn(::std::set<::some::valid::ns::MyStruct>& /*_return*/) {}
 
-void ReturnServiceSvNull::list_UnionReturn(::std::vector<::some::valid::ns::ComplexUnion>& /*_return*/) {  }
+void ReturnServiceSvNull::list_UnionReturn(::std::vector<::some::valid::ns::ComplexUnion>& /*_return*/) {}
 
-void ReturnServiceSvNull::readData(::some::valid::ns::IOBufPtr& /*_return*/, ::std::int64_t /*size*/) {  }
+void ReturnServiceSvNull::readData(::some::valid::ns::IOBufPtr& /*_return*/, ::std::int64_t /*size*/) {}
 
 
 std::string_view ReturnServiceAsyncProcessor::getServiceName() {

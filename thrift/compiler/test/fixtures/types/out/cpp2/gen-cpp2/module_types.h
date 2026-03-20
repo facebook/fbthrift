@@ -644,12 +644,10 @@ class empty_struct final  {
   empty_struct(apache::thrift::FragileConstructor);
 
   empty_struct(empty_struct&&) = default;
-
   empty_struct(const empty_struct&) = default;
 
 
   empty_struct& operator=(empty_struct&&) = default;
-
   empty_struct& operator=(const empty_struct&) = default;
 
  public:
@@ -727,12 +725,11 @@ class decorated_struct final  {
   decorated_struct(apache::thrift::FragileConstructor, ::std::string field__arg);
 
   decorated_struct(decorated_struct&&) noexcept;
-
   decorated_struct(const decorated_struct& src);
 
 
   decorated_struct& operator=(decorated_struct&&) noexcept;
-  decorated_struct& operator=(const decorated_struct& src);
+  decorated_struct& operator=(const decorated_struct&);
 
   ~decorated_struct();
 
@@ -886,12 +883,11 @@ class ContainerStruct final  {
   ContainerStruct(apache::thrift::FragileConstructor, ::std::vector<::std::int32_t> fieldA__arg, std::list<::std::int32_t> fieldB__arg, std::deque<::std::int32_t> fieldC__arg, folly::fbvector<::std::int32_t> fieldD__arg, folly::small_vector<::std::int32_t> fieldE__arg, ::apache::thrift::fixtures::types::set_i32_7194 fieldF__arg, folly::sorted_vector_map<::std::int32_t, ::std::string> fieldG__arg, ::apache::thrift::fixtures::types::SomeMap fieldH__arg);
 
   ContainerStruct(ContainerStruct&&) noexcept;
-
   ContainerStruct(const ContainerStruct& src);
 
 
   ContainerStruct& operator=(ContainerStruct&&) noexcept;
-  ContainerStruct& operator=(const ContainerStruct& src);
+  ContainerStruct& operator=(const ContainerStruct&);
 
   ~ContainerStruct();
 
@@ -1405,12 +1401,11 @@ class CppTypeStruct final  {
   CppTypeStruct(apache::thrift::FragileConstructor, std::list<int32_t> fieldA__arg);
 
   CppTypeStruct(CppTypeStruct&&) noexcept;
-
   CppTypeStruct(const CppTypeStruct& src);
 
 
   CppTypeStruct& operator=(CppTypeStruct&&) noexcept;
-  CppTypeStruct& operator=(const CppTypeStruct& src);
+  CppTypeStruct& operator=(const CppTypeStruct&);
 
   ~CppTypeStruct();
 
@@ -1547,12 +1542,11 @@ class VirtualStruct  {
   VirtualStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg);
 
   VirtualStruct(VirtualStruct&&) noexcept;
-
   VirtualStruct(const VirtualStruct& src);
 
 
   VirtualStruct& operator=(VirtualStruct&&) noexcept;
-  VirtualStruct& operator=(const VirtualStruct& src);
+  VirtualStruct& operator=(const VirtualStruct&);
 
   virtual ~VirtualStruct() {}
 
@@ -1684,12 +1678,10 @@ class MyStructWithForwardRefEnum final  {
   MyStructWithForwardRefEnum(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::MyForwardRefEnum a__arg, ::apache::thrift::fixtures::types::MyForwardRefEnum b__arg);
 
   MyStructWithForwardRefEnum(MyStructWithForwardRefEnum&&) = default;
-
   MyStructWithForwardRefEnum(const MyStructWithForwardRefEnum&) = default;
 
 
   MyStructWithForwardRefEnum& operator=(MyStructWithForwardRefEnum&&) = default;
-
   MyStructWithForwardRefEnum& operator=(const MyStructWithForwardRefEnum&) = default;
  private:
   ::apache::thrift::fixtures::types::MyForwardRefEnum __fbthrift_field_a;
@@ -1865,12 +1857,10 @@ class TrivialNumeric final  {
   TrivialNumeric(apache::thrift::FragileConstructor, ::std::int32_t a__arg, bool b__arg);
 
   TrivialNumeric(TrivialNumeric&&) = default;
-
   TrivialNumeric(const TrivialNumeric&) = default;
 
 
   TrivialNumeric& operator=(TrivialNumeric&&) = default;
-
   TrivialNumeric& operator=(const TrivialNumeric&) = default;
  private:
   ::std::int32_t __fbthrift_field_a;
@@ -2046,12 +2036,10 @@ class TrivialNestedWithDefault final  {
   TrivialNestedWithDefault(apache::thrift::FragileConstructor, ::std::int32_t z__arg, ::apache::thrift::fixtures::types::TrivialNumeric n__arg);
 
   TrivialNestedWithDefault(TrivialNestedWithDefault&&) = default;
-
   TrivialNestedWithDefault(const TrivialNestedWithDefault&) = default;
 
 
   TrivialNestedWithDefault& operator=(TrivialNestedWithDefault&&) = default;
-
   TrivialNestedWithDefault& operator=(const TrivialNestedWithDefault&) = default;
  private:
   ::std::int32_t __fbthrift_field_z;
@@ -2233,12 +2221,11 @@ class ComplexString final  {
   ComplexString(apache::thrift::FragileConstructor, ::std::string a__arg, ::std::map<::std::string, ::std::int32_t> b__arg);
 
   ComplexString(ComplexString&&) noexcept;
-
   ComplexString(const ComplexString& src);
 
 
   ComplexString& operator=(ComplexString&&) noexcept;
-  ComplexString& operator=(const ComplexString& src);
+  ComplexString& operator=(const ComplexString&);
 
   ~ComplexString();
 
@@ -2434,12 +2421,11 @@ class ComplexNestedWithDefault final  {
   ComplexNestedWithDefault(apache::thrift::FragileConstructor, ::std::string z__arg, ::apache::thrift::fixtures::types::ComplexString n__arg);
 
   ComplexNestedWithDefault(ComplexNestedWithDefault&&) noexcept;
-
   ComplexNestedWithDefault(const ComplexNestedWithDefault& src);
 
 
   ComplexNestedWithDefault& operator=(ComplexNestedWithDefault&&) noexcept;
-  ComplexNestedWithDefault& operator=(const ComplexNestedWithDefault& src);
+  ComplexNestedWithDefault& operator=(const ComplexNestedWithDefault&);
 
   ~ComplexNestedWithDefault();
 
@@ -2646,12 +2632,11 @@ class MinPadding final  {
   MinPadding(apache::thrift::FragileConstructor, ::std::int8_t small__arg, ::std::int64_t big__arg, ::std::int16_t medium__arg, ::std::int32_t biggish__arg, ::std::int8_t tiny__arg);
 
   MinPadding(MinPadding&&) noexcept;
-
   MinPadding(const MinPadding& src);
 
 
   MinPadding& operator=(MinPadding&&) noexcept;
-  MinPadding& operator=(const MinPadding& src);
+  MinPadding& operator=(const MinPadding&);
  private:
   ::std::int64_t __fbthrift_field_big;
  private:
@@ -2976,7 +2961,7 @@ class MinPaddingWithCustomType final  {
 
 
   MinPaddingWithCustomType& operator=(MinPaddingWithCustomType&&) noexcept;
-  MinPaddingWithCustomType& operator=(const MinPaddingWithCustomType& src);
+  MinPaddingWithCustomType& operator=(const MinPaddingWithCustomType&);
  private:
   ::apache::thrift::adapt_detail::adapted_field_t<::my::Adapter, 3, ::std::int16_t, MinPaddingWithCustomType> __fbthrift_field_medium;
  private:
@@ -3241,12 +3226,10 @@ class MyDataItem final  {
   MyDataItem(apache::thrift::FragileConstructor);
 
   MyDataItem(MyDataItem&&) = default;
-
   MyDataItem(const MyDataItem&) = default;
 
 
   MyDataItem& operator=(MyDataItem&&) = default;
-
   MyDataItem& operator=(const MyDataItem&) = default;
 
  public:
@@ -3327,12 +3310,11 @@ class MyStruct final  {
   MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::std::int64_t majorVer__arg, ::apache::thrift::fixtures::types::MyDataItem data__arg);
 
   MyStruct(MyStruct&&) noexcept;
-
   MyStruct(const MyStruct& src);
 
 
   MyStruct& operator=(MyStruct&&) noexcept;
-  MyStruct& operator=(const MyStruct& src);
+  MyStruct& operator=(const MyStruct&);
 
   ~MyStruct();
 
@@ -3616,12 +3598,10 @@ class Renamed final  {
   Renamed(apache::thrift::FragileConstructor, ::std::int64_t bar__arg);
 
   Renamed(Renamed&&) = default;
-
   Renamed(const Renamed&) = default;
 
 
   Renamed& operator=(Renamed&&) = default;
-
   Renamed& operator=(const Renamed&) = default;
  private:
   ::std::int64_t __fbthrift_field_bar;
@@ -3749,12 +3729,11 @@ class AnnotatedTypes final  {
   AnnotatedTypes(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::TBinary_8623 binary_field__arg, ::apache::thrift::fixtures::types::SomeListOfTypeMap_2468 list_field__arg);
 
   AnnotatedTypes(AnnotatedTypes&&) noexcept;
-
   AnnotatedTypes(const AnnotatedTypes& src);
 
 
   AnnotatedTypes& operator=(AnnotatedTypes&&) noexcept;
-  AnnotatedTypes& operator=(const AnnotatedTypes& src);
+  AnnotatedTypes& operator=(const AnnotatedTypes&);
 
   ~AnnotatedTypes();
 
@@ -3952,7 +3931,7 @@ class ForwardUsageStruct final  {
 
 
   ForwardUsageStruct& operator=(ForwardUsageStruct&&) noexcept;
-  ForwardUsageStruct& operator=(const ForwardUsageStruct& src);
+  ForwardUsageStruct& operator=(const ForwardUsageStruct&);
 
   ~ForwardUsageStruct();
 
@@ -4079,7 +4058,7 @@ class ForwardUsageRoot final  {
 
 
   ForwardUsageRoot& operator=(ForwardUsageRoot&&) noexcept;
-  ForwardUsageRoot& operator=(const ForwardUsageRoot& src);
+  ForwardUsageRoot& operator=(const ForwardUsageRoot&);
 
   ~ForwardUsageRoot();
 
@@ -4262,7 +4241,7 @@ class ForwardUsageByRef final  {
 
 
   ForwardUsageByRef& operator=(ForwardUsageByRef&&) noexcept;
-  ForwardUsageByRef& operator=(const ForwardUsageByRef& src);
+  ForwardUsageByRef& operator=(const ForwardUsageByRef&);
 
   ~ForwardUsageByRef();
 
@@ -4383,12 +4362,11 @@ class IncompleteMap final  {
   IncompleteMap(apache::thrift::FragileConstructor, ::std::map<::std::int32_t, ::apache::thrift::fixtures::types::IncompleteMapDep> field__arg);
 
   IncompleteMap(IncompleteMap&&) noexcept;
-
   IncompleteMap(const IncompleteMap& src);
 
 
   IncompleteMap& operator=(IncompleteMap&&) noexcept;
-  IncompleteMap& operator=(const IncompleteMap& src);
+  IncompleteMap& operator=(const IncompleteMap&);
 
   ~IncompleteMap();
 
@@ -4524,12 +4502,10 @@ class IncompleteMapDep final  {
   IncompleteMapDep(apache::thrift::FragileConstructor);
 
   IncompleteMapDep(IncompleteMapDep&&) = default;
-
   IncompleteMapDep(const IncompleteMapDep&) = default;
 
 
   IncompleteMapDep& operator=(IncompleteMapDep&&) = default;
-
   IncompleteMapDep& operator=(const IncompleteMapDep&) = default;
 
  public:
@@ -4605,12 +4581,10 @@ class CompleteMapDep final  {
   CompleteMapDep(apache::thrift::FragileConstructor);
 
   CompleteMapDep(CompleteMapDep&&) = default;
-
   CompleteMapDep(const CompleteMapDep&) = default;
 
 
   CompleteMapDep& operator=(CompleteMapDep&&) = default;
-
   CompleteMapDep& operator=(const CompleteMapDep&) = default;
 
  public:
@@ -4688,12 +4662,11 @@ class CompleteMap final  {
   CompleteMap(apache::thrift::FragileConstructor, std::unordered_map<::std::int32_t, ::apache::thrift::fixtures::types::CompleteMapDep> field__arg);
 
   CompleteMap(CompleteMap&&) noexcept;
-
   CompleteMap(const CompleteMap& src);
 
 
   CompleteMap& operator=(CompleteMap&&) noexcept;
-  CompleteMap& operator=(const CompleteMap& src);
+  CompleteMap& operator=(const CompleteMap&);
 
   ~CompleteMap();
 
@@ -4831,12 +4804,11 @@ class IncompleteList final  {
   IncompleteList(apache::thrift::FragileConstructor, ::std::list<::apache::thrift::fixtures::types::IncompleteListDep> field__arg);
 
   IncompleteList(IncompleteList&&) noexcept;
-
   IncompleteList(const IncompleteList& src);
 
 
   IncompleteList& operator=(IncompleteList&&) noexcept;
-  IncompleteList& operator=(const IncompleteList& src);
+  IncompleteList& operator=(const IncompleteList&);
 
   ~IncompleteList();
 
@@ -4972,12 +4944,10 @@ class IncompleteListDep final  {
   IncompleteListDep(apache::thrift::FragileConstructor);
 
   IncompleteListDep(IncompleteListDep&&) = default;
-
   IncompleteListDep(const IncompleteListDep&) = default;
 
 
   IncompleteListDep& operator=(IncompleteListDep&&) = default;
-
   IncompleteListDep& operator=(const IncompleteListDep&) = default;
 
  public:
@@ -5053,12 +5023,10 @@ class CompleteListDep final  {
   CompleteListDep(apache::thrift::FragileConstructor);
 
   CompleteListDep(CompleteListDep&&) = default;
-
   CompleteListDep(const CompleteListDep&) = default;
 
 
   CompleteListDep& operator=(CompleteListDep&&) = default;
-
   CompleteListDep& operator=(const CompleteListDep&) = default;
 
  public:
@@ -5136,12 +5104,11 @@ class CompleteList final  {
   CompleteList(apache::thrift::FragileConstructor, folly::small_vector<::apache::thrift::fixtures::types::CompleteListDep> field__arg);
 
   CompleteList(CompleteList&&) noexcept;
-
   CompleteList(const CompleteList& src);
 
 
   CompleteList& operator=(CompleteList&&) noexcept;
-  CompleteList& operator=(const CompleteList& src);
+  CompleteList& operator=(const CompleteList&);
 
   ~CompleteList();
 
@@ -5279,12 +5246,11 @@ class AdaptedList final  {
   AdaptedList(apache::thrift::FragileConstructor, ::std::vector<::apache::thrift::fixtures::types::AdaptedListDep> field__arg);
 
   AdaptedList(AdaptedList&&) noexcept;
-
   AdaptedList(const AdaptedList& src);
 
 
   AdaptedList& operator=(AdaptedList&&) noexcept;
-  AdaptedList& operator=(const AdaptedList& src);
+  AdaptedList& operator=(const AdaptedList&);
 
   ~AdaptedList();
 
@@ -5423,12 +5389,11 @@ class AdaptedListDep final  {
   AdaptedListDep(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::AdaptedList field__arg);
 
   AdaptedListDep(AdaptedListDep&&) noexcept;
-
   AdaptedListDep(const AdaptedListDep& src);
 
 
   AdaptedListDep& operator=(AdaptedListDep&&) noexcept;
-  AdaptedListDep& operator=(const AdaptedListDep& src);
+  AdaptedListDep& operator=(const AdaptedListDep&);
  private:
   ::apache::thrift::fixtures::types::AdaptedList __fbthrift_field_field;
  private:
@@ -5563,12 +5528,11 @@ class DependentAdaptedListDep final  {
   DependentAdaptedListDep(apache::thrift::FragileConstructor, ::apache::thrift::detail::boxed_value_ptr<::std::int16_t> field__arg);
 
   DependentAdaptedListDep(DependentAdaptedListDep&&) noexcept;
-
   DependentAdaptedListDep(const DependentAdaptedListDep& src);
 
 
   DependentAdaptedListDep& operator=(DependentAdaptedListDep&&) noexcept;
-  DependentAdaptedListDep& operator=(const DependentAdaptedListDep& src);
+  DependentAdaptedListDep& operator=(const DependentAdaptedListDep&);
 
   ~DependentAdaptedListDep();
 
@@ -5689,12 +5653,11 @@ class DependentAdaptedList final  {
   DependentAdaptedList(apache::thrift::FragileConstructor, ::std::vector<::apache::thrift::fixtures::types::DependentAdaptedListDep> field__arg);
 
   DependentAdaptedList(DependentAdaptedList&&) noexcept;
-
   DependentAdaptedList(const DependentAdaptedList& src);
 
 
   DependentAdaptedList& operator=(DependentAdaptedList&&) noexcept;
-  DependentAdaptedList& operator=(const DependentAdaptedList& src);
+  DependentAdaptedList& operator=(const DependentAdaptedList&);
 
   ~DependentAdaptedList();
 
@@ -5857,7 +5820,7 @@ class AllocatorAware final  {
   explicit AllocatorAware(const AllocatorAware& other, const allocator_type& alloc);
   explicit AllocatorAware(AllocatorAware&& other, const allocator_type& alloc);
   AllocatorAware& operator=(AllocatorAware&&) noexcept;
-  AllocatorAware& operator=(const AllocatorAware& src);
+  AllocatorAware& operator=(const AllocatorAware&);
 
   ~AllocatorAware();
 
@@ -6302,7 +6265,7 @@ class AllocatorAware2 final  {
   explicit AllocatorAware2(const AllocatorAware2& other, const allocator_type& alloc);
   explicit AllocatorAware2(AllocatorAware2&& other, const allocator_type& alloc);
   AllocatorAware2& operator=(AllocatorAware2&&) noexcept;
-  AllocatorAware2& operator=(const AllocatorAware2& src);
+  AllocatorAware2& operator=(const AllocatorAware2&);
 
   ~AllocatorAware2();
 
@@ -6475,12 +6438,11 @@ class TypedefStruct final  {
   TypedefStruct(apache::thrift::FragileConstructor, ::std::int32_t i32_field__arg, ::apache::thrift::fixtures::types::IntTypedef IntTypedef_field__arg, ::apache::thrift::fixtures::types::UintTypedef UintTypedef_field__arg);
 
   TypedefStruct(TypedefStruct&&) noexcept;
-
   TypedefStruct(const TypedefStruct& src);
 
 
   TypedefStruct& operator=(TypedefStruct&&) noexcept;
-  TypedefStruct& operator=(const TypedefStruct& src);
+  TypedefStruct& operator=(const TypedefStruct&);
  private:
   ::std::int32_t __fbthrift_field_i32_field;
  private:
@@ -6698,12 +6660,10 @@ class StructWithDoubleUnderscores final  {
   StructWithDoubleUnderscores(apache::thrift::FragileConstructor, ::std::int32_t __field__arg);
 
   StructWithDoubleUnderscores(StructWithDoubleUnderscores&&) = default;
-
   StructWithDoubleUnderscores(const StructWithDoubleUnderscores&) = default;
 
 
   StructWithDoubleUnderscores& operator=(StructWithDoubleUnderscores&&) = default;
-
   StructWithDoubleUnderscores& operator=(const StructWithDoubleUnderscores&) = default;
  private:
   ::std::int32_t __fbthrift_field___field;

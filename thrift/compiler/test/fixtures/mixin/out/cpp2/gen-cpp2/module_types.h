@@ -122,12 +122,11 @@ class Mixin1 final  {
   Mixin1(apache::thrift::FragileConstructor, ::std::string field1__arg);
 
   Mixin1(Mixin1&&) noexcept;
-
   Mixin1(const Mixin1& src);
 
 
   Mixin1& operator=(Mixin1&&) noexcept;
-  Mixin1& operator=(const Mixin1& src);
+  Mixin1& operator=(const Mixin1&);
 
   ~Mixin1();
 
@@ -268,12 +267,11 @@ class Mixin2 final  {
   Mixin2(apache::thrift::FragileConstructor, ::cpp2::Mixin1 m1__arg, ::std::string field2__arg);
 
   Mixin2(Mixin2&&) noexcept;
-
   Mixin2(const Mixin2& src);
 
 
   Mixin2& operator=(Mixin2&&) noexcept;
-  Mixin2& operator=(const Mixin2& src);
+  Mixin2& operator=(const Mixin2&);
 
   ~Mixin2();
 
@@ -476,12 +474,11 @@ class Mixin3Base final  {
   Mixin3Base(apache::thrift::FragileConstructor, ::std::string field3__arg);
 
   Mixin3Base(Mixin3Base&&) noexcept;
-
   Mixin3Base(const Mixin3Base& src);
 
 
   Mixin3Base& operator=(Mixin3Base&&) noexcept;
-  Mixin3Base& operator=(const Mixin3Base& src);
+  Mixin3Base& operator=(const Mixin3Base&);
 
   ~Mixin3Base();
 
@@ -624,12 +621,11 @@ class Foo final  {
   Foo(apache::thrift::FragileConstructor, ::std::string field4__arg, ::cpp2::Mixin2 m2__arg, ::cpp2::Mixin3 m3__arg);
 
   Foo(Foo&&) noexcept;
-
   Foo(const Foo& src);
 
 
   Foo& operator=(Foo&&) noexcept;
-  Foo& operator=(const Foo& src);
+  Foo& operator=(const Foo&);
 
   ~Foo();
 

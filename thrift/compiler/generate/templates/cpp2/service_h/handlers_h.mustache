@@ -58,12 +58,34 @@ class {{service.cpp_name}}AsyncProcessor : public {{#if (object.notnull? service
   static const {{service.cpp_name}}AsyncProcessor::InteractionConstructorMap interactionConstructorMap_;
   {{/if (not (array.empty? service.interactions))}}
  private:
-  {{#each service.functions as |function|}}
+  {{#each (array.enumerate service.functions with_first=true with_last=true) as |i function first? last?|}}
+    {{#if first?}}
+  //
+  // Service Methods
+  //
+
+    {{/if first?}}
 {{#partial async_processor_per_function.async_processor_per_function interface=service parent_service=null function=function}}
+    {{#if last?}}
+  //
+  // End of Service Methods
+  //
+    {{/if last?}}
   {{/each}}
   {{#each service.interactions as |interaction|}}
-    {{#each interaction.functions as |function|}}
+    {{#each (array.enumerate interaction.functions with_first=true with_last=true) as |i function first? last?|}}
+      {{#if first?}}
+  //
+  // Interaction {{interaction.name}} Methods
+  //
+
+      {{/if first?}}
 {{#partial async_processor_per_function.async_processor_per_function interface=interaction parent_service=service function=function}}
+      {{#if last?}}
+  //
+  // End of Interaction {{interaction.name}} Methods
+  //
+      {{/if last?}}
     {{/each}}
   {{/each}}
  public:

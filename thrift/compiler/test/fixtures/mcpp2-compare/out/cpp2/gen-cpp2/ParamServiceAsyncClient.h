@@ -83,6 +83,7 @@ struct ServiceMethodTypesFootprint<::some::valid::ns::ParamService> {
   ::some::valid::ns::folly_set,
   ::some::valid::ns::folly_map>;
 };
+
 } // namespace detail
 
 template <>

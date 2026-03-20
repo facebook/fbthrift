@@ -73,6 +73,7 @@ struct ServiceMethodTypesFootprint<::py3::simple::SimpleService> {
   ::py3::simple::BinaryUnion,
   ::py3::simple::BinaryUnionStruct>;
 };
+
 } // namespace detail
 
 template <>

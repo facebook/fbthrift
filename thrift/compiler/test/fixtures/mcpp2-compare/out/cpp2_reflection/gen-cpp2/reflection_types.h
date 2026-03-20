@@ -88,12 +88,10 @@ class ReflectionStruct final  {
   ReflectionStruct(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg);
 
   ReflectionStruct(ReflectionStruct&&) = default;
-
   ReflectionStruct(const ReflectionStruct&) = default;
 
 
   ReflectionStruct& operator=(ReflectionStruct&&) = default;
-
   ReflectionStruct& operator=(const ReflectionStruct&) = default;
  private:
   ::std::int32_t __fbthrift_field_fieldA;

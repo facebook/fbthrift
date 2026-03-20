@@ -52,7 +52,6 @@ class ServiceHandler<::test::fixtures::basic_structured_annotations::MyService> 
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
-
   virtual void sync_first(::test::fixtures::basic_structured_annotations::annotated_inline_string& /*_return*/);
   [[deprecated("Use sync_first instead")]] virtual void first(::test::fixtures::basic_structured_annotations::annotated_inline_string& /*_return*/);
   virtual folly::Future<std::unique_ptr<::test::fixtures::basic_structured_annotations::annotated_inline_string>> future_first();
@@ -158,13 +157,6 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'first'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //

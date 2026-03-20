@@ -108,7 +108,8 @@ class MyInteractionIf : public apache::thrift::Tile, public apache::thrift::Serv
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_ping{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_truthify{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_encode{apache::thrift::detail::si::InvocationType::AsyncTm};
-};class MyInteractionFastServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
+};
+class MyInteractionFastServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
   public:
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
@@ -131,7 +132,8 @@ class MyInteractionFastIf : public apache::thrift::EventBaseTile, public apache:
   virtual void async_eb_truthify(apache::thrift::HandlerCallbackPtr<::apache::thrift::ServerStream<bool>> callback);
   virtual void async_eb_encode(apache::thrift::HandlerCallbackPtr<::apache::thrift::ResponseAndSinkConsumer<::std::set<::std::int32_t>, ::std::string, ::std::string>> callback);
  private:
-};class SerialInteractionServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
+};
+class SerialInteractionServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
   public:
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
@@ -340,33 +342,12 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
  std::unique_ptr<apache::thrift::Tile> createMyInteraction() {
    return iface_->createMyInteraction();
  }
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
  std::unique_ptr<apache::thrift::Tile> createMyInteractionFast() {
    return iface_->createMyInteractionFast();
  }
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
  std::unique_ptr<apache::thrift::Tile> createSerialInteraction() {
    return iface_->createSerialInteraction();
  }
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
   //
   // Method 'foo'
   //
@@ -394,13 +375,6 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'foo'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -433,13 +407,6 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'interactFast'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -467,13 +434,6 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'interactFast'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -511,7 +471,7 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   // End of Service Methods
   //
   //
-  // Service Methods
+  // Interaction MyInteraction Methods
   //
 
   //
@@ -545,13 +505,6 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'ping'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -567,13 +520,6 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
 
   //
   // End of Method 'ping'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -605,13 +551,6 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'truthify'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -649,10 +588,10 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   //
 
   //
-  // End of Service Methods
+  // End of Interaction MyInteraction Methods
   //
   //
-  // Service Methods
+  // Interaction MyInteractionFast Methods
   //
 
   //
@@ -686,13 +625,6 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'ping'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -708,13 +640,6 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
 
   //
   // End of Method 'ping'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -746,13 +671,6 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'truthify'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -790,10 +708,10 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   //
 
   //
-  // End of Service Methods
+  // End of Interaction MyInteractionFast Methods
   //
   //
-  // Service Methods
+  // Interaction SerialInteraction Methods
   //
 
   //
@@ -826,7 +744,7 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   //
 
   //
-  // End of Service Methods
+  // End of Interaction SerialInteraction Methods
   //
  public:
   MyServiceAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::MyService>* iface) :

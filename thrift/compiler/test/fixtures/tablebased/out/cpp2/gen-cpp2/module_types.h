@@ -220,7 +220,7 @@ class TrivialTypesStruct final  {
 
 
   TrivialTypesStruct& operator=(TrivialTypesStruct&&) noexcept;
-  TrivialTypesStruct& operator=(const TrivialTypesStruct& src);
+  TrivialTypesStruct& operator=(const TrivialTypesStruct&);
 
   ~TrivialTypesStruct();
 
@@ -583,12 +583,11 @@ class ContainerStruct final  {
   ContainerStruct(apache::thrift::FragileConstructor, ::std::vector<::std::int32_t> fieldA__arg, std::list<::std::int32_t> fieldB__arg, std::deque<::std::int32_t> fieldC__arg, folly::fbvector<::std::int32_t> fieldD__arg, folly::small_vector<::std::int32_t> fieldE__arg, folly::sorted_vector_set<::std::int32_t> fieldF__arg, folly::sorted_vector_map<::std::int32_t, ::std::string> fieldG__arg, ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct> fieldH__arg);
 
   ContainerStruct(ContainerStruct&&) noexcept;
-
   ContainerStruct(const ContainerStruct& src);
 
 
   ContainerStruct& operator=(ContainerStruct&&) noexcept;
-  ContainerStruct& operator=(const ContainerStruct& src);
+  ContainerStruct& operator=(const ContainerStruct&);
 
   ~ContainerStruct();
 

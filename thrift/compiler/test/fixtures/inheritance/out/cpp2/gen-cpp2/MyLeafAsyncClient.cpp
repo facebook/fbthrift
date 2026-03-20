@@ -163,21 +163,20 @@ folly::Future<folly::Unit> apache::thrift::Client<::cpp2::MyLeaf>::future_do_lea
   return future_do_leaf(rpcOptions);
 }
 
-folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::MyLeaf>::semifuture_do_leaf() {
-  ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_do_leaf(rpcOptions);
-}
-
 folly::Future<folly::Unit> apache::thrift::Client<::cpp2::MyLeaf>::future_do_leaf(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
   return fbthrift_semifuture_do_leaf<CallbackType>(rpcOptions).toUnsafeFuture();
+}
+
+folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::MyLeaf>::semifuture_do_leaf() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_do_leaf(rpcOptions);
 }
 
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::MyLeaf>::semifuture_do_leaf(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::SemiFutureCallback<folly::Unit>;
   return fbthrift_semifuture_do_leaf<CallbackType>(rpcOptions);
 }
-
 
 void apache::thrift::Client<::cpp2::MyLeaf>::do_leaf(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   do_leaf(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));

@@ -370,13 +370,6 @@ class FootprintTestServiceAsyncProcessor : public ::apache::thrift::GeneratedAsy
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'getStruct'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -404,13 +397,6 @@ class FootprintTestServiceAsyncProcessor : public ::apache::thrift::GeneratedAsy
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'getStruct'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -443,13 +429,6 @@ class FootprintTestServiceAsyncProcessor : public ::apache::thrift::GeneratedAsy
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'setStructList'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -476,13 +455,6 @@ class FootprintTestServiceAsyncProcessor : public ::apache::thrift::GeneratedAsy
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'setStructList'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -516,13 +488,6 @@ class FootprintTestServiceAsyncProcessor : public ::apache::thrift::GeneratedAsy
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'getNestedContainer'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -550,13 +515,6 @@ class FootprintTestServiceAsyncProcessor : public ::apache::thrift::GeneratedAsy
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'getNestedContainer'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -590,13 +548,6 @@ class FootprintTestServiceAsyncProcessor : public ::apache::thrift::GeneratedAsy
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'getTypedefList'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -624,13 +575,6 @@ class FootprintTestServiceAsyncProcessor : public ::apache::thrift::GeneratedAsy
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'getTypedefList'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -664,13 +608,6 @@ class FootprintTestServiceAsyncProcessor : public ::apache::thrift::GeneratedAsy
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'getCalculator'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -697,13 +634,6 @@ class FootprintTestServiceAsyncProcessor : public ::apache::thrift::GeneratedAsy
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'getCalculator'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -738,13 +668,6 @@ class FootprintTestServiceAsyncProcessor : public ::apache::thrift::GeneratedAsy
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'streamWithSinkInitial'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -773,13 +696,6 @@ class FootprintTestServiceAsyncProcessor : public ::apache::thrift::GeneratedAsy
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'streamWithSinkInitial'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -817,7 +733,7 @@ class FootprintTestServiceAsyncProcessor : public ::apache::thrift::GeneratedAsy
   // End of Service Methods
   //
   //
-  // Service Methods
+  // Interaction Calculator Methods
   //
 
   //
@@ -851,7 +767,7 @@ class FootprintTestServiceAsyncProcessor : public ::apache::thrift::GeneratedAsy
   //
 
   //
-  // End of Service Methods
+  // End of Interaction Calculator Methods
   //
  public:
   FootprintTestServiceAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2_struct_footprint::FootprintTestService>* iface) :

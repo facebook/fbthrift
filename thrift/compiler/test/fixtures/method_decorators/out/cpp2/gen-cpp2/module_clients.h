@@ -43,6 +43,7 @@ struct ServiceMethodTypesFootprint<::cpp2::DecoratedService> {
   ::cpp2::Request,
   ::cpp2::Response>;
 };
+
 } // namespace detail
 
 template <>
@@ -59,12 +60,9 @@ class LegacyPerforms final : public apache::thrift::InteractionHandle {
   using apache::thrift::InteractionHandle::InteractionHandle;
   friend class ::apache::thrift::Client<::cpp2::DecoratedService>;
  public:
-
-
   std::string_view getServiceName() const noexcept override {
     return "DecoratedService";
   }
-
 
   /** Glean {"file": "thrift/compiler/test/fixtures/method_decorators/src/module.thrift", "service": "LegacyPerforms", "function": "perform"} */
   void perform(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
@@ -166,16 +164,14 @@ class LegacyPerforms final : public apache::thrift::InteractionHandle {
   template <typename CallbackType>
   folly::SemiFuture<folly::Unit> fbthrift_semifuture_perform(apache::thrift::RpcOptions& rpcOptions);
  public:
-};class EchoInteraction final : public apache::thrift::InteractionHandle {
+};
+class EchoInteraction final : public apache::thrift::InteractionHandle {
   using apache::thrift::InteractionHandle::InteractionHandle;
   friend class ::apache::thrift::Client<::cpp2::DecoratedService>;
  public:
-
-
   std::string_view getServiceName() const noexcept override {
     return "DecoratedService";
   }
-
 
   /** Glean {"file": "thrift/compiler/test/fixtures/method_decorators/src/module.thrift", "service": "EchoInteraction", "function": "interactionEcho"} */
   void interactionEcho(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_text);
@@ -277,6 +273,7 @@ class LegacyPerforms final : public apache::thrift::InteractionHandle {
   folly::SemiFuture<::std::string> fbthrift_semifuture_interactionEcho(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_text);
  public:
 };
+
   /** Glean {"file": "thrift/compiler/test/fixtures/method_decorators/src/module.thrift", "service": "DecoratedService", "function": "createLegacyPerforms"} */
   LegacyPerforms createLegacyPerforms();
   /** Glean {"file": "thrift/compiler/test/fixtures/method_decorators/src/module.thrift", "service": "DecoratedService", "function": "noop"} */
@@ -1094,6 +1091,7 @@ struct ServiceMethodTypesFootprint<::cpp2::UndecoratedService> {
   ::cpp2::Response,
   ::cpp2::AdaptedRequest>;
 };
+
 } // namespace detail
 
 template <>
@@ -1922,6 +1920,7 @@ struct ServiceMethodTypesFootprint<::cpp2::DecoratedService_ExtendsUndecoratedSe
   using TypesInMethods = folly::tag_t<
   void>;
 };
+
 } // namespace detail
 
 template <>
@@ -2072,6 +2071,7 @@ struct ServiceMethodTypesFootprint<::cpp2::DecoratedService_ExtendsDecoratedServ
   using TypesInMethods = folly::tag_t<
   void>;
 };
+
 } // namespace detail
 
 template <>
@@ -2222,6 +2222,7 @@ struct ServiceMethodTypesFootprint<::cpp2::UndecoratedService_ExtendsDecoratedSe
   using TypesInMethods = folly::tag_t<
   void>;
 };
+
 } // namespace detail
 
 template <>
@@ -2372,6 +2373,7 @@ struct ServiceMethodTypesFootprint<::cpp2::DecoratedService_ExtendsUndecoratedSe
   using TypesInMethods = folly::tag_t<
   ::std::string>;
 };
+
 } // namespace detail
 
 template <>

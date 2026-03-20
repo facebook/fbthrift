@@ -171,12 +171,11 @@ class Default final  {
   Default(apache::thrift::FragileConstructor, ::std::int32_t field1__arg, ::std::int32_t field2__arg, ::std::string field3__arg, double field4__arg);
 
   Default(Default&&) noexcept;
-
   Default(const Default& src);
 
 
   Default& operator=(Default&&) noexcept;
-  Default& operator=(const Default& src);
+  Default& operator=(const Default&);
 
   ~Default();
 
@@ -475,12 +474,11 @@ class NonAtomic final  {
   NonAtomic(apache::thrift::FragileConstructor, ::std::int32_t field1__arg, ::std::int32_t field2__arg, ::std::string field3__arg, double field4__arg);
 
   NonAtomic(NonAtomic&&) noexcept;
-
   NonAtomic(const NonAtomic& src);
 
 
   NonAtomic& operator=(NonAtomic&&) noexcept;
-  NonAtomic& operator=(const NonAtomic& src);
+  NonAtomic& operator=(const NonAtomic&);
 
   ~NonAtomic();
 
@@ -779,12 +777,11 @@ class Atomic final  {
   Atomic(apache::thrift::FragileConstructor, ::std::int32_t field1__arg, ::std::int32_t field2__arg, ::std::string field3__arg, double field4__arg);
 
   Atomic(Atomic&&) noexcept;
-
   Atomic(const Atomic& src);
 
 
   Atomic& operator=(Atomic&&) noexcept;
-  Atomic& operator=(const Atomic& src);
+  Atomic& operator=(const Atomic&);
 
   ~Atomic();
 
@@ -1083,12 +1080,11 @@ class AtomicFoo final  {
   AtomicFoo(apache::thrift::FragileConstructor, ::std::int32_t field1__arg, ::std::int32_t field2__arg, ::std::string field3__arg, double field4__arg);
 
   AtomicFoo(AtomicFoo&&) noexcept;
-
   AtomicFoo(const AtomicFoo& src);
 
 
   AtomicFoo& operator=(AtomicFoo&&) noexcept;
-  AtomicFoo& operator=(const AtomicFoo& src);
+  AtomicFoo& operator=(const AtomicFoo&);
 
   ~AtomicFoo();
 

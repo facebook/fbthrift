@@ -101,12 +101,11 @@ class Request final  {
   Request(apache::thrift::FragileConstructor, ::std::string id__arg);
 
   Request(Request&&) noexcept;
-
   Request(const Request& src);
 
 
   Request& operator=(Request&&) noexcept;
-  Request& operator=(const Request& src);
+  Request& operator=(const Request&);
 
   ~Request();
 
@@ -246,12 +245,11 @@ class AdaptedRequest final  {
   AdaptedRequest(apache::thrift::FragileConstructor, ::std::string id__arg);
 
   AdaptedRequest(AdaptedRequest&&) noexcept;
-
   AdaptedRequest(const AdaptedRequest& src);
 
 
   AdaptedRequest& operator=(AdaptedRequest&&) noexcept;
-  AdaptedRequest& operator=(const AdaptedRequest& src);
+  AdaptedRequest& operator=(const AdaptedRequest&);
 
   ~AdaptedRequest();
 
@@ -393,12 +391,11 @@ class Response final  {
   Response(apache::thrift::FragileConstructor, ::std::string text__arg);
 
   Response(Response&&) noexcept;
-
   Response(const Response& src);
 
 
   Response& operator=(Response&&) noexcept;
-  Response& operator=(const Response& src);
+  Response& operator=(const Response&);
 
   ~Response();
 

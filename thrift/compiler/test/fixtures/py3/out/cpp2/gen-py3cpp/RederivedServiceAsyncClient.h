@@ -36,6 +36,7 @@ struct ServiceMethodTypesFootprint<::py3::simple::RederivedService> {
   using TypesInMethods = folly::tag_t<
   ::std::int32_t>;
 };
+
 } // namespace detail
 
 template <>

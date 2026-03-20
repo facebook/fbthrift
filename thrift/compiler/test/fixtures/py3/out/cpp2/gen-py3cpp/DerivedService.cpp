@@ -182,7 +182,7 @@ determineInvocationType:
 
 namespace py3::simple {
 
-::std::int32_t DerivedServiceSvNull::get_six() { 
+::std::int32_t DerivedServiceSvNull::get_six() {
   return 0;
 }
 

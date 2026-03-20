@@ -144,12 +144,10 @@ class AStruct final  {
   AStruct(apache::thrift::FragileConstructor, ::std::int32_t FieldA__arg);
 
   AStruct(AStruct&&) = default;
-
   AStruct(const AStruct&) = default;
 
 
   AStruct& operator=(AStruct&&) = default;
-
   AStruct& operator=(const AStruct&) = default;
  private:
   ::std::int32_t __fbthrift_field_FieldA;
@@ -274,12 +272,11 @@ class AStructB final  {
   AStructB(apache::thrift::FragileConstructor, ::std::shared_ptr<const ::a::different::ns::AStruct> FieldA__arg);
 
   AStructB(AStructB&&) noexcept;
-
   AStructB(const AStructB& src);
 
 
   AStructB& operator=(AStructB&&) noexcept;
-  AStructB& operator=(const AStructB& src);
+  AStructB& operator=(const AStructB&);
 
   ~AStructB();
 

@@ -132,12 +132,11 @@ class User final  {
   User(apache::thrift::FragileConstructor, ::std::int64_t id__arg, ::std::string name__arg, ::std::string full_name__arg, ::std::string email__arg, ::std::string email_address__arg);
 
   User(User&&) noexcept;
-
   User(const User& src);
 
 
   User& operator=(User&&) noexcept;
-  User& operator=(const User& src);
+  User& operator=(const User&);
 
   ~User();
 

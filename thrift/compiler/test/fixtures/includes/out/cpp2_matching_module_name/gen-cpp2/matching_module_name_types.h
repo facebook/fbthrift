@@ -88,12 +88,10 @@ class MyStruct final  {
   MyStruct(apache::thrift::FragileConstructor, ::matching_module_name::OtherStruct OtherStructField__arg);
 
   MyStruct(MyStruct&&) = default;
-
   MyStruct(const MyStruct&) = default;
 
 
   MyStruct& operator=(MyStruct&&) = default;
-
   MyStruct& operator=(const MyStruct&) = default;
  private:
   ::matching_module_name::OtherStruct __fbthrift_field_OtherStructField;

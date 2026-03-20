@@ -164,12 +164,10 @@ class MyDataItem final  {
   MyDataItem(apache::thrift::FragileConstructor);
 
   MyDataItem(MyDataItem&&) = default;
-
   MyDataItem(const MyDataItem&) = default;
 
 
   MyDataItem& operator=(MyDataItem&&) = default;
-
   MyDataItem& operator=(const MyDataItem&) = default;
 
  public:
@@ -252,12 +250,11 @@ class MyStruct final  {
   MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::cpp2::MyDataItem MyDataField__arg, ::cpp2::MyEnum myEnum__arg);
 
   MyStruct(MyStruct&&) noexcept;
-
   MyStruct(const MyStruct& src);
 
 
   MyStruct& operator=(MyStruct&&) noexcept;
-  MyStruct& operator=(const MyStruct& src);
+  MyStruct& operator=(const MyStruct&);
 
   ~MyStruct();
 

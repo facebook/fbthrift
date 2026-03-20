@@ -50,7 +50,6 @@ class ServiceHandler<::test::namespace_from_package::module::TestService> : publ
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
-
   virtual ::std::int64_t sync_init(::std::int64_t /*int1*/);
   [[deprecated("Use sync_init instead")]] virtual ::std::int64_t init(::std::int64_t /*int1*/);
   virtual folly::Future<::std::int64_t> future_init(::std::int64_t p_int1);

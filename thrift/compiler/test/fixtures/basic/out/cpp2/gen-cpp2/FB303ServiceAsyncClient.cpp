@@ -164,21 +164,20 @@ folly::Future<::test::fixtures::basic::ReservedKeyword> apache::thrift::Client<:
   return future_simple_rpc(rpcOptions, p_int_parameter);
 }
 
-folly::SemiFuture<::test::fixtures::basic::ReservedKeyword> apache::thrift::Client<::test::fixtures::basic::FB303Service>::semifuture_simple_rpc(::std::int32_t p_int_parameter) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_simple_rpc(rpcOptions, p_int_parameter);
-}
-
 folly::Future<::test::fixtures::basic::ReservedKeyword> apache::thrift::Client<::test::fixtures::basic::FB303Service>::future_simple_rpc(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_int_parameter) {
   using CallbackType = apache::thrift::FutureCallback<::test::fixtures::basic::ReservedKeyword>;
   return fbthrift_semifuture_simple_rpc<CallbackType>(rpcOptions, p_int_parameter).toUnsafeFuture();
+}
+
+folly::SemiFuture<::test::fixtures::basic::ReservedKeyword> apache::thrift::Client<::test::fixtures::basic::FB303Service>::semifuture_simple_rpc(::std::int32_t p_int_parameter) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_simple_rpc(rpcOptions, p_int_parameter);
 }
 
 folly::SemiFuture<::test::fixtures::basic::ReservedKeyword> apache::thrift::Client<::test::fixtures::basic::FB303Service>::semifuture_simple_rpc(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_int_parameter) {
   using CallbackType = apache::thrift::SemiFutureCallback<::test::fixtures::basic::ReservedKeyword>;
   return fbthrift_semifuture_simple_rpc<CallbackType>(rpcOptions, p_int_parameter);
 }
-
 
 void apache::thrift::Client<::test::fixtures::basic::FB303Service>::simple_rpc(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int32_t p_int_parameter) {
   simple_rpc(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_int_parameter);
