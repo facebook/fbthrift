@@ -139,8 +139,10 @@ class {{service.name}}Interface(
                         protocol
                     )
                     {{#if (array.empty? function.sink.exceptions)}}
-                    assert sink_elem.success is not None, "unexpected empty sink element"
-                    yield sink_elem.success
+                    if sink_elem.success is None:
+                        break{{! iobuf_item unexpectedly empty, may happen if client terminated}}
+                    else:
+                        yield sink_elem.success
                     {{#else}}
                     if sink_elem.success is not None:
                         yield sink_elem.success
@@ -149,7 +151,8 @@ class {{service.name}}Interface(
                         if ex is not None:
                             # pyre-ignore[48]: Invalid Exception
                             raise ex
-                    assert sink_elem.success is not None, "unexpected empty sink element"
+
+                    break{{! iobuf_item unexpectedly empty, may happen if client terminated}}
                     {{/if (array.empty? function.sink.exceptions)}}
 
             {{#if (array.empty? function.sink.final_response_exceptions)}}
@@ -194,8 +197,10 @@ class {{service.name}}Interface(
                         protocol
                     )
                     {{#if (array.empty? function.sink.exceptions)}}
-                    assert sink_elem.success is not None, "unexpected empty sink element"
-                    yield sink_elem.success
+                    if sink_elem.success is None:
+                        break{{! iobuf_item unexpectedly empty, may happen if client terminated}}
+                    else:
+                        yield sink_elem.success
                     {{#else}}
                     if sink_elem.success is not None:
                         yield sink_elem.success
@@ -204,7 +209,7 @@ class {{service.name}}Interface(
                         if ex is not None:
                             # pyre-ignore[48]: Invalid Exception
                             raise ex
-                    assert sink_elem.success is not None, "unexpected empty sink element"
+                    break{{! iobuf_item unexpectedly empty, may happen if client terminated}}
                     {{/if (array.empty? function.sink.exceptions)}}
 
             async def _handle_stream(stream_generator: _typing.AsyncIterator[{{#partial typehints.pep484_type type=function.stream.elem_type}}]) -> _typing.AsyncGenerator[_fbthrift_iobuf.IOBuf, None]:

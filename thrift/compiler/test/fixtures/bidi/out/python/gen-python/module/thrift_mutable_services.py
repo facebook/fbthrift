@@ -74,8 +74,10 @@ class BiDiServiceInterface(
                         iobuf_item,
                         protocol
                     )
-                    assert sink_elem.success is not None, "unexpected empty sink element"
-                    yield sink_elem.success
+                    if sink_elem.success is None:
+                        break
+                    else:
+                        yield sink_elem.success
 
             async def _handle_stream(stream_generator: _typing.AsyncIterator[builtins.int]) -> _typing.AsyncGenerator[_fbthrift_iobuf.IOBuf, None]:
                 async for item in stream_generator:
@@ -113,8 +115,10 @@ class BiDiServiceInterface(
                         iobuf_item,
                         protocol
                     )
-                    assert sink_elem.success is not None, "unexpected empty sink element"
-                    yield sink_elem.success
+                    if sink_elem.success is None:
+                        break
+                    else:
+                        yield sink_elem.success
 
             async def _handle_stream(stream_generator: _typing.AsyncIterator[builtins.int]) -> _typing.AsyncGenerator[_fbthrift_iobuf.IOBuf, None]:
                 async for item in stream_generator:
@@ -159,7 +163,7 @@ class BiDiServiceInterface(
                         if ex is not None:
                             # pyre-ignore[48]: Invalid Exception
                             raise ex
-                    assert sink_elem.success is not None, "unexpected empty sink element"
+                    break
 
             async def _handle_stream(stream_generator: _typing.AsyncIterator[builtins.int]) -> _typing.AsyncGenerator[_fbthrift_iobuf.IOBuf, None]:
                 try:

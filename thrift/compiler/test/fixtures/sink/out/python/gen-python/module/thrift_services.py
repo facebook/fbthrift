@@ -76,8 +76,10 @@ class SinkServiceInterface(
                         iobuf_item,
                         protocol
                     )
-                    assert sink_elem.success is not None, "unexpected empty sink element"
-                    yield sink_elem.success
+                    if sink_elem.success is None:
+                        break
+                    else:
+                        yield sink_elem.success
 
             final_resp = await handler_sink_callback(_handler_agen())
             return_struct = _fbthrift__module__thrift_types._fbthrift_SinkService_method_result_sink_final(success=final_resp)
@@ -115,8 +117,10 @@ class SinkServiceInterface(
                         iobuf_item,
                         protocol
                     )
-                    assert sink_elem.success is not None, "unexpected empty sink element"
-                    yield sink_elem.success
+                    if sink_elem.success is None:
+                        break
+                    else:
+                        yield sink_elem.success
 
             final_resp = await handler_sink_callback(_handler_agen())
             return_struct = _fbthrift__module__thrift_types._fbthrift_SinkService_methodAndReponse_result_sink_final(success=final_resp)
@@ -154,8 +158,10 @@ class SinkServiceInterface(
                         iobuf_item,
                         protocol
                     )
-                    assert sink_elem.success is not None, "unexpected empty sink element"
-                    yield sink_elem.success
+                    if sink_elem.success is None:
+                        break
+                    else:
+                        yield sink_elem.success
 
             final_resp = await handler_sink_callback(_handler_agen())
             return_struct = _fbthrift__module__thrift_types._fbthrift_SinkService_methodThrow_result_sink_final(success=final_resp)
@@ -206,7 +212,8 @@ class SinkServiceInterface(
                         if ex is not None:
                             # pyre-ignore[48]: Invalid Exception
                             raise ex
-                    assert sink_elem.success is not None, "unexpected empty sink element"
+
+                    break
 
             final_resp = await handler_sink_callback(_handler_agen())
             return_struct = _fbthrift__module__thrift_types._fbthrift_SinkService_methodSinkThrow_result_sink_final(success=final_resp)
@@ -244,8 +251,10 @@ class SinkServiceInterface(
                         iobuf_item,
                         protocol
                     )
-                    assert sink_elem.success is not None, "unexpected empty sink element"
-                    yield sink_elem.success
+                    if sink_elem.success is None:
+                        break
+                    else:
+                        yield sink_elem.success
 
             try:
                 final_resp = await handler_sink_callback(_handler_agen())
@@ -293,7 +302,8 @@ class SinkServiceInterface(
                         if ex is not None:
                             # pyre-ignore[48]: Invalid Exception
                             raise ex
-                    assert sink_elem.success is not None, "unexpected empty sink element"
+
+                    break
 
             try:
                 final_resp = await handler_sink_callback(_handler_agen())
@@ -334,8 +344,10 @@ class SinkServiceInterface(
                         iobuf_item,
                         protocol
                     )
-                    assert sink_elem.success is not None, "unexpected empty sink element"
-                    yield sink_elem.success
+                    if sink_elem.success is None:
+                        break
+                    else:
+                        yield sink_elem.success
 
             final_resp = await handler_sink_callback(_handler_agen())
             return_struct = _fbthrift__module__thrift_types._fbthrift_SinkService_methodFast_result_sink_final(success=final_resp)
