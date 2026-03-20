@@ -15,37 +15,36 @@
   limitations under the License.
 
 }}
-{{#import "common/server" as server}}
 {{> Autogen}}
 #pragma once
 
 #include <thrift/lib/cpp2/gen/service_h.h>
 
-#include "{{program:include_prefix}}{{program:name}}_types.h"
-  {{#each program:includes_for_codegen as |include|}}
+#include "{{program.include_prefix}}{{program.name}}_types.h"
+  {{#each program.includes_for_codegen as |include|}}
 #include "{{include.program.include_prefix}}{{include.program.name}}_handlers.h"
   {{/each}}
 
-  {{#each program:cpp_includes as |cpp_include|}}
+  {{#each program.cpp_includes as |cpp_include|}}
 // cpp_include's
 #include {{cpp_include}}
   {{/each}}
-  {{#each program:extra_cpp_includes as |cpp_include|}}
+  {{#each program.extra_cpp_includes as |cpp_include|}}
 // cpp_include's
 #include {{cpp_include}}
   {{/each}}
 
-  {{#if (or program:any_sink_functions? program:any_interaction_functions?)}}
+  {{#if (or program.any_sink_functions? program.any_interaction_functions?)}}
 #include <thrift/lib/cpp2/async/Sink.h>
 #include <thrift/lib/cpp2/async/BiDiStream.h>
 #include <thrift/lib/cpp2/async/ServerBiDiStreamFactory.h>
-  {{/if (or program:any_sink_functions? program:any_interaction_functions?)}}
-  {{#if (or program:any_stream_functions? program:any_interaction_functions?)}}
+  {{/if (or program.any_sink_functions? program.any_interaction_functions?)}}
+  {{#if (or program.any_stream_functions? program.any_interaction_functions?)}}
 #include <thrift/lib/cpp2/async/ServerStream.h>
-  {{/if (or program:any_stream_functions? program:any_interaction_functions?)}}
-  {{#if program:any_method_decorators?}}
+  {{/if (or program.any_stream_functions? program.any_interaction_functions?)}}
+  {{#if program.any_method_decorators?}}
 #include <thrift/lib/cpp2/gen/module_method_decorator_h.h>
-  {{/if program:any_method_decorators?}}
+  {{/if program.any_method_decorators?}}
 
 namespace folly {
   class IOBuf;
@@ -58,8 +57,8 @@ namespace apache { namespace thrift {
   namespace transport { class THeader; }
 }}
 
-{{#program:services}}
+  {{#each program.services as |service|}}
 {{> service_h/handlers_h}}
 
 
-{{/program:services}}
+  {{/each}}

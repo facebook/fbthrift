@@ -14,15 +14,65 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{> service_h/service_interface}}{{!
-
 }}
-
-namespace {{service:cpp_qualified_namespace}} {
-{{> service_h/service_null}}
-
-
-{{> service_h/async_processor}}
+{{#import "common/server" as server}}
+{{#import "service_h/async_processor_per_function" as async_processor_per_function}}
+{{> service_h/service_interface}}
 
 
-} // namespace {{service:cpp_qualified_namespace}}
+namespace {{service.cpp_qualified_namespace}} {
+class {{service.cpp_name}}SvNull : public ::apache::thrift::ServiceHandler<{{service.cpp_name}}>{{#if (object.notnull? service.extends)}}, virtual public ::apache::thrift::ServiceHandler<::{{service.extends.cpp_qualified_namespace}}::{{service.extends.cpp_name}}>{{/if}} {
+ public:
+  {{#each service.functions as |function|}}
+    {{#if (not (or function.starts_interaction? function.creates_interaction? function.event_based? function.stream?))}}
+  {{#partial server.sync_return_type function=function service=service}} {{function.cpp_name}}({{#partial server.sync_return_param function=function}}{{#partial server.function_param_list_commented_out function=function}}) override;
+    {{/if (not (or function.starts_interaction? function.creates_interaction? function.event_based? function.stream?))}}
+  {{/each}}
+};
+
+class {{service.cpp_name}}AsyncProcessor : public {{#if (object.notnull? service.extends)}}::{{service.extends.cpp_qualified_namespace}}::{{service.extends.cpp_name}}AsyncProcessor{{#else}}::apache::thrift::GeneratedAsyncProcessorBase{{/if}} {
+ public:
+  std::string_view getServiceName() override;
+  void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
+  using BaseAsyncProcessor = {{#if (object.eq? null service.extends)}}void{{#else}}::{{service.extends.cpp_qualified_namespace}}::{{service.extends.cpp_name}}AsyncProcessor{{/if}};
+ protected:
+  ::apache::thrift::ServiceHandler<{{service.qualified_name}}>* iface_;
+ public:
+  void processSerializedCompressedRequestWithMetadata(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) override;
+  void executeRequest(apache::thrift::ServerRequest&& serverRequest, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata) override;
+ public:
+  using ProcessFuncs = GeneratedAsyncProcessorBase::ProcessFuncs<{{service.cpp_name}}AsyncProcessor>;
+  using ProcessMap = GeneratedAsyncProcessorBase::ProcessMap<ProcessFuncs>;
+  {{#if (not (array.empty? service.interactions))}}
+  using InteractionConstructor = GeneratedAsyncProcessorBase::InteractionConstructor<{{service.cpp_name}}AsyncProcessor>;
+  using InteractionConstructorMap = GeneratedAsyncProcessorBase::InteractionConstructorMap<InteractionConstructor>;
+  {{/if (not (array.empty? service.interactions))}}
+  static const {{service.cpp_name}}AsyncProcessor::ProcessMap& getOwnProcessMap();
+  {{#if (not (array.empty? service.interactions))}}
+  static const {{service.cpp_name}}AsyncProcessor::InteractionConstructorMap& getInteractionConstructorMap();
+  std::unique_ptr<apache::thrift::Tile> createInteractionImpl(const std::string& name, int16_t) override;
+  {{/if (not (array.empty? service.interactions))}}
+ private:
+  static const {{service.cpp_name}}AsyncProcessor::ProcessMap kOwnProcessMap_;
+  {{#if (not (array.empty? service.interactions))}}
+  static const {{service.cpp_name}}AsyncProcessor::InteractionConstructorMap interactionConstructorMap_;
+  {{/if (not (array.empty? service.interactions))}}
+ private:
+  {{#each service.functions as |function|}}
+{{#partial async_processor_per_function.async_processor_per_function interface=service parent_service=null function=function}}
+  {{/each}}
+  {{#each service.interactions as |interaction|}}
+    {{#each interaction.functions as |function|}}
+{{#partial async_processor_per_function.async_processor_per_function interface=interaction parent_service=service function=function}}
+    {{/each}}
+  {{/each}}
+ public:
+  {{service.cpp_name}}AsyncProcessor(::apache::thrift::ServiceHandler<{{service.qualified_name}}>* iface) :
+  {{#if (object.notnull? service.extends)}}
+      ::{{service.extends.cpp_qualified_namespace}}::{{service.extends.cpp_name}}AsyncProcessor(iface),
+  {{/if (object.notnull? service.extends)}}
+      iface_(iface) {}
+  ~{{service.cpp_name}}AsyncProcessor() override {}
+};
+
+} // namespace {{service.cpp_qualified_namespace}}

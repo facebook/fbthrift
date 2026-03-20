@@ -2312,20 +2312,12 @@ void t_mstch_cpp2_generator::generate_structs(const t_program* program) {
 
 void t_mstch_cpp2_generator::generate_out_of_line_service(
     const t_service* service) {
-  const auto& name = service->name();
-  auto mstch_service =
-      make_mstch_service_cached(get_program(), service, mstch_context_);
-
-  mstch::map context = {
-      {"program", cached_program(get_program())},
-      {"service", mstch_service},
-  };
-
+  const std::string& name = service->name();
   render_whisker_service_file(
       *service, "ServiceAsyncClient.h", fmt::format("{}AsyncClient.h", name));
   render_whisker_service_file(
       *service, "service.cpp", fmt::format("{}.cpp", name));
-  render_to_file(mstch_service, "service.h", name + ".h");
+  render_whisker_service_file(*service, "service.h", fmt::format("{}.h", name));
   render_whisker_service_file(
       *service, "service.tcc", fmt::format("{}.tcc", name));
   render_whisker_service_file(
@@ -2389,10 +2381,8 @@ void t_mstch_cpp2_generator::generate_inline_services() {
       "module_clients.cpp", fmt::format("{}_clients.cpp", module_name));
   render_whisker_file(
       "module_handlers-inl.h", fmt::format("{}_handlers-inl.h", module_name));
-  render_to_file(
-      cached_program(get_program()),
-      "module_handlers.h",
-      fmt::format("{}_handlers.h", module_name));
+  render_whisker_file(
+      "module_handlers.h", fmt::format("{}_handlers.h", module_name));
   render_whisker_file(
       "module_handlers.cpp", fmt::format("{}_handlers.cpp", module_name));
 }

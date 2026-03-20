@@ -14,18 +14,25 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{#service:functions?}}
+}}
+{{#let export partial async_processor_per_function |interface parent_service function|}}
+  {{#if (not (array.empty? interface.functions))}}
+  {{! TODO(T260006192): Preserved behavior - this header/footer will be emitted for each function }}
   //
   // Service Methods
   //
 
-{{/service:functions?}}
-{{#function:return_type}}{{^function:starts_interaction?}}
+  {{/if (not (array.empty? interface.functions))}}
+  {{#if function.starts_interaction?}}
+ std::unique_ptr<apache::thrift::Tile> {{function.cpp_name}}() {
+   return iface_->{{function.cpp_name}}();
+ }
+  {{#else}}
   //
-  // Method '{{function:name}}'
+  // Method '{{function.name}}'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void setUpAndProcess_{{function:prefixed_name}}(
+  void setUpAndProcess_{{function.prefixed_name}}(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
       apache::thrift::SerializedCompressedRequest&& serializedRequest,
       apache::thrift::Cpp2RequestContext* ctx,
@@ -33,63 +40,54 @@
       apache::thrift::concurrency::ThreadManager* tm);
 
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void executeRequest_{{function:prefixed_name}}(apache::thrift::ServerRequest&& serverRequest);
+  void executeRequest_{{function.prefixed_name}}(apache::thrift::ServerRequest&& serverRequest);
 
-{{^function:oneway?}}
+    {{#if (not function.oneway?)}}
   template <class ProtocolIn_, class ProtocolOut_>
-{{^function:cpp_recv_arg?}}
-  static apache::thrift::SerializedResponse return_{{function:prefixed_name}}(
+      {{#if (not function.cpp_recv_arg?)}}
+  static apache::thrift::SerializedResponse return_{{function.prefixed_name}}(
       apache::thrift::ContextStack* ctx);
-
-{{/function:cpp_recv_arg?}}
-{{#function:cpp_recv_arg?}}
- {{#if function:self.bidirectional_stream?}}
+      {{#else if function.bidirectional_stream?}}
   static apache::thrift::ResponseAndServerBiDiStreamFactory
-  return_{{function:prefixed_name}}(
+  return_{{function.prefixed_name}}(
     apache::thrift::ContextStack* ctx,
     folly::Executor::KeepAlive<> executor,
-    {{function:cpp_return_type}}&& _return);
-
- {{#else if function:self.stream?}}
-  static apache::thrift::ResponseAndServerStreamFactory return_{{function:prefixed_name}}(
+    {{function.cpp_return_type}}&& _return);
+      {{#else if function.stream?}}
+  static apache::thrift::ResponseAndServerStreamFactory return_{{function.prefixed_name}}(
       apache::thrift::ContextStack* ctx,
       folly::Executor::KeepAlive<> executor,
-      {{function:cpp_return_type}}&& _return);
-
-{{#else if function:self.sink?}}
+      {{function.cpp_return_type}}&& _return);
+      {{#else if function.sink?}}
   static std::pair<
       apache::thrift::SerializedResponse,
       apache::thrift::detail::ServerSinkFactory>
-  return_{{function:prefixed_name}}(
+  return_{{function.prefixed_name}}(
       apache::thrift::ContextStack* ctx,
-      {{function:cpp_return_type}}&& _return,
+      {{function.cpp_return_type}}&& _return,
       folly::Executor::KeepAlive<> executor);
-
-{{#else}}
-  static apache::thrift::SerializedResponse return_{{function:prefixed_name}}(
+      {{#else}}
+  static apache::thrift::SerializedResponse return_{{function.prefixed_name}}(
       apache::thrift::ContextStack* ctx,
-      {{function:cpp_return_type}} const& _return);
+      {{function.cpp_return_type}} const& _return);
+      {{/if (not function.cpp_recv_arg?)}}
 
-{{/if function:self.bidirectional_stream?}}
-{{/function:cpp_recv_arg?}}
   template <class ProtocolIn_, class ProtocolOut_>
-  static void throw_wrapped_{{function:prefixed_name}}(
+  static void throw_wrapped_{{function.prefixed_name}}(
       apache::thrift::ResponseChannelRequest::UniquePtr req,
       int32_t protoSeqId,
       apache::thrift::ContextStack* ctx,
       folly::exception_wrapper ew,
       apache::thrift::Cpp2RequestContext* reqCtx);
-{{/function:oneway?}}
+    {{/if (not function.oneway?)}}
   //
-  // End of Method '{{function:name}}'
+  // End of Method '{{function.name}}'
   //
 
-{{/function:starts_interaction?}}{{#function:starts_interaction?}}
- std::unique_ptr<apache::thrift::Tile> {{function:cpp_name}}() {
-   return iface_->{{function:cpp_name}}();
- }
-{{/function:starts_interaction?}}{{/function:return_type}}{{#service:functions?}}
+  {{/if function.starts_interaction?}}
+  {{#if (not (array.empty? interface.functions))}}
   //
   // End of Service Methods
   //
-{{/service:functions?}}
+  {{/if (not (array.empty? interface.functions))}}
+{{/let partial}}
