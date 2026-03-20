@@ -114,7 +114,9 @@ namespace apache::thrift::json5::detail {
  */
 class Json5ProtocolWriter final {
  public:
-  explicit Json5ProtocolWriter(JsonWriterOptions options = {})
+  explicit Json5ProtocolWriter(
+      ExternalBufferSharing /*sharing*/ = COPY_EXTERNAL_BUFFER /* ignored */,
+      JsonWriterOptions options = {})
       : options_(options), writer_(options) {}
 
   KeyOrder keyOrder() const { return KeyOrder::StableAscending; }
@@ -192,7 +194,7 @@ template <class Tag>
 [[nodiscard]] std::string toJsonImpl(
     const type::native_type<Tag>& value, const JsonWriterOptions& options) {
   folly::IOBufQueue queue;
-  Json5ProtocolWriter writer(options);
+  Json5ProtocolWriter writer(COPY_EXTERNAL_BUFFER, options);
   writer.setOutput(&queue);
   [[maybe_unused]] auto size = op::encode<Tag>(writer, value);
   auto output = queue.moveAsValue().toString();
