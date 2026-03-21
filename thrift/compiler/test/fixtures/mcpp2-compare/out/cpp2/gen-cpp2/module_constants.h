@@ -64,9 +64,9 @@ namespace module_constants {
   }
 
   /** Glean {"constant": "aString"} */
-  constexpr const char* const aString_ = "Joe Doe";
+  constexpr char const * const aString_ = "Joe Doe";
   /** Glean {"constant": "aString"} */
-  constexpr const char* aString() {
+  constexpr char const * aString() {
     return aString_;
   }
 

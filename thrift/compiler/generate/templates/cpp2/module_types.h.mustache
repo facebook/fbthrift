@@ -65,7 +65,7 @@ APACHE_THRIFT_DEFINE_ACCESSOR({{field.cpp_name}});
   {{/if program.structs?}}
 {{> module_types_h/declare_enums}}
 
-{{#partial module_types.forward_declare_structured_definitions program=program}}
+{{#partial module_types.forward_declare program=program}}
 namespace apache::thrift::detail::annotation {
   {{#each program.structured_definitions as |struct|}}
     {{#if struct.fields_with_runtime_annotation?}}

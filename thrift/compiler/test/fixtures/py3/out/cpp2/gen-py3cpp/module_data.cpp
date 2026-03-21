@@ -29,7 +29,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::py3::simple::SimpleException>::fields_types = { {
-  apache::thrift::protocol::TType::T_I16,
+  TType::T_I16,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::py3::simple::SimpleException>::isset_indexes = { {
   0,
@@ -43,7 +43,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::py3::simple::OptionalRefStruct>::fields_types = { {
-  apache::thrift::protocol::TType::T_STRING,
+  TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::py3::simple::OptionalRefStruct>::isset_indexes = { {
   0,
@@ -79,18 +79,18 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 12> TStructDataStor
   12,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 12> TStructDataStorage<::py3::simple::SimpleStruct>::fields_types = { {
-  apache::thrift::protocol::TType::T_BOOL,
-  apache::thrift::protocol::TType::T_BYTE,
-  apache::thrift::protocol::TType::T_I16,
-  apache::thrift::protocol::TType::T_I32,
-  apache::thrift::protocol::TType::T_I64,
-  apache::thrift::protocol::TType::T_DOUBLE,
-  apache::thrift::protocol::TType::T_FLOAT,
-  apache::thrift::protocol::TType::T_MAP,
-  apache::thrift::protocol::TType::T_I16,
-  apache::thrift::protocol::TType::T_I32,
-  apache::thrift::protocol::TType::T_STRING,
-  apache::thrift::protocol::TType::T_I32,
+  TType::T_BOOL,
+  TType::T_BYTE,
+  TType::T_I16,
+  TType::T_I32,
+  TType::T_I64,
+  TType::T_DOUBLE,
+  TType::T_FLOAT,
+  TType::T_MAP,
+  TType::T_I16,
+  TType::T_I32,
+  TType::T_STRING,
+  TType::T_I32,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 12> TStructDataStorage<::py3::simple::SimpleStruct>::isset_indexes = { {
   0,
@@ -121,10 +121,10 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 4> TStructDataStora
   4,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 4> TStructDataStorage<::py3::simple::Float32Struct>::fields_types = { {
-  apache::thrift::protocol::TType::T_FLOAT,
-  apache::thrift::protocol::TType::T_FLOAT,
-  apache::thrift::protocol::TType::T_LIST,
-  apache::thrift::protocol::TType::T_MAP,
+  TType::T_FLOAT,
+  TType::T_FLOAT,
+  TType::T_LIST,
+  TType::T_MAP,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 4> TStructDataStorage<::py3::simple::Float32Struct>::isset_indexes = { {
   0,
@@ -145,9 +145,9 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 3> TStructDataStora
   3,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 3> TStructDataStorage<::py3::simple::HiddenTypeFieldsStruct>::fields_types = { {
-  apache::thrift::protocol::TType::T_STRUCT,
-  apache::thrift::protocol::TType::T_LIST,
-  apache::thrift::protocol::TType::T_MAP,
+  TType::T_STRUCT,
+  TType::T_LIST,
+  TType::T_MAP,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 3> TStructDataStorage<::py3::simple::HiddenTypeFieldsStruct>::isset_indexes = { {
   0,
@@ -163,7 +163,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::py3::simple::detail::AdaptedUnion>::fields_types = { {
-  apache::thrift::protocol::TType::T_I16,
+  TType::T_I16,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::py3::simple::detail::AdaptedUnion>::isset_indexes = { {
   0,
@@ -177,7 +177,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::py3::simple::HiddenException>::fields_types = { {
-  apache::thrift::protocol::TType::T_I16,
+  TType::T_I16,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::py3::simple::HiddenException>::isset_indexes = { {
   0,
@@ -207,15 +207,15 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 9> TStructDataStora
   9,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 9> TStructDataStorage<::py3::simple::ComplexStruct>::fields_types = { {
-  apache::thrift::protocol::TType::T_STRUCT,
-  apache::thrift::protocol::TType::T_STRUCT,
-  apache::thrift::protocol::TType::T_I32,
-  apache::thrift::protocol::TType::T_STRING,
-  apache::thrift::protocol::TType::T_I32,
-  apache::thrift::protocol::TType::T_STRING,
-  apache::thrift::protocol::TType::T_STRING,
-  apache::thrift::protocol::TType::T_STRING,
-  apache::thrift::protocol::TType::T_STRING,
+  TType::T_STRUCT,
+  TType::T_STRUCT,
+  TType::T_I32,
+  TType::T_STRING,
+  TType::T_I32,
+  TType::T_STRING,
+  TType::T_STRING,
+  TType::T_STRING,
+  TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 9> TStructDataStorage<::py3::simple::ComplexStruct>::isset_indexes = { {
   0,
@@ -237,7 +237,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::py3::simple::BinaryUnion>::fields_types = { {
-  apache::thrift::protocol::TType::T_STRING,
+  TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::py3::simple::BinaryUnion>::isset_indexes = { {
   0,
@@ -251,7 +251,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::py3::simple::BinaryUnionStruct>::fields_types = { {
-  apache::thrift::protocol::TType::T_STRUCT,
+  TType::T_STRUCT,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::py3::simple::BinaryUnionStruct>::isset_indexes = { {
   0,
@@ -281,15 +281,15 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 9> TStructDataStora
   9,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 9> TStructDataStorage<::py3::simple::CustomFields>::fields_types = { {
-  apache::thrift::protocol::TType::T_BOOL,
-  apache::thrift::protocol::TType::T_I64,
-  apache::thrift::protocol::TType::T_DOUBLE,
-  apache::thrift::protocol::TType::T_STRING,
-  apache::thrift::protocol::TType::T_STRING,
-  apache::thrift::protocol::TType::T_LIST,
-  apache::thrift::protocol::TType::T_SET,
-  apache::thrift::protocol::TType::T_MAP,
-  apache::thrift::protocol::TType::T_STRUCT,
+  TType::T_BOOL,
+  TType::T_I64,
+  TType::T_DOUBLE,
+  TType::T_STRING,
+  TType::T_STRING,
+  TType::T_LIST,
+  TType::T_SET,
+  TType::T_MAP,
+  TType::T_STRUCT,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 9> TStructDataStorage<::py3::simple::CustomFields>::isset_indexes = { {
   0,
@@ -327,15 +327,15 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 9> TStructDataStora
   9,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 9> TStructDataStorage<::py3::simple::CustomTypedefFields>::fields_types = { {
-  apache::thrift::protocol::TType::T_BOOL,
-  apache::thrift::protocol::TType::T_I64,
-  apache::thrift::protocol::TType::T_DOUBLE,
-  apache::thrift::protocol::TType::T_STRING,
-  apache::thrift::protocol::TType::T_STRING,
-  apache::thrift::protocol::TType::T_LIST,
-  apache::thrift::protocol::TType::T_SET,
-  apache::thrift::protocol::TType::T_MAP,
-  apache::thrift::protocol::TType::T_STRUCT,
+  TType::T_BOOL,
+  TType::T_I64,
+  TType::T_DOUBLE,
+  TType::T_STRING,
+  TType::T_STRING,
+  TType::T_LIST,
+  TType::T_SET,
+  TType::T_MAP,
+  TType::T_STRUCT,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 9> TStructDataStorage<::py3::simple::CustomTypedefFields>::isset_indexes = { {
   0,
@@ -373,15 +373,15 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 9> TStructDataStora
   9,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 9> TStructDataStorage<::py3::simple::AdaptedTypedefFields>::fields_types = { {
-  apache::thrift::protocol::TType::T_BOOL,
-  apache::thrift::protocol::TType::T_I64,
-  apache::thrift::protocol::TType::T_DOUBLE,
-  apache::thrift::protocol::TType::T_STRING,
-  apache::thrift::protocol::TType::T_STRING,
-  apache::thrift::protocol::TType::T_LIST,
-  apache::thrift::protocol::TType::T_SET,
-  apache::thrift::protocol::TType::T_MAP,
-  apache::thrift::protocol::TType::T_STRUCT,
+  TType::T_BOOL,
+  TType::T_I64,
+  TType::T_DOUBLE,
+  TType::T_STRING,
+  TType::T_STRING,
+  TType::T_LIST,
+  TType::T_SET,
+  TType::T_MAP,
+  TType::T_STRUCT,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 9> TStructDataStorage<::py3::simple::AdaptedTypedefFields>::isset_indexes = { {
   0,

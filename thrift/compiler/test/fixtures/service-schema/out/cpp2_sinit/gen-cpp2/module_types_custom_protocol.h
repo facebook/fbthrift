@@ -51,7 +51,7 @@ void CustomException::readNoXfer(Protocol_* iprot) {
           iprot,
           0,
           1,
-          apache::thrift::protocol::TType::T_STRING))) {
+          apache::thrift::protocol::T_STRING))) {
     goto _advance_failure;
   }
 _readField_name:
@@ -64,7 +64,7 @@ _readField_name:
           iprot,
           1,
           2,
-          apache::thrift::protocol::TType::T_I32))) {
+          apache::thrift::protocol::T_I32))) {
     goto _advance_failure;
   }
 _readField_result:
@@ -100,7 +100,7 @@ _loop:
   switch (_readState.fieldId) {
     case 1:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_STRING))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
         goto _readField_name;
       } else {
         goto _skip;
@@ -108,7 +108,7 @@ _loop:
     }
     case 2:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_I32))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32))) {
         goto _readField_result;
       } else {
         goto _skip;
@@ -130,11 +130,11 @@ uint32_t CustomException::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("CustomException");
   {
-    xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::TType::T_STRING, 1);
+    xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_name);
   }
   {
-    xfer += prot_->serializedFieldSize("result", apache::thrift::protocol::TType::T_I32, 2);
+    xfer += prot_->serializedFieldSize("result", apache::thrift::protocol::T_I32, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::facebook::thrift::test::fixtures::service_schema::Result>::serializedSize<false>(*prot_, this->__fbthrift_field_result);
   }
   xfer += prot_->serializedSizeStop();
@@ -146,11 +146,11 @@ uint32_t CustomException::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("CustomException");
   {
-    xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::TType::T_STRING, 1);
+    xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_name);
   }
   {
-    xfer += prot_->serializedFieldSize("result", apache::thrift::protocol::TType::T_I32, 2);
+    xfer += prot_->serializedFieldSize("result", apache::thrift::protocol::T_I32, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::facebook::thrift::test::fixtures::service_schema::Result>::serializedSize<false>(*prot_, this->__fbthrift_field_result);
   }
   xfer += prot_->serializedSizeStop();
@@ -164,14 +164,14 @@ uint32_t CustomException::write(Protocol_* prot_) const {
   bool previousFieldHasValue = true;
   {
     constexpr int16_t kPrevFieldId = 0;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 1, kPrevFieldId>(*prot_, "name", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 1, kPrevFieldId>(*prot_, "name", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_name);
     xfer += prot_->writeFieldEnd();
   }
   {
     constexpr int16_t kPrevFieldId = 1;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 2, kPrevFieldId>(*prot_, "result", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 2, kPrevFieldId>(*prot_, "result", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::facebook::thrift::test::fixtures::service_schema::Result>::write(*prot_, this->__fbthrift_field_result);
     xfer += prot_->writeFieldEnd();

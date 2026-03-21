@@ -30,7 +30,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::facebook::thrift::test::fixtures::runtime_annotations::MyStruct>::fields_types = { {
-  apache::thrift::protocol::TType::T_I32,
+  TType::T_I32,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::facebook::thrift::test::fixtures::runtime_annotations::MyStruct>::isset_indexes = { {
   0,
@@ -44,7 +44,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::facebook::thrift::test::fixtures::runtime_annotations::MyUnion>::fields_types = { {
-  apache::thrift::protocol::TType::T_I32,
+  TType::T_I32,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::facebook::thrift::test::fixtures::runtime_annotations::MyUnion>::isset_indexes = { {
   0,
@@ -58,7 +58,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::facebook::thrift::test::fixtures::runtime_annotations::MyException>::fields_types = { {
-  apache::thrift::protocol::TType::T_I32,
+  TType::T_I32,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::facebook::thrift::test::fixtures::runtime_annotations::MyException>::isset_indexes = { {
   0,

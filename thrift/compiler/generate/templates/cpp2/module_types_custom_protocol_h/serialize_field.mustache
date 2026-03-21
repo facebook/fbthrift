@@ -18,7 +18,7 @@
   {{#let type = field.type}}
 {{#partial custom_protocol.if_should_write field=field struct=struct}}
     constexpr int16_t kPrevFieldId = {{#if (and first? struct.indexing?)}}::apache::thrift::detail::kSizeField.id{{#else if first?}}0{{#else}}{{field.serialization_prev_field.id}}{{/if}};
-    xfer += ::apache::thrift::detail::writeFieldBegin<{{#partial types.protocol_type type=field.type}}, {{field.id}}, kPrevFieldId>(*prot_, "{{field.name}}", {{#if struct.union?}}false{{#else}}previousFieldHasValue{{/if}});
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::{{#partial types.protocol_type type=field.type}}, {{field.id}}, kPrevFieldId>(*prot_, "{{field.name}}", {{#if struct.union?}}false{{#else}}previousFieldHasValue{{/if}});
     {{#if (not struct.union?)}}
     previousFieldHasValue = true;
     {{/if (not struct.union?)}}

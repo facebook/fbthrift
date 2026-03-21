@@ -20,7 +20,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_types = { {
-  apache::thrift::protocol::TType::T_I32,
+  TType::T_I32,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::isset_indexes = { {
   0,

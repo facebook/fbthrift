@@ -70,7 +70,7 @@ void NonOrderableStruct::readNoXfer(Protocol_* iprot) {
           iprot,
           0,
           1,
-          apache::thrift::protocol::TType::T_I32))) {
+          apache::thrift::protocol::T_I32))) {
     goto _advance_failure;
   }
 _readField_field1:
@@ -83,7 +83,7 @@ _readField_field1:
           iprot,
           1,
           2,
-          apache::thrift::protocol::TType::T_STRING))) {
+          apache::thrift::protocol::T_STRING))) {
     goto _advance_failure;
   }
 _readField_field2:
@@ -119,7 +119,7 @@ _loop:
   switch (_readState.fieldId) {
     case 1:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_I32))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32))) {
         goto _readField_field1;
       } else {
         goto _skip;
@@ -127,7 +127,7 @@ _loop:
     }
     case 2:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_STRING))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
         goto _readField_field2;
       } else {
         goto _skip;
@@ -149,11 +149,11 @@ uint32_t NonOrderableStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("NonOrderableStruct");
   {
-    xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::TType::T_I32, 1);
+    xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->__fbthrift_field_field1);
   }
   {
-    xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::TType::T_STRING, 2);
+    xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_STRING, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_field2);
   }
   xfer += prot_->serializedSizeStop();
@@ -165,11 +165,11 @@ uint32_t NonOrderableStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("NonOrderableStruct");
   {
-    xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::TType::T_I32, 1);
+    xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->__fbthrift_field_field1);
   }
   {
-    xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::TType::T_STRING, 2);
+    xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_STRING, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_field2);
   }
   xfer += prot_->serializedSizeStop();
@@ -183,14 +183,14 @@ uint32_t NonOrderableStruct::write(Protocol_* prot_) const {
   bool previousFieldHasValue = true;
   {
     constexpr int16_t kPrevFieldId = 0;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 1, kPrevFieldId>(*prot_, "field1", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 1, kPrevFieldId>(*prot_, "field1", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->__fbthrift_field_field1);
     xfer += prot_->writeFieldEnd();
   }
   {
     constexpr int16_t kPrevFieldId = 1;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 2, kPrevFieldId>(*prot_, "field2", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 2, kPrevFieldId>(*prot_, "field2", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_field2);
     xfer += prot_->writeFieldEnd();
@@ -227,7 +227,7 @@ void NonOrderableUnion::readNoXfer(Protocol_* iprot) {
     switch (_readState.fieldId) {
       case 1:
       {
-        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_I32)) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->int_value_ref().emplace();
           ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, value_.int_value, _readState);
         } else {
@@ -237,7 +237,7 @@ void NonOrderableUnion::readNoXfer(Protocol_* iprot) {
       }
       case 2:
       {
-        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_STRING)) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING)) {
           this->string_value_ref().emplace();
           ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, value_.string_value, _readState);
         } else {
@@ -267,13 +267,13 @@ uint32_t NonOrderableUnion::serializedSize(Protocol_ const* prot_) const {
   switch(this->getType()) {
     case NonOrderableUnion::Type::int_value:
     {
-      xfer += prot_->serializedFieldSize("int_value", apache::thrift::protocol::TType::T_I32, 1);
+      xfer += prot_->serializedFieldSize("int_value", apache::thrift::protocol::T_I32, 1);
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, value_.int_value);
       break;
     }
     case NonOrderableUnion::Type::string_value:
     {
-      xfer += prot_->serializedFieldSize("string_value", apache::thrift::protocol::TType::T_STRING, 2);
+      xfer += prot_->serializedFieldSize("string_value", apache::thrift::protocol::T_STRING, 2);
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, value_.string_value);
       break;
     }
@@ -293,13 +293,13 @@ uint32_t NonOrderableUnion::serializedSizeZC(Protocol_ const* prot_) const {
   switch(this->getType()) {
     case NonOrderableUnion::Type::int_value:
     {
-      xfer += prot_->serializedFieldSize("int_value", apache::thrift::protocol::TType::T_I32, 1);
+      xfer += prot_->serializedFieldSize("int_value", apache::thrift::protocol::T_I32, 1);
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, value_.int_value);
       break;
     }
     case NonOrderableUnion::Type::string_value:
     {
-      xfer += prot_->serializedFieldSize("string_value", apache::thrift::protocol::TType::T_STRING, 2);
+      xfer += prot_->serializedFieldSize("string_value", apache::thrift::protocol::T_STRING, 2);
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, value_.string_value);
       break;
     }
@@ -320,7 +320,7 @@ uint32_t NonOrderableUnion::write(Protocol_* prot_) const {
     case NonOrderableUnion::Type::int_value:
     {
       constexpr int16_t kPrevFieldId = 0;
-      xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 1, kPrevFieldId>(*prot_, "int_value", false);
+      xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 1, kPrevFieldId>(*prot_, "int_value", false);
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, value_.int_value);
       xfer += prot_->writeFieldEnd();
       break;
@@ -328,7 +328,7 @@ uint32_t NonOrderableUnion::write(Protocol_* prot_) const {
     case NonOrderableUnion::Type::string_value:
     {
       constexpr int16_t kPrevFieldId = 1;
-      xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 2, kPrevFieldId>(*prot_, "string_value", false);
+      xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 2, kPrevFieldId>(*prot_, "string_value", false);
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, value_.string_value);
       xfer += prot_->writeFieldEnd();
       break;
@@ -366,7 +366,7 @@ void OrderableStruct::readNoXfer(Protocol_* iprot) {
           iprot,
           0,
           1,
-          apache::thrift::protocol::TType::T_I32))) {
+          apache::thrift::protocol::T_I32))) {
     goto _advance_failure;
   }
 _readField_field1:
@@ -379,7 +379,7 @@ _readField_field1:
           iprot,
           1,
           2,
-          apache::thrift::protocol::TType::T_STRING))) {
+          apache::thrift::protocol::T_STRING))) {
     goto _advance_failure;
   }
 _readField_field2:
@@ -415,7 +415,7 @@ _loop:
   switch (_readState.fieldId) {
     case 1:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_I32))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32))) {
         goto _readField_field1;
       } else {
         goto _skip;
@@ -423,7 +423,7 @@ _loop:
     }
     case 2:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_STRING))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
         goto _readField_field2;
       } else {
         goto _skip;
@@ -445,11 +445,11 @@ uint32_t OrderableStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("OrderableStruct");
   {
-    xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::TType::T_I32, 1);
+    xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->__fbthrift_field_field1);
   }
   {
-    xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::TType::T_STRING, 2);
+    xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_STRING, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_field2);
   }
   xfer += prot_->serializedSizeStop();
@@ -461,11 +461,11 @@ uint32_t OrderableStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("OrderableStruct");
   {
-    xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::TType::T_I32, 1);
+    xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->__fbthrift_field_field1);
   }
   {
-    xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::TType::T_STRING, 2);
+    xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_STRING, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_field2);
   }
   xfer += prot_->serializedSizeStop();
@@ -479,14 +479,14 @@ uint32_t OrderableStruct::write(Protocol_* prot_) const {
   bool previousFieldHasValue = true;
   {
     constexpr int16_t kPrevFieldId = 0;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 1, kPrevFieldId>(*prot_, "field1", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 1, kPrevFieldId>(*prot_, "field1", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->__fbthrift_field_field1);
     xfer += prot_->writeFieldEnd();
   }
   {
     constexpr int16_t kPrevFieldId = 1;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 2, kPrevFieldId>(*prot_, "field2", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 2, kPrevFieldId>(*prot_, "field2", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_field2);
     xfer += prot_->writeFieldEnd();
@@ -523,7 +523,7 @@ void OrderableUnion::readNoXfer(Protocol_* iprot) {
     switch (_readState.fieldId) {
       case 1:
       {
-        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_I32)) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->int_value_ref().emplace();
           ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, value_.int_value, _readState);
         } else {
@@ -533,7 +533,7 @@ void OrderableUnion::readNoXfer(Protocol_* iprot) {
       }
       case 2:
       {
-        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_STRING)) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING)) {
           this->string_value_ref().emplace();
           ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, value_.string_value, _readState);
         } else {
@@ -563,13 +563,13 @@ uint32_t OrderableUnion::serializedSize(Protocol_ const* prot_) const {
   switch(this->getType()) {
     case OrderableUnion::Type::int_value:
     {
-      xfer += prot_->serializedFieldSize("int_value", apache::thrift::protocol::TType::T_I32, 1);
+      xfer += prot_->serializedFieldSize("int_value", apache::thrift::protocol::T_I32, 1);
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, value_.int_value);
       break;
     }
     case OrderableUnion::Type::string_value:
     {
-      xfer += prot_->serializedFieldSize("string_value", apache::thrift::protocol::TType::T_STRING, 2);
+      xfer += prot_->serializedFieldSize("string_value", apache::thrift::protocol::T_STRING, 2);
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, value_.string_value);
       break;
     }
@@ -589,13 +589,13 @@ uint32_t OrderableUnion::serializedSizeZC(Protocol_ const* prot_) const {
   switch(this->getType()) {
     case OrderableUnion::Type::int_value:
     {
-      xfer += prot_->serializedFieldSize("int_value", apache::thrift::protocol::TType::T_I32, 1);
+      xfer += prot_->serializedFieldSize("int_value", apache::thrift::protocol::T_I32, 1);
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, value_.int_value);
       break;
     }
     case OrderableUnion::Type::string_value:
     {
-      xfer += prot_->serializedFieldSize("string_value", apache::thrift::protocol::TType::T_STRING, 2);
+      xfer += prot_->serializedFieldSize("string_value", apache::thrift::protocol::T_STRING, 2);
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, value_.string_value);
       break;
     }
@@ -616,7 +616,7 @@ uint32_t OrderableUnion::write(Protocol_* prot_) const {
     case OrderableUnion::Type::int_value:
     {
       constexpr int16_t kPrevFieldId = 0;
-      xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 1, kPrevFieldId>(*prot_, "int_value", false);
+      xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 1, kPrevFieldId>(*prot_, "int_value", false);
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, value_.int_value);
       xfer += prot_->writeFieldEnd();
       break;
@@ -624,7 +624,7 @@ uint32_t OrderableUnion::write(Protocol_* prot_) const {
     case OrderableUnion::Type::string_value:
     {
       constexpr int16_t kPrevFieldId = 1;
-      xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 2, kPrevFieldId>(*prot_, "string_value", false);
+      xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 2, kPrevFieldId>(*prot_, "string_value", false);
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, value_.string_value);
       xfer += prot_->writeFieldEnd();
       break;

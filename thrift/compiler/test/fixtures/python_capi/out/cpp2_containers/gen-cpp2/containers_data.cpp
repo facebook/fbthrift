@@ -28,11 +28,11 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 5> TStructDataStora
   5,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 5> TStructDataStorage<::test::fixtures::python_capi::TemplateLists>::fields_types = { {
-  apache::thrift::protocol::TType::T_LIST,
-  apache::thrift::protocol::TType::T_LIST,
-  apache::thrift::protocol::TType::T_LIST,
-  apache::thrift::protocol::TType::T_LIST,
-  apache::thrift::protocol::TType::T_LIST,
+  TType::T_LIST,
+  TType::T_LIST,
+  TType::T_LIST,
+  TType::T_LIST,
+  TType::T_LIST,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 5> TStructDataStorage<::test::fixtures::python_capi::TemplateLists>::isset_indexes = { {
   0,
@@ -62,13 +62,13 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 7> TStructDataStora
   7,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 7> TStructDataStorage<::test::fixtures::python_capi::TemplateSets>::fields_types = { {
-  apache::thrift::protocol::TType::T_SET,
-  apache::thrift::protocol::TType::T_SET,
-  apache::thrift::protocol::TType::T_SET,
-  apache::thrift::protocol::TType::T_SET,
-  apache::thrift::protocol::TType::T_SET,
-  apache::thrift::protocol::TType::T_SET,
-  apache::thrift::protocol::TType::T_SET,
+  TType::T_SET,
+  TType::T_SET,
+  TType::T_SET,
+  TType::T_SET,
+  TType::T_SET,
+  TType::T_SET,
+  TType::T_SET,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 7> TStructDataStorage<::test::fixtures::python_capi::TemplateSets>::isset_indexes = { {
   0,
@@ -100,13 +100,13 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 7> TStructDataStora
   7,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 7> TStructDataStorage<::test::fixtures::python_capi::TemplateMaps>::fields_types = { {
-  apache::thrift::protocol::TType::T_MAP,
-  apache::thrift::protocol::TType::T_MAP,
-  apache::thrift::protocol::TType::T_MAP,
-  apache::thrift::protocol::TType::T_MAP,
-  apache::thrift::protocol::TType::T_MAP,
-  apache::thrift::protocol::TType::T_MAP,
-  apache::thrift::protocol::TType::T_MAP,
+  TType::T_MAP,
+  TType::T_MAP,
+  TType::T_MAP,
+  TType::T_MAP,
+  TType::T_MAP,
+  TType::T_MAP,
+  TType::T_MAP,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 7> TStructDataStorage<::test::fixtures::python_capi::TemplateMaps>::isset_indexes = { {
   0,
@@ -128,8 +128,8 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 2> TStructDataStora
   2,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 2> TStructDataStorage<::test::fixtures::python_capi::TWrapped>::fields_types = { {
-  apache::thrift::protocol::TType::T_STRING,
-  apache::thrift::protocol::TType::T_STRING,
+  TType::T_STRING,
+  TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 2> TStructDataStorage<::test::fixtures::python_capi::TWrapped>::isset_indexes = { {
   0,
@@ -144,7 +144,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::test::fixtures::python_capi::IndirectionA>::fields_types = { {
-  apache::thrift::protocol::TType::T_LIST,
+  TType::T_LIST,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::test::fixtures::python_capi::IndirectionA>::isset_indexes = { {
   0,
@@ -158,7 +158,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::test::fixtures::python_capi::IndirectionB>::fields_types = { {
-  apache::thrift::protocol::TType::T_LIST,
+  TType::T_LIST,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::test::fixtures::python_capi::IndirectionB>::isset_indexes = { {
   0,
@@ -172,7 +172,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::test::fixtures::python_capi::IndirectionC>::fields_types = { {
-  apache::thrift::protocol::TType::T_LIST,
+  TType::T_LIST,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::test::fixtures::python_capi::IndirectionC>::isset_indexes = { {
   0,

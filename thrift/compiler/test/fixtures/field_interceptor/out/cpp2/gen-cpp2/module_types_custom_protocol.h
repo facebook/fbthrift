@@ -49,7 +49,7 @@ void InterceptedFields::readNoXfer(Protocol_* iprot) {
           iprot,
           0,
           1,
-          apache::thrift::protocol::TType::T_I32))) {
+          apache::thrift::protocol::T_I32))) {
     goto _advance_failure;
   }
 _readField_access_field:
@@ -62,7 +62,7 @@ _readField_access_field:
           iprot,
           1,
           2,
-          apache::thrift::protocol::TType::T_I32))) {
+          apache::thrift::protocol::T_I32))) {
     goto _advance_failure;
   }
 _readField_access_shared_field:
@@ -76,7 +76,7 @@ _readField_access_shared_field:
           iprot,
           2,
           3,
-          apache::thrift::protocol::TType::T_I32))) {
+          apache::thrift::protocol::T_I32))) {
     goto _advance_failure;
   }
 _readField_access_optional_shared_field:
@@ -90,7 +90,7 @@ _readField_access_optional_shared_field:
           iprot,
           3,
           4,
-          apache::thrift::protocol::TType::T_I32))) {
+          apache::thrift::protocol::T_I32))) {
     goto _advance_failure;
   }
 _readField_access_shared_const_field:
@@ -104,7 +104,7 @@ _readField_access_shared_const_field:
           iprot,
           4,
           5,
-          apache::thrift::protocol::TType::T_I32))) {
+          apache::thrift::protocol::T_I32))) {
     goto _advance_failure;
   }
 _readField_access_optional_shared_const_field:
@@ -118,7 +118,7 @@ _readField_access_optional_shared_const_field:
           iprot,
           5,
           6,
-          apache::thrift::protocol::TType::T_I32))) {
+          apache::thrift::protocol::T_I32))) {
     goto _advance_failure;
   }
 _readField_access_optional_boxed_field:
@@ -155,7 +155,7 @@ _loop:
   switch (_readState.fieldId) {
     case 1:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_I32))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32))) {
         goto _readField_access_field;
       } else {
         goto _skip;
@@ -163,7 +163,7 @@ _loop:
     }
     case 2:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_I32))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32))) {
         goto _readField_access_shared_field;
       } else {
         goto _skip;
@@ -171,7 +171,7 @@ _loop:
     }
     case 3:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_I32))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32))) {
         goto _readField_access_optional_shared_field;
       } else {
         goto _skip;
@@ -179,7 +179,7 @@ _loop:
     }
     case 4:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_I32))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32))) {
         goto _readField_access_shared_const_field;
       } else {
         goto _skip;
@@ -187,7 +187,7 @@ _loop:
     }
     case 5:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_I32))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32))) {
         goto _readField_access_optional_shared_const_field;
       } else {
         goto _skip;
@@ -195,7 +195,7 @@ _loop:
     }
     case 6:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_I32))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32))) {
         goto _readField_access_optional_boxed_field;
       } else {
         goto _skip;
@@ -217,31 +217,31 @@ uint32_t InterceptedFields::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("InterceptedFields");
   {
-    xfer += prot_->serializedFieldSize("access_field", apache::thrift::protocol::TType::T_I32, 1);
+    xfer += prot_->serializedFieldSize("access_field", apache::thrift::protocol::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->__fbthrift_field_access_field);
   }
   {
-    xfer += prot_->serializedFieldSize("access_shared_field", apache::thrift::protocol::TType::T_I32, 2);
+    xfer += prot_->serializedFieldSize("access_shared_field", apache::thrift::protocol::T_I32, 2);
     if (this->__fbthrift_field_access_shared_field) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, *this->__fbthrift_field_access_shared_field);
     }
   }
   if (this->__fbthrift_field_access_optional_shared_field) {
-    xfer += prot_->serializedFieldSize("access_optional_shared_field", apache::thrift::protocol::TType::T_I32, 3);
+    xfer += prot_->serializedFieldSize("access_optional_shared_field", apache::thrift::protocol::T_I32, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, *this->__fbthrift_field_access_optional_shared_field);
   }
   {
-    xfer += prot_->serializedFieldSize("access_shared_const_field", apache::thrift::protocol::TType::T_I32, 4);
+    xfer += prot_->serializedFieldSize("access_shared_const_field", apache::thrift::protocol::T_I32, 4);
     if (this->__fbthrift_field_access_shared_const_field) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, *this->__fbthrift_field_access_shared_const_field);
     }
   }
   if (this->__fbthrift_field_access_optional_shared_const_field) {
-    xfer += prot_->serializedFieldSize("access_optional_shared_const_field", apache::thrift::protocol::TType::T_I32, 5);
+    xfer += prot_->serializedFieldSize("access_optional_shared_const_field", apache::thrift::protocol::T_I32, 5);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, *this->__fbthrift_field_access_optional_shared_const_field);
   }
   if (this->__fbthrift_field_access_optional_boxed_field) {
-    xfer += prot_->serializedFieldSize("access_optional_boxed_field", apache::thrift::protocol::TType::T_I32, 6);
+    xfer += prot_->serializedFieldSize("access_optional_boxed_field", apache::thrift::protocol::T_I32, 6);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, *this->__fbthrift_field_access_optional_boxed_field);
   }
   xfer += prot_->serializedSizeStop();
@@ -253,31 +253,31 @@ uint32_t InterceptedFields::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("InterceptedFields");
   {
-    xfer += prot_->serializedFieldSize("access_field", apache::thrift::protocol::TType::T_I32, 1);
+    xfer += prot_->serializedFieldSize("access_field", apache::thrift::protocol::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->__fbthrift_field_access_field);
   }
   {
-    xfer += prot_->serializedFieldSize("access_shared_field", apache::thrift::protocol::TType::T_I32, 2);
+    xfer += prot_->serializedFieldSize("access_shared_field", apache::thrift::protocol::T_I32, 2);
     if (this->__fbthrift_field_access_shared_field) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, *this->__fbthrift_field_access_shared_field);
     }
   }
   if (this->__fbthrift_field_access_optional_shared_field) {
-    xfer += prot_->serializedFieldSize("access_optional_shared_field", apache::thrift::protocol::TType::T_I32, 3);
+    xfer += prot_->serializedFieldSize("access_optional_shared_field", apache::thrift::protocol::T_I32, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, *this->__fbthrift_field_access_optional_shared_field);
   }
   {
-    xfer += prot_->serializedFieldSize("access_shared_const_field", apache::thrift::protocol::TType::T_I32, 4);
+    xfer += prot_->serializedFieldSize("access_shared_const_field", apache::thrift::protocol::T_I32, 4);
     if (this->__fbthrift_field_access_shared_const_field) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, *this->__fbthrift_field_access_shared_const_field);
     }
   }
   if (this->__fbthrift_field_access_optional_shared_const_field) {
-    xfer += prot_->serializedFieldSize("access_optional_shared_const_field", apache::thrift::protocol::TType::T_I32, 5);
+    xfer += prot_->serializedFieldSize("access_optional_shared_const_field", apache::thrift::protocol::T_I32, 5);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, *this->__fbthrift_field_access_optional_shared_const_field);
   }
   if (this->__fbthrift_field_access_optional_boxed_field) {
-    xfer += prot_->serializedFieldSize("access_optional_boxed_field", apache::thrift::protocol::TType::T_I32, 6);
+    xfer += prot_->serializedFieldSize("access_optional_boxed_field", apache::thrift::protocol::T_I32, 6);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, *this->__fbthrift_field_access_optional_boxed_field);
   }
   xfer += prot_->serializedSizeStop();
@@ -291,14 +291,14 @@ uint32_t InterceptedFields::write(Protocol_* prot_) const {
   bool previousFieldHasValue = true;
   {
     constexpr int16_t kPrevFieldId = 0;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 1, kPrevFieldId>(*prot_, "access_field", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 1, kPrevFieldId>(*prot_, "access_field", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->__fbthrift_field_access_field);
     xfer += prot_->writeFieldEnd();
   }
   {
     constexpr int16_t kPrevFieldId = 1;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 2, kPrevFieldId>(*prot_, "access_shared_field", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 2, kPrevFieldId>(*prot_, "access_shared_field", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->__fbthrift_field_access_shared_field) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, *this->__fbthrift_field_access_shared_field);
@@ -307,7 +307,7 @@ uint32_t InterceptedFields::write(Protocol_* prot_) const {
   }
   if (this->__fbthrift_field_access_optional_shared_field) {
     constexpr int16_t kPrevFieldId = 2;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 3, kPrevFieldId>(*prot_, "access_optional_shared_field", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 3, kPrevFieldId>(*prot_, "access_optional_shared_field", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, *this->__fbthrift_field_access_optional_shared_field);
     xfer += prot_->writeFieldEnd();
@@ -316,7 +316,7 @@ uint32_t InterceptedFields::write(Protocol_* prot_) const {
   }
   {
     constexpr int16_t kPrevFieldId = 3;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 4, kPrevFieldId>(*prot_, "access_shared_const_field", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 4, kPrevFieldId>(*prot_, "access_shared_const_field", previousFieldHasValue);
     previousFieldHasValue = true;
     if (this->__fbthrift_field_access_shared_const_field) {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, *this->__fbthrift_field_access_shared_const_field);
@@ -325,7 +325,7 @@ uint32_t InterceptedFields::write(Protocol_* prot_) const {
   }
   if (this->__fbthrift_field_access_optional_shared_const_field) {
     constexpr int16_t kPrevFieldId = 4;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 5, kPrevFieldId>(*prot_, "access_optional_shared_const_field", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 5, kPrevFieldId>(*prot_, "access_optional_shared_const_field", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, *this->__fbthrift_field_access_optional_shared_const_field);
     xfer += prot_->writeFieldEnd();
@@ -334,7 +334,7 @@ uint32_t InterceptedFields::write(Protocol_* prot_) const {
   }
   if (this->__fbthrift_field_access_optional_boxed_field) {
     constexpr int16_t kPrevFieldId = 5;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 6, kPrevFieldId>(*prot_, "access_optional_boxed_field", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 6, kPrevFieldId>(*prot_, "access_optional_boxed_field", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, *this->__fbthrift_field_access_optional_boxed_field);
     xfer += prot_->writeFieldEnd();

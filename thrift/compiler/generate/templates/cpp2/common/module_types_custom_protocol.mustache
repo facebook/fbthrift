@@ -51,8 +51,12 @@ ptr.mut()
 {{! The container type arguments for struct field begin/end calls. }}
 {{#let export partial container_struct_type |type| captures |types|}}
 {{#pragma ignore-newlines}}
-{{#if type.map?}}{{#partial types.protocol_type type=type.true_type.key_type}}, {{#partial types.protocol_type type=type.true_type.val_type}}
-{{#else if (or type.list? type.set?)}}{{#partial types.protocol_type type=type.true_type.elem_type}}
+  {{#if type.map?}}
+apache::thrift::protocol::{{#partial types.protocol_type type=type.true_type.key_type}}, apache::thrift::protocol::{{#partial types.protocol_type type=type.true_type.val_type}}
+  {{#else if type.list?}}
+apache::thrift::protocol::{{#partial types.protocol_type type=type.true_type.elem_type}}
+  {{#else if type.set?}}
+apache::thrift::protocol::{{#partial types.protocol_type type=type.true_type.elem_type}}
   {{/if type.map?}}
 {{/let partial}}
 

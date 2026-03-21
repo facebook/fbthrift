@@ -49,7 +49,7 @@ void Foo::readNoXfer(Protocol_* iprot) {
           iprot,
           0,
           1,
-          apache::thrift::protocol::TType::T_I64))) {
+          apache::thrift::protocol::T_I64))) {
     goto _advance_failure;
   }
 _readField_MyInt:
@@ -85,7 +85,7 @@ _loop:
   switch (_readState.fieldId) {
     case 1:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_I64))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I64))) {
         goto _readField_MyInt;
       } else {
         goto _skip;
@@ -107,7 +107,7 @@ uint32_t Foo::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Foo");
   {
-    xfer += prot_->serializedFieldSize("MyInt", apache::thrift::protocol::TType::T_I64, 1);
+    xfer += prot_->serializedFieldSize("MyInt", apache::thrift::protocol::T_I64, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->__fbthrift_field_MyInt);
   }
   xfer += prot_->serializedSizeStop();
@@ -119,7 +119,7 @@ uint32_t Foo::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Foo");
   {
-    xfer += prot_->serializedFieldSize("MyInt", apache::thrift::protocol::TType::T_I64, 1);
+    xfer += prot_->serializedFieldSize("MyInt", apache::thrift::protocol::T_I64, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->__fbthrift_field_MyInt);
   }
   xfer += prot_->serializedSizeStop();
@@ -133,7 +133,7 @@ uint32_t Foo::write(Protocol_* prot_) const {
   bool previousFieldHasValue = true;
   {
     constexpr int16_t kPrevFieldId = 0;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I64, 1, kPrevFieldId>(*prot_, "MyInt", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I64, 1, kPrevFieldId>(*prot_, "MyInt", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, this->__fbthrift_field_MyInt);
     xfer += prot_->writeFieldEnd();

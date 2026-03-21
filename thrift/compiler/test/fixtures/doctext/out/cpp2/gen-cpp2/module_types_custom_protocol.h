@@ -63,7 +63,7 @@ void A::readNoXfer(Protocol_* iprot) {
           iprot,
           0,
           1,
-          apache::thrift::protocol::TType::T_I32))) {
+          apache::thrift::protocol::T_I32))) {
     goto _advance_failure;
   }
 _readField_useless_field:
@@ -99,7 +99,7 @@ _loop:
   switch (_readState.fieldId) {
     case 1:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_I32))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32))) {
         goto _readField_useless_field;
       } else {
         goto _skip;
@@ -121,7 +121,7 @@ uint32_t A::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("A");
   {
-    xfer += prot_->serializedFieldSize("useless_field", apache::thrift::protocol::TType::T_I32, 1);
+    xfer += prot_->serializedFieldSize("useless_field", apache::thrift::protocol::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->__fbthrift_field_useless_field);
   }
   xfer += prot_->serializedSizeStop();
@@ -133,7 +133,7 @@ uint32_t A::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("A");
   {
-    xfer += prot_->serializedFieldSize("useless_field", apache::thrift::protocol::TType::T_I32, 1);
+    xfer += prot_->serializedFieldSize("useless_field", apache::thrift::protocol::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->__fbthrift_field_useless_field);
   }
   xfer += prot_->serializedSizeStop();
@@ -147,7 +147,7 @@ uint32_t A::write(Protocol_* prot_) const {
   bool previousFieldHasValue = true;
   {
     constexpr int16_t kPrevFieldId = 0;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 1, kPrevFieldId>(*prot_, "useless_field", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 1, kPrevFieldId>(*prot_, "useless_field", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->__fbthrift_field_useless_field);
     xfer += prot_->writeFieldEnd();
@@ -184,7 +184,7 @@ void U::readNoXfer(Protocol_* iprot) {
     switch (_readState.fieldId) {
       case 1:
       {
-        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_I32)) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->i_ref().emplace();
           ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, value_.i, _readState);
         } else {
@@ -194,7 +194,7 @@ void U::readNoXfer(Protocol_* iprot) {
       }
       case 2:
       {
-        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_STRING)) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING)) {
           this->s_ref().emplace();
           ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, value_.s, _readState);
         } else {
@@ -224,13 +224,13 @@ uint32_t U::serializedSize(Protocol_ const* prot_) const {
   switch(this->getType()) {
     case U::Type::i:
     {
-      xfer += prot_->serializedFieldSize("i", apache::thrift::protocol::TType::T_I32, 1);
+      xfer += prot_->serializedFieldSize("i", apache::thrift::protocol::T_I32, 1);
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, value_.i);
       break;
     }
     case U::Type::s:
     {
-      xfer += prot_->serializedFieldSize("s", apache::thrift::protocol::TType::T_STRING, 2);
+      xfer += prot_->serializedFieldSize("s", apache::thrift::protocol::T_STRING, 2);
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, value_.s);
       break;
     }
@@ -250,13 +250,13 @@ uint32_t U::serializedSizeZC(Protocol_ const* prot_) const {
   switch(this->getType()) {
     case U::Type::i:
     {
-      xfer += prot_->serializedFieldSize("i", apache::thrift::protocol::TType::T_I32, 1);
+      xfer += prot_->serializedFieldSize("i", apache::thrift::protocol::T_I32, 1);
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, value_.i);
       break;
     }
     case U::Type::s:
     {
-      xfer += prot_->serializedFieldSize("s", apache::thrift::protocol::TType::T_STRING, 2);
+      xfer += prot_->serializedFieldSize("s", apache::thrift::protocol::T_STRING, 2);
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, value_.s);
       break;
     }
@@ -277,7 +277,7 @@ uint32_t U::write(Protocol_* prot_) const {
     case U::Type::i:
     {
       constexpr int16_t kPrevFieldId = 0;
-      xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 1, kPrevFieldId>(*prot_, "i", false);
+      xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 1, kPrevFieldId>(*prot_, "i", false);
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, value_.i);
       xfer += prot_->writeFieldEnd();
       break;
@@ -285,7 +285,7 @@ uint32_t U::write(Protocol_* prot_) const {
     case U::Type::s:
     {
       constexpr int16_t kPrevFieldId = 1;
-      xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 2, kPrevFieldId>(*prot_, "s", false);
+      xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 2, kPrevFieldId>(*prot_, "s", false);
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, value_.s);
       xfer += prot_->writeFieldEnd();
       break;
@@ -323,7 +323,7 @@ void Bang::readNoXfer(Protocol_* iprot) {
           iprot,
           0,
           1,
-          apache::thrift::protocol::TType::T_STRING))) {
+          apache::thrift::protocol::T_STRING))) {
     goto _advance_failure;
   }
 _readField_message:
@@ -359,7 +359,7 @@ _loop:
   switch (_readState.fieldId) {
     case 1:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_STRING))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
         goto _readField_message;
       } else {
         goto _skip;
@@ -381,7 +381,7 @@ uint32_t Bang::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Bang");
   {
-    xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::TType::T_STRING, 1);
+    xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::T_STRING, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_message);
   }
   xfer += prot_->serializedSizeStop();
@@ -393,7 +393,7 @@ uint32_t Bang::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Bang");
   {
-    xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::TType::T_STRING, 1);
+    xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::T_STRING, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_message);
   }
   xfer += prot_->serializedSizeStop();
@@ -407,7 +407,7 @@ uint32_t Bang::write(Protocol_* prot_) const {
   bool previousFieldHasValue = true;
   {
     constexpr int16_t kPrevFieldId = 0;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 1, kPrevFieldId>(*prot_, "message", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 1, kPrevFieldId>(*prot_, "message", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_message);
     xfer += prot_->writeFieldEnd();

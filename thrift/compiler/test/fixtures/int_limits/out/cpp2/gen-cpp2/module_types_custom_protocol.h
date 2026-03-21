@@ -49,7 +49,7 @@ void Limits::readNoXfer(Protocol_* iprot) {
           iprot,
           0,
           1,
-          apache::thrift::protocol::TType::T_I64))) {
+          apache::thrift::protocol::T_I64))) {
     goto _advance_failure;
   }
 _readField_max_i64_field:
@@ -62,7 +62,7 @@ _readField_max_i64_field:
           iprot,
           1,
           2,
-          apache::thrift::protocol::TType::T_I64))) {
+          apache::thrift::protocol::T_I64))) {
     goto _advance_failure;
   }
 _readField_min_i64_field:
@@ -75,7 +75,7 @@ _readField_min_i64_field:
           iprot,
           2,
           3,
-          apache::thrift::protocol::TType::T_I32))) {
+          apache::thrift::protocol::T_I32))) {
     goto _advance_failure;
   }
 _readField_max_i32_field:
@@ -88,7 +88,7 @@ _readField_max_i32_field:
           iprot,
           3,
           4,
-          apache::thrift::protocol::TType::T_I32))) {
+          apache::thrift::protocol::T_I32))) {
     goto _advance_failure;
   }
 _readField_min_i32_field:
@@ -101,7 +101,7 @@ _readField_min_i32_field:
           iprot,
           4,
           5,
-          apache::thrift::protocol::TType::T_I16))) {
+          apache::thrift::protocol::T_I16))) {
     goto _advance_failure;
   }
 _readField_max_i16_field:
@@ -114,7 +114,7 @@ _readField_max_i16_field:
           iprot,
           5,
           6,
-          apache::thrift::protocol::TType::T_I16))) {
+          apache::thrift::protocol::T_I16))) {
     goto _advance_failure;
   }
 _readField_min_i16_field:
@@ -127,7 +127,7 @@ _readField_min_i16_field:
           iprot,
           6,
           7,
-          apache::thrift::protocol::TType::T_BYTE))) {
+          apache::thrift::protocol::T_BYTE))) {
     goto _advance_failure;
   }
 _readField_max_byte_field:
@@ -140,7 +140,7 @@ _readField_max_byte_field:
           iprot,
           7,
           8,
-          apache::thrift::protocol::TType::T_BYTE))) {
+          apache::thrift::protocol::T_BYTE))) {
     goto _advance_failure;
   }
 _readField_min_byte_field:
@@ -176,7 +176,7 @@ _loop:
   switch (_readState.fieldId) {
     case 1:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_I64))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I64))) {
         goto _readField_max_i64_field;
       } else {
         goto _skip;
@@ -184,7 +184,7 @@ _loop:
     }
     case 2:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_I64))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I64))) {
         goto _readField_min_i64_field;
       } else {
         goto _skip;
@@ -192,7 +192,7 @@ _loop:
     }
     case 3:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_I32))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32))) {
         goto _readField_max_i32_field;
       } else {
         goto _skip;
@@ -200,7 +200,7 @@ _loop:
     }
     case 4:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_I32))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32))) {
         goto _readField_min_i32_field;
       } else {
         goto _skip;
@@ -208,7 +208,7 @@ _loop:
     }
     case 5:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_I16))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I16))) {
         goto _readField_max_i16_field;
       } else {
         goto _skip;
@@ -216,7 +216,7 @@ _loop:
     }
     case 6:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_I16))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I16))) {
         goto _readField_min_i16_field;
       } else {
         goto _skip;
@@ -224,7 +224,7 @@ _loop:
     }
     case 7:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_BYTE))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_BYTE))) {
         goto _readField_max_byte_field;
       } else {
         goto _skip;
@@ -232,7 +232,7 @@ _loop:
     }
     case 8:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_BYTE))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_BYTE))) {
         goto _readField_min_byte_field;
       } else {
         goto _skip;
@@ -254,35 +254,35 @@ uint32_t Limits::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Limits");
   {
-    xfer += prot_->serializedFieldSize("max_i64_field", apache::thrift::protocol::TType::T_I64, 1);
+    xfer += prot_->serializedFieldSize("max_i64_field", apache::thrift::protocol::T_I64, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->__fbthrift_field_max_i64_field);
   }
   {
-    xfer += prot_->serializedFieldSize("min_i64_field", apache::thrift::protocol::TType::T_I64, 2);
+    xfer += prot_->serializedFieldSize("min_i64_field", apache::thrift::protocol::T_I64, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->__fbthrift_field_min_i64_field);
   }
   {
-    xfer += prot_->serializedFieldSize("max_i32_field", apache::thrift::protocol::TType::T_I32, 3);
+    xfer += prot_->serializedFieldSize("max_i32_field", apache::thrift::protocol::T_I32, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->__fbthrift_field_max_i32_field);
   }
   {
-    xfer += prot_->serializedFieldSize("min_i32_field", apache::thrift::protocol::TType::T_I32, 4);
+    xfer += prot_->serializedFieldSize("min_i32_field", apache::thrift::protocol::T_I32, 4);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->__fbthrift_field_min_i32_field);
   }
   {
-    xfer += prot_->serializedFieldSize("max_i16_field", apache::thrift::protocol::TType::T_I16, 5);
+    xfer += prot_->serializedFieldSize("max_i16_field", apache::thrift::protocol::T_I16, 5);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int16_t>::serializedSize<false>(*prot_, this->__fbthrift_field_max_i16_field);
   }
   {
-    xfer += prot_->serializedFieldSize("min_i16_field", apache::thrift::protocol::TType::T_I16, 6);
+    xfer += prot_->serializedFieldSize("min_i16_field", apache::thrift::protocol::T_I16, 6);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int16_t>::serializedSize<false>(*prot_, this->__fbthrift_field_min_i16_field);
   }
   {
-    xfer += prot_->serializedFieldSize("max_byte_field", apache::thrift::protocol::TType::T_BYTE, 7);
+    xfer += prot_->serializedFieldSize("max_byte_field", apache::thrift::protocol::T_BYTE, 7);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int8_t>::serializedSize<false>(*prot_, this->__fbthrift_field_max_byte_field);
   }
   {
-    xfer += prot_->serializedFieldSize("min_byte_field", apache::thrift::protocol::TType::T_BYTE, 8);
+    xfer += prot_->serializedFieldSize("min_byte_field", apache::thrift::protocol::T_BYTE, 8);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int8_t>::serializedSize<false>(*prot_, this->__fbthrift_field_min_byte_field);
   }
   xfer += prot_->serializedSizeStop();
@@ -294,35 +294,35 @@ uint32_t Limits::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Limits");
   {
-    xfer += prot_->serializedFieldSize("max_i64_field", apache::thrift::protocol::TType::T_I64, 1);
+    xfer += prot_->serializedFieldSize("max_i64_field", apache::thrift::protocol::T_I64, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->__fbthrift_field_max_i64_field);
   }
   {
-    xfer += prot_->serializedFieldSize("min_i64_field", apache::thrift::protocol::TType::T_I64, 2);
+    xfer += prot_->serializedFieldSize("min_i64_field", apache::thrift::protocol::T_I64, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->__fbthrift_field_min_i64_field);
   }
   {
-    xfer += prot_->serializedFieldSize("max_i32_field", apache::thrift::protocol::TType::T_I32, 3);
+    xfer += prot_->serializedFieldSize("max_i32_field", apache::thrift::protocol::T_I32, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->__fbthrift_field_max_i32_field);
   }
   {
-    xfer += prot_->serializedFieldSize("min_i32_field", apache::thrift::protocol::TType::T_I32, 4);
+    xfer += prot_->serializedFieldSize("min_i32_field", apache::thrift::protocol::T_I32, 4);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->__fbthrift_field_min_i32_field);
   }
   {
-    xfer += prot_->serializedFieldSize("max_i16_field", apache::thrift::protocol::TType::T_I16, 5);
+    xfer += prot_->serializedFieldSize("max_i16_field", apache::thrift::protocol::T_I16, 5);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int16_t>::serializedSize<false>(*prot_, this->__fbthrift_field_max_i16_field);
   }
   {
-    xfer += prot_->serializedFieldSize("min_i16_field", apache::thrift::protocol::TType::T_I16, 6);
+    xfer += prot_->serializedFieldSize("min_i16_field", apache::thrift::protocol::T_I16, 6);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int16_t>::serializedSize<false>(*prot_, this->__fbthrift_field_min_i16_field);
   }
   {
-    xfer += prot_->serializedFieldSize("max_byte_field", apache::thrift::protocol::TType::T_BYTE, 7);
+    xfer += prot_->serializedFieldSize("max_byte_field", apache::thrift::protocol::T_BYTE, 7);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int8_t>::serializedSize<false>(*prot_, this->__fbthrift_field_max_byte_field);
   }
   {
-    xfer += prot_->serializedFieldSize("min_byte_field", apache::thrift::protocol::TType::T_BYTE, 8);
+    xfer += prot_->serializedFieldSize("min_byte_field", apache::thrift::protocol::T_BYTE, 8);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int8_t>::serializedSize<false>(*prot_, this->__fbthrift_field_min_byte_field);
   }
   xfer += prot_->serializedSizeStop();
@@ -336,56 +336,56 @@ uint32_t Limits::write(Protocol_* prot_) const {
   bool previousFieldHasValue = true;
   {
     constexpr int16_t kPrevFieldId = 0;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I64, 1, kPrevFieldId>(*prot_, "max_i64_field", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I64, 1, kPrevFieldId>(*prot_, "max_i64_field", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, this->__fbthrift_field_max_i64_field);
     xfer += prot_->writeFieldEnd();
   }
   {
     constexpr int16_t kPrevFieldId = 1;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I64, 2, kPrevFieldId>(*prot_, "min_i64_field", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I64, 2, kPrevFieldId>(*prot_, "min_i64_field", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, this->__fbthrift_field_min_i64_field);
     xfer += prot_->writeFieldEnd();
   }
   {
     constexpr int16_t kPrevFieldId = 2;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 3, kPrevFieldId>(*prot_, "max_i32_field", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 3, kPrevFieldId>(*prot_, "max_i32_field", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->__fbthrift_field_max_i32_field);
     xfer += prot_->writeFieldEnd();
   }
   {
     constexpr int16_t kPrevFieldId = 3;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 4, kPrevFieldId>(*prot_, "min_i32_field", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 4, kPrevFieldId>(*prot_, "min_i32_field", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->__fbthrift_field_min_i32_field);
     xfer += prot_->writeFieldEnd();
   }
   {
     constexpr int16_t kPrevFieldId = 4;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I16, 5, kPrevFieldId>(*prot_, "max_i16_field", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I16, 5, kPrevFieldId>(*prot_, "max_i16_field", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int16_t>::write(*prot_, this->__fbthrift_field_max_i16_field);
     xfer += prot_->writeFieldEnd();
   }
   {
     constexpr int16_t kPrevFieldId = 5;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I16, 6, kPrevFieldId>(*prot_, "min_i16_field", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I16, 6, kPrevFieldId>(*prot_, "min_i16_field", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int16_t>::write(*prot_, this->__fbthrift_field_min_i16_field);
     xfer += prot_->writeFieldEnd();
   }
   {
     constexpr int16_t kPrevFieldId = 6;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_BYTE, 7, kPrevFieldId>(*prot_, "max_byte_field", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_BYTE, 7, kPrevFieldId>(*prot_, "max_byte_field", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int8_t>::write(*prot_, this->__fbthrift_field_max_byte_field);
     xfer += prot_->writeFieldEnd();
   }
   {
     constexpr int16_t kPrevFieldId = 7;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_BYTE, 8, kPrevFieldId>(*prot_, "min_byte_field", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_BYTE, 8, kPrevFieldId>(*prot_, "min_byte_field", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int8_t>::write(*prot_, this->__fbthrift_field_min_byte_field);
     xfer += prot_->writeFieldEnd();

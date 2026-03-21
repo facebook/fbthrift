@@ -23,7 +23,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::BiDiSinkException>::fields_types = { {
-  apache::thrift::protocol::TType::T_STRING,
+  TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::cpp2::BiDiSinkException>::isset_indexes = { {
   0,
@@ -37,7 +37,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::BiDiStreamException>::fields_types = { {
-  apache::thrift::protocol::TType::T_STRING,
+  TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::cpp2::BiDiStreamException>::isset_indexes = { {
   0,
@@ -51,7 +51,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::BiDiMethodException>::fields_types = { {
-  apache::thrift::protocol::TType::T_STRING,
+  TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::cpp2::BiDiMethodException>::isset_indexes = { {
   0,

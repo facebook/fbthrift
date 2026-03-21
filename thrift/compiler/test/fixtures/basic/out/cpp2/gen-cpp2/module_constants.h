@@ -50,9 +50,9 @@ namespace module_constants {
   }
 
   /** Glean {"constant": "DATE"} */
-  constexpr const char* const DATE_ = "June 28, 2017";
+  constexpr char const * const DATE_ = "June 28, 2017";
   /** Glean {"constant": "DATE"} */
-  constexpr const char* DATE() {
+  constexpr char const * DATE() {
     return DATE_;
   }
 

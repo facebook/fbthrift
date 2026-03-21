@@ -77,7 +77,7 @@ void MyStructNestedAnnotation::readNoXfer(Protocol_* iprot) {
           iprot,
           0,
           1,
-          apache::thrift::protocol::TType::T_STRING))) {
+          apache::thrift::protocol::T_STRING))) {
     goto _advance_failure;
   }
 _readField_name:
@@ -113,7 +113,7 @@ _loop:
   switch (_readState.fieldId) {
     case 1:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_STRING))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
         goto _readField_name;
       } else {
         goto _skip;
@@ -135,7 +135,7 @@ uint32_t MyStructNestedAnnotation::serializedSize(Protocol_ const* prot_) const 
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStructNestedAnnotation");
   {
-    xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::TType::T_STRING, 1);
+    xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_name);
   }
   xfer += prot_->serializedSizeStop();
@@ -147,7 +147,7 @@ uint32_t MyStructNestedAnnotation::serializedSizeZC(Protocol_ const* prot_) cons
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStructNestedAnnotation");
   {
-    xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::TType::T_STRING, 1);
+    xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_name);
   }
   xfer += prot_->serializedSizeStop();
@@ -161,7 +161,7 @@ uint32_t MyStructNestedAnnotation::write(Protocol_* prot_) const {
   bool previousFieldHasValue = true;
   {
     constexpr int16_t kPrevFieldId = 0;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 1, kPrevFieldId>(*prot_, "name", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 1, kPrevFieldId>(*prot_, "name", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_name);
     xfer += prot_->writeFieldEnd();
@@ -361,7 +361,7 @@ void YourStruct::readNoXfer(Protocol_* iprot) {
           iprot,
           0,
           2,
-          apache::thrift::protocol::TType::T_I64))) {
+          apache::thrift::protocol::T_I64))) {
     goto _advance_failure;
   }
 _readField_majorVer:
@@ -374,7 +374,7 @@ _readField_majorVer:
           iprot,
           2,
           1,
-          apache::thrift::protocol::TType::T_STRING))) {
+          apache::thrift::protocol::T_STRING))) {
     goto _advance_failure;
   }
 _readField_abstract:
@@ -387,7 +387,7 @@ _readField_abstract:
           iprot,
           1,
           3,
-          apache::thrift::protocol::TType::T_STRING))) {
+          apache::thrift::protocol::T_STRING))) {
     goto _advance_failure;
   }
 _readField_annotation_with_quote:
@@ -400,7 +400,7 @@ _readField_annotation_with_quote:
           iprot,
           3,
           4,
-          apache::thrift::protocol::TType::T_STRING))) {
+          apache::thrift::protocol::T_STRING))) {
     goto _advance_failure;
   }
 _readField_class_:
@@ -413,7 +413,7 @@ _readField_class_:
           iprot,
           4,
           5,
-          apache::thrift::protocol::TType::T_STRING))) {
+          apache::thrift::protocol::T_STRING))) {
     goto _advance_failure;
   }
 _readField_annotation_with_trailing_comma:
@@ -426,7 +426,7 @@ _readField_annotation_with_trailing_comma:
           iprot,
           5,
           6,
-          apache::thrift::protocol::TType::T_STRING))) {
+          apache::thrift::protocol::T_STRING))) {
     goto _advance_failure;
   }
 _readField_empty_annotations:
@@ -439,7 +439,7 @@ _readField_empty_annotations:
           iprot,
           6,
           7,
-          apache::thrift::protocol::TType::T_I32))) {
+          apache::thrift::protocol::T_I32))) {
     goto _advance_failure;
   }
 _readField_my_enum:
@@ -452,7 +452,7 @@ _readField_my_enum:
           iprot,
           7,
           8,
-          apache::thrift::protocol::TType::T_LIST))) {
+          apache::thrift::protocol::T_LIST))) {
     goto _advance_failure;
   }
 _readField_cpp_type_annotation:
@@ -468,7 +468,7 @@ _readField_cpp_type_annotation:
           iprot,
           8,
           9,
-          apache::thrift::protocol::TType::T_STRUCT))) {
+          apache::thrift::protocol::T_STRUCT))) {
     goto _advance_failure;
   }
 _readField_my_union:
@@ -506,7 +506,7 @@ _loop:
   switch (_readState.fieldId) {
     case 2:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_I64))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I64))) {
         goto _readField_majorVer;
       } else {
         goto _skip;
@@ -514,7 +514,7 @@ _loop:
     }
     case 1:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_STRING))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
         goto _readField_abstract;
       } else {
         goto _skip;
@@ -522,7 +522,7 @@ _loop:
     }
     case 3:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_STRING))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
         goto _readField_annotation_with_quote;
       } else {
         goto _skip;
@@ -530,7 +530,7 @@ _loop:
     }
     case 4:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_STRING))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
         goto _readField_class_;
       } else {
         goto _skip;
@@ -538,7 +538,7 @@ _loop:
     }
     case 5:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_STRING))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
         goto _readField_annotation_with_trailing_comma;
       } else {
         goto _skip;
@@ -546,7 +546,7 @@ _loop:
     }
     case 6:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_STRING))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
         goto _readField_empty_annotations;
       } else {
         goto _skip;
@@ -554,7 +554,7 @@ _loop:
     }
     case 7:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_I32))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32))) {
         goto _readField_my_enum;
       } else {
         goto _skip;
@@ -562,7 +562,7 @@ _loop:
     }
     case 8:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_LIST))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_LIST))) {
         goto _readField_cpp_type_annotation;
       } else {
         goto _skip;
@@ -570,7 +570,7 @@ _loop:
     }
     case 9:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_STRUCT))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRUCT))) {
         goto _readField_my_union;
       } else {
         goto _skip;
@@ -592,39 +592,39 @@ uint32_t YourStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStruct");
   {
-    xfer += prot_->serializedFieldSize("major", apache::thrift::protocol::TType::T_I64, 2);
+    xfer += prot_->serializedFieldSize("major", apache::thrift::protocol::T_I64, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->__fbthrift_field_majorVer);
   }
   {
-    xfer += prot_->serializedFieldSize("abstract", apache::thrift::protocol::TType::T_STRING, 1);
+    xfer += prot_->serializedFieldSize("abstract", apache::thrift::protocol::T_STRING, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_abstract);
   }
   {
-    xfer += prot_->serializedFieldSize("annotation_with_quote", apache::thrift::protocol::TType::T_STRING, 3);
+    xfer += prot_->serializedFieldSize("annotation_with_quote", apache::thrift::protocol::T_STRING, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_annotation_with_quote);
   }
   {
-    xfer += prot_->serializedFieldSize("class_", apache::thrift::protocol::TType::T_STRING, 4);
+    xfer += prot_->serializedFieldSize("class_", apache::thrift::protocol::T_STRING, 4);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_class_);
   }
   {
-    xfer += prot_->serializedFieldSize("annotation_with_trailing_comma", apache::thrift::protocol::TType::T_STRING, 5);
+    xfer += prot_->serializedFieldSize("annotation_with_trailing_comma", apache::thrift::protocol::T_STRING, 5);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_annotation_with_trailing_comma);
   }
   {
-    xfer += prot_->serializedFieldSize("empty_annotations", apache::thrift::protocol::TType::T_STRING, 6);
+    xfer += prot_->serializedFieldSize("empty_annotations", apache::thrift::protocol::T_STRING, 6);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_empty_annotations);
   }
   {
-    xfer += prot_->serializedFieldSize("my_enum", apache::thrift::protocol::TType::T_I32, 7);
+    xfer += prot_->serializedFieldSize("my_enum", apache::thrift::protocol::T_I32, 7);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::YourEnum>::serializedSize<false>(*prot_, this->__fbthrift_field_my_enum);
   }
   {
-    xfer += prot_->serializedFieldSize("cpp_type_annotation", apache::thrift::protocol::TType::T_LIST, 8);
+    xfer += prot_->serializedFieldSize("cpp_type_annotation", apache::thrift::protocol::T_LIST, 8);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::string>, ::cpp2::list_string_6884>::serializedSize<false>(*prot_, this->__fbthrift_field_cpp_type_annotation);
   }
   {
-    xfer += prot_->serializedFieldSize("my_union", apache::thrift::protocol::TType::T_STRUCT, 9);
+    xfer += prot_->serializedFieldSize("my_union", apache::thrift::protocol::T_STRUCT, 9);
     xfer += ::apache::thrift::op::serialized_size<false, ::apache::thrift::type::adapted<::StaticCast, ::apache::thrift::type::union_t<::cpp2::detail::YourUnion>>>(*prot_, this->__fbthrift_field_my_union);
   }
   xfer += prot_->serializedSizeStop();
@@ -636,39 +636,39 @@ uint32_t YourStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStruct");
   {
-    xfer += prot_->serializedFieldSize("major", apache::thrift::protocol::TType::T_I64, 2);
+    xfer += prot_->serializedFieldSize("major", apache::thrift::protocol::T_I64, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->__fbthrift_field_majorVer);
   }
   {
-    xfer += prot_->serializedFieldSize("abstract", apache::thrift::protocol::TType::T_STRING, 1);
+    xfer += prot_->serializedFieldSize("abstract", apache::thrift::protocol::T_STRING, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_abstract);
   }
   {
-    xfer += prot_->serializedFieldSize("annotation_with_quote", apache::thrift::protocol::TType::T_STRING, 3);
+    xfer += prot_->serializedFieldSize("annotation_with_quote", apache::thrift::protocol::T_STRING, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_annotation_with_quote);
   }
   {
-    xfer += prot_->serializedFieldSize("class_", apache::thrift::protocol::TType::T_STRING, 4);
+    xfer += prot_->serializedFieldSize("class_", apache::thrift::protocol::T_STRING, 4);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_class_);
   }
   {
-    xfer += prot_->serializedFieldSize("annotation_with_trailing_comma", apache::thrift::protocol::TType::T_STRING, 5);
+    xfer += prot_->serializedFieldSize("annotation_with_trailing_comma", apache::thrift::protocol::T_STRING, 5);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_annotation_with_trailing_comma);
   }
   {
-    xfer += prot_->serializedFieldSize("empty_annotations", apache::thrift::protocol::TType::T_STRING, 6);
+    xfer += prot_->serializedFieldSize("empty_annotations", apache::thrift::protocol::T_STRING, 6);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_empty_annotations);
   }
   {
-    xfer += prot_->serializedFieldSize("my_enum", apache::thrift::protocol::TType::T_I32, 7);
+    xfer += prot_->serializedFieldSize("my_enum", apache::thrift::protocol::T_I32, 7);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::YourEnum>::serializedSize<false>(*prot_, this->__fbthrift_field_my_enum);
   }
   {
-    xfer += prot_->serializedFieldSize("cpp_type_annotation", apache::thrift::protocol::TType::T_LIST, 8);
+    xfer += prot_->serializedFieldSize("cpp_type_annotation", apache::thrift::protocol::T_LIST, 8);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::string>, ::cpp2::list_string_6884>::serializedSize<false>(*prot_, this->__fbthrift_field_cpp_type_annotation);
   }
   {
-    xfer += prot_->serializedFieldSize("my_union", apache::thrift::protocol::TType::T_STRUCT, 9);
+    xfer += prot_->serializedFieldSize("my_union", apache::thrift::protocol::T_STRUCT, 9);
     xfer += ::apache::thrift::op::serialized_size<true, ::apache::thrift::type::adapted<::StaticCast, ::apache::thrift::type::union_t<::cpp2::detail::YourUnion>>>(*prot_, this->__fbthrift_field_my_union);
   }
   xfer += prot_->serializedSizeStop();
@@ -682,63 +682,63 @@ uint32_t YourStruct::write(Protocol_* prot_) const {
   bool previousFieldHasValue = true;
   {
     constexpr int16_t kPrevFieldId = 0;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I64, 2, kPrevFieldId>(*prot_, "major", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I64, 2, kPrevFieldId>(*prot_, "major", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, this->__fbthrift_field_majorVer);
     xfer += prot_->writeFieldEnd();
   }
   {
     constexpr int16_t kPrevFieldId = 2;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 1, kPrevFieldId>(*prot_, "abstract", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 1, kPrevFieldId>(*prot_, "abstract", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_abstract);
     xfer += prot_->writeFieldEnd();
   }
   {
     constexpr int16_t kPrevFieldId = 1;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 3, kPrevFieldId>(*prot_, "annotation_with_quote", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 3, kPrevFieldId>(*prot_, "annotation_with_quote", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_annotation_with_quote);
     xfer += prot_->writeFieldEnd();
   }
   {
     constexpr int16_t kPrevFieldId = 3;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 4, kPrevFieldId>(*prot_, "class_", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 4, kPrevFieldId>(*prot_, "class_", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_class_);
     xfer += prot_->writeFieldEnd();
   }
   {
     constexpr int16_t kPrevFieldId = 4;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 5, kPrevFieldId>(*prot_, "annotation_with_trailing_comma", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 5, kPrevFieldId>(*prot_, "annotation_with_trailing_comma", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_annotation_with_trailing_comma);
     xfer += prot_->writeFieldEnd();
   }
   {
     constexpr int16_t kPrevFieldId = 5;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 6, kPrevFieldId>(*prot_, "empty_annotations", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 6, kPrevFieldId>(*prot_, "empty_annotations", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_empty_annotations);
     xfer += prot_->writeFieldEnd();
   }
   {
     constexpr int16_t kPrevFieldId = 6;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 7, kPrevFieldId>(*prot_, "my_enum", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 7, kPrevFieldId>(*prot_, "my_enum", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::YourEnum>::write(*prot_, this->__fbthrift_field_my_enum);
     xfer += prot_->writeFieldEnd();
   }
   {
     constexpr int16_t kPrevFieldId = 7;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_LIST, 8, kPrevFieldId>(*prot_, "cpp_type_annotation", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 8, kPrevFieldId>(*prot_, "cpp_type_annotation", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::string>, ::cpp2::list_string_6884>::write(*prot_, this->__fbthrift_field_cpp_type_annotation);
     xfer += prot_->writeFieldEnd();
   }
   {
     constexpr int16_t kPrevFieldId = 8;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRUCT, 9, kPrevFieldId>(*prot_, "my_union", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 9, kPrevFieldId>(*prot_, "my_union", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::op::encode<::apache::thrift::type::adapted<::StaticCast, ::apache::thrift::type::union_t<::cpp2::detail::YourUnion>>>(*prot_, this->__fbthrift_field_my_union);
     xfer += prot_->writeFieldEnd();
@@ -772,7 +772,7 @@ void SecretStruct::readNoXfer(Protocol_* iprot) {
           iprot,
           0,
           1,
-          apache::thrift::protocol::TType::T_I64))) {
+          apache::thrift::protocol::T_I64))) {
     goto _advance_failure;
   }
 _readField_id:
@@ -785,7 +785,7 @@ _readField_id:
           iprot,
           1,
           2,
-          apache::thrift::protocol::TType::T_STRING))) {
+          apache::thrift::protocol::T_STRING))) {
     goto _advance_failure;
   }
 _readField_password:
@@ -821,7 +821,7 @@ _loop:
   switch (_readState.fieldId) {
     case 1:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_I64))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I64))) {
         goto _readField_id;
       } else {
         goto _skip;
@@ -829,7 +829,7 @@ _loop:
     }
     case 2:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_STRING))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
         goto _readField_password;
       } else {
         goto _skip;
@@ -851,11 +851,11 @@ uint32_t SecretStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("SecretStruct");
   {
-    xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::TType::T_I64, 1);
+    xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::T_I64, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->__fbthrift_field_id);
   }
   {
-    xfer += prot_->serializedFieldSize("password", apache::thrift::protocol::TType::T_STRING, 2);
+    xfer += prot_->serializedFieldSize("password", apache::thrift::protocol::T_STRING, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_password);
   }
   xfer += prot_->serializedSizeStop();
@@ -867,11 +867,11 @@ uint32_t SecretStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("SecretStruct");
   {
-    xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::TType::T_I64, 1);
+    xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::T_I64, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->__fbthrift_field_id);
   }
   {
-    xfer += prot_->serializedFieldSize("password", apache::thrift::protocol::TType::T_STRING, 2);
+    xfer += prot_->serializedFieldSize("password", apache::thrift::protocol::T_STRING, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_password);
   }
   xfer += prot_->serializedSizeStop();
@@ -885,14 +885,14 @@ uint32_t SecretStruct::write(Protocol_* prot_) const {
   bool previousFieldHasValue = true;
   {
     constexpr int16_t kPrevFieldId = 0;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I64, 1, kPrevFieldId>(*prot_, "id", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I64, 1, kPrevFieldId>(*prot_, "id", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, this->__fbthrift_field_id);
     xfer += prot_->writeFieldEnd();
   }
   {
     constexpr int16_t kPrevFieldId = 1;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 2, kPrevFieldId>(*prot_, "password", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 2, kPrevFieldId>(*prot_, "password", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_password);
     xfer += prot_->writeFieldEnd();

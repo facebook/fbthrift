@@ -24,7 +24,7 @@
   {{#each program.includes_for_codegen as |include|}}
 #include "{{include.program.include_prefix}}{{include.program.name}}_layouts.h"
   {{/each}}
-namespace apache::thrift::frozen {
+namespace apache { namespace thrift { namespace frozen {
 
   {{#each program.type_definitions_topological_order as |def|}}
     {{#if (and (not def.typedef?) def.cpp_frozen2_exclude?)}}
@@ -106,5 +106,5 @@ FROZEN_TYPE({{def.cpp_fullname}},{{!
 
     {{/if (not (or def.typedef? def.cpp_frozen2_exclude?))}}
   {{/each}}
-} // apache::thrift::frozen
+}}} // apache::thrift::frozen
 {{!}}

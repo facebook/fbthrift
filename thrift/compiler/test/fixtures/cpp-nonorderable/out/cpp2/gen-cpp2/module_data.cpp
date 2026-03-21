@@ -22,8 +22,8 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 2> TStructDataStora
   2,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::NonOrderableStruct>::fields_types = { {
-  apache::thrift::protocol::TType::T_I32,
-  apache::thrift::protocol::TType::T_STRING,
+  TType::T_I32,
+  TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 2> TStructDataStorage<::cpp2::NonOrderableStruct>::isset_indexes = { {
   0,
@@ -40,8 +40,8 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 2> TStructDataStora
   2,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::NonOrderableUnion>::fields_types = { {
-  apache::thrift::protocol::TType::T_I32,
-  apache::thrift::protocol::TType::T_STRING,
+  TType::T_I32,
+  TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 2> TStructDataStorage<::cpp2::NonOrderableUnion>::isset_indexes = { {
   0,
@@ -58,8 +58,8 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 2> TStructDataStora
   2,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::OrderableStruct>::fields_types = { {
-  apache::thrift::protocol::TType::T_I32,
-  apache::thrift::protocol::TType::T_STRING,
+  TType::T_I32,
+  TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 2> TStructDataStorage<::cpp2::OrderableStruct>::isset_indexes = { {
   0,
@@ -76,8 +76,8 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 2> TStructDataStora
   2,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::OrderableUnion>::fields_types = { {
-  apache::thrift::protocol::TType::T_I32,
-  apache::thrift::protocol::TType::T_STRING,
+  TType::T_I32,
+  TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 2> TStructDataStorage<::cpp2::OrderableUnion>::isset_indexes = { {
   0,

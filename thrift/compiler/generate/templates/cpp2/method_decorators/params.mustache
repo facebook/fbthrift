@@ -50,7 +50,10 @@ p_{{param.cpp_name}}
 }}
 {{#let export partial after_param_unused |service function|}}
 {{#pragma ignore-newlines}}
-{{#if (not function.return_type.void?)}}, apache::thrift::detail::DecoratorReturnType<{{function.cpp_return_type}}>::type /*result*/{{/if}}
+{{#if function.return_type.void?}}
+{{#else}}
+, apache::thrift::detail::DecoratorReturnType<{{function.cpp_return_type}}>::type /*result*/
+{{/if function.return_type.void?}}
 {{/let partial}}
 
 {{!
@@ -58,7 +61,10 @@ p_{{param.cpp_name}}
 }}
 {{#let export partial after_param |service function|}}
 {{#pragma ignore-newlines}}
-{{#if (not function.return_type.void?)}}, apache::thrift::detail::DecoratorReturnType<{{function.cpp_return_type}}>::type result{{/if}}
+{{#if function.return_type.void?}}
+{{#else}}
+, apache::thrift::detail::DecoratorReturnType<{{function.cpp_return_type}}>::type result
+{{/if function.return_type.void?}}
 {{/let partial}}
 
 {{!
@@ -66,10 +72,17 @@ p_{{param.cpp_name}}
 }}
 {{#let export partial before_invocation_args |function|}}
 {{#pragma ignore-newlines}}
-  {{#each function.params.fields as |param|}}
-    {{#let is_smart_ptr=(and (not function.stack_arguments?) param.type.resolves_to_complex_return?)}}
-, {{#if is_smart_ptr}}*{{/if}}args.uarg_{{param.cpp_name}}
-  {{/each}}
+{{#each function.params.fields as |param|}}
+{{#if param.type.resolves_to_complex_return?}}
+{{#if function.stack_arguments?}}
+, args.uarg_{{param.cpp_name}}
+{{#else}}
+, *args.uarg_{{param.cpp_name}}
+{{/if function.stack_arguments?}}
+{{#else}}
+, args.uarg_{{param.cpp_name}}
+{{/if param.type.resolves_to_complex_return?}}
+{{/each}}
 {{/let partial}}
 
 {{!
@@ -80,5 +93,8 @@ p_{{param.cpp_name}}
 }}
 {{#let export partial after_invocation_args |function|}}
 {{#pragma ignore-newlines}}
-{{#if (not function.return_type.void?)}}, result{{/if}}
+{{#if function.return_type.void?}}
+{{#else}}
+, result
+{{/if function.return_type.void?}}
 {{/let partial}}

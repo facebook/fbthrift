@@ -35,8 +35,8 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 2> TStructDataStora
   2,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 2> TStructDataStorage<::test::fixtures::basic_structured_annotations::structured_annotation_inline>::fields_types = { {
-  apache::thrift::protocol::TType::T_I64,
-  apache::thrift::protocol::TType::T_STRING,
+  TType::T_I64,
+  TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 2> TStructDataStorage<::test::fixtures::basic_structured_annotations::structured_annotation_inline>::isset_indexes = { {
   0,
@@ -51,7 +51,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::test::fixtures::basic_structured_annotations::structured_annotation_with_default>::fields_types = { {
-  apache::thrift::protocol::TType::T_STRING,
+  TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::test::fixtures::basic_structured_annotations::structured_annotation_with_default>::isset_indexes = { {
   0,
@@ -69,9 +69,9 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 3> TStructDataStora
   3,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 3> TStructDataStorage<::test::fixtures::basic_structured_annotations::structured_annotation_recursive>::fields_types = { {
-  apache::thrift::protocol::TType::T_STRING,
-  apache::thrift::protocol::TType::T_STRUCT,
-  apache::thrift::protocol::TType::T_STRUCT,
+  TType::T_STRING,
+  TType::T_STRUCT,
+  TType::T_STRUCT,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 3> TStructDataStorage<::test::fixtures::basic_structured_annotations::structured_annotation_recursive>::isset_indexes = { {
   0,
@@ -87,7 +87,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::test::fixtures::basic_structured_annotations::structured_annotation_forward>::fields_types = { {
-  apache::thrift::protocol::TType::T_I64,
+  TType::T_I64,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::test::fixtures::basic_structured_annotations::structured_annotation_forward>::isset_indexes = { {
   0,
@@ -103,8 +103,8 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 2> TStructDataStora
   2,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 2> TStructDataStorage<::test::fixtures::basic_structured_annotations::structured_annotation_nested>::fields_types = { {
-  apache::thrift::protocol::TType::T_STRING,
-  apache::thrift::protocol::TType::T_STRUCT,
+  TType::T_STRING,
+  TType::T_STRUCT,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 2> TStructDataStorage<::test::fixtures::basic_structured_annotations::structured_annotation_nested>::isset_indexes = { {
   0,
@@ -125,10 +125,10 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 4> TStructDataStora
   4,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 4> TStructDataStorage<::test::fixtures::basic_structured_annotations::MyStruct>::fields_types = { {
-  apache::thrift::protocol::TType::T_I64,
-  apache::thrift::protocol::TType::T_STRING,
-  apache::thrift::protocol::TType::T_STRING,
-  apache::thrift::protocol::TType::T_I64,
+  TType::T_I64,
+  TType::T_STRING,
+  TType::T_STRING,
+  TType::T_I64,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 4> TStructDataStorage<::test::fixtures::basic_structured_annotations::MyStruct>::isset_indexes = { {
   0,
@@ -145,7 +145,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::test::fixtures::basic_structured_annotations::MyException>::fields_types = { {
-  apache::thrift::protocol::TType::T_STRING,
+  TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::test::fixtures::basic_structured_annotations::MyException>::isset_indexes = { {
   0,
@@ -161,8 +161,8 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 2> TStructDataStora
   2,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 2> TStructDataStorage<::test::fixtures::basic_structured_annotations::MyUnion>::fields_types = { {
-  apache::thrift::protocol::TType::T_STRING,
-  apache::thrift::protocol::TType::T_I64,
+  TType::T_STRING,
+  TType::T_I64,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 2> TStructDataStorage<::test::fixtures::basic_structured_annotations::MyUnion>::isset_indexes = { {
   0,
