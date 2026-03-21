@@ -23,7 +23,7 @@ import com.facebook.thrift.type.TypeList;
 import java.util.ArrayList;
 import java.util.List;
 
-public class __fbthrift_TypeList_{{program:typeListHash}} implements TypeList {
+public class __fbthrift_TypeList_{{program:type_list_hash}} implements TypeList {
 
   private static List<TypeMapping> list = new ArrayList<>();
 
@@ -31,19 +31,19 @@ public class __fbthrift_TypeList_{{program:typeListHash}} implements TypeList {
     list.add(new TypeList.TypeMapping(uri, className));
   }
 
-  {{#program:typeList}}
-  private static void addToList{{typeList:index}}() {
-    {{#typeList:batch}}
-    add("{{typeList:uri}}", "{{typeList:className}}");
-    {{/typeList:batch}}
+  {{#each (array.enumerate program:type_list_batches) as |batch_index types|}}
+  private static void addToList{{batch_index}}() {
+    {{#each types as |type|}}
+    add("{{type.uri}}", "{{program:javaPackage}}.{{type.javaCapitalName}}");
+    {{/each}}
   }
-  {{/program:typeList}}
+  {{/each}}
 
-  {{#program:typeList}}
+  {{#each (array.enumerate program:type_list_batches) as |batch_index types|}}
   static {
-    addToList{{typeList:index}}();
+    addToList{{batch_index}}();
   }
-  {{/program:typeList}}
+  {{/each}}
 
   @java.lang.Override
   public List<TypeList.TypeMapping> getTypes() {

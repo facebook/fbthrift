@@ -76,7 +76,7 @@ oprot.writeMapBegin(new TMap(TType.{{#type:key_type}}{{> TType}}{{/type:key_type
 }}{{#function:isNested?}}_iter{{function:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.write0(oprot);
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.STRUCT_FIELD);
-{{^struct:isUnion?}}{{/struct:isUnion?}}_iter0.write0(oprot);{{/function:isNested?}}{{!
+{{^struct:union?}}{{/struct:union?}}_iter0.write0(oprot);{{/function:isNested?}}{{!
 }}{{/type:structured?}}{{!
 
 }}{{#type:enum?}}{{!
@@ -84,7 +84,7 @@ oprot.writeMapBegin(new TMap(TType.{{#type:key_type}}{{> TType}}{{/type:key_type
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}
 oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD);
-oprot.writeI32({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0 == null ? 0 : {{^struct:isUnion?}}{{/struct:isUnion?}}_iter0.getValue());{{/function:isNested?}}{{!
+oprot.writeI32({{^struct:union?}}{{/struct:union?}}_iter0 == null ? 0 : {{^struct:union?}}{{/struct:union?}}_iter0.getValue());{{/function:isNested?}}{{!
 }}{{/type:enum?}}{{!
 
 }}{{#type:binary?}}{{!
@@ -92,7 +92,7 @@ oprot.writeI32({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0 == null ? 0 : {{^s
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}
 oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.STRING_FIELD);
-oprot.writeBinary({{^type:javaType}}java.nio.ByteBuffer.wrap{{/type:javaType}}({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0));{{/function:isNested?}}{{!
+oprot.writeBinary({{^type:javaType}}java.nio.ByteBuffer.wrap{{/type:javaType}}({{^struct:union?}}{{/struct:union?}}_iter0));{{/function:isNested?}}{{!
 }}{{/type:binary?}}{{!
 
 }}{{#type:string?}}{{!
@@ -100,7 +100,7 @@ oprot.writeBinary({{^type:javaType}}java.nio.ByteBuffer.wrap{{/type:javaType}}({
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}
 oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.STRING_FIELD);
-oprot.writeString({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNested?}}{{!
+oprot.writeString({{^struct:union?}}{{/struct:union?}}_iter0);{{/function:isNested?}}{{!
 }}{{/type:string?}}{{!
 
 }}{{#type:bool?}}{{!
@@ -108,7 +108,7 @@ oprot.writeString({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:is
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}
 oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.BOOL_FIELD);
-oprot.writeBool({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNested?}}{{!
+oprot.writeBool({{^struct:union?}}{{/struct:union?}}_iter0);{{/function:isNested?}}{{!
 }}{{/type:bool?}}{{!
 
 }}{{#type:byte?}}{{!
@@ -116,7 +116,7 @@ oprot.writeBool({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNe
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}
 oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.BYTE_FIELD);
-oprot.writeByte({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNested?}}{{!
+oprot.writeByte({{^struct:union?}}{{/struct:union?}}_iter0);{{/function:isNested?}}{{!
 }}{{/type:byte?}}{{!
 
 }}{{#type:i16?}}{{!
@@ -124,7 +124,7 @@ oprot.writeByte({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNe
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}
 oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I16_FIELD);
-oprot.writeI16({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNested?}}{{!
+oprot.writeI16({{^struct:union?}}{{/struct:union?}}_iter0);{{/function:isNested?}}{{!
 }}{{/type:i16?}}{{!
 
 }}{{#type:i32?}}{{!
@@ -132,7 +132,7 @@ oprot.writeI16({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNes
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}
 oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD);
-oprot.writeI32({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNested?}}{{!
+oprot.writeI32({{^struct:union?}}{{/struct:union?}}_iter0);{{/function:isNested?}}{{!
 }}{{/type:i32?}}{{!
 
 }}{{#type:i64?}}{{!
@@ -140,7 +140,7 @@ oprot.writeI32({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNes
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}
 oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I64_FIELD);
-oprot.writeI64({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNested?}}{{!
+oprot.writeI64({{^struct:union?}}{{/struct:union?}}_iter0);{{/function:isNested?}}{{!
 }}{{/type:i64?}}{{!
 
 }}{{#type:float?}}{{!
@@ -148,7 +148,7 @@ oprot.writeI64({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNes
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}
 oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.FLOAT_FIELD);
-oprot.writeFloat({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNested?}}{{!
+oprot.writeFloat({{^struct:union?}}{{/struct:union?}}_iter0);{{/function:isNested?}}{{!
 }}{{/type:float?}}{{!
 
 }}{{#type:double?}}{{!
@@ -156,7 +156,7 @@ oprot.writeFloat({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isN
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}
 oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.DOUBLE_FIELD);
-oprot.writeDouble({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNested?}}{{!
+oprot.writeDouble({{^struct:union?}}{{/struct:union?}}_iter0);{{/function:isNested?}}{{!
 }}{{/type:double?}}{{!
 
 }}{{/type:typedef?}}{{!

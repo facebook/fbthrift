@@ -42,39 +42,39 @@ public class {{service:javaCapitalName}}ReactiveBlockingWrapper {{#if (object.no
 
   {{#service:singleRequestFunctions}}
   @java.lang.Override
-  public {{#function:return_type}}{{> Type}}{{/function:return_type}} {{function:javaName}}({{#function:args}} final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}){{!
+  public {{#function:return_type}}{{> Type}}{{/function:return_type}} {{function:java_name}}({{#function:args}} final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}){{!
           Exceptions
         }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
     {{#function:voidType}}
-      {{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}com.facebook.thrift.client.RpcOptions.EMPTY);
+      {{function:java_name}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}com.facebook.thrift.client.RpcOptions.EMPTY);
     {{/function:voidType}}
     {{^function:voidType}}
-      return {{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}com.facebook.thrift.client.RpcOptions.EMPTY).getData();
+      return {{function:java_name}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}com.facebook.thrift.client.RpcOptions.EMPTY).getData();
     {{/function:voidType}}
   }
 
   @java.lang.Override
-  public {{#function:return_type}}{{> Type}}{{/function:return_type}} {{function:javaName}}({{#function:args}}
+  public {{#function:return_type}}{{> Type}}{{/function:return_type}} {{function:java_name}}({{#function:args}}
         final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
         com.facebook.thrift.client.RpcOptions rpcOptions){{!
           Exceptions
         }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
     {{#function:voidType}}
-      {{function:javaName}}Wrapper({{#function:args}}{{field:javaName}},{{/function:args}}rpcOptions);
+      {{function:java_name}}Wrapper({{#function:args}}{{field:javaName}},{{/function:args}}rpcOptions);
     {{/function:voidType}}
     {{^function:voidType}}
-      return {{function:javaName}}Wrapper({{#function:args}}{{field:javaName}},{{/function:args}}rpcOptions).getData();
+      return {{function:java_name}}Wrapper({{#function:args}}{{field:javaName}},{{/function:args}}rpcOptions).getData();
     {{/function:voidType}}
   }
 
   @java.lang.Override
-  public com.facebook.thrift.client.ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}Wrapper({{#function:args}}
+  public com.facebook.thrift.client.ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}Wrapper({{#function:args}}
     final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
     com.facebook.thrift.client.RpcOptions rpcOptions){{!
       Exceptions
     }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
       try {
-        return _delegate.{{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}rpcOptions).block();
+        return _delegate.{{function:java_name}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}rpcOptions).block();
       } catch (Throwable t) {
         {{#function:exceptions}}
         if (t instanceof {{#field:type}}{{> BoxedType}}{{/field:type}}) {
