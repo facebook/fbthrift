@@ -1198,10 +1198,12 @@ class Empty final  {
   Empty(apache::thrift::FragileConstructor);
 
   Empty(Empty&&) = default;
+
   Empty(const Empty&) = default;
 
 
   Empty& operator=(Empty&&) = default;
+
   Empty& operator=(const Empty&) = default;
 
  public:
@@ -1279,10 +1281,12 @@ class ASimpleStruct final  {
   ASimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t boolField__arg);
 
   ASimpleStruct(ASimpleStruct&&) = default;
+
   ASimpleStruct(const ASimpleStruct&) = default;
 
 
   ASimpleStruct& operator=(ASimpleStruct&&) = default;
+
   ASimpleStruct& operator=(const ASimpleStruct&) = default;
  private:
   ::std::int64_t __fbthrift_field_boolField;
@@ -1412,10 +1416,12 @@ class ASimpleStructNoexcept final  {
   ASimpleStructNoexcept(apache::thrift::FragileConstructor, ::std::int64_t boolField__arg);
 
   ASimpleStructNoexcept(ASimpleStructNoexcept&&) = default;
+
   ASimpleStructNoexcept(const ASimpleStructNoexcept&) = default;
 
 
   ASimpleStructNoexcept& operator=(ASimpleStructNoexcept&&) = default;
+
   ASimpleStructNoexcept& operator=(const ASimpleStructNoexcept&) = default;
  private:
   ::std::int64_t __fbthrift_field_boolField;
@@ -1568,7 +1574,7 @@ class MyStruct final  {
 
 
   MyStruct& operator=(MyStruct&&) noexcept;
-  MyStruct& operator=(const MyStruct&);
+  MyStruct& operator=(const MyStruct& src);
 
   ~MyStruct();
 
@@ -2591,7 +2597,7 @@ class FOLLY_EXPORT AnException : public virtual apache::thrift::TException {
 
 
   AnException& operator=(AnException&&) noexcept;
-  AnException& operator=(const AnException&);
+  AnException& operator=(const AnException& src);
 
   ~AnException() override;
 
@@ -6317,11 +6323,12 @@ class FOLLY_EXPORT AnotherException : public virtual apache::thrift::TException 
   AnotherException(apache::thrift::FragileConstructor, ::std::int32_t code__arg, ::std::int32_t req_code__arg, ::std::string message__arg);
 
   AnotherException(AnotherException&&) noexcept;
+
   AnotherException(const AnotherException& src);
 
 
   AnotherException& operator=(AnotherException&&) noexcept;
-  AnotherException& operator=(const AnotherException&);
+  AnotherException& operator=(const AnotherException& src);
 
    ~AnotherException()  override;
 
@@ -9169,7 +9176,7 @@ class MyIncludedStruct final  {
 
 
   MyIncludedStruct& operator=(MyIncludedStruct&&) noexcept;
-  MyIncludedStruct& operator=(const MyIncludedStruct&);
+  MyIncludedStruct& operator=(const MyIncludedStruct& src);
 
   ~MyIncludedStruct();
 
@@ -11458,7 +11465,7 @@ class ComplexContainerStruct final  {
 
 
   ComplexContainerStruct& operator=(ComplexContainerStruct&&) noexcept;
-  ComplexContainerStruct& operator=(const ComplexContainerStruct&);
+  ComplexContainerStruct& operator=(const ComplexContainerStruct& src);
 
   ~ComplexContainerStruct();
 
@@ -11659,10 +11666,12 @@ class FloatStruct final  {
   FloatStruct(apache::thrift::FragileConstructor, float floatField__arg, double doubleField__arg);
 
   FloatStruct(FloatStruct&&) = default;
+
   FloatStruct(const FloatStruct&) = default;
 
 
   FloatStruct& operator=(FloatStruct&&) = default;
+
   FloatStruct& operator=(const FloatStruct&) = default;
  private:
   float __fbthrift_field_floatField;
@@ -12123,10 +12132,12 @@ class AllRequiredNoExceptMoveCtrStruct final  {
   AllRequiredNoExceptMoveCtrStruct(apache::thrift::FragileConstructor, ::std::int64_t intField__arg);
 
   AllRequiredNoExceptMoveCtrStruct(AllRequiredNoExceptMoveCtrStruct&&) = default;
+
   AllRequiredNoExceptMoveCtrStruct(const AllRequiredNoExceptMoveCtrStruct&) = default;
 
 
   AllRequiredNoExceptMoveCtrStruct& operator=(AllRequiredNoExceptMoveCtrStruct&&) = default;
+
   AllRequiredNoExceptMoveCtrStruct& operator=(const AllRequiredNoExceptMoveCtrStruct&) = default;
  private:
   ::std::int64_t __fbthrift_field_intField;

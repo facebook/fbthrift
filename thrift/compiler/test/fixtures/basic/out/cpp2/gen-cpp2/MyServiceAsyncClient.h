@@ -35,7 +35,6 @@ struct ServiceMethodTypesFootprint<::test::fixtures::basic::MyService> {
   bool,
   ::std::set<float>>;
 };
-
 } // namespace detail
 
 template <>

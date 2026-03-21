@@ -48,6 +48,7 @@ class ServiceHandler<::cpp2::NestedContainers> : public apache::thrift::ServerIn
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
+
   virtual void sync_mapList(std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::int32_t>>> /*foo*/);
   [[deprecated("Use sync_mapList instead")]] virtual void mapList(std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::int32_t>>> /*foo*/);
   virtual folly::Future<folly::Unit> future_mapList(std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::int32_t>>> p_foo);
@@ -203,6 +204,13 @@ class NestedContainersAsyncProcessor : public ::apache::thrift::GeneratedAsyncPr
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'mapSet'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -229,6 +237,13 @@ class NestedContainersAsyncProcessor : public ::apache::thrift::GeneratedAsyncPr
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'mapSet'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -261,6 +276,13 @@ class NestedContainersAsyncProcessor : public ::apache::thrift::GeneratedAsyncPr
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'listSet'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -287,6 +309,13 @@ class NestedContainersAsyncProcessor : public ::apache::thrift::GeneratedAsyncPr
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'listSet'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //

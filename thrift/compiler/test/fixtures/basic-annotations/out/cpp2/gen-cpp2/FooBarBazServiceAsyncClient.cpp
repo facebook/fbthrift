@@ -189,20 +189,21 @@ folly::Future<folly::Unit> apache::thrift::Client<::cpp2::FooBarBazService>::fut
   return future_foo(rpcOptions);
 }
 
-folly::Future<folly::Unit> apache::thrift::Client<::cpp2::FooBarBazService>::future_foo(apache::thrift::RpcOptions& rpcOptions) {
-  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
-  return fbthrift_semifuture_foo<CallbackType>(rpcOptions).toUnsafeFuture();
-}
-
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::FooBarBazService>::semifuture_foo() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_foo(rpcOptions);
+}
+
+folly::Future<folly::Unit> apache::thrift::Client<::cpp2::FooBarBazService>::future_foo(apache::thrift::RpcOptions& rpcOptions) {
+  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
+  return fbthrift_semifuture_foo<CallbackType>(rpcOptions).toUnsafeFuture();
 }
 
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::FooBarBazService>::semifuture_foo(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::SemiFutureCallback<folly::Unit>;
   return fbthrift_semifuture_foo<CallbackType>(rpcOptions);
 }
+
 
 void apache::thrift::Client<::cpp2::FooBarBazService>::foo(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   foo(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -391,20 +392,21 @@ folly::Future<folly::Unit> apache::thrift::Client<::cpp2::FooBarBazService>::fut
   return future_bar(rpcOptions);
 }
 
-folly::Future<folly::Unit> apache::thrift::Client<::cpp2::FooBarBazService>::future_bar(apache::thrift::RpcOptions& rpcOptions) {
-  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
-  return fbthrift_semifuture_bar<CallbackType>(rpcOptions).toUnsafeFuture();
-}
-
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::FooBarBazService>::semifuture_bar() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_bar(rpcOptions);
+}
+
+folly::Future<folly::Unit> apache::thrift::Client<::cpp2::FooBarBazService>::future_bar(apache::thrift::RpcOptions& rpcOptions) {
+  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
+  return fbthrift_semifuture_bar<CallbackType>(rpcOptions).toUnsafeFuture();
 }
 
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::FooBarBazService>::semifuture_bar(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::SemiFutureCallback<folly::Unit>;
   return fbthrift_semifuture_bar<CallbackType>(rpcOptions);
 }
+
 
 void apache::thrift::Client<::cpp2::FooBarBazService>::bar(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   bar(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -593,20 +595,21 @@ folly::Future<folly::Unit> apache::thrift::Client<::cpp2::FooBarBazService>::fut
   return future_baz(rpcOptions);
 }
 
-folly::Future<folly::Unit> apache::thrift::Client<::cpp2::FooBarBazService>::future_baz(apache::thrift::RpcOptions& rpcOptions) {
-  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
-  return fbthrift_semifuture_baz<CallbackType>(rpcOptions).toUnsafeFuture();
-}
-
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::FooBarBazService>::semifuture_baz() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_baz(rpcOptions);
+}
+
+folly::Future<folly::Unit> apache::thrift::Client<::cpp2::FooBarBazService>::future_baz(apache::thrift::RpcOptions& rpcOptions) {
+  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
+  return fbthrift_semifuture_baz<CallbackType>(rpcOptions).toUnsafeFuture();
 }
 
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::FooBarBazService>::semifuture_baz(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::SemiFutureCallback<folly::Unit>;
   return fbthrift_semifuture_baz<CallbackType>(rpcOptions);
 }
+
 
 void apache::thrift::Client<::cpp2::FooBarBazService>::baz(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   baz(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));

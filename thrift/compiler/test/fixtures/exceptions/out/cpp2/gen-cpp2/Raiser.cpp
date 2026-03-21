@@ -632,15 +632,15 @@ determineInvocationType:
 
 namespace cpp2 {
 
-void RaiserSvNull::doBland() {
+void RaiserSvNull::doBland() { 
 }
 
-void RaiserSvNull::doRaise() {
+void RaiserSvNull::doRaise() { 
 }
 
-void RaiserSvNull::get200(::std::string& /*_return*/) {}
+void RaiserSvNull::get200(::std::string& /*_return*/) {  }
 
-void RaiserSvNull::get500(::std::string& /*_return*/) {}
+void RaiserSvNull::get500(::std::string& /*_return*/) {  }
 
 
 std::string_view RaiserAsyncProcessor::getServiceName() {

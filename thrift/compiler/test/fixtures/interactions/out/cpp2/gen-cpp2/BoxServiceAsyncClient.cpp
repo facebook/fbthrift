@@ -191,6 +191,7 @@ std::pair<
 }
 
 
+
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper apache::thrift::Client<::cpp2::BoxService>::recv_wrapped_getABoxSession(::cpp2::ShouldBeBoxed& _return, ::apache::thrift::ClientReceiveState& state) {
@@ -390,6 +391,7 @@ folly::SemiFuture<::cpp2::ShouldBeBoxed> apache::thrift::Client<::cpp2::BoxServi
   using CallbackType = apache::thrift::SemiFutureCallback<::cpp2::ShouldBeBoxed>;
   return fbthrift_semifuture_getABox<CallbackType>(rpcOptions);
 }
+
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES

@@ -49,6 +49,7 @@ class ServiceHandler<::cpp2::SinkService> : public apache::thrift::ServerInterfa
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
+
   virtual ::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse> sync_method();
   [[deprecated("Use sync_method instead")]] virtual ::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse> method();
   virtual folly::Future<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>> future_method();
@@ -231,6 +232,13 @@ class SinkServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'methodAndReponse'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -262,6 +270,13 @@ class SinkServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'methodAndReponse'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -299,6 +314,13 @@ class SinkServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'methodSinkThrow'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -330,6 +352,13 @@ class SinkServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'methodSinkThrow'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -367,6 +396,13 @@ class SinkServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'methodBothThrow'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -398,6 +434,13 @@ class SinkServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'methodBothThrow'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //

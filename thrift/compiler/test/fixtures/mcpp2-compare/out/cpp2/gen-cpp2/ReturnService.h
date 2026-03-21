@@ -50,6 +50,7 @@ class ServiceHandler<::some::valid::ns::ReturnService> : public apache::thrift::
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
+
   virtual void async_eb_noReturn(apache::thrift::HandlerCallbackPtr<void> callback);
   virtual bool sync_boolReturn();
   [[deprecated("Use sync_boolReturn instead")]] virtual bool boolReturn();
@@ -401,6 +402,13 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'boolReturn'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -428,6 +436,13 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'boolReturn'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -461,6 +476,13 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'i32Return'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -488,6 +510,13 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'i32Return'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -521,6 +550,13 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'floatReturn'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -548,6 +584,13 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'floatReturn'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -581,6 +624,13 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'stringReturn'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -608,6 +658,13 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'stringReturn'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -641,6 +698,13 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'mapReturn'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -668,6 +732,13 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'mapReturn'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -701,6 +772,13 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'complexTypedefReturn'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -728,6 +806,13 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'complexTypedefReturn'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -761,6 +846,13 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'enumReturn'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -788,6 +880,13 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'enumReturn'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -821,6 +920,13 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'structReturn'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -848,6 +954,13 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'structReturn'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -881,6 +994,13 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'unionReturn'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -908,6 +1028,13 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'unionReturn'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -941,6 +1068,13 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'readDataEb'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -968,6 +1102,13 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'readDataEb'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //

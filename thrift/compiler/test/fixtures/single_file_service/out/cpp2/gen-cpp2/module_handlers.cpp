@@ -332,7 +332,7 @@ determineInvocationType:
 
 namespace cpp2 {
 
-void ASvNull::foo(::cpp2::Foo& /*_return*/) {}
+void ASvNull::foo(::cpp2::Foo& /*_return*/) {  }
 
 
 std::string_view AAsyncProcessor::getServiceName() {
@@ -406,8 +406,7 @@ const AAsyncProcessor::InteractionConstructorMap AAsyncProcessor::interactionCon
 std::unique_ptr<apache::thrift::Tile> AAsyncProcessor::createInteractionImpl(const std::string& name, int16_t) {
   auto fn = getInteractionConstructorMap().at(name);
   return (this->*fn)();
-}
-} // namespace cpp2
+}} // namespace cpp2
 
 std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<::cpp2::B>::getProcessor() {
   return std::make_unique<::cpp2::BAsyncProcessor>(this);
@@ -875,10 +874,10 @@ determineInvocationType:
 
 namespace cpp2 {
 
-void BSvNull::bar(std::unique_ptr<::cpp2::Foo> /*foo*/) {
+void BSvNull::bar(std::unique_ptr<::cpp2::Foo> /*foo*/) { 
 }
 
-::apache::thrift::SinkConsumer<::std::int32_t, ::std::int32_t> BSvNull::sink_stuff() {
+::apache::thrift::SinkConsumer<::std::int32_t, ::std::int32_t> BSvNull::sink_stuff() { 
   return {};
 }
 
@@ -1190,6 +1189,5 @@ const CAsyncProcessor::InteractionConstructorMap CAsyncProcessor::interactionCon
 std::unique_ptr<apache::thrift::Tile> CAsyncProcessor::createInteractionImpl(const std::string& name, int16_t) {
   auto fn = getInteractionConstructorMap().at(name);
   return (this->*fn)();
-}
-} // namespace cpp2
+}} // namespace cpp2
 

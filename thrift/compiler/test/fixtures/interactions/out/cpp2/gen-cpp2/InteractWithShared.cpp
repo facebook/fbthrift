@@ -1119,7 +1119,7 @@ determineInvocationType:
 
 namespace cpp2 {
 
-void InteractWithSharedSvNull::do_some_similar_things(::thrift::shared_interactions::DoSomethingResult& /*_return*/) {}
+void InteractWithSharedSvNull::do_some_similar_things(::thrift::shared_interactions::DoSomethingResult& /*_return*/) {  }
 
 
 std::string_view InteractWithSharedAsyncProcessor::getServiceName() {
@@ -1272,5 +1272,4 @@ const InteractWithSharedAsyncProcessor::InteractionConstructorMap InteractWithSh
 std::unique_ptr<apache::thrift::Tile> InteractWithSharedAsyncProcessor::createInteractionImpl(const std::string& name, int16_t) {
   auto fn = getInteractionConstructorMap().at(name);
   return (this->*fn)();
-}
-} // namespace cpp2
+}} // namespace cpp2

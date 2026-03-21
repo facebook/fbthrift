@@ -526,5 +526,4 @@ const InteractLocallyAsyncProcessor::InteractionConstructorMap InteractLocallyAs
 std::unique_ptr<apache::thrift::Tile> InteractLocallyAsyncProcessor::createInteractionImpl(const std::string& name, int16_t) {
   auto fn = getInteractionConstructorMap().at(name);
   return (this->*fn)();
-}
-} // namespace thrift::shared_interactions
+}} // namespace thrift::shared_interactions

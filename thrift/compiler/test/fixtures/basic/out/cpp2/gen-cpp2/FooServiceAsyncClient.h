@@ -31,7 +31,6 @@ struct ServiceMethodTypesFootprint<::test::fixtures::basic::FooService> {
   using TypesInMethods = folly::tag_t<
   void>;
 };
-
 } // namespace detail
 
 template <>

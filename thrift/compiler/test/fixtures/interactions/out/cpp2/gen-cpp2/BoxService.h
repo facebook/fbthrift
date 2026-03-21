@@ -186,7 +186,7 @@ class BoxServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcesso
   // End of Service Methods
   //
   //
-  // Interaction BoxedInteraction Methods
+  // Service Methods
   //
 
   //
@@ -220,7 +220,7 @@ class BoxServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcesso
   //
 
   //
-  // End of Interaction BoxedInteraction Methods
+  // End of Service Methods
   //
  public:
   BoxServiceAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::BoxService>* iface) :

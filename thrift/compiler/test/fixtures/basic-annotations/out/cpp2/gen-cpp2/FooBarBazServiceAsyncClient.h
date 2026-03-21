@@ -31,7 +31,6 @@ struct ServiceMethodTypesFootprint<::cpp2::FooBarBazService> {
   using TypesInMethods = folly::tag_t<
   void>;
 };
-
 } // namespace detail
 
 template <>

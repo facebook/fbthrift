@@ -193,7 +193,7 @@ determineInvocationType:
 
 namespace facebook::thrift::test::fixtures::service_schema {
 
-::std::int64_t ExtendedServiceSvNull::init(::std::int64_t /*param0*/, ::std::int64_t /*param1*/) {
+::std::int64_t ExtendedServiceSvNull::init(::std::int64_t /*param0*/, ::std::int64_t /*param1*/) { 
   return 0;
 }
 

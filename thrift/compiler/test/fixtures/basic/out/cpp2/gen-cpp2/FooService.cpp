@@ -184,7 +184,7 @@ determineInvocationType:
 
 namespace test::fixtures::basic {
 
-void FooServiceSvNull::simple_rpc() {
+void FooServiceSvNull::simple_rpc() { 
 }
 
 

@@ -36,7 +36,6 @@ struct ServiceMethodTypesFootprint<::cpp2::NestedContainers> {
   ::std::vector<::std::set<::std::int32_t>>,
   ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>>;
 };
-
 } // namespace detail
 
 template <>

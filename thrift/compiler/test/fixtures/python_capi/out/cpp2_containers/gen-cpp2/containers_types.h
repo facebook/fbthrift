@@ -239,11 +239,12 @@ class TemplateLists final  {
   TemplateLists(apache::thrift::FragileConstructor, std::vector<::std::string> std_string__arg, std::deque<::std::string> deque_string__arg, ::test::fixtures::python_capi::small_vector_iobuf small_vector_iobuf__arg, folly::small_vector<::test::fixtures::python_capi::fbvector_string> nested_small_vector__arg, folly::fbvector<::test::fixtures::python_capi::fbvector_fbvector_string> small_vector_tensor__arg);
 
   TemplateLists(TemplateLists&&) noexcept;
+
   TemplateLists(const TemplateLists& src);
 
 
   TemplateLists& operator=(TemplateLists&&) noexcept;
-  TemplateLists& operator=(const TemplateLists&);
+  TemplateLists& operator=(const TemplateLists& src);
 
   ~TemplateLists();
 
@@ -606,11 +607,12 @@ class TemplateSets final  {
   TemplateSets(apache::thrift::FragileConstructor, std::set<::std::string> std_set__arg, std::unordered_set<::std::string> std_unordered__arg, folly::F14FastSet<::std::string> folly_fast__arg, folly::F14NodeSet<::std::string> folly_node__arg, folly::F14ValueSet<::std::string> folly_value__arg, folly::F14VectorSet<::std::string> folly_vector__arg, folly::sorted_vector_set<::std::string> folly_sorted_vector__arg);
 
   TemplateSets(TemplateSets&&) noexcept;
+
   TemplateSets(const TemplateSets& src);
 
 
   TemplateSets& operator=(TemplateSets&&) noexcept;
-  TemplateSets& operator=(const TemplateSets&);
+  TemplateSets& operator=(const TemplateSets& src);
 
   ~TemplateSets();
 
@@ -1082,11 +1084,12 @@ class TemplateMaps final  {
   TemplateMaps(apache::thrift::FragileConstructor, std::map<::std::string, ::std::string> std_map__arg, std::unordered_map<::std::string, ::std::string> std_unordered__arg, folly::F14FastMap<::std::string, ::std::string> folly_fast__arg, folly::F14NodeMap<::std::string, ::std::string> folly_node__arg, folly::F14ValueMap<::std::string, ::std::string> folly_value__arg, folly::F14VectorMap<::std::string, ::std::string> folly_vector__arg, folly::sorted_vector_map<::std::string, ::std::string> folly_sorted_vector__arg);
 
   TemplateMaps(TemplateMaps&&) noexcept;
+
   TemplateMaps(const TemplateMaps& src);
 
 
   TemplateMaps& operator=(TemplateMaps&&) noexcept;
-  TemplateMaps& operator=(const TemplateMaps&);
+  TemplateMaps& operator=(const TemplateMaps& src);
 
   ~TemplateMaps();
 
@@ -1548,11 +1551,12 @@ class TWrapped final  {
   TWrapped(apache::thrift::FragileConstructor, ::std::string fieldA__arg, ::std::string fieldB__arg);
 
   TWrapped(TWrapped&&) noexcept;
+
   TWrapped(const TWrapped& src);
 
 
   TWrapped& operator=(TWrapped&&) noexcept;
-  TWrapped& operator=(const TWrapped&);
+  TWrapped& operator=(const TWrapped& src);
 
   ~TWrapped();
 
@@ -1750,11 +1754,12 @@ class IndirectionA final  {
   IndirectionA(apache::thrift::FragileConstructor, ::test::fixtures::python_capi::ListOfWrapped lst__arg);
 
   IndirectionA(IndirectionA&&) noexcept;
+
   IndirectionA(const IndirectionA& src);
 
 
   IndirectionA& operator=(IndirectionA&&) noexcept;
-  IndirectionA& operator=(const IndirectionA&);
+  IndirectionA& operator=(const IndirectionA& src);
 
   ~IndirectionA();
 
@@ -1890,11 +1895,12 @@ class IndirectionB final  {
   IndirectionB(apache::thrift::FragileConstructor, ::test::fixtures::python_capi::VecOfWrapped lst__arg);
 
   IndirectionB(IndirectionB&&) noexcept;
+
   IndirectionB(const IndirectionB& src);
 
 
   IndirectionB& operator=(IndirectionB&&) noexcept;
-  IndirectionB& operator=(const IndirectionB&);
+  IndirectionB& operator=(const IndirectionB& src);
 
   ~IndirectionB();
 
@@ -2030,11 +2036,12 @@ class IndirectionC final  {
   IndirectionC(apache::thrift::FragileConstructor, ::test::fixtures::python_capi::ListOfWrappedAlias lst__arg);
 
   IndirectionC(IndirectionC&&) noexcept;
+
   IndirectionC(const IndirectionC& src);
 
 
   IndirectionC& operator=(IndirectionC&&) noexcept;
-  IndirectionC& operator=(const IndirectionC&);
+  IndirectionC& operator=(const IndirectionC& src);
 
   ~IndirectionC();
 

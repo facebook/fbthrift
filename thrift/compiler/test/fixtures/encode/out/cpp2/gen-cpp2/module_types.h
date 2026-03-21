@@ -218,10 +218,12 @@ class Foo final  {
   Foo(apache::thrift::FragileConstructor, ::std::int32_t field__arg);
 
   Foo(Foo&&) = default;
+
   Foo(const Foo&) = default;
 
 
   Foo& operator=(Foo&&) = default;
+
   Foo& operator=(const Foo&) = default;
  private:
   ::std::int32_t __fbthrift_field_field;
@@ -349,11 +351,12 @@ class Bar final  {
   Bar(apache::thrift::FragileConstructor, ::std::vector<::facebook::thrift::test::fixtures::encode::AdaptedFoo> list_field__arg);
 
   Bar(Bar&&) noexcept;
+
   Bar(const Bar& src);
 
 
   Bar& operator=(Bar&&) noexcept;
-  Bar& operator=(const Bar&);
+  Bar& operator=(const Bar& src);
 
   ~Bar();
 
@@ -491,11 +494,12 @@ class Baz final  {
   Baz(apache::thrift::FragileConstructor, ::std::vector<::facebook::thrift::test::fixtures::encode::AdaptedFoo> list_field__arg, ::std::vector<::std::vector<::facebook::thrift::test::fixtures::encode::AdaptedFoo>> nested_list_field__arg);
 
   Baz(Baz&&) noexcept;
+
   Baz(const Baz& src);
 
 
   Baz& operator=(Baz&&) noexcept;
-  Baz& operator=(const Baz&);
+  Baz& operator=(const Baz& src);
 
   ~Baz();
 
@@ -711,7 +715,7 @@ class OpEncodeStruct final  {
 
 
   OpEncodeStruct& operator=(OpEncodeStruct&&) noexcept;
-  OpEncodeStruct& operator=(const OpEncodeStruct&);
+  OpEncodeStruct& operator=(const OpEncodeStruct& src);
 
   ~OpEncodeStruct();
 

@@ -176,20 +176,21 @@ folly::Future<::facebook::thrift::test::fixtures::adapter::CountingStruct> apach
   return future_count(rpcOptions);
 }
 
-folly::Future<::facebook::thrift::test::fixtures::adapter::CountingStruct> apache::thrift::Client<::facebook::thrift::test::fixtures::adapter::AdapterService>::future_count(apache::thrift::RpcOptions& rpcOptions) {
-  using CallbackType = apache::thrift::FutureCallback<::facebook::thrift::test::fixtures::adapter::CountingStruct>;
-  return fbthrift_semifuture_count<CallbackType>(rpcOptions).toUnsafeFuture();
-}
-
 folly::SemiFuture<::facebook::thrift::test::fixtures::adapter::CountingStruct> apache::thrift::Client<::facebook::thrift::test::fixtures::adapter::AdapterService>::semifuture_count() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_count(rpcOptions);
+}
+
+folly::Future<::facebook::thrift::test::fixtures::adapter::CountingStruct> apache::thrift::Client<::facebook::thrift::test::fixtures::adapter::AdapterService>::future_count(apache::thrift::RpcOptions& rpcOptions) {
+  using CallbackType = apache::thrift::FutureCallback<::facebook::thrift::test::fixtures::adapter::CountingStruct>;
+  return fbthrift_semifuture_count<CallbackType>(rpcOptions).toUnsafeFuture();
 }
 
 folly::SemiFuture<::facebook::thrift::test::fixtures::adapter::CountingStruct> apache::thrift::Client<::facebook::thrift::test::fixtures::adapter::AdapterService>::semifuture_count(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::SemiFutureCallback<::facebook::thrift::test::fixtures::adapter::CountingStruct>;
   return fbthrift_semifuture_count<CallbackType>(rpcOptions);
 }
+
 
 void apache::thrift::Client<::facebook::thrift::test::fixtures::adapter::AdapterService>::count(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   count(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -379,20 +380,21 @@ folly::Future<::facebook::thrift::test::fixtures::adapter::HeapAllocated> apache
   return future_adaptedTypes(rpcOptions, p_arg);
 }
 
-folly::Future<::facebook::thrift::test::fixtures::adapter::HeapAllocated> apache::thrift::Client<::facebook::thrift::test::fixtures::adapter::AdapterService>::future_adaptedTypes(apache::thrift::RpcOptions& rpcOptions, const ::facebook::thrift::test::fixtures::adapter::HeapAllocated& p_arg) {
-  using CallbackType = apache::thrift::FutureCallback<::facebook::thrift::test::fixtures::adapter::HeapAllocated>;
-  return fbthrift_semifuture_adaptedTypes<CallbackType>(rpcOptions, p_arg).toUnsafeFuture();
-}
-
 folly::SemiFuture<::facebook::thrift::test::fixtures::adapter::HeapAllocated> apache::thrift::Client<::facebook::thrift::test::fixtures::adapter::AdapterService>::semifuture_adaptedTypes(const ::facebook::thrift::test::fixtures::adapter::HeapAllocated& p_arg) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_adaptedTypes(rpcOptions, p_arg);
+}
+
+folly::Future<::facebook::thrift::test::fixtures::adapter::HeapAllocated> apache::thrift::Client<::facebook::thrift::test::fixtures::adapter::AdapterService>::future_adaptedTypes(apache::thrift::RpcOptions& rpcOptions, const ::facebook::thrift::test::fixtures::adapter::HeapAllocated& p_arg) {
+  using CallbackType = apache::thrift::FutureCallback<::facebook::thrift::test::fixtures::adapter::HeapAllocated>;
+  return fbthrift_semifuture_adaptedTypes<CallbackType>(rpcOptions, p_arg).toUnsafeFuture();
 }
 
 folly::SemiFuture<::facebook::thrift::test::fixtures::adapter::HeapAllocated> apache::thrift::Client<::facebook::thrift::test::fixtures::adapter::AdapterService>::semifuture_adaptedTypes(apache::thrift::RpcOptions& rpcOptions, const ::facebook::thrift::test::fixtures::adapter::HeapAllocated& p_arg) {
   using CallbackType = apache::thrift::SemiFutureCallback<::facebook::thrift::test::fixtures::adapter::HeapAllocated>;
   return fbthrift_semifuture_adaptedTypes<CallbackType>(rpcOptions, p_arg);
 }
+
 
 void apache::thrift::Client<::facebook::thrift::test::fixtures::adapter::AdapterService>::adaptedTypes(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::facebook::thrift::test::fixtures::adapter::HeapAllocated& p_arg) {
   adaptedTypes(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_arg);

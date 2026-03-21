@@ -480,13 +480,13 @@ determineInvocationType:
 
 namespace cpp2 {
 
-void FooBarBazServiceSvNull::foo() {
+void FooBarBazServiceSvNull::foo() { 
 }
 
-void FooBarBazServiceSvNull::bar() {
+void FooBarBazServiceSvNull::bar() { 
 }
 
-void FooBarBazServiceSvNull::baz() {
+void FooBarBazServiceSvNull::baz() { 
 }
 
 

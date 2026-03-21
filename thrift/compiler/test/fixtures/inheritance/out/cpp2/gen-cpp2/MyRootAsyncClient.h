@@ -31,7 +31,6 @@ struct ServiceMethodTypesFootprint<::cpp2::MyRoot> {
   using TypesInMethods = folly::tag_t<
   void>;
 };
-
 } // namespace detail
 
 template <>

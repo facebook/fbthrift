@@ -93,11 +93,12 @@ class EchoRequest final  {
   EchoRequest(apache::thrift::FragileConstructor, ::std::string text__arg);
 
   EchoRequest(EchoRequest&&) noexcept;
+
   EchoRequest(const EchoRequest& src);
 
 
   EchoRequest& operator=(EchoRequest&&) noexcept;
-  EchoRequest& operator=(const EchoRequest&);
+  EchoRequest& operator=(const EchoRequest& src);
 
   ~EchoRequest();
 
@@ -236,11 +237,12 @@ class EchoResponse final  {
   EchoResponse(apache::thrift::FragileConstructor, ::std::string text__arg);
 
   EchoResponse(EchoResponse&&) noexcept;
+
   EchoResponse(const EchoResponse& src);
 
 
   EchoResponse& operator=(EchoResponse&&) noexcept;
-  EchoResponse& operator=(const EchoResponse&);
+  EchoResponse& operator=(const EchoResponse& src);
 
   ~EchoResponse();
 

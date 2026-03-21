@@ -182,7 +182,7 @@ determineInvocationType:
 
 namespace facebook::thrift::test::fixtures::adapter {
 
-::facebook::thrift::test::fixtures::adapter::MyI32_4873 ServiceSvNull::func(std::unique_ptr<::facebook::thrift::test::fixtures::adapter::StringWithAdapter_7208> /*arg1*/, std::unique_ptr<::facebook::thrift::test::fixtures::adapter::StringWithCppAdapter> /*arg2*/, std::unique_ptr<::facebook::thrift::test::fixtures::adapter::Foo> /*arg3*/) {
+::facebook::thrift::test::fixtures::adapter::MyI32_4873 ServiceSvNull::func(std::unique_ptr<::facebook::thrift::test::fixtures::adapter::StringWithAdapter_7208> /*arg1*/, std::unique_ptr<::facebook::thrift::test::fixtures::adapter::StringWithCppAdapter> /*arg2*/, std::unique_ptr<::facebook::thrift::test::fixtures::adapter::Foo> /*arg3*/) { 
   return 0;
 }
 

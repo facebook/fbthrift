@@ -312,10 +312,12 @@ class MyDataItem final  {
   MyDataItem(apache::thrift::FragileConstructor);
 
   MyDataItem(MyDataItem&&) = default;
+
   MyDataItem(const MyDataItem&) = default;
 
 
   MyDataItem& operator=(MyDataItem&&) = default;
+
   MyDataItem& operator=(const MyDataItem&) = default;
 
  public:
@@ -409,11 +411,12 @@ class MyStruct final  {
   MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::test::fixtures::basic::MyDataItemAlias MyDataField__arg, ::test::fixtures::basic::MyEnum myEnum__arg, bool oneway__arg, bool readonly__arg, bool idempotent__arg, ::std::set<float> floatSet__arg, ::std::string no_hack_codegen_field__arg);
 
   MyStruct(MyStruct&&) noexcept;
+
   MyStruct(const MyStruct& src);
 
 
   MyStruct& operator=(MyStruct&&) noexcept;
-  MyStruct& operator=(const MyStruct&);
+  MyStruct& operator=(const MyStruct& src);
 
   ~MyStruct();
 
@@ -953,11 +956,12 @@ class Containers final  {
   Containers(apache::thrift::FragileConstructor, ::std::vector<::std::int32_t> I32List__arg, ::std::set<::std::string> StringSet__arg, ::std::map<::std::string, ::std::int64_t> StringToI64Map__arg);
 
   Containers(Containers&&) noexcept;
+
   Containers(const Containers& src);
 
 
   Containers& operator=(Containers&&) noexcept;
-  Containers& operator=(const Containers&);
+  Containers& operator=(const Containers& src);
 
   ~Containers();
 
@@ -1698,11 +1702,12 @@ class FOLLY_EXPORT MyException : public virtual apache::thrift::TException {
   MyException(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::test::fixtures::basic::MyStruct myStruct__arg, ::test::fixtures::basic::MyUnion myUnion__arg);
 
   MyException(MyException&&) noexcept;
+
   MyException(const MyException& src);
 
 
   MyException& operator=(MyException&&) noexcept;
-  MyException& operator=(const MyException&);
+  MyException& operator=(const MyException& src);
 
   ~MyException() override;
 
@@ -2013,11 +2018,12 @@ class FOLLY_EXPORT MyExceptionWithMessage : public virtual apache::thrift::TExce
   MyExceptionWithMessage(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::test::fixtures::basic::MyStruct myStruct__arg, ::test::fixtures::basic::MyUnion myUnion__arg);
 
   MyExceptionWithMessage(MyExceptionWithMessage&&) noexcept;
+
   MyExceptionWithMessage(const MyExceptionWithMessage& src);
 
 
   MyExceptionWithMessage& operator=(MyExceptionWithMessage&&) noexcept;
-  MyExceptionWithMessage& operator=(const MyExceptionWithMessage&);
+  MyExceptionWithMessage& operator=(const MyExceptionWithMessage& src);
 
   ~MyExceptionWithMessage() override;
 
@@ -2316,10 +2322,12 @@ class ReservedKeyword final  {
   ReservedKeyword(apache::thrift::FragileConstructor, ::std::int32_t reserved_field__arg);
 
   ReservedKeyword(ReservedKeyword&&) = default;
+
   ReservedKeyword(const ReservedKeyword&) = default;
 
 
   ReservedKeyword& operator=(ReservedKeyword&&) = default;
+
   ReservedKeyword& operator=(const ReservedKeyword&) = default;
  private:
   ::std::int32_t __fbthrift_field_reserved_field;

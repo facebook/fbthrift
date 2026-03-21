@@ -48,6 +48,7 @@ class ServiceHandler<::cpp2::MyServicePrioParent> : public apache::thrift::Serve
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
+
   virtual void sync_ping();
   [[deprecated("Use sync_ping instead")]] virtual void ping();
   virtual folly::Future<folly::Unit> future_ping();
@@ -152,6 +153,13 @@ class MyServicePrioParentAsyncProcessor : public ::apache::thrift::GeneratedAsyn
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'ping'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //

@@ -49,6 +49,7 @@ class ServiceHandler<::cpp2::C> : public apache::thrift::ServerInterface {
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
+
   virtual void sync_f();
   [[deprecated("Use sync_f instead")]] virtual void f();
   virtual folly::Future<folly::Unit> future_f();
@@ -171,6 +172,13 @@ class CAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessorBase {
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'numbers'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -199,6 +207,13 @@ class CAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessorBase {
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'numbers'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //

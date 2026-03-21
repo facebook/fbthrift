@@ -48,6 +48,7 @@ class ServiceHandler<::cpp2::NullService> : public apache::thrift::ServerInterfa
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
+
  private:
   static ::cpp2::NullServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
  public:

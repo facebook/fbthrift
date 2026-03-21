@@ -48,6 +48,7 @@ class ServiceHandler<::cpp2::FooBarBazService> : public apache::thrift::ServerIn
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
+
   virtual void sync_foo();
   [[deprecated("Use sync_foo instead")]] virtual void foo();
   virtual folly::Future<folly::Unit> future_foo();
@@ -171,6 +172,13 @@ class FooBarBazServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncPr
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'bar'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -197,6 +205,13 @@ class FooBarBazServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncPr
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'bar'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //

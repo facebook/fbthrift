@@ -327,7 +327,7 @@ determineInvocationType:
 
 namespace cpp2 {
 
-::std::int32_t GoodServiceSvNull::bar() {
+::std::int32_t GoodServiceSvNull::bar() { 
   return 0;
 }
 
@@ -403,5 +403,4 @@ const GoodServiceAsyncProcessor::InteractionConstructorMap GoodServiceAsyncProce
 std::unique_ptr<apache::thrift::Tile> GoodServiceAsyncProcessor::createInteractionImpl(const std::string& name, int16_t) {
   auto fn = getInteractionConstructorMap().at(name);
   return (this->*fn)();
-}
-} // namespace cpp2
+}} // namespace cpp2

@@ -216,20 +216,21 @@ folly::Future<folly::Unit> apache::thrift::Client<::cpp2::NestedContainers>::fut
   return future_mapList(rpcOptions, p_foo);
 }
 
-folly::Future<folly::Unit> apache::thrift::Client<::cpp2::NestedContainers>::future_mapList(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo) {
-  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
-  return fbthrift_semifuture_mapList<CallbackType>(rpcOptions, p_foo).toUnsafeFuture();
-}
-
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::NestedContainers>::semifuture_mapList(const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_mapList(rpcOptions, p_foo);
+}
+
+folly::Future<folly::Unit> apache::thrift::Client<::cpp2::NestedContainers>::future_mapList(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo) {
+  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
+  return fbthrift_semifuture_mapList<CallbackType>(rpcOptions, p_foo).toUnsafeFuture();
 }
 
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::NestedContainers>::semifuture_mapList(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo) {
   using CallbackType = apache::thrift::SemiFutureCallback<folly::Unit>;
   return fbthrift_semifuture_mapList<CallbackType>(rpcOptions, p_foo);
 }
+
 
 void apache::thrift::Client<::cpp2::NestedContainers>::mapList(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::map<::std::int32_t, ::std::vector<::std::int32_t>>& p_foo) {
   mapList(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_foo);
@@ -419,20 +420,21 @@ folly::Future<folly::Unit> apache::thrift::Client<::cpp2::NestedContainers>::fut
   return future_mapSet(rpcOptions, p_foo);
 }
 
-folly::Future<folly::Unit> apache::thrift::Client<::cpp2::NestedContainers>::future_mapSet(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo) {
-  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
-  return fbthrift_semifuture_mapSet<CallbackType>(rpcOptions, p_foo).toUnsafeFuture();
-}
-
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::NestedContainers>::semifuture_mapSet(const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_mapSet(rpcOptions, p_foo);
+}
+
+folly::Future<folly::Unit> apache::thrift::Client<::cpp2::NestedContainers>::future_mapSet(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo) {
+  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
+  return fbthrift_semifuture_mapSet<CallbackType>(rpcOptions, p_foo).toUnsafeFuture();
 }
 
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::NestedContainers>::semifuture_mapSet(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo) {
   using CallbackType = apache::thrift::SemiFutureCallback<folly::Unit>;
   return fbthrift_semifuture_mapSet<CallbackType>(rpcOptions, p_foo);
 }
+
 
 void apache::thrift::Client<::cpp2::NestedContainers>::mapSet(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::map<::std::int32_t, ::std::set<::std::int32_t>>& p_foo) {
   mapSet(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_foo);
@@ -622,20 +624,21 @@ folly::Future<folly::Unit> apache::thrift::Client<::cpp2::NestedContainers>::fut
   return future_listMap(rpcOptions, p_foo);
 }
 
-folly::Future<folly::Unit> apache::thrift::Client<::cpp2::NestedContainers>::future_listMap(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo) {
-  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
-  return fbthrift_semifuture_listMap<CallbackType>(rpcOptions, p_foo).toUnsafeFuture();
-}
-
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::NestedContainers>::semifuture_listMap(const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_listMap(rpcOptions, p_foo);
+}
+
+folly::Future<folly::Unit> apache::thrift::Client<::cpp2::NestedContainers>::future_listMap(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo) {
+  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
+  return fbthrift_semifuture_listMap<CallbackType>(rpcOptions, p_foo).toUnsafeFuture();
 }
 
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::NestedContainers>::semifuture_listMap(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo) {
   using CallbackType = apache::thrift::SemiFutureCallback<folly::Unit>;
   return fbthrift_semifuture_listMap<CallbackType>(rpcOptions, p_foo);
 }
+
 
 void apache::thrift::Client<::cpp2::NestedContainers>::listMap(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& p_foo) {
   listMap(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_foo);
@@ -825,20 +828,21 @@ folly::Future<folly::Unit> apache::thrift::Client<::cpp2::NestedContainers>::fut
   return future_listSet(rpcOptions, p_foo);
 }
 
-folly::Future<folly::Unit> apache::thrift::Client<::cpp2::NestedContainers>::future_listSet(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<::std::int32_t>>& p_foo) {
-  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
-  return fbthrift_semifuture_listSet<CallbackType>(rpcOptions, p_foo).toUnsafeFuture();
-}
-
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::NestedContainers>::semifuture_listSet(const ::std::vector<::std::set<::std::int32_t>>& p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_listSet(rpcOptions, p_foo);
+}
+
+folly::Future<folly::Unit> apache::thrift::Client<::cpp2::NestedContainers>::future_listSet(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<::std::int32_t>>& p_foo) {
+  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
+  return fbthrift_semifuture_listSet<CallbackType>(rpcOptions, p_foo).toUnsafeFuture();
 }
 
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::NestedContainers>::semifuture_listSet(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<::std::int32_t>>& p_foo) {
   using CallbackType = apache::thrift::SemiFutureCallback<folly::Unit>;
   return fbthrift_semifuture_listSet<CallbackType>(rpcOptions, p_foo);
 }
+
 
 void apache::thrift::Client<::cpp2::NestedContainers>::listSet(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::set<::std::int32_t>>& p_foo) {
   listSet(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_foo);
@@ -1028,20 +1032,21 @@ folly::Future<folly::Unit> apache::thrift::Client<::cpp2::NestedContainers>::fut
   return future_turtles(rpcOptions, p_foo);
 }
 
-folly::Future<folly::Unit> apache::thrift::Client<::cpp2::NestedContainers>::future_turtles(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo) {
-  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
-  return fbthrift_semifuture_turtles<CallbackType>(rpcOptions, p_foo).toUnsafeFuture();
-}
-
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::NestedContainers>::semifuture_turtles(const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_turtles(rpcOptions, p_foo);
+}
+
+folly::Future<folly::Unit> apache::thrift::Client<::cpp2::NestedContainers>::future_turtles(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo) {
+  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
+  return fbthrift_semifuture_turtles<CallbackType>(rpcOptions, p_foo).toUnsafeFuture();
 }
 
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::NestedContainers>::semifuture_turtles(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo) {
   using CallbackType = apache::thrift::SemiFutureCallback<folly::Unit>;
   return fbthrift_semifuture_turtles<CallbackType>(rpcOptions, p_foo);
 }
+
 
 void apache::thrift::Client<::cpp2::NestedContainers>::turtles(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>& p_foo) {
   turtles(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_foo);

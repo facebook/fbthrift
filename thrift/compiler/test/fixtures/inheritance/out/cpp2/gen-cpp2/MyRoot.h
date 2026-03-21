@@ -48,6 +48,7 @@ class ServiceHandler<::cpp2::MyRoot> : public apache::thrift::ServerInterface {
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
+
   virtual void sync_do_root();
   [[deprecated("Use sync_do_root instead")]] virtual void do_root();
   virtual folly::Future<folly::Unit> future_do_root();

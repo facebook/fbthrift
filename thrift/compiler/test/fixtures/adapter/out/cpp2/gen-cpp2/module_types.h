@@ -767,7 +767,7 @@ class Foo final  {
 
 
   Foo& operator=(Foo&&) noexcept;
-  Foo& operator=(const Foo&);
+  Foo& operator=(const Foo& src);
 
   ~Foo();
 
@@ -2052,10 +2052,12 @@ class DirectlyAdapted final  {
   DirectlyAdapted(apache::thrift::FragileConstructor, ::std::int32_t field__arg);
 
   DirectlyAdapted(DirectlyAdapted&&) = default;
+
   DirectlyAdapted(const DirectlyAdapted&) = default;
 
 
   DirectlyAdapted& operator=(DirectlyAdapted&&) = default;
+
   DirectlyAdapted& operator=(const DirectlyAdapted&) = default;
  private:
   ::std::int32_t __fbthrift_field_field;
@@ -2210,7 +2212,7 @@ class Bar final  {
 
 
   Bar& operator=(Bar&&) noexcept;
-  Bar& operator=(const Bar&);
+  Bar& operator=(const Bar& src);
 
   ~Bar();
 
@@ -2648,10 +2650,12 @@ class A final  {
   A(apache::thrift::FragileConstructor);
 
   A(A&&) = default;
+
   A(const A&) = default;
 
 
   A& operator=(A&&) = default;
+
   A& operator=(const A&) = default;
 
  public:
@@ -2760,10 +2764,12 @@ class ThriftAdaptedStruct final  {
   ThriftAdaptedStruct(apache::thrift::FragileConstructor, ::std::int64_t data__arg);
 
   ThriftAdaptedStruct(ThriftAdaptedStruct&&) = default;
+
   ThriftAdaptedStruct(const ThriftAdaptedStruct&) = default;
 
 
   ThriftAdaptedStruct& operator=(ThriftAdaptedStruct&&) = default;
+
   ThriftAdaptedStruct& operator=(const ThriftAdaptedStruct&) = default;
  private:
   ::std::int64_t __fbthrift_field_data;
@@ -2893,10 +2899,12 @@ class DirectlyAdaptedStruct final  {
   DirectlyAdaptedStruct(apache::thrift::FragileConstructor, ::std::int64_t data__arg);
 
   DirectlyAdaptedStruct(DirectlyAdaptedStruct&&) = default;
+
   DirectlyAdaptedStruct(const DirectlyAdaptedStruct&) = default;
 
 
   DirectlyAdaptedStruct& operator=(DirectlyAdaptedStruct&&) = default;
+
   DirectlyAdaptedStruct& operator=(const DirectlyAdaptedStruct&) = default;
  private:
   ::std::int64_t __fbthrift_field_data;
@@ -3037,11 +3045,12 @@ class MyAnnotation final  {
   MyAnnotation(apache::thrift::FragileConstructor, ::std::string signature__arg, ::facebook::thrift::test::fixtures::adapter::Color color__arg);
 
   MyAnnotation(MyAnnotation&&) noexcept;
+
   MyAnnotation(const MyAnnotation& src);
 
 
   MyAnnotation& operator=(MyAnnotation&&) noexcept;
-  MyAnnotation& operator=(const MyAnnotation&);
+  MyAnnotation& operator=(const MyAnnotation& src);
 
   ~MyAnnotation();
 
@@ -3229,10 +3238,12 @@ class IndependentDirectlyAdapted final  {
   IndependentDirectlyAdapted(apache::thrift::FragileConstructor, ::std::int32_t field__arg);
 
   IndependentDirectlyAdapted(IndependentDirectlyAdapted&&) = default;
+
   IndependentDirectlyAdapted(const IndependentDirectlyAdapted&) = default;
 
 
   IndependentDirectlyAdapted& operator=(IndependentDirectlyAdapted&&) = default;
+
   IndependentDirectlyAdapted& operator=(const IndependentDirectlyAdapted&) = default;
  private:
   ::std::int32_t __fbthrift_field_field;
@@ -3369,7 +3380,7 @@ class StructWithFieldAdapter final  {
 
 
   StructWithFieldAdapter& operator=(StructWithFieldAdapter&&) noexcept;
-  StructWithFieldAdapter& operator=(const StructWithFieldAdapter&);
+  StructWithFieldAdapter& operator=(const StructWithFieldAdapter& src);
 
   ~StructWithFieldAdapter();
 
@@ -3617,7 +3628,7 @@ class TerseAdaptedFields final  {
 
 
   TerseAdaptedFields& operator=(TerseAdaptedFields&&) noexcept;
-  TerseAdaptedFields& operator=(const TerseAdaptedFields&);
+  TerseAdaptedFields& operator=(const TerseAdaptedFields& src);
 
   ~TerseAdaptedFields();
 
@@ -3816,7 +3827,7 @@ class B final  {
 
 
   B& operator=(B&&) noexcept;
-  B& operator=(const B&);
+  B& operator=(const B& src);
  private:
   ::facebook::thrift::test::fixtures::adapter::AdaptedA __fbthrift_field_a;
  private:
@@ -3933,11 +3944,12 @@ class Config final  {
   Config(apache::thrift::FragileConstructor, ::std::string path__arg);
 
   Config(Config&&) noexcept;
+
   Config(const Config& src);
 
 
   Config& operator=(Config&&) noexcept;
-  Config& operator=(const Config&);
+  Config& operator=(const Config& src);
 
   ~Config();
 
@@ -4083,7 +4095,7 @@ class MyStruct final  {
 
 
   MyStruct& operator=(MyStruct&&) noexcept;
-  MyStruct& operator=(const MyStruct&);
+  MyStruct& operator=(const MyStruct& src);
 
   ~MyStruct();
 
@@ -4271,7 +4283,7 @@ class AdaptTestStruct final  {
 
 
   AdaptTestStruct& operator=(AdaptTestStruct&&) noexcept;
-  AdaptTestStruct& operator=(const AdaptTestStruct&);
+  AdaptTestStruct& operator=(const AdaptTestStruct& src);
 
   ~AdaptTestStruct();
 
@@ -4799,7 +4811,7 @@ class AdaptTemplatedTestStruct final  {
 
 
   AdaptTemplatedTestStruct& operator=(AdaptTemplatedTestStruct&&) noexcept;
-  AdaptTemplatedTestStruct& operator=(const AdaptTemplatedTestStruct&);
+  AdaptTemplatedTestStruct& operator=(const AdaptTemplatedTestStruct& src);
 
   ~AdaptTemplatedTestStruct();
 
@@ -5717,11 +5729,12 @@ class AdaptTemplatedNestedTestStruct final  {
   AdaptTemplatedNestedTestStruct(apache::thrift::FragileConstructor, ::facebook::thrift::test::fixtures::adapter::AdaptTemplatedTestStruct adaptedStruct__arg);
 
   AdaptTemplatedNestedTestStruct(AdaptTemplatedNestedTestStruct&&) noexcept;
+
   AdaptTemplatedNestedTestStruct(const AdaptTemplatedNestedTestStruct& src);
 
 
   AdaptTemplatedNestedTestStruct& operator=(AdaptTemplatedNestedTestStruct&&) noexcept;
-  AdaptTemplatedNestedTestStruct& operator=(const AdaptTemplatedNestedTestStruct&);
+  AdaptTemplatedNestedTestStruct& operator=(const AdaptTemplatedNestedTestStruct& src);
  private:
   ::facebook::thrift::test::fixtures::adapter::AdaptTemplatedTestStruct __fbthrift_field_adaptedStruct;
  private:
@@ -6164,7 +6177,7 @@ class StructFieldAdaptedStruct final  {
 
 
   StructFieldAdaptedStruct& operator=(StructFieldAdaptedStruct&&) noexcept;
-  StructFieldAdaptedStruct& operator=(const StructFieldAdaptedStruct&);
+  StructFieldAdaptedStruct& operator=(const StructFieldAdaptedStruct& src);
  private:
   ::apache::thrift::adapt_detail::adapted_field_t<::apache::thrift::test::TemplatedTestAdapter, 1, ::facebook::thrift::test::fixtures::adapter::ThriftAdaptedStruct, StructFieldAdaptedStruct> __fbthrift_field_adaptedStruct;
  private:
@@ -6399,7 +6412,7 @@ class CircularStruct final  {
 
 
   CircularStruct& operator=(CircularStruct&&) noexcept;
-  CircularStruct& operator=(const CircularStruct&);
+  CircularStruct& operator=(const CircularStruct& src);
 
   ~CircularStruct();
 
@@ -6520,11 +6533,12 @@ class CircularAdaptee final  {
   CircularAdaptee(apache::thrift::FragileConstructor, ::facebook::thrift::test::fixtures::adapter::CircularStruct field__arg);
 
   CircularAdaptee(CircularAdaptee&&) noexcept;
+
   CircularAdaptee(const CircularAdaptee& src);
 
 
   CircularAdaptee& operator=(CircularAdaptee&&) noexcept;
-  CircularAdaptee& operator=(const CircularAdaptee&);
+  CircularAdaptee& operator=(const CircularAdaptee& src);
  private:
   ::facebook::thrift::test::fixtures::adapter::CircularStruct __fbthrift_field_field;
  private:
@@ -6656,10 +6670,12 @@ class DeclaredAfterStruct final  {
   DeclaredAfterStruct(apache::thrift::FragileConstructor);
 
   DeclaredAfterStruct(DeclaredAfterStruct&&) = default;
+
   DeclaredAfterStruct(const DeclaredAfterStruct&) = default;
 
 
   DeclaredAfterStruct& operator=(DeclaredAfterStruct&&) = default;
+
   DeclaredAfterStruct& operator=(const DeclaredAfterStruct&) = default;
 
  public:
@@ -6744,7 +6760,7 @@ class ReorderedStruct final  {
 
 
   ReorderedStruct& operator=(ReorderedStruct&&) noexcept;
-  ReorderedStruct& operator=(const ReorderedStruct&);
+  ReorderedStruct& operator=(const ReorderedStruct& src);
 
   ~ReorderedStruct();
 
@@ -6866,10 +6882,12 @@ class UnderlyingRenamedStruct final  {
   UnderlyingRenamedStruct(apache::thrift::FragileConstructor, ::std::int64_t data__arg);
 
   UnderlyingRenamedStruct(UnderlyingRenamedStruct&&) = default;
+
   UnderlyingRenamedStruct(const UnderlyingRenamedStruct&) = default;
 
 
   UnderlyingRenamedStruct& operator=(UnderlyingRenamedStruct&&) = default;
+
   UnderlyingRenamedStruct& operator=(const UnderlyingRenamedStruct&) = default;
  private:
   ::std::int64_t __fbthrift_field_data;
@@ -6998,10 +7016,12 @@ class UnderlyingSameNamespaceStruct final  {
   UnderlyingSameNamespaceStruct(apache::thrift::FragileConstructor, ::std::int64_t data__arg);
 
   UnderlyingSameNamespaceStruct(UnderlyingSameNamespaceStruct&&) = default;
+
   UnderlyingSameNamespaceStruct(const UnderlyingSameNamespaceStruct&) = default;
 
 
   UnderlyingSameNamespaceStruct& operator=(UnderlyingSameNamespaceStruct&&) = default;
+
   UnderlyingSameNamespaceStruct& operator=(const UnderlyingSameNamespaceStruct&) = default;
  private:
   ::std::int64_t __fbthrift_field_data;
@@ -7128,10 +7148,12 @@ class HeapAllocated final  {
   HeapAllocated(apache::thrift::FragileConstructor);
 
   HeapAllocated(HeapAllocated&&) = default;
+
   HeapAllocated(const HeapAllocated&) = default;
 
 
   HeapAllocated& operator=(HeapAllocated&&) = default;
+
   HeapAllocated& operator=(const HeapAllocated&) = default;
 
  public:
@@ -7217,7 +7239,7 @@ class MoveOnly final  {
 
 
   MoveOnly& operator=(MoveOnly&&) = default;
-  MoveOnly& operator=(const MoveOnly&);
+  MoveOnly& operator=(const MoveOnly& src);
  private:
   ::facebook::thrift::test::fixtures::adapter::HeapAllocated __fbthrift_field_ptr;
  private:
@@ -7340,7 +7362,7 @@ class AlsoMoveOnly final  {
 
 
   AlsoMoveOnly& operator=(AlsoMoveOnly&&) = default;
-  AlsoMoveOnly& operator=(const AlsoMoveOnly&);
+  AlsoMoveOnly& operator=(const AlsoMoveOnly& src);
  private:
   ::apache::thrift::adapt_detail::adapted_field_t<::apache::thrift::test::MoveOnlyAdapter, 1, ::std::int64_t, AlsoMoveOnly> __fbthrift_field_ptr;
  private:
@@ -7455,10 +7477,12 @@ class ApplyAdapter final  {
   ApplyAdapter(apache::thrift::FragileConstructor);
 
   ApplyAdapter(ApplyAdapter&&) = default;
+
   ApplyAdapter(const ApplyAdapter&) = default;
 
 
   ApplyAdapter& operator=(ApplyAdapter&&) = default;
+
   ApplyAdapter& operator=(const ApplyAdapter&) = default;
 
  public:
@@ -7535,10 +7559,12 @@ class TransitiveAdapted final  {
   TransitiveAdapted(apache::thrift::FragileConstructor);
 
   TransitiveAdapted(TransitiveAdapted&&) = default;
+
   TransitiveAdapted(const TransitiveAdapted&) = default;
 
 
   TransitiveAdapted& operator=(TransitiveAdapted&&) = default;
+
   TransitiveAdapted& operator=(const TransitiveAdapted&) = default;
 
  public:
@@ -7627,7 +7653,7 @@ class CountingStruct final  {
 
 
   CountingStruct& operator=(CountingStruct&&) noexcept;
-  CountingStruct& operator=(const CountingStruct&);
+  CountingStruct& operator=(const CountingStruct& src);
 
   ~CountingStruct();
 
@@ -7823,11 +7849,12 @@ class Person final  {
   Person(apache::thrift::FragileConstructor, ::std::string name__arg);
 
   Person(Person&&) noexcept;
+
   Person(const Person& src);
 
 
   Person& operator=(Person&&) noexcept;
-  Person& operator=(const Person&);
+  Person& operator=(const Person& src);
 
   ~Person();
 
@@ -7967,11 +7994,12 @@ class Person2 final  {
   Person2(apache::thrift::FragileConstructor, ::std::string name__arg);
 
   Person2(Person2&&) noexcept;
+
   Person2(const Person2& src);
 
 
   Person2& operator=(Person2&&) noexcept;
-  Person2& operator=(const Person2&);
+  Person2& operator=(const Person2& src);
 
   ~Person2();
 
@@ -8117,7 +8145,7 @@ class Renamed final  {
 
 
   Renamed& operator=(Renamed&&) = default;
-  Renamed& operator=(const Renamed&);
+  Renamed& operator=(const Renamed& src);
  private:
   ::apache::thrift::adapt_detail::adapted_field_t<::apache::thrift::test::FieldAdapter, 1, ::std::int32_t, Renamed> __fbthrift_field_field;
  private:

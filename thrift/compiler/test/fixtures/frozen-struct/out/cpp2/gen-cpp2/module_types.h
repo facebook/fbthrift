@@ -221,11 +221,12 @@ class ModuleA final  {
   ModuleA(apache::thrift::FragileConstructor, ::std::int32_t i32Field__arg, ::std::string strField__arg, ::std::vector<::std::int16_t> listField__arg, ::std::map<::std::string, ::std::int32_t> mapField__arg, ::some::ns::IncludedA inclAField__arg, ::some::ns::IncludedB inclBField__arg);
 
   ModuleA(ModuleA&&) noexcept;
+
   ModuleA(const ModuleA& src);
 
 
   ModuleA& operator=(ModuleA&&) noexcept;
-  ModuleA& operator=(const ModuleA&);
+  ModuleA& operator=(const ModuleA& src);
 
   ~ModuleA();
 
@@ -630,10 +631,12 @@ class ModuleB final  {
   ModuleB(apache::thrift::FragileConstructor, ::std::int32_t i32Field__arg, ::some::ns::EnumB inclEnumB__arg);
 
   ModuleB(ModuleB&&) = default;
+
   ModuleB(const ModuleB&) = default;
 
 
   ModuleB& operator=(ModuleB&&) = default;
+
   ModuleB& operator=(const ModuleB&) = default;
  private:
   ::std::int32_t __fbthrift_field_i32Field;
@@ -806,10 +809,12 @@ class DirectlyAdapted final  {
   DirectlyAdapted(apache::thrift::FragileConstructor, ::std::int32_t field__arg);
 
   DirectlyAdapted(DirectlyAdapted&&) = default;
+
   DirectlyAdapted(const DirectlyAdapted&) = default;
 
 
   DirectlyAdapted& operator=(DirectlyAdapted&&) = default;
+
   DirectlyAdapted& operator=(const DirectlyAdapted&) = default;
  private:
   ::std::int32_t __fbthrift_field_field;
@@ -945,11 +950,12 @@ class CppRef final  {
   CppRef(apache::thrift::FragileConstructor, ::std::shared_ptr<::std::int32_t> shared_field__arg, ::std::shared_ptr<const ::std::int32_t> shared_const_field__arg, ::std::shared_ptr<::std::int32_t> opt_shared_field__arg, ::std::shared_ptr<const ::std::int32_t> opt_shared_const_field__arg, ::apache::thrift::detail::boxed_value_ptr<::std::int32_t> boxed_field__arg);
 
   CppRef(CppRef&&) noexcept;
+
   CppRef(const CppRef& src);
 
 
   CppRef& operator=(CppRef&&) noexcept;
-  CppRef& operator=(const CppRef&);
+  CppRef& operator=(const CppRef& src);
 
   ~CppRef();
 

@@ -505,11 +505,12 @@ class SomeStruct final  {
   SomeStruct(apache::thrift::FragileConstructor, ::test::fixtures::enums::Metasyntactic reasonable__arg, ::test::fixtures::enums::Metasyntactic fine__arg, ::test::fixtures::enums::Metasyntactic questionable__arg, ::std::set<::std::int32_t> tags__arg);
 
   SomeStruct(SomeStruct&&) noexcept;
+
   SomeStruct(const SomeStruct& src);
 
 
   SomeStruct& operator=(SomeStruct&&) noexcept;
-  SomeStruct& operator=(const SomeStruct&);
+  SomeStruct& operator=(const SomeStruct& src);
 
   ~SomeStruct();
 
@@ -793,10 +794,12 @@ class MyStruct final  {
   MyStruct(apache::thrift::FragileConstructor, ::test::fixtures::enums::MyEnum2 me2_3__arg, ::test::fixtures::enums::MyEnum3 me3_n3__arg, ::test::fixtures::enums::MyEnum1 me1_t1__arg, ::test::fixtures::enums::MyEnum1 me1_t2__arg);
 
   MyStruct(MyStruct&&) = default;
+
   MyStruct(const MyStruct&) = default;
 
 
   MyStruct& operator=(MyStruct&&) = default;
+
   MyStruct& operator=(const MyStruct&) = default;
  private:
   ::test::fixtures::enums::MyEnum2 __fbthrift_field_me2_3;

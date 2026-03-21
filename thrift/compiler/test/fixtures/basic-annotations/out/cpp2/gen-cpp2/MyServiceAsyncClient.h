@@ -35,7 +35,6 @@ struct ServiceMethodTypesFootprint<::cpp2::MyService> {
   ::std::int64_t,
   bool>;
 };
-
 } // namespace detail
 
 template <>

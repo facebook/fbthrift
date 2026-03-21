@@ -336,9 +336,9 @@ determineInvocationType:
 
 namespace test::fixtures::basic {
 
-void DbMixedStackArgumentsSvNull::getDataByKey0(::std::string& /*_return*/, std::unique_ptr<::std::string> /*key*/) {}
+void DbMixedStackArgumentsSvNull::getDataByKey0(::std::string& /*_return*/, std::unique_ptr<::std::string> /*key*/) {  }
 
-void DbMixedStackArgumentsSvNull::getDataByKey1(::std::string& /*_return*/, std::unique_ptr<::std::string> /*key*/) {}
+void DbMixedStackArgumentsSvNull::getDataByKey1(::std::string& /*_return*/, std::unique_ptr<::std::string> /*key*/) {  }
 
 
 std::string_view DbMixedStackArgumentsAsyncProcessor::getServiceName() {

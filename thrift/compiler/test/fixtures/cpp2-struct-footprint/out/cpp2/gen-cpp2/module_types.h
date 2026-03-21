@@ -132,10 +132,12 @@ class SimpleStruct final  {
   SimpleStruct(apache::thrift::FragileConstructor, ::std::int32_t field__arg);
 
   SimpleStruct(SimpleStruct&&) = default;
+
   SimpleStruct(const SimpleStruct&) = default;
 
 
   SimpleStruct& operator=(SimpleStruct&&) = default;
+
   SimpleStruct& operator=(const SimpleStruct&) = default;
  private:
   ::std::int32_t __fbthrift_field_field;
@@ -260,10 +262,12 @@ class ComplexStruct final  {
   ComplexStruct(apache::thrift::FragileConstructor, ::cpp2_struct_footprint::SimpleStruct nested__arg);
 
   ComplexStruct(ComplexStruct&&) = default;
+
   ComplexStruct(const ComplexStruct&) = default;
 
 
   ComplexStruct& operator=(ComplexStruct&&) = default;
+
   ComplexStruct& operator=(const ComplexStruct&) = default;
  private:
   ::cpp2_struct_footprint::SimpleStruct __fbthrift_field_nested;
@@ -394,10 +398,12 @@ class Struct1 final  {
   Struct1(apache::thrift::FragileConstructor);
 
   Struct1(Struct1&&) = default;
+
   Struct1(const Struct1&) = default;
 
 
   Struct1& operator=(Struct1&&) = default;
+
   Struct1& operator=(const Struct1&) = default;
 
  public:
@@ -472,10 +478,12 @@ class Struct2 final  {
   Struct2(apache::thrift::FragileConstructor);
 
   Struct2(Struct2&&) = default;
+
   Struct2(const Struct2&) = default;
 
 
   Struct2& operator=(Struct2&&) = default;
+
   Struct2& operator=(const Struct2&) = default;
 
  public:
@@ -550,10 +558,12 @@ class Struct3 final  {
   Struct3(apache::thrift::FragileConstructor);
 
   Struct3(Struct3&&) = default;
+
   Struct3(const Struct3&) = default;
 
 
   Struct3& operator=(Struct3&&) = default;
+
   Struct3& operator=(const Struct3&) = default;
 
  public:
@@ -628,10 +638,12 @@ class Struct4 final  {
   Struct4(apache::thrift::FragileConstructor);
 
   Struct4(Struct4&&) = default;
+
   Struct4(const Struct4&) = default;
 
 
   Struct4& operator=(Struct4&&) = default;
+
   Struct4& operator=(const Struct4&) = default;
 
  public:
@@ -706,10 +718,12 @@ class Struct5 final  {
   Struct5(apache::thrift::FragileConstructor);
 
   Struct5(Struct5&&) = default;
+
   Struct5(const Struct5&) = default;
 
 
   Struct5& operator=(Struct5&&) = default;
+
   Struct5& operator=(const Struct5&) = default;
 
  public:
@@ -792,11 +806,12 @@ class FOLLY_EXPORT ExStruct : public virtual apache::thrift::TException {
   ExStruct(apache::thrift::FragileConstructor, ::std::string message__arg);
 
   ExStruct(ExStruct&&) noexcept;
+
   ExStruct(const ExStruct& src);
 
 
   ExStruct& operator=(ExStruct&&) noexcept;
-  ExStruct& operator=(const ExStruct&);
+  ExStruct& operator=(const ExStruct& src);
 
   ~ExStruct() override;
 

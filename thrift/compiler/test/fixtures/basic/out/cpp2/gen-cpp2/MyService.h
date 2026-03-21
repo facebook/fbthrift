@@ -50,6 +50,7 @@ class ServiceHandler<::test::fixtures::basic::MyService> : public apache::thrift
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
+
   virtual void sync_ping();
   [[deprecated("Use sync_ping instead")]] virtual void ping();
   virtual folly::Future<folly::Unit> future_ping();
@@ -285,6 +286,13 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'getRandomData'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -312,6 +320,13 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'getRandomData'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -344,6 +359,13 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'putDataById'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -370,6 +392,13 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'putDataById'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -403,6 +432,13 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'getDataById'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -430,6 +466,13 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'getDataById'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -462,6 +505,13 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'lobDataById'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -477,6 +527,13 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
 
   //
   // End of Method 'lobDataById'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -507,6 +564,13 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'invalid_return_for_hack'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //

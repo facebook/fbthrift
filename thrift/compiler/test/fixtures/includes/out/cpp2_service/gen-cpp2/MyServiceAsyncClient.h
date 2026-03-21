@@ -35,7 +35,6 @@ struct ServiceMethodTypesFootprint<::cpp2::MyService> {
   ::cpp2::Included,
   void>;
 };
-
 } // namespace detail
 
 template <>

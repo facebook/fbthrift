@@ -34,7 +34,6 @@ struct ServiceMethodTypesFootprint<::apache::thrift::fixtures::types::SomeServic
   ::std::vector<::std::int64_t>,
   ::std::map<::apache::thrift::fixtures::types::TBinary, ::std::int64_t>>;
 };
-
 } // namespace detail
 
 template <>

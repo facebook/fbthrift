@@ -81,10 +81,12 @@ class Empty final  {
   Empty(apache::thrift::FragileConstructor);
 
   Empty(Empty&&) = default;
+
   Empty(const Empty&) = default;
 
 
   Empty& operator=(Empty&&) = default;
+
   Empty& operator=(const Empty&) = default;
 
  public:

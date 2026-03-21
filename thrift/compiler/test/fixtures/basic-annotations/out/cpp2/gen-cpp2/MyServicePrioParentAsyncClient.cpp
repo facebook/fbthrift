@@ -176,20 +176,21 @@ folly::Future<folly::Unit> apache::thrift::Client<::cpp2::MyServicePrioParent>::
   return future_ping(rpcOptions);
 }
 
-folly::Future<folly::Unit> apache::thrift::Client<::cpp2::MyServicePrioParent>::future_ping(apache::thrift::RpcOptions& rpcOptions) {
-  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
-  return fbthrift_semifuture_ping<CallbackType>(rpcOptions).toUnsafeFuture();
-}
-
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::MyServicePrioParent>::semifuture_ping() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_ping(rpcOptions);
+}
+
+folly::Future<folly::Unit> apache::thrift::Client<::cpp2::MyServicePrioParent>::future_ping(apache::thrift::RpcOptions& rpcOptions) {
+  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
+  return fbthrift_semifuture_ping<CallbackType>(rpcOptions).toUnsafeFuture();
 }
 
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::MyServicePrioParent>::semifuture_ping(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::SemiFutureCallback<folly::Unit>;
   return fbthrift_semifuture_ping<CallbackType>(rpcOptions);
 }
+
 
 void apache::thrift::Client<::cpp2::MyServicePrioParent>::ping(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   ping(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -378,20 +379,21 @@ folly::Future<folly::Unit> apache::thrift::Client<::cpp2::MyServicePrioParent>::
   return future_pong(rpcOptions);
 }
 
-folly::Future<folly::Unit> apache::thrift::Client<::cpp2::MyServicePrioParent>::future_pong(apache::thrift::RpcOptions& rpcOptions) {
-  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
-  return fbthrift_semifuture_pong<CallbackType>(rpcOptions).toUnsafeFuture();
-}
-
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::MyServicePrioParent>::semifuture_pong() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_pong(rpcOptions);
+}
+
+folly::Future<folly::Unit> apache::thrift::Client<::cpp2::MyServicePrioParent>::future_pong(apache::thrift::RpcOptions& rpcOptions) {
+  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
+  return fbthrift_semifuture_pong<CallbackType>(rpcOptions).toUnsafeFuture();
 }
 
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::MyServicePrioParent>::semifuture_pong(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::SemiFutureCallback<folly::Unit>;
   return fbthrift_semifuture_pong<CallbackType>(rpcOptions);
 }
+
 
 void apache::thrift::Client<::cpp2::MyServicePrioParent>::pong(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   pong(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));

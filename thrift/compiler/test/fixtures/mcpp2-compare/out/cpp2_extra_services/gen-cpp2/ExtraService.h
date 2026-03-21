@@ -53,6 +53,7 @@ class ServiceHandler<::extra::svc::ExtraService> : virtual public ::some::valid:
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
+
   virtual bool sync_simple_function();
   [[deprecated("Use sync_simple_function instead")]] virtual bool simple_function();
   virtual folly::Future<bool> future_simple_function();
@@ -313,6 +314,13 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'throws_function'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -339,6 +347,13 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'throws_function'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -372,6 +387,13 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'throws_function3'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -402,6 +424,13 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'oneway_void_ret'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -417,6 +446,13 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
 
   //
   // End of Method 'oneway_void_ret'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -438,6 +474,13 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'oneway_void_ret_map_setlist_param'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -456,6 +499,13 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'oneway_void_ret_struct_param'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -471,6 +521,13 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
 
   //
   // End of Method 'oneway_void_ret_struct_param'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //

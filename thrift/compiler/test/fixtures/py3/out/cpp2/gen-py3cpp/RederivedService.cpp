@@ -182,7 +182,7 @@ determineInvocationType:
 
 namespace py3::simple {
 
-::std::int32_t RederivedServiceSvNull::get_seven() {
+::std::int32_t RederivedServiceSvNull::get_seven() { 
   return 0;
 }
 

@@ -924,23 +924,23 @@ determineInvocationType:
 
 namespace test_cpp2::cpp_reflection {
 
-void service2SvNull::methodA() {
+void service2SvNull::methodA() { 
 }
 
-void service2SvNull::methodB(::std::int32_t /*x*/, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> /*y*/, double /*z*/) {
+void service2SvNull::methodB(::std::int32_t /*x*/, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> /*y*/, double /*z*/) { 
 }
 
-::std::int32_t service2SvNull::methodC() {
+::std::int32_t service2SvNull::methodC() { 
   return 0;
 }
 
-::std::int32_t service2SvNull::methodD(::std::int32_t /*i*/, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> /*j*/, double /*k*/) {
+::std::int32_t service2SvNull::methodD(::std::int32_t /*i*/, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> /*j*/, double /*k*/) { 
   return 0;
 }
 
-void service2SvNull::methodE(::test_cpp2::cpp_reflection::struct2& /*_return*/) {}
+void service2SvNull::methodE(::test_cpp2::cpp_reflection::struct2& /*_return*/) {  }
 
-void service2SvNull::methodF(::test_cpp2::cpp_reflection::struct2& /*_return*/, ::std::int32_t /*l*/, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> /*m*/, double /*n*/) {}
+void service2SvNull::methodF(::test_cpp2::cpp_reflection::struct2& /*_return*/, ::std::int32_t /*l*/, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> /*m*/, double /*n*/) {  }
 
 
 std::string_view service2AsyncProcessor::getServiceName() {

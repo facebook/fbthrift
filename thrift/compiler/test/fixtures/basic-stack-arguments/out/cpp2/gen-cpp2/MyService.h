@@ -48,6 +48,7 @@ class ServiceHandler<::cpp2::MyService> : public apache::thrift::ServerInterface
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
+
   virtual bool sync_hasDataById(::std::int64_t /*id*/);
   [[deprecated("Use sync_hasDataById instead")]] virtual bool hasDataById(::std::int64_t /*id*/);
   virtual folly::Future<bool> future_hasDataById(::std::int64_t p_id);
@@ -188,6 +189,13 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'getDataById'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -218,6 +226,13 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'putDataById'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -244,6 +259,13 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'putDataById'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //

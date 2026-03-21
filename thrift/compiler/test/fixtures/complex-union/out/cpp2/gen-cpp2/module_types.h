@@ -1499,11 +1499,12 @@ class Val final  {
   Val(apache::thrift::FragileConstructor, ::std::string strVal__arg, ::std::int32_t intVal__arg, ::cpp2::containerTypedef typedefValue__arg);
 
   Val(Val&&) noexcept;
+
   Val(const Val& src);
 
 
   Val& operator=(Val&&) noexcept;
-  Val& operator=(const Val&);
+  Val& operator=(const Val& src);
 
   ~Val();
 

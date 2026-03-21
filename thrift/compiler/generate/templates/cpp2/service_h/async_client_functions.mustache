@@ -197,11 +197,13 @@
  public:
 #endif // FOLLY_HAS_COROUTINES
 
-    {{#if (and function.legacy_client_methods? (not function.stream?))}}
+    {{#if function.legacy_client_methods?}}
+      {{#if (not function.stream?)}}
 {{#partial glean.function_docblock service=interface function=function}}
   virtual void {{function.cpp_name}}(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback{{#if function.creates_interaction?}}, const apache::thrift::InteractionHandle& handle{{/if}}{{function_comma}}{{#partial client.function_param_list function=function}});
+      {{/if (not function.stream?)}}{{! TODO(T260006192): Preserved blank line can be removed, simplify conditional by flattening }}
 
-    {{/if (and function.legacy_client_methods? (not function.stream?))}}
+    {{/if function.legacy_client_methods?}}
   {{#else if function.sink?}}
 #if FOLLY_HAS_COROUTINES
 {{#partial glean.function_docblock service=interface function=function}}

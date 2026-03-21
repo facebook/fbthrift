@@ -163,20 +163,21 @@ folly::Future<folly::Unit> apache::thrift::Client<::cpp2::MyRoot>::future_do_roo
   return future_do_root(rpcOptions);
 }
 
-folly::Future<folly::Unit> apache::thrift::Client<::cpp2::MyRoot>::future_do_root(apache::thrift::RpcOptions& rpcOptions) {
-  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
-  return fbthrift_semifuture_do_root<CallbackType>(rpcOptions).toUnsafeFuture();
-}
-
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::MyRoot>::semifuture_do_root() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_do_root(rpcOptions);
+}
+
+folly::Future<folly::Unit> apache::thrift::Client<::cpp2::MyRoot>::future_do_root(apache::thrift::RpcOptions& rpcOptions) {
+  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
+  return fbthrift_semifuture_do_root<CallbackType>(rpcOptions).toUnsafeFuture();
 }
 
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::MyRoot>::semifuture_do_root(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::SemiFutureCallback<folly::Unit>;
   return fbthrift_semifuture_do_root<CallbackType>(rpcOptions);
 }
+
 
 void apache::thrift::Client<::cpp2::MyRoot>::do_root(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   do_root(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));

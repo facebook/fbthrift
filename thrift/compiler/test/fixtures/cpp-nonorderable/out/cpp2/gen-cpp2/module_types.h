@@ -127,11 +127,12 @@ class NonOrderableStruct final  {
   NonOrderableStruct(apache::thrift::FragileConstructor, ::std::int32_t field1__arg, ::std::string field2__arg);
 
   NonOrderableStruct(NonOrderableStruct&&) noexcept;
+
   NonOrderableStruct(const NonOrderableStruct& src);
 
 
   NonOrderableStruct& operator=(NonOrderableStruct&&) noexcept;
-  NonOrderableStruct& operator=(const NonOrderableStruct&);
+  NonOrderableStruct& operator=(const NonOrderableStruct& src);
 
   ~NonOrderableStruct();
 
@@ -613,11 +614,12 @@ class OrderableStruct final  {
   OrderableStruct(apache::thrift::FragileConstructor, ::std::int32_t field1__arg, ::std::string field2__arg);
 
   OrderableStruct(OrderableStruct&&) noexcept;
+
   OrderableStruct(const OrderableStruct& src);
 
 
   OrderableStruct& operator=(OrderableStruct&&) noexcept;
-  OrderableStruct& operator=(const OrderableStruct&);
+  OrderableStruct& operator=(const OrderableStruct& src);
 
   ~OrderableStruct();
 

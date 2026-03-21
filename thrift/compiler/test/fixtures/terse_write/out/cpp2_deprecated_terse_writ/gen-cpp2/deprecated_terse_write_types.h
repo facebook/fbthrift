@@ -527,10 +527,12 @@ class MyStruct final  {
   MyStruct(apache::thrift::FragileConstructor);
 
   MyStruct(MyStruct&&) = default;
+
   MyStruct(const MyStruct&) = default;
 
 
   MyStruct& operator=(MyStruct&&) = default;
+
   MyStruct& operator=(const MyStruct&) = default;
 
  public:
@@ -756,11 +758,12 @@ class StructLevelTerseStruct final  {
   StructLevelTerseStruct(apache::thrift::FragileConstructor, bool bool_field__arg, ::std::int8_t byte_field__arg, ::std::int16_t short_field__arg, ::std::int32_t int_field__arg, ::std::int64_t long_field__arg, float float_field__arg, double double_field__arg, ::std::string string_field__arg, ::std::string binary_field__arg, ::facebook::thrift::test::fixtures::terse_write::deprecated::MyEnum enum_field__arg, ::std::vector<::std::int16_t> list_field__arg, ::std::set<::std::int16_t> set_field__arg, ::std::map<::std::int16_t, ::std::int16_t> map_field__arg, ::facebook::thrift::test::fixtures::terse_write::deprecated::MyStruct struct_field__arg, ::facebook::thrift::test::fixtures::terse_write::deprecated::MyUnion union_field__arg);
 
   StructLevelTerseStruct(StructLevelTerseStruct&&) noexcept;
+
   StructLevelTerseStruct(const StructLevelTerseStruct& src);
 
 
   StructLevelTerseStruct& operator=(StructLevelTerseStruct&&) noexcept;
-  StructLevelTerseStruct& operator=(const StructLevelTerseStruct&);
+  StructLevelTerseStruct& operator=(const StructLevelTerseStruct& src);
 
   ~StructLevelTerseStruct();
 
@@ -1468,11 +1471,12 @@ class FieldLevelTerseStruct final  {
   FieldLevelTerseStruct(apache::thrift::FragileConstructor, bool terse_bool_field__arg, ::std::int8_t terse_byte_field__arg, ::std::int16_t terse_short_field__arg, ::std::int32_t terse_int_field__arg, ::std::int64_t terse_long_field__arg, float terse_float_field__arg, double terse_double_field__arg, ::std::string terse_string_field__arg, ::std::string terse_binary_field__arg, ::facebook::thrift::test::fixtures::terse_write::deprecated::MyEnum terse_enum_field__arg, ::std::vector<::std::int16_t> terse_list_field__arg, ::std::set<::std::int16_t> terse_set_field__arg, ::std::map<::std::int16_t, ::std::int16_t> terse_map_field__arg, ::facebook::thrift::test::fixtures::terse_write::deprecated::MyStruct terse_struct_field__arg, bool bool_field__arg, ::std::int8_t byte_field__arg, ::std::int16_t short_field__arg, ::std::int32_t int_field__arg, ::std::int64_t long_field__arg, float float_field__arg, double double_field__arg, ::std::string string_field__arg, ::std::string binary_field__arg, ::facebook::thrift::test::fixtures::terse_write::deprecated::MyEnum enum_field__arg, ::std::vector<::std::int16_t> list_field__arg, ::std::set<::std::int16_t> set_field__arg, ::std::map<::std::int16_t, ::std::int16_t> map_field__arg, ::facebook::thrift::test::fixtures::terse_write::deprecated::MyStruct struct_field__arg, ::facebook::thrift::test::fixtures::terse_write::deprecated::MyUnion union_field__arg, std::unique_ptr<folly::IOBuf> iobuf_ptr_field__arg);
 
   FieldLevelTerseStruct(FieldLevelTerseStruct&&) noexcept;
+
   FieldLevelTerseStruct(const FieldLevelTerseStruct& src);
 
 
   FieldLevelTerseStruct& operator=(FieldLevelTerseStruct&&) noexcept;
-  FieldLevelTerseStruct& operator=(const FieldLevelTerseStruct&);
+  FieldLevelTerseStruct& operator=(const FieldLevelTerseStruct& src);
 
   ~FieldLevelTerseStruct();
 
@@ -2948,7 +2952,7 @@ class CppRefStructFields final  {
 
 
   CppRefStructFields& operator=(CppRefStructFields&&) noexcept;
-  CppRefStructFields& operator=(const CppRefStructFields&);
+  CppRefStructFields& operator=(const CppRefStructFields& src);
 
   ~CppRefStructFields();
 
@@ -3138,11 +3142,12 @@ class DeprecatedTerseWriteWithCustomDefault final  {
   DeprecatedTerseWriteWithCustomDefault(apache::thrift::FragileConstructor, bool bool_field__arg, ::std::int8_t byte_field__arg, ::std::int16_t short_field__arg, ::std::int32_t int_field__arg, ::std::int64_t long_field__arg, float float_field__arg, double double_field__arg, ::std::string string_field__arg, ::std::string binary_field__arg, ::facebook::thrift::test::fixtures::terse_write::deprecated::MyEnum enum_field__arg, ::std::vector<::std::int16_t> list_field__arg, ::std::set<::std::int16_t> set_field__arg, ::std::map<::std::int16_t, ::std::int16_t> map_field__arg);
 
   DeprecatedTerseWriteWithCustomDefault(DeprecatedTerseWriteWithCustomDefault&&) noexcept;
+
   DeprecatedTerseWriteWithCustomDefault(const DeprecatedTerseWriteWithCustomDefault& src);
 
 
   DeprecatedTerseWriteWithCustomDefault& operator=(DeprecatedTerseWriteWithCustomDefault&&) noexcept;
-  DeprecatedTerseWriteWithCustomDefault& operator=(const DeprecatedTerseWriteWithCustomDefault&);
+  DeprecatedTerseWriteWithCustomDefault& operator=(const DeprecatedTerseWriteWithCustomDefault& src);
 
   ~DeprecatedTerseWriteWithCustomDefault();
 
@@ -3946,11 +3951,12 @@ class DeprecatedTerseWriteWithRedundantCustomDefault final  {
   DeprecatedTerseWriteWithRedundantCustomDefault(apache::thrift::FragileConstructor, bool bool_field__arg, ::std::int8_t byte_field__arg, ::std::int16_t short_field__arg, ::std::int32_t int_field__arg, ::std::int64_t long_field__arg, float float_field__arg, double double_field__arg, ::std::string string_field__arg, ::std::string binary_field__arg, ::facebook::thrift::test::fixtures::terse_write::deprecated::MyEnum enum_field__arg, ::std::vector<::std::int16_t> list_field__arg, ::std::set<::std::int16_t> set_field__arg, ::std::map<::std::int16_t, ::std::int16_t> map_field__arg);
 
   DeprecatedTerseWriteWithRedundantCustomDefault(DeprecatedTerseWriteWithRedundantCustomDefault&&) noexcept;
+
   DeprecatedTerseWriteWithRedundantCustomDefault(const DeprecatedTerseWriteWithRedundantCustomDefault& src);
 
 
   DeprecatedTerseWriteWithRedundantCustomDefault& operator=(DeprecatedTerseWriteWithRedundantCustomDefault&&) noexcept;
-  DeprecatedTerseWriteWithRedundantCustomDefault& operator=(const DeprecatedTerseWriteWithRedundantCustomDefault&);
+  DeprecatedTerseWriteWithRedundantCustomDefault& operator=(const DeprecatedTerseWriteWithRedundantCustomDefault& src);
 
   ~DeprecatedTerseWriteWithRedundantCustomDefault();
 

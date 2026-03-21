@@ -51,6 +51,7 @@ class ServiceHandler<::apache::thrift::fixtures::types::SomeService> : public ap
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
+
   virtual void sync_bounce_map(::apache::thrift::fixtures::types::SomeMap& /*_return*/, std::unique_ptr<::apache::thrift::fixtures::types::SomeMap> /*m*/);
   [[deprecated("Use sync_bounce_map instead")]] virtual void bounce_map(::apache::thrift::fixtures::types::SomeMap& /*_return*/, std::unique_ptr<::apache::thrift::fixtures::types::SomeMap> /*m*/);
   virtual folly::Future<std::unique_ptr<::apache::thrift::fixtures::types::SomeMap>> future_bounce_map(std::unique_ptr<::apache::thrift::fixtures::types::SomeMap> p_m);
@@ -156,6 +157,13 @@ class SomeServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'bounce_map'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //

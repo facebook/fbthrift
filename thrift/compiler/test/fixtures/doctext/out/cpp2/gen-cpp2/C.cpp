@@ -480,10 +480,10 @@ determineInvocationType:
 
 namespace cpp2 {
 
-void CSvNull::f() {
+void CSvNull::f() { 
 }
 
-void CSvNull::thing(::std::string& /*_return*/, ::std::int32_t /*a*/, std::unique_ptr<::std::string> /*b*/, std::unique_ptr<::std::set<::std::int32_t>> /*c*/) {}
+void CSvNull::thing(::std::string& /*_return*/, ::std::int32_t /*a*/, std::unique_ptr<::std::string> /*b*/, std::unique_ptr<::std::set<::std::int32_t>> /*c*/) {  }
 
 
 std::string_view CAsyncProcessor::getServiceName() {

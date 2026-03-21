@@ -136,11 +136,12 @@ class FOLLY_EXPORT FooStreamEx : public virtual apache::thrift::TException {
   FooStreamEx(apache::thrift::FragileConstructor);
 
   FooStreamEx(FooStreamEx&&) noexcept;
+
   FooStreamEx(const FooStreamEx& src);
 
 
   FooStreamEx& operator=(FooStreamEx&&) noexcept;
-  FooStreamEx& operator=(const FooStreamEx&);
+  FooStreamEx& operator=(const FooStreamEx& src);
 
   ~FooStreamEx() override;
 
@@ -227,11 +228,12 @@ class FOLLY_EXPORT FooEx : public virtual apache::thrift::TException {
   FooEx(apache::thrift::FragileConstructor);
 
   FooEx(FooEx&&) noexcept;
+
   FooEx(const FooEx& src);
 
 
   FooEx& operator=(FooEx&&) noexcept;
-  FooEx& operator=(const FooEx&);
+  FooEx& operator=(const FooEx& src);
 
   ~FooEx() override;
 
@@ -318,11 +320,12 @@ class FOLLY_EXPORT FooEx2 : public virtual apache::thrift::TException {
   FooEx2(apache::thrift::FragileConstructor);
 
   FooEx2(FooEx2&&) noexcept;
+
   FooEx2(const FooEx2& src);
 
 
   FooEx2& operator=(FooEx2&&) noexcept;
-  FooEx2& operator=(const FooEx2&);
+  FooEx2& operator=(const FooEx2& src);
 
   ~FooEx2() override;
 
@@ -405,11 +408,12 @@ class InitialResponse final  {
   InitialResponse(apache::thrift::FragileConstructor, ::std::string content__arg);
 
   InitialResponse(InitialResponse&&) noexcept;
+
   InitialResponse(const InitialResponse& src);
 
 
   InitialResponse& operator=(InitialResponse&&) noexcept;
-  InitialResponse& operator=(const InitialResponse&);
+  InitialResponse& operator=(const InitialResponse& src);
 
   ~InitialResponse();
 
@@ -548,11 +552,12 @@ class FinalResponse final  {
   FinalResponse(apache::thrift::FragileConstructor, ::std::string content__arg);
 
   FinalResponse(FinalResponse&&) noexcept;
+
   FinalResponse(const FinalResponse& src);
 
 
   FinalResponse& operator=(FinalResponse&&) noexcept;
-  FinalResponse& operator=(const FinalResponse&);
+  FinalResponse& operator=(const FinalResponse& src);
 
   ~FinalResponse();
 
@@ -691,11 +696,12 @@ class SinkPayload final  {
   SinkPayload(apache::thrift::FragileConstructor, ::std::string content__arg);
 
   SinkPayload(SinkPayload&&) noexcept;
+
   SinkPayload(const SinkPayload& src);
 
 
   SinkPayload& operator=(SinkPayload&&) noexcept;
-  SinkPayload& operator=(const SinkPayload&);
+  SinkPayload& operator=(const SinkPayload& src);
 
   ~SinkPayload();
 
@@ -834,11 +840,12 @@ class CompatibleWithKeywordSink final  {
   CompatibleWithKeywordSink(apache::thrift::FragileConstructor, ::std::string sink__arg);
 
   CompatibleWithKeywordSink(CompatibleWithKeywordSink&&) noexcept;
+
   CompatibleWithKeywordSink(const CompatibleWithKeywordSink& src);
 
 
   CompatibleWithKeywordSink& operator=(CompatibleWithKeywordSink&&) noexcept;
-  CompatibleWithKeywordSink& operator=(const CompatibleWithKeywordSink&);
+  CompatibleWithKeywordSink& operator=(const CompatibleWithKeywordSink& src);
 
   ~CompatibleWithKeywordSink();
 
@@ -983,11 +990,12 @@ class FOLLY_EXPORT InitialException : public virtual apache::thrift::TException 
   InitialException(apache::thrift::FragileConstructor, ::std::string reason__arg);
 
   InitialException(InitialException&&) noexcept;
+
   InitialException(const InitialException& src);
 
 
   InitialException& operator=(InitialException&&) noexcept;
-  InitialException& operator=(const InitialException&);
+  InitialException& operator=(const InitialException& src);
 
   ~InitialException() override;
 
@@ -1136,11 +1144,12 @@ class FOLLY_EXPORT SinkException1 : public virtual apache::thrift::TException {
   SinkException1(apache::thrift::FragileConstructor, ::std::string reason__arg);
 
   SinkException1(SinkException1&&) noexcept;
+
   SinkException1(const SinkException1& src);
 
 
   SinkException1& operator=(SinkException1&&) noexcept;
-  SinkException1& operator=(const SinkException1&);
+  SinkException1& operator=(const SinkException1& src);
 
   ~SinkException1() override;
 
@@ -1289,11 +1298,12 @@ class FOLLY_EXPORT SinkException2 : public virtual apache::thrift::TException {
   SinkException2(apache::thrift::FragileConstructor, ::std::int64_t reason__arg);
 
   SinkException2(SinkException2&&) noexcept;
+
   SinkException2(const SinkException2& src);
 
 
   SinkException2& operator=(SinkException2&&) noexcept;
-  SinkException2& operator=(const SinkException2&);
+  SinkException2& operator=(const SinkException2& src);
 
   ~SinkException2() override;
 
@@ -1424,11 +1434,12 @@ class StreamItem final  {
   StreamItem(apache::thrift::FragileConstructor, ::std::string content__arg);
 
   StreamItem(StreamItem&&) noexcept;
+
   StreamItem(const StreamItem& src);
 
 
   StreamItem& operator=(StreamItem&&) noexcept;
-  StreamItem& operator=(const StreamItem&);
+  StreamItem& operator=(const StreamItem& src);
 
   ~StreamItem();
 

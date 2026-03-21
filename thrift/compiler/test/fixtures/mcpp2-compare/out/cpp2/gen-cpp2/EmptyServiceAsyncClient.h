@@ -32,7 +32,6 @@ struct ServiceMethodTypesFootprint<::some::valid::ns::EmptyService> {
   // parameter of a client stub, it appears here,
   using TypesInMethods = folly::tag_t<>;
 };
-
 } // namespace detail
 
 template <>

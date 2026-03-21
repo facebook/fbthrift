@@ -240,10 +240,12 @@ class SmallStruct final  {
   SmallStruct(apache::thrift::FragileConstructor, bool small_A__arg, ::std::int32_t small_B__arg);
 
   SmallStruct(SmallStruct&&) = default;
+
   SmallStruct(const SmallStruct&) = default;
 
 
   SmallStruct& operator=(SmallStruct&&) = default;
+
   SmallStruct& operator=(const SmallStruct&) = default;
  private:
   bool __fbthrift_field_small_A;
@@ -454,7 +456,7 @@ class containerStruct final  {
 
 
   containerStruct& operator=(containerStruct&&) noexcept;
-  containerStruct& operator=(const containerStruct&);
+  containerStruct& operator=(const containerStruct& src);
 
   ~containerStruct();
 

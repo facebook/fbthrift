@@ -122,10 +122,12 @@ class EmptyStruct final  {
   EmptyStruct(apache::thrift::FragileConstructor);
 
   EmptyStruct(EmptyStruct&&) = default;
+
   EmptyStruct(const EmptyStruct&) = default;
 
 
   EmptyStruct& operator=(EmptyStruct&&) = default;
+
   EmptyStruct& operator=(const EmptyStruct&) = default;
 
  public:
@@ -217,11 +219,12 @@ class TestStruct final  {
   TestStruct(apache::thrift::FragileConstructor, ::std::int32_t unqualified_int_field__arg, bool unqualified_bool_field__arg, ::std::vector<::std::int32_t> unqualified_list_field__arg, ::facebook::thrift::compiler::test::fixtures::default_values_rectification_after::EmptyStruct unqualified_struct_field__arg, ::std::int32_t optional_int_field__arg, bool optional_bool_field__arg, ::std::vector<::std::int32_t> optional_list_field__arg, ::facebook::thrift::compiler::test::fixtures::default_values_rectification_after::EmptyStruct optional_struct_field__arg);
 
   TestStruct(TestStruct&&) noexcept;
+
   TestStruct(const TestStruct& src);
 
 
   TestStruct& operator=(TestStruct&&) noexcept;
-  TestStruct& operator=(const TestStruct&);
+  TestStruct& operator=(const TestStruct& src);
 
   ~TestStruct();
 

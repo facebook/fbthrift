@@ -94,10 +94,12 @@ class B final  {
   B(apache::thrift::FragileConstructor, ::std::int32_t field__arg);
 
   B(B&&) = default;
+
   B(const B&) = default;
 
 
   B& operator=(B&&) = default;
+
   B& operator=(const B&) = default;
  private:
   ::std::int32_t __fbthrift_field_field;
@@ -228,11 +230,12 @@ class A final  {
   A(apache::thrift::FragileConstructor, std::unordered_map<::std::int32_t, ::apache::thrift::test::B> some_map__arg);
 
   A(A&&) noexcept;
+
   A(const A& src);
 
 
   A& operator=(A&&) noexcept;
-  A& operator=(const A&);
+  A& operator=(const A& src);
 
   ~A();
 

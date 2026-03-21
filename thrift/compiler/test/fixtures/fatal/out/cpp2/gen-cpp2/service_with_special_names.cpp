@@ -4124,115 +4124,115 @@ determineInvocationType:
 
 namespace test_cpp2::cpp_reflection {
 
-::std::int32_t service_with_special_namesSvNull::get() {
+::std::int32_t service_with_special_namesSvNull::get() { 
   return 0;
 }
 
-::std::int32_t service_with_special_namesSvNull::getter() {
+::std::int32_t service_with_special_namesSvNull::getter() { 
   return 0;
 }
 
-::std::int32_t service_with_special_namesSvNull::lists() {
+::std::int32_t service_with_special_namesSvNull::lists() { 
   return 0;
 }
 
-::std::int32_t service_with_special_namesSvNull::maps() {
+::std::int32_t service_with_special_namesSvNull::maps() { 
   return 0;
 }
 
-::std::int32_t service_with_special_namesSvNull::name() {
+::std::int32_t service_with_special_namesSvNull::name() { 
   return 0;
 }
 
-::std::int32_t service_with_special_namesSvNull::name_to_value() {
+::std::int32_t service_with_special_namesSvNull::name_to_value() { 
   return 0;
 }
 
-::std::int32_t service_with_special_namesSvNull::names() {
+::std::int32_t service_with_special_namesSvNull::names() { 
   return 0;
 }
 
-::std::int32_t service_with_special_namesSvNull::prefix_tree() {
+::std::int32_t service_with_special_namesSvNull::prefix_tree() { 
   return 0;
 }
 
-::std::int32_t service_with_special_namesSvNull::sets() {
+::std::int32_t service_with_special_namesSvNull::sets() { 
   return 0;
 }
 
-::std::int32_t service_with_special_namesSvNull::setter() {
+::std::int32_t service_with_special_namesSvNull::setter() { 
   return 0;
 }
 
-::std::int32_t service_with_special_namesSvNull::str() {
+::std::int32_t service_with_special_namesSvNull::str() { 
   return 0;
 }
 
-::std::int32_t service_with_special_namesSvNull::strings() {
+::std::int32_t service_with_special_namesSvNull::strings() { 
   return 0;
 }
 
-::std::int32_t service_with_special_namesSvNull::type() {
+::std::int32_t service_with_special_namesSvNull::type() { 
   return 0;
 }
 
-::std::int32_t service_with_special_namesSvNull::value() {
+::std::int32_t service_with_special_namesSvNull::value() { 
   return 0;
 }
 
-::std::int32_t service_with_special_namesSvNull::value_to_name() {
+::std::int32_t service_with_special_namesSvNull::value_to_name() { 
   return 0;
 }
 
-::std::int32_t service_with_special_namesSvNull::values() {
+::std::int32_t service_with_special_namesSvNull::values() { 
   return 0;
 }
 
-::std::int32_t service_with_special_namesSvNull::id() {
+::std::int32_t service_with_special_namesSvNull::id() { 
   return 0;
 }
 
-::std::int32_t service_with_special_namesSvNull::ids() {
+::std::int32_t service_with_special_namesSvNull::ids() { 
   return 0;
 }
 
-::std::int32_t service_with_special_namesSvNull::descriptor() {
+::std::int32_t service_with_special_namesSvNull::descriptor() { 
   return 0;
 }
 
-::std::int32_t service_with_special_namesSvNull::descriptors() {
+::std::int32_t service_with_special_namesSvNull::descriptors() { 
   return 0;
 }
 
-::std::int32_t service_with_special_namesSvNull::key() {
+::std::int32_t service_with_special_namesSvNull::key() { 
   return 0;
 }
 
-::std::int32_t service_with_special_namesSvNull::keys() {
+::std::int32_t service_with_special_namesSvNull::keys() { 
   return 0;
 }
 
-::std::int32_t service_with_special_namesSvNull::annotation() {
+::std::int32_t service_with_special_namesSvNull::annotation() { 
   return 0;
 }
 
-::std::int32_t service_with_special_namesSvNull::annotations() {
+::std::int32_t service_with_special_namesSvNull::annotations() { 
   return 0;
 }
 
-::std::int32_t service_with_special_namesSvNull::member() {
+::std::int32_t service_with_special_namesSvNull::member() { 
   return 0;
 }
 
-::std::int32_t service_with_special_namesSvNull::members() {
+::std::int32_t service_with_special_namesSvNull::members() { 
   return 0;
 }
 
-::std::int32_t service_with_special_namesSvNull::field() {
+::std::int32_t service_with_special_namesSvNull::field() { 
   return 0;
 }
 
-::std::int32_t service_with_special_namesSvNull::fields() {
+::std::int32_t service_with_special_namesSvNull::fields() { 
   return 0;
 }
 

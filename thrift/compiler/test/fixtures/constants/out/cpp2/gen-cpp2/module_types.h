@@ -358,11 +358,12 @@ class Internship final  {
   Internship(apache::thrift::FragileConstructor, ::std::int32_t weeks__arg, ::std::string title__arg, ::cpp2::Company employer__arg, double compensation__arg, ::std::string school__arg);
 
   Internship(Internship&&) noexcept;
+
   Internship(const Internship& src);
 
 
   Internship& operator=(Internship&&) noexcept;
-  Internship& operator=(const Internship&);
+  Internship& operator=(const Internship& src);
 
   ~Internship();
 
@@ -711,10 +712,12 @@ class Range final  {
   Range(apache::thrift::FragileConstructor, ::std::int32_t min__arg, ::std::int32_t max__arg);
 
   Range(Range&&) = default;
+
   Range(const Range&) = default;
 
 
   Range& operator=(Range&&) = default;
+
   Range& operator=(const Range&) = default;
  private:
   ::std::int32_t __fbthrift_field_min;
@@ -885,11 +888,12 @@ class struct1 final  {
   struct1(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::std::string b__arg);
 
   struct1(struct1&&) noexcept;
+
   struct1(const struct1& src);
 
 
   struct1& operator=(struct1&&) noexcept;
-  struct1& operator=(const struct1&);
+  struct1& operator=(const struct1& src);
 
   ~struct1();
 
@@ -1080,11 +1084,12 @@ class struct2 final  {
   struct2(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::std::string b__arg, ::cpp2::struct1 c__arg, ::std::vector<::std::int32_t> d__arg);
 
   struct2(struct2&&) noexcept;
+
   struct2(const struct2& src);
 
 
   struct2& operator=(struct2&&) noexcept;
-  struct2& operator=(const struct2&);
+  struct2& operator=(const struct2& src);
 
   ~struct2();
 
@@ -1381,11 +1386,12 @@ class struct3 final  {
   struct3(apache::thrift::FragileConstructor, ::std::string a__arg, ::std::int32_t b__arg, ::cpp2::struct2 c__arg);
 
   struct3(struct3&&) noexcept;
+
   struct3(const struct3& src);
 
 
   struct3& operator=(struct3&&) noexcept;
-  struct3& operator=(const struct3&);
+  struct3& operator=(const struct3& src);
 
   ~struct3();
 
@@ -1631,11 +1637,12 @@ class struct4 final  {
   struct4(apache::thrift::FragileConstructor, ::std::int32_t a__arg, double b__arg, ::std::int8_t c__arg);
 
   struct4(struct4&&) noexcept;
+
   struct4(const struct4& src);
 
 
   struct4& operator=(struct4&&) noexcept;
-  struct4& operator=(const struct4&);
+  struct4& operator=(const struct4& src);
  private:
   ::std::int32_t __fbthrift_field_a;
  private:

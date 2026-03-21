@@ -52,6 +52,7 @@ class ServiceHandler<::py3::simple::DerivedService> : virtual public ::py3::simp
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
+
   virtual ::std::int32_t sync_get_six();
   [[deprecated("Use sync_get_six instead")]] virtual ::std::int32_t get_six();
   virtual folly::Future<::std::int32_t> future_get_six();

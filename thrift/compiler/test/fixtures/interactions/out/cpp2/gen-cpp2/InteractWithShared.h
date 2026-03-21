@@ -108,8 +108,7 @@ class MyInteractionIf : public apache::thrift::Tile, public apache::thrift::Serv
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_ping{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_truthify{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_encode{apache::thrift::detail::si::InvocationType::AsyncTm};
-};
-class SharedInteractionServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
+};class SharedInteractionServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
   public:
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
@@ -301,9 +300,23 @@ class InteractWithSharedAsyncProcessor : public ::apache::thrift::GeneratedAsync
   // End of Method 'do_some_similar_things'
   //
 
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
  std::unique_ptr<apache::thrift::Tile> createMyInteraction() {
    return iface_->createMyInteraction();
  }
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
  std::unique_ptr<apache::thrift::Tile> createshared.SharedInteraction() {
    return iface_->createshared.SharedInteraction();
  }
@@ -311,7 +324,7 @@ class InteractWithSharedAsyncProcessor : public ::apache::thrift::GeneratedAsync
   // End of Service Methods
   //
   //
-  // Interaction MyInteraction Methods
+  // Service Methods
   //
 
   //
@@ -345,6 +358,13 @@ class InteractWithSharedAsyncProcessor : public ::apache::thrift::GeneratedAsync
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'ping'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -360,6 +380,13 @@ class InteractWithSharedAsyncProcessor : public ::apache::thrift::GeneratedAsync
 
   //
   // End of Method 'ping'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -391,6 +418,13 @@ class InteractWithSharedAsyncProcessor : public ::apache::thrift::GeneratedAsync
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'truthify'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -428,10 +462,10 @@ class InteractWithSharedAsyncProcessor : public ::apache::thrift::GeneratedAsync
   //
 
   //
-  // End of Interaction MyInteraction Methods
+  // End of Service Methods
   //
   //
-  // Interaction SharedInteraction Methods
+  // Service Methods
   //
 
   //
@@ -465,6 +499,13 @@ class InteractWithSharedAsyncProcessor : public ::apache::thrift::GeneratedAsync
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'do_something'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -492,6 +533,13 @@ class InteractWithSharedAsyncProcessor : public ::apache::thrift::GeneratedAsync
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'do_something'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -524,7 +572,7 @@ class InteractWithSharedAsyncProcessor : public ::apache::thrift::GeneratedAsync
   //
 
   //
-  // End of Interaction SharedInteraction Methods
+  // End of Service Methods
   //
  public:
   InteractWithSharedAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::InteractWithShared>* iface) :

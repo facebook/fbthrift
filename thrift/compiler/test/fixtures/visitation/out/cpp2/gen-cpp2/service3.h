@@ -51,6 +51,7 @@ class ServiceHandler<::test_cpp2::cpp_reflection::service3> : public apache::thr
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
+
   virtual void sync_methodA();
   [[deprecated("Use sync_methodA instead")]] virtual void methodA();
   virtual folly::Future<folly::Unit> future_methodA();
@@ -222,6 +223,13 @@ class service3AsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessorB
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'methodB'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -248,6 +256,13 @@ class service3AsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessorB
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'methodB'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -281,6 +296,13 @@ class service3AsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessorB
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'methodD'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -311,6 +333,13 @@ class service3AsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessorB
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'methodE'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -338,6 +367,13 @@ class service3AsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessorB
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'methodE'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //

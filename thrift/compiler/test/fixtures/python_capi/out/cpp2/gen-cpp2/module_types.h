@@ -620,11 +620,12 @@ class MyDataItem final  {
   MyDataItem(apache::thrift::FragileConstructor, ::std::string s__arg);
 
   MyDataItem(MyDataItem&&) noexcept;
+
   MyDataItem(const MyDataItem& src);
 
 
   MyDataItem& operator=(MyDataItem&&) noexcept;
-  MyDataItem& operator=(const MyDataItem&);
+  MyDataItem& operator=(const MyDataItem& src);
 
   ~MyDataItem();
 
@@ -778,11 +779,12 @@ class MyStruct final  {
   MyStruct(apache::thrift::FragileConstructor, ::std::int64_t inty__arg, ::std::string stringy__arg, ::test::fixtures::python_capi::MyDataItem myItemy__arg, ::test::fixtures::python_capi::MyEnum myEnumy__arg, bool boulet__arg, ::std::vector<float> floatListy__arg, ::std::map<::std::string, ::std::string> strMappy__arg, ::std::set<::std::int32_t> intSetty__arg);
 
   MyStruct(MyStruct&&) noexcept;
+
   MyStruct(const MyStruct& src);
 
 
   MyStruct& operator=(MyStruct&&) noexcept;
-  MyStruct& operator=(const MyStruct&);
+  MyStruct& operator=(const MyStruct& src);
 
   ~MyStruct();
 
@@ -1274,10 +1276,12 @@ class TransitiveDoubler final  {
   TransitiveDoubler(apache::thrift::FragileConstructor);
 
   TransitiveDoubler(TransitiveDoubler&&) = default;
+
   TransitiveDoubler(const TransitiveDoubler&) = default;
 
 
   TransitiveDoubler& operator=(TransitiveDoubler&&) = default;
+
   TransitiveDoubler& operator=(const TransitiveDoubler&) = default;
 
  public:
@@ -1358,11 +1362,12 @@ class DoubledPair final  {
   DoubledPair(apache::thrift::FragileConstructor, ::std::string s__arg, ::std::int32_t x__arg);
 
   DoubledPair(DoubledPair&&) noexcept;
+
   DoubledPair(const DoubledPair& src);
 
 
   DoubledPair& operator=(DoubledPair&&) noexcept;
-  DoubledPair& operator=(const DoubledPair&);
+  DoubledPair& operator=(const DoubledPair& src);
 
   ~DoubledPair();
 
@@ -1557,7 +1562,7 @@ class StringPair final  {
 
 
   StringPair& operator=(StringPair&&) noexcept;
-  StringPair& operator=(const StringPair&);
+  StringPair& operator=(const StringPair& src);
 
   ~StringPair();
 
@@ -1733,10 +1738,12 @@ class VapidStruct final  {
   VapidStruct(apache::thrift::FragileConstructor);
 
   VapidStruct(VapidStruct&&) = default;
+
   VapidStruct(const VapidStruct&) = default;
 
 
   VapidStruct& operator=(VapidStruct&&) = default;
+
   VapidStruct& operator=(const VapidStruct&) = default;
 
  public:
@@ -1848,7 +1855,7 @@ class PrimitiveStruct final  {
 
 
   PrimitiveStruct& operator=(PrimitiveStruct&&) noexcept;
-  PrimitiveStruct& operator=(const PrimitiveStruct&);
+  PrimitiveStruct& operator=(const PrimitiveStruct& src);
 
   ~PrimitiveStruct();
 
@@ -2736,7 +2743,7 @@ class AdaptedFields final  {
 
 
   AdaptedFields& operator=(AdaptedFields&&) noexcept;
-  AdaptedFields& operator=(const AdaptedFields&);
+  AdaptedFields& operator=(const AdaptedFields& src);
 
   ~AdaptedFields();
 
@@ -3586,11 +3593,12 @@ class SetStruct final  {
   SetStruct(apache::thrift::FragileConstructor, ::std::set<::test::fixtures::python_capi::MyEnum> enumz__arg, ::std::set<::std::int32_t> intz__arg, ::apache::thrift::detail::boxed_value_ptr<::std::set<::std::string>> binnaz__arg, std::unordered_set<::std::string> encoded__arg, std::unordered_set<uint64_t> uidz__arg, folly::F14FastSet<uint8_t> charz__arg, ::std::vector<::std::set<::std::int64_t>> setz__arg);
 
   SetStruct(SetStruct&&) noexcept;
+
   SetStruct(const SetStruct& src);
 
 
   SetStruct& operator=(SetStruct&&) noexcept;
-  SetStruct& operator=(const SetStruct&);
+  SetStruct& operator=(const SetStruct& src);
 
   ~SetStruct();
 
@@ -4058,7 +4066,7 @@ class MapStruct final  {
 
 
   MapStruct& operator=(MapStruct&&) noexcept;
-  MapStruct& operator=(const MapStruct&);
+  MapStruct& operator=(const MapStruct& src);
 
   ~MapStruct();
 

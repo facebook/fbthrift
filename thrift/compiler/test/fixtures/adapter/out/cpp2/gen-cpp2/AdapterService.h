@@ -50,6 +50,7 @@ class ServiceHandler<::facebook::thrift::test::fixtures::adapter::AdapterService
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
+
   virtual void sync_count(::facebook::thrift::test::fixtures::adapter::CountingStruct& /*_return*/);
   [[deprecated("Use sync_count instead")]] virtual void count(::facebook::thrift::test::fixtures::adapter::CountingStruct& /*_return*/);
   virtual folly::Future<std::unique_ptr<::facebook::thrift::test::fixtures::adapter::CountingStruct>> future_count();
@@ -155,6 +156,13 @@ class AdapterServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProc
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'count'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //

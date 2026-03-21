@@ -232,10 +232,12 @@ class runtime_annotation final  {
   runtime_annotation(apache::thrift::FragileConstructor);
 
   runtime_annotation(runtime_annotation&&) = default;
+
   runtime_annotation(const runtime_annotation&) = default;
 
 
   runtime_annotation& operator=(runtime_annotation&&) = default;
+
   runtime_annotation& operator=(const runtime_annotation&) = default;
 
  public:
@@ -315,11 +317,12 @@ class structured_annotation_inline final  {
   structured_annotation_inline(apache::thrift::FragileConstructor, ::std::int64_t count__arg, ::std::string name__arg);
 
   structured_annotation_inline(structured_annotation_inline&&) noexcept;
+
   structured_annotation_inline(const structured_annotation_inline& src);
 
 
   structured_annotation_inline& operator=(structured_annotation_inline&&) noexcept;
-  structured_annotation_inline& operator=(const structured_annotation_inline&);
+  structured_annotation_inline& operator=(const structured_annotation_inline& src);
 
   ~structured_annotation_inline();
 
@@ -505,11 +508,12 @@ class structured_annotation_with_default final  {
   structured_annotation_with_default(apache::thrift::FragileConstructor, ::std::string name__arg);
 
   structured_annotation_with_default(structured_annotation_with_default&&) noexcept;
+
   structured_annotation_with_default(const structured_annotation_with_default& src);
 
 
   structured_annotation_with_default& operator=(structured_annotation_with_default&&) noexcept;
-  structured_annotation_with_default& operator=(const structured_annotation_with_default&);
+  structured_annotation_with_default& operator=(const structured_annotation_with_default& src);
 
   ~structured_annotation_with_default();
 
@@ -650,10 +654,12 @@ class structured_annotation_forward final  {
   structured_annotation_forward(apache::thrift::FragileConstructor, ::std::int64_t count__arg);
 
   structured_annotation_forward(structured_annotation_forward&&) = default;
+
   structured_annotation_forward(const structured_annotation_forward&) = default;
 
 
   structured_annotation_forward& operator=(structured_annotation_forward&&) = default;
+
   structured_annotation_forward& operator=(const structured_annotation_forward&) = default;
  private:
   ::std::int64_t __fbthrift_field_count;
@@ -787,7 +793,7 @@ class structured_annotation_recursive final  {
 
 
   structured_annotation_recursive& operator=(structured_annotation_recursive&&) noexcept;
-  structured_annotation_recursive& operator=(const structured_annotation_recursive&);
+  structured_annotation_recursive& operator=(const structured_annotation_recursive& src);
 
   ~structured_annotation_recursive();
 
@@ -1024,11 +1030,12 @@ class structured_annotation_nested final  {
   structured_annotation_nested(apache::thrift::FragileConstructor, ::std::string name__arg, ::test::fixtures::basic_structured_annotations::structured_annotation_with_default nest__arg);
 
   structured_annotation_nested(structured_annotation_nested&&) noexcept;
+
   structured_annotation_nested(const structured_annotation_nested& src);
 
 
   structured_annotation_nested& operator=(structured_annotation_nested&&) noexcept;
-  structured_annotation_nested& operator=(const structured_annotation_nested&);
+  structured_annotation_nested& operator=(const structured_annotation_nested& src);
 
   ~structured_annotation_nested();
 
@@ -1239,11 +1246,12 @@ class MyStruct final  {
   MyStruct(apache::thrift::FragileConstructor, ::std::int64_t annotated_field__arg, ::test::fixtures::basic_structured_annotations::annotated_inline_string annotated_type__arg, ::std::string annotated_recursive__arg, ::std::int64_t annotated_nested__arg);
 
   MyStruct(MyStruct&&) noexcept;
+
   MyStruct(const MyStruct& src);
 
 
   MyStruct& operator=(MyStruct&&) noexcept;
-  MyStruct& operator=(const MyStruct&);
+  MyStruct& operator=(const MyStruct& src);
 
   ~MyStruct();
 
@@ -1539,11 +1547,12 @@ class FOLLY_EXPORT MyException : public virtual apache::thrift::TException {
   MyException(apache::thrift::FragileConstructor, ::std::string context__arg);
 
   MyException(MyException&&) noexcept;
+
   MyException(const MyException& src);
 
 
   MyException& operator=(MyException&&) noexcept;
-  MyException& operator=(const MyException&);
+  MyException& operator=(const MyException& src);
 
   ~MyException() override;
 

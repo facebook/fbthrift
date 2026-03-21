@@ -34,7 +34,6 @@ struct ServiceMethodTypesFootprint<::test_cpp2::cpp_reflection::service_with_spe
   using TypesInMethods = folly::tag_t<
   ::std::int32_t>;
 };
-
 } // namespace detail
 
 template <>

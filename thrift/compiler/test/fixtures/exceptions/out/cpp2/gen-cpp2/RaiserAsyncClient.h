@@ -35,7 +35,6 @@ struct ServiceMethodTypesFootprint<::cpp2::Raiser> {
   ::cpp2::Serious,
   ::std::string>;
 };
-
 } // namespace detail
 
 template <>

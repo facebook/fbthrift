@@ -41,7 +41,6 @@ struct ServiceMethodTypesFootprint<::cpp2::A> {
   void,
   ::cpp2::Foo>;
 };
-
 } // namespace detail
 
 template <>
@@ -58,9 +57,12 @@ class I final : public apache::thrift::InteractionHandle {
   using apache::thrift::InteractionHandle::InteractionHandle;
   friend class ::apache::thrift::Client<::cpp2::A>;
  public:
+
+
   std::string_view getServiceName() const noexcept override {
     return "A";
   }
+
 
   /** Glean {"file": "thrift/compiler/test/fixtures/single_file_service/src/module.thrift", "service": "I", "function": "interact"} */
   void interact(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
@@ -163,7 +165,6 @@ class I final : public apache::thrift::InteractionHandle {
   folly::SemiFuture<folly::Unit> fbthrift_semifuture_interact(apache::thrift::RpcOptions& rpcOptions);
  public:
 };
-
   /** Glean {"file": "thrift/compiler/test/fixtures/single_file_service/src/module.thrift", "service": "A", "function": "createI"} */
   I createI();
   /** Glean {"file": "thrift/compiler/test/fixtures/single_file_service/src/module.thrift", "service": "A", "function": "foo"} */
@@ -304,7 +305,6 @@ struct ServiceMethodTypesFootprint<::cpp2::B> {
   void,
   ::std::int32_t>;
 };
-
 } // namespace detail
 
 template <>
@@ -529,6 +529,7 @@ class Client<::cpp2::B> : public ::cpp2::AAsyncClient {
 #endif // FOLLY_HAS_COROUTINES
 
 
+
   /** Glean {"file": "thrift/compiler/test/fixtures/single_file_service/src/module.thrift", "service": "B", "function": "stream_stuff"} */
   static folly::exception_wrapper recv_wrapped_stream_stuff(apache::thrift::ClientBufferedStream<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
   /** Glean {"file": "thrift/compiler/test/fixtures/single_file_service/src/module.thrift", "service": "B", "function": "stream_stuff"} */
@@ -594,7 +595,6 @@ struct ServiceMethodTypesFootprint<::cpp2::C> {
   using TypesInMethods = folly::tag_t<
   void>;
 };
-
 } // namespace detail
 
 template <>
@@ -611,9 +611,12 @@ class I final : public apache::thrift::InteractionHandle {
   using apache::thrift::InteractionHandle::InteractionHandle;
   friend class ::apache::thrift::Client<::cpp2::C>;
  public:
+
+
   std::string_view getServiceName() const noexcept override {
     return "C";
   }
+
 
   /** Glean {"file": "thrift/compiler/test/fixtures/single_file_service/src/module.thrift", "service": "I", "function": "interact"} */
   void interact(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
@@ -716,7 +719,6 @@ class I final : public apache::thrift::InteractionHandle {
   folly::SemiFuture<folly::Unit> fbthrift_semifuture_interact(apache::thrift::RpcOptions& rpcOptions);
  public:
 };
-
   /** Glean {"file": "thrift/compiler/test/fixtures/single_file_service/src/module.thrift", "service": "C", "function": "createI"} */
   I createI();
 };

@@ -203,10 +203,12 @@ class TrivialStruct final  {
   TrivialStruct(apache::thrift::FragileConstructor, ::std::int32_t int_value__arg);
 
   TrivialStruct(TrivialStruct&&) = default;
+
   TrivialStruct(const TrivialStruct&) = default;
 
 
   TrivialStruct& operator=(TrivialStruct&&) = default;
+
   TrivialStruct& operator=(const TrivialStruct&) = default;
  private:
   ::std::int32_t __fbthrift_field_int_value;
@@ -336,10 +338,12 @@ class TrivialStructWithDefault final  {
   TrivialStructWithDefault(apache::thrift::FragileConstructor, ::std::int32_t int_value_1__arg, ::std::int32_t int_value_2__arg);
 
   TrivialStructWithDefault(TrivialStructWithDefault&&) = default;
+
   TrivialStructWithDefault(const TrivialStructWithDefault&) = default;
 
 
   TrivialStructWithDefault& operator=(TrivialStructWithDefault&&) = default;
+
   TrivialStructWithDefault& operator=(const TrivialStructWithDefault&) = default;
  private:
   ::std::int32_t __fbthrift_field_int_value_1;
@@ -524,10 +528,12 @@ class StructWithNoCustomDefaultValues final  {
   StructWithNoCustomDefaultValues(apache::thrift::FragileConstructor, ::std::int32_t unqualified_integer__arg, ::std::int32_t optional_integer__arg, ::std::int32_t required_integer__arg, ::facebook::thrift::compiler::test::fixtures::default_values::TrivialStruct unqualified_struct__arg, ::facebook::thrift::compiler::test::fixtures::default_values::TrivialStruct optional_struct__arg, ::facebook::thrift::compiler::test::fixtures::default_values::TrivialStruct required_struct__arg);
 
   StructWithNoCustomDefaultValues(StructWithNoCustomDefaultValues&&) = default;
+
   StructWithNoCustomDefaultValues(const StructWithNoCustomDefaultValues&) = default;
 
 
   StructWithNoCustomDefaultValues& operator=(StructWithNoCustomDefaultValues&&) = default;
+
   StructWithNoCustomDefaultValues& operator=(const StructWithNoCustomDefaultValues&) = default;
  private:
   ::std::int32_t __fbthrift_field_unqualified_integer;
@@ -936,10 +942,12 @@ class StructWithCustomDefaultValues final  {
   StructWithCustomDefaultValues(apache::thrift::FragileConstructor, ::std::int32_t unqualified_integer__arg, ::std::int32_t optional_integer__arg, ::std::int32_t required_integer__arg, ::facebook::thrift::compiler::test::fixtures::default_values::TrivialStruct unqualified_struct__arg, ::facebook::thrift::compiler::test::fixtures::default_values::TrivialStruct optional_struct__arg, ::facebook::thrift::compiler::test::fixtures::default_values::TrivialStruct required_struct__arg, ::facebook::thrift::compiler::test::fixtures::default_values::TrivialStructWithDefault struct_with_default_unspecified__arg, ::facebook::thrift::compiler::test::fixtures::default_values::TrivialStructWithDefault struct_with_default_specified__arg);
 
   StructWithCustomDefaultValues(StructWithCustomDefaultValues&&) = default;
+
   StructWithCustomDefaultValues(const StructWithCustomDefaultValues&) = default;
 
 
   StructWithCustomDefaultValues& operator=(StructWithCustomDefaultValues&&) = default;
+
   StructWithCustomDefaultValues& operator=(const StructWithCustomDefaultValues&) = default;
  private:
   ::std::int32_t __fbthrift_field_unqualified_integer;
@@ -1445,11 +1453,12 @@ class StructWithCollectionDefaultValues final  {
   StructWithCollectionDefaultValues(apache::thrift::FragileConstructor, ::std::vector<::std::int32_t> list_with_list_value__arg, ::std::set<::std::int32_t> set_with_list_value__arg, ::std::map<::std::int32_t, ::std::int32_t> map_with_map_value__arg, ::std::vector<::std::int32_t> list_with_map_value__arg, ::std::set<::std::int32_t> set_with_map_value__arg, ::std::map<::std::int32_t, ::std::int32_t> map_with_list_value__arg);
 
   StructWithCollectionDefaultValues(StructWithCollectionDefaultValues&&) noexcept;
+
   StructWithCollectionDefaultValues(const StructWithCollectionDefaultValues& src);
 
 
   StructWithCollectionDefaultValues& operator=(StructWithCollectionDefaultValues&&) noexcept;
-  StructWithCollectionDefaultValues& operator=(const StructWithCollectionDefaultValues&);
+  StructWithCollectionDefaultValues& operator=(const StructWithCollectionDefaultValues& src);
 
   ~StructWithCollectionDefaultValues();
 

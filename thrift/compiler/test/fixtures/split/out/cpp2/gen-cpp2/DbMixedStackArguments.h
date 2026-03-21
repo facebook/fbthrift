@@ -48,6 +48,7 @@ class ServiceHandler<::cpp2::DbMixedStackArguments> : public apache::thrift::Ser
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
+
   virtual void sync_getDataByKey0(::std::string& /*_return*/, std::unique_ptr<::std::string> /*key*/);
   [[deprecated("Use sync_getDataByKey0 instead")]] virtual void getDataByKey0(::std::string& /*_return*/, std::unique_ptr<::std::string> /*key*/);
   virtual folly::Future<std::unique_ptr<::std::string>> future_getDataByKey0(std::unique_ptr<::std::string> p_key);
@@ -153,6 +154,13 @@ class DbMixedStackArgumentsAsyncProcessor : public ::apache::thrift::GeneratedAs
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'getDataByKey0'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //

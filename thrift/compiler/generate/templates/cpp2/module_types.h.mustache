@@ -258,11 +258,18 @@ class {{#if def.exception?}}FOLLY_EXPORT {{/if}}{{def.cpp_underlying_name}} {{!
 
   {{def.cpp_underlying_name}}({{def.cpp_underlying_name}}&&) {{#if def.is_eligible_for_constexpr?}}= default{{#else}}noexcept{{/if}};
         {{#if (not def.cpp_noncopyable)}}
-          {{#if (and (not def.nondefault_copy_ctor_and_assignment?) def.is_eligible_for_constexpr?)}}
+          {{#if (not def.nondefault_copy_ctor_and_assignment?)}}
+            {{#if def.is_eligible_for_constexpr?}}
+
   {{def.cpp_underlying_name}}(const {{def.cpp_underlying_name}}&) = default;
+            {{#else}}
+
+  {{! TODO(T260006192): Some branches like this one are identical except for whitespace, and can be consolidated post-migration completion }}
+  {{def.cpp_underlying_name}}(const {{def.cpp_underlying_name}}& src);
+            {{/if def.is_eligible_for_constexpr?}}
           {{#else}}
   {{def.cpp_underlying_name}}(const {{def.cpp_underlying_name}}& src);
-          {{/if (and (not def.nondefault_copy_ctor_and_assignment?) def.is_eligible_for_constexpr?)}}
+          {{/if (not def.nondefault_copy_ctor_and_assignment?)}}
         {{/if (not def.cpp_noncopyable)}}
 
         {{#if (object.notnull? def.cpp_allocator)}}
@@ -271,8 +278,17 @@ class {{#if def.exception?}}FOLLY_EXPORT {{/if}}{{def.cpp_underlying_name}} {{!
 
   {{def.cpp_underlying_name}}& operator=({{def.cpp_underlying_name}}&&) {{#if def.is_eligible_for_constexpr?}}= default{{#else}}noexcept{{/if}};
         {{#if (not def.cpp_noncopyable)}}
-          {{#let use_default = (and (not def.nondefault_copy_ctor_and_assignment?) def.is_eligible_for_constexpr?)}}
-  {{def.cpp_underlying_name}}& operator=(const {{def.cpp_underlying_name}}&){{#if use_default}} = default{{/if}};
+          {{#if (not def.nondefault_copy_ctor_and_assignment?)}}
+            {{#if def.is_eligible_for_constexpr?}}
+
+  {{def.cpp_underlying_name}}& operator=(const {{def.cpp_underlying_name}}&) = default;
+            {{#else}}
+  {{! TODO(T260006192): Some branches like this one are identical except for whitespace, and can be consolidated post-migration completion }}
+  {{def.cpp_underlying_name}}& operator=(const {{def.cpp_underlying_name}}& src);
+            {{/if def.is_eligible_for_constexpr?}}
+          {{#else}}
+  {{def.cpp_underlying_name}}& operator=(const {{def.cpp_underlying_name}}& src);
+          {{/if (not def.nondefault_copy_ctor_and_assignment?)}}
         {{/if (not def.cpp_noncopyable)}}
         {{#if def.virtual}}
 

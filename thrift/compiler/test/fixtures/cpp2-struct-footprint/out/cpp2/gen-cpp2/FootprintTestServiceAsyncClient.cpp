@@ -335,20 +335,21 @@ folly::Future<folly::Unit> apache::thrift::Client<::cpp2_struct_footprint::Footp
   return future_processIOBuf(rpcOptions, p_buf, p_ptr, p_alias);
 }
 
-folly::Future<folly::Unit> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::future_processIOBuf(apache::thrift::RpcOptions& rpcOptions, const ::cpp2_struct_footprint::IOBuf& p_buf, const ::cpp2_struct_footprint::IOBufPtr& p_ptr, ::cpp2_struct_footprint::I32Alias p_alias) {
-  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
-  return fbthrift_semifuture_processIOBuf<CallbackType>(rpcOptions, p_buf, p_ptr, p_alias).toUnsafeFuture();
-}
-
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::semifuture_processIOBuf(const ::cpp2_struct_footprint::IOBuf& p_buf, const ::cpp2_struct_footprint::IOBufPtr& p_ptr, ::cpp2_struct_footprint::I32Alias p_alias) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_processIOBuf(rpcOptions, p_buf, p_ptr, p_alias);
+}
+
+folly::Future<folly::Unit> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::future_processIOBuf(apache::thrift::RpcOptions& rpcOptions, const ::cpp2_struct_footprint::IOBuf& p_buf, const ::cpp2_struct_footprint::IOBufPtr& p_ptr, ::cpp2_struct_footprint::I32Alias p_alias) {
+  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
+  return fbthrift_semifuture_processIOBuf<CallbackType>(rpcOptions, p_buf, p_ptr, p_alias).toUnsafeFuture();
 }
 
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::semifuture_processIOBuf(apache::thrift::RpcOptions& rpcOptions, const ::cpp2_struct_footprint::IOBuf& p_buf, const ::cpp2_struct_footprint::IOBufPtr& p_ptr, ::cpp2_struct_footprint::I32Alias p_alias) {
   using CallbackType = apache::thrift::SemiFutureCallback<folly::Unit>;
   return fbthrift_semifuture_processIOBuf<CallbackType>(rpcOptions, p_buf, p_ptr, p_alias);
 }
+
 
 void apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::processIOBuf(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::cpp2_struct_footprint::IOBuf& p_buf, const ::cpp2_struct_footprint::IOBufPtr& p_ptr, ::cpp2_struct_footprint::I32Alias p_alias) {
   processIOBuf(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_buf, p_ptr, p_alias);
@@ -537,20 +538,21 @@ folly::Future<::cpp2_struct_footprint::SimpleStruct> apache::thrift::Client<::cp
   return future_getStruct(rpcOptions);
 }
 
-folly::Future<::cpp2_struct_footprint::SimpleStruct> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::future_getStruct(apache::thrift::RpcOptions& rpcOptions) {
-  using CallbackType = apache::thrift::FutureCallback<::cpp2_struct_footprint::SimpleStruct>;
-  return fbthrift_semifuture_getStruct<CallbackType>(rpcOptions).toUnsafeFuture();
-}
-
 folly::SemiFuture<::cpp2_struct_footprint::SimpleStruct> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::semifuture_getStruct() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_getStruct(rpcOptions);
+}
+
+folly::Future<::cpp2_struct_footprint::SimpleStruct> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::future_getStruct(apache::thrift::RpcOptions& rpcOptions) {
+  using CallbackType = apache::thrift::FutureCallback<::cpp2_struct_footprint::SimpleStruct>;
+  return fbthrift_semifuture_getStruct<CallbackType>(rpcOptions).toUnsafeFuture();
 }
 
 folly::SemiFuture<::cpp2_struct_footprint::SimpleStruct> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::semifuture_getStruct(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::SemiFutureCallback<::cpp2_struct_footprint::SimpleStruct>;
   return fbthrift_semifuture_getStruct<CallbackType>(rpcOptions);
 }
+
 
 void apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::getStruct(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   getStruct(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -740,20 +742,21 @@ folly::Future<folly::Unit> apache::thrift::Client<::cpp2_struct_footprint::Footp
   return future_setStruct(rpcOptions, p_input);
 }
 
-folly::Future<folly::Unit> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::future_setStruct(apache::thrift::RpcOptions& rpcOptions, const ::cpp2_struct_footprint::SimpleStruct& p_input) {
-  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
-  return fbthrift_semifuture_setStruct<CallbackType>(rpcOptions, p_input).toUnsafeFuture();
-}
-
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::semifuture_setStruct(const ::cpp2_struct_footprint::SimpleStruct& p_input) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_setStruct(rpcOptions, p_input);
+}
+
+folly::Future<folly::Unit> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::future_setStruct(apache::thrift::RpcOptions& rpcOptions, const ::cpp2_struct_footprint::SimpleStruct& p_input) {
+  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
+  return fbthrift_semifuture_setStruct<CallbackType>(rpcOptions, p_input).toUnsafeFuture();
 }
 
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::semifuture_setStruct(apache::thrift::RpcOptions& rpcOptions, const ::cpp2_struct_footprint::SimpleStruct& p_input) {
   using CallbackType = apache::thrift::SemiFutureCallback<folly::Unit>;
   return fbthrift_semifuture_setStruct<CallbackType>(rpcOptions, p_input);
 }
+
 
 void apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::setStruct(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::cpp2_struct_footprint::SimpleStruct& p_input) {
   setStruct(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_input);
@@ -943,20 +946,21 @@ folly::Future<folly::Unit> apache::thrift::Client<::cpp2_struct_footprint::Footp
   return future_setStructList(rpcOptions, p_items);
 }
 
-folly::Future<folly::Unit> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::future_setStructList(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::cpp2_struct_footprint::SimpleStruct>& p_items) {
-  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
-  return fbthrift_semifuture_setStructList<CallbackType>(rpcOptions, p_items).toUnsafeFuture();
-}
-
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::semifuture_setStructList(const ::std::vector<::cpp2_struct_footprint::SimpleStruct>& p_items) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_setStructList(rpcOptions, p_items);
+}
+
+folly::Future<folly::Unit> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::future_setStructList(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::cpp2_struct_footprint::SimpleStruct>& p_items) {
+  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
+  return fbthrift_semifuture_setStructList<CallbackType>(rpcOptions, p_items).toUnsafeFuture();
 }
 
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::semifuture_setStructList(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::cpp2_struct_footprint::SimpleStruct>& p_items) {
   using CallbackType = apache::thrift::SemiFutureCallback<folly::Unit>;
   return fbthrift_semifuture_setStructList<CallbackType>(rpcOptions, p_items);
 }
+
 
 void apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::setStructList(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::cpp2_struct_footprint::SimpleStruct>& p_items) {
   setStructList(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_items);
@@ -1145,20 +1149,21 @@ folly::Future<::std::vector<::cpp2_struct_footprint::SimpleStruct>> apache::thri
   return future_getStructList(rpcOptions);
 }
 
-folly::Future<::std::vector<::cpp2_struct_footprint::SimpleStruct>> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::future_getStructList(apache::thrift::RpcOptions& rpcOptions) {
-  using CallbackType = apache::thrift::FutureCallback<::std::vector<::cpp2_struct_footprint::SimpleStruct>>;
-  return fbthrift_semifuture_getStructList<CallbackType>(rpcOptions).toUnsafeFuture();
-}
-
 folly::SemiFuture<::std::vector<::cpp2_struct_footprint::SimpleStruct>> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::semifuture_getStructList() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_getStructList(rpcOptions);
+}
+
+folly::Future<::std::vector<::cpp2_struct_footprint::SimpleStruct>> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::future_getStructList(apache::thrift::RpcOptions& rpcOptions) {
+  using CallbackType = apache::thrift::FutureCallback<::std::vector<::cpp2_struct_footprint::SimpleStruct>>;
+  return fbthrift_semifuture_getStructList<CallbackType>(rpcOptions).toUnsafeFuture();
 }
 
 folly::SemiFuture<::std::vector<::cpp2_struct_footprint::SimpleStruct>> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::semifuture_getStructList(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::SemiFutureCallback<::std::vector<::cpp2_struct_footprint::SimpleStruct>>;
   return fbthrift_semifuture_getStructList<CallbackType>(rpcOptions);
 }
+
 
 void apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::getStructList(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   getStructList(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -1347,20 +1352,21 @@ folly::Future<::std::map<::std::string, ::std::vector<::cpp2_struct_footprint::S
   return future_getNestedContainer(rpcOptions);
 }
 
-folly::Future<::std::map<::std::string, ::std::vector<::cpp2_struct_footprint::SimpleStruct>>> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::future_getNestedContainer(apache::thrift::RpcOptions& rpcOptions) {
-  using CallbackType = apache::thrift::FutureCallback<::std::map<::std::string, ::std::vector<::cpp2_struct_footprint::SimpleStruct>>>;
-  return fbthrift_semifuture_getNestedContainer<CallbackType>(rpcOptions).toUnsafeFuture();
-}
-
 folly::SemiFuture<::std::map<::std::string, ::std::vector<::cpp2_struct_footprint::SimpleStruct>>> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::semifuture_getNestedContainer() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_getNestedContainer(rpcOptions);
+}
+
+folly::Future<::std::map<::std::string, ::std::vector<::cpp2_struct_footprint::SimpleStruct>>> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::future_getNestedContainer(apache::thrift::RpcOptions& rpcOptions) {
+  using CallbackType = apache::thrift::FutureCallback<::std::map<::std::string, ::std::vector<::cpp2_struct_footprint::SimpleStruct>>>;
+  return fbthrift_semifuture_getNestedContainer<CallbackType>(rpcOptions).toUnsafeFuture();
 }
 
 folly::SemiFuture<::std::map<::std::string, ::std::vector<::cpp2_struct_footprint::SimpleStruct>>> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::semifuture_getNestedContainer(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::SemiFutureCallback<::std::map<::std::string, ::std::vector<::cpp2_struct_footprint::SimpleStruct>>>;
   return fbthrift_semifuture_getNestedContainer<CallbackType>(rpcOptions);
 }
+
 
 void apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::getNestedContainer(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   getNestedContainer(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -1549,20 +1555,21 @@ folly::Future<::cpp2_struct_footprint::MyStruct> apache::thrift::Client<::cpp2_s
   return future_getTypedefStruct(rpcOptions);
 }
 
-folly::Future<::cpp2_struct_footprint::MyStruct> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::future_getTypedefStruct(apache::thrift::RpcOptions& rpcOptions) {
-  using CallbackType = apache::thrift::FutureCallback<::cpp2_struct_footprint::MyStruct>;
-  return fbthrift_semifuture_getTypedefStruct<CallbackType>(rpcOptions).toUnsafeFuture();
-}
-
 folly::SemiFuture<::cpp2_struct_footprint::MyStruct> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::semifuture_getTypedefStruct() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_getTypedefStruct(rpcOptions);
+}
+
+folly::Future<::cpp2_struct_footprint::MyStruct> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::future_getTypedefStruct(apache::thrift::RpcOptions& rpcOptions) {
+  using CallbackType = apache::thrift::FutureCallback<::cpp2_struct_footprint::MyStruct>;
+  return fbthrift_semifuture_getTypedefStruct<CallbackType>(rpcOptions).toUnsafeFuture();
 }
 
 folly::SemiFuture<::cpp2_struct_footprint::MyStruct> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::semifuture_getTypedefStruct(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::SemiFutureCallback<::cpp2_struct_footprint::MyStruct>;
   return fbthrift_semifuture_getTypedefStruct<CallbackType>(rpcOptions);
 }
+
 
 void apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::getTypedefStruct(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   getTypedefStruct(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -1751,20 +1758,21 @@ folly::Future<::cpp2_struct_footprint::StructList> apache::thrift::Client<::cpp2
   return future_getTypedefList(rpcOptions);
 }
 
-folly::Future<::cpp2_struct_footprint::StructList> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::future_getTypedefList(apache::thrift::RpcOptions& rpcOptions) {
-  using CallbackType = apache::thrift::FutureCallback<::cpp2_struct_footprint::StructList>;
-  return fbthrift_semifuture_getTypedefList<CallbackType>(rpcOptions).toUnsafeFuture();
-}
-
 folly::SemiFuture<::cpp2_struct_footprint::StructList> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::semifuture_getTypedefList() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_getTypedefList(rpcOptions);
+}
+
+folly::Future<::cpp2_struct_footprint::StructList> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::future_getTypedefList(apache::thrift::RpcOptions& rpcOptions) {
+  using CallbackType = apache::thrift::FutureCallback<::cpp2_struct_footprint::StructList>;
+  return fbthrift_semifuture_getTypedefList<CallbackType>(rpcOptions).toUnsafeFuture();
 }
 
 folly::SemiFuture<::cpp2_struct_footprint::StructList> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::semifuture_getTypedefList(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::SemiFutureCallback<::cpp2_struct_footprint::StructList>;
   return fbthrift_semifuture_getTypedefList<CallbackType>(rpcOptions);
 }
+
 
 void apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::getTypedefList(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   getTypedefList(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -1953,20 +1961,21 @@ folly::Future<::cpp2_struct_footprint::TestUnion> apache::thrift::Client<::cpp2_
   return future_getUnion(rpcOptions);
 }
 
-folly::Future<::cpp2_struct_footprint::TestUnion> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::future_getUnion(apache::thrift::RpcOptions& rpcOptions) {
-  using CallbackType = apache::thrift::FutureCallback<::cpp2_struct_footprint::TestUnion>;
-  return fbthrift_semifuture_getUnion<CallbackType>(rpcOptions).toUnsafeFuture();
-}
-
 folly::SemiFuture<::cpp2_struct_footprint::TestUnion> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::semifuture_getUnion() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_getUnion(rpcOptions);
+}
+
+folly::Future<::cpp2_struct_footprint::TestUnion> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::future_getUnion(apache::thrift::RpcOptions& rpcOptions) {
+  using CallbackType = apache::thrift::FutureCallback<::cpp2_struct_footprint::TestUnion>;
+  return fbthrift_semifuture_getUnion<CallbackType>(rpcOptions).toUnsafeFuture();
 }
 
 folly::SemiFuture<::cpp2_struct_footprint::TestUnion> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::semifuture_getUnion(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::SemiFutureCallback<::cpp2_struct_footprint::TestUnion>;
   return fbthrift_semifuture_getUnion<CallbackType>(rpcOptions);
 }
+
 
 void apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::getUnion(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   getUnion(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -2177,6 +2186,7 @@ std::pair<
 }
 
 
+
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::recv_wrapped_getCalculator(::apache::thrift::ClientReceiveState& state) {
@@ -2352,15 +2362,18 @@ folly::SemiFuture<apache::thrift::ClientBufferedStream<::cpp2_struct_footprint::
   return std::move(semifuture).deferValue(CallbackHelper::processClientInterceptorsAndExtractResult);
 }
 
+
 folly::SemiFuture<apache::thrift::ClientBufferedStream<::cpp2_struct_footprint::SimpleStruct>> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::semifuture_streamStructs() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_streamStructs(rpcOptions);
 }
 
+
 folly::SemiFuture<apache::thrift::ClientBufferedStream<::cpp2_struct_footprint::SimpleStruct>> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::semifuture_streamStructs(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::SemiFutureCallback<apache::thrift::ClientBufferedStream<::cpp2_struct_footprint::SimpleStruct>>;
   return fbthrift_semifuture_streamStructs<CallbackType>(rpcOptions);
 }
+
 
 
 #if FOLLY_HAS_COROUTINES
@@ -2548,15 +2561,18 @@ folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<::cpp2_struct_
   return std::move(semifuture).deferValue(CallbackHelper::processClientInterceptorsAndExtractResult);
 }
 
+
 folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<::cpp2_struct_footprint::Struct1,::cpp2_struct_footprint::SimpleStruct>> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::semifuture_streamWithSinkInitial(::std::int32_t p_input) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_streamWithSinkInitial(rpcOptions, p_input);
 }
 
+
 folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<::cpp2_struct_footprint::Struct1,::cpp2_struct_footprint::SimpleStruct>> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::semifuture_streamWithSinkInitial(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_input) {
   using CallbackType = apache::thrift::SemiFutureCallback<apache::thrift::ResponseAndClientBufferedStream<::cpp2_struct_footprint::Struct1,::cpp2_struct_footprint::SimpleStruct>>;
   return fbthrift_semifuture_streamWithSinkInitial<CallbackType>(rpcOptions, p_input);
 }
+
 
 
 #if FOLLY_HAS_COROUTINES
@@ -2744,15 +2760,18 @@ folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<::cpp2_struct_
   return std::move(semifuture).deferValue(CallbackHelper::processClientInterceptorsAndExtractResult);
 }
 
+
 folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<::cpp2_struct_footprint::Struct1,::cpp2_struct_footprint::SimpleStruct>> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::semifuture_streamWithSinkException(::std::int32_t p_input) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_streamWithSinkException(rpcOptions, p_input);
 }
 
+
 folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<::cpp2_struct_footprint::Struct1,::cpp2_struct_footprint::SimpleStruct>> apache::thrift::Client<::cpp2_struct_footprint::FootprintTestService>::semifuture_streamWithSinkException(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_input) {
   using CallbackType = apache::thrift::SemiFutureCallback<apache::thrift::ResponseAndClientBufferedStream<::cpp2_struct_footprint::Struct1,::cpp2_struct_footprint::SimpleStruct>>;
   return fbthrift_semifuture_streamWithSinkException<CallbackType>(rpcOptions, p_input);
 }
+
 
 
 #if FOLLY_HAS_COROUTINES
@@ -2965,6 +2984,7 @@ folly::SemiFuture<::std::int32_t> apache::thrift::Client<::cpp2_struct_footprint
   using CallbackType = apache::thrift::SemiFutureCallback<::std::int32_t>;
   return fbthrift_semifuture_add<CallbackType>(rpcOptions, p_a, p_b);
 }
+
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES

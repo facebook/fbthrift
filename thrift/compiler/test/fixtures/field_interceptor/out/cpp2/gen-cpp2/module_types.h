@@ -129,11 +129,12 @@ class InterceptedFields final  {
   InterceptedFields(apache::thrift::FragileConstructor, ::std::int32_t access_field__arg, ::std::shared_ptr<::std::int32_t> access_shared_field__arg, ::std::shared_ptr<::std::int32_t> access_optional_shared_field__arg, ::std::shared_ptr<const ::std::int32_t> access_shared_const_field__arg, ::std::shared_ptr<const ::std::int32_t> access_optional_shared_const_field__arg, ::apache::thrift::detail::boxed_value_ptr<::std::int32_t> access_optional_boxed_field__arg);
 
   InterceptedFields(InterceptedFields&&) noexcept;
+
   InterceptedFields(const InterceptedFields& src);
 
 
   InterceptedFields& operator=(InterceptedFields&&) noexcept;
-  InterceptedFields& operator=(const InterceptedFields&);
+  InterceptedFields& operator=(const InterceptedFields& src);
 
   ~InterceptedFields();
 

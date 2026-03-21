@@ -73,8 +73,7 @@ class {{interaction.name}}If : public apache::thrift::{{#if interaction.serial?}
     std::terminate();
   }
 {{#partial service_interface_functions.service_interface_functions interface=interaction parent_service=service}}
-};
-  {{/each}}
+};{{/each}}{{! TODO(T260006192): Preserved missing newline }}
 {{#partial service_interface_functions.service_interface_functions interface=service parent_service=null}}
 {{#partial method_decorator_h.handler_declarations service=service}}
 };

@@ -112,10 +112,12 @@ class BasicTypes final  {
   BasicTypes(apache::thrift::FragileConstructor, ::std::int32_t first__arg, ::std::int32_t second__arg, ::std::int64_t third__arg, bool isTrue__arg);
 
   BasicTypes(BasicTypes&&) = default;
+
   BasicTypes(const BasicTypes&) = default;
 
 
   BasicTypes& operator=(BasicTypes&&) = default;
+
   BasicTypes& operator=(const BasicTypes&) = default;
  private:
   ::std::int32_t __fbthrift_field_first;

@@ -48,6 +48,7 @@ class ServiceHandler<::cpp2::MyServiceFast> : public apache::thrift::ServerInter
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
+
   virtual void async_eb_hasDataById(apache::thrift::HandlerCallbackPtr<bool> callback, ::std::int64_t p_id);
   virtual void async_eb_getDataById(apache::thrift::HandlerCallbackPtr<::std::string> callback, ::std::int64_t p_id);
   virtual void async_eb_putDataById(apache::thrift::HandlerCallbackPtr<void> callback, ::std::int64_t p_id, const ::std::string& p_data);
@@ -148,6 +149,13 @@ class MyServiceFastAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'getDataById'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -178,6 +186,13 @@ class MyServiceFastAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'putDataById'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -204,6 +219,13 @@ class MyServiceFastAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'putDataById'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //

@@ -37,7 +37,6 @@ struct ServiceMethodTypesFootprint<::facebook::thrift::test::fixtures::service_s
   ::cpp2::I,
   void>;
 };
-
 } // namespace detail
 
 template <>

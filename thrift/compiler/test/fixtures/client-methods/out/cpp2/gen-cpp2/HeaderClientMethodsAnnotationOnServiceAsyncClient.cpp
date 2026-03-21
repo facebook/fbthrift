@@ -177,14 +177,14 @@ folly::Future<::cpp2::EchoResponse> apache::thrift::Client<::cpp2::HeaderClientM
   return future_echo(rpcOptions, p_request);
 }
 
-folly::Future<::cpp2::EchoResponse> apache::thrift::Client<::cpp2::HeaderClientMethodsAnnotationOnService>::future_echo(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::EchoRequest& p_request) {
-  using CallbackType = apache::thrift::FutureCallback<::cpp2::EchoResponse>;
-  return fbthrift_semifuture_echo<CallbackType>(rpcOptions, p_request).toUnsafeFuture();
-}
-
 folly::SemiFuture<::cpp2::EchoResponse> apache::thrift::Client<::cpp2::HeaderClientMethodsAnnotationOnService>::semifuture_echo(const ::cpp2::EchoRequest& p_request) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_echo(rpcOptions, p_request);
+}
+
+folly::Future<::cpp2::EchoResponse> apache::thrift::Client<::cpp2::HeaderClientMethodsAnnotationOnService>::future_echo(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::EchoRequest& p_request) {
+  using CallbackType = apache::thrift::FutureCallback<::cpp2::EchoResponse>;
+  return fbthrift_semifuture_echo<CallbackType>(rpcOptions, p_request).toUnsafeFuture();
 }
 
 folly::SemiFuture<::cpp2::EchoResponse> apache::thrift::Client<::cpp2::HeaderClientMethodsAnnotationOnService>::semifuture_echo(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::EchoRequest& p_request) {
@@ -396,14 +396,14 @@ folly::Future<::cpp2::EchoResponse> apache::thrift::Client<::cpp2::HeaderClientM
   return future_echo_2(rpcOptions, p_request);
 }
 
-folly::Future<::cpp2::EchoResponse> apache::thrift::Client<::cpp2::HeaderClientMethodsAnnotationOnService>::future_echo_2(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::EchoRequest& p_request) {
-  using CallbackType = apache::thrift::FutureCallback<::cpp2::EchoResponse>;
-  return fbthrift_semifuture_echo_2<CallbackType>(rpcOptions, p_request).toUnsafeFuture();
-}
-
 folly::SemiFuture<::cpp2::EchoResponse> apache::thrift::Client<::cpp2::HeaderClientMethodsAnnotationOnService>::semifuture_echo_2(const ::cpp2::EchoRequest& p_request) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_echo_2(rpcOptions, p_request);
+}
+
+folly::Future<::cpp2::EchoResponse> apache::thrift::Client<::cpp2::HeaderClientMethodsAnnotationOnService>::future_echo_2(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::EchoRequest& p_request) {
+  using CallbackType = apache::thrift::FutureCallback<::cpp2::EchoResponse>;
+  return fbthrift_semifuture_echo_2<CallbackType>(rpcOptions, p_request).toUnsafeFuture();
 }
 
 folly::SemiFuture<::cpp2::EchoResponse> apache::thrift::Client<::cpp2::HeaderClientMethodsAnnotationOnService>::semifuture_echo_2(apache::thrift::RpcOptions& rpcOptions, const ::cpp2::EchoRequest& p_request) {

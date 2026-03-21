@@ -52,6 +52,7 @@ class ServiceHandler<::cpp2::MyNode> : virtual public ::cpp2::MyRootSvIf {
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
+
   virtual void sync_do_mid();
   [[deprecated("Use sync_do_mid instead")]] virtual void do_mid();
   virtual folly::Future<folly::Unit> future_do_mid();

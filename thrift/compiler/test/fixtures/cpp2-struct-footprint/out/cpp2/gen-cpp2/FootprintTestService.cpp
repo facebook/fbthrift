@@ -2099,26 +2099,26 @@ determineInvocationType:
 
 namespace cpp2_struct_footprint {
 
-void FootprintTestServiceSvNull::processIOBuf(std::unique_ptr<::cpp2_struct_footprint::IOBuf> /*buf*/, std::unique_ptr<::cpp2_struct_footprint::IOBufPtr> /*ptr*/, ::cpp2_struct_footprint::I32Alias /*alias*/) {
+void FootprintTestServiceSvNull::processIOBuf(std::unique_ptr<::cpp2_struct_footprint::IOBuf> /*buf*/, std::unique_ptr<::cpp2_struct_footprint::IOBufPtr> /*ptr*/, ::cpp2_struct_footprint::I32Alias /*alias*/) { 
 }
 
-void FootprintTestServiceSvNull::getStruct(::cpp2_struct_footprint::SimpleStruct& /*_return*/) {}
+void FootprintTestServiceSvNull::getStruct(::cpp2_struct_footprint::SimpleStruct& /*_return*/) {  }
 
-void FootprintTestServiceSvNull::setStruct(std::unique_ptr<::cpp2_struct_footprint::SimpleStruct> /*input*/) {
+void FootprintTestServiceSvNull::setStruct(std::unique_ptr<::cpp2_struct_footprint::SimpleStruct> /*input*/) { 
 }
 
-void FootprintTestServiceSvNull::setStructList(std::unique_ptr<::std::vector<::cpp2_struct_footprint::SimpleStruct>> /*items*/) {
+void FootprintTestServiceSvNull::setStructList(std::unique_ptr<::std::vector<::cpp2_struct_footprint::SimpleStruct>> /*items*/) { 
 }
 
-void FootprintTestServiceSvNull::getStructList(::std::vector<::cpp2_struct_footprint::SimpleStruct>& /*_return*/) {}
+void FootprintTestServiceSvNull::getStructList(::std::vector<::cpp2_struct_footprint::SimpleStruct>& /*_return*/) {  }
 
-void FootprintTestServiceSvNull::getNestedContainer(::std::map<::std::string, ::std::vector<::cpp2_struct_footprint::SimpleStruct>>& /*_return*/) {}
+void FootprintTestServiceSvNull::getNestedContainer(::std::map<::std::string, ::std::vector<::cpp2_struct_footprint::SimpleStruct>>& /*_return*/) {  }
 
-void FootprintTestServiceSvNull::getTypedefStruct(::cpp2_struct_footprint::MyStruct& /*_return*/) {}
+void FootprintTestServiceSvNull::getTypedefStruct(::cpp2_struct_footprint::MyStruct& /*_return*/) {  }
 
-void FootprintTestServiceSvNull::getTypedefList(::cpp2_struct_footprint::StructList& /*_return*/) {}
+void FootprintTestServiceSvNull::getTypedefList(::cpp2_struct_footprint::StructList& /*_return*/) {  }
 
-void FootprintTestServiceSvNull::getUnion(::cpp2_struct_footprint::TestUnion& /*_return*/) {}
+void FootprintTestServiceSvNull::getUnion(::cpp2_struct_footprint::TestUnion& /*_return*/) {  }
 
 
 std::string_view FootprintTestServiceAsyncProcessor::getServiceName() {
@@ -2347,5 +2347,4 @@ const FootprintTestServiceAsyncProcessor::InteractionConstructorMap FootprintTes
 std::unique_ptr<apache::thrift::Tile> FootprintTestServiceAsyncProcessor::createInteractionImpl(const std::string& name, int16_t) {
   auto fn = getInteractionConstructorMap().at(name);
   return (this->*fn)();
-}
-} // namespace cpp2_struct_footprint
+}} // namespace cpp2_struct_footprint

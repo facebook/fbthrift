@@ -107,11 +107,12 @@ class Struct final  {
   Struct(apache::thrift::FragileConstructor, ::module0::Struct first__arg, ::module1::Struct second__arg);
 
   Struct(Struct&&) noexcept;
+
   Struct(const Struct& src);
 
 
   Struct& operator=(Struct&&) noexcept;
-  Struct& operator=(const Struct&);
+  Struct& operator=(const Struct& src);
  private:
   ::module0::Struct __fbthrift_field_first;
  private:
@@ -300,11 +301,12 @@ class BigStruct final  {
   BigStruct(apache::thrift::FragileConstructor, ::module2::Struct s__arg, ::std::int32_t id__arg);
 
   BigStruct(BigStruct&&) noexcept;
+
   BigStruct(const BigStruct& src);
 
 
   BigStruct& operator=(BigStruct&&) noexcept;
-  BigStruct& operator=(const BigStruct&);
+  BigStruct& operator=(const BigStruct& src);
  private:
   ::module2::Struct __fbthrift_field_s;
  private:

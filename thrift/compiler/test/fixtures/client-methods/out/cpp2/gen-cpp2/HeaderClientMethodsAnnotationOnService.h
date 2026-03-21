@@ -48,6 +48,7 @@ class ServiceHandler<::cpp2::HeaderClientMethodsAnnotationOnService> : public ap
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
+
   virtual void sync_echo(::cpp2::EchoResponse& /*_return*/, std::unique_ptr<::cpp2::EchoRequest> /*request*/);
   [[deprecated("Use sync_echo instead")]] virtual void echo(::cpp2::EchoResponse& /*_return*/, std::unique_ptr<::cpp2::EchoRequest> /*request*/);
   virtual folly::Future<std::unique_ptr<::cpp2::EchoResponse>> future_echo(std::unique_ptr<::cpp2::EchoRequest> p_request);
@@ -153,6 +154,13 @@ class HeaderClientMethodsAnnotationOnServiceAsyncProcessor : public ::apache::th
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'echo'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //

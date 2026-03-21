@@ -163,20 +163,21 @@ folly::Future<::std::map<::std::int32_t, ::std::vector<::cpp2_struct_footprint::
   return future_getComplexMap(rpcOptions);
 }
 
-folly::Future<::std::map<::std::int32_t, ::std::vector<::cpp2_struct_footprint::ComplexStruct>>> apache::thrift::Client<::cpp2_struct_footprint::ExtendedFootprintService>::future_getComplexMap(apache::thrift::RpcOptions& rpcOptions) {
-  using CallbackType = apache::thrift::FutureCallback<::std::map<::std::int32_t, ::std::vector<::cpp2_struct_footprint::ComplexStruct>>>;
-  return fbthrift_semifuture_getComplexMap<CallbackType>(rpcOptions).toUnsafeFuture();
-}
-
 folly::SemiFuture<::std::map<::std::int32_t, ::std::vector<::cpp2_struct_footprint::ComplexStruct>>> apache::thrift::Client<::cpp2_struct_footprint::ExtendedFootprintService>::semifuture_getComplexMap() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_getComplexMap(rpcOptions);
+}
+
+folly::Future<::std::map<::std::int32_t, ::std::vector<::cpp2_struct_footprint::ComplexStruct>>> apache::thrift::Client<::cpp2_struct_footprint::ExtendedFootprintService>::future_getComplexMap(apache::thrift::RpcOptions& rpcOptions) {
+  using CallbackType = apache::thrift::FutureCallback<::std::map<::std::int32_t, ::std::vector<::cpp2_struct_footprint::ComplexStruct>>>;
+  return fbthrift_semifuture_getComplexMap<CallbackType>(rpcOptions).toUnsafeFuture();
 }
 
 folly::SemiFuture<::std::map<::std::int32_t, ::std::vector<::cpp2_struct_footprint::ComplexStruct>>> apache::thrift::Client<::cpp2_struct_footprint::ExtendedFootprintService>::semifuture_getComplexMap(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::SemiFutureCallback<::std::map<::std::int32_t, ::std::vector<::cpp2_struct_footprint::ComplexStruct>>>;
   return fbthrift_semifuture_getComplexMap<CallbackType>(rpcOptions);
 }
+
 
 void apache::thrift::Client<::cpp2_struct_footprint::ExtendedFootprintService>::getComplexMap(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   getComplexMap(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));

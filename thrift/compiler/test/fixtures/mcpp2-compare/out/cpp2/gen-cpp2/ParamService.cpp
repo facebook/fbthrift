@@ -3936,82 +3936,82 @@ determineInvocationType:
 
 namespace some::valid::ns {
 
-void ParamServiceSvNull::void_ret_byte_i16_param(::std::int8_t /*param1*/, ::std::int16_t /*param2*/) {
+void ParamServiceSvNull::void_ret_byte_i16_param(::std::int8_t /*param1*/, ::std::int16_t /*param2*/) { 
 }
 
-void ParamServiceSvNull::void_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/) {
+void ParamServiceSvNull::void_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/) { 
 }
 
-void ParamServiceSvNull::void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/, std::unique_ptr<::std::set<::std::vector<::std::string>>> /*param2*/) {
+void ParamServiceSvNull::void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/, std::unique_ptr<::std::set<::std::vector<::std::string>>> /*param2*/) { 
 }
 
-void ParamServiceSvNull::void_ret_map_typedef_param(::some::valid::ns::simpleTypeDef /*param1*/) {
+void ParamServiceSvNull::void_ret_map_typedef_param(::some::valid::ns::simpleTypeDef /*param1*/) { 
 }
 
-void ParamServiceSvNull::void_ret_enum_param(::some::valid::ns::MyEnumA /*param1*/) {
+void ParamServiceSvNull::void_ret_enum_param(::some::valid::ns::MyEnumA /*param1*/) { 
 }
 
-void ParamServiceSvNull::void_ret_struct_param(std::unique_ptr<::some::valid::ns::MyStruct> /*param1*/) {
+void ParamServiceSvNull::void_ret_struct_param(std::unique_ptr<::some::valid::ns::MyStruct> /*param1*/) { 
 }
 
-void ParamServiceSvNull::void_ret_listunion_param(std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>> /*param1*/) {
+void ParamServiceSvNull::void_ret_listunion_param(std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>> /*param1*/) { 
 }
 
-bool ParamServiceSvNull::bool_ret_i32_i64_param(::std::int32_t /*param1*/, ::std::int64_t /*param2*/) {
+bool ParamServiceSvNull::bool_ret_i32_i64_param(::std::int32_t /*param1*/, ::std::int64_t /*param2*/) { 
   return 0;
 }
 
-bool ParamServiceSvNull::bool_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/) {
+bool ParamServiceSvNull::bool_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/) { 
   return 0;
 }
 
-bool ParamServiceSvNull::bool_ret_union_param(std::unique_ptr<::some::valid::ns::ComplexUnion> /*param1*/) {
+bool ParamServiceSvNull::bool_ret_union_param(std::unique_ptr<::some::valid::ns::ComplexUnion> /*param1*/) { 
   return 0;
 }
 
-::std::int64_t ParamServiceSvNull::i64_ret_float_double_param(float /*param1*/, double /*param2*/) {
+::std::int64_t ParamServiceSvNull::i64_ret_float_double_param(float /*param1*/, double /*param2*/) { 
   return 0;
 }
 
-::std::int64_t ParamServiceSvNull::i64_ret_string_typedef_param(std::unique_ptr<::std::string> /*param1*/, std::unique_ptr<::std::set<::some::valid::ns::mostComplexTypeDef>> /*param2*/) {
+::std::int64_t ParamServiceSvNull::i64_ret_string_typedef_param(std::unique_ptr<::std::string> /*param1*/, std::unique_ptr<::std::set<::some::valid::ns::mostComplexTypeDef>> /*param2*/) { 
   return 0;
 }
 
-double ParamServiceSvNull::double_ret_setstruct_param(std::unique_ptr<::std::set<::some::valid::ns::MyStruct>> /*param1*/) {
+double ParamServiceSvNull::double_ret_setstruct_param(std::unique_ptr<::std::set<::some::valid::ns::MyStruct>> /*param1*/) { 
   return 0;
 }
 
-void ParamServiceSvNull::string_ret_string_param(::std::string& /*_return*/, std::unique_ptr<::std::string> /*param1*/) {}
+void ParamServiceSvNull::string_ret_string_param(::std::string& /*_return*/, std::unique_ptr<::std::string> /*param1*/) {  }
 
-void ParamServiceSvNull::binary_ret_binary_param(::std::string& /*_return*/, std::unique_ptr<::std::string> /*param1*/) {}
+void ParamServiceSvNull::binary_ret_binary_param(::std::string& /*_return*/, std::unique_ptr<::std::string> /*param1*/) {  }
 
-void ParamServiceSvNull::map_ret_bool_param(::std::map<::std::string, ::std::int64_t>& /*_return*/, bool /*param1*/) {}
+void ParamServiceSvNull::map_ret_bool_param(::std::map<::std::string, ::std::int64_t>& /*_return*/, bool /*param1*/) {  }
 
-void ParamServiceSvNull::list_ret_map_setlist_param(::std::vector<bool>& /*_return*/, std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> /*param1*/, std::unique_ptr<::std::vector<::std::string>> /*param2*/) {}
+void ParamServiceSvNull::list_ret_map_setlist_param(::std::vector<bool>& /*_return*/, std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> /*param1*/, std::unique_ptr<::std::vector<::std::string>> /*param2*/) {  }
 
-void ParamServiceSvNull::mapsetlistmapliststring_ret_listlistlist_param(::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& /*_return*/, std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>> /*param1*/) {}
+void ParamServiceSvNull::mapsetlistmapliststring_ret_listlistlist_param(::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& /*_return*/, std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>> /*param1*/) {  }
 
-::some::valid::ns::simpleTypeDef ParamServiceSvNull::typedef_ret_i32_param(::std::int32_t /*param1*/) {
+::some::valid::ns::simpleTypeDef ParamServiceSvNull::typedef_ret_i32_param(::std::int32_t /*param1*/) { 
   return 0;
 }
 
-::some::valid::ns::MyEnumA ParamServiceSvNull::enum_ret_double_param(double /*param1*/) {
+::some::valid::ns::MyEnumA ParamServiceSvNull::enum_ret_double_param(double /*param1*/) { 
   return (::some::valid::ns::MyEnumA)0;
 }
 
-::some::valid::ns::MyEnumA ParamServiceSvNull::enum_ret_double_enum_param(double /*param1*/, ::some::valid::ns::MyEnumA /*param2*/) {
+::some::valid::ns::MyEnumA ParamServiceSvNull::enum_ret_double_enum_param(double /*param1*/, ::some::valid::ns::MyEnumA /*param2*/) { 
   return (::some::valid::ns::MyEnumA)0;
 }
 
-void ParamServiceSvNull::listenum_ret_map_param(::std::vector<::some::valid::ns::MyEnumA>& /*_return*/, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/) {}
+void ParamServiceSvNull::listenum_ret_map_param(::std::vector<::some::valid::ns::MyEnumA>& /*_return*/, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/) {  }
 
-void ParamServiceSvNull::setstruct_ret_set_param(::std::set<::some::valid::ns::MyStruct>& /*_return*/, std::unique_ptr<::std::set<::std::string>> /*param1*/) {}
+void ParamServiceSvNull::setstruct_ret_set_param(::std::set<::some::valid::ns::MyStruct>& /*_return*/, std::unique_ptr<::std::set<::std::string>> /*param1*/) {  }
 
-void ParamServiceSvNull::union_ret_i32_i32_param(::some::valid::ns::ComplexUnion& /*_return*/, ::std::int32_t /*param1*/, ::std::int32_t /*param2*/) {}
+void ParamServiceSvNull::union_ret_i32_i32_param(::some::valid::ns::ComplexUnion& /*_return*/, ::std::int32_t /*param1*/, ::std::int32_t /*param2*/) {  }
 
-void ParamServiceSvNull::listunion_string_param(::std::vector<::some::valid::ns::ComplexUnion>& /*_return*/, std::unique_ptr<::std::string> /*param1*/) {}
+void ParamServiceSvNull::listunion_string_param(::std::vector<::some::valid::ns::ComplexUnion>& /*_return*/, std::unique_ptr<::std::string> /*param1*/) {  }
 
-void ParamServiceSvNull::annotatedParams(std::unique_ptr<::some::valid::ns::ContainerStruct> /*no_annotation*/, std::unique_ptr<::std::set<::std::int32_t>> /*opt_ref_type_shared*/, ::some::valid::ns::CppFakeI32 /*base_type*/, std::unique_ptr<::some::valid::ns::FollySmallVectorI64> /*list_type*/, std::unique_ptr<::some::valid::ns::SortedVectorSetString> /*set_type*/, std::unique_ptr<::some::valid::ns::FakeMap> /*map_type*/, std::unique_ptr<::some::valid::ns::UnorderedMapStruct> /*map_struct_type*/, std::unique_ptr<::some::valid::ns::IOBuf> /*iobuf_type*/, std::unique_ptr<::some::valid::ns::IOBufPtr> /*iobuf_ptr*/, std::unique_ptr<::std::vector<::std::int32_t>> /*list_i32_template*/, std::unique_ptr<::std::vector<::std::string>> /*list_string_template*/, std::unique_ptr<::std::set<::std::string>> /*set_template*/, std::unique_ptr<::std::map<::std::int64_t, ::std::string>> /*map_template*/, std::unique_ptr<::some::valid::ns::std_list> /*typedef_list_template*/, std::unique_ptr<::some::valid::ns::std_deque> /*typedef_deque_template*/, std::unique_ptr<::some::valid::ns::folly_set> /*typedef_set_template*/, std::unique_ptr<::some::valid::ns::folly_map> /*typedef_map_template*/, std::unique_ptr<::some::valid::ns::IOBuf> /*iobuf_type_val*/, std::unique_ptr<::some::valid::ns::IOBufPtr> /*iobuf_ptr_val*/, std::unique_ptr<::some::valid::ns::ContainerStruct> /*struct_struct*/) {
+void ParamServiceSvNull::annotatedParams(std::unique_ptr<::some::valid::ns::ContainerStruct> /*no_annotation*/, std::unique_ptr<::std::set<::std::int32_t>> /*opt_ref_type_shared*/, ::some::valid::ns::CppFakeI32 /*base_type*/, std::unique_ptr<::some::valid::ns::FollySmallVectorI64> /*list_type*/, std::unique_ptr<::some::valid::ns::SortedVectorSetString> /*set_type*/, std::unique_ptr<::some::valid::ns::FakeMap> /*map_type*/, std::unique_ptr<::some::valid::ns::UnorderedMapStruct> /*map_struct_type*/, std::unique_ptr<::some::valid::ns::IOBuf> /*iobuf_type*/, std::unique_ptr<::some::valid::ns::IOBufPtr> /*iobuf_ptr*/, std::unique_ptr<::std::vector<::std::int32_t>> /*list_i32_template*/, std::unique_ptr<::std::vector<::std::string>> /*list_string_template*/, std::unique_ptr<::std::set<::std::string>> /*set_template*/, std::unique_ptr<::std::map<::std::int64_t, ::std::string>> /*map_template*/, std::unique_ptr<::some::valid::ns::std_list> /*typedef_list_template*/, std::unique_ptr<::some::valid::ns::std_deque> /*typedef_deque_template*/, std::unique_ptr<::some::valid::ns::folly_set> /*typedef_set_template*/, std::unique_ptr<::some::valid::ns::folly_map> /*typedef_map_template*/, std::unique_ptr<::some::valid::ns::IOBuf> /*iobuf_type_val*/, std::unique_ptr<::some::valid::ns::IOBufPtr> /*iobuf_ptr_val*/, std::unique_ptr<::some::valid::ns::ContainerStruct> /*struct_struct*/) { 
 }
 
 

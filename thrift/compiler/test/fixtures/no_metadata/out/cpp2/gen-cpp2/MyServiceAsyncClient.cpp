@@ -227,20 +227,21 @@ folly::Future<folly::Unit> apache::thrift::Client<::cpp2::MyService>::future_pin
   return future_ping(rpcOptions);
 }
 
-folly::Future<folly::Unit> apache::thrift::Client<::cpp2::MyService>::future_ping(apache::thrift::RpcOptions& rpcOptions) {
-  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
-  return fbthrift_semifuture_ping<CallbackType>(rpcOptions).toUnsafeFuture();
-}
-
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::MyService>::semifuture_ping() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_ping(rpcOptions);
+}
+
+folly::Future<folly::Unit> apache::thrift::Client<::cpp2::MyService>::future_ping(apache::thrift::RpcOptions& rpcOptions) {
+  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
+  return fbthrift_semifuture_ping<CallbackType>(rpcOptions).toUnsafeFuture();
 }
 
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::MyService>::semifuture_ping(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::SemiFutureCallback<folly::Unit>;
   return fbthrift_semifuture_ping<CallbackType>(rpcOptions);
 }
+
 
 void apache::thrift::Client<::cpp2::MyService>::ping(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   ping(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -429,20 +430,21 @@ folly::Future<::std::string> apache::thrift::Client<::cpp2::MyService>::future_g
   return future_getRandomData(rpcOptions);
 }
 
-folly::Future<::std::string> apache::thrift::Client<::cpp2::MyService>::future_getRandomData(apache::thrift::RpcOptions& rpcOptions) {
-  using CallbackType = apache::thrift::FutureCallback<::std::string>;
-  return fbthrift_semifuture_getRandomData<CallbackType>(rpcOptions).toUnsafeFuture();
-}
-
 folly::SemiFuture<::std::string> apache::thrift::Client<::cpp2::MyService>::semifuture_getRandomData() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_getRandomData(rpcOptions);
+}
+
+folly::Future<::std::string> apache::thrift::Client<::cpp2::MyService>::future_getRandomData(apache::thrift::RpcOptions& rpcOptions) {
+  using CallbackType = apache::thrift::FutureCallback<::std::string>;
+  return fbthrift_semifuture_getRandomData<CallbackType>(rpcOptions).toUnsafeFuture();
 }
 
 folly::SemiFuture<::std::string> apache::thrift::Client<::cpp2::MyService>::semifuture_getRandomData(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::SemiFutureCallback<::std::string>;
   return fbthrift_semifuture_getRandomData<CallbackType>(rpcOptions);
 }
+
 
 void apache::thrift::Client<::cpp2::MyService>::getRandomData(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   getRandomData(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -634,20 +636,21 @@ folly::Future<bool> apache::thrift::Client<::cpp2::MyService>::future_hasDataByI
   return future_hasDataById(rpcOptions, p_id);
 }
 
-folly::Future<bool> apache::thrift::Client<::cpp2::MyService>::future_hasDataById(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_id) {
-  using CallbackType = apache::thrift::FutureCallback<bool>;
-  return fbthrift_semifuture_hasDataById<CallbackType>(rpcOptions, p_id).toUnsafeFuture();
-}
-
 folly::SemiFuture<bool> apache::thrift::Client<::cpp2::MyService>::semifuture_hasDataById(::std::int64_t p_id) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_hasDataById(rpcOptions, p_id);
+}
+
+folly::Future<bool> apache::thrift::Client<::cpp2::MyService>::future_hasDataById(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_id) {
+  using CallbackType = apache::thrift::FutureCallback<bool>;
+  return fbthrift_semifuture_hasDataById<CallbackType>(rpcOptions, p_id).toUnsafeFuture();
 }
 
 folly::SemiFuture<bool> apache::thrift::Client<::cpp2::MyService>::semifuture_hasDataById(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_id) {
   using CallbackType = apache::thrift::SemiFutureCallback<bool>;
   return fbthrift_semifuture_hasDataById<CallbackType>(rpcOptions, p_id);
 }
+
 
 void apache::thrift::Client<::cpp2::MyService>::hasDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int64_t p_id) {
   hasDataById(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_id);
@@ -839,20 +842,21 @@ folly::Future<::std::string> apache::thrift::Client<::cpp2::MyService>::future_g
   return future_getDataById(rpcOptions, p_id);
 }
 
-folly::Future<::std::string> apache::thrift::Client<::cpp2::MyService>::future_getDataById(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_id) {
-  using CallbackType = apache::thrift::FutureCallback<::std::string>;
-  return fbthrift_semifuture_getDataById<CallbackType>(rpcOptions, p_id).toUnsafeFuture();
-}
-
 folly::SemiFuture<::std::string> apache::thrift::Client<::cpp2::MyService>::semifuture_getDataById(::std::int64_t p_id) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_getDataById(rpcOptions, p_id);
+}
+
+folly::Future<::std::string> apache::thrift::Client<::cpp2::MyService>::future_getDataById(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_id) {
+  using CallbackType = apache::thrift::FutureCallback<::std::string>;
+  return fbthrift_semifuture_getDataById<CallbackType>(rpcOptions, p_id).toUnsafeFuture();
 }
 
 folly::SemiFuture<::std::string> apache::thrift::Client<::cpp2::MyService>::semifuture_getDataById(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_id) {
   using CallbackType = apache::thrift::SemiFutureCallback<::std::string>;
   return fbthrift_semifuture_getDataById<CallbackType>(rpcOptions, p_id);
 }
+
 
 void apache::thrift::Client<::cpp2::MyService>::getDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int64_t p_id) {
   getDataById(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_id);
@@ -1043,20 +1047,21 @@ folly::Future<folly::Unit> apache::thrift::Client<::cpp2::MyService>::future_put
   return future_putDataById(rpcOptions, p_id, p_data);
 }
 
-folly::Future<folly::Unit> apache::thrift::Client<::cpp2::MyService>::future_putDataById(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_id, const ::std::string& p_data) {
-  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
-  return fbthrift_semifuture_putDataById<CallbackType>(rpcOptions, p_id, p_data).toUnsafeFuture();
-}
-
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::MyService>::semifuture_putDataById(::std::int64_t p_id, const ::std::string& p_data) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_putDataById(rpcOptions, p_id, p_data);
+}
+
+folly::Future<folly::Unit> apache::thrift::Client<::cpp2::MyService>::future_putDataById(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_id, const ::std::string& p_data) {
+  using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
+  return fbthrift_semifuture_putDataById<CallbackType>(rpcOptions, p_id, p_data).toUnsafeFuture();
 }
 
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::MyService>::semifuture_putDataById(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_id, const ::std::string& p_data) {
   using CallbackType = apache::thrift::SemiFutureCallback<folly::Unit>;
   return fbthrift_semifuture_putDataById<CallbackType>(rpcOptions, p_id, p_data);
 }
+
 
 void apache::thrift::Client<::cpp2::MyService>::putDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int64_t p_id, const ::std::string& p_data) {
   putDataById(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_id, p_data);
@@ -1233,20 +1238,21 @@ folly::Future<folly::Unit> apache::thrift::Client<::cpp2::MyService>::future_lob
   return future_lobDataById(rpcOptions, p_id, p_data);
 }
 
-folly::Future<folly::Unit> apache::thrift::Client<::cpp2::MyService>::future_lobDataById(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_id, const ::std::string& p_data) {
-  using CallbackType = apache::thrift::OneWayFutureCallback;
-  return fbthrift_semifuture_lobDataById<CallbackType>(rpcOptions, p_id, p_data).toUnsafeFuture();
-}
-
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::MyService>::semifuture_lobDataById(::std::int64_t p_id, const ::std::string& p_data) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_lobDataById(rpcOptions, p_id, p_data);
+}
+
+folly::Future<folly::Unit> apache::thrift::Client<::cpp2::MyService>::future_lobDataById(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_id, const ::std::string& p_data) {
+  using CallbackType = apache::thrift::OneWayFutureCallback;
+  return fbthrift_semifuture_lobDataById<CallbackType>(rpcOptions, p_id, p_data).toUnsafeFuture();
 }
 
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::MyService>::semifuture_lobDataById(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_id, const ::std::string& p_data) {
   using CallbackType = apache::thrift::OneWaySemiFutureCallback;
   return fbthrift_semifuture_lobDataById<CallbackType>(rpcOptions, p_id, p_data);
 }
+
 
 void apache::thrift::Client<::cpp2::MyService>::lobDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int64_t p_id, const ::std::string& p_data) {
   lobDataById(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_id, p_data);

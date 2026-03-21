@@ -627,16 +627,16 @@ determineInvocationType:
 
 namespace cpp2 {
 
-bool MyServiceSvNull::hasDataById(::std::int64_t /*id*/) {
+bool MyServiceSvNull::hasDataById(::std::int64_t /*id*/) { 
   return 0;
 }
 
-void MyServiceSvNull::getDataById(::std::string& /*_return*/, ::std::int64_t /*id*/) {}
+void MyServiceSvNull::getDataById(::std::string& /*_return*/, ::std::int64_t /*id*/) {  }
 
-void MyServiceSvNull::putDataById(::std::int64_t /*id*/, const ::std::string& /*data*/) {
+void MyServiceSvNull::putDataById(::std::int64_t /*id*/, const ::std::string& /*data*/) { 
 }
 
-void MyServiceSvNull::lobDataById(::std::int64_t /*id*/, const ::std::string& /*data*/) {
+void MyServiceSvNull::lobDataById(::std::int64_t /*id*/, const ::std::string& /*data*/) { 
 }
 
 

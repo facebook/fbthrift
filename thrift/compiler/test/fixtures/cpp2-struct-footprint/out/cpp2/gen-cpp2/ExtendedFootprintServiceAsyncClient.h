@@ -36,7 +36,6 @@ struct ServiceMethodTypesFootprint<::cpp2_struct_footprint::ExtendedFootprintSer
   using TypesInMethods = folly::tag_t<
   ::std::map<::std::int32_t, ::std::vector<::cpp2_struct_footprint::ComplexStruct>>>;
 };
-
 } // namespace detail
 
 template <>

@@ -163,6 +163,13 @@ class GoodServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
    return iface_->createBadInteraction();
  }
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'bar'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -196,7 +203,7 @@ class GoodServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
   // End of Service Methods
   //
   //
-  // Interaction BadInteraction Methods
+  // Service Methods
   //
 
   //
@@ -229,7 +236,7 @@ class GoodServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
   //
 
   //
-  // End of Interaction BadInteraction Methods
+  // End of Service Methods
   //
  public:
   GoodServiceAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::GoodService>* iface) :

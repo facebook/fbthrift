@@ -48,6 +48,7 @@ class ServiceHandler<::py3::simple::SimpleService> : public apache::thrift::Serv
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
+
   virtual ::std::int32_t sync_get_five();
   [[deprecated("Use sync_get_five instead")]] virtual ::std::int32_t get_five();
   virtual folly::Future<::std::int32_t> future_get_five();
@@ -796,6 +797,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'add_five'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -826,6 +834,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'do_nothing'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -852,6 +867,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'do_nothing'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -885,6 +907,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'get_value'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -912,6 +941,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'get_value'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -945,6 +981,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'tiny'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -972,6 +1015,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'tiny'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -1005,6 +1055,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'big'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1032,6 +1089,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'big'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -1065,6 +1129,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'expected_exception'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1091,6 +1162,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'expected_exception'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -1124,6 +1202,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'sum_i16_list'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1151,6 +1236,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'sum_i16_list'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -1184,6 +1276,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'sum_i64_list'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1211,6 +1310,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'sum_i64_list'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -1244,6 +1350,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'count_structs'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1271,6 +1384,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'count_structs'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -1304,6 +1424,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'contains_word'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1331,6 +1458,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'contains_word'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -1364,6 +1498,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'map_length'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1391,6 +1532,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'map_length'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -1424,6 +1572,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'complex_sum_i32'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1451,6 +1606,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'complex_sum_i32'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -1484,6 +1646,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'get_struct'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1511,6 +1680,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'get_struct'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -1544,6 +1720,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'unique_words'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1571,6 +1754,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'unique_words'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -1604,6 +1794,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'set_enum'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1631,6 +1828,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'set_enum'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -1664,6 +1868,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'word_character_frequency'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1691,6 +1902,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'word_character_frequency'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -1724,6 +1942,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'nested_map_argument'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1751,6 +1976,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'nested_map_argument'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -1784,6 +2016,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'get_union'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1811,6 +2050,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'get_union'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -1844,6 +2090,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'lookup_double'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1871,6 +2124,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'lookup_double'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -1904,6 +2164,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'contain_binary'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1931,6 +2198,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'contain_binary'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //
@@ -1964,6 +2238,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   //
 
   //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
+  //
+
+  //
   // Method 'get_binary_union_struct'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1991,6 +2272,13 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'get_binary_union_struct'
+  //
+
+  //
+  // End of Service Methods
+  //
+  //
+  // Service Methods
   //
 
   //

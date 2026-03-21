@@ -102,7 +102,7 @@ class Foo final  {
 
 
   Foo& operator=(Foo&&) noexcept;
-  Foo& operator=(const Foo&);
+  Foo& operator=(const Foo& src);
 
   ~Foo();
 

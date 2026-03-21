@@ -176,20 +176,21 @@ folly::Future<::test::fixtures::basic_structured_annotations::annotated_inline_s
   return future_first(rpcOptions);
 }
 
-folly::Future<::test::fixtures::basic_structured_annotations::annotated_inline_string> apache::thrift::Client<::test::fixtures::basic_structured_annotations::MyService>::future_first(apache::thrift::RpcOptions& rpcOptions) {
-  using CallbackType = apache::thrift::FutureCallback<::test::fixtures::basic_structured_annotations::annotated_inline_string>;
-  return fbthrift_semifuture_first<CallbackType>(rpcOptions).toUnsafeFuture();
-}
-
 folly::SemiFuture<::test::fixtures::basic_structured_annotations::annotated_inline_string> apache::thrift::Client<::test::fixtures::basic_structured_annotations::MyService>::semifuture_first() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_first(rpcOptions);
+}
+
+folly::Future<::test::fixtures::basic_structured_annotations::annotated_inline_string> apache::thrift::Client<::test::fixtures::basic_structured_annotations::MyService>::future_first(apache::thrift::RpcOptions& rpcOptions) {
+  using CallbackType = apache::thrift::FutureCallback<::test::fixtures::basic_structured_annotations::annotated_inline_string>;
+  return fbthrift_semifuture_first<CallbackType>(rpcOptions).toUnsafeFuture();
 }
 
 folly::SemiFuture<::test::fixtures::basic_structured_annotations::annotated_inline_string> apache::thrift::Client<::test::fixtures::basic_structured_annotations::MyService>::semifuture_first(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::SemiFutureCallback<::test::fixtures::basic_structured_annotations::annotated_inline_string>;
   return fbthrift_semifuture_first<CallbackType>(rpcOptions);
 }
+
 
 void apache::thrift::Client<::test::fixtures::basic_structured_annotations::MyService>::first(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   first(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -381,20 +382,21 @@ folly::Future<bool> apache::thrift::Client<::test::fixtures::basic_structured_an
   return future_second(rpcOptions, p_count);
 }
 
-folly::Future<bool> apache::thrift::Client<::test::fixtures::basic_structured_annotations::MyService>::future_second(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_count) {
-  using CallbackType = apache::thrift::FutureCallback<bool>;
-  return fbthrift_semifuture_second<CallbackType>(rpcOptions, p_count).toUnsafeFuture();
-}
-
 folly::SemiFuture<bool> apache::thrift::Client<::test::fixtures::basic_structured_annotations::MyService>::semifuture_second(::std::int64_t p_count) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_second(rpcOptions, p_count);
+}
+
+folly::Future<bool> apache::thrift::Client<::test::fixtures::basic_structured_annotations::MyService>::future_second(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_count) {
+  using CallbackType = apache::thrift::FutureCallback<bool>;
+  return fbthrift_semifuture_second<CallbackType>(rpcOptions, p_count).toUnsafeFuture();
 }
 
 folly::SemiFuture<bool> apache::thrift::Client<::test::fixtures::basic_structured_annotations::MyService>::semifuture_second(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_count) {
   using CallbackType = apache::thrift::SemiFutureCallback<bool>;
   return fbthrift_semifuture_second<CallbackType>(rpcOptions, p_count);
 }
+
 
 void apache::thrift::Client<::test::fixtures::basic_structured_annotations::MyService>::second(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int64_t p_count) {
   second(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_count);

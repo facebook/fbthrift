@@ -37,7 +37,6 @@ struct ServiceMethodTypesFootprint<::cpp2::PubSubStreamingService> {
   ::cpp2::FooEx2,
   ::std::int32_t>;
 };
-
 } // namespace detail
 
 template <>
@@ -149,6 +148,7 @@ class Client<::cpp2::PubSubStreamingService> : public apache::thrift::GeneratedA
   }
  public:
 #endif // FOLLY_HAS_COROUTINES
+
 
 
   /** Glean {"file": "thrift/compiler/test/fixtures/sync-methods-return-try/src/module.thrift", "service": "PubSubStreamingService", "function": "returnstream"} */
@@ -268,6 +268,7 @@ class Client<::cpp2::PubSubStreamingService> : public apache::thrift::GeneratedA
 #endif // FOLLY_HAS_COROUTINES
 
 
+
   /** Glean {"file": "thrift/compiler/test/fixtures/sync-methods-return-try/src/module.thrift", "service": "PubSubStreamingService", "function": "streamthrows"} */
   static folly::exception_wrapper recv_wrapped_streamthrows(apache::thrift::ClientBufferedStream<::cpp2::StreamItem>& _return, ::apache::thrift::ClientReceiveState& state);
   /** Glean {"file": "thrift/compiler/test/fixtures/sync-methods-return-try/src/module.thrift", "service": "PubSubStreamingService", "function": "streamthrows"} */
@@ -383,6 +384,7 @@ class Client<::cpp2::PubSubStreamingService> : public apache::thrift::GeneratedA
   }
  public:
 #endif // FOLLY_HAS_COROUTINES
+
 
 
   /** Glean {"file": "thrift/compiler/test/fixtures/sync-methods-return-try/src/module.thrift", "service": "PubSubStreamingService", "function": "servicethrows"} */
@@ -502,6 +504,7 @@ class Client<::cpp2::PubSubStreamingService> : public apache::thrift::GeneratedA
 #endif // FOLLY_HAS_COROUTINES
 
 
+
   /** Glean {"file": "thrift/compiler/test/fixtures/sync-methods-return-try/src/module.thrift", "service": "PubSubStreamingService", "function": "servicethrows2"} */
   static folly::exception_wrapper recv_wrapped_servicethrows2(apache::thrift::ClientBufferedStream<::cpp2::StreamItem>& _return, ::apache::thrift::ClientReceiveState& state);
   /** Glean {"file": "thrift/compiler/test/fixtures/sync-methods-return-try/src/module.thrift", "service": "PubSubStreamingService", "function": "servicethrows2"} */
@@ -617,6 +620,7 @@ class Client<::cpp2::PubSubStreamingService> : public apache::thrift::GeneratedA
   }
  public:
 #endif // FOLLY_HAS_COROUTINES
+
 
 
   /** Glean {"file": "thrift/compiler/test/fixtures/sync-methods-return-try/src/module.thrift", "service": "PubSubStreamingService", "function": "boththrows"} */
@@ -736,6 +740,7 @@ class Client<::cpp2::PubSubStreamingService> : public apache::thrift::GeneratedA
 #endif // FOLLY_HAS_COROUTINES
 
 
+
   /** Glean {"file": "thrift/compiler/test/fixtures/sync-methods-return-try/src/module.thrift", "service": "PubSubStreamingService", "function": "responseandstreamstreamthrows"} */
   static folly::exception_wrapper recv_wrapped_responseandstreamstreamthrows(apache::thrift::ResponseAndClientBufferedStream<::cpp2::StreamItem,::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
   /** Glean {"file": "thrift/compiler/test/fixtures/sync-methods-return-try/src/module.thrift", "service": "PubSubStreamingService", "function": "responseandstreamstreamthrows"} */
@@ -853,6 +858,7 @@ class Client<::cpp2::PubSubStreamingService> : public apache::thrift::GeneratedA
 #endif // FOLLY_HAS_COROUTINES
 
 
+
   /** Glean {"file": "thrift/compiler/test/fixtures/sync-methods-return-try/src/module.thrift", "service": "PubSubStreamingService", "function": "responseandstreamservicethrows"} */
   static folly::exception_wrapper recv_wrapped_responseandstreamservicethrows(apache::thrift::ResponseAndClientBufferedStream<::cpp2::StreamItem,::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
   /** Glean {"file": "thrift/compiler/test/fixtures/sync-methods-return-try/src/module.thrift", "service": "PubSubStreamingService", "function": "responseandstreamservicethrows"} */
@@ -968,6 +974,7 @@ class Client<::cpp2::PubSubStreamingService> : public apache::thrift::GeneratedA
   }
  public:
 #endif // FOLLY_HAS_COROUTINES
+
 
 
   /** Glean {"file": "thrift/compiler/test/fixtures/sync-methods-return-try/src/module.thrift", "service": "PubSubStreamingService", "function": "responseandstreamboththrows"} */

@@ -94,11 +94,12 @@ class IncludedA final  {
   IncludedA(apache::thrift::FragileConstructor, ::std::int32_t i32Field__arg, ::std::string strField__arg);
 
   IncludedA(IncludedA&&) noexcept;
+
   IncludedA(const IncludedA& src);
 
 
   IncludedA& operator=(IncludedA&&) noexcept;
-  IncludedA& operator=(const IncludedA&);
+  IncludedA& operator=(const IncludedA& src);
 
   ~IncludedA();
 

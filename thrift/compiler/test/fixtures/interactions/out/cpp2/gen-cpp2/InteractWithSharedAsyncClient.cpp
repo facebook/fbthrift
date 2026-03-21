@@ -163,20 +163,21 @@ folly::Future<::thrift::shared_interactions::DoSomethingResult> apache::thrift::
   return future_do_some_similar_things(rpcOptions);
 }
 
-folly::Future<::thrift::shared_interactions::DoSomethingResult> apache::thrift::Client<::cpp2::InteractWithShared>::future_do_some_similar_things(apache::thrift::RpcOptions& rpcOptions) {
-  using CallbackType = apache::thrift::FutureCallback<::thrift::shared_interactions::DoSomethingResult>;
-  return fbthrift_semifuture_do_some_similar_things<CallbackType>(rpcOptions).toUnsafeFuture();
-}
-
 folly::SemiFuture<::thrift::shared_interactions::DoSomethingResult> apache::thrift::Client<::cpp2::InteractWithShared>::semifuture_do_some_similar_things() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_do_some_similar_things(rpcOptions);
+}
+
+folly::Future<::thrift::shared_interactions::DoSomethingResult> apache::thrift::Client<::cpp2::InteractWithShared>::future_do_some_similar_things(apache::thrift::RpcOptions& rpcOptions) {
+  using CallbackType = apache::thrift::FutureCallback<::thrift::shared_interactions::DoSomethingResult>;
+  return fbthrift_semifuture_do_some_similar_things<CallbackType>(rpcOptions).toUnsafeFuture();
 }
 
 folly::SemiFuture<::thrift::shared_interactions::DoSomethingResult> apache::thrift::Client<::cpp2::InteractWithShared>::semifuture_do_some_similar_things(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::SemiFutureCallback<::thrift::shared_interactions::DoSomethingResult>;
   return fbthrift_semifuture_do_some_similar_things<CallbackType>(rpcOptions);
 }
+
 
 void apache::thrift::Client<::cpp2::InteractWithShared>::do_some_similar_things(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   do_some_similar_things(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -452,6 +453,7 @@ folly::SemiFuture<::std::int32_t> apache::thrift::Client<::cpp2::InteractWithSha
   return fbthrift_semifuture_frobnicate<CallbackType>(rpcOptions);
 }
 
+
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper apache::thrift::Client<::cpp2::InteractWithShared>::MyInteraction::recv_wrapped_frobnicate(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
@@ -613,8 +615,10 @@ folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::InteractWithShared
   return fbthrift_semifuture_ping<CallbackType>(rpcOptions);
 }
 
+
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
+
 
 void apache::thrift::Client<::cpp2::InteractWithShared>::MyInteraction::truthify(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto [ctx, header] = truthifyCtx(&rpcOptions);
@@ -756,6 +760,7 @@ folly::SemiFuture<apache::thrift::ClientBufferedStream<bool>> apache::thrift::Cl
   return fbthrift_semifuture_truthify<CallbackType>(rpcOptions);
 }
 
+
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper apache::thrift::Client<::cpp2::InteractWithShared>::MyInteraction::recv_wrapped_truthify(apache::thrift::ClientBufferedStream<bool>& _return, ::apache::thrift::ClientReceiveState& state) {
@@ -843,6 +848,7 @@ std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::t
 
   return {std::move(ctx), std::move(header)};
 }
+
 #if FOLLY_HAS_COROUTINES
 folly::coro::Task<apache::thrift::ResponseAndClientSink<::std::set<::std::int32_t>, ::std::string, ::std::string>> apache::thrift::Client<::cpp2::InteractWithShared>::MyInteraction::co_encode() {
   ::apache::thrift::RpcOptions rpcOptions;
@@ -1117,6 +1123,7 @@ folly::SemiFuture<::std::int32_t> apache::thrift::Client<::cpp2::InteractWithSha
   return fbthrift_semifuture_init<CallbackType>(rpcOptions);
 }
 
+
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper apache::thrift::Client<::cpp2::InteractWithShared>::SharedInteraction::recv_wrapped_init(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
@@ -1292,6 +1299,7 @@ folly::SemiFuture<::thrift::shared_interactions::DoSomethingResult> apache::thri
   return fbthrift_semifuture_do_something<CallbackType>(rpcOptions);
 }
 
+
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper apache::thrift::Client<::cpp2::InteractWithShared>::SharedInteraction::recv_wrapped_do_something(::thrift::shared_interactions::DoSomethingResult& _return, ::apache::thrift::ClientReceiveState& state) {
@@ -1464,6 +1472,7 @@ folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::InteractWithShared
   using CallbackType = apache::thrift::SemiFutureCallback<folly::Unit>;
   return fbthrift_semifuture_tear_down<CallbackType>(rpcOptions);
 }
+
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES

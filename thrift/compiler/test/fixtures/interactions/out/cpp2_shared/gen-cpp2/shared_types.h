@@ -94,11 +94,12 @@ class DoSomethingResult final  {
   DoSomethingResult(apache::thrift::FragileConstructor, ::std::string s_res__arg, ::std::int32_t i_res__arg);
 
   DoSomethingResult(DoSomethingResult&&) noexcept;
+
   DoSomethingResult(const DoSomethingResult& src);
 
 
   DoSomethingResult& operator=(DoSomethingResult&&) noexcept;
-  DoSomethingResult& operator=(const DoSomethingResult&);
+  DoSomethingResult& operator=(const DoSomethingResult& src);
 
   ~DoSomethingResult();
 

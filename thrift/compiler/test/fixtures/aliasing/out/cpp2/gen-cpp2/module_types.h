@@ -97,11 +97,12 @@ class Foo final  {
   Foo(apache::thrift::FragileConstructor, ::cpp2::Foo other_foo__arg, ::cpp2::Foo yet_another_foo__arg);
 
   Foo(Foo&&) noexcept;
+
   Foo(const Foo& src);
 
 
   Foo& operator=(Foo&&) noexcept;
-  Foo& operator=(const Foo&);
+  Foo& operator=(const Foo& src);
  private:
   ::cpp2::Foo __fbthrift_field_other_foo;
  private:

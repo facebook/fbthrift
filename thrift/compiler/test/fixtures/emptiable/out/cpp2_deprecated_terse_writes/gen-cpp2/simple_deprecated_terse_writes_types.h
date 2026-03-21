@@ -269,10 +269,12 @@ class MyStruct final  {
   MyStruct(apache::thrift::FragileConstructor);
 
   MyStruct(MyStruct&&) = default;
+
   MyStruct(const MyStruct&) = default;
 
 
   MyStruct& operator=(MyStruct&&) = default;
+
   MyStruct& operator=(const MyStruct&) = default;
 
  public:
@@ -375,11 +377,12 @@ class EmptiableStruct final  {
   EmptiableStruct(apache::thrift::FragileConstructor, bool bool_field__arg, ::std::int8_t byte_field__arg, ::std::int16_t short_field__arg, ::std::int32_t int_field__arg, ::std::int64_t long_field__arg, float float_field__arg, double double_field__arg, ::std::string string_field__arg, ::std::string binary_field__arg, ::apache::thrift::test::MyEnum enum_field__arg, ::std::vector<::std::int16_t> list_field__arg, ::std::set<::std::int16_t> set_field__arg, ::std::map<::std::int16_t, ::std::int16_t> map_field__arg, ::apache::thrift::test::MyStruct struct_field__arg);
 
   EmptiableStruct(EmptiableStruct&&) noexcept;
+
   EmptiableStruct(const EmptiableStruct& src);
 
 
   EmptiableStruct& operator=(EmptiableStruct&&) noexcept;
-  EmptiableStruct& operator=(const EmptiableStruct&);
+  EmptiableStruct& operator=(const EmptiableStruct& src);
 
   ~EmptiableStruct();
 
@@ -1240,11 +1243,12 @@ class NotEmptiableStruct final  {
   NotEmptiableStruct(apache::thrift::FragileConstructor, bool bool_field__arg, ::std::int8_t byte_field__arg, ::std::int16_t short_field__arg, ::std::int32_t int_field__arg, ::std::int64_t long_field__arg, float float_field__arg, double double_field__arg, ::std::string string_field__arg, ::std::string binary_field__arg, ::apache::thrift::test::MyEnum enum_field__arg, ::std::vector<::std::int16_t> list_field__arg, ::std::set<::std::int16_t> set_field__arg, ::std::map<::std::int16_t, ::std::int16_t> map_field__arg, ::apache::thrift::test::MyStruct struct_field__arg);
 
   NotEmptiableStruct(NotEmptiableStruct&&) noexcept;
+
   NotEmptiableStruct(const NotEmptiableStruct& src);
 
 
   NotEmptiableStruct& operator=(NotEmptiableStruct&&) noexcept;
-  NotEmptiableStruct& operator=(const NotEmptiableStruct&);
+  NotEmptiableStruct& operator=(const NotEmptiableStruct& src);
 
   ~NotEmptiableStruct();
 

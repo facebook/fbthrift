@@ -336,9 +336,9 @@ determineInvocationType:
 
 namespace cpp2 {
 
-void HeaderClientMethodsAnnotationOnServiceSvNull::echo(::cpp2::EchoResponse& /*_return*/, std::unique_ptr<::cpp2::EchoRequest> /*request*/) {}
+void HeaderClientMethodsAnnotationOnServiceSvNull::echo(::cpp2::EchoResponse& /*_return*/, std::unique_ptr<::cpp2::EchoRequest> /*request*/) {  }
 
-void HeaderClientMethodsAnnotationOnServiceSvNull::echo_2(::cpp2::EchoResponse& /*_return*/, std::unique_ptr<::cpp2::EchoRequest> /*request*/) {}
+void HeaderClientMethodsAnnotationOnServiceSvNull::echo_2(::cpp2::EchoResponse& /*_return*/, std::unique_ptr<::cpp2::EchoRequest> /*request*/) {  }
 
 
 std::string_view HeaderClientMethodsAnnotationOnServiceAsyncProcessor::getServiceName() {

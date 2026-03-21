@@ -186,7 +186,7 @@ determineInvocationType:
 
 namespace cpp2_struct_footprint {
 
-void ExtendedFootprintServiceSvNull::getComplexMap(::std::map<::std::int32_t, ::std::vector<::cpp2_struct_footprint::ComplexStruct>>& /*_return*/) {}
+void ExtendedFootprintServiceSvNull::getComplexMap(::std::map<::std::int32_t, ::std::vector<::cpp2_struct_footprint::ComplexStruct>>& /*_return*/) {  }
 
 
 std::string_view ExtendedFootprintServiceAsyncProcessor::getServiceName() {

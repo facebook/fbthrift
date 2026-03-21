@@ -113,10 +113,12 @@ class MyStruct final  {
   MyStruct(apache::thrift::FragileConstructor, ::std::int32_t def_field__arg, ::std::int32_t opt_field__arg, ::std::int32_t req_field__arg, ::std::int32_t terse_field__arg);
 
   MyStruct(MyStruct&&) = default;
+
   MyStruct(const MyStruct&) = default;
 
 
   MyStruct& operator=(MyStruct&&) = default;
+
   MyStruct& operator=(const MyStruct&) = default;
  private:
   ::std::int32_t __fbthrift_field_def_field;
