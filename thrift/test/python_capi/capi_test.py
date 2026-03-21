@@ -21,7 +21,7 @@ from sys import getrefcount
 
 import thrift.python_capi.fixture as fixture
 from folly.iobuf import IOBuf
-from thrift.python.exceptions import GeneratedError
+from thrift.python.exceptions import GeneratedError, ProtocolError
 from thrift.python.serializer import deserialize, Protocol, serialize, serialize_iobuf
 from thrift.python.types import Struct as PythonStruct, StructOrUnion
 from thrift.test.python_capi.containers.thrift_types import (
@@ -587,7 +587,7 @@ class PythonCapiSerializeParity(PythonCapiFixture):
 
     def test_serialize_oversized_cpp_struct(self) -> None:
         with self.assertRaisesRegex(
-            ValueError, "TProtocolException: .* exceeds size limit"
+            ProtocolError, "TProtocolException: .* exceeds size limit"
         ):
             fixture.gen_SerializedStruct(2**31)
 
