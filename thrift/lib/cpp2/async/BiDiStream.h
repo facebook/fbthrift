@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include <chrono>
+
 #include <folly/Function.h>
 #include <folly/coro/AsyncGenerator.h>
 #include <folly/coro/Task.h>
@@ -76,6 +78,10 @@ struct StreamTransformation {
   // Maximum number of sink-direction (client-to-server) items that can be
   // in-flight before the server grants additional credits.
   int32_t bufferSize{100};
+  // Maximum time the server waits for the client to send the next sink payload
+  // after credits have been granted. A value of 0 (default) disables the
+  // timeout.
+  std::chrono::milliseconds chunkTimeout{0};
 };
 
 /**

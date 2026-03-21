@@ -1621,6 +1621,7 @@ apache::thrift::detail::ServerBiDiStreamFactory encode_server_bidi_stream(
     apache::thrift::StreamTransformation<InputType, OutputType>&&
         streamTransformation,
     folly::Executor::KeepAlive<> serverExecutor) {
+  auto chunkTimeout = streamTransformation.chunkTimeout;
   auto& decoder = get_decoder<ProtocolReader, SinkPResult, InputType>();
   auto& encoder = get_encoder<
       ErrorBlame::SERVER,
@@ -1631,7 +1632,8 @@ apache::thrift::detail::ServerBiDiStreamFactory encode_server_bidi_stream(
       std::move(streamTransformation),
       decoder,
       encoder,
-      std::move(serverExecutor));
+      std::move(serverExecutor),
+      chunkTimeout);
 }
 
 } // namespace detail::ap

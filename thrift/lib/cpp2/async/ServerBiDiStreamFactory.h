@@ -46,7 +46,9 @@ class ServerBiDiStreamFactory {
       StreamTransformation<InputType, OutputType> streamTransformation,
       SinkElementDecoder<InputType>& decoder,
       StreamElementEncoder<OutputType>& encoder,
-      folly::Executor::KeepAlive<> serverExecutor) {
+      folly::Executor::KeepAlive<> serverExecutor,
+      std::chrono::milliseconds chunkTimeout = std::chrono::milliseconds{0})
+      : chunkTimeout_(chunkTimeout) {
     startFunction_ =
         [transformFn = std::move(streamTransformation.func),
          sinkBufferSize = streamTransformation.bufferSize,
@@ -99,6 +101,8 @@ class ServerBiDiStreamFactory {
 
   bool valid() const;
 
+  std::chrono::milliseconds getChunkTimeout() const { return chunkTimeout_; }
+
   void start(
       FirstResponsePayload&& firstResponsePayload,
       BiDiClientCallback* clientCallback,
@@ -115,6 +119,7 @@ class ServerBiDiStreamFactory {
   StartFunction startFunction_;
   std::shared_ptr<ContextStack> contextStack_{nullptr};
   TilePtr interaction_{};
+  std::chrono::milliseconds chunkTimeout_{0};
 };
 
 } // namespace detail

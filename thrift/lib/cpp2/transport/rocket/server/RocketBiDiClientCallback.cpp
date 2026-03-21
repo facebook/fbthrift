@@ -93,6 +93,7 @@ bool RocketBiDiClientCallback::onSinkCancel() {
   if (!state_.isSinkOpen()) {
     return state_.isAlive();
   }
+  cancelSinkTimeout();
   state_.onSinkCancel();
   connection_.sendCancel(streamId_);
 
@@ -100,6 +101,9 @@ bool RocketBiDiClientCallback::onSinkCancel() {
 }
 
 bool RocketBiDiClientCallback::onSinkRequestN(int32_t n) {
+  if (sinkTimeout_) {
+    sinkTimeout_->incCredits(n);
+  }
   connection_.sendRequestN(streamId_, n);
 
   return state_.isAlive() ? true : freeStreamAndReturn(false);
@@ -183,11 +187,16 @@ bool RocketBiDiClientCallback::onStreamCancel() {
 bool RocketBiDiClientCallback::onSinkNext(StreamPayload&& payload) {
   DCHECK(state_.isSinkOpen());
 
+  if (sinkTimeout_) {
+    sinkTimeout_->decCredits();
+  }
+
   return serverCallback_->onSinkNext(std::move(payload));
 }
 
 bool RocketBiDiClientCallback::onSinkError(folly::exception_wrapper ew) {
   DCHECK(state_.isSinkOpen());
+  cancelSinkTimeout();
 
   state_.onSinkError();
   bool wasTerminal = state_.isTerminal();
@@ -203,6 +212,7 @@ bool RocketBiDiClientCallback::onSinkError(folly::exception_wrapper ew) {
 
 bool RocketBiDiClientCallback::onSinkComplete() {
   DCHECK(state_.isSinkOpen());
+  cancelSinkTimeout();
 
   state_.onSinkComplete();
   bool wasTerminal = state_.isTerminal();
@@ -400,6 +410,7 @@ void RocketBiDiClientCallback::handleFrame(ExtFrame&& extFrame) {
 
 void RocketBiDiClientCallback::handleConnectionClose() {
   cancelTimeout();
+  cancelSinkTimeout();
   if (!serverCallbackReady()) {
     return;
   }
@@ -420,6 +431,7 @@ void RocketBiDiClientCallback::handleConnectionClose() {
 
 void RocketBiDiClientCallback::timeoutExpired() noexcept {
   DCHECK_EQ(0u, streamTokens_);
+  cancelSinkTimeout();
 
   // Credit timeout is fatal for the entire bidi interaction.
   // Notify sink error through the Stapler BEFORE cancelling the stream.
@@ -429,18 +441,21 @@ void RocketBiDiClientCallback::timeoutExpired() noexcept {
   // null and the deferred callback is a no-op. Without this ordering,
   // freeStream() destroys this callback while the deferred callback still
   // holds a reference, causing a use-after-free.
-  if (isSinkOpen()) {
+  bool sinkWasOpen = isSinkOpen();
+  if (sinkWasOpen) {
+    state_.onSinkCancel();
     std::ignore = serverCallback_->onSinkError(
         folly::make_exception_wrapper<TApplicationException>(
             TApplicationException::TApplicationExceptionType::TIMEOUT,
             "BiDi stream credit timeout"));
   }
   if (isStreamOpen()) {
+    state_.onStreamCancel();
     std::ignore = serverCallback_->onStreamCancel();
   }
 
   // Send cancel for the sink direction so the client stops sending.
-  if (isSinkOpen()) {
+  if (sinkWasOpen) {
     connection_.sendCancel(streamId_);
   }
 
@@ -468,6 +483,85 @@ void RocketBiDiClientCallback::scheduleTimeout() {
 
 void RocketBiDiClientCallback::cancelTimeout() {
   timeoutCallback_.reset();
+}
+
+void RocketBiDiClientCallback::setChunkTimeout(
+    std::chrono::milliseconds timeout) {
+  if (timeout != std::chrono::milliseconds::zero()) {
+    sinkTimeout_ = std::make_unique<SinkTimeoutCallback>(*this, timeout);
+  }
+}
+
+void RocketBiDiClientCallback::sinkChunkTimeoutExpired() noexcept {
+  cancelSinkTimeout();
+
+  // Chunk timeout is fatal for the entire bidi interaction.
+  // Cancel the sink half first. We must not delegate to onSinkError() because
+  // it calls freeStreamAndReturn() when both halves are closed, which would
+  // destroy `this` before we finish cleanup.
+  bool sinkWasOpen = state_.isSinkOpen();
+  if (sinkWasOpen) {
+    state_.onSinkCancel();
+    std::ignore = serverCallback_->onSinkError(
+        folly::make_exception_wrapper<TApplicationException>(
+            TApplicationException::TApplicationExceptionType::TIMEOUT,
+            "Sink chunk timeout"));
+  }
+
+  // Cancel the stream half if still open.
+  if (state_.isStreamOpen()) {
+    cancelTimeout();
+    state_.onStreamCancel();
+    std::ignore = serverCallback_->onStreamCancel();
+  }
+
+  // Send cancel for the sink direction so the client stops sending.
+  if (sinkWasOpen) {
+    connection_.sendCancel(streamId_);
+  }
+
+  // Send CHUNK_TIMEOUT error to the client and free the stream.
+  StreamRpcError streamRpcError;
+  streamRpcError.code() = StreamRpcErrorCode::CHUNK_TIMEOUT;
+  streamRpcError.name_utf8() =
+      apache::thrift::TEnumTraits<StreamRpcErrorCode>::findName(
+          StreamRpcErrorCode::CHUNK_TIMEOUT);
+  streamRpcError.what_utf8() = "Sink chunk timeout";
+  connection_.sendError(
+      streamId_,
+      RocketException(
+          ErrorCode::CANCELED,
+          connection_.getPayloadSerializer()->packCompact(streamRpcError)));
+  connection_.freeStream(streamId_, /* markRequestComplete */ true);
+}
+
+void RocketBiDiClientCallback::scheduleSinkTimeout(
+    std::chrono::milliseconds chunkTimeout) {
+  if (sinkTimeout_) {
+    connection_.scheduleSinkTimeout(sinkTimeout_.get(), chunkTimeout);
+  }
+}
+
+void RocketBiDiClientCallback::cancelSinkTimeout() {
+  if (sinkTimeout_) {
+    sinkTimeout_->cancelTimeout();
+  }
+}
+
+void RocketBiDiClientCallback::SinkTimeoutCallback::incCredits(uint64_t n) {
+  if (credits_ == 0) {
+    parent_.scheduleSinkTimeout(chunkTimeout_);
+  }
+  credits_ += n;
+}
+
+void RocketBiDiClientCallback::SinkTimeoutCallback::decCredits() {
+  DCHECK(credits_ != 0);
+  if (--credits_ != 0) {
+    parent_.scheduleSinkTimeout(chunkTimeout_);
+  } else {
+    parent_.cancelSinkTimeout();
+  }
 }
 
 } // namespace apache::thrift::rocket

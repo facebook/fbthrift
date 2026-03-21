@@ -103,6 +103,9 @@ class RocketBiDiClientCallback final : public BiDiClientCallback,
   void handleConnectionClose() override;
 
   void timeoutExpired() noexcept;
+  void sinkChunkTimeoutExpired() noexcept;
+
+  void setChunkTimeout(std::chrono::milliseconds timeout);
 
   void setCompressionConfig(CompressionConfig compressionConfig) {
     compressionConfig_ = compressionConfig;
@@ -152,6 +155,31 @@ class RocketBiDiClientCallback final : public BiDiClientCallback,
 
   void scheduleTimeout();
   void cancelTimeout();
+
+  class SinkTimeoutCallback : public folly::HHWheelTimer::Callback {
+   public:
+    SinkTimeoutCallback(
+        RocketBiDiClientCallback& parent,
+        std::chrono::milliseconds chunkTimeout)
+        : parent_(parent), chunkTimeout_(chunkTimeout) {
+      DCHECK(chunkTimeout != std::chrono::milliseconds::zero());
+    }
+    void timeoutExpired() noexcept override {
+      parent_.sinkChunkTimeoutExpired();
+    }
+    void incCredits(uint64_t n);
+    void decCredits();
+
+   private:
+    RocketBiDiClientCallback& parent_;
+    std::chrono::milliseconds chunkTimeout_;
+    uint64_t credits_{0};
+  };
+
+  void scheduleSinkTimeout(std::chrono::milliseconds chunkTimeout);
+  void cancelSinkTimeout();
+
+  std::unique_ptr<SinkTimeoutCallback> sinkTimeout_;
 
   [[nodiscard]] bool freeStreamAndReturn(bool returnValue) {
     DCHECK(returnValue == false) << "Must return false when freeing the stream";

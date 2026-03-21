@@ -912,9 +912,7 @@ void ThriftServerRequestBiDi::sendBiDiThriftResponse(
   }
 
   context_.unsetMarkRequestComplete();
-  // Missing some configuration here
-  // clientCallback_->setProtoId(getProtoId());
-  // clientCallback_->setChunkTimeout(sinkConsumer.chunkTimeout);
+  clientCallback_->setChunkTimeout(bidiStreamFactory.getChunkTimeout());
   auto payload = apache::thrift::FirstResponsePayload{
       std::move(data), std::move(metadata)};
   payload.fds =

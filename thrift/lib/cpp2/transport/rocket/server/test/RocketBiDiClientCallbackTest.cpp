@@ -395,3 +395,174 @@ TEST_F(RocketBiDiClientCallbackTest, TimeoutCancelledOnConnectionClose) {
   EXPECT_CALL(serverCallback_, onStreamCancel()).Times(1);
   callback_->handleConnectionClose();
 }
+
+// --- Sink chunk timeout tests ---
+
+TEST_F(RocketBiDiClientCallbackTest, SinkTimeoutScheduledWhenCreditsGranted) {
+  makeReady();
+  callback_->setChunkTimeout(std::chrono::milliseconds{100});
+
+  EXPECT_CALL(
+      connection_, scheduleSinkTimeout(_, std::chrono::milliseconds{100}))
+      .Times(1);
+  callback_->onSinkRequestN(5);
+}
+
+TEST_F(RocketBiDiClientCallbackTest, SinkTimeoutRescheduledOnPayload) {
+  makeReady();
+  callback_->setChunkTimeout(std::chrono::milliseconds{100});
+
+  // Grant credits — timeout scheduled.
+  EXPECT_CALL(connection_, scheduleSinkTimeout(_, _)).Times(1);
+  callback_->onSinkRequestN(5);
+
+  // Receive payload — timeout rescheduled (credits go from 5 to 4).
+  EXPECT_CALL(connection_, scheduleSinkTimeout(_, _)).Times(1);
+  EXPECT_CALL(serverCallback_, onSinkNext(_)).WillOnce(Return(true));
+  auto data = folly::IOBuf::copyBuffer("test");
+  StreamPayload sp(std::move(data), StreamPayloadMetadata());
+  auto packed =
+      connection_.getPayloadSerializer()->pack(std::move(sp), false, nullptr);
+  PayloadFrame frame(kStreamId, std::move(packed), Flags().next(true));
+  callback_->handleFrame(std::move(frame));
+}
+
+TEST_F(RocketBiDiClientCallbackTest, SinkTimeoutCancelledWhenCreditsExhausted) {
+  makeReady();
+  callback_->setChunkTimeout(std::chrono::milliseconds{100});
+
+  // Grant 1 credit.
+  callback_->onSinkRequestN(1);
+
+  // Receive 1 payload — credits exhausted, timeout cancelled.
+  EXPECT_CALL(serverCallback_, onSinkNext(_)).WillOnce(Return(true));
+  auto data = folly::IOBuf::copyBuffer("test");
+  StreamPayload sp(std::move(data), StreamPayloadMetadata());
+  auto packed =
+      connection_.getPayloadSerializer()->pack(std::move(sp), false, nullptr);
+  PayloadFrame frame(kStreamId, std::move(packed), Flags().next(true));
+  callback_->handleFrame(std::move(frame));
+
+  // No more scheduleSinkTimeout calls after credits are exhausted.
+  // (The cancelSinkTimeout was called internally.)
+}
+
+TEST_F(RocketBiDiClientCallbackTest, SinkTimeoutExpiredCancelsAll) {
+  makeReady();
+  callback_->setChunkTimeout(std::chrono::milliseconds{100});
+
+  // Grant credits to arm timeout.
+  callback_->onSinkRequestN(5);
+
+  // Expect: sink error, stream cancel, cancel sent, error sent, stream freed.
+  EXPECT_CALL(serverCallback_, onSinkError(_)).WillOnce(Return(true));
+  EXPECT_CALL(serverCallback_, onStreamCancel()).WillOnce(Return(true));
+  EXPECT_CALL(connection_, sendCancel(kStreamId)).Times(1);
+  EXPECT_CALL(connection_, sendError(kStreamId, _, _)).Times(1);
+  EXPECT_CALL(connection_, freeStream(kStreamId, true)).Times(1);
+
+  callback_->sinkChunkTimeoutExpired();
+}
+
+TEST_F(RocketBiDiClientCallbackTest, SinkTimeoutCancelledOnSinkComplete) {
+  makeReady();
+  callback_->setChunkTimeout(std::chrono::milliseconds{100});
+
+  // Grant credits.
+  callback_->onSinkRequestN(5);
+
+  // Sink complete cancels the timeout.
+  EXPECT_CALL(serverCallback_, onSinkComplete()).WillOnce(Return(true));
+  callback_->onSinkComplete();
+}
+
+TEST_F(
+    RocketBiDiClientCallbackTest, SinkTimeoutExpiredWhenStreamAlreadyClosed) {
+  makeReadyWithTokens(1);
+  callback_->setChunkTimeout(std::chrono::milliseconds{100});
+
+  // Grant sink credits to arm timeout.
+  callback_->onSinkRequestN(5);
+
+  // Close the stream half first via onStreamComplete.
+  callback_->onStreamComplete();
+
+  // Now fire the sink chunk timeout. The stream is already closed, so only the
+  // sink half should be cancelled. Previously this was a use-after-free because
+  // onSinkError() would call freeStreamAndReturn() (destroying `this`) before
+  // the rest of sinkChunkTimeoutExpired() could run.
+  EXPECT_CALL(serverCallback_, onSinkError(_)).WillOnce(Return(true));
+  EXPECT_CALL(serverCallback_, onStreamCancel()).Times(0);
+  EXPECT_CALL(connection_, sendCancel(kStreamId)).Times(1);
+  EXPECT_CALL(connection_, sendError(kStreamId, _, _)).Times(1);
+  EXPECT_CALL(connection_, freeStream(kStreamId, true)).Times(1);
+
+  callback_->sinkChunkTimeoutExpired();
+}
+
+TEST_F(RocketBiDiClientCallbackTest, SinkTimeoutExpiredWhenSinkAlreadyClosed) {
+  makeReady();
+  callback_->setChunkTimeout(std::chrono::milliseconds{100});
+
+  // Grant sink credits to arm timeout.
+  callback_->onSinkRequestN(5);
+
+  // Close the sink half first via onSinkComplete.
+  EXPECT_CALL(serverCallback_, onSinkComplete()).WillOnce(Return(true));
+  callback_->onSinkComplete();
+
+  // Now fire the sink chunk timeout. The sink is already closed, so only the
+  // stream half should be cancelled.
+  EXPECT_CALL(serverCallback_, onSinkError(_)).Times(0);
+  EXPECT_CALL(serverCallback_, onStreamCancel()).WillOnce(Return(true));
+  EXPECT_CALL(connection_, sendCancel(_)).Times(0);
+  EXPECT_CALL(connection_, sendError(kStreamId, _, _)).Times(1);
+  EXPECT_CALL(connection_, freeStream(kStreamId, true)).Times(1);
+
+  callback_->sinkChunkTimeoutExpired();
+}
+
+TEST_F(RocketBiDiClientCallbackTest, SinkTimeoutCancelledOnSinkError) {
+  makeReady();
+  callback_->setChunkTimeout(std::chrono::milliseconds{100});
+
+  // Grant credits to arm timeout.
+  callback_->onSinkRequestN(5);
+
+  // Sink error cancels the timeout.
+  EXPECT_CALL(serverCallback_, onSinkError(_)).WillOnce(Return(true));
+  callback_->onSinkError(
+      folly::make_exception_wrapper<std::runtime_error>("test error"));
+}
+
+TEST_F(RocketBiDiClientCallbackTest, SinkTimeoutCancelledOnSinkCancel) {
+  makeReady();
+  callback_->setChunkTimeout(std::chrono::milliseconds{100});
+
+  // Grant credits to arm timeout.
+  callback_->onSinkRequestN(5);
+
+  // onSinkCancel cancels the timeout.
+  callback_->onSinkCancel();
+}
+
+TEST_F(RocketBiDiClientCallbackTest, SinkTimeoutCancelledOnConnectionClose) {
+  makeReady();
+  callback_->setChunkTimeout(std::chrono::milliseconds{100});
+
+  // Grant credits to arm timeout.
+  callback_->onSinkRequestN(5);
+
+  // handleConnectionClose cancels the sink timeout.
+  EXPECT_CALL(serverCallback_, onSinkError(_)).Times(1);
+  EXPECT_CALL(serverCallback_, onStreamCancel()).Times(1);
+  callback_->handleConnectionClose();
+}
+
+TEST_F(RocketBiDiClientCallbackTest, NoSinkTimeoutWithoutSetChunkTimeout) {
+  makeReady();
+
+  // Without calling setChunkTimeout, no timeout is scheduled.
+  EXPECT_CALL(connection_, scheduleSinkTimeout(_, _)).Times(0);
+  callback_->onSinkRequestN(5);
+}

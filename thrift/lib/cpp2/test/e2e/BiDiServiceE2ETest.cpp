@@ -741,21 +741,17 @@ CO_TEST_F(BiDiServiceE2ETest, CreditStarvationTimeout) {
   co_await folly::coro::collectAll(std::move(sinkTask), std::move(streamTask));
 }
 
-CO_TEST_F(BiDiServiceE2ETest, CreditStarvationTimeoutStreamAlreadyClosed) {
-  // Server produces a fixed number of items then completes the stream.
-  // Client stops consuming after one item, so the server exhausts credits
-  // while producing. The credit starvation timeout fires after the stream
-  // half is already closed, exercising the path where only the sink needs
-  // cancellation.
-  constexpr int64_t kStreamItems = 5;
-
+CO_TEST_F(BiDiServiceE2ETest, CreditStarvationTimeoutClientStopsConsuming) {
+  // Server produces items indefinitely. Client stops consuming after one
+  // item, so the server eventually exhausts credits. The credit starvation
+  // timeout fires, tearing down both halves of the bidi interaction.
   struct Handler : public ServiceHandler<detail::test::TestBiDiService> {
     folly::coro::Task<StreamTransformation<int64_t, int64_t>> co_intStream()
         override {
       co_return StreamTransformation<int64_t, int64_t>{
           [](folly::coro::AsyncGenerator<int64_t&&> /*input*/)
               -> folly::coro::AsyncGenerator<int64_t&&> {
-            for (int64_t i = 0; i < kStreamItems; ++i) {
+            for (int64_t i = 0;; ++i) {
               co_yield int64_t(i);
             }
           }};
@@ -794,19 +790,131 @@ CO_TEST_F(BiDiServiceE2ETest, CreditStarvationTimeoutStreamAlreadyClosed) {
 
         co_await folly::coro::sleep(std::chrono::milliseconds(2000));
 
-        // The stream should complete normally (server finished producing)
-        // or we get a timeout error. Either way the interaction ends.
-        bool completed = false;
+        // The credit starvation timeout should fire.
         bool gotTimeout = false;
         try {
           while (co_await streamGen.next()) {
           }
-          completed = true;
         } catch (const TApplicationException& ex) {
           EXPECT_EQ(ex.getType(), TApplicationException::TIMEOUT);
           gotTimeout = true;
         }
-        EXPECT_TRUE(completed || gotTimeout);
+        EXPECT_TRUE(gotTimeout);
+      });
+
+  co_await folly::coro::collectAll(std::move(sinkTask), std::move(streamTask));
+}
+
+CO_TEST_F(BiDiServiceE2ETest, SinkChunkTimeout) {
+  // Server sets a chunk timeout on the sink direction. Client sends one item
+  // then pauses longer than the timeout. The server-side timeout fires,
+  // cancelling both halves of the bidi interaction.
+  struct Handler : public ServiceHandler<detail::test::TestBiDiService> {
+    folly::coro::Task<StreamTransformation<std::string, std::string>> co_echo()
+        override {
+      co_return StreamTransformation<std::string, std::string>{
+          .func = [](folly::coro::AsyncGenerator<std::string&&> input)
+              -> folly::coro::AsyncGenerator<std::string&&> {
+            while (auto item = co_await input.next()) {
+              co_yield std::move(*item);
+            }
+          },
+          .chunkTimeout = std::chrono::milliseconds{200}};
+    }
+  };
+
+  testConfig({std::make_shared<Handler>()});
+  auto client = makeClient<detail::test::TestBiDiService>();
+  auto bidi = co_await client->co_echo();
+
+  // Sink: send one item, then pause longer than the chunk timeout.
+  auto sinkTask = folly::coro::co_invoke(
+      [clientSink = std::move(bidi.sink)]() mutable -> folly::coro::Task<void> {
+        try {
+          co_await std::move(clientSink)
+              .sink(
+                  folly::coro::co_invoke(
+                      []() -> folly::coro::AsyncGenerator<std::string&&> {
+                        co_yield std::string("hello");
+                        // Pause longer than the 200ms chunk timeout.
+                        co_await folly::coro::sleep(
+                            std::chrono::milliseconds(2000));
+                        co_yield std::string("should not arrive");
+                      }));
+        } catch (...) {
+          // Expected: server cancels the sink on chunk timeout.
+        }
+      });
+
+  auto streamTask = folly::coro::co_invoke(
+      [streamGen = std::move(bidi.stream).toAsyncGenerator()]() mutable
+          -> folly::coro::Task<void> {
+        // Read the first echoed item.
+        auto first = co_await streamGen.next();
+        EXPECT_TRUE(first.has_value());
+        EXPECT_EQ(*first, "hello");
+
+        // The chunk timeout fires while we wait. Drain any buffered items,
+        // then expect the timeout error.
+        bool gotTimeout = false;
+        try {
+          while (co_await streamGen.next()) {
+          }
+        } catch (const TApplicationException& ex) {
+          EXPECT_EQ(ex.getType(), TApplicationException::TIMEOUT);
+          gotTimeout = true;
+        }
+        EXPECT_TRUE(gotTimeout);
+      });
+
+  co_await folly::coro::collectAll(std::move(sinkTask), std::move(streamTask));
+}
+
+CO_TEST_F(BiDiServiceE2ETest, NoSinkChunkTimeoutWhenClientSendsPromptly) {
+  // Server sets a chunk timeout, but the client sends items fast enough that
+  // the timeout never fires. The interaction completes normally.
+  constexpr int64_t kNumItems = 20;
+
+  struct Handler : public ServiceHandler<detail::test::TestBiDiService> {
+    folly::coro::Task<StreamTransformation<int64_t, int64_t>> co_intStream()
+        override {
+      co_return StreamTransformation<int64_t, int64_t>{
+          .func = [](folly::coro::AsyncGenerator<int64_t&&> input)
+              -> folly::coro::AsyncGenerator<int64_t&&> {
+            while (auto item = co_await input.next()) {
+              co_yield std::move(*item);
+            }
+          },
+          .chunkTimeout = std::chrono::milliseconds{500}};
+    }
+  };
+
+  testConfig({std::make_shared<Handler>()});
+  auto client = makeClient<detail::test::TestBiDiService>();
+  auto bidi = co_await client->co_intStream();
+
+  auto sinkTask = folly::coro::co_invoke(
+      [clientSink = std::move(bidi.sink)]() mutable -> folly::coro::Task<void> {
+        co_await std::move(clientSink)
+            .sink(
+                folly::coro::co_invoke(
+                    []() -> folly::coro::AsyncGenerator<int64_t&&> {
+                      for (int64_t i = 0; i < kNumItems; ++i) {
+                        co_yield int64_t(i);
+                      }
+                    }));
+      });
+
+  auto streamTask = folly::coro::co_invoke(
+      [streamGen = std::move(bidi.stream).toAsyncGenerator()]() mutable
+          -> folly::coro::Task<void> {
+        for (int64_t i = 0; i < kNumItems; ++i) {
+          auto next = co_await streamGen.next();
+          EXPECT_TRUE(next.has_value());
+          EXPECT_EQ(*next, i);
+        }
+        // Stream should complete normally, no timeout.
+        EXPECT_FALSE(co_await streamGen.next());
       });
 
   co_await folly::coro::collectAll(std::move(sinkTask), std::move(streamTask));
