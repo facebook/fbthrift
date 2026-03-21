@@ -16,7 +16,6 @@
 
 #pragma once
 
-#include <cstdint>
 #include <string>
 
 #include <thrift/compiler/ast/t_program.h>
@@ -34,16 +33,6 @@ namespace apache::thrift::compiler::csharp {
  * banned at the IDL level rather than silently mangled.
  */
 std::string get_csharp_property_name(const std::string& name);
-
-/**
- * Returns the TType wire type byte for a given Thrift type.
- * Examples:
- *   bool -> 2 (BOOL)
- *   i32 -> 8 (I32)
- *   string -> 11 (STRING)
- *   struct -> 12 (STRUCT)
- */
-uint8_t get_csharp_ttype(const t_type* type);
 
 /**
  * Gets the C# namespace for a program.

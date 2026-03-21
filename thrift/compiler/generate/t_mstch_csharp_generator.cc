@@ -83,10 +83,6 @@ class t_csharp_EXPERIMENTAL_generator : public t_whisker_generator {
     auto base = t_whisker_generator::make_prototype_for_type(proto);
     auto def = whisker::dsl::prototype_builder<h_type>::extends(base);
 
-    def.property("csharp_ttype_byte", [](const t_type& self) {
-      return static_cast<int64_t>(csharp::get_csharp_ttype(&self));
-    });
-
     def.property("nullable?", [](const t_type& self) {
       return csharp::is_csharp_nullable_type(&self);
     });

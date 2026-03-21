@@ -21,7 +21,7 @@ using System.IO;
 using System.Linq;
 using FBThrift;
 
-namespace Facebook.Com.Thrift.Test.Fixtures.Terse_write
+namespace facebook.thrift.test.fixtures.terse_write
 {
     /// <summary>
     /// Auto-generated enum from MyEnum

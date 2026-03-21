@@ -15,9 +15,62 @@
  */
 
 #include <gtest/gtest.h>
+#include <thrift/compiler/ast/t_package.h>
+#include <thrift/compiler/ast/t_program.h>
+#include <thrift/compiler/diagnostic.h>
 #include <thrift/compiler/generate/csharp/util.h>
+#include <thrift/compiler/source_location.h>
 
 namespace apache::thrift::compiler::csharp {
+
+// === get_csharp_namespace ===
+
+TEST(CSharpUtilTest, GetCSharpNamespace_ExplicitNamespaceTakesPriority) {
+  t_program program("", "");
+  program.set_namespace("csharp", "My.Explicit.Namespace");
+  program.set_package(t_package{"test.dev/fixtures/basic"});
+
+  source_manager source_mgr;
+  diagnostics_engine diags = diagnostics_engine::ignore_all(source_mgr);
+
+  EXPECT_EQ(get_csharp_namespace(program, diags), "My.Explicit.Namespace");
+}
+
+TEST(CSharpUtilTest, GetCSharpNamespace_DerivedFromPackageStripsTLD) {
+  t_program program("program.thrift", "/path/to/program.thrift");
+  program.set_package(t_package{"test.dev/fixtures/basic"});
+
+  source_manager source_mgr;
+  diagnostics_engine diags = diagnostics_engine::ignore_all(source_mgr);
+
+  // TLD ("dev") is stripped, consistent with other language generators
+  EXPECT_EQ(get_csharp_namespace(program, diags), "test.fixtures.basic");
+}
+
+TEST(CSharpUtilTest, GetCSharpNamespace_DerivedFromLongerPackage) {
+  t_program program("program.thrift", "/path/to/program.thrift");
+  program.set_package(
+      t_package{"facebook.com/thrift/compiler/test/fixtures/default_values"});
+
+  source_manager source_mgr;
+  diagnostics_engine diags = diagnostics_engine::ignore_all(source_mgr);
+
+  // TLD ("com") is stripped
+  EXPECT_EQ(
+      get_csharp_namespace(program, diags),
+      "facebook.thrift.compiler.test.fixtures.default_values");
+}
+
+TEST(CSharpUtilTest, GetCSharpNamespace_EmptyPackageEmitsError) {
+  t_program program("test_program", "test_program");
+
+  source_manager source_mgr;
+  diagnostic_results results;
+  diagnostics_engine diags(source_mgr, results);
+
+  EXPECT_EQ(get_csharp_namespace(program, diags), "test_program");
+  EXPECT_TRUE(diags.has_errors());
+}
 
 // === get_csharp_property_name ===
 

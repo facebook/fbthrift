@@ -21,7 +21,7 @@ using System.IO;
 using System.Linq;
 using FBThrift;
 
-namespace Facebook.Com.Thrift.Compiler.Test.Fixtures.Default_values
+namespace facebook.thrift.compiler.test.fixtures.default_values
 {
     /// <summary>
     /// Auto-generated from TrivialStruct

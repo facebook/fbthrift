@@ -21,7 +21,7 @@ using System.IO;
 using System.Linq;
 using FBThrift;
 
-namespace Facebook.Com.Thrift.Annotation.Cpp
+namespace facebook.thrift.annotation.cpp
 {
     /// <summary>
     /// Auto-generated enum from RefType

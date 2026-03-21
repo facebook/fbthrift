@@ -34,8 +34,7 @@ using {{inc.alias}} = {{inc.csharp_namespace}};
 
 namespace {{root_program.csharp_namespace}}
 {
-{{! Typedef aliases must be inside the namespace block so they can resolve
-    types defined in the same namespace (e.g. enum/struct types).
+{{! Generate typedef aliases INSIDE namespace - maps Thrift typedefs to C# using aliases.
     NOTE: Skip typedefs that resolve to types incompatible with C# using aliases:
     - binary -> byte[] (arrays not allowed in using aliases until C# 12 / .NET 8+)
     - float/double -> C# keywords can't be used directly in using aliases

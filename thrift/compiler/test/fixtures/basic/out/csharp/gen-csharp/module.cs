@@ -21,7 +21,7 @@ using System.IO;
 using System.Linq;
 using FBThrift;
 
-namespace Test.Dev.Fixtures.Basic
+namespace test.fixtures.basic
 {
     using @MyEnumAlias = @MyEnum;
     using @MyDataItemAlias = @MyDataItem;

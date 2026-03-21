@@ -336,7 +336,7 @@ This gives the following default namespaces:
 | Language    | Target(s)       | Namespace               |
 | ----------- | --------------- | ----------------------- |
 | C++         | `cpp2`          | `meta.search.query`     |
-| C#          | `csharp`        | `Meta.Search.Query` |
+| C#          | `csharp`        | `meta.search.query` |
 | Python      | `python`, `py3` | `meta.search`           |
 | Hack        | `hack`          | `meta.search.query`     |
 | Java        | `java.swift`    | `com.meta.search.query` |
@@ -350,7 +350,7 @@ package "meta.com/search"
 | Language    | Target(s)       | Namespace         |
 | ----------- | --------------- | ----------------- |
 | C++         | `cpp2`          | `meta.search`     |
-| C#          | `csharp`        | `Meta.Search` |
+| C#          | `csharp`        | `meta.search` |
 | Python      | `python`, `py3` | `meta.search`     |
 | Hack        | `hack`          | `meta.search`     |
 | Java        | `java.swift`    | `com.meta.search` |

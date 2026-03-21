@@ -22,7 +22,7 @@ using System.Linq;
 using FBThrift;
 using included_enum = Test.Fixtures.Enums.Included;
 
-namespace Test.Dev.Fixtures.Enums
+namespace test.fixtures.enums
 {
     using @IncludedEnumAlias = Test.Fixtures.Enums.Included.@IncludedEnum;
     /// <summary>

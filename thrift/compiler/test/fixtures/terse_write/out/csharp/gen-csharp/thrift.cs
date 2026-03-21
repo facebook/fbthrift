@@ -21,7 +21,7 @@ using System.IO;
 using System.Linq;
 using FBThrift;
 
-namespace Facebook.Com.Thrift.Annotation
+namespace facebook.thrift.annotation
 {
     /// <summary>
     /// Auto-generated enum from RpcPriority

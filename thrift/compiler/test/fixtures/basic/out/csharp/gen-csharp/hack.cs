@@ -21,7 +21,7 @@ using System.IO;
 using System.Linq;
 using FBThrift;
 
-namespace Facebook.Com.Thrift.Annotation.Hack
+namespace facebook.thrift.annotation.hack
 {
     /// <summary>
     /// Auto-generated from FieldWrapper
