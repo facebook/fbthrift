@@ -17,6 +17,7 @@
 #pragma once
 
 #include <folly/io/async/AsyncSocket.h>
+#include <folly/io/async/HHWheelTimer.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/compression/CompressionManager.h>
@@ -101,6 +102,8 @@ class RocketBiDiClientCallback final : public BiDiClientCallback,
   void handleFrame(ExtFrame&&) override;
   void handleConnectionClose() override;
 
+  void timeoutExpired() noexcept;
+
   void setCompressionConfig(CompressionConfig compressionConfig) {
     compressionConfig_ = compressionConfig;
   }
@@ -124,6 +127,8 @@ class RocketBiDiClientCallback final : public BiDiClientCallback,
   BidirectionalStreamState state_;
 
   int32_t initialTokens_{0};
+  uint64_t streamTokens_{0};
+  std::unique_ptr<folly::HHWheelTimer::Callback> timeoutCallback_;
 
   std::optional<CompressionConfig> compressionConfig_;
   folly::Optional<Payload> bufferedFragment_;
@@ -144,6 +149,9 @@ class RocketBiDiClientCallback final : public BiDiClientCallback,
    * or folly::none if still buffering intermediate fragments.
    */
   folly::Optional<Payload> bufferOrGetFullPayload(PayloadFrame&& payloadFrame);
+
+  void scheduleTimeout();
+  void cancelTimeout();
 
   [[nodiscard]] bool freeStreamAndReturn(bool returnValue) {
     DCHECK(returnValue == false) << "Must return false when freeing the stream";

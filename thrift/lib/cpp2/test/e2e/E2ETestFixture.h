@@ -36,11 +36,11 @@ class E2ETestFixture : public ::testing::Test {
  public:
   struct TestConfig {
     std::shared_ptr<AsyncProcessorFactory> handler;
+    ScopedServerInterfaceThread::ServerConfigCb serverConfigCb = {};
     MakeChannelFunc channelFunc =
         [](folly::AsyncSocket::UniquePtr socket) -> RequestChannel::Ptr {
       return RocketClientChannel::newChannel(std::move(socket));
     };
-    ServerConfigCb serverConfigCb = {};
   };
 
   void testConfig(TestConfig&& config) {

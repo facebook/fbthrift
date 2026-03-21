@@ -54,6 +54,14 @@ class RocketBiDiClientCallbackTest : public ::testing::Test {
         &serverCallback_);
   }
 
+  void makeReadyWithTokens(int32_t tokens) {
+    callback_ = std::make_unique<RocketBiDiClientCallback>(
+        kStreamId, connection_, tokens);
+    EXPECT_CALL(serverCallback_, onStreamRequestN(tokens))
+        .WillOnce(Return(true));
+    makeReady();
+  }
+
   NiceMock<MockIRocketServerConnection> connection_;
   NiceMock<MockBiDiServerCallback> serverCallback_;
   std::unique_ptr<RocketBiDiClientCallback> callback_;
@@ -217,4 +225,173 @@ TEST_F(RocketBiDiClientCallbackTest, HandlePayloadNextAndComplete) {
   PayloadFrame frame(
       kStreamId, std::move(packed), Flags().next(true).complete(true));
   callback_->handleFrame(std::move(frame));
+}
+
+// --- Stream credit starvation timeout tests ---
+
+TEST_F(RocketBiDiClientCallbackTest, TimeoutScheduledWhenTokensExhausted) {
+  makeReadyWithTokens(2);
+
+  // First onStreamNext: tokens go from 2 to 1, no timeout yet.
+  EXPECT_CALL(connection_, scheduleStreamTimeout(_)).Times(0);
+  callback_->onStreamNext(
+      StreamPayload(folly::IOBuf::copyBuffer("a"), StreamPayloadMetadata()));
+
+  // Second onStreamNext: tokens go from 1 to 0, timeout scheduled.
+  EXPECT_CALL(connection_, scheduleStreamTimeout(_)).Times(1);
+  callback_->onStreamNext(
+      StreamPayload(folly::IOBuf::copyBuffer("b"), StreamPayloadMetadata()));
+}
+
+TEST_F(RocketBiDiClientCallbackTest, TimeoutNotScheduledWhenTokensRemain) {
+  makeReadyWithTokens(2);
+
+  EXPECT_CALL(connection_, scheduleStreamTimeout(_)).Times(0);
+  callback_->onStreamNext(
+      StreamPayload(folly::IOBuf::copyBuffer("a"), StreamPayloadMetadata()));
+}
+
+TEST_F(RocketBiDiClientCallbackTest, TimeoutCancelledOnRequestN) {
+  makeReadyWithTokens(1);
+
+  // Exhaust tokens — timeout scheduled.
+  EXPECT_CALL(connection_, scheduleStreamTimeout(_)).Times(1);
+  callback_->onStreamNext(
+      StreamPayload(folly::IOBuf::copyBuffer("a"), StreamPayloadMetadata()));
+
+  // Client sends REQUEST_N — timeout cancelled, tokens replenished.
+  EXPECT_CALL(serverCallback_, onStreamRequestN(5)).WillOnce(Return(true));
+  RequestNFrame frame(kStreamId, 5);
+  callback_->handleFrame(std::move(frame));
+
+  // Verify timeout is cancelled by sending more payloads without timeout
+  // being scheduled until tokens are exhausted again.
+  EXPECT_CALL(connection_, scheduleStreamTimeout(_)).Times(0);
+  for (int i = 0; i < 4; ++i) {
+    callback_->onStreamNext(
+        StreamPayload(folly::IOBuf::copyBuffer("x"), StreamPayloadMetadata()));
+  }
+
+  // 5th payload exhausts tokens again.
+  EXPECT_CALL(connection_, scheduleStreamTimeout(_)).Times(1);
+  callback_->onStreamNext(
+      StreamPayload(folly::IOBuf::copyBuffer("x"), StreamPayloadMetadata()));
+}
+
+TEST_F(RocketBiDiClientCallbackTest, TimeoutExpiredCancelsStreamAndSink) {
+  makeReadyWithTokens(1);
+
+  // Exhaust tokens.
+  callback_->onStreamNext(
+      StreamPayload(folly::IOBuf::copyBuffer("a"), StreamPayloadMetadata()));
+
+  // Expect: sink error notified, stream cancelled, cancel + error sent, freed.
+  // Sink is notified through the Stapler before stream cancel to prevent
+  // a use-after-free from the deferred canceled() callback.
+  EXPECT_CALL(serverCallback_, onSinkError(_)).WillOnce(Return(true));
+  EXPECT_CALL(serverCallback_, onStreamCancel()).WillOnce(Return(true));
+  EXPECT_CALL(connection_, sendCancel(kStreamId)).Times(1);
+  EXPECT_CALL(connection_, sendError(kStreamId, _, _)).Times(1);
+  EXPECT_CALL(connection_, freeStream(kStreamId, true)).Times(1);
+
+  callback_->timeoutExpired();
+}
+
+TEST_F(RocketBiDiClientCallbackTest, TimeoutExpiredWhenSinkAlreadyClosed) {
+  makeReadyWithTokens(1);
+
+  // Close sink first via onSinkComplete.
+  EXPECT_CALL(serverCallback_, onSinkComplete()).WillOnce(Return(true));
+  callback_->onSinkComplete();
+
+  // Exhaust tokens.
+  callback_->onStreamNext(
+      StreamPayload(folly::IOBuf::copyBuffer("a"), StreamPayloadMetadata()));
+
+  // Sink is already closed, so no sendCancel should be called.
+  EXPECT_CALL(serverCallback_, onStreamCancel()).WillOnce(Return(true));
+  EXPECT_CALL(connection_, sendCancel(_)).Times(0);
+  EXPECT_CALL(connection_, sendError(kStreamId, _, _)).Times(1);
+  EXPECT_CALL(connection_, freeStream(kStreamId, true)).Times(1);
+
+  callback_->timeoutExpired();
+}
+
+TEST_F(RocketBiDiClientCallbackTest, TimeoutExpiredWhenStreamAlreadyClosed) {
+  makeReadyWithTokens(1);
+
+  // Close the stream half first via onStreamComplete.
+  callback_->onStreamNext(
+      StreamPayload(folly::IOBuf::copyBuffer("a"), StreamPayloadMetadata()));
+  callback_->onStreamComplete();
+
+  // Stream is already closed, so no onStreamCancel should be called.
+  // Only the sink half should be notified.
+  EXPECT_CALL(serverCallback_, onSinkError(_)).WillOnce(Return(true));
+  EXPECT_CALL(serverCallback_, onStreamCancel()).Times(0);
+  EXPECT_CALL(connection_, sendCancel(kStreamId)).Times(1);
+  EXPECT_CALL(connection_, sendError(kStreamId, _, _)).Times(1);
+  EXPECT_CALL(connection_, freeStream(kStreamId, true)).Times(1);
+
+  callback_->timeoutExpired();
+}
+
+TEST_F(RocketBiDiClientCallbackTest, TimeoutCancelledOnStreamError) {
+  makeReadyWithTokens(1);
+
+  // Exhaust tokens — timeout scheduled.
+  EXPECT_CALL(connection_, scheduleStreamTimeout(_)).Times(1);
+  callback_->onStreamNext(
+      StreamPayload(folly::IOBuf::copyBuffer("a"), StreamPayloadMetadata()));
+
+  // onStreamError cancels the timeout.
+  callback_->onStreamError(
+      folly::make_exception_wrapper<RocketException>(
+          ErrorCode::APPLICATION_ERROR, "err"));
+
+  // Verify no timeout fires.
+  EXPECT_CALL(serverCallback_, onStreamCancel()).Times(0);
+}
+
+TEST_F(RocketBiDiClientCallbackTest, TimeoutCancelledOnStreamCancel) {
+  makeReadyWithTokens(1);
+
+  // Exhaust tokens — timeout scheduled.
+  EXPECT_CALL(connection_, scheduleStreamTimeout(_)).Times(1);
+  callback_->onStreamNext(
+      StreamPayload(folly::IOBuf::copyBuffer("a"), StreamPayloadMetadata()));
+
+  // onStreamCancel cancels the timeout.
+  EXPECT_CALL(serverCallback_, onStreamCancel()).WillOnce(Return(true));
+  callback_->onStreamCancel();
+}
+
+TEST_F(RocketBiDiClientCallbackTest, TimeoutCancelledOnStreamComplete) {
+  makeReadyWithTokens(1);
+
+  // Exhaust tokens — timeout scheduled.
+  EXPECT_CALL(connection_, scheduleStreamTimeout(_)).Times(1);
+  callback_->onStreamNext(
+      StreamPayload(folly::IOBuf::copyBuffer("a"), StreamPayloadMetadata()));
+
+  // onStreamComplete cancels the timeout.
+  callback_->onStreamComplete();
+
+  // Verify no timeout fires (if it did, it would call onStreamCancel which
+  // we don't expect).
+  EXPECT_CALL(serverCallback_, onStreamCancel()).Times(0);
+}
+
+TEST_F(RocketBiDiClientCallbackTest, TimeoutCancelledOnConnectionClose) {
+  makeReadyWithTokens(1);
+
+  // Exhaust tokens — timeout scheduled.
+  EXPECT_CALL(connection_, scheduleStreamTimeout(_)).Times(1);
+  callback_->onStreamNext(
+      StreamPayload(folly::IOBuf::copyBuffer("a"), StreamPayloadMetadata()));
+
+  // handleConnectionClose cancels the timeout.
+  EXPECT_CALL(serverCallback_, onSinkError(_)).Times(1);
+  EXPECT_CALL(serverCallback_, onStreamCancel()).Times(1);
+  callback_->handleConnectionClose();
 }

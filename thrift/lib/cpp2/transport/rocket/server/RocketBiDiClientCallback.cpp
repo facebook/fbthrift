@@ -26,6 +26,18 @@
 
 namespace apache::thrift::rocket {
 
+namespace {
+class BiDiTimeoutCallback : public folly::HHWheelTimer::Callback {
+ public:
+  explicit BiDiTimeoutCallback(RocketBiDiClientCallback& parent)
+      : parent_(parent) {}
+  void timeoutExpired() noexcept override { parent_.timeoutExpired(); }
+
+ private:
+  RocketBiDiClientCallback& parent_;
+};
+} // namespace
+
 //
 //  BiDiClientCallback methods, called by server-side (bridge).
 //  These are "outgoing" methods, e.g. server calls client
@@ -94,6 +106,11 @@ bool RocketBiDiClientCallback::onSinkRequestN(int32_t n) {
 }
 
 bool RocketBiDiClientCallback::onStreamNext(StreamPayload&& payload) {
+  DCHECK_NE(streamTokens_, 0u);
+  if (!--streamTokens_) {
+    scheduleTimeout();
+  }
+
   applyCompressionConfigIfNeeded(payload);
   sendPayload(std::move(payload), /* next */ true);
 
@@ -101,6 +118,7 @@ bool RocketBiDiClientCallback::onStreamNext(StreamPayload&& payload) {
 }
 
 bool RocketBiDiClientCallback::onStreamError(folly::exception_wrapper ew) {
+  cancelTimeout();
   state_.onStreamError();
   ew.handle(
       [this](RocketException& rex) {
@@ -120,6 +138,7 @@ bool RocketBiDiClientCallback::onStreamError(folly::exception_wrapper ew) {
 }
 
 bool RocketBiDiClientCallback::onStreamComplete() {
+  cancelTimeout();
   state_.onStreamComplete();
   sendEmptyPayload(/* complete */ true);
 
@@ -137,11 +156,17 @@ bool RocketBiDiClientCallback::onStreamComplete() {
 
 bool RocketBiDiClientCallback::onStreamRequestN(int32_t n) {
   DCHECK(state_.isStreamOpen());
+  if (n <= 0) {
+    return !serverCallback_->onStreamRequestN(n);
+  }
+  cancelTimeout();
+  streamTokens_ += n;
   return serverCallback_->onStreamRequestN(n);
 }
 
 bool RocketBiDiClientCallback::onStreamCancel() {
   DCHECK(state_.isStreamOpen());
+  cancelTimeout();
 
   state_.onStreamCancel();
   bool wasTerminal = state_.isTerminal();
@@ -374,6 +399,7 @@ void RocketBiDiClientCallback::handleFrame(ExtFrame&& extFrame) {
 }
 
 void RocketBiDiClientCallback::handleConnectionClose() {
+  cancelTimeout();
   if (!serverCallbackReady()) {
     return;
   }
@@ -390,6 +416,58 @@ void RocketBiDiClientCallback::handleConnectionClose() {
   if (isStreamOpen()) {
     std::ignore = serverCallback_->onStreamCancel();
   }
+}
+
+void RocketBiDiClientCallback::timeoutExpired() noexcept {
+  DCHECK_EQ(0u, streamTokens_);
+
+  // Credit timeout is fatal for the entire bidi interaction.
+  // Notify sink error through the Stapler BEFORE cancelling the stream.
+  // Cancelling the stream triggers cleanup of the sink bridge's input
+  // generator, which posts a deferred canceled() callback. If the sink is
+  // already cancelled through the Stapler, the bridge's clientCb_ will be
+  // null and the deferred callback is a no-op. Without this ordering,
+  // freeStream() destroys this callback while the deferred callback still
+  // holds a reference, causing a use-after-free.
+  if (isSinkOpen()) {
+    std::ignore = serverCallback_->onSinkError(
+        folly::make_exception_wrapper<TApplicationException>(
+            TApplicationException::TApplicationExceptionType::TIMEOUT,
+            "BiDi stream credit timeout"));
+  }
+  if (isStreamOpen()) {
+    std::ignore = serverCallback_->onStreamCancel();
+  }
+
+  // Send cancel for the sink direction so the client stops sending.
+  if (isSinkOpen()) {
+    connection_.sendCancel(streamId_);
+  }
+
+  // Send CREDIT_TIMEOUT error to the client and free the stream.
+  StreamRpcError streamRpcError;
+  streamRpcError.code() = StreamRpcErrorCode::CREDIT_TIMEOUT;
+  streamRpcError.name_utf8() =
+      apache::thrift::TEnumTraits<StreamRpcErrorCode>::findName(
+          StreamRpcErrorCode::CREDIT_TIMEOUT);
+  streamRpcError.what_utf8() = "BiDi stream credit timeout";
+  connection_.sendError(
+      streamId_,
+      RocketException(
+          ErrorCode::CANCELED,
+          connection_.getPayloadSerializer()->packCompact(streamRpcError)));
+  connection_.freeStream(streamId_, /* markRequestComplete */ true);
+}
+
+void RocketBiDiClientCallback::scheduleTimeout() {
+  if (!timeoutCallback_) {
+    timeoutCallback_ = std::make_unique<BiDiTimeoutCallback>(*this);
+  }
+  connection_.scheduleStreamTimeout(timeoutCallback_.get());
+}
+
+void RocketBiDiClientCallback::cancelTimeout() {
+  timeoutCallback_.reset();
 }
 
 } // namespace apache::thrift::rocket
