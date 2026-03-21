@@ -60,3 +60,53 @@ Map<
 >
   {{/if (not (string.empty? type.javaType))}}
 {{/let partial}}
+
+{{! Defines the mapping of a Thrift type to the Java TType constant name. }}
+{{#let export partial ttype |type|}}
+  {{#pragma ignore-newlines}}
+{{#if type.typedef?}}{{#partial ttype type=type.true_type}}
+{{#else if type.void?}}VOID
+{{#else if type.string?}}STRING
+{{#else if type.binary?}}STRING
+{{#else if type.bool?}}BOOL
+{{#else if type.byte?}}BYTE
+{{#else if type.i16?}}I16
+{{#else if type.i32?}}I32
+{{#else if type.i64?}}I64
+{{#else if type.float?}}FLOAT
+{{#else if type.double?}}DOUBLE
+{{#else if type.structured?}}STRUCT
+{{#else if type.enum?}}I32
+{{#else if type.list?}}LIST
+{{#else if type.set?}}SET
+{{#else if type.map?}}MAP
+{{/if type.typedef?}}
+{{/let partial}}
+
+{{! Maps a field's qualifier to the Java Requiredness enum constant. }}
+{{#let export partial requiredness |field|}}
+  {{#pragma ignore-newlines}}
+{{#if field.required?}}Requiredness.REQUIRED
+{{#else if field.optional?}}Requiredness.OPTIONAL
+{{#else if field.terse?}}Requiredness.TERSE
+{{#else}}Requiredness.NONE
+{{/if field.required?}}
+{{/let partial}}
+
+{{! Defines a Java default value for a given Thrift type.
+    Recursively resolves through typedefs, returns zero-values for primitives,
+    fromInteger(0) for enums, and null for everything else. }}
+{{#let export partial java_default_value |type|}}
+  {{#pragma ignore-newlines}}
+{{#if type.typedef?}}{{#partial java_default_value type=type.true_type}}
+{{#else if type.bool?}}false
+{{#else if type.byte?}}0
+{{#else if type.i16?}}0
+{{#else if type.i32?}}0
+{{#else if type.i64?}}0L
+{{#else if type.float?}}0.f
+{{#else if type.double?}}0.
+{{#else if type.enum?}}{{type.program.javaPackage}}.{{type.javaCapitalName}}.fromInteger(0)
+{{#else}}null
+{{/if type.typedef?}}
+{{/let partial}}

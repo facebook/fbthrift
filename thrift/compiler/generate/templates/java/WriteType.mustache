@@ -57,7 +57,7 @@
   }}{{/type:isAdapterSet?}}{{!
 }}{{/type:typedef?}}{{!
 }}{{^type:typedef?}}{{!
-}}{{#type:set?}}oprot.writeSetBegin(new TSet(TType.{{#type:set_elem_type}}{{> TType}}{{/type:set_elem_type}}, _iter{{field:prevNestedDepth}}{{> KeyValue}}.size()));
+}}{{#type:set?}}oprot.writeSetBegin(new TSet(TType.{{#type:set_elem_type}}{{#partial types.ttype type=type:self}}{{/type:set_elem_type}}, _iter{{field:prevNestedDepth}}{{> KeyValue}}.size()));
         for ({{#type:set_elem_type}}{{> AdaptedType}}{{/type:set_elem_type}} _iter{{field:nestedDepth}} : _iter{{field:prevNestedDepth}}{{> KeyValue}}) {
           {{field:setIsNested}}{{type:setIsNotMap}}{{!
           }}{{#type:set_elem_type}}{{!
@@ -69,7 +69,7 @@
 }}{{/type:set?}}{{!
 
 }}{{#type:list?}}{{!
-}}oprot.writeListBegin(new TList(TType.{{#type:list_elem_type}}{{> TType}}{{/type:list_elem_type}}, _iter{{field:prevNestedDepth}}{{> KeyValue}}.size()));
+}}oprot.writeListBegin(new TList(TType.{{#type:list_elem_type}}{{#partial types.ttype type=type:self}}{{/type:list_elem_type}}, _iter{{field:prevNestedDepth}}{{> KeyValue}}.size()));
         for ({{#type:list_elem_type}}{{> AdaptedType}}{{/type:list_elem_type}} _iter{{field:nestedDepth}} : _iter{{field:prevNestedDepth}}{{> KeyValue}}) {
           {{field:setIsNested}}{{type:setIsNotMap}}{{!
           }}{{#type:list_elem_type}}{{!
@@ -81,7 +81,7 @@
 }}{{/type:list?}}{{!
 
 }}{{#type:map?}}{{!
-}}oprot.writeMapBegin(new TMap(TType.{{#type:key_type}}{{> TType}}{{/type:key_type}}, TType.{{#type:value_type}}{{> TType}}{{/type:value_type}}, _iter{{field:prevNestedDepth}}{{> KeyValue}}.size()));
+}}oprot.writeMapBegin(new TMap(TType.{{#type:key_type}}{{#partial types.ttype type=type:self}}{{/type:key_type}}, TType.{{#type:value_type}}{{#partial types.ttype type=type:self}}{{/type:value_type}}, _iter{{field:prevNestedDepth}}{{> KeyValue}}.size()));
         for (Map.Entry<{{#type:key_type}}{{> BoxedType}}{{/type:key_type}}, {{#type:value_type}}{{> BoxedType}}{{/type:value_type}}> _iter{{field:nestedDepth}} : _iter{{field:prevNestedDepth}}{{> KeyValue}}.entrySet()) {
           {{field:setIsNested}}{{!
 

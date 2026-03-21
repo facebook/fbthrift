@@ -21,7 +21,7 @@
 }}{{/type:typedef?}}{{!
 }}{{^type:typedef?}}{{!
 }}{{#type:set?}}{{^function:isNested?}}oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.SET_FIELD);{{/function:isNested?}}
-      oprot.writeSetBegin(new TSet(TType.{{#type:set_elem_type}}{{> TType}}{{/type:set_elem_type}}, _iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.size()));
+      oprot.writeSetBegin(new TSet(TType.{{#type:set_elem_type}}{{#partial types.ttype type=type:self}}{{/type:set_elem_type}}, _iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.size()));
         for ({{#type:set_elem_type}}{{> Type}}{{/type:set_elem_type}} _iter{{function:nestedDepth}} : _iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}) {
           {{function:setIsNested}}{{type:setIsNotMap}}{{!
           }}{{#type:set_elem_type}}{{!
@@ -36,7 +36,7 @@
 
 }}{{#type:list?}}{{!
 }}{{^function:isNested?}}oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.LIST_FIELD);{{/function:isNested?}}
-oprot.writeListBegin(new TList(TType.{{#type:list_elem_type}}{{> TType}}{{/type:list_elem_type}}, _iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.size()));
+oprot.writeListBegin(new TList(TType.{{#type:list_elem_type}}{{#partial types.ttype type=type:self}}{{/type:list_elem_type}}, _iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.size()));
         for ({{#type:list_elem_type}}{{> Type}}{{/type:list_elem_type}} _iter{{function:nestedDepth}} : _iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}) {
           {{function:setIsNested}}{{type:setIsNotMap}}{{!
           }}{{#type:list_elem_type}}{{!
@@ -51,7 +51,7 @@ oprot.writeListBegin(new TList(TType.{{#type:list_elem_type}}{{> TType}}{{/type:
 
 }}{{#type:map?}}{{!
 }}{{^function:isNested?}}oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.MAP_FIELD);{{/function:isNested?}}
-oprot.writeMapBegin(new TMap(TType.{{#type:key_type}}{{> TType}}{{/type:key_type}}, TType.{{#type:value_type}}{{> TType}}{{/type:value_type}}, _iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.size()));
+oprot.writeMapBegin(new TMap(TType.{{#type:key_type}}{{#partial types.ttype type=type:self}}{{/type:key_type}}, TType.{{#type:value_type}}{{#partial types.ttype type=type:self}}{{/type:value_type}}, _iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.size()));
         for (Map.Entry<{{#type:key_type}}{{> BoxedType}}{{/type:key_type}}, {{#type:value_type}}{{> BoxedType}}{{/type:value_type}}> _iter{{function:nestedDepth}} : _iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.entrySet()) {
           {{function:setIsNested}}{{!
 

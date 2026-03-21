@@ -47,7 +47,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
 
   {{#service:singleRequestFunctions}}
   {{#function:args}}
-  private static final TField _{{function:java_name}}_{{field:javaTFieldName}} = new TField("{{field:name}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:id}});
+  private static final TField _{{function:java_name}}_{{field:javaTFieldName}} = new TField("{{field:name}}", TType.{{#field:type}}{{#partial types.ttype type=type:self}}{{/field:type}}, (short){{field:id}});
   {{/function:args}}
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{function:java_name}}_EXCEPTION_READERS = {{#function:exceptions?}}new HashMap<>();{{/function:exceptions?}}{{^function:exceptions?}}java.util.Collections.emptyMap();{{/function:exceptions?}}
   {{#function:exceptions}}
@@ -56,7 +56,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
   {{/service:singleRequestFunctions}}
   {{#service:streamingFunctions}}
   {{#function:args}}
-  private static final TField _{{function:java_name}}_{{field:javaTFieldName}} = new TField("{{field:name}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:id}});
+  private static final TField _{{function:java_name}}_{{field:javaTFieldName}} = new TField("{{field:name}}", TType.{{#field:type}}{{#partial types.ttype type=type:self}}{{/field:type}}, (short){{field:id}});
   {{/function:args}}
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{function:java_name}}_EXCEPTION_READERS = {{#function:exceptions?}}new HashMap<>();{{/function:exceptions?}}{{^function:exceptions?}}java.util.Collections.emptyMap();{{/function:exceptions?}}
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{function:java_name}}_STREAM_EXCEPTION_READERS = {{#if (array.empty? function:stream.exceptions)}}java.util.Collections.emptyMap();{{#else}}new HashMap<>();{{/if}}
@@ -69,10 +69,10 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
   {{/service:streamingFunctions}}
   {{#service:sinkFunctions}}
   {{#function:args}}
-  private static final TField _{{function:java_name}}_{{field:javaTFieldName}} = new TField("{{field:name}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:id}});
+  private static final TField _{{function:java_name}}_{{field:javaTFieldName}} = new TField("{{field:name}}", TType.{{#field:type}}{{#partial types.ttype type=type:self}}{{/field:type}}, (short){{field:id}});
   {{/function:args}}
   {{#function:return_type}}{{#function:sink_elem_type}}
-  private static final TField _{{function:java_name}}_SINK_TFIELD = new TField("payload", TType.{{> TType}}, (short)0);
+  private static final TField _{{function:java_name}}_SINK_TFIELD = new TField("payload", TType.{{#partial types.ttype type=type:self}}, (short)0);
   {{/function:sink_elem_type}}{{/function:return_type}}
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{function:java_name}}_EXCEPTION_READERS = {{#function:exceptions?}}new HashMap<>();{{/function:exceptions?}}{{^function:exceptions?}}java.util.Collections.emptyMap();{{/function:exceptions?}}
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{function:java_name}}_STREAM_EXCEPTION_READERS = {{#if (array.empty? function:sink.final_response_exceptions)}}java.util.Collections.emptyMap();{{#else}}new HashMap<>();{{/if}}
@@ -86,7 +86,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
   {{#service:interactions}}
   {{#service:singleRequestFunctions}}
   {{#function:args}}
-  private static final TField _{{function:java_name}}_{{field:javaTFieldName}}_INT = new TField("{{field:name}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:id}});
+  private static final TField _{{function:java_name}}_{{field:javaTFieldName}}_INT = new TField("{{field:name}}", TType.{{#field:type}}{{#partial types.ttype type=type:self}}{{/field:type}}, (short){{field:id}});
   {{/function:args}}
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{function:java_name}}_EXCEPTION_READERS_INT = {{#function:exceptions?}}new HashMap<>();{{/function:exceptions?}}{{^function:exceptions?}}java.util.Collections.emptyMap();{{/function:exceptions?}}
   {{#function:exceptions}}
@@ -95,7 +95,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
   {{/service:singleRequestFunctions}}
   {{#service:streamingFunctions}}
   {{#function:args}}
-  private static final TField _{{function:java_name}}_{{field:javaTFieldName}}_INT = new TField("{{field:name}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:id}});
+  private static final TField _{{function:java_name}}_{{field:javaTFieldName}}_INT = new TField("{{field:name}}", TType.{{#field:type}}{{#partial types.ttype type=type:self}}{{/field:type}}, (short){{field:id}});
   {{/function:args}}
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{function:java_name}}_EXCEPTION_READERS_INT = {{#function:exceptions?}}new HashMap<>();{{/function:exceptions?}}{{^function:exceptions?}}java.util.Collections.emptyMap();{{/function:exceptions?}}
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{function:java_name}}_STREAM_EXCEPTION_READERS_INT = {{#if (array.empty? function:stream.exceptions)}}java.util.Collections.emptyMap();{{#else}}new HashMap<>();{{/if}}

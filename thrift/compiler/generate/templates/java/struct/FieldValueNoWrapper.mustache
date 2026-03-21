@@ -33,7 +33,7 @@
       }}null{{!
     }}{{/field:hasAdapter?}}{{!
     }}{{^field:hasAdapter?}}{{!
-      }}{{field:javaDefaultValue}}{{!
+      }}{{#if field:optional?}}null{{#else}}{{#partial types.java_default_value type=field:self.type}}{{/if}}{{!
     }}{{/field:hasAdapter?}}{{!
   }}{{/field:terse?}}{{!
 
@@ -42,10 +42,10 @@
 }}{{#if field:hasAdapter?}}{{!
   }}{{> FromThriftStart}}{{#if field:hasInitialValue?}}{{!
     }}{{#partial const_value.const_value value=field:default_value root_const=null as_bean=struct:asBean? field_hasAdapter=field:hasAdapter? }}{{!
-  }}{{#else}}{{field:javaDefaultValue}}{{/if field:hasInitialValue?}}{{> FromThriftEnd}}{{!
+  }}{{#else}}{{#if field:optional?}}null{{#else}}{{#partial types.java_default_value type=field:self.type}}{{/if}}{{/if field:hasInitialValue?}}{{> FromThriftEnd}}{{!
 }}{{#else}}{{!
   }}{{#if field:hasInitialValue?}}{{!
     }}{{#partial const_value.const_value value=field:default_value root_const=null as_bean=struct:asBean? field_hasAdapter=field:hasAdapter? }}{{!
-  }}{{#else}}{{field:javaDefaultValue}}{{/if field:hasInitialValue?}}{{!
+  }}{{#else}}{{#if field:optional?}}null{{#else}}{{#partial types.java_default_value type=field:self.type}}{{/if}}{{/if field:hasInitialValue?}}{{!
 }}{{/if field:hasAdapter?}}{{!
 }}{{/if (object.eq? field:default_value null)}}

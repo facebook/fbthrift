@@ -29,17 +29,17 @@ public static class Builder {
     {{/field:isSensitive?}}
     {{> ThriftFieldAnnotation}}
     {{#field:hasWrapper?}}
-    public Builder {{> SetterName}}({{field:wrapperType}} {{field:javaName}}) {
+    public Builder set{{field:javaCapitalName}}({{field:wrapperType}} {{field:javaName}}) {
         this.{{field:javaName}} = {{field:javaName}};
         return this;
     }
-    private Builder _{{> SetterName}}({{> FieldTypeNoWrapper}} {{field:javaName}}) {
+    private Builder _set{{field:javaCapitalName}}({{> FieldTypeNoWrapper}} {{field:javaName}}) {
         this._{{field:javaName}} = {{field:javaName}};
         return this;
     }
     {{/field:hasWrapper?}}
     {{^field:hasWrapper?}}
-    public Builder {{> SetterName}}({{> FieldType}} {{field:javaName}}) {
+    public Builder set{{field:javaCapitalName}}({{> FieldType}} {{field:javaName}}) {
         this.{{field:javaName}} = {{field:javaName}};
         return this;
     }

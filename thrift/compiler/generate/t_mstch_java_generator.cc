@@ -177,29 +177,6 @@ std::string java_constant_name(std::string name) {
   return constant_str;
 }
 
-std::string default_value_for_type(const t_type* type) {
-  if (const t_typedef* typedef_ = type->try_as<t_typedef>()) {
-    return default_value_for_type(&typedef_->type().deref());
-  } else {
-    if (type->is_byte() || type->is_i16() || type->is_i32()) {
-      return "0";
-    } else if (type->is_i64()) {
-      return "0L";
-    } else if (type->is_float()) {
-      return "0.f";
-    } else if (type->is_double()) {
-      return "0.";
-    } else if (type->is_bool()) {
-      return "false";
-    } else if (type->is<t_enum>()) {
-      auto javaNamespace = get_namespace_or_default(*(type->program()));
-      auto enumType = java::mangle_java_name(type->name(), true);
-      return javaNamespace + "." + enumType + ".fromInteger(0)";
-    }
-    return "null";
-  }
-}
-
 set<std::string> adapterDefinitionSet;
 std::string prevTypeName;
 
@@ -567,12 +544,6 @@ class t_mstch_java_generator : public t_mstch_generator {
     def.property("typeFieldName", [](const t_field& self) {
       auto type_name = self.type()->get_true_type()->get_full_name();
       return java::mangle_java_name(type_name, true);
-    });
-    def.property("javaDefaultValue", [](const t_field& self) {
-      if (self.qualifier() == t_field_qualifier::optional) {
-        return std::string("null");
-      }
-      return default_value_for_type(self.type().get_type());
     });
 
     return std::move(def).make();

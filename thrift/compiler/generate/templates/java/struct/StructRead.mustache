@@ -28,10 +28,10 @@ public static {{struct:javaCapitalName}} read0(TProtocol oprot) throws TExceptio
   {{#field:terse?}}
   {{#field:default_value}}
   {{#field:hasAdapter?}}
-  builder.{{> SetterName}}({{> FromThriftStart}}{{#field:type}}{{> struct/IntrinsicDefault}}{{/field:type}}{{> FromThriftEnd}});
+  builder.set{{field:javaCapitalName}}({{> FromThriftStart}}{{#field:type}}{{> struct/IntrinsicDefault}}{{/field:type}}{{> FromThriftEnd}});
   {{/field:hasAdapter?}}
   {{^field:hasAdapter?}}
-  {{^field:isObject?}}builder.{{> SetterName}}({{#field:type}}{{> struct/IntrinsicDefault}}{{/field:type}});{{/field:isObject?}}
+  {{^field:isObject?}}builder.set{{field:javaCapitalName}}({{#field:type}}{{> struct/IntrinsicDefault}}{{/field:type}});{{/field:isObject?}}
   {{/field:hasAdapter?}}
   {{/field:default_value}}
   {{/field:terse?}}
@@ -42,15 +42,15 @@ public static {{struct:javaCapitalName}} read0(TProtocol oprot) throws TExceptio
     switch (__field.id) {
     {{#struct:fields}}
     case _{{field:javaAllCapsName}}:
-      if (__field.type == TType.{{#field:type}}{{> TType}}{{/field:type}}) {
+      if (__field.type == TType.{{#field:type}}{{#partial types.ttype type=type:self}}{{/field:type}}) {
         {{#field:type}}
         {{field:nestedDepth++}}{{> ReadType}}{{field:nestedDepth--}}
         {{/field:type}}
         {{#field:hasAdapter?}}
-        builder.{{#field:hasWrapper?}}_{{/field:hasWrapper?}}{{> SetterName}}({{> FromThriftStart}}{{field:javaName}}{{> FromThriftEnd}});
+        builder.{{#field:hasWrapper?}}_{{/field:hasWrapper?}}set{{field:javaCapitalName}}({{> FromThriftStart}}{{field:javaName}}{{> FromThriftEnd}});
         {{/field:hasAdapter?}}
         {{^field:hasAdapter?}}
-        builder.{{#field:hasWrapper?}}_{{/field:hasWrapper?}}{{> SetterName}}({{field:javaName}});
+        builder.{{#field:hasWrapper?}}_{{/field:hasWrapper?}}set{{field:javaCapitalName}}({{field:javaName}});
         {{/field:hasAdapter?}}
       } else {
         TProtocolUtil.skip(oprot, __field.type);

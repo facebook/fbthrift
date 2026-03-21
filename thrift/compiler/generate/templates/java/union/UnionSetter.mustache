@@ -18,7 +18,7 @@
     {{#struct:fields}}
     @com.facebook.swift.codec.ThriftField
     @Deprecated
-    public void {{> SetterName}}(final {{> FieldType}} {{field:javaName}}) {
+    public void set{{field:javaCapitalName}}(final {{> FieldType}} {{field:javaName}}) {
         this.value = {{field:javaName}};
         this.id = {{field:id}};
     }
