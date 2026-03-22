@@ -17,12 +17,12 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using test.fixtures.basic;
+using FBThrift.Tests.Unions;
 
 namespace FBThrift.Tests
 {
     /// <summary>
-    /// Tests for generated Thrift unions using the cross-language basic fixture.
+    /// Tests for generated Thrift unions.
     /// </summary>
     [TestFixture]
     public class GeneratedUnionsTests

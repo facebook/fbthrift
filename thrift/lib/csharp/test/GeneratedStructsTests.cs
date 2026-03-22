@@ -17,12 +17,12 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using test.fixtures.basic;
+using FBThrift.Tests.Structs;
 
 namespace FBThrift.Tests
 {
     /// <summary>
-    /// Tests for generated Thrift structs using the cross-language basic fixture.
+    /// Tests for generated Thrift structs.
     /// </summary>
     [TestFixture]
     public class GeneratedStructsTests

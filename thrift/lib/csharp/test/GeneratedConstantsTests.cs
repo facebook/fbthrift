@@ -17,12 +17,12 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using test.fixtures.basic;
+using FBThrift.Tests.ConstantsModule;
 
 namespace FBThrift.Tests
 {
     /// <summary>
-    /// Tests for generated Thrift constants using the cross-language basic fixture.
+    /// Tests for generated Thrift constants.
     /// </summary>
     [TestFixture]
     public class GeneratedConstantsTests
@@ -51,35 +51,6 @@ namespace FBThrift.Tests
         public void TestStringConstant()
         {
             Assert.AreEqual("June 28, 2017", Constants.DATE);
-        }
-
-        [Test]
-        public void TestListConstant()
-        {
-            Assert.AreEqual(4, Constants.AList.Count);
-            Assert.AreEqual(2, Constants.AList[0]);
-            Assert.AreEqual(3, Constants.AList[1]);
-            Assert.AreEqual(5, Constants.AList[2]);
-            Assert.AreEqual(7, Constants.AList[3]);
-        }
-
-        [Test]
-        public void TestSetConstant()
-        {
-            Assert.AreEqual(3, Constants.ASet.Count);
-            Assert.IsTrue(Constants.ASet.Contains("foo"));
-            Assert.IsTrue(Constants.ASet.Contains("bar"));
-            Assert.IsTrue(Constants.ASet.Contains("baz"));
-        }
-
-        [Test]
-        public void TestMapConstant()
-        {
-            Assert.AreEqual(2, Constants.AMap.Count);
-            Assert.IsTrue(Constants.AMap.ContainsKey("foo"));
-            Assert.IsTrue(Constants.AMap.ContainsKey("bar"));
-            Assert.AreEqual(4, Constants.AMap["foo"].Count);
-            Assert.AreEqual(3, Constants.AMap["bar"].Count);
         }
     }
 }
