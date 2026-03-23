@@ -13,3 +13,4 @@ path = "type_system/lib.rs"
 
 [dependencies]
 thiserror = "2.0.18"
+type_system_digest = { path = "type_system_digest" }
