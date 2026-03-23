@@ -416,7 +416,7 @@ mod tests {
     fn fast_field_handle_max_valid_index() {
         let h = FastFieldHandle::new(FastFieldHandle::MAX_INDEX);
         assert!(h.is_valid());
-        assert_eq!(h.index(), FastFieldHandle::MAX_INDEX as u16);
+        assert_eq!(h.index(), FastFieldHandle::MAX_INDEX);
     }
 
     #[test]
