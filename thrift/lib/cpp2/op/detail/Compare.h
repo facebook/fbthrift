@@ -762,7 +762,7 @@ std::weak_ordering compareStructFieldsByFieldId(const T& lhs, const T& rhs) {
 template <typename T>
 struct CompareThreeWay<type::struct_t<T>> {
   std::weak_ordering operator()(const T& lhs, const T& rhs) const {
-    return compareStructFields<T>(lhs, rhs, FieldIterOrder::FieldIdAscending);
+    return compareStructFields<T>(lhs, rhs, FieldIterOrder::Declaration);
   }
 };
 

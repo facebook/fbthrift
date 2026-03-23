@@ -393,6 +393,7 @@ TEST(CompareTest, ThriftObjectModelLess_OutOfOrderStruct) {
   test::OutOfOrderNested l, r;
   l.s() = lhs;
   r.s() = rhs;
+  EXPECT_LT(l, r);
   EXPECT_FALSE(thrift_object_model_less<test::OutOfOrderNested>(l, r));
   EXPECT_TRUE(thrift_object_model_less<test::OutOfOrderNested>(r, l));
 }
@@ -423,6 +424,7 @@ TEST(CompareTest, ThriftObjectModelLess_OutOfOrderUnion) {
   test::OutOfOrderNested l, r;
   l.u() = lhs;
   r.u() = rhs;
+  EXPECT_LT(l, r);
   EXPECT_FALSE(thrift_object_model_less<test::OutOfOrderNested>(l, r));
   EXPECT_TRUE(thrift_object_model_less<test::OutOfOrderNested>(r, l));
 }
