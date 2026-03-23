@@ -1,0 +1,36 @@
+{{!
+
+  Copyright (c) Meta Platforms, Inc. and affiliates.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+}}
+
+{{! Defines the mapping of a thrift type to the Java RpcPayloadUtil field constant. }}
+{{#let export partial rpc_field_type |type|}}
+  {{#pragma ignore-newlines}}
+{{#if type.string_or_binary?}}com.facebook.thrift.util.RpcPayloadUtil.STRING_FIELD
+{{#else if type.bool?}}com.facebook.thrift.util.RpcPayloadUtil.BOOL_FIELD
+{{#else if type.byte?}}com.facebook.thrift.util.RpcPayloadUtil.BYTE_FIELD
+{{#else if type.i16?}}com.facebook.thrift.util.RpcPayloadUtil.I16_FIELD
+{{#else if type.i32?}}com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD
+{{#else if type.i64?}}com.facebook.thrift.util.RpcPayloadUtil.I64_FIELD
+{{#else if type.double?}}com.facebook.thrift.util.RpcPayloadUtil.DOUBLE_FIELD
+{{#else if type.float?}}com.facebook.thrift.util.RpcPayloadUtil.FLOAT_FIELD
+{{#else if type.enum?}}com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD
+{{#else if type.structured?}}com.facebook.thrift.util.RpcPayloadUtil.STRUCT_FIELD
+{{#else if type.list?}}com.facebook.thrift.util.RpcPayloadUtil.LIST_FIELD
+{{#else if type.set?}}com.facebook.thrift.util.RpcPayloadUtil.SET_FIELD
+{{#else if type.map?}}com.facebook.thrift.util.RpcPayloadUtil.MAP_FIELD
+{{/if type.string_or_binary?}}
+{{/let partial}}

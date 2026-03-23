@@ -66,7 +66,7 @@ public class BoxServiceRpcServerHandler
         
         test.fixtures.interactions.ShouldBeBoxed _iter0 = (test.fixtures.interactions.ShouldBeBoxed)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.STRUCT_FIELD);
-_iter0.write0(oprot);
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
 
         oprot.writeFieldStop();

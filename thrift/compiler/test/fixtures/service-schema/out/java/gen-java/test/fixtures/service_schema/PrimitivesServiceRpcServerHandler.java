@@ -74,7 +74,7 @@ public class PrimitivesServiceRpcServerHandler
         
         long _iter0 = (long)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I64_FIELD);
-oprot.writeI64(_iter0);
+        oprot.writeI64(_iter0);
         oprot.writeFieldEnd();
 
         oprot.writeFieldStop();
@@ -163,7 +163,7 @@ oprot.writeI64(_iter0);
         
         test.fixtures.service_schema.Result _iter0 = (test.fixtures.service_schema.Result)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD);
-oprot.writeI32(_iter0 == null ? 0 : _iter0.getValue());
+        oprot.writeI32(_iter0 == null ? 0 : _iter0.getValue());
         oprot.writeFieldEnd();
 
         oprot.writeFieldStop();

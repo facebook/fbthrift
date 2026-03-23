@@ -299,7 +299,7 @@ public class RaiserRpcServerHandler
         
         String _iter0 = (String)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.STRING_FIELD);
-oprot.writeString(_iter0);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
 
         oprot.writeFieldStop();
@@ -386,7 +386,7 @@ oprot.writeString(_iter0);
         
         String _iter0 = (String)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.STRING_FIELD);
-oprot.writeString(_iter0);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
 
         oprot.writeFieldStop();

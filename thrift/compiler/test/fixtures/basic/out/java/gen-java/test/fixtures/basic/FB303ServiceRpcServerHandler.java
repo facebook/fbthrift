@@ -66,7 +66,7 @@ public class FB303ServiceRpcServerHandler
         
         test.fixtures.basic.ReservedKeyword _iter0 = (test.fixtures.basic.ReservedKeyword)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.STRUCT_FIELD);
-_iter0.write0(oprot);
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
 
         oprot.writeFieldStop();

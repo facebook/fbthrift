@@ -69,7 +69,7 @@ public class DbMixedStackArgumentsRpcServerHandler
         
         byte[] _iter0 = (byte[])_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.STRING_FIELD);
-oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
+        oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
         oprot.writeFieldEnd();
 
         oprot.writeFieldStop();
@@ -159,7 +159,7 @@ oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
         
         byte[] _iter0 = (byte[])_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.STRING_FIELD);
-oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
+        oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
         oprot.writeFieldEnd();
 
         oprot.writeFieldStop();

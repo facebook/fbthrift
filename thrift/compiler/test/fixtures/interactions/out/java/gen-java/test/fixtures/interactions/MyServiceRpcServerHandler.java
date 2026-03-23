@@ -90,7 +90,7 @@ public class MyServiceRpcServerHandler
         
         int _iter0 = (int)_o;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD);
-oprot.writeI32(_iter0);
+        oprot.writeI32(_iter0);
         oprot.writeFieldEnd();
 
         oprot.writeFieldStop();
@@ -112,7 +112,7 @@ oprot.writeI32(_iter0);
         
         int _iter0 = (int)_o;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD);
-oprot.writeI32(_iter0);
+        oprot.writeI32(_iter0);
         oprot.writeFieldEnd();
 
         oprot.writeFieldStop();
@@ -317,7 +317,7 @@ oprot.writeI32(_iter0);
         
         int _iter0 = (int)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD);
-oprot.writeI32(_iter0);
+        oprot.writeI32(_iter0);
         oprot.writeFieldEnd();
 
         oprot.writeFieldStop();

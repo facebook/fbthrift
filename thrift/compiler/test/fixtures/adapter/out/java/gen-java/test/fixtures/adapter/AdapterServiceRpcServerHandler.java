@@ -67,7 +67,7 @@ public class AdapterServiceRpcServerHandler
         
         test.fixtures.adapter.CountingStruct _iter0 = (test.fixtures.adapter.CountingStruct)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.STRUCT_FIELD);
-_iter0.write0(oprot);
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
 
         oprot.writeFieldStop();
@@ -156,7 +156,7 @@ _iter0.write0(oprot);
         
         test.fixtures.adapter.HeapAllocated _iter0 = (test.fixtures.adapter.HeapAllocated)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.STRUCT_FIELD);
-_iter0.write0(oprot);
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
 
         oprot.writeFieldStop();

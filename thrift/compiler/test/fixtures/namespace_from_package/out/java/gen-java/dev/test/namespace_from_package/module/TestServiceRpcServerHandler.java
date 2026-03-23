@@ -66,7 +66,7 @@ public class TestServiceRpcServerHandler
         
         long _iter0 = (long)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I64_FIELD);
-oprot.writeI64(_iter0);
+        oprot.writeI64(_iter0);
         oprot.writeFieldEnd();
 
         oprot.writeFieldStop();
