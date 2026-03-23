@@ -153,14 +153,6 @@ FOLLY_ERASE constexpr Struct make_structured_constant(
   return s;
 }
 
-// TODO(ytj): Remove after migrating existing callsites
-template <typename S, typename... A, typename... T, typename TypeClass>
-FOLLY_ERASE constexpr S make_constant(
-    TypeClass,
-    wrapped_struct_argument<A, void, static_cast<FieldId>(0), T>... arg) {
-  return make_structured_constant<S>(arg...);
-}
-
 template <typename T, std::enable_if_t<st::IsThriftClass<T>{}, int> = 0>
 constexpr bool operator!=(const T & lhs, const T & rhs) {
   return !(lhs == rhs);
