@@ -160,6 +160,7 @@ add_library(
 target_link_libraries(
   compiler
   compiler_ast
+  compiler_base
   fmt::fmt
   Folly::folly
   ${FBTHRIFT_COMPILER_LINK_CXXFS}
