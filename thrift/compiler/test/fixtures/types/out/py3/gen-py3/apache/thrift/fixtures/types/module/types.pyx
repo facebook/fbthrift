@@ -70,7 +70,7 @@ from apache.thrift.fixtures.types.module.containers_FBTHRIFT_ONLY_DO_NOT_USE imp
     folly_fbvector__List__i32,
     folly_small_vector__List__i32,
     folly_sorted_vector_set__Set__i32,
-    Map__i32_string,
+    folly_sorted_vector_map__Map__i32_string,
     std_list_int32_t__List__i32,
     Map__string_i32,
     List__std_unordered_map__Map__i32_string,
@@ -399,7 +399,7 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
 
     cdef inline fieldG_impl(self):
         if self.__fbthrift_cached_fieldG is None:
-            self.__fbthrift_cached_fieldG = Map__i32_string__from_cpp(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).fieldG_ref().ref())
+            self.__fbthrift_cached_fieldG = folly_sorted_vector_map__Map__i32_string__from_cpp(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).fieldG_ref().ref())
         return self.__fbthrift_cached_fieldG
 
     @property
@@ -1005,7 +1005,7 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
 
     cdef inline n_impl(self):
         if self.__fbthrift_cached_n is None:
-            self.__fbthrift_cached_n = TrivialNumeric._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).n_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_n = TrivialNumeric._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_apache_thrift_fixtures_types_module_cbindings.cTrivialNumeric](deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).n_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_n
 
     @property
@@ -1251,7 +1251,7 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
 
     cdef inline n_impl(self):
         if self.__fbthrift_cached_n is None:
-            self.__fbthrift_cached_n = ComplexString._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).n_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_n = ComplexString._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_apache_thrift_fixtures_types_module_cbindings.cComplexString](deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).n_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_n
 
     @property
@@ -1675,7 +1675,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     cdef inline data_impl(self):
         if self.__fbthrift_cached_data is None:
-            self.__fbthrift_cached_data = MyDataItem._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).data_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_data = MyDataItem._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_apache_thrift_fixtures_types_module_cbindings.cMyDataItem](deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).data_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_data
 
     @property
@@ -2116,7 +2116,7 @@ cdef class ForwardUsageRoot(thrift.py3.types.Struct):
         if not deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).ForwardUsageStruct_ref().has_value():
             return None
         if self.__fbthrift_cached_ForwardUsageStruct is None:
-            self.__fbthrift_cached_ForwardUsageStruct = ForwardUsageStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).ForwardUsageStruct_ref().ref_unchecked(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_ForwardUsageStruct = ForwardUsageStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_apache_thrift_fixtures_types_module_cbindings.cForwardUsageStruct](deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).ForwardUsageStruct_ref().ref_unchecked(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_ForwardUsageStruct
 
     @property
@@ -2127,7 +2127,7 @@ cdef class ForwardUsageRoot(thrift.py3.types.Struct):
         if self.__fbthrift_cached_ForwardUsageByRef is None:
             if not deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).ForwardUsageByRef_ref():
                 return None
-            self.__fbthrift_cached_ForwardUsageByRef = ForwardUsageByRef._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).ForwardUsageByRef_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_ForwardUsageByRef = ForwardUsageByRef._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_apache_thrift_fixtures_types_module_cbindings.cForwardUsageByRef](deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).ForwardUsageByRef_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_ForwardUsageByRef
 
     @property
@@ -2243,7 +2243,7 @@ cdef class ForwardUsageStruct(thrift.py3.types.Struct):
         if self.__fbthrift_cached_foo is None:
             if not deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).foo_ref():
                 return None
-            self.__fbthrift_cached_foo = ForwardUsageRoot._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).foo_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_foo = ForwardUsageRoot._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_apache_thrift_fixtures_types_module_cbindings.cForwardUsageRoot](deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).foo_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_foo
 
     @property
@@ -2359,7 +2359,7 @@ cdef class ForwardUsageByRef(thrift.py3.types.Struct):
         if self.__fbthrift_cached_foo is None:
             if not deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).foo_ref():
                 return None
-            self.__fbthrift_cached_foo = ForwardUsageRoot._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).foo_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_foo = ForwardUsageRoot._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_apache_thrift_fixtures_types_module_cbindings.cForwardUsageRoot](deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).foo_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_foo
 
     @property
@@ -3615,7 +3615,7 @@ cdef class AllocatorAware(thrift.py3.types.Struct):
         if self.__fbthrift_cached_aa_unique is None:
             if not deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).aa_unique_ref():
                 return None
-            self.__fbthrift_cached_aa_unique = cint32_t._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).aa_unique_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_aa_unique = cint32_t._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[cint32_t](deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).aa_unique_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_aa_unique
 
     @property
@@ -3626,7 +3626,7 @@ cdef class AllocatorAware(thrift.py3.types.Struct):
         if self.__fbthrift_cached_aa_shared is None:
             if not deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).aa_shared_ref():
                 return None
-            self.__fbthrift_cached_aa_shared = cint32_t._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).aa_shared_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_aa_shared = cint32_t._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[cint32_t](deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).aa_shared_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_aa_shared
 
     @property
@@ -4250,8 +4250,8 @@ cdef object folly_sorted_vector_set__Set__i32__from_cpp(const _apache_thrift_fix
         py_items.append(citem)
     return folly_sorted_vector_set__Set__i32(frozenset(py_items), thrift.py3.types._fbthrift_set_private_ctor)
 
-cdef cmap[cint32_t,string] Map__i32_string__make_instance(object items) except *:
-    cdef cmap[cint32_t,string] c_inst
+cdef _apache_thrift_fixtures_types_module_cbindings.folly_sorted_vector_map[cint32_t,string] folly_sorted_vector_map__Map__i32_string__make_instance(object items) except *:
+    cdef _apache_thrift_fixtures_types_module_cbindings.folly_sorted_vector_map[cint32_t,string] c_inst
     cdef cint32_t c_key
     if items is None:
         return cmove(c_inst)
@@ -4265,15 +4265,15 @@ cdef cmap[cint32_t,string] Map__i32_string__make_instance(object items) except *
         c_inst[c_key] = item.encode('UTF-8')
     return cmove(c_inst)
 
-cdef object Map__i32_string__from_cpp(const cmap[cint32_t,string]& c_map) except *:
+cdef object folly_sorted_vector_map__Map__i32_string__from_cpp(const _apache_thrift_fixtures_types_module_cbindings.folly_sorted_vector_map[cint32_t,string]& c_map) except *:
     cdef dict py_items = {}
-    cdef __map_iter[cmap[cint32_t,string]] iter = __map_iter[cmap[cint32_t,string]](c_map)
+    cdef __map_iter[_apache_thrift_fixtures_types_module_cbindings.folly_sorted_vector_map[cint32_t,string]] iter = __map_iter[_apache_thrift_fixtures_types_module_cbindings.folly_sorted_vector_map[cint32_t,string]](c_map)
     cdef cint32_t ckey = 0
     cdef string cval
     for i in range(c_map.size()):
         iter.genNextKeyVal(ckey, cval)
         py_items[ckey] = __init_unicode_from_cpp(cval)
-    return Map__i32_string(py_items, private_ctor_token=thrift.py3.types._fbthrift_map_private_ctor)
+    return folly_sorted_vector_map__Map__i32_string(py_items, private_ctor_token=thrift.py3.types._fbthrift_map_private_ctor)
 
 cdef _apache_thrift_fixtures_types_module_cbindings.std_list_int32_t std_list_int32_t__List__i32__make_instance(object items) except *:
     cdef _apache_thrift_fixtures_types_module_cbindings.std_list_int32_t c_inst
@@ -4512,7 +4512,7 @@ TBinary_8623 = bytes
 i32_9314 = int
 list_i32_9187 = List__i32
 map_i32_i32_9565 = Map__i32_i32
-map_i32_string_1261 = Map__i32_string
+map_i32_string_1261 = folly_sorted_vector_map__Map__i32_string
 set_i32_7070 = Set__i32
 set_i32_7194 = folly_sorted_vector_set__Set__i32
 string_5252 = str

@@ -385,13 +385,17 @@ TEST_F(CppNameResolverTest, custom_type) {
   EXPECT_TRUE(can_resolve_to_scalar(tunion));
 
   t_typedef ttypedef1(&program_, "Foo", t_primitive_type::t_bool());
-  ttypedef1.set_unstructured_annotation("cpp2.type", "Other");
-  EXPECT_EQ(get_native_type(ttypedef1), "Other");
+  ttypedef1.add_structured_annotation(
+      gen::type_builder(program_, "cpp").make("Other"));
+  // For typedefs, get_native_type returns the namespaced typedef name, not
+  // the raw cpp.type override. The override is used in the using declaration.
+  EXPECT_EQ(get_native_type(ttypedef1), "::path::to::Foo");
   EXPECT_TRUE(can_resolve_to_scalar(ttypedef1));
 
   t_typedef ttypedef2(&program_, "FooBar", t_primitive_type::t_string());
-  ttypedef2.set_unstructured_annotation("cpp2.type", "Other");
-  EXPECT_EQ(get_native_type(ttypedef2), "Other");
+  ttypedef2.add_structured_annotation(
+      gen::type_builder(program_, "cpp").make("Other"));
+  EXPECT_EQ(get_native_type(ttypedef2), "::path::to::FooBar");
   EXPECT_TRUE(can_resolve_to_scalar(ttypedef2));
 
   t_map tmap1(t_primitive_type::t_string(), tui64);
@@ -497,7 +501,8 @@ TEST_F(CppNameResolverTest, typedef_cpptemplate) {
   // container fields.
   t_map imap(t_primitive_type::t_i32(), t_primitive_type::t_string());
   t_typedef iumap(&program_, "iumap", imap);
-  iumap.set_unstructured_annotation("cpp.template", "std::unorderd_map");
+  iumap.add_structured_annotation(
+      gen::type_builder(program_, "cpp").make_template("std::unorderd_map"));
   t_typedef tiumap(&program_, "tiumap", iumap);
 
   EXPECT_EQ(get_native_type(imap), "::std::map<::std::int32_t, ::std::string>");
@@ -505,12 +510,10 @@ TEST_F(CppNameResolverTest, typedef_cpptemplate) {
       get_standard_type(imap), "::std::map<::std::int32_t, ::std::string>");
   EXPECT_FALSE(can_resolve_to_scalar(imap));
 
-  EXPECT_EQ(
-      get_native_type(iumap),
-      "std::unorderd_map<::std::int32_t, ::std::string>");
-  EXPECT_EQ(
-      get_standard_type(iumap),
-      "std::unorderd_map<::std::int32_t, ::std::string>");
+  // The @cpp.Type{template} annotation on a typedef is used for the using
+  // declaration, but references to the typedef use the namespaced typedef name.
+  EXPECT_EQ(get_native_type(iumap), "::path::to::iumap");
+  EXPECT_EQ(get_standard_type(iumap), "::path::to::iumap");
   EXPECT_FALSE(can_resolve_to_scalar(iumap));
 
   EXPECT_EQ(get_native_type(tiumap), "::path::to::tiumap");
@@ -521,8 +524,9 @@ TEST_F(CppNameResolverTest, typedef_cpptemplate) {
 TEST_F(CppNameResolverTest, typedef_cpptype) {
   t_map imap(t_primitive_type::t_i32(), t_primitive_type::t_string());
   t_typedef iumap(&program_, "iumap", imap);
-  iumap.set_unstructured_annotation(
-      "cpp.type", "std::unorderd_map<::std::int32_t, ::std::string>");
+  iumap.add_structured_annotation(
+      gen::type_builder(program_, "cpp")
+          .make("std::unorderd_map<::std::int32_t, ::std::string>"));
   t_typedef tiumap(&program_, "tiumap", iumap);
 
   EXPECT_EQ(get_native_type(imap), "::std::map<::std::int32_t, ::std::string>");
@@ -530,17 +534,10 @@ TEST_F(CppNameResolverTest, typedef_cpptype) {
       get_standard_type(imap), "::std::map<::std::int32_t, ::std::string>");
   EXPECT_FALSE(can_resolve_to_scalar(imap));
 
-  // The 'cpp.type' annotation is respected on the typedef.
-  // TODO(afuller): It seems like this annotation is applied incorrectly and the
-  // annotation should apply to the type being referenced, not the type name of
-  // the typedef itself (which should just be the typedef's specified name)
-  // which is still code-genend, but with the wrong type!
-  EXPECT_EQ(
-      get_native_type(iumap),
-      "std::unorderd_map<::std::int32_t, ::std::string>");
-  EXPECT_EQ(
-      get_standard_type(iumap),
-      "std::unorderd_map<::std::int32_t, ::std::string>");
+  // The @cpp.Type{name} annotation on a typedef is used for the using
+  // declaration, but references to the typedef use the namespaced typedef name.
+  EXPECT_EQ(get_native_type(iumap), "::path::to::iumap");
+  EXPECT_EQ(get_standard_type(iumap), "::path::to::iumap");
   EXPECT_TRUE(can_resolve_to_scalar(iumap));
 
   EXPECT_EQ(get_native_type(tiumap), "::path::to::tiumap");

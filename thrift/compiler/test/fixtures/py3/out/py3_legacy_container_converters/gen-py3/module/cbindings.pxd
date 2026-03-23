@@ -201,6 +201,8 @@ cdef extern from * nogil:
         bint empty()
 
 cdef extern from *:
+    ctypedef cSimpleStruct _MyType "::MyType"
+cdef extern from *:
     ctypedef string _py3_simple_AdaptedString "::py3::simple::AdaptedString"
 cdef extern from *:
     ctypedef bstring _py3_simple_AdaptedBinary "::py3::simple::AdaptedBinary"
@@ -469,7 +471,7 @@ cdef extern from "thrift/compiler/test/fixtures/py3/gen-cpp2/module_types_custom
         __field_ref[_MyType] list_field_ref "list_field_ref" ()
         __field_ref[_MyType] set_field_ref "set_field_ref" ()
         __field_ref[_MyType] map_field_ref "map_field_ref" ()
-        __field_ref[cSimpleStruct] struct_field_ref "struct_field_ref" ()
+        __field_ref[_MyType] struct_field_ref "struct_field_ref" ()
 
 
     cdef cppclass cAdaptedTypedefFields "::py3::simple::AdaptedTypedefFields":

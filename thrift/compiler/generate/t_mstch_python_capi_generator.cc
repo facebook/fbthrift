@@ -328,20 +328,22 @@ bool is_capi_eligible_type(const t_type* type) {
       return false;
     }
   }
-  // thrift currently lowers structured annotations to unstructured
-  // annotations so this will always be non-null if @cpp.Type annotation
-  // used on type or field
-  // TODO: delete these if structured annotation migration completed
-  if (const std::string* template_anno =
-          type->find_unstructured_annotation_or_null(
-              {"cpp.template", "cpp2.template"})) {
-    if (!is_supported_template(*template_anno)) {
-      return false;
+  // Unstructured annotation fallback for legacy cpp.type/cpp.template on
+  // non-typedef types. User-defined typedefs must use structured @cpp.Type.
+  if (auto* td = type->try_as<t_typedef>();
+      !td || td->typedef_kind() != t_typedef::kind::defined) {
+    if (const std::string* template_anno =
+            type->find_unstructured_annotation_or_null(
+                {"cpp.template", "cpp2.template"})) {
+      if (!is_supported_template(*template_anno)) {
+        return false;
+      }
     }
-  }
-  if (const std::string* type_anno = type->find_unstructured_annotation_or_null(
-          {"cpp.type", "cpp2.type"})) {
-    return is_type_iobuf(*type_anno);
+    if (const std::string* type_anno =
+            type->find_unstructured_annotation_or_null(
+                {"cpp.type", "cpp2.type"})) {
+      return is_type_iobuf(*type_anno);
+    }
   }
   if (const t_list* list = type->try_as<t_list>();
       list != nullptr && !is_capi_eligible_type(list->elem_type().get_type())) {
@@ -524,7 +526,7 @@ class t_mstch_python_capi_generator : public t_whisker_generator {
     });
     def.property("iobuf?", [](const t_field& self) {
       const t_type* ttype = self.type()->get_true_type();
-      return ttype->is_binary() && is_type_iobuf(ttype);
+      return ttype->is_binary() && is_type_iobuf(self.type().get_type());
     });
 
     return std::move(def).make();

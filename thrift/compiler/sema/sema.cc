@@ -828,7 +828,16 @@ std::vector<ast_mutator> pre_validation_standard_mutators() {
 
   ast_mutator initial;
   initial.add_field_visitor(&lower_cpp_type_annotations<t_field>);
-  initial.add_typedef_visitor(&lower_cpp_type_annotations<t_typedef>);
+  // Strip hs.* annotations from typedef inner types. This was previously a
+  // side effect of lowering @cpp.Type on typedefs (which is no longer done).
+  initial.add_typedef_visitor(
+      [](sema_context&, mutator_context& mctx, t_typedef& node) {
+        add_annotations_to_node_type(
+            node,
+            {},
+            mctx.program(),
+            deprecated_annotation_value::origin::lowered_cpp_type);
+      });
   initial.add_function_visitor(&normalize_return_type);
   initial.add_named_visitor(&lower_deprecated_annotations);
   mutators.push_back(std::move(initial));

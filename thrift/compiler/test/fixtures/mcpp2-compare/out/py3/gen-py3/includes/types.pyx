@@ -214,7 +214,7 @@ cdef class AStructB(thrift.py3.types.Struct):
         if self.__fbthrift_cached_FieldA is None:
             if not deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).FieldA_ref():
                 return None
-            self.__fbthrift_cached_FieldA = AStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).FieldA_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_FieldA = AStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_includes_cbindings.cAStruct](deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).FieldA_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_FieldA
 
     @property

@@ -248,7 +248,7 @@ cdef class ComplexUnion(thrift.py3.types.Union):
             if not deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).get_stringRef():
                 self.py_value = None
             else:
-                self.py_value = str._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).get_stringRef()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+                self.py_value = str._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[string](deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).get_stringRef()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.py_value
 
     cdef _initialize_py(ComplexUnion self):

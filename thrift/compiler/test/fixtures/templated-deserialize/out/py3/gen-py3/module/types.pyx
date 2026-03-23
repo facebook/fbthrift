@@ -386,7 +386,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if self.__fbthrift_cached_fieldS is None:
             if not deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).fieldS_ref():
                 return None
-            self.__fbthrift_cached_fieldS = SmallStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).fieldS_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_fieldS = SmallStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_module_cbindings.cSmallStruct](deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).fieldS_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_fieldS
 
     @property
@@ -397,7 +397,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if self.__fbthrift_cached_fieldT is None:
             if not deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).fieldT_ref():
                 return None
-            self.__fbthrift_cached_fieldT = SmallStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).fieldT_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_fieldT = SmallStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_module_cbindings.cSmallStruct](deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).fieldT_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_fieldT
 
     @property
@@ -408,7 +408,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if self.__fbthrift_cached_fieldU is None:
             if not deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).fieldU_ref():
                 return None
-            self.__fbthrift_cached_fieldU = SmallStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).fieldU_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_fieldU = SmallStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_module_cbindings.cSmallStruct](deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).fieldU_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_fieldU
 
     @property
@@ -419,7 +419,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if self.__fbthrift_cached_fieldX is None:
             if not deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).fieldX_ref():
                 return None
-            self.__fbthrift_cached_fieldX = SmallStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).fieldX_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_fieldX = SmallStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_module_cbindings.cSmallStruct](deref(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).fieldX_ref()), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_fieldX
 
     @property

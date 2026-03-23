@@ -828,7 +828,7 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
 
     cdef inline structOne_impl(self):
         if self.__fbthrift_cached_structOne is None:
-            self.__fbthrift_cached_structOne = SimpleStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).structOne_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_structOne = SimpleStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_module_cbindings.cSimpleStruct](deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).structOne_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_structOne
 
     @property
@@ -837,7 +837,7 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
 
     cdef inline structTwo_impl(self):
         if self.__fbthrift_cached_structTwo is None:
-            self.__fbthrift_cached_structTwo = SimpleStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).structTwo_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_structTwo = SimpleStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_module_cbindings.cSimpleStruct](deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).structTwo_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_structTwo
 
     @property
@@ -1141,7 +1141,7 @@ cdef class BinaryUnionStruct(thrift.py3.types.Struct):
 
     cdef inline u_impl(self):
         if self.__fbthrift_cached_u is None:
-            self.__fbthrift_cached_u = BinaryUnion._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).u_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_u = BinaryUnion._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_module_cbindings.cBinaryUnion](deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).u_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_u
 
     @property
@@ -1321,7 +1321,7 @@ cdef class CustomFields(thrift.py3.types.Struct):
 
     cdef inline struct_field_impl(self):
         if self.__fbthrift_cached_struct_field is None:
-            self.__fbthrift_cached_struct_field = SimpleStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).struct_field_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_struct_field = SimpleStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_module_cbindings.cSimpleStruct](deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).struct_field_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_struct_field
 
     @property
@@ -1508,7 +1508,7 @@ cdef class CustomTypedefFields(thrift.py3.types.Struct):
 
     cdef inline struct_field_impl(self):
         if self.__fbthrift_cached_struct_field is None:
-            self.__fbthrift_cached_struct_field = SimpleStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).struct_field_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_struct_field = SimpleStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_module_cbindings.cSimpleStruct](deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).struct_field_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_struct_field
 
     @property
@@ -1695,7 +1695,7 @@ cdef class AdaptedTypedefFields(thrift.py3.types.Struct):
 
     cdef inline struct_field_impl(self):
         if self.__fbthrift_cached_struct_field is None:
-            self.__fbthrift_cached_struct_field = SimpleStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr(deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).struct_field_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
+            self.__fbthrift_cached_struct_field = SimpleStruct._create_FBTHRIFT_ONLY_DO_NOT_USE(__reference_shared_ptr[_module_cbindings.cSimpleStruct](deref(self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE).struct_field_ref().ref(), self._cpp_obj_FBTHRIFT_ONLY_DO_NOT_USE))
         return self.__fbthrift_cached_struct_field
 
     @property

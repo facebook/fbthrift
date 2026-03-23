@@ -1594,7 +1594,7 @@ class OptionalRefStruct final  {
   >;
 
   using __fbthrift_reflection_type_tags = folly::tag_t<
-    ::apache::thrift::type::cpp_type<std::unique_ptr<folly::IOBuf>, ::apache::thrift::type::binary_t>
+    ::apache::thrift::type::cpp_type<::py3::simple::IOBufPtr, ::apache::thrift::type::binary_t>
   >;
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -2420,7 +2420,7 @@ class ComplexStruct final  {
     ::apache::thrift::type::binary_t,
     ::apache::thrift::type::string_t,
     ::apache::thrift::type::string_t,
-    ::apache::thrift::type::cpp_type<foo::Bar, ::apache::thrift::type::binary_t>
+    ::apache::thrift::type::cpp_type<::py3::simple::foo_bar, ::apache::thrift::type::binary_t>
   >;
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -2996,7 +2996,7 @@ class BinaryUnion final  {
   >;
 
   using __fbthrift_reflection_type_tags = folly::tag_t<
-    ::apache::thrift::type::cpp_type<folly::IOBuf, ::apache::thrift::type::binary_t>
+    ::apache::thrift::type::cpp_type<::py3::simple::IOBuf, ::apache::thrift::type::binary_t>
   >;
   void __fbthrift_clear();
   void __fbthrift_destruct();
@@ -3925,15 +3925,15 @@ class CustomTypedefFields final  {
   >;
 
   using __fbthrift_reflection_type_tags = folly::tag_t<
-    ::apache::thrift::type::cpp_type<::MyType, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::cpp_type<::MyType, ::apache::thrift::type::i64_t>,
-    ::apache::thrift::type::cpp_type<::MyType, ::apache::thrift::type::double_t>,
-    ::apache::thrift::type::cpp_type<::MyType, ::apache::thrift::type::string_t>,
-    ::apache::thrift::type::cpp_type<::MyType, ::apache::thrift::type::binary_t>,
-    ::apache::thrift::type::cpp_type<::MyType, ::apache::thrift::type::list<::apache::thrift::type::i32_t>>,
-    ::apache::thrift::type::cpp_type<::MyType, ::apache::thrift::type::set<::apache::thrift::type::i32_t>>,
-    ::apache::thrift::type::cpp_type<::MyType, ::apache::thrift::type::map<::apache::thrift::type::i32_t, ::apache::thrift::type::i32_t>>,
-    ::apache::thrift::type::cpp_type<::MyType, ::apache::thrift::type::struct_t<::py3::simple::SimpleStruct>>
+    ::apache::thrift::type::cpp_type<::py3::simple::CustomBool, ::apache::thrift::type::bool_t>,
+    ::apache::thrift::type::cpp_type<::py3::simple::CustomInteger, ::apache::thrift::type::i64_t>,
+    ::apache::thrift::type::cpp_type<::py3::simple::CustomDouble, ::apache::thrift::type::double_t>,
+    ::apache::thrift::type::cpp_type<::py3::simple::CustomString, ::apache::thrift::type::string_t>,
+    ::apache::thrift::type::cpp_type<::py3::simple::CustomBinary, ::apache::thrift::type::binary_t>,
+    ::apache::thrift::type::cpp_type<::py3::simple::CustomList, ::apache::thrift::type::list<::apache::thrift::type::i32_t>>,
+    ::apache::thrift::type::cpp_type<::py3::simple::CustomSet, ::apache::thrift::type::set<::apache::thrift::type::i32_t>>,
+    ::apache::thrift::type::cpp_type<::py3::simple::CustomMap, ::apache::thrift::type::map<::apache::thrift::type::i32_t, ::apache::thrift::type::i32_t>>,
+    ::apache::thrift::type::cpp_type<::py3::simple::CustomStruct, ::apache::thrift::type::struct_t<::py3::simple::SimpleStruct>>
   >;
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;

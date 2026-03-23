@@ -152,7 +152,7 @@ def get_reflection__ContainerStruct() -> __StructSpec:
             id=7,
             name="fieldG",
             py_name="fieldG",
-            type=_apache_thrift_fixtures_types_module_types.Map__i32_string,
+            type=_apache_thrift_fixtures_types_module_types.folly_sorted_vector_map__Map__i32_string,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -1156,7 +1156,7 @@ def get_reflection__folly_sorted_vector_set__Set__i32() -> __SetSpec:
         kind=__NumberType.I32,
      )
 
-def get_reflection__Map__i32_string() -> __MapSpec:
+def get_reflection__folly_sorted_vector_map__Map__i32_string() -> __MapSpec:
     return __MapSpec._fbthrift_create(
         key=int,
         key_kind=__NumberType.I32,

@@ -40,7 +40,7 @@ from apache.thrift.fixtures.types.module.containers_FBTHRIFT_ONLY_DO_NOT_USE imp
     folly_fbvector__List__i32,
     folly_small_vector__List__i32,
     folly_sorted_vector_set__Set__i32,
-    Map__i32_string,
+    folly_sorted_vector_map__Map__i32_string,
     std_list_int32_t__List__i32,
     Map__string_i32,
     List__std_unordered_map__Map__i32_string,
@@ -170,7 +170,7 @@ cdef class __ContainerStruct_FieldsSetter(__StructFieldsSetter):
         if _fbthrift_value is None:
             __reset_field[_apache_thrift_fixtures_types_module_cbindings.cContainerStruct](deref(self._struct_cpp_obj), 6)
             return
-        deref(self._struct_cpp_obj).fieldG_ref().assign(_apache_thrift_fixtures_types_module_types.Map__i32_string__make_instance(_fbthrift_value))
+        deref(self._struct_cpp_obj).fieldG_ref().assign(_apache_thrift_fixtures_types_module_types.folly_sorted_vector_map__Map__i32_string__make_instance(_fbthrift_value))
 
     cdef void _set_field_7(self, _fbthrift_value) except *:
         # for field fieldH

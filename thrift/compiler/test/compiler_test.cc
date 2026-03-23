@@ -926,6 +926,7 @@ TEST(CompilerTest, cpp_type_compatibility) {
 
     @cpp.Adapter{name="Adapter"} # expected-error: Definition `Bar1` cannot have both cpp.type/cpp.template and @cpp.Adapter annotations
     typedef i32 Bar1 (cpp.type = "std::uint32_t") # expected-error@-1: The annotation cpp.type has been removed. Please use @cpp.Type instead.
+    # expected-warning@-2: Unstructured annotation cpp.type/cpp.template on typedef `Bar1` is ignored. Use @cpp.Type instead.
 
     @cpp.Adapter{name="Adapter"} # expected-error: Definition `A` cannot have both cpp.type/cpp.template and @cpp.Adapter annotations
     struct A {
