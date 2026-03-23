@@ -43,11 +43,8 @@
 #include <thrift/test/gen-cpp2/adapter_types.h>
 #include <thrift/test/testset/Testset.h>
 
-// TODO: Remove this. Specify namespace explicitly instead.
-using namespace ::apache::thrift::conformance;
-
-using detail::protocol_reader_t;
-using detail::protocol_writer_t;
+using ::apache::thrift::conformance::detail::protocol_reader_t;
+using ::apache::thrift::conformance::detail::protocol_writer_t;
 
 namespace apache::thrift::protocol {
 namespace {
@@ -182,7 +179,7 @@ TEST(ObjectTest, String) {
 TEST(ObjectTest, Binary) {
   Value value = asValueStruct<type::binary_t>("hi");
   ASSERT_EQ(value.getType(), Value::Type::binaryValue);
-  EXPECT_EQ(toString(value.as_binary()), "hi");
+  EXPECT_EQ(conformance::toString(value.as_binary()), "hi");
 }
 
 TEST(ObjectTest, List) {
@@ -567,7 +564,8 @@ template <
     typename T>
 void testParseObject() {
   T testsetValue;
-  for (const auto& val : data::ValueGenerator<Tag>::getKeyValues()) {
+  for (const auto& val :
+       conformance::data::ValueGenerator<Tag>::getKeyValues()) {
     SCOPED_TRACE(val.name);
     testsetValue.field_1_ref() = val.value;
     auto object = asObject(testsetValue);
@@ -591,7 +589,8 @@ template <
     typename T>
 void testWithMask(bool testSerialize) {
   T testsetValue;
-  for (const auto& val : data::ValueGenerator<Tag>::getKeyValues()) {
+  for (const auto& val :
+       conformance::data::ValueGenerator<Tag>::getKeyValues()) {
     SCOPED_TRACE(val.name);
     testsetValue.field_1_ref() = val.value;
     auto object = asObject(testsetValue);
