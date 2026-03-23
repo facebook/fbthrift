@@ -108,9 +108,6 @@ getStringMapMask(const Mask& mask);
 // If mask is an AnyMask, return it, otherwise return nullptr
 [[nodiscard]] const MapTypeToMask* FOLLY_NULLABLE getTypeMask(const Mask& mask);
 
-// If mask is an any-mask, return it, otherwise return nullptr
-// TODO
-
 // Moves the given object to the field (can be field ref or smart pointer).
 template <typename T, typename U>
 void moveObject(T& field, U&& object) {

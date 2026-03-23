@@ -303,7 +303,6 @@ TEST(MapTest, ConstGet) {
   EXPECT_FALSE(val3.has_value());
 }
 
-// TODO: Enable serialization tests once serialization is implemented
 TEST(MapTest, SerializationRoundTrip) {
   // Create a map type: map<i32, string>
   type_system::TypeRef mapType = type_system::TypeRef(makeMapType(

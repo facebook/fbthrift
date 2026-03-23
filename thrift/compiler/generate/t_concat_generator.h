@@ -73,7 +73,6 @@ class t_concat_generator : public t_generator {
   virtual void generate_typedef(const t_typedef* ttypedef) = 0;
   virtual void generate_enum(const t_enum* tenum) = 0;
   virtual void generate_const(const t_const* /*tconst*/) {}
-  // TODO(aristidis): (2023-09-13) Change t_struct to t_structured
   virtual void generate_forward_declaration(const t_structured* /*tstruct*/) {}
   virtual void generate_struct(const t_structured* tstruct) = 0;
   virtual void generate_service(const t_service* tservice) = 0;

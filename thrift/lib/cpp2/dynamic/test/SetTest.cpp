@@ -152,9 +152,6 @@ TEST(SetTest, TypeMismatch) {
   EXPECT_THROW(set.insert(DynamicValue::makeDouble(3.14)), std::runtime_error);
 }
 
-// TODO: Enable serialization tests once serialization is implemented
-// TEST(SetTest, SerializationRoundTrip) {
-
 TEST(SetTest, SerializationRoundTrip) {
   // Create a set type: set<i32>
   type_system::TypeRef setType =
