@@ -16,7 +16,6 @@
 # pyre-strict
 
 import asyncio
-import threading
 import unittest
 from typing import AsyncIterator, Tuple
 
@@ -200,22 +199,14 @@ class StreamClientTest(unittest.IsolatedAsyncioTestCase):
 
     @unittest.expectedFailure
     async def test_stream_cancel_propagates_during_blocked_anext(self) -> None:
-        """Regression test: stream cancellation must work when __anext__ is in-flight.
-
+        """
+        Stream cancellation must work when __anext__ is in-flight.
         When cancelAsyncGenerator calls aclose() on the server-side stream wrapper
         while its __anext__() is blocked waiting for the next item from the handler's
         generator, cancellation must propagate to the handler's generator.
-
-        Bug: The old async-generator-based stream wrapper cannot handle aclose()
-        while __anext__() is running (Python raises RuntimeError for async generators
-        in 'running' state). fallibleClose swallows the error, so the handler's
-        generator is never cancelled.
-
-        Fix: The class-based stream wrapper wraps __anext__() in an asyncio.Task,
-        allowing aclose() to cancel the in-flight task and propagate cancellation.
         """
-        generator_cleanup_event = threading.Event()
-        generator_blocked_event = threading.Event()
+        generator_cleanup_event = asyncio.Event()
+        generator_blocked_event = asyncio.Event()
 
         class BlockingStreamHandler(Handler):
             async def returnstream(
@@ -242,20 +233,8 @@ class StreamClientTest(unittest.IsolatedAsyncioTestCase):
                 stream = await client.returnstream(0, 10)
                 first = await stream.__anext__()
                 self.assertEqual(first, 0)
-                # Ensure server generator is blocked in __anext__
-                blocked = await asyncio.get_running_loop().run_in_executor(
-                    None, generator_blocked_event.wait, 5.0
-                )
-                self.assertTrue(
-                    blocked, "Server generator did not reach blocking state"
-                )
+                # Ensure server generator is blocked in __anext__.
+                await asyncio.wait_for(generator_blocked_event.wait(), timeout=5.0)
             # Client disconnected; cancelAsyncGenerator fires on server side.
-            # Verify generator cleanup BEFORE server shutdown.
-            cleaned = await asyncio.get_running_loop().run_in_executor(
-                None, generator_cleanup_event.wait, 5.0
-            )
-            self.assertTrue(
-                cleaned,
-                "Server-side generator was not cleaned up after client disconnect. "
-                "aclose() failed to propagate while __anext__() was in-flight.",
-            )
+            # Verify generator cleanup before server shutdown.
+            await asyncio.wait_for(generator_cleanup_event.wait(), timeout=5.0)
