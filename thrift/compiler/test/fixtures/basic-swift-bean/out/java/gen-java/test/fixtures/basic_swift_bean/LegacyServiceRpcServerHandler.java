@@ -70,12 +70,18 @@ public class LegacyServiceRpcServerHandler
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.MAP_FIELD);
         oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter0.size()));
         for (Map.Entry<String, List<Integer>> _iter1 : _iter0.entrySet()) {
-          oprot.writeString(_iter1.getKey());
-          oprot.writeListBegin(new TList(TType.I32, _iter1.getValue().size()));
-        for (int _iter2 : _iter1.getValue()) {
-          oprot.writeI32(_iter2);
+          {
+            String _iter2 = _iter1.getKey();
+            oprot.writeString(_iter2);
+          }
+          {
+            List<Integer> _iter2 = _iter1.getValue();
+            oprot.writeListBegin(new TList(TType.I32, _iter2.size()));
+        for (int _iter3 : _iter2) {
+          oprot.writeI32(_iter3);
         }
         oprot.writeListEnd();
+          }
         }
         oprot.writeMapEnd();
         oprot.writeFieldEnd();
