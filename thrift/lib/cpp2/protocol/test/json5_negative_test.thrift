@@ -33,6 +33,7 @@ const list<NegativeTestCase> enumValidationNegativeCases = [
   NegativeTestCase{name = "InvalidName", json = "{\"enumValue\": \"INVALID_ENUM\"}"},
   NegativeTestCase{name = "InvalidNameWithValue", json = "{\"enumValue\": \"INVALID_ENUM (1)\"}"},
   NegativeTestCase{name = "ExtraWhitespace", json = "{\"enumValue\": \"ONE \"}"},
+  NegativeTestCase{name = "ExtraWhitespace2", json = "{\"enumValue\": \"1 \"}"},
   NegativeTestCase{name = "MissingCloseParen", json = "{\"enumValue\": \"ONE (1\"}"},
   NegativeTestCase{name = "EmptyParentheses", json = "{\"enumValue\": \"ONE ()\"}"},
   NegativeTestCase{name = "ReversedNameValue", json = "{\"enumValue\": \"1 (ONE)\"}"},
@@ -90,4 +91,11 @@ const list<NegativeTestCase> overflowValidationNegativeCases = [
   // i64 overflow (range: -9223372036854775808 to 9223372036854775807)
   NegativeTestCase{name = "I64StringPositiveOverflow", json = "{\"i64Value\": \"9223372036854775808\"}"},
   NegativeTestCase{name = "I64StringNegativeOverflow", json = "{\"i64Value\": \"-9223372036854775809\"}"},
+  // enum overflow (range: -2147483648 to 2147483647)
+  NegativeTestCase{name = "EnumPositiveOverflow1", json = "{\"enumValue\": 2147483648}"},
+  NegativeTestCase{name = "EnumPositiveOverflow2", json = "{\"enumValue\": \"2147483648\"}"},
+  NegativeTestCase{name = "EnumPositiveOverflow3", json = "{\"enumValue\": \"(2147483648)\"}"},
+  NegativeTestCase{name = "EnumNegativeOverflow1", json = "{\"enumValue\": -2147483649}"},
+  NegativeTestCase{name = "EnumNegativeOverflow2", json = "{\"enumValue\": \"-2147483649\"}"},
+  NegativeTestCase{name = "EnumNegativeOverflow3", json = "{\"enumValue\": \"(-2147483649)\"}"},
 ];

@@ -16,6 +16,7 @@
 
 #include <thrift/lib/cpp2/protocol/detail/Json5ProtocolReader.h>
 
+#include <charconv>
 #include <limits>
 #include <optional>
 #include <stdexcept>
@@ -331,6 +332,15 @@ Json5ProtocolReader::EnumReadResult Json5ProtocolReader::parseEnumString(
   if (re2::RE2::FullMatch(
           s, kNameValuePattern, &ret.name, &ret.value.emplace())) {
     return ret;
+  }
+
+  // matches bare integer "-123" or "123"
+  {
+    std::int32_t i;
+    auto [ptr, ec] = std::from_chars(s.data(), s.data() + s.size(), i);
+    if (ec == std::errc{} && ptr == s.data() + s.size()) {
+      return {.name = {}, .value = i};
+    }
   }
 
   // matches bare identifier "NAME"
