@@ -38,40 +38,55 @@ namespace {
 // thrift struct because old serialization code will serialize by IDL order,
 // while new serialization code will serialize by field id order. The resulting
 // difference in order will consequently change the bytes serialized.
-#define EXPECT_SERIALIZED_DATA_EQ(Serializer, expected, result) \
-  do {                                                          \
-    if (std::is_same_v<Serializer, SimpleJSONSerializer>) {     \
-      FOLLY_EXPECT_JSON_EQ(expected, result);                   \
-    } else {                                                    \
-      EXPECT_EQ(expected, result);                              \
-    }                                                           \
-  } while (false)
+template <typename Serializer>
+::testing::AssertionResult serializedDataEq(
+    std::string_view expected, std::string_view result) {
+  if constexpr (std::is_same_v<Serializer, SimpleJSONSerializer>) {
+    if (::folly::compareJson(expected, result)) {
+      return ::testing::AssertionSuccess();
+    }
+  } else if (expected == result) {
+    return ::testing::AssertionSuccess();
+  }
+  return ::testing::AssertionFailure()
+      << "serialized bytes do not match: expected=" << expected
+      << " actual=" << result;
+}
 
 // Tests that table based serialization matches the output of original
 // serialization. Tests that table based deserialization works with original
 // serialized bytes.
-#define EXPECT_COMPATIBLE_PROTOCOL_IMPL(                                     \
-    object, tableBasedObject, Serializer, shouldSkipEqualityForUnionWithRef) \
-  do {                                                                       \
-    std::string originalBytes =                                              \
-        Serializer::template serialize<std::string>(object);                 \
-    auto tableBasedObjectFromOriginalBytes =                                 \
-        Serializer::template deserialize<decltype(tableBasedObject)>(        \
-            originalBytes);                                                  \
-    std::string tableBasedBytes =                                            \
-        Serializer::template serialize<std::string>(tableBasedObject);       \
-    if (!shouldSkipEqualityForUnionWithRef) {                                \
-      EXPECT_EQ(tableBasedObject, tableBasedObjectFromOriginalBytes);        \
-    }                                                                        \
-    EXPECT_SERIALIZED_DATA_EQ(Serializer, originalBytes, tableBasedBytes);   \
-  } while (false)
+template <typename Serializer, typename T, typename TB>
+::testing::AssertionResult isCompatibleProtocolImpl(
+    const T& object,
+    const TB& tableBasedObject,
+    bool shouldSkipEqualityForUnionWithRef) {
+  std::string originalBytes =
+      Serializer::template serialize<std::string>(object);
+  auto tableBasedObjectFromOriginalBytes =
+      Serializer::template deserialize<TB>(originalBytes);
+  std::string tableBasedBytes =
+      Serializer::template serialize<std::string>(tableBasedObject);
+  if (!shouldSkipEqualityForUnionWithRef) {
+    if (tableBasedObject != tableBasedObjectFromOriginalBytes) {
+      return ::testing::AssertionFailure()
+          << "deserialized object does not match table-based object";
+    }
+  }
+  return serializedDataEq<Serializer>(originalBytes, tableBasedBytes);
+}
 
-#define EXPECT_COMPATIBLE_PROTOCOL(object, tableBasedObject, Serializer) \
-  EXPECT_COMPATIBLE_PROTOCOL_IMPL(object, tableBasedObject, Serializer, false)
+template <typename Serializer, typename T, typename TB>
+::testing::AssertionResult isCompatibleProtocol(
+    const T& object, const TB& tableBasedObject) {
+  return isCompatibleProtocolImpl<Serializer>(object, tableBasedObject, false);
+}
 
-#define EXPECT_COMPATIBLE_PROTOCOL_UNION_REF( \
-    object, tableBasedObject, Serializer)     \
-  EXPECT_COMPATIBLE_PROTOCOL_IMPL(object, tableBasedObject, Serializer, true)
+template <typename Serializer, typename T, typename TB>
+::testing::AssertionResult isCompatibleProtocolUnionRef(
+    const T& object, const TB& tableBasedObject) {
+  return isCompatibleProtocolImpl<Serializer>(object, tableBasedObject, true);
+}
 
 template <typename Type>
 Type makeStructWithIncludeLike() {
@@ -155,63 +170,68 @@ class MultiProtocolTest : public ::testing::Test {};
 TYPED_TEST_CASE(MultiProtocolTest, Protocols);
 
 TYPED_TEST(MultiProtocolTest, EmptyFrozenStructA) {
-  EXPECT_COMPATIBLE_PROTOCOL(
-      FrozenStructA(), tablebased::FrozenStructA(), TypeParam);
+  EXPECT_TRUE(
+      isCompatibleProtocol<TypeParam>(
+          FrozenStructA(), tablebased::FrozenStructA()));
 }
 
 TYPED_TEST(MultiProtocolTest, FrozenStructA) {
   FrozenStructA oldObject = makeFrozenStructALike<FrozenStructA>();
   tablebased::FrozenStructA newObject =
       makeFrozenStructALike<tablebased::FrozenStructA>();
-  EXPECT_COMPATIBLE_PROTOCOL(oldObject, newObject, TypeParam);
+  EXPECT_TRUE(isCompatibleProtocol<TypeParam>(oldObject, newObject));
 }
 
 TYPED_TEST(MultiProtocolTest, EmptyFrozenStructB) {
-  EXPECT_COMPATIBLE_PROTOCOL(
-      FrozenStructB(), tablebased::FrozenStructA(), TypeParam);
+  EXPECT_TRUE(
+      isCompatibleProtocol<TypeParam>(
+          FrozenStructB(), tablebased::FrozenStructA()));
 }
 
 TYPED_TEST(MultiProtocolTest, FrozenStructB) {
   FrozenStructB oldObject = makeFrozenStructBLike<FrozenStructB>();
   tablebased::FrozenStructB newObject =
       makeFrozenStructBLike<tablebased::FrozenStructB>();
-  EXPECT_COMPATIBLE_PROTOCOL(oldObject, newObject, TypeParam);
+  EXPECT_TRUE(isCompatibleProtocol<TypeParam>(oldObject, newObject));
 }
 
 TYPED_TEST(MultiProtocolTest, EmptyStructA) {
-  EXPECT_COMPATIBLE_PROTOCOL(StructA(), tablebased::StructA(), TypeParam);
+  EXPECT_TRUE(
+      isCompatibleProtocol<TypeParam>(StructA(), tablebased::StructA()));
 }
 
 TYPED_TEST(MultiProtocolTest, StructA) {
   StructA oldObject = makeStructALike<StructA>();
   tablebased::StructA newObject = makeStructALike<tablebased::StructA>();
-  EXPECT_COMPATIBLE_PROTOCOL(oldObject, newObject, TypeParam);
+  EXPECT_TRUE(isCompatibleProtocol<TypeParam>(oldObject, newObject));
 }
 
 TYPED_TEST(MultiProtocolTest, EmptyStructWithRef) {
-  EXPECT_COMPATIBLE_PROTOCOL(
-      StructWithRef(), tablebased::StructWithRef(), TypeParam);
+  EXPECT_TRUE(
+      isCompatibleProtocol<TypeParam>(
+          StructWithRef(), tablebased::StructWithRef()));
 }
 
 TYPED_TEST(MultiProtocolTest, StructWithRef) {
   auto oldObject = makeStructWithRefLike<StructWithRef>();
   auto newObject = makeStructWithRefLike<tablebased::StructWithRef>();
-  EXPECT_COMPATIBLE_PROTOCOL(oldObject, newObject, TypeParam);
+  EXPECT_TRUE(isCompatibleProtocol<TypeParam>(oldObject, newObject));
 }
 
 TYPED_TEST(MultiProtocolTest, EmptyStructWithInclude) {
-  EXPECT_COMPATIBLE_PROTOCOL(
-      StructWithInclude(), tablebased::StructWithInclude(), TypeParam);
+  EXPECT_TRUE(
+      isCompatibleProtocol<TypeParam>(
+          StructWithInclude(), tablebased::StructWithInclude()));
 }
 
 TYPED_TEST(MultiProtocolTest, StructWithInclude) {
   auto oldObject = makeStructWithIncludeLike<StructWithInclude>();
   auto newObject = makeStructWithIncludeLike<tablebased::StructWithInclude>();
-  EXPECT_COMPATIBLE_PROTOCOL(oldObject, newObject, TypeParam);
+  EXPECT_TRUE(isCompatibleProtocol<TypeParam>(oldObject, newObject));
 }
 
 TYPED_TEST(MultiProtocolTest, EmptyUnion) {
-  EXPECT_COMPATIBLE_PROTOCOL(Union(), tablebased::Union(), TypeParam);
+  EXPECT_TRUE(isCompatibleProtocol<TypeParam>(Union(), tablebased::Union()));
 }
 
 TYPED_TEST(MultiProtocolTest, Union) {
@@ -220,27 +240,28 @@ TYPED_TEST(MultiProtocolTest, Union) {
     oldObject.a_field() = makeStructALike<StructA>();
     tablebased::Union newObject;
     newObject.a_field() = makeStructALike<tablebased::StructA>();
-    EXPECT_COMPATIBLE_PROTOCOL(oldObject, newObject, TypeParam);
+    EXPECT_TRUE(isCompatibleProtocol<TypeParam>(oldObject, newObject));
   }
   {
     Union oldObject;
     oldObject.b_field() = makeStructBLike<StructB>();
     tablebased::Union newObject;
     newObject.b_field() = makeStructBLike<tablebased::StructB>();
-    EXPECT_COMPATIBLE_PROTOCOL(oldObject, newObject, TypeParam);
+    EXPECT_TRUE(isCompatibleProtocol<TypeParam>(oldObject, newObject));
   }
   {
     Union oldObject;
     oldObject.str_field() = "test";
     tablebased::Union newObject;
     newObject.str_field() = "test";
-    EXPECT_COMPATIBLE_PROTOCOL(oldObject, newObject, TypeParam);
+    EXPECT_TRUE(isCompatibleProtocol<TypeParam>(oldObject, newObject));
   }
 }
 
 TYPED_TEST(MultiProtocolTest, EmptyUnionWithRef) {
-  EXPECT_COMPATIBLE_PROTOCOL(
-      UnionWithRef(), tablebased::UnionWithRef(), TypeParam);
+  EXPECT_TRUE(
+      isCompatibleProtocol<TypeParam>(
+          UnionWithRef(), tablebased::UnionWithRef()));
 }
 
 TYPED_TEST(MultiProtocolTest, UnionWithRef) {
@@ -249,7 +270,7 @@ TYPED_TEST(MultiProtocolTest, UnionWithRef) {
     oldObject.set_simple_field(makeStructBLike<StructB>());
     tablebased::UnionWithRef newObject;
     newObject.set_simple_field(makeStructBLike<tablebased::StructB>());
-    EXPECT_COMPATIBLE_PROTOCOL(oldObject, newObject, TypeParam);
+    EXPECT_TRUE(isCompatibleProtocol<TypeParam>(oldObject, newObject));
   }
   {
     UnionWithRef oldObject;
@@ -266,10 +287,10 @@ TYPED_TEST(MultiProtocolTest, UnionWithRef) {
       const_cast<std::unique_ptr<tablebased::StructA>&>(ptr) =
           std::unique_ptr<tablebased::StructA>(nullptr);
     }
-    EXPECT_COMPATIBLE_PROTOCOL_UNION_REF(oldObject, newObject, TypeParam);
+    EXPECT_TRUE(isCompatibleProtocolUnionRef<TypeParam>(oldObject, newObject));
     oldObject.set_unique_field(makeStructALike<StructA>());
     newObject.set_unique_field(makeStructALike<tablebased::StructA>());
-    EXPECT_COMPATIBLE_PROTOCOL(oldObject, newObject, TypeParam);
+    EXPECT_TRUE(isCompatibleProtocol<TypeParam>(oldObject, newObject));
   }
   {
     UnionWithRef oldObject;
@@ -286,10 +307,10 @@ TYPED_TEST(MultiProtocolTest, UnionWithRef) {
       const_cast<std::shared_ptr<tablebased::StructA>&>(ptr) =
           std::shared_ptr<tablebased::StructA>(nullptr);
     }
-    EXPECT_COMPATIBLE_PROTOCOL_UNION_REF(oldObject, newObject, TypeParam);
+    EXPECT_TRUE(isCompatibleProtocolUnionRef<TypeParam>(oldObject, newObject));
     oldObject.set_shared_field(makeStructALike<StructA>());
     newObject.set_shared_field(makeStructALike<tablebased::StructA>());
-    EXPECT_COMPATIBLE_PROTOCOL(oldObject, newObject, TypeParam);
+    EXPECT_TRUE(isCompatibleProtocol<TypeParam>(oldObject, newObject));
   }
   {
     UnionWithRef oldObject;
@@ -306,10 +327,10 @@ TYPED_TEST(MultiProtocolTest, UnionWithRef) {
       const_cast<std::shared_ptr<const tablebased::StructA>&>(ptr) =
           std::shared_ptr<const tablebased::StructA>(nullptr);
     }
-    EXPECT_COMPATIBLE_PROTOCOL_UNION_REF(oldObject, newObject, TypeParam);
+    EXPECT_TRUE(isCompatibleProtocolUnionRef<TypeParam>(oldObject, newObject));
     oldObject.set_shared_const_field(makeStructALike<StructA>());
     newObject.set_shared_const_field(makeStructALike<tablebased::StructA>());
-    EXPECT_COMPATIBLE_PROTOCOL(oldObject, newObject, TypeParam);
+    EXPECT_TRUE(isCompatibleProtocol<TypeParam>(oldObject, newObject));
   }
 }
 
