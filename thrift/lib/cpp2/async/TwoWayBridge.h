@@ -21,7 +21,7 @@
 #include <memory>
 #include <utility>
 #include <glog/logging.h>
-#include <folly/experimental/channels/detail/AtomicQueue.h>
+#include <folly/channels/detail/AtomicQueue.h>
 #include <folly/lang/Assume.h>
 
 namespace apache::thrift::detail {
