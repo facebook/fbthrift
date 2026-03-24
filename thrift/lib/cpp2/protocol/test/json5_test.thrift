@@ -30,6 +30,7 @@ struct OutOfOrderFields {
 }
 
 enum Enum {
+  NEGATIVE_ONE = -1,
   DEFAULT = 0,
   ONE = 1,
   TWO = 2,
@@ -116,6 +117,16 @@ const list<TestCase> testCases = [
   floatValue: 0.10000001,
   doubleValue: 0.10000000000000002,
   enumValue: \"ONE (1)\",
+}",
+  },
+  TestCase{
+    name = "NegativeEnum",
+    example = Example{enumValue = Enum.NEGATIVE_ONE},
+    json = "{
+  \"enumValue\": \"NEGATIVE_ONE (-1)\"
+}",
+    json5 = "{
+  enumValue: \"NEGATIVE_ONE (-1)\",
 }",
   },
   TestCase{

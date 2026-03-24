@@ -127,6 +127,26 @@ const list<CompatibilityTestCase> compatibilityTestCases = [
     output = json5_test.Example{enumValue = 2},
   },
   CompatibilityTestCase{
+    name = "EnumNegativeOne",
+    inputs = [
+      "{\"enumValue\": \"NEGATIVE_ONE (-1)\"}",
+      "{\"enumValue\": \"NEGATIVE_ONE\"}",
+      "{\"enumValue\": \"(-1)\"}",
+      "{\"enumValue\": -1}",
+      "{\"enumValue\": -0x1}",
+    ],
+    output = json5_test.Example{enumValue = -1},
+  },
+  CompatibilityTestCase{
+    name = "EnumUnregistered",
+    inputs = [
+      "{\"enumValue\": \"(-5)\"}",
+      "{\"enumValue\": \"SomeName (-5)\"}",
+      "{\"enumValue\": -5}",
+    ],
+    output = json5_test.Example{enumValue = -5},
+  },
+  CompatibilityTestCase{
     name = "EnumDefault",
     inputs = [
       "{\"enumValue\": \"DEFAULT (0)\"}",

@@ -59,18 +59,6 @@ T parse(std::string_view json) {
   return Json5ProtocolUtils::fromJson5<T>(json);
 }
 
-// Unregistered enum values can't be represented as thrift constants.
-TEST(JsonDecoderCompatibilityExtraTest, EnumUnregistered) {
-  for (auto json : {
-           R"_({"enumValue": "(-5)"})_",
-           R"_({"enumValue": "SomeName (-5)"})_",
-           R"_({"enumValue": -5})_",
-       }) {
-    EXPECT_EQ(
-        folly::to_underlying(parse<Example>(json).enumValue().value()), -5);
-  }
-}
-
 // Infinity and NaN can't be represented as thrift constants.
 
 TEST(JsonDecoderCompatibilityExtraTest, PositiveInfinityFormats) {
