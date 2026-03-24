@@ -108,7 +108,7 @@ ctx_ptr newMdContext() {
 }
 
 std::string hash(std::string st) {
-  // Save an initalized context.
+  // Save an initialized context.
   static EVP_MD_CTX* kBase = []() {
     auto ctx = newMdContext();
     EVP_DigestInit_ex(ctx.get(), EVP_sha256(), nullptr);

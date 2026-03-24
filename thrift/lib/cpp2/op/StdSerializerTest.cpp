@@ -24,11 +24,11 @@ namespace apache::thrift::op {
 namespace {
 
 template <typename Tag, typename S, typename T>
-void testTypeRegistryLoad(const S& seralizer, const T& value) {
+void testTypeRegistryLoad(const S& serializer, const T& value) {
   folly::IOBufQueue queue;
-  seralizer.encode(value, folly::io::QueueAppender{&queue, 2 << 4});
+  serializer.encode(value, folly::io::QueueAppender{&queue, 2 << 4});
   type::SemiAnyStruct sa;
-  sa.protocol() = seralizer.getProtocol();
+  sa.protocol() = serializer.getProtocol();
   sa.data() = *queue.front();
   sa.type() = type::Type::get<Tag>();
   type::AnyData anyData(sa);
@@ -37,19 +37,19 @@ void testTypeRegistryLoad(const S& seralizer, const T& value) {
 }
 
 template <typename Tag, typename S, typename T>
-void testTypeRegistryStore(const S& seralizer, const T& value) {
+void testTypeRegistryStore(const S& serializer, const T& value) {
   auto anyData = type::TypeRegistry::generated().store(
-      type::ConstRef(Tag{}, value), seralizer.getProtocol());
+      type::ConstRef(Tag{}, value), serializer.getProtocol());
   folly::io::Cursor cursor(&anyData.data());
-  auto actual = seralizer.template decode<Tag>(cursor);
+  auto actual = serializer.template decode<Tag>(cursor);
   EXPECT_EQ(actual, value);
 }
 
 template <typename Tag, typename S, typename T>
-void testSerialization(const S& seralizer, const T& value) {
-  test::expectRoundTrip<Tag>(seralizer, value);
-  testTypeRegistryLoad<Tag>(seralizer, value);
-  testTypeRegistryStore<Tag>(seralizer, value);
+void testSerialization(const S& serializer, const T& value) {
+  test::expectRoundTrip<Tag>(serializer, value);
+  testTypeRegistryLoad<Tag>(serializer, value);
+  testTypeRegistryStore<Tag>(serializer, value);
 }
 
 // Checks that the value roundtrips correctly for all standard protocols.

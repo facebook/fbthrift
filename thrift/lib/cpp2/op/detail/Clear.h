@@ -227,7 +227,7 @@ template <typename Adapter, typename UTag>
 struct GetIntrinsicDefault<type::adapted<Adapter, UTag>> {
   using Tag = type::adapted<Adapter, UTag>;
   const auto& operator()() const {
-    // TODO(dokwon): Consider adding enforcement to striping reference in
+    // TODO(dokwon): Consider adding enforcement to stripping reference in
     // 'Adapter::fromThrift' instead of copying.
     static const auto* p = new type::native_type<Tag>(
         Adapter::fromThrift(folly::copy(GetIntrinsicDefault<UTag>{}())));

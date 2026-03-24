@@ -114,7 +114,7 @@ void report_resolution_mismatch(
 
           if (const auto* enum_val = try_as_enum_value(*mismatch.local_node)) {
             // An unscoped reference to an enum value is used, which is being
-            // overriden by another program's Enum value of the same (unscoped)
+            // overridden by another program's Enum value of the same (unscoped)
             // name. The local qualified name should be used, i.e.
             // `<enum_name>.<value_name>`.
 

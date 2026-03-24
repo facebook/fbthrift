@@ -30,8 +30,8 @@ class Ref;
 namespace apache::thrift::type::detail {
 
 /**
- * A pointer for a type that has sufficent alignment to store information in the
- * lower bits.
+ * A pointer for a type that has sufficient alignment to store information in
+ * the lower bits.
  *
  * Template Parameters:
  * 1. `T`: Underlying type, whose pointer will be held (i.e., effectively a

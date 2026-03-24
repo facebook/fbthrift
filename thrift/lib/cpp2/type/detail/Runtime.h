@@ -80,8 +80,8 @@ class RuntimeType {
   const TypeInfo* operator->() const noexcept { return &info(); }
 
  private:
-  // Stash the runtime qualifer information in the TypeInfo pointer, as
-  // we know it has sufficent alignment.
+  // Stash the runtime qualifier information in the TypeInfo pointer, as
+  // we know it has sufficient alignment.
   enum Qualifier { kConst, kRvalue, kQualSize };
   AlignedPtr<const TypeInfo, kQualSize> info_ = &voidTypeInfo();
 

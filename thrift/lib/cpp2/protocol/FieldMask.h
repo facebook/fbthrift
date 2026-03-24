@@ -97,7 +97,7 @@ void clear(const Mask& mask, T& t) {
  *
  * Semantics for masks specified on data contained within thrift.Any:
  *  1. If the mask doesn't select the actual type contained within thrift.Any,
- * the returned object will be default inialized (i.e. cleared).
+ * the returned object will be default initialized (i.e. cleared).
  *  2. If the mask selects the actual type contained within thrift.Any, but is a
  * noneMask, same behavior as (1).
  *  3. If the mask selects the actual type contained within thrift.Any, is a

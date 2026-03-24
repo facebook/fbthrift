@@ -42,7 +42,7 @@ struct MaskedDecodeResult {
 
 namespace detail {
 
-// TODO(dokwon): Use Path once avaialble.
+// TODO(dokwon): Use Path once available.
 // Path of a field in a Thrift struct as a list of field ids.
 using FieldPath = std::vector<FieldId>;
 

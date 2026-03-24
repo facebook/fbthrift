@@ -91,7 +91,7 @@ class t_function final : public t_named {
   t_paramlist& params() { return *params_; }
   const t_paramlist& params() const { return *params_; }
 
-  // Returns the exceptions declared in the throws clause or or null if there
+  // Returns the exceptions declared in the throws clause or null if there
   // is no throws clause.
   t_throws* exceptions() { return exceptions_.get(); }
   const t_throws* exceptions() const { return exceptions_.get(); }

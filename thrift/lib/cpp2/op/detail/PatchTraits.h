@@ -81,7 +81,7 @@ using StringPatchAdapter = InlineAdapter<StringPatch<T>>;
 template <typename T>
 using BinaryPatchAdapter = InlineAdapter<BinaryPatch<T>>;
 
-// Adapters for structred types.
+// Adapters for structured types.
 template <typename T>
 using FieldPatchAdapter = InlineAdapter<FieldPatch<T>>;
 template <typename T>

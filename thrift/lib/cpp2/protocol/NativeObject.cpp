@@ -65,7 +65,7 @@ ValueHolder& ValueHolder::operator=(ValueHolder&& val) noexcept {
 }
 
 ValueHolder::~ValueHolder() {
-  // TODO(sadroeck) - Invalidate data_ by putting sentinal value as last byte ?
+  // TODO(sadroeck) - Invalidate data_ by putting sentinel value as last byte ?
   // Note: this should always be the std::variant index
   if (data_ != decltype(data_){}) {
     static_cast<NativeValue&>(*this).~NativeValue();

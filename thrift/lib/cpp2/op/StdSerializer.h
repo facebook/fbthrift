@@ -49,7 +49,7 @@ struct ProtocolSelector<type::StandardProtocol::SimpleJson>
 
 } // namespace detail
 
-// A standard protocol serializer for any thrift structred type.
+// A standard protocol serializer for any thrift structured type.
 template <typename Tag, type::StandardProtocol P>
 class StdSerializer : public ProtocolSerializer<
                           Tag,

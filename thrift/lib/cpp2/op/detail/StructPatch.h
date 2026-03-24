@@ -104,7 +104,7 @@ struct FieldPatchAssigner<type::adapted<Adapter, Tag>> {
   void operator()(Patch& patch, Val&& val) {
     using value_type = typename Patch::value_type;
     if constexpr (std::is_same_v<value_type, folly::remove_cvref_t<Val>>) {
-      // Maintain compatbility with legacy AnyPatch
+      // Maintain compatibility with legacy AnyPatch
       patch.assign(std::forward<Val>(val));
     } else {
       patch.assign(Adapter::toThrift(std::forward<Val>(val)));

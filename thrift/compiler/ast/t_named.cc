@@ -40,7 +40,7 @@ t_named::t_named(const t_named& named)
   }
 }
 
-// NOTE: Must be defined here for t_const's destructor defintion.
+// NOTE: Must be defined here for t_const's destructor definition.
 t_named::~t_named() = default;
 
 std::string t_named::get_scoped_name() const {

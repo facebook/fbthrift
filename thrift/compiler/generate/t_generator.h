@@ -97,7 +97,7 @@ class t_generator {
   t_program_bundle& program_bundle_;
 
   /**
-   * Output type-specifc directory name ("gen-*").
+   * Output type-specific directory name ("gen-*").
    */
   std::string out_dir_base_;
 

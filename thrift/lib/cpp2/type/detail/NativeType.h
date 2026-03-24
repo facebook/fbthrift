@@ -172,7 +172,7 @@ struct NativeTypes<struct_t<T>> : ConcreteType<T> {};
 template <typename T>
 struct NativeTypes<union_t<T>> : ConcreteType<T> {};
 
-// Traits for excpetions.
+// Traits for exceptions.
 template <typename T>
 struct NativeTypes<exception_t<T>> : ConcreteType<T> {};
 

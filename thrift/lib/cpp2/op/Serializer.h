@@ -49,7 +49,7 @@ class Serializer {
   // The protocol used by this serializer.
   virtual const type::Protocol& getProtocol() const = 0;
 
-  // Enocde a value.
+  // Encode a value.
   //
   // Throws std::bad_any_cast if the type is not supported.
   // TODO(afuller): Figure out if appender should really be accepted by r-value,

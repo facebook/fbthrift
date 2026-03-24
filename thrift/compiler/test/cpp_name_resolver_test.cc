@@ -346,7 +346,7 @@ TEST_F(CppNameResolverTest, typedefs_adapter) {
   // It does not affect the type name.
   EXPECT_EQ(get_standard_type(ttypedef1), "::path::to::detail::Foo");
   EXPECT_EQ(get_native_type(ttypedef1), "::path::to::MyHash");
-  // It is the refered to type that has the adapter.
+  // It is the referred to type that has the adapter.
   EXPECT_EQ(get_native_type(*ttypedef1.type()), "::path::to::Foo");
   EXPECT_TRUE(can_resolve_to_scalar(ttypedef1));
   ASSERT_TRUE(resolver_.find_first_adapter(ttypedef1));

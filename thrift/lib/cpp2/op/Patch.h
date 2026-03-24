@@ -90,7 +90,7 @@ void checkFieldIsNotDeprecatedTerseWritesWithCustomDefault() {
 
 } // namespace detail
 
-/// The safe patch represenations for the base thrift types.
+/// The safe patch representations for the base thrift types.
 ///
 /// Safe patch provides versioning to indicate the minimum Thrift Patch version
 /// required to safely and successfully process that patch as well as opaque
@@ -103,7 +103,7 @@ using safe_patch_type =
 template <typename T>
 using safe_patch_value_type = typename detail::SafePatchValueType<T>::type;
 
-/// The patch represenations for the base thrift types.
+/// The patch representations for the base thrift types.
 ///
 /// All patch types support the following methods:
 /// - empty() - Returns true iff the patch is a noop.

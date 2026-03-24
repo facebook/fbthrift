@@ -1322,8 +1322,8 @@ void t_hack_generator::generate_json_field(
 
   if (const auto* tstruct = dynamic_cast<const t_structured*>(type)) {
     generate_json_struct(out, namer, tstruct, name, prefix_json);
-  } else if (const auto* tconatiner = dynamic_cast<const t_container*>(type)) {
-    generate_json_container(out, namer, tconatiner, name, prefix_json);
+  } else if (const auto* tcontainer = dynamic_cast<const t_container*>(type)) {
+    generate_json_container(out, namer, tcontainer, name, prefix_json);
   } else if (const auto* tenum = dynamic_cast<const t_enum*>(type)) {
     generate_json_enum(out, namer, tenum, name, prefix_json);
   } else if (const auto* tbase_type = type->try_as<t_primitive_type>()) {

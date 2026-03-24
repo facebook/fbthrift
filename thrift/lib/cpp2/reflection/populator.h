@@ -408,7 +408,7 @@ struct populator_methods<type::list<ElemTag>, Type> {
 // Sets
 template <typename ElemTag, typename Type>
 struct populator_methods<type::set<ElemTag>, Type> {
-  // TODO: fair amount of shared code bewteen this and specialization for
+  // TODO: fair amount of shared code between this and specialization for
   // type_class::list
   using elem_type = typename Type::value_type;
   using elem_methods = populator_methods<ElemTag, elem_type>;

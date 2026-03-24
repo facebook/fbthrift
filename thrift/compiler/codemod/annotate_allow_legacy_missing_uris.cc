@@ -111,7 +111,7 @@ bool needs_new_package_level_annotation(const t_program& program) {
  * 2. If the answer above is false => return (nothing to do)
  *
  * 3. (Else) If the answer above is true (i.e., the annotation must be added),
- *    do the followinmg:
+ *    do the following:
  *    a. If there is no package directive, add one with an explicitly empty
  *       name (i.e., `package;`)
  *    b. Annotate the package directive with the annotation (including the

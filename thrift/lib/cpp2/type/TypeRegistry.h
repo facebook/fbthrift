@@ -36,7 +36,7 @@ namespace apache::thrift::type {
 // A registry of type information and functionality.
 //
 // All registered serializers must either be owned by the TypeRegistry, or be
-// externally guarneteed to out live all TypeRegistry instances they are
+// externally guaranteed to out live all TypeRegistry instances they are
 // registered with.
 class TypeRegistry {
  public:
@@ -107,7 +107,7 @@ class TypeRegistry {
   // multiple types.
   //
   // If any entry cannot be registered, false is returned, with all
-  // successufully registered entries remaining registered.
+  // successfully registered entries remaining registered.
   // TODO(afuller): Consider making success/failure all or nothing (aka atomic).
   template <
       typename C = std::initializer_list<Type>,
@@ -139,7 +139,7 @@ class TypeRegistry {
   AnyData storeImpl(T&& value, const Protocol& protocol) const;
 };
 
-// Implemenation details
+// Implementation details
 
 template <typename C, typename>
 bool TypeRegistry::registerSerializer(

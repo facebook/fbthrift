@@ -54,8 +54,8 @@ inline constexpr IdenticalTo<type::infer_tag<TagOrT>> identical{};
 template <typename LTag = void, typename RTag = LTag>
 struct Less : detail::LessThan<LTag, RTag> {};
 
-/// A binary operator that returns true iff one Thrift values is less than
-/// the another.
+/// A binary operator that returns true iff one Thrift value is less than
+/// another.
 ///
 /// For example:
 /// * less<int32_t>(1, 2) -> true

@@ -54,7 +54,7 @@ asObject(T&& obj) {
 // Works for binary, compact. Does not work for SimpleJson protocol as it does
 // not save fieldID and field type information in serialized data. Does not work
 // with json protocol because both binary & string is marked as T_STRING type in
-// serailized data but both are encoded differently. Binary is base64 encoded
+// serialized data but both are encoded differently. Binary is base64 encoded
 // and string is written as is. So during deserialization we cannot decode it
 // correctly without schema. String fields are currently saved in binaryValue.
 template <class Protocol>

@@ -132,8 +132,8 @@ class cpp_name_resolver {
     return node.get_unstructured_annotation("cpp.name", &node.name());
   }
 
-  static std::string gen_namespace(const t_program& progam);
-  static std::string gen_unprefixed_namespace(const t_program& progam);
+  static std::string gen_namespace(const t_program& program);
+  static std::string gen_unprefixed_namespace(const t_program& program);
   static std::vector<std::string> gen_namespace_components(
       const t_program& program);
 

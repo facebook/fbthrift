@@ -105,7 +105,7 @@ class t_program : public t_named {
   void set_package(t_package package) { package_ = std::move(package); }
   const t_package& package() const { return package_; }
 
-  // Defintions, in the order they were added.
+  // Definitions, in the order they were added.
   node_list_view<t_named> definitions() { return definitions_; }
   node_list_view<const t_named> definitions() const { return definitions_; }
 

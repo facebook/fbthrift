@@ -3443,7 +3443,7 @@ TEST(CompilerTest, scope_resolution_duplicate_include_as_alias) {
       1: i32 id;
     }
 
-    // The `foo.Bar` identifier is overriden by the local definition, despite an explicit include
+    // The `foo.Bar` identifier is overridden by the local definition, despite an explicit include
     const foo.Bar MY_REMOTE_CONST_V1 = foo.Bar{name = "foo"}; # expected-error: no field named `name` in `Bar`
     const FooV2.Bar MY_REMOTE_CONST_V2 = FooV2.Bar{name = "foo"};
     const Bar MY_LOCAL_CONST = Bar{id = 1};

@@ -837,7 +837,7 @@ void serializeValue(
       serializeValue(prot, val, protocolData, nestedMaskedData);
     }
     for (const auto& [key, val] : mapVal) {
-      if (keys.find(key) != keys.end()) { // already serailized
+      if (keys.find(key) != keys.end()) { // already serialized
         continue;
       }
       ensureSameType(key, keyType);

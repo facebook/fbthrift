@@ -109,7 +109,7 @@ struct FieldPosition {
 };
 
 /**
- * The relative position of an an object from the layout root, with bit
+ * The relative position of an object from the layout root, with bit
  * granularity.
  */
 struct LayoutPosition {
@@ -683,7 +683,7 @@ class LayoutRoot : public FieldCycleHolder {
   }
 
   /**
-   * Internal utility for recrusively laying out child fields.
+   * Internal utility for recursively laying out child fields.
    *
    * Lays out 'field' at position 'fieldPos', then recurse into the field value
    * to adjust 'field.layout'.

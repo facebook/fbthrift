@@ -442,7 +442,7 @@ struct LessThan<type::list<VTag>, type::list<VTag>> {
   // TODO: Migrate all the cases above and make this function non-template.
   template <typename T = type::native_type<type::list<VTag>>>
   bool operator()(const T& lhs, const T& rhs) const {
-    // `std::vector::operator<` has the same implementation as this funcion.
+    // `std::vector::operator<` has the same implementation as this function.
     // https://github.com/gcc-mirror/gcc/blob/6cb2f2c7f36c999590a949f663d6057cbc67271f/libstdc%2B%2B-v3/include/bits/stl_vector.h#L2077-L2081
     return std::lexicographical_compare(
         lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), LessThan<VTag>{});
@@ -510,7 +510,7 @@ struct EqualTo<type::list<VTag>> {
   // TODO: Similar to LessThan version, this should be a non-template function.
   template <typename T = type::native_type<type::list<VTag>>>
   bool operator()(const T& lhs, const T& rhs) const {
-    // `std::vector::operator==` has the same implementation as this funcion.
+    // `std::vector::operator==` has the same implementation as this function.
     // https://github.com/gcc-mirror/gcc/blob/6cb2f2c7f36c999590a949f663d6057cbc67271f/libstdc%2B%2B-v3/include/bits/stl_vector.h#L2037-L2042
     return lhs.size() == rhs.size() &&
         std::equal(lhs.begin(), lhs.end(), rhs.begin(), EqualTo<VTag>{});

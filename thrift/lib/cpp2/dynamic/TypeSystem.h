@@ -758,7 +758,7 @@ class TypeSystem {
   virtual std::optional<folly::F14FastSet<Uri>> getKnownUris() const = 0;
 
   /**
-   * Resolves the defintion of a user-defined type referred to by a source
+   * Resolves the definition of a user-defined type referred to by a source
    * identifier, if it exists.
    *
    * Note that source information is optional — not all user-defined types may

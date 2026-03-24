@@ -171,11 +171,11 @@ void expectPatch(P patch, const T1& actual, const T2& expected) {
 
 // Checks round trips using the given serializer.
 template <typename Tag, typename S, typename T = type::native_type<Tag>>
-void expectRoundTrip(const S& seralizer, const T& expected) {
+void expectRoundTrip(const S& serializer, const T& expected) {
   folly::IOBufQueue queue;
-  seralizer.encode(expected, folly::io::QueueAppender{&queue, 2 << 4});
+  serializer.encode(expected, folly::io::QueueAppender{&queue, 2 << 4});
   folly::io::Cursor cursor(queue.front());
-  T actual = seralizer.template decode<Tag>(cursor);
+  T actual = serializer.template decode<Tag>(cursor);
   EXPECT_EQ(actual, expected);
 }
 

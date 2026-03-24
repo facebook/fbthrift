@@ -112,7 +112,7 @@ std::string normalizeMemoryAddresses(const std::string& input) {
       std::string address =
           input.substr(addressStart, addressEnd - addressStart);
 
-      // Special handing for nullptr, which is consistent across runs.
+      // Special handling for nullptr, which is consistent across runs.
       if (address == "0x0") {
         result += "0x0";
         pos = addressEnd;

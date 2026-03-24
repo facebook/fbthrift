@@ -177,7 +177,7 @@ inline Ref Ptr::operator*() const noexcept {
 }
 } // namespace detail
 
-// A runtime Thrift value that owns it's own memory.
+// A runtime Thrift value that owns its own memory.
 //
 // TODO(afuller): Store small values in-situ.
 class Value : public detail::BaseDyn<ConstRef, Ref, Value> {

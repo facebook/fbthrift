@@ -238,7 +238,7 @@ class t_type_ref final {
    */
   const t_type& deref() const { return deref_or_throw(); }
 
-  // Returns true the type reference has not been initalized.
+  // Returns true the type reference has not been initialized.
   bool empty() const noexcept { return type_ == nullptr; }
 
   /**
@@ -291,7 +291,7 @@ class t_type_ref final {
   source_range range_;
   // The placeholder we have write access to, if we need to resolve the type
   // before derefing.
-  // Note: It is not thread safe to access this value if 'this' is const.s
+  // Note: It is not thread safe to access this value if 'this' is const.
   //
   // TODO(T244601847): Make an unresolved reference directly representable in
   // the AST, merging `t_placeholder_typedef` into `t_type_ref`.

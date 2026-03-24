@@ -33,8 +33,8 @@ namespace type {
 // - Serialized-Reference (AnyData?),  Such a rep would be able to
 // efficiently 'snip' serialized values out of other serialized values, without
 // deserializing. Note: As type::ByteBuffer is actually a folly::IOBuf, AnyData
-// might already be sufficent to represent this. In which case all that would be
-// needed is the 'snipping' logic.
+// might already be sufficient to represent this. In which case all that would
+// be needed is the 'snipping' logic.
 
 // An Any value, that may not contain all the required information
 // to deserialize the value.

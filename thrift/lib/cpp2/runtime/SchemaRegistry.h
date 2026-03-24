@@ -193,7 +193,7 @@ class SchemaRegistry : public type_system::TypeSystem {
   }
   std::optional<folly::F14FastSet<type_system::Uri>> getKnownUris()
       const override {
-    // We pessimitically return an empty optional even though we can enumerate
+    // We pessimistically return an empty optional even though we can enumerate
     // all URIs for files with the `any` cpp2 compiler option enabled.
     return std::nullopt;
   }

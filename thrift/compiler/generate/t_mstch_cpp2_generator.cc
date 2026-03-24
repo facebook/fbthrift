@@ -155,7 +155,7 @@ whisker::array::ptr build_user_type_footprint(
   std::vector<const t_type*> types;
   std::unordered_set<const t_type*> seen;
 
-  // Helper to extract the necesary types from a single type identified in
+  // Helper to extract the necessary types from a single type identified in
   // some component of a method declaration.  Deals with maps, lists, streams
   // that surround actual types.
   auto extract_type = [&](const t_type* type) -> void {

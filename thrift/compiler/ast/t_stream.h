@@ -31,7 +31,7 @@ class t_stream : public t_node {
   const t_type_ref& elem_type() const { return elem_type_; }
   t_type_ref& elem_type() { return elem_type_; }
 
-  // Returns the exceptions declared in the throws clause or or null if there
+  // Returns the exceptions declared in the throws clause or null if there
   // is no throws clause.
   t_throws* exceptions() { return exceptions_.get(); }
   const t_throws* exceptions() const { return exceptions_.get(); }

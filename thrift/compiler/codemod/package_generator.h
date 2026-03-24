@@ -144,7 +144,7 @@ class package_name_generator {
     return identifier;
   }
 
-  // Remove identifer or substrings specific to the language
+  // Remove identifier or substrings specific to the language
   std::vector<std::string> get_modified_path() const {
     bool found_modified_path = false;
     std::vector<std::string> modified_path;

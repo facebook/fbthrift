@@ -338,7 +338,7 @@ class CompactProtocolReader : public detail::ProtocolBase {
  protected:
   /**
    * Cursor to manipulate the buffer to read from.  Throws an exception if
-   * there is not enough data tor ead the whole struct.
+   * there is not enough data to read the whole struct.
    */
   Cursor in_;
 

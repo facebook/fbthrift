@@ -52,7 +52,7 @@ void checkResult(int evp_result) {
 }
 
 folly::fbstring UniversalHashSha2_256(std::string_view uri) {
-  // Save an initalized context.
+  // Save an initialized context.
   static EVP_MD_CTX* kBase = []() {
     auto ctx = newMdContext();
     checkResult(EVP_DigestInit_ex(ctx.get(), EVP_sha256(), nullptr));

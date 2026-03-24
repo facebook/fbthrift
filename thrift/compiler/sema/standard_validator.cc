@@ -552,7 +552,7 @@ void validate_field_names_uniqueness(
 
 // @thrift.ExceptionMessage annotation is only valid in exceptions.
 // This validator checks if the node that contains any field
-// with that annotation is an exception definiton.
+// with that annotation is an exception definition.
 void validate_exception_message_annotation_is_only_in_exceptions(
     sema_context& ctx, const t_structured& node) {
   for (const auto& f : node.fields()) {
