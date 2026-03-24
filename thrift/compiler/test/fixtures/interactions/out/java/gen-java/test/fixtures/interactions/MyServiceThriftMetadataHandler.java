@@ -30,64 +30,64 @@ import com.facebook.thrift.metadata.ThriftType;
 public class MyServiceThriftMetadataHandler implements com.facebook.thrift.server.ThriftMetadataHandler {
 
   private static void addFunctions_0(List<ThriftFunction> functions) {
-    {
-      List<ThriftField> args = new ArrayList<>();
-
-      List<ThriftField> exceptions = new ArrayList<>();
-
-      functions.add(new ThriftFunction.Builder()
-          .setName("foo")
-          .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
-          .setArguments(args)
-          .setExceptions(exceptions)
-          .setIsOneway(false)
-          .build());
-    }
-    {
-      List<ThriftField> args = new ArrayList<>();
-      args.add(new ThriftField.Builder()
-          .setId(1)
-          .setType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE))
-          .setName("arg")
-          .setIsOptional(false)
-          .build());
-
-      List<ThriftField> exceptions = new ArrayList<>();
-
-      functions.add(new ThriftFunction.Builder()
-          .setName("interact")
-          .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
-          .setArguments(args)
-          .setExceptions(exceptions)
-          .setIsOneway(false)
-          .build());
-    }
-    {
-      List<ThriftField> args = new ArrayList<>();
-
-      List<ThriftField> exceptions = new ArrayList<>();
-
-      functions.add(new ThriftFunction.Builder()
-          .setName("interactFast")
-          .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE))
-          .setArguments(args)
-          .setExceptions(exceptions)
-          .setIsOneway(false)
-          .build());
-    }
-    {
-      List<ThriftField> args = new ArrayList<>();
-
-      List<ThriftField> exceptions = new ArrayList<>();
-
-      functions.add(new ThriftFunction.Builder()
-          .setName("serialize")
-          .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE))
-          .setArguments(args)
-          .setExceptions(exceptions)
-          .setIsOneway(false)
-          .build());
-    }
+        {
+          List<ThriftField> args = new ArrayList<>();
+    
+          List<ThriftField> exceptions = new ArrayList<>();
+    
+          functions.add(new ThriftFunction.Builder()
+              .setName("foo")
+              .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
+              .setArguments(args)
+              .setExceptions(exceptions)
+              .setIsOneway(false)
+              .build());
+        }
+        {
+          List<ThriftField> args = new ArrayList<>();
+          args.add(new ThriftField.Builder()
+              .setId(1)
+              .setType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE))
+              .setName("arg")
+              .setIsOptional(false)
+              .build());
+    
+          List<ThriftField> exceptions = new ArrayList<>();
+    
+          functions.add(new ThriftFunction.Builder()
+              .setName("interact")
+              .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
+              .setArguments(args)
+              .setExceptions(exceptions)
+              .setIsOneway(false)
+              .build());
+        }
+        {
+          List<ThriftField> args = new ArrayList<>();
+    
+          List<ThriftField> exceptions = new ArrayList<>();
+    
+          functions.add(new ThriftFunction.Builder()
+              .setName("interactFast")
+              .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE))
+              .setArguments(args)
+              .setExceptions(exceptions)
+              .setIsOneway(false)
+              .build());
+        }
+        {
+          List<ThriftField> args = new ArrayList<>();
+    
+          List<ThriftField> exceptions = new ArrayList<>();
+    
+          functions.add(new ThriftFunction.Builder()
+              .setName("serialize")
+              .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE))
+              .setArguments(args)
+              .setExceptions(exceptions)
+              .setIsOneway(false)
+              .build());
+        }
   }
 
   private static final ThriftService THRIFT_SERVICE;

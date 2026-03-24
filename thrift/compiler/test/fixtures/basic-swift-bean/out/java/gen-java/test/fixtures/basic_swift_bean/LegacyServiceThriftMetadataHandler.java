@@ -30,31 +30,31 @@ import com.facebook.thrift.metadata.ThriftType;
 public class LegacyServiceThriftMetadataHandler implements com.facebook.thrift.server.ThriftMetadataHandler {
 
   private static void addFunctions_0(List<ThriftFunction> functions) {
-    {
-      List<ThriftField> args = new ArrayList<>();
-      args.add(new ThriftField.Builder()
-          .setId(1)
-          .setType(ThriftType.fromTSet(new ThriftSetType.Builder().setValueType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_STRING_TYPE)).build()))
-          .setName("key")
-          .setIsOptional(false)
-          .build());
-      args.add(new ThriftField.Builder()
-          .setId(-1)
-          .setType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I64_TYPE))
-          .setName("legacyStuff")
-          .setIsOptional(false)
-          .build());
-
-      List<ThriftField> exceptions = new ArrayList<>();
-
-      functions.add(new ThriftFunction.Builder()
-          .setName("getPoints")
-          .setReturnType(ThriftType.fromTMap(new ThriftMapType.Builder().setKeyType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_STRING_TYPE)).setValueType(ThriftType.fromTList(new ThriftListType.Builder().setValueType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE)).build())).build()))
-          .setArguments(args)
-          .setExceptions(exceptions)
-          .setIsOneway(false)
-          .build());
-    }
+        {
+          List<ThriftField> args = new ArrayList<>();
+          args.add(new ThriftField.Builder()
+              .setId(1)
+              .setType(ThriftType.fromTSet(new ThriftSetType.Builder().setValueType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_STRING_TYPE)).build()))
+              .setName("key")
+              .setIsOptional(false)
+              .build());
+          args.add(new ThriftField.Builder()
+              .setId(-1)
+              .setType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I64_TYPE))
+              .setName("legacyStuff")
+              .setIsOptional(false)
+              .build());
+    
+          List<ThriftField> exceptions = new ArrayList<>();
+    
+          functions.add(new ThriftFunction.Builder()
+              .setName("getPoints")
+              .setReturnType(ThriftType.fromTMap(new ThriftMapType.Builder().setKeyType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_STRING_TYPE)).setValueType(ThriftType.fromTList(new ThriftListType.Builder().setValueType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE)).build())).build()))
+              .setArguments(args)
+              .setExceptions(exceptions)
+              .setIsOneway(false)
+              .build());
+        }
   }
 
   private static final ThriftService THRIFT_SERVICE;

@@ -30,103 +30,103 @@ import com.facebook.thrift.metadata.ThriftType;
 public class SinkServiceThriftMetadataHandler implements com.facebook.thrift.server.ThriftMetadataHandler {
 
   private static void addFunctions_0(List<ThriftFunction> functions) {
-    {
-      List<ThriftField> args = new ArrayList<>();
-
-      List<ThriftField> exceptions = new ArrayList<>();
-
-      functions.add(new ThriftFunction.Builder()
-          .setName("method")
-          .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
-          .setArguments(args)
-          .setExceptions(exceptions)
-          .setIsOneway(false)
-          .build());
-    }
-    {
-      List<ThriftField> args = new ArrayList<>();
-
-      List<ThriftField> exceptions = new ArrayList<>();
-
-      functions.add(new ThriftFunction.Builder()
-          .setName("methodAndReponse")
-          .setReturnType(ThriftType.fromTStruct(new ThriftStructType.Builder().setName("test.fixtures.sink.InitialResponse").build()))
-          .setArguments(args)
-          .setExceptions(exceptions)
-          .setIsOneway(false)
-          .build());
-    }
-    {
-      List<ThriftField> args = new ArrayList<>();
-
-      List<ThriftField> exceptions = new ArrayList<>();
-      exceptions.add(new ThriftField.Builder()
-          .setId(1)
-          .setType(ThriftType.fromTStruct(new ThriftStructType.Builder().setName("test.fixtures.sink.InitialException").build()))
-          .setName("exception_1")
-          .setIsOptional(false)
-          .build());
-
-      functions.add(new ThriftFunction.Builder()
-          .setName("methodThrow")
-          .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
-          .setArguments(args)
-          .setExceptions(exceptions)
-          .setIsOneway(false)
-          .build());
-    }
-    {
-      List<ThriftField> args = new ArrayList<>();
-
-      List<ThriftField> exceptions = new ArrayList<>();
-
-      functions.add(new ThriftFunction.Builder()
-          .setName("methodSinkThrow")
-          .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
-          .setArguments(args)
-          .setExceptions(exceptions)
-          .setIsOneway(false)
-          .build());
-    }
-    {
-      List<ThriftField> args = new ArrayList<>();
-
-      List<ThriftField> exceptions = new ArrayList<>();
-
-      functions.add(new ThriftFunction.Builder()
-          .setName("methodFinalThrow")
-          .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
-          .setArguments(args)
-          .setExceptions(exceptions)
-          .setIsOneway(false)
-          .build());
-    }
-    {
-      List<ThriftField> args = new ArrayList<>();
-
-      List<ThriftField> exceptions = new ArrayList<>();
-
-      functions.add(new ThriftFunction.Builder()
-          .setName("methodBothThrow")
-          .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
-          .setArguments(args)
-          .setExceptions(exceptions)
-          .setIsOneway(false)
-          .build());
-    }
-    {
-      List<ThriftField> args = new ArrayList<>();
-
-      List<ThriftField> exceptions = new ArrayList<>();
-
-      functions.add(new ThriftFunction.Builder()
-          .setName("methodFast")
-          .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
-          .setArguments(args)
-          .setExceptions(exceptions)
-          .setIsOneway(false)
-          .build());
-    }
+        {
+          List<ThriftField> args = new ArrayList<>();
+    
+          List<ThriftField> exceptions = new ArrayList<>();
+    
+          functions.add(new ThriftFunction.Builder()
+              .setName("method")
+              .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
+              .setArguments(args)
+              .setExceptions(exceptions)
+              .setIsOneway(false)
+              .build());
+        }
+        {
+          List<ThriftField> args = new ArrayList<>();
+    
+          List<ThriftField> exceptions = new ArrayList<>();
+    
+          functions.add(new ThriftFunction.Builder()
+              .setName("methodAndReponse")
+              .setReturnType(ThriftType.fromTStruct(new ThriftStructType.Builder().setName("test.fixtures.sink.InitialResponse").build()))
+              .setArguments(args)
+              .setExceptions(exceptions)
+              .setIsOneway(false)
+              .build());
+        }
+        {
+          List<ThriftField> args = new ArrayList<>();
+    
+          List<ThriftField> exceptions = new ArrayList<>();
+          exceptions.add(new ThriftField.Builder()
+              .setId(1)
+              .setType(ThriftType.fromTStruct(new ThriftStructType.Builder().setName("test.fixtures.sink.InitialException").build()))
+              .setName("exception_1")
+              .setIsOptional(false)
+              .build());
+    
+          functions.add(new ThriftFunction.Builder()
+              .setName("methodThrow")
+              .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
+              .setArguments(args)
+              .setExceptions(exceptions)
+              .setIsOneway(false)
+              .build());
+        }
+        {
+          List<ThriftField> args = new ArrayList<>();
+    
+          List<ThriftField> exceptions = new ArrayList<>();
+    
+          functions.add(new ThriftFunction.Builder()
+              .setName("methodSinkThrow")
+              .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
+              .setArguments(args)
+              .setExceptions(exceptions)
+              .setIsOneway(false)
+              .build());
+        }
+        {
+          List<ThriftField> args = new ArrayList<>();
+    
+          List<ThriftField> exceptions = new ArrayList<>();
+    
+          functions.add(new ThriftFunction.Builder()
+              .setName("methodFinalThrow")
+              .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
+              .setArguments(args)
+              .setExceptions(exceptions)
+              .setIsOneway(false)
+              .build());
+        }
+        {
+          List<ThriftField> args = new ArrayList<>();
+    
+          List<ThriftField> exceptions = new ArrayList<>();
+    
+          functions.add(new ThriftFunction.Builder()
+              .setName("methodBothThrow")
+              .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
+              .setArguments(args)
+              .setExceptions(exceptions)
+              .setIsOneway(false)
+              .build());
+        }
+        {
+          List<ThriftField> args = new ArrayList<>();
+    
+          List<ThriftField> exceptions = new ArrayList<>();
+    
+          functions.add(new ThriftFunction.Builder()
+              .setName("methodFast")
+              .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
+              .setArguments(args)
+              .setExceptions(exceptions)
+              .setIsOneway(false)
+              .build());
+        }
   }
 
   private static final ThriftService THRIFT_SERVICE;

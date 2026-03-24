@@ -30,101 +30,101 @@ import com.facebook.thrift.metadata.ThriftType;
 public class NestedContainersThriftMetadataHandler implements com.facebook.thrift.server.ThriftMetadataHandler {
 
   private static void addFunctions_0(List<ThriftFunction> functions) {
-    {
-      List<ThriftField> args = new ArrayList<>();
-      args.add(new ThriftField.Builder()
-          .setId(1)
-          .setType(ThriftType.fromTMap(new ThriftMapType.Builder().setKeyType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE)).setValueType(ThriftType.fromTList(new ThriftListType.Builder().setValueType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE)).build())).build()))
-          .setName("foo")
-          .setIsOptional(false)
-          .build());
-
-      List<ThriftField> exceptions = new ArrayList<>();
-
-      functions.add(new ThriftFunction.Builder()
-          .setName("mapList")
-          .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
-          .setArguments(args)
-          .setExceptions(exceptions)
-          .setIsOneway(false)
-          .build());
-    }
-    {
-      List<ThriftField> args = new ArrayList<>();
-      args.add(new ThriftField.Builder()
-          .setId(1)
-          .setType(ThriftType.fromTMap(new ThriftMapType.Builder().setKeyType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE)).setValueType(ThriftType.fromTSet(new ThriftSetType.Builder().setValueType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE)).build())).build()))
-          .setName("foo")
-          .setIsOptional(false)
-          .build());
-
-      List<ThriftField> exceptions = new ArrayList<>();
-
-      functions.add(new ThriftFunction.Builder()
-          .setName("mapSet")
-          .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
-          .setArguments(args)
-          .setExceptions(exceptions)
-          .setIsOneway(false)
-          .build());
-    }
-    {
-      List<ThriftField> args = new ArrayList<>();
-      args.add(new ThriftField.Builder()
-          .setId(1)
-          .setType(ThriftType.fromTList(new ThriftListType.Builder().setValueType(ThriftType.fromTMap(new ThriftMapType.Builder().setKeyType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE)).setValueType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE)).build())).build()))
-          .setName("foo")
-          .setIsOptional(false)
-          .build());
-
-      List<ThriftField> exceptions = new ArrayList<>();
-
-      functions.add(new ThriftFunction.Builder()
-          .setName("listMap")
-          .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
-          .setArguments(args)
-          .setExceptions(exceptions)
-          .setIsOneway(false)
-          .build());
-    }
-    {
-      List<ThriftField> args = new ArrayList<>();
-      args.add(new ThriftField.Builder()
-          .setId(1)
-          .setType(ThriftType.fromTList(new ThriftListType.Builder().setValueType(ThriftType.fromTSet(new ThriftSetType.Builder().setValueType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE)).build())).build()))
-          .setName("foo")
-          .setIsOptional(false)
-          .build());
-
-      List<ThriftField> exceptions = new ArrayList<>();
-
-      functions.add(new ThriftFunction.Builder()
-          .setName("listSet")
-          .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
-          .setArguments(args)
-          .setExceptions(exceptions)
-          .setIsOneway(false)
-          .build());
-    }
-    {
-      List<ThriftField> args = new ArrayList<>();
-      args.add(new ThriftField.Builder()
-          .setId(1)
-          .setType(ThriftType.fromTList(new ThriftListType.Builder().setValueType(ThriftType.fromTList(new ThriftListType.Builder().setValueType(ThriftType.fromTMap(new ThriftMapType.Builder().setKeyType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE)).setValueType(ThriftType.fromTMap(new ThriftMapType.Builder().setKeyType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE)).setValueType(ThriftType.fromTSet(new ThriftSetType.Builder().setValueType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE)).build())).build())).build())).build())).build()))
-          .setName("foo")
-          .setIsOptional(false)
-          .build());
-
-      List<ThriftField> exceptions = new ArrayList<>();
-
-      functions.add(new ThriftFunction.Builder()
-          .setName("turtles")
-          .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
-          .setArguments(args)
-          .setExceptions(exceptions)
-          .setIsOneway(false)
-          .build());
-    }
+        {
+          List<ThriftField> args = new ArrayList<>();
+          args.add(new ThriftField.Builder()
+              .setId(1)
+              .setType(ThriftType.fromTMap(new ThriftMapType.Builder().setKeyType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE)).setValueType(ThriftType.fromTList(new ThriftListType.Builder().setValueType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE)).build())).build()))
+              .setName("foo")
+              .setIsOptional(false)
+              .build());
+    
+          List<ThriftField> exceptions = new ArrayList<>();
+    
+          functions.add(new ThriftFunction.Builder()
+              .setName("mapList")
+              .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
+              .setArguments(args)
+              .setExceptions(exceptions)
+              .setIsOneway(false)
+              .build());
+        }
+        {
+          List<ThriftField> args = new ArrayList<>();
+          args.add(new ThriftField.Builder()
+              .setId(1)
+              .setType(ThriftType.fromTMap(new ThriftMapType.Builder().setKeyType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE)).setValueType(ThriftType.fromTSet(new ThriftSetType.Builder().setValueType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE)).build())).build()))
+              .setName("foo")
+              .setIsOptional(false)
+              .build());
+    
+          List<ThriftField> exceptions = new ArrayList<>();
+    
+          functions.add(new ThriftFunction.Builder()
+              .setName("mapSet")
+              .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
+              .setArguments(args)
+              .setExceptions(exceptions)
+              .setIsOneway(false)
+              .build());
+        }
+        {
+          List<ThriftField> args = new ArrayList<>();
+          args.add(new ThriftField.Builder()
+              .setId(1)
+              .setType(ThriftType.fromTList(new ThriftListType.Builder().setValueType(ThriftType.fromTMap(new ThriftMapType.Builder().setKeyType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE)).setValueType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE)).build())).build()))
+              .setName("foo")
+              .setIsOptional(false)
+              .build());
+    
+          List<ThriftField> exceptions = new ArrayList<>();
+    
+          functions.add(new ThriftFunction.Builder()
+              .setName("listMap")
+              .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
+              .setArguments(args)
+              .setExceptions(exceptions)
+              .setIsOneway(false)
+              .build());
+        }
+        {
+          List<ThriftField> args = new ArrayList<>();
+          args.add(new ThriftField.Builder()
+              .setId(1)
+              .setType(ThriftType.fromTList(new ThriftListType.Builder().setValueType(ThriftType.fromTSet(new ThriftSetType.Builder().setValueType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE)).build())).build()))
+              .setName("foo")
+              .setIsOptional(false)
+              .build());
+    
+          List<ThriftField> exceptions = new ArrayList<>();
+    
+          functions.add(new ThriftFunction.Builder()
+              .setName("listSet")
+              .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
+              .setArguments(args)
+              .setExceptions(exceptions)
+              .setIsOneway(false)
+              .build());
+        }
+        {
+          List<ThriftField> args = new ArrayList<>();
+          args.add(new ThriftField.Builder()
+              .setId(1)
+              .setType(ThriftType.fromTList(new ThriftListType.Builder().setValueType(ThriftType.fromTList(new ThriftListType.Builder().setValueType(ThriftType.fromTMap(new ThriftMapType.Builder().setKeyType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE)).setValueType(ThriftType.fromTMap(new ThriftMapType.Builder().setKeyType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE)).setValueType(ThriftType.fromTSet(new ThriftSetType.Builder().setValueType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE)).build())).build())).build())).build())).build()))
+              .setName("foo")
+              .setIsOptional(false)
+              .build());
+    
+          List<ThriftField> exceptions = new ArrayList<>();
+    
+          functions.add(new ThriftFunction.Builder()
+              .setName("turtles")
+              .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
+              .setArguments(args)
+              .setExceptions(exceptions)
+              .setIsOneway(false)
+              .build());
+        }
   }
 
   private static final ThriftService THRIFT_SERVICE;

@@ -30,44 +30,44 @@ import com.facebook.thrift.metadata.ThriftType;
 public class DbMixedStackArgumentsThriftMetadataHandler implements com.facebook.thrift.server.ThriftMetadataHandler {
 
   private static void addFunctions_0(List<ThriftFunction> functions) {
-    {
-      List<ThriftField> args = new ArrayList<>();
-      args.add(new ThriftField.Builder()
-          .setId(1)
-          .setType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_STRING_TYPE))
-          .setName("key")
-          .setIsOptional(false)
-          .build());
-
-      List<ThriftField> exceptions = new ArrayList<>();
-
-      functions.add(new ThriftFunction.Builder()
-          .setName("getDataByKey0")
-          .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_BINARY_TYPE))
-          .setArguments(args)
-          .setExceptions(exceptions)
-          .setIsOneway(false)
-          .build());
-    }
-    {
-      List<ThriftField> args = new ArrayList<>();
-      args.add(new ThriftField.Builder()
-          .setId(1)
-          .setType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_STRING_TYPE))
-          .setName("key")
-          .setIsOptional(false)
-          .build());
-
-      List<ThriftField> exceptions = new ArrayList<>();
-
-      functions.add(new ThriftFunction.Builder()
-          .setName("getDataByKey1")
-          .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_BINARY_TYPE))
-          .setArguments(args)
-          .setExceptions(exceptions)
-          .setIsOneway(false)
-          .build());
-    }
+        {
+          List<ThriftField> args = new ArrayList<>();
+          args.add(new ThriftField.Builder()
+              .setId(1)
+              .setType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_STRING_TYPE))
+              .setName("key")
+              .setIsOptional(false)
+              .build());
+    
+          List<ThriftField> exceptions = new ArrayList<>();
+    
+          functions.add(new ThriftFunction.Builder()
+              .setName("getDataByKey0")
+              .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_BINARY_TYPE))
+              .setArguments(args)
+              .setExceptions(exceptions)
+              .setIsOneway(false)
+              .build());
+        }
+        {
+          List<ThriftField> args = new ArrayList<>();
+          args.add(new ThriftField.Builder()
+              .setId(1)
+              .setType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_STRING_TYPE))
+              .setName("key")
+              .setIsOptional(false)
+              .build());
+    
+          List<ThriftField> exceptions = new ArrayList<>();
+    
+          functions.add(new ThriftFunction.Builder()
+              .setName("getDataByKey1")
+              .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_BINARY_TYPE))
+              .setArguments(args)
+              .setExceptions(exceptions)
+              .setIsOneway(false)
+              .build());
+        }
   }
 
   private static final ThriftService THRIFT_SERVICE;

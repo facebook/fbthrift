@@ -30,75 +30,75 @@ import com.facebook.thrift.metadata.ThriftType;
 public class PrimitivesServiceThriftMetadataHandler implements com.facebook.thrift.server.ThriftMetadataHandler {
 
   private static void addFunctions_0(List<ThriftFunction> functions) {
-    {
-      List<ThriftField> args = new ArrayList<>();
-      args.add(new ThriftField.Builder()
-          .setId(1)
-          .setType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I64_TYPE))
-          .setName("param0")
-          .setIsOptional(false)
-          .build());
-      args.add(new ThriftField.Builder()
-          .setId(2)
-          .setType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I64_TYPE))
-          .setName("param1")
-          .setIsOptional(false)
-          .build());
-
-      List<ThriftField> exceptions = new ArrayList<>();
-
-      functions.add(new ThriftFunction.Builder()
-          .setName("init")
-          .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I64_TYPE))
-          .setArguments(args)
-          .setExceptions(exceptions)
-          .setIsOneway(false)
-          .build());
-    }
-    {
-      List<ThriftField> args = new ArrayList<>();
-
-      List<ThriftField> exceptions = new ArrayList<>();
-      exceptions.add(new ThriftField.Builder()
-          .setId(1)
-          .setType(ThriftType.fromTStruct(new ThriftStructType.Builder().setName("test.fixtures.service_schema.CustomException").build()))
-          .setName("exception_1")
-          .setIsOptional(false)
-          .build());
-
-      functions.add(new ThriftFunction.Builder()
-          .setName("method_that_throws")
-          .setReturnType(ThriftType.fromTEnum(new ThriftEnumType.Builder().setName("test.fixtures.service_schema.Result").build()))
-          .setArguments(args)
-          .setExceptions(exceptions)
-          .setIsOneway(false)
-          .build());
-    }
-    {
-      List<ThriftField> args = new ArrayList<>();
-      args.add(new ThriftField.Builder()
-          .setId(1)
-          .setType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I64_TYPE))
-          .setName("id")
-          .setIsOptional(false)
-          .build());
-      args.add(new ThriftField.Builder()
-          .setId(2)
-          .setType(ThriftType.fromTStruct(new ThriftStructType.Builder().setName("test.fixtures.service_schema.I").build()))
-          .setName("i")
-          .setIsOptional(false)
-          .build());
-
-      List<ThriftField> exceptions = new ArrayList<>();
-
-      functions.add(new ThriftFunction.Builder()
-          .setName("return_void_method")
-          .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
-          .setArguments(args)
-          .setExceptions(exceptions)
-          .setIsOneway(false)
-          .build());
-    }
+        {
+          List<ThriftField> args = new ArrayList<>();
+          args.add(new ThriftField.Builder()
+              .setId(1)
+              .setType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I64_TYPE))
+              .setName("param0")
+              .setIsOptional(false)
+              .build());
+          args.add(new ThriftField.Builder()
+              .setId(2)
+              .setType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I64_TYPE))
+              .setName("param1")
+              .setIsOptional(false)
+              .build());
+    
+          List<ThriftField> exceptions = new ArrayList<>();
+    
+          functions.add(new ThriftFunction.Builder()
+              .setName("init")
+              .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I64_TYPE))
+              .setArguments(args)
+              .setExceptions(exceptions)
+              .setIsOneway(false)
+              .build());
+        }
+        {
+          List<ThriftField> args = new ArrayList<>();
+    
+          List<ThriftField> exceptions = new ArrayList<>();
+          exceptions.add(new ThriftField.Builder()
+              .setId(1)
+              .setType(ThriftType.fromTStruct(new ThriftStructType.Builder().setName("test.fixtures.service_schema.CustomException").build()))
+              .setName("exception_1")
+              .setIsOptional(false)
+              .build());
+    
+          functions.add(new ThriftFunction.Builder()
+              .setName("method_that_throws")
+              .setReturnType(ThriftType.fromTEnum(new ThriftEnumType.Builder().setName("test.fixtures.service_schema.Result").build()))
+              .setArguments(args)
+              .setExceptions(exceptions)
+              .setIsOneway(false)
+              .build());
+        }
+        {
+          List<ThriftField> args = new ArrayList<>();
+          args.add(new ThriftField.Builder()
+              .setId(1)
+              .setType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I64_TYPE))
+              .setName("id")
+              .setIsOptional(false)
+              .build());
+          args.add(new ThriftField.Builder()
+              .setId(2)
+              .setType(ThriftType.fromTStruct(new ThriftStructType.Builder().setName("test.fixtures.service_schema.I").build()))
+              .setName("i")
+              .setIsOptional(false)
+              .build());
+    
+          List<ThriftField> exceptions = new ArrayList<>();
+    
+          functions.add(new ThriftFunction.Builder()
+              .setName("return_void_method")
+              .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
+              .setArguments(args)
+              .setExceptions(exceptions)
+              .setIsOneway(false)
+              .build());
+        }
   }
 
   private static final ThriftService THRIFT_SERVICE;

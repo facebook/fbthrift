@@ -30,37 +30,37 @@ import com.facebook.thrift.metadata.ThriftType;
 public class ServiceThriftMetadataHandler implements com.facebook.thrift.server.ThriftMetadataHandler {
 
   private static void addFunctions_0(List<ThriftFunction> functions) {
-    {
-      List<ThriftField> args = new ArrayList<>();
-      args.add(new ThriftField.Builder()
-          .setId(1)
-          .setType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_STRING_TYPE))
-          .setName("arg1")
-          .setIsOptional(false)
-          .build());
-      args.add(new ThriftField.Builder()
-          .setId(2)
-          .setType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_STRING_TYPE))
-          .setName("arg2")
-          .setIsOptional(false)
-          .build());
-      args.add(new ThriftField.Builder()
-          .setId(3)
-          .setType(ThriftType.fromTStruct(new ThriftStructType.Builder().setName("test.fixtures.adapter.Foo").build()))
-          .setName("arg3")
-          .setIsOptional(false)
-          .build());
-
-      List<ThriftField> exceptions = new ArrayList<>();
-
-      functions.add(new ThriftFunction.Builder()
-          .setName("func")
-          .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE))
-          .setArguments(args)
-          .setExceptions(exceptions)
-          .setIsOneway(false)
-          .build());
-    }
+        {
+          List<ThriftField> args = new ArrayList<>();
+          args.add(new ThriftField.Builder()
+              .setId(1)
+              .setType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_STRING_TYPE))
+              .setName("arg1")
+              .setIsOptional(false)
+              .build());
+          args.add(new ThriftField.Builder()
+              .setId(2)
+              .setType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_STRING_TYPE))
+              .setName("arg2")
+              .setIsOptional(false)
+              .build());
+          args.add(new ThriftField.Builder()
+              .setId(3)
+              .setType(ThriftType.fromTStruct(new ThriftStructType.Builder().setName("test.fixtures.adapter.Foo").build()))
+              .setName("arg3")
+              .setIsOptional(false)
+              .build());
+    
+          List<ThriftField> exceptions = new ArrayList<>();
+    
+          functions.add(new ThriftFunction.Builder()
+              .setName("func")
+              .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE))
+              .setArguments(args)
+              .setExceptions(exceptions)
+              .setIsOneway(false)
+              .build());
+        }
   }
 
   private static final ThriftService THRIFT_SERVICE;
