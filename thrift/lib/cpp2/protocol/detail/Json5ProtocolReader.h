@@ -110,6 +110,10 @@ class Json5ProtocolReader final {
   static constexpr bool kHasDeferredRead() { return false; }
   static constexpr bool kCanReadStringView() { return false; }
 
+  static constexpr ProtocolType protocolType() {
+    return ProtocolType::T_JSON5_PROTOCOL;
+  }
+
   void setInput(const folly::io::Cursor& cursor);
   void setInput(const folly::IOBuf* buf);
 

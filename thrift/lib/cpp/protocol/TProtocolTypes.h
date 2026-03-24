@@ -30,6 +30,7 @@ enum PROTOCOL_TYPES : uint16_t {
   T_SIMPLE_JSON_PROTOCOL = 5,
   // The frozen2 protocol is deprecated, but we don't want reuse its ID.
   // T_FROZEN2_PROTOCOL = 6,
+  T_JSON5_PROTOCOL = 7,
 };
 }
 

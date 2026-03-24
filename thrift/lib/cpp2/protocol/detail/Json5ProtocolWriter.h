@@ -122,6 +122,10 @@ class Json5ProtocolWriter final {
   KeyOrder keyOrder() const { return KeyOrder::StableAscending; }
   FieldOrder fieldOrder() const { return FieldOrder::IdAscending; }
 
+  static constexpr ProtocolType protocolType() {
+    return ProtocolType::T_JSON5_PROTOCOL;
+  }
+
   static constexpr size_t kDefaultGrowth = 1 << 14; // 16KB
 
   void setOutput(folly::IOBufQueue* queue, size_t growth = kDefaultGrowth);
