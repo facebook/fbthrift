@@ -337,12 +337,12 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
     };
   }
 
-  private com.facebook.thrift.payload.Writer _create{{function:java_name}}SinkWriter({{#function:return_type}}{{#function:sink_elem_type}}{{> BoxedType}} _p{{/function:sink_elem_type}}{{/function:return_type}}) {
+  private com.facebook.thrift.payload.Writer _create{{function:java_name}}SinkWriter({{#function:return_type}}{{#function:sink_elem_type}}{{> BoxedType}} _iter0{{/function:sink_elem_type}}{{/function:return_type}}) {
     return oprot -> {
       try {
         oprot.writeFieldBegin(_{{function:java_name}}_SINK_TFIELD);
         {{#function:return_type}}{{#function:sink_elem_type}}
-        {{> WriteSinkPayloadType}}
+        {{function:nestedDepth++}}{{> WriteSinkPayloadType}}{{function:nestedDepth--}}
         {{/function:sink_elem_type}}{{/function:return_type}}
 
         oprot.writeFieldEnd();
