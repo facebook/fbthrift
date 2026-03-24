@@ -206,23 +206,14 @@ class {{service.name}}Interface(
                     break{{! iobuf_item unexpectedly empty, may happen if client terminated}}
                     {{/if (array.empty? function.sink.exceptions)}}
 
-            async def _handle_stream(stream_generator: _typing.AsyncIterator[{{#partial typehints.pep484_type type=function.stream.elem_type}}]) -> _typing.AsyncGenerator[_fbthrift_iobuf.IOBuf, None]:
-                {{#if (array.empty? function.stream.exceptions)}}
-                async for item in stream_generator:
-                    yield serialize_iobuf({{program.module_mangle}}__{{#partial m_types.import_path}}._fbthrift_{{service.name}}_{{function.name}}_result_stream_elem(success=item), protocol)
-                {{#else}}
-                try:
-                    async for item in stream_generator:
-                        yield serialize_iobuf({{program.module_mangle}}__{{#partial m_types.import_path}}._fbthrift_{{service.name}}_{{function.name}}_result_stream_elem(success=item), protocol)
-                {{#each (array.enumerate function.stream.exceptions) as |index field|}}
-                except {{field.type.module_mangle}}.{{#partial m_types.unadapted_name type=field.type}} as e:
-                    return_struct = {{program.module_mangle}}__{{#partial m_types.import_path}}._fbthrift_{{service.name}}_{{function.name}}_result_stream_elem({{#partial m_fields.exception_field_name field=field index=index}}=e)
-                    buf = serialize_iobuf(return_struct, protocol)
-                    exp = PythonUserException('{{field.type.py3_namespace}}{{#partial m_types.unadapted_name type=field.type}}', str(e), buf)
-                    raise exp
-                {{/each}}
-                {{/if (array.empty? function.stream.exceptions)}}
-            return _handle_stream(handler_bidi_callback(_handle_sink()))
+            return CloseableGenerator(
+                handler_bidi_callback(_handle_sink()),
+                protocol,
+                {{program.module_mangle}}__{{#partial m_types.import_path}}._fbthrift_{{service.name}}_{{function.name}}_result_stream_elem,
+                ({{#each (array.enumerate function.stream.exceptions) as |index field|}}
+                    UserExceptionMeta({{field.type.module_mangle}}.{{#partial m_types.unadapted_name type=field.type}}, "{{#partial m_fields.exception_field_name field=field index=index}}", '{{field.type.py3_namespace}}{{#partial m_types.unadapted_name type=field.type}}'),
+                {{/each}}),
+            )
 
         return _fbthrift_iobuf_bidi_callback
     {{/if (not function.bidirectional_stream?)}}

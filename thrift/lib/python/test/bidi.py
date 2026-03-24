@@ -19,7 +19,6 @@ from __future__ import annotations
 
 import asyncio
 import sys
-import unittest
 from typing import AsyncGenerator, Callable, Generator, Tuple, TypeVar
 from unittest import IsolatedAsyncioTestCase
 
@@ -506,7 +505,6 @@ class BidiTests(IsolatedAsyncioTestCase):
                     f"apache::thrift::TApplicationException: .*'{expected_msg}'",
                 )
 
-    @unittest.expectedFailure
     async def test_bidi_stream_cancel_propagates_during_blocked_anext(self) -> None:
         """
         Bidi stream cancellation must work when __anext__ is in-flight.

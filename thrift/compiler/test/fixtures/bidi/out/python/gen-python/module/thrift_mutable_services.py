@@ -80,10 +80,12 @@ class BiDiServiceInterface(
                     else:
                         yield sink_elem.success
 
-            async def _handle_stream(stream_generator: _typing.AsyncIterator[builtins.int]) -> _typing.AsyncGenerator[_fbthrift_iobuf.IOBuf, None]:
-                async for item in stream_generator:
-                    yield serialize_iobuf(_fbthrift__module__thrift_mutable_types._fbthrift_BiDiService_simple_result_stream_elem(success=item), protocol)
-            return _handle_stream(handler_bidi_callback(_handle_sink()))
+            return CloseableGenerator(
+                handler_bidi_callback(_handle_sink()),
+                protocol,
+                _fbthrift__module__thrift_mutable_types._fbthrift_BiDiService_simple_result_stream_elem,
+                (),
+            )
 
         return _fbthrift_iobuf_bidi_callback
     async def _fbthrift__handler_simple(self, args: _fbthrift_iobuf.IOBuf, protocol: Protocol) -> _typing.Tuple[_fbthrift_iobuf.IOBuf, _typing.Callable[[_typing.Callable[[], _typing.AsyncGenerator[_fbthrift_iobuf.IOBuf, None]]], _typing.Awaitable[_typing.AsyncGenerator[_fbthrift_iobuf.IOBuf, None]]]]:
@@ -121,10 +123,12 @@ class BiDiServiceInterface(
                     else:
                         yield sink_elem.success
 
-            async def _handle_stream(stream_generator: _typing.AsyncIterator[builtins.int]) -> _typing.AsyncGenerator[_fbthrift_iobuf.IOBuf, None]:
-                async for item in stream_generator:
-                    yield serialize_iobuf(_fbthrift__module__thrift_mutable_types._fbthrift_BiDiService_response_result_stream_elem(success=item), protocol)
-            return _handle_stream(handler_bidi_callback(_handle_sink()))
+            return CloseableGenerator(
+                handler_bidi_callback(_handle_sink()),
+                protocol,
+                _fbthrift__module__thrift_mutable_types._fbthrift_BiDiService_response_result_stream_elem,
+                (),
+            )
 
         return _fbthrift_iobuf_bidi_callback
     async def _fbthrift__handler_response(self, args: _fbthrift_iobuf.IOBuf, protocol: Protocol) -> _typing.Tuple[_fbthrift_iobuf.IOBuf, _typing.Callable[[_typing.Callable[[], _typing.AsyncGenerator[_fbthrift_iobuf.IOBuf, None]]], _typing.Awaitable[_typing.AsyncGenerator[_fbthrift_iobuf.IOBuf, None]]]]:
@@ -166,16 +170,14 @@ class BiDiServiceInterface(
                             raise ex
                     break
 
-            async def _handle_stream(stream_generator: _typing.AsyncIterator[builtins.int]) -> _typing.AsyncGenerator[_fbthrift_iobuf.IOBuf, None]:
-                try:
-                    async for item in stream_generator:
-                        yield serialize_iobuf(_fbthrift__module__thrift_mutable_types._fbthrift_BiDiService_canThrow_result_stream_elem(success=item), protocol)
-                except _fbthrift__module__thrift_mutable_types.BiDiStreamException as e:
-                    return_struct = _fbthrift__module__thrift_mutable_types._fbthrift_BiDiService_canThrow_result_stream_elem(_ex0__ex=e)
-                    buf = serialize_iobuf(return_struct, protocol)
-                    exp = PythonUserException('BiDiStreamException', str(e), buf)
-                    raise exp
-            return _handle_stream(handler_bidi_callback(_handle_sink()))
+            return CloseableGenerator(
+                handler_bidi_callback(_handle_sink()),
+                protocol,
+                _fbthrift__module__thrift_mutable_types._fbthrift_BiDiService_canThrow_result_stream_elem,
+                (
+                    UserExceptionMeta(_fbthrift__module__thrift_mutable_types.BiDiStreamException, "_ex0__ex", 'BiDiStreamException'),
+                ),
+            )
 
         return _fbthrift_iobuf_bidi_callback
     async def _fbthrift__handler_canThrow(self, args: _fbthrift_iobuf.IOBuf, protocol: Protocol) -> _typing.Tuple[_fbthrift_iobuf.IOBuf, _typing.Callable[[_typing.Callable[[], _typing.AsyncGenerator[_fbthrift_iobuf.IOBuf, None]]], _typing.Awaitable[_typing.AsyncGenerator[_fbthrift_iobuf.IOBuf, None]]]]:
