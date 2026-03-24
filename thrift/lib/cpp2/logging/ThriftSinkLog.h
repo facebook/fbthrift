@@ -18,6 +18,7 @@
 
 #include <atomic>
 #include <chrono>
+#include <limits>
 #include <string_view>
 
 #include <thrift/lib/cpp2/logging/IThriftRequestLogging.h>
@@ -83,6 +84,11 @@ class ThriftSinkLog {
   std::atomic<uint64_t> consumedCounter_{0};
   std::atomic<uint64_t> sampledChunkNumber_{0};
   std::chrono::steady_clock::time_point sampledChunkReceivedTime_;
+
+  // Byte tracking
+  uint64_t totalBytes_{0};
+  uint64_t minChunkSize_{std::numeric_limits<uint64_t>::max()};
+  uint64_t maxChunkSize_{0};
 
   // Credit tracking (for approx pause detection)
   uint32_t creditsAvailable_{0};

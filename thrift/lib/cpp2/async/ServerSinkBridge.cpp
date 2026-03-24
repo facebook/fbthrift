@@ -58,7 +58,9 @@ ServerSinkBridge::Ptr ServerSinkBridge::create(
 
 // SinkServerCallback method
 bool ServerSinkBridge::onSinkNext(StreamPayload&& payload) {
-  notifySinkNext();
+  uint64_t payloadBytes =
+      payload.payload ? payload.payload->computeChainDataLength() : 0;
+  notifySinkNext(payloadBytes);
   clientPush(
       StreamMessage::PayloadOrError{
           folly::Try<StreamPayload>(std::move(payload))});
@@ -227,12 +229,12 @@ void ServerSinkBridge::notifySinkSubscribe() {
   }
 }
 
-void ServerSinkBridge::notifySinkNext() {
+void ServerSinkBridge::notifySinkNext(uint64_t payloadBytes) {
   if (const auto& contextStack = consumer_.contextStack) {
     contextStack->onSinkNext();
   }
   if (sinkLog_) {
-    sinkLog_->log(detail::SinkNextEvent{});
+    sinkLog_->log(detail::SinkNextEvent{payloadBytes});
   }
 }
 

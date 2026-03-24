@@ -132,7 +132,7 @@ class ServerSinkBridge : public TwoWayBridge<
 
   // Helper methods to encapsulate ContextStack usage
   void notifySinkSubscribe();
-  void notifySinkNext();
+  void notifySinkNext(uint64_t payloadBytes);
   void notifySinkFinally(details::SINK_ENDING_TYPES endingType);
   void notifySinkError(
       const folly::exception_wrapper& exception,

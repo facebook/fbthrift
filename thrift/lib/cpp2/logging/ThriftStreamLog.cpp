@@ -40,11 +40,17 @@ void ThriftStreamLog::log(const detail::StreamSubscribeEvent& /*event*/) {
   }
 }
 
-void ThriftStreamLog::log(const detail::StreamNextEvent& /*event*/) {
+void ThriftStreamLog::log(const detail::StreamNextEvent& event) {
   auto now = std::chrono::steady_clock::now();
 
   if (counters_) {
     counters_->onStreamNext(methodName_);
+  }
+
+  totalBytes_ += event.payloadBytes;
+  if (event.payloadBytes > 0) {
+    minChunkSize_ = std::min(minChunkSize_, event.payloadBytes);
+    maxChunkSize_ = std::max(maxChunkSize_, event.payloadBytes);
   }
 
   if (credits_ > 0) {
@@ -162,6 +168,9 @@ void ThriftStreamLog::finish(detail::StreamEndReason reason) {
     summary.totalPauseDuration = totalPauseDuration_;
     summary.startTime = startTime_;
     summary.endTime = std::chrono::steady_clock::now();
+    summary.totalBytes = totalBytes_;
+    summary.minChunkSize = (maxChunkSize_ > 0) ? minChunkSize_ : 0;
+    summary.maxChunkSize = maxChunkSize_;
     logging_->onStreamComplete(summary);
   }
 }

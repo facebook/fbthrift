@@ -16,6 +16,7 @@
 
 #include <thrift/lib/cpp2/logging/ThriftSinkLog.h>
 
+#include <algorithm>
 #include <utility>
 
 namespace apache::thrift {
@@ -39,11 +40,17 @@ void ThriftSinkLog::log(const detail::SinkSubscribeEvent& /*event*/) {
   }
 }
 
-void ThriftSinkLog::log(const detail::SinkNextEvent& /*event*/) {
+void ThriftSinkLog::log(const detail::SinkNextEvent& event) {
   auto now = std::chrono::steady_clock::now();
 
   if (counters_) {
     counters_->onSinkNext(methodName_);
+  }
+
+  totalBytes_ += event.payloadBytes;
+  if (event.payloadBytes > 0) {
+    minChunkSize_ = std::min(minChunkSize_, event.payloadBytes);
+    maxChunkSize_ = std::max(maxChunkSize_, event.payloadBytes);
   }
 
   // Track receive interval
@@ -143,6 +150,9 @@ void ThriftSinkLog::finish(detail::SinkEndReason reason) {
     summary.totalCreditsSent = totalCreditsSent_;
     summary.startTime = startTime_;
     summary.endTime = std::chrono::steady_clock::now();
+    summary.totalBytes = totalBytes_;
+    summary.minChunkSize = (maxChunkSize_ > 0) ? minChunkSize_ : 0;
+    summary.maxChunkSize = maxChunkSize_;
     logging_->onSinkComplete(summary);
   }
 }

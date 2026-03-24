@@ -42,7 +42,9 @@ struct StreamSubscribeEvent {
   std::optional<std::chrono::steady_clock::time_point> interactionCreationTime;
 };
 
-struct StreamNextEvent {};
+struct StreamNextEvent {
+  uint64_t payloadBytes{0};
+};
 
 struct StreamNextSentEvent {};
 
@@ -88,7 +90,9 @@ struct SinkSubscribeEvent {
   std::optional<std::chrono::steady_clock::time_point> interactionCreationTime;
 };
 
-struct SinkNextEvent {};
+struct SinkNextEvent {
+  uint64_t payloadBytes{0};
+};
 
 struct SinkConsumedEvent {};
 

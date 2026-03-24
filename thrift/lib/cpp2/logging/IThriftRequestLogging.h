@@ -51,6 +51,9 @@ class IThriftRequestLogging {
     std::chrono::milliseconds totalPauseDuration;
     std::chrono::steady_clock::time_point startTime;
     std::chrono::steady_clock::time_point endTime;
+    uint64_t totalBytes{0};
+    uint64_t minChunkSize{0};
+    uint64_t maxChunkSize{0};
   };
 
   /**
@@ -64,6 +67,9 @@ class IThriftRequestLogging {
     uint32_t totalCreditsSent;
     std::chrono::steady_clock::time_point startTime;
     std::chrono::steady_clock::time_point endTime;
+    uint64_t totalBytes{0};
+    uint64_t minChunkSize{0};
+    uint64_t maxChunkSize{0};
   };
 
   virtual void onStreamComplete(const StreamSummary& /*summary*/) {}

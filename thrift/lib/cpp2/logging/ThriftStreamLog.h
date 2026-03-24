@@ -18,6 +18,7 @@
 
 #include <atomic>
 #include <chrono>
+#include <limits>
 #include <string_view>
 
 #include <thrift/lib/cpp2/logging/IThriftRequestLogging.h>
@@ -93,6 +94,11 @@ class ThriftStreamLog {
   uint32_t totalPauseEvents_{0};
   std::chrono::milliseconds totalPauseDuration_{0};
   std::chrono::milliseconds pauseDurationSinceLastChunk_{0};
+
+  // Byte tracking
+  uint64_t totalBytes_{0};
+  uint64_t minChunkSize_{std::numeric_limits<uint64_t>::max()};
+  uint64_t maxChunkSize_{0};
 
   // Chunk counters
   uint64_t chunkCounter_{0};

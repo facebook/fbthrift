@@ -308,23 +308,27 @@ class ServerGeneratorStreamBridge : public TwoWayBridge<
         }
       }
 
+      uint64_t payloadBytes = 0;
       if constexpr (WithHeader) {
         folly::Try<StreamPayload> sp =
             encodeMessageVariant(encode, std::move(item));
         bool hasPayload = sp->payload || sp->isOrderedHeader;
+        payloadBytes = sp->payload ? sp->payload->computeChainDataLength() : 0;
         stream->serverPush(StreamMessage::PayloadOrError{std::move(sp)});
         if (hasPayload) {
           --credits;
         }
       } else {
-        stream->serverPush(
-            StreamMessage::PayloadOrError{(*encode)(std::move(item))});
+        auto encoded = (*encode)(std::move(item));
+        payloadBytes =
+            encoded->payload ? encoded->payload->computeChainDataLength() : 0;
+        stream->serverPush(StreamMessage::PayloadOrError{std::move(encoded)});
         --credits;
       }
 
       notifyStreamNext(contextStack.get());
       if (streamLog) {
-        streamLog->log(detail::StreamNextEvent{});
+        streamLog->log(detail::StreamNextEvent{payloadBytes});
       }
       if (credits == 0) {
         notifyStreamPause(
