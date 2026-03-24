@@ -41,6 +41,27 @@ class ServerBiDiStreamFactory {
       folly::EventBase*)>;
 
  public:
+  /**
+   * Callback interface for receiving both BiDi bridges.
+   * Similar to ServerSinkFactory::ConsumerCallback and
+   * ServerGeneratorStreamBridge::ProducerCallback.
+   */
+  class ServerBiDiCallback {
+   public:
+    virtual void provideBiDiBridge(
+        ServerBiDiStreamBridge::Ptr streamBridge,
+        ServerBiDiSinkBridge::Ptr sinkBridge) = 0;
+    ServerBiDiCallback() = default;
+    virtual ~ServerBiDiCallback() = default;
+  };
+
+  /**
+   * Constructor for runtimes that want to receive the bridges
+   * directly via a callback.
+   */
+  explicit ServerBiDiStreamFactory(
+      ServerBiDiCallback* biDiCallback, uint64_t bufferSize);
+
   template <typename InputType, typename OutputType>
   explicit ServerBiDiStreamFactory(
       StreamTransformation<InputType, OutputType> streamTransformation,

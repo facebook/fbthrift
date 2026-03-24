@@ -58,6 +58,51 @@ class IdentityEncoder : public StreamElementEncoder<StreamPayload> {
   }
 };
 
+// Implementation of ServerBiDiCallback similar to TestProducerCallback
+// in TestStreamService.cpp. This callback uses ServerBiDiStreamBridge::getTask
+// and ServerBiDiSinkBridge::getInput to handle flow control automatically.
+// Works directly with StreamPayload to avoid needing external encoder/decoder.
+class TestServerBiDiCallback
+    : public ServerBiDiStreamFactory::ServerBiDiCallback {
+ public:
+  using StreamTransformationFactory =
+      std::function<StreamTransformation<StreamPayload, StreamPayload>()>;
+
+  TestServerBiDiCallback(
+      StreamTransformation<StreamPayload, StreamPayload> streamTransformation,
+      IdentityDecoder* decoder,
+      IdentityEncoder* encoder,
+      folly::Executor::KeepAlive<> executor)
+      : transformFn_(std::move(streamTransformation)),
+        executor_(std::move(executor)),
+        decoder_(decoder),
+        encoder_(encoder) {}
+
+  ~TestServerBiDiCallback() override = default;
+
+  void provideBiDiBridge(
+      ServerBiDiStreamBridge::Ptr streamBridge,
+      ServerBiDiSinkBridge::Ptr sinkBridge) override {
+    // Move executor out so we don't hold the KeepAlive, which would prevent
+    // server shutdown
+    auto executor = std::move(executor_);
+    auto task = ServerBiDiStreamBridge::getTask(
+        streamBridge->copy(),
+        folly::coro::co_invoke(
+            std::move(transformFn_.func),
+            ServerBiDiSinkBridge::getInput(sinkBridge->copy(), decoder_)),
+        encoder_);
+    folly::coro::co_withExecutor(executor, std::move(task)).start();
+    delete this;
+  }
+
+ private:
+  StreamTransformation<StreamPayload, StreamPayload> transformFn_;
+  folly::Executor::KeepAlive<> executor_;
+  IdentityDecoder* decoder_;
+  IdentityEncoder* encoder_;
+};
+
 struct TestHandler : public AsyncProcessorFactory {
   using StreamTransformationFactory =
       std::function<StreamTransformation<StreamPayload, StreamPayload>()>;
@@ -66,10 +111,12 @@ struct TestHandler : public AsyncProcessorFactory {
     explicit TestAsyncProcessor(
         StreamTransformationFactory streamTransformationFactory,
         IdentityDecoder* decoder,
-        IdentityEncoder* encoder)
+        IdentityEncoder* encoder,
+        bool useServerBiDiCallback = false)
         : streamTransformationFactory_(std::move(streamTransformationFactory)),
           decoder_(decoder),
-          encoder_(encoder) {}
+          encoder_(encoder),
+          useServerBiDiCallback_(useServerBiDiCallback) {}
 
     void processSerializedCompressedRequestWithMetadata(
         ResponseChannelRequest::UniquePtr,
@@ -90,11 +137,18 @@ struct TestHandler : public AsyncProcessorFactory {
       auto req = std::move(request.request());
       auto executor = ServerRequestHelper::executor(request);
 
-      ServerBiDiStreamFactory factory(
-          streamTransformationFactory_(), *decoder_, *encoder_, executor);
-
-      req->sendBiDiReply(
-          ResponsePayload{makeResponse("hello")}, std::move(factory));
+      if (useServerBiDiCallback_) {
+        auto* callback = new TestServerBiDiCallback(
+            streamTransformationFactory_(), decoder_, encoder_, executor);
+        ServerBiDiStreamFactory factory(callback, 100);
+        req->sendBiDiReply(
+            ResponsePayload{makeResponse("hello")}, std::move(factory));
+      } else {
+        ServerBiDiStreamFactory factory(
+            streamTransformationFactory_(), *decoder_, *encoder_, executor);
+        req->sendBiDiReply(
+            ResponsePayload{makeResponse("hello")}, std::move(factory));
+      }
     }
 
     void processInteraction(ServerRequest&&) override { std::terminate(); }
@@ -102,11 +156,15 @@ struct TestHandler : public AsyncProcessorFactory {
     StreamTransformationFactory streamTransformationFactory_;
     IdentityDecoder* decoder_;
     IdentityEncoder* encoder_;
+    bool useServerBiDiCallback_;
   };
 
   std::unique_ptr<AsyncProcessor> getProcessor() override {
     return std::make_unique<TestAsyncProcessor>(
-        streamTransformationFactory_, decoder_.get(), encoder_.get());
+        streamTransformationFactory_,
+        decoder_.get(),
+        encoder_.get(),
+        useServerBiDiCallback_);
   }
 
   std::vector<ServiceHandlerBase*> getServiceHandlers() override { return {}; }
@@ -125,7 +183,12 @@ struct TestHandler : public AsyncProcessorFactory {
     streamTransformationFactory_ = std::move(streamTransformationFactory);
   }
 
+  void useServerBiDiCallback(bool useServerBiDiCallback) {
+    useServerBiDiCallback_ = useServerBiDiCallback;
+  }
+
  private:
+  bool useServerBiDiCallback_ = false;
   StreamTransformationFactory streamTransformationFactory_;
   std::unique_ptr<IdentityDecoder> decoder_ =
       std::make_unique<IdentityDecoder>();
@@ -147,11 +210,13 @@ struct BiDiBridgesTest
 
   void test(
       ClientCallbackFactory clientCallbackFactory,
-      const StreamTransformationFactory& streamTransformationFactory) {
+      const StreamTransformationFactory& streamTransformationFactory,
+      bool useServerBiDiCallback = false) {
     DCHECK(clientCallbackFactory);
     DCHECK(streamTransformationFactory);
 
     handler_->useStreamTransformationFactory(streamTransformationFactory);
+    handler_->useServerBiDiCallback(useServerBiDiCallback);
     connectToServer(
         [clientCallbackFactory = std::move(clientCallbackFactory)](
             Client<TestSinkService>& client) -> folly::coro::Task<void> {
@@ -327,6 +392,25 @@ TEST_F(BiDiBridgesTest, ClientCancelsStreamWhileTransformBlocksOnInput) {
               }
             });
       });
+}
+
+TEST_F(BiDiBridgesTest, BasicWithBiDiCallback) {
+  test(
+      [](auto done) {
+        auto client = new BiDiFiniteClient(5, 100, done);
+        client->setSinkLimitAction(BiDiFiniteClient::SinkLimitAction::COMPLETE);
+        return client;
+      },
+      []() -> StreamTransformation<StreamPayload, StreamPayload> {
+        return StreamTransformation<StreamPayload, StreamPayload>(
+            [](folly::coro::AsyncGenerator<StreamPayload&&> gen)
+                -> folly::coro::AsyncGenerator<StreamPayload&&> {
+              while (auto item = co_await gen.next()) {
+                co_yield std::move(*item);
+              }
+            });
+      },
+      true);
 }
 
 } // namespace apache::thrift

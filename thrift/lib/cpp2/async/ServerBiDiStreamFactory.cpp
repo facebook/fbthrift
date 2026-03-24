@@ -20,6 +20,43 @@ namespace apache::thrift::detail {
 
 ServerBiDiStreamFactory::ServerBiDiStreamFactory() : startFunction_{nullptr} {}
 
+ServerBiDiStreamFactory::ServerBiDiStreamFactory(
+    ServerBiDiCallback* biDiCallback, uint64_t bufferSize) {
+  startFunction_ = [biDiCallback, bufferSize](
+                       std::shared_ptr<ContextStack> contextStack,
+                       TilePtr&& /* interaction */,
+                       FirstResponsePayload&& payload,
+                       BiDiClientCallback* clientCb,
+                       folly::EventBase* evb) -> void {
+    if (contextStack) {
+      contextStack->onBiDiSubscribe();
+    }
+
+    auto stapled = new ServerCallbackStapler();
+    auto streamBridge = new ServerBiDiStreamBridge(stapled, evb, contextStack);
+    auto sinkBridge = new ServerBiDiSinkBridge(stapled, evb, contextStack);
+    stapled->setContextStack(contextStack);
+    stapled->setSinkServerCallback(sinkBridge);
+    stapled->setStreamServerCallback(streamBridge);
+    stapled->resetClientCallback(*clientCb);
+
+    sinkBridge->setBufferSize(bufferSize);
+
+    // Provide bridges to the callback
+    if (biDiCallback) {
+      biDiCallback->provideBiDiBridge(streamBridge->copy(), sinkBridge->copy());
+    }
+
+    std::ignore = clientCb->onFirstResponse(std::move(payload), evb, stapled);
+
+    // Send initial credits for sink
+    sinkBridge->serverPush(
+        StreamMessage::RequestN{static_cast<int32_t>(bufferSize)});
+    sinkBridge->processClientMessages();
+    streamBridge->processClientMessages();
+  };
+}
+
 /* static */ ServerBiDiStreamFactory
 ServerBiDiStreamFactory::makeNoopFactory() {
   return ServerBiDiStreamFactory();

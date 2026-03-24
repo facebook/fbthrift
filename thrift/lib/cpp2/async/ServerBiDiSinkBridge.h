@@ -42,7 +42,7 @@ using ServerBiDiSinkMessageClientToServer =
 class ServerBiDiSinkBridge : public TwoWayBridge<
                                  ServerBiDiSinkBridge,
                                  ServerBiDiSinkMessageServerToClient,
-                                 CoroConsumer,
+                                 QueueConsumer,
                                  ServerBiDiSinkMessageClientToServer,
                                  ServerBiDiSinkBridge>,
                              public SinkServerCallback {
@@ -220,8 +220,15 @@ class ServerBiDiSinkBridge : public TwoWayBridge<
   }
 
   void setBufferSize(uint64_t bufferSize) { bufferSize_ = bufferSize; }
+  uint64_t getBufferSize() { return bufferSize_; }
 
+  using TwoWayBridge::clientClose;
+  using TwoWayBridge::isClientClosed;
+  using TwoWayBridge::isServerClosed;
+  using TwoWayBridge::serverClose;
+  using TwoWayBridge::serverGetMessages;
   using TwoWayBridge::serverPush;
+  using TwoWayBridge::serverWait;
 
   static void notifyBiDiSinkNext(ContextStack* ctx) {
     if (ctx) {

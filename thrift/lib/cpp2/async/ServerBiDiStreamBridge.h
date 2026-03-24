@@ -45,7 +45,7 @@ using ServerBiDiStreamMessageClientToServer =
 class ServerBiDiStreamBridge : public TwoWayBridge<
                                    ServerBiDiStreamBridge,
                                    ServerBiDiStreamMessageServerToClient,
-                                   CoroConsumer,
+                                   QueueConsumer,
                                    ServerBiDiStreamMessageClientToServer,
                                    ServerBiDiStreamBridge>,
                                public StreamServerCallback {
@@ -90,6 +90,11 @@ class ServerBiDiStreamBridge : public TwoWayBridge<
   //
   // end of TwoWayBridge methods
   //
+
+  using TwoWayBridge::serverClose;
+  using TwoWayBridge::serverGetMessages;
+  using TwoWayBridge::serverPush;
+  using TwoWayBridge::serverWait;
 
   template <typename Out>
   static folly::coro::Task<> getTask(
