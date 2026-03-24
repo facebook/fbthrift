@@ -171,12 +171,11 @@ class TerseFoo final  {
   TerseFoo(apache::thrift::FragileConstructor, ::std::vector<double> field1__arg, ::std::vector<::std::int32_t> field2__arg, ::std::vector<double> field3__arg, ::std::vector<::std::int32_t> field4__arg);
 
   TerseFoo(TerseFoo&&) noexcept;
-
   TerseFoo(const TerseFoo& src);
 
 
   TerseFoo& operator=(TerseFoo&&) noexcept;
-  TerseFoo& operator=(const TerseFoo& src);
+  TerseFoo& operator=(const TerseFoo&);
 
   ~TerseFoo();
 
@@ -499,7 +498,7 @@ class TerseLazyFoo final  {
 
 
   TerseLazyFoo& operator=(TerseLazyFoo&&) noexcept;
-  TerseLazyFoo& operator=(const TerseLazyFoo& src);
+  TerseLazyFoo& operator=(const TerseLazyFoo&);
 
   ~TerseLazyFoo();
 
@@ -834,12 +833,11 @@ class TerseOptionalFoo final  {
   TerseOptionalFoo(apache::thrift::FragileConstructor, ::std::vector<double> field1__arg, ::std::vector<::std::int32_t> field2__arg, ::std::vector<double> field3__arg, ::std::vector<::std::int32_t> field4__arg);
 
   TerseOptionalFoo(TerseOptionalFoo&&) noexcept;
-
   TerseOptionalFoo(const TerseOptionalFoo& src);
 
 
   TerseOptionalFoo& operator=(TerseOptionalFoo&&) noexcept;
-  TerseOptionalFoo& operator=(const TerseOptionalFoo& src);
+  TerseOptionalFoo& operator=(const TerseOptionalFoo&);
 
   ~TerseOptionalFoo();
 
@@ -1154,7 +1152,7 @@ class TerseOptionalLazyFoo final  {
 
 
   TerseOptionalLazyFoo& operator=(TerseOptionalLazyFoo&&) noexcept;
-  TerseOptionalLazyFoo& operator=(const TerseOptionalLazyFoo& src);
+  TerseOptionalLazyFoo& operator=(const TerseOptionalLazyFoo&);
 
   ~TerseOptionalLazyFoo();
 

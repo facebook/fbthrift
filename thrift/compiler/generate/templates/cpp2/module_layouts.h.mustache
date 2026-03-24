@@ -89,9 +89,8 @@ FROZEN_TYPE({{def.cpp_fullname}},{{!
 
   View view(ViewPosition self) const {
     return View(this, self);
-  }{{!
-  TODO(T260006192): Post-migration: remove preserved missing new line
-}}  FROZEN_SAVE_INLINE({{!
+  }
+  FROZEN_SAVE_INLINE({{!
 }}
     FROZEN_SAVE_FIELD(fbthrift_type_){{!
 }}{{#each def.fields as |field|}}

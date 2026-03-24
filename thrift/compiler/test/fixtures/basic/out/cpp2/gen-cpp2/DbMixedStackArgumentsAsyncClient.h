@@ -32,6 +32,7 @@ struct ServiceMethodTypesFootprint<::test::fixtures::basic::DbMixedStackArgument
   ::std::string,
   ::std::string>;
 };
+
 } // namespace detail
 
 template <>

@@ -347,7 +347,7 @@ class YourStruct final  {
 
 
   YourStruct& operator=(YourStruct&&) noexcept;
-  YourStruct& operator=(const YourStruct& src);
+  YourStruct& operator=(const YourStruct&);
 
   ~YourStruct();
 
@@ -909,12 +909,11 @@ class MyStructNestedAnnotation final  {
   MyStructNestedAnnotation(apache::thrift::FragileConstructor, ::std::string name__arg);
 
   MyStructNestedAnnotation(MyStructNestedAnnotation&&) noexcept;
-
   MyStructNestedAnnotation(const MyStructNestedAnnotation& src);
 
 
   MyStructNestedAnnotation& operator=(MyStructNestedAnnotation&&) noexcept;
-  MyStructNestedAnnotation& operator=(const MyStructNestedAnnotation& src);
+  MyStructNestedAnnotation& operator=(const MyStructNestedAnnotation&);
 
   ~MyStructNestedAnnotation();
 
@@ -1058,12 +1057,11 @@ class FOLLY_EXPORT YourException : public virtual apache::thrift::TException {
   YourException(apache::thrift::FragileConstructor);
 
   YourException(YourException&&) noexcept;
-
   YourException(const YourException& src);
 
 
   YourException& operator=(YourException&&) noexcept;
-  YourException& operator=(const YourException& src);
+  YourException& operator=(const YourException&);
 
   ~YourException() override;
 
@@ -1151,12 +1149,11 @@ class SecretStruct final  {
   SecretStruct(apache::thrift::FragileConstructor, ::std::int64_t id__arg, ::std::string password__arg);
 
   SecretStruct(SecretStruct&&) noexcept;
-
   SecretStruct(const SecretStruct& src);
 
 
   SecretStruct& operator=(SecretStruct&&) noexcept;
-  SecretStruct& operator=(const SecretStruct& src);
+  SecretStruct& operator=(const SecretStruct&);
 
   ~SecretStruct();
 

@@ -54,7 +54,6 @@ class ServiceHandler<::facebook::thrift::test::fixtures::service_schema::Primiti
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
-
   virtual ::std::int64_t sync_init(::std::int64_t /*param0*/, ::std::int64_t /*param1*/);
   [[deprecated("Use sync_init instead")]] virtual ::std::int64_t init(::std::int64_t /*param0*/, ::std::int64_t /*param1*/);
   virtual folly::Future<::std::int64_t> future_init(::std::int64_t p_param0, ::std::int64_t p_param1);
@@ -179,13 +178,6 @@ class PrimitivesServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncP
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'method_that_throws'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -213,13 +205,6 @@ class PrimitivesServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncP
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'method_that_throws'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //

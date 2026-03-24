@@ -30,6 +30,7 @@ struct ServiceMethodTypesFootprint<::cpp2::NullService> {
   // parameter of a client stub, it appears here,
   using TypesInMethods = folly::tag_t<>;
 };
+
 } // namespace detail
 
 template <>

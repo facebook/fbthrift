@@ -487,15 +487,15 @@ determineInvocationType:
 
 namespace facebook::thrift::test::fixtures::service_schema {
 
-::std::int64_t PrimitivesServiceSvNull::init(::std::int64_t /*param0*/, ::std::int64_t /*param1*/) { 
+::std::int64_t PrimitivesServiceSvNull::init(::std::int64_t /*param0*/, ::std::int64_t /*param1*/) {
   return 0;
 }
 
-::facebook::thrift::test::fixtures::service_schema::Result PrimitivesServiceSvNull::method_that_throws() { 
+::facebook::thrift::test::fixtures::service_schema::Result PrimitivesServiceSvNull::method_that_throws() {
   return (::facebook::thrift::test::fixtures::service_schema::Result)0;
 }
 
-void PrimitivesServiceSvNull::return_void_method(::std::int64_t /*id*/, std::unique_ptr<::cpp2::I> /*i*/) { 
+void PrimitivesServiceSvNull::return_void_method(::std::int64_t /*id*/, std::unique_ptr<::cpp2::I> /*i*/) {
 }
 
 

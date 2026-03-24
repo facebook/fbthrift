@@ -38,6 +38,7 @@ struct ServiceMethodTypesFootprint<::cpp2::C> {
   ::std::set<::std::int32_t>,
   ::cpp2::Bang>;
 };
+
 } // namespace detail
 
 template <>
@@ -260,7 +261,6 @@ class Client<::cpp2::C> : public apache::thrift::GeneratedAsyncClient {
   }
  public:
 #endif // FOLLY_HAS_COROUTINES
-
 
 
   /** Glean {"file": "thrift/compiler/test/fixtures/doctext/src/module.thrift", "service": "C", "function": "numbers"} */

@@ -145,12 +145,11 @@ class FOLLY_EXPORT Fiery : public virtual apache::thrift::TException {
   Fiery(apache::thrift::FragileConstructor, ::std::string message__arg);
 
   Fiery(Fiery&&) noexcept;
-
   Fiery(const Fiery& src);
 
 
   Fiery& operator=(Fiery&&) noexcept;
-  Fiery& operator=(const Fiery& src);
+  Fiery& operator=(const Fiery&);
 
   ~Fiery() override;
 
@@ -298,12 +297,11 @@ class FOLLY_EXPORT Serious : public virtual apache::thrift::TException {
   Serious(apache::thrift::FragileConstructor, ::std::string sonnet__arg);
 
   Serious(Serious&&) noexcept;
-
   Serious(const Serious& src);
 
 
   Serious& operator=(Serious&&) noexcept;
-  Serious& operator=(const Serious& src);
+  Serious& operator=(const Serious&);
 
   ~Serious() override;
 
@@ -453,12 +451,11 @@ class FOLLY_EXPORT ComplexFieldNames : public virtual apache::thrift::TException
   ComplexFieldNames(apache::thrift::FragileConstructor, ::std::string error_message__arg, ::std::string internal_error_message__arg);
 
   ComplexFieldNames(ComplexFieldNames&&) noexcept;
-
   ComplexFieldNames(const ComplexFieldNames& src);
 
 
   ComplexFieldNames& operator=(ComplexFieldNames&&) noexcept;
-  ComplexFieldNames& operator=(const ComplexFieldNames& src);
+  ComplexFieldNames& operator=(const ComplexFieldNames&);
 
   ~ComplexFieldNames() override;
 
@@ -668,12 +665,11 @@ class FOLLY_EXPORT CustomFieldNames : public virtual apache::thrift::TException 
   CustomFieldNames(apache::thrift::FragileConstructor, ::std::string error_message__arg, ::std::string internal_error_message__arg);
 
   CustomFieldNames(CustomFieldNames&&) noexcept;
-
   CustomFieldNames(const CustomFieldNames& src);
 
 
   CustomFieldNames& operator=(CustomFieldNames&&) noexcept;
-  CustomFieldNames& operator=(const CustomFieldNames& src);
+  CustomFieldNames& operator=(const CustomFieldNames&);
 
   ~CustomFieldNames() override;
 
@@ -883,12 +879,11 @@ class FOLLY_EXPORT ExceptionWithPrimitiveField : public virtual apache::thrift::
   ExceptionWithPrimitiveField(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::int32_t error_code__arg);
 
   ExceptionWithPrimitiveField(ExceptionWithPrimitiveField&&) noexcept;
-
   ExceptionWithPrimitiveField(const ExceptionWithPrimitiveField& src);
 
 
   ExceptionWithPrimitiveField& operator=(ExceptionWithPrimitiveField&&) noexcept;
-  ExceptionWithPrimitiveField& operator=(const ExceptionWithPrimitiveField& src);
+  ExceptionWithPrimitiveField& operator=(const ExceptionWithPrimitiveField&);
 
   ~ExceptionWithPrimitiveField() override;
 
@@ -1086,12 +1081,11 @@ class FOLLY_EXPORT ExceptionWithStructuredAnnotation : public virtual apache::th
   ExceptionWithStructuredAnnotation(apache::thrift::FragileConstructor, ::std::string message_field__arg, ::std::int32_t error_code__arg);
 
   ExceptionWithStructuredAnnotation(ExceptionWithStructuredAnnotation&&) noexcept;
-
   ExceptionWithStructuredAnnotation(const ExceptionWithStructuredAnnotation& src);
 
 
   ExceptionWithStructuredAnnotation& operator=(ExceptionWithStructuredAnnotation&&) noexcept;
-  ExceptionWithStructuredAnnotation& operator=(const ExceptionWithStructuredAnnotation& src);
+  ExceptionWithStructuredAnnotation& operator=(const ExceptionWithStructuredAnnotation&);
 
   ~ExceptionWithStructuredAnnotation() override;
 
@@ -1284,12 +1278,11 @@ class FOLLY_EXPORT Banal : public virtual apache::thrift::TException {
   Banal(apache::thrift::FragileConstructor);
 
   Banal(Banal&&) noexcept;
-
   Banal(const Banal& src);
 
 
   Banal& operator=(Banal&&) noexcept;
-  Banal& operator=(const Banal& src);
+  Banal& operator=(const Banal&);
 
   ~Banal() override;
 

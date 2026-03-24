@@ -560,12 +560,11 @@ class SimpleStruct final  {
   SimpleStruct(apache::thrift::FragileConstructor, bool is_on__arg, ::std::int8_t tiny_int__arg, ::std::int16_t small_int__arg, ::std::int32_t nice_sized_int__arg, ::std::int64_t big_int__arg, double real__arg, float smaller_real__arg, ::std::unordered_map<::std::int32_t, ::std::int32_t> something__arg, ::std::int16_t hidden_field__arg, ::std::int32_t opt_default_int__arg, ::std::string opt_default_str__arg, ::py3::simple::AnEnum opt_default_enum__arg);
 
   SimpleStruct(SimpleStruct&&) noexcept;
-
   SimpleStruct(const SimpleStruct& src);
 
 
   SimpleStruct& operator=(SimpleStruct&&) noexcept;
-  SimpleStruct& operator=(const SimpleStruct& src);
+  SimpleStruct& operator=(const SimpleStruct&);
 
   ~SimpleStruct();
 
@@ -1478,12 +1477,11 @@ class FOLLY_EXPORT SimpleException : public virtual apache::thrift::TException {
   SimpleException(apache::thrift::FragileConstructor, ::std::int16_t err_code__arg);
 
   SimpleException(SimpleException&&) noexcept;
-
   SimpleException(const SimpleException& src);
 
 
   SimpleException& operator=(SimpleException&&) noexcept;
-  SimpleException& operator=(const SimpleException& src);
+  SimpleException& operator=(const SimpleException&);
 
   ~SimpleException() override;
 
@@ -1618,7 +1616,7 @@ class OptionalRefStruct final  {
 
 
   OptionalRefStruct& operator=(OptionalRefStruct&&) noexcept;
-  OptionalRefStruct& operator=(const OptionalRefStruct& src);
+  OptionalRefStruct& operator=(const OptionalRefStruct&);
 
   ~OptionalRefStruct();
 
@@ -1761,12 +1759,11 @@ class Float32Struct final  {
   Float32Struct(apache::thrift::FragileConstructor, float float32__arg, ::py3::simple::DeferredTruncationFloat float64__arg, ::std::vector<::py3::simple::DeferredTruncationFloat> float_list__arg, ::std::map<::std::string, ::std::vector<::py3::simple::DeferredTruncationFloat>> float_map__arg);
 
   Float32Struct(Float32Struct&&) noexcept;
-
   Float32Struct(const Float32Struct& src);
 
 
   Float32Struct& operator=(Float32Struct&&) noexcept;
-  Float32Struct& operator=(const Float32Struct& src);
+  Float32Struct& operator=(const Float32Struct&);
 
   ~Float32Struct();
 
@@ -2055,7 +2052,7 @@ class HiddenTypeFieldsStruct final  {
 
 
   HiddenTypeFieldsStruct& operator=(HiddenTypeFieldsStruct&&) noexcept;
-  HiddenTypeFieldsStruct& operator=(const HiddenTypeFieldsStruct& src);
+  HiddenTypeFieldsStruct& operator=(const HiddenTypeFieldsStruct&);
 
   ~HiddenTypeFieldsStruct();
 
@@ -2288,12 +2285,11 @@ class FOLLY_EXPORT HiddenException : public virtual apache::thrift::TException {
   HiddenException(apache::thrift::FragileConstructor, ::std::int16_t test__arg);
 
   HiddenException(HiddenException&&) noexcept;
-
   HiddenException(const HiddenException& src);
 
 
   HiddenException& operator=(HiddenException&&) noexcept;
-  HiddenException& operator=(const HiddenException& src);
+  HiddenException& operator=(const HiddenException&);
 
   ~HiddenException() override;
 
@@ -2440,12 +2436,11 @@ class ComplexStruct final  {
   ComplexStruct(apache::thrift::FragileConstructor, ::py3::simple::SimpleStruct structOne__arg, ::py3::simple::SimpleStruct structTwo__arg, ::std::int32_t an_integer__arg, ::std::string name__arg, ::py3::simple::AnEnum an_enum__arg, ::std::string some_bytes__arg, ::std::string from__arg, ::std::string cdef__arg, ::py3::simple::foo_bar bytes_with_cpp_type__arg);
 
   ComplexStruct(ComplexStruct&&) noexcept;
-
   ComplexStruct(const ComplexStruct& src);
 
 
   ComplexStruct& operator=(ComplexStruct&&) noexcept;
-  ComplexStruct& operator=(const ComplexStruct& src);
+  ComplexStruct& operator=(const ComplexStruct&);
 
   ~ComplexStruct();
 
@@ -3231,12 +3226,11 @@ class BinaryUnionStruct final  {
   BinaryUnionStruct(apache::thrift::FragileConstructor, ::py3::simple::BinaryUnion u__arg);
 
   BinaryUnionStruct(BinaryUnionStruct&&) noexcept;
-
   BinaryUnionStruct(const BinaryUnionStruct& src);
 
 
   BinaryUnionStruct& operator=(BinaryUnionStruct&&) noexcept;
-  BinaryUnionStruct& operator=(const BinaryUnionStruct& src);
+  BinaryUnionStruct& operator=(const BinaryUnionStruct&);
  private:
   ::py3::simple::BinaryUnion __fbthrift_field_u;
  private:
@@ -3381,12 +3375,11 @@ class CustomFields final  {
   CustomFields(apache::thrift::FragileConstructor, ::MyType bool_field__arg, ::MyType integer_field__arg, ::MyType double_field__arg, ::MyType string_field__arg, ::MyType binary_field__arg, ::MyType list_field__arg, ::MyType set_field__arg, ::MyType map_field__arg, ::MyType struct_field__arg);
 
   CustomFields(CustomFields&&) noexcept;
-
   CustomFields(const CustomFields& src);
 
 
   CustomFields& operator=(CustomFields&&) noexcept;
-  CustomFields& operator=(const CustomFields& src);
+  CustomFields& operator=(const CustomFields&);
 
   ~CustomFields();
 
@@ -3953,12 +3946,11 @@ class CustomTypedefFields final  {
   CustomTypedefFields(apache::thrift::FragileConstructor, ::py3::simple::CustomBool bool_field__arg, ::py3::simple::CustomInteger integer_field__arg, ::py3::simple::CustomDouble double_field__arg, ::py3::simple::CustomString string_field__arg, ::py3::simple::CustomBinary binary_field__arg, ::py3::simple::CustomList list_field__arg, ::py3::simple::CustomSet set_field__arg, ::py3::simple::CustomMap map_field__arg, ::py3::simple::CustomStruct struct_field__arg);
 
   CustomTypedefFields(CustomTypedefFields&&) noexcept;
-
   CustomTypedefFields(const CustomTypedefFields& src);
 
 
   CustomTypedefFields& operator=(CustomTypedefFields&&) noexcept;
-  CustomTypedefFields& operator=(const CustomTypedefFields& src);
+  CustomTypedefFields& operator=(const CustomTypedefFields&);
 
   ~CustomTypedefFields();
 
@@ -4529,7 +4521,7 @@ class AdaptedTypedefFields final  {
 
 
   AdaptedTypedefFields& operator=(AdaptedTypedefFields&&) noexcept;
-  AdaptedTypedefFields& operator=(const AdaptedTypedefFields& src);
+  AdaptedTypedefFields& operator=(const AdaptedTypedefFields&);
 
   ~AdaptedTypedefFields();
 

@@ -89,12 +89,10 @@ class Foo final  {
   Foo(apache::thrift::FragileConstructor, ::std::int64_t MyInt__arg);
 
   Foo(Foo&&) = default;
-
   Foo(const Foo&) = default;
 
 
   Foo& operator=(Foo&&) = default;
-
   Foo& operator=(const Foo&) = default;
  private:
   ::std::int64_t __fbthrift_field_MyInt;

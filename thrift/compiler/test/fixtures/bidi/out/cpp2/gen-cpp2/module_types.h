@@ -105,12 +105,11 @@ class FOLLY_EXPORT BiDiSinkException : public virtual apache::thrift::TException
   BiDiSinkException(apache::thrift::FragileConstructor, ::std::string message__arg);
 
   BiDiSinkException(BiDiSinkException&&) noexcept;
-
   BiDiSinkException(const BiDiSinkException& src);
 
 
   BiDiSinkException& operator=(BiDiSinkException&&) noexcept;
-  BiDiSinkException& operator=(const BiDiSinkException& src);
+  BiDiSinkException& operator=(const BiDiSinkException&);
 
   ~BiDiSinkException() override;
 
@@ -259,12 +258,11 @@ class FOLLY_EXPORT BiDiStreamException : public virtual apache::thrift::TExcepti
   BiDiStreamException(apache::thrift::FragileConstructor, ::std::string message__arg);
 
   BiDiStreamException(BiDiStreamException&&) noexcept;
-
   BiDiStreamException(const BiDiStreamException& src);
 
 
   BiDiStreamException& operator=(BiDiStreamException&&) noexcept;
-  BiDiStreamException& operator=(const BiDiStreamException& src);
+  BiDiStreamException& operator=(const BiDiStreamException&);
 
   ~BiDiStreamException() override;
 
@@ -413,12 +411,11 @@ class FOLLY_EXPORT BiDiMethodException : public virtual apache::thrift::TExcepti
   BiDiMethodException(apache::thrift::FragileConstructor, ::std::string message__arg);
 
   BiDiMethodException(BiDiMethodException&&) noexcept;
-
   BiDiMethodException(const BiDiMethodException& src);
 
 
   BiDiMethodException& operator=(BiDiMethodException&&) noexcept;
-  BiDiMethodException& operator=(const BiDiMethodException& src);
+  BiDiMethodException& operator=(const BiDiMethodException&);
 
   ~BiDiMethodException() override;
 

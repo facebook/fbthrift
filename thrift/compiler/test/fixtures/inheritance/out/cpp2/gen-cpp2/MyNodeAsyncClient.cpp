@@ -163,21 +163,20 @@ folly::Future<folly::Unit> apache::thrift::Client<::cpp2::MyNode>::future_do_mid
   return future_do_mid(rpcOptions);
 }
 
-folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::MyNode>::semifuture_do_mid() {
-  ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_do_mid(rpcOptions);
-}
-
 folly::Future<folly::Unit> apache::thrift::Client<::cpp2::MyNode>::future_do_mid(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
   return fbthrift_semifuture_do_mid<CallbackType>(rpcOptions).toUnsafeFuture();
+}
+
+folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::MyNode>::semifuture_do_mid() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_do_mid(rpcOptions);
 }
 
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::MyNode>::semifuture_do_mid(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::SemiFutureCallback<folly::Unit>;
   return fbthrift_semifuture_do_mid<CallbackType>(rpcOptions);
 }
-
 
 void apache::thrift::Client<::cpp2::MyNode>::do_mid(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   do_mid(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));

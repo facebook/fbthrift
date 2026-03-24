@@ -50,7 +50,6 @@ class ServiceHandler<::some::valid::ns::EmptyService> : public apache::thrift::S
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
-
  private:
   static ::some::valid::ns::EmptyServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
  public:

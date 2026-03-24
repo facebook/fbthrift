@@ -121,12 +121,10 @@ class Foo final  {
   Foo(apache::thrift::FragileConstructor, ::std::int32_t field1__arg, ::std::int32_t field2__arg, ::std::int32_t field3__arg);
 
   Foo(Foo&&) = default;
-
   Foo(const Foo&) = default;
 
 
   Foo& operator=(Foo&&) = default;
-
   Foo& operator=(const Foo&) = default;
  private:
   ::std::int32_t __fbthrift_field_field1;
@@ -350,12 +348,10 @@ class Foo2 final  {
   Foo2(apache::thrift::FragileConstructor, ::std::int32_t field1__arg, ::std::int32_t field2__arg, ::std::int32_t field3__arg);
 
   Foo2(Foo2&&) = default;
-
   Foo2(const Foo2&) = default;
 
 
   Foo2& operator=(Foo2&&) = default;
-
   Foo2& operator=(const Foo2&) = default;
  private:
   ::std::int32_t __fbthrift_field_field1;

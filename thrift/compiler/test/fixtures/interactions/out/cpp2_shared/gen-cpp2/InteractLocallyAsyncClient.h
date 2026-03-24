@@ -38,6 +38,7 @@ struct ServiceMethodTypesFootprint<::thrift::shared_interactions::InteractLocall
   ::std::int32_t,
   ::thrift::shared_interactions::DoSomethingResult>;
 };
+
 } // namespace detail
 
 template <>
@@ -54,12 +55,9 @@ class SharedInteraction final : public apache::thrift::InteractionHandle {
   using apache::thrift::InteractionHandle::InteractionHandle;
   friend class ::apache::thrift::Client<::thrift::shared_interactions::InteractLocally>;
  public:
-
-
   std::string_view getServiceName() const noexcept override {
     return "InteractLocally";
   }
-
 
   /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/shared.thrift", "service": "SharedInteraction", "function": "init"} */
   void init(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
@@ -360,6 +358,7 @@ class SharedInteraction final : public apache::thrift::InteractionHandle {
   folly::SemiFuture<folly::Unit> fbthrift_semifuture_tear_down(apache::thrift::RpcOptions& rpcOptions);
  public:
 };
+
   /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/shared.thrift", "service": "InteractLocally", "function": "createSharedInteraction"} */
   SharedInteraction createSharedInteraction();
 };

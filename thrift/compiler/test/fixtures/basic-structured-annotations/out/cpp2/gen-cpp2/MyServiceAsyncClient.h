@@ -35,6 +35,7 @@ struct ServiceMethodTypesFootprint<::test::fixtures::basic_structured_annotation
   ::std::int64_t,
   bool>;
 };
+
 } // namespace detail
 
 template <>

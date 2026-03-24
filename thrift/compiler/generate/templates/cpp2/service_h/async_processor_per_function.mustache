@@ -16,13 +16,6 @@
 
 }}
 {{#let export partial async_processor_per_function |interface parent_service function|}}
-  {{#if (not (array.empty? interface.functions))}}
-  {{! TODO(T260006192): Preserved behavior - this header/footer will be emitted for each function }}
-  //
-  // Service Methods
-  //
-
-  {{/if (not (array.empty? interface.functions))}}
   {{#if function.starts_interaction?}}
  std::unique_ptr<apache::thrift::Tile> {{function.cpp_name}}() {
    return iface_->{{function.cpp_name}}();
@@ -85,9 +78,4 @@
   //
 
   {{/if function.starts_interaction?}}
-  {{#if (not (array.empty? interface.functions))}}
-  //
-  // End of Service Methods
-  //
-  {{/if (not (array.empty? interface.functions))}}
 {{/let partial}}

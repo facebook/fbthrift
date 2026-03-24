@@ -284,12 +284,10 @@ class MyStruct final  {
   MyStruct(apache::thrift::FragileConstructor, ::test::fixtures::enumstrict::MyEnum myEnum__arg, ::test::fixtures::enumstrict::MyBigEnum myBigEnum__arg);
 
   MyStruct(MyStruct&&) = default;
-
   MyStruct(const MyStruct&) = default;
 
 
   MyStruct& operator=(MyStruct&&) = default;
-
   MyStruct& operator=(const MyStruct&) = default;
  private:
   ::test::fixtures::enumstrict::MyEnum __fbthrift_field_myEnum;

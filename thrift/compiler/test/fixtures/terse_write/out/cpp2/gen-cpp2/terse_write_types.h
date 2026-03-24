@@ -458,12 +458,10 @@ class MyStruct final  {
   MyStruct(apache::thrift::FragileConstructor);
 
   MyStruct(MyStruct&&) = default;
-
   MyStruct(const MyStruct&) = default;
 
 
   MyStruct& operator=(MyStruct&&) = default;
-
   MyStruct& operator=(const MyStruct&) = default;
 
  public:
@@ -1853,12 +1851,10 @@ class MyStructWithCustomDefault final  {
   MyStructWithCustomDefault(apache::thrift::FragileConstructor, ::std::int64_t field1__arg);
 
   MyStructWithCustomDefault(MyStructWithCustomDefault&&) = default;
-
   MyStructWithCustomDefault(const MyStructWithCustomDefault&) = default;
 
 
   MyStructWithCustomDefault& operator=(MyStructWithCustomDefault&&) = default;
-
   MyStructWithCustomDefault& operator=(const MyStructWithCustomDefault&) = default;
  private:
   ::std::int64_t __fbthrift_field_field1;
@@ -2012,12 +2008,11 @@ class StructLevelTerseStruct final  {
   StructLevelTerseStruct(apache::thrift::FragileConstructor, bool bool_field__arg, ::std::int8_t byte_field__arg, ::std::int16_t short_field__arg, ::std::int32_t int_field__arg, ::std::int64_t long_field__arg, float float_field__arg, double double_field__arg, ::std::string string_field__arg, ::std::string binary_field__arg, ::facebook::thrift::test::fixtures::terse_write::MyEnum enum_field__arg, ::std::vector<::std::int16_t> list_field__arg, ::std::set<::std::int16_t> set_field__arg, ::std::map<::std::int16_t, ::std::int16_t> map_field__arg, ::facebook::thrift::test::fixtures::terse_write::MyStruct struct_field__arg, ::facebook::thrift::test::fixtures::terse_write::MyUnion union_field__arg);
 
   StructLevelTerseStruct(StructLevelTerseStruct&&) noexcept;
-
   StructLevelTerseStruct(const StructLevelTerseStruct& src);
 
 
   StructLevelTerseStruct& operator=(StructLevelTerseStruct&&) noexcept;
-  StructLevelTerseStruct& operator=(const StructLevelTerseStruct& src);
+  StructLevelTerseStruct& operator=(const StructLevelTerseStruct&);
 
   ~StructLevelTerseStruct();
 
@@ -2725,12 +2720,11 @@ class FieldLevelTerseStruct final  {
   FieldLevelTerseStruct(apache::thrift::FragileConstructor, bool terse_bool_field__arg, ::std::int8_t terse_byte_field__arg, ::std::int16_t terse_short_field__arg, ::std::int32_t terse_int_field__arg, ::std::int64_t terse_long_field__arg, float terse_float_field__arg, double terse_double_field__arg, ::std::string terse_string_field__arg, ::std::string terse_binary_field__arg, ::facebook::thrift::test::fixtures::terse_write::MyEnum terse_enum_field__arg, ::std::vector<::std::int16_t> terse_list_field__arg, ::std::set<::std::int16_t> terse_set_field__arg, ::std::map<::std::int16_t, ::std::int16_t> terse_map_field__arg, ::facebook::thrift::test::fixtures::terse_write::MyStruct terse_struct_field__arg, ::facebook::thrift::test::fixtures::terse_write::MyUnion terse_union_field__arg, bool bool_field__arg, ::std::int8_t byte_field__arg, ::std::int16_t short_field__arg, ::std::int32_t int_field__arg, ::std::int64_t long_field__arg, float float_field__arg, double double_field__arg, ::std::string string_field__arg, ::std::string binary_field__arg, ::facebook::thrift::test::fixtures::terse_write::MyEnum enum_field__arg, ::std::vector<::std::int16_t> list_field__arg, ::std::set<::std::int16_t> set_field__arg, ::std::map<::std::int16_t, ::std::int16_t> map_field__arg, ::facebook::thrift::test::fixtures::terse_write::MyStruct struct_field__arg, ::facebook::thrift::test::fixtures::terse_write::MyUnion union_field__arg);
 
   FieldLevelTerseStruct(FieldLevelTerseStruct&&) noexcept;
-
   FieldLevelTerseStruct(const FieldLevelTerseStruct& src);
 
 
   FieldLevelTerseStruct& operator=(FieldLevelTerseStruct&&) noexcept;
-  FieldLevelTerseStruct& operator=(const FieldLevelTerseStruct& src);
+  FieldLevelTerseStruct& operator=(const FieldLevelTerseStruct&);
 
   ~FieldLevelTerseStruct();
 
@@ -4150,7 +4144,7 @@ class AdaptedFields final  {
 
 
   AdaptedFields& operator=(AdaptedFields&&) noexcept;
-  AdaptedFields& operator=(const AdaptedFields& src);
+  AdaptedFields& operator=(const AdaptedFields&);
  private:
   ::facebook::thrift::test::fixtures::terse_write::MyInteger __fbthrift_field_field1;
  private:
@@ -4348,12 +4342,11 @@ class FOLLY_EXPORT TerseException : public virtual apache::thrift::TException {
   TerseException(apache::thrift::FragileConstructor, ::std::string msg__arg);
 
   TerseException(TerseException&&) noexcept;
-
   TerseException(const TerseException& src);
 
 
   TerseException& operator=(TerseException&&) noexcept;
-  TerseException& operator=(const TerseException& src);
+  TerseException& operator=(const TerseException&);
 
   ~TerseException() override;
 

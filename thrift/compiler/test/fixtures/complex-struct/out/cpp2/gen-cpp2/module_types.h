@@ -903,12 +903,11 @@ class MyStructFloatFieldThrowExp final  {
   MyStructFloatFieldThrowExp(apache::thrift::FragileConstructor, ::std::int64_t myLongField__arg, ::std::int8_t MyByteField__arg, ::std::string myStringField__arg, float myFloatField__arg);
 
   MyStructFloatFieldThrowExp(MyStructFloatFieldThrowExp&&) noexcept;
-
   MyStructFloatFieldThrowExp(const MyStructFloatFieldThrowExp& src);
 
 
   MyStructFloatFieldThrowExp& operator=(MyStructFloatFieldThrowExp&&) noexcept;
-  MyStructFloatFieldThrowExp& operator=(const MyStructFloatFieldThrowExp& src);
+  MyStructFloatFieldThrowExp& operator=(const MyStructFloatFieldThrowExp&);
 
   ~MyStructFloatFieldThrowExp();
 
@@ -1187,12 +1186,11 @@ class MyStructMapFloatThrowExp final  {
   MyStructMapFloatThrowExp(apache::thrift::FragileConstructor, ::std::int64_t myLongField__arg, ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::floatTypedef>>> mapListOfFloats__arg);
 
   MyStructMapFloatThrowExp(MyStructMapFloatThrowExp&&) noexcept;
-
   MyStructMapFloatThrowExp(const MyStructMapFloatThrowExp& src);
 
 
   MyStructMapFloatThrowExp& operator=(MyStructMapFloatThrowExp&&) noexcept;
-  MyStructMapFloatThrowExp& operator=(const MyStructMapFloatThrowExp& src);
+  MyStructMapFloatThrowExp& operator=(const MyStructMapFloatThrowExp&);
 
   ~MyStructMapFloatThrowExp();
 
@@ -1371,12 +1369,10 @@ class MyDataItem final  {
   MyDataItem(apache::thrift::FragileConstructor);
 
   MyDataItem(MyDataItem&&) = default;
-
   MyDataItem(const MyDataItem&) = default;
 
 
   MyDataItem& operator=(MyDataItem&&) = default;
-
   MyDataItem& operator=(const MyDataItem&) = default;
 
  public:
@@ -1507,12 +1503,11 @@ class MyStruct final  {
   MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::cpp2::MyDataItem MyDataField__arg, ::cpp2::MyEnum myEnum__arg, bool MyBoolField__arg, ::std::int8_t MyByteField__arg, ::std::int16_t MyShortField__arg, ::std::int64_t MyLongField__arg, double MyDoubleField__arg, ::std::vector<double> lDouble__arg, ::std::vector<::std::int16_t> lShort__arg, ::std::vector<::std::int32_t> lInteger__arg, ::std::vector<::std::int64_t> lLong__arg, ::std::vector<::std::string> lString__arg, ::std::vector<bool> lBool__arg, ::std::vector<::std::int8_t> lByte__arg, ::std::map<::std::int16_t, ::std::string> mShortString__arg, ::std::map<::std::int32_t, ::std::string> mIntegerString__arg, ::std::map<::std::string, ::cpp2::MyStruct> mStringMyStruct__arg, ::std::map<::std::string, bool> mStringBool__arg, ::std::map<::std::int32_t, ::std::int32_t> mIntegerInteger__arg, ::std::map<::std::int32_t, bool> mIntegerBool__arg, ::std::set<::std::int16_t> sShort__arg, ::std::set<::cpp2::MyStruct> sMyStruct__arg, ::std::set<::std::int64_t> sLong__arg, ::std::set<::std::string> sString__arg, ::std::set<::std::int8_t> sByte__arg, ::std::map<::std::vector<::std::int32_t>, ::std::vector<::std::int32_t>> mListList__arg);
 
   MyStruct(MyStruct&&) noexcept;
-
   MyStruct(const MyStruct& src);
 
 
   MyStruct& operator=(MyStruct&&) noexcept;
-  MyStruct& operator=(const MyStruct& src);
+  MyStruct& operator=(const MyStruct&);
 
   ~MyStruct();
 
@@ -3055,12 +3050,11 @@ class SimpleStruct final  {
   SimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t age__arg, ::std::string name__arg);
 
   SimpleStruct(SimpleStruct&&) noexcept;
-
   SimpleStruct(const SimpleStruct& src);
 
 
   SimpleStruct& operator=(SimpleStruct&&) noexcept;
-  SimpleStruct& operator=(const SimpleStruct& src);
+  SimpleStruct& operator=(const SimpleStruct&);
 
   ~SimpleStruct();
 
@@ -3279,12 +3273,11 @@ class ComplexNestedStruct final  {
   ComplexNestedStruct(apache::thrift::FragileConstructor, ::std::set<::std::set<::std::int32_t>> setOfSetOfInt__arg, ::std::vector<::std::vector<::std::vector<::std::vector<::cpp2::MyEnum>>>> listofListOfListOfListOfEnum__arg, ::std::vector<::std::vector<::cpp2::MyStruct>> listOfListOfMyStruct__arg, ::std::set<::std::vector<::std::vector<::std::int64_t>>> setOfListOfListOfLong__arg, ::std::set<::std::set<::std::set<::std::int64_t>>> setOfSetOfsetOfLong__arg, ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::MyStruct>>> mapStructListOfListOfLong__arg, ::std::map<::cpp2::MyStruct, ::std::int32_t> mKeyStructValInt__arg, ::std::vector<::std::map<::std::int32_t, ::std::int32_t>> listOfMapKeyIntValInt__arg, ::std::vector<::std::map<::std::string, ::std::vector<::cpp2::MyStruct>>> listOfMapKeyStrValList__arg, ::std::map<::std::set<::std::int32_t>, ::std::int64_t> mapKeySetValLong__arg, ::std::map<::std::vector<::std::string>, ::std::int32_t> mapKeyListValLong__arg, ::std::map<::std::map<::std::int32_t, ::std::string>, ::std::map<::std::int32_t, ::std::string>> mapKeyMapValMap__arg, ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> mapKeySetValMap__arg, ::std::map<::std::map<::std::map<::std::int32_t, ::std::string>, ::std::string>, ::std::map<::std::int32_t, ::std::string>> NestedMaps__arg, ::std::map<::std::int32_t, ::std::vector<::cpp2::MyStruct>> mapKeyIntValList__arg, ::std::map<::std::int32_t, ::std::set<bool>> mapKeyIntValSet__arg, ::std::map<::std::set<bool>, ::cpp2::MyEnum> mapKeySetValInt__arg, ::std::map<::std::vector<::std::int32_t>, ::std::set<::std::map<double, ::std::string>>> mapKeyListValSet__arg);
 
   ComplexNestedStruct(ComplexNestedStruct&&) noexcept;
-
   ComplexNestedStruct(const ComplexNestedStruct& src);
 
 
   ComplexNestedStruct& operator=(ComplexNestedStruct&&) noexcept;
-  ComplexNestedStruct& operator=(const ComplexNestedStruct& src);
+  ComplexNestedStruct& operator=(const ComplexNestedStruct&);
 
   ~ComplexNestedStruct();
 
@@ -5017,12 +5010,11 @@ class defaultStruct final  {
   defaultStruct(apache::thrift::FragileConstructor, ::std::int64_t myLongDFset__arg, ::std::int64_t myLongDF__arg, ::std::int32_t portDFset__arg, ::std::int32_t portNum__arg, ::std::string myBinaryDFset__arg, ::std::string myBinary__arg, ::std::int8_t myByteDFSet__arg, ::std::int8_t myByte__arg, double myDoubleDFset__arg, double myDoubleDFZero__arg, double myDouble__arg, ::std::map<::std::int32_t, ::std::string> field3__arg, ::std::vector<::cpp2::MyEnum> myList__arg, ::std::set<::std::string> mySet__arg, ::cpp2::SimpleStruct simpleStruct__arg, ::std::vector<::cpp2::SimpleStruct> listStructDFset__arg, ::cpp2::MyUnion myUnion__arg, ::std::vector<::cpp2::MyUnion> listUnionDFset__arg, ::std::map<::std::int32_t, ::std::vector<::cpp2::SimpleStruct>> mapNestlistStructDfSet__arg, ::cpp2::map_i64_string_5732 mapJavaTypeDFset__arg, ::std::map<::std::int64_t, ::std::int32_t> emptyMap__arg, ::std::map<::std::string, ::std::map<::std::int32_t, ::cpp2::MyEnum>> enumMapDFset__arg);
 
   defaultStruct(defaultStruct&&) noexcept;
-
   defaultStruct(const defaultStruct& src);
 
 
   defaultStruct& operator=(defaultStruct&&) noexcept;
-  defaultStruct& operator=(const defaultStruct& src);
+  defaultStruct& operator=(const defaultStruct&);
 
   ~defaultStruct();
 
@@ -6243,12 +6235,11 @@ class MyStructTypeDef final  {
   MyStructTypeDef(apache::thrift::FragileConstructor, ::std::int64_t myLongField__arg, ::cpp2::longTypeDef myLongTypeDef__arg, ::std::string myStringField__arg, ::cpp2::stringTypedef myStringTypedef__arg, ::std::map<::std::int16_t, ::std::string> myMapField__arg, ::cpp2::mapTypedef myMapTypedef__arg, ::std::vector<double> myListField__arg, ::cpp2::listTypedef myListTypedef__arg, ::std::map<::std::int16_t, ::std::vector<::cpp2::listTypedef>> myMapListOfTypeDef__arg);
 
   MyStructTypeDef(MyStructTypeDef&&) noexcept;
-
   MyStructTypeDef(const MyStructTypeDef& src);
 
 
   MyStructTypeDef& operator=(MyStructTypeDef&&) noexcept;
-  MyStructTypeDef& operator=(const MyStructTypeDef& src);
+  MyStructTypeDef& operator=(const MyStructTypeDef&);
 
   ~MyStructTypeDef();
 
@@ -7297,12 +7288,11 @@ class TypeRemapped final  {
   TypeRemapped(apache::thrift::FragileConstructor, ::cpp2::map_i64_string_5732 lsMap__arg, ::cpp2::map_i32_FMap_6797 ioMap__arg, ::cpp2::i32_1194 BigInteger__arg, ::cpp2::binary_4918 binaryTestBuffer__arg);
 
   TypeRemapped(TypeRemapped&&) noexcept;
-
   TypeRemapped(const TypeRemapped& src);
 
 
   TypeRemapped& operator=(TypeRemapped&&) noexcept;
-  TypeRemapped& operator=(const TypeRemapped& src);
+  TypeRemapped& operator=(const TypeRemapped&);
 
   ~TypeRemapped();
 
@@ -7599,12 +7589,11 @@ class FOLLY_EXPORT emptyXcep : public virtual apache::thrift::TException {
   emptyXcep(apache::thrift::FragileConstructor);
 
   emptyXcep(emptyXcep&&) noexcept;
-
   emptyXcep(const emptyXcep& src);
 
 
   emptyXcep& operator=(emptyXcep&&) noexcept;
-  emptyXcep& operator=(const emptyXcep& src);
+  emptyXcep& operator=(const emptyXcep&);
 
   ~emptyXcep() override;
 
@@ -7695,12 +7684,11 @@ class FOLLY_EXPORT reqXcep : public virtual apache::thrift::TException {
   reqXcep(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::int32_t errorCode__arg);
 
   reqXcep(reqXcep&&) noexcept;
-
   reqXcep(const reqXcep& src);
 
 
   reqXcep& operator=(reqXcep&&) noexcept;
-  reqXcep& operator=(const reqXcep& src);
+  reqXcep& operator=(const reqXcep&);
 
   ~reqXcep() override;
 
@@ -7895,12 +7883,11 @@ class FOLLY_EXPORT optXcep : public virtual apache::thrift::TException {
   optXcep(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::int32_t errorCode__arg);
 
   optXcep(optXcep&&) noexcept;
-
   optXcep(const optXcep& src);
 
 
   optXcep& operator=(optXcep&&) noexcept;
-  optXcep& operator=(const optXcep& src);
+  optXcep& operator=(const optXcep&);
 
   ~optXcep() override;
 
@@ -8109,12 +8096,11 @@ class FOLLY_EXPORT complexException : public virtual apache::thrift::TException 
   complexException(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::vector<::std::string> listStrings__arg, ::cpp2::MyEnum errorEnum__arg, ::cpp2::MyUnion unionError__arg, ::cpp2::MyStruct structError__arg, ::cpp2::map_i64_string_5732 lsMap__arg);
 
   complexException(complexException&&) noexcept;
-
   complexException(const complexException& src);
 
 
   complexException& operator=(complexException&&) noexcept;
-  complexException& operator=(const complexException& src);
+  complexException& operator=(const complexException&);
 
   ~complexException() override;
 
@@ -8593,12 +8579,11 @@ class Containers final  {
   Containers(apache::thrift::FragileConstructor, ::std::vector<::cpp2::MyStruct> struct_list__arg, ::std::vector<::cpp2::MyUnion> union_list__arg, ::std::vector<::cpp2::MyEnum> enum_list__arg, ::std::set<::cpp2::MyStruct> struct_set__arg, ::std::set<::cpp2::MyUnion> union_set__arg, ::std::set<::cpp2::MyEnum> enum_set__arg, ::std::map<::cpp2::MyStruct, ::std::int64_t> struct_map__arg, ::std::map<::cpp2::MyUnion, ::std::int64_t> union_map__arg, ::std::map<::cpp2::MyEnum, ::std::int64_t> enum_map__arg, ::std::map<::std::int32_t, ::cpp2::MyStruct> struct_map_2__arg, ::std::map<::std::int32_t, ::cpp2::MyUnion> union_map_2__arg, ::std::map<::std::int32_t, ::cpp2::MyEnum> enum_map_2__arg, ::std::map<::std::vector<::std::int32_t>, ::std::int32_t> list_map__arg, ::std::map<::std::int32_t, ::std::vector<::std::int32_t>> list_map_2__arg, ::std::map<::std::set<::std::int32_t>, ::std::int32_t> set_map__arg, ::std::map<::std::int32_t, ::std::set<::std::int32_t>> set_map_2__arg, ::std::map<::std::map<::std::int32_t, ::std::int32_t>, ::std::int32_t> map_map__arg, ::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::int32_t>> map_map_2__arg, ::std::vector<::std::vector<::std::int32_t>> list_list_i32__arg, ::std::vector<::std::vector<::cpp2::MyStruct>> list_list_struct__arg, ::std::vector<::std::set<::std::int32_t>> list_set_i32__arg, ::std::vector<::std::set<::cpp2::MyStruct>> list_set_struct__arg, ::std::vector<::std::map<::std::int32_t, ::std::int32_t>> list_map_i32_i32__arg, ::std::vector<::std::map<::std::int32_t, ::cpp2::MyStruct>> list_map_i32_struct__arg, ::std::vector<::std::map<::cpp2::MyStruct, ::std::int32_t>> list_map_struct_i32__arg, ::std::set<::std::vector<::std::int32_t>> set_list_i32__arg, ::std::set<::std::vector<::cpp2::MyStruct>> set_list_struct__arg, ::std::set<::std::set<::std::int32_t>> set_set_i32__arg, ::std::set<::std::set<::cpp2::MyStruct>> set_set_struct__arg, ::std::set<::std::map<::std::int32_t, ::std::int32_t>> set_map_i32_i32__arg, ::std::set<::std::map<::std::int32_t, ::cpp2::MyStruct>> set_map_i32_struct__arg, ::std::set<::std::map<::cpp2::MyStruct, ::std::int32_t>> set_map_struct_i32__arg, ::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::int32_t>> map_i32_map_i32_i32__arg, ::std::map<::std::int32_t, ::std::map<::cpp2::MyStruct, ::std::int32_t>> map_i32_map_struct_i32__arg, ::std::map<::std::int32_t, ::std::map<::std::int32_t, ::cpp2::MyStruct>> map_i32_map_i32_struct__arg, ::std::map<::std::int32_t, ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>> map_i32_map_list_i32_i32__arg, ::std::map<::std::int32_t, ::std::vector<::std::map<::cpp2::MyStruct, ::std::int32_t>>> map_i32_map_list_struct_i32__arg);
 
   Containers(Containers&&) noexcept;
-
   Containers(const Containers& src);
 
 
   Containers& operator=(Containers&&) noexcept;
-  Containers& operator=(const Containers& src);
+  Containers& operator=(const Containers&);
 
   ~Containers();
 

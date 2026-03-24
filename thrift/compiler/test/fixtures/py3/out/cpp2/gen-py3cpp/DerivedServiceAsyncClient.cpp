@@ -165,21 +165,20 @@ folly::Future<::std::int32_t> apache::thrift::Client<::py3::simple::DerivedServi
   return future_get_six(rpcOptions);
 }
 
-folly::SemiFuture<::std::int32_t> apache::thrift::Client<::py3::simple::DerivedService>::semifuture_get_six() {
-  ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_get_six(rpcOptions);
-}
-
 folly::Future<::std::int32_t> apache::thrift::Client<::py3::simple::DerivedService>::future_get_six(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::FutureCallback<::std::int32_t>;
   return fbthrift_semifuture_get_six<CallbackType>(rpcOptions).toUnsafeFuture();
+}
+
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::py3::simple::DerivedService>::semifuture_get_six() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_get_six(rpcOptions);
 }
 
 folly::SemiFuture<::std::int32_t> apache::thrift::Client<::py3::simple::DerivedService>::semifuture_get_six(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::SemiFutureCallback<::std::int32_t>;
   return fbthrift_semifuture_get_six<CallbackType>(rpcOptions);
 }
-
 
 void apache::thrift::Client<::py3::simple::DerivedService>::get_six(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   get_six(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));

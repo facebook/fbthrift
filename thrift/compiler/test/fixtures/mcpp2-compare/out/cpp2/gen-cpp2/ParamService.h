@@ -50,7 +50,6 @@ class ServiceHandler<::some::valid::ns::ParamService> : public apache::thrift::S
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
-
   virtual void async_eb_void_ret_i16_param(apache::thrift::HandlerCallbackPtr<void> callback, ::std::int16_t p_param1);
   virtual void sync_void_ret_byte_i16_param(::std::int8_t /*param1*/, ::std::int16_t /*param2*/);
   [[deprecated("Use sync_void_ret_byte_i16_param instead")]] virtual void void_ret_byte_i16_param(::std::int8_t /*param1*/, ::std::int16_t /*param2*/);
@@ -566,13 +565,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'void_ret_byte_i16_param'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -599,13 +591,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'void_ret_byte_i16_param'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -638,13 +623,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'void_ret_map_setlist_param'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -671,13 +649,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'void_ret_map_setlist_param'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -710,13 +681,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'void_ret_enum_param'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -743,13 +707,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'void_ret_enum_param'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -782,13 +739,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'void_ret_listunion_param'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -815,13 +765,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'void_ret_listunion_param'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -855,13 +798,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'bool_ret_map_param'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -889,13 +825,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'bool_ret_map_param'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -929,13 +858,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'i64_ret_float_double_param'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -963,13 +885,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'i64_ret_float_double_param'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -1003,13 +918,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'i64_ret_i32_i32_i32_i32_i32_param'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1037,13 +945,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'i64_ret_i32_i32_i32_i32_i32_param'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -1077,13 +978,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'string_ret_string_param'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1111,13 +1005,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'string_ret_string_param'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -1151,13 +1038,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'map_ret_bool_param'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1185,13 +1065,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'map_ret_bool_param'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -1225,13 +1098,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'mapsetlistmapliststring_ret_listlistlist_param'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1259,13 +1125,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'mapsetlistmapliststring_ret_listlistlist_param'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -1299,13 +1158,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'listtypedef_ret_typedef_param'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1333,13 +1185,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'listtypedef_ret_typedef_param'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -1373,13 +1218,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'enum_ret_double_enum_param'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1407,13 +1245,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'enum_ret_double_enum_param'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -1447,13 +1278,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'struct_ret_i16_param'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1481,13 +1305,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'struct_ret_i16_param'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -1521,13 +1338,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'union_ret_i32_i32_param'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1558,13 +1368,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'listunion_string_param'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1592,13 +1395,6 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'listunion_string_param'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //

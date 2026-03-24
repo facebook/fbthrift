@@ -31,6 +31,7 @@ struct ServiceMethodTypesFootprint<::test::namespace_from_package::module::TestS
   using TypesInMethods = folly::tag_t<
   ::std::int64_t>;
 };
+
 } // namespace detail
 
 template <>

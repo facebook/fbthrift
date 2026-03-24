@@ -336,9 +336,9 @@ determineInvocationType:
 
 namespace facebook::thrift::test::fixtures::adapter {
 
-void AdapterServiceSvNull::count(::facebook::thrift::test::fixtures::adapter::CountingStruct& /*_return*/) {  }
+void AdapterServiceSvNull::count(::facebook::thrift::test::fixtures::adapter::CountingStruct& /*_return*/) {}
 
-void AdapterServiceSvNull::adaptedTypes(::facebook::thrift::test::fixtures::adapter::HeapAllocated& /*_return*/, std::unique_ptr<::facebook::thrift::test::fixtures::adapter::HeapAllocated> /*arg*/) {  }
+void AdapterServiceSvNull::adaptedTypes(::facebook::thrift::test::fixtures::adapter::HeapAllocated& /*_return*/, std::unique_ptr<::facebook::thrift::test::fixtures::adapter::HeapAllocated> /*arg*/) {}
 
 
 std::string_view AdapterServiceAsyncProcessor::getServiceName() {

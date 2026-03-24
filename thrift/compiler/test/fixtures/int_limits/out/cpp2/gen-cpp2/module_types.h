@@ -144,12 +144,11 @@ class Limits final  {
   Limits(apache::thrift::FragileConstructor, ::std::int64_t max_i64_field__arg, ::std::int64_t min_i64_field__arg, ::std::int32_t max_i32_field__arg, ::std::int32_t min_i32_field__arg, ::std::int16_t max_i16_field__arg, ::std::int16_t min_i16_field__arg, ::std::int8_t max_byte_field__arg, ::std::int8_t min_byte_field__arg);
 
   Limits(Limits&&) noexcept;
-
   Limits(const Limits& src);
 
 
   Limits& operator=(Limits&&) noexcept;
-  Limits& operator=(const Limits& src);
+  Limits& operator=(const Limits&);
  private:
   ::std::int64_t __fbthrift_field_max_i64_field;
  private:

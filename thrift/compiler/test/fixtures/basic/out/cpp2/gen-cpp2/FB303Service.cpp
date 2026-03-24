@@ -186,7 +186,7 @@ determineInvocationType:
 
 namespace test::fixtures::basic {
 
-void FB303ServiceSvNull::simple_rpc(::test::fixtures::basic::ReservedKeyword& /*_return*/, ::std::int32_t /*int_parameter*/) {  }
+void FB303ServiceSvNull::simple_rpc(::test::fixtures::basic::ReservedKeyword& /*_return*/, ::std::int32_t /*int_parameter*/) {}
 
 
 std::string_view FB303ServiceAsyncProcessor::getServiceName() {

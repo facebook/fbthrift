@@ -44,6 +44,7 @@ struct ServiceMethodTypesFootprint<::cpp2::InteractWithShared> {
   ::std::string,
   ::std::string>;
 };
+
 } // namespace detail
 
 template <>
@@ -60,12 +61,9 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
   using apache::thrift::InteractionHandle::InteractionHandle;
   friend class ::apache::thrift::Client<::cpp2::InteractWithShared>;
  public:
-
-
   std::string_view getServiceName() const noexcept override {
     return "InteractWithShared";
   }
-
 
   /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "MyInteraction", "function": "frobnicate"} */
   void frobnicate(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
@@ -367,16 +365,14 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
   void fbthrift_send_encode(apache::thrift::SerializedRequest&& request, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::SinkClientCallback* callback, std::unique_ptr<folly::IOBuf> interceptorFrameworkMetadata);
   std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::thrift::transport::THeader>> encodeCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
-};class SharedInteraction final : public apache::thrift::InteractionHandle {
+};
+class SharedInteraction final : public apache::thrift::InteractionHandle {
   using apache::thrift::InteractionHandle::InteractionHandle;
   friend class ::apache::thrift::Client<::cpp2::InteractWithShared>;
  public:
-
-
   std::string_view getServiceName() const noexcept override {
     return "InteractWithShared";
   }
-
 
   /** Glean {"file": "shared.thrift", "service": "SharedInteraction", "function": "init"} */
   void init(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
@@ -677,6 +673,7 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
   folly::SemiFuture<folly::Unit> fbthrift_semifuture_tear_down(apache::thrift::RpcOptions& rpcOptions);
  public:
 };
+
   /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "InteractWithShared", "function": "do_some_similar_things"} */
   virtual void do_some_similar_things(std::unique_ptr<apache::thrift::RequestCallback> callback);
   /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "InteractWithShared", "function": "do_some_similar_things"} */

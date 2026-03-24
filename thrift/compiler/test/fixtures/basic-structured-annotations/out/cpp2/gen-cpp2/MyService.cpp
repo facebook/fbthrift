@@ -332,9 +332,9 @@ determineInvocationType:
 
 namespace test::fixtures::basic_structured_annotations {
 
-void MyServiceSvNull::first(::test::fixtures::basic_structured_annotations::annotated_inline_string& /*_return*/) {  }
+void MyServiceSvNull::first(::test::fixtures::basic_structured_annotations::annotated_inline_string& /*_return*/) {}
 
-bool MyServiceSvNull::second(::std::int64_t /*count*/) { 
+bool MyServiceSvNull::second(::std::int64_t /*count*/) {
   return 0;
 }
 

@@ -141,12 +141,11 @@ class Fields final  {
   Fields(apache::thrift::FragileConstructor, ::std::string injected_field__arg);
 
   Fields(Fields&&) noexcept;
-
   Fields(const Fields& src);
 
 
   Fields& operator=(Fields&&) noexcept;
-  Fields& operator=(const Fields& src);
+  Fields& operator=(const Fields&);
 
   ~Fields();
 
@@ -285,12 +284,11 @@ class FieldsInjectedToEmptyStruct final  {
   FieldsInjectedToEmptyStruct(apache::thrift::FragileConstructor, ::std::string injected_field__arg);
 
   FieldsInjectedToEmptyStruct(FieldsInjectedToEmptyStruct&&) noexcept;
-
   FieldsInjectedToEmptyStruct(const FieldsInjectedToEmptyStruct& src);
 
 
   FieldsInjectedToEmptyStruct& operator=(FieldsInjectedToEmptyStruct&&) noexcept;
-  FieldsInjectedToEmptyStruct& operator=(const FieldsInjectedToEmptyStruct& src);
+  FieldsInjectedToEmptyStruct& operator=(const FieldsInjectedToEmptyStruct&);
 
   ~FieldsInjectedToEmptyStruct();
 
@@ -431,12 +429,11 @@ class FieldsInjectedToStruct final  {
   FieldsInjectedToStruct(apache::thrift::FragileConstructor, ::std::string string_field__arg, ::std::string injected_field__arg);
 
   FieldsInjectedToStruct(FieldsInjectedToStruct&&) noexcept;
-
   FieldsInjectedToStruct(const FieldsInjectedToStruct& src);
 
 
   FieldsInjectedToStruct& operator=(FieldsInjectedToStruct&&) noexcept;
-  FieldsInjectedToStruct& operator=(const FieldsInjectedToStruct& src);
+  FieldsInjectedToStruct& operator=(const FieldsInjectedToStruct&);
 
   ~FieldsInjectedToStruct();
 
@@ -639,12 +636,11 @@ class FieldsInjectedWithIncludedStruct final  {
   FieldsInjectedWithIncludedStruct(apache::thrift::FragileConstructor, ::std::string string_field__arg, ::std::string injected_field__arg, ::apache::thrift::detail::boxed_value_ptr<::std::string> injected_structured_annotation_field__arg, ::apache::thrift::detail::boxed_value_ptr<::std::string> injected_unstructured_annotation_field__arg);
 
   FieldsInjectedWithIncludedStruct(FieldsInjectedWithIncludedStruct&&) noexcept;
-
   FieldsInjectedWithIncludedStruct(const FieldsInjectedWithIncludedStruct& src);
 
 
   FieldsInjectedWithIncludedStruct& operator=(FieldsInjectedWithIncludedStruct&&) noexcept;
-  FieldsInjectedWithIncludedStruct& operator=(const FieldsInjectedWithIncludedStruct& src);
+  FieldsInjectedWithIncludedStruct& operator=(const FieldsInjectedWithIncludedStruct&);
 
   ~FieldsInjectedWithIncludedStruct();
 
@@ -919,12 +915,11 @@ class FieldsInjectedWithFieldsWithIncludedStruct final  {
   FieldsInjectedWithFieldsWithIncludedStruct(apache::thrift::FragileConstructor, ::std::string string_field__arg, ::cpp2::InjectedField injected_field__arg);
 
   FieldsInjectedWithFieldsWithIncludedStruct(FieldsInjectedWithFieldsWithIncludedStruct&&) noexcept;
-
   FieldsInjectedWithFieldsWithIncludedStruct(const FieldsInjectedWithFieldsWithIncludedStruct& src);
 
 
   FieldsInjectedWithFieldsWithIncludedStruct& operator=(FieldsInjectedWithFieldsWithIncludedStruct&&) noexcept;
-  FieldsInjectedWithFieldsWithIncludedStruct& operator=(const FieldsInjectedWithFieldsWithIncludedStruct& src);
+  FieldsInjectedWithFieldsWithIncludedStruct& operator=(const FieldsInjectedWithFieldsWithIncludedStruct&);
 
   ~FieldsInjectedWithFieldsWithIncludedStruct();
 

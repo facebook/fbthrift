@@ -32,6 +32,7 @@ struct ServiceMethodTypesFootprint<::test::fixtures::basic::FB303Service> {
   ::std::int32_t,
   ::test::fixtures::basic::ReservedKeyword>;
 };
+
 } // namespace detail
 
 template <>

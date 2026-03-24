@@ -52,7 +52,6 @@ class ServiceHandler<::cpp2::MyLeaf> : virtual public ::cpp2::MyNodeSvIf {
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
-
   virtual void sync_do_leaf();
   [[deprecated("Use sync_do_leaf instead")]] virtual void do_leaf();
   virtual folly::Future<folly::Unit> future_do_leaf();

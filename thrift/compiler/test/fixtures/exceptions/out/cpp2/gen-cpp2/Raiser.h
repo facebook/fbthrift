@@ -48,7 +48,6 @@ class ServiceHandler<::cpp2::Raiser> : public apache::thrift::ServerInterface {
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
-
   virtual void sync_doBland();
   [[deprecated("Use sync_doBland instead")]] virtual void doBland();
   virtual folly::Future<folly::Unit> future_doBland();
@@ -188,13 +187,6 @@ class RaiserAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessorBas
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'doRaise'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -221,13 +213,6 @@ class RaiserAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessorBas
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'doRaise'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -258,13 +243,6 @@ class RaiserAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessorBas
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'get200'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //

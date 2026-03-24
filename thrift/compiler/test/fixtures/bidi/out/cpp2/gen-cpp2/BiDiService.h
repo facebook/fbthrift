@@ -52,7 +52,6 @@ class ServiceHandler<::cpp2::BiDiService> : public apache::thrift::ServerInterfa
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
-
   virtual ::apache::thrift::StreamTransformation<::std::int32_t, ::std::int16_t> sync_simple();
   [[deprecated("Use sync_simple instead")]] virtual ::apache::thrift::StreamTransformation<::std::int32_t, ::std::int16_t> simple();
   virtual folly::Future<::apache::thrift::StreamTransformation<::std::int32_t, ::std::int16_t>> future_simple();
@@ -176,13 +175,6 @@ class BiDiServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'response'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -212,13 +204,6 @@ class BiDiServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'response'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //

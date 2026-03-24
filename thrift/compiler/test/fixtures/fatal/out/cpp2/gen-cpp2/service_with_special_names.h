@@ -51,7 +51,6 @@ class ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names> : 
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
-
   virtual ::std::int32_t sync_get();
   [[deprecated("Use sync_get instead")]] virtual ::std::int32_t get();
   virtual folly::Future<::std::int32_t> future_get();
@@ -576,13 +575,6 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'getter'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -610,13 +602,6 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'getter'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -650,13 +635,6 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'maps'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -684,13 +662,6 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'maps'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -724,13 +695,6 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'name_to_value'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -758,13 +722,6 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'name_to_value'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -798,13 +755,6 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'prefix_tree'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -832,13 +782,6 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'prefix_tree'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -872,13 +815,6 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'setter'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -906,13 +842,6 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'setter'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -946,13 +875,6 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'strings'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -980,13 +902,6 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'strings'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -1020,13 +935,6 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'value'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1054,13 +962,6 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'value'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -1094,13 +995,6 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'values'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1128,13 +1022,6 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'values'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -1168,13 +1055,6 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'ids'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1202,13 +1082,6 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'ids'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -1242,13 +1115,6 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'descriptors'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1276,13 +1142,6 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'descriptors'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -1316,13 +1175,6 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'keys'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1350,13 +1202,6 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'keys'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -1390,13 +1235,6 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'annotations'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1424,13 +1262,6 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'annotations'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -1464,13 +1295,6 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'members'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1501,13 +1325,6 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'field'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1535,13 +1352,6 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'field'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //

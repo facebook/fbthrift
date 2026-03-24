@@ -287,12 +287,10 @@ class SomeStruct final  {
   SomeStruct(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg);
 
   SomeStruct(SomeStruct&&) = default;
-
   SomeStruct(const SomeStruct&) = default;
 
 
   SomeStruct& operator=(SomeStruct&&) = default;
-
   SomeStruct& operator=(const SomeStruct&) = default;
  private:
   ::std::int32_t __fbthrift_field_fieldA;

@@ -1221,27 +1221,27 @@ determineInvocationType:
 
 namespace cpp2 {
 
-void MyServiceSvNull::ping() { 
+void MyServiceSvNull::ping() {
 }
 
-void MyServiceSvNull::getRandomData(::std::string& /*_return*/) {  }
+void MyServiceSvNull::getRandomData(::std::string& /*_return*/) {}
 
-void MyServiceSvNull::sink(::std::int64_t /*sink*/) { 
+void MyServiceSvNull::sink(::std::int64_t /*sink*/) {
 }
 
-void MyServiceSvNull::putDataById(::std::int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) { 
+void MyServiceSvNull::putDataById(::std::int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) {
 }
 
-bool MyServiceSvNull::hasDataById(::std::int64_t /*id*/) { 
+bool MyServiceSvNull::hasDataById(::std::int64_t /*id*/) {
   return 0;
 }
 
-void MyServiceSvNull::getDataById(::std::string& /*_return*/, ::std::int64_t /*id*/) {  }
+void MyServiceSvNull::getDataById(::std::string& /*_return*/, ::std::int64_t /*id*/) {}
 
-void MyServiceSvNull::deleteDataById(::std::int64_t /*id*/) { 
+void MyServiceSvNull::deleteDataById(::std::int64_t /*id*/) {
 }
 
-void MyServiceSvNull::lobDataById(::std::int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) { 
+void MyServiceSvNull::lobDataById(::std::int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) {
 }
 
 

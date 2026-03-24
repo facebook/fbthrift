@@ -1039,7 +1039,7 @@ class MyField final  {
 
 
   MyField& operator=(MyField&&) noexcept;
-  MyField& operator=(const MyField& src);
+  MyField& operator=(const MyField&);
 
   ~MyField();
 
@@ -1495,7 +1495,7 @@ class MyStruct final  {
 
 
   MyStruct& operator=(MyStruct&&) noexcept;
-  MyStruct& operator=(const MyStruct& src);
+  MyStruct& operator=(const MyStruct&);
 
   ~MyStruct();
 
@@ -1705,7 +1705,7 @@ class StructWithUnion final  {
 
 
   StructWithUnion& operator=(StructWithUnion&&) noexcept;
-  StructWithUnion& operator=(const StructWithUnion& src);
+  StructWithUnion& operator=(const StructWithUnion&);
 
   ~StructWithUnion();
 
@@ -1922,12 +1922,11 @@ class RecursiveStruct final  {
   RecursiveStruct(apache::thrift::FragileConstructor, ::std::vector<::cpp2::RecursiveStruct> mes__arg);
 
   RecursiveStruct(RecursiveStruct&&) noexcept;
-
   RecursiveStruct(const RecursiveStruct& src);
 
 
   RecursiveStruct& operator=(RecursiveStruct&&) noexcept;
-  RecursiveStruct& operator=(const RecursiveStruct& src);
+  RecursiveStruct& operator=(const RecursiveStruct&);
 
   ~RecursiveStruct();
 
@@ -2078,7 +2077,7 @@ class StructWithContainers final  {
 
 
   StructWithContainers& operator=(StructWithContainers&&) noexcept;
-  StructWithContainers& operator=(const StructWithContainers& src);
+  StructWithContainers& operator=(const StructWithContainers&);
 
   ~StructWithContainers();
 
@@ -2407,12 +2406,11 @@ class StructWithSharedConst final  {
   StructWithSharedConst(apache::thrift::FragileConstructor, ::std::shared_ptr<const ::cpp2::MyField> opt_shared_const__arg, ::std::shared_ptr<const ::cpp2::MyField> shared_const__arg, ::std::shared_ptr<const ::cpp2::MyField> req_shared_const__arg);
 
   StructWithSharedConst(StructWithSharedConst&&) noexcept;
-
   StructWithSharedConst(const StructWithSharedConst& src);
 
 
   StructWithSharedConst& operator=(StructWithSharedConst&&) noexcept;
-  StructWithSharedConst& operator=(const StructWithSharedConst& src);
+  StructWithSharedConst& operator=(const StructWithSharedConst&);
 
   ~StructWithSharedConst();
 
@@ -2612,12 +2610,10 @@ class Empty final  {
   Empty(apache::thrift::FragileConstructor);
 
   Empty(Empty&&) = default;
-
   Empty(const Empty&) = default;
 
 
   Empty& operator=(Empty&&) = default;
-
   Empty& operator=(const Empty&) = default;
 
  public:
@@ -2702,7 +2698,7 @@ class StructWithRef final  {
 
 
   StructWithRef& operator=(StructWithRef&&) noexcept;
-  StructWithRef& operator=(const StructWithRef& src);
+  StructWithRef& operator=(const StructWithRef&);
 
   ~StructWithRef();
 
@@ -2908,12 +2904,11 @@ class StructWithBox final  {
   StructWithBox(apache::thrift::FragileConstructor, ::apache::thrift::detail::boxed_value_ptr<::std::string> a__arg, ::apache::thrift::detail::boxed_value_ptr<::std::vector<::std::int64_t>> b__arg, ::apache::thrift::detail::boxed_value_ptr<::cpp2::StructWithRef> c__arg);
 
   StructWithBox(StructWithBox&&) noexcept;
-
   StructWithBox(const StructWithBox& src);
 
 
   StructWithBox& operator=(StructWithBox&&) noexcept;
-  StructWithBox& operator=(const StructWithBox& src);
+  StructWithBox& operator=(const StructWithBox&);
 
   ~StructWithBox();
 
@@ -3108,12 +3103,11 @@ class StructWithInternBox final  {
   StructWithInternBox(apache::thrift::FragileConstructor, ::apache::thrift::detail::boxed_value<::cpp2::Empty> field1__arg, ::apache::thrift::detail::boxed_value<::cpp2::MyField> field2__arg);
 
   StructWithInternBox(StructWithInternBox&&) noexcept;
-
   StructWithInternBox(const StructWithInternBox& src);
 
 
   StructWithInternBox& operator=(StructWithInternBox&&) noexcept;
-  StructWithInternBox& operator=(const StructWithInternBox& src);
+  StructWithInternBox& operator=(const StructWithInternBox&);
 
   ~StructWithInternBox();
 
@@ -3272,12 +3266,11 @@ class StructWithTerseInternBox final  {
   StructWithTerseInternBox(apache::thrift::FragileConstructor, ::apache::thrift::detail::boxed_value<::cpp2::Empty> field1__arg, ::apache::thrift::detail::boxed_value<::cpp2::MyField> field2__arg);
 
   StructWithTerseInternBox(StructWithTerseInternBox&&) noexcept;
-
   StructWithTerseInternBox(const StructWithTerseInternBox& src);
 
 
   StructWithTerseInternBox& operator=(StructWithTerseInternBox&&) noexcept;
-  StructWithTerseInternBox& operator=(const StructWithTerseInternBox& src);
+  StructWithTerseInternBox& operator=(const StructWithTerseInternBox&);
 
   ~StructWithTerseInternBox();
 
@@ -3438,7 +3431,7 @@ class AdaptedStructWithInternBox final  {
 
 
   AdaptedStructWithInternBox& operator=(AdaptedStructWithInternBox&&) noexcept;
-  AdaptedStructWithInternBox& operator=(const AdaptedStructWithInternBox& src);
+  AdaptedStructWithInternBox& operator=(const AdaptedStructWithInternBox&);
 
   ~AdaptedStructWithInternBox();
 
@@ -3601,7 +3594,7 @@ class AdaptedStructWithTerseInternBox final  {
 
 
   AdaptedStructWithTerseInternBox& operator=(AdaptedStructWithTerseInternBox&&) noexcept;
-  AdaptedStructWithTerseInternBox& operator=(const AdaptedStructWithTerseInternBox& src);
+  AdaptedStructWithTerseInternBox& operator=(const AdaptedStructWithTerseInternBox&);
 
   ~AdaptedStructWithTerseInternBox();
 
@@ -3764,7 +3757,7 @@ class StructWithRefTypeUnique final  {
 
 
   StructWithRefTypeUnique& operator=(StructWithRefTypeUnique&&) noexcept;
-  StructWithRefTypeUnique& operator=(const StructWithRefTypeUnique& src);
+  StructWithRefTypeUnique& operator=(const StructWithRefTypeUnique&);
 
   ~StructWithRefTypeUnique();
 
@@ -3970,12 +3963,11 @@ class StructWithRefTypeShared final  {
   StructWithRefTypeShared(apache::thrift::FragileConstructor, ::std::shared_ptr<::cpp2::Empty> def_field__arg, ::std::shared_ptr<::cpp2::Empty> opt_field__arg, ::std::shared_ptr<::cpp2::Empty> req_field__arg);
 
   StructWithRefTypeShared(StructWithRefTypeShared&&) noexcept;
-
   StructWithRefTypeShared(const StructWithRefTypeShared& src);
 
 
   StructWithRefTypeShared& operator=(StructWithRefTypeShared&&) noexcept;
-  StructWithRefTypeShared& operator=(const StructWithRefTypeShared& src);
+  StructWithRefTypeShared& operator=(const StructWithRefTypeShared&);
 
   ~StructWithRefTypeShared();
 
@@ -4181,12 +4173,11 @@ class StructWithRefTypeSharedConst final  {
   StructWithRefTypeSharedConst(apache::thrift::FragileConstructor, ::std::shared_ptr<const ::cpp2::Empty> def_field__arg, ::std::shared_ptr<const ::cpp2::Empty> opt_field__arg, ::std::shared_ptr<const ::cpp2::Empty> req_field__arg);
 
   StructWithRefTypeSharedConst(StructWithRefTypeSharedConst&&) noexcept;
-
   StructWithRefTypeSharedConst(const StructWithRefTypeSharedConst& src);
 
 
   StructWithRefTypeSharedConst& operator=(StructWithRefTypeSharedConst&&) noexcept;
-  StructWithRefTypeSharedConst& operator=(const StructWithRefTypeSharedConst& src);
+  StructWithRefTypeSharedConst& operator=(const StructWithRefTypeSharedConst&);
 
   ~StructWithRefTypeSharedConst();
 
@@ -4392,7 +4383,7 @@ class StructWithRefAndAnnotCppNoexceptMoveCtor final  {
 
 
   StructWithRefAndAnnotCppNoexceptMoveCtor& operator=(StructWithRefAndAnnotCppNoexceptMoveCtor&&) noexcept;
-  StructWithRefAndAnnotCppNoexceptMoveCtor& operator=(const StructWithRefAndAnnotCppNoexceptMoveCtor& src);
+  StructWithRefAndAnnotCppNoexceptMoveCtor& operator=(const StructWithRefAndAnnotCppNoexceptMoveCtor&);
 
   ~StructWithRefAndAnnotCppNoexceptMoveCtor();
 
@@ -4524,7 +4515,7 @@ class StructWithString final  {
 
 
   StructWithString& operator=(StructWithString&&) noexcept;
-  StructWithString& operator=(const StructWithString& src);
+  StructWithString& operator=(const StructWithString&);
 
   ~StructWithString();
 

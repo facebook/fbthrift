@@ -163,21 +163,20 @@ folly::Future<folly::Unit> apache::thrift::Client<::test::fixtures::basic::FooSe
   return future_simple_rpc(rpcOptions);
 }
 
-folly::SemiFuture<folly::Unit> apache::thrift::Client<::test::fixtures::basic::FooService>::semifuture_simple_rpc() {
-  ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_simple_rpc(rpcOptions);
-}
-
 folly::Future<folly::Unit> apache::thrift::Client<::test::fixtures::basic::FooService>::future_simple_rpc(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::FutureCallback<folly::Unit>;
   return fbthrift_semifuture_simple_rpc<CallbackType>(rpcOptions).toUnsafeFuture();
+}
+
+folly::SemiFuture<folly::Unit> apache::thrift::Client<::test::fixtures::basic::FooService>::semifuture_simple_rpc() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_simple_rpc(rpcOptions);
 }
 
 folly::SemiFuture<folly::Unit> apache::thrift::Client<::test::fixtures::basic::FooService>::semifuture_simple_rpc(apache::thrift::RpcOptions& rpcOptions) {
   using CallbackType = apache::thrift::SemiFutureCallback<folly::Unit>;
   return fbthrift_semifuture_simple_rpc<CallbackType>(rpcOptions);
 }
-
 
 void apache::thrift::Client<::test::fixtures::basic::FooService>::simple_rpc(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   simple_rpc(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));

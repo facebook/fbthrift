@@ -166,13 +166,6 @@ class AAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessorBase {
    return iface_->createI();
  }
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'foo'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -206,7 +199,7 @@ class AAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessorBase {
   // End of Service Methods
   //
   //
-  // Service Methods
+  // Interaction I Methods
   //
 
   //
@@ -239,7 +232,7 @@ class AAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessorBase {
   //
 
   //
-  // End of Service Methods
+  // End of Interaction I Methods
   //
  public:
   AAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::A>* iface) :
@@ -274,7 +267,6 @@ class ServiceHandler<::cpp2::B> : virtual public ::cpp2::ASvIf {
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
-
   virtual void sync_bar(std::unique_ptr<::cpp2::Foo> /*foo*/);
   [[deprecated("Use sync_bar instead")]] virtual void bar(std::unique_ptr<::cpp2::Foo> /*foo*/);
   virtual folly::Future<folly::Unit> future_bar(std::unique_ptr<::cpp2::Foo> p_foo);
@@ -403,13 +395,6 @@ class BAsyncProcessor : public ::cpp2::AAsyncProcessor {
   //
 
   //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
-  //
-
-  //
   // Method 'stream_stuff'
   //
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -438,13 +423,6 @@ class BAsyncProcessor : public ::cpp2::AAsyncProcessor {
       apache::thrift::Cpp2RequestContext* reqCtx);
   //
   // End of Method 'stream_stuff'
-  //
-
-  //
-  // End of Service Methods
-  //
-  //
-  // Service Methods
   //
 
   //
@@ -617,7 +595,7 @@ class CAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessorBase {
   // End of Service Methods
   //
   //
-  // Service Methods
+  // Interaction I Methods
   //
 
   //
@@ -650,7 +628,7 @@ class CAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessorBase {
   //
 
   //
-  // End of Service Methods
+  // End of Interaction I Methods
   //
  public:
   CAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::C>* iface) :

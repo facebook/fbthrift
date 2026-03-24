@@ -53,6 +53,7 @@ struct ServiceMethodTypesFootprint<::some::valid::ns::ReturnService> {
   ::some::valid::ns::IOBuf,
   ::some::valid::ns::IOBufPtr>;
 };
+
 } // namespace detail
 
 template <>

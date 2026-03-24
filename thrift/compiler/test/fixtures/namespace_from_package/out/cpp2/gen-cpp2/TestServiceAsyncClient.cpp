@@ -166,21 +166,20 @@ folly::Future<::std::int64_t> apache::thrift::Client<::test::namespace_from_pack
   return future_init(rpcOptions, p_int1);
 }
 
-folly::SemiFuture<::std::int64_t> apache::thrift::Client<::test::namespace_from_package::module::TestService>::semifuture_init(::std::int64_t p_int1) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_init(rpcOptions, p_int1);
-}
-
 folly::Future<::std::int64_t> apache::thrift::Client<::test::namespace_from_package::module::TestService>::future_init(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_int1) {
   using CallbackType = apache::thrift::FutureCallback<::std::int64_t>;
   return fbthrift_semifuture_init<CallbackType>(rpcOptions, p_int1).toUnsafeFuture();
+}
+
+folly::SemiFuture<::std::int64_t> apache::thrift::Client<::test::namespace_from_package::module::TestService>::semifuture_init(::std::int64_t p_int1) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_init(rpcOptions, p_int1);
 }
 
 folly::SemiFuture<::std::int64_t> apache::thrift::Client<::test::namespace_from_package::module::TestService>::semifuture_init(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_int1) {
   using CallbackType = apache::thrift::SemiFutureCallback<::std::int64_t>;
   return fbthrift_semifuture_init<CallbackType>(rpcOptions, p_int1);
 }
-
 
 void apache::thrift::Client<::test::namespace_from_package::module::TestService>::init(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int64_t p_int1) {
   init(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_int1);

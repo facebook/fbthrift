@@ -168,21 +168,20 @@ folly::Future<::facebook::thrift::test::fixtures::adapter::MyI32_4873> apache::t
   return future_func(rpcOptions, p_arg1, p_arg2, p_arg3);
 }
 
-folly::SemiFuture<::facebook::thrift::test::fixtures::adapter::MyI32_4873> apache::thrift::Client<::facebook::thrift::test::fixtures::adapter::Service>::semifuture_func(const ::facebook::thrift::test::fixtures::adapter::StringWithAdapter_7208& p_arg1, const ::facebook::thrift::test::fixtures::adapter::StringWithCppAdapter& p_arg2, const ::facebook::thrift::test::fixtures::adapter::Foo& p_arg3) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_func(rpcOptions, p_arg1, p_arg2, p_arg3);
-}
-
 folly::Future<::facebook::thrift::test::fixtures::adapter::MyI32_4873> apache::thrift::Client<::facebook::thrift::test::fixtures::adapter::Service>::future_func(apache::thrift::RpcOptions& rpcOptions, const ::facebook::thrift::test::fixtures::adapter::StringWithAdapter_7208& p_arg1, const ::facebook::thrift::test::fixtures::adapter::StringWithCppAdapter& p_arg2, const ::facebook::thrift::test::fixtures::adapter::Foo& p_arg3) {
   using CallbackType = apache::thrift::FutureCallback<::facebook::thrift::test::fixtures::adapter::MyI32_4873>;
   return fbthrift_semifuture_func<CallbackType>(rpcOptions, p_arg1, p_arg2, p_arg3).toUnsafeFuture();
+}
+
+folly::SemiFuture<::facebook::thrift::test::fixtures::adapter::MyI32_4873> apache::thrift::Client<::facebook::thrift::test::fixtures::adapter::Service>::semifuture_func(const ::facebook::thrift::test::fixtures::adapter::StringWithAdapter_7208& p_arg1, const ::facebook::thrift::test::fixtures::adapter::StringWithCppAdapter& p_arg2, const ::facebook::thrift::test::fixtures::adapter::Foo& p_arg3) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_func(rpcOptions, p_arg1, p_arg2, p_arg3);
 }
 
 folly::SemiFuture<::facebook::thrift::test::fixtures::adapter::MyI32_4873> apache::thrift::Client<::facebook::thrift::test::fixtures::adapter::Service>::semifuture_func(apache::thrift::RpcOptions& rpcOptions, const ::facebook::thrift::test::fixtures::adapter::StringWithAdapter_7208& p_arg1, const ::facebook::thrift::test::fixtures::adapter::StringWithCppAdapter& p_arg2, const ::facebook::thrift::test::fixtures::adapter::Foo& p_arg3) {
   using CallbackType = apache::thrift::SemiFutureCallback<::facebook::thrift::test::fixtures::adapter::MyI32_4873>;
   return fbthrift_semifuture_func<CallbackType>(rpcOptions, p_arg1, p_arg2, p_arg3);
 }
-
 
 void apache::thrift::Client<::facebook::thrift::test::fixtures::adapter::Service>::func(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::facebook::thrift::test::fixtures::adapter::StringWithAdapter_7208& p_arg1, const ::facebook::thrift::test::fixtures::adapter::StringWithCppAdapter& p_arg2, const ::facebook::thrift::test::fixtures::adapter::Foo& p_arg3) {
   func(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_arg1, p_arg2, p_arg3);

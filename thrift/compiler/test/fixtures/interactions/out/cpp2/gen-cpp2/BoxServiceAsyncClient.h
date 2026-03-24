@@ -37,6 +37,7 @@ struct ServiceMethodTypesFootprint<::cpp2::BoxService> {
   using TypesInMethods = folly::tag_t<
   ::cpp2::ShouldBeBoxed>;
 };
+
 } // namespace detail
 
 template <>
@@ -53,12 +54,9 @@ class BoxedInteraction final : public apache::thrift::InteractionHandle {
   using apache::thrift::InteractionHandle::InteractionHandle;
   friend class ::apache::thrift::Client<::cpp2::BoxService>;
  public:
-
-
   std::string_view getServiceName() const noexcept override {
     return "BoxService";
   }
-
 
   /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "BoxedInteraction", "function": "getABox"} */
   void getABox(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
@@ -160,6 +158,7 @@ class BoxedInteraction final : public apache::thrift::InteractionHandle {
   folly::SemiFuture<::cpp2::ShouldBeBoxed> fbthrift_semifuture_getABox(apache::thrift::RpcOptions& rpcOptions);
  public:
 };
+
   /** Glean {"file": "thrift/compiler/test/fixtures/interactions/src/module.thrift", "service": "BoxService", "function": "getABoxSession"} */
   void getABoxSession(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const apache::thrift::InteractionHandle& handle, const ::cpp2::ShouldBeBoxed& p_req);
  protected:

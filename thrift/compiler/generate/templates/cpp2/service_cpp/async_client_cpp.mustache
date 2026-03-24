@@ -76,16 +76,11 @@ namespace {{interaction.cpp_qualified_namespace}} {
 {{#partial sync_functions.sync_functions interface=interaction parent_service=service function=function}}
 
 {{#partial future_functions.future_functions interface=interaction parent_service=service function=function}}
-      {{#else}}
-
       {{/if (not function.sink?)}}
 {{#partial coroutine_functions.coroutine_functions interface=interaction parent_service=service function=function}}
       {{#if (not function.oneway?)}}
 {{#partial received_wrapped.received_wrapped interface=interaction parent_service=service function=function}}
 {{#partial received.received interface=interaction parent_service=service function=function}}
-      {{#else}}
-        {{! TODO(T260006192): Clean-up preserve whitespace behavior }}
-
       {{/if (not function.oneway?)}}
     {{/each}}
 

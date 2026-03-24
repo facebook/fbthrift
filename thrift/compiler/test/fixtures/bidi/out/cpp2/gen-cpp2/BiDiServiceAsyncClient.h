@@ -41,6 +41,7 @@ struct ServiceMethodTypesFootprint<::cpp2::BiDiService> {
   ::cpp2::BiDiMethodException,
   ::std::int64_t>;
 };
+
 } // namespace detail
 
 template <>

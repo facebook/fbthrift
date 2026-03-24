@@ -102,12 +102,10 @@ class Included final  {
   Included(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::cpp2::Foo MyTransitiveField__arg);
 
   Included(Included&&) = default;
-
   Included(const Included&) = default;
 
 
   Included& operator=(Included&&) = default;
-
   Included& operator=(const Included&) = default;
  private:
   ::std::int64_t __fbthrift_field_MyIntField;

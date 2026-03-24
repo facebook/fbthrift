@@ -153,12 +153,11 @@ class FOLLY_EXPORT CustomException : public virtual apache::thrift::TException {
   CustomException(apache::thrift::FragileConstructor, ::std::string name__arg, ::facebook::thrift::test::fixtures::service_schema::Result result__arg);
 
   CustomException(CustomException&&) noexcept;
-
   CustomException(const CustomException& src);
 
 
   CustomException& operator=(CustomException&&) noexcept;
-  CustomException& operator=(const CustomException& src);
+  CustomException& operator=(const CustomException&);
 
   ~CustomException() override;
 

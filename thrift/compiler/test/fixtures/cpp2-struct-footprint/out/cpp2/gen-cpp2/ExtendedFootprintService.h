@@ -52,7 +52,6 @@ class ServiceHandler<::cpp2_struct_footprint::ExtendedFootprintService> : virtua
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
-
   virtual void sync_getComplexMap(::std::map<::std::int32_t, ::std::vector<::cpp2_struct_footprint::ComplexStruct>>& /*_return*/);
   [[deprecated("Use sync_getComplexMap instead")]] virtual void getComplexMap(::std::map<::std::int32_t, ::std::vector<::cpp2_struct_footprint::ComplexStruct>>& /*_return*/);
   virtual folly::Future<std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::cpp2_struct_footprint::ComplexStruct>>>> future_getComplexMap();

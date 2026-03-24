@@ -39,6 +39,7 @@ struct ServiceMethodTypesFootprint<::test_cpp2::cpp_reflection::service3> {
   ::test_cpp2::cpp_reflection::struct2,
   ::test_cpp2::cpp_reflection::struct3>;
 };
+
 } // namespace detail
 
 template <>

@@ -177,21 +177,20 @@ folly::Future<::apache::thrift::fixtures::types::SomeMap> apache::thrift::Client
   return future_bounce_map(rpcOptions, p_m);
 }
 
-folly::SemiFuture<::apache::thrift::fixtures::types::SomeMap> apache::thrift::Client<::apache::thrift::fixtures::types::SomeService>::semifuture_bounce_map(const ::apache::thrift::fixtures::types::SomeMap& p_m) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_bounce_map(rpcOptions, p_m);
-}
-
 folly::Future<::apache::thrift::fixtures::types::SomeMap> apache::thrift::Client<::apache::thrift::fixtures::types::SomeService>::future_bounce_map(apache::thrift::RpcOptions& rpcOptions, const ::apache::thrift::fixtures::types::SomeMap& p_m) {
   using CallbackType = apache::thrift::FutureCallback<::apache::thrift::fixtures::types::SomeMap>;
   return fbthrift_semifuture_bounce_map<CallbackType>(rpcOptions, p_m).toUnsafeFuture();
+}
+
+folly::SemiFuture<::apache::thrift::fixtures::types::SomeMap> apache::thrift::Client<::apache::thrift::fixtures::types::SomeService>::semifuture_bounce_map(const ::apache::thrift::fixtures::types::SomeMap& p_m) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_bounce_map(rpcOptions, p_m);
 }
 
 folly::SemiFuture<::apache::thrift::fixtures::types::SomeMap> apache::thrift::Client<::apache::thrift::fixtures::types::SomeService>::semifuture_bounce_map(apache::thrift::RpcOptions& rpcOptions, const ::apache::thrift::fixtures::types::SomeMap& p_m) {
   using CallbackType = apache::thrift::SemiFutureCallback<::apache::thrift::fixtures::types::SomeMap>;
   return fbthrift_semifuture_bounce_map<CallbackType>(rpcOptions, p_m);
 }
-
 
 void apache::thrift::Client<::apache::thrift::fixtures::types::SomeService>::bounce_map(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::apache::thrift::fixtures::types::SomeMap& p_m) {
   bounce_map(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_m);
@@ -381,21 +380,20 @@ folly::Future<::std::map<::apache::thrift::fixtures::types::TBinary, ::std::int6
   return future_binary_keyed_map(rpcOptions, p_r);
 }
 
-folly::SemiFuture<::std::map<::apache::thrift::fixtures::types::TBinary, ::std::int64_t>> apache::thrift::Client<::apache::thrift::fixtures::types::SomeService>::semifuture_binary_keyed_map(const ::std::vector<::std::int64_t>& p_r) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_binary_keyed_map(rpcOptions, p_r);
-}
-
 folly::Future<::std::map<::apache::thrift::fixtures::types::TBinary, ::std::int64_t>> apache::thrift::Client<::apache::thrift::fixtures::types::SomeService>::future_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int64_t>& p_r) {
   using CallbackType = apache::thrift::FutureCallback<::std::map<::apache::thrift::fixtures::types::TBinary, ::std::int64_t>>;
   return fbthrift_semifuture_binary_keyed_map<CallbackType>(rpcOptions, p_r).toUnsafeFuture();
+}
+
+folly::SemiFuture<::std::map<::apache::thrift::fixtures::types::TBinary, ::std::int64_t>> apache::thrift::Client<::apache::thrift::fixtures::types::SomeService>::semifuture_binary_keyed_map(const ::std::vector<::std::int64_t>& p_r) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_binary_keyed_map(rpcOptions, p_r);
 }
 
 folly::SemiFuture<::std::map<::apache::thrift::fixtures::types::TBinary, ::std::int64_t>> apache::thrift::Client<::apache::thrift::fixtures::types::SomeService>::semifuture_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int64_t>& p_r) {
   using CallbackType = apache::thrift::SemiFutureCallback<::std::map<::apache::thrift::fixtures::types::TBinary, ::std::int64_t>>;
   return fbthrift_semifuture_binary_keyed_map<CallbackType>(rpcOptions, p_r);
 }
-
 
 void apache::thrift::Client<::apache::thrift::fixtures::types::SomeService>::binary_keyed_map(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::int64_t>& p_r) {
   binary_keyed_map(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_r);

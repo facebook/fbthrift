@@ -38,6 +38,7 @@ struct ServiceMethodTypesFootprint<::facebook::thrift::test::fixtures::service_s
   using TypesInMethods = folly::tag_t<
   ::std::int64_t>;
 };
+
 } // namespace detail
 
 template <>

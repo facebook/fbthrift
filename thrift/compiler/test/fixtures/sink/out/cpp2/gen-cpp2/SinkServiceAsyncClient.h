@@ -37,6 +37,7 @@ struct ServiceMethodTypesFootprint<::cpp2::SinkService> {
   ::cpp2::InitialResponse,
   ::cpp2::InitialException>;
 };
+
 } // namespace detail
 
 template <>

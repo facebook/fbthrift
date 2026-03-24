@@ -159,12 +159,10 @@ class MyAnnotation final  {
   MyAnnotation(apache::thrift::FragileConstructor);
 
   MyAnnotation(MyAnnotation&&) = default;
-
   MyAnnotation(const MyAnnotation&) = default;
 
 
   MyAnnotation& operator=(MyAnnotation&&) = default;
-
   MyAnnotation& operator=(const MyAnnotation&) = default;
 
  public:
@@ -254,12 +252,10 @@ class MyStruct final  {
   MyStruct(apache::thrift::FragileConstructor, ::std::int32_t field__arg);
 
   MyStruct(MyStruct&&) = default;
-
   MyStruct(const MyStruct&) = default;
 
 
   MyStruct& operator=(MyStruct&&) = default;
-
   MyStruct& operator=(const MyStruct&) = default;
  private:
   ::std::int32_t __fbthrift_field_field;
@@ -397,12 +393,10 @@ class MyUnion final  {
   MyUnion(apache::thrift::FragileConstructor, ::std::int32_t field__arg);
 
   MyUnion(MyUnion&&) = default;
-
   MyUnion(const MyUnion&) = default;
 
 
   MyUnion& operator=(MyUnion&&) = default;
-
   MyUnion& operator=(const MyUnion&) = default;
  private:
   ::std::int32_t __fbthrift_field_field;
@@ -545,12 +539,11 @@ class FOLLY_EXPORT MyException : public virtual apache::thrift::TException {
   MyException(apache::thrift::FragileConstructor, ::std::int32_t field__arg);
 
   MyException(MyException&&) noexcept;
-
   MyException(const MyException& src);
 
 
   MyException& operator=(MyException&&) noexcept;
-  MyException& operator=(const MyException& src);
+  MyException& operator=(const MyException&);
 
   ~MyException() override;
 

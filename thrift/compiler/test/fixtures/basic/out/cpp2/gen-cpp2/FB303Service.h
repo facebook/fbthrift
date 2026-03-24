@@ -50,7 +50,6 @@ class ServiceHandler<::test::fixtures::basic::FB303Service> : public apache::thr
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
-
   virtual void sync_simple_rpc(::test::fixtures::basic::ReservedKeyword& /*_return*/, ::std::int32_t /*int_parameter*/);
   [[deprecated("Use sync_simple_rpc instead")]] virtual void simple_rpc(::test::fixtures::basic::ReservedKeyword& /*_return*/, ::std::int32_t /*int_parameter*/);
   virtual folly::Future<std::unique_ptr<::test::fixtures::basic::ReservedKeyword>> future_simple_rpc(::std::int32_t p_int_parameter);

@@ -182,7 +182,7 @@ determineInvocationType:
 
 namespace test::namespace_from_package::module {
 
-::std::int64_t TestServiceSvNull::init(::std::int64_t /*int1*/) { 
+::std::int64_t TestServiceSvNull::init(::std::int64_t /*int1*/) {
   return 0;
 }
 
