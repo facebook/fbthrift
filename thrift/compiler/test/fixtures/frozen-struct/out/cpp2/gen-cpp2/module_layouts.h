@@ -10,7 +10,7 @@
 #include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/module_types.h"
 #include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/include1_layouts.h"
 #include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/include2_layouts.h"
-namespace apache { namespace thrift { namespace frozen {
+namespace apache::thrift::frozen {
 
 FROZEN_EXCLUDE_TYPE(::some::ns::detail::DirectlyAdapted)
 
@@ -81,4 +81,4 @@ FROZEN_TYPE(::some::ns::CppRef,
     FROZEN_LOAD_FIELD(opt_shared_const_field, 4)
     FROZEN_LOAD_FIELD(boxed_field, 5)));
 
-}}} // apache::thrift::frozen
+} // apache::thrift::frozen

@@ -38,10 +38,10 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 4> TStructDataStora
   7,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 4> TStructDataStorage<::test_cpp2::cpp_reflection::union1>::fields_types = { {
-  TType::T_I32,
-  TType::T_DOUBLE,
-  TType::T_STRING,
-  TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_DOUBLE,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_I32,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 4> TStructDataStorage<::test_cpp2::cpp_reflection::union1>::isset_indexes = { {
   0,
@@ -64,10 +64,10 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 4> TStructDataStora
   4,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 4> TStructDataStorage<::test_cpp2::cpp_reflection::union2>::fields_types = { {
-  TType::T_I32,
-  TType::T_DOUBLE,
-  TType::T_STRING,
-  TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_DOUBLE,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_I32,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 4> TStructDataStorage<::test_cpp2::cpp_reflection::union2>::isset_indexes = { {
   0,
@@ -90,10 +90,10 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 4> TStructDataStora
   4,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 4> TStructDataStorage<::test_cpp2::cpp_reflection::union3>::fields_types = { {
-  TType::T_I32,
-  TType::T_DOUBLE,
-  TType::T_STRING,
-  TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_DOUBLE,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_I32,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 4> TStructDataStorage<::test_cpp2::cpp_reflection::union3>::isset_indexes = { {
   0,
@@ -112,8 +112,8 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 2> TStructDataStora
   2,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 2> TStructDataStorage<::test_cpp2::cpp_reflection::structA>::fields_types = { {
-  TType::T_I32,
-  TType::T_STRING,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 2> TStructDataStorage<::test_cpp2::cpp_reflection::structA>::isset_indexes = { {
   0,
@@ -136,11 +136,11 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 5> TStructDataStora
   5,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 5> TStructDataStorage<::test_cpp2::cpp_reflection::unionA>::fields_types = { {
-  TType::T_I32,
-  TType::T_DOUBLE,
-  TType::T_STRING,
-  TType::T_I32,
-  TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_DOUBLE,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_STRUCT,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 5> TStructDataStorage<::test_cpp2::cpp_reflection::unionA>::isset_indexes = { {
   0,
@@ -160,8 +160,8 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 2> TStructDataStora
   2,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 2> TStructDataStorage<::test_cpp2::cpp_reflection::structB>::fields_types = { {
-  TType::T_DOUBLE,
-  TType::T_BOOL,
+  apache::thrift::protocol::TType::T_DOUBLE,
+  apache::thrift::protocol::TType::T_BOOL,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 2> TStructDataStorage<::test_cpp2::cpp_reflection::structB>::isset_indexes = { {
   0,
@@ -234,36 +234,36 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 30> TStructDataStor
   30,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 30> TStructDataStorage<::test_cpp2::cpp_reflection::structC>::fields_types = { {
-  TType::T_I32,
-  TType::T_STRING,
-  TType::T_DOUBLE,
-  TType::T_BOOL,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_STRUCT,
-  TType::T_STRUCT,
-  TType::T_STRUCT,
-  TType::T_LIST,
-  TType::T_LIST,
-  TType::T_LIST,
-  TType::T_LIST,
-  TType::T_SET,
-  TType::T_SET,
-  TType::T_SET,
-  TType::T_SET,
-  TType::T_MAP,
-  TType::T_MAP,
-  TType::T_MAP,
-  TType::T_MAP,
-  TType::T_MAP,
-  TType::T_MAP,
-  TType::T_MAP,
-  TType::T_MAP,
-  TType::T_MAP,
-  TType::T_MAP,
-  TType::T_MAP,
-  TType::T_MAP,
-  TType::T_MAP,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_DOUBLE,
+  apache::thrift::protocol::TType::T_BOOL,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_LIST,
+  apache::thrift::protocol::TType::T_LIST,
+  apache::thrift::protocol::TType::T_LIST,
+  apache::thrift::protocol::TType::T_LIST,
+  apache::thrift::protocol::TType::T_SET,
+  apache::thrift::protocol::TType::T_SET,
+  apache::thrift::protocol::TType::T_SET,
+  apache::thrift::protocol::TType::T_SET,
+  apache::thrift::protocol::TType::T_MAP,
+  apache::thrift::protocol::TType::T_MAP,
+  apache::thrift::protocol::TType::T_MAP,
+  apache::thrift::protocol::TType::T_MAP,
+  apache::thrift::protocol::TType::T_MAP,
+  apache::thrift::protocol::TType::T_MAP,
+  apache::thrift::protocol::TType::T_MAP,
+  apache::thrift::protocol::TType::T_MAP,
+  apache::thrift::protocol::TType::T_MAP,
+  apache::thrift::protocol::TType::T_MAP,
+  apache::thrift::protocol::TType::T_MAP,
+  apache::thrift::protocol::TType::T_MAP,
+  apache::thrift::protocol::TType::T_MAP,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 30> TStructDataStorage<::test_cpp2::cpp_reflection::structC>::isset_indexes = { {
   0,
@@ -316,12 +316,12 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 6> TStructDataStora
   6,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 6> TStructDataStorage<::test_cpp2::cpp_reflection::struct1>::fields_types = { {
-  TType::T_I32,
-  TType::T_STRING,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_STRUCT,
-  TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_STRUCT,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 6> TStructDataStorage<::test_cpp2::cpp_reflection::struct1>::isset_indexes = { {
   -1,
@@ -352,13 +352,13 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 7> TStructDataStora
   7,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 7> TStructDataStorage<::test_cpp2::cpp_reflection::struct2>::fields_types = { {
-  TType::T_I32,
-  TType::T_STRING,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_STRUCT,
-  TType::T_STRUCT,
-  TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_STRUCT,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 7> TStructDataStorage<::test_cpp2::cpp_reflection::struct2>::isset_indexes = { {
   0,
@@ -412,24 +412,24 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 18> TStructDataStor
   18,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 18> TStructDataStorage<::test_cpp2::cpp_reflection::struct3>::fields_types = { {
-  TType::T_I32,
-  TType::T_STRING,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_STRUCT,
-  TType::T_STRUCT,
-  TType::T_STRUCT,
-  TType::T_STRUCT,
-  TType::T_LIST,
-  TType::T_LIST,
-  TType::T_LIST,
-  TType::T_LIST,
-  TType::T_SET,
-  TType::T_SET,
-  TType::T_SET,
-  TType::T_SET,
-  TType::T_MAP,
-  TType::T_MAP,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_LIST,
+  apache::thrift::protocol::TType::T_LIST,
+  apache::thrift::protocol::TType::T_LIST,
+  apache::thrift::protocol::TType::T_LIST,
+  apache::thrift::protocol::TType::T_SET,
+  apache::thrift::protocol::TType::T_SET,
+  apache::thrift::protocol::TType::T_SET,
+  apache::thrift::protocol::TType::T_SET,
+  apache::thrift::protocol::TType::T_MAP,
+  apache::thrift::protocol::TType::T_MAP,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 18> TStructDataStorage<::test_cpp2::cpp_reflection::struct3>::isset_indexes = { {
   -1,
@@ -466,10 +466,10 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 4> TStructDataStora
   6,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 4> TStructDataStorage<::test_cpp2::cpp_reflection::struct4>::fields_types = { {
-  TType::T_I32,
-  TType::T_STRING,
-  TType::T_I32,
-  TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_STRUCT,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 4> TStructDataStorage<::test_cpp2::cpp_reflection::struct4>::isset_indexes = { {
   -1,
@@ -494,11 +494,11 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 5> TStructDataStora
   5,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 5> TStructDataStorage<::test_cpp2::cpp_reflection::struct5>::fields_types = { {
-  TType::T_I32,
-  TType::T_STRING,
-  TType::T_I32,
-  TType::T_STRUCT,
-  TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_STRING,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_STRUCT,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 5> TStructDataStorage<::test_cpp2::cpp_reflection::struct5>::isset_indexes = { {
   -1,
@@ -516,7 +516,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::test_cpp2::cpp_reflection::struct_binary>::fields_types = { {
-  TType::T_STRING,
+  apache::thrift::protocol::TType::T_STRING,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::test_cpp2::cpp_reflection::struct_binary>::isset_indexes = { {
   0,
@@ -534,9 +534,9 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 3> TStructDataStora
   3,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 3> TStructDataStorage<::test_cpp2::cpp_reflection::dep_A_struct>::fields_types = { {
-  TType::T_STRUCT,
-  TType::T_STRUCT,
-  TType::T_I32,
+  apache::thrift::protocol::TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_I32,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 3> TStructDataStorage<::test_cpp2::cpp_reflection::dep_A_struct>::isset_indexes = { {
   0,
@@ -556,9 +556,9 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 3> TStructDataStora
   3,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 3> TStructDataStorage<::test_cpp2::cpp_reflection::dep_B_struct>::fields_types = { {
-  TType::T_STRUCT,
-  TType::T_STRUCT,
-  TType::T_I32,
+  apache::thrift::protocol::TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_I32,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 3> TStructDataStorage<::test_cpp2::cpp_reflection::dep_B_struct>::isset_indexes = { {
   0,
@@ -574,7 +574,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::test_cpp2::cpp_reflection::annotated>::fields_types = { {
-  TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::test_cpp2::cpp_reflection::annotated>::isset_indexes = { {
   0,
@@ -642,34 +642,34 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 28> TStructDataStor
   28,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 28> TStructDataStorage<::test_cpp2::cpp_reflection::union_with_special_names>::fields_types = { {
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 28> TStructDataStorage<::test_cpp2::cpp_reflection::union_with_special_names>::isset_indexes = { {
   0,
@@ -764,34 +764,34 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 28> TStructDataStor
   28,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 28> TStructDataStorage<::test_cpp2::cpp_reflection::struct_with_special_names>::fields_types = { {
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 28> TStructDataStorage<::test_cpp2::cpp_reflection::struct_with_special_names>::isset_indexes = { {
   0,
@@ -832,7 +832,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::test_cpp2::cpp_reflection::StructWithFieldAdapter>::fields_types = { {
-  TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::test_cpp2::cpp_reflection::StructWithFieldAdapter>::isset_indexes = { {
   0,
@@ -846,7 +846,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter>::fields_types = { {
-  TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::test_cpp2::cpp_reflection::UnionWithTypedefFieldAdapter>::isset_indexes = { {
   0,

@@ -20,7 +20,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 1> TStructDataStora
   1,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 1> TStructDataStorage<::facebook::thrift::compiler::test::fixtures::default_values::TrivialStruct>::fields_types = { {
-  TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<::facebook::thrift::compiler::test::fixtures::default_values::TrivialStruct>::isset_indexes = { {
   0,
@@ -36,8 +36,8 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 2> TStructDataStora
   2,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 2> TStructDataStorage<::facebook::thrift::compiler::test::fixtures::default_values::TrivialStructWithDefault>::fields_types = { {
-  TType::T_I32,
-  TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 2> TStructDataStorage<::facebook::thrift::compiler::test::fixtures::default_values::TrivialStructWithDefault>::isset_indexes = { {
   0,
@@ -62,12 +62,12 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 6> TStructDataStora
   6,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 6> TStructDataStorage<::facebook::thrift::compiler::test::fixtures::default_values::StructWithNoCustomDefaultValues>::fields_types = { {
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_STRUCT,
-  TType::T_STRUCT,
-  TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_STRUCT,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 6> TStructDataStorage<::facebook::thrift::compiler::test::fixtures::default_values::StructWithNoCustomDefaultValues>::isset_indexes = { {
   0,
@@ -100,14 +100,14 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 8> TStructDataStora
   8,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 8> TStructDataStorage<::facebook::thrift::compiler::test::fixtures::default_values::StructWithCustomDefaultValues>::fields_types = { {
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_I32,
-  TType::T_STRUCT,
-  TType::T_STRUCT,
-  TType::T_STRUCT,
-  TType::T_STRUCT,
-  TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_I32,
+  apache::thrift::protocol::TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_STRUCT,
+  apache::thrift::protocol::TType::T_STRUCT,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 8> TStructDataStorage<::facebook::thrift::compiler::test::fixtures::default_values::StructWithCustomDefaultValues>::isset_indexes = { {
   0,
@@ -138,12 +138,12 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, 6> TStructDataStora
   6,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, 6> TStructDataStorage<::facebook::thrift::compiler::test::fixtures::default_values::StructWithCollectionDefaultValues>::fields_types = { {
-  TType::T_LIST,
-  TType::T_SET,
-  TType::T_MAP,
-  TType::T_LIST,
-  TType::T_SET,
-  TType::T_MAP,
+  apache::thrift::protocol::TType::T_LIST,
+  apache::thrift::protocol::TType::T_SET,
+  apache::thrift::protocol::TType::T_MAP,
+  apache::thrift::protocol::TType::T_LIST,
+  apache::thrift::protocol::TType::T_SET,
+  apache::thrift::protocol::TType::T_MAP,
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 6> TStructDataStorage<::facebook::thrift::compiler::test::fixtures::default_values::StructWithCollectionDefaultValues>::isset_indexes = { {
   0,

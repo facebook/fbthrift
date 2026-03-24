@@ -22,16 +22,16 @@ namespace module_constants {
   }
 
   /** Glean {"constant": "name"} */
-  constexpr char const * const name_ = "Mark Zuckerberg";
+  constexpr const char* const name_ = "Mark Zuckerberg";
   /** Glean {"constant": "name"} */
-  constexpr char const * name() {
+  constexpr const char* name() {
     return name_;
   }
 
   /** Glean {"constant": "multi_line_string"} */
-  constexpr char const * const multi_line_string_ = "This\nis a\nmulti line string.\n";
+  constexpr const char* const multi_line_string_ = "This\nis a\nmulti line string.\n";
   /** Glean {"constant": "multi_line_string"} */
-  constexpr char const * multi_line_string() {
+  constexpr const char* multi_line_string() {
     return multi_line_string_;
   }
 
@@ -88,9 +88,9 @@ namespace module_constants {
   }
 
   /** Glean {"constant": "foo"} */
-  constexpr char const * const foo_ = "foo";
+  constexpr const char* const foo_ = "foo";
   /** Glean {"constant": "foo"} */
-  constexpr char const * foo() {
+  constexpr const char* foo() {
     return foo_;
   }
 
@@ -183,37 +183,37 @@ namespace module_constants {
   ::cpp2::union2 const& u_2_6();
 
   /** Glean {"constant": "apostrophe"} */
-  constexpr char const * const apostrophe_ = "'";
+  constexpr const char* const apostrophe_ = "'";
   /** Glean {"constant": "apostrophe"} */
-  constexpr char const * apostrophe() {
+  constexpr const char* apostrophe() {
     return apostrophe_;
   }
 
   /** Glean {"constant": "tripleApostrophe"} */
-  constexpr char const * const tripleApostrophe_ = "'''";
+  constexpr const char* const tripleApostrophe_ = "'''";
   /** Glean {"constant": "tripleApostrophe"} */
-  constexpr char const * tripleApostrophe() {
+  constexpr const char* tripleApostrophe() {
     return tripleApostrophe_;
   }
 
   /** Glean {"constant": "quotationMark"} */
-  constexpr char const * const quotationMark_ = "\"";
+  constexpr const char* const quotationMark_ = "\"";
   /** Glean {"constant": "quotationMark"} */
-  constexpr char const * quotationMark() {
+  constexpr const char* quotationMark() {
     return quotationMark_;
   }
 
   /** Glean {"constant": "backslash"} */
-  constexpr char const * const backslash_ = "\\";
+  constexpr const char* const backslash_ = "\\";
   /** Glean {"constant": "backslash"} */
-  constexpr char const * backslash() {
+  constexpr const char* backslash() {
     return backslash_;
   }
 
   /** Glean {"constant": "escaped_a"} */
-  constexpr char const * const escaped_a_ = "a";
+  constexpr const char* const escaped_a_ = "a";
   /** Glean {"constant": "escaped_a"} */
-  constexpr char const * escaped_a() {
+  constexpr const char* escaped_a() {
     return escaped_a_;
   }
 
@@ -276,9 +276,9 @@ namespace module_constants {
   }
 
   /** Glean {"constant": "empty_string"} */
-  constexpr char const * const empty_string_ = "";
+  constexpr const char* const empty_string_ = "";
   /** Glean {"constant": "empty_string"} */
-  constexpr char const * empty_string() {
+  constexpr const char* empty_string() {
     return empty_string_;
   }
 

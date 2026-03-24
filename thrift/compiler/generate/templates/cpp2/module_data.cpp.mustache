@@ -45,7 +45,7 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int16_t, {{(array.len struct
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<protocol::TType, {{(array.len struct.fields)}}> TStructDataStorage<{{struct.cpp_fullname}}>::fields_types = { {
     {{#each struct.fields as |field|}}
-  TType::{{#partial types.protocol_type type=field.type}},
+  {{#partial types.protocol_type type=field.type}},
     {{/each}}
 }};
 THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, {{(array.len struct.fields)}}> TStructDataStorage<{{struct.cpp_fullname}}>::isset_indexes = { {

@@ -15,9 +15,9 @@
   limitations under the License.
 
 }}
-{{! TODO(T260006192): Post completion of Whisker migration, consider adding `TType::` prefix to this partial }}
 {{#let export partial protocol_type |type|}}
 {{#pragma ignore-newlines}}
+apache::thrift::protocol::TType::
 {{#if type.void?}}T_VOID
 {{#else if type.string_or_binary?}}T_STRING
 {{#else if type.bool?}}T_BOOL

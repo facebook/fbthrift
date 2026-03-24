@@ -17,7 +17,7 @@
 }}
 {{#import "common/fields" as fields}}
 
-{{#let export partial forward_declare |program|}}
+{{#let export partial forward_declare_structured_definitions |program|}}
 // BEGIN forward_declare
   {{#if program.structs?}}
 namespace {{program.cpp_qualified_namespace}} {

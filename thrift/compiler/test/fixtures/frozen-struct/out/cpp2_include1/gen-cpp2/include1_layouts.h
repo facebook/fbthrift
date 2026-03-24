@@ -8,7 +8,7 @@
 
 #include <thrift/lib/cpp2/frozen/Frozen.h>
 #include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/include1_types.h"
-namespace apache { namespace thrift { namespace frozen {
+namespace apache::thrift::frozen {
 
 
 FROZEN_TYPE(::some::ns::IncludedA,
@@ -24,4 +24,4 @@ FROZEN_TYPE(::some::ns::IncludedA,
     FROZEN_LOAD_FIELD(i32Field, 1)
     FROZEN_LOAD_FIELD(strField, 2)));
 
-}}} // apache::thrift::frozen
+} // apache::thrift::frozen

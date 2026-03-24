@@ -19,7 +19,7 @@
 {{! Constant value type - resolves the C++ type for a constant declaration }}
 {{#let export partial const_value_type |const|}}
 {{#pragma ignore-newlines}}
-{{#if const.type.string?}}char const *
+{{#if const.type.string?}}const char*
 {{#else if const.type.binary?}}::std::string_view
 {{#else}}{{const.cpp_type}}
 {{/if const.type.string?}}

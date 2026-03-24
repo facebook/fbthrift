@@ -49,7 +49,7 @@ void MyStruct::readNoXfer(Protocol_* iprot) {
           iprot,
           0,
           1,
-          apache::thrift::protocol::T_I32))) {
+          apache::thrift::protocol::TType::T_I32))) {
     goto _advance_failure;
   }
 _readField_myEnum:
@@ -62,7 +62,7 @@ _readField_myEnum:
           iprot,
           1,
           2,
-          apache::thrift::protocol::T_I32))) {
+          apache::thrift::protocol::TType::T_I32))) {
     goto _advance_failure;
   }
 _readField_myBigEnum:
@@ -98,7 +98,7 @@ _loop:
   switch (_readState.fieldId) {
     case 1:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_I32))) {
         goto _readField_myEnum;
       } else {
         goto _skip;
@@ -106,7 +106,7 @@ _loop:
     }
     case 2:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32))) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::TType::T_I32))) {
         goto _readField_myBigEnum;
       } else {
         goto _skip;
@@ -128,11 +128,11 @@ uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStruct");
   {
-    xfer += prot_->serializedFieldSize("myEnum", apache::thrift::protocol::T_I32, 1);
+    xfer += prot_->serializedFieldSize("myEnum", apache::thrift::protocol::TType::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::test::fixtures::enumstrict::MyEnum>::serializedSize<false>(*prot_, this->__fbthrift_field_myEnum);
   }
   {
-    xfer += prot_->serializedFieldSize("myBigEnum", apache::thrift::protocol::T_I32, 2);
+    xfer += prot_->serializedFieldSize("myBigEnum", apache::thrift::protocol::TType::T_I32, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::test::fixtures::enumstrict::MyBigEnum>::serializedSize<false>(*prot_, this->__fbthrift_field_myBigEnum);
   }
   xfer += prot_->serializedSizeStop();
@@ -144,11 +144,11 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStruct");
   {
-    xfer += prot_->serializedFieldSize("myEnum", apache::thrift::protocol::T_I32, 1);
+    xfer += prot_->serializedFieldSize("myEnum", apache::thrift::protocol::TType::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::test::fixtures::enumstrict::MyEnum>::serializedSize<false>(*prot_, this->__fbthrift_field_myEnum);
   }
   {
-    xfer += prot_->serializedFieldSize("myBigEnum", apache::thrift::protocol::T_I32, 2);
+    xfer += prot_->serializedFieldSize("myBigEnum", apache::thrift::protocol::TType::T_I32, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::test::fixtures::enumstrict::MyBigEnum>::serializedSize<false>(*prot_, this->__fbthrift_field_myBigEnum);
   }
   xfer += prot_->serializedSizeStop();
@@ -162,14 +162,14 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
   bool previousFieldHasValue = true;
   {
     constexpr int16_t kPrevFieldId = 0;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 1, kPrevFieldId>(*prot_, "myEnum", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 1, kPrevFieldId>(*prot_, "myEnum", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::test::fixtures::enumstrict::MyEnum>::write(*prot_, this->__fbthrift_field_myEnum);
     xfer += prot_->writeFieldEnd();
   }
   {
     constexpr int16_t kPrevFieldId = 1;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 2, kPrevFieldId>(*prot_, "myBigEnum", previousFieldHasValue);
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 2, kPrevFieldId>(*prot_, "myBigEnum", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::test::fixtures::enumstrict::MyBigEnum>::write(*prot_, this->__fbthrift_field_myBigEnum);
     xfer += prot_->writeFieldEnd();

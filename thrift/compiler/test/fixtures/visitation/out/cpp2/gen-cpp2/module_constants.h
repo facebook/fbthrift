@@ -22,9 +22,9 @@ namespace module_constants {
   }
 
   /** Glean {"constant": "constant2"} */
-  constexpr char const * const constant2_ = "hello";
+  constexpr const char* const constant2_ = "hello";
   /** Glean {"constant": "constant2"} */
-  constexpr char const * constant2() {
+  constexpr const char* constant2() {
     return constant2_;
   }
 
