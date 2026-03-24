@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import asyncio
 import sys
+import unittest
 from typing import AsyncGenerator, Callable, Generator, Tuple, TypeVar
 from unittest import IsolatedAsyncioTestCase
 
@@ -504,6 +505,61 @@ class BidiTests(IsolatedAsyncioTestCase):
                     stream_ex.message,
                     f"apache::thrift::TApplicationException: .*'{expected_msg}'",
                 )
+
+    @unittest.expectedFailure
+    async def test_bidi_stream_cancel_propagates_during_blocked_anext(self) -> None:
+        """
+        Bidi stream cancellation must work when __anext__ is in-flight.
+        When cancelAsyncGenerator calls aclose() on the server-side stream wrapper
+        while its __anext__() is blocked waiting for the next item from the handler's
+        generator, cancellation must propagate to the handler's generator.
+        """
+        generator_cleanup_event = asyncio.Event()
+        generator_blocked_event = asyncio.Event()
+
+        class BlockingBidiHandler(BidiHandler):
+            async def canThrow(
+                self,
+                where: ThrowWhere,
+                expected_throw: bool,
+            ) -> Callable[
+                [AsyncGenerator[int, None]],
+                AsyncGenerator[int, None],
+            ]:
+                async def callback(
+                    agen: AsyncGenerator[int, None],
+                ) -> AsyncGenerator[int, None]:
+                    try:
+                        yield 42
+                        generator_blocked_event.set()
+                        # Block forever; cancellation must interrupt this
+                        await asyncio.Future()
+                        yield 99  # Should never reach here
+                    finally:
+                        generator_cleanup_event.set()
+
+                return callback
+
+        async with TestServer(handler=BlockingBidiHandler(), ip="::1") as sa:
+            ip, port = sa.ip, sa.port
+            assert ip and port
+            async with get_client(
+                TestBidiService,
+                host=ip,
+                port=port,
+                client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
+            ) as client:
+                bidi = await client.canThrow(ThrowWhere.STREAM_AFTER_FIRST_CHUNK, False)
+                # Send some data to the sink so the server can start
+                await bidi.sink.sink(yield_ints(1, 3))
+                # Read the first stream item
+                first = await bidi.stream.__anext__()
+                self.assertEqual(first, 42)
+                # Ensure server generator is blocked in __anext__
+                await asyncio.wait_for(generator_blocked_event.wait(), timeout=5.0)
+            # Client disconnected; cancelAsyncGenerator fires on server side.
+            # Verify generator cleanup before server shutdown.
+            await asyncio.wait_for(generator_cleanup_event.wait(), timeout=5.0)
 
 
 class BidiHandler(TestBidiServiceInterface):
