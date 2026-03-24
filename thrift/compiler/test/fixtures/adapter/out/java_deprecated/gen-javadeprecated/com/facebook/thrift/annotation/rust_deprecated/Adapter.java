@@ -77,11 +77,26 @@ import com.facebook.thrift.protocol.*;
 public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparable<Adapter> {
   private static final TStruct STRUCT_DESC = new TStruct("Adapter");
   private static final TField NAME_FIELD_DESC = new TField("name", TType.STRING, (short)1);
+  private static final TField SERDE_FIELD_DESC = new TField("serde", TType.BOOL, (short)2);
 
   public String name;
+  /**
+   * If true, the adapter's `AdaptedType` is expected to implement
+   * `serde::Serialize` and `serde::Deserialize`. This allows the adapted field
+   * to be used in types that derive serde traits (via the `serde` codegen
+   * option or `@rust.Serde`).
+   * 
+   * If false (default), using this adapter on a field with serde enabled will
+   * produce a validation error, since the compiler cannot verify that the
+   * `AdaptedType` implements the required serde traits.
+   */
+  public boolean serde;
   public static final int NAME = 1;
+  public static final int SERDE = 2;
 
   // isset id assignments
+  private static final int __SERDE_ISSET_ID = 0;
+  private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
@@ -89,6 +104,8 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(NAME, new FieldMetaData("name", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.STRING)));
+    tmpMetaDataMap.put(SERDE, new FieldMetaData("serde", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.BOOL)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -97,16 +114,24 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
   }
 
   public Adapter() {
+    this.serde = false;
+
   }
 
   public Adapter(
-      String name) {
+      String name,
+      boolean serde) {
     this();
     this.name = name;
+    this.serde = serde;
+    setSerdeIsSet(true);
   }
 
   public static class Builder {
     private String name;
+    private boolean serde;
+
+    BitSet __optional_isset = new BitSet(1);
 
     public Builder() {
     }
@@ -116,9 +141,18 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
       return this;
     }
 
+    public Builder setSerde(final boolean serde) {
+      this.serde = serde;
+      __optional_isset.set(__SERDE_ISSET_ID, true);
+      return this;
+    }
+
     public Adapter build() {
       Adapter result = new Adapter();
       result.setName(this.name);
+      if (__optional_isset.get(__SERDE_ISSET_ID)) {
+        result.setSerde(this.serde);
+      }
       return result;
     }
   }
@@ -131,9 +165,12 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
    * Performs a deep copy on <i>other</i>.
    */
   public Adapter(Adapter other) {
+    __isset_bit_vector.clear();
+    __isset_bit_vector.or(other.__isset_bit_vector);
     if (other.isSetName()) {
       this.name = TBaseHelper.deepCopy(other.name);
     }
+    this.serde = TBaseHelper.deepCopy(other.serde);
   }
 
   public Adapter deepCopy() {
@@ -164,6 +201,49 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
     }
   }
 
+  /**
+   * If true, the adapter's `AdaptedType` is expected to implement
+   * `serde::Serialize` and `serde::Deserialize`. This allows the adapted field
+   * to be used in types that derive serde traits (via the `serde` codegen
+   * option or `@rust.Serde`).
+   * 
+   * If false (default), using this adapter on a field with serde enabled will
+   * produce a validation error, since the compiler cannot verify that the
+   * `AdaptedType` implements the required serde traits.
+   */
+  public boolean isSerde() {
+    return this.serde;
+  }
+
+  /**
+   * If true, the adapter's `AdaptedType` is expected to implement
+   * `serde::Serialize` and `serde::Deserialize`. This allows the adapted field
+   * to be used in types that derive serde traits (via the `serde` codegen
+   * option or `@rust.Serde`).
+   * 
+   * If false (default), using this adapter on a field with serde enabled will
+   * produce a validation error, since the compiler cannot verify that the
+   * `AdaptedType` implements the required serde traits.
+   */
+  public Adapter setSerde(boolean serde) {
+    this.serde = serde;
+    setSerdeIsSet(true);
+    return this;
+  }
+
+  public void unsetSerde() {
+    __isset_bit_vector.clear(__SERDE_ISSET_ID);
+  }
+
+  // Returns true if field serde is set (has been assigned a value) and false otherwise
+  public boolean isSetSerde() {
+    return __isset_bit_vector.get(__SERDE_ISSET_ID);
+  }
+
+  public void setSerdeIsSet(boolean __value) {
+    __isset_bit_vector.set(__SERDE_ISSET_ID, __value);
+  }
+
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case NAME:
@@ -171,6 +251,14 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
         unsetName();
       } else {
         setName((String)__value);
+      }
+      break;
+
+    case SERDE:
+      if (__value == null) {
+        unsetSerde();
+      } else {
+        setSerde((Boolean)__value);
       }
       break;
 
@@ -183,6 +271,9 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
     switch (fieldID) {
     case NAME:
       return getName();
+
+    case SERDE:
+      return new Boolean(isSerde());
 
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -201,12 +292,14 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
 
     if (!TBaseHelper.equalsNobinary(this.isSetName(), that.isSetName(), this.name, that.name)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.serde, that.serde)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {name});
+    return Arrays.deepHashCode(new Object[] {name, serde});
   }
 
   @Override
@@ -229,6 +322,14 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
     if (lastComparison != 0) { 
       return lastComparison;
     }
+    lastComparison = Boolean.valueOf(isSetSerde()).compareTo(other.isSetSerde());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(serde, other.serde);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
     return 0;
   }
 
@@ -246,6 +347,14 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
         case NAME:
           if (__field.type == TType.STRING) {
             this.name = iprot.readString();
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case SERDE:
+          if (__field.type == TType.BOOL) {
+            this.serde = iprot.readBool();
+            setSerdeIsSet(true);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
@@ -272,6 +381,9 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
       oprot.writeString(this.name);
       oprot.writeFieldEnd();
     }
+    oprot.writeFieldBegin(SERDE_FIELD_DESC);
+    oprot.writeBool(this.serde);
+    oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -301,6 +413,13 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable, Comparab
     } else {
       sb.append(TBaseHelper.toString(this.getName(), indent + 1, prettyPrint));
     }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("serde");
+    sb.append(space);
+    sb.append(":").append(space);
+    sb.append(TBaseHelper.toString(this.isSerde(), indent + 1, prettyPrint));
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
     sb.append(")");

@@ -77,13 +77,28 @@ import com.facebook.thrift.protocol.*;
 public class Adapter implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("Adapter");
   private static final TField NAME_FIELD_DESC = new TField("name", TType.STRING, (short)1);
+  private static final TField SERDE_FIELD_DESC = new TField("serde", TType.BOOL, (short)2);
 
   public final String name;
+  /**
+   * If true, the adapter's `AdaptedType` is expected to implement
+   * `serde::Serialize` and `serde::Deserialize`. This allows the adapted field
+   * to be used in types that derive serde traits (via the `serde` codegen
+   * option or `@rust.Serde`).
+   * 
+   * If false (default), using this adapter on a field with serde enabled will
+   * produce a validation error, since the compiler cannot verify that the
+   * `AdaptedType` implements the required serde traits.
+   */
+  public final Boolean serde;
   public static final int NAME = 1;
+  public static final int SERDE = 2;
 
   public Adapter(
-      String name) {
+      String name,
+      Boolean serde) {
     this.name = name;
+    this.serde = serde;
   }
 
   /**
@@ -94,6 +109,11 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable {
       this.name = TBaseHelper.deepCopy(other.name);
     } else {
       this.name = null;
+    }
+    if (other.isSetSerde()) {
+      this.serde = TBaseHelper.deepCopy(other.serde);
+    } else {
+      this.serde = null;
     }
   }
 
@@ -110,6 +130,25 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable {
     return this.name != null;
   }
 
+  /**
+   * If true, the adapter's `AdaptedType` is expected to implement
+   * `serde::Serialize` and `serde::Deserialize`. This allows the adapted field
+   * to be used in types that derive serde traits (via the `serde` codegen
+   * option or `@rust.Serde`).
+   * 
+   * If false (default), using this adapter on a field with serde enabled will
+   * produce a validation error, since the compiler cannot verify that the
+   * `AdaptedType` implements the required serde traits.
+   */
+  public Boolean isSerde() {
+    return this.serde;
+  }
+
+  // Returns true if field serde is set (has been assigned a value) and false otherwise
+  public boolean isSetSerde() {
+    return this.serde != null;
+  }
+
   @Override
   public boolean equals(Object _that) {
     if (_that == null)
@@ -122,12 +161,14 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable {
 
     if (!TBaseHelper.equalsNobinary(this.isSetName(), that.isSetName(), this.name, that.name)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetSerde(), that.isSetSerde(), this.serde, that.serde)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {name});
+    return Arrays.deepHashCode(new Object[] {name, serde});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -137,6 +178,7 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable {
 
   public static Adapter deserialize(TProtocol iprot) throws TException {
     String tmp_name = null;
+    Boolean tmp_serde = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -154,6 +196,13 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case SERDE:
+          if (__field.type == TType.BOOL) {
+            tmp_serde = iprot.readBool();
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -165,6 +214,7 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable {
     Adapter _that;
     _that = new Adapter(
       tmp_name
+      ,tmp_serde
     );
     _that.validate();
     return _that;
@@ -177,6 +227,11 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable {
     if (this.name != null) {
       oprot.writeFieldBegin(NAME_FIELD_DESC);
       oprot.writeString(this.name);
+      oprot.writeFieldEnd();
+    }
+    if (this.serde != null) {
+      oprot.writeFieldBegin(SERDE_FIELD_DESC);
+      oprot.writeBool(this.serde);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();

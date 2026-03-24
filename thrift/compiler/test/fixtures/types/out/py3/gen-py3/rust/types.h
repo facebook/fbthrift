@@ -115,6 +115,9 @@ inline void reset_field<::facebook::thrift::annotation::rust::Adapter>(
     case 0:
       obj.name_ref().copy_from(default_inst<::facebook::thrift::annotation::rust::Adapter>().name_ref());
       return;
+    case 1:
+      obj.serde_ref().copy_from(default_inst<::facebook::thrift::annotation::rust::Adapter>().serde_ref());
+      return;
   }
 }
 

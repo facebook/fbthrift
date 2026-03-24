@@ -1337,27 +1337,49 @@ class Adapter implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftSha
       'var' => 'name',
       'type' => \TType::STRING,
     ),
+    2 => shape(
+      'var' => 'serde',
+      'type' => \TType::BOOL,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'name' => 1,
+    'serde' => 2,
   ];
 
   const type TConstructorShape = shape(
     ?'name' => ?string,
+    ?'serde' => ?bool,
   );
 
   const type TShape = shape(
     'name' => string,
+    'serde' => bool,
   );
-  const int STRUCTURAL_ID = 7068917836668558637;
+  const int STRUCTURAL_ID = 1439977277193223242;
   /**
    * Original thrift field:-
    * 1: string name
    */
   public string $name;
+  /**
+   * If true, the adapter's `AdaptedType` is expected to implement
+   * `serde::Serialize` and `serde::Deserialize`. This allows the adapted field
+   * to be used in types that derive serde traits (via the `serde` codegen
+   * option or `@rust.Serde`).
+   * 
+   * If false (default), using this adapter on a field with serde enabled will
+   * produce a validation error, since the compiler cannot verify that the
+   * `AdaptedType` implements the required serde traits.
+   * 
+   * Original thrift field:-
+   * 2: bool serde
+   */
+  public bool $serde;
 
-  public function __construct(?string $name = null)[] {
+  public function __construct(?string $name = null, ?bool $serde = null)[] {
     $this->name = $name ?? '';
+    $this->serde = $serde ?? false;
   }
 
   public static function withDefaultValues()[]: this {
@@ -1367,6 +1389,7 @@ class Adapter implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftSha
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'name'),
+      Shapes::idx($shape, 'serde'),
     );
   }
 
@@ -1390,6 +1413,17 @@ class Adapter implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftSha
               "name" => "name",
             )
           ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
+                )
+              ),
+              "name" => "serde",
+            )
+          ),
         ],
         "is_union" => false,
       )
@@ -1411,12 +1445,14 @@ class Adapter implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftSha
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       $shape['name'],
+      $shape['serde'],
     );
   }
 
   public function __toShape()[]: self::TShape {
     return shape(
       'name' => $this->name,
+      'serde' => $this->serde,
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -1432,6 +1468,9 @@ class Adapter implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftSha
 
     if (idx($parsed, 'name') !== null) {
       $this->name = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['name']);
+    }
+    if (idx($parsed, 'serde') !== null) {
+      $this->serde = HH\FIXME\UNSAFE_CAST<mixed, bool>($parsed['serde']);
     }
   }
 

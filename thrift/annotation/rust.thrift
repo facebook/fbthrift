@@ -344,6 +344,17 @@ struct Mod {
 @scope.Struct
 struct Adapter {
   1: string name;
+  /**
+   * If true, the adapter's `AdaptedType` is expected to implement
+   * `serde::Serialize` and `serde::Deserialize`. This allows the adapted field
+   * to be used in types that derive serde traits (via the `serde` codegen
+   * option or `@rust.Serde`).
+   *
+   * If false (default), using this adapter on a field with serde enabled will
+   * produce a validation error, since the compiler cannot verify that the
+   * `AdaptedType` implements the required serde traits.
+   */
+  2: bool serde = false;
 }
 
 /**

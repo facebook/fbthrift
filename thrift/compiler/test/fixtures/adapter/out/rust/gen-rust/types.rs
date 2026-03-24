@@ -1310,6 +1310,7 @@ impl ::fbthrift::metadata::ThriftAnnotations for Foo {
                 if type_id == ::std::any::TypeId::of::<rust__types::Adapter>() {
                     let mut tmp = ::std::option::Option::Some(rust__types::Adapter {
                         name: "::my::Adapter1".to_owned(),
+                        serde: false,
                         ..::std::default::Default::default()
                     });
                     let r: &mut dyn ::std::any::Any = &mut tmp;
@@ -1365,6 +1366,7 @@ impl ::fbthrift::metadata::ThriftAnnotations for Foo {
                 if type_id == ::std::any::TypeId::of::<rust__types::Adapter>() {
                     let mut tmp = ::std::option::Option::Some(rust__types::Adapter {
                         name: "::my::Adapter1".to_owned(),
+                        serde: false,
                         ..::std::default::Default::default()
                     });
                     let r: &mut dyn ::std::any::Any = &mut tmp;
@@ -1420,6 +1422,7 @@ impl ::fbthrift::metadata::ThriftAnnotations for Foo {
                 if type_id == ::std::any::TypeId::of::<rust__types::Adapter>() {
                     let mut tmp = ::std::option::Option::Some(rust__types::Adapter {
                         name: "::my::Adapter1".to_owned(),
+                        serde: false,
                         ..::std::default::Default::default()
                     });
                     let r: &mut dyn ::std::any::Any = &mut tmp;
@@ -1479,6 +1482,7 @@ impl ::fbthrift::metadata::ThriftAnnotations for Foo {
                 if type_id == ::std::any::TypeId::of::<rust__types::Adapter>() {
                     let mut tmp = ::std::option::Option::Some(rust__types::Adapter {
                         name: "::my::Adapter3".to_owned(),
+                        serde: false,
                         ..::std::default::Default::default()
                     });
                     let r: &mut dyn ::std::any::Any = &mut tmp;
@@ -1534,6 +1538,7 @@ impl ::fbthrift::metadata::ThriftAnnotations for Foo {
                 if type_id == ::std::any::TypeId::of::<rust__types::Adapter>() {
                     let mut tmp = ::std::option::Option::Some(rust__types::Adapter {
                         name: "::my::Adapter3".to_owned(),
+                        serde: false,
                         ..::std::default::Default::default()
                     });
                     let r: &mut dyn ::std::any::Any = &mut tmp;
@@ -1589,6 +1594,7 @@ impl ::fbthrift::metadata::ThriftAnnotations for Foo {
                 if type_id == ::std::any::TypeId::of::<rust__types::Adapter>() {
                     let mut tmp = ::std::option::Option::Some(rust__types::Adapter {
                         name: "::my::Adapter3".to_owned(),
+                        serde: false,
                         ..::std::default::Default::default()
                     });
                     let r: &mut dyn ::std::any::Any = &mut tmp;
@@ -1651,6 +1657,7 @@ impl ::fbthrift::metadata::ThriftAnnotations for Foo {
                 if type_id == ::std::any::TypeId::of::<rust__types::Adapter>() {
                     let mut tmp = ::std::option::Option::Some(rust__types::Adapter {
                         name: "::my::Adapter2".to_owned(),
+                        serde: false,
                         ..::std::default::Default::default()
                     });
                     let r: &mut dyn ::std::any::Any = &mut tmp;
@@ -1953,6 +1960,7 @@ impl ::fbthrift::metadata::ThriftAnnotations for Baz {
                 if type_id == ::std::any::TypeId::of::<rust__types::Adapter>() {
                     let mut tmp = ::std::option::Option::Some(rust__types::Adapter {
                         name: "::my::Adapter1".to_owned(),
+                        serde: false,
                         ..::std::default::Default::default()
                     });
                     let r: &mut dyn ::std::any::Any = &mut tmp;
@@ -2010,6 +2018,7 @@ impl ::fbthrift::metadata::ThriftAnnotations for Baz {
                 if type_id == ::std::any::TypeId::of::<rust__types::Adapter>() {
                     let mut tmp = ::std::option::Option::Some(rust__types::Adapter {
                         name: "::my::Adapter3".to_owned(),
+                        serde: false,
                         ..::std::default::Default::default()
                     });
                     let r: &mut dyn ::std::any::Any = &mut tmp;
@@ -2065,6 +2074,7 @@ impl ::fbthrift::metadata::ThriftAnnotations for Baz {
                 if type_id == ::std::any::TypeId::of::<rust__types::Adapter>() {
                     let mut tmp = ::std::option::Option::Some(rust__types::Adapter {
                         name: "::my::Adapter1".to_owned(),
+                        serde: false,
                         ..::std::default::Default::default()
                     });
                     let r: &mut dyn ::std::any::Any = &mut tmp;
@@ -2951,6 +2961,7 @@ impl ::fbthrift::metadata::ThriftAnnotations for StructWithFieldAdapter {
                 if type_id == ::std::any::TypeId::of::<rust__types::Adapter>() {
                     let mut tmp = ::std::option::Option::Some(rust__types::Adapter {
                         name: "::my::Adapter1<>".to_owned(),
+                        serde: false,
                         ..::std::default::Default::default()
                     });
                     let r: &mut dyn ::std::any::Any = &mut tmp;
@@ -3045,6 +3056,7 @@ impl ::fbthrift::metadata::ThriftAnnotations for StructWithFieldAdapter {
                 if type_id == ::std::any::TypeId::of::<rust__types::Adapter>() {
                     let mut tmp = ::std::option::Option::Some(rust__types::Adapter {
                         name: "::my::Adapter1<>".to_owned(),
+                        serde: false,
                         ..::std::default::Default::default()
                     });
                     let r: &mut dyn ::std::any::Any = &mut tmp;
@@ -4839,6 +4851,7 @@ impl ::fbthrift::metadata::ThriftAnnotations for AdaptTemplatedTestStruct {
                 if type_id == ::std::any::TypeId::of::<rust__types::Adapter>() {
                     let mut tmp = ::std::option::Option::Some(rust__types::Adapter {
                         name: "::fbthrift_adapters::test::TestAdapter".to_owned(),
+                        serde: false,
                         ..::std::default::Default::default()
                     });
                     let r: &mut dyn ::std::any::Any = &mut tmp;
@@ -4869,6 +4882,7 @@ impl ::fbthrift::metadata::ThriftAnnotations for AdaptTemplatedTestStruct {
                 if type_id == ::std::any::TypeId::of::<rust__types::Adapter>() {
                     let mut tmp = ::std::option::Option::Some(rust__types::Adapter {
                         name: "::fbthrift_adapters::test::TestAdapter".to_owned(),
+                        serde: false,
                         ..::std::default::Default::default()
                     });
                     let r: &mut dyn ::std::any::Any = &mut tmp;
@@ -4899,6 +4913,7 @@ impl ::fbthrift::metadata::ThriftAnnotations for AdaptTemplatedTestStruct {
                 if type_id == ::std::any::TypeId::of::<rust__types::Adapter>() {
                     let mut tmp = ::std::option::Option::Some(rust__types::Adapter {
                         name: "::fbthrift_adapters::test::TestAdapter".to_owned(),
+                        serde: false,
                         ..::std::default::Default::default()
                     });
                     let r: &mut dyn ::std::any::Any = &mut tmp;

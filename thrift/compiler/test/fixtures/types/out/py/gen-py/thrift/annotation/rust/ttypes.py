@@ -1291,6 +1291,14 @@ class Adapter:
   
   Attributes:
    - name
+   - serde: If true, the adapter's `AdaptedType` is expected to implement
+  `serde::Serialize` and `serde::Deserialize`. This allows the adapted field
+  to be used in types that derive serde traits (via the `serde` codegen
+  option or `@rust.Serde`).
+  
+  If false (default), using this adapter on a field with serde enabled will
+  produce a validation error, since the compiler cannot verify that the
+  `AdaptedType` implements the required serde traits.
   """
 
   thrift_spec = None
@@ -1318,6 +1326,11 @@ class Adapter:
           self.name = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
         else:
           iprot.skip(ftype)
+      elif fid == 2:
+        if ftype == TType.BOOL:
+          self.serde = iprot.readBool()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -1335,6 +1348,10 @@ class Adapter:
       oprot.writeFieldBegin('name', TType.STRING, 1)
       oprot.writeString(self.name.encode('utf-8')) if UTF8STRINGS and not isinstance(self.name, bytes) else oprot.writeString(self.name)
       oprot.writeFieldEnd()
+    if self.serde != None:
+      oprot.writeFieldBegin('serde', TType.BOOL, 2)
+      oprot.writeBool(self.serde)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -1345,6 +1362,10 @@ class Adapter:
       value = pprint.pformat(self.name, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    name=%s' % (value))
+    if self.serde is not None:
+      value = pprint.pformat(self.serde, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    serde=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -1359,6 +1380,7 @@ class Adapter:
   def __dir__(self):
     return (
       'name',
+      'serde',
     )
 
   __hash__ = object.__hash__
@@ -1923,6 +1945,7 @@ Mod.__setstate__ = Mod__setstate__
 all_structs.append(Adapter)
 Adapter.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
   (1, TType.STRING, 'name', True, None, 2, ), # 1
+  (2, TType.BOOL, 'serde', None, False, 2, ), # 2
 )))
 
 Adapter.thrift_struct_annotations = {
@@ -1930,13 +1953,15 @@ Adapter.thrift_struct_annotations = {
 Adapter.thrift_field_annotations = {
 }
 
-def Adapter__init__(self, name=None,):
+def Adapter__init__(self, name=None, serde=Adapter.thrift_spec[2][4],):
   self.name = name
+  self.serde = serde
 
 Adapter.__init__ = Adapter__init__
 
 def Adapter__setstate__(self, state):
   state.setdefault('name', None)
+  state.setdefault('serde', False)
   self.__dict__ = state
 
 Adapter.__getstate__ = lambda self: self.__dict__.copy()
