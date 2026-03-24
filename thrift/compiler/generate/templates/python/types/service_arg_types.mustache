@@ -75,7 +75,7 @@ class {{#partial m_functions.args_type service=service function=function}}(metac
 class _fbthrift_{{service.name}}_{{function.name}}_result(metaclass={{#partial m_types.struct_metaclass}}):
     _fbthrift_disable_field_cache_DO_NOT_USE = True
     _fbthrift_SPEC = (
-        {{#let regular_response_type = function.return_type.true_type}}
+        {{#let regular_response_type = function.return_type}}
           {{#if (not regular_response_type.void?)}}
         {{#partial success_result_field_info type=regular_response_type}}
           {{/if (not regular_response_type.void?)}}
