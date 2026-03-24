@@ -346,7 +346,7 @@ Json5ProtocolReader::EnumReadResult Json5ProtocolReader::parseEnumString(
   // matches bare identifier "NAME"
   static const re2::RE2 kNameOnlyPattern = R"(^\w+$)";
   if (re2::RE2::FullMatch(s, kNameOnlyPattern)) {
-    return {.name = std::move(s)};
+    return {.name = std::move(s), .value = std::nullopt};
   }
 
   throwError(fmt::format("invalid enum value: '{}'", s));
