@@ -18,6 +18,7 @@ import apache.thrift.metadata.thrift_types as _fbthrift_metadata
 import thrift.python.mutable_containers as _fbthrift_python_mutable_containers
 from thrift.python.mutable_serializer import serialize_iobuf, deserialize, Protocol
 from thrift.python.server import ServiceInterface as _fbthrift_ServiceInterface, RpcKind, PythonUserException
+from thrift.python.streaming.closeable import CloseableGenerator, UserExceptionMeta
 
 import module.thrift_mutable_types as _fbthrift__module__thrift_mutable_types
 import module.thrift_metadata as _fbthrift__module__thrift_metadata
@@ -66,9 +67,13 @@ class PubSubStreamingServiceInterface(
         ) -> _typing.Awaitable[_typing.AsyncIterator[builtins.int]] | _typing.AsyncIterator[builtins.int]:
         raise NotImplementedError("async def returnstream is not implemented")
 
-    async def _fbthrift__stream_wrapper_returnstream(self, stream_generator: _typing.AsyncIterator[builtins.int], protocol: Protocol) -> _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]:
-        async for item in stream_generator:
-            yield serialize_iobuf(_fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_returnstream_result_stream_elem(success=item), protocol)
+    def _fbthrift__stream_wrapper_returnstream(self, stream_generator: _typing.AsyncIterator[builtins.int], protocol: Protocol) -> _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]:
+        return CloseableGenerator(
+            stream_generator,
+            protocol,
+            _fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_returnstream_result_stream_elem,
+            (),
+        )
 
     async def _fbthrift__handler_returnstream(self, args: _fbthrift_iobuf.IOBuf, protocol: Protocol) -> _typing.Tuple[_fbthrift_iobuf.IOBuf, _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]]:
         args_struct = deserialize(_fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_returnstream_args, args, protocol)
@@ -87,15 +92,15 @@ class PubSubStreamingServiceInterface(
         ) -> _typing.Awaitable[_typing.AsyncIterator[builtins.int]] | _typing.AsyncIterator[builtins.int]:
         raise NotImplementedError("async def streamthrows is not implemented")
 
-    async def _fbthrift__stream_wrapper_streamthrows(self, stream_generator: _typing.AsyncIterator[builtins.int], protocol: Protocol) -> _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]:
-        try:
-            async for item in stream_generator:
-                yield serialize_iobuf(_fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_streamthrows_result_stream_elem(success=item), protocol)
-        except _fbthrift__module__thrift_mutable_types.FooStreamEx as e:
-            return_struct = _fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_streamthrows_result_stream_elem(_ex0__e=e)
-            buf = serialize_iobuf(return_struct, protocol)
-            exp = PythonUserException('FooStreamEx', str(e), buf)
-            raise exp
+    def _fbthrift__stream_wrapper_streamthrows(self, stream_generator: _typing.AsyncIterator[builtins.int], protocol: Protocol) -> _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]:
+        return CloseableGenerator(
+            stream_generator,
+            protocol,
+            _fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_streamthrows_result_stream_elem,
+            (
+                UserExceptionMeta(_fbthrift__module__thrift_mutable_types.FooStreamEx, "_ex0__e", 'FooStreamEx'),
+            ),
+        )
 
     async def _fbthrift__handler_streamthrows(self, args: _fbthrift_iobuf.IOBuf, protocol: Protocol) -> _typing.Tuple[_fbthrift_iobuf.IOBuf, _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]]:
         args_struct = deserialize(_fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_streamthrows_args, args, protocol)
@@ -114,9 +119,13 @@ class PubSubStreamingServiceInterface(
         ) -> _typing.Awaitable[_typing.AsyncIterator[builtins.int]] | _typing.AsyncIterator[builtins.int]:
         raise NotImplementedError("async def servicethrows is not implemented")
 
-    async def _fbthrift__stream_wrapper_servicethrows(self, stream_generator: _typing.AsyncIterator[builtins.int], protocol: Protocol) -> _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]:
-        async for item in stream_generator:
-            yield serialize_iobuf(_fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_servicethrows_result_stream_elem(success=item), protocol)
+    def _fbthrift__stream_wrapper_servicethrows(self, stream_generator: _typing.AsyncIterator[builtins.int], protocol: Protocol) -> _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]:
+        return CloseableGenerator(
+            stream_generator,
+            protocol,
+            _fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_servicethrows_result_stream_elem,
+            (),
+        )
 
     async def _fbthrift__handler_servicethrows(self, args: _fbthrift_iobuf.IOBuf, protocol: Protocol) -> _typing.Tuple[_fbthrift_iobuf.IOBuf, _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]]:
         args_struct = deserialize(_fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_servicethrows_args, args, protocol)
@@ -141,9 +150,13 @@ class PubSubStreamingServiceInterface(
         ) -> _typing.Awaitable[_typing.AsyncIterator[builtins.int]] | _typing.AsyncIterator[builtins.int]:
         raise NotImplementedError("async def servicethrows2 is not implemented")
 
-    async def _fbthrift__stream_wrapper_servicethrows2(self, stream_generator: _typing.AsyncIterator[builtins.int], protocol: Protocol) -> _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]:
-        async for item in stream_generator:
-            yield serialize_iobuf(_fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_servicethrows2_result_stream_elem(success=item), protocol)
+    def _fbthrift__stream_wrapper_servicethrows2(self, stream_generator: _typing.AsyncIterator[builtins.int], protocol: Protocol) -> _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]:
+        return CloseableGenerator(
+            stream_generator,
+            protocol,
+            _fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_servicethrows2_result_stream_elem,
+            (),
+        )
 
     async def _fbthrift__handler_servicethrows2(self, args: _fbthrift_iobuf.IOBuf, protocol: Protocol) -> _typing.Tuple[_fbthrift_iobuf.IOBuf, _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]]:
         args_struct = deserialize(_fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_servicethrows2_args, args, protocol)
@@ -173,15 +186,15 @@ class PubSubStreamingServiceInterface(
         ) -> _typing.Awaitable[_typing.AsyncIterator[builtins.int]] | _typing.AsyncIterator[builtins.int]:
         raise NotImplementedError("async def boththrows is not implemented")
 
-    async def _fbthrift__stream_wrapper_boththrows(self, stream_generator: _typing.AsyncIterator[builtins.int], protocol: Protocol) -> _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]:
-        try:
-            async for item in stream_generator:
-                yield serialize_iobuf(_fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_boththrows_result_stream_elem(success=item), protocol)
-        except _fbthrift__module__thrift_mutable_types.FooStreamEx as e:
-            return_struct = _fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_boththrows_result_stream_elem(_ex0__e=e)
-            buf = serialize_iobuf(return_struct, protocol)
-            exp = PythonUserException('FooStreamEx', str(e), buf)
-            raise exp
+    def _fbthrift__stream_wrapper_boththrows(self, stream_generator: _typing.AsyncIterator[builtins.int], protocol: Protocol) -> _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]:
+        return CloseableGenerator(
+            stream_generator,
+            protocol,
+            _fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_boththrows_result_stream_elem,
+            (
+                UserExceptionMeta(_fbthrift__module__thrift_mutable_types.FooStreamEx, "_ex0__e", 'FooStreamEx'),
+            ),
+        )
 
     async def _fbthrift__handler_boththrows(self, args: _fbthrift_iobuf.IOBuf, protocol: Protocol) -> _typing.Tuple[_fbthrift_iobuf.IOBuf, _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]]:
         args_struct = deserialize(_fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_boththrows_args, args, protocol)
@@ -206,15 +219,15 @@ class PubSubStreamingServiceInterface(
         ) -> _typing.Tuple[builtins.int, _typing.Awaitable[_typing.AsyncIterator[builtins.int]] | _typing.AsyncIterator[builtins.int]]:
         raise NotImplementedError("async def responseandstreamstreamthrows is not implemented")
 
-    async def _fbthrift__stream_wrapper_responseandstreamstreamthrows(self, stream_generator: _typing.AsyncIterator[builtins.int], protocol: Protocol) -> _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]:
-        try:
-            async for item in stream_generator:
-                yield serialize_iobuf(_fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_responseandstreamstreamthrows_result_stream_elem(success=item), protocol)
-        except _fbthrift__module__thrift_mutable_types.FooStreamEx as e:
-            return_struct = _fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_responseandstreamstreamthrows_result_stream_elem(_ex0__e=e)
-            buf = serialize_iobuf(return_struct, protocol)
-            exp = PythonUserException('FooStreamEx', str(e), buf)
-            raise exp
+    def _fbthrift__stream_wrapper_responseandstreamstreamthrows(self, stream_generator: _typing.AsyncIterator[builtins.int], protocol: Protocol) -> _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]:
+        return CloseableGenerator(
+            stream_generator,
+            protocol,
+            _fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_responseandstreamstreamthrows_result_stream_elem,
+            (
+                UserExceptionMeta(_fbthrift__module__thrift_mutable_types.FooStreamEx, "_ex0__e", 'FooStreamEx'),
+            ),
+        )
 
     async def _fbthrift__handler_responseandstreamstreamthrows(self, args: _fbthrift_iobuf.IOBuf, protocol: Protocol) -> _typing.Tuple[_fbthrift_iobuf.IOBuf, _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]]:
         args_struct = deserialize(_fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_responseandstreamstreamthrows_args, args, protocol)
@@ -233,9 +246,13 @@ class PubSubStreamingServiceInterface(
         ) -> _typing.Tuple[builtins.int, _typing.Awaitable[_typing.AsyncIterator[builtins.int]] | _typing.AsyncIterator[builtins.int]]:
         raise NotImplementedError("async def responseandstreamservicethrows is not implemented")
 
-    async def _fbthrift__stream_wrapper_responseandstreamservicethrows(self, stream_generator: _typing.AsyncIterator[builtins.int], protocol: Protocol) -> _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]:
-        async for item in stream_generator:
-            yield serialize_iobuf(_fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_responseandstreamservicethrows_result_stream_elem(success=item), protocol)
+    def _fbthrift__stream_wrapper_responseandstreamservicethrows(self, stream_generator: _typing.AsyncIterator[builtins.int], protocol: Protocol) -> _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]:
+        return CloseableGenerator(
+            stream_generator,
+            protocol,
+            _fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_responseandstreamservicethrows_result_stream_elem,
+            (),
+        )
 
     async def _fbthrift__handler_responseandstreamservicethrows(self, args: _fbthrift_iobuf.IOBuf, protocol: Protocol) -> _typing.Tuple[_fbthrift_iobuf.IOBuf, _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]]:
         args_struct = deserialize(_fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_responseandstreamservicethrows_args, args, protocol)
@@ -260,15 +277,15 @@ class PubSubStreamingServiceInterface(
         ) -> _typing.Tuple[builtins.int, _typing.Awaitable[_typing.AsyncIterator[builtins.int]] | _typing.AsyncIterator[builtins.int]]:
         raise NotImplementedError("async def responseandstreamboththrows is not implemented")
 
-    async def _fbthrift__stream_wrapper_responseandstreamboththrows(self, stream_generator: _typing.AsyncIterator[builtins.int], protocol: Protocol) -> _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]:
-        try:
-            async for item in stream_generator:
-                yield serialize_iobuf(_fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_responseandstreamboththrows_result_stream_elem(success=item), protocol)
-        except _fbthrift__module__thrift_mutable_types.FooStreamEx as e:
-            return_struct = _fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_responseandstreamboththrows_result_stream_elem(_ex0__e=e)
-            buf = serialize_iobuf(return_struct, protocol)
-            exp = PythonUserException('FooStreamEx', str(e), buf)
-            raise exp
+    def _fbthrift__stream_wrapper_responseandstreamboththrows(self, stream_generator: _typing.AsyncIterator[builtins.int], protocol: Protocol) -> _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]:
+        return CloseableGenerator(
+            stream_generator,
+            protocol,
+            _fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_responseandstreamboththrows_result_stream_elem,
+            (
+                UserExceptionMeta(_fbthrift__module__thrift_mutable_types.FooStreamEx, "_ex0__e", 'FooStreamEx'),
+            ),
+        )
 
     async def _fbthrift__handler_responseandstreamboththrows(self, args: _fbthrift_iobuf.IOBuf, protocol: Protocol) -> _typing.Tuple[_fbthrift_iobuf.IOBuf, _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]]:
         args_struct = deserialize(_fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_responseandstreamboththrows_args, args, protocol)
@@ -294,9 +311,13 @@ class PubSubStreamingServiceInterface(
         ) -> _typing.Awaitable[_typing.AsyncIterator[builtins.int]] | _typing.AsyncIterator[builtins.int]:
         raise NotImplementedError("async def returnstreamFast is not implemented")
 
-    async def _fbthrift__stream_wrapper_returnstreamFast(self, stream_generator: _typing.AsyncIterator[builtins.int], protocol: Protocol) -> _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]:
-        async for item in stream_generator:
-            yield serialize_iobuf(_fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_returnstreamFast_result_stream_elem(success=item), protocol)
+    def _fbthrift__stream_wrapper_returnstreamFast(self, stream_generator: _typing.AsyncIterator[builtins.int], protocol: Protocol) -> _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]:
+        return CloseableGenerator(
+            stream_generator,
+            protocol,
+            _fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_returnstreamFast_result_stream_elem,
+            (),
+        )
 
     async def _fbthrift__handler_returnstreamFast(self, args: _fbthrift_iobuf.IOBuf, protocol: Protocol) -> _typing.Tuple[_fbthrift_iobuf.IOBuf, _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]]:
         args_struct = deserialize(_fbthrift__module__thrift_mutable_types._fbthrift_PubSubStreamingService_returnstreamFast_args, args, protocol)

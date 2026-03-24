@@ -197,7 +197,6 @@ class StreamClientTest(unittest.IsolatedAsyncioTestCase):
                 res = [n async for n in stream]
                 self.assertEqual(res, list(range(10, 1024)))
 
-    @unittest.expectedFailure
     async def test_stream_cancel_propagates_during_blocked_anext(self) -> None:
         """
         Stream cancellation must work when __anext__ is in-flight.

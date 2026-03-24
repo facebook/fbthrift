@@ -41,6 +41,7 @@ import {{program.base_library_package}}.mutable_containers as _fbthrift_python_m
 from {{program.base_library_package}}.mutable_serializer import serialize_iobuf, deserialize, Protocol
 {{/if python.generate_mutable_types?}}
 from {{program.base_library_package}}.server import ServiceInterface as _fbthrift_ServiceInterface, RpcKind, PythonUserException
+from {{program.base_library_package}}.streaming.closeable import CloseableGenerator, UserExceptionMeta
 
 import {{program.module_path}}.{{#partial m_types.import_path}} as {{program.module_mangle}}__{{#partial m_types.import_path}}
 import {{program.module_path}}.thrift_metadata as {{program.module_mangle}}__thrift_metadata
@@ -105,22 +106,15 @@ class {{service.name}}Interface(
         raise NotImplementedError("async def {{function.name}} is not implemented")
 
     {{#if function.stream?}}
-    async def _fbthrift__stream_wrapper_{{function.name}}(self, stream_generator: _typing.AsyncIterator[{{#partial typehints.pep484_type type=function.stream.elem_type}}], protocol: Protocol) -> _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]:
-        {{#if (array.empty? function.stream.exceptions)}}
-        async for item in stream_generator:
-            yield serialize_iobuf({{#partial m_functions.second_return_type service=service function=function}}(success=item), protocol)
-        {{#else}}
-        try:
-            async for item in stream_generator:
-                yield serialize_iobuf({{#partial m_functions.second_return_type service=service function=function}}(success=item), protocol)
-        {{#each (array.enumerate function.stream.exceptions) as |index field|}}
-        except {{field.type.module_mangle}}.{{#partial m_types.unadapted_name type=field.type}} as e:
-            return_struct = {{#partial m_functions.second_return_type service=service function=function}}({{#partial m_fields.exception_field_name field=field index=index}}=e)
-            buf = serialize_iobuf(return_struct, protocol)
-            exp = PythonUserException('{{field.type.py3_namespace}}{{#partial m_types.unadapted_name type=field.type}}', str(e), buf)
-            raise exp
-        {{/each}}
-        {{/if (array.empty? function.stream.exceptions)}}
+    def _fbthrift__stream_wrapper_{{function.name}}(self, stream_generator: _typing.AsyncIterator[{{#partial typehints.pep484_type type=function.stream.elem_type}}], protocol: Protocol) -> _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]:
+        return CloseableGenerator(
+            stream_generator,
+            protocol,
+            {{#partial m_functions.second_return_type service=service function=function}},
+            ({{#each (array.enumerate function.stream.exceptions) as |index field|}}
+                UserExceptionMeta({{field.type.module_mangle}}.{{#partial m_types.unadapted_name type=field.type}}, "{{#partial m_fields.exception_field_name field=field index=index}}", '{{field.type.py3_namespace}}{{#partial m_types.unadapted_name type=field.type}}'),
+            {{/each}}),
+        )
 
     {{#else if function.sink?}}
     def _fbthrift__sink_wrapper_{{function.name}}(

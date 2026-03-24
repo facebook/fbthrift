@@ -19,6 +19,7 @@ import folly.iobuf as _fbthrift_iobuf
 import apache.thrift.metadata.thrift_types as _fbthrift_metadata
 from fbcode.thrift.python.serializer import serialize_iobuf, deserialize, Protocol
 from fbcode.thrift.python.server import ServiceInterface as _fbthrift_ServiceInterface, RpcKind, PythonUserException
+from fbcode.thrift.python.streaming.closeable import CloseableGenerator, UserExceptionMeta
 
 import module.thrift_types as _fbthrift__module__thrift_types
 import module.thrift_metadata as _fbthrift__module__thrift_metadata

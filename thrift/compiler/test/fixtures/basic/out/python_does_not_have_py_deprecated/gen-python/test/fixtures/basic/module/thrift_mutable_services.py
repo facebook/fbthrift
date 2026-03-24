@@ -18,6 +18,7 @@ import apache.thrift.metadata.thrift_types as _fbthrift_metadata
 import thrift.python.mutable_containers as _fbthrift_python_mutable_containers
 from thrift.python.mutable_serializer import serialize_iobuf, deserialize, Protocol
 from thrift.python.server import ServiceInterface as _fbthrift_ServiceInterface, RpcKind, PythonUserException
+from thrift.python.streaming.closeable import CloseableGenerator, UserExceptionMeta
 
 import test.fixtures.basic.module.thrift_mutable_types as _fbthrift__test__fixtures__basic__module__thrift_mutable_types
 import test.fixtures.basic.module.thrift_metadata as _fbthrift__test__fixtures__basic__module__thrift_metadata

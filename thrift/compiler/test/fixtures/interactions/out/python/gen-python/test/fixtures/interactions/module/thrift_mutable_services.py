@@ -18,6 +18,7 @@ import apache.thrift.metadata.thrift_types as _fbthrift_metadata
 import thrift.python.mutable_containers as _fbthrift_python_mutable_containers
 from thrift.python.mutable_serializer import serialize_iobuf, deserialize, Protocol
 from thrift.python.server import ServiceInterface as _fbthrift_ServiceInterface, RpcKind, PythonUserException
+from thrift.python.streaming.closeable import CloseableGenerator, UserExceptionMeta
 
 import test.fixtures.interactions.module.thrift_mutable_types as _fbthrift__test__fixtures__interactions__module__thrift_mutable_types
 import test.fixtures.interactions.module.thrift_metadata as _fbthrift__test__fixtures__interactions__module__thrift_metadata
@@ -98,9 +99,13 @@ class MyServiceInterface(
         ) -> _typing.Tuple[builtins.int, _typing.Awaitable[_typing.AsyncIterator[builtins.int]] | _typing.AsyncIterator[builtins.int]]:
         raise NotImplementedError("async def serialize is not implemented")
 
-    async def _fbthrift__stream_wrapper_serialize(self, stream_generator: _typing.AsyncIterator[builtins.int], protocol: Protocol) -> _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]:
-        async for item in stream_generator:
-            yield serialize_iobuf(_fbthrift__test__fixtures__interactions__module__thrift_mutable_types._fbthrift_MyService_serialize_result_stream_elem(success=item), protocol)
+    def _fbthrift__stream_wrapper_serialize(self, stream_generator: _typing.AsyncIterator[builtins.int], protocol: Protocol) -> _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]:
+        return CloseableGenerator(
+            stream_generator,
+            protocol,
+            _fbthrift__test__fixtures__interactions__module__thrift_mutable_types._fbthrift_MyService_serialize_result_stream_elem,
+            (),
+        )
 
     async def _fbthrift__handler_serialize(self, args: _fbthrift_iobuf.IOBuf, protocol: Protocol) -> _typing.Tuple[_fbthrift_iobuf.IOBuf, _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]]:
         args_struct = deserialize(_fbthrift__test__fixtures__interactions__module__thrift_mutable_types._fbthrift_MyService_serialize_args, args, protocol)
@@ -186,9 +191,13 @@ class FactoriesInterface(
         ) -> _typing.Tuple[builtins.int, _typing.Awaitable[_typing.AsyncIterator[builtins.int]] | _typing.AsyncIterator[builtins.int]]:
         raise NotImplementedError("async def serialize is not implemented")
 
-    async def _fbthrift__stream_wrapper_serialize(self, stream_generator: _typing.AsyncIterator[builtins.int], protocol: Protocol) -> _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]:
-        async for item in stream_generator:
-            yield serialize_iobuf(_fbthrift__test__fixtures__interactions__module__thrift_mutable_types._fbthrift_Factories_serialize_result_stream_elem(success=item), protocol)
+    def _fbthrift__stream_wrapper_serialize(self, stream_generator: _typing.AsyncIterator[builtins.int], protocol: Protocol) -> _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]:
+        return CloseableGenerator(
+            stream_generator,
+            protocol,
+            _fbthrift__test__fixtures__interactions__module__thrift_mutable_types._fbthrift_Factories_serialize_result_stream_elem,
+            (),
+        )
 
     async def _fbthrift__handler_serialize(self, args: _fbthrift_iobuf.IOBuf, protocol: Protocol) -> _typing.Tuple[_fbthrift_iobuf.IOBuf, _typing.AsyncIterator[_fbthrift_iobuf.IOBuf]]:
         args_struct = deserialize(_fbthrift__test__fixtures__interactions__module__thrift_mutable_types._fbthrift_Factories_serialize_args, args, protocol)
