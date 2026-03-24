@@ -256,8 +256,43 @@ bool Json5ProtocolReader::peekSet() {
 // Skip Methods
 // ============================================================================
 
-void Json5ProtocolReader::skip(protocol::TType type, int depth) {
-  apache::thrift::skip(*this, type, depth);
+void Json5ProtocolReader::skip(protocol::TType /*type*/, int depth) {
+  if (depth >= FLAGS_thrift_protocol_max_depth) {
+    protocol::TProtocolException::throwExceededDepthLimit();
+  }
+
+  // JSON5 is self-describing, so we ignore the TType parameter and dispatch
+  // based on the next JSON5 token, similar to SimpleJSONProtocolReader::skip().
+  auto token = reader_.peekToken();
+  switch (token) {
+    case Json5Reader::Token::ObjectBegin: {
+      reader_.readObjectBegin();
+      while (reader_.peekToken() != Json5Reader::Token::ObjectEnd) {
+        // Skip key
+        reader_.readObjectName();
+        // Skip value
+        skip(protocol::T_VOID, depth + 1);
+      }
+      reader_.readObjectEnd();
+      break;
+    }
+    case Json5Reader::Token::ListBegin: {
+      reader_.readListBegin();
+      while (reader_.peekToken() != Json5Reader::Token::ListEnd) {
+        skip(protocol::T_VOID, depth + 1);
+      }
+      reader_.readListEnd();
+      break;
+    }
+    case Json5Reader::Token::Primitive: {
+      reader_.readPrimitive(Json5Reader::FloatingPointPrecision::Double);
+      break;
+    }
+    case Json5Reader::Token::ObjectEnd:
+    case Json5Reader::Token::ListEnd:
+    default:
+      throwError("unexpected token during skip");
+  }
 }
 
 [[noreturn]] void Json5ProtocolReader::skipBytes(size_t /*bytes*/) {

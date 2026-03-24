@@ -187,4 +187,19 @@ const list<CompatibilityTestCase> compatibilityTestCases = [
     ],
     output = json5_test.Example{boolAsKey = {1: 1, 0: 0}},
   },
+  // ── Unknown Field Skipping Compatibility ────────────────────────────────────
+  // Unknown fields should be silently skipped during deserialization.
+  CompatibilityTestCase{
+    name = "SkipUnknownFields",
+    inputs = [
+      "{\"i64Value\": 42, \"unknownStr\": \"hello\"}",
+      "{\"unknownNum\": 123, \"i64Value\": 42}",
+      "{\"unknownBool\": true, \"i64Value\": 42}",
+      "{\"unknownNull\": null, \"i64Value\": 42}",
+      "{\"unknownObj\": {\"a\": 1, \"b\": [2, 3]}, \"i64Value\": 42}",
+      "{\"unknownArr\": [1, \"two\", true], \"i64Value\": 42}",
+      "{\"x\": 1, \"y\": \"s\", \"z\": [1], \"w\": {\"a\": 1}, \"i64Value\": 42}",
+    ],
+    output = json5_test.Example{i64Value = 42},
+  },
 ];
