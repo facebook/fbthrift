@@ -166,3 +166,52 @@ TEST_F(RocketStreamClientCallbackTest, HandleConnectionClosePreReady) {
 
   callback_->handleConnectionClose();
 }
+
+TEST_F(RocketStreamClientCallbackTest, HandleStreamHeadersPush) {
+  makeReady();
+
+  EXPECT_CALL(serverCallback_, onSinkHeaders(_)).WillOnce(Return(true));
+
+  callback_->handleStreamHeadersPush(HeadersPayload(HeadersPayloadContent{}));
+}
+
+TEST_F(RocketStreamClientCallbackTest, HandleStreamHeadersPushPreReady) {
+  // Before first response, headers push should be a no-op
+  EXPECT_CALL(serverCallback_, onSinkHeaders(_)).Times(0);
+
+  callback_->handleStreamHeadersPush(HeadersPayload(HeadersPayloadContent{}));
+}
+
+TEST_F(RocketStreamClientCallbackTest, HandlePausedByConnection) {
+  makeReady();
+
+  EXPECT_CALL(connection_, areStreamsPaused()).WillRepeatedly(Return(true));
+  EXPECT_CALL(serverCallback_, pauseStream()).Times(1);
+
+  callback_->handlePausedByConnection();
+}
+
+TEST_F(RocketStreamClientCallbackTest, HandleResumedByConnection) {
+  makeReady();
+
+  EXPECT_CALL(connection_, areStreamsPaused()).WillRepeatedly(Return(false));
+  EXPECT_CALL(serverCallback_, resumeStream()).Times(1);
+
+  callback_->handleResumedByConnection();
+}
+
+TEST_F(RocketStreamClientCallbackTest, HandlePausedByConnectionPreReady) {
+  // Before first response, pause should be a no-op
+  EXPECT_CALL(connection_, areStreamsPaused()).WillRepeatedly(Return(true));
+  EXPECT_CALL(serverCallback_, pauseStream()).Times(0);
+
+  callback_->handlePausedByConnection();
+}
+
+TEST_F(RocketStreamClientCallbackTest, HandleResumedByConnectionPreReady) {
+  // Before first response, resume should be a no-op
+  EXPECT_CALL(connection_, areStreamsPaused()).WillRepeatedly(Return(false));
+  EXPECT_CALL(serverCallback_, resumeStream()).Times(0);
+
+  callback_->handleResumedByConnection();
+}

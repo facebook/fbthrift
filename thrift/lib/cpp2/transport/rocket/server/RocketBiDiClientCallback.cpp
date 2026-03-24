@@ -298,6 +298,13 @@ void RocketBiDiClientCallback::handleFrame(PayloadFrame&& payloadFrame) {
         alive = onSinkError(std::move(streamPayload.exception()));
       }
     } else {
+      // As noted in `RocketClient::handleSinkResponse`, bidi streams
+      // currently lack the codegen to be able to support FD passing.
+      DCHECK(
+          !streamPayload->metadata.fdMetadata().has_value() ||
+          streamPayload->metadata.fdMetadata()->numFds().value_or(0) == 0)
+          << "FD passing is not implemented for bidi streams";
+
       auto payloadMetadataRef = streamPayload->metadata.payloadMetadata();
       if (payloadMetadataRef &&
           payloadMetadataRef->getType() ==

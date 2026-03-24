@@ -17,7 +17,6 @@
 #pragma once
 
 #include <folly/ExceptionWrapper.h>
-#include <folly/Overload.h>
 #include <thrift/lib/cpp2/async/StreamPayload.h>
 #include <thrift/lib/cpp2/server/LoggingEventTransportMetadata.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
@@ -25,11 +24,6 @@
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache::thrift::rocket {
-
-// Forward declarations
-class RocketStreamClientCallback;
-class RocketSinkClientCallback;
-class RocketBiDiClientCallback;
 
 template <typename ConnectionT, template <typename> class ConnectionAdapter>
 class MetadataPushHandler {
@@ -46,10 +40,6 @@ class MetadataPushHandler {
   void handle(MetadataPushFrame&& frame) noexcept;
 
  private:
-  template <typename StreamCallback>
-  void processStreamHeaders(
-      StreamCallback* callback, const ClientPushMetadata& clientMeta) noexcept;
-
   Connection* connection_;
 };
 
@@ -79,14 +69,9 @@ void MetadataPushHandler<ConnectionT, ConnectionAdapter>::handle(
       StreamId sid(clientMeta.streamHeadersPush()->streamId().value_or(0));
       auto it = connection_->getWrappedConnection()->findStream(sid);
       if (it != connection_->getWrappedConnection()->streamsEnd()) {
-        folly::variant_match(
-            it->second,
-            [&](const std::unique_ptr<RocketStreamClientCallback>&
-                    clientCallback) {
-              processStreamHeaders(clientCallback.get(), clientMeta);
-            },
-            [&](const std::unique_ptr<RocketSinkClientCallback>&) {},
-            [&](const std::unique_ptr<RocketBiDiClientCallback>&) {});
+        it->second->handleStreamHeadersPush(HeadersPayload(
+            clientMeta.streamHeadersPush()->headersPayloadContent().value_or(
+                {})));
       }
       break;
     }
@@ -104,14 +89,6 @@ void MetadataPushHandler<ConnectionT, ConnectionAdapter>::handle(
     default:
       break;
   }
-}
-
-template <typename ConnectionT, template <typename> class ConnectionAdapter>
-template <typename StreamCallback>
-void MetadataPushHandler<ConnectionT, ConnectionAdapter>::processStreamHeaders(
-    StreamCallback* callback, const ClientPushMetadata& clientMeta) noexcept {
-  callback->handleStreamHeadersPush(HeadersPayload(
-      clientMeta.streamHeadersPush()->headersPayloadContent().value_or({})));
 }
 
 } // namespace apache::thrift::rocket

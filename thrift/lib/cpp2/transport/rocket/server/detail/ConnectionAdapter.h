@@ -124,12 +124,6 @@ class ConnectionAdapter {
   auto& getStreams() { return connection_->streams_; }
 
   /**
-   * Get access to buffered fragments for partial frame handling.
-   * Used by streaming handlers to manage fragmented REQUEST_STREAM frames.
-   */
-  auto& getBufferedFragments() { return connection_->bufferedFragments_; }
-
-  /**
    * Check if streams are currently paused due to backpressure.
    */
   void setStreamsPaused(bool paused) { connection_->streamsPaused_ = paused; }

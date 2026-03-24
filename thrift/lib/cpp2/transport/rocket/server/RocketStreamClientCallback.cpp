@@ -165,6 +165,9 @@ bool RocketStreamClientCallback::handle(RequestNFrame requestNFrame) {
 
 void RocketStreamClientCallback::handleStreamHeadersPush(
     HeadersPayload&& payload) {
+  if (UNLIKELY(!serverCallbackReady())) {
+    return;
+  }
   std::ignore = serverCallback()->onSinkHeaders(std::move(payload));
 }
 

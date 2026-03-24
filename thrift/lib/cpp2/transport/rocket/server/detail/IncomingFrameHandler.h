@@ -39,6 +39,8 @@
 
 namespace apache::thrift::rocket {
 
+class RocketStreamClientCallback;
+
 [[maybe_unused]] FOLLY_ALWAYS_INLINE FrameType
 parseFrameType(folly::IOBuf& frame) noexcept {
   constexpr size_t kFlagAndFrameSize = sizeof(uint16_t);

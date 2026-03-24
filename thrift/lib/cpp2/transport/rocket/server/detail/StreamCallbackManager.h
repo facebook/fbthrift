@@ -17,7 +17,6 @@
 #pragma once
 
 #include <folly/Indestructible.h>
-#include <folly/Overload.h>
 #include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
 
@@ -27,10 +26,10 @@ namespace apache::thrift::rocket {
 
 /**
  * Manages the lifecycle and operations of stream callback instances.
- * This class handles STREAMING-ONLY functionality (REQUEST_STREAM).
  *
- * SCOPE LIMITATION: This class handles ONLY stream callbacks,
- * not RocketSinkClientCallback or any sink/channel functionality.
+ * Note: pauseStreams/resumeStreams iterate all handlers in the streams_ map
+ * (including sinks and bidi) via the IConnectionStreamHandler interface.
+ * Non-stream handlers provide no-op defaults for pause/resume.
  */
 template <
     typename ConnectionT,
@@ -74,8 +73,6 @@ class StreamCallbackManager {
   void freeStream(StreamId streamId, bool markRequestComplete) {
     auto dg = connection_->getDestructorGuard();
 
-    connection_->getBufferedFragments().erase(streamId);
-
     auto& streams = connection_->getStreams();
     DCHECK(streams.find(streamId) != streams.end());
     streams.erase(streamId);
@@ -94,15 +91,8 @@ class StreamCallbackManager {
     connection_->setStreamsPaused(true);
 
     auto& streams = connection_->getStreams();
-    for (auto it = streams.begin(); it != streams.end(); it++) {
-      folly::variant_match(
-          it->second,
-          [](const std::unique_ptr<RocketStreamClientCallback>& stream) {
-            stream->handlePausedByConnection();
-          },
-          [](const auto&) {
-            // Only handle stream callbacks - ignore sinks/channels
-          });
+    for (auto& [_, handler] : streams) {
+      handler->handlePausedByConnection();
     }
   }
 
@@ -115,15 +105,8 @@ class StreamCallbackManager {
     connection_->setStreamsPaused(false);
 
     auto& streams = connection_->getStreams();
-    for (auto it = streams.begin(); it != streams.end(); it++) {
-      folly::variant_match(
-          it->second,
-          [](const std::unique_ptr<RocketStreamClientCallback>& stream) {
-            stream->handleResumedByConnection();
-          },
-          [](const auto&) {
-            // Only handle stream callbacks - ignore sinks/channels
-          });
+    for (auto& [_, handler] : streams) {
+      handler->handleResumedByConnection();
     }
   }
 

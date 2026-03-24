@@ -212,6 +212,24 @@ TEST_F(RocketBiDiClientCallbackTest, HandlePayloadFragmentReassembly) {
   callback_->handleFrame(std::move(fragment2));
 }
 
+TEST_F(RocketBiDiClientCallbackTest, HandlePausedByConnectionIsNoop) {
+  makeReady();
+  EXPECT_CALL(connection_, close(_)).Times(0);
+  callback_->handlePausedByConnection();
+}
+
+TEST_F(RocketBiDiClientCallbackTest, HandleResumedByConnectionIsNoop) {
+  makeReady();
+  EXPECT_CALL(connection_, close(_)).Times(0);
+  callback_->handleResumedByConnection();
+}
+
+TEST_F(RocketBiDiClientCallbackTest, HandleStreamHeadersPushIsNoop) {
+  makeReady();
+  EXPECT_CALL(connection_, close(_)).Times(0);
+  callback_->handleStreamHeadersPush(HeadersPayload(HeadersPayloadContent{}));
+}
+
 TEST_F(RocketBiDiClientCallbackTest, HandlePayloadNextAndComplete) {
   makeReady();
 

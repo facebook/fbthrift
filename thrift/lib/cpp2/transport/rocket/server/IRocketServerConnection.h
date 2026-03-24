@@ -37,6 +37,7 @@ namespace rocket {
 
 class IRocketServerConnection;
 class RocketServerConnection;
+class IConnectionStreamHandler;
 class RocketBiDiClientCallback;
 class RocketSinkClientCallback;
 class RocketStreamClientCallback;
@@ -44,14 +45,7 @@ class RocketServerFrameContext;
 class RocketServerHandler;
 class RocketServerFrameContext;
 
-using ClientCallbackUniquePtr = std::variant<
-    std::unique_ptr<RocketStreamClientCallback>,
-    std::unique_ptr<RocketSinkClientCallback>,
-    std::unique_ptr<RocketBiDiClientCallback>>;
-using ClientCallbackPtr = std::variant<
-    RocketStreamClientCallback*,
-    RocketSinkClientCallback*,
-    RocketBiDiClientCallback*>;
+using ClientCallbackUniquePtr = std::unique_ptr<IConnectionStreamHandler>;
 
 // Forward declare the factory method implementation
 struct ChannelRequestCallbackFactory {

@@ -26,6 +26,7 @@
 #include <thrift/lib/cpp2/transport/rocket/core/FrameUtil.h>
 #include <thrift/lib/cpp2/transport/rocket/core/StreamUtil.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
+#include <thrift/lib/cpp2/transport/rocket/server/IConnectionStreamHandler.h>
 
 namespace apache::thrift::rocket {
 
@@ -89,7 +90,7 @@ class ExistingStreamFrameHandler {
     } else if constexpr (std::is_same_v<std::decay_t<Frame>, CancelFrame>) {
       handleCancelFrame(std::forward<Frame>(frame), it);
     } else if constexpr (std::is_same_v<std::decay_t<Frame>, ExtFrame>) {
-      handleExtFrame(std::forward<Frame>(frame));
+      handleExtFrame(std::forward<Frame>(frame), it);
     } else {
       static_assert(
           std::is_same_v<Frame, Frame>,
@@ -124,100 +125,43 @@ class ExistingStreamFrameHandler {
   }
 
   /**
-   * Handle REQUEST_N frames - routes to stream or sink based on callback type.
-   * Uses delegation to existing callbacks to avoid circular dependencies.
+   * Handle REQUEST_N frames — dispatches through the IConnectionStreamHandler
+   * interface for virtual dispatch to the appropriate callback type.
    */
   template <typename IteratorType>
   void handleRequestNFrame(RequestNFrame&& frame, IteratorType& it) noexcept {
-    folly::variant_match(
-        it->second,
-        [&](std::unique_ptr<RequestStreamCallback>& clientCallback) {
-          if (clientCallback) {
-            if (!clientCallback->serverCallbackReady()) {
-              connection_->close(
-                  folly::make_exception_wrapper<RocketException>(
-                      ErrorCode::INVALID,
-                      fmt::format(
-                          "Received unexpected early frame, stream id ({}) type (REQUEST_N)",
-                          static_cast<uint32_t>(frame.streamId()))));
-              return;
-            }
-            clientCallback->handle(std::move(frame));
-          }
-        },
-        [&](std::unique_ptr<RequestChannelCallback>& clientCallback) {
-          if (clientCallback) {
-            clientCallback->onSinkRequestN(frame.requestN());
-          }
-        },
-        [&](auto& clientCallback) {
-          if (clientCallback) {
-            if (!clientCallback->serverCallbackReady()) {
-              connection_->close(
-                  folly::make_exception_wrapper<RocketException>(
-                      ErrorCode::INVALID,
-                      fmt::format(
-                          "Received unexpected early frame, stream id ({}) type (REQUEST_N)",
-                          static_cast<uint32_t>(frame.streamId()))));
-              return;
-            }
-            if (clientCallback->isStreamOpen()) {
-              clientCallback->onStreamRequestN(frame.requestN());
-            }
-          }
-        });
+    it->second->handleFrame(std::move(frame));
   }
 
   /**
-   * Handle CANCEL frames - interface matches handleFrame expectation.
-   * Uses pure delegation to avoid circular dependencies.
+   * Handle CANCEL frames — dispatches through the IConnectionStreamHandler
+   * interface for virtual dispatch to the appropriate callback type.
    */
   template <typename IteratorType>
   void handleCancelFrame(CancelFrame&& frame, IteratorType& it) noexcept {
-    folly::variant_match(
-        it->second,
-        [&](std::unique_ptr<RequestStreamCallback>& clientCallback) {
-          if (clientCallback) {
-            clientCallback->handle(std::move(frame));
-          }
-        },
-        [&](std::unique_ptr<RequestChannelCallback>& clientCallback) {
-          if (clientCallback) {
-            // Note: we can receive connection closure AFTER we already
-            // cancelled the sink
-            clientCallback->onSinkError(TApplicationException(
-                TApplicationException::TApplicationExceptionType::
-                    INTERRUPTION));
-          }
-        },
-        [&](auto& clientCallback) {
-          // Handle other variants like BiDi callbacks
-          if (clientCallback) {
-            clientCallback->onStreamCancel();
-          }
-        });
+    it->second->handleFrame(std::move(frame));
   }
 
   /**
-   * Handle EXT frames - interface matches handleFrame expectation.
-   * Uses pure delegation to avoid circular dependencies.
+   * Handle EXT frames — dispatches through the IConnectionStreamHandler
+   * interface for virtual dispatch to the appropriate callback type.
    */
-  void handleExtFrame(ExtFrame&& extFrame) noexcept {
-    if (!extFrame.hasIgnore()) {
-      connection_->close(
-          folly::make_exception_wrapper<RocketException>(
-              ErrorCode::INVALID,
-              fmt::format(
-                  "Received unsupported EXT frame type ({}) for stream (id {})",
-                  static_cast<uint32_t>(extFrame.extFrameType()),
-                  static_cast<uint32_t>(extFrame.streamId()))));
-    }
+  template <typename IteratorType>
+  void handleExtFrame(ExtFrame&& frame, IteratorType& it) noexcept {
+    it->second->handleFrame(std::move(frame));
   }
 
+  /**
+   * Handle sink/bidi payload frames — dispatches through the
+   * IConnectionStreamHandler interface for virtual dispatch.
+   */
   void handleSinkPayloadFrame(
-      StreamId /*streamId*/, PayloadFrame&& payloadFrame) noexcept {
-    connection_->getWrappedConnection()->handleExistingStreamPayloadFrame(
-        std::move(payloadFrame));
+      StreamId streamId, PayloadFrame&& payloadFrame) noexcept {
+    auto it = connection_->getWrappedConnection()->findStream(streamId);
+    if (it == connection_->getWrappedConnection()->streamsEnd()) {
+      return;
+    }
+    it->second->handleFrame(std::move(payloadFrame));
   }
 };
 

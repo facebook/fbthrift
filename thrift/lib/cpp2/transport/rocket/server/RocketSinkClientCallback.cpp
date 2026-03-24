@@ -320,6 +320,13 @@ void RocketSinkClientCallback::handleFrame(PayloadFrame&& payloadFrame) {
         return;
       }
     } else {
+      // FIXME: As noted in `RocketClient::handleSinkResponse`, sinks
+      // currently lack the codegen to be able to support FD passing.
+      DCHECK(
+          !streamPayload->metadata.fdMetadata().has_value() ||
+          streamPayload->metadata.fdMetadata()->numFds().value_or(0) == 0)
+          << "FD passing is not implemented for sinks";
+
       auto payloadMetadataRef = streamPayload->metadata.payloadMetadata();
       if (payloadMetadataRef &&
           payloadMetadataRef->getType() ==
@@ -420,8 +427,6 @@ void RocketSinkClientCallback::handleFrame(ExtFrame&&) {
 }
 
 void RocketSinkClientCallback::handleConnectionClose() {
-  // TODO: Wire up call sites in RocketServerConnection to call this method
-  // instead of inlining the onSinkError logic.
   bool state = onSinkError(TApplicationException(
       TApplicationException::TApplicationExceptionType::INTERRUPTION));
   DCHECK(state) << "onSinkError called after sink complete!";

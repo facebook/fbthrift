@@ -171,3 +171,21 @@ TEST_F(RocketSinkClientCallbackTest, HandleConnectionClose) {
 
   callback_->handleConnectionClose();
 }
+
+TEST_F(RocketSinkClientCallbackTest, HandlePausedByConnectionIsNoop) {
+  makeReady();
+  EXPECT_CALL(connection_, close(_)).Times(0);
+  callback_->handlePausedByConnection();
+}
+
+TEST_F(RocketSinkClientCallbackTest, HandleResumedByConnectionIsNoop) {
+  makeReady();
+  EXPECT_CALL(connection_, close(_)).Times(0);
+  callback_->handleResumedByConnection();
+}
+
+TEST_F(RocketSinkClientCallbackTest, HandleStreamHeadersPushIsNoop) {
+  makeReady();
+  EXPECT_CALL(connection_, close(_)).Times(0);
+  callback_->handleStreamHeadersPush(HeadersPayload(HeadersPayloadContent{}));
+}

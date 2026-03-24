@@ -22,7 +22,6 @@
 #include <ostream>
 #include <unordered_map>
 #include <utility>
-#include <variant>
 
 #include <folly/ExceptionWrapper.h>
 #include <folly/Executor.h>
@@ -237,7 +236,6 @@ class RocketServerConnection final : public IRocketServerConnection {
           RequestStreamFrame,
           RequestChannelFrame>>
       partialRequestFrames_;
-  folly::F14FastMap<StreamId, Payload> bufferedFragments_;
 
   // Total number of active Request* frames ("streams" in protocol parlance)
   size_t inflightRequests_{0};
@@ -463,7 +461,6 @@ class RocketServerConnection final : public IRocketServerConnection {
   void closeWhenIdle() final;
   void dropConnection(const std::string& errorMsg = "") final;
   void dumpConnectionState(uint8_t) final {}
-  folly::Optional<Payload> bufferOrGetFullPayload(PayloadFrame&& payloadFrame);
 
   void handleUntrackedFrame(
       std::unique_ptr<folly::IOBuf> frame,
@@ -471,20 +468,6 @@ class RocketServerConnection final : public IRocketServerConnection {
       FrameType frameType,
       Flags flags,
       folly::io::Cursor cursor);
-  void handleSinkFrame(
-      std::unique_ptr<folly::IOBuf> frame,
-      StreamId streamId,
-      FrameType frameType,
-      Flags flags,
-      folly::io::Cursor cursor,
-      RocketSinkClientCallback& clientCallback);
-  void handleBiDiFrame(
-      std::unique_ptr<folly::IOBuf> frame,
-      StreamId streamId,
-      FrameType frameType,
-      Flags flags,
-      folly::io::Cursor cursor,
-      RocketBiDiClientCallback& clientCallback);
   template <typename RequestFrame>
   void handleRequestFrame(RequestFrame&& frame) {
     auto streamId = frame.streamId();

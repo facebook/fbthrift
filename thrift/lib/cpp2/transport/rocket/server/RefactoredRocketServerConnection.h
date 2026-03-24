@@ -296,7 +296,6 @@ class RefactoredRocketServerConnection final : public IRocketServerConnection {
           RequestStreamFrame,
           RequestChannelFrame>>
       partialRequestFrames_;
-  folly::F14FastMap<StreamId, Payload> bufferedFragments_;
 
   // Context for each inflight write to the underlying transport.
   // The size of the queue is equal to the total number of inflight writes to
@@ -325,14 +324,7 @@ class RefactoredRocketServerConnection final : public IRocketServerConnection {
   // **STREAM MANAGEMENT DATA** - Co-located for cache efficiency
   // Total number of active Request* frames ("streams" in protocol parlance)
   size_t inflightRequests_{0};
-  using ClientCallbackUniquePtr = std::variant<
-      std::unique_ptr<RocketStreamClientCallback>,
-      std::unique_ptr<RocketSinkClientCallback>,
-      std::unique_ptr<RocketBiDiClientCallback>>;
-  using ClientCallbackPtr = std::variant<
-      RocketStreamClientCallback*,
-      RocketSinkClientCallback*,
-      RocketBiDiClientCallback*>;
+  using ClientCallbackUniquePtr = std::unique_ptr<IConnectionStreamHandler>;
   folly::F14FastMap<StreamId, ClientCallbackUniquePtr> streams_;
 
   // Accessor methods for streams_ - needed for MetadataPushHandler
@@ -434,30 +426,7 @@ class RefactoredRocketServerConnection final : public IRocketServerConnection {
   void closeWhenIdle() final;
   void dropConnection(const std::string& errorMsg = "") final;
   void dumpConnectionState(uint8_t) final {}
-  folly::Optional<Payload> bufferOrGetFullPayload(PayloadFrame&& payloadFrame);
 
-  void handleSinkFrame(
-      std::unique_ptr<folly::IOBuf> frame,
-      StreamId streamId,
-      FrameType frameType,
-      Flags flags,
-      folly::io::Cursor cursor,
-      RocketSinkClientCallback& clientCallback);
-  void handleSinkPayloadFromFrame(
-      StreamId streamId,
-      PayloadFrame&& payloadFrame,
-      RocketSinkClientCallback& clientCallback);
-  void handleBiDiFrame(
-      std::unique_ptr<folly::IOBuf> frame,
-      StreamId streamId,
-      FrameType frameType,
-      Flags flags,
-      folly::io::Cursor cursor,
-      RocketBiDiClientCallback& clientCallback);
-  void handleBiDiPayloadFromFrame(
-      StreamId streamId,
-      PayloadFrame&& payloadFrame,
-      RocketBiDiClientCallback& clientCallback);
   void handleUntrackedFrame(
       std::unique_ptr<folly::IOBuf> frame,
       StreamId streamId,

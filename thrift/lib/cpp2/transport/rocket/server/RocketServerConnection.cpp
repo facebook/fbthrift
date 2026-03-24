@@ -359,33 +359,10 @@ void RocketServerConnection::closeIfNeeded() {
   }
 
   while (!streams_.empty()) {
-    auto callback = std::move(streams_.begin()->second);
+    auto handler = std::move(streams_.begin()->second);
     streams_.erase(streams_.begin());
     // Calling application callback may trigger rehashing.
-    folly::variant_match(
-        callback,
-        [&](const std::unique_ptr<RocketStreamClientCallback>& callback) {
-          callback->handleConnectionClose();
-        },
-        [](const std::unique_ptr<RocketSinkClientCallback>& callback) {
-          bool state = callback->onSinkError(TApplicationException(
-              TApplicationException::TApplicationExceptionType::INTERRUPTION));
-          DCHECK(state) << "onSinkError called after sink complete!";
-        },
-        [](const std::unique_ptr<RocketBiDiClientCallback>& callback) {
-          if (callback->isSinkOpen()) {
-            // NOTE that we can receive connection closure AFTER we already
-            // cancelled the sink
-            callback->onSinkError(TApplicationException(
-                TApplicationException::TApplicationExceptionType::
-                    INTERRUPTION));
-          }
-          if (callback->isStreamOpen()) {
-            // NOTE that we can receive connection closure AFTER we already
-            // cancelled the sink
-            callback->onStreamCancel();
-          }
-        });
+    handler->handleConnectionClose();
     requestComplete();
   }
 
@@ -500,75 +477,38 @@ void RocketServerConnection::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
         handleUntrackedFrame(
             std::move(frame), streamId, frameType, flags, std::move(cursor));
       } else {
-        folly::variant_match(
-            iter->second,
-            [&](const std::unique_ptr<RocketStreamClientCallback>&
-                    clientCallback) {
-              if (!clientCallback->serverCallbackReady()) {
-                switch (frameType) {
-                  case FrameType::CANCEL: {
-                    clientCallback->handle(CancelFrame(streamId));
-                    return;
-                  }
-                  default:
-                    return close(
-                        folly::make_exception_wrapper<RocketException>(
-                            ErrorCode::INVALID,
-                            fmt::format(
-                                "Received unexpected early frame, stream id ({}) type ({})",
-                                static_cast<uint32_t>(streamId),
-                                static_cast<uint8_t>(frameType))));
-                }
-              }
-
-              switch (frameType) {
-                case FrameType::REQUEST_N: {
-                  RequestNFrame requestNFrame(streamId, flags, cursor);
-                  clientCallback->handle(std::move(requestNFrame));
-                  return;
-                }
-
-                case FrameType::CANCEL: {
-                  clientCallback->handle(CancelFrame(streamId));
-                  return;
-                }
-
-                case FrameType::EXT: {
-                  ExtFrame extFrame(streamId, flags, cursor, std::move(frame));
-                  clientCallback->handle(std::move(extFrame));
-                  return;
-                }
-
-                default:
-                  close(
-                      folly::make_exception_wrapper<RocketException>(
-                          ErrorCode::INVALID,
-                          fmt::format(
-                              "Received unhandleable frame type ({}) for stream (id {})",
-                              static_cast<uint8_t>(frameType),
-                              static_cast<uint32_t>(streamId))));
-              }
-            },
-            [&](const std::unique_ptr<RocketSinkClientCallback>&
-                    clientCallback) {
-              handleSinkFrame(
-                  std::move(frame),
-                  streamId,
-                  frameType,
-                  flags,
-                  std::move(cursor),
-                  *clientCallback);
-            },
-            [&](const std::unique_ptr<RocketBiDiClientCallback>&
-                    clientCallback) {
-              handleBiDiFrame(
-                  std::move(frame),
-                  streamId,
-                  frameType,
-                  flags,
-                  std::move(cursor),
-                  *clientCallback);
-            });
+        auto& handler = iter->second;
+        switch (frameType) {
+          case FrameType::REQUEST_N: {
+            handler->handleFrame(RequestNFrame(streamId, flags, cursor));
+            break;
+          }
+          case FrameType::CANCEL: {
+            handler->handleFrame(CancelFrame(streamId));
+            break;
+          }
+          case FrameType::PAYLOAD: {
+            handler->handleFrame(
+                PayloadFrame(streamId, flags, cursor, std::move(frame)));
+            break;
+          }
+          case FrameType::ERROR: {
+            handler->handleFrame(ErrorFrame(std::move(frame)));
+            break;
+          }
+          case FrameType::EXT: {
+            handler->handleFrame(
+                ExtFrame(streamId, flags, cursor, std::move(frame)));
+            break;
+          }
+          default:
+            close(
+                folly::make_exception_wrapper<RocketException>(
+                    ErrorCode::INVALID,
+                    fmt::format(
+                        "Received unhandleable frame type ({})",
+                        static_cast<uint8_t>(frameType))));
+        }
       }
     }
   }
@@ -642,21 +582,10 @@ void RocketServerConnection::handleUntrackedFrame(
           StreamId sid(clientMeta.streamHeadersPush()->streamId().value_or(0));
           auto it = streams_.find(sid);
           if (it != streams_.end()) {
-            folly::variant_match(
-                it->second,
-                [&](const std::unique_ptr<RocketStreamClientCallback>&
-                        clientCallback) {
-                  clientCallback->handleStreamHeadersPush(
-                      HeadersPayload(clientMeta.streamHeadersPush()
-                                         ->headersPayloadContent()
-                                         .value_or({})));
-                },
-                [&](const std::unique_ptr<RocketSinkClientCallback>&) {
-                  // do nothing, headers push is not supported for sinks
-                },
-                [&](const std::unique_ptr<RocketBiDiClientCallback>&) {
-                  // do nothing, headers push is not supported for bidi
-                });
+            it->second->handleStreamHeadersPush(
+                HeadersPayload(clientMeta.streamHeadersPush()
+                                   ->headersPayloadContent()
+                                   .value_or({})));
           }
           break;
         }
@@ -684,277 +613,6 @@ void RocketServerConnection::handleUntrackedFrame(
               fmt::format(
                   "Received unhandleable frame type ({})",
                   static_cast<uint8_t>(frameType))));
-  }
-}
-
-void RocketServerConnection::handleSinkFrame(
-    std::unique_ptr<folly::IOBuf> frame,
-    StreamId streamId,
-    FrameType frameType,
-    Flags flags,
-    folly::io::Cursor cursor,
-    RocketSinkClientCallback& clientCallback) {
-  if (!clientCallback.serverCallbackReady()) {
-    if (frameType == FrameType::ERROR) {
-      ErrorFrame errorFrame{std::move(frame)};
-      if (errorFrame.errorCode() == ErrorCode::CANCELED) {
-        return clientCallback.earlyCancelled();
-      }
-    }
-    return close(
-        folly::make_exception_wrapper<RocketException>(
-            ErrorCode::INVALID,
-            fmt::format(
-                "Received unexpected early frame, stream id ({}) type ({})",
-                static_cast<uint32_t>(streamId),
-                static_cast<uint8_t>(frameType))));
-  }
-
-  auto handleSinkPayload = [&](PayloadFrame&& payloadFrame) {
-    const bool next = payloadFrame.hasNext();
-    const bool complete = payloadFrame.hasComplete();
-    if (auto fullPayload = bufferOrGetFullPayload(std::move(payloadFrame))) {
-      bool notViolateContract = true;
-      if (next) {
-        auto streamPayload = getPayloadSerializer()->unpack<StreamPayload>(
-            std::move(*fullPayload), decodeMetadataUsingBinary_.value());
-        if (streamPayload.hasException()) {
-          notViolateContract =
-              clientCallback.onSinkError(std::move(streamPayload.exception()));
-          if (notViolateContract) {
-            freeStream(streamId, true);
-          }
-        } else {
-          // FIXME: As noted in `RocketClient::handleSinkResponse`, sinks
-          // currently lack the codegen to be able to support FD passing.
-          DCHECK(
-              !streamPayload->metadata.fdMetadata().has_value() ||
-              streamPayload->metadata.fdMetadata()->numFds().value_or(0) == 0)
-              << "FD passing is not implemented for sinks";
-
-          auto payloadMetadataRef = streamPayload->metadata.payloadMetadata();
-          if (payloadMetadataRef &&
-              payloadMetadataRef->getType() ==
-                  PayloadMetadata::Type::exceptionMetadata) {
-            notViolateContract = clientCallback.onSinkError(
-                apache::thrift::detail::EncodedStreamError(
-                    std::move(streamPayload.value())));
-            if (notViolateContract) {
-              freeStream(streamId, true);
-            }
-          } else {
-            notViolateContract =
-                clientCallback.onSinkNext(std::move(*streamPayload));
-          }
-        }
-      }
-
-      if (complete) {
-        // it is possible final response(error) sent from serverCallback,
-        // serverCallback may be already destroyed.
-        if (streams_.find(streamId) != streams_.end()) {
-          notViolateContract = clientCallback.onSinkComplete();
-        }
-      }
-
-      if (!notViolateContract) {
-        close(
-            folly::make_exception_wrapper<transport::TTransportException>(
-                transport::TTransportException::TTransportExceptionType::
-                    STREAMING_CONTRACT_VIOLATION,
-                "receiving sink payload frame after sink completion"));
-      }
-    }
-  };
-
-  switch (frameType) {
-    case FrameType::PAYLOAD: {
-      PayloadFrame payloadFrame(streamId, flags, cursor, std::move(frame));
-      handleSinkPayload(std::move(payloadFrame));
-    } break;
-
-    case FrameType::ERROR: {
-      ErrorFrame errorFrame{std::move(frame)};
-      auto ew = [&] {
-        if (errorFrame.errorCode() == ErrorCode::CANCELED) {
-          return folly::make_exception_wrapper<TApplicationException>(
-              TApplicationException::TApplicationExceptionType::INTERRUPTION);
-        } else {
-          return folly::make_exception_wrapper<RocketException>(
-              errorFrame.errorCode(), std::move(errorFrame.payload()).data());
-        }
-      }();
-
-      bool notViolateContract = clientCallback.onSinkError(std::move(ew));
-      if (notViolateContract) {
-        freeStream(streamId, true);
-      } else {
-        close(
-            folly::make_exception_wrapper<transport::TTransportException>(
-                transport::TTransportException::TTransportExceptionType::
-                    STREAMING_CONTRACT_VIOLATION,
-                "receiving sink error frame after sink completion"));
-      }
-    } break;
-
-    case FrameType::EXT: {
-      ExtFrame extFrame(streamId, flags, cursor, std::move(frame));
-      extFrame.extFrameType();
-    }
-      [[fallthrough]];
-
-    default:
-      close(
-          folly::make_exception_wrapper<RocketException>(
-              ErrorCode::INVALID,
-              fmt::format(
-                  "Received unhandleable frame type ({}) for sink (id {})",
-                  static_cast<uint8_t>(frameType),
-                  static_cast<uint32_t>(streamId))));
-  }
-}
-
-void RocketServerConnection::handleBiDiFrame(
-    std::unique_ptr<folly::IOBuf> frame,
-    StreamId streamId,
-    FrameType frameType,
-    Flags flags,
-    folly::io::Cursor cursor,
-    RocketBiDiClientCallback& clientCallback) {
-  if (!clientCallback.serverCallbackReady()) {
-    // early cancellation
-    if (frameType == FrameType::ERROR) {
-      ErrorFrame errorFrame{std::move(frame)};
-      if (errorFrame.errorCode() == ErrorCode::CANCELED) {
-        clientCallback.cancelEarly();
-        return;
-      }
-    }
-    // unexpected frame
-    close(
-        folly::make_exception_wrapper<RocketException>(
-            ErrorCode::INVALID,
-            fmt::format(
-                "Received unexpected early frame, stream id ({}) type ({})",
-                static_cast<uint32_t>(streamId),
-                static_cast<uint8_t>(frameType))));
-    return;
-  }
-
-  auto getErrorFromPayload = [](folly::Try<StreamPayload>& payload)
-      -> std::optional<folly::exception_wrapper> {
-    if (payload.hasException()) {
-      return payload.exception();
-    }
-
-    if (auto metadata = payload->metadata.payloadMetadata()) {
-      if (metadata->getType() == PayloadMetadata::Type::exceptionMetadata) {
-        return apache::thrift::detail::EncodedStreamError(std::move(*payload));
-      }
-    }
-
-    return std::nullopt;
-  };
-
-  auto dcheckFDPassingIsNotSupported = [](folly::Try<StreamPayload>& payload) {
-    // As noted in `RocketClient::handleSinkResponse`, bidi streams
-    // currently lack the codegen to be able to support FD passing.
-    DCHECK(
-        !payload->metadata.fdMetadata().has_value() ||
-        payload->metadata.fdMetadata()->numFds().value_or(0) == 0)
-        << "FD passing is not implemented for bidi streams";
-  };
-
-  auto handlePayloadFrame = [&](PayloadFrame&& payloadFrame) {
-    const bool next = payloadFrame.hasNext();
-    const bool complete = payloadFrame.hasComplete();
-    bool alive = true;
-
-    if (auto fullPayload = bufferOrGetFullPayload(std::move(payloadFrame))) {
-      if (next) {
-        auto streamPayload = getPayloadSerializer()->unpack<StreamPayload>(
-            std::move(*fullPayload), decodeMetadataUsingBinary_.value());
-
-        dcheckFDPassingIsNotSupported(streamPayload);
-
-        if (auto error = getErrorFromPayload(streamPayload)) {
-          if (clientCallback.isSinkOpen()) {
-            alive = clientCallback.onSinkError(std::move(*error));
-          }
-        } else {
-          if (clientCallback.isSinkOpen()) {
-            alive = clientCallback.onSinkNext(std::move(*streamPayload));
-          }
-        }
-      }
-
-      if (complete) {
-        if (alive && clientCallback.isSinkOpen()) {
-          std::ignore = clientCallback.onSinkComplete();
-        }
-      }
-    }
-  };
-
-  auto handleErrorFrame = [&](ErrorFrame&& errorFrame) {
-    auto ew = [&] {
-      if (errorFrame.errorCode() == ErrorCode::CANCELED) {
-        return folly::make_exception_wrapper<TApplicationException>(
-            TApplicationException::TApplicationExceptionType::INTERRUPTION);
-      } else {
-        return folly::make_exception_wrapper<RocketException>(
-            errorFrame.errorCode(), std::move(errorFrame.payload()).data());
-      }
-    }();
-
-    if (clientCallback.isSinkOpen()) {
-      std::ignore = clientCallback.onSinkError(std::move(ew));
-    }
-  };
-
-  auto handleRequestNFrame = [&](RequestNFrame&& requestNFrame) {
-    if (clientCallback.isStreamOpen()) {
-      clientCallback.onStreamRequestN(requestNFrame.requestN());
-    }
-  };
-
-  auto handleCancelFrame = [&]() { clientCallback.onStreamCancel(); };
-
-  switch (frameType) {
-    case FrameType::PAYLOAD: {
-      handlePayloadFrame(
-          PayloadFrame{streamId, flags, cursor, std::move(frame)});
-    } break;
-    case FrameType::ERROR: {
-      handleErrorFrame(ErrorFrame(std::move(frame)));
-    } break;
-    case FrameType::REQUEST_N: {
-      handleRequestNFrame(RequestNFrame{streamId, flags, cursor});
-    } break;
-    case FrameType::CANCEL: {
-      handleCancelFrame();
-    } break;
-    case FrameType::EXT: {
-      ExtFrame extFrame(streamId, flags, cursor, std::move(frame));
-      if (!extFrame.hasIgnore()) {
-        close(
-            folly::make_exception_wrapper<RocketException>(
-                ErrorCode::INVALID,
-                fmt::format(
-                    "Received unsupported EXT frame type ({}) for stream (id {})",
-                    static_cast<uint32_t>(extFrame.extFrameType()),
-                    static_cast<uint32_t>(streamId))));
-      }
-    } break;
-    default: {
-      close(
-          folly::make_exception_wrapper<RocketException>(
-              ErrorCode::INVALID,
-              fmt::format(
-                  "Received unsupported frame type ({}) for bidi stream (id {})",
-                  static_cast<uint8_t>(frameType),
-                  static_cast<uint32_t>(streamId))));
-    }
   }
 }
 
@@ -1204,35 +862,6 @@ void RocketServerConnection::scheduleSinkTimeout(
   }
 }
 
-folly::Optional<Payload> RocketServerConnection::bufferOrGetFullPayload(
-    PayloadFrame&& payloadFrame) {
-  folly::Optional<Payload> fullPayload;
-
-  const auto streamId = payloadFrame.streamId();
-  const bool hasFollows = payloadFrame.hasFollows();
-  const auto it = bufferedFragments_.find(streamId);
-
-  if (hasFollows) {
-    if (it != bufferedFragments_.end()) {
-      auto& firstFragments = it->second;
-      firstFragments.append(std::move(payloadFrame.payload()));
-    } else {
-      bufferedFragments_.emplace(streamId, std::move(payloadFrame.payload()));
-    }
-  } else {
-    if (it != bufferedFragments_.end()) {
-      auto firstFragments = std::move(it->second);
-      bufferedFragments_.erase(it);
-      firstFragments.append(std::move(payloadFrame.payload()));
-      fullPayload = std::move(firstFragments);
-    } else {
-      fullPayload = std::move(payloadFrame.payload());
-    }
-  }
-
-  return fullPayload;
-}
-
 void RocketServerConnection::sendPayload(
     StreamId streamId,
     Payload&& payload,
@@ -1280,8 +909,6 @@ void RocketServerConnection::freeStream(
   }
 
   DestructorGuard dg(this);
-
-  bufferedFragments_.erase(streamId);
 
   if (auto it = streams_.find(streamId); it != streams_.end()) {
     streams_.erase(it);
@@ -1344,26 +971,16 @@ void RocketServerConnection::applyQosMarking(
 void RocketServerConnection::pauseStreams() {
   DCHECK(!streamsPaused_);
   streamsPaused_ = true;
-  for (auto it = streams_.begin(); it != streams_.end(); it++) {
-    folly::variant_match(
-        it->second,
-        [](const std::unique_ptr<RocketStreamClientCallback>& stream) {
-          stream->handlePausedByConnection();
-        },
-        [](const auto&) {});
+  for (auto& [_, handler] : streams_) {
+    handler->handlePausedByConnection();
   }
 }
 
 void RocketServerConnection::resumeStreams() {
   DCHECK(streamsPaused_);
   streamsPaused_ = false;
-  for (auto it = streams_.begin(); it != streams_.end(); it++) {
-    folly::variant_match(
-        it->second,
-        [](const std::unique_ptr<RocketStreamClientCallback>& stream) {
-          stream->handleResumedByConnection();
-        },
-        [](const auto&) {});
+  for (auto& [_, handler] : streams_) {
+    handler->handleResumedByConnection();
   }
 }
 
