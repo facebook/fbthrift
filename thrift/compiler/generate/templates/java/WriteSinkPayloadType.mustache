@@ -15,122 +15,120 @@
   limitations under the License.
 
 }}{{#type:typedef?}}{{!
-    }}{{#type:isMapKey?}}{{#type:typedef_type}}{{type:setIsMapKey}}{{> WriteSinkPayloadType}}{{/type:typedef_type}}{{/type:isMapKey?}}{{!
-    }}{{#type:isMapValue?}}{{#type:typedef_type}}{{type:setIsMapValue}}{{> WriteSinkPayloadType}}{{/type:typedef_type}}{{/type:isMapValue?}}{{!
-    }}{{^type:isMapKey?}}{{^type:isMapValue?}}{{#type:typedef_type}}{{> WriteSinkPayloadType}}{{/type:typedef_type}}{{/type:isMapValue?}}{{/type:isMapKey?}}{{!
+    }}{{#type:typedef_type}}{{> WriteSinkPayloadType}}{{/type:typedef_type}}{{!
 }}{{/type:typedef?}}{{!
 }}{{^type:typedef?}}{{!
-}}{{#type:set?}}oprot.writeSetBegin(new TSet(TType.{{#type:set_elem_type}}{{#partial types.ttype type=type:self}}{{/type:set_elem_type}}, _iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.size()));
-        for ({{#type:set_elem_type}}{{> Type}}{{/type:set_elem_type}} _iter{{function:nestedDepth}} : _iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}) {
+}}{{#type:set?}}oprot.writeSetBegin(new TSet(TType.{{#type:set_elem_type}}{{#partial types.ttype type=type:self}}{{/type:set_elem_type}}, _iter{{function:prevNestedDepth}}.size()));
+        for ({{#type:set_elem_type}}{{> Type}}{{/type:set_elem_type}} _iter{{function:nestedDepth}} : _iter{{function:prevNestedDepth}}) {
           {{function:setIsNested}}{{type:setIsNotMap}}{{!
           }}{{#type:set_elem_type}}{{!
-          }}{{#type:container?}}{{!
           }}{{function:nestedDepth++}}{{> WriteSinkPayloadType}}{{function:nestedDepth--}}
-          {{/type:container?}}{{!
-          }}{{^type:container?}}{{> WriteSinkPayloadType}}
-          {{/type:container?}}{{/type:set_elem_type}}
+          {{/type:set_elem_type}}
         }
         oprot.writeSetEnd();{{!
 }}{{/type:set?}}{{!
 
 }}{{#type:list?}}{{!
-}}oprot.writeListBegin(new TList(TType.{{#type:list_elem_type}}{{#partial types.ttype type=type:self}}{{/type:list_elem_type}}, _iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.size()));
-        for ({{#type:list_elem_type}}{{> Type}}{{/type:list_elem_type}} _iter{{function:nestedDepth}} : _iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}) {
+}}oprot.writeListBegin(new TList(TType.{{#type:list_elem_type}}{{#partial types.ttype type=type:self}}{{/type:list_elem_type}}, _iter{{function:prevNestedDepth}}.size()));
+        for ({{#type:list_elem_type}}{{> Type}}{{/type:list_elem_type}} _iter{{function:nestedDepth}} : _iter{{function:prevNestedDepth}}) {
           {{function:setIsNested}}{{type:setIsNotMap}}{{!
           }}{{#type:list_elem_type}}{{!
-          }}{{#type:container?}}{{!
           }}{{function:nestedDepth++}}{{> WriteSinkPayloadType}}{{function:nestedDepth--}}
-          {{/type:container?}}{{!
-          }}{{^type:container?}}{{> WriteSinkPayloadType}}
-          {{/type:container?}}{{/type:list_elem_type}}
+          {{/type:list_elem_type}}
         }
         oprot.writeListEnd();{{!
 }}{{/type:list?}}{{!
 
 }}{{#type:map?}}{{!
-}}oprot.writeMapBegin(new TMap(TType.{{#type:key_type}}{{#partial types.ttype type=type:self}}{{/type:key_type}}, TType.{{#type:value_type}}{{#partial types.ttype type=type:self}}{{/type:value_type}}, _iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.size()));
-        for (Map.Entry<{{#type:key_type}}{{> BoxedType}}{{/type:key_type}}, {{#type:value_type}}{{> BoxedType}}{{/type:value_type}}> _iter{{function:nestedDepth}} : _iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.entrySet()) {
+}}oprot.writeMapBegin(new TMap(TType.{{#type:key_type}}{{#partial types.ttype type=type:self}}{{/type:key_type}}, TType.{{#type:value_type}}{{#partial types.ttype type=type:self}}{{/type:value_type}}, _iter{{function:prevNestedDepth}}.size()));
+        for (Map.Entry<{{#type:key_type}}{{> BoxedType}}{{/type:key_type}}, {{#type:value_type}}{{> BoxedType}}{{/type:value_type}}> _iter{{function:nestedDepth}} : _iter{{function:prevNestedDepth}}.entrySet()) {
           {{function:setIsNested}}{{!
-
-          }}{{#type:key_type}}{{type:setIsMapKey}}{{!
-          }}{{#type:container?}}{{!
-          }}{{function:nestedDepth++}}{{> WriteSinkPayloadType}}{{function:nestedDepth--}}
-          {{/type:container?}}{{!
-          }}{{^type:container?}}{{> WriteSinkPayloadType}}
-          {{/type:container?}}{{/type:key_type}}{{!
-
-          }}{{#type:value_type}}{{type:setIsMapValue}}{{!
-          }}{{#type:container?}}
-          {{function:nestedDepth++}}{{> WriteSinkPayloadType}}{{function:nestedDepth--}}
-          {{/type:container?}}{{!
-          }}{{^type:container?}}{{> WriteSinkPayloadType}}{{!
-          }}{{/type:container?}}{{/type:value_type}}
+          }}{
+            {{#type:key_type}}{{!
+            }}{{function:nestedDepth++}}{{!
+            }}{{> BoxedType}} _iter{{function:nestedDepth}} = _iter{{function:prevNestedDepth}}.getKey();
+            {{function:nestedDepth++}}{{!
+            }}{{> WriteSinkPayloadType}}{{!
+            }}{{function:nestedDepth--}}{{!
+            }}{{function:nestedDepth--}}{{!
+            }}{{/type:key_type}}
+          }
+          {
+            {{#type:value_type}}{{!
+            }}{{function:nestedDepth++}}{{!
+            }}{{> BoxedType}} _iter{{function:nestedDepth}} = _iter{{function:prevNestedDepth}}.getValue();
+            {{function:nestedDepth++}}{{!
+            }}{{> WriteSinkPayloadType}}{{!
+            }}{{function:nestedDepth--}}{{!
+            }}{{function:nestedDepth--}}{{!
+            }}{{/type:value_type}}
+          }
         }
         oprot.writeMapEnd();{{!
 }}{{/type:map?}}{{!
 
 }}{{#type:structured?}}{{!
-}}{{#function:isNested?}}_iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.write0(oprot);
+}}{{#function:isNested?}}_iter{{function:prevNestedDepth}}.write0(oprot);
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}_iter0.write0(oprot);{{/function:isNested?}}{{!
 }}{{/type:structured?}}{{!
 
 }}{{#type:enum?}}{{!
-}}{{#function:isNested?}}oprot.writeI32(_iter{{function:prevNestedDepth}} == null ? 0 : _iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.getValue());
+}}{{#function:isNested?}}oprot.writeI32(_iter{{function:prevNestedDepth}} == null ? 0 : _iter{{function:prevNestedDepth}}.getValue());
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}oprot.writeI32(_iter0 == null ? 0 : _iter0.getValue());{{/function:isNested?}}{{!
 }}{{/type:enum?}}{{!
 
 }}{{#type:binary?}}{{!
-}}{{#function:isNested?}}oprot.writeBinary({{^type:javaType}}java.nio.ByteBuffer.wrap{{/type:javaType}}(_iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}));
+}}{{#function:isNested?}}oprot.writeBinary({{^type:javaType}}java.nio.ByteBuffer.wrap{{/type:javaType}}(_iter{{function:prevNestedDepth}}));
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}oprot.writeBinary({{^type:javaType}}java.nio.ByteBuffer.wrap{{/type:javaType}}(_iter0));{{/function:isNested?}}{{!
 }}{{/type:binary?}}{{!
 
 }}{{#type:string?}}{{!
-}}{{#function:isNested?}}oprot.writeString(_iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
+}}{{#function:isNested?}}oprot.writeString(_iter{{function:prevNestedDepth}});
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}oprot.writeString(_iter0);{{/function:isNested?}}{{!
 }}{{/type:string?}}{{!
 
 }}{{#type:bool?}}{{!
-}}{{#function:isNested?}}oprot.writeBool(_iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
+}}{{#function:isNested?}}oprot.writeBool(_iter{{function:prevNestedDepth}});
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}oprot.writeBool(_iter0);{{/function:isNested?}}{{!
 }}{{/type:bool?}}{{!
 
 }}{{#type:byte?}}{{!
-}}{{#function:isNested?}}oprot.writeByte(_iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
+}}{{#function:isNested?}}oprot.writeByte(_iter{{function:prevNestedDepth}});
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}oprot.writeByte(_iter0);{{/function:isNested?}}{{!
 }}{{/type:byte?}}{{!
 
 }}{{#type:i16?}}{{!
-}}{{#function:isNested?}}oprot.writeI16(_iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
+}}{{#function:isNested?}}oprot.writeI16(_iter{{function:prevNestedDepth}});
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}oprot.writeI16(_iter0);{{/function:isNested?}}{{!
 }}{{/type:i16?}}{{!
 
 }}{{#type:i32?}}{{!
-}}{{#function:isNested?}}oprot.writeI32(_iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
+}}{{#function:isNested?}}oprot.writeI32(_iter{{function:prevNestedDepth}});
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}oprot.writeI32(_iter0);{{/function:isNested?}}{{!
 }}{{/type:i32?}}{{!
 
 }}{{#type:i64?}}{{!
-}}{{#function:isNested?}}oprot.writeI64(_iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
+}}{{#function:isNested?}}oprot.writeI64(_iter{{function:prevNestedDepth}});
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}oprot.writeI64(_iter0);{{/function:isNested?}}{{!
 }}{{/type:i64?}}{{!
 
 }}{{#type:float?}}{{!
-}}{{#function:isNested?}}oprot.writeFloat(_iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
+}}{{#function:isNested?}}oprot.writeFloat(_iter{{function:prevNestedDepth}});
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}oprot.writeFloat(_iter0);{{/function:isNested?}}{{!
 }}{{/type:float?}}{{!
 
 }}{{#type:double?}}{{!
-}}{{#function:isNested?}}oprot.writeDouble(_iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
+}}{{#function:isNested?}}oprot.writeDouble(_iter{{function:prevNestedDepth}});
 {{/function:isNested?}}{{!
 }}{{^function:isNested?}}oprot.writeDouble(_iter0);{{/function:isNested?}}{{!
 }}{{/type:double?}}{{!
