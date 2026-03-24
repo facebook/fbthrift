@@ -24,6 +24,7 @@
 #include <folly/observer/SimpleObservable.h>
 #include <folly/synchronization/Baton.h>
 
+#include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/server/CPUConcurrencyController.h>
 #include <thrift/lib/cpp2/server/ThriftServerConfig.h>
@@ -31,6 +32,8 @@
 
 using namespace std::chrono_literals;
 using apache::thrift::CPUConcurrencyController;
+
+THRIFT_FLAG_DECLARE_bool(cpucc_enable_ema_load_smoothing);
 
 class MockEventHandler : public CPUConcurrencyController::EventHandler {
  public:
@@ -192,6 +195,7 @@ TEST_F(CPUConcurrencyControllerTest, getDbgInfo) {
           .collectionSampleSize = 11,
           .concurrencyUpperBound = 1002,
           .concurrencyLowerBound = 1001,
+          .cpuLoadSmoothingCoeff = 0.42,
       });
 
   CPUConcurrencyController cpuConcurrencyController{
@@ -213,6 +217,7 @@ TEST_F(CPUConcurrencyControllerTest, getDbgInfo) {
   ASSERT_EQ(*dbgInfo.collectionSampleSize(), 11);
   ASSERT_EQ(*dbgInfo.concurrencyLowerBound(), 1001);
   ASSERT_EQ(*dbgInfo.concurrencyUpperBound(), 1002);
+  ASSERT_DOUBLE_EQ(*dbgInfo.cpuLoadSmoothingCoeff(), 0.42);
 }
 
 // ---------------------------------------------------------------------------
@@ -1473,6 +1478,153 @@ TEST_F(CPUConcurrencyControllerTest, convergesBackToStableEstimate) {
   load = 50;
   // Wait for refractory period to expire + convergence increase
   ASSERT_TRUE(converging.try_wait_for(2s));
+
+  configObservable.setValue(
+      CPUConcurrencyController::Config{
+          .mode = CPUConcurrencyController::Mode::DISABLED});
+}
+
+// ---------------------------------------------------------------------------
+// EMA CPU load smoothing tests
+// ---------------------------------------------------------------------------
+
+TEST_F(CPUConcurrencyControllerTest, emaSmoothingDampensTransientSpikes) {
+  // Verifies that with a low cpuLoadSmoothingCoeff, a single CPU spike
+  // above cpuTarget does NOT trigger an immediate limit decrease, because
+  // the EMA-smoothed load stays below the target.
+  THRIFT_FLAG_SET_MOCK(cpucc_enable_ema_load_smoothing, true);
+  using namespace apache::thrift;
+  server::test::MockServerConfigs serverConfigs{};
+  ThriftServerConfig thriftServerConfig{};
+  folly::observer::SimpleObservable<CPUConcurrencyController::Config>
+      configObservable;
+
+  std::atomic<int64_t> load{50};
+  CPUConcurrencyController::LoadFunc loadFunc =
+      [&load](std::chrono::milliseconds, CPULoadSource) { return load.load(); };
+
+  // Use heavy smoothing (alpha=0.1) so transient spikes are dampened.
+  // collectionSampleSize=0 skips bootstrap, so we start with the upper bound.
+  configObservable.setValue(
+      CPUConcurrencyController::Config{
+          .mode = CPUConcurrencyController::Mode::ENABLED,
+          .method = CPUConcurrencyController::Method::MAX_REQUESTS,
+          .cpuTarget = 90,
+          .refreshPeriodMs = 50ms,
+          .collectionSampleSize = 0,
+          .concurrencyUpperBound = 100,
+          .concurrencyLowerBound = 1,
+          .cpuLoadSmoothingCoeff = 0.1,
+      });
+
+  CPUConcurrencyController controller{
+      configObservable.getObserver(),
+      serverConfigs,
+      thriftServerConfig,
+      loadFunc};
+
+  auto eventHandler = std::make_shared<::testing::NiceMock<MockEventHandler>>();
+
+  // We'll count cycles where the limit was decreased.
+  std::atomic<int> decreaseCount{0};
+  // Count total cycles to know when enough have elapsed.
+  std::atomic<int> cycleCount{0};
+  folly::Baton<> enoughCycles;
+
+  EXPECT_CALL(*eventHandler, onCycle(::testing::_, ::testing::_, ::testing::_))
+      .WillRepeatedly(::testing::Invoke([&](auto, auto, auto) {
+        if (++cycleCount >= 5) {
+          enoughCycles.post();
+        }
+      }));
+  EXPECT_CALL(*eventHandler, limitDecreased())
+      .WillRepeatedly(::testing::Invoke([&]() { decreaseCount.fetch_add(1); }));
+  EXPECT_CALL(*eventHandler, limitIncreased())
+      .WillRepeatedly(::testing::Return());
+
+  controller.setEventHandler(eventHandler);
+
+  // Simulate a transient spike: raw load jumps from 50 to 100 for one cycle,
+  // then back to 50. With alpha=0.1, the smoothed load after the spike:
+  //   cycle 0: smoothed = 50 (seeded)
+  //   cycle 1: smoothed = 0.1*100 + 0.9*50 = 55 (below target 90)
+  //   cycle 2: smoothed = 0.1*50 + 0.9*55 = 54.5
+  // So the limit should never be decreased.
+
+  // Wait for the first cycle at load=50 to seed the EMA.
+  /* sleep override */
+  std::this_thread::sleep_for(100ms);
+  // Spike for one cycle.
+  load = 100;
+  /* sleep override */
+  std::this_thread::sleep_for(60ms);
+  // Back to normal.
+  load = 50;
+
+  ASSERT_TRUE(enoughCycles.try_wait_for(2s));
+
+  // The smoothed load should never have reached 90, so no decrease expected.
+  EXPECT_EQ(decreaseCount.load(), 0);
+
+  configObservable.setValue(
+      CPUConcurrencyController::Config{
+          .mode = CPUConcurrencyController::Mode::DISABLED});
+}
+
+TEST_F(CPUConcurrencyControllerTest, emaSmoothingDefaultPassesThrough) {
+  // Verifies that with cpuLoadSmoothingCoeff=1.0 (default), CPU spikes
+  // are NOT dampened — the raw load is used directly. A spike above
+  // cpuTarget should trigger a limit decrease.
+  THRIFT_FLAG_SET_MOCK(cpucc_enable_ema_load_smoothing, true);
+  using namespace apache::thrift;
+  server::test::MockServerConfigs serverConfigs{};
+  ThriftServerConfig thriftServerConfig{};
+  folly::observer::SimpleObservable<CPUConcurrencyController::Config>
+      configObservable;
+
+  std::atomic<int64_t> load{50};
+  CPUConcurrencyController::LoadFunc loadFunc =
+      [&load](std::chrono::milliseconds, CPULoadSource) { return load.load(); };
+
+  // Default smoothing (alpha=1.0) — raw load pass-through.
+  configObservable.setValue(
+      CPUConcurrencyController::Config{
+          .mode = CPUConcurrencyController::Mode::ENABLED,
+          .method = CPUConcurrencyController::Method::MAX_REQUESTS,
+          .cpuTarget = 90,
+          .refreshPeriodMs = 50ms,
+          .collectionSampleSize = 0,
+          .concurrencyUpperBound = 100,
+          .concurrencyLowerBound = 1,
+          .cpuLoadSmoothingCoeff = 1.0,
+      });
+
+  CPUConcurrencyController controller{
+      configObservable.getObserver(),
+      serverConfigs,
+      thriftServerConfig,
+      loadFunc};
+
+  auto eventHandler = std::make_shared<::testing::NiceMock<MockEventHandler>>();
+  folly::Baton<> decreased;
+
+  EXPECT_CALL(*eventHandler, onCycle(::testing::_, ::testing::_, ::testing::_))
+      .WillRepeatedly(::testing::Return());
+  EXPECT_CALL(*eventHandler, limitDecreased())
+      .WillOnce(::testing::Invoke([&]() { decreased.post(); }));
+  EXPECT_CALL(*eventHandler, limitIncreased())
+      .WillRepeatedly(::testing::Return());
+
+  controller.setEventHandler(eventHandler);
+
+  // Let the controller stabilize at load=50.
+  /* sleep override */
+  std::this_thread::sleep_for(100ms);
+  // Spike above target — with alpha=1.0, this should trigger immediate
+  // decrease.
+  load = 99;
+
+  ASSERT_TRUE(decreased.try_wait_for(2s));
 
   configObservable.setValue(
       CPUConcurrencyController::Config{

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/server/CPUConcurrencyController.h>
 #include <thrift/lib/cpp2/server/ServerAttribute.h>
 
@@ -22,6 +23,8 @@
 #include <fmt/core.h>
 #include <folly/Overload.h>
 #include <folly/lang/Assume.h>
+
+THRIFT_FLAG_DEFINE_bool(cpucc_enable_ema_load_smoothing, false);
 
 namespace apache::thrift {
 
@@ -120,7 +123,26 @@ void CPUConcurrencyController::cycleOnce() {
 
   auto limit = this->getLimit(config);
   auto currentLimitUsage = this->getLimitUsage(config);
-  auto load = getLoadInternal(config);
+  auto rawLoad = getLoadInternal(config);
+
+  int64_t load;
+  if (THRIFT_FLAG(cpucc_enable_ema_load_smoothing)) {
+    // Apply EMA smoothing to the CPU load signal to filter out transient
+    // spikes. smoothedLoad = alpha * rawLoad + (1 - alpha) *
+    // previousSmoothedLoad With alpha=1.0 (default), this is a no-op and uses
+    // the raw reading.
+    auto alpha = std::clamp(config->cpuLoadSmoothingCoeff, 0.0, 1.0);
+    if (smoothedLoad_ < 0) {
+      // First sample: seed the EMA directly.
+      smoothedLoad_ = rawLoad;
+    } else {
+      smoothedLoad_ = alpha * rawLoad + (1.0 - alpha) * smoothedLoad_;
+    }
+    load = static_cast<int64_t>(smoothedLoad_);
+  } else {
+    load = rawLoad;
+  }
+
   if (eventHandler) {
     eventHandler->onCycle(limit, currentLimitUsage, load);
   }
@@ -252,6 +274,7 @@ void CPUConcurrencyController::cancel() {
   dryRunLimit_ = 0;
   stableConcurrencySamples_.clear();
   stableEstimate_.exchange(-1);
+  smoothedLoad_ = -1.0;
 }
 
 bool CPUConcurrencyController::enabled_fast() const {
@@ -476,11 +499,13 @@ std::string CPUConcurrencyController::Config::describe() const {
       "Method: {}, "
       "CPU Target: {}, "
       "Refresh Period (ms): {}, "
+      "CPU Load Smoothing Coeff: {}, "
       "Concurrency Upper Bound({}): {}",
       modeName(),
       methodName(),
       cpuTarget,
       refreshPeriodMs.count(),
+      cpuLoadSmoothingCoeff,
       concurrencyUnit(),
       concurrencyUpperBoundName());
 }
@@ -519,6 +544,7 @@ CPUConcurrencyController::getDbgInfo() const {
   info.concurrencyLowerBound() = configLocal->concurrencyLowerBound;
 
   info.cpuLoad() = getLoadInternal(configLocal);
+  info.cpuLoadSmoothingCoeff() = configLocal->cpuLoadSmoothingCoeff;
 
   return info;
 }

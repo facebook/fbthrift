@@ -170,6 +170,16 @@ class CPUConcurrencyController {
     std::variant<int32_t, UseStaticLimit> concurrencyUpperBound = 1 << 16;
     // Don't go below this concurrency limit, ever.
     uint32_t concurrencyLowerBound = 1;
+    // Exponential moving average (EMA) smoothing coefficient for CPU load
+    // readings. Controls how much weight is given to the latest CPU sample
+    // vs. the historical smoothed value.
+    //   smoothedLoad = alpha * rawLoad + (1 - alpha) * previousSmoothedLoad
+    // Range [0, 1]:
+    //   1.0 = no smoothing (use raw reading, current default behavior)
+    //   0.0 = ignore new readings entirely (not useful)
+    //   0.1 = heavy smoothing (good for bursty/spiky CPU profiles)
+    //   0.5 = moderate smoothing
+    double cpuLoadSmoothingCoeff = 1.0;
 
     bool enabled() const;
 
@@ -279,6 +289,10 @@ class CPUConcurrencyController {
 
   std::vector<uint32_t> stableConcurrencySamples_;
   std::atomic<int64_t> stableEstimate_{-1};
+
+  // EMA-smoothed CPU load. Negative value means uninitialized (first sample
+  // will seed it directly). Only accessed from the control loop thread.
+  double smoothedLoad_{-1.0};
 
   // Keeps track of total requests seen. We use this to compute
   // an estimate of RPS since the last time interval. This helps us

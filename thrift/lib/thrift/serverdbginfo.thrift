@@ -129,6 +129,10 @@ struct CPUConcurrencyControllerDbgInfo {
 
   // The current CPU load, as seen by CPU Concurrency Controller.
   16: i16 cpuLoad;
+
+  // EMA smoothing coefficient for CPU load readings. Range [0, 1].
+  // 1.0 = no smoothing (raw readings), lower values = heavier smoothing.
+  17: double cpuLoadSmoothingCoeff;
 }
 
 struct ResourcePoolsDbgInfo {
