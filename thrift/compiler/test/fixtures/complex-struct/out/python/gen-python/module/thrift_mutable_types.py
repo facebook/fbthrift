@@ -2386,11 +2386,6 @@ _fbthrift_all_structs = [
 ]
 _fbthrift_python_mutable_types.fill_specs(*_fbthrift_all_structs)
 
-
-DEFAULT_PORT_NUM = 3456
-
-constEnumUnion = MyUnion(myEnum=MyEnum.MyValue2)
-
 stringTypedef = str
 longTypeDef = int
 mapTypedef = _fbthrift_python_mutable_containers.MutableMapTypeFactory(_fbthrift_python_types.typeinfo_i16, _fbthrift_python_types.typeinfo_string)

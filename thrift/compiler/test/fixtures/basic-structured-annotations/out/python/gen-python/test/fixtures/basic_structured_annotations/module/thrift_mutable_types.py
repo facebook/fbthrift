@@ -634,9 +634,6 @@ _fbthrift_all_structs = [
 ]
 _fbthrift_python_mutable_types.fill_specs(*_fbthrift_all_structs)
 
-
-MyConst = _fbthrift_python_types.Map(_fbthrift_python_types.typeinfo_string, _fbthrift_python_types.typeinfo_string, { "ENUMERATOR": "enum", "CONST": "const"})
-
 annotated_with_default_string = str
 annotated_inline_string = str
 annotated_inline_i64 = int
