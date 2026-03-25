@@ -87,16 +87,18 @@ public class NestedContainersReactiveClient
 
           oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _iter0.size()));
         for (Map.Entry<Integer, List<Integer>> _iter1 : _iter0.entrySet()) {
-          oprot.writeI32(_iter1.getKey());
-
-          
-          oprot.writeListBegin(new TList(TType.I32, _iter1.getValue().size()));
-        for (int _iter2 : _iter1.getValue()) {
-          oprot.writeI32(_iter2);
-
+          {
+            Integer _iter2 = _iter1.getKey();
+            oprot.writeI32(_iter2);
+          }
+          {
+            List<Integer> _iter2 = _iter1.getValue();
+            oprot.writeListBegin(new TList(TType.I32, _iter2.size()));
+        for (int _iter3 : _iter2) {
+          oprot.writeI32(_iter3);
         }
         oprot.writeListEnd();
-          
+          }
         }
         oprot.writeMapEnd();
           oprot.writeFieldEnd();
@@ -157,16 +159,18 @@ public class NestedContainersReactiveClient
 
           oprot.writeMapBegin(new TMap(TType.I32, TType.SET, _iter0.size()));
         for (Map.Entry<Integer, Set<Integer>> _iter1 : _iter0.entrySet()) {
-          oprot.writeI32(_iter1.getKey());
-
-          
-          oprot.writeSetBegin(new TSet(TType.I32, _iter1.getValue().size()));
-        for (int _iter2 : _iter1.getValue()) {
-          oprot.writeI32(_iter2);
-
+          {
+            Integer _iter2 = _iter1.getKey();
+            oprot.writeI32(_iter2);
+          }
+          {
+            Set<Integer> _iter2 = _iter1.getValue();
+            oprot.writeSetBegin(new TSet(TType.I32, _iter2.size()));
+        for (int _iter3 : _iter2) {
+          oprot.writeI32(_iter3);
         }
         oprot.writeSetEnd();
-          
+          }
         }
         oprot.writeMapEnd();
           oprot.writeFieldEnd();
@@ -229,13 +233,17 @@ public class NestedContainersReactiveClient
         for (Map<Integer, Integer> _iter1 : _iter0) {
           oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _iter1.size()));
         for (Map.Entry<Integer, Integer> _iter2 : _iter1.entrySet()) {
-          oprot.writeI32(_iter2.getKey());
-
-          oprot.writeI32(_iter2.getValue());
-
+          {
+            Integer _iter3 = _iter2.getKey();
+            oprot.writeI32(_iter3);
+          }
+          {
+            Integer _iter3 = _iter2.getValue();
+            oprot.writeI32(_iter3);
+          }
         }
         oprot.writeMapEnd();
-                  }
+        }
         oprot.writeListEnd();
           oprot.writeFieldEnd();
         }
@@ -298,10 +306,9 @@ public class NestedContainersReactiveClient
           oprot.writeSetBegin(new TSet(TType.I32, _iter1.size()));
         for (int _iter2 : _iter1) {
           oprot.writeI32(_iter2);
-
         }
         oprot.writeSetEnd();
-                  }
+        }
         oprot.writeListEnd();
           oprot.writeFieldEnd();
         }
@@ -365,29 +372,34 @@ public class NestedContainersReactiveClient
         for (Map<Integer, Map<Integer, Set<Integer>>> _iter2 : _iter1) {
           oprot.writeMapBegin(new TMap(TType.I32, TType.MAP, _iter2.size()));
         for (Map.Entry<Integer, Map<Integer, Set<Integer>>> _iter3 : _iter2.entrySet()) {
-          oprot.writeI32(_iter3.getKey());
-
-          
-          oprot.writeMapBegin(new TMap(TType.I32, TType.SET, _iter3.getValue().size()));
-        for (Map.Entry<Integer, Set<Integer>> _iter4 : _iter3.getValue().entrySet()) {
-          oprot.writeI32(_iter4.getKey());
-
-          
-          oprot.writeSetBegin(new TSet(TType.I32, _iter4.getValue().size()));
-        for (int _iter5 : _iter4.getValue()) {
-          oprot.writeI32(_iter5);
-
+          {
+            Integer _iter4 = _iter3.getKey();
+            oprot.writeI32(_iter4);
+          }
+          {
+            Map<Integer, Set<Integer>> _iter4 = _iter3.getValue();
+            oprot.writeMapBegin(new TMap(TType.I32, TType.SET, _iter4.size()));
+        for (Map.Entry<Integer, Set<Integer>> _iter5 : _iter4.entrySet()) {
+          {
+            Integer _iter6 = _iter5.getKey();
+            oprot.writeI32(_iter6);
+          }
+          {
+            Set<Integer> _iter6 = _iter5.getValue();
+            oprot.writeSetBegin(new TSet(TType.I32, _iter6.size()));
+        for (int _iter7 : _iter6) {
+          oprot.writeI32(_iter7);
         }
         oprot.writeSetEnd();
-          
+          }
         }
         oprot.writeMapEnd();
-          
+          }
         }
         oprot.writeMapEnd();
-                  }
+        }
         oprot.writeListEnd();
-                  }
+        }
         oprot.writeListEnd();
           oprot.writeFieldEnd();
         }

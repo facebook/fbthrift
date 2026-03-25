@@ -81,7 +81,6 @@ public class LegacyServiceReactiveClient
           oprot.writeSetBegin(new TSet(TType.STRING, _iter0.size()));
         for (String _iter1 : _iter0) {
           oprot.writeString(_iter1);
-
         }
         oprot.writeSetEnd();
           oprot.writeFieldEnd();
