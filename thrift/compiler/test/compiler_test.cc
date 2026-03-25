@@ -2680,6 +2680,48 @@ TEST(CompilerTest, enum_value_name_matches_enclosing_type) {
       {"--extra-validation", "enum_value_name_matches_enclosing_type=warn"});
 }
 
+TEST(CompilerTest, rust_adapter_serde_strict_error) {
+  check_compile(
+      R"(
+    include "thrift/annotation/rust.thrift"
+    package "facebook.com/thrift/test"
+    struct S {
+      @rust.Adapter{name = "::some::Adapter"}
+      # expected-error@-1: Field `field` has an @rust.Adapter without `serde = true` in a context where serde is enabled. Set `serde = true` on the @rust.Adapter annotation if the adapter's AdaptedType implements serde::Serialize and serde::Deserialize. [rust-field-adapter-rule]
+      1: i64 field;
+
+      @rust.Adapter{name = "::some::Adapter", serde = true}
+      2: i64 field_with_serde_adapter;
+
+      @rust.Adapter{name = "::some::Adapter"} # expected-error: Field `field_with_type` cannot have both an adapter and `rust.type` or `rust.newtype` [rust-field-adapter-rule]
+      @rust.Type{name = "::some::Type"}
+      3: i64 field_with_type;
+    }
+  )",
+      {"--gen", "mstch_rust:serde"});
+}
+
+TEST(CompilerTest, rust_deprecated_loose_adapter_serde_warning) {
+  check_compile(
+      R"(
+    include "thrift/annotation/rust.thrift"
+    package "facebook.com/thrift/test"
+    struct S {
+      @rust.Adapter{name = "::some::Adapter"}
+      # expected-warning@-1: Field `field` has an @rust.Adapter without `serde = true` in a context where serde is enabled. Set `serde = true` on the @rust.Adapter annotation if the adapter's AdaptedType implements serde::Serialize and serde::Deserialize. [rust-field-adapter-rule]
+      1: i64 field;
+
+      @rust.Adapter{name = "::some::Adapter", serde = true}
+      2: i64 field_with_serde_adapter;
+
+      @rust.Adapter{name = "::some::Adapter"} # expected-error: Field `field_with_type` cannot have both an adapter and `rust.type` or `rust.newtype` [rust-field-adapter-rule]
+      @rust.Type{name = "::some::Type"}
+      3: i64 field_with_type;
+    }
+  )",
+      {"--gen", "mstch_rust:serde,deprecated_loose_adapter_serde"});
+}
+
 TEST(CompilerTest, cursor_serialization_adapter) {
   check_compile(R"(
     package "facebook.com/thrift/test"

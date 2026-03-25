@@ -38,6 +38,8 @@
 
 namespace apache::thrift::compiler::rust {
 
+namespace {
+
 // A compiler counterpart of rust.EnumUnderlyingType that avoids dependency on
 // the generated code and follows the compiler naming conventions.
 enum class rust_enum_underlying_type {
@@ -64,6 +66,16 @@ struct rust_codegen_options {
   // Whether to emit derive(Serialize, Deserialize).
   // Enabled by `--gen rust:serde`.
   bool serde = false;
+
+  /**
+   * Whether to opt out of strictly requiring `serde=true` on `@rust.Adapter`
+   * annotations when `serde` is enabled (either via compiler option or the
+   * `@rust.Serde` annotation).
+   *
+   * DO_BEFORE(hchok, 20260415): Remove and enforce globally once all affected
+   * IDL files have been cleaned up.
+   */
+  bool deprecated_loose_adapter_serde = false;
 
   // Whether to emit derive(Valuable).
   // Enabled by `--gen rust:valuable`
@@ -105,8 +117,6 @@ struct rust_codegen_options {
 enum class FieldKind { Box, Arc, Inline };
 
 class mstch_rust_value;
-
-namespace {
 
 const std::string_view kRustCratePrefix = "crate::";
 const std::string_view kRustCrateTypesPrefix = "crate::types::";
@@ -406,21 +416,17 @@ bool type_has_transitive_adapter(
 
     return type_has_transitive_adapter(
         &typedef_type->type().deref(), step_through_newtypes);
-
   } else if (const t_list* list_type = type->try_as<t_list>()) {
     return type_has_transitive_adapter(
         list_type->elem_type().get_type(), step_through_newtypes);
-
   } else if (const t_set* set_type = type->try_as<t_set>()) {
     return type_has_transitive_adapter(
         set_type->elem_type().get_type(), step_through_newtypes);
-
   } else if (const t_map* map_type = type->try_as<t_map>()) {
     return type_has_transitive_adapter(
                &map_type->key_type().deref(), step_through_newtypes) ||
         type_has_transitive_adapter(
                &map_type->val_type().deref(), step_through_newtypes);
-
   } else if (const t_structured* struct_type = type->try_as<t_structured>()) {
     return node_has_adapter(*struct_type);
   }
@@ -824,8 +830,6 @@ std::string get_resolved_name(const t_field* field) {
   return get_resolved_name(&field->type().deref());
 }
 
-} // namespace
-
 class t_mstch_rust_generator : public t_mstch_generator {
  public:
   using t_mstch_generator::t_mstch_generator;
@@ -844,6 +848,7 @@ class t_mstch_rust_generator : public t_mstch_generator {
   void generate_program() override;
   void generate_split_types();
   void fill_validator_visitors(ast_validator&) const override;
+  void process_options(const std::map<std::string, std::string>& options) final;
 
  private:
   void set_mstch_factories();
@@ -2613,7 +2618,9 @@ mstch::node rust_mstch_service::rust_all_exceptions() {
   return output;
 }
 
-void t_mstch_rust_generator::generate_program() {
+void t_mstch_rust_generator::process_options(
+    const std::map<std::string, std::string>& options) {
+  t_mstch_generator::process_options(options);
   if (auto types_crate_flag = get_option("types_crate")) {
     options_.types_crate =
         boost::algorithm::replace_all_copy(*types_crate_flag, "-", "_");
@@ -2633,6 +2640,8 @@ void t_mstch_rust_generator::generate_program() {
   }
 
   options_.serde = has_option("serde");
+  options_.deprecated_loose_adapter_serde =
+      has_compiler_option("deprecated_loose_adapter_serde");
   options_.skip_none_serialization = has_option("skip_none_serialization");
   if (options_.skip_none_serialization) {
     assert(options_.serde);
@@ -2672,7 +2681,9 @@ void t_mstch_rust_generator::generate_program() {
   if (auto gen_metadata = get_option("gen_metadata")) {
     options_.gen_metadata = gen_metadata.value() == "true";
   }
+}
 
+void t_mstch_rust_generator::generate_program() {
   std::optional<std::string> crate_name_option = get_option("crate_name");
   std::string namespace_rust = program_->get_namespace("rust");
   if (!namespace_rust.empty()) {
@@ -2762,8 +2773,6 @@ void t_mstch_rust_generator::set_mstch_factories() {
   mstch_context_.add<rust_mstch_const>(&options_);
 }
 
-namespace {
-
 void validate_struct_annotations(
     sema_context& ctx,
     const t_structured& s,
@@ -2779,15 +2788,31 @@ void validate_struct_annotations(
           field.name());
     }
 
-    if (node_has_adapter(field) &&
-        (node_has_custom_rust_type(field) ||
-         rust_serde_enabled(options, field))) {
-      ctx.report(
-          field,
-          "rust-field-adapter-rule",
-          diagnostic_level::error,
-          "Field `{}` cannot have both an adapter and `rust.type` or `rust.newtype` or `rust.serde = true`",
-          field.name());
+    if (const t_const* adapter_annot =
+            find_structured_adapter_annotation(field)) {
+      if (node_has_custom_rust_type(field)) {
+        ctx.report(
+            field,
+            "rust-field-adapter-rule",
+            diagnostic_level::error,
+            "Field `{}` cannot have both an adapter and `rust.type` or `rust.newtype`",
+            field.name());
+      } else if (
+          rust_serde_enabled(options, s) &&
+          !get_annotation_property_bool(adapter_annot, "serde")) {
+        diagnostic_level level = options.deprecated_loose_adapter_serde
+            ? diagnostic_level::warning
+            : diagnostic_level::error;
+        ctx.report(
+            field,
+            "rust-field-adapter-rule",
+            level,
+            "Field `{}` has an @rust.Adapter without `serde = true` in a "
+            "context where serde is enabled. Set `serde = true` on the "
+            "@rust.Adapter annotation if the adapter's AdaptedType implements "
+            "serde::Serialize and serde::Deserialize.",
+            field.name());
+      }
     }
   }
 }
@@ -2839,8 +2864,6 @@ bool validate_program_annotations(sema_context& ctx, const t_program& program) {
   return true;
 }
 
-} // namespace
-
 void t_mstch_rust_generator::fill_validator_visitors(
     ast_validator& validator) const {
   validator.add_structured_definition_visitor(
@@ -2851,6 +2874,8 @@ void t_mstch_rust_generator::fill_validator_visitors(
           options_));
   validator.add_program_visitor(validate_program_annotations);
 }
+
+} // namespace
 
 THRIFT_REGISTER_GENERATOR(
     mstch_rust,
