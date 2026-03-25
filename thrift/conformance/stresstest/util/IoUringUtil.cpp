@@ -136,7 +136,7 @@ folly::IoUringBackend::Options getIoUringOptions() {
       options.setZeroCopyRx(true)
           .setZeroCopyRxInterface(FLAGS_io_zcrx_ifname)
           .setZeroCopyRxQueue(queueId)
-          .setZeroCopyRxNumPages(FLAGS_io_zcrx_num_pages)
+          .setZeroCopyRxNumBuffers(FLAGS_io_zcrx_num_pages)
           .setZeroCopyRxRefillEntries(FLAGS_io_zcrx_refill_entries)
           .setResolveNapiCallback(resolve_napi_callback)
           .setZcrxSrcPortCallback(src_port_callback);
