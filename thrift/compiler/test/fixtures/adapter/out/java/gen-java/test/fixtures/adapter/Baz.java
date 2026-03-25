@@ -20,15 +20,12 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("Baz")
 public final class Baz implements com.facebook.thrift.payload.ThriftSerializable {
-    
             private static final com.facebook.thrift.adapter.TypeAdapter<Integer, com.facebook.thrift.my.AdaptedI32_5137_1> _intField_Adapter = new com.facebook.thrift.my.Adapter1();
     private static final com.facebook.thrift.adapter.TypeAdapter<Set<String>, com.facebook.thrift.my.AdaptedSet_2> __SetWithAdapter_Adapter = new com.facebook.thrift.my.Adapter2();
-    
             private static final com.facebook.thrift.adapter.TypeAdapter<Map<String, com.facebook.thrift.my.AdaptedList_2>, com.facebook.thrift.my.AdaptedMap_string_ListWithElemAdapter_withAdapter_8454_3> _mapField_Adapter = new com.facebook.thrift.my.Adapter3();
     private static final com.facebook.thrift.adapter.TypeAdapter<List<com.facebook.thrift.my.AdaptedString_1>, com.facebook.thrift.my.AdaptedList_2> __ListWithElemAdapter_withAdapter_2312_Adapter = new com.facebook.thrift.my.Adapter2();
     private static final com.facebook.thrift.adapter.TypeAdapter<List<com.facebook.thrift.my.AdaptedString_1>, com.facebook.thrift.my.AdaptedList_2> __ListWithElemAdapter_withAdapter_Adapter = new com.facebook.thrift.my.Adapter2();
     private static final com.facebook.thrift.adapter.TypeAdapter<String, com.facebook.thrift.my.AdaptedString_1> __StringWithAdapter_Adapter = new com.facebook.thrift.my.Adapter1();
-    
             private static final com.facebook.thrift.adapter.TypeAdapter<io.netty.buffer.ByteBuf, com.facebook.thrift.my.AdaptedBinary_5673_1> _binaryField_Adapter = new com.facebook.thrift.my.Adapter1();
     private static final com.facebook.thrift.adapter.TypeAdapter<Long, com.facebook.thrift.my.AdaptedI64_1> __MyI64_Adapter = new com.facebook.thrift.my.Adapter1();
 

@@ -83,6 +83,19 @@ Map<
 {{/if (not (string.empty? type.javaType))}}
 {{/let partial}}
 
+{{! Resolves the adapted boxed type for a typedef with an adapter.
+    For the last adapter in a chain, gives the boxed type of the underlying type.
+    For nested adapters, gives the typeClassName of the intermediate adapter. }}
+{{#let export partial adapted_boxed_type |type| captures |boxed_type|}}
+  {{#pragma ignore-newlines}}
+{{#if (not (string.empty? type.javaType))}}{{type.javaType}}
+  {{#else if type.typedef?}}
+{{#if type.lastAdapter?}}{{#partial adapted_boxed_type type=type.resolved}}{{#else}}{{type.typeClassName}}{{/if}}
+  {{#else}}
+{{#partial boxed_type type=type type_isAdapterSet=true field_hasAdapter=false}}
+  {{/if (not (string.empty? type.javaType))}}
+{{/let partial}}
+
 {{! Defines the mapping of a Thrift type to the Java TType constant name. }}
 {{#let export partial ttype |type|}}
   {{#pragma ignore-newlines}}

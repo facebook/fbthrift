@@ -106,9 +106,7 @@ public final class StructWithFieldAdapter implements com.facebook.thrift.payload
             return result;
         }
     }
-    
             private static final com.facebook.thrift.adapter.TypeAdapter<Integer, com.facebook.thrift.my.AdaptedI32_1> _field_Adapter = new com.facebook.thrift.my.Adapter1();
-    
             private static final com.facebook.thrift.adapter.TypeAdapter<Integer, com.facebook.thrift.my.AdaptedI32_1> _optSharedField_Adapter = new com.facebook.thrift.my.Adapter1();
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();

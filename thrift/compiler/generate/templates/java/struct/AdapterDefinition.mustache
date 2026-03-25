@@ -15,7 +15,6 @@
   limitations under the License.
 
 }}{{!
-}}{{struct:clearAdapter}}{{!
 }}{{#struct:fields}}{{!
     }}{{#field:hasFieldAdapter?}}
         private static final com.facebook.thrift.adapter.TypeAdapter<{{#field:type}}{{> BoxedType}}{{/field:type}}, {{field:fieldAdapterTypeClassName}}> _{{field:javaName}}_Adapter = new {{field:fieldAdapterClassName}}();
@@ -32,7 +31,8 @@
       }}, {{field:wrapperType}}, com.facebook.thrift.payload.ThriftSerializable> _{{field:javaName}}_Wrapper = new {{field:wrapper}}();
     {{/field:hasWrapper?}}{{!
 
-}}{{#field:type}}{{!
-  }}{{> struct/NestedAdapterDefinition}}{{!
-}}{{/field:type}}{{!
-}}{{/struct:fields}}
+}}
+{{#each (array.at struct:unique_adapted_typedefs field:index) as |typedef|}}
+private static final com.facebook.thrift.adapter.TypeAdapter<{{#partial types.adapted_boxed_type type=typedef}}, {{typedef.typeClassName}}> __{{typedef.name}}_Adapter = new {{typedef.adapterClassName}}();
+{{/each}}
+{{/struct:fields}}

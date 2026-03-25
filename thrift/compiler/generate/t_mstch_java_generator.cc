@@ -177,8 +177,33 @@ std::string java_constant_name(std::string name) {
   return constant_str;
 }
 
-set<std::string> adapterDefinitionSet;
 std::string prevTypeName;
+
+void collect_adapted_typedefs(
+    const t_type* type,
+    std::set<std::string>& seen,
+    whisker::array::raw& result,
+    const whisker::prototype_database& proto) {
+  if (!type) {
+    return;
+  }
+  if (const auto* td = type->try_as<t_typedef>()) {
+    if (t_typedef::get_first_structured_annotation_or_null(
+            type, kJavaAdapterUri) != nullptr) {
+      if (seen.insert(td->name()).second) {
+        result.emplace_back(resolve_derived_t_type(proto, *td));
+      }
+    }
+    collect_adapted_typedefs(&td->type().deref(), seen, result, proto);
+  } else if (const auto* list = type->try_as<t_list>()) {
+    collect_adapted_typedefs(&list->elem_type().deref(), seen, result, proto);
+  } else if (const auto* set = type->try_as<t_set>()) {
+    collect_adapted_typedefs(&set->elem_type().deref(), seen, result, proto);
+  } else if (const auto* map = type->try_as<t_map>()) {
+    collect_adapted_typedefs(&map->key_type().deref(), seen, result, proto);
+    collect_adapted_typedefs(&map->val_type().deref(), seen, result, proto);
+  }
+}
 
 bool is_annotation_map_field_equal(
     const t_const* annotation, const char* field, const int value) {
@@ -644,6 +669,18 @@ class t_mstch_java_generator : public t_mstch_generator {
       return true;
     });
 
+    def.property("unique_adapted_typedefs", [&proto](const t_structured& self) {
+      std::set<std::string> seen;
+      whisker::array::raw per_field;
+      for (const auto& field : self.fields()) {
+        whisker::array::raw field_typedefs;
+        collect_adapted_typedefs(
+            field.type().get_type(), seen, field_typedefs, proto);
+        per_field.emplace_back(whisker::make::array(std::move(field_typedefs)));
+      }
+      return whisker::make::array(std::move(per_field));
+    });
+
     def.property("asBean?", [](const t_structured& self) {
       return self.is<t_struct>() &&
           (self.get_unstructured_annotation("java.swift.mutable") == "true" ||
@@ -773,6 +810,24 @@ class t_mstch_java_generator : public t_mstch_generator {
             "java.swift.skip_enum_name_map");
       }
       return false;
+    });
+    def.property("lastAdapter?", [](const t_type& self) {
+      int32_t count = 0;
+      auto* type = &self;
+      while (type) {
+        if (self.is<t_typedef>() &&
+            type->has_structured_annotation(kJavaAdapterUri)) {
+          count++;
+          if (const auto* as_typedef = type->try_as<t_typedef>()) {
+            type = &as_typedef->type().deref();
+          } else {
+            break;
+          }
+        } else {
+          break;
+        }
+      }
+      return count < 2;
     });
 
     return std::move(def).make();
@@ -1050,23 +1105,6 @@ class t_mstch_java_generator : public t_mstch_generator {
   }
 };
 
-class mstch_java_struct : public mstch_struct {
- public:
-  mstch_java_struct(
-      const t_structured* s, mstch_context& ctx, mstch_element_position pos)
-      : mstch_struct(s, ctx, pos) {
-    register_methods(
-        this,
-        {
-            {"struct:clearAdapter", &mstch_java_struct::clear_adapter},
-        });
-  }
-  mstch::node clear_adapter() {
-    adapterDefinitionSet.clear();
-    return mstch::node();
-  }
-};
-
 class mstch_java_service : public mstch_service {
  public:
   mstch_java_service(
@@ -1295,10 +1333,6 @@ class mstch_java_type : public mstch_type {
              {with_no_caching, &mstch_java_type::unset_adapter}},
             {"type:isAdapterSet?",
              {with_no_caching, &mstch_java_type::is_adapter_set}},
-            {"type:addAdapter",
-             {with_no_caching, &mstch_java_type::add_type_adapter}},
-            {"type:adapterDefined?",
-             {with_no_caching, &mstch_java_type::is_type_adapter_defined}},
             {"type:lastAdapter?",
              {with_no_caching, &mstch_java_type::is_last_type_adapter}},
             {"type:setTypeName",
@@ -1338,16 +1372,6 @@ class mstch_java_type : public mstch_type {
   }
 
   mstch::node is_adapter_set() { return hasTypeAdapter; }
-
-  mstch::node add_type_adapter() {
-    adapterDefinitionSet.insert(type_->name());
-    return mstch::node();
-  }
-
-  mstch::node is_type_adapter_defined() {
-    return adapterDefinitionSet.find(type_->name()) !=
-        adapterDefinitionSet.end();
-  }
 
   int32_t nested_adapter_count() {
     int32_t count = 0;
@@ -1417,7 +1441,6 @@ void t_mstch_java_generator::set_mstch_factories() {
   mstch_context_.add<mstch_java_service>();
   mstch_context_.add<mstch_java_interaction>();
   mstch_context_.add<mstch_java_type>();
-  mstch_context_.add<mstch_java_struct>();
   mstch_context_.add<mstch_java_field>();
 }
 
