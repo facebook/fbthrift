@@ -147,9 +147,9 @@ async def runGenerator(
             ex.type.value, ex.message.encode('UTF-8')
         ))
     except asyncio.CancelledError as ex:
-        err_msg = SINK_ERR_MSG if is_client_sink else SERVER_ERR_MSG
-        print(f"Coroutine was cancelled in {err_msg}:", file=sys.stderr)
-        traceback.print_exc()
+        if is_client_sink:
+            print(f"Coroutine was cancelled in {SINK_ERR_MSG}:", file=sys.stderr)
+            traceback.print_exc()
         blame = "client" if is_client_sink else "server"
         msg = f"Application was cancelled on the {blame} with message: {str(ex)}"
         promise.error_ta(
