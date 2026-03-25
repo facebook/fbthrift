@@ -144,6 +144,20 @@ inline void reset_field<::facebook::thrift::annotation::hack::MigrationBlockingL
 }
 
 template<>
+inline void reset_field<::facebook::thrift::annotation::hack::FixmeWrongType>(
+    ::facebook::thrift::annotation::hack::FixmeWrongType& obj, uint16_t index) {
+  switch (index) {
+  }
+}
+
+template<>
+inline void reset_field<::facebook::thrift::annotation::hack::UnsafeArray>(
+    ::facebook::thrift::annotation::hack::UnsafeArray& obj, uint16_t index) {
+  switch (index) {
+  }
+}
+
+template<>
 inline const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::facebook::thrift::annotation::hack::FieldWrapper>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
@@ -266,6 +280,26 @@ inline const std::unordered_map<std::string_view, std::string_view>& PyStructTra
 template<>
 inline const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::facebook::thrift::annotation::hack::MigrationBlockingLegacyJSONSerialization>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+inline const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::facebook::thrift::annotation::hack::FixmeWrongType>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+inline const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::facebook::thrift::annotation::hack::UnsafeArray>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

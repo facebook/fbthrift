@@ -213,6 +213,10 @@ inline constexpr auto kHackMigrationBlockingAllowInheritance =
     "facebook.com/thrift/annotation/hack/MigrationBlockingAllowInheritance";
 inline constexpr auto kHackMigrationBlockingLegacyJSONSerialization =
     "facebook.com/thrift/annotation/hack/MigrationBlockingLegacyJSONSerialization";
+inline constexpr auto kHackFixmeWrongTypeUri =
+    "facebook.com/thrift/annotation/hack/FixmeWrongType";
+inline constexpr auto kHackUnsafeArrayUri =
+    "facebook.com/thrift/annotation/hack/UnsafeArray";
 
 // Go:
 inline constexpr auto kGoNameUri = "facebook.com/thrift/annotation/go/Name";

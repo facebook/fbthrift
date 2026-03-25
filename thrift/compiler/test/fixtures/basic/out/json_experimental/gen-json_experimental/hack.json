@@ -534,6 +534,64 @@
         "is_exception" : false,
         "is_union" : false,
         "lineno" : 238
+      },
+      "FixmeWrongType" : {
+        "name" : "FixmeWrongType",
+        "structured_annotations": {
+          "scope.Field" : {
+            "type" : {
+            "type" : "struct",
+            "name" : "Field",
+            "path" : "thrift/annotation/scope.thrift"
+          },
+            "value" : {}
+          },
+          "scope.Struct" : {
+            "type" : {
+            "type" : "struct",
+            "name" : "Struct",
+            "path" : "thrift/annotation/scope.thrift"
+          },
+            "value" : {}
+          },
+          "scope.Union" : {
+            "type" : {
+            "type" : "struct",
+            "name" : "Union",
+            "path" : "thrift/annotation/scope.thrift"
+          },
+            "value" : {}
+          },
+          "scope.Exception" : {
+            "type" : {
+            "type" : "struct",
+            "name" : "Exception",
+            "path" : "thrift/annotation/scope.thrift"
+          },
+            "value" : {}
+          }
+        },
+        "docstring" : "Wraps the field type with \\HH_FIXME\\WRONG_TYPE<Type> in generated Hack code\nto suppress type-checking errors.\n\nWhen applied to a struct, wraps all field types in the struct.\n\nExample:\n  struct MyStruct {\n    @hack.FixmeWrongType\n    1: i64 my_field;\n  }\n\nGenerates: public \\HH_FIXME\\WRONG_TYPE<int> $my_field;\n",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 255
+      },
+      "UnsafeArray" : {
+        "name" : "UnsafeArray",
+        "structured_annotations": {
+          "scope.Field" : {
+            "type" : {
+            "type" : "struct",
+            "name" : "Field",
+            "path" : "thrift/annotation/scope.thrift"
+          },
+            "value" : {}
+          }
+        },
+        "docstring" : "Replaces array/collection types with unsafe semi-statically-typed equivalents:\n  - vec<T> becomes varrayish_UNSAFE<T>\n  - dict<K, V> becomes darrayish_UNSAFE<K, V>\n\nExample:\n  struct MyStruct {\n    @hack.UnsafeArray\n    1: list<i64> my_list;\n  }\n\nGenerates: public varrayish_UNSAFE<int> $my_list;\n",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 274
       }
   },
   "source_path" : "thrift/annotation/hack",

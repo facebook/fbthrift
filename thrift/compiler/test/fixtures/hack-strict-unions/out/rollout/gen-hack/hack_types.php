@@ -1243,3 +1243,149 @@ class MigrationBlockingLegacyJSONSerialization implements \IThriftSyncStruct, \I
 
 }
 
+/**
+ * Wraps the field type with \HH_FIXME\WRONG_TYPE<Type> in generated Hack code
+ * to suppress type-checking errors.
+ * 
+ * When applied to a struct, wraps all field types in the struct.
+ * 
+ * Example:
+ *   struct MyStruct {
+ *     @hack.FixmeWrongType
+ *     1: i64 my_field;
+ *   }
+ * 
+ * Generates: public \HH_FIXME\WRONG_TYPE<int> $my_field;
+ *
+ * Original thrift struct:-
+ * FixmeWrongType
+ */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/hack/FixmeWrongType'))>>
+class FixmeWrongType implements \IThriftSyncStruct, \IThriftStructMetadata {
+  use \ThriftSerializationTrait;
+
+  const \ThriftStructTypes::TSpec SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  public function __construct()[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function getName()[]: string {
+    return 'FixmeWrongType';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "hack.FixmeWrongType",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        '\facebook\thrift\annotation\Field' => \facebook\thrift\annotation\Field::withDefaultValues(),
+        '\facebook\thrift\annotation\Struct' => \facebook\thrift\annotation\Struct::withDefaultValues(),
+        '\facebook\thrift\annotation\Union' => \facebook\thrift\annotation\Union::withDefaultValues(),
+        '\facebook\thrift\annotation\Exception' => \facebook\thrift\annotation\Exception::withDefaultValues(),
+      ],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+}
+
+/**
+ * Replaces array/collection types with unsafe semi-statically-typed equivalents:
+ *   - vec<T> becomes varrayish_UNSAFE<T>
+ *   - dict<K, V> becomes darrayish_UNSAFE<K, V>
+ * 
+ * Example:
+ *   struct MyStruct {
+ *     @hack.UnsafeArray
+ *     1: list<i64> my_list;
+ *   }
+ * 
+ * Generates: public varrayish_UNSAFE<int> $my_list;
+ *
+ * Original thrift struct:-
+ * UnsafeArray
+ */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/hack/UnsafeArray'))>>
+class UnsafeArray implements \IThriftSyncStruct, \IThriftStructMetadata {
+  use \ThriftSerializationTrait;
+
+  const \ThriftStructTypes::TSpec SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  public function __construct()[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function getName()[]: string {
+    return 'UnsafeArray';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "hack.UnsafeArray",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        '\facebook\thrift\annotation\Field' => \facebook\thrift\annotation\Field::withDefaultValues(),
+      ],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+}
+

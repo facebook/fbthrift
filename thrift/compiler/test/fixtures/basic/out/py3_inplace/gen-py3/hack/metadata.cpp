@@ -26,6 +26,8 @@ namespace facebook::thrift::annotation::hack {
   ::apache::thrift::detail::md::StructMetadata<GenerateClientMethodsWithHeaders>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MigrationBlockingAllowInheritance>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MigrationBlockingLegacyJSONSerialization>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<FixmeWrongType>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<UnsafeArray>::gen(metadata);
   return metadata;
 }
 } // namespace facebook::thrift::annotation::hack

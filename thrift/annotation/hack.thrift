@@ -237,3 +237,39 @@ struct MigrationBlockingAllowInheritance {}
  */
 @scope.Union
 struct MigrationBlockingLegacyJSONSerialization {}
+
+/**
+ * Wraps the field type with \HH_FIXME\WRONG_TYPE<Type> in generated Hack code
+ * to suppress type-checking errors.
+ *
+ * When applied to a struct, wraps all field types in the struct.
+ *
+ * Example:
+ *   struct MyStruct {
+ *     @hack.FixmeWrongType
+ *     1: i64 my_field;
+ *   }
+ *
+ * Generates: public \HH_FIXME\WRONG_TYPE<int> $my_field;
+ */
+@scope.Field
+@scope.Struct
+@scope.Union
+@scope.Exception
+struct FixmeWrongType {}
+
+/**
+ * Replaces array/collection types with unsafe semi-statically-typed equivalents:
+ *   - vec<T> becomes varrayish_UNSAFE<T>
+ *   - dict<K, V> becomes darrayish_UNSAFE<K, V>
+ *
+ * Example:
+ *   struct MyStruct {
+ *     @hack.UnsafeArray
+ *     1: list<i64> my_list;
+ *   }
+ *
+ * Generates: public varrayish_UNSAFE<int> $my_list;
+ */
+@scope.Field
+struct UnsafeArray {}

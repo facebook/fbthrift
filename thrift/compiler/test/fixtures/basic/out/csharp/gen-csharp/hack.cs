@@ -1224,4 +1224,142 @@ namespace facebook.thrift.annotation.hack
         }
     }
 
+    /// <summary>
+    /// Auto-generated from FixmeWrongType
+    /// </summary>
+    public class @FixmeWrongType : IThriftSerializable
+    {
+        /// <summary>The Thrift URI for this type, used for type registration.</summary>
+        public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/hack/FixmeWrongType";
+    
+        public @FixmeWrongType()
+        {
+        }
+    
+        public void __fbthrift_clear()
+        {
+        }
+    
+        public bool __fbthrift_is_empty()
+        {
+            return true;
+        }
+    
+        public void __fbthrift_write(IThriftProtocolWriter writer)
+        {
+            writer.WriteFieldStop();
+        }
+    
+        public void __fbthrift_read(IThriftProtocolReader reader)
+        {
+            while (true)
+            {
+                var (fieldType, fieldId) = reader.ReadFieldBegin();
+                if (fieldType == ThriftWireType.Stop)
+                {
+                    break;
+                }
+        
+                switch (fieldId)
+                {
+                    default:
+                        reader.Skip(fieldType);
+                        break;
+                }
+            }
+        }
+    
+        public override bool Equals(object? obj)
+        {
+            if (obj is not @FixmeWrongType other)
+            {
+                return false;
+            }
+            return true;
+        }
+        
+        public override int GetHashCode()
+        {
+            var hashCode = new HashCode();
+            return hashCode.ToHashCode();
+        }
+    
+        public override string ToString()
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.Append("FixmeWrongType(");
+            sb.Append(")");
+            return sb.ToString();
+        }
+    }
+
+    /// <summary>
+    /// Auto-generated from UnsafeArray
+    /// </summary>
+    public class @UnsafeArray : IThriftSerializable
+    {
+        /// <summary>The Thrift URI for this type, used for type registration.</summary>
+        public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/hack/UnsafeArray";
+    
+        public @UnsafeArray()
+        {
+        }
+    
+        public void __fbthrift_clear()
+        {
+        }
+    
+        public bool __fbthrift_is_empty()
+        {
+            return true;
+        }
+    
+        public void __fbthrift_write(IThriftProtocolWriter writer)
+        {
+            writer.WriteFieldStop();
+        }
+    
+        public void __fbthrift_read(IThriftProtocolReader reader)
+        {
+            while (true)
+            {
+                var (fieldType, fieldId) = reader.ReadFieldBegin();
+                if (fieldType == ThriftWireType.Stop)
+                {
+                    break;
+                }
+        
+                switch (fieldId)
+                {
+                    default:
+                        reader.Skip(fieldType);
+                        break;
+                }
+            }
+        }
+    
+        public override bool Equals(object? obj)
+        {
+            if (obj is not @UnsafeArray other)
+            {
+                return false;
+            }
+            return true;
+        }
+        
+        public override int GetHashCode()
+        {
+            var hashCode = new HashCode();
+            return hashCode.ToHashCode();
+        }
+    
+        public override string ToString()
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.Append("UnsafeArray(");
+            sb.Append(")");
+            return sb.ToString();
+        }
+    }
+
 }
