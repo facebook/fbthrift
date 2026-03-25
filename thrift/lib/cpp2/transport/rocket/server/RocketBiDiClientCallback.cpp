@@ -48,8 +48,8 @@ bool RocketBiDiClientCallback::onFirstResponse(
     folly::EventBase* /* evb */,
     BiDiServerCallback* serverCallback) {
   if (state_.isCancelledEarly()) {
-    if (serverCallback_->onStreamCancel()) {
-      std::ignore = serverCallback_->onSinkComplete();
+    if (serverCallback->onStreamCancel()) {
+      std::ignore = serverCallback->onSinkComplete();
     }
 
     DCHECK(state_.isTerminal());

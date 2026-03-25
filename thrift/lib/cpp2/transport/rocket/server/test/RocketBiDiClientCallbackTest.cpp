@@ -97,6 +97,29 @@ TEST_F(RocketBiDiClientCallbackTest, HandleErrorCanceledPreReady) {
   callback_->handleFrame(std::move(frame));
 }
 
+TEST_F(RocketBiDiClientCallbackTest, OnFirstResponseAfterEarlyCancelTeardown) {
+  // Simulate early cancellation via a cancel error frame before first response.
+  EXPECT_CALL(connection_, close(_)).Times(0);
+  ErrorFrame cancelFrame(kStreamId, ErrorCode::CANCELED, Payload{});
+  callback_->handleFrame(std::move(cancelFrame));
+
+  // When onFirstResponse is called after early cancel, it should use the
+  // serverCallback parameter (not the null member) to tear down both halves.
+  // This is a regression test for a null pointer dereference where
+  // serverCallback_ (member, still nullptr) was used instead of serverCallback
+  // (parameter).
+  EXPECT_CALL(serverCallback_, onStreamCancel()).WillOnce(Return(true));
+  EXPECT_CALL(serverCallback_, onSinkComplete()).WillOnce(Return(true));
+  EXPECT_CALL(connection_, freeStream(kStreamId, _)).Times(1);
+
+  FirstResponsePayload firstResponse(
+      folly::IOBuf::copyBuffer(""), ResponseRpcMetadata());
+  bool result = callback_->onFirstResponse(
+      std::move(firstResponse), &connection_.getEventBase(), &serverCallback_);
+
+  EXPECT_FALSE(result);
+}
+
 TEST_F(RocketBiDiClientCallbackTest, HandleErrorCanceledPostReady) {
   makeReady();
 
