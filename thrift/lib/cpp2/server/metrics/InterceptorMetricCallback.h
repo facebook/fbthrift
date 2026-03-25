@@ -17,6 +17,7 @@
 #pragma once
 
 #include <chrono>
+
 #include <thrift/lib/cpp2/server/ServiceInterceptorQualifiedName.h>
 
 namespace apache::thrift {
@@ -24,6 +25,12 @@ namespace apache::thrift {
 class InterceptorMetricCallback {
  public:
   virtual ~InterceptorMetricCallback() = default;
+
+  /**
+   * Returns true if this callback is actively recording metrics.
+   * Callers should skip timing overhead when this returns false.
+   */
+  virtual bool isEnabled() const { return true; }
 
   /**
    * Records the completion of a single interceptor's onRequest call.
@@ -161,6 +168,8 @@ class InterceptorMetricCallback {
 
 class NoopInterceptorMetricCallback : public InterceptorMetricCallback {
  public:
+  bool isEnabled() const final { return false; }
+
   void onRequestComplete(
       const ServiceInterceptorQualifiedName&, std::chrono::microseconds) final {
   }
@@ -201,6 +210,32 @@ class NoopInterceptorMetricCallback : public InterceptorMetricCallback {
   void onStreamBeginTotalComplete(std::chrono::microseconds) final {}
   void onStreamPayloadTotalComplete(std::chrono::microseconds) final {}
   void onStreamEndTotalComplete(std::chrono::microseconds) final {}
+};
+
+/**
+ * RAII timer that only calls steady_clock::now() when the metric callback
+ * is enabled. When disabled, construction and elapsed() are zero-cost.
+ * Replaces folly::stop_watch at interceptor timing sites to avoid
+ * clock_gettime overhead when metrics are not being collected.
+ */
+class InterceptorTimer {
+ public:
+  explicit InterceptorTimer(const InterceptorMetricCallback& cb) {
+    if (cb.isEnabled()) {
+      start_ = std::chrono::steady_clock::now();
+    }
+  }
+
+  std::chrono::microseconds elapsed() const {
+    if (start_ == std::chrono::steady_clock::time_point{}) {
+      return {};
+    }
+    return std::chrono::duration_cast<std::chrono::microseconds>(
+        std::chrono::steady_clock::now() - start_);
+  }
+
+ private:
+  std::chrono::steady_clock::time_point start_{};
 };
 
 } // namespace apache::thrift

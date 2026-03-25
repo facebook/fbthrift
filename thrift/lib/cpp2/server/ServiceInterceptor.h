@@ -16,7 +16,6 @@
 
 #pragma once
 
-#include <folly/stop_watch.h>
 #include <thrift/lib/cpp2/server/ServiceInterceptorBase.h>
 #include <thrift/lib/cpp2/server/ServiceInterceptorControl.h>
 #include <thrift/lib/cpp2/server/ServiceInterceptorStorage.h>
@@ -105,10 +104,10 @@ class ServiceInterceptor : public ServiceInterceptorBase {
     if (isDisabled()) {
       return;
     }
-    folly::stop_watch<std::chrono::microseconds> onConnectionAttemptTimer;
+    InterceptorTimer timer(interceptorMetricCallback);
     onConnectionAttempted(std::move(connectionInfo));
     interceptorMetricCallback.onConnectionAttemptedComplete(
-        getQualifiedName(), onConnectionAttemptTimer.elapsed());
+        getQualifiedName(), timer.elapsed());
   }
 
   void internal_onConnectionEstablished(
@@ -117,13 +116,13 @@ class ServiceInterceptor : public ServiceInterceptorBase {
     if (isDisabled()) {
       return;
     }
-    folly::stop_watch<std::chrono::microseconds> onConnectionTimer;
+    InterceptorTimer timer(interceptorMetricCallback);
     auto* storage = connectionInfo.storage;
     if (auto value = onConnectionEstablished(std::move(connectionInfo))) {
       storage->emplace<ConnectionState>(std::move(*value));
     }
     interceptorMetricCallback.onConnectionComplete(
-        getQualifiedName(), onConnectionTimer.elapsed());
+        getQualifiedName(), timer.elapsed());
   }
 
   void internal_onConnectionClosed(
@@ -132,12 +131,12 @@ class ServiceInterceptor : public ServiceInterceptorBase {
     if (isDisabled()) {
       return;
     }
-    folly::stop_watch<std::chrono::microseconds> onConnectionClosedTimer;
+    InterceptorTimer timer(interceptorMetricCallback);
     auto* connectionState =
         getValueAsType<ConnectionState>(*connectionInfo.storage);
     onConnectionClosed(connectionState, std::move(connectionInfo));
     interceptorMetricCallback.onConnectionClosedComplete(
-        getQualifiedName(), onConnectionClosedTimer.elapsed());
+        getQualifiedName(), timer.elapsed());
   }
 
   folly::coro::Task<void> internal_onRequest(
@@ -147,7 +146,7 @@ class ServiceInterceptor : public ServiceInterceptorBase {
     if (isDisabled()) {
       co_return;
     }
-    folly::stop_watch<std::chrono::microseconds> onRequestTimer;
+    InterceptorTimer timer(interceptorMetricCallback);
     auto* connectionState =
         getValueAsType<ConnectionState>(*connectionInfo.storage);
     auto* storage = requestInfo.storage;
@@ -156,7 +155,7 @@ class ServiceInterceptor : public ServiceInterceptorBase {
       storage->emplace<RequestState>(std::move(*value));
     }
     interceptorMetricCallback.onRequestComplete(
-        getQualifiedName(), onRequestTimer.elapsed());
+        getQualifiedName(), timer.elapsed());
   }
 
   folly::coro::Task<void> internal_onResponse(
@@ -166,13 +165,13 @@ class ServiceInterceptor : public ServiceInterceptorBase {
     if (isDisabled()) {
       co_return;
     }
-    folly::stop_watch<std::chrono::microseconds> onResponseTimer;
+    InterceptorTimer timer(interceptorMetricCallback);
     auto* requestState = getValueAsType<RequestState>(*responseInfo.storage);
     auto* connectionState =
         getValueAsType<ConnectionState>(*connectionInfo.storage);
     co_await onResponse(requestState, connectionState, std::move(responseInfo));
     interceptorMetricCallback.onResponseComplete(
-        getQualifiedName(), onResponseTimer.elapsed());
+        getQualifiedName(), timer.elapsed());
   }
 
   // ============ Internal Stream Implementations ============
@@ -183,7 +182,7 @@ class ServiceInterceptor : public ServiceInterceptorBase {
     if (isDisabled()) {
       co_return;
     }
-    folly::stop_watch<std::chrono::microseconds> timer;
+    InterceptorTimer timer(interceptorMetricCallback);
     auto* requestState =
         getValueAsType<RequestState>(*streamInfo.requestStorage);
     auto maybeTask = onStreamBegin(requestState, std::move(streamInfo));
@@ -210,7 +209,7 @@ class ServiceInterceptor : public ServiceInterceptorBase {
     if (isDisabled()) {
       co_return;
     }
-    folly::stop_watch<std::chrono::microseconds> timer;
+    InterceptorTimer timer(interceptorMetricCallback);
     auto* requestState = getValueAsType<RequestState>(*endInfo.requestStorage);
     auto maybeTask = onStreamEnd(requestState, endInfo);
     if (maybeTask) {

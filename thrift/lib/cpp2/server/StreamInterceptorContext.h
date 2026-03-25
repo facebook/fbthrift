@@ -26,7 +26,6 @@
 #include <folly/CPortability.h>
 #include <folly/ExceptionWrapper.h>
 #include <folly/coro/Task.h>
-#include <folly/stop_watch.h>
 #include <thrift/lib/cpp/StreamEventHandler.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/ServiceInterceptorBase.h>
@@ -91,7 +90,7 @@ class StreamInterceptorContext {
    * Called when a stream is established.
    */
   folly::coro::Task<void> invokeOnStreamBegin() {
-    folly::stop_watch<std::chrono::microseconds> totalTimer;
+    InterceptorTimer totalTimer(metricCallback_);
     for (std::size_t i = 0; i < interceptors_.size(); ++i) {
       auto streamInfo = ServiceInterceptorBase::StreamInfo{
           .streamId = streamId_,
@@ -114,11 +113,8 @@ class StreamInterceptorContext {
   template <typename T>
   folly::coro::Task<void> invokeOnStreamPayload(
       const T& payload, uint64_t sequenceNumber) {
-    // Capture a single start timestamp and measure per-interceptor duration
-    // as deltas, avoiding redundant clock_gettime calls inside each
-    // interceptor.
-    auto totalStart = std::chrono::steady_clock::now();
-    auto interceptorStart = totalStart;
+    InterceptorTimer totalTimer(metricCallback_);
+    InterceptorTimer interceptorTimer(metricCallback_);
     for (std::size_t i = 0; i < interceptors_.size(); ++i) {
       auto payloadInfo = ServiceInterceptorBase::StreamPayloadInfo{
           .streamId = streamId_,
@@ -131,16 +127,11 @@ class StreamInterceptorContext {
       if (maybeTask) {
         co_await std::move(*maybeTask);
       }
-      auto now = std::chrono::steady_clock::now();
       metricCallback_.onStreamPayloadComplete(
-          interceptors_[i]->getQualifiedName(),
-          std::chrono::duration_cast<std::chrono::microseconds>(
-              now - interceptorStart));
-      interceptorStart = now;
+          interceptors_[i]->getQualifiedName(), interceptorTimer.elapsed());
+      interceptorTimer = InterceptorTimer(metricCallback_);
     }
-    metricCallback_.onStreamPayloadTotalComplete(
-        std::chrono::duration_cast<std::chrono::microseconds>(
-            interceptorStart - totalStart));
+    metricCallback_.onStreamPayloadTotalComplete(totalTimer.elapsed());
   }
 
   /**
@@ -154,7 +145,7 @@ class StreamInterceptorContext {
       folly::exception_wrapper error,
       uint64_t totalPayloads) {
     // Call in reverse order (LIFO pattern like onResponse)
-    folly::stop_watch<std::chrono::microseconds> totalTimer;
+    InterceptorTimer totalTimer(metricCallback_);
     for (auto i = std::ptrdiff_t(interceptors_.size()) - 1; i >= 0; --i) {
       auto endInfo = ServiceInterceptorBase::StreamEndInfo{
           .streamId = streamId_,
