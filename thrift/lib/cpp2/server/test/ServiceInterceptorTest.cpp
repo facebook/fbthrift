@@ -1452,16 +1452,16 @@ CO_TEST_P(ServiceInterceptorTestP, StreamingInterceptorLifecycle) {
       co_return std::make_optional<RequestState>("stream-state-initialized");
     }
 
-    folly::coro::Task<void> onStreamBegin(
+    std::optional<folly::coro::Task<void>> onStreamBegin(
         RequestState*, StreamInfo info) override {
       onStreamBeginCalled = true;
       streamId = info.streamId;
       serviceName = std::string(info.serviceName);
       methodName = std::string(info.methodName);
-      co_return;
+      return std::nullopt;
     }
 
-    folly::coro::Task<void> onStreamPayload(
+    std::optional<folly::coro::Task<void>> onStreamPayload(
         RequestState* requestState, StreamPayloadInfo info) override {
       ++payloadCount;
       sequenceNumbers.push_back(info.sequenceNumber);
@@ -1472,11 +1472,11 @@ CO_TEST_P(ServiceInterceptorTestP, StreamingInterceptorLifecycle) {
       if (requestState) {
         EXPECT_EQ(*requestState, "stream-state-initialized");
       }
-      co_return;
+      return std::nullopt;
     }
 
-    folly::coro::Task<void> onStreamEnd(
-        RequestState* requestState, StreamEndInfo info) override {
+    std::optional<folly::coro::Task<void>> onStreamEnd(
+        RequestState* requestState, const StreamEndInfo& info) override {
       onStreamEndCalled = true;
       endReason = info.reason;
       totalPayloadsReported = info.totalPayloads;
@@ -1485,7 +1485,7 @@ CO_TEST_P(ServiceInterceptorTestP, StreamingInterceptorLifecycle) {
         EXPECT_EQ(*requestState, "stream-state-initialized");
       }
       streamEndBaton_.post();
-      co_return;
+      return std::nullopt;
     }
 
     std::string name_;
@@ -1571,12 +1571,13 @@ CO_TEST_P(
 
     bool supportsStreamInterception() const override { return true; }
 
-    folly::coro::Task<void> onStreamBegin(RequestState*, StreamInfo) override {
+    std::optional<folly::coro::Task<void>> onStreamBegin(
+        RequestState*, StreamInfo) override {
       callOrder.push_back(name_ + ":begin");
-      co_return;
+      return std::nullopt;
     }
 
-    folly::coro::Task<void> onStreamPayload(
+    std::optional<folly::coro::Task<void>> onStreamPayload(
         RequestState*, StreamPayloadInfo) override {
       // Only track first payload to keep test simple
       if (callOrder.empty() ||
@@ -1584,15 +1585,16 @@ CO_TEST_P(
           callOrder.back().find(name_) == std::string::npos) {
         callOrder.push_back(name_ + ":payload");
       }
-      co_return;
+      return std::nullopt;
     }
 
-    folly::coro::Task<void> onStreamEnd(RequestState*, StreamEndInfo) override {
+    std::optional<folly::coro::Task<void>> onStreamEnd(
+        RequestState*, const StreamEndInfo&) override {
       callOrder.push_back(name_ + ":end");
       if (streamEndBaton_) {
         streamEndBaton_->post();
       }
-      co_return;
+      return std::nullopt;
     }
 
     std::string name_;

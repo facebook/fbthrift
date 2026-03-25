@@ -136,17 +136,53 @@ struct StreamAwareAsyncInterceptor
     co_return std::nullopt;
   }
 
-  folly::coro::Task<void> onStreamBegin(folly::Unit*, StreamInfo) override {
-    co_return;
+  std::optional<folly::coro::Task<void>> onStreamBegin(
+      folly::Unit*, StreamInfo) override {
+    return std::nullopt;
   }
 
-  folly::coro::Task<void> onStreamPayload(
+  std::optional<folly::coro::Task<void>> onStreamPayload(
       folly::Unit*, StreamPayloadInfo) override {
-    co_return;
+    return folly::coro::co_invoke(
+        []() -> folly::coro::Task<void> { co_return; });
   }
 
-  folly::coro::Task<void> onStreamEnd(folly::Unit*, StreamEndInfo) override {
-    co_return;
+  std::optional<folly::coro::Task<void>> onStreamEnd(
+      folly::Unit*, const StreamEndInfo&) override {
+    return std::nullopt;
+  }
+
+ private:
+  std::string name_;
+};
+
+// Sync interceptor: overrides onStreamPayload to return std::nullopt,
+// skipping coroutine dispatch entirely.
+struct StreamAwareSyncInterceptor
+    : public ServiceInterceptor<folly::Unit, folly::Unit> {
+  explicit StreamAwareSyncInterceptor(std::string n) : name_(std::move(n)) {}
+  std::string getName() const override { return name_; }
+
+  bool supportsStreamInterception() const override { return true; }
+
+  folly::coro::Task<std::optional<folly::Unit>> onRequest(
+      folly::Unit*, RequestInfo) override {
+    co_return std::nullopt;
+  }
+
+  std::optional<folly::coro::Task<void>> onStreamBegin(
+      folly::Unit*, StreamInfo) override {
+    return std::nullopt;
+  }
+
+  std::optional<folly::coro::Task<void>> onStreamPayload(
+      folly::Unit*, StreamPayloadInfo) override {
+    return std::nullopt;
+  }
+
+  std::optional<folly::coro::Task<void>> onStreamEnd(
+      folly::Unit*, const StreamEndInfo&) override {
+    return std::nullopt;
   }
 
  private:
@@ -287,6 +323,42 @@ BENCHMARK_COUNTERS_RELATIVE(StreamAsyncInterceptorX3, counters, n) {
         {std::make_shared<StreamAwareAsyncInterceptor>("async-1"),
          std::make_shared<StreamAwareAsyncInterceptor>("async-2"),
          std::make_shared<StreamAwareAsyncInterceptor>("async-3")});
+    fixture = &f;
+  }
+  double cpuTotal = 0;
+  for (unsigned i = 0; i < n; ++i) {
+    cpuTotal += fixture->run();
+  }
+  int64_t totalPayloads =
+      static_cast<int64_t>(n) * FLAGS_concurrent * FLAGS_payloads;
+  counters["cpu/p"] = folly::UserMetric(
+      cpuTotal / totalPayloads, folly::UserMetric::Type::TIME);
+}
+
+BENCHMARK_COUNTERS_RELATIVE(StreamSyncInterceptorX1, counters, n) {
+  BenchFixture* fixture = nullptr;
+  BENCHMARK_SUSPEND {
+    static BenchFixture f(
+        {std::make_shared<StreamAwareSyncInterceptor>("sync-1")});
+    fixture = &f;
+  }
+  double cpuTotal = 0;
+  for (unsigned i = 0; i < n; ++i) {
+    cpuTotal += fixture->run();
+  }
+  int64_t totalPayloads =
+      static_cast<int64_t>(n) * FLAGS_concurrent * FLAGS_payloads;
+  counters["cpu/p"] = folly::UserMetric(
+      cpuTotal / totalPayloads, folly::UserMetric::Type::TIME);
+}
+
+BENCHMARK_COUNTERS_RELATIVE(StreamSyncInterceptorX3, counters, n) {
+  BenchFixture* fixture = nullptr;
+  BENCHMARK_SUSPEND {
+    static BenchFixture f(
+        {std::make_shared<StreamAwareSyncInterceptor>("sync-1"),
+         std::make_shared<StreamAwareSyncInterceptor>("sync-2"),
+         std::make_shared<StreamAwareSyncInterceptor>("sync-3")});
     fixture = &f;
   }
   double cpuTotal = 0;

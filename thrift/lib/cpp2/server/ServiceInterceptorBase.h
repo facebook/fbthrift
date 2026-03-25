@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <optional>
 #include <variant>
 
 #include <folly/ExceptionWrapper.h>
@@ -265,11 +266,13 @@ class ServiceInterceptorBase {
    * Called for each typed payload BEFORE serialization.
    * This is where interceptors can inspect/process streaming data.
    *
-   * PERFORMANCE NOTE: This is on the hot path. Implementations should
-   * be as lightweight as possible.
+   * Returns std::nullopt when no async work is needed (fast path),
+   * or a Task<void> that the caller must co_await (async path).
+   * This avoids coroutine frame allocation for synchronous interceptors.
    */
-  virtual folly::coro::Task<void> internal_onStreamPayload(StreamPayloadInfo) {
-    co_return;
+  virtual std::optional<folly::coro::Task<void>> internal_onStreamPayload(
+      StreamPayloadInfo) {
+    return std::nullopt;
   }
 
   /**

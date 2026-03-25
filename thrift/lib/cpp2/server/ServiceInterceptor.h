@@ -65,8 +65,9 @@ class ServiceInterceptor : public ServiceInterceptorBase {
    * streams may outlive the connection. If you need connection-level state
    * during streaming, capture it in RequestState during onRequest.
    */
-  virtual folly::coro::Task<void> onStreamBegin(RequestState*, StreamInfo) {
-    co_return;
+  virtual std::optional<folly::coro::Task<void>> onStreamBegin(
+      RequestState*, StreamInfo) {
+    return std::nullopt;
   }
 
   /**
@@ -76,9 +77,9 @@ class ServiceInterceptor : public ServiceInterceptorBase {
    * @param requestState Per-request state from onRequest
    * @param info Payload information including typed payload reference
    */
-  virtual folly::coro::Task<void> onStreamPayload(
+  virtual std::optional<folly::coro::Task<void>> onStreamPayload(
       RequestState*, StreamPayloadInfo) {
-    co_return;
+    return std::nullopt;
   }
 
   /**
@@ -88,8 +89,9 @@ class ServiceInterceptor : public ServiceInterceptorBase {
    * @param requestState Per-request state from onRequest
    * @param info Stream end information
    */
-  virtual folly::coro::Task<void> onStreamEnd(RequestState*, StreamEndInfo) {
-    co_return;
+  virtual std::optional<folly::coro::Task<void>> onStreamEnd(
+      RequestState*, const StreamEndInfo&) {
+    return std::nullopt;
   }
 
   const ServiceInterceptorQualifiedName& getQualifiedName() const final {
@@ -184,19 +186,22 @@ class ServiceInterceptor : public ServiceInterceptorBase {
     folly::stop_watch<std::chrono::microseconds> timer;
     auto* requestState =
         getValueAsType<RequestState>(*streamInfo.requestStorage);
-    co_await onStreamBegin(requestState, std::move(streamInfo));
+    auto maybeTask = onStreamBegin(requestState, std::move(streamInfo));
+    if (maybeTask) {
+      co_await std::move(*maybeTask);
+    }
     interceptorMetricCallback.onStreamBeginComplete(
         getQualifiedName(), timer.elapsed());
   }
 
-  folly::coro::Task<void> internal_onStreamPayload(
+  std::optional<folly::coro::Task<void>> internal_onStreamPayload(
       StreamPayloadInfo payloadInfo) final {
     if (isDisabled()) {
-      co_return;
+      return std::nullopt;
     }
     auto* requestState =
         getValueAsType<RequestState>(*payloadInfo.requestStorage);
-    co_await onStreamPayload(requestState, std::move(payloadInfo));
+    return onStreamPayload(requestState, std::move(payloadInfo));
   }
 
   folly::coro::Task<void> internal_onStreamEnd(
@@ -207,7 +212,10 @@ class ServiceInterceptor : public ServiceInterceptorBase {
     }
     folly::stop_watch<std::chrono::microseconds> timer;
     auto* requestState = getValueAsType<RequestState>(*endInfo.requestStorage);
-    co_await onStreamEnd(requestState, std::move(endInfo));
+    auto maybeTask = onStreamEnd(requestState, endInfo);
+    if (maybeTask) {
+      co_await std::move(*maybeTask);
+    }
     interceptorMetricCallback.onStreamEndComplete(
         getQualifiedName(), timer.elapsed());
   }

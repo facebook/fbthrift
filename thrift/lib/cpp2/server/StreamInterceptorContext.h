@@ -127,7 +127,10 @@ class StreamInterceptorContext {
           .sequenceNumber = sequenceNumber,
       };
 
-      co_await interceptors_[i]->internal_onStreamPayload(payloadInfo);
+      auto maybeTask = interceptors_[i]->internal_onStreamPayload(payloadInfo);
+      if (maybeTask) {
+        co_await std::move(*maybeTask);
+      }
       auto now = std::chrono::steady_clock::now();
       metricCallback_.onStreamPayloadComplete(
           interceptors_[i]->getQualifiedName(),
