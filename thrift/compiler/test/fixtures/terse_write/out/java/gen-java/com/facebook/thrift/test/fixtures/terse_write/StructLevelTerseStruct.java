@@ -773,20 +773,20 @@ public final class StructLevelTerseStruct implements com.facebook.thrift.payload
         pos = p.mark();
         this.structField.write0(oprot);
         if (p.mark() - pos > p.getEmptyStructSize()) {
-          p.writeFieldEnd();    
+          p.writeFieldEnd();
         } else {
           p.rollback(structStart);
-        }    
+        }
       java.util.Objects.requireNonNull(unionField, "unionField must not be null");
       structStart = p.mark();
         oprot.writeFieldBegin(UNION_FIELD_FIELD_DESC);
         pos = p.mark();
         this.unionField.write0(oprot);
         if (p.mark() - pos > p.getEmptyStructSize()) {
-          p.writeFieldEnd();    
+          p.writeFieldEnd();
         } else {
           p.rollback(structStart);
-        }    
+        }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }

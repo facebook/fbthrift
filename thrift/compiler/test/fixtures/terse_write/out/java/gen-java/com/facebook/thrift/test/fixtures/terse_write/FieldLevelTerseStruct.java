@@ -1329,20 +1329,20 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
         pos = p.mark();
         this.terseStructField.write0(oprot);
         if (p.mark() - pos > p.getEmptyStructSize()) {
-          p.writeFieldEnd();    
+          p.writeFieldEnd();
         } else {
           p.rollback(structStart);
-        }    
+        }
       java.util.Objects.requireNonNull(terseUnionField, "terseUnionField must not be null");
       structStart = p.mark();
         oprot.writeFieldBegin(TERSE_UNION_FIELD_FIELD_DESC);
         pos = p.mark();
         this.terseUnionField.write0(oprot);
         if (p.mark() - pos > p.getEmptyStructSize()) {
-          p.writeFieldEnd();    
+          p.writeFieldEnd();
         } else {
           p.rollback(structStart);
-        }    
+        }
       oprot.writeFieldBegin(BOOL_FIELD_FIELD_DESC);
       oprot.writeBool(this.boolField);
       oprot.writeFieldEnd();

@@ -17,15 +17,14 @@
 }}{{#if (object.eq? field:default_value null)}}{{!
   }}{{#field:terse?}}{{!
     }}{{#field:hasAdapter?}}{{!
-    }}{{> FromThriftStart}}{{#field:isObject?}}{{#field:type}}{{> ThriftBoxedType}}{{/field:type}}.defaultInstance(){{/field:isObject?}}{{^field:isObject?}}{{#field:type}}{{> struct/IntrinsicDefault}}{{/field:type}}{{/field:isObject?}}{{> FromThriftEnd}}{{!
+    }}{{> FromThriftStart}}{{#if field:self.type.structured?}}{{#field:type}}{{> ThriftBoxedType}}{{/field:type}}.defaultInstance(){{#else}}{{#field:type}}{{> struct/IntrinsicDefault}}{{/field:type}}{{/if field:self.type.structured?}}{{> FromThriftEnd}}{{!
     }}{{/field:hasAdapter?}}{{!
     }}{{^field:hasAdapter?}}{{!
-      }}{{#field:isObject?}}{{!
+      }}{{#if field:self.type.structured?}}{{!
         }}{{> FieldType}}.defaultInstance(){{!
-      }}{{/field:isObject?}}{{!
-      }}{{^field:isObject?}}{{!
+      }}{{#else}}{{!
         }}{{#field:type}}{{> struct/IntrinsicDefault}}{{/field:type}}{{!
-      }}{{/field:isObject?}}{{!
+      }}{{/if field:self.type.structured?}}{{!
     }}{{/field:hasAdapter?}}{{!
   }}{{/field:terse?}}{{!
   }}{{^field:terse?}}{{!
@@ -34,7 +33,7 @@
     }}{{/field:hasAdapter?}}{{!
     }}{{^field:hasAdapter?}}{{!
       }}{{#field:hasWrapper?}}null{{/field:hasWrapper?}}{{!
-      }}{{^field:hasWrapper?}}{{#if field:optional?}}null{{#else}}{{#partial types.java_default_value type=field:self.type}}{{/if}}{{/field:hasWrapper?}}{{!
+      }}{{^field:hasWrapper?}}{{#if field:optional?}}null{{#else}}{{#partial types.java_default_value type=field:self.type}}{{/if field:optional?}}{{/field:hasWrapper?}}{{!
     }}{{/field:hasAdapter?}}{{!
   }}{{/field:terse?}}{{!
 
@@ -43,10 +42,10 @@
 }}{{#if field:hasAdapter?}}{{!
   }}{{> FromThriftStart}}{{#if field:hasInitialValue?}}{{!
     }}{{#partial const_value.const_value value=field:default_value root_const=null as_bean=struct:asBean? field_hasAdapter=field:hasAdapter? }}{{!
-  }}{{#else}}{{#if field:optional?}}null{{#else}}{{#partial types.java_default_value type=field:self.type}}{{/if}}{{/if field:hasInitialValue?}}{{> FromThriftEnd}}{{!
+  }}{{#else}}{{#if field:optional?}}null{{#else}}{{#partial types.java_default_value type=field:self.type}}{{/if field:optional?}}{{/if field:hasInitialValue?}}{{> FromThriftEnd}}{{!
 }}{{#else}}{{!
   }}{{#if field:hasInitialValue?}}{{!
     }}{{#partial const_value.const_value value=field:default_value root_const=null as_bean=struct:asBean? field_hasAdapter=field:hasAdapter? }}{{!
-  }}{{#else}}{{#if field:optional?}}null{{#else}}{{#partial types.java_default_value type=field:self.type}}{{/if}}{{/if field:hasInitialValue?}}{{!
+  }}{{#else}}{{#if field:optional?}}null{{#else}}{{#partial types.java_default_value type=field:self.type}}{{/if field:optional?}}{{/if field:hasInitialValue?}}{{!
 }}{{/if field:hasAdapter?}}{{!
 }}{{/if (object.eq? field:default_value null)}}

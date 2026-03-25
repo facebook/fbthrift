@@ -391,15 +391,6 @@ class t_mstch_java_generator : public t_mstch_generator {
     def.property("FieldNameUnmangled?", [](const t_field& self) {
       return self.has_structured_annotation(kJavaFieldUseUnmangledNameUri);
     });
-    def.property("isEnum?", [](const t_field& self) {
-      return self.type()->get_true_type()->is<t_enum>();
-    });
-    def.property("isObject?", [](const t_field& self) {
-      return self.type()->get_true_type()->is<t_structured>();
-    });
-    def.property("isUnion?", [](const t_field& self) {
-      return self.type()->get_true_type()->is<t_union>();
-    });
     def.property("isNumericOrVoid?", [](const t_field& self) {
       auto type = self.type()->get_true_type();
       return type->is_void() || type->is_bool() || type->is_byte() ||

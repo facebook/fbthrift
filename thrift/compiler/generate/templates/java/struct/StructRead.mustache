@@ -31,7 +31,7 @@ public static {{struct:javaCapitalName}} read0(TProtocol oprot) throws TExceptio
   builder.set{{field:javaCapitalName}}({{> FromThriftStart}}{{#field:type}}{{> struct/IntrinsicDefault}}{{/field:type}}{{> FromThriftEnd}});
   {{/field:hasAdapter?}}
   {{^field:hasAdapter?}}
-  {{^field:isObject?}}builder.set{{field:javaCapitalName}}({{#field:type}}{{> struct/IntrinsicDefault}}{{/field:type}});{{/field:isObject?}}
+  {{#if (not field:self.type.structured?)}}builder.set{{field:javaCapitalName}}({{#field:type}}{{> struct/IntrinsicDefault}}{{/field:type}});{{/if (not field:self.type.structured?)}}
   {{/field:hasAdapter?}}
   {{/field:default_value}}
   {{/field:terse?}}

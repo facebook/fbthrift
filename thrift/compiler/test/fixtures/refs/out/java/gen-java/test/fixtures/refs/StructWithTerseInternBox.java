@@ -192,20 +192,20 @@ public final class StructWithTerseInternBox implements com.facebook.thrift.paylo
         pos = p.mark();
         this.field1.write0(oprot);
         if (p.mark() - pos > p.getEmptyStructSize()) {
-          p.writeFieldEnd();    
+          p.writeFieldEnd();
         } else {
           p.rollback(structStart);
-        }    
+        }
       java.util.Objects.requireNonNull(field2, "field2 must not be null");
       structStart = p.mark();
         oprot.writeFieldBegin(FIELD2_FIELD_DESC);
         pos = p.mark();
         this.field2.write0(oprot);
         if (p.mark() - pos > p.getEmptyStructSize()) {
-          p.writeFieldEnd();    
+          p.writeFieldEnd();
         } else {
           p.rollback(structStart);
-        }    
+        }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }

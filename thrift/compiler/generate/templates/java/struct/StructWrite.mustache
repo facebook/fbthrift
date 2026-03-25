@@ -27,12 +27,12 @@ public void write0(TProtocol oprot) throws TException {
   {{#field:type}}{{> AdaptedBoxedType}}{{/field:type}} {{field:javaName}} = {{> ToThriftStart}}this.{{field:javaName}}{{> ToThriftEnd}};
   {{/field:hasAdapterOrWrapper?}}
   {{#field:isNullableOrOptionalNotEnum?}}
-  {{#field:terse?}}  
+  {{#field:terse?}}
   java.util.Objects.requireNonNull({{field:javaName}}, "{{field:javaName}} must not be null");
-  {{#field:isObject?}}structStart = p.mark();{{/field:isObject?}}
-  {{^field:isObject?}}
+  {{#if field:self.type.structured?}}structStart = p.mark();{{/if field:self.type.structured?}}
+  {{#if (not field:self.type.structured?)}}
   if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault({{field:javaName}})) {
-  {{/field:isObject?}}
+  {{/if (not field:self.type.structured?)}}
     oprot.writeFieldBegin({{field:javaTFieldName}});
     {{#field:self.type.container?}}
     {{> ThriftFieldType}} _iter{{field:nestedDepth}} = {{field:javaName}};
@@ -43,25 +43,24 @@ public void write0(TProtocol oprot) throws TException {
     {{/type:typedef_type}}{{!
 
     }}{{#field:type}}
-    {{#field:isObject?}}
+    {{#if field:self.type.structured?}}
     pos = p.mark();
-    {{/field:isObject?}}    
+    {{/if field:self.type.structured?}}
     {{#field:type}}{{field:nestedDepth++}}{{> WriteType}}{{field:nestedDepth--}}{{/field:type}}
     {{/field:type}}{{!
     }}
-    {{#field:isObject?}}
+    {{#if field:self.type.structured?}}
     if (p.mark() - pos > p.getEmptyStructSize()) {
-      p.writeFieldEnd();    
+      p.writeFieldEnd();
     } else {
       p.rollback(structStart);
-    }    
-    {{/field:isObject?}}    
-    {{^field:isObject?}}
+    }
+    {{#else}}
     oprot.writeFieldEnd();
-    {{/field:isObject?}}    
-  {{^field:isObject?}}
+    {{/if field:self.type.structured?}}
+  {{#if (not field:self.type.structured?)}}
   }
-  {{/field:isObject?}}
+  {{/if (not field:self.type.structured?)}}
   {{/field:terse?}}
   {{^field:terse?}}
   if ({{field:javaName}} != null) {
@@ -79,18 +78,17 @@ public void write0(TProtocol oprot) throws TException {
     {{/field:type}}{{!
     }}oprot.writeFieldEnd();
   }
-  {{/field:terse?}}  
+  {{/field:terse?}}
   {{/field:isNullableOrOptionalNotEnum?}}{{!
 
   }}{{^field:isNullableOrOptionalNotEnum?}}
   {{#field:terse?}}
-  {{#field:isEnum?}}
+  {{#if field:self.type.enum?}}
   java.util.Objects.requireNonNull({{field:javaName}}, "{{field:javaName}} must not be null");
   if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(com.facebook.thrift.util.EnumUtil.getValue({{field:javaName}}))) {
-  {{/field:isEnum?}}
-  {{^field:isEnum?}}
+  {{#else}}
   if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault({{field:javaName}})) {
-  {{/field:isEnum?}}
+  {{/if field:self.type.enum?}}
     oprot.writeFieldBegin({{field:javaTFieldName}});
     {{#field:type}}
     {{field:nestedDepth++}}{{> WriteType}}{{field:nestedDepth--}}
