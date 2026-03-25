@@ -190,17 +190,13 @@ class ServiceInterceptor : public ServiceInterceptorBase {
   }
 
   folly::coro::Task<void> internal_onStreamPayload(
-      StreamPayloadInfo payloadInfo,
-      InterceptorMetricCallback& interceptorMetricCallback) final {
+      StreamPayloadInfo payloadInfo) final {
     if (isDisabled()) {
       co_return;
     }
-    folly::stop_watch<std::chrono::microseconds> timer;
     auto* requestState =
         getValueAsType<RequestState>(*payloadInfo.requestStorage);
     co_await onStreamPayload(requestState, std::move(payloadInfo));
-    interceptorMetricCallback.onStreamPayloadComplete(
-        getQualifiedName(), timer.elapsed());
   }
 
   folly::coro::Task<void> internal_onStreamEnd(

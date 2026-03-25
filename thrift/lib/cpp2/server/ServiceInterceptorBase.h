@@ -268,8 +268,7 @@ class ServiceInterceptorBase {
    * PERFORMANCE NOTE: This is on the hot path. Implementations should
    * be as lightweight as possible.
    */
-  virtual folly::coro::Task<void> internal_onStreamPayload(
-      StreamPayloadInfo, InterceptorMetricCallback&) {
+  virtual folly::coro::Task<void> internal_onStreamPayload(StreamPayloadInfo) {
     co_return;
   }
 

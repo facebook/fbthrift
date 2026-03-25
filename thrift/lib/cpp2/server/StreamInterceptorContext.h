@@ -114,7 +114,11 @@ class StreamInterceptorContext {
   template <typename T>
   folly::coro::Task<void> invokeOnStreamPayload(
       const T& payload, uint64_t sequenceNumber) {
-    folly::stop_watch<std::chrono::microseconds> totalTimer;
+    // Capture a single start timestamp and measure per-interceptor duration
+    // as deltas, avoiding redundant clock_gettime calls inside each
+    // interceptor.
+    auto totalStart = std::chrono::steady_clock::now();
+    auto interceptorStart = totalStart;
     for (std::size_t i = 0; i < interceptors_.size(); ++i) {
       auto payloadInfo = ServiceInterceptorBase::StreamPayloadInfo{
           .streamId = streamId_,
@@ -123,10 +127,17 @@ class StreamInterceptorContext {
           .sequenceNumber = sequenceNumber,
       };
 
-      co_await interceptors_[i]->internal_onStreamPayload(
-          payloadInfo, metricCallback_);
+      co_await interceptors_[i]->internal_onStreamPayload(payloadInfo);
+      auto now = std::chrono::steady_clock::now();
+      metricCallback_.onStreamPayloadComplete(
+          interceptors_[i]->getQualifiedName(),
+          std::chrono::duration_cast<std::chrono::microseconds>(
+              now - interceptorStart));
+      interceptorStart = now;
     }
-    metricCallback_.onStreamPayloadTotalComplete(totalTimer.elapsed());
+    metricCallback_.onStreamPayloadTotalComplete(
+        std::chrono::duration_cast<std::chrono::microseconds>(
+            interceptorStart - totalStart));
   }
 
   /**
