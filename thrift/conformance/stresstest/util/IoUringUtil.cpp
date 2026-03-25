@@ -140,8 +140,9 @@ folly::IoUringBackend::Options getIoUringOptions() {
           .setZeroCopyRxRefillEntries(FLAGS_io_zcrx_refill_entries)
           .setResolveNapiCallback(resolve_napi_callback)
           .setZcrxSrcPortCallback(src_port_callback);
+    } else {
+      options.setZeroCopyImport(true);
     }
-    // else: non-owner thread gets plain io_uring without zcrx
   }
 
   if (FLAGS_io_zctx && folly::IoUringArena::initialized()) {

@@ -22,6 +22,7 @@
 #include <folly/init/Init.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/IoUringBackend.h>
+#include <folly/io/async/IoUringBufferPoolSharing.h>
 #include <folly/memory/IoUringArena.h>
 
 #include <gflags/gflags.h>
@@ -214,10 +215,16 @@ std::shared_ptr<ThriftServer> createStressTestServer(
   server->setInterface(std::move(handler));
   server->setPort(FLAGS_port);
   server->setPreferIoUring(FLAGS_io_uring);
-  server->setIOThreadPool(
-      getIOThreadPool("thrift_eventbase", FLAGS_io_threads));
+  auto ioThreadPool = getIOThreadPool("thrift_eventbase", FLAGS_io_threads);
+  server->setIOThreadPool(ioThreadPool);
   server->setNumCPUWorkerThreads(numCpuWorkerThreads);
   server->addModule(std::make_unique<StressTestServerModule>());
+  if (FLAGS_io_zcrx && FLAGS_io_zcrx_hw_queues > 0) {
+    auto evbs = ioThreadPool->getAllEventBases();
+    if (!folly::setupIoUringBufferPoolSharing(evbs, FLAGS_io_zcrx_hw_queues)) {
+      LOG(FATAL) << "Failed to set up buffer pool sharing";
+    }
+  }
   if (FLAGS_io_zctx) {
     server->setZeroCopyEnableFunc(
         [](const std::unique_ptr<folly::IOBuf>&) { return true; });
