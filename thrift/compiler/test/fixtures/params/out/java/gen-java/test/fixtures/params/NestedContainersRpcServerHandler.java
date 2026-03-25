@@ -61,7 +61,6 @@ public class NestedContainersRpcServerHandler
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_mapList_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.mapReader(Readers.i32Reader(),Readers.listReader(Readers.i32Reader())));
 
     return _readerList;
@@ -75,7 +74,6 @@ public class NestedContainersRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
@@ -148,7 +146,6 @@ public class NestedContainersRpcServerHandler
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_mapSet_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.mapReader(Readers.i32Reader(),Readers.setReader(Readers.i32Reader())));
 
     return _readerList;
@@ -162,7 +159,6 @@ public class NestedContainersRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
@@ -235,7 +231,6 @@ public class NestedContainersRpcServerHandler
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_listMap_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.listReader(Readers.mapReader(Readers.i32Reader(),Readers.i32Reader())));
 
     return _readerList;
@@ -249,7 +244,6 @@ public class NestedContainersRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
@@ -322,7 +316,6 @@ public class NestedContainersRpcServerHandler
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_listSet_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.listReader(Readers.setReader(Readers.i32Reader())));
 
     return _readerList;
@@ -336,7 +329,6 @@ public class NestedContainersRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
@@ -409,7 +401,6 @@ public class NestedContainersRpcServerHandler
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_turtles_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.listReader(Readers.listReader(Readers.mapReader(Readers.i32Reader(),Readers.mapReader(Readers.i32Reader(),Readers.setReader(Readers.i32Reader()))))));
 
     return _readerList;
@@ -423,7 +414,6 @@ public class NestedContainersRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();

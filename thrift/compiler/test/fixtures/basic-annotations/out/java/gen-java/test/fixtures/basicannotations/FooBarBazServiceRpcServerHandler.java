@@ -67,7 +67,6 @@ public class FooBarBazServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
@@ -151,7 +150,6 @@ public class FooBarBazServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
@@ -235,7 +233,6 @@ public class FooBarBazServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();

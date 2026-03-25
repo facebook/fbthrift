@@ -49,7 +49,6 @@ public class BoxServiceRpcServerHandler
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_getABoxSession_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.wrap(test.fixtures.interactions.ShouldBeBoxed.asReader()));
 
     return _readerList;
@@ -63,7 +62,6 @@ public class BoxServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         test.fixtures.interactions.ShouldBeBoxed _iter0 = (test.fixtures.interactions.ShouldBeBoxed)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.STRUCT_FIELD);
         _iter0.write0(oprot);

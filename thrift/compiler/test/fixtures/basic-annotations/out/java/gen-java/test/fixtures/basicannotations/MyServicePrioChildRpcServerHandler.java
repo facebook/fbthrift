@@ -61,7 +61,6 @@ public class MyServicePrioChildRpcServerHandler  extends test.fixtures.basicanno
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();

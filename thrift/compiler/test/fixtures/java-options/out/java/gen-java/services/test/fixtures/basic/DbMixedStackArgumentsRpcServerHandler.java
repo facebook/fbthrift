@@ -52,7 +52,6 @@ public class DbMixedStackArgumentsRpcServerHandler
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_getDataByKey0_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.stringReader());
 
     return _readerList;
@@ -66,7 +65,6 @@ public class DbMixedStackArgumentsRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         byte[] _iter0 = (byte[])_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.STRING_FIELD);
         oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
@@ -142,7 +140,6 @@ public class DbMixedStackArgumentsRpcServerHandler
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_getDataByKey1_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.stringReader());
 
     return _readerList;
@@ -156,7 +153,6 @@ public class DbMixedStackArgumentsRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         byte[] _iter0 = (byte[])_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.STRING_FIELD);
         oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));

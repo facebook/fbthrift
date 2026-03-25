@@ -49,7 +49,6 @@ public class FB303ServiceRpcServerHandler
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_simpleRpc_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.i32Reader());
 
     return _readerList;
@@ -63,7 +62,6 @@ public class FB303ServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         test.fixtures.basic.ReservedKeyword _iter0 = (test.fixtures.basic.ReservedKeyword)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.STRUCT_FIELD);
         _iter0.write0(oprot);

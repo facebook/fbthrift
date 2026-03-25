@@ -118,7 +118,6 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     {{#function:args}}
-    {{function:unsetIsNested}}
     _readerList.add({{#field:type}}{{> TypeReader }}{{/field:type}});
     {{/function:args}}
 
@@ -130,7 +129,6 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        {{function:unsetIsNested}}
         {{^function:voidType}}
         {{#function:return_type}}
         {{#function:stream_elem_type}}
@@ -159,7 +157,6 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        {{function:unsetIsNested}}
         {{^function:voidType}}
         {{#function:return_type}}
         {{#function:stream_first_response_type}}
@@ -191,7 +188,6 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     {{#function:args}}
-    {{function:unsetIsNested}}
     _readerList.add({{#field:type}}{{> TypeReader }}{{/field:type}});
     {{/function:args}}
 
@@ -206,7 +202,6 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        {{function:unsetIsNested}}
         {{^function:voidType}}
         {{#function:return_type}}
         {{> Type}} _iter0 = ({{> Type}})_r;
@@ -346,7 +341,6 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     {{#function:args}}
-    {{function:unsetIsNested}}
     _readerList.add({{#field:type}}{{> TypeReader }}{{/field:type}});
     {{/function:args}}
 

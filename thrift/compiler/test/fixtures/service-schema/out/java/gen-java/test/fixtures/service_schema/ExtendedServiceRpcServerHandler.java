@@ -49,9 +49,7 @@ public class ExtendedServiceRpcServerHandler  extends com.facebook.thrift.test.f
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_init_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.i64Reader());
-    
     _readerList.add(Readers.i64Reader());
 
     return _readerList;
@@ -65,7 +63,6 @@ public class ExtendedServiceRpcServerHandler  extends com.facebook.thrift.test.f
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         long _iter0 = (long)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I64_FIELD);
         oprot.writeI64(_iter0);

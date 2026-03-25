@@ -49,11 +49,8 @@ public class ServiceRpcServerHandler
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_func_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.stringReader());
-    
     _readerList.add(Readers.stringReader());
-    
     _readerList.add(Readers.wrap(test.fixtures.adapter.Foo.asReader()));
 
     return _readerList;
@@ -67,7 +64,6 @@ public class ServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         int _iter0 = (int)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD);
         oprot.writeI32(_iter0);

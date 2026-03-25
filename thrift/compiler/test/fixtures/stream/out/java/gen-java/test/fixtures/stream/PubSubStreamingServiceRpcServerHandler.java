@@ -266,9 +266,7 @@ public class PubSubStreamingServiceRpcServerHandler
   private final static java.util.List<com.facebook.thrift.payload.Reader> _create_returnstream_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.i32Reader());
-    
     _readerList.add(Readers.i32Reader());
 
     return _readerList;
@@ -279,7 +277,6 @@ public class PubSubStreamingServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         int _iter0 = (int)_o;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD);
         oprot.writeI32(_iter0);
@@ -300,7 +297,6 @@ public class PubSubStreamingServiceRpcServerHandler
   private final static java.util.List<com.facebook.thrift.payload.Reader> _create_streamthrows_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.i32Reader());
 
     return _readerList;
@@ -311,7 +307,6 @@ public class PubSubStreamingServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         int _iter0 = (int)_o;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD);
         oprot.writeI32(_iter0);
@@ -332,7 +327,6 @@ public class PubSubStreamingServiceRpcServerHandler
   private final static java.util.List<com.facebook.thrift.payload.Reader> _create_servicethrows_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.i32Reader());
 
     return _readerList;
@@ -343,7 +337,6 @@ public class PubSubStreamingServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         int _iter0 = (int)_o;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD);
         oprot.writeI32(_iter0);
@@ -364,7 +357,6 @@ public class PubSubStreamingServiceRpcServerHandler
   private final static java.util.List<com.facebook.thrift.payload.Reader> _create_servicethrows2_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.i32Reader());
 
     return _readerList;
@@ -375,7 +367,6 @@ public class PubSubStreamingServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         int _iter0 = (int)_o;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD);
         oprot.writeI32(_iter0);
@@ -396,7 +387,6 @@ public class PubSubStreamingServiceRpcServerHandler
   private final static java.util.List<com.facebook.thrift.payload.Reader> _create_boththrows_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.i32Reader());
 
     return _readerList;
@@ -407,7 +397,6 @@ public class PubSubStreamingServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         int _iter0 = (int)_o;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD);
         oprot.writeI32(_iter0);
@@ -428,7 +417,6 @@ public class PubSubStreamingServiceRpcServerHandler
   private final static java.util.List<com.facebook.thrift.payload.Reader> _create_responseandstreamstreamthrows_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.i32Reader());
 
     return _readerList;
@@ -439,7 +427,6 @@ public class PubSubStreamingServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         int _iter0 = (int)_o;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD);
         oprot.writeI32(_iter0);
@@ -461,7 +448,6 @@ public class PubSubStreamingServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         int _iter0 = (int)_o;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD);
         oprot.writeI32(_iter0);
@@ -482,7 +468,6 @@ public class PubSubStreamingServiceRpcServerHandler
   private final static java.util.List<com.facebook.thrift.payload.Reader> _create_responseandstreamservicethrows_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.i32Reader());
 
     return _readerList;
@@ -493,7 +478,6 @@ public class PubSubStreamingServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         int _iter0 = (int)_o;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD);
         oprot.writeI32(_iter0);
@@ -515,7 +499,6 @@ public class PubSubStreamingServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         int _iter0 = (int)_o;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD);
         oprot.writeI32(_iter0);
@@ -536,7 +519,6 @@ public class PubSubStreamingServiceRpcServerHandler
   private final static java.util.List<com.facebook.thrift.payload.Reader> _create_responseandstreamboththrows_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.i32Reader());
 
     return _readerList;
@@ -547,7 +529,6 @@ public class PubSubStreamingServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         int _iter0 = (int)_o;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD);
         oprot.writeI32(_iter0);
@@ -569,7 +550,6 @@ public class PubSubStreamingServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         int _iter0 = (int)_o;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD);
         oprot.writeI32(_iter0);
@@ -590,9 +570,7 @@ public class PubSubStreamingServiceRpcServerHandler
   private final static java.util.List<com.facebook.thrift.payload.Reader> _create_returnstreamFast_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.i32Reader());
-    
     _readerList.add(Readers.i32Reader());
 
     return _readerList;
@@ -603,7 +581,6 @@ public class PubSubStreamingServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         int _iter0 = (int)_o;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD);
         oprot.writeI32(_iter0);

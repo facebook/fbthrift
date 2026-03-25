@@ -88,7 +88,6 @@ public class MyServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
@@ -172,7 +171,6 @@ public class MyServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         String _iter0 = (String)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.STRING_FIELD);
         oprot.writeString(_iter0);
@@ -247,7 +245,6 @@ public class MyServiceRpcServerHandler
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_sink_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.i64Reader());
 
     return _readerList;
@@ -261,7 +258,6 @@ public class MyServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
@@ -334,9 +330,7 @@ public class MyServiceRpcServerHandler
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_putDataById_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.i64Reader());
-    
     _readerList.add(Readers.stringReader());
 
     return _readerList;
@@ -350,7 +344,6 @@ public class MyServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
@@ -424,7 +417,6 @@ public class MyServiceRpcServerHandler
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_hasDataById_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.i64Reader());
 
     return _readerList;
@@ -438,7 +430,6 @@ public class MyServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         boolean _iter0 = (boolean)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.BOOL_FIELD);
         oprot.writeBool(_iter0);
@@ -514,7 +505,6 @@ public class MyServiceRpcServerHandler
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_getDataById_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.i64Reader());
 
     return _readerList;
@@ -528,7 +518,6 @@ public class MyServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         String _iter0 = (String)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.STRING_FIELD);
         oprot.writeString(_iter0);
@@ -604,7 +593,6 @@ public class MyServiceRpcServerHandler
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_deleteDataById_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.i64Reader());
 
     return _readerList;
@@ -618,7 +606,6 @@ public class MyServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
@@ -703,7 +690,6 @@ public class MyServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         Set<Float> _iter0 = (Set<Float>)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.SET_FIELD);
         oprot.writeSetBegin(new TSet(TType.FLOAT, _iter0.size()));
@@ -794,7 +780,6 @@ public class MyServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
@@ -867,9 +852,7 @@ public class MyServiceRpcServerHandler
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_lobDataById_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.i64Reader());
-    
     _readerList.add(Readers.stringReader());
 
     return _readerList;

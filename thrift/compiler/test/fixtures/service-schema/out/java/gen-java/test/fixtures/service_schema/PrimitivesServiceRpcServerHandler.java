@@ -55,9 +55,7 @@ public class PrimitivesServiceRpcServerHandler
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_init_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.i64Reader());
-    
     _readerList.add(Readers.i64Reader());
 
     return _readerList;
@@ -71,7 +69,6 @@ public class PrimitivesServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         long _iter0 = (long)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I64_FIELD);
         oprot.writeI64(_iter0);
@@ -160,7 +157,6 @@ public class PrimitivesServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         test.fixtures.service_schema.Result _iter0 = (test.fixtures.service_schema.Result)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD);
         oprot.writeI32(_iter0 == null ? 0 : _iter0.getValue());
@@ -273,9 +269,7 @@ public class PrimitivesServiceRpcServerHandler
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_returnVoidMethod_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.i64Reader());
-    
     _readerList.add(Readers.wrap(test.fixtures.service_schema.I.asReader()));
 
     return _readerList;
@@ -289,7 +283,6 @@ public class PrimitivesServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();

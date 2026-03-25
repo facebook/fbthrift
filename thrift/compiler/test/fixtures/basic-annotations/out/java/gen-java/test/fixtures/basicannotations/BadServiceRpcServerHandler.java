@@ -61,7 +61,6 @@ public class BadServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         int _iter0 = (int)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD);
         oprot.writeI32(_iter0);

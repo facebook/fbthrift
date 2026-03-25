@@ -87,7 +87,6 @@ public class FactoriesRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         int _iter0 = (int)_o;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD);
         oprot.writeI32(_iter0);
@@ -109,7 +108,6 @@ public class FactoriesRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         int _iter0 = (int)_o;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD);
         oprot.writeI32(_iter0);
@@ -143,7 +141,6 @@ public class FactoriesRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
@@ -215,7 +212,6 @@ public class FactoriesRpcServerHandler
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_interact_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.i32Reader());
 
     return _readerList;
@@ -229,7 +225,6 @@ public class FactoriesRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
@@ -314,7 +309,6 @@ public class FactoriesRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         int _iter0 = (int)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.I32_FIELD);
         oprot.writeI32(_iter0);

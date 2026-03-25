@@ -61,7 +61,6 @@ public class MyLeafRpcServerHandler  extends test.fixtures.inheritance.MyNodeRpc
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();

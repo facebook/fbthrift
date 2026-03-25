@@ -52,9 +52,7 @@ public class MyServiceRpcServerHandler
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_query_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.wrap(test.fixtures.includes.MyStruct.asReader()));
-    
     _readerList.add(Readers.wrap(test.fixtures.includes.includes.Included.asReader()));
 
     return _readerList;
@@ -68,7 +66,6 @@ public class MyServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
@@ -142,9 +139,7 @@ public class MyServiceRpcServerHandler
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_hasArgDocs_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.wrap(test.fixtures.includes.MyStruct.asReader()));
-    
     _readerList.add(Readers.wrap(test.fixtures.includes.includes.Included.asReader()));
 
     return _readerList;
@@ -158,7 +153,6 @@ public class MyServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();

@@ -49,9 +49,7 @@ public class LegacyServiceRpcServerHandler
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_getPoints_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
-    
     _readerList.add(Readers.setReader(Readers.stringReader()));
-    
     _readerList.add(Readers.i64Reader());
 
     return _readerList;
@@ -65,7 +63,6 @@ public class LegacyServiceRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         Map<String, List<Integer>> _iter0 = (Map<String, List<Integer>>)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.MAP_FIELD);
         oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter0.size()));

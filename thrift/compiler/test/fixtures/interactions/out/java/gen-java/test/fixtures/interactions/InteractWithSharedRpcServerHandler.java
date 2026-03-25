@@ -61,7 +61,6 @@ public class InteractWithSharedRpcServerHandler
       try {
         oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
-        
         test.fixtures.another_interactions.DoSomethingResult _iter0 = (test.fixtures.another_interactions.DoSomethingResult)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.STRUCT_FIELD);
         _iter0.write0(oprot);
