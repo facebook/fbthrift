@@ -28,18 +28,25 @@ class TestModule : public apache::thrift::ServerModule {
 };
 } // namespace
 
-TEST(ThriftServerDuplicateModuleTest, testDuplicateModule) {
+TEST(ThriftServerDuplicateModuleTest, ThrowsDuplicateModuleNameError) {
   EXPECT_THROW(
       {
         try {
           ThriftServer server;
           server.addModule(std::make_unique<TestModule>());
           server.addModule(std::make_unique<TestModule>());
-        } catch (const std::invalid_argument& ex) {
+        } catch (const DuplicateModuleNameError& ex) {
           EXPECT_THAT(
               ex.what(), HasSubstr("Duplicate module name: TestModule"));
           throw;
         }
       },
-      std::invalid_argument);
+      DuplicateModuleNameError);
+}
+
+TEST(ThriftServerDuplicateModuleTest, CatchableAsInvalidArgument) {
+  ThriftServer server;
+  server.addModule(std::make_unique<TestModule>());
+  EXPECT_THROW(
+      server.addModule(std::make_unique<TestModule>()), std::invalid_argument);
 }

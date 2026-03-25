@@ -133,6 +133,14 @@ class ThriftRocketServerHandler;
 class RocketRequestHandler;
 } // namespace rocket
 
+/**
+ * Exception thrown when a module with a duplicate name is added to a
+ * ThriftServer.
+ */
+class DuplicateModuleNameError : public std::invalid_argument {
+  using std::invalid_argument::invalid_argument;
+};
+
 enum class SSLPolicy { DISABLED, PERMITTED, REQUIRED };
 
 enum class PSPUpgradePolicy {
@@ -2263,7 +2271,7 @@ class ThriftServer : public apache::thrift::concurrency::Runnable,
 
     auto [_, inserted] = unprocessedModulesSpecification_.names.insert(name);
     if (!inserted) {
-      throw std::invalid_argument(
+      throw DuplicateModuleNameError(
           fmt::format("Duplicate module name: {}", name));
     }
 
