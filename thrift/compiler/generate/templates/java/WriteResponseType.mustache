@@ -20,8 +20,7 @@
 }}{{^type:typedef?}}{{!
 }}{{#type:set?}}oprot.writeSetBegin(new TSet(TType.{{#type:set_elem_type}}{{#partial types.ttype type=type:self}}{{/type:set_elem_type}}, _iter{{function:prevNestedDepth}}.size()));
         for ({{#type:set_elem_type}}{{> Type}}{{/type:set_elem_type}} _iter{{function:nestedDepth}} : _iter{{function:prevNestedDepth}}) {
-          {{type:setIsNotMap}}{{!
-          }}{{#type:set_elem_type}}{{!
+          {{#type:set_elem_type}}{{!
           }}{{function:nestedDepth++}}{{> WriteResponseType}}{{function:nestedDepth--}}
           {{/type:set_elem_type}}
         }
@@ -31,8 +30,7 @@
 }}{{#type:list?}}{{!
 }}oprot.writeListBegin(new TList(TType.{{#type:list_elem_type}}{{#partial types.ttype type=type:self}}{{/type:list_elem_type}}, _iter{{function:prevNestedDepth}}.size()));
         for ({{#type:list_elem_type}}{{> Type}}{{/type:list_elem_type}} _iter{{function:nestedDepth}} : _iter{{function:prevNestedDepth}}) {
-          {{type:setIsNotMap}}{{!
-          }}{{#type:list_elem_type}}{{!
+          {{#type:list_elem_type}}{{!
           }}{{function:nestedDepth++}}{{> WriteResponseType}}{{function:nestedDepth--}}
           {{/type:list_elem_type}}
         }
