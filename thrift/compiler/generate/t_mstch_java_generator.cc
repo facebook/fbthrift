@@ -1180,28 +1180,7 @@ class mstch_java_function : public mstch_function {
         this,
         {
             {"function:voidType", &mstch_java_function::is_void_type},
-            {"function:nestedDepth",
-             {with_no_caching, &mstch_java_function::get_nested_depth}},
-            {"function:nestedDepth++",
-             {with_no_caching, &mstch_java_function::increment_nested_depth}},
-            {"function:nestedDepth--",
-             {with_no_caching, &mstch_java_function::decrement_nested_depth}},
-            {"function:prevNestedDepth",
-             {with_no_caching, &mstch_java_function::preceding_nested_depth}},
         });
-  }
-
-  int32_t nestedDepth = 0;
-
-  mstch::node get_nested_depth() { return nestedDepth; }
-  mstch::node preceding_nested_depth() { return (nestedDepth - 1); }
-  mstch::node increment_nested_depth() {
-    nestedDepth++;
-    return mstch::node();
-  }
-  mstch::node decrement_nested_depth() {
-    nestedDepth--;
-    return mstch::node();
   }
 
   mstch::node is_void_type() {

@@ -74,10 +74,10 @@ public class LegacyServiceRpcServerHandler
           {
             List<Integer> _iter2 = _iter1.getValue();
             oprot.writeListBegin(new TList(TType.I32, _iter2.size()));
-        for (int _iter3 : _iter2) {
-          oprot.writeI32(_iter3);
-        }
-        oprot.writeListEnd();
+            for (int _iter3 : _iter2) {
+              oprot.writeI32(_iter3);
+            }
+            oprot.writeListEnd();
           }
         }
         oprot.writeMapEnd();

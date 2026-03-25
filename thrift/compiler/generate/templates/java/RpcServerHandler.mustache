@@ -134,7 +134,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
         {{#function:stream_elem_type}}
         {{> Type}} _iter0 = ({{> Type}})_o;
         oprot.writeFieldBegin({{#partial codec.rpc_field_type type=type:self}});
-        {{function:nestedDepth++}}{{> WriteResponseType}}{{function:nestedDepth--}}
+        {{#partial codec.write_response_type type=type:self depth=0}}
         {{/function:stream_elem_type}}
         oprot.writeFieldEnd();
         {{/function:return_type}}
@@ -162,7 +162,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
         {{#function:stream_first_response_type}}
         {{> Type}} _iter0 = ({{> Type}})_o;
         oprot.writeFieldBegin({{#partial codec.rpc_field_type type=type:self}});
-        {{function:nestedDepth++}}{{> WriteResponseType}}{{function:nestedDepth--}}
+        {{#partial codec.write_response_type type=type:self depth=0}}
         {{/function:stream_first_response_type}}
         oprot.writeFieldEnd();
         {{/function:return_type}}
@@ -206,7 +206,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
         {{#function:return_type}}
         {{> Type}} _iter0 = ({{> Type}})_r;
         oprot.writeFieldBegin({{#partial codec.rpc_field_type type=type:self}});
-        {{function:nestedDepth++}}{{> WriteResponseType}}{{function:nestedDepth--}}
+        {{#partial codec.write_response_type type=type:self depth=0}}
         oprot.writeFieldEnd();
         {{/function:return_type}}
         {{/function:voidType}}

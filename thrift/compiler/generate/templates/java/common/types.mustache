@@ -61,6 +61,28 @@ Map<
   {{/if (not (string.empty? type.javaType))}}
 {{/let partial}}
 
+{{! Defines an unboxed Java type for a given Thrift type.
+    Uses primitive types (boolean, int, long, etc.) for primitives,
+    and falls back to boxed_type for complex types.
+    Recurses through typedefs one layer at a time since each layer
+    could override javaType. }}
+{{#let export partial java_type |type| captures |boxed_type|}}
+  {{#pragma ignore-newlines}}
+{{#if (not (string.empty? type.javaType))}}{{type.javaType}}
+{{#else if type.isBinaryString?}}byte[]
+{{#else if type.typedef?}}{{#partial java_type type=type.resolved}}
+{{#else if type.void?}}void
+{{#else if type.bool?}}boolean
+{{#else if type.byte?}}byte
+{{#else if type.i16?}}short
+{{#else if type.i32?}}int
+{{#else if type.i64?}}long
+{{#else if type.double?}}double
+{{#else if type.float?}}float
+{{#else}}{{#partial boxed_type type=type type_isAdapterSet=false field_hasAdapter=false}}
+{{/if (not (string.empty? type.javaType))}}
+{{/let partial}}
+
 {{! Defines the mapping of a Thrift type to the Java TType constant name. }}
 {{#let export partial ttype |type|}}
   {{#pragma ignore-newlines}}
