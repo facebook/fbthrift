@@ -641,7 +641,8 @@ class t_hack_generator : public t_concat_generator {
   std::string field_to_typehint(
       const t_field& tfield,
       const std::string& struct_class_name,
-      bool is_field_nullable = false);
+      bool is_field_nullable = false,
+      const t_structured* parent_struct = nullptr);
   std::string get_stream_function_return_typehint(const t_function* function);
   std::string get_sink_function_return_typehint(const t_function* function);
   std::string get_container_keyword(
@@ -889,6 +890,28 @@ class t_hack_generator : public t_concat_generator {
   bool should_generate_client_header_methods(const t_named* tnamed) const {
     return tnamed->has_structured_annotation(
         kHackGenerateClientMethodsWithHeaders);
+  }
+
+  bool has_hack_fixme_wrong_type(
+      const t_field& field, const t_structured* parent_struct) const {
+    if (field.has_structured_annotation(kHackFixmeWrongTypeUri)) {
+      return true;
+    }
+    return parent_struct &&
+        parent_struct->has_structured_annotation(kHackFixmeWrongTypeUri);
+  }
+
+  bool has_hack_unsafe_array(const t_field& field) const {
+    return field.has_structured_annotation(kHackUnsafeArrayUri);
+  }
+
+  static std::string apply_unsafe_array_typehint(const std::string& typehint) {
+    if (typehint.substr(0, 4) == "vec<") {
+      return "varrayish_UNSAFE" + typehint.substr(3);
+    } else if (typehint.substr(0, 5) == "dict<") {
+      return "darrayish_UNSAFE" + typehint.substr(4);
+    }
+    return typehint;
   }
 
   std::string php_namespace(const t_program* p) const {
@@ -4170,7 +4193,8 @@ void t_hack_generator::generate_php_union_methods(
     typehint = field_to_typehint(
         field,
         struct_hack_name_with_ns,
-        /* is_field_nullable */ false);
+        /* is_field_nullable */ false,
+        tstruct);
 
     // get_<fieldName>()
     indent(out) << "public function get_" << fieldName << "()[]: ?" << typehint
@@ -4256,7 +4280,8 @@ void t_hack_generator::generate_php_struct_fields(
     std::string typehint = field_to_typehint(
         field,
         struct_hack_name_with_ns,
-        nullable && !tstruct->is<t_union>() /* is_field_nullable */);
+        nullable && !tstruct->is<t_union>() /* is_field_nullable */,
+        tstruct);
 
     if (tstruct->is<t_result_struct>() && fieldName == "success") {
       typehint = "this::TResult";
@@ -4675,6 +4700,14 @@ void t_hack_generator::generate_php_struct_constructor(
     }
     if (tstruct->is<t_result_struct>() && field.name() == "success") {
       typehint = "this::TResult";
+    }
+    // Apply @hack.UnsafeArray
+    if (has_hack_unsafe_array(field)) {
+      typehint = apply_unsafe_array_typehint(typehint);
+    }
+    // Apply @hack.FixmeWrongType
+    if (has_hack_fixme_wrong_type(field, tstruct)) {
+      typehint = "\\HH_FIXME\\WRONG_TYPE<" + typehint + ">";
     }
     out << delim << "?" << typehint << " $" << field.name() << " = null";
     delim = ", ";
@@ -6904,7 +6937,8 @@ std::string t_hack_generator::type_to_typehint(
 std::string t_hack_generator::field_to_typehint(
     const t_field& tfield,
     const std::string& struct_class_name,
-    bool is_field_nullable) {
+    bool is_field_nullable,
+    const t_structured* parent_struct) {
   std::string typehint;
   // Check the adapter before resolving typedefs.
   if (std::optional<std::string> adapter = find_hack_field_adapter(tfield)) {
@@ -6918,6 +6952,17 @@ std::string t_hack_generator::field_to_typehint(
     typehint = *field_wrapper + "<" + (is_field_nullable ? "?" : "") +
         typehint + ", " + struct_class_name + ">";
   }
+
+  // Apply @hack.UnsafeArray: replace array type prefixes with unsafe variants
+  if (has_hack_unsafe_array(tfield)) {
+    typehint = apply_unsafe_array_typehint(typehint);
+  }
+
+  // Apply @hack.FixmeWrongType: wrap type with \HH_FIXME\WRONG_TYPE<>
+  if (has_hack_fixme_wrong_type(tfield, parent_struct)) {
+    typehint = "\\HH_FIXME\\WRONG_TYPE<" + typehint + ">";
+  }
+
   return typehint;
 }
 

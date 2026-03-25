@@ -70,3 +70,35 @@ service FooService {
 service FooService1 {
   i32 ping(1: string str_arg);
 }
+
+// Test @hack.FixmeWrongType on individual fields
+struct FieldFixme {
+  @hack.FixmeWrongType
+  1: i64 bad_field;
+  2: string good_field;
+  @hack.FixmeWrongType
+  3: list<string> bad_list;
+}
+
+// Test @hack.FixmeWrongType on a struct (all fields)
+@hack.FixmeWrongType
+struct AllFieldsFixme {
+  1: i64 field_one;
+  2: string field_two;
+  3: list<i32> field_three;
+}
+
+// Test @hack.FixmeWrongType on optional fields (nullable)
+struct NullableFixme {
+  @hack.FixmeWrongType
+  1: optional i64 nullable_fixme;
+  @hack.FixmeWrongType
+  2: optional list<string> nullable_fixme_list;
+}
+
+// Test @hack.FixmeWrongType on union fields
+union UnionFixme {
+  @hack.FixmeWrongType
+  1: i64 int_field;
+  2: string string_field;
+}

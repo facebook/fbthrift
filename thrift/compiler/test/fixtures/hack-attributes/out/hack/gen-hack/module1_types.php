@@ -868,3 +868,630 @@ class UnionTestingStructured implements \IThriftSyncStruct, \IThriftStructMetada
 
 }
 
+/**
+ * Original thrift struct:-
+ * FieldFixme
+ */
+class FieldFixme implements \IThriftSyncStruct, \IThriftStructMetadata {
+  use \ThriftSerializationTrait;
+
+  const \ThriftStructTypes::TSpec SPEC = dict[
+    1 => shape(
+      'var' => 'bad_field',
+      'type' => \TType::I64,
+    ),
+    2 => shape(
+      'var' => 'good_field',
+      'type' => \TType::STRING,
+    ),
+    3 => shape(
+      'var' => 'bad_list',
+      'type' => \TType::LST,
+      'etype' => \TType::STRING,
+      'elem' => shape(
+        'type' => \TType::STRING,
+      ),
+      'format' => 'collection',
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'bad_field' => 1,
+    'good_field' => 2,
+    'bad_list' => 3,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'bad_field' => ?int,
+    ?'good_field' => ?string,
+    ?'bad_list' => ?Vector<string>,
+  );
+
+  const int STRUCTURAL_ID = 5579396869651696247;
+  /**
+   * Original thrift field:-
+   * 1: i64 bad_field
+   */
+  public \HH_FIXME\WRONG_TYPE<int> $bad_field;
+  /**
+   * Original thrift field:-
+   * 2: string good_field
+   */
+  public string $good_field;
+  /**
+   * Original thrift field:-
+   * 3: list<string> bad_list
+   */
+  public \HH_FIXME\WRONG_TYPE<Vector<string>> $bad_list;
+
+  public function __construct(?\HH_FIXME\WRONG_TYPE<int> $bad_field = null, ?string $good_field = null, ?\HH_FIXME\WRONG_TYPE<Vector<string>> $bad_list = null)[] {
+    $this->bad_field = $bad_field ?? 0;
+    $this->good_field = $good_field ?? '';
+    $this->bad_list = $bad_list ?? Vector {};
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'bad_field'),
+      Shapes::idx($shape, 'good_field'),
+      Shapes::idx($shape, 'bad_list'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'FieldFixme';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module1.FieldFixme",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                )
+              ),
+              "name" => "bad_field",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "good_field",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_list" => \tmeta_ThriftListType::fromShape(
+                    shape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "bad_list",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'bad_field' => shape(
+          'field' => dict[
+            '\facebook\thrift\annotation\hack\FixmeWrongType' => \facebook\thrift\annotation\hack\FixmeWrongType::withDefaultValues(),
+          ],
+          'type' => dict[],
+        ),
+        'bad_list' => shape(
+          'field' => dict[
+            '\facebook\thrift\annotation\hack\FixmeWrongType' => \facebook\thrift\annotation\hack\FixmeWrongType::withDefaultValues(),
+          ],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+}
+
+/**
+ * Original thrift struct:-
+ * AllFieldsFixme
+ */
+class AllFieldsFixme implements \IThriftSyncStruct, \IThriftStructMetadata {
+  use \ThriftSerializationTrait;
+
+  const \ThriftStructTypes::TSpec SPEC = dict[
+    1 => shape(
+      'var' => 'field_one',
+      'type' => \TType::I64,
+    ),
+    2 => shape(
+      'var' => 'field_two',
+      'type' => \TType::STRING,
+    ),
+    3 => shape(
+      'var' => 'field_three',
+      'type' => \TType::LST,
+      'etype' => \TType::I32,
+      'elem' => shape(
+        'type' => \TType::I32,
+      ),
+      'format' => 'collection',
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'field_one' => 1,
+    'field_two' => 2,
+    'field_three' => 3,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'field_one' => ?int,
+    ?'field_two' => ?string,
+    ?'field_three' => ?Vector<int>,
+  );
+
+  const int STRUCTURAL_ID = 6646393871329257509;
+  /**
+   * Original thrift field:-
+   * 1: i64 field_one
+   */
+  public \HH_FIXME\WRONG_TYPE<int> $field_one;
+  /**
+   * Original thrift field:-
+   * 2: string field_two
+   */
+  public \HH_FIXME\WRONG_TYPE<string> $field_two;
+  /**
+   * Original thrift field:-
+   * 3: list<i32> field_three
+   */
+  public \HH_FIXME\WRONG_TYPE<Vector<int>> $field_three;
+
+  public function __construct(?\HH_FIXME\WRONG_TYPE<int> $field_one = null, ?\HH_FIXME\WRONG_TYPE<string> $field_two = null, ?\HH_FIXME\WRONG_TYPE<Vector<int>> $field_three = null)[] {
+    $this->field_one = $field_one ?? 0;
+    $this->field_two = $field_two ?? '';
+    $this->field_three = $field_three ?? Vector {};
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'field_one'),
+      Shapes::idx($shape, 'field_two'),
+      Shapes::idx($shape, 'field_three'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'AllFieldsFixme';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module1.AllFieldsFixme",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                )
+              ),
+              "name" => "field_one",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "field_two",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_list" => \tmeta_ThriftListType::fromShape(
+                    shape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "field_three",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        '\facebook\thrift\annotation\hack\FixmeWrongType' => \facebook\thrift\annotation\hack\FixmeWrongType::withDefaultValues(),
+      ],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+}
+
+/**
+ * Original thrift struct:-
+ * NullableFixme
+ */
+class NullableFixme implements \IThriftSyncStruct, \IThriftStructMetadata {
+  use \ThriftSerializationTrait;
+
+  const \ThriftStructTypes::TSpec SPEC = dict[
+    1 => shape(
+      'var' => 'nullable_fixme',
+      'type' => \TType::I64,
+    ),
+    2 => shape(
+      'var' => 'nullable_fixme_list',
+      'type' => \TType::LST,
+      'etype' => \TType::STRING,
+      'elem' => shape(
+        'type' => \TType::STRING,
+      ),
+      'format' => 'collection',
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'nullable_fixme' => 1,
+    'nullable_fixme_list' => 2,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'nullable_fixme' => ?int,
+    ?'nullable_fixme_list' => ?Vector<string>,
+  );
+
+  const int STRUCTURAL_ID = 942712148201541600;
+  /**
+   * Original thrift field:-
+   * 1: i64 nullable_fixme
+   */
+  public ?\HH_FIXME\WRONG_TYPE<int> $nullable_fixme;
+  /**
+   * Original thrift field:-
+   * 2: list<string> nullable_fixme_list
+   */
+  public ?\HH_FIXME\WRONG_TYPE<Vector<string>> $nullable_fixme_list;
+
+  public function __construct(?\HH_FIXME\WRONG_TYPE<int> $nullable_fixme = null, ?\HH_FIXME\WRONG_TYPE<Vector<string>> $nullable_fixme_list = null)[] {
+    $this->nullable_fixme = $nullable_fixme;
+    $this->nullable_fixme_list = $nullable_fixme_list;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'nullable_fixme'),
+      Shapes::idx($shape, 'nullable_fixme_list'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'NullableFixme';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module1.NullableFixme",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                )
+              ),
+              "name" => "nullable_fixme",
+              "is_optional" => true,
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_list" => \tmeta_ThriftListType::fromShape(
+                    shape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "nullable_fixme_list",
+              "is_optional" => true,
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'nullable_fixme' => shape(
+          'field' => dict[
+            '\facebook\thrift\annotation\hack\FixmeWrongType' => \facebook\thrift\annotation\hack\FixmeWrongType::withDefaultValues(),
+          ],
+          'type' => dict[],
+        ),
+        'nullable_fixme_list' => shape(
+          'field' => dict[
+            '\facebook\thrift\annotation\hack\FixmeWrongType' => \facebook\thrift\annotation\hack\FixmeWrongType::withDefaultValues(),
+          ],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+}
+
+enum UnionFixmeEnum: int {
+  _EMPTY_ = 0;
+  int_field = 1;
+  string_field = 2;
+}
+
+/**
+ * Original thrift union:-
+ * UnionFixme
+ */
+class UnionFixme implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftUnion<\test\fixtures\jsenum\UnionFixmeEnum> {
+  use \ThriftUnionSerializationTrait;
+
+  const \ThriftStructTypes::TSpec SPEC = dict[
+    1 => shape(
+      'var' => 'int_field',
+      'union' => true,
+      'type' => \TType::I64,
+    ),
+    2 => shape(
+      'var' => 'string_field',
+      'union' => true,
+      'type' => \TType::STRING,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'int_field' => 1,
+    'string_field' => 2,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'int_field' => ?int,
+    ?'string_field' => ?string,
+  );
+
+  const int STRUCTURAL_ID = 1660206846992891097;
+  /**
+   * Original thrift field:-
+   * 1: i64 int_field
+   */
+  public ?\HH_FIXME\WRONG_TYPE<int> $int_field;
+  /**
+   * Original thrift field:-
+   * 2: string string_field
+   */
+  public ?string $string_field;
+  protected \test\fixtures\jsenum\UnionFixmeEnum $_type = \test\fixtures\jsenum\UnionFixmeEnum::_EMPTY_;
+
+  public function __construct(?\HH_FIXME\WRONG_TYPE<int> $int_field = null, ?string $string_field = null)[] {
+    $this->_type = \test\fixtures\jsenum\UnionFixmeEnum::_EMPTY_;
+    if ($int_field !== null) {
+      $this->int_field = $int_field;
+      $this->_type = \test\fixtures\jsenum\UnionFixmeEnum::int_field;
+    }
+    if ($string_field !== null) {
+      $this->string_field = $string_field;
+      $this->_type = \test\fixtures\jsenum\UnionFixmeEnum::string_field;
+    }
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'int_field'),
+      Shapes::idx($shape, 'string_field'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'UnionFixme';
+  }
+
+  public function getType()[]: \test\fixtures\jsenum\UnionFixmeEnum {
+    return $this->_type;
+  }
+
+  public function reset()[write_props]: void {
+    switch ($this->_type) {
+      case \test\fixtures\jsenum\UnionFixmeEnum::int_field:
+        $this->int_field = null;
+        break;
+      case \test\fixtures\jsenum\UnionFixmeEnum::string_field:
+        $this->string_field = null;
+        break;
+      case \test\fixtures\jsenum\UnionFixmeEnum::_EMPTY_:
+        break;
+    }
+    $this->_type = \test\fixtures\jsenum\UnionFixmeEnum::_EMPTY_;
+  }
+
+  public function set_int_field(int $int_field)[write_props]: this {
+    $this->reset();
+    $this->_type = \test\fixtures\jsenum\UnionFixmeEnum::int_field;
+    $this->int_field = $int_field;
+    return $this;
+  }
+
+  public function get_int_field()[]: ?\HH_FIXME\WRONG_TYPE<int> {
+    $this->logIncorrectFieldAccessed(
+      $this->_type,
+      \test\fixtures\jsenum\UnionFixmeEnum::int_field,
+    );
+    return $this->int_field;
+  }
+
+  public function getx_int_field()[]: \HH_FIXME\WRONG_TYPE<int> {
+    invariant(
+      $this->_type === \test\fixtures\jsenum\UnionFixmeEnum::int_field,
+      'get_int_field called on an instance of UnionFixme whose current type is %s',
+      (string)$this->_type,
+    );
+    return $this->int_field as nonnull;
+  }
+
+  public function set_string_field(string $string_field)[write_props]: this {
+    $this->reset();
+    $this->_type = \test\fixtures\jsenum\UnionFixmeEnum::string_field;
+    $this->string_field = $string_field;
+    return $this;
+  }
+
+  public function get_string_field()[]: ?string {
+    $this->logIncorrectFieldAccessed(
+      $this->_type,
+      \test\fixtures\jsenum\UnionFixmeEnum::string_field,
+    );
+    return $this->string_field;
+  }
+
+  public function getx_string_field()[]: string {
+    invariant(
+      $this->_type === \test\fixtures\jsenum\UnionFixmeEnum::string_field,
+      'get_string_field called on an instance of UnionFixme whose current type is %s',
+      (string)$this->_type,
+    );
+    return $this->string_field as nonnull;
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module1.UnionFixme",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                )
+              ),
+              "name" => "int_field",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "string_field",
+            )
+          ),
+        ],
+        "is_union" => true,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'int_field' => shape(
+          'field' => dict[
+            '\facebook\thrift\annotation\hack\FixmeWrongType' => \facebook\thrift\annotation\hack\FixmeWrongType::withDefaultValues(),
+          ],
+          'type' => dict[],
+        ),
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+}
+
