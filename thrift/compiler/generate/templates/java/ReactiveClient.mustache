@@ -173,9 +173,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
 
           {{> FieldType}} _iter0 = {{field:javaName}};
 
-          {{#field:type}}
-          {{field:nestedDepth++}}{{> WriteRequestType}}{{field:nestedDepth--}}
-          {{/field:type}}
+          {{#partial codec.write_response_type type=field:self.type depth=0}}
           oprot.writeFieldEnd();
         }
         {{/field:type}}
@@ -243,9 +241,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
 
           {{> FieldType}} _iter0 = {{field:javaName}};
 
-          {{#field:type}}
-          {{field:nestedDepth++}}{{> WriteRequestType}}{{field:nestedDepth--}}
-          {{/field:type}}
+          {{#partial codec.write_response_type type=field:self.type depth=0}}
           oprot.writeFieldEnd();
         }
         {{/field:type}}
@@ -322,9 +318,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
 
           {{> FieldType}} _iter0 = {{field:javaName}};
 
-          {{#field:type}}
-          {{field:nestedDepth++}}{{> WriteRequestType}}{{field:nestedDepth--}}
-          {{/field:type}}
+          {{#partial codec.write_response_type type=field:self.type depth=0}}
           oprot.writeFieldEnd();
         }
         {{/field:type}}
@@ -446,9 +440,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
 
             {{> FieldType}} _iter0 = {{field:javaName}};
 
-            {{#field:type}}
-            {{field:nestedDepth++}}{{> WriteRequestType}}{{field:nestedDepth--}}
-            {{/field:type}}
+            {{#partial codec.write_response_type type=field:self.type depth=0}}
             oprot.writeFieldEnd();
           }
           {{/field:type}}
@@ -533,9 +525,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
 
             {{> FieldType}} _iter0 = {{field:javaName}};
 
-            {{#field:type}}
-            {{field:nestedDepth++}}{{> WriteRequestType}}{{field:nestedDepth--}}
-            {{/field:type}}
+            {{#partial codec.write_response_type type=field:self.type depth=0}}
             oprot.writeFieldEnd();
           }
           {{/field:type}}
