@@ -25,7 +25,7 @@
   }}{{^type:isAdapterSet?}}{{!
     }}{{#type:isBinaryString?}}{{!
       }}{{#field:isNested?}}{{!
-        }}{{^field:hasAdapterOrWrapper?}}{{#type:isAdapterSet?}}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, {{> WriteNestedType}});{{/type:isAdapterSet?}}{{^type:isAdapterSet?}}oprot.writeBinary(java.nio.ByteBuffer.wrap({{> WriteNestedType}}));{{/type:isAdapterSet?}}{{/field:hasAdapterOrWrapper?}}{{!
+        }}{{^field:hasAdapterOrWrapper?}}oprot.writeBinary(java.nio.ByteBuffer.wrap({{> WriteNestedType}}));{{/field:hasAdapterOrWrapper?}}{{!
         }}{{#field:hasAdapterOrWrapper?}}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, {{> WriteNestedType}});{{/field:hasAdapterOrWrapper?}}{{!
       }}{{/field:isNested?}}{{!
       }}{{^field:isNested?}}{{!
