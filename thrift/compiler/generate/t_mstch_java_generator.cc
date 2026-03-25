@@ -631,6 +631,19 @@ class t_mstch_java_generator : public t_mstch_generator {
     auto base = t_whisker_generator::make_prototype_for_structured(proto);
     auto def = whisker::dsl::prototype_builder<h_structured>::extends(base);
 
+    def.property("unionFieldTypeUnique?", [](const t_structured& self) {
+      std::set<std::string> field_types;
+      for (const auto& field : self.fields()) {
+        std::string type_name = field.type()->get_true_type()->get_full_name();
+        std::string_view type_with_erasure =
+            std::string_view{type_name}.substr(0, type_name.find('<'));
+        if (!field_types.insert(std::string(type_with_erasure)).second) {
+          return false;
+        }
+      }
+      return true;
+    });
+
     def.property("asBean?", [](const t_structured& self) {
       return self.is<t_struct>() &&
           (self.get_unstructured_annotation("java.swift.mutable") == "true" ||
@@ -1045,23 +1058,8 @@ class mstch_java_struct : public mstch_struct {
     register_methods(
         this,
         {
-            {"struct:unionFieldTypeUnique?",
-             &mstch_java_struct::is_union_field_type_unique},
             {"struct:clearAdapter", &mstch_java_struct::clear_adapter},
         });
-  }
-  mstch::node is_union_field_type_unique() {
-    std::set<std::string> field_types;
-    for (const auto& field : struct_->fields()) {
-      auto type_name = field.type()->get_true_type()->get_full_name();
-      std::string type_with_erasure = type_name.substr(0, type_name.find('<'));
-      if (field_types.find(type_with_erasure) != field_types.end()) {
-        return false;
-      } else {
-        field_types.insert(type_with_erasure);
-      }
-    }
-    return true;
   }
   mstch::node clear_adapter() {
     adapterDefinitionSet.clear();
