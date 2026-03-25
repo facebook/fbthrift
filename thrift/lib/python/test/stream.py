@@ -29,6 +29,11 @@ from thrift.python.client import ClientType, get_client
 from thrift.python.common import RpcOptions
 
 
+class _TestStreamError(Exception):
+    """Test-only exception used in generator tests to avoid matching
+    framework-internal errors like RuntimeError."""
+
+
 class Handler(StreamTestServiceInterface):
     async def returnstream(self, i32_from: int, i32_to: int) -> AsyncIterator[int]:
         for i in range(i32_from, i32_to):
@@ -234,6 +239,63 @@ class StreamClientTest(unittest.IsolatedAsyncioTestCase):
                 self.assertEqual(first, 0)
                 # Ensure server generator is blocked in __anext__.
                 await asyncio.wait_for(generator_blocked_event.wait(), timeout=5.0)
+
             # Client disconnected; cancelAsyncGenerator fires on server side.
-            # Verify generator cleanup before server shutdown.
             await asyncio.wait_for(generator_cleanup_event.wait(), timeout=5.0)
+
+    async def _assert_cancel_cleanup_despite_finally_error(
+        self,
+        async_sleep_in_finally: bool,
+    ) -> None:
+        """Generator finally block does cleanup then raises; cleanup must
+        still happen and server must not crash."""
+        generator_cleanup_event = asyncio.Event()
+        generator_blocked_event = asyncio.Event()
+
+        class FinallyErrorHandler(Handler):
+            async def returnstream(
+                self, i32_from: int, i32_to: int
+            ) -> AsyncIterator[int]:
+                try:
+                    for i in range(i32_from, i32_to):
+                        yield i
+                        if i == i32_from + 2:
+                            generator_blocked_event.set()
+                            # Block forever; cancellation must interrupt this
+                            await asyncio.Future()
+                finally:
+                    generator_cleanup_event.set()
+                    if async_sleep_in_finally:
+                        await asyncio.sleep(0)
+                    raise _TestStreamError("bug in finally")
+
+        async with TestServer(handler=FinallyErrorHandler(), ip="::1") as sa:
+            ip, port = sa.ip, sa.port
+            assert ip and port
+            async with get_client(
+                StreamTestService,
+                host=ip,
+                port=port,
+                client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
+            ) as client:
+                stream = await client.returnstream(0, 100)
+                results = []
+                async for val in stream:
+                    results.append(val)
+                    if len(results) >= 3:
+                        break
+                self.assertEqual(results, [0, 1, 2])
+                await asyncio.wait_for(generator_blocked_event.wait(), timeout=5.0)
+
+            # Client disconnected; cancellation must trigger generator cleanup.
+            await asyncio.wait_for(generator_cleanup_event.wait(), timeout=5.0)
+
+    async def test_stream_cancel_cleanup_despite_finally_error(self) -> None:
+        await self._assert_cancel_cleanup_despite_finally_error(
+            async_sleep_in_finally=False
+        )
+
+    async def test_stream_cancel_cleanup_despite_async_finally_error(self) -> None:
+        await self._assert_cancel_cleanup_despite_finally_error(
+            async_sleep_in_finally=True
+        )
