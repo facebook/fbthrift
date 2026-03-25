@@ -342,7 +342,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
       try {
         oprot.writeFieldBegin(_{{function:java_name}}_SINK_TFIELD);
         {{#function:return_type}}{{#function:sink_elem_type}}
-        {{function:nestedDepth++}}{{> WriteSinkPayloadType}}{{function:nestedDepth--}}
+        {{function:nestedDepth++}}{{> WriteResponseType}}{{function:nestedDepth--}}
         {{/function:sink_elem_type}}{{/function:return_type}}
 
         oprot.writeFieldEnd();
