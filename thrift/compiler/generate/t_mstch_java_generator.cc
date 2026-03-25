@@ -620,6 +620,9 @@ class t_mstch_java_generator : public t_mstch_generator {
     def.property("java_name", [](const t_function& self) {
       return java::mangle_java_name(self.name(), false);
     });
+    def.property("voidType", [](const t_function& self) {
+      return self.return_type()->is_void() && !self.stream();
+    });
     return std::move(def).make();
   }
 
@@ -1171,23 +1174,6 @@ class mstch_java_interaction : public mstch_java_service {
   }
 };
 
-class mstch_java_function : public mstch_function {
- public:
-  mstch_java_function(
-      const t_function* f, mstch_context& ctx, mstch_element_position pos)
-      : mstch_function(f, ctx, pos) {
-    register_methods(
-        this,
-        {
-            {"function:voidType", &mstch_java_function::is_void_type},
-        });
-  }
-
-  mstch::node is_void_type() {
-    return function_->return_type()->is_void() && !function_->stream();
-  }
-};
-
 class mstch_java_field : public mstch_field {
  public:
   mstch_java_field(
@@ -1432,7 +1418,6 @@ void t_mstch_java_generator::generate_program() {
 void t_mstch_java_generator::set_mstch_factories() {
   mstch_context_.add<mstch_java_service>();
   mstch_context_.add<mstch_java_interaction>();
-  mstch_context_.add<mstch_java_function>();
   mstch_context_.add<mstch_java_type>();
   mstch_context_.add<mstch_java_struct>();
   mstch_context_.add<mstch_java_field>();
