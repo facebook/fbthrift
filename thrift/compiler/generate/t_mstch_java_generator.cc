@@ -570,6 +570,50 @@ class t_mstch_java_generator : public t_mstch_generator {
       auto type_name = self.type()->get_true_type()->get_full_name();
       return java::mangle_java_name(type_name, true);
     });
+    def.property("java_strings_compat?", [this](const t_field& self) {
+      if (self.has_structured_annotation(kStringsUri) ||
+          t_typedef::get_first_structured_annotation_or_null(
+              self.type().get_type(), kStringsUri) != nullptr) {
+        return true;
+      }
+      const t_structured* parent = context().get_field_parent(&self);
+      assert(parent != nullptr);
+      return parent->has_structured_annotation(kStringsUri) ||
+          parent->program()->has_structured_annotation(kStringsUri);
+    });
+    def.property(
+        "java_coding_error_action_report?", [this](const t_field& self) {
+          constexpr auto kOnInvalidUtf8 = "onInvalidUtf8";
+          constexpr int kActionReport = 1;
+
+          if (const t_const* annotation =
+                  self.find_structured_annotation_or_null(kStringsUri)) {
+            return is_annotation_map_field_equal(
+                annotation, kOnInvalidUtf8, kActionReport);
+          }
+          if (const t_const* annotation =
+                  t_typedef::get_first_structured_annotation_or_null(
+                      self.type().get_type(), kStringsUri)) {
+            return is_annotation_map_field_equal(
+                annotation, kOnInvalidUtf8, kActionReport);
+          }
+          const t_structured* parent = context().get_field_parent(&self);
+          if (parent == nullptr) {
+            return false;
+          }
+          if (const t_const* annotation =
+                  parent->find_structured_annotation_or_null(kStringsUri)) {
+            return is_annotation_map_field_equal(
+                annotation, kOnInvalidUtf8, kActionReport);
+          }
+          if (const t_const* annotation =
+                  parent->program()->find_structured_annotation_or_null(
+                      kStringsUri)) {
+            return is_annotation_map_field_equal(
+                annotation, kOnInvalidUtf8, kActionReport);
+          }
+          return false;
+        });
 
     return std::move(def).make();
   }
@@ -1230,11 +1274,6 @@ class mstch_java_field : public mstch_field {
              {with_no_caching, &mstch_java_field::get_nested_container_flag}},
             {"field:setIsNested",
              {with_no_caching, &mstch_java_field::set_nested_container_flag}},
-
-            {"field:java_strings_compat?",
-             &mstch_java_field::is_strings_compat},
-            {"field:java_coding_error_action_report?",
-             &mstch_java_field::is_coding_error_action_report},
         });
   }
 
@@ -1255,57 +1294,6 @@ class mstch_java_field : public mstch_field {
   mstch::node decrement_nested_depth() {
     nestedDepth--;
     return mstch::node();
-  }
-
-  mstch::node is_strings_compat() {
-    if (field_->has_structured_annotation(kStringsUri)) {
-      return true;
-    }
-    auto type = field_->type().get_type();
-    if (type->is<t_typedef>() &&
-        t_typedef::get_first_structured_annotation_or_null(type, kStringsUri) !=
-            nullptr) {
-      return true;
-    }
-    const t_structured* parent = whisker_context().get_field_parent(field_);
-    return parent != nullptr &&
-        (parent->has_structured_annotation(kStringsUri) ||
-         parent->program()->has_structured_annotation(kStringsUri));
-  }
-  mstch::node is_coding_error_action_report() {
-    constexpr auto kOnInvalidUtf8 = "onInvalidUtf8";
-    constexpr int kActionReport = 1;
-
-    auto type = field_->type().get_type();
-    if (type->is<t_typedef>()) {
-      if (const t_const* annotation =
-              t_typedef::get_first_structured_annotation_or_null(
-                  type, kStringsUri)) {
-        return is_annotation_map_field_equal(
-            annotation, kOnInvalidUtf8, kActionReport);
-      }
-    }
-    if (const t_const* annotation =
-            field_->find_structured_annotation_or_null(kStringsUri)) {
-      return is_annotation_map_field_equal(
-          annotation, kOnInvalidUtf8, kActionReport);
-    }
-    const t_structured* parent = whisker_context().get_field_parent(field_);
-    if (parent == nullptr) {
-      return false;
-    }
-    if (const t_const* annotation =
-            parent->find_structured_annotation_or_null(kStringsUri)) {
-      return is_annotation_map_field_equal(
-          annotation, kOnInvalidUtf8, kActionReport);
-    }
-    if (const t_const* annotation =
-            parent->program()->find_structured_annotation_or_null(
-                kStringsUri)) {
-      return is_annotation_map_field_equal(
-          annotation, kOnInvalidUtf8, kActionReport);
-    }
-    return false;
   }
 };
 
