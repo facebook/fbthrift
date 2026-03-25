@@ -84,7 +84,7 @@ public class PrimitivesServiceReactiveClient
 
           long _iter0 = param0;
 
-          oprot.writeI64(param0);
+          oprot.writeI64(_iter0);
           oprot.writeFieldEnd();
         }
 
@@ -93,7 +93,7 @@ public class PrimitivesServiceReactiveClient
 
           long _iter0 = param1;
 
-          oprot.writeI64(param1);
+          oprot.writeI64(_iter0);
           oprot.writeFieldEnd();
         }
 
@@ -198,7 +198,7 @@ public class PrimitivesServiceReactiveClient
 
           long _iter0 = id;
 
-          oprot.writeI64(id);
+          oprot.writeI64(_iter0);
           oprot.writeFieldEnd();
         }
 

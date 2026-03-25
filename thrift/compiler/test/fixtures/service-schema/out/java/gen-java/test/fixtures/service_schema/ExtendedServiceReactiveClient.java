@@ -62,7 +62,7 @@ public class ExtendedServiceReactiveClient extends com.facebook.thrift.test.fixt
 
           long _iter0 = param0;
 
-          oprot.writeI64(param0);
+          oprot.writeI64(_iter0);
           oprot.writeFieldEnd();
         }
 
@@ -71,7 +71,7 @@ public class ExtendedServiceReactiveClient extends com.facebook.thrift.test.fixt
 
           long _iter0 = param1;
 
-          oprot.writeI64(param1);
+          oprot.writeI64(_iter0);
           oprot.writeFieldEnd();
         }
 

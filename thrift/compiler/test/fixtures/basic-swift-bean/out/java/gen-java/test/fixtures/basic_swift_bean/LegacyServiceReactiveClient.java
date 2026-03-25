@@ -92,7 +92,7 @@ public class LegacyServiceReactiveClient
 
           long _iter0 = legacyStuff;
 
-          oprot.writeI64(legacyStuff);
+          oprot.writeI64(_iter0);
           oprot.writeFieldEnd();
         }
 

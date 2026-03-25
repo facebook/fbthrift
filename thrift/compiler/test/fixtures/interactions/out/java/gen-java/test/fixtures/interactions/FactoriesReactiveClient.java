@@ -139,7 +139,7 @@ public class FactoriesReactiveClient
 
           int _iter0 = arg;
 
-          oprot.writeI32(arg);
+          oprot.writeI32(_iter0);
           oprot.writeFieldEnd();
         }
 

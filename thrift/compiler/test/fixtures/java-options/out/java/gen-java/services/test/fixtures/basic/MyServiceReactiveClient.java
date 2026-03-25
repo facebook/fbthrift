@@ -175,7 +175,7 @@ public class MyServiceReactiveClient
 
           long _iter0 = sink;
 
-          oprot.writeI64(sink);
+          oprot.writeI64(_iter0);
           oprot.writeFieldEnd();
         }
 

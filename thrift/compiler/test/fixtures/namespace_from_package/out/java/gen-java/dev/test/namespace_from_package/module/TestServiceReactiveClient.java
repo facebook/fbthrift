@@ -77,7 +77,7 @@ public class TestServiceReactiveClient
 
           long _iter0 = int1;
 
-          oprot.writeI64(int1);
+          oprot.writeI64(_iter0);
           oprot.writeFieldEnd();
         }
 

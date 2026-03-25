@@ -79,7 +79,7 @@ public class ServiceReactiveClient
 
           com.facebook.thrift.my.AdaptedString_1 _iter0 = arg1;
 
-          oprot.writeString(arg1);
+          oprot.writeString(_iter0);
           oprot.writeFieldEnd();
         }
 
@@ -88,7 +88,7 @@ public class ServiceReactiveClient
 
           String _iter0 = arg2;
 
-          oprot.writeString(arg2);
+          oprot.writeString(_iter0);
           oprot.writeFieldEnd();
         }
 

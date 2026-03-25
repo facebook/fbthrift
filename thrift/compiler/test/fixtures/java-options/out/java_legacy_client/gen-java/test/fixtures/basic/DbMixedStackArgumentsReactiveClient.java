@@ -79,7 +79,7 @@ public class DbMixedStackArgumentsReactiveClient
 
           String _iter0 = key;
 
-          oprot.writeString(key);
+          oprot.writeString(_iter0);
           oprot.writeFieldEnd();
         }
 
@@ -136,7 +136,7 @@ public class DbMixedStackArgumentsReactiveClient
 
           String _iter0 = key;
 
-          oprot.writeString(key);
+          oprot.writeString(_iter0);
           oprot.writeFieldEnd();
         }
 

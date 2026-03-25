@@ -77,7 +77,7 @@ public class FB303ServiceReactiveClient
 
           int _iter0 = intParameter;
 
-          oprot.writeI32(intParameter);
+          oprot.writeI32(_iter0);
           oprot.writeFieldEnd();
         }
 

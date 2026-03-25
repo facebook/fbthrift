@@ -189,7 +189,7 @@ public class MyServiceReactiveClient
 
           long _iter0 = sink;
 
-          oprot.writeI64(sink);
+          oprot.writeI64(_iter0);
           oprot.writeFieldEnd();
         }
 
@@ -246,7 +246,7 @@ public class MyServiceReactiveClient
 
           long _iter0 = id;
 
-          oprot.writeI64(id);
+          oprot.writeI64(_iter0);
           oprot.writeFieldEnd();
         }
 
@@ -255,7 +255,7 @@ public class MyServiceReactiveClient
 
           String _iter0 = data;
 
-          oprot.writeString(data);
+          oprot.writeString(_iter0);
           oprot.writeFieldEnd();
         }
 
@@ -312,7 +312,7 @@ public class MyServiceReactiveClient
 
           long _iter0 = id;
 
-          oprot.writeI64(id);
+          oprot.writeI64(_iter0);
           oprot.writeFieldEnd();
         }
 
@@ -369,7 +369,7 @@ public class MyServiceReactiveClient
 
           long _iter0 = id;
 
-          oprot.writeI64(id);
+          oprot.writeI64(_iter0);
           oprot.writeFieldEnd();
         }
 
@@ -426,7 +426,7 @@ public class MyServiceReactiveClient
 
           long _iter0 = id;
 
-          oprot.writeI64(id);
+          oprot.writeI64(_iter0);
           oprot.writeFieldEnd();
         }
 
@@ -483,7 +483,7 @@ public class MyServiceReactiveClient
 
           long _iter0 = id;
 
-          oprot.writeI64(id);
+          oprot.writeI64(_iter0);
           oprot.writeFieldEnd();
         }
 
@@ -492,7 +492,7 @@ public class MyServiceReactiveClient
 
           String _iter0 = data;
 
-          oprot.writeString(data);
+          oprot.writeString(_iter0);
           oprot.writeFieldEnd();
         }
 

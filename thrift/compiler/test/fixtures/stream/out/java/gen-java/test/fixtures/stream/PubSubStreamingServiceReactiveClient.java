@@ -124,7 +124,7 @@ public class PubSubStreamingServiceReactiveClient
 
           int _iter0 = i32From;
 
-          oprot.writeI32(i32From);
+          oprot.writeI32(_iter0);
           oprot.writeFieldEnd();
         }
 
@@ -133,7 +133,7 @@ public class PubSubStreamingServiceReactiveClient
 
           int _iter0 = i32To;
 
-          oprot.writeI32(i32To);
+          oprot.writeI32(_iter0);
           oprot.writeFieldEnd();
         }
 
@@ -195,7 +195,7 @@ public class PubSubStreamingServiceReactiveClient
 
           int _iter0 = foo;
 
-          oprot.writeI32(foo);
+          oprot.writeI32(_iter0);
           oprot.writeFieldEnd();
         }
 
@@ -257,7 +257,7 @@ public class PubSubStreamingServiceReactiveClient
 
           int _iter0 = foo;
 
-          oprot.writeI32(foo);
+          oprot.writeI32(_iter0);
           oprot.writeFieldEnd();
         }
 
@@ -319,7 +319,7 @@ public class PubSubStreamingServiceReactiveClient
 
           int _iter0 = foo;
 
-          oprot.writeI32(foo);
+          oprot.writeI32(_iter0);
           oprot.writeFieldEnd();
         }
 
@@ -381,7 +381,7 @@ public class PubSubStreamingServiceReactiveClient
 
           int _iter0 = foo;
 
-          oprot.writeI32(foo);
+          oprot.writeI32(_iter0);
           oprot.writeFieldEnd();
         }
 
@@ -443,7 +443,7 @@ public class PubSubStreamingServiceReactiveClient
 
           int _iter0 = foo;
 
-          oprot.writeI32(foo);
+          oprot.writeI32(_iter0);
           oprot.writeFieldEnd();
         }
 
@@ -506,7 +506,7 @@ public class PubSubStreamingServiceReactiveClient
 
           int _iter0 = foo;
 
-          oprot.writeI32(foo);
+          oprot.writeI32(_iter0);
           oprot.writeFieldEnd();
         }
 
@@ -569,7 +569,7 @@ public class PubSubStreamingServiceReactiveClient
 
           int _iter0 = foo;
 
-          oprot.writeI32(foo);
+          oprot.writeI32(_iter0);
           oprot.writeFieldEnd();
         }
 
@@ -632,7 +632,7 @@ public class PubSubStreamingServiceReactiveClient
 
           int _iter0 = i32From;
 
-          oprot.writeI32(i32From);
+          oprot.writeI32(_iter0);
           oprot.writeFieldEnd();
         }
 
@@ -641,7 +641,7 @@ public class PubSubStreamingServiceReactiveClient
 
           int _iter0 = i32To;
 
-          oprot.writeI32(i32To);
+          oprot.writeI32(_iter0);
           oprot.writeFieldEnd();
         }
 
