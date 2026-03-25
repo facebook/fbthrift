@@ -16,7 +16,6 @@
 
 #pragma once
 
-#include <atomic>
 #include <cstddef>
 #include <cstdint>
 #include <memory>
@@ -41,7 +40,6 @@ namespace apache::thrift::detail {
  *
  * Each stream gets its own context instance, which holds:
  * - A unique stream identifier
- * - Sequence number for payload ordering
  * - Moved request storage (owned locally, survives request destruction)
  *
  * Connection context is intentionally NOT stored here. Streams run on the
@@ -86,10 +84,6 @@ class StreamInterceptorContext {
     }
   }
 
-  uint64_t getTotalPayloads() const {
-    return sequenceNumber_.load(std::memory_order_seq_cst);
-  }
-
   // ============ Interceptor Invocation Methods ============
 
   /**
@@ -118,12 +112,8 @@ class StreamInterceptorContext {
    * Called for each typed payload BEFORE serialization.
    */
   template <typename T>
-  folly::coro::Task<void> invokeOnStreamPayload(const T& payload) {
-    // Get sequence number once for this payload - all interceptors see same
-    // value. Use seq_cst to ensure proper ordering visibility across threads.
-    const auto sequenceNumber =
-        sequenceNumber_.fetch_add(1, std::memory_order_seq_cst);
-
+  folly::coro::Task<void> invokeOnStreamPayload(
+      const T& payload, uint64_t sequenceNumber) {
     folly::stop_watch<std::chrono::microseconds> totalTimer;
     for (std::size_t i = 0; i < interceptors_.size(); ++i) {
       auto payloadInfo = ServiceInterceptorBase::StreamPayloadInfo{
@@ -147,7 +137,8 @@ class StreamInterceptorContext {
    */
   folly::coro::Task<void> invokeOnStreamEnd(
       details::STREAM_ENDING_TYPES reason,
-      folly::exception_wrapper error = {}) {
+      folly::exception_wrapper error,
+      uint64_t totalPayloads) {
     // Call in reverse order (LIFO pattern like onResponse)
     folly::stop_watch<std::chrono::microseconds> totalTimer;
     for (auto i = std::ptrdiff_t(interceptors_.size()) - 1; i >= 0; --i) {
@@ -156,7 +147,7 @@ class StreamInterceptorContext {
           .requestStorage = &requestStorage_[i],
           .reason = reason,
           .error = error,
-          .totalPayloads = sequenceNumber_.load(std::memory_order_seq_cst),
+          .totalPayloads = totalPayloads,
       };
 
       co_await interceptors_[i]->internal_onStreamEnd(endInfo, metricCallback_);
@@ -169,7 +160,6 @@ class StreamInterceptorContext {
   std::vector<std::shared_ptr<ServiceInterceptorBase>> interceptors_;
   InterceptorMetricCallback& metricCallback_;
   std::vector<ServiceInterceptorOnRequestStorage> requestStorage_;
-  std::atomic<uint64_t> sequenceNumber_{0};
   std::string serviceName_;
   std::string methodName_;
 };

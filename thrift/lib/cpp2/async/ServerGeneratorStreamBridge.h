@@ -170,6 +170,7 @@ class ServerGeneratorStreamBridge : public TwoWayBridge<
 
     bool pauseStream = false;
     int64_t credits = 0;
+    uint64_t payloadSequence = 0;
     SCOPE_EXIT {
       stream->serverClose();
     };
@@ -244,7 +245,7 @@ class ServerGeneratorStreamBridge : public TwoWayBridge<
             }
             if (interceptorContext) {
               co_await interceptorContext->invokeOnStreamEnd(
-                  streamEndReason, streamError);
+                  streamEndReason, streamError, payloadSequence);
             }
             co_return;
           }
@@ -276,7 +277,7 @@ class ServerGeneratorStreamBridge : public TwoWayBridge<
                 (*encode)(std::move(next.exception()))});
         if (interceptorContext) {
           co_await interceptorContext->invokeOnStreamEnd(
-              streamEndReason, streamError);
+              streamEndReason, streamError, payloadSequence);
         }
         co_return;
       }
@@ -288,7 +289,7 @@ class ServerGeneratorStreamBridge : public TwoWayBridge<
         stream->serverPush(StreamMessage::Complete{});
         if (interceptorContext) {
           co_await interceptorContext->invokeOnStreamEnd(
-              streamEndReason, streamError);
+              streamEndReason, streamError, payloadSequence);
         }
         co_return;
       }
@@ -297,13 +298,16 @@ class ServerGeneratorStreamBridge : public TwoWayBridge<
 
       if constexpr (!WithHeader) {
         if (interceptorContext) {
-          co_await interceptorContext->invokeOnStreamPayload<T>(item);
+          auto seq = payloadSequence++;
+          co_await interceptorContext->invokeOnStreamPayload<T>(item, seq);
         }
       } else {
         // For WithHeader case, only invoke for actual payloads (not headers)
         if (auto* payload = std::get_if<T>(&item)) {
           if (interceptorContext) {
-            co_await interceptorContext->invokeOnStreamPayload<T>(*payload);
+            auto seq = payloadSequence++;
+            co_await interceptorContext->invokeOnStreamPayload<T>(
+                *payload, seq);
           }
         }
       }
