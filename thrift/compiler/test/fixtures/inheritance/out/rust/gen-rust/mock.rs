@@ -138,7 +138,8 @@ impl<'mock> ::::MyRoot for MyRoot<'mock> {
 impl<'mock, T> ::::MyRootExt<T> for MyRoot<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn do_root_with_rpc_opts(
+{
+    fn do_root_with_rpc_opts(
         &self,
         _rpc_options: T::RpcOptions,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_root::DoRootError>> {
@@ -191,7 +192,8 @@ impl<'mock> ::::MyNode for MyNode<'mock> {
 impl<'mock, T> ::::MyNodeExt<T> for MyNode<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn do_mid_with_rpc_opts(
+{
+    fn do_mid_with_rpc_opts(
         &self,
         _rpc_options: T::RpcOptions,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_node::DoMidError>> {
@@ -258,7 +260,8 @@ impl<'mock> ::::MyLeaf for MyLeaf<'mock> {
 impl<'mock, T> ::::MyLeafExt<T> for MyLeaf<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn do_leaf_with_rpc_opts(
+{
+    fn do_leaf_with_rpc_opts(
         &self,
         _rpc_options: T::RpcOptions,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_leaf::DoLeafError>> {

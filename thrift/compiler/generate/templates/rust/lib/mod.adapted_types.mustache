@@ -17,7 +17,7 @@
 }}
 
 #[allow(dead_code)]
-mod adapted_types {{> lib/block}}{{!
+mod adapted_types \{{{!
     }}{{#program:structs}}{{#if struct:has_adapter?}}
     pub type {{struct:rust_name}} = {{struct:adapter_qualified}}::AdaptedType;{{!
     }}{{/if struct:has_adapter?}}{{/program:structs}}

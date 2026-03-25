@@ -234,7 +234,8 @@ impl<'mock> ::::SinkService for SinkService<'mock> {
 impl<'mock, T> ::::SinkServiceExt<T> for SinkService<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn method_with_rpc_opts(
+{
+    fn method_with_rpc_opts(
         &self,
         _rpc_options: T::RpcOptions,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::fbthrift::SinkResult<

@@ -189,7 +189,8 @@ impl<'mock> ::::MyService for MyService<'mock> {
 impl<'mock, T> ::::MyServiceExt<T> for MyService<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn ping_with_rpc_opts(
+{
+    fn ping_with_rpc_opts(
         &self,
         _rpc_options: T::RpcOptions,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::PingError>> {

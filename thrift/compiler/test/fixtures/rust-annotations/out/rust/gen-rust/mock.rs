@@ -138,7 +138,8 @@ impl<'mock> ::::Service1 for Service1<'mock> {
 impl<'mock, T> ::::Service1Ext<T> for Service1<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn r_with_rpc_opts(
+{
+    fn r_with_rpc_opts(
         &self,
         _rpc_options: T::RpcOptions,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<crate::types::T6, crate::errors::service1::RError>> {
@@ -189,7 +190,8 @@ impl<'mock> ::::S2 for S2<'mock> {
 impl<'mock, T> ::::S2Ext<T> for S2<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn s_with_rpc_opts(
+{
+    fn s_with_rpc_opts(
         &self,
         _rpc_options: T::RpcOptions,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<crate::types::T6, crate::errors::s2_proxy::RError>> {
@@ -249,7 +251,8 @@ impl<'mock> ::::AllMethods for AllMethods<'mock> {
 impl<'mock, T> ::::AllMethodsExt<T> for AllMethods<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn foo_with_rpc_opts(
+{
+    fn foo_with_rpc_opts(
         &self,
         _rpc_options: T::RpcOptions,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::all_methods::FooError>> {
@@ -317,7 +320,8 @@ impl<'mock> ::::OneMethod for OneMethod<'mock> {
 impl<'mock, T> ::::OneMethodExt<T> for OneMethod<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn foo_with_rpc_opts(
+{
+    fn foo_with_rpc_opts(
         &self,
         _rpc_options: T::RpcOptions,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::one_method::FooError>> {
@@ -385,7 +389,8 @@ impl<'mock> ::::OneMethodOptOut for OneMethodOptOut<'mock> {
 impl<'mock, T> ::::OneMethodOptOutExt<T> for OneMethodOptOut<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn foo_with_rpc_opts(
+{
+    fn foo_with_rpc_opts(
         &self,
         _rpc_options: T::RpcOptions,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::one_method_opt_out::FooError>> {

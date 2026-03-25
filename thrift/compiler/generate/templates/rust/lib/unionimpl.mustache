@@ -48,7 +48,7 @@ where
     #[inline]
     fn rs_thrift_write(&self, p: &mut P) {
         p.write_struct_begin("{{struct:name}}");
-        match self {{> lib/block}}{{!
+        match self \{{{!
             }}{{#struct:fields}}
             Self::{{field:rust_name}}(inner) => {
                 p.write_field_begin({{!

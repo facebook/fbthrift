@@ -17,7 +17,7 @@
 }}
 
 {{#if service:interactions?}}{{!
-}}pub mod {{service:snake}} {{> lib/block}}
+}}pub mod {{service:snake}} {
     use super::*;
 
     {{#service:interactions}}
@@ -490,7 +490,7 @@ where
 
     #[inline]
     fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
-        match name {{> lib/block}}{{!
+        match name \{{{!
             }}{{#service:rustFunctions}}{{#if (not function:starts_interaction?)}}
             b"{{#if service:interaction?}}{{service:name}}.{{/if service:interaction?}}{{function:name}}" => ::std::result::Result::Ok({{function:index}}usize),{{!
             }}{{/if (not function:starts_interaction?)}}{{/service:rustFunctions}}
@@ -508,7 +508,7 @@ where
         _reply_state: ::std::sync::Arc<RS>,
         _seqid: ::std::primitive::u32,
     ) -> ::anyhow::Result<()> {
-        match idx {{> lib/block}}{{!
+        match idx \{{{!
             }}{{#service:rustFunctions}}{{#if (not function:starts_interaction?)}}
             {{function:index}}usize => {
                 self.handle_{{function:name}}(_p, _req, _req_ctxt, _reply_state, _seqid).await
@@ -525,7 +525,7 @@ where
     #[allow(clippy::match_single_binding)]
     #[inline]
     fn create_interaction_idx(&self, name: &::std::primitive::str) -> ::anyhow::Result<::std::primitive::usize> {
-        match name {{> lib/block}}{{!
+        match name \{{{!
             }}{{#service:rustFunctions}}{{#if function:starts_interaction?}}
             "{{function:interaction_name}}" => ::std::result::Result::Ok({{function:index}}usize),{{!
             }}{{/if function:starts_interaction?}}{{/service:rustFunctions}}
@@ -540,7 +540,7 @@ where
     ) -> ::anyhow::Result<
         ::std::sync::Arc<dyn ::fbthrift::ThriftService<P::Frame, Handler = (), RequestContext = Self::RequestContext, ReplyState = Self::ReplyState> + ::std::marker::Send + 'static>
     > {
-        match idx {{> lib/block}}{{!
+        match idx \{{{!
             }}{{#service:rustFunctions}}{{#if function:starts_interaction?}}
             {{function:index}}usize => {
                 let handler = self.handle_{{function:name}}()?;

@@ -20,7 +20,7 @@
 {{/if service:docs?}}
 pub trait {{service:rust_name}}: {{!
     }}{{#service:extends}}{{service:client_package}}::{{service:rust_name}} + {{/service:extends}}{{!
-    }}::std::marker::Send {{> lib/block}}{{!
+    }}::std::marker::Send \{{{!
 
     }}{{#service:rustFunctions}}
     {{#if function:docs?}}
@@ -46,8 +46,7 @@ pub trait {{service:rust_name}}Ext<T>: {{service:rust_name}}{{!
     }}{{#service:extends}} + {{service:client_package}}::{{service:rust_name}}Ext<T>{{/service:extends}}
 where
     T: ::fbthrift::Transport,
-{{> lib/block}}
-
+{
     {{#service:rustFunctions}}
     {{#if function:docs?}}
     #[doc = {{function:docs}}]

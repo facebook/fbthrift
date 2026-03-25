@@ -149,7 +149,8 @@ impl<'mock> ::::SomeService for SomeService<'mock> {
 impl<'mock, T> ::::SomeServiceExt<T> for SomeService<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn bounce_map_with_rpc_opts(
+{
+    fn bounce_map_with_rpc_opts(
         &self,
         arg_m: &included__types::SomeMap,
         _rpc_options: T::RpcOptions,

@@ -139,7 +139,8 @@ impl<'mock> ::::TestService for TestService<'mock> {
 impl<'mock, T> ::::TestServiceExt<T> for TestService<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn init_with_rpc_opts(
+{
+    fn init_with_rpc_opts(
         &self,
         arg_int1: ::std::primitive::i64,
         _rpc_options: T::RpcOptions,

@@ -20,7 +20,7 @@
 #[allow(clippy::derivable_impls)]
 impl ::std::default::Default for self::{{struct:rust_name}} {
     fn default() -> Self {
-        Self {{> lib/block}}{{!
+        Self \{{{!
         }}{{#struct:fields}}
             {{field:rust_name}}: {{!
                 }}{{#field:default}}{{!
@@ -209,7 +209,7 @@ where
 
         {{#if struct:all_optional?}}
         #[allow(unused_mut)]
-        let mut output = Self {{> lib/block}}{{!
+        let mut output = Self \{{{!
             }}{{#struct:fields}}
             {{field:rust_name}}: ::std::option::Option::None,{{!
             }}{{/struct:fields}}
@@ -246,7 +246,7 @@ where
         ::std::result::Result::Ok(output)
         {{/if struct:all_optional?}}
         {{#if (not struct:all_optional?)}}
-        ::std::result::Result::Ok(Self {{> lib/block}}{{!
+        ::std::result::Result::Ok(Self \{{{!
             }}{{#struct:fields}}
             {{field:rust_name}}: field_{{field:name}}{{!
                 }}{{#if (not field:optional?)}}{{!

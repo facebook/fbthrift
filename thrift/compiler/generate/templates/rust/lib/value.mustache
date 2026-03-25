@@ -126,7 +126,7 @@
     }}{{/if value:empty?}}{{!
 }}{{/if value:map?}}{{!
 }}{{#if value:struct?}}{{!
-    }}{{> lib/type}} {{> lib/block}}{{!
+    }}{{> lib/type}} \{{{!
         }}{{#value:structFields}}
             {{value:indent}}{{field:rust_name}}: {{!
             }}{{#if field:has_adapter?}}{{field:adapter_qualified}}::from_thrift_default::<{{!

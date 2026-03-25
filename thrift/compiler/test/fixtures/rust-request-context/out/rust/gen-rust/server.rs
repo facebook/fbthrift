@@ -500,7 +500,8 @@ pub trait MyService: ::std::marker::Send + ::std::marker::Sync + 'static {
 impl<T> MyService for ::std::boxed::Box<T>
 where
     T: MyService + Send + Sync + ?Sized,
-{    type RequestContext = T::RequestContext;
+{
+    type RequestContext = T::RequestContext;
     async fn ping(
         &self,
         request_context: &Self::RequestContext,
@@ -619,7 +620,8 @@ where
 impl<T> MyService for ::std::sync::Arc<T>
 where
     T: MyService + Send + Sync + ?Sized,
-{    type RequestContext = T::RequestContext;
+{
+    type RequestContext = T::RequestContext;
     async fn ping(
         &self,
         request_context: &Self::RequestContext,

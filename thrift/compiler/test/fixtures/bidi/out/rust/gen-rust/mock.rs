@@ -156,7 +156,8 @@ impl<'mock> ::::BiDiService for BiDiService<'mock> {
 impl<'mock, T> ::::BiDiServiceExt<T> for BiDiService<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn simple_with_rpc_opts(
+{
+    fn simple_with_rpc_opts(
         &self,
         _rpc_options: T::RpcOptions,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i16, crate::errors::bi_di_service::SimpleStreamError>>, Box<dyn ::std::ops::FnOnce(::futures::stream::BoxStream<'static, ::std::result::Result<::std::primitive::i32, crate::errors::bi_di_service::SimpleSinkError>>) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::bi_di_service::SimpleSinkError>> + ::std::marker::Send>), crate::errors::bi_di_service::SimpleError>> {

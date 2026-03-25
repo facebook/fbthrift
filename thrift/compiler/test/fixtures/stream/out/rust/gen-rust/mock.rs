@@ -221,7 +221,8 @@ impl<'mock> ::::PubSubStreamingService for PubSubStreamingService<'mock> {
 impl<'mock, T> ::::PubSubStreamingServiceExt<T> for PubSubStreamingService<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn returnstream_with_rpc_opts(
+{
+    fn returnstream_with_rpc_opts(
         &self,
         arg_i32_from: ::std::primitive::i32,
         arg_i32_to: ::std::primitive::i32,

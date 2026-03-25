@@ -181,7 +181,8 @@ impl<'mock> ::::MyService for MyService<'mock> {
 impl<'mock, T> ::::MyServiceExt<T> for MyService<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn foo_with_rpc_opts(
+{
+    fn foo_with_rpc_opts(
         &self,
         _rpc_options: T::RpcOptions,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::FooError>> {
@@ -283,7 +284,8 @@ impl<'mock> ::::Factories for Factories<'mock> {
 impl<'mock, T> ::::FactoriesExt<T> for Factories<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn foo_with_rpc_opts(
+{
+    fn foo_with_rpc_opts(
         &self,
         _rpc_options: T::RpcOptions,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::factories::FooError>> {
@@ -378,7 +380,8 @@ impl<'mock> ::::Perform for Perform<'mock> {
 impl<'mock, T> ::::PerformExt<T> for Perform<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn foo_with_rpc_opts(
+{
+    fn foo_with_rpc_opts(
         &self,
         _rpc_options: T::RpcOptions,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::perform::FooError>> {
@@ -441,7 +444,8 @@ impl<'mock> ::::InteractWithShared for InteractWithShared<'mock> {
 impl<'mock, T> ::::InteractWithSharedExt<T> for InteractWithShared<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn do_some_similar_things_with_rpc_opts(
+{
+    fn do_some_similar_things_with_rpc_opts(
         &self,
         _rpc_options: T::RpcOptions,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<shared__types::DoSomethingResult, crate::errors::interact_with_shared::DoSomeSimilarThingsError>> {
@@ -492,7 +496,8 @@ impl<'mock> ::::BoxService for BoxService<'mock> {
 impl<'mock, T> ::::BoxServiceExt<T> for BoxService<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn getABoxSession_with_rpc_opts(
+{
+    fn getABoxSession_with_rpc_opts(
         &self,
         arg_req: &crate::types::ShouldBeBoxed,
         _rpc_options: T::RpcOptions,

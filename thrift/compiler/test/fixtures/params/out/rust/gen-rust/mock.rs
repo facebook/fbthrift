@@ -179,7 +179,8 @@ impl<'mock> ::::NestedContainers for NestedContainers<'mock> {
 impl<'mock, T> ::::NestedContainersExt<T> for NestedContainers<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn mapList_with_rpc_opts(
+{
+    fn mapList_with_rpc_opts(
         &self,
         arg_foo: &::std::collections::BTreeMap<::std::primitive::i32, ::std::vec::Vec<::std::primitive::i32>>,
         _rpc_options: T::RpcOptions,

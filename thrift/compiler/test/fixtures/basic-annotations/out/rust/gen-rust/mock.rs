@@ -198,7 +198,8 @@ impl<'mock> ::::MyService for MyService<'mock> {
 impl<'mock, T> ::::MyServiceExt<T> for MyService<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn ping_with_rpc_opts(
+{
+    fn ping_with_rpc_opts(
         &self,
         _rpc_options: T::RpcOptions,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::PingError>> {
@@ -318,7 +319,8 @@ impl<'mock> ::::MyServicePrioParent for MyServicePrioParent<'mock> {
 impl<'mock, T> ::::MyServicePrioParentExt<T> for MyServicePrioParent<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn ping_with_rpc_opts(
+{
+    fn ping_with_rpc_opts(
         &self,
         _rpc_options: T::RpcOptions,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service_prio_parent::PingError>> {
@@ -379,7 +381,8 @@ impl<'mock> ::::MyServicePrioChild for MyServicePrioChild<'mock> {
 impl<'mock, T> ::::MyServicePrioChildExt<T> for MyServicePrioChild<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn pang_with_rpc_opts(
+{
+    fn pang_with_rpc_opts(
         &self,
         _rpc_options: T::RpcOptions,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service_prio_child::PangError>> {
@@ -450,7 +453,8 @@ impl<'mock> ::::BadService for BadService<'mock> {
 impl<'mock, T> ::::BadServiceExt<T> for BadService<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn bar_with_rpc_opts(
+{
+    fn bar_with_rpc_opts(
         &self,
         _rpc_options: T::RpcOptions,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<::std::primitive::i32, crate::errors::bad_service::BarError>> {
@@ -519,7 +523,8 @@ impl<'mock> ::::FooBarBazService for FooBarBazService<'mock> {
 impl<'mock, T> ::::FooBarBazServiceExt<T> for FooBarBazService<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn foo_with_rpc_opts(
+{
+    fn foo_with_rpc_opts(
         &self,
         _rpc_options: T::RpcOptions,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::foo_bar_baz_service::FooError>> {

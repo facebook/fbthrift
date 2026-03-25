@@ -149,7 +149,8 @@ impl<'mock> ::::Foo for Foo<'mock> {
 impl<'mock, T> ::::FooExt<T> for Foo<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn r#return_with_rpc_opts(
+{
+    fn r#return_with_rpc_opts(
         &self,
         arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
         _rpc_options: T::RpcOptions,

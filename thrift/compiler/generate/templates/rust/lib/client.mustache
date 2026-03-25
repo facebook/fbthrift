@@ -521,8 +521,7 @@ where
     ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
     P::Deserializer: ::std::marker::Send,
     S: ::fbthrift::help::Spawner,
-{{> lib/block}}
-
+{
     {{#service:rustFunctions}}
     {{#if (not function:starts_interaction?)}}
     fn {{function:rust_name}}(
@@ -567,8 +566,7 @@ where
     ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
     P::Deserializer: ::std::marker::Send,
     S: ::fbthrift::help::Spawner,
-{{> lib/block}}
-
+{
     {{#service:rustFunctions}}
     {{#if (not function:starts_interaction?)}}
     fn {{function:rust_name}}_with_rpc_opts(

@@ -141,7 +141,8 @@ impl<'mock> ::::Service for Service<'mock> {
 impl<'mock, T> ::::ServiceExt<T> for Service<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn func_with_rpc_opts(
+{
+    fn func_with_rpc_opts(
         &self,
         arg_arg1: &::std::primitive::str,
         arg_arg2: &::std::primitive::str,
@@ -208,7 +209,8 @@ impl<'mock> ::::AdapterService for AdapterService<'mock> {
 impl<'mock, T> ::::AdapterServiceExt<T> for AdapterService<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn count_with_rpc_opts(
+{
+    fn count_with_rpc_opts(
         &self,
         _rpc_options: T::RpcOptions,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<crate::types::CountingStruct, crate::errors::adapter_service::CountError>> {

@@ -159,7 +159,8 @@ impl<'mock> ::::C for C<'mock> {
 impl<'mock, T> ::::CExt<T> for C<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn f_with_rpc_opts(
+{
+    fn f_with_rpc_opts(
         &self,
         _rpc_options: T::RpcOptions,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::c::FError>> {

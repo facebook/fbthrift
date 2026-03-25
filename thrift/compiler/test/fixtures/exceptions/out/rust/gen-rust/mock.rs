@@ -165,7 +165,8 @@ impl<'mock> ::::Raiser for Raiser<'mock> {
 impl<'mock, T> ::::RaiserExt<T> for Raiser<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn doBland_with_rpc_opts(
+{
+    fn doBland_with_rpc_opts(
         &self,
         _rpc_options: T::RpcOptions,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::raiser::DoBlandError>> {

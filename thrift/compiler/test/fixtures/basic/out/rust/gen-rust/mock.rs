@@ -138,7 +138,8 @@ impl<'mock> ::::FooService for FooService<'mock> {
 impl<'mock, T> ::::FooServiceExt<T> for FooService<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn simple_rpc_with_rpc_opts(
+{
+    fn simple_rpc_with_rpc_opts(
         &self,
         _rpc_options: T::RpcOptions,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::foo_service::SimpleRpcError>> {
@@ -190,7 +191,8 @@ impl<'mock> ::::FB303Service for FB303Service<'mock> {
 impl<'mock, T> ::::FB303ServiceExt<T> for FB303Service<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn simple_rpc_with_rpc_opts(
+{
+    fn simple_rpc_with_rpc_opts(
         &self,
         arg_int_parameter: ::std::primitive::i32,
         _rpc_options: T::RpcOptions,
@@ -332,7 +334,8 @@ impl<'mock> ::::MyService for MyService<'mock> {
 impl<'mock, T> ::::MyServiceExt<T> for MyService<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn ping_with_rpc_opts(
+{
+    fn ping_with_rpc_opts(
         &self,
         _rpc_options: T::RpcOptions,
     ) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), crate::errors::my_service::PingError>> {
@@ -482,7 +485,8 @@ impl<'mock> ::::DbMixedStackArguments for DbMixedStackArguments<'mock> {
 impl<'mock, T> ::::DbMixedStackArgumentsExt<T> for DbMixedStackArguments<'mock>
 where
     T: ::fbthrift::Transport,
-{    fn getDataByKey0_with_rpc_opts(
+{
+    fn getDataByKey0_with_rpc_opts(
         &self,
         arg_key: &::std::primitive::str,
         _rpc_options: T::RpcOptions,

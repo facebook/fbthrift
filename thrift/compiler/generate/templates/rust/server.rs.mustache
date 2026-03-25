@@ -37,7 +37,7 @@ include!("{{src}}");
 #[doc(inline)]
 pub use {{program:types}} as types;
 
-pub mod errors {{> lib/block}}{{#program:services}}
+pub mod errors \{{{#program:services}}
     {{> lib/server_errors}}
 
     {{/program:services}}

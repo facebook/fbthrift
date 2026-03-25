@@ -95,7 +95,7 @@ include!("{{src}}");
 ================================================================================
 }}
 {{#if program:nonexhaustiveStructs?}}
-mod dot_dot {{> lib/block}}{{!
+mod dot_dot \{{{!
     NOTE: intentionally no Default impl}}
     #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash{{#if program:valuable?}}, ::valuable::Valuable{{/if program:valuable?}})]
     pub struct OtherFields(pub(crate) ());
