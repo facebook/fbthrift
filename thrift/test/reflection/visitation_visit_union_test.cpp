@@ -16,49 +16,44 @@
 
 #include <any>
 #include <gtest/gtest.h>
-#include <thrift/lib/thrift/gen-cpp2/metadata_for_each_field.h>
-#include <thrift/lib/thrift/gen-cpp2/metadata_visit_by_thrift_field_metadata.h>
-#include <thrift/lib/thrift/gen-cpp2/metadata_visit_union.h>
-#include <thrift/test/gen-cpp2/UnionFieldRef_for_each_field.h>
-#include <thrift/test/gen-cpp2/UnionFieldRef_visit_union.h>
+#include <folly/Utility.h>
+#include <thrift/lib/cpp2/op/Get.h>
+#include <thrift/lib/thrift/gen-cpp2/metadata_types.h>
+#include <thrift/test/gen-cpp2/UnionFieldRef_types.h>
 
 namespace apache::thrift::test {
 namespace {
 
 struct VisitUnionAdapter {
-  template <class... Args>
-  void operator()(Args&&... args) const {
-    apache::thrift::visit_union(std::forward<Args>(args)...);
+  template <class T, class F>
+  void operator()(T&& t, F&& f) const {
+    apache::thrift::op::visit_union_with_tag(
+        std::forward<T>(t),
+        [&]<typename Ident>(folly::tag_t<Ident>, auto& value) {
+          using U = folly::remove_cvref_t<T>;
+          f(apache::thrift::op::get_name_v<U, Ident>,
+            apache::thrift::op::get_field_id_v<U, Ident>,
+            value);
+        },
+        []() {});
   }
 };
 
 struct ForEachFieldAdapter {
   template <class T, class F>
   void operator()(T&& t, F&& f) const {
-    apache::thrift::for_each_field(
-        std::forward<T>(t), [&](auto&& meta, auto&& ref) {
-          if (folly::to_underlying(t.getType()) == meta.id_ref()) {
-            f(meta, *ref);
-          }
-        });
-  }
-};
-
-struct VisitByThriftIdAdapter {
-  template <class T, class F>
-  void operator()(T&& t, F f) const {
-    if (t.getType() != T::Type::__EMPTY__) {
-      apache::thrift::metadata::ThriftField field;
-      apache::thrift::for_each_field(
-          std::forward<T>(t), [&](auto&& meta, auto&& ref) {
-            if (ref) {
-              field = meta;
-            }
-          });
-
-      apache::thrift::visit_by_thrift_field_metadata(
-          std::forward<T>(t), field, std::move(f));
-    }
+    using U = folly::remove_cvref_t<T>;
+    apache::thrift::op::for_each_field_id<U>([&]<class Id>(Id) {
+      if (folly::to_underlying(t.getType()) ==
+          folly::to_underlying(Id::value)) {
+        auto fieldRef = apache::thrift::op::get<Id>(std::forward<T>(t));
+        if (auto* value = apache::thrift::op::get_value_or_null(fieldRef)) {
+          f(apache::thrift::op::get_name_v<U, Id>,
+            apache::thrift::op::get_field_id_v<U, Id>,
+            *value);
+        }
+      }
+    });
   }
 };
 
@@ -72,17 +67,16 @@ TYPED_TEST_CASE(VisitUnionTest, Adapters);
 
 TYPED_TEST(VisitUnionTest, basic) {
   Basic a;
-  TestFixture::adapter(a, [&](auto&&, auto&&) { FAIL(); });
+  TestFixture::adapter(a, [&](auto&&, auto&&, auto&&) { FAIL(); });
 
   static const std::string str = "foo";
   a.str() = str;
-  TestFixture::adapter(a, [](auto&& meta, auto&& v) {
-    EXPECT_EQ(*meta.name_ref(), "str");
-    EXPECT_EQ(
-        meta.type_ref()->getType(), metadata::ThriftType::Type::t_primitive);
-    EXPECT_EQ(*meta.id_ref(), 2);
-    EXPECT_EQ(*meta.is_optional_ref(), false);
-    if constexpr (std::is_same_v<decltype(v), std::string&>) {
+  TestFixture::adapter(a, [](auto&& name, auto&& id, auto&& v) {
+    EXPECT_EQ(name, "str");
+    EXPECT_EQ(folly::to_underlying(id), 2);
+    if constexpr (std::is_same_v<
+                      folly::remove_cvref_t<decltype(v)>,
+                      std::string>) {
       EXPECT_EQ(v, str);
     } else {
       FAIL();
@@ -91,14 +85,11 @@ TYPED_TEST(VisitUnionTest, basic) {
 
   static const int64_t int64 = 42LL << 42;
   a.int64() = int64;
-  TestFixture::adapter(a, [](auto&& meta, auto&& v) {
-    EXPECT_EQ(*meta.name_ref(), "int64");
-    EXPECT_EQ(
-        meta.type_ref()->getType(), metadata::ThriftType::Type::t_primitive);
-    EXPECT_EQ(*meta.id_ref(), 1);
-    EXPECT_EQ(*meta.is_optional_ref(), false);
+  TestFixture::adapter(a, [](auto&& name, auto&& id, auto&& v) {
+    EXPECT_EQ(name, "int64");
+    EXPECT_EQ(folly::to_underlying(id), 1);
     EXPECT_EQ(typeid(v), typeid(int64_t));
-    if constexpr (std::is_same_v<decltype(v), int64_t&>) {
+    if constexpr (std::is_same_v<folly::remove_cvref_t<decltype(v)>, int64_t>) {
       EXPECT_EQ(v, int64);
     } else {
       FAIL();
@@ -107,12 +98,12 @@ TYPED_TEST(VisitUnionTest, basic) {
 
   static const std::vector<int32_t> list_i32 = {3, 1, 2};
   a.list_i32() = list_i32;
-  TestFixture::adapter(a, [](auto&& meta, auto&& v) {
-    EXPECT_EQ(*meta.name_ref(), "list_i32");
-    EXPECT_EQ(meta.type_ref()->getType(), metadata::ThriftType::Type::t_list);
-    EXPECT_EQ(*meta.id_ref(), 4);
-    EXPECT_EQ(*meta.is_optional_ref(), false);
-    if constexpr (std::is_same_v<decltype(v), std::vector<int32_t>&>) {
+  TestFixture::adapter(a, [](auto&& name, auto&& id, auto&& v) {
+    EXPECT_EQ(name, "list_i32");
+    EXPECT_EQ(folly::to_underlying(id), 4);
+    if constexpr (std::is_same_v<
+                      folly::remove_cvref_t<decltype(v)>,
+                      std::vector<int32_t>>) {
       EXPECT_EQ(v, list_i32);
     } else {
       FAIL();
@@ -123,15 +114,9 @@ TYPED_TEST(VisitUnionTest, basic) {
 TYPED_TEST(VisitUnionTest, Metadata) {
   Basic a;
   a.int64() = 42;
-  TestFixture::adapter(a, [](auto&& m, auto&&) {
-    // ThriftType itself is union, we can visit it like ordinary thrift union
-    TestFixture::adapter(*m.type_ref(), [](auto&& meta, std::any value) {
-      EXPECT_EQ(*meta.name_ref(), "t_primitive");
-      EXPECT_EQ(meta.type_ref()->getType(), metadata::ThriftType::Type::t_enum);
-      EXPECT_EQ(
-          std::any_cast<metadata::ThriftPrimitiveType>(value),
-          metadata::ThriftPrimitiveType::THRIFT_I64_TYPE);
-    });
+  TestFixture::adapter(a, [](auto&& name, auto&&, auto&&) {
+    // Verify the visit works and we get the correct field name
+    EXPECT_EQ(name, "int64");
   });
 }
 
@@ -165,31 +150,40 @@ TEST(VisitUnionTest, CppRef) {
   r2.str() = "42";
   r.set_cppref(r2);
   bool typeMatches = false;
-  apache::thrift::visit_union(r, [&typeMatches](auto&&, auto&& r2) {
-    if constexpr (!kIsString<decltype(r2)>) {
-      apache::thrift::visit_union(r2, [&typeMatches](auto&&, auto&& v) {
-        if constexpr (kIsString<decltype(v)>) {
-          typeMatches = true;
-          EXPECT_EQ(v, "42");
+  apache::thrift::op::visit_union_with_tag(
+      r,
+      [&]<typename Ident>(folly::tag_t<Ident>, auto& r2Value) {
+        if constexpr (!kIsString<decltype(r2Value)>) {
+          apache::thrift::op::visit_union_with_tag(
+              r2Value,
+              [&]<typename Ident2>(folly::tag_t<Ident2>, auto& v) {
+                if constexpr (kIsString<decltype(v)>) {
+                  typeMatches = true;
+                  EXPECT_EQ(v, "42");
+                }
+              },
+              []() {});
         }
-      });
-    }
-  });
+      },
+      []() {});
   EXPECT_TRUE(typeMatches);
 }
 
 TEST(VisitUnionTest, NonVoid) {
   DuplicateType r;
   r.set_str1("boo");
-  auto callable = [](auto&&, auto&& r2) {
-    if constexpr (std::is_same_v<
-                      folly::remove_cvref_t<decltype(r2)>,
-                      std::string>) {
-      return std::move(r2);
-    }
-    return std::string("list");
-  };
-  EXPECT_EQ(apache::thrift::visit_union(r, callable), "boo");
+  auto result = apache::thrift::op::visit_union_with_tag(
+      r,
+      []<typename Ident>(folly::tag_t<Ident>, auto& r2) {
+        if constexpr (std::is_same_v<
+                          folly::remove_cvref_t<decltype(r2)>,
+                          std::string>) {
+          return std::move(r2);
+        }
+        return std::string("list");
+      },
+      []() { return std::string(); });
+  EXPECT_EQ(result, "boo");
 }
 
 } // namespace
