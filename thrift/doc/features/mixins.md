@@ -1,7 +1,5 @@
 # Mixins
 
-<!-- https://www.internalfb.com/intern/wiki/Thrift/Thrift_Guide/IDL/Mixins/?noredirect -->
-
 ## Motivation
 
 The idea is to achieve reusability of common parts of a struct via composition with an additional syntactic sugar.
@@ -56,8 +54,6 @@ The highlighted methods are imported from mixin fields `m1` and `m2`.
 
 Currently it has full support in C++, and readonly support in thrift-py3.
 
-We do not have timeline to support this in other languages. However, if you have strong use case, feel free to let us know by commenting on this [post](https://fb.workplace.com/groups/1730279463893632/permalink/2608655872722649/) to help prioritization.
-
 ## FAQ
 
 > Q: Is nested mixin struct supported?
@@ -71,5 +67,3 @@ A: No.
 > Q: What if we have duplicated field name in 2 mixin fields?
 
 A: There will be build error with diagnostic message.
-
-Design doc: [here](https://fb.quip.com/Q0QmAQPtJadN).
