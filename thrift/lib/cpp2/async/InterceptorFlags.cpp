@@ -18,7 +18,7 @@
 
 namespace apache::thrift {
 
-THRIFT_FLAG_DEFINE_bool(enable_client_interceptor_framework_metadata, false);
+THRIFT_FLAG_DEFINE_bool(enable_client_interceptor_framework_metadata, true);
 
 THRIFT_FLAG_DEFINE_bool(enable_service_interceptor_framework_metadata, false);
 
