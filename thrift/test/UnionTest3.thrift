@@ -15,6 +15,7 @@
  */
 
 include "thrift/annotation/thrift.thrift"
+include "thrift/annotation/cpp.thrift"
 
 @thrift.AllowLegacyMissingUris
 package;
@@ -23,10 +24,12 @@ namespace cpp thrift.test.debug
 namespace py thrift.test.UnionTest
 
 struct I32Stuff {
+  @cpp.DeprecatedTerseWrite
   1: i32 a;
 }
 
 struct StringStuff {
+  @cpp.DeprecatedTerseWrite
   1: string a;
 }
 

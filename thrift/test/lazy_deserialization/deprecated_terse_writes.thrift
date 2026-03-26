@@ -23,18 +23,26 @@ package;
 namespace cpp2 apache.thrift.test
 
 struct TerseFoo {
+  @cpp.DeprecatedTerseWrite
   1: list<double> field1;
+  @cpp.DeprecatedTerseWrite
   2: list<i32> field2;
+  @cpp.DeprecatedTerseWrite
   3: list<double> field3;
+  @cpp.DeprecatedTerseWrite
   4: list<i32> field4;
 }
 
 struct TerseLazyFoo {
+  @cpp.DeprecatedTerseWrite
   1: list<double> field1;
+  @cpp.DeprecatedTerseWrite
   2: list<i32> field2;
   @cpp.Lazy
+  @cpp.DeprecatedTerseWrite
   3: list<double> field3;
   @cpp.Lazy
+  @cpp.DeprecatedTerseWrite
   4: list<i32> field4;
 }
 

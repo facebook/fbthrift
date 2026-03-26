@@ -32,7 +32,9 @@ typedef i64 DurationMs
 typedef binary CustomProtocolType
 
 struct AdaptTestStruct {
+  @cpp.DeprecatedTerseWrite
   1: DurationMs delay;
+  @cpp.DeprecatedTerseWrite
   2: CustomProtocolType custom;
 }
 
