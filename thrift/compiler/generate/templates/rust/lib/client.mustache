@@ -213,7 +213,7 @@ where
 
             // Create the sink handler that accepts client stream and sends to server
             let sink_helper_fn = move |stream: ::futures::stream::BoxStream<'static, ::std::result::Result<
-                {{#function:sink_elem_type}}{{> lib/type}}{{/function:sink_elem_type}},
+                {{#partial types.type_name type=function:sink.elem_type}},
                 {{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}SinkError
             >>| {
                 let new_stream = stream.map(|item| {
@@ -246,7 +246,7 @@ where
                 }.boxed()
             };
 
-            let res = ::std::result::Result::Ok((server_stream, Box::new(sink_helper_fn) as Box<dyn ::std::ops::FnOnce(::futures::stream::BoxStream<'static, ::std::result::Result<{{#function:sink_elem_type}}{{> lib/type}}{{/function:sink_elem_type}}, {{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}SinkError>>) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), {{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}SinkError>> + ::std::marker::Send>));
+            let res = ::std::result::Result::Ok((server_stream, Box::new(sink_helper_fn) as Box<dyn ::std::ops::FnOnce(::futures::stream::BoxStream<'static, ::std::result::Result<{{#partial types.type_name type=function:sink.elem_type}}, {{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}SinkError>>) -> ::futures::future::BoxFuture<'static, ::std::result::Result<(), {{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}SinkError>> + ::std::marker::Send>));
             {{/if function:bidirectional_stream?}}{{#if (not function:bidirectional_stream?)}}{{#if function:stream?}}{{!
 
             ******************************
@@ -318,7 +318,7 @@ where
             {{/if function:sink_has_first_response?}}
 
             let sink_helper_fn = move |stream: ::futures::stream::BoxStream<'static, ::std::result::Result<
-                {{#function:sink_elem_type}}{{> lib/type}}{{/function:sink_elem_type}},
+                {{#partial types.type_name type=function:sink.elem_type}},
                 {{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}SinkError
             >>| {
                 {{!TODO (seanlawlor): This decoding should be done on the blocking thread, not the IO thread. }}
@@ -355,10 +355,10 @@ where
             };
 
             let res = Ok(::fbthrift::SinkResult::<
-                {{#if function:sink_has_first_response?}}{{#function:return_type}}{{#function:sink_first_response_type}}{{> lib/type}}{{/function:sink_first_response_type}}{{/function:return_type}}{{#else}}(){{/if function:sink_has_first_response?}},
-                {{#function:sink_elem_type}}{{> lib/type}}{{/function:sink_elem_type}},
+                {{#if function:sink_has_first_response?}}{{#partial types.type_name type=function:self.return_type}}{{#else}}(){{/if}},
+                {{#partial types.type_name type=function:sink.elem_type}},
                 {{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}SinkError,
-                {{#function:sink_final_response_type}}{{> lib/type}}{{/function:sink_final_response_type}},
+                {{#partial types.type_name type=function:sink.final_response_type}},
                 {{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}SinkFinalError,
             > {
                 initial_response,
@@ -493,7 +493,7 @@ impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_
         }}{{#function:args}}
         p.write_field_begin({{!
             }}"{{field:name}}", {{!
-            }}{{#field:type}}{{> lib/ttype}}{{/field:type}}, {{!
+            }}{{#partial types.protocol_ttype type=field:self.type}}, {{!
             }}{{field:id}}i16{{!
         }});
         {{#field:type}}{{!

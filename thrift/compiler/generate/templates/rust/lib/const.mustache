@@ -24,7 +24,7 @@
 pub const {{constant:rust_name}}{{!
 }}: {{!
 }}{{#if type:string?}}&::std::primitive::str = {{value:quoted}}{{!
-}}{{#else}}{{> lib/type}} = {{> lib/value}}{{!
+}}{{#else}}{{#partial types.type_name type=type:self}} = {{> lib/value}}{{!
 }}{{/if type:string?}}{{!
 }};
 {{/if (not constant:lazy?)}}
@@ -33,7 +33,7 @@ pub static {{constant:rust_name}}{{!
 }}: ::std::sync::LazyLock<{{!
 }}{{#constant:type}}{{!
     }}{{#if type:has_adapter?}}{{type:adapter_qualified}}::AdaptedType{{/if type:has_adapter?}}{{!
-    }}{{#if (not type:has_adapter?)}}{{> lib/type}}{{/if (not type:has_adapter?)}}{{!
+    }}{{#if (not type:has_adapter?)}}{{#partial types.type_name type=type:self}}{{/if (not type:has_adapter?)}}{{!
 }}{{/constant:type}}{{!
 }}> = ::std::sync::LazyLock::new(|| {{!
     }}{{#constant:type}}{{#if type:has_adapter?}}{{type:adapter_qualified}}::from_thrift({{/if type:has_adapter?}}{{/constant:type}}{{!

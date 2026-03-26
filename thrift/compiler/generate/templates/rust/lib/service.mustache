@@ -26,7 +26,7 @@ pub mod {{service:snake}} \{{{!
     #[derive(Clone, Debug)]
     pub enum {{function:upcamel}}StreamExn {
         {{#function:stream_exceptions}}
-        {{field:rust_name}}({{#field:type}}{{> lib/type}}{{/field:type}}),{{!
+        {{field:rust_name}}({{#partial types.type_name type=field:self.type}}),{{!
         }}{{/function:stream_exceptions}}
         ApplicationException(::fbthrift::ApplicationException),
     }
@@ -72,8 +72,8 @@ pub mod {{service:snake}} \{{{!
     }{{!
     }}{{#function:uniqueStreamExceptions}}
 
-    impl ::std::convert::From<{{#field:type}}{{> lib/type}}{{/field:type}}> for {{function:upcamel}}StreamExn {
-        fn from(exn: {{#field:type}}{{> lib/type}}{{/field:type}}) -> Self {
+    impl ::std::convert::From<{{#partial types.type_name type=field:self.type}}> for {{function:upcamel}}StreamExn {
+        fn from(exn: {{#partial types.type_name type=field:self.type}}) -> Self {
             Self::{{field:rust_name}}(exn)
         }
     }{{!
@@ -99,7 +99,7 @@ pub mod {{service:snake}} \{{{!
     {{/if function:enable_anyhow_to_application_exn}}
 
     impl ::fbthrift::help::SerializeExn for {{function:upcamel}}StreamExn {
-        type Success = {{#function:stream_elem_type}}{{> lib/type}}{{/function:stream_elem_type}};
+        type Success = {{#partial types.type_name type=function:stream.elem_type}};
 
         fn write_result<P>(
             res: ::std::result::Result<&Self::Success, &Self>,
@@ -118,7 +118,7 @@ pub mod {{service:snake}} \{{{!
                 ::std::result::Result::Ok(success) => {
                     p.write_field_begin(
                         "Success",
-                        {{#function:stream_elem_type}}{{> lib/ttype}}{{/function:stream_elem_type}},
+                        {{#partial types.protocol_ttype type=function:stream.elem_type}},
                         0i16,
                     );
                     ::fbthrift::Serialize::rs_thrift_write(success, p);
@@ -128,7 +128,7 @@ pub mod {{service:snake}} \{{{!
                 ::std::result::Result::Err(Self::{{field:rust_name}}(inner)) => {
                     p.write_field_begin(
                         "{{field:name}}",
-                        {{#field:type}}{{> lib/ttype}}{{/field:type}},
+                        {{#partial types.protocol_ttype type=field:self.type}},
                         {{field:id}},
                     );
                     ::fbthrift::Serialize::rs_thrift_write(inner, p);
@@ -145,12 +145,12 @@ pub mod {{service:snake}} \{{{!
 
     pub struct {{function:upcamel}}SinkResult {
         {{#if function:sink_has_first_response?}}
-        pub initial_response: {{#function:return_type}}{{#function:sink_first_response_type}}{{> lib/type}}{{/function:sink_first_response_type}}{{/function:return_type}},
+        pub initial_response: {{#partial types.type_name type=function:self.return_type}},
         {{/if function:sink_has_first_response?}}
         pub stream_handler: ::std::boxed::Box<dyn ::std::ops::FnOnce(
-            ::futures::stream::BoxStream<'static, ::std::result::Result<{{#function:sink_elem_type}}{{> lib/type}}{{/function:sink_elem_type}}, {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}SinkExn>>
+            ::futures::stream::BoxStream<'static, ::std::result::Result<{{#partial types.type_name type=function:sink.elem_type}}, {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}SinkExn>>
         ) -> ::futures::future::BoxFuture<'static,
-            ::std::result::Result<{{#function:sink_final_response_type}}{{> lib/type}}{{/function:sink_final_response_type}}, {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}SinkFinalExn>
+            ::std::result::Result<{{#partial types.type_name type=function:sink.final_response_type}}, {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}SinkFinalExn>
         > + Send>,
         pub buffer_size: u64,
         pub chunk_timeout: ::std::time::Duration,
@@ -159,12 +159,12 @@ pub mod {{service:snake}} \{{{!
     impl {{function:upcamel}}SinkResult {
         pub fn new(
             {{#if function:sink_has_first_response?}}
-            initial_response: {{#function:return_type}}{{#function:sink_first_response_type}}{{> lib/type}}{{/function:sink_first_response_type}}{{/function:return_type}},
+            initial_response: {{#partial types.type_name type=function:self.return_type}},
             {{/if function:sink_has_first_response?}}
             stream_handler: ::std::boxed::Box<dyn ::std::ops::FnOnce(
-                ::futures::stream::BoxStream<'static, ::std::result::Result<{{#function:sink_elem_type}}{{> lib/type}}{{/function:sink_elem_type}}, {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}SinkExn>>
+                ::futures::stream::BoxStream<'static, ::std::result::Result<{{#partial types.type_name type=function:sink.elem_type}}, {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}SinkExn>>
             ) -> ::futures::future::BoxFuture<'static,
-                ::std::result::Result<{{#function:sink_final_response_type}}{{> lib/type}}{{/function:sink_final_response_type}}, {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}SinkFinalExn>
+                ::std::result::Result<{{#partial types.type_name type=function:sink.final_response_type}}, {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}SinkFinalExn>
             > + Send>,
         ) -> Self {
             Self {
@@ -192,7 +192,7 @@ pub mod {{service:snake}} \{{{!
     #[derive(Clone, Debug)]
     pub enum {{function:upcamel}}SinkExn {
         {{#function:sink_exceptions}}
-        {{field:rust_name}}({{#field:type}}{{> lib/type}}{{/field:type}}),{{!
+        {{field:rust_name}}({{#partial types.type_name type=field:self.type}}),{{!
         }}{{/function:sink_exceptions}}
         ApplicationException(::fbthrift::ApplicationException),
     }
@@ -238,8 +238,8 @@ pub mod {{service:snake}} \{{{!
     }{{!
     }}{{#function:uniqueSinkExceptions}}
 
-    impl ::std::convert::From<{{#field:type}}{{> lib/type}}{{/field:type}}> for {{function:upcamel}}SinkExn {
-        fn from(exn: {{#field:type}}{{> lib/type}}{{/field:type}}) -> Self {
+    impl ::std::convert::From<{{#partial types.type_name type=field:self.type}}> for {{function:upcamel}}SinkExn {
+        fn from(exn: {{#partial types.type_name type=field:self.type}}) -> Self {
             Self::{{field:rust_name}}(exn)
         }
     }{{!
@@ -265,7 +265,7 @@ pub mod {{service:snake}} \{{{!
     {{/if function:enable_anyhow_to_application_exn}}
 
     impl ::fbthrift::help::SerializeExn for {{function:upcamel}}SinkExn {
-        type Success = {{#function:sink_elem_type}}{{> lib/type}}{{/function:sink_elem_type}};
+        type Success = {{#partial types.type_name type=function:sink.elem_type}};
 
         fn write_result<P>(
             res: ::std::result::Result<&Self::Success, &Self>,
@@ -284,7 +284,7 @@ pub mod {{service:snake}} \{{{!
                 ::std::result::Result::Ok(success) => {
                     p.write_field_begin(
                         "Success",
-                        {{#function:sink_elem_type}}{{> lib/ttype}}{{/function:sink_elem_type}},
+                        {{#partial types.protocol_ttype type=function:sink.elem_type}},
                         0i16,
                     );
                     ::fbthrift::Serialize::rs_thrift_write(success, p);
@@ -294,7 +294,7 @@ pub mod {{service:snake}} \{{{!
                 ::std::result::Result::Err(Self::{{field:rust_name}}(inner)) => {
                     p.write_field_begin(
                         "{{field:name}}",
-                        {{#field:type}}{{> lib/ttype}}{{/field:type}},
+                        {{#partial types.protocol_ttype type=field:self.type}},
                         {{field:id}},
                     );
                     ::fbthrift::Serialize::rs_thrift_write(inner, p);
@@ -311,7 +311,7 @@ pub mod {{service:snake}} \{{{!
     #[doc(hidden)]
     pub enum {{function:upcamel}}SinkReader {}
     impl ::fbthrift::help::DeserializeExn for {{function:upcamel}}SinkReader {
-        type Success = {{#function:sink_elem_type}}{{> lib/type}}{{/function:sink_elem_type}};
+        type Success = {{#partial types.type_name type=function:sink.elem_type}};
         type Error = {{function:upcamel}}SinkExn;
 
         fn read_result<P>(p: &mut P) -> ::anyhow::Result<::std::result::Result<Self::Success, Self::Error>>
@@ -333,12 +333,12 @@ pub mod {{service:snake}} \{{{!
                         p.read_field_end()?;
                         break;
                     }
-                    (({{#function:sink_elem_type}}{{> lib/ttype}}{{/function:sink_elem_type}}, 0i32), false) => {
+                    (({{#partial types.protocol_ttype type=function:sink.elem_type}}, 0i32), false) => {
                         once = true;
                         alt = ::std::option::Option::Some(::std::result::Result::Ok(::fbthrift::Deserialize::rs_thrift_read(p)?));
                     }{{!
                     }}{{#function:sink_exceptions}}
-                    (({{#field:type}}{{> lib/ttype}}{{/field:type}}, {{field:id}}), false) => {
+                    (({{#partial types.protocol_ttype type=field:self.type}}, {{field:id}}), false) => {
                         once = true;
                         alt = ::std::option::Option::Some(::std::result::Result::Err(Self::Error::{{field:rust_name}}(::fbthrift::Deserialize::rs_thrift_read(p)?)));
                     }{{!
@@ -373,7 +373,7 @@ pub mod {{service:snake}} \{{{!
     #[derive(Clone, Debug)]
     pub enum {{function:upcamel}}SinkFinalExn {
         {{#function:sink_final_response_exceptions}}
-        {{field:rust_name}}({{#field:type}}{{> lib/type}}{{/field:type}}),{{!
+        {{field:rust_name}}({{#partial types.type_name type=field:self.type}}),{{!
         }}{{/function:sink_final_response_exceptions}}
         ApplicationException(::fbthrift::ApplicationException),
     }
@@ -419,8 +419,8 @@ pub mod {{service:snake}} \{{{!
     }{{!
     }}{{#function:uniqueSinkFinalExceptions}}
 
-    impl ::std::convert::From<{{#field:type}}{{> lib/type}}{{/field:type}}> for {{function:upcamel}}SinkFinalExn {
-        fn from(exn: {{#field:type}}{{> lib/type}}{{/field:type}}) -> Self {
+    impl ::std::convert::From<{{#partial types.type_name type=field:self.type}}> for {{function:upcamel}}SinkFinalExn {
+        fn from(exn: {{#partial types.type_name type=field:self.type}}) -> Self {
             Self::{{field:rust_name}}(exn)
         }
     }{{!
@@ -446,7 +446,7 @@ pub mod {{service:snake}} \{{{!
     {{/if function:enable_anyhow_to_application_exn}}
 
     impl ::fbthrift::help::SerializeExn for {{function:upcamel}}SinkFinalExn {
-        type Success = {{#function:sink_final_response_type}}{{> lib/type}}{{/function:sink_final_response_type}};
+        type Success = {{#partial types.type_name type=function:sink.final_response_type}};
 
         fn write_result<P>(
             res: ::std::result::Result<&Self::Success, &Self>,
@@ -465,7 +465,7 @@ pub mod {{service:snake}} \{{{!
                 ::std::result::Result::Ok(success) => {
                     p.write_field_begin(
                         "Success",
-                        {{#function:sink_final_response_type}}{{> lib/ttype}}{{/function:sink_final_response_type}},
+                        {{#partial types.protocol_ttype type=function:sink.final_response_type}},
                         0i16,
                     );
                     ::fbthrift::Serialize::rs_thrift_write(success, p);
@@ -475,7 +475,7 @@ pub mod {{service:snake}} \{{{!
                 ::std::result::Result::Err(Self::{{field:rust_name}}(inner)) => {
                     p.write_field_begin(
                         "{{field:name}}",
-                        {{#field:type}}{{> lib/ttype}}{{/field:type}},
+                        {{#partial types.protocol_ttype type=field:self.type}},
                         {{field:id}},
                     );
                     ::fbthrift::Serialize::rs_thrift_write(inner, p);
@@ -494,14 +494,14 @@ pub mod {{service:snake}} \{{{!
     #[derive(Clone, Debug)]
     pub enum {{function:upcamel}}Exn {
         {{#function:exceptions}}
-        {{field:rust_name}}({{#field:type}}{{> lib/type}}{{/field:type}}),{{!
+        {{field:rust_name}}({{#partial types.type_name type=field:self.type}}),{{!
         }}{{/function:exceptions}}
         ApplicationException(::fbthrift::ApplicationException),
     }{{!
     }}{{#function:uniqueExceptions}}
 
-    impl ::std::convert::From<{{#field:type}}{{> lib/type}}{{/field:type}}> for {{function:upcamel}}Exn {
-        fn from(exn: {{#field:type}}{{> lib/type}}{{/field:type}}) -> Self {
+    impl ::std::convert::From<{{#partial types.type_name type=field:self.type}}> for {{function:upcamel}}Exn {
+        fn from(exn: {{#partial types.type_name type=field:self.type}}) -> Self {
             Self::{{field:rust_name}}(exn)
         }
     }{{!
@@ -590,18 +590,11 @@ pub mod {{service:snake}} \{{{!
 
     impl ::fbthrift::help::SerializeExn for {{function:upcamel}}Exn {
         type Success = {{!
-}}{{#if function:bidirectional_stream?}}{{#if function:sink_has_first_response?}}{{#function:return_type}}{{#function:sink_first_response_type}}{{> lib/type}}{{/function:sink_first_response_type}}{{/function:return_type}}{{/if function:sink_has_first_response?}}{{#if (not function:sink_has_first_response?)}}(){{/if (not function:sink_has_first_response?)}}{{/if function:bidirectional_stream?}}{{!
-}}{{#if (not function:bidirectional_stream?)}}{{!
-}}{{#if (not function:sink?)}}{{#if (not function:stream?)}}{{> lib/server_ok_type}}{{/if (not function:stream?)}}{{/if (not function:sink?)}}{{!
-}}{{#if function:stream?}}{{!
-}}{{#if function:stream_has_first_response?}}{{#function:return_type}}{{#function:stream_first_response_type}}{{> lib/type}}{{/function:stream_first_response_type}}{{/function:return_type}}{{/if function:stream_has_first_response?}}{{!
-}}{{#if (not function:stream_has_first_response?)}}(){{/if (not function:stream_has_first_response?)}}{{!
-}}{{/if function:stream?}}{{!
-}}{{#if function:sink?}}{{!
-}}{{#if function:sink_has_first_response?}}{{#function:return_type}}{{#function:sink_first_response_type}}{{> lib/type}}{{/function:sink_first_response_type}}{{/function:return_type}}{{/if function:sink_has_first_response?}}{{!
-}}{{#if (not function:sink_has_first_response?)}}(){{/if (not function:sink_has_first_response?)}}{{!
-}}{{/if function:sink?}}{{!
-}}{{/if (not function:bidirectional_stream?)}}{{!
+}}{{#if function:bidirectional_stream?}}{{#if function:sink_has_first_response?}}{{#partial types.type_name type=function:self.return_type}}{{#else}}(){{/if}}{{!
+}}{{#else if function:stream?}}{{#if function:stream_has_first_response?}}{{#partial types.type_name type=function:self.return_type}}{{#else}}(){{/if}}{{!
+}}{{#else if function:sink?}}{{#if function:sink_has_first_response?}}{{#partial types.type_name type=function:self.return_type}}{{#else}}(){{/if}}{{!
+}}{{#else}}{{> lib/server_ok_type}}{{!
+}}{{/if function:bidirectional_stream?}}{{!
         }};
 
         fn write_result<P>(
@@ -621,28 +614,11 @@ pub mod {{service:snake}} \{{{!
                 ::std::result::Result::Ok(_success) => {
                     p.write_field_begin("Success", {{!
                         }}{{#if function:bidirectional_stream?}}{{!
-                            }}{{#if function:sink_has_first_response?}}{{!
-                                }}{{#function:return_type}}{{#function:sink_first_response_type}}{{> lib/ttype}}{{/function:sink_first_response_type}}{{/function:return_type}}{{!
-                            }}{{/if function:sink_has_first_response?}}{{!
-                            }}{{#if (not function:sink_has_first_response?)}}::fbthrift::TType::Void{{/if (not function:sink_has_first_response?)}}{{!
-                        }}{{/if function:bidirectional_stream?}}{{!
-                        }}{{#if (not function:bidirectional_stream?)}}{{!
-                            }}{{#if (not function:sink?)}}{{#if (not function:stream?)}}{{!
-                                }}{{#function:return_type}}{{> lib/ttype}}{{/function:return_type}}{{!
-                            }}{{/if (not function:stream?)}}{{/if (not function:sink?)}}{{!
-                            }}{{#if function:stream?}}{{!
-                                }}{{#if function:stream_has_first_response?}}{{!
-                                    }}{{#function:return_type}}{{#function:stream_first_response_type}}{{> lib/ttype}}{{/function:stream_first_response_type}}{{/function:return_type}}{{!
-                                }}{{/if function:stream_has_first_response?}}{{!
-                                }}{{#if (not function:stream_has_first_response?)}}::fbthrift::TType::Void{{/if (not function:stream_has_first_response?)}}{{!
-                            }}{{/if function:stream?}}{{!
-                            }}{{#if function:sink?}}{{!
-                                }}{{#if function:sink_has_first_response?}}{{!
-                                    }}{{#function:return_type}}{{#function:sink_first_response_type}}{{> lib/ttype}}{{/function:sink_first_response_type}}{{/function:return_type}}{{!
-                                }}{{/if function:sink_has_first_response?}}{{!
-                                }}{{#if (not function:sink_has_first_response?)}}::fbthrift::TType::Void{{/if (not function:sink_has_first_response?)}}{{!
-                            }}{{/if function:sink?}}{{!
-                        }}{{/if (not function:bidirectional_stream?)}}{{!
+}}{{#if function:sink_has_first_response?}}{{#partial types.protocol_ttype type=function:self.return_type}}{{#else}}::fbthrift::TType::Void{{/if}}{{!
+}}{{#else if function:stream?}}{{#if function:stream_has_first_response?}}{{#partial types.protocol_ttype type=function:self.return_type}}{{#else}}::fbthrift::TType::Void{{/if}}{{!
+}}{{#else if function:sink?}}{{#if function:sink_has_first_response?}}{{#partial types.protocol_ttype type=function:self.return_type}}{{#else}}::fbthrift::TType::Void{{/if}}{{!
+}}{{#else}}{{#partial types.protocol_ttype type=function:self.return_type}}{{!
+}}{{/if function:bidirectional_stream?}}{{!
                     }}, 0i16);
                     {{#if function:bidirectional_stream?}}{{#if function:sink_has_first_response?}}
                     ::fbthrift::Serialize::rs_thrift_write(_success, p);
@@ -667,7 +643,7 @@ pub mod {{service:snake}} \{{{!
                 ::std::result::Result::Err(Self::{{field:rust_name}}(inner)) => {
                     p.write_field_begin(
                         "{{field:name}}",
-                        {{#field:type}}{{> lib/ttype}}{{/field:type}},
+                        {{#partial types.protocol_ttype type=field:self.type}},
                         {{field:id}},
                     );
                     ::fbthrift::Serialize::rs_thrift_write(inner, p);

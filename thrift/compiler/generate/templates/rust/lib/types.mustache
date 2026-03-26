@@ -103,3 +103,25 @@
 , {{#partial type_name_impl type=type.true_type.val_type raw=false}}>
   {{/if type.list?}}
 {{/let partial}}
+
+
+{{#let export partial protocol_ttype |type|}}
+{{#pragma ignore-newlines}}
+::fbthrift::TType::
+{{#if type.void?}}Void
+{{#else if type.string?}}String
+{{#else if type.binary?}}String
+{{#else if type.bool?}}Bool
+{{#else if type.byte?}}Byte
+{{#else if type.i16?}}I16
+{{#else if type.i32?}}I32
+{{#else if type.i64?}}I64
+{{#else if type.double?}}Double
+{{#else if type.float?}}Float
+{{#else if type.structured?}}Struct
+{{#else if type.enum?}}I32
+{{#else if type.list?}}List
+{{#else if type.set?}}Set
+{{#else if type.map?}}Map
+{{/if type.void?}}
+{{/let partial}}

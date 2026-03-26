@@ -1311,13 +1311,6 @@ class t_mstch_rust_generator : public t_mstch_generator {
       }
       return whisker::make::array(std::move(result));
     });
-    def.property("args_by_name", [&proto](const t_function& self) {
-      std::vector<const t_field*> params = self.params().fields().copy();
-      std::sort(params.begin(), params.end(), [](auto a, auto b) {
-        return a->name() < b->name();
-      });
-      return to_array(params, proto.of<t_field>());
-    });
     def.property(
         "enable_anyhow_to_application_exn", [this](const t_function& self) {
           // First look for annotation on the function.

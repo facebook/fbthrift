@@ -15,26 +15,26 @@
   limitations under the License.
 
 }}{{#if function:bidirectional_stream?}}{{#if function:sink_has_first_response?}}(
-    {{#function:return_type}}{{#function:sink_first_response_type}}{{> lib/type}}{{/function:sink_first_response_type}}{{/function:return_type}},
-    ::futures::stream::BoxStream<'static, ::std::result::Result<{{#function:stream_elem_type}}{{> lib/type}}{{/function:stream_elem_type}}, {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn>>,
+    {{#partial types.type_name type=function:self.return_type}},
+    ::futures::stream::BoxStream<'static, ::std::result::Result<{{#partial types.type_name type=function:stream.elem_type}}, {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn>>,
     ::std::boxed::Box<dyn ::std::ops::FnOnce(
-        ::futures::stream::BoxStream<'static, ::std::result::Result<{{#function:sink_elem_type}}{{> lib/type}}{{/function:sink_elem_type}}, {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}SinkExn>>
+        ::futures::stream::BoxStream<'static, ::std::result::Result<{{#partial types.type_name type=function:sink.elem_type}}, {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}SinkExn>>
     ) -> ::futures::future::BoxFuture<'static, ()> + Send>
 ){{#else}}(
-    ::futures::stream::BoxStream<'static, ::std::result::Result<{{#function:stream_elem_type}}{{> lib/type}}{{/function:stream_elem_type}}, {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn>>,
+    ::futures::stream::BoxStream<'static, ::std::result::Result<{{#partial types.type_name type=function:stream.elem_type}}, {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn>>,
     ::std::boxed::Box<dyn ::std::ops::FnOnce(
-        ::futures::stream::BoxStream<'static, ::std::result::Result<{{#function:sink_elem_type}}{{> lib/type}}{{/function:sink_elem_type}}, {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}SinkExn>>
+        ::futures::stream::BoxStream<'static, ::std::result::Result<{{#partial types.type_name type=function:sink.elem_type}}, {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}SinkExn>>
     ) -> ::futures::future::BoxFuture<'static, ()> + Send>
-){{/if function:sink_has_first_response?}}{{/if function:bidirectional_stream?}}{{!
-}}{{#if (not function:bidirectional_stream?)}}{{#if function:stream?}}
+){{/if function:sink_has_first_response?}}{{!
+}}{{#else if function:stream?}}
 {{#if function:stream_has_first_response?}}
 (
-    {{#function:return_type}}{{#function:stream_first_response_type}}{{> lib/type}}{{/function:stream_first_response_type}}{{/function:return_type}},
+    {{#partial types.type_name type=function:self.return_type}},
 {{/if function:stream_has_first_response?}}
-    ::futures::stream::BoxStream<'static, ::std::result::Result<{{#function:stream_elem_type}}{{> lib/type}}{{/function:stream_elem_type}}, {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn>>
+    ::futures::stream::BoxStream<'static, ::std::result::Result<{{#partial types.type_name type=function:stream.elem_type}}, {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn>>
 {{#if function:stream_has_first_response?}}
 )
-{{/if function:stream_has_first_response?}}{{/if function:stream?}}
-{{#if (not function:stream?)}}{{#if (not function:sink?)}}{{#function:return_type}}
-{{> lib/return_type}}
-{{/function:return_type}}{{/if (not function:sink?)}}{{#if function:sink?}}{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}SinkResult{{/if function:sink?}}{{/if (not function:stream?)}}{{/if (not function:bidirectional_stream?)}}
+{{/if function:stream_has_first_response?}}{{!
+}}{{#else if function:sink?}}{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}SinkResult{{!
+}}{{#else}}{{#function:return_type}}{{> lib/return_type}}{{/function:return_type}}{{!
+}}{{/if function:bidirectional_stream?}}

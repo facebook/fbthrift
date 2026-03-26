@@ -181,7 +181,7 @@ impl<'mock> {{program:clients}}::{{service:rust_name}} for {{service:rust_name}}
         let mut closure = self.{{function:rust_name}}.closure.lock().unwrap();
         let closure: &mut dyn ::std::ops::FnMut({{!
             }}{{#function:args}}{{!
-            }}{{#field:type}}{{> lib/type}}{{/field:type}}{{!
+            }}{{#partial types.type_name type=field:self.type}}{{!
             }}{{#if (not last?)}}, {{/if (not last?)}}{{!
             }}{{/function:args}}{{!
         }}) -> _ = &mut **closure;
@@ -301,7 +301,7 @@ pub mod r#impl \{{{!
             pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
                 dyn ::std::ops::FnMut({{!
                     }}{{#function:args}}{{!
-                    }}{{#field:type}}{{> lib/type}}{{/field:type}}{{!
+                    }}{{#partial types.type_name type=field:self.type}}{{!
                     }}{{#if (not last?)}}, {{/if (not last?)}}{{!
                     }}{{/function:args}}{{!
                 }}) -> ::std::result::Result<
@@ -317,7 +317,7 @@ pub mod r#impl \{{{!
                 Self {
                     closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|{{!
                         }}{{#function:args}}{{!
-                        }}_: {{#field:type}}{{> lib/type}}{{/field:type}}{{!
+                        }}_: {{#partial types.type_name type=field:self.type}}{{!
                         }}{{#if (not last?)}}, {{/if (not last?)}}{{!
                         }}{{/function:args}}{{!
                     }}| panic!(
@@ -341,7 +341,7 @@ pub mod r#impl \{{{!
                 {{#else}}
                 self.mock(move |{{!
                     }}{{#function:args}}{{!
-                    }}_: {{#field:type}}{{> lib/type}}{{/field:type}}{{!
+                    }}_: {{#partial types.type_name type=field:self.type}}{{!
                     }}{{#if (not last?)}}, {{/if (not last?)}}{{!
                     }}{{/function:args}}{{!
                 }}| value.clone());
@@ -350,7 +350,7 @@ pub mod r#impl \{{{!
 
             pub fn mock(&self, mut mock: impl ::std::ops::FnMut({{!
                 }}{{#function:args}}{{!
-                }}{{#field:type}}{{> lib/type}}{{/field:type}}{{!
+                }}{{#partial types.type_name type=field:self.type}}{{!
                 }}{{#if (not last?)}}, {{/if (not last?)}}{{!
                 }}{{/function:args}}{{!
             }}) -> {{#function:return_type}}{{> lib/return_type}}{{/function:return_type}}{{!
@@ -372,7 +372,7 @@ pub mod r#impl \{{{!
 
             pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut({{!
                 }}{{#function:args}}{{!
-                }}{{#field:type}}{{> lib/type}}{{/field:type}}{{!
+                }}{{#partial types.type_name type=field:self.type}}{{!
                 }}{{#if (not last?)}}, {{/if (not last?)}}{{!
                 }}{{/function:args}}{{!
             }}) -> ::std::result::Result<{{!
@@ -402,7 +402,7 @@ pub mod r#impl \{{{!
                 let mut closure = self.closure.lock().unwrap();
                 *closure = ::std::boxed::Box::new(move |{{!
                     }}{{#function:args}}{{!
-                    }}_: {{#field:type}}{{> lib/type}}{{/field:type}}{{!
+                    }}_: {{#partial types.type_name type=field:self.type}}{{!
                     }}{{#if (not last?)}}, {{/if (not last?)}}{{!
                     }}{{/function:args}}{{!
                 }}| ::std::result::Result::Err(exception.clone().into()));

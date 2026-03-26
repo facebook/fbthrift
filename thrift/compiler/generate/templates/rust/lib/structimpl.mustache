@@ -106,7 +106,7 @@ where
         if let ::std::option::Option::Some(some) = &self.{{field:rust_name}} {
             p.write_field_begin({{!
                 }}"{{field:name}}", {{!
-                }}{{#field:type}}{{> lib/ttype}}{{/field:type}}, {{!
+                }}{{#partial types.protocol_ttype type=field:self.type}}, {{!
                 }}{{field:id}}{{!
             }});
             {{#field:type}}{{#if field:type_annotation?}}{{> lib/annfieldwrite}}{{#else}}{{> lib/write}}{{/if field:type_annotation?}}{{/field:type}}({{!
@@ -119,7 +119,7 @@ where
         }}{{#else}}
         p.write_field_begin({{!
             }}"{{field:name}}", {{!
-            }}{{#field:type}}{{> lib/ttype}}{{/field:type}}, {{!
+            }}{{#partial types.protocol_ttype type=field:self.type}}, {{!
             }}{{field:id}}{{!
         }});
         {{#field:type}}{{#if field:type_annotation?}}{{> lib/annfieldwrite}}{{#else}}{{> lib/write}}{{/if field:type_annotation?}}{{/field:type}}({{!
@@ -143,7 +143,7 @@ where
     fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
         static FIELDS: &[::fbthrift::Field] = &[
             {{#each struct:fields_by_name as |field|}}
-            ::fbthrift::Field::new("{{field.name}}", {{#field.type}}{{> lib/ttype}}{{/field.type}}, {{field.id}}),
+            ::fbthrift::Field::new("{{field.name}}", {{#partial types.protocol_ttype type=field.type}}, {{field.id}}),
             {{/each}}
         ];
 
@@ -155,7 +155,7 @@ where
         #[allow(unused_labels)]
         let fallback  = 'fastpath: {
             {{#struct:fields}}
-            if (fty, fid) == ({{#field:type}}{{> lib/ttype}}{{/field:type}}, {{field:id}}) {
+            if (fty, fid) == ({{#partial types.protocol_ttype type=field:self.type}}, {{field:id}}) {
                 output.{{field:rust_name}} = {{!
                 }}{{#if field:optional?}}{{!
                 }}::std::option::Option::Some({{!
@@ -182,7 +182,7 @@ where
                 match (fty, fid) {
                     (::fbthrift::TType::Stop, _) => break,{{!
                     }}{{#struct:fields}}
-                    ({{#field:type}}{{> lib/ttype}}{{/field:type}}, {{field:id}}) => {{!
+                    ({{#partial types.protocol_ttype type=field:self.type}}, {{field:id}}) => {{!
                         }}output.{{field:rust_name}} = {{!
                         }}{{#if field:optional?}}{{!
                         }}::std::option::Option::Some({{!
@@ -228,7 +228,7 @@ where
             match (fty, fid as ::std::primitive::i32) {
                 (::fbthrift::TType::Stop, _) => break,{{!
                 }}{{#struct:fields}}
-                ({{#field:type}}{{> lib/ttype}}{{/field:type}}, {{field:id}}) => {{!
+                ({{#partial types.protocol_ttype type=field:self.type}}, {{field:id}}) => {{!
                     }}{{#if struct:all_optional?}}output.{{field:rust_name}}{{/if struct:all_optional?}}{{!
                     }}{{#if (not struct:all_optional?)}}field_{{field:name}}{{/if (not struct:all_optional?)}}{{!
                     }} = ::std::option::Option::Some({{!

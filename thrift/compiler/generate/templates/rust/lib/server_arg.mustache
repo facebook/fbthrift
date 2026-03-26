@@ -28,8 +28,8 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_{{
     #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "{{service:name}}.{{function:name}}"))]
     fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
         static ARGS: &[::fbthrift::Field] = &[
-            {{#each function:args_by_name as |field|}}
-            ::fbthrift::Field::new("{{field.name}}", {{#field.type}}{{> lib/ttype}}{{/field.type}}, {{field.id}}),
+            {{#each function:params.fields_by_name as |field|}}
+            ::fbthrift::Field::new("{{field.name}}", {{#partial types.protocol_ttype type=field.type}}, {{field.id}}),
             {{/each}}
         ];
         {{#function:args}}
@@ -41,7 +41,7 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_{{
             match (fty, fid as ::std::primitive::i32) {
                 (::fbthrift::TType::Stop, _) => break,{{!
                 }}{{#function:args}}
-                ({{#field:type}}{{> lib/ttype}}{{/field:type}}, {{field:id}}) => {{!
+                ({{#partial types.protocol_ttype type=field:self.type}}, {{field:id}}) => {{!
                     }}field_{{field:name}} = ::std::option::Option::Some({{!
                     }}{{#if field:has_adapter?}}{{field:adapter_qualified}}::from_thrift_field::<fbthrift::metadata::NoThriftAnnotations>({{/if field:has_adapter?}}{{!
                     }}{{#field:type}}::anyhow::Context::context({{#if field:type_annotation?}}{{> lib/annfieldread}}{{#else}}{{> lib/read}}{{/if field:type_annotation?}}{{/field:type}}(p), ::fbthrift::errors::DeserializingArgError { arg: "{{field:name}}", function: "{{function:name}}"})?{{!

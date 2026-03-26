@@ -33,7 +33,7 @@ pub trait {{service:rust_name}}: ::std::marker::Send + ::std::marker::Sync + 'st
         _request_context: &Self::RequestContext,{{!
         }}{{/if service:requestContext?}}{{!
         }}{{#function:args}}
-        _{{field:name}}: {{#field:type}}{{> lib/type}}{{/field:type}},{{!
+        _{{field:name}}: {{#partial types.type_name type=field:self.type}},{{!
         }}{{/function:args}}
     ) -> {{> lib/server_return_type}} {
         ::std::result::Result::Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(
@@ -72,7 +72,7 @@ where
         request_context: &Self::RequestContext,{{!
         }}{{/if service:requestContext?}}{{!
         }}{{#function:args}}
-        {{field:rust_name}}: {{#field:type}}{{> lib/type}}{{/field:type}},{{!
+        {{field:rust_name}}: {{#partial types.type_name type=field:self.type}},{{!
         }}{{/function:args}}
     ) -> {{> lib/server_return_type}} {
         (**self).{{function:rust_name}}({{!
@@ -112,7 +112,7 @@ where
         request_context: &Self::RequestContext,{{!
         }}{{/if service:requestContext?}}{{!
         }}{{#function:args}}
-        {{field:rust_name}}: {{#field:type}}{{> lib/type}}{{/field:type}},{{!
+        {{field:rust_name}}: {{#partial types.type_name type=field:self.type}},{{!
         }}{{/function:args}}
     ) -> {{> lib/server_return_type}} {
         (**self).{{function:rust_name}}({{!

@@ -53,7 +53,7 @@ where
             Self::{{field:rust_name}}(inner) => {
                 p.write_field_begin({{!
                     }}"{{field:name}}", {{!
-                    }}{{#field:type}}{{> lib/ttype}}{{/field:type}}, {{!
+                    }}{{#partial types.protocol_ttype type=field:self.type}}, {{!
                     }}{{field:id}}{{!
                 }});
                 {{#field:type}}{{#if field:type_annotation?}}{{> lib/annfieldwrite}}{{#else}}{{> lib/write}}{{/if field:type_annotation?}}{{/field:type}}({{!
@@ -79,7 +79,7 @@ where
     fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
         static FIELDS: &[::fbthrift::Field] = &[
             {{#each struct:fields_by_name as |field|}}
-            ::fbthrift::Field::new("{{field.name}}", {{#field.type}}{{> lib/ttype}}{{/field.type}}, {{field.id}}),
+            ::fbthrift::Field::new("{{field.name}}", {{#partial types.protocol_ttype type=field.type}}, {{field.id}}),
             {{/each}}
         ];
         let _ = ::anyhow::Context::context(p.read_struct_begin(|_| ()), "Expected a {{struct:name}}")?;
@@ -90,7 +90,7 @@ where
             match (fty, fid as ::std::primitive::i32, once) {
                 (::fbthrift::TType::Stop, _, _) => break,{{!
                 }}{{#struct:fields}}
-                ({{#field:type}}{{> lib/ttype}}{{/field:type}}, {{field:id}}, false) => {
+                ({{#partial types.protocol_ttype type=field:self.type}}, {{field:id}}, false) => {
                     once = true;
                     alt = ::std::option::Option::Some(Self::{{field:rust_name}}({{!
                     }}{{#if field:has_adapter?}}{{field:adapter_qualified}}::from_thrift_field::<{{struct:rust_name}}>({{/if field:has_adapter?}}{{!

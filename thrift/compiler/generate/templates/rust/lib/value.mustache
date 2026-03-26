@@ -47,7 +47,7 @@
 {{value:indent}}{
     {{value:indent}}#[inline(never)]
     {{value:indent}}fn __do_push(list: &mut {{!
-        }}{{#if type:has_adapter?}}{{type:adapter_qualified}}::StandardType{{#else}}{{> lib/type}}{{/if}}{{!
+        }}{{#if type:has_adapter?}}{{type:adapter_qualified}}::StandardType{{#else}}{{#partial types.type_name type=type:self}}{{/if}}{{!
     }}) {
         {{value:indent}}list.push({{> lib/value}});
     {{value:indent}}}
@@ -69,7 +69,7 @@
 {{value:indent}}{
     {{value:indent}}#[inline(never)]
     {{value:indent}}fn __do_insert(set: &mut {{!
-        }}{{#if type:has_adapter?}}{{type:adapter_qualified}}::StandardType{{#else}}{{> lib/type}}{{/if}}{{!
+        }}{{#if type:has_adapter?}}{{type:adapter_qualified}}::StandardType{{#else}}{{#partial types.type_name type=type:self}}{{/if}}{{!
     }}) {
         {{value:indent}}set.insert({{!
             }}{{#if value:floatingPoint?}}{{!
@@ -95,7 +95,7 @@
             {{value:indent}}{
                 {{value:indent}}#[inline(never)]
                 {{value:indent}}fn __do_insert(map: &mut {{!
-                    }}{{#if type:has_adapter?}}{{type:adapter_qualified}}::StandardType{{#else}}{{> lib/type}}{{/if}}{{!
+                    }}{{#if type:has_adapter?}}{{type:adapter_qualified}}::StandardType{{#else}}{{#partial types.type_name type=type:self}}{{/if}}{{!
                 }}) {
                     {{value:indent}}map.insert({{!
                         }}{{#entry:key}}{{!
@@ -114,7 +114,7 @@
     }}{{/if value:empty?}}{{!
 }}{{/if value:map?}}{{!
 }}{{#if value:struct?}}{{!
-    }}{{> lib/type}} \{{{!
+    }}{{#partial types.type_name type=type:self}} \{{{!
         }}{{#value:structFields}}
             {{value:indent}}{{field:rust_name}}: {{!
             }}{{#if field:has_adapter?}}{{field:adapter_qualified}}::from_thrift_default::<{{!
@@ -155,12 +155,12 @@
 }}{{/if value:struct?}}{{!
 }}{{#if value:union?}}{{!
     }}{{#value:unionVariant}}{{!
-        }}{{> lib/type}}::{{value:unionVariant}}({{!
+        }}{{#partial types.type_name type=type:self}}::{{value:unionVariant}}({{!
             }}{{#value:unionValue}}{{> lib/value}}{{/value:unionValue}}{{!
         }}){{!
     }}{{/value:unionVariant}}{{!
     }}{{^value:unionVariant}}{{!
-        }}{{> lib/type}}::default(){{!
+        }}{{#partial types.type_name type=type:self}}::default(){{!
     }}{{/value:unionVariant}}{{!
 }}{{/if value:union?}}{{!
 }}{{#if value:enum?}}{{!
