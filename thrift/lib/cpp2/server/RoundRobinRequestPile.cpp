@@ -443,25 +443,25 @@ RoundRobinRequestPileOptions::addInternalPriorities() const {
   }
 
   // Double the number of priorities
-  std::vector<unsigned int> numBucketsPerPriority;
-  numBucketsPerPriority.reserve(opts.numBucketsPerPriority.size() * 2);
+  std::vector<unsigned int> newNumBucketsPerPriority;
+  newNumBucketsPerPriority.reserve(opts.numBucketsPerPriority.size() * 2);
   for (auto numBuckets : opts.numBucketsPerPriority) {
     // See comment on addInternalPriorities declaration for why we do this
-    numBucketsPerPriority.push_back(numBuckets);
-    numBucketsPerPriority.push_back(numBuckets);
+    newNumBucketsPerPriority.push_back(numBuckets);
+    newNumBucketsPerPriority.push_back(numBuckets);
   }
-  opts.numBucketsPerPriority = std::move(numBucketsPerPriority);
+  opts.numBucketsPerPriority = std::move(newNumBucketsPerPriority);
 
   // Double the number of priorities also for per-priority limits.
   if (!opts.numMaxRequestsPerPriority.empty()) {
-    std::vector<uint32_t> numMaxRequestsPerPriority;
-    numMaxRequestsPerPriority.reserve(
+    std::vector<uint32_t> newNumMaxRequestsPerPriority;
+    newNumMaxRequestsPerPriority.reserve(
         opts.numMaxRequestsPerPriority.size() * 2);
     for (auto limit : opts.numMaxRequestsPerPriority) {
-      numMaxRequestsPerPriority.push_back(limit);
-      numMaxRequestsPerPriority.push_back(limit);
+      newNumMaxRequestsPerPriority.push_back(limit);
+      newNumMaxRequestsPerPriority.push_back(limit);
     }
-    opts.numMaxRequestsPerPriority = std::move(numMaxRequestsPerPriority);
+    opts.numMaxRequestsPerPriority = std::move(newNumMaxRequestsPerPriority);
   }
 
   // Update pileSelectionFunction
