@@ -1168,29 +1168,6 @@ class t_mstch_rust_generator : public t_mstch_generator {
     def.property("derive", [this](const t_structured& self) {
       return compute_derive_string(self, options_);
     });
-    def.property("has_exception_message?", [](const t_structured& self) {
-      if (const auto* exc = dynamic_cast<const t_exception*>(&self)) {
-        return exc->get_message_field() != nullptr;
-      }
-      return false;
-    });
-    def.property(
-        "is_exception_message_optional?", [](const t_structured& self) {
-          if (const auto* exc = dynamic_cast<const t_exception*>(&self)) {
-            if (const auto* message_field = exc->get_message_field()) {
-              return message_field->qualifier() == t_field_qualifier::optional;
-            }
-          }
-          return false;
-        });
-    def.property("exception_message", [](const t_structured& self) {
-      if (const auto* exc = dynamic_cast<const t_exception*>(&self)) {
-        if (const auto* message_field = exc->get_message_field()) {
-          return message_field->name();
-        }
-      }
-      return std::string();
-    });
     def.property("all_optional?", [](const t_structured& self) {
       for (const auto& field : self.fields()) {
         if (field.qualifier() != t_field_qualifier::optional) {
