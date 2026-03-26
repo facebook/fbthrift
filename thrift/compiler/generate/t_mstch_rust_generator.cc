@@ -880,6 +880,30 @@ class t_mstch_rust_generator : public t_mstch_generator {
     return globals;
   }
 
+  prototype<t_const_value>::ptr make_prototype_for_const_value(
+      const prototype_database& proto) const override {
+    using value_type = t_const_value::t_const_value_kind;
+    auto base = t_whisker_generator::make_prototype_for_const_value(proto);
+    auto def = whisker::dsl::prototype_builder<h_const_value>::extends(
+        std::move(base));
+
+    def.property("double_value", [](const t_const_value& self) {
+      std::string str = fmt::format(
+          "{}",
+          self.kind() == value_type::CV_INTEGER ? self.get_integer()
+                                                : self.get_double());
+      if (str.find('.') == std::string::npos &&
+          str.find('e') == std::string::npos &&
+          str.find('E') == std::string::npos) {
+        str = fmt::format("{}.0", str);
+      }
+      return str;
+    });
+    def.property("string_value", mem_fn(&t_const_value::get_string));
+
+    return std::move(def).make();
+  }
+
   prototype<t_enum>::ptr make_prototype_for_enum(
       const prototype_database& proto) const override {
     auto base = t_whisker_generator::make_prototype_for_enum(proto);
@@ -2018,39 +2042,23 @@ class mstch_rust_value : public mstch_base {
     register_methods(
         this,
         {
+            {"value:self", &mstch_rust_value::self},
             {"value:underlying_type", &mstch_rust_value::underlying_type},
             {"value:local_type", &mstch_rust_value::local_type},
             {"value:newtype?", &mstch_rust_value::is_newtype},
             {"value:inner", &mstch_rust_value::inner},
-            {"value:bool?", &mstch_rust_value::is_bool},
-            {"value:bool_value", &mstch_rust_value::bool_value},
-            {"value:integer?", &mstch_rust_value::is_integer},
-            {"value:integer_value", &mstch_rust_value::integer_value},
-            {"value:floatingPoint?", &mstch_rust_value::is_floating_point},
-            {"value:floatingPointValue",
-             &mstch_rust_value::floating_point_value},
-            {"value:string?", &mstch_rust_value::is_string},
-            {"value:binary?", &mstch_rust_value::is_binary},
-            {"value:quoted", &mstch_rust_value::string_quoted},
-            {"value:list?", &mstch_rust_value::is_list},
             {"value:list_elements", &mstch_rust_value::list_elements},
-            {"value:set?", &mstch_rust_value::is_set},
             {"value:setMembers", &mstch_rust_value::set_members},
-            {"value:map?", &mstch_rust_value::is_map},
             {"value:mapEntries", &mstch_rust_value::map_entries},
-            {"value:struct?", &mstch_rust_value::is_struct},
             {"value:structFields", &mstch_rust_value::struct_fields},
             {"value:exhaustive?", &mstch_rust_value::is_exhaustive},
-            {"value:union?", &mstch_rust_value::is_union},
             {"value:unionVariant", &mstch_rust_value::union_variant},
             {"value:unionValue", &mstch_rust_value::union_value},
-            {"value:enum?", &mstch_rust_value::is_enum},
-            {"value:enumVariant", &mstch_rust_value::enum_variant},
-            {"value:empty?", &mstch_rust_value::is_empty},
             {"value:indent", &mstch_rust_value::indent},
             {"value:simpleLiteral?", &mstch_rust_value::simple_literal},
         });
   }
+  whisker::object self() { return make_self(*const_value_); }
   mstch::node underlying_type() {
     return context_.type_factory->make_mstch_object(
         underlying_type_, context_, pos_);
@@ -2067,48 +2075,6 @@ class mstch_rust_value : public mstch_base {
           const_value_, inner_type, depth_, context_, pos_, options_);
     }
     return mstch::node();
-  }
-  mstch::node is_bool() { return underlying_type_->is_bool(); }
-  mstch::node bool_value() {
-    if (const_value_->kind() == value_type::CV_INTEGER) {
-      return const_value_->get_integer() != 0;
-    }
-    return const_value_->get_bool();
-  }
-  mstch::node is_integer() {
-    return underlying_type_->is_byte() || underlying_type_->is_i16() ||
-        underlying_type_->is_i32() || underlying_type_->is_i64();
-  }
-  mstch::node integer_value() {
-    return std::to_string(const_value_->get_integer());
-  }
-  mstch::node is_floating_point() {
-    return underlying_type_->is_float() || underlying_type_->is_double();
-  }
-  mstch::node floating_point_value() {
-    auto str = fmt::format(
-        "{}",
-        const_value_->kind() == value_type::CV_INTEGER
-            ? const_value_->get_integer()
-            : const_value_->get_double());
-
-    if (str.find('.') == std::string::npos &&
-        str.find('e') == std::string::npos &&
-        str.find('E') == std::string::npos) {
-      str += ".0";
-    }
-    return str;
-  }
-  mstch::node is_string() { return underlying_type_->is_string(); }
-  mstch::node is_binary() { return underlying_type_->is_binary(); }
-  mstch::node string_quoted() {
-    return quote(const_value_->get_string(), false);
-  }
-  mstch::node is_list() {
-    return underlying_type_->is<t_list>() &&
-        (const_value_->kind() == value_type::CV_LIST ||
-         (const_value_->kind() == value_type::CV_MAP &&
-          const_value_->get_map().empty()));
   }
   mstch::node list_elements() {
     const t_type* elem_type;
@@ -2128,39 +2094,10 @@ class mstch_rust_value : public mstch_base {
     }
     return elements;
   }
-  mstch::node is_set() {
-    return underlying_type_->is<t_set>() &&
-        (const_value_->kind() == value_type::CV_LIST ||
-         (const_value_->kind() == value_type::CV_MAP &&
-          const_value_->get_map().empty()));
-  }
   mstch::node set_members() { return list_elements(); }
-  mstch::node is_map() {
-    return underlying_type_->is<t_map>() &&
-        (const_value_->kind() == value_type::CV_MAP ||
-         (const_value_->kind() == value_type::CV_LIST &&
-          const_value_->get_list().empty()));
-  }
   mstch::node map_entries();
-  mstch::node is_struct() {
-    return underlying_type_->is<t_structured>() &&
-        !underlying_type_->is<t_union>() &&
-        const_value_->kind() == value_type::CV_MAP;
-  }
   mstch::node struct_fields();
   mstch::node is_exhaustive();
-  mstch::node is_union() {
-    if (!underlying_type_->is<t_union>() ||
-        const_value_->kind() != value_type::CV_MAP) {
-      return false;
-    }
-    if (const_value_->get_map().empty()) {
-      // value will be the union's Default
-      return true;
-    }
-    return const_value_->get_map().size() == 1 &&
-        const_value_->get_map().at(0).first->kind() == value_type::CV_STRING;
-  }
   mstch::node union_variant() {
     auto struct_type = dynamic_cast<const t_structured*>(underlying_type_);
     if (!struct_type) {
@@ -2209,42 +2146,12 @@ class mstch_rust_value : public mstch_base {
     }
     return mstch::node();
   }
-  mstch::node is_enum() { return underlying_type_->is<t_enum>(); }
-  mstch::node enum_variant() {
-    if (const_value_->is_enum()) {
-      auto enum_value = const_value_->get_enum_value();
-      if (enum_value) {
-        return mangle(enum_value->name());
-      }
-    }
-    return mstch::node();
-  }
-  mstch::node is_empty() {
-    auto kind = const_value_->kind();
-    if (kind == value_type::CV_LIST) {
-      return const_value_->get_list().empty();
-    }
-    if (kind == value_type::CV_MAP) {
-      return const_value_->get_map().empty();
-    }
-    if (kind == value_type::CV_STRING) {
-      return const_value_->get_string().empty();
-    }
-    return false;
-  }
   mstch::node indent() { return std::string(4 * depth_, ' '); }
   mstch::node simple_literal() {
-    // Primitives have simple literals
-    if (underlying_type_->is_bool() || underlying_type_->is_byte() ||
+    // Primitives and enum variants have simple literals
+    return underlying_type_->is_bool() || underlying_type_->is_byte() ||
         underlying_type_->is_any_int() ||
-        underlying_type_->is_floating_point()) {
-      return true;
-    }
-    // Enum variants as well
-    if (underlying_type_->is<t_enum>()) {
-      return enum_variant();
-    }
-    return false;
+        underlying_type_->is_floating_point() || const_value_->is_enum_value();
   }
 
  private:

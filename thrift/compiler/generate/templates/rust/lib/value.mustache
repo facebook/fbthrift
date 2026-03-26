@@ -25,22 +25,19 @@
         }}).expect("constant Thrift value should adapt without error"){{!
         }}{{/if typedef:has_adapter?}}{{/type:typedef}}{{/value:underlying_type}}{{!
     }}){{!
-}}{{/if value:newtype?}}{{!
-}}{{#if value:bool?}}{{value:bool_value}}{{/if value:bool?}}{{!
-}}{{#if value:integer?}}{{value:integer_value}}{{/if value:integer?}}{{!
-}}{{#if value:floatingPoint?}}{{value:floatingPointValue}}{{/if value:floatingPoint?}}{{!
-}}{{#if value:string?}}{{!
-    }}{{#if value:empty?}}::std::string::String::new(){{!
-    }}{{#else}}{{value:quoted}}.to_owned(){{/if value:empty?}}{{!
-}}{{/if value:string?}}{{!
-}}{{#if value:binary?}}{{!
-    }}{{#if value:empty?}}{{!
+}}{{#else if type:bool?}}{{#if value:nonzero?}}true{{#else}}false{{/if}}{{!
+}}{{#else if (or type:any_int? type:byte?)}}{{value:integer_value}}{{!
+}}{{#else if type:floating_point?}}{{value:double_value}}{{!
+}}{{#else if type:string?}}{{!
+    }}{{#if (string.empty? value:string_value)}}::std::string::String::new(){{!
+    }}{{#else}}{{(rust_quote value:string_value)}}.to_owned(){{/if (string.empty? value:string_value)}}{{!
+}}{{#else if type:binary?}}{{!
+    }}{{#if (string.empty? value:string_value)}}{{!
         }}{{#if (string.empty? type:rust_type)}}::std::vec::Vec{{#else}}<::{{type:rust_type}}>{{/if}}::new(){{!
-    }}{{#else}}{{value:quoted}}.as_bytes().into(){{/if value:empty?}}{{!
-}}{{/if value:binary?}}{{!
-}}{{#if value:list?}}{{!
-    }}{{#if value:empty?}}::std::vec::Vec::new(){{/if value:empty?}}{{!
-    }}{{#if (not value:empty?)}}{{!
+    }}{{#else}}{{(rust_quote value:string_value)}}.as_bytes().into(){{/if (string.empty? value:string_value)}}{{!
+}}{{#else if type:list?}}{{!
+    }}{{#if value:empty_container?}}::std::vec::Vec::new(){{!
+    }}{{#else}}{{!
         }}{
             {{value:indent}}let mut list = ::std::vec::Vec::new();
             {{#value:list_elements}}
@@ -56,10 +53,9 @@
             {{/value:list_elements}}
             {{value:indent}}list
         {{value:indent}}}{{!
-    }}{{/if (not value:empty?)}}{{!
-}}{{/if value:list?}}{{!
-}}{{#if value:set?}}{{!
-    }}{{#if value:empty?}}{{!
+    }}{{/if value:empty_container?}}{{!
+}}{{#else if type:set?}}{{!
+    }}{{#if value:empty_container?}}{{!
         }}{{#if (string.empty? type:rust_type)}}::std::collections::BTreeSet{{#else}}::{{type:rust_type}}{{/if}}::new(){{!
     }}{{#else}}{{!
         }}{
@@ -72,9 +68,9 @@
         }}{{#if type:has_adapter?}}{{type:adapter_qualified}}::StandardType{{#else}}{{#partial types.type_name type=type:self}}{{/if}}{{!
     }}) {
         {{value:indent}}set.insert({{!
-            }}{{#if value:floatingPoint?}}{{!
+            }}{{#if type:floating_point?}}{{!
                 }}::fbthrift::export::OrderedFloat({{> lib/value}}){{!
-            }}{{#else}}{{> lib/value}}{{/if value:floatingPoint?}}{{!
+            }}{{#else}}{{> lib/value}}{{/if type:floating_point?}}{{!
         }});
     {{value:indent}}}
     {{value:indent}}__do_insert(&mut set);
@@ -82,10 +78,9 @@
             {{/value:setMembers}}
             {{value:indent}}set
         {{value:indent}}}{{!
-    }}{{/if value:empty?}}{{!
-}}{{/if value:set?}}{{!
-}}{{#if value:map?}}{{!
-    }}{{#if value:empty?}}{{!
+    }}{{/if value:empty_container?}}{{!
+}}{{#else if value:map?}}{{!
+    }}{{#if value:empty_container?}}{{!
         }}{{#if (string.empty? type:rust_type)}}::std::collections::BTreeMap{{#else}}::{{type:rust_type}}{{/if}}::new(){{!
     }}{{#else}}{{!
         }}{
@@ -99,9 +94,9 @@
                 }}) {
                     {{value:indent}}map.insert({{!
                         }}{{#entry:key}}{{!
-                            }}{{#if value:floatingPoint?}}{{!
+                            }}{{#if type:floating_point?}}{{!
                                 }}::fbthrift::export::OrderedFloat({{> lib/value}}){{!
-                            }}{{#else}}{{> lib/value}}{{/if value:floatingPoint?}}{{!
+                            }}{{#else}}{{> lib/value}}{{/if type:floating_point?}}{{!
                         }}{{/entry:key}}, {{!
                         }}{{#entry:value}}{{> lib/value}}{{/entry:value}}{{!
                     }});
@@ -111,10 +106,19 @@
             }}{{/value:mapEntries}}
             {{value:indent}}map
         {{value:indent}}}{{!
-    }}{{/if value:empty?}}{{!
-}}{{/if value:map?}}{{!
-}}{{#if value:struct?}}{{!
-    }}{{#partial types.type_name type=type:self}} \{{{!
+    }}{{/if value:empty_container?}}{{!
+}}{{#else if value:structured?}}{{!
+  }}{{#if type:union?}}{{!
+    }}{{#value:unionVariant}}{{!
+        }}{{#partial types.type_name type=type:self}}::{{value:unionVariant}}({{!
+            }}{{#value:unionValue}}{{> lib/value}}{{/value:unionValue}}{{!
+        }}){{!
+    }}{{/value:unionVariant}}{{!
+    }}{{^value:unionVariant}}{{!
+        }}{{#partial types.type_name type=type:self}}::default(){{!
+    }}{{/value:unionVariant}}{{!
+}}{{#else}}{{!
+}}{{#partial types.type_name type=type:self}} \{{{!
         }}{{#value:structFields}}
             {{value:indent}}{{field:rust_name}}: {{!
             }}{{#if field:has_adapter?}}{{field:adapter_qualified}}::from_thrift_default::<{{!
@@ -152,21 +156,10 @@
             {{value:indent}}..::std::default::Default::default(){{!
         }}{{/if (not value:exhaustive?)}}
         {{value:indent}}}{{!
-}}{{/if value:struct?}}{{!
-}}{{#if value:union?}}{{!
-    }}{{#value:unionVariant}}{{!
-        }}{{#partial types.type_name type=type:self}}::{{value:unionVariant}}({{!
-            }}{{#value:unionValue}}{{> lib/value}}{{/value:unionValue}}{{!
-        }}){{!
-    }}{{/value:unionVariant}}{{!
-    }}{{^value:unionVariant}}{{!
-        }}{{#partial types.type_name type=type:self}}::default(){{!
-    }}{{/value:unionVariant}}{{!
-}}{{/if value:union?}}{{!
-}}{{#if value:enum?}}{{!
+  }}{{/if type:union?}}{{!
+}}{{#else if value:enum?}}{{!
     }}{{#value:local_type}}{{type:package}}::{{type:rust_name}}{{/value:local_type}}{{!
-    }}{{#value:enumVariant}}::{{value:enumVariant}}{{/value:enumVariant}}{{!
-    }}{{^value:enumVariant}}({{value:integer_value}}){{/value:enumVariant}}{{!
-}}{{/if value:enum?}}{{!
+    }}{{#if value:enum_value?}}::{{value:enum_value.rust_name}}{{#else}}({{value:integer_value}}){{/if}}{{!
+}}{{/if value:newtype?}}{{!
 }}{{/value:underlying_type}}{{!
 }}

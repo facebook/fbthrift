@@ -23,7 +23,7 @@
 {{/if constant:docs?}}{{#if (not constant:lazy?)}}
 pub const {{constant:rust_name}}{{!
 }}: {{!
-}}{{#if type:string?}}&::std::primitive::str = {{value:quoted}}{{!
+}}{{#if type:string?}}&::std::primitive::str = {{(rust_quote value:string_value)}}{{!
 }}{{#else}}{{#partial types.type_name type=type:self}} = {{> lib/value}}{{!
 }}{{/if type:string?}}{{!
 }};
