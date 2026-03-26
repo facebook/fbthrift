@@ -178,6 +178,8 @@ struct RequestLoggingContext {
   bool requestStartedProcessing;
 
   uint8_t cpuConcurrencyControllerMode;
+
+  std::string securityProtocol;
 };
 
 class RequestEventHandler : public LoggingEventHandler {

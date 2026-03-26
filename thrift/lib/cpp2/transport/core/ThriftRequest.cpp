@@ -273,6 +273,10 @@ ThriftRequestCore::LogRequestSampleCallback::buildRequestLoggingContext(
         static_cast<uint8_t>(CPUConcurrencyController::Mode::DISABLED);
   }
 
+  if (const auto* connContext = reqContext->getConnectionContext()) {
+    requestLoggingContext.securityProtocol = connContext->getSecurityProtocol();
+  }
+
   return requestLoggingContext;
 }
 
