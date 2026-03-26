@@ -16,9 +16,7 @@
 
 }}{{#type:typedef?}}{{!
   }}{{#type:isAdapterSet?}}{{!
-    }}{{#type:isMapKey?}}{{#type:typedef_type}}{{type:setIsMapKey}}{{type:setAdapter}}{{> ReadType}}{{/type:typedef_type}}{{/type:isMapKey?}}{{!
-    }}{{#type:isMapValue?}}{{#type:typedef_type}}{{type:setIsMapValue}}{{type:setAdapter}}{{> ReadType}}{{/type:typedef_type}}{{/type:isMapValue?}}{{!
-    }}{{^type:isMapKey?}}{{^type:isMapValue?}}{{#type:typedef_type}}{{type:setAdapter}}{{> ReadType}}{{/type:typedef_type}}{{/type:isMapValue?}}{{/type:isMapKey?}}{{!
+    }}{{#type:typedef_type}}{{type:setAdapter}}{{> ReadType}}{{/type:typedef_type}}{{!
   }}{{/type:isAdapterSet?}}{{!
   }}{{^type:isAdapterSet?}}{{!
     }}{{#type:isBinaryString?}}{{!
@@ -48,16 +46,12 @@
           }}{{/field:isNested?}}{{!
         }}{{/type:binary?}}{{!
         }}{{^type:binary?}}{{!
-        }}{{#type:isMapKey?}}{{#type:typedef_type}}{{type:setIsMapKey}}{{> ReadType}}{{/type:typedef_type}}{{/type:isMapKey?}}{{!
-        }}{{#type:isMapValue?}}{{#type:typedef_type}}{{type:setIsMapValue}}{{> ReadType}}{{/type:typedef_type}}{{/type:isMapValue?}}{{!
-        }}{{^type:isMapKey?}}{{^type:isMapValue?}}{{#type:typedef_type}}{{> ReadType}}{{/type:typedef_type}}{{/type:isMapValue?}}{{/type:isMapKey?}}{{!
+        }}{{#type:typedef_type}}{{> ReadType}}{{/type:typedef_type}}{{!
         }}{{/type:binary?}}{{!
       }}{{/type:container?}}{{!
     }}{{/type:javaType}}{{!
     }}{{^type:javaType}}{{!
-    }}{{#type:isMapKey?}}{{#type:typedef_type}}{{type:setIsMapKey}}{{> ReadType}}{{/type:typedef_type}}{{/type:isMapKey?}}{{!
-    }}{{#type:isMapValue?}}{{#type:typedef_type}}{{type:setIsMapValue}}{{> ReadType}}{{/type:typedef_type}}{{/type:isMapValue?}}{{!
-    }}{{^type:isMapKey?}}{{^type:isMapValue?}}{{#type:typedef_type}}{{> ReadType}}{{/type:typedef_type}}{{/type:isMapValue?}}{{/type:isMapKey?}}{{!
+    }}{{#type:typedef_type}}{{> ReadType}}{{/type:typedef_type}}{{!
     }}{{/type:javaType}}{{!
     }}{{/type:isBinaryString?}}{{!
   }}{{/type:isAdapterSet?}}{{!
