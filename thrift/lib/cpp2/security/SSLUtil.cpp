@@ -144,7 +144,7 @@ folly::AsyncSocketTransport::UniquePtr toFDSocket(
 
   auto sock = fizzSock->template getUnderlyingTransport<folly::AsyncSocket>();
   folly::AsyncSocketTransport::UniquePtr ret;
-#if defined(__linux__) && __has_include(<liburing.h>)
+#if FOLLY_HAS_LIBURING
   if (!sock &&
       fizzSock->template getUnderlyingTransport<folly::AsyncIoUringSocket>()) {
     // `AsyncFdSocket` currently lacks uring support, so hardcode `AsyncSocket`
