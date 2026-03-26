@@ -14,11 +14,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{#if type:typedef?}}{{!
-  }}{{#if type:type_annotation?}}{{> lib/rawtype}}{{/if type:type_annotation?}}{{!
-  }}{{#if (not type:type_annotation?)}}{{type:package}}::{{type:rust_name}}{{/if (not type:type_annotation?)}}{{!
-}}{{/if type:typedef?}}{{!
-}}{{#if (not type:typedef?)}}{{!
-}}{{> lib/rawtype}}{{!
-}}{{/if (not type:typedef?)}}{{!
 }}
+{{! Redirect to partial implementation until usages are replaced }}
+{{#partial types.type_name type=type:self}}

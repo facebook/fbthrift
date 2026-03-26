@@ -35,8 +35,7 @@
 }}{{/if value:string?}}{{!
 }}{{#if value:binary?}}{{!
     }}{{#if value:empty?}}{{!
-        }}{{#if (not (string.empty? type:rust))}}<::{{type:rust}}>::new(){{!
-        }}{{#else}}::std::vec::Vec::new(){{/if (not (string.empty? type:rust))}}{{!
+        }}{{#if (string.empty? type:rust_type)}}::std::vec::Vec{{#else}}<::{{type:rust_type}}>{{/if}}::new(){{!
     }}{{#else}}{{value:quoted}}.as_bytes().into(){{/if value:empty?}}{{!
 }}{{/if value:binary?}}{{!
 }}{{#if value:list?}}{{!
@@ -48,8 +47,7 @@
 {{value:indent}}{
     {{value:indent}}#[inline(never)]
     {{value:indent}}fn __do_push(list: &mut {{!
-        }}{{#if type:has_adapter?}}{{type:adapter_qualified}}::StandardType{{/if type:has_adapter?}}{{!
-        }}{{#if (not type:has_adapter?)}}{{>lib/type}}{{/if (not type:has_adapter?)}}{{!
+        }}{{#if type:has_adapter?}}{{type:adapter_qualified}}::StandardType{{#else}}{{> lib/type}}{{/if}}{{!
     }}) {
         {{value:indent}}list.push({{> lib/value}});
     {{value:indent}}}
@@ -62,21 +60,16 @@
 }}{{/if value:list?}}{{!
 }}{{#if value:set?}}{{!
     }}{{#if value:empty?}}{{!
-        }}{{#if (not (string.empty? type:rust))}}::{{type:rust}}{{!
-        }}{{#else}}::std::collections::BTreeSet{{/if (not (string.empty? type:rust))}}{{!
-        }}::new(){{!
+        }}{{#if (string.empty? type:rust_type)}}::std::collections::BTreeSet{{#else}}::{{type:rust_type}}{{/if}}::new(){{!
     }}{{#else}}{{!
         }}{
             {{value:indent}}let mut set = {{!
-                }}{{#if (not (string.empty? type:rust))}}::{{type:rust}}{{!
-                }}{{#else}}::std::collections::BTreeSet{{/if (not (string.empty? type:rust))}}{{!
-            }}::new();
+                }}{{#if (not (string.empty? type:rust_type))}}::{{type:rust_type}}{{#else}}::std::collections::BTreeSet{{/if}}::new();
             {{#value:setMembers}}
 {{value:indent}}{
     {{value:indent}}#[inline(never)]
     {{value:indent}}fn __do_insert(set: &mut {{!
-        }}{{#if type:has_adapter?}}{{type:adapter_qualified}}::StandardType{{/if type:has_adapter?}}{{!
-        }}{{#if (not type:has_adapter?)}}{{>lib/type}}{{/if (not type:has_adapter?)}}{{!
+        }}{{#if type:has_adapter?}}{{type:adapter_qualified}}::StandardType{{#else}}{{> lib/type}}{{/if}}{{!
     }}) {
         {{value:indent}}set.insert({{!
             }}{{#if value:floatingPoint?}}{{!
@@ -93,21 +86,16 @@
 }}{{/if value:set?}}{{!
 }}{{#if value:map?}}{{!
     }}{{#if value:empty?}}{{!
-        }}{{#if (not (string.empty? type:rust))}}::{{type:rust}}{{!
-        }}{{#else}}::std::collections::BTreeMap{{/if (not (string.empty? type:rust))}}{{!
-        }}::new(){{!
+        }}{{#if (string.empty? type:rust_type)}}::std::collections::BTreeMap{{#else}}::{{type:rust_type}}{{/if}}::new(){{!
     }}{{#else}}{{!
         }}{
             {{value:indent}}let mut map = {{!
-                }}{{#if (not (string.empty? type:rust))}}::{{type:rust}}{{!
-                }}{{#else}}::std::collections::BTreeMap{{/if (not (string.empty? type:rust))}}{{!
-            }}::new();{{!
+                }}{{#if (string.empty? type:rust_type)}}::std::collections::BTreeMap{{#else}}::{{type:rust_type}}{{/if}}::new();{{!
             }}{{#value:mapEntries}}
             {{value:indent}}{
                 {{value:indent}}#[inline(never)]
                 {{value:indent}}fn __do_insert(map: &mut {{!
-                    }}{{#if type:has_adapter?}}{{type:adapter_qualified}}::StandardType{{/if type:has_adapter?}}{{!
-                    }}{{#if (not type:has_adapter?)}}{{>lib/type}}{{/if (not type:has_adapter?)}}{{!
+                    }}{{#if type:has_adapter?}}{{type:adapter_qualified}}::StandardType{{#else}}{{> lib/type}}{{/if}}{{!
                 }}) {
                     {{value:indent}}map.insert({{!
                         }}{{#entry:key}}{{!

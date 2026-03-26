@@ -15,10 +15,10 @@
   limitations under the License.
 
 }}{{#pragma ignore-newlines}}
-{{#if (not (string.empty? field:type_rust))}}::{{field:type_rust}}
+{{#if (not (string.empty? field:rust_type))}}::{{field:rust_type}}
 {{#else if type:string?}}::std::string::String
 {{#else if type:structured?}}{{type:true_type.package}}{{#if type:true_type.has_adapter?}}::unadapted{{/if}}::{{type:true_type.rust_name}}
 {{#else if type:enum?}}{{type:true_type.package}}::{{type:true_type.rust_name}}
 {{#else if type:list?}}::std::vec::Vec
-{{/if (not (string.empty? field:type_rust))}}
-{{#if type:container?}}{{> lib/type_generics}}{{/if}}
+{{/if (not (string.empty? field:rust_type))}}
+{{#if type:container?}}{{#partial types.type_generics type=type:self}}{{/if}}

@@ -967,7 +967,7 @@ class t_mstch_rust_generator : public t_mstch_generator {
     def.property("package", [this](const t_type& self) {
       return get_types_import_name(self.program(), options_);
     });
-    def.property("rust", [](const t_type& self) {
+    def.property("rust_type", [](const t_type& self) {
       auto rust_type = get_type_annotation(&self);
       if (!rust_type.empty() && rust_type.find("::") == std::string::npos) {
         return fmt::format("fbthrift::builtin_types::{}", rust_type);
@@ -1104,7 +1104,7 @@ class t_mstch_rust_generator : public t_mstch_generator {
     def.property("type_nonstandard?", [](const t_field& self) {
       return has_nonstandard_type_annotation(&self);
     });
-    def.property("type_rust", [](const t_field& self) {
+    def.property("rust_type", [](const t_field& self) {
       auto rust_type = get_type_annotation(&self);
       if (!rust_type.empty() && rust_type.find("::") == std::string::npos) {
         return std::string("fbthrift::builtin_types::") + rust_type;

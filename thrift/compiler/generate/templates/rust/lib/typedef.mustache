@@ -31,7 +31,7 @@ pub type {{typedef:rust_name}} = {{!
 }}{{#if (not typedef:has_adapter?)}}{{!
   }}{{#typedef:type}}
 pub type {{typedef:rust_name}} = {{!
-    }}{{#if (not (string.empty? typedef:rust_type))}}::{{typedef:rust_type}}{{> lib/type_generics}}{{!
+    }}{{#if (not (string.empty? typedef:rust_type))}}::{{typedef:rust_type}}{{#partial types.type_generics type=type:self}}{{!
     }}{{#else}}{{> lib/type}}{{/if (not (string.empty? typedef:rust_type))}}{{!
 }};
 {{#if typedef:constructor?}}
