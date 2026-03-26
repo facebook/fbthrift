@@ -16,10 +16,11 @@
 
 package com.facebook.thrift.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeFalse;
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import com.facebook.nifty.core.RequestContext;
 import com.facebook.nifty.ssl.SslSession;
@@ -41,17 +42,14 @@ import io.netty.handler.ssl.SslContext;
 import io.netty.util.AttributeKey;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 public class RpcServerUtilsTest {
-  @Rule public ExpectedException expectedException = ExpectedException.none();
   private EventLoopGroup group = RpcResources.getEventLoopGroup();
 
   @Test
@@ -105,10 +103,13 @@ public class RpcServerUtilsTest {
 
   @Test
   public void testInvalidSocketGroupCombination() {
-    expectedException.expect(UnsupportedOperationException.class);
-    SocketAddress socketAddress = new DomainSocketAddress("/foo");
-    RpcServerUtils.getChannelClass(
-        new NioEventLoopGroup(0, new ThreadFactoryBuilder().build()), socketAddress);
+    assertThrows(
+        UnsupportedOperationException.class,
+        () -> {
+          SocketAddress socketAddress = new DomainSocketAddress("/foo");
+          RpcServerUtils.getChannelClass(
+              new NioEventLoopGroup(0, new ThreadFactoryBuilder().build()), socketAddress);
+        });
   }
 
   // TODO(yuhanhao) need NettyTcNativeLoader

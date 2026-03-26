@@ -83,16 +83,36 @@ Map<
 {{/if (not (string.empty? type.javaType))}}
 {{/let partial}}
 
+{{! Resolves the boxed type within an adapter context, propagating
+    type_isAdapterSet=true through container element types. Unlike boxed_type,
+    which resets type_isAdapterSet for container elements (to match mstch behavior),
+    this partial maintains the adapter context through nested containers so that
+    binary elements correctly resolve to ByteBuf instead of byte[]. }}
+{{#let partial adapted_inner_boxed_type |type| captures |boxed_type|}}
+  {{#pragma ignore-newlines}}
+{{#if (not (string.empty? type.javaType))}}{{type.javaType}}
+{{#else if type.hasAdapter?}}{{type.typeClassName}}
+{{#else if (or type.binary? type.isBinaryString?)}}io.netty.buffer.ByteBuf
+{{#else if type.typedef?}}{{#partial adapted_inner_boxed_type type=type.resolved}}
+{{#else if type.list?}}List<{{#partial adapted_inner_boxed_type type=type.elem_type}}>
+{{#else if type.set?}}Set<{{#partial adapted_inner_boxed_type type=type.elem_type}}>
+{{#else if type.map?}}
+Map<{{#partial adapted_inner_boxed_type type=type.key_type}}, {{#partial adapted_inner_boxed_type type=type.val_type}}>
+{{#else}}
+{{#partial boxed_type type=type type_isAdapterSet=true field_hasAdapter=false}}
+{{/if (not (string.empty? type.javaType))}}
+{{/let partial}}
+
 {{! Resolves the adapted boxed type for a typedef with an adapter.
     For the last adapter in a chain, gives the boxed type of the underlying type.
     For nested adapters, gives the typeClassName of the intermediate adapter. }}
-{{#let export partial adapted_boxed_type |type| captures |boxed_type|}}
+{{#let export partial adapted_boxed_type |type| captures |boxed_type adapted_inner_boxed_type|}}
   {{#pragma ignore-newlines}}
 {{#if (not (string.empty? type.javaType))}}{{type.javaType}}
   {{#else if type.typedef?}}
-{{#if type.lastAdapter?}}{{#partial adapted_boxed_type type=type.resolved}}{{#else}}{{type.typeClassName}}{{/if}}
+{{#if type.lastAdapter?}}{{#if type.isBinaryString?}}io.netty.buffer.ByteBuf{{#else}}{{#partial adapted_boxed_type type=type.resolved}}{{/if}}{{#else}}{{type.typeClassName}}{{/if}}
   {{#else}}
-{{#partial boxed_type type=type type_isAdapterSet=true field_hasAdapter=true}}
+{{#partial adapted_inner_boxed_type type=type}}
   {{/if (not (string.empty? type.javaType))}}
 {{/let partial}}
 

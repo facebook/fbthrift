@@ -202,14 +202,11 @@ typedef adaptedInt doubleTypedefInt
 typedef doubleTypedefInt multipleTypedefInt
 
 @thrift.AllowLegacyTypedefUri
-@thrift.DeprecatedUnvalidatedAnnotations{
-  items = {"java.swift.binary_string": "1"},
-}
 @java.Adapter{
   adapterClassName = "com.facebook.thrift.adapter.common.CopiedPooledByteBufTypeAdapter",
   typeClassName = "io.netty.buffer.ByteBuf",
 }
-typedef string BinaryString
+typedef binary BinaryString
 
 @thrift.AllowLegacyTypedefUri
 typedef binary data

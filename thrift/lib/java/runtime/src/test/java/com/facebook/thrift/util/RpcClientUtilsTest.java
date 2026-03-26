@@ -16,12 +16,13 @@
 
 package com.facebook.thrift.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import com.facebook.thrift.client.ThriftClientConfig;
 import com.facebook.thrift.example.ping.CustomException;
@@ -67,14 +68,11 @@ import org.apache.thrift.protocol.TField;
 import org.apache.thrift.protocol.TStruct;
 import org.apache.thrift.protocol.TType;
 import org.apache.thrift.transport.TTransportException;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.rules.ExpectedException;
 import reactor.core.Exceptions;
 
 public class RpcClientUtilsTest {
 
-  @Rule public ExpectedException expectedException = ExpectedException.none();
   private final EventLoopGroup group = RpcResources.getEventLoopGroup();
   private final Reader<PingResponse> reader =
       (oprot) -> {
@@ -149,12 +147,13 @@ public class RpcClientUtilsTest {
 
   @Test
   public void testInvalidSocketGroupCombination() {
-    expectedException.expect(UnsupportedOperationException.class);
-    SocketAddress socketAddress = new DomainSocketAddress("/foo");
-    Class<?> channelClass =
-        RpcClientUtils.getChannelClass(
-            new NioEventLoopGroup(0, new ThreadFactoryBuilder().build()), socketAddress);
-    assertEquals(channelClass, NioSocketChannel.class);
+    assertThrows(
+        UnsupportedOperationException.class,
+        () -> {
+          SocketAddress socketAddress = new DomainSocketAddress("/foo");
+          RpcClientUtils.getChannelClass(
+              new NioEventLoopGroup(0, new ThreadFactoryBuilder().build()), socketAddress);
+        });
   }
 
   @Test
