@@ -1284,16 +1284,6 @@ class mstch_java_type : public mstch_type {
     register_methods(
         this,
         {
-            {"type:setIsMapKey",
-             {with_no_caching, &mstch_java_type::set_is_map_key}},
-            {"type:isMapKey?",
-             {with_no_caching, &mstch_java_type::get_map_key_flag}},
-            {"type:setIsMapValue",
-             {with_no_caching, &mstch_java_type::set_is_map_value}},
-            {"type:isMapValue?",
-             {with_no_caching, &mstch_java_type::get_map_value_flag}},
-            {"type:setIsNotMap",
-             {with_no_caching, &mstch_java_type::set_is_not_map}},
             {"type:setAdapter",
              {with_no_caching, &mstch_java_type::set_adapter}},
             {"type:unsetAdapter",
@@ -1308,25 +1298,7 @@ class mstch_java_type : public mstch_type {
              {with_no_caching, &mstch_java_type::get_type_name}},
         });
   }
-  bool isMapValueFlag = false;
-  bool isMapKeyFlag = false;
   bool hasTypeAdapter = false;
-
-  mstch::node set_is_not_map() {
-    isMapValueFlag = false;
-    isMapKeyFlag = false;
-    return mstch::node();
-  }
-  mstch::node get_map_value_flag() { return isMapValueFlag; }
-  mstch::node get_map_key_flag() { return isMapKeyFlag; }
-  mstch::node set_is_map_value() {
-    isMapValueFlag = true;
-    return mstch::node();
-  }
-  mstch::node set_is_map_key() {
-    isMapKeyFlag = true;
-    return mstch::node();
-  }
 
   mstch::node set_adapter() {
     hasTypeAdapter = true;

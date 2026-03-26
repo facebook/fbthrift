@@ -298,8 +298,14 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
         it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> _iter0 = lsMap;
         oprot.writeMapBegin(new TMap(TType.I64, TType.STRING, _iter0.size()));
             for (Map.Entry<Long, String> _iter1 : _iter0.entrySet()) {
-              oprot.writeI64(_iter1.getKey());
-              oprot.writeString(_iter1.getValue());
+              {
+                Long _iter2 = _iter1.getKey();
+                oprot.writeI64(_iter2);
+              }
+              {
+                String _iter2 = _iter1.getValue();
+                oprot.writeString(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -309,13 +315,25 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
         it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> _iter0 = ioMap;
         oprot.writeMapBegin(new TMap(TType.I32, TType.MAP, _iter0.size()));
             for (Map.Entry<Integer, it.unimi.dsi.fastutil.ints.Int2LongArrayMap> _iter1 : _iter0.entrySet()) {
-              oprot.writeI32(_iter1.getKey());
-              oprot.writeMapBegin(new TMap(TType.I32, TType.I64, _iter1.getValue().size()));
-            for (Map.Entry<Integer, Long> _iter2 : _iter1.getValue().entrySet()) {
-              oprot.writeI32(_iter2.getKey());
-              oprot.writeI64(_iter2.getValue());
+              {
+                Integer _iter2 = _iter1.getKey();
+                oprot.writeI32(_iter2);
+              }
+              {
+                it.unimi.dsi.fastutil.ints.Int2LongArrayMap _iter2 = _iter1.getValue();
+                oprot.writeMapBegin(new TMap(TType.I32, TType.I64, _iter2.size()));
+            for (Map.Entry<Integer, Long> _iter3 : _iter2.entrySet()) {
+              {
+                Integer _iter4 = _iter3.getKey();
+                oprot.writeI32(_iter4);
+              }
+              {
+                Long _iter4 = _iter3.getValue();
+                oprot.writeI64(_iter4);
+              }
             }
             oprot.writeMapEnd();
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();

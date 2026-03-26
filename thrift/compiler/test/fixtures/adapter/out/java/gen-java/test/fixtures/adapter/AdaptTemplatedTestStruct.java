@@ -1008,8 +1008,14 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
         Map<Long, Long> _iter0 = adaptedMap;
         oprot.writeMapBegin(new TMap(TType.I64, TType.I64, _iter0.size()));
             for (Map.Entry<Long, Long> _iter1 : _iter0.entrySet()) {
-              oprot.writeI64(_iter1.getKey());
-              oprot.writeI64(_iter1.getValue());
+              {
+                Long _iter2 = _iter1.getKey();
+                oprot.writeI64(_iter2);
+              }
+              {
+                Long _iter2 = _iter1.getValue();
+                oprot.writeI64(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -1065,8 +1071,14 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
         Map<Long, Long> _iter0 = adaptedMapDefault;
         oprot.writeMapBegin(new TMap(TType.I64, TType.I64, _iter0.size()));
             for (Map.Entry<Long, Long> _iter1 : _iter0.entrySet()) {
-              oprot.writeI64(_iter1.getKey());
-              oprot.writeI64(_iter1.getValue());
+              {
+                Long _iter2 = _iter1.getKey();
+                oprot.writeI64(_iter2);
+              }
+              {
+                Long _iter2 = _iter1.getValue();
+                oprot.writeI64(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();

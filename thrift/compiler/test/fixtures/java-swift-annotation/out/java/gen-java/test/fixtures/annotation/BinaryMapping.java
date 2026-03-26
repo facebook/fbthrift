@@ -210,8 +210,14 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
         Map<String, byte[]> _iter0 = binaryMap;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.STRING, _iter0.size()));
             for (Map.Entry<String, byte[]> _iter1 : _iter0.entrySet()) {
-              oprot.writeString(_iter1.getKey());
-              oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter1.getValue()));
+              {
+                String _iter2 = _iter1.getKey();
+                oprot.writeString(_iter2);
+              }
+              {
+                byte[] _iter2 = _iter1.getValue();
+                oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter2));
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -221,8 +227,14 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
         Map<String, byte[]> _iter0 = regularBinary;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.STRING, _iter0.size()));
             for (Map.Entry<String, byte[]> _iter1 : _iter0.entrySet()) {
-              oprot.writeString(_iter1.getKey());
-              oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter1.getValue()));
+              {
+                String _iter2 = _iter1.getKey();
+                oprot.writeString(_iter2);
+              }
+              {
+                byte[] _iter2 = _iter1.getValue();
+                oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter2));
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();

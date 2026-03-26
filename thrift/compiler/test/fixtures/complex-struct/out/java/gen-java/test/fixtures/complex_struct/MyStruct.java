@@ -1420,8 +1420,14 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         Map<Short, String> _iter0 = mShortString;
         oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, _iter0.size()));
             for (Map.Entry<Short, String> _iter1 : _iter0.entrySet()) {
-              oprot.writeI16(_iter1.getKey());
-              oprot.writeString(_iter1.getValue());
+              {
+                Short _iter2 = _iter1.getKey();
+                oprot.writeI16(_iter2);
+              }
+              {
+                String _iter2 = _iter1.getValue();
+                oprot.writeString(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -1431,8 +1437,14 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         Map<Integer, String> _iter0 = mIntegerString;
         oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, _iter0.size()));
             for (Map.Entry<Integer, String> _iter1 : _iter0.entrySet()) {
-              oprot.writeI32(_iter1.getKey());
-              oprot.writeString(_iter1.getValue());
+              {
+                Integer _iter2 = _iter1.getKey();
+                oprot.writeI32(_iter2);
+              }
+              {
+                String _iter2 = _iter1.getValue();
+                oprot.writeString(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -1442,8 +1454,14 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         Map<String, test.fixtures.complex_struct.MyStruct> _iter0 = mStringMyStruct;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.STRUCT, _iter0.size()));
             for (Map.Entry<String, test.fixtures.complex_struct.MyStruct> _iter1 : _iter0.entrySet()) {
-              oprot.writeString(_iter1.getKey());
-              _iter1.getValue().write0(oprot);
+              {
+                String _iter2 = _iter1.getKey();
+                oprot.writeString(_iter2);
+              }
+              {
+                test.fixtures.complex_struct.MyStruct _iter2 = _iter1.getValue();
+                _iter2.write0(oprot);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -1453,8 +1471,14 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         Map<String, Boolean> _iter0 = mStringBool;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.BOOL, _iter0.size()));
             for (Map.Entry<String, Boolean> _iter1 : _iter0.entrySet()) {
-              oprot.writeString(_iter1.getKey());
-              oprot.writeBool(_iter1.getValue());
+              {
+                String _iter2 = _iter1.getKey();
+                oprot.writeString(_iter2);
+              }
+              {
+                Boolean _iter2 = _iter1.getValue();
+                oprot.writeBool(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -1464,8 +1488,14 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         Map<Integer, Integer> _iter0 = mIntegerInteger;
         oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _iter0.size()));
             for (Map.Entry<Integer, Integer> _iter1 : _iter0.entrySet()) {
-              oprot.writeI32(_iter1.getKey());
-              oprot.writeI32(_iter1.getValue());
+              {
+                Integer _iter2 = _iter1.getKey();
+                oprot.writeI32(_iter2);
+              }
+              {
+                Integer _iter2 = _iter1.getValue();
+                oprot.writeI32(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -1475,8 +1505,14 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         Map<Integer, Boolean> _iter0 = mIntegerBool;
         oprot.writeMapBegin(new TMap(TType.I32, TType.BOOL, _iter0.size()));
             for (Map.Entry<Integer, Boolean> _iter1 : _iter0.entrySet()) {
-              oprot.writeI32(_iter1.getKey());
-              oprot.writeBool(_iter1.getValue());
+              {
+                Integer _iter2 = _iter1.getKey();
+                oprot.writeI32(_iter2);
+              }
+              {
+                Boolean _iter2 = _iter1.getValue();
+                oprot.writeBool(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -1536,16 +1572,22 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         Map<List<Integer>, List<Integer>> _iter0 = mListList;
         oprot.writeMapBegin(new TMap(TType.LIST, TType.LIST, _iter0.size()));
             for (Map.Entry<List<Integer>, List<Integer>> _iter1 : _iter0.entrySet()) {
-              oprot.writeListBegin(new TList(TType.I32, _iter1.getKey().size()));
-            for (int _iter2 : _iter1.getKey()) {
-              oprot.writeI32(_iter2);
+              {
+                List<Integer> _iter2 = _iter1.getKey();
+                oprot.writeListBegin(new TList(TType.I32, _iter2.size()));
+            for (int _iter3 : _iter2) {
+              oprot.writeI32(_iter3);
             }
             oprot.writeListEnd();
-              oprot.writeListBegin(new TList(TType.I32, _iter1.getValue().size()));
-            for (int _iter2 : _iter1.getValue()) {
-              oprot.writeI32(_iter2);
+              }
+              {
+                List<Integer> _iter2 = _iter1.getValue();
+                oprot.writeListBegin(new TList(TType.I32, _iter2.size()));
+            for (int _iter3 : _iter2) {
+              oprot.writeI32(_iter3);
             }
             oprot.writeListEnd();
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();

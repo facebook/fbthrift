@@ -529,8 +529,14 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
         Map<Short, String> _iter0 = myMapField;
         oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, _iter0.size()));
             for (Map.Entry<Short, String> _iter1 : _iter0.entrySet()) {
-              oprot.writeI16(_iter1.getKey());
-              oprot.writeString(_iter1.getValue());
+              {
+                Short _iter2 = _iter1.getKey();
+                oprot.writeI16(_iter2);
+              }
+              {
+                String _iter2 = _iter1.getValue();
+                oprot.writeString(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -540,8 +546,14 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
         Map<Short, String> _iter0 = myMapTypedef;
         oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, _iter0.size()));
             for (Map.Entry<Short, String> _iter1 : _iter0.entrySet()) {
-              oprot.writeI16(_iter1.getKey());
-              oprot.writeString(_iter1.getValue());
+              {
+                Short _iter2 = _iter1.getKey();
+                oprot.writeI16(_iter2);
+              }
+              {
+                String _iter2 = _iter1.getValue();
+                oprot.writeString(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -571,16 +583,22 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
         Map<Short, List<List<Double>>> _iter0 = myMapListOfTypeDef;
         oprot.writeMapBegin(new TMap(TType.I16, TType.LIST, _iter0.size()));
             for (Map.Entry<Short, List<List<Double>>> _iter1 : _iter0.entrySet()) {
-              oprot.writeI16(_iter1.getKey());
-              oprot.writeListBegin(new TList(TType.LIST, _iter1.getValue().size()));
-            for (List<Double> _iter2 : _iter1.getValue()) {
-              oprot.writeListBegin(new TList(TType.DOUBLE, _iter2.size()));
-            for (double _iter3 : _iter2) {
-              oprot.writeDouble(_iter3);
+              {
+                Short _iter2 = _iter1.getKey();
+                oprot.writeI16(_iter2);
+              }
+              {
+                List<List<Double>> _iter2 = _iter1.getValue();
+                oprot.writeListBegin(new TList(TType.LIST, _iter2.size()));
+            for (List<Double> _iter3 : _iter2) {
+              oprot.writeListBegin(new TList(TType.DOUBLE, _iter3.size()));
+            for (double _iter4 : _iter3) {
+              oprot.writeDouble(_iter4);
             }
             oprot.writeListEnd();
             }
             oprot.writeListEnd();
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();

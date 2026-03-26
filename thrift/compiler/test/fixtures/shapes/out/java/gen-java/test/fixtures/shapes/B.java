@@ -1916,8 +1916,14 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
         Map<String, Integer> _iter0 = mapOfStringToI32;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.I32, _iter0.size()));
             for (Map.Entry<String, Integer> _iter1 : _iter0.entrySet()) {
-              oprot.writeString(_iter1.getKey());
-              oprot.writeI32(_iter1.getValue());
+              {
+                String _iter2 = _iter1.getKey();
+                oprot.writeString(_iter2);
+              }
+              {
+                Integer _iter2 = _iter1.getValue();
+                oprot.writeI32(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -1927,8 +1933,14 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
         Map<String, test.fixtures.shapes.A> _iter0 = mapOfStringToA;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.STRUCT, _iter0.size()));
             for (Map.Entry<String, test.fixtures.shapes.A> _iter1 : _iter0.entrySet()) {
-              oprot.writeString(_iter1.getKey());
-              _iter1.getValue().write0(oprot);
+              {
+                String _iter2 = _iter1.getKey();
+                oprot.writeString(_iter2);
+              }
+              {
+                test.fixtures.shapes.A _iter2 = _iter1.getValue();
+                _iter2.write0(oprot);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -1938,12 +1950,18 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
         Map<String, List<Integer>> _iter0 = mapOfStringToListOfI32;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter0.size()));
             for (Map.Entry<String, List<Integer>> _iter1 : _iter0.entrySet()) {
-              oprot.writeString(_iter1.getKey());
-              oprot.writeListBegin(new TList(TType.I32, _iter1.getValue().size()));
-            for (int _iter2 : _iter1.getValue()) {
-              oprot.writeI32(_iter2);
+              {
+                String _iter2 = _iter1.getKey();
+                oprot.writeString(_iter2);
+              }
+              {
+                List<Integer> _iter2 = _iter1.getValue();
+                oprot.writeListBegin(new TList(TType.I32, _iter2.size()));
+            for (int _iter3 : _iter2) {
+              oprot.writeI32(_iter3);
             }
             oprot.writeListEnd();
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -1953,12 +1971,18 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
         Map<String, List<test.fixtures.shapes.A>> _iter0 = mapOfStringToListOfA;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter0.size()));
             for (Map.Entry<String, List<test.fixtures.shapes.A>> _iter1 : _iter0.entrySet()) {
-              oprot.writeString(_iter1.getKey());
-              oprot.writeListBegin(new TList(TType.STRUCT, _iter1.getValue().size()));
-            for (test.fixtures.shapes.A _iter2 : _iter1.getValue()) {
-              _iter2.write0(oprot);
+              {
+                String _iter2 = _iter1.getKey();
+                oprot.writeString(_iter2);
+              }
+              {
+                List<test.fixtures.shapes.A> _iter2 = _iter1.getValue();
+                oprot.writeListBegin(new TList(TType.STRUCT, _iter2.size()));
+            for (test.fixtures.shapes.A _iter3 : _iter2) {
+              _iter3.write0(oprot);
             }
             oprot.writeListEnd();
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -1968,12 +1992,18 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
         Map<String, Set<Integer>> _iter0 = mapOfStringToSetOfI32;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.SET, _iter0.size()));
             for (Map.Entry<String, Set<Integer>> _iter1 : _iter0.entrySet()) {
-              oprot.writeString(_iter1.getKey());
-              oprot.writeSetBegin(new TSet(TType.I32, _iter1.getValue().size()));
-            for (int _iter2 : _iter1.getValue()) {
-              oprot.writeI32(_iter2);
+              {
+                String _iter2 = _iter1.getKey();
+                oprot.writeString(_iter2);
+              }
+              {
+                Set<Integer> _iter2 = _iter1.getValue();
+                oprot.writeSetBegin(new TSet(TType.I32, _iter2.size()));
+            for (int _iter3 : _iter2) {
+              oprot.writeI32(_iter3);
             }
             oprot.writeSetEnd();
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -1983,13 +2013,25 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
         Map<String, Map<String, Integer>> _iter0 = mapOfStringToMapOfStringToI32;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.MAP, _iter0.size()));
             for (Map.Entry<String, Map<String, Integer>> _iter1 : _iter0.entrySet()) {
-              oprot.writeString(_iter1.getKey());
-              oprot.writeMapBegin(new TMap(TType.STRING, TType.I32, _iter1.getValue().size()));
-            for (Map.Entry<String, Integer> _iter2 : _iter1.getValue().entrySet()) {
-              oprot.writeString(_iter2.getKey());
-              oprot.writeI32(_iter2.getValue());
+              {
+                String _iter2 = _iter1.getKey();
+                oprot.writeString(_iter2);
+              }
+              {
+                Map<String, Integer> _iter2 = _iter1.getValue();
+                oprot.writeMapBegin(new TMap(TType.STRING, TType.I32, _iter2.size()));
+            for (Map.Entry<String, Integer> _iter3 : _iter2.entrySet()) {
+              {
+                String _iter4 = _iter3.getKey();
+                oprot.writeString(_iter4);
+              }
+              {
+                Integer _iter4 = _iter3.getValue();
+                oprot.writeI32(_iter4);
+              }
             }
             oprot.writeMapEnd();
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -1999,13 +2041,25 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
         Map<String, Map<String, test.fixtures.shapes.A>> _iter0 = mapOfStringToMapOfStringToA;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.MAP, _iter0.size()));
             for (Map.Entry<String, Map<String, test.fixtures.shapes.A>> _iter1 : _iter0.entrySet()) {
-              oprot.writeString(_iter1.getKey());
-              oprot.writeMapBegin(new TMap(TType.STRING, TType.STRUCT, _iter1.getValue().size()));
-            for (Map.Entry<String, test.fixtures.shapes.A> _iter2 : _iter1.getValue().entrySet()) {
-              oprot.writeString(_iter2.getKey());
-              _iter2.getValue().write0(oprot);
+              {
+                String _iter2 = _iter1.getKey();
+                oprot.writeString(_iter2);
+              }
+              {
+                Map<String, test.fixtures.shapes.A> _iter2 = _iter1.getValue();
+                oprot.writeMapBegin(new TMap(TType.STRING, TType.STRUCT, _iter2.size()));
+            for (Map.Entry<String, test.fixtures.shapes.A> _iter3 : _iter2.entrySet()) {
+              {
+                String _iter4 = _iter3.getKey();
+                oprot.writeString(_iter4);
+              }
+              {
+                test.fixtures.shapes.A _iter4 = _iter3.getValue();
+                _iter4.write0(oprot);
+              }
             }
             oprot.writeMapEnd();
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -2031,12 +2085,18 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             for (Map<String, List<test.fixtures.shapes.A>> _iter1 : _iter0) {
               oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter1.size()));
             for (Map.Entry<String, List<test.fixtures.shapes.A>> _iter2 : _iter1.entrySet()) {
-              oprot.writeString(_iter2.getKey());
-              oprot.writeListBegin(new TList(TType.STRUCT, _iter2.getValue().size()));
-            for (test.fixtures.shapes.A _iter3 : _iter2.getValue()) {
-              _iter3.write0(oprot);
+              {
+                String _iter3 = _iter2.getKey();
+                oprot.writeString(_iter3);
+              }
+              {
+                List<test.fixtures.shapes.A> _iter3 = _iter2.getValue();
+                oprot.writeListBegin(new TList(TType.STRUCT, _iter3.size()));
+            for (test.fixtures.shapes.A _iter4 : _iter3) {
+              _iter4.write0(oprot);
             }
             oprot.writeListEnd();
+              }
             }
             oprot.writeMapEnd();
             }
@@ -2050,8 +2110,14 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             for (Map<String, test.fixtures.shapes.A> _iter1 : _iter0) {
               oprot.writeMapBegin(new TMap(TType.STRING, TType.STRUCT, _iter1.size()));
             for (Map.Entry<String, test.fixtures.shapes.A> _iter2 : _iter1.entrySet()) {
-              oprot.writeString(_iter2.getKey());
-              _iter2.getValue().write0(oprot);
+              {
+                String _iter3 = _iter2.getKey();
+                oprot.writeString(_iter3);
+              }
+              {
+                test.fixtures.shapes.A _iter3 = _iter2.getValue();
+                _iter3.write0(oprot);
+              }
             }
             oprot.writeMapEnd();
             }
@@ -2106,8 +2172,14 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
         Map<String, Integer>  _iter0 = optionalMapOfStringToI32;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.I32, _iter0.size()));
             for (Map.Entry<String, Integer> _iter1 : _iter0.entrySet()) {
-              oprot.writeString(_iter1.getKey());
-              oprot.writeI32(_iter1.getValue());
+              {
+                String _iter2 = _iter1.getKey();
+                oprot.writeString(_iter2);
+              }
+              {
+                Integer _iter2 = _iter1.getValue();
+                oprot.writeI32(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -2117,8 +2189,14 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
         Map<String, test.fixtures.shapes.A>  _iter0 = optionalMapOfStringToA;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.STRUCT, _iter0.size()));
             for (Map.Entry<String, test.fixtures.shapes.A> _iter1 : _iter0.entrySet()) {
-              oprot.writeString(_iter1.getKey());
-              _iter1.getValue().write0(oprot);
+              {
+                String _iter2 = _iter1.getKey();
+                oprot.writeString(_iter2);
+              }
+              {
+                test.fixtures.shapes.A _iter2 = _iter1.getValue();
+                _iter2.write0(oprot);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -2128,12 +2206,18 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
         Map<String, List<Integer>>  _iter0 = optionalMapOfStringToListOfI32;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter0.size()));
             for (Map.Entry<String, List<Integer>> _iter1 : _iter0.entrySet()) {
-              oprot.writeString(_iter1.getKey());
-              oprot.writeListBegin(new TList(TType.I32, _iter1.getValue().size()));
-            for (int _iter2 : _iter1.getValue()) {
-              oprot.writeI32(_iter2);
+              {
+                String _iter2 = _iter1.getKey();
+                oprot.writeString(_iter2);
+              }
+              {
+                List<Integer> _iter2 = _iter1.getValue();
+                oprot.writeListBegin(new TList(TType.I32, _iter2.size()));
+            for (int _iter3 : _iter2) {
+              oprot.writeI32(_iter3);
             }
             oprot.writeListEnd();
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -2143,12 +2227,18 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
         Map<String, List<test.fixtures.shapes.A>>  _iter0 = optionalMapOfStringToListOfA;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter0.size()));
             for (Map.Entry<String, List<test.fixtures.shapes.A>> _iter1 : _iter0.entrySet()) {
-              oprot.writeString(_iter1.getKey());
-              oprot.writeListBegin(new TList(TType.STRUCT, _iter1.getValue().size()));
-            for (test.fixtures.shapes.A _iter2 : _iter1.getValue()) {
-              _iter2.write0(oprot);
+              {
+                String _iter2 = _iter1.getKey();
+                oprot.writeString(_iter2);
+              }
+              {
+                List<test.fixtures.shapes.A> _iter2 = _iter1.getValue();
+                oprot.writeListBegin(new TList(TType.STRUCT, _iter2.size()));
+            for (test.fixtures.shapes.A _iter3 : _iter2) {
+              _iter3.write0(oprot);
             }
             oprot.writeListEnd();
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -2158,12 +2248,18 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
         Map<String, Set<Integer>>  _iter0 = optionalMapOfStringToSetOfI32;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.SET, _iter0.size()));
             for (Map.Entry<String, Set<Integer>> _iter1 : _iter0.entrySet()) {
-              oprot.writeString(_iter1.getKey());
-              oprot.writeSetBegin(new TSet(TType.I32, _iter1.getValue().size()));
-            for (int _iter2 : _iter1.getValue()) {
-              oprot.writeI32(_iter2);
+              {
+                String _iter2 = _iter1.getKey();
+                oprot.writeString(_iter2);
+              }
+              {
+                Set<Integer> _iter2 = _iter1.getValue();
+                oprot.writeSetBegin(new TSet(TType.I32, _iter2.size()));
+            for (int _iter3 : _iter2) {
+              oprot.writeI32(_iter3);
             }
             oprot.writeSetEnd();
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -2210,8 +2306,14 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
         Map<Integer, String> _iter0 = mapOfI32ToStringWithDefaultValue;
         oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, _iter0.size()));
             for (Map.Entry<Integer, String> _iter1 : _iter0.entrySet()) {
-              oprot.writeI32(_iter1.getKey());
-              oprot.writeString(_iter1.getValue());
+              {
+                Integer _iter2 = _iter1.getKey();
+                oprot.writeI32(_iter2);
+              }
+              {
+                String _iter2 = _iter1.getValue();
+                oprot.writeString(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -2231,12 +2333,18 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
         Map<String, List<Integer>> _iter0 = mapOfStringToListOfI32WithDefaultValue;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter0.size()));
             for (Map.Entry<String, List<Integer>> _iter1 : _iter0.entrySet()) {
-              oprot.writeString(_iter1.getKey());
-              oprot.writeListBegin(new TList(TType.I32, _iter1.getValue().size()));
-            for (int _iter2 : _iter1.getValue()) {
-              oprot.writeI32(_iter2);
+              {
+                String _iter2 = _iter1.getKey();
+                oprot.writeString(_iter2);
+              }
+              {
+                List<Integer> _iter2 = _iter1.getValue();
+                oprot.writeListBegin(new TList(TType.I32, _iter2.size()));
+            for (int _iter3 : _iter2) {
+              oprot.writeI32(_iter3);
             }
             oprot.writeListEnd();
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();

@@ -18,9 +18,7 @@
 {{#type:typedef?}}{{!
   }}{{type:setTypeName}}{{!
   }}{{#type:isAdapterSet?}}{{!
-    }}{{#type:isMapKey?}}{{#type:typedef_type}}{{type:setIsMapKey}}{{type:setAdapter}}{{> WriteType}}{{/type:typedef_type}}{{/type:isMapKey?}}{{!
-    }}{{#type:isMapValue?}}{{#type:typedef_type}}{{type:setIsMapValue}}{{type:setAdapter}}{{> WriteType}}{{/type:typedef_type}}{{/type:isMapValue?}}{{!
-    }}{{^type:isMapKey?}}{{^type:isMapValue?}}{{#type:typedef_type}}{{type:setAdapter}}{{> WriteType}}{{/type:typedef_type}}{{/type:isMapValue?}}{{/type:isMapKey?}}{{!
+    }}{{#type:typedef_type}}{{type:setAdapter}}{{> WriteType}}{{/type:typedef_type}}{{!
   }}{{/type:isAdapterSet?}}{{!
   }}{{^type:isAdapterSet?}}{{!
     }}{{#type:isBinaryString?}}{{!
@@ -44,22 +42,18 @@
         }}{{#field:hasAdapterOrWrapper?}}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, {{field:javaName}});{{/field:hasAdapterOrWrapper?}}{{!
       }}{{/field:isNested?}}{{!
     }}{{/type:binary?}}{{^type:binary?}}{{!
-    }}{{#type:isMapKey?}}{{#type:typedef_type}}{{type:setIsMapKey}}{{> WriteType}}{{/type:typedef_type}}{{/type:isMapKey?}}{{!
-    }}{{#type:isMapValue?}}{{#type:typedef_type}}{{type:setIsMapValue}}{{> WriteType}}{{/type:typedef_type}}{{/type:isMapValue?}}{{!
-    }}{{^type:isMapKey?}}{{^type:isMapValue?}}{{#type:typedef_type}}{{> WriteType}}{{/type:typedef_type}}{{/type:isMapValue?}}{{/type:isMapKey?}}{{!
+    }}{{#type:typedef_type}}{{> WriteType}}{{/type:typedef_type}}{{!
     }}{{/type:binary?}}{{/type:javaType}}{{!
     }}{{^type:javaType}}{{!
-    }}{{#type:isMapKey?}}{{#type:typedef_type}}{{type:setIsMapKey}}{{> WriteType}}{{/type:typedef_type}}{{/type:isMapKey?}}{{!
-    }}{{#type:isMapValue?}}{{#type:typedef_type}}{{type:setIsMapValue}}{{> WriteType}}{{/type:typedef_type}}{{/type:isMapValue?}}{{!
-    }}{{^type:isMapKey?}}{{^type:isMapValue?}}{{#type:typedef_type}}{{> WriteType}}{{/type:typedef_type}}{{/type:isMapValue?}}{{/type:isMapKey?}}{{!
+    }}{{#type:typedef_type}}{{> WriteType}}{{/type:typedef_type}}{{!
     }}{{/type:javaType}}{{!
     }}{{/type:isBinaryString?}}{{!
   }}{{/type:isAdapterSet?}}{{!
 }}{{/type:typedef?}}{{!
 }}{{^type:typedef?}}{{!
-}}{{#type:set?}}oprot.writeSetBegin(new TSet(TType.{{#type:set_elem_type}}{{#partial types.ttype type=type:self}}{{/type:set_elem_type}}, _iter{{field:prevNestedDepth}}{{> KeyValue}}.size()));
-        for ({{#type:set_elem_type}}{{> AdaptedType}}{{/type:set_elem_type}} _iter{{field:nestedDepth}} : _iter{{field:prevNestedDepth}}{{> KeyValue}}) {
-          {{field:setIsNested}}{{type:setIsNotMap}}{{!
+}}{{#type:set?}}oprot.writeSetBegin(new TSet(TType.{{#type:set_elem_type}}{{#partial types.ttype type=type:self}}{{/type:set_elem_type}}, _iter{{field:prevNestedDepth}}.size()));
+        for ({{#type:set_elem_type}}{{> AdaptedType}}{{/type:set_elem_type}} _iter{{field:nestedDepth}} : _iter{{field:prevNestedDepth}}) {
+          {{field:setIsNested}}{{!
           }}{{#type:set_elem_type}}{{!
           }}{{#type:container?}}{{> WriteTypeAdapter}}{{/type:container?}}{{!
           }}{{^type:container?}}{{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> WriteType}}{{!
@@ -69,9 +63,9 @@
 }}{{/type:set?}}{{!
 
 }}{{#type:list?}}{{!
-}}oprot.writeListBegin(new TList(TType.{{#type:list_elem_type}}{{#partial types.ttype type=type:self}}{{/type:list_elem_type}}, _iter{{field:prevNestedDepth}}{{> KeyValue}}.size()));
-        for ({{#type:list_elem_type}}{{> AdaptedType}}{{/type:list_elem_type}} _iter{{field:nestedDepth}} : _iter{{field:prevNestedDepth}}{{> KeyValue}}) {
-          {{field:setIsNested}}{{type:setIsNotMap}}{{!
+}}oprot.writeListBegin(new TList(TType.{{#type:list_elem_type}}{{#partial types.ttype type=type:self}}{{/type:list_elem_type}}, _iter{{field:prevNestedDepth}}.size()));
+        for ({{#type:list_elem_type}}{{> AdaptedType}}{{/type:list_elem_type}} _iter{{field:nestedDepth}} : _iter{{field:prevNestedDepth}}) {
+          {{field:setIsNested}}{{!
           }}{{#type:list_elem_type}}{{!
           }}{{#type:container?}}{{> WriteTypeAdapter}}{{/type:container?}}{{!
           }}{{^type:container?}}{{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> WriteType}}{{!
@@ -81,19 +75,29 @@
 }}{{/type:list?}}{{!
 
 }}{{#type:map?}}{{!
-}}oprot.writeMapBegin(new TMap(TType.{{#type:key_type}}{{#partial types.ttype type=type:self}}{{/type:key_type}}, TType.{{#type:value_type}}{{#partial types.ttype type=type:self}}{{/type:value_type}}, _iter{{field:prevNestedDepth}}{{> KeyValue}}.size()));
-        for (Map.Entry<{{#type:key_type}}{{> BoxedType}}{{/type:key_type}}, {{#type:value_type}}{{> BoxedType}}{{/type:value_type}}> _iter{{field:nestedDepth}} : _iter{{field:prevNestedDepth}}{{> KeyValue}}.entrySet()) {
+}}oprot.writeMapBegin(new TMap(TType.{{#type:key_type}}{{#partial types.ttype type=type:self}}{{/type:key_type}}, TType.{{#type:value_type}}{{#partial types.ttype type=type:self}}{{/type:value_type}}, _iter{{field:prevNestedDepth}}.size()));
+        for (Map.Entry<{{#type:key_type}}{{> BoxedType}}{{/type:key_type}}, {{#type:value_type}}{{> BoxedType}}{{/type:value_type}}> _iter{{field:nestedDepth}} : _iter{{field:prevNestedDepth}}.entrySet()) {
           {{field:setIsNested}}{{!
-
-          }}{{#type:key_type}}{{type:setIsMapKey}}{{!
-          }}{{#type:container?}}{{> WriteTypeAdapter}}{{/type:container?}}{{!
-          }}{{^type:container?}}{{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> WriteType}}{{!
-          }}{{/type:container?}}{{/type:key_type}}
-          {{!
-          }}{{#type:value_type}}{{type:setIsMapValue}}{{!
-          }}{{#type:container?}}{{> WriteTypeAdapter}}{{/type:container?}}{{!
-          }}{{^type:container?}}{{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> WriteType}}{{!
-          }}{{/type:container?}}{{/type:value_type}}
+          }}{
+            {{#type:key_type}}{{!
+            }}{{field:nestedDepth++}}{{!
+            }}{{> BoxedType}} _iter{{field:nestedDepth}} = _iter{{field:prevNestedDepth}}.getKey();
+            {{#type:container?}}{{> WriteTypeAdapter}}{{/type:container?}}{{!
+            }}{{^type:container?}}{{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> WriteType}}{{!
+            }}{{/type:container?}}{{!
+            }}{{field:nestedDepth--}}{{!
+            }}{{/type:key_type}}
+          }
+          {
+            {{#type:value_type}}{{!
+            }}{{field:nestedDepth++}}{{!
+            }}{{> BoxedType}} _iter{{field:nestedDepth}} = _iter{{field:prevNestedDepth}}.getValue();
+            {{#type:container?}}{{> WriteTypeAdapter}}{{/type:container?}}{{!
+            }}{{^type:container?}}{{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> WriteType}}{{!
+            }}{{/type:container?}}{{!
+            }}{{field:nestedDepth--}}{{!
+            }}{{/type:value_type}}
+          }
         }
         oprot.writeMapEnd();{{!
 }}{{/type:map?}}{{!

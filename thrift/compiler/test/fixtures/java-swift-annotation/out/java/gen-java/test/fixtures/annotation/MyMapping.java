@@ -320,8 +320,14 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
         com.foo.FastLongStringMap _iter0 = lsMap;
         oprot.writeMapBegin(new TMap(TType.I64, TType.STRING, _iter0.size()));
             for (Map.Entry<Long, String> _iter1 : _iter0.entrySet()) {
-              oprot.writeI64(_iter1.getKey());
-              oprot.writeString(_iter1.getValue());
+              {
+                Long _iter2 = _iter1.getKey();
+                oprot.writeI64(_iter2);
+              }
+              {
+                String _iter2 = _iter1.getValue();
+                oprot.writeString(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -331,13 +337,25 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
         com.foo.FastIntObjectMap<com.foo.FastIntLongMap> _iter0 = ioMap;
         oprot.writeMapBegin(new TMap(TType.I32, TType.MAP, _iter0.size()));
             for (Map.Entry<Integer, com.foo.FastIntLongMap> _iter1 : _iter0.entrySet()) {
-              oprot.writeI32(_iter1.getKey());
-              oprot.writeMapBegin(new TMap(TType.I32, TType.I64, _iter1.getValue().size()));
-            for (Map.Entry<Integer, Long> _iter2 : _iter1.getValue().entrySet()) {
-              oprot.writeI32(_iter2.getKey());
-              oprot.writeI64(_iter2.getValue());
+              {
+                Integer _iter2 = _iter1.getKey();
+                oprot.writeI32(_iter2);
+              }
+              {
+                com.foo.FastIntLongMap _iter2 = _iter1.getValue();
+                oprot.writeMapBegin(new TMap(TType.I32, TType.I64, _iter2.size()));
+            for (Map.Entry<Integer, Long> _iter3 : _iter2.entrySet()) {
+              {
+                Integer _iter4 = _iter3.getKey();
+                oprot.writeI32(_iter4);
+              }
+              {
+                Long _iter4 = _iter3.getValue();
+                oprot.writeI64(_iter4);
+              }
             }
             oprot.writeMapEnd();
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -347,8 +365,14 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
         Map<String, byte[]> _iter0 = binaryMap;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.STRING, _iter0.size()));
             for (Map.Entry<String, byte[]> _iter1 : _iter0.entrySet()) {
-              oprot.writeString(_iter1.getKey());
-              oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter1.getValue()));
+              {
+                String _iter2 = _iter1.getKey();
+                oprot.writeString(_iter2);
+              }
+              {
+                byte[] _iter2 = _iter1.getValue();
+                oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter2));
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -358,8 +382,14 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
         Map<String, byte[]> _iter0 = regularBinary;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.STRING, _iter0.size()));
             for (Map.Entry<String, byte[]> _iter1 : _iter0.entrySet()) {
-              oprot.writeString(_iter1.getKey());
-              oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter1.getValue()));
+              {
+                String _iter2 = _iter1.getKey();
+                oprot.writeString(_iter2);
+              }
+              {
+                byte[] _iter2 = _iter1.getValue();
+                oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter2));
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();

@@ -321,8 +321,14 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
         it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> _iter0 = lsMap;
         oprot.writeMapBegin(new TMap(TType.I64, TType.STRING, _iter0.size()));
             for (Map.Entry<Long, String> _iter1 : _iter0.entrySet()) {
-              oprot.writeI64(_iter1.getKey());
-              oprot.writeString(_iter1.getValue());
+              {
+                Long _iter2 = _iter1.getKey();
+                oprot.writeI64(_iter2);
+              }
+              {
+                String _iter2 = _iter1.getValue();
+                oprot.writeString(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();

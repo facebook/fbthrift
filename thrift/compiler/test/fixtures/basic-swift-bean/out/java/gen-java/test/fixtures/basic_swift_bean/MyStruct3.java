@@ -740,12 +740,18 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
         Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _iter0 = myMapList;
         oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _iter0.size()));
             for (Map.Entry<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _iter1 : _iter0.entrySet()) {
-              oprot.writeI32(_iter1.getKey());
-              oprot.writeListBegin(new TList(TType.STRUCT, _iter1.getValue().size()));
-            for (test.fixtures.basic_swift_bean.MyDataItem _iter2 : _iter1.getValue()) {
-              _iter2.write0(oprot);
+              {
+                Integer _iter2 = _iter1.getKey();
+                oprot.writeI32(_iter2);
+              }
+              {
+                List<test.fixtures.basic_swift_bean.MyDataItem> _iter2 = _iter1.getValue();
+                oprot.writeListBegin(new TList(TType.STRUCT, _iter2.size()));
+            for (test.fixtures.basic_swift_bean.MyDataItem _iter3 : _iter2) {
+              _iter3.write0(oprot);
             }
             oprot.writeListEnd();
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -765,12 +771,18 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
         Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _iter0 = myEmptyMapList;
         oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _iter0.size()));
             for (Map.Entry<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _iter1 : _iter0.entrySet()) {
-              oprot.writeI32(_iter1.getKey());
-              oprot.writeListBegin(new TList(TType.STRUCT, _iter1.getValue().size()));
-            for (test.fixtures.basic_swift_bean.MyDataItem _iter2 : _iter1.getValue()) {
-              _iter2.write0(oprot);
+              {
+                Integer _iter2 = _iter1.getKey();
+                oprot.writeI32(_iter2);
+              }
+              {
+                List<test.fixtures.basic_swift_bean.MyDataItem> _iter2 = _iter1.getValue();
+                oprot.writeListBegin(new TList(TType.STRUCT, _iter2.size()));
+            for (test.fixtures.basic_swift_bean.MyDataItem _iter3 : _iter2) {
+              _iter3.write0(oprot);
             }
             oprot.writeListEnd();
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();

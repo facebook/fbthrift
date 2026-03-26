@@ -409,8 +409,14 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
         Map<Integer, Integer> _iter0 = mapRef;
         oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _iter0.size()));
             for (Map.Entry<Integer, Integer> _iter1 : _iter0.entrySet()) {
-              oprot.writeI32(_iter1.getKey());
-              oprot.writeI32(_iter1.getValue());
+              {
+                Integer _iter2 = _iter1.getKey();
+                oprot.writeI32(_iter2);
+              }
+              {
+                Integer _iter2 = _iter1.getValue();
+                oprot.writeI32(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();

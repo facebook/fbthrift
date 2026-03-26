@@ -2274,8 +2274,14 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
         Map<test.fixtures.complex_struct.MyStruct, Long> _iter0 = structMap;
         oprot.writeMapBegin(new TMap(TType.STRUCT, TType.I64, _iter0.size()));
             for (Map.Entry<test.fixtures.complex_struct.MyStruct, Long> _iter1 : _iter0.entrySet()) {
-              _iter1.getKey().write0(oprot);
-              oprot.writeI64(_iter1.getValue());
+              {
+                test.fixtures.complex_struct.MyStruct _iter2 = _iter1.getKey();
+                _iter2.write0(oprot);
+              }
+              {
+                Long _iter2 = _iter1.getValue();
+                oprot.writeI64(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -2285,8 +2291,14 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
         Map<test.fixtures.complex_struct.MyUnion, Long> _iter0 = unionMap;
         oprot.writeMapBegin(new TMap(TType.STRUCT, TType.I64, _iter0.size()));
             for (Map.Entry<test.fixtures.complex_struct.MyUnion, Long> _iter1 : _iter0.entrySet()) {
-              _iter1.getKey().write0(oprot);
-              oprot.writeI64(_iter1.getValue());
+              {
+                test.fixtures.complex_struct.MyUnion _iter2 = _iter1.getKey();
+                _iter2.write0(oprot);
+              }
+              {
+                Long _iter2 = _iter1.getValue();
+                oprot.writeI64(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -2296,8 +2308,14 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
         Map<test.fixtures.complex_struct.MyEnum, Long> _iter0 = enumMap;
         oprot.writeMapBegin(new TMap(TType.I32, TType.I64, _iter0.size()));
             for (Map.Entry<test.fixtures.complex_struct.MyEnum, Long> _iter1 : _iter0.entrySet()) {
-              oprot.writeI32(_iter1 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter1.getKey()));
-              oprot.writeI64(_iter1.getValue());
+              {
+                test.fixtures.complex_struct.MyEnum _iter2 = _iter1.getKey();
+                oprot.writeI32(_iter2 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter2));
+              }
+              {
+                Long _iter2 = _iter1.getValue();
+                oprot.writeI64(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -2307,8 +2325,14 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
         Map<Integer, test.fixtures.complex_struct.MyStruct> _iter0 = structMap2;
         oprot.writeMapBegin(new TMap(TType.I32, TType.STRUCT, _iter0.size()));
             for (Map.Entry<Integer, test.fixtures.complex_struct.MyStruct> _iter1 : _iter0.entrySet()) {
-              oprot.writeI32(_iter1.getKey());
-              _iter1.getValue().write0(oprot);
+              {
+                Integer _iter2 = _iter1.getKey();
+                oprot.writeI32(_iter2);
+              }
+              {
+                test.fixtures.complex_struct.MyStruct _iter2 = _iter1.getValue();
+                _iter2.write0(oprot);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -2318,8 +2342,14 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
         Map<Integer, test.fixtures.complex_struct.MyUnion> _iter0 = unionMap2;
         oprot.writeMapBegin(new TMap(TType.I32, TType.STRUCT, _iter0.size()));
             for (Map.Entry<Integer, test.fixtures.complex_struct.MyUnion> _iter1 : _iter0.entrySet()) {
-              oprot.writeI32(_iter1.getKey());
-              _iter1.getValue().write0(oprot);
+              {
+                Integer _iter2 = _iter1.getKey();
+                oprot.writeI32(_iter2);
+              }
+              {
+                test.fixtures.complex_struct.MyUnion _iter2 = _iter1.getValue();
+                _iter2.write0(oprot);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -2329,8 +2359,14 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
         Map<Integer, test.fixtures.complex_struct.MyEnum> _iter0 = enumMap2;
         oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _iter0.size()));
             for (Map.Entry<Integer, test.fixtures.complex_struct.MyEnum> _iter1 : _iter0.entrySet()) {
-              oprot.writeI32(_iter1.getKey());
-              oprot.writeI32(_iter1 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter1.getValue()));
+              {
+                Integer _iter2 = _iter1.getKey();
+                oprot.writeI32(_iter2);
+              }
+              {
+                test.fixtures.complex_struct.MyEnum _iter2 = _iter1.getValue();
+                oprot.writeI32(_iter2 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter2));
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -2340,12 +2376,18 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
         Map<List<Integer>, Integer> _iter0 = listMap;
         oprot.writeMapBegin(new TMap(TType.LIST, TType.I32, _iter0.size()));
             for (Map.Entry<List<Integer>, Integer> _iter1 : _iter0.entrySet()) {
-              oprot.writeListBegin(new TList(TType.I32, _iter1.getKey().size()));
-            for (int _iter2 : _iter1.getKey()) {
-              oprot.writeI32(_iter2);
+              {
+                List<Integer> _iter2 = _iter1.getKey();
+                oprot.writeListBegin(new TList(TType.I32, _iter2.size()));
+            for (int _iter3 : _iter2) {
+              oprot.writeI32(_iter3);
             }
             oprot.writeListEnd();
-              oprot.writeI32(_iter1.getValue());
+              }
+              {
+                Integer _iter2 = _iter1.getValue();
+                oprot.writeI32(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -2355,12 +2397,18 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
         Map<Integer, List<Integer>> _iter0 = listMap2;
         oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _iter0.size()));
             for (Map.Entry<Integer, List<Integer>> _iter1 : _iter0.entrySet()) {
-              oprot.writeI32(_iter1.getKey());
-              oprot.writeListBegin(new TList(TType.I32, _iter1.getValue().size()));
-            for (int _iter2 : _iter1.getValue()) {
-              oprot.writeI32(_iter2);
+              {
+                Integer _iter2 = _iter1.getKey();
+                oprot.writeI32(_iter2);
+              }
+              {
+                List<Integer> _iter2 = _iter1.getValue();
+                oprot.writeListBegin(new TList(TType.I32, _iter2.size()));
+            for (int _iter3 : _iter2) {
+              oprot.writeI32(_iter3);
             }
             oprot.writeListEnd();
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -2370,12 +2418,18 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
         Map<Set<Integer>, Integer> _iter0 = setMap;
         oprot.writeMapBegin(new TMap(TType.SET, TType.I32, _iter0.size()));
             for (Map.Entry<Set<Integer>, Integer> _iter1 : _iter0.entrySet()) {
-              oprot.writeSetBegin(new TSet(TType.I32, _iter1.getKey().size()));
-            for (int _iter2 : _iter1.getKey()) {
-              oprot.writeI32(_iter2);
+              {
+                Set<Integer> _iter2 = _iter1.getKey();
+                oprot.writeSetBegin(new TSet(TType.I32, _iter2.size()));
+            for (int _iter3 : _iter2) {
+              oprot.writeI32(_iter3);
             }
             oprot.writeSetEnd();
-              oprot.writeI32(_iter1.getValue());
+              }
+              {
+                Integer _iter2 = _iter1.getValue();
+                oprot.writeI32(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -2385,12 +2439,18 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
         Map<Integer, Set<Integer>> _iter0 = setMap2;
         oprot.writeMapBegin(new TMap(TType.I32, TType.SET, _iter0.size()));
             for (Map.Entry<Integer, Set<Integer>> _iter1 : _iter0.entrySet()) {
-              oprot.writeI32(_iter1.getKey());
-              oprot.writeSetBegin(new TSet(TType.I32, _iter1.getValue().size()));
-            for (int _iter2 : _iter1.getValue()) {
-              oprot.writeI32(_iter2);
+              {
+                Integer _iter2 = _iter1.getKey();
+                oprot.writeI32(_iter2);
+              }
+              {
+                Set<Integer> _iter2 = _iter1.getValue();
+                oprot.writeSetBegin(new TSet(TType.I32, _iter2.size()));
+            for (int _iter3 : _iter2) {
+              oprot.writeI32(_iter3);
             }
             oprot.writeSetEnd();
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -2400,13 +2460,25 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
         Map<Map<Integer, Integer>, Integer> _iter0 = mapMap;
         oprot.writeMapBegin(new TMap(TType.MAP, TType.I32, _iter0.size()));
             for (Map.Entry<Map<Integer, Integer>, Integer> _iter1 : _iter0.entrySet()) {
-              oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _iter1.getKey().size()));
-            for (Map.Entry<Integer, Integer> _iter2 : _iter1.getKey().entrySet()) {
-              oprot.writeI32(_iter2.getKey());
-              oprot.writeI32(_iter2.getValue());
+              {
+                Map<Integer, Integer> _iter2 = _iter1.getKey();
+                oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _iter2.size()));
+            for (Map.Entry<Integer, Integer> _iter3 : _iter2.entrySet()) {
+              {
+                Integer _iter4 = _iter3.getKey();
+                oprot.writeI32(_iter4);
+              }
+              {
+                Integer _iter4 = _iter3.getValue();
+                oprot.writeI32(_iter4);
+              }
             }
             oprot.writeMapEnd();
-              oprot.writeI32(_iter1.getValue());
+              }
+              {
+                Integer _iter2 = _iter1.getValue();
+                oprot.writeI32(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -2416,13 +2488,25 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
         Map<Integer, Map<Integer, Integer>> _iter0 = mapMap2;
         oprot.writeMapBegin(new TMap(TType.I32, TType.MAP, _iter0.size()));
             for (Map.Entry<Integer, Map<Integer, Integer>> _iter1 : _iter0.entrySet()) {
-              oprot.writeI32(_iter1.getKey());
-              oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _iter1.getValue().size()));
-            for (Map.Entry<Integer, Integer> _iter2 : _iter1.getValue().entrySet()) {
-              oprot.writeI32(_iter2.getKey());
-              oprot.writeI32(_iter2.getValue());
+              {
+                Integer _iter2 = _iter1.getKey();
+                oprot.writeI32(_iter2);
+              }
+              {
+                Map<Integer, Integer> _iter2 = _iter1.getValue();
+                oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _iter2.size()));
+            for (Map.Entry<Integer, Integer> _iter3 : _iter2.entrySet()) {
+              {
+                Integer _iter4 = _iter3.getKey();
+                oprot.writeI32(_iter4);
+              }
+              {
+                Integer _iter4 = _iter3.getValue();
+                oprot.writeI32(_iter4);
+              }
             }
             oprot.writeMapEnd();
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -2490,8 +2574,14 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             for (Map<Integer, Integer> _iter1 : _iter0) {
               oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _iter1.size()));
             for (Map.Entry<Integer, Integer> _iter2 : _iter1.entrySet()) {
-              oprot.writeI32(_iter2.getKey());
-              oprot.writeI32(_iter2.getValue());
+              {
+                Integer _iter3 = _iter2.getKey();
+                oprot.writeI32(_iter3);
+              }
+              {
+                Integer _iter3 = _iter2.getValue();
+                oprot.writeI32(_iter3);
+              }
             }
             oprot.writeMapEnd();
             }
@@ -2505,8 +2595,14 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             for (Map<Integer, test.fixtures.complex_struct.MyStruct> _iter1 : _iter0) {
               oprot.writeMapBegin(new TMap(TType.I32, TType.STRUCT, _iter1.size()));
             for (Map.Entry<Integer, test.fixtures.complex_struct.MyStruct> _iter2 : _iter1.entrySet()) {
-              oprot.writeI32(_iter2.getKey());
-              _iter2.getValue().write0(oprot);
+              {
+                Integer _iter3 = _iter2.getKey();
+                oprot.writeI32(_iter3);
+              }
+              {
+                test.fixtures.complex_struct.MyStruct _iter3 = _iter2.getValue();
+                _iter3.write0(oprot);
+              }
             }
             oprot.writeMapEnd();
             }
@@ -2520,8 +2616,14 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             for (Map<test.fixtures.complex_struct.MyStruct, Integer> _iter1 : _iter0) {
               oprot.writeMapBegin(new TMap(TType.STRUCT, TType.I32, _iter1.size()));
             for (Map.Entry<test.fixtures.complex_struct.MyStruct, Integer> _iter2 : _iter1.entrySet()) {
-              _iter2.getKey().write0(oprot);
-              oprot.writeI32(_iter2.getValue());
+              {
+                test.fixtures.complex_struct.MyStruct _iter3 = _iter2.getKey();
+                _iter3.write0(oprot);
+              }
+              {
+                Integer _iter3 = _iter2.getValue();
+                oprot.writeI32(_iter3);
+              }
             }
             oprot.writeMapEnd();
             }
@@ -2591,8 +2693,14 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             for (Map<Integer, Integer> _iter1 : _iter0) {
               oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _iter1.size()));
             for (Map.Entry<Integer, Integer> _iter2 : _iter1.entrySet()) {
-              oprot.writeI32(_iter2.getKey());
-              oprot.writeI32(_iter2.getValue());
+              {
+                Integer _iter3 = _iter2.getKey();
+                oprot.writeI32(_iter3);
+              }
+              {
+                Integer _iter3 = _iter2.getValue();
+                oprot.writeI32(_iter3);
+              }
             }
             oprot.writeMapEnd();
             }
@@ -2606,8 +2714,14 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             for (Map<Integer, test.fixtures.complex_struct.MyStruct> _iter1 : _iter0) {
               oprot.writeMapBegin(new TMap(TType.I32, TType.STRUCT, _iter1.size()));
             for (Map.Entry<Integer, test.fixtures.complex_struct.MyStruct> _iter2 : _iter1.entrySet()) {
-              oprot.writeI32(_iter2.getKey());
-              _iter2.getValue().write0(oprot);
+              {
+                Integer _iter3 = _iter2.getKey();
+                oprot.writeI32(_iter3);
+              }
+              {
+                test.fixtures.complex_struct.MyStruct _iter3 = _iter2.getValue();
+                _iter3.write0(oprot);
+              }
             }
             oprot.writeMapEnd();
             }
@@ -2621,8 +2735,14 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             for (Map<test.fixtures.complex_struct.MyStruct, Integer> _iter1 : _iter0) {
               oprot.writeMapBegin(new TMap(TType.STRUCT, TType.I32, _iter1.size()));
             for (Map.Entry<test.fixtures.complex_struct.MyStruct, Integer> _iter2 : _iter1.entrySet()) {
-              _iter2.getKey().write0(oprot);
-              oprot.writeI32(_iter2.getValue());
+              {
+                test.fixtures.complex_struct.MyStruct _iter3 = _iter2.getKey();
+                _iter3.write0(oprot);
+              }
+              {
+                Integer _iter3 = _iter2.getValue();
+                oprot.writeI32(_iter3);
+              }
             }
             oprot.writeMapEnd();
             }
@@ -2634,13 +2754,25 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
         Map<Integer, Map<Integer, Integer>> _iter0 = mapI32MapI32I32;
         oprot.writeMapBegin(new TMap(TType.I32, TType.MAP, _iter0.size()));
             for (Map.Entry<Integer, Map<Integer, Integer>> _iter1 : _iter0.entrySet()) {
-              oprot.writeI32(_iter1.getKey());
-              oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _iter1.getValue().size()));
-            for (Map.Entry<Integer, Integer> _iter2 : _iter1.getValue().entrySet()) {
-              oprot.writeI32(_iter2.getKey());
-              oprot.writeI32(_iter2.getValue());
+              {
+                Integer _iter2 = _iter1.getKey();
+                oprot.writeI32(_iter2);
+              }
+              {
+                Map<Integer, Integer> _iter2 = _iter1.getValue();
+                oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _iter2.size()));
+            for (Map.Entry<Integer, Integer> _iter3 : _iter2.entrySet()) {
+              {
+                Integer _iter4 = _iter3.getKey();
+                oprot.writeI32(_iter4);
+              }
+              {
+                Integer _iter4 = _iter3.getValue();
+                oprot.writeI32(_iter4);
+              }
             }
             oprot.writeMapEnd();
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -2650,13 +2782,25 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
         Map<Integer, Map<test.fixtures.complex_struct.MyStruct, Integer>> _iter0 = mapI32MapStructI32;
         oprot.writeMapBegin(new TMap(TType.I32, TType.MAP, _iter0.size()));
             for (Map.Entry<Integer, Map<test.fixtures.complex_struct.MyStruct, Integer>> _iter1 : _iter0.entrySet()) {
-              oprot.writeI32(_iter1.getKey());
-              oprot.writeMapBegin(new TMap(TType.STRUCT, TType.I32, _iter1.getValue().size()));
-            for (Map.Entry<test.fixtures.complex_struct.MyStruct, Integer> _iter2 : _iter1.getValue().entrySet()) {
-              _iter2.getKey().write0(oprot);
-              oprot.writeI32(_iter2.getValue());
+              {
+                Integer _iter2 = _iter1.getKey();
+                oprot.writeI32(_iter2);
+              }
+              {
+                Map<test.fixtures.complex_struct.MyStruct, Integer> _iter2 = _iter1.getValue();
+                oprot.writeMapBegin(new TMap(TType.STRUCT, TType.I32, _iter2.size()));
+            for (Map.Entry<test.fixtures.complex_struct.MyStruct, Integer> _iter3 : _iter2.entrySet()) {
+              {
+                test.fixtures.complex_struct.MyStruct _iter4 = _iter3.getKey();
+                _iter4.write0(oprot);
+              }
+              {
+                Integer _iter4 = _iter3.getValue();
+                oprot.writeI32(_iter4);
+              }
             }
             oprot.writeMapEnd();
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -2666,13 +2810,25 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
         Map<Integer, Map<Integer, test.fixtures.complex_struct.MyStruct>> _iter0 = mapI32MapI32Struct;
         oprot.writeMapBegin(new TMap(TType.I32, TType.MAP, _iter0.size()));
             for (Map.Entry<Integer, Map<Integer, test.fixtures.complex_struct.MyStruct>> _iter1 : _iter0.entrySet()) {
-              oprot.writeI32(_iter1.getKey());
-              oprot.writeMapBegin(new TMap(TType.I32, TType.STRUCT, _iter1.getValue().size()));
-            for (Map.Entry<Integer, test.fixtures.complex_struct.MyStruct> _iter2 : _iter1.getValue().entrySet()) {
-              oprot.writeI32(_iter2.getKey());
-              _iter2.getValue().write0(oprot);
+              {
+                Integer _iter2 = _iter1.getKey();
+                oprot.writeI32(_iter2);
+              }
+              {
+                Map<Integer, test.fixtures.complex_struct.MyStruct> _iter2 = _iter1.getValue();
+                oprot.writeMapBegin(new TMap(TType.I32, TType.STRUCT, _iter2.size()));
+            for (Map.Entry<Integer, test.fixtures.complex_struct.MyStruct> _iter3 : _iter2.entrySet()) {
+              {
+                Integer _iter4 = _iter3.getKey();
+                oprot.writeI32(_iter4);
+              }
+              {
+                test.fixtures.complex_struct.MyStruct _iter4 = _iter3.getValue();
+                _iter4.write0(oprot);
+              }
             }
             oprot.writeMapEnd();
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -2682,17 +2838,29 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
         Map<Integer, List<Map<Integer, Integer>>> _iter0 = mapI32MapListI32I32;
         oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _iter0.size()));
             for (Map.Entry<Integer, List<Map<Integer, Integer>>> _iter1 : _iter0.entrySet()) {
-              oprot.writeI32(_iter1.getKey());
-              oprot.writeListBegin(new TList(TType.MAP, _iter1.getValue().size()));
-            for (Map<Integer, Integer> _iter2 : _iter1.getValue()) {
-              oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _iter2.size()));
-            for (Map.Entry<Integer, Integer> _iter3 : _iter2.entrySet()) {
-              oprot.writeI32(_iter3.getKey());
-              oprot.writeI32(_iter3.getValue());
+              {
+                Integer _iter2 = _iter1.getKey();
+                oprot.writeI32(_iter2);
+              }
+              {
+                List<Map<Integer, Integer>> _iter2 = _iter1.getValue();
+                oprot.writeListBegin(new TList(TType.MAP, _iter2.size()));
+            for (Map<Integer, Integer> _iter3 : _iter2) {
+              oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _iter3.size()));
+            for (Map.Entry<Integer, Integer> _iter4 : _iter3.entrySet()) {
+              {
+                Integer _iter5 = _iter4.getKey();
+                oprot.writeI32(_iter5);
+              }
+              {
+                Integer _iter5 = _iter4.getValue();
+                oprot.writeI32(_iter5);
+              }
             }
             oprot.writeMapEnd();
             }
             oprot.writeListEnd();
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -2702,17 +2870,29 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
         Map<Integer, List<Map<test.fixtures.complex_struct.MyStruct, Integer>>> _iter0 = mapI32MapListStructI32;
         oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _iter0.size()));
             for (Map.Entry<Integer, List<Map<test.fixtures.complex_struct.MyStruct, Integer>>> _iter1 : _iter0.entrySet()) {
-              oprot.writeI32(_iter1.getKey());
-              oprot.writeListBegin(new TList(TType.MAP, _iter1.getValue().size()));
-            for (Map<test.fixtures.complex_struct.MyStruct, Integer> _iter2 : _iter1.getValue()) {
-              oprot.writeMapBegin(new TMap(TType.STRUCT, TType.I32, _iter2.size()));
-            for (Map.Entry<test.fixtures.complex_struct.MyStruct, Integer> _iter3 : _iter2.entrySet()) {
-              _iter3.getKey().write0(oprot);
-              oprot.writeI32(_iter3.getValue());
+              {
+                Integer _iter2 = _iter1.getKey();
+                oprot.writeI32(_iter2);
+              }
+              {
+                List<Map<test.fixtures.complex_struct.MyStruct, Integer>> _iter2 = _iter1.getValue();
+                oprot.writeListBegin(new TList(TType.MAP, _iter2.size()));
+            for (Map<test.fixtures.complex_struct.MyStruct, Integer> _iter3 : _iter2) {
+              oprot.writeMapBegin(new TMap(TType.STRUCT, TType.I32, _iter3.size()));
+            for (Map.Entry<test.fixtures.complex_struct.MyStruct, Integer> _iter4 : _iter3.entrySet()) {
+              {
+                test.fixtures.complex_struct.MyStruct _iter5 = _iter4.getKey();
+                _iter5.write0(oprot);
+              }
+              {
+                Integer _iter5 = _iter4.getValue();
+                oprot.writeI32(_iter5);
+              }
             }
             oprot.writeMapEnd();
             }
             oprot.writeListEnd();
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();

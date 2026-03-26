@@ -354,8 +354,14 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         com.foo.FastIntLongMap _iter0 = detailMap;
         oprot.writeMapBegin(new TMap(TType.I32, TType.I64, _iter0.size()));
             for (Map.Entry<Integer, Long> _iter1 : _iter0.entrySet()) {
-              oprot.writeI32(_iter1.getKey());
-              oprot.writeI64(_iter1.getValue());
+              {
+                Integer _iter2 = _iter1.getKey();
+                oprot.writeI32(_iter2);
+              }
+              {
+                Long _iter2 = _iter1.getValue();
+                oprot.writeI64(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();

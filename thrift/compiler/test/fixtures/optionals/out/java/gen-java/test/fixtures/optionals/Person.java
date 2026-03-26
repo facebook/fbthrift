@@ -537,8 +537,14 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
         Map<test.fixtures.optionals.Animal, String>  _iter0 = petNames;
         oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, _iter0.size()));
             for (Map.Entry<test.fixtures.optionals.Animal, String> _iter1 : _iter0.entrySet()) {
-              oprot.writeI32(_iter1 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter1.getKey()));
-              oprot.writeString(_iter1.getValue());
+              {
+                test.fixtures.optionals.Animal _iter2 = _iter1.getKey();
+                oprot.writeI32(_iter2 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter2));
+              }
+              {
+                String _iter2 = _iter1.getValue();
+                oprot.writeString(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();

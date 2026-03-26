@@ -1148,8 +1148,14 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
         Map<Integer, String> _iter0 = field3;
         oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, _iter0.size()));
             for (Map.Entry<Integer, String> _iter1 : _iter0.entrySet()) {
-              oprot.writeI32(_iter1.getKey());
-              oprot.writeString(_iter1.getValue());
+              {
+                Integer _iter2 = _iter1.getKey();
+                oprot.writeI32(_iter2);
+              }
+              {
+                String _iter2 = _iter1.getValue();
+                oprot.writeString(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -1209,12 +1215,18 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
         Map<Integer, List<test.fixtures.complex_struct.SimpleStruct>> _iter0 = mapNestlistStructDfSet;
         oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _iter0.size()));
             for (Map.Entry<Integer, List<test.fixtures.complex_struct.SimpleStruct>> _iter1 : _iter0.entrySet()) {
-              oprot.writeI32(_iter1.getKey());
-              oprot.writeListBegin(new TList(TType.STRUCT, _iter1.getValue().size()));
-            for (test.fixtures.complex_struct.SimpleStruct _iter2 : _iter1.getValue()) {
-              _iter2.write0(oprot);
+              {
+                Integer _iter2 = _iter1.getKey();
+                oprot.writeI32(_iter2);
+              }
+              {
+                List<test.fixtures.complex_struct.SimpleStruct> _iter2 = _iter1.getValue();
+                oprot.writeListBegin(new TList(TType.STRUCT, _iter2.size()));
+            for (test.fixtures.complex_struct.SimpleStruct _iter3 : _iter2) {
+              _iter3.write0(oprot);
             }
             oprot.writeListEnd();
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -1224,8 +1236,14 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
         it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> _iter0 = mapJavaTypeDFset;
         oprot.writeMapBegin(new TMap(TType.I64, TType.STRING, _iter0.size()));
             for (Map.Entry<Long, String> _iter1 : _iter0.entrySet()) {
-              oprot.writeI64(_iter1.getKey());
-              oprot.writeString(_iter1.getValue());
+              {
+                Long _iter2 = _iter1.getKey();
+                oprot.writeI64(_iter2);
+              }
+              {
+                String _iter2 = _iter1.getValue();
+                oprot.writeString(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -1235,8 +1253,14 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
         Map<Long, Integer> _iter0 = emptyMap;
         oprot.writeMapBegin(new TMap(TType.I64, TType.I32, _iter0.size()));
             for (Map.Entry<Long, Integer> _iter1 : _iter0.entrySet()) {
-              oprot.writeI64(_iter1.getKey());
-              oprot.writeI32(_iter1.getValue());
+              {
+                Long _iter2 = _iter1.getKey();
+                oprot.writeI64(_iter2);
+              }
+              {
+                Integer _iter2 = _iter1.getValue();
+                oprot.writeI32(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -1246,13 +1270,25 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
         Map<String, Map<Integer, test.fixtures.complex_struct.MyEnum>> _iter0 = enumMapDFset;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.MAP, _iter0.size()));
             for (Map.Entry<String, Map<Integer, test.fixtures.complex_struct.MyEnum>> _iter1 : _iter0.entrySet()) {
-              oprot.writeString(_iter1.getKey());
-              oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _iter1.getValue().size()));
-            for (Map.Entry<Integer, test.fixtures.complex_struct.MyEnum> _iter2 : _iter1.getValue().entrySet()) {
-              oprot.writeI32(_iter2.getKey());
-              oprot.writeI32(_iter2 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter2.getValue()));
+              {
+                String _iter2 = _iter1.getKey();
+                oprot.writeString(_iter2);
+              }
+              {
+                Map<Integer, test.fixtures.complex_struct.MyEnum> _iter2 = _iter1.getValue();
+                oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _iter2.size()));
+            for (Map.Entry<Integer, test.fixtures.complex_struct.MyEnum> _iter3 : _iter2.entrySet()) {
+              {
+                Integer _iter4 = _iter3.getKey();
+                oprot.writeI32(_iter4);
+              }
+              {
+                test.fixtures.complex_struct.MyEnum _iter4 = _iter3.getValue();
+                oprot.writeI32(_iter4 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter4));
+              }
             }
             oprot.writeMapEnd();
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();

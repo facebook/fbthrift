@@ -878,8 +878,14 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         Map<Short, Short> _iter0 = (Map<Short, Short>)this.value;
         oprot.writeMapBegin(new TMap(TType.I16, TType.I16, _iter0.size()));
             for (Map.Entry<Short, Short> _iter1 : _iter0.entrySet()) {
-              oprot.writeI16(_iter1.getKey());
-              oprot.writeI16(_iter1.getValue());
+              {
+                Short _iter2 = _iter1.getKey();
+                oprot.writeI16(_iter2);
+              }
+              {
+                Short _iter2 = _iter1.getValue();
+                oprot.writeI16(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();

@@ -229,16 +229,22 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
         Map<Integer, List<List<Float>>> _iter0 = mapListOfFloats;
         oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _iter0.size()));
             for (Map.Entry<Integer, List<List<Float>>> _iter1 : _iter0.entrySet()) {
-              oprot.writeI32(_iter1.getKey());
-              oprot.writeListBegin(new TList(TType.LIST, _iter1.getValue().size()));
-            for (List<Float> _iter2 : _iter1.getValue()) {
-              oprot.writeListBegin(new TList(TType.FLOAT, _iter2.size()));
-            for (float _iter3 : _iter2) {
-              oprot.writeFloat(_iter3);
+              {
+                Integer _iter2 = _iter1.getKey();
+                oprot.writeI32(_iter2);
+              }
+              {
+                List<List<Float>> _iter2 = _iter1.getValue();
+                oprot.writeListBegin(new TList(TType.LIST, _iter2.size()));
+            for (List<Float> _iter3 : _iter2) {
+              oprot.writeListBegin(new TList(TType.FLOAT, _iter3.size()));
+            for (float _iter4 : _iter3) {
+              oprot.writeFloat(_iter4);
             }
             oprot.writeListEnd();
             }
             oprot.writeListEnd();
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();

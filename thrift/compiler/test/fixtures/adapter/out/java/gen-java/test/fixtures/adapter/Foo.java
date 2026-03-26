@@ -842,13 +842,19 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         Map<String, com.facebook.thrift.my.AdaptedList_2> _iter0 = mapField;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter0.size()));
             for (Map.Entry<String, com.facebook.thrift.my.AdaptedList_2> _iter1 : _iter0.entrySet()) {
-              oprot.writeString(_iter1.getKey());
-              List<com.facebook.thrift.my.AdaptedString_1> _iter2 = __ListWithElemAdapter_withAdapter_2312_Adapter.toThrift(_iter1.getValue());
-        oprot.writeListBegin(new TList(TType.STRING, _iter2.size()));
-            for (com.facebook.thrift.my.AdaptedString_1 _iter3 : _iter2) {
-              oprot.writeString(__StringWithAdapter_Adapter.toThrift(_iter3));
+              {
+                String _iter2 = _iter1.getKey();
+                oprot.writeString(_iter2);
+              }
+              {
+                com.facebook.thrift.my.AdaptedList_2 _iter2 = _iter1.getValue();
+                List<com.facebook.thrift.my.AdaptedString_1> _iter3 = __ListWithElemAdapter_withAdapter_2312_Adapter.toThrift(_iter2);
+        oprot.writeListBegin(new TList(TType.STRING, _iter3.size()));
+            for (com.facebook.thrift.my.AdaptedString_1 _iter4 : _iter3) {
+              oprot.writeString(__StringWithAdapter_Adapter.toThrift(_iter4));
             }
             oprot.writeListEnd();
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -859,13 +865,19 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         Map<String, com.facebook.thrift.my.AdaptedList_2>  _iter0 = optionalMapField;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter0.size()));
             for (Map.Entry<String, com.facebook.thrift.my.AdaptedList_2> _iter1 : _iter0.entrySet()) {
-              oprot.writeString(_iter1.getKey());
-              List<com.facebook.thrift.my.AdaptedString_1> _iter2 = __ListWithElemAdapter_withAdapter_2312_Adapter.toThrift(_iter1.getValue());
-        oprot.writeListBegin(new TList(TType.STRING, _iter2.size()));
-            for (com.facebook.thrift.my.AdaptedString_1 _iter3 : _iter2) {
-              oprot.writeString(__StringWithAdapter_Adapter.toThrift(_iter3));
+              {
+                String _iter2 = _iter1.getKey();
+                oprot.writeString(_iter2);
+              }
+              {
+                com.facebook.thrift.my.AdaptedList_2 _iter2 = _iter1.getValue();
+                List<com.facebook.thrift.my.AdaptedString_1> _iter3 = __ListWithElemAdapter_withAdapter_2312_Adapter.toThrift(_iter2);
+        oprot.writeListBegin(new TList(TType.STRING, _iter3.size()));
+            for (com.facebook.thrift.my.AdaptedString_1 _iter4 : _iter3) {
+              oprot.writeString(__StringWithAdapter_Adapter.toThrift(_iter4));
             }
             oprot.writeListEnd();
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -919,8 +931,14 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         Map<String, Integer> _iter0 = adaptedMap;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.I32, _iter0.size()));
             for (Map.Entry<String, Integer> _iter1 : _iter0.entrySet()) {
-              oprot.writeString(_iter1.getKey());
-              oprot.writeI32(_iter1.getValue());
+              {
+                String _iter2 = _iter1.getKey();
+                oprot.writeString(_iter2);
+              }
+              {
+                Integer _iter2 = _iter1.getValue();
+                oprot.writeI32(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
@@ -934,8 +952,14 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
             for (Map<Integer, Integer> _iter2 : _iter1) {
               oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _iter2.size()));
             for (Map.Entry<Integer, Integer> _iter3 : _iter2.entrySet()) {
-              oprot.writeI32(_iter3.getKey());
-              oprot.writeI32(_iter3.getValue());
+              {
+                Integer _iter4 = _iter3.getKey();
+                oprot.writeI32(_iter4);
+              }
+              {
+                Integer _iter4 = _iter3.getValue();
+                oprot.writeI32(_iter4);
+              }
             }
             oprot.writeMapEnd();
             }

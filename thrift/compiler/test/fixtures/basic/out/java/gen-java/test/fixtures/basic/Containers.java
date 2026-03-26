@@ -277,8 +277,14 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
         Map<String, Long> _iter0 = stringToI64Map;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.I64, _iter0.size()));
             for (Map.Entry<String, Long> _iter1 : _iter0.entrySet()) {
-              oprot.writeString(_iter1.getKey());
-              oprot.writeI64(_iter1.getValue());
+              {
+                String _iter2 = _iter1.getKey();
+                oprot.writeString(_iter2);
+              }
+              {
+                Long _iter2 = _iter1.getValue();
+                oprot.writeI64(_iter2);
+              }
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
