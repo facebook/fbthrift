@@ -318,13 +318,7 @@ struct SerializedSize<ZeroCopy, type::enum_t<T>> {
   }
 };
 
-inline uint32_t checked_container_size(size_t size) {
-  const size_t limit = std::numeric_limits<int32_t>::max();
-  if (size > limit) {
-    TProtocolException::throwExceededSizeLimit(size, limit);
-  }
-  return static_cast<uint32_t>(size);
-}
+using apache::thrift::detail::pm::checked_container_size;
 
 template <bool ZeroCopy, typename Tag>
 struct SerializedSize<ZeroCopy, type::list<Tag>> {
