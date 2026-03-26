@@ -1160,12 +1160,6 @@ class mstch_java_service : public mstch_service {
             {"service:streamingFunctions",
              &mstch_java_service::get_streaming_functions},
             {"service:sinkFunctions", &mstch_java_service::get_sink_functions},
-            {"service:metaReferencedStructs",
-             &mstch_java_service::meta_referenced_structs},
-            {"service:metaReferencedEnums",
-             &mstch_java_service::meta_referenced_enums},
-            {"service:metaReferencedExceptions",
-             &mstch_java_service::meta_referenced_exceptions},
         });
   }
   mstch::node get_oneway_functions() {
@@ -1216,12 +1210,6 @@ class mstch_java_service : public mstch_service {
     }
     return make_mstch_functions(funcs);
   }
-
-  // TODO(leochashnikov): Traverse type graph to populate
-  // structs/enums/exceptions.
-  mstch::node meta_referenced_structs() { return mstch::array(); }
-  mstch::node meta_referenced_enums() { return mstch::array(); }
-  mstch::node meta_referenced_exceptions() { return mstch::array(); }
 };
 
 class mstch_java_interaction : public mstch_java_service {

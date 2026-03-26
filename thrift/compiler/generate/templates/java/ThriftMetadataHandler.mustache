@@ -75,55 +75,12 @@ public class {{service:javaCapitalName}}ThriftMetadataHandler implements com.fac
         .build();
 
     Map<String, ThriftEnum> enums = new HashMap<>();
-    {{#service:metaReferencedEnums}}
-    {
-      Map<Integer, String> elements = new HashMap<>();
-      {{#metaEnum:values}}
-      elements.put({{metaEnumValue:value}}, "{{metaEnumValue:name}}");
-      {{/metaEnum:values}}
-      enums.put("{{metaEnum:fqn}}", new ThriftEnum.Builder()
-          .setName("{{metaEnum:fqn}}")
-          .setElements(elements)
-          .build());
-    }
-    {{/service:metaReferencedEnums}}
     ENUMS = Collections.unmodifiableMap(enums);
 
     Map<String, ThriftStruct> structs = new HashMap<>();
-    {{#service:metaReferencedStructs}}
-    structs.put("{{metaStruct:fqn}}", new ThriftStruct.Builder()
-        .setName("{{metaStruct:fqn}}")
-        .setFields(Arrays.asList(
-            {{#metaStruct:fields}}
-            new ThriftField.Builder()
-                .setId({{metaField:id}})
-                .setType({{metaField:typeExpression}})
-                .setName("{{metaField:name}}")
-                .setIsOptional({{#metaField:isOptional}}true{{/metaField:isOptional}}{{^metaField:isOptional}}false{{/metaField:isOptional}})
-                .build(){{^last?}},{{/last?}}
-            {{/metaStruct:fields}}
-        ))
-        .setIsUnion({{#metaStruct:isUnion}}true{{/metaStruct:isUnion}}{{^metaStruct:isUnion}}false{{/metaStruct:isUnion}})
-        .build());
-    {{/service:metaReferencedStructs}}
     STRUCTS = Collections.unmodifiableMap(structs);
 
     Map<String, ThriftException> exceptions = new HashMap<>();
-    {{#service:metaReferencedExceptions}}
-    exceptions.put("{{metaException:fqn}}", new ThriftException.Builder()
-        .setName("{{metaException:fqn}}")
-        .setFields(Arrays.asList(
-            {{#metaException:fields}}
-            new ThriftField.Builder()
-                .setId({{metaField:id}})
-                .setType({{metaField:typeExpression}})
-                .setName("{{metaField:name}}")
-                .setIsOptional({{#metaField:isOptional}}true{{/metaField:isOptional}}{{^metaField:isOptional}}false{{/metaField:isOptional}})
-                .build(){{^last?}},{{/last?}}
-            {{/metaException:fields}}
-        ))
-        .build());
-    {{/service:metaReferencedExceptions}}
     EXCEPTIONS = Collections.unmodifiableMap(exceptions);
   }
 
