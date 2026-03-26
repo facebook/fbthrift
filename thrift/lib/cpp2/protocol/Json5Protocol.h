@@ -93,7 +93,7 @@ class Json5ProtocolUtils final {
   template <class Tag>
   [[nodiscard]] static std::string toBasicJson(
       const type::native_type<Tag>& value) {
-    return json5::detail::toJsonImpl<Tag>(value, {.indentWidth = 2});
+    return json5::detail::toJsonImpl<Tag>(value, {{.indentWidth = 2}});
   }
   template <class T>
     requires(is_thrift_class_v<T>)
@@ -134,7 +134,7 @@ class Json5ProtocolUtils final {
       const type::native_type<Tag>& value) {
     auto opts = json5::detail::kJson5Options;
     opts.indentWidth = 2;
-    return json5::detail::toJsonImpl<Tag>(value, opts);
+    return json5::detail::toJsonImpl<Tag>(value, {.writer = opts});
   }
   template <class T>
     requires(is_thrift_class_v<T>)

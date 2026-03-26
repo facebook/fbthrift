@@ -90,8 +90,6 @@
 
 #pragma once
 
-#include <variant>
-
 #include <glog/logging.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBufQueue.h>
@@ -114,10 +112,13 @@ namespace apache::thrift::json5::detail {
  */
 class Json5ProtocolWriter final {
  public:
+  struct Options {
+    JsonWriterOptions writer;
+  };
   explicit Json5ProtocolWriter(
       ExternalBufferSharing /*sharing*/ = COPY_EXTERNAL_BUFFER /* ignored */,
-      JsonWriterOptions options = {})
-      : options_(options), writer_(options) {}
+      Options options = {})
+      : options_(options.writer), writer_(options_) {}
 
   KeyOrder keyOrder() const { return KeyOrder::StableAscending; }
   FieldOrder fieldOrder() const { return FieldOrder::IdAscending; }
@@ -196,7 +197,8 @@ class Json5ProtocolWriter final {
 
 template <class Tag>
 [[nodiscard]] std::string toJsonImpl(
-    const type::native_type<Tag>& value, const JsonWriterOptions& options) {
+    const type::native_type<Tag>& value,
+    const Json5ProtocolWriter::Options& options) {
   folly::IOBufQueue queue;
   Json5ProtocolWriter writer(COPY_EXTERNAL_BUFFER, options);
   writer.setOutput(&queue);

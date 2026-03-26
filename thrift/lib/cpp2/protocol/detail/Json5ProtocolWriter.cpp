@@ -191,7 +191,7 @@ std::optional<std::uint32_t> Json5ProtocolWriter::maybeWriteSimpleMapKey(
     return writer_.writeObjectName(value);
   } else {
     // For non-string keys, use Json5Protocol to stringify the value.
-    return writer_.writeObjectName(toJsonImpl<Tag>(value, options_));
+    return writer_.writeObjectName(toJsonImpl<Tag>(value, {options_}));
   }
 }
 
