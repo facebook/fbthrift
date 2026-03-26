@@ -92,7 +92,7 @@ Map<
   {{#else if type.typedef?}}
 {{#if type.lastAdapter?}}{{#partial adapted_boxed_type type=type.resolved}}{{#else}}{{type.typeClassName}}{{/if}}
   {{#else}}
-{{#partial boxed_type type=type type_isAdapterSet=true field_hasAdapter=false}}
+{{#partial boxed_type type=type type_isAdapterSet=true field_hasAdapter=true}}
   {{/if (not (string.empty? type.javaType))}}
 {{/let partial}}
 

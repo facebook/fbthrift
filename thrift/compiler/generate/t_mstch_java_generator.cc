@@ -850,7 +850,7 @@ class t_mstch_java_generator : public t_mstch_generator {
       int32_t count = 0;
       auto* type = &self;
       while (type) {
-        if (self.is<t_typedef>() &&
+        if (type->is<t_typedef>() &&
             type->has_structured_annotation(kJavaAdapterUri)) {
           count++;
           if (const auto* as_typedef = type->try_as<t_typedef>()) {
