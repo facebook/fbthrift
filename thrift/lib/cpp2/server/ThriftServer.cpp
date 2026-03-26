@@ -2509,10 +2509,14 @@ folly::observer::Observer<CPUConcurrencyController::Config>
 ThriftServer::makeCPUConcurrencyControllerConfigInternal() {
   return folly::observer::makeObserver(
       [mockConfig = mockCPUConcurrencyControllerConfig_.getObserver(),
+       dynamicConfig = dynamicCPUConcurrencyControllerConfig_.getObserver(),
        config = detail::makeCPUConcurrencyControllerConfig(
            this)]() -> CPUConcurrencyController::Config {
-        if (auto config_2 = **mockConfig) {
-          return *config_2;
+        if (auto mockVal = **mockConfig) {
+          return *mockVal;
+        }
+        if (auto dynVal = **dynamicConfig) {
+          return *dynVal;
         }
         return **config;
       });

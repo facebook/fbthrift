@@ -1055,6 +1055,11 @@ class ThriftServer : public apache::thrift::concurrency::Runnable,
   folly::observer::SimpleObservable<
       std::optional<CPUConcurrencyController::Config>>
       mockCPUConcurrencyControllerConfig_{std::nullopt};
+  folly::observer::SimpleObservable<
+      std::optional<CPUConcurrencyController::Config>>
+      dynamicCPUConcurrencyControllerConfig_{std::nullopt};
+  folly::observer::CallbackHandle
+      dynamicCPUConcurrencyControllerConfigCallbackHandle_;
   folly::observer::Observer<CPUConcurrencyController::Config>
   makeCPUConcurrencyControllerConfigInternal();
   std::shared_ptr<CPUConcurrencyController> cpuConcurrencyController_;
@@ -1133,6 +1138,19 @@ class ThriftServer : public apache::thrift::concurrency::Runnable,
   void setMockCPUConcurrencyControllerConfig(
       CPUConcurrencyController::Config config) {
     mockCPUConcurrencyControllerConfig_.setValue(config);
+  }
+
+  void setDynamicCPUConcurrencyControllerConfigObserver(
+      const folly::observer::Observer<
+          std::optional<CPUConcurrencyController::Config>>& observer) {
+    dynamicCPUConcurrencyControllerConfigCallbackHandle_ =
+        observer.addCallback([this](const auto& snapshot) {
+          if (auto configOpt = *snapshot) {
+            dynamicCPUConcurrencyControllerConfig_.setValue(*configOpt);
+          } else {
+            dynamicCPUConcurrencyControllerConfig_.setValue(std::nullopt);
+          }
+        });
   }
 
   /**
