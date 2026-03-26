@@ -16,8 +16,15 @@
 
 #pragma once
 
+#include <type_traits>
+
 #include <thrift/conformance/cpp2/Protocol.h>
 #include <thrift/conformance/if/gen-cpp2/any_types.h>
+#include <thrift/lib/cpp2/Thrift.h>
+#include <thrift/lib/cpp2/op/Encode.h>
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/type/Tag.h>
 
 namespace apache::thrift::conformance {
 
@@ -32,5 +39,64 @@ void setProtocol(const Protocol& protocol, Any& any) noexcept;
 
 // Raises std::invalid_argument if invalid.
 void validateAny(const Any& any);
+
+// Encode a statically-typed value into a conformance::Any, bypassing the
+// AnyRegistry. The type must have a Thrift URI (i.e. be a generated struct).
+template <
+    StandardProtocol P = StandardProtocol::Compact,
+    typename T,
+    std::enable_if_t<
+        !std::is_same_v<std::decay_t<T>, Any> &&
+            (P == StandardProtocol::Compact || P == StandardProtocol::Binary),
+        int> = 0>
+Any toStaticAny(const T& value) {
+  using Tag = type::infer_tag<T>;
+  using Writer = std::conditional_t<
+      P == StandardProtocol::Binary,
+      BinaryProtocolWriter,
+      CompactProtocolWriter>;
+
+  Writer writer;
+  folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
+  writer.setOutput(&queue);
+  op::encode<Tag>(writer, value);
+
+  Any result;
+  result.type() = std::string(uri<T>());
+  if constexpr (P != StandardProtocol::Compact) {
+    result.protocol() = P;
+  }
+  result.data() = queue.moveAsValue();
+  return result;
+}
+
+// Decode a conformance::Any into a statically-typed value, bypassing the
+// AnyRegistry. Assumes the Any contains data of type T.
+template <typename T>
+T fromStaticAny(const Any& any) {
+  using Tag = type::infer_tag<T>;
+  T value;
+
+  if (!any.data().has_value()) {
+    folly::throw_exception<std::runtime_error>(
+        "fromStaticAny: Any has no data");
+  }
+
+  auto protocol = any.protocol().value_or(StandardProtocol::Compact);
+  if (protocol == StandardProtocol::Compact) {
+    CompactProtocolReader reader;
+    reader.setInput(&*any.data());
+    op::decode<Tag>(reader, value);
+  } else if (protocol == StandardProtocol::Binary) {
+    BinaryProtocolReader reader;
+    reader.setInput(&*any.data());
+    op::decode<Tag>(reader, value);
+  } else {
+    folly::throw_exception<std::runtime_error>(
+        "fromStaticAny: unsupported protocol");
+  }
+
+  return value;
+}
 
 } // namespace apache::thrift::conformance
