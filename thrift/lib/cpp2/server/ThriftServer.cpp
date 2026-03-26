@@ -103,7 +103,7 @@ THRIFT_FLAG_DEFINE_bool(enable_on_stop_serving, true);
 
 THRIFT_FLAG_DEFINE_bool(enable_io_queue_lag_detection, true);
 
-THRIFT_FLAG_DEFINE_bool(fizz_server_enable_hybrid_kex, false);
+THRIFT_FLAG_DEFINE_bool(fizz_server_enable_hybrid_kex, true);
 
 THRIFT_FLAG_DEFINE_bool(server_fizz_enable_aegis, false);
 THRIFT_FLAG_DEFINE_bool(server_fizz_prefer_psk_ke, false);
