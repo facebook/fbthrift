@@ -24,6 +24,9 @@ namespace java test.fixtures.toobigenum
 namespace cpp2 test.fixtures.toobigenum
 namespace py3 test.fixtures.toobigenum
 
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {"java.swift.skip_enum_name_map": "1"},
+}
 enum TooBigEnum {
   UNKNOWN = 0,
   ONE = 1,
@@ -45,4 +48,4 @@ enum TooBigEnum {
   SEVENTEEN = 17,
   EIGHTEEN = 18,
   NINETEEN = 19,
-} (java.swift.skip_enum_name_map = 1)
+}

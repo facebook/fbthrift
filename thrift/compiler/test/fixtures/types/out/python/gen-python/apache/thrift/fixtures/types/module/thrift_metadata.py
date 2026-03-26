@@ -52,6 +52,8 @@ def _fbthrift_gen_metadata_struct_decorated_struct(metadata_struct: _fbthrift_me
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="cpp.DeclareEqualToSpecialization"), fields= {  }),
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="cpp.DeclareHashSpecialization"), fields= {  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
@@ -154,6 +156,7 @@ def _fbthrift_gen_metadata_struct_VirtualStruct(metadata_struct: _fbthrift_metad
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="thrift.DeprecatedUnvalidatedAnnotations"), fields= { "items": _fbthrift_metadata.ThriftConstValue(cv_map=[_fbthrift_metadata.ThriftConstValuePair(key=_fbthrift_metadata.ThriftConstValue(cv_string="cpp.virtual"), value=_fbthrift_metadata.ThriftConstValue(cv_string="1")), ]),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
@@ -402,6 +405,7 @@ def _fbthrift_gen_metadata_struct_MyStruct(metadata_struct: _fbthrift_metadata.T
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="thrift.DeprecatedUnvalidatedAnnotations"), fields= { "items": _fbthrift_metadata.ThriftConstValue(cv_map=[_fbthrift_metadata.ThriftConstValuePair(key=_fbthrift_metadata.ThriftConstValue(cv_string="cpp.noncomparable"), value=_fbthrift_metadata.ThriftConstValue(cv_string="1")), ]),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
@@ -427,6 +431,7 @@ def _fbthrift_gen_metadata_struct_MyDataItem(metadata_struct: _fbthrift_metadata
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="thrift.DeprecatedUnvalidatedAnnotations"), fields= { "items": _fbthrift_metadata.ThriftConstValue(cv_map=[_fbthrift_metadata.ThriftConstValuePair(key=_fbthrift_metadata.ThriftConstValue(cv_string="cpp.noncomparable"), value=_fbthrift_metadata.ThriftConstValue(cv_string="1")), ]),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
@@ -884,6 +889,7 @@ def _fbthrift_gen_metadata_struct_AllocatorAware(metadata_struct: _fbthrift_meta
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="thrift.DeprecatedUnvalidatedAnnotations"), fields= { "items": _fbthrift_metadata.ThriftConstValue(cv_map=[_fbthrift_metadata.ThriftConstValuePair(key=_fbthrift_metadata.ThriftConstValue(cv_string="cpp.allocator"), value=_fbthrift_metadata.ThriftConstValue(cv_string="some_allocator")), ]),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
@@ -918,6 +924,7 @@ def _fbthrift_gen_metadata_struct_AllocatorAware2(metadata_struct: _fbthrift_met
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="thrift.DeprecatedUnvalidatedAnnotations"), fields= { "items": _fbthrift_metadata.ThriftConstValue(cv_map=[_fbthrift_metadata.ThriftConstValuePair(key=_fbthrift_metadata.ThriftConstValue(cv_string="cpp.allocator"), value=_fbthrift_metadata.ThriftConstValue(cv_string="some_allocator")), ]),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 

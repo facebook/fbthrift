@@ -20,10 +20,11 @@ include "thrift/annotation/thrift.thrift"
 @thrift.AllowLegacyMissingUris
 package;
 
+@thrift.DeprecatedUnvalidatedAnnotations{items = {"php.structtrait": "1"}}
 @hack.StructTrait
 struct MyStruct {
   1: string foo;
-} (php.structtrait)
+}
 
 @hack.StructTrait
 struct MySecondStruct {

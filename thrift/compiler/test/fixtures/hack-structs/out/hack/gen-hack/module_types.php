@@ -79,6 +79,13 @@ class MyStruct implements \IThriftSyncStruct, \IThriftStructMetadata {
   public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
+        '\facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations' => \facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations::fromShape(
+          shape(
+            "items" => dict[
+              "php.structtrait" => "1",
+            ],
+          )
+        ),
         '\facebook\thrift\annotation\hack\StructTrait' => \facebook\thrift\annotation\hack\StructTrait::withDefaultValues(),
       ],
       'fields' => dict[

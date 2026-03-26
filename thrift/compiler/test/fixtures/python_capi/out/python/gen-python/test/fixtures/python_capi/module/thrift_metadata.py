@@ -344,6 +344,7 @@ def _fbthrift_gen_metadata_struct_ListStruct(metadata_struct: _fbthrift_metadata
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="thrift.DeprecatedUnvalidatedAnnotations"), fields= { "items": _fbthrift_metadata.ThriftConstValue(cv_map=[_fbthrift_metadata.ThriftConstValuePair(key=_fbthrift_metadata.ThriftConstValue(cv_string="cpp.noncopyable"), value=_fbthrift_metadata.ThriftConstValue(cv_string="1")), ]),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
@@ -509,6 +510,7 @@ def _fbthrift_gen_metadata_struct_ComposeStruct(metadata_struct: _fbthrift_metad
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="thrift.DeprecatedUnvalidatedAnnotations"), fields= { "items": _fbthrift_metadata.ThriftConstValue(cv_map=[_fbthrift_metadata.ThriftConstValuePair(key=_fbthrift_metadata.ThriftConstValue(cv_string="cpp.noncopyable"), value=_fbthrift_metadata.ThriftConstValue(cv_string="1")), ]),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 

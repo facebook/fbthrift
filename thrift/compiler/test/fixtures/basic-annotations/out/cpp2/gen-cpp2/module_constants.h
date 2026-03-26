@@ -17,9 +17,9 @@ namespace module_constants {
   /** Glean {"constant": "myStruct"} */
   ::cpp2::YourStruct const& myStruct();
 
-  FOLLY_EXPORT ::std::string_view _fbthrift_schema_f047d2fb0cb3f2fe();
-  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_f047d2fb0cb3f2fe_includes();
-  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_f047d2fb0cb3f2fe_uris();
+  FOLLY_EXPORT ::std::string_view _fbthrift_schema_c6df15e5a532384b();
+  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_c6df15e5a532384b_includes();
+  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_c6df15e5a532384b_uris();
 
 } // namespace module_constants
 } // namespace cpp2

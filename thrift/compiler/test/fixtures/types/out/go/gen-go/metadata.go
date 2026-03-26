@@ -305,6 +305,28 @@ var (
                     StructuredAnnotations: []*metadata.ThriftConstStruct{
                         &metadata.ThriftConstStruct{
                             Type: &metadata.ThriftStructType{
+                                Name: "thrift.DeprecatedUnvalidatedAnnotations",
+                            },
+                            Fields: map[string]*metadata.ThriftConstValue{
+                                "items":
+                                    &metadata.ThriftConstValue{
+                                        CvMap: []*metadata.ThriftConstValuePair{
+                                            &metadata.ThriftConstValuePair{
+                                                Key: &metadata.ThriftConstValue{
+                                                CvString: new("noop_annotation"),
+                                            },
+                                            
+                                                Value: &metadata.ThriftConstValue{
+                                                CvString: new("1"),
+                                            },
+                                            
+                                            },
+                                        },
+                                    },
+                            },
+                        },
+                        &metadata.ThriftConstStruct{
+                            Type: &metadata.ThriftStructType{
                                 Name: "thrift.AllowLegacyTypedefUri",
                             },
                             Fields: map[string]*metadata.ThriftConstValue{
@@ -320,6 +342,28 @@ var (
                     Name:           "module.SomeListOfTypeMap_2468",
                     UnderlyingType: included.GetMetadataThriftType("included.SomeListOfTypeMap"),
                     StructuredAnnotations: []*metadata.ThriftConstStruct{
+                        &metadata.ThriftConstStruct{
+                            Type: &metadata.ThriftStructType{
+                                Name: "thrift.DeprecatedUnvalidatedAnnotations",
+                            },
+                            Fields: map[string]*metadata.ThriftConstValue{
+                                "items":
+                                    &metadata.ThriftConstValue{
+                                        CvMap: []*metadata.ThriftConstValuePair{
+                                            &metadata.ThriftConstValuePair{
+                                                Key: &metadata.ThriftConstValue{
+                                                CvString: new("noop_annotation"),
+                                            },
+                                            
+                                                Value: &metadata.ThriftConstValue{
+                                                CvString: new("1"),
+                                            },
+                                            
+                                            },
+                                        },
+                                    },
+                            },
+                        },
                         &metadata.ThriftConstStruct{
                             Type: &metadata.ThriftStructType{
                                 Name: "thrift.AllowLegacyTypedefUri",
@@ -495,6 +539,28 @@ var (
                     StructuredAnnotations: []*metadata.ThriftConstStruct{
                         &metadata.ThriftConstStruct{
                             Type: &metadata.ThriftStructType{
+                                Name: "thrift.DeprecatedUnvalidatedAnnotations",
+                            },
+                            Fields: map[string]*metadata.ThriftConstValue{
+                                "items":
+                                    &metadata.ThriftConstValue{
+                                        CvMap: []*metadata.ThriftConstValuePair{
+                                            &metadata.ThriftConstValuePair{
+                                                Key: &metadata.ThriftConstValue{
+                                                CvString: new("cpp.use_allocator"),
+                                            },
+                                            
+                                                Value: &metadata.ThriftConstValue{
+                                                CvString: new("1"),
+                                            },
+                                            
+                                            },
+                                        },
+                                    },
+                            },
+                        },
+                        &metadata.ThriftConstStruct{
+                            Type: &metadata.ThriftStructType{
                                 Name: "thrift.AllowLegacyTypedefUri",
                             },
                             Fields: map[string]*metadata.ThriftConstValue{
@@ -510,6 +576,28 @@ var (
                     Name:           "module.set_i32_7070",
                     UnderlyingType: premadeThriftType_set_i32,
                     StructuredAnnotations: []*metadata.ThriftConstStruct{
+                        &metadata.ThriftConstStruct{
+                            Type: &metadata.ThriftStructType{
+                                Name: "thrift.DeprecatedUnvalidatedAnnotations",
+                            },
+                            Fields: map[string]*metadata.ThriftConstValue{
+                                "items":
+                                    &metadata.ThriftConstValue{
+                                        CvMap: []*metadata.ThriftConstValuePair{
+                                            &metadata.ThriftConstValuePair{
+                                                Key: &metadata.ThriftConstValue{
+                                                CvString: new("cpp.use_allocator"),
+                                            },
+                                            
+                                                Value: &metadata.ThriftConstValue{
+                                                CvString: new("1"),
+                                            },
+                                            
+                                            },
+                                        },
+                                    },
+                            },
+                        },
                         &metadata.ThriftConstStruct{
                             Type: &metadata.ThriftStructType{
                                 Name: "thrift.AllowLegacyTypedefUri",
@@ -537,6 +625,28 @@ var (
                     StructuredAnnotations: []*metadata.ThriftConstStruct{
                         &metadata.ThriftConstStruct{
                             Type: &metadata.ThriftStructType{
+                                Name: "thrift.DeprecatedUnvalidatedAnnotations",
+                            },
+                            Fields: map[string]*metadata.ThriftConstValue{
+                                "items":
+                                    &metadata.ThriftConstValue{
+                                        CvMap: []*metadata.ThriftConstValuePair{
+                                            &metadata.ThriftConstValuePair{
+                                                Key: &metadata.ThriftConstValue{
+                                                CvString: new("cpp.use_allocator"),
+                                            },
+                                            
+                                                Value: &metadata.ThriftConstValue{
+                                                CvString: new("1"),
+                                            },
+                                            
+                                            },
+                                        },
+                                    },
+                            },
+                        },
+                        &metadata.ThriftConstStruct{
+                            Type: &metadata.ThriftStructType{
                                 Name: "thrift.AllowLegacyTypedefUri",
                             },
                             Fields: map[string]*metadata.ThriftConstValue{
@@ -554,6 +664,28 @@ var (
                     StructuredAnnotations: []*metadata.ThriftConstStruct{
                         &metadata.ThriftConstStruct{
                             Type: &metadata.ThriftStructType{
+                                Name: "thrift.DeprecatedUnvalidatedAnnotations",
+                            },
+                            Fields: map[string]*metadata.ThriftConstValue{
+                                "items":
+                                    &metadata.ThriftConstValue{
+                                        CvMap: []*metadata.ThriftConstValuePair{
+                                            &metadata.ThriftConstValuePair{
+                                                Key: &metadata.ThriftConstValue{
+                                                CvString: new("cpp.use_allocator"),
+                                            },
+                                            
+                                                Value: &metadata.ThriftConstValue{
+                                                CvString: new("1"),
+                                            },
+                                            
+                                            },
+                                        },
+                                    },
+                            },
+                        },
+                        &metadata.ThriftConstStruct{
+                            Type: &metadata.ThriftStructType{
                                 Name: "thrift.AllowLegacyTypedefUri",
                             },
                             Fields: map[string]*metadata.ThriftConstValue{
@@ -569,6 +701,28 @@ var (
                     Name:           "module.i32_9314",
                     UnderlyingType: premadeThriftType_i32,
                     StructuredAnnotations: []*metadata.ThriftConstStruct{
+                        &metadata.ThriftConstStruct{
+                            Type: &metadata.ThriftStructType{
+                                Name: "thrift.DeprecatedUnvalidatedAnnotations",
+                            },
+                            Fields: map[string]*metadata.ThriftConstValue{
+                                "items":
+                                    &metadata.ThriftConstValue{
+                                        CvMap: []*metadata.ThriftConstValuePair{
+                                            &metadata.ThriftConstValuePair{
+                                                Key: &metadata.ThriftConstValue{
+                                                CvString: new("cpp.use_allocator"),
+                                            },
+                                            
+                                                Value: &metadata.ThriftConstValue{
+                                                CvString: new("1"),
+                                            },
+                                            
+                                            },
+                                        },
+                                    },
+                            },
+                        },
                         &metadata.ThriftConstStruct{
                             Type: &metadata.ThriftStructType{
                                 Name: "thrift.AllowLegacyTypedefUri",
@@ -690,6 +844,22 @@ var (
                     Type:       premadeThriftType_string,
                 },
             },
+            StructuredAnnotations: []*metadata.ThriftConstStruct{
+                &metadata.ThriftConstStruct{
+                    Type: &metadata.ThriftStructType{
+                        Name: "cpp.DeclareEqualToSpecialization",
+                    },
+                    Fields: map[string]*metadata.ThriftConstValue{
+                    },
+                },
+                &metadata.ThriftConstStruct{
+                    Type: &metadata.ThriftStructType{
+                        Name: "cpp.DeclareHashSpecialization",
+                    },
+                    Fields: map[string]*metadata.ThriftConstValue{
+                    },
+                },
+            },
         }
     premadeStructMetadata_ContainerStruct =
         &metadata.ThriftStruct{
@@ -778,6 +948,30 @@ var (
                     Name:       "MyIntField",
                     IsOptional: false,
                     Type:       premadeThriftType_i64,
+                },
+            },
+            StructuredAnnotations: []*metadata.ThriftConstStruct{
+                &metadata.ThriftConstStruct{
+                    Type: &metadata.ThriftStructType{
+                        Name: "thrift.DeprecatedUnvalidatedAnnotations",
+                    },
+                    Fields: map[string]*metadata.ThriftConstValue{
+                        "items":
+                            &metadata.ThriftConstValue{
+                                CvMap: []*metadata.ThriftConstValuePair{
+                                    &metadata.ThriftConstValuePair{
+                                        Key: &metadata.ThriftConstValue{
+                                        CvString: new("cpp.virtual"),
+                                    },
+                                    
+                                        Value: &metadata.ThriftConstValue{
+                                        CvString: new("1"),
+                                    },
+                                    
+                                    },
+                                },
+                            },
+                    },
                 },
             },
         }
@@ -1012,12 +1206,60 @@ var (
                     Type:       premadeThriftType_module_MyDataItem,
                 },
             },
+            StructuredAnnotations: []*metadata.ThriftConstStruct{
+                &metadata.ThriftConstStruct{
+                    Type: &metadata.ThriftStructType{
+                        Name: "thrift.DeprecatedUnvalidatedAnnotations",
+                    },
+                    Fields: map[string]*metadata.ThriftConstValue{
+                        "items":
+                            &metadata.ThriftConstValue{
+                                CvMap: []*metadata.ThriftConstValuePair{
+                                    &metadata.ThriftConstValuePair{
+                                        Key: &metadata.ThriftConstValue{
+                                        CvString: new("cpp.noncomparable"),
+                                    },
+                                    
+                                        Value: &metadata.ThriftConstValue{
+                                        CvString: new("1"),
+                                    },
+                                    
+                                    },
+                                },
+                            },
+                    },
+                },
+            },
         }
     premadeStructMetadata_MyDataItem =
         &metadata.ThriftStruct{
             Name:    "module.MyDataItem",
             IsUnion: false,
             Fields:  []*metadata.ThriftField{
+            },
+            StructuredAnnotations: []*metadata.ThriftConstStruct{
+                &metadata.ThriftConstStruct{
+                    Type: &metadata.ThriftStructType{
+                        Name: "thrift.DeprecatedUnvalidatedAnnotations",
+                    },
+                    Fields: map[string]*metadata.ThriftConstValue{
+                        "items":
+                            &metadata.ThriftConstValue{
+                                CvMap: []*metadata.ThriftConstValuePair{
+                                    &metadata.ThriftConstValuePair{
+                                        Key: &metadata.ThriftConstValue{
+                                        CvString: new("cpp.noncomparable"),
+                                    },
+                                    
+                                        Value: &metadata.ThriftConstValue{
+                                        CvString: new("1"),
+                                    },
+                                    
+                                    },
+                                },
+                            },
+                    },
+                },
             },
         }
     premadeStructMetadata_Renaming =
@@ -1338,6 +1580,30 @@ var (
                     Type:       premadeThriftType_module_i32_9314,
                 },
             },
+            StructuredAnnotations: []*metadata.ThriftConstStruct{
+                &metadata.ThriftConstStruct{
+                    Type: &metadata.ThriftStructType{
+                        Name: "thrift.DeprecatedUnvalidatedAnnotations",
+                    },
+                    Fields: map[string]*metadata.ThriftConstValue{
+                        "items":
+                            &metadata.ThriftConstValue{
+                                CvMap: []*metadata.ThriftConstValuePair{
+                                    &metadata.ThriftConstValuePair{
+                                        Key: &metadata.ThriftConstValue{
+                                        CvString: new("cpp.allocator"),
+                                    },
+                                    
+                                        Value: &metadata.ThriftConstValue{
+                                        CvString: new("some_allocator"),
+                                    },
+                                    
+                                    },
+                                },
+                            },
+                    },
+                },
+            },
         }
     premadeStructMetadata_AllocatorAware2 =
         &metadata.ThriftStruct{
@@ -1355,6 +1621,30 @@ var (
                     Name:       "box_field",
                     IsOptional: true,
                     Type:       premadeThriftType_i32,
+                },
+            },
+            StructuredAnnotations: []*metadata.ThriftConstStruct{
+                &metadata.ThriftConstStruct{
+                    Type: &metadata.ThriftStructType{
+                        Name: "thrift.DeprecatedUnvalidatedAnnotations",
+                    },
+                    Fields: map[string]*metadata.ThriftConstValue{
+                        "items":
+                            &metadata.ThriftConstValue{
+                                CvMap: []*metadata.ThriftConstValuePair{
+                                    &metadata.ThriftConstValuePair{
+                                        Key: &metadata.ThriftConstValue{
+                                        CvString: new("cpp.allocator"),
+                                    },
+                                    
+                                        Value: &metadata.ThriftConstValue{
+                                        CvString: new("some_allocator"),
+                                    },
+                                    
+                                    },
+                                },
+                            },
+                    },
                 },
             },
         }
@@ -1517,6 +1807,30 @@ var enumMetadatas = func() []*metadata.ThriftEnum {
                 4: "two",
                 8: "three",
             },
+            StructuredAnnotations: []*metadata.ThriftConstStruct{
+                &metadata.ThriftConstStruct{
+                    Type: &metadata.ThriftStructType{
+                        Name: "thrift.DeprecatedUnvalidatedAnnotations",
+                    },
+                    Fields: map[string]*metadata.ThriftConstValue{
+                        "items":
+                            &metadata.ThriftConstValue{
+                                CvMap: []*metadata.ThriftConstValuePair{
+                                    &metadata.ThriftConstValuePair{
+                                        Key: &metadata.ThriftConstValue{
+                                        CvString: new("cpp.declare_bitwise_ops"),
+                                    },
+                                    
+                                        Value: &metadata.ThriftConstValue{
+                                        CvString: new("1"),
+                                    },
+                                    
+                                    },
+                                },
+                            },
+                    },
+                },
+            },
         },
     )
     fbthriftResults = append(fbthriftResults,
@@ -1525,6 +1839,30 @@ var enumMetadatas = func() []*metadata.ThriftEnum {
             Elements: map[int32]string{
                 0: "hello",
                 1: "world",
+            },
+            StructuredAnnotations: []*metadata.ThriftConstStruct{
+                &metadata.ThriftConstStruct{
+                    Type: &metadata.ThriftStructType{
+                        Name: "thrift.DeprecatedUnvalidatedAnnotations",
+                    },
+                    Fields: map[string]*metadata.ThriftConstValue{
+                        "items":
+                            &metadata.ThriftConstValue{
+                                CvMap: []*metadata.ThriftConstValuePair{
+                                    &metadata.ThriftConstValuePair{
+                                        Key: &metadata.ThriftConstValue{
+                                        CvString: new("cpp.deprecated_enum_unscoped"),
+                                    },
+                                    
+                                        Value: &metadata.ThriftConstValue{
+                                        CvString: new("1"),
+                                    },
+                                    
+                                    },
+                                },
+                            },
+                    },
+                },
             },
         },
     )

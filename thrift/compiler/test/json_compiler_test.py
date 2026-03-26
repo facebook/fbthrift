@@ -47,8 +47,6 @@ def check_run_thrift(annotate, *args):
         thrift,
         "--gen",
         gen_str,
-        "--extra-validation",
-        "allow_unstructured_annotations",
     ] + list(args)
     pipe = subprocess.PIPE
     return subprocess.check_call(argsx, stdout=pipe, stderr=pipe)
@@ -353,14 +351,22 @@ class JsonCompilerTest(unittest.TestCase):
             "foo.thrift",
             textwrap.dedent(
                 """\
+            include "thrift/annotation/thrift.thrift"
+
             struct Annotation {
               1: string name;
             }
 
             @Annotation{name="aba"}
+            @thrift.DeprecatedUnvalidatedAnnotations{
+              items = {"my_annotation_key": "my_annotation_value"},
+            }
             struct DataHolder {
-              1: string data (foo="bar", ignore)
-            } (my_annotation_key = "my_annotation_value")
+              @thrift.DeprecatedUnvalidatedAnnotations{
+                items = {"foo": "bar", "ignore": "1"},
+              }
+              1: string data
+            }
         """
             ),
             annotate=True,
@@ -370,6 +376,11 @@ class JsonCompilerTest(unittest.TestCase):
             {
                 "__fbthrift": {"@" + "generated": 0},
                 "thrift_module": "foo",
+                "includes": {
+                    "thrift": {
+                        "path": "thrift/annotation/thrift.thrift",
+                    },
+                },
                 "structs": {
                     "Annotation": {
                         "fields": {
@@ -379,11 +390,11 @@ class JsonCompilerTest(unittest.TestCase):
                                 "type_enum": "STRING",
                                 "source_range": {
                                     "begin": {
-                                        "line": 2,
+                                        "line": 4,
                                         "column": 3,
                                     },
                                     "end": {
-                                        "line": 2,
+                                        "line": 4,
                                         "column": 18,
                                     },
                                 },
@@ -391,14 +402,14 @@ class JsonCompilerTest(unittest.TestCase):
                         },
                         "is_exception": False,
                         "is_union": False,
-                        "lineno": 1,
+                        "lineno": 3,
                         "source_range": {
                             "begin": {
-                                "line": 1,
+                                "line": 3,
                                 "column": 1,
                             },
                             "end": {
-                                "line": 3,
+                                "line": 5,
                                 "column": 2,
                             },
                         },
@@ -414,12 +425,12 @@ class JsonCompilerTest(unittest.TestCase):
                                         "value": "bar",
                                         "source_range": {
                                             "begin": {
-                                                "line": 7,
-                                                "column": 19,
+                                                "line": 13,
+                                                "column": 14,
                                             },
                                             "end": {
-                                                "line": 7,
-                                                "column": 28,
+                                                "line": 13,
+                                                "column": 26,
                                             },
                                         },
                                     },
@@ -427,42 +438,50 @@ class JsonCompilerTest(unittest.TestCase):
                                         "value": "1",
                                         "source_range": {
                                             "begin": {
-                                                "line": 7,
-                                                "column": 30,
+                                                "line": 13,
+                                                "column": 28,
                                             },
                                             "end": {
-                                                "line": 7,
-                                                "column": 36,
+                                                "line": 13,
+                                                "column": 41,
                                             },
+                                        },
+                                    },
+                                },
+                                "structured_annotations": {
+                                    "thrift.DeprecatedUnvalidatedAnnotations": {
+                                        "items": {
+                                            "foo": "bar",
+                                            "ignore": "1",
                                         },
                                     },
                                 },
                                 "source_range": {
                                     "begin": {
-                                        "line": 7,
+                                        "line": 12,
                                         "column": 3,
                                     },
                                     "end": {
-                                        "line": 7,
-                                        "column": 37,
+                                        "line": 15,
+                                        "column": 17,
                                     },
                                 },
                             },
                         },
                         "is_exception": False,
                         "is_union": False,
-                        "lineno": 5,
+                        "lineno": 7,
                         "annotations": {
                             "my_annotation_key": {
                                 "value": "my_annotation_value",
                                 "source_range": {
                                     "begin": {
-                                        "line": 8,
-                                        "column": 4,
+                                        "line": 9,
+                                        "column": 12,
                                     },
                                     "end": {
-                                        "line": 8,
-                                        "column": 45,
+                                        "line": 9,
+                                        "column": 54,
                                     },
                                 },
                             },
@@ -471,15 +490,20 @@ class JsonCompilerTest(unittest.TestCase):
                             "Annotation": {
                                 "name": "aba",
                             },
+                            "thrift.DeprecatedUnvalidatedAnnotations": {
+                                "items": {
+                                    "my_annotation_key": "my_annotation_value",
+                                },
+                            },
                         },
                         "source_range": {
                             "begin": {
-                                "line": 5,
+                                "line": 7,
                                 "column": 1,
                             },
                             "end": {
-                                "line": 8,
-                                "column": 46,
+                                "line": 16,
+                                "column": 2,
                             },
                         },
                     },

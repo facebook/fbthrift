@@ -44,8 +44,6 @@ def get_reflection__decorated_struct() -> __StructSpec:
         name="decorated_struct",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.declare_equal_to""": """1""",
-            """cpp.declare_hash""": """1""",
         },
     )
     spec.add_field(

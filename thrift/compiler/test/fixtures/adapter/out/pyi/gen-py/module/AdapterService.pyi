@@ -9,8 +9,6 @@ import typing as __T
 from thrift import Thrift
 from thrift.protocol.TProtocol import TProtocolBase
 
-import ::my
-import my
 from module.ttypes import *
 
 

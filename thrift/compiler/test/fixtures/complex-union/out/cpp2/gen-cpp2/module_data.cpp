@@ -171,35 +171,35 @@ THRIFT_DATA_MEMBER FOLLY_ATTR_WEAK const std::array<int, 1> TStructDataStorage<:
 namespace detail {
 
 ::folly::Range<const ::std::string_view*> TSchemaAssociation<::cpp2::ComplexUnion, false>::bundle() {
-    return ::cpp2::module_constants::_fbthrift_schema_6b2bbec0742c9ec0_includes();
+    return ::cpp2::module_constants::_fbthrift_schema_ab85939f1995974b_includes();
 }
 
 ::folly::Range<const ::std::string_view*> TSchemaAssociation<::cpp2::ListUnion, false>::bundle() {
-    return ::cpp2::module_constants::_fbthrift_schema_6b2bbec0742c9ec0_includes();
+    return ::cpp2::module_constants::_fbthrift_schema_ab85939f1995974b_includes();
 }
 
 ::folly::Range<const ::std::string_view*> TSchemaAssociation<::cpp2::DataUnion, false>::bundle() {
-    return ::cpp2::module_constants::_fbthrift_schema_6b2bbec0742c9ec0_includes();
+    return ::cpp2::module_constants::_fbthrift_schema_ab85939f1995974b_includes();
 }
 
 ::folly::Range<const ::std::string_view*> TSchemaAssociation<::cpp2::Val, false>::bundle() {
-    return ::cpp2::module_constants::_fbthrift_schema_6b2bbec0742c9ec0_includes();
+    return ::cpp2::module_constants::_fbthrift_schema_ab85939f1995974b_includes();
 }
 
 ::folly::Range<const ::std::string_view*> TSchemaAssociation<::cpp2::ValUnion, false>::bundle() {
-    return ::cpp2::module_constants::_fbthrift_schema_6b2bbec0742c9ec0_includes();
+    return ::cpp2::module_constants::_fbthrift_schema_ab85939f1995974b_includes();
 }
 
 ::folly::Range<const ::std::string_view*> TSchemaAssociation<::cpp2::VirtualComplexUnion, false>::bundle() {
-    return ::cpp2::module_constants::_fbthrift_schema_6b2bbec0742c9ec0_includes();
+    return ::cpp2::module_constants::_fbthrift_schema_ab85939f1995974b_includes();
 }
 
 ::folly::Range<const ::std::string_view*> TSchemaAssociation<::cpp2::NonCopyableStruct, false>::bundle() {
-    return ::cpp2::module_constants::_fbthrift_schema_6b2bbec0742c9ec0_includes();
+    return ::cpp2::module_constants::_fbthrift_schema_ab85939f1995974b_includes();
 }
 
 ::folly::Range<const ::std::string_view*> TSchemaAssociation<::cpp2::NonCopyableUnion, false>::bundle() {
-    return ::cpp2::module_constants::_fbthrift_schema_6b2bbec0742c9ec0_includes();
+    return ::cpp2::module_constants::_fbthrift_schema_ab85939f1995974b_includes();
 }
 
 } // namespace detail

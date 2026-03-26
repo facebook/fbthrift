@@ -40,6 +40,7 @@ def _fbthrift_gen_metadata_struct_TemplateLists(metadata_struct: _fbthrift_metad
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="thrift.DeprecatedUnvalidatedAnnotations"), fields= { "items": _fbthrift_metadata.ThriftConstValue(cv_map=[_fbthrift_metadata.ThriftConstValuePair(key=_fbthrift_metadata.ThriftConstValue(cv_string="cpp.noncomparable"), value=_fbthrift_metadata.ThriftConstValue(cv_string="1")), ]),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 

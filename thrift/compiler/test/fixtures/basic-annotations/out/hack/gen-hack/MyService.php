@@ -1496,6 +1496,16 @@ class MyService_lobDataById_args implements \IThriftSyncStruct, \IThriftStructMe
     return shape(
       'struct' => dict[],
       'fields' => dict[
+        'data' => shape(
+          'field' => dict[
+            '\facebook\thrift\annotation\cpp\Name' => \facebook\thrift\annotation\cpp\Name::fromShape(
+              shape(
+                "value" => "dataStr",
+              )
+            ),
+          ],
+          'type' => dict[],
+        ),
       ],
     );
   }

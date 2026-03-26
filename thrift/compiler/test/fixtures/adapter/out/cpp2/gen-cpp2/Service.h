@@ -74,8 +74,8 @@ class ServiceHandler<::facebook::thrift::test::fixtures::adapter::Service> : pub
 namespace detail {
 template <> struct TSchemaAssociation<::facebook::thrift::test::fixtures::adapter::Service, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = 4183034140653051010;
-  static constexpr ::std::string_view definitionKey = {"\xcf\x3b\x50\x01\xc3\xa0\xc2\xe3\x2d\x66\x26\xce\xfc\x29\xde\x4c", 16};
+  static constexpr int64_t programId = 5042608518712446510;
+  static constexpr ::std::string_view definitionKey = {"\x2f\x9b\xb7\xcc\x36\xcd\xc6\xf0\x79\x94\x75\xf1\x75\x96\x4f\x59", 16};
 };
 }
 } // namespace apache::thrift

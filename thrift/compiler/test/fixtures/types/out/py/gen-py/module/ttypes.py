@@ -4253,8 +4253,6 @@ decorated_struct.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
 )))
 
 decorated_struct.thrift_struct_annotations = {
-  "cpp.declare_equal_to": "1",
-  "cpp.declare_hash": "1",
 }
 decorated_struct.thrift_field_annotations = {
 }

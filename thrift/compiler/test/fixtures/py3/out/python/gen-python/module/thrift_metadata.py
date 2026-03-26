@@ -307,6 +307,7 @@ def _fbthrift_gen_metadata_struct_BinaryUnion(metadata_struct: _fbthrift_metadat
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=True,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="thrift.DeprecatedUnvalidatedAnnotations"), fields= { "items": _fbthrift_metadata.ThriftConstValue(cv_map=[_fbthrift_metadata.ThriftConstValuePair(key=_fbthrift_metadata.ThriftConstValue(cv_string="cpp.noncomparable"), value=_fbthrift_metadata.ThriftConstValue(cv_string="1")), ]),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
@@ -331,6 +332,7 @@ def _fbthrift_gen_metadata_struct_BinaryUnionStruct(metadata_struct: _fbthrift_m
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="thrift.DeprecatedUnvalidatedAnnotations"), fields= { "items": _fbthrift_metadata.ThriftConstValue(cv_map=[_fbthrift_metadata.ThriftConstValuePair(key=_fbthrift_metadata.ThriftConstValue(cv_string="cpp.noncomparable"), value=_fbthrift_metadata.ThriftConstValue(cv_string="1")), ]),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
@@ -1051,6 +1053,7 @@ def _fbthrift_gen_metadata_service_DerivedService(metadata_struct: _fbthrift_met
     
     service_dict = dict(metadata_struct.services)
     service_dict[qualified_name] = _fbthrift_metadata.ThriftService(name=qualified_name, functions=functions, parent="module.SimpleService", structured_annotations=[
+        _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="thrift.DeprecatedUnvalidatedAnnotations"), fields= { "items": _fbthrift_metadata.ThriftConstValue(cv_map=[_fbthrift_metadata.ThriftConstValuePair(key=_fbthrift_metadata.ThriftConstValue(cv_string="bar"), value=_fbthrift_metadata.ThriftConstValue(cv_string="1")), _fbthrift_metadata.ThriftConstValuePair(key=_fbthrift_metadata.ThriftConstValue(cv_string="foo"), value=_fbthrift_metadata.ThriftConstValue(cv_string="\"\"\"")), ]),  }),
     ])
     new_struct = metadata_struct(services=service_dict)
     new_struct = _fbthrift_gen_metadata_service_SimpleService(new_struct)

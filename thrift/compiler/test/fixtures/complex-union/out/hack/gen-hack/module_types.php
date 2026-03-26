@@ -1582,7 +1582,15 @@ class VirtualComplexUnion implements \IThriftSyncStruct, \IThriftStructMetadata,
 
   public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        '\facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations' => \facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations::fromShape(
+          shape(
+            "items" => dict[
+              "cpp.virtual" => "1",
+            ],
+          )
+        ),
+      ],
       'fields' => dict[
       ],
     );
@@ -1682,7 +1690,15 @@ class NonCopyableStruct implements \IThriftSyncStruct, \IThriftStructMetadata {
 
   public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        '\facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations' => \facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations::fromShape(
+          shape(
+            "items" => dict[
+              "cpp.noncopyable" => "1",
+            ],
+          )
+        ),
+      ],
       'fields' => dict[
       ],
     );
@@ -1831,8 +1847,28 @@ class NonCopyableUnion implements \IThriftSyncStruct, \IThriftStructMetadata, \I
 
   public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        '\facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations' => \facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations::fromShape(
+          shape(
+            "items" => dict[
+              "cpp.noncopyable" => "1",
+            ],
+          )
+        ),
+      ],
       'fields' => dict[
+        's' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations' => \facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations::fromShape(
+              shape(
+                "items" => dict[
+                  "cpp.noncopyable" => "1",
+                ],
+              )
+            ),
+          ],
+        ),
       ],
     );
   }

@@ -1051,6 +1051,32 @@ impl ::fbthrift::metadata::ThriftAnnotations for decorated_struct {
         #[allow(unused_variables)]
         let type_id = ::std::any::TypeId::of::<T>();
 
+        if type_id == ::std::any::TypeId::of::<cpp__types::DeclareEqualToSpecialization>() {
+            let mut tmp = ::std::option::Option::Some(cpp__types::DeclareEqualToSpecialization {
+                ..::std::default::Default::default()
+            });
+            let r: &mut dyn ::std::any::Any = &mut tmp;
+            let r: &mut ::std::option::Option<T> = r.downcast_mut().unwrap();
+            return r.take();
+        }
+
+        if let ::std::option::Option::Some(r) = <cpp__types::DeclareEqualToSpecialization as ::fbthrift::metadata::ThriftAnnotations>::get_structured_annotation::<T>() {
+            return ::std::option::Option::Some(r);
+        }
+
+        if type_id == ::std::any::TypeId::of::<cpp__types::DeclareHashSpecialization>() {
+            let mut tmp = ::std::option::Option::Some(cpp__types::DeclareHashSpecialization {
+                ..::std::default::Default::default()
+            });
+            let r: &mut dyn ::std::any::Any = &mut tmp;
+            let r: &mut ::std::option::Option<T> = r.downcast_mut().unwrap();
+            return r.take();
+        }
+
+        if let ::std::option::Option::Some(r) = <cpp__types::DeclareHashSpecialization as ::fbthrift::metadata::ThriftAnnotations>::get_structured_annotation::<T>() {
+            return ::std::option::Option::Some(r);
+        }
+
         ::std::option::Option::None
     }
 
@@ -1616,6 +1642,30 @@ impl ::fbthrift::metadata::ThriftAnnotations for VirtualStruct {
     fn get_structured_annotation<T: Sized + 'static>() -> ::std::option::Option<T> {
         #[allow(unused_variables)]
         let type_id = ::std::any::TypeId::of::<T>();
+
+        if type_id == ::std::any::TypeId::of::<thrift__types::DeprecatedUnvalidatedAnnotations>() {
+            let mut tmp = ::std::option::Option::Some(thrift__types::DeprecatedUnvalidatedAnnotations {
+                items: {
+                    let mut map = ::std::collections::BTreeMap::new();
+                    {
+                        #[inline(never)]
+                        fn __do_insert(map: &mut ::std::collections::BTreeMap<::std::string::String, ::std::string::String>) {
+                            map.insert("cpp.virtual".to_owned(), "1".to_owned());
+                        }
+                        __do_insert(&mut map);
+                    }
+                    map
+                },
+                ..::std::default::Default::default()
+            });
+            let r: &mut dyn ::std::any::Any = &mut tmp;
+            let r: &mut ::std::option::Option<T> = r.downcast_mut().unwrap();
+            return r.take();
+        }
+
+        if let ::std::option::Option::Some(r) = <thrift__types::DeprecatedUnvalidatedAnnotations as ::fbthrift::metadata::ThriftAnnotations>::get_structured_annotation::<T>() {
+            return ::std::option::Option::Some(r);
+        }
 
         ::std::option::Option::None
     }
@@ -2988,6 +3038,30 @@ impl ::fbthrift::metadata::ThriftAnnotations for MyStruct {
         #[allow(unused_variables)]
         let type_id = ::std::any::TypeId::of::<T>();
 
+        if type_id == ::std::any::TypeId::of::<thrift__types::DeprecatedUnvalidatedAnnotations>() {
+            let mut tmp = ::std::option::Option::Some(thrift__types::DeprecatedUnvalidatedAnnotations {
+                items: {
+                    let mut map = ::std::collections::BTreeMap::new();
+                    {
+                        #[inline(never)]
+                        fn __do_insert(map: &mut ::std::collections::BTreeMap<::std::string::String, ::std::string::String>) {
+                            map.insert("cpp.noncomparable".to_owned(), "1".to_owned());
+                        }
+                        __do_insert(&mut map);
+                    }
+                    map
+                },
+                ..::std::default::Default::default()
+            });
+            let r: &mut dyn ::std::any::Any = &mut tmp;
+            let r: &mut ::std::option::Option<T> = r.downcast_mut().unwrap();
+            return r.take();
+        }
+
+        if let ::std::option::Option::Some(r) = <thrift__types::DeprecatedUnvalidatedAnnotations as ::fbthrift::metadata::ThriftAnnotations>::get_structured_annotation::<T>() {
+            return ::std::option::Option::Some(r);
+        }
+
         ::std::option::Option::None
     }
 
@@ -3104,6 +3178,30 @@ impl ::fbthrift::metadata::ThriftAnnotations for MyDataItem {
     fn get_structured_annotation<T: Sized + 'static>() -> ::std::option::Option<T> {
         #[allow(unused_variables)]
         let type_id = ::std::any::TypeId::of::<T>();
+
+        if type_id == ::std::any::TypeId::of::<thrift__types::DeprecatedUnvalidatedAnnotations>() {
+            let mut tmp = ::std::option::Option::Some(thrift__types::DeprecatedUnvalidatedAnnotations {
+                items: {
+                    let mut map = ::std::collections::BTreeMap::new();
+                    {
+                        #[inline(never)]
+                        fn __do_insert(map: &mut ::std::collections::BTreeMap<::std::string::String, ::std::string::String>) {
+                            map.insert("cpp.noncomparable".to_owned(), "1".to_owned());
+                        }
+                        __do_insert(&mut map);
+                    }
+                    map
+                },
+                ..::std::default::Default::default()
+            });
+            let r: &mut dyn ::std::any::Any = &mut tmp;
+            let r: &mut ::std::option::Option<T> = r.downcast_mut().unwrap();
+            return r.take();
+        }
+
+        if let ::std::option::Option::Some(r) = <thrift__types::DeprecatedUnvalidatedAnnotations as ::fbthrift::metadata::ThriftAnnotations>::get_structured_annotation::<T>() {
+            return ::std::option::Option::Some(r);
+        }
 
         ::std::option::Option::None
     }
@@ -5589,6 +5687,30 @@ impl ::fbthrift::metadata::ThriftAnnotations for AllocatorAware {
         #[allow(unused_variables)]
         let type_id = ::std::any::TypeId::of::<T>();
 
+        if type_id == ::std::any::TypeId::of::<thrift__types::DeprecatedUnvalidatedAnnotations>() {
+            let mut tmp = ::std::option::Option::Some(thrift__types::DeprecatedUnvalidatedAnnotations {
+                items: {
+                    let mut map = ::std::collections::BTreeMap::new();
+                    {
+                        #[inline(never)]
+                        fn __do_insert(map: &mut ::std::collections::BTreeMap<::std::string::String, ::std::string::String>) {
+                            map.insert("cpp.allocator".to_owned(), "some_allocator".to_owned());
+                        }
+                        __do_insert(&mut map);
+                    }
+                    map
+                },
+                ..::std::default::Default::default()
+            });
+            let r: &mut dyn ::std::any::Any = &mut tmp;
+            let r: &mut ::std::option::Option<T> = r.downcast_mut().unwrap();
+            return r.take();
+        }
+
+        if let ::std::option::Option::Some(r) = <thrift__types::DeprecatedUnvalidatedAnnotations as ::fbthrift::metadata::ThriftAnnotations>::get_structured_annotation::<T>() {
+            return ::std::option::Option::Some(r);
+        }
+
         ::std::option::Option::None
     }
 
@@ -5779,6 +5901,30 @@ impl ::fbthrift::metadata::ThriftAnnotations for AllocatorAware2 {
     fn get_structured_annotation<T: Sized + 'static>() -> ::std::option::Option<T> {
         #[allow(unused_variables)]
         let type_id = ::std::any::TypeId::of::<T>();
+
+        if type_id == ::std::any::TypeId::of::<thrift__types::DeprecatedUnvalidatedAnnotations>() {
+            let mut tmp = ::std::option::Option::Some(thrift__types::DeprecatedUnvalidatedAnnotations {
+                items: {
+                    let mut map = ::std::collections::BTreeMap::new();
+                    {
+                        #[inline(never)]
+                        fn __do_insert(map: &mut ::std::collections::BTreeMap<::std::string::String, ::std::string::String>) {
+                            map.insert("cpp.allocator".to_owned(), "some_allocator".to_owned());
+                        }
+                        __do_insert(&mut map);
+                    }
+                    map
+                },
+                ..::std::default::Default::default()
+            });
+            let r: &mut dyn ::std::any::Any = &mut tmp;
+            let r: &mut ::std::option::Option<T> = r.downcast_mut().unwrap();
+            return r.take();
+        }
+
+        if let ::std::option::Option::Some(r) = <thrift__types::DeprecatedUnvalidatedAnnotations as ::fbthrift::metadata::ThriftAnnotations>::get_structured_annotation::<T>() {
+            return ::std::option::Option::Some(r);
+        }
 
         ::std::option::Option::None
     }

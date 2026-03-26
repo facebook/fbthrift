@@ -14,8 +14,6 @@ from thrift.protocol.TProtocol import TProtocolBase
 
 __property__ = property  # sometimes `property` is used as a field name
 
-import ::my
-import my
 
 UTF8STRINGS: bool
 
@@ -241,41 +239,41 @@ class Bar:
 
     def __init__(
         self, *,
-        structField: __T.Optional[::my.Adapter1.Type] = ...,
-        optionalStructField: __T.Optional[my.Adapter1.Type] = ...,
-        structListField: __T.Optional[__T.List[my.Adapter1.Type]] = ...,
-        optionalStructListField: __T.Optional[__T.List[my.Adapter1.Type]] = ...,
-        unionField: __T.Optional[my.Adapter1.Type] = ...,
-        optionalUnionField: __T.Optional[my.Adapter1.Type] = ...,
+        structField: __T.Optional[Foo] = ...,
+        optionalStructField: __T.Optional[Foo] = ...,
+        structListField: __T.Optional[__T.List[Foo]] = ...,
+        optionalStructListField: __T.Optional[__T.List[Foo]] = ...,
+        unionField: __T.Optional[Baz] = ...,
+        optionalUnionField: __T.Optional[Baz] = ...,
         adaptedStructField: __T.Optional[DirectlyAdapted] = ...,
         structListFieldWithTypedef: __T.Optional[__T.List[Foo]] = ...
     ) -> None:
         ...
 
     @__property__
-    def structField(self) -> ::my.Adapter1.Type: ...
+    def structField(self) -> Foo: ...
     @structField.setter
-    def structField(self, value: __T.Optional[::my.Adapter1.Type]) -> None: ...
+    def structField(self, value: __T.Optional[Foo]) -> None: ...
     @__property__
-    def optionalStructField(self) -> __T.Optional[my.Adapter1.Type]: ...
+    def optionalStructField(self) -> __T.Optional[Foo]: ...
     @optionalStructField.setter
-    def optionalStructField(self, value: __T.Optional[my.Adapter1.Type]) -> None: ...
+    def optionalStructField(self, value: __T.Optional[Foo]) -> None: ...
     @__property__
-    def structListField(self) -> __T.List[my.Adapter1.Type]: ...
+    def structListField(self) -> __T.List[Foo]: ...
     @structListField.setter
-    def structListField(self, value: __T.Optional[__T.List[my.Adapter1.Type]]) -> None: ...
+    def structListField(self, value: __T.Optional[__T.List[Foo]]) -> None: ...
     @__property__
-    def optionalStructListField(self) -> __T.Optional[__T.List[my.Adapter1.Type]]: ...
+    def optionalStructListField(self) -> __T.Optional[__T.List[Foo]]: ...
     @optionalStructListField.setter
-    def optionalStructListField(self, value: __T.Optional[__T.List[my.Adapter1.Type]]) -> None: ...
+    def optionalStructListField(self, value: __T.Optional[__T.List[Foo]]) -> None: ...
     @__property__
-    def unionField(self) -> my.Adapter1.Type: ...
+    def unionField(self) -> Baz: ...
     @unionField.setter
-    def unionField(self, value: __T.Optional[my.Adapter1.Type]) -> None: ...
+    def unionField(self, value: __T.Optional[Baz]) -> None: ...
     @__property__
-    def optionalUnionField(self) -> __T.Optional[my.Adapter1.Type]: ...
+    def optionalUnionField(self) -> __T.Optional[Baz]: ...
     @optionalUnionField.setter
-    def optionalUnionField(self, value: __T.Optional[my.Adapter1.Type]) -> None: ...
+    def optionalUnionField(self, value: __T.Optional[Baz]) -> None: ...
     @__property__
     def adaptedStructField(self) -> DirectlyAdapted: ...
     @adaptedStructField.setter
@@ -1519,8 +1517,8 @@ DoubleTypedefI64 = int
 MyI32 = int
 FooWithAdapter = Foo
 ListOfFooTypedef = __T.List[Foo]
-StructWithAdapter = my.Adapter2.Type
-UnionWithAdapter = my.Adapter2.Type
+StructWithAdapter = Bar
+UnionWithAdapter = Baz
 AdaptedA = A
 StringWithCppAdapter = str
 DurationMs = int
@@ -1540,13 +1538,13 @@ AdaptedTypedef = AdaptedStruct
 TypedefOfDirect = DirectlyAdaptedStruct
 AdaptedCircularAdaptee = CircularAdaptee
 CountingInt = int
-FooWithAdapter_9317 = my.Adapter1.Type
+FooWithAdapter_9317 = Foo
 ListWithElemAdapter_withAdapter_2312 = __T.List[str]
 MyI32_4873 = int
 StringWithAdapter_7208 = str
-Baz_7352 = my.Adapter1.Type
-Foo_3943 = my.Adapter1.Type
-Foo_6868 = ::my.Adapter1.Type
+Baz_7352 = Baz
+Foo_3943 = Foo
+Foo_6868 = Foo
 binary_5673 = bytes
 i32_5137 = int
 map_string_ListWithElemAdapter_withAdapter_8454 = __T.Dict[str, __T.List[str]]

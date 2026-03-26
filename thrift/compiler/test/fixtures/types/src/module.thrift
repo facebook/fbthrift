@@ -26,9 +26,11 @@ typedef binary TBinary
 
 struct empty_struct {}
 
+@cpp.DeclareEqualToSpecialization
+@cpp.DeclareHashSpecialization
 struct decorated_struct {
   1: string field;
-} (cpp.declare_hash, cpp.declare_equal_to)
+}
 
 @cpp.EnableCustomTypeOrdering
 struct ContainerStruct {
@@ -52,27 +54,34 @@ struct CppTypeStruct {
   1: list<i32> fieldA;
 }
 
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {"cpp.declare_bitwise_ops": "1"},
+}
 enum has_bitwise_ops {
   none = 0,
   zero = 1,
   one = 2,
   two = 4,
   three = 8,
-} (cpp.declare_bitwise_ops)
+}
 
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {"cpp.deprecated_enum_unscoped": "1"},
+}
 enum is_unscoped {
   hello = 0,
   world = 1,
-} (cpp.deprecated_enum_unscoped)
+}
 
 service SomeService {
   included.SomeMap bounce_map(1: included.SomeMap m);
   map<TBinary, i64> binary_keyed_map(1: list<i64> r);
 }
 
+@thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.virtual": "1"}}
 struct VirtualStruct {
   1: i64 MyIntField;
-} (cpp.virtual)
+}
 
 struct MyStructWithForwardRefEnum {
   1: MyForwardRefEnum a = NONZERO;
@@ -130,14 +139,16 @@ struct MinPaddingWithCustomType {
   5: byte tiny;
 }
 
+@thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.noncomparable": "1"}}
 struct MyStruct {
   1: i64 MyIntField;
   2: string MyStringField;
   3: i64 majorVer;
   4: MyDataItem data;
-} (cpp.noncomparable)
+}
 
-struct MyDataItem {} (cpp.noncomparable)
+@thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.noncomparable": "1"}}
+struct MyDataItem {}
 
 @cpp.Name{value = "Renamed"}
 struct Renaming {
@@ -217,6 +228,9 @@ struct DependentAdaptedListDep {
 }
 
 # Allocator-aware struct with allocator-aware fields
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {"cpp.allocator": "some_allocator"},
+}
 struct AllocatorAware {
   1: list_i32_9187 aa_list;
   2: set_i32_7070 aa_set;
@@ -229,14 +243,17 @@ struct AllocatorAware {
   @cpp.Ref{type = cpp.RefType.SharedMutable}
   @cpp.AllowLegacyNonOptionalRef
   7: i32_9314 aa_shared;
-} (cpp.allocator = "some_allocator")
+}
 
 # Allocator-aware struct with no allocator-aware fields
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {"cpp.allocator": "some_allocator"},
+}
 struct AllocatorAware2 {
   1: i32 not_a_container;
   @thrift.Box
   2: optional i32 box_field;
-} (cpp.allocator = "some_allocator")
+}
 
 @thrift.AllowLegacyTypedefUri
 typedef i32 IntTypedef
@@ -255,26 +272,31 @@ struct StructWithDoubleUnderscores {
 }
 
 // The following were automatically generated and may benefit from renaming.
+@thrift.DeprecatedUnvalidatedAnnotations{items = {"noop_annotation": "1"}}
 @thrift.AllowLegacyTypedefUri
-typedef included.SomeListOfTypeMap (
-  noop_annotation = "1",
-) SomeListOfTypeMap_2468
+typedef included.SomeListOfTypeMap SomeListOfTypeMap_2468
+@thrift.DeprecatedUnvalidatedAnnotations{items = {"noop_annotation": "1"}}
 @thrift.AllowLegacyTypedefUri
-typedef TBinary (noop_annotation = "1") TBinary_8623
+typedef TBinary TBinary_8623
+@thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
 @thrift.AllowLegacyTypedefUri
-typedef i32 (cpp.use_allocator = "1") i32_9314
+typedef i32 i32_9314
+@thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
 @thrift.AllowLegacyTypedefUri
-typedef list<i32> (cpp.use_allocator = "1") list_i32_9187
+typedef list<i32> list_i32_9187
+@thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
 @thrift.AllowLegacyTypedefUri
-typedef map<i32, i32> (cpp.use_allocator = "1") map_i32_i32_9565
+typedef map<i32, i32> map_i32_i32_9565
 @thrift.AllowLegacyTypedefUri
 @rust.Type{name = "sorted_vector_map::SortedVectorMap"}
 typedef map<i32, string> map_i32_string_1261
+@thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
 @thrift.AllowLegacyTypedefUri
-typedef set<i32> (cpp.use_allocator = "1") set_i32_7070
+typedef set<i32> set_i32_7070
 @thrift.AllowLegacyTypedefUri
 @cpp.Type{template = "folly::sorted_vector_set"}
 @rust.Type{name = "sorted_vector_map::SortedVectorSet"}
 typedef set<i32> set_i32_7194
+@thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.use_allocator": "1"}}
 @thrift.AllowLegacyTypedefUri
-typedef string (cpp.use_allocator = "1") string_5252
+typedef string string_5252

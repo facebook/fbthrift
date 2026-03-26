@@ -27,19 +27,22 @@ typedef map<i64, string> MyMapTypedef
 
 struct MyStruct {
   1: i64 MyIntField;
+  @thrift.DeprecatedUnvalidatedAnnotations{items = {"annotation": "1"}}
   @MyAnnot
-  2: string MyStringField (annotation);
+  2: string MyStringField;
 }
 
 enum MyEnum {
   VALUE1 = 1,
+  @thrift.DeprecatedUnvalidatedAnnotations{items = {"annotation": "1"}}
   @MyAnnot
-  VALUE2 = 2 (annotation),
+  VALUE2 = 2,
 }
 
 service MyService {
   void ping();
 
+  @thrift.DeprecatedUnvalidatedAnnotations{items = {"annotation": "1"}}
   @MyAnnot
-  void pong() (annotation);
+  void pong();
 }

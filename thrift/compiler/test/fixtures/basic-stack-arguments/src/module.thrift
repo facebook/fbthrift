@@ -49,6 +49,7 @@ service MyServiceFast {
 }
 
 service DbMixedStackArguments {
-  binary getDataByKey0(1: string key) (cpp.stack_arguments = "0");
+  @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.stack_arguments": "0"}}
+  binary getDataByKey0(1: string key);
   binary getDataByKey1(1: string key);
 }

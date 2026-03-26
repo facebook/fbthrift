@@ -652,6 +652,18 @@ class MyStruct implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftSh
   public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
+        '\facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations' => \facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations::fromShape(
+          shape(
+            "items" => dict[
+              "android.generate_builder" => "1",
+            ],
+          )
+        ),
+        '\facebook\thrift\annotation\Uri' => \facebook\thrift\annotation\Uri::fromShape(
+          shape(
+            "value" => "facebook.com/thrift/compiler/test/fixtures/basic_annotations/src/module/MyStruct",
+          )
+        ),
         '\facebook\thrift\annotation\cpp\Name' => \facebook\thrift\annotation\cpp\Name::fromShape(
           shape(
             "value" => "YourStruct",
@@ -688,6 +700,13 @@ class MyStruct implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftSh
         ),
         'abstract' => shape(
           'field' => dict[
+            '\facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations' => \facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations::fromShape(
+              shape(
+                "items" => dict[
+                  "java.swift.name" => "_abstract",
+                ],
+              )
+            ),
             '\facebook\thrift\annotation\go\Name' => \facebook\thrift\annotation\go\Name::fromShape(
               shape(
                 "name" => "AbstractName",
@@ -706,6 +725,30 @@ class MyStruct implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftSh
             '\facebook\thrift\annotation\go\Tag' => \facebook\thrift\annotation\go\Tag::fromShape(
               shape(
                 "tag" => "tag:\"somevalue\"",
+              )
+            ),
+          ],
+          'type' => dict[],
+        ),
+        'class_' => shape(
+          'field' => dict[
+            '\facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations' => \facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations::fromShape(
+              shape(
+                "items" => dict[
+                  "java.swift.name" => "class_",
+                ],
+              )
+            ),
+          ],
+          'type' => dict[],
+        ),
+        'annotation_with_trailing_comma' => shape(
+          'field' => dict[
+            '\facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations' => \facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations::fromShape(
+              shape(
+                "items" => dict[
+                  "custom" => "test",
+                ],
               )
             ),
           ],

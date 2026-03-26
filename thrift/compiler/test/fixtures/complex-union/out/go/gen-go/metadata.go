@@ -277,6 +277,30 @@ var (
                     Type:       premadeThriftType_string,
                 },
             },
+            StructuredAnnotations: []*metadata.ThriftConstStruct{
+                &metadata.ThriftConstStruct{
+                    Type: &metadata.ThriftStructType{
+                        Name: "thrift.DeprecatedUnvalidatedAnnotations",
+                    },
+                    Fields: map[string]*metadata.ThriftConstValue{
+                        "items":
+                            &metadata.ThriftConstValue{
+                                CvMap: []*metadata.ThriftConstValuePair{
+                                    &metadata.ThriftConstValuePair{
+                                        Key: &metadata.ThriftConstValue{
+                                        CvString: new("cpp.virtual"),
+                                    },
+                                    
+                                        Value: &metadata.ThriftConstValue{
+                                        CvString: new("1"),
+                                    },
+                                    
+                                    },
+                                },
+                            },
+                    },
+                },
+            },
         }
     premadeStructMetadata_NonCopyableStruct =
         &metadata.ThriftStruct{
@@ -290,6 +314,30 @@ var (
                     Type:       premadeThriftType_i64,
                 },
             },
+            StructuredAnnotations: []*metadata.ThriftConstStruct{
+                &metadata.ThriftConstStruct{
+                    Type: &metadata.ThriftStructType{
+                        Name: "thrift.DeprecatedUnvalidatedAnnotations",
+                    },
+                    Fields: map[string]*metadata.ThriftConstValue{
+                        "items":
+                            &metadata.ThriftConstValue{
+                                CvMap: []*metadata.ThriftConstValuePair{
+                                    &metadata.ThriftConstValuePair{
+                                        Key: &metadata.ThriftConstValue{
+                                        CvString: new("cpp.noncopyable"),
+                                    },
+                                    
+                                        Value: &metadata.ThriftConstValue{
+                                        CvString: new("1"),
+                                    },
+                                    
+                                    },
+                                },
+                            },
+                    },
+                },
+            },
         }
     premadeStructMetadata_NonCopyableUnion =
         &metadata.ThriftStruct{
@@ -301,6 +349,30 @@ var (
                     Name:       "s",
                     IsOptional: false,
                     Type:       premadeThriftType_module_NonCopyableStruct,
+                },
+            },
+            StructuredAnnotations: []*metadata.ThriftConstStruct{
+                &metadata.ThriftConstStruct{
+                    Type: &metadata.ThriftStructType{
+                        Name: "thrift.DeprecatedUnvalidatedAnnotations",
+                    },
+                    Fields: map[string]*metadata.ThriftConstValue{
+                        "items":
+                            &metadata.ThriftConstValue{
+                                CvMap: []*metadata.ThriftConstValuePair{
+                                    &metadata.ThriftConstValuePair{
+                                        Key: &metadata.ThriftConstValue{
+                                        CvString: new("cpp.noncopyable"),
+                                    },
+                                    
+                                        Value: &metadata.ThriftConstValue{
+                                        CvString: new("1"),
+                                    },
+                                    
+                                    },
+                                },
+                            },
+                    },
                 },
             },
         }

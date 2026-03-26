@@ -24,6 +24,9 @@ namespace cocoa example
 struct Example {
   @thrift.AllowUnsafeRequiredFieldQualifier
   1: required string name;
+  @thrift.DeprecatedUnvalidatedAnnotations{
+    items = {"cocoa.name": "xyz_description"},
+  }
   @thrift.AllowUnsafeRequiredFieldQualifier
-  2: required string description (cocoa.name = "xyz_description");
+  2: required string description;
 }

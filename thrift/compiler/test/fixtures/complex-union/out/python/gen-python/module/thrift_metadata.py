@@ -183,6 +183,7 @@ def _fbthrift_gen_metadata_struct_VirtualComplexUnion(metadata_struct: _fbthrift
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=True,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="thrift.DeprecatedUnvalidatedAnnotations"), fields= { "items": _fbthrift_metadata.ThriftConstValue(cv_map=[_fbthrift_metadata.ThriftConstValuePair(key=_fbthrift_metadata.ThriftConstValue(cv_string="cpp.virtual"), value=_fbthrift_metadata.ThriftConstValue(cv_string="1")), ]),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
@@ -208,6 +209,7 @@ def _fbthrift_gen_metadata_struct_NonCopyableStruct(metadata_struct: _fbthrift_m
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=False,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="thrift.DeprecatedUnvalidatedAnnotations"), fields= { "items": _fbthrift_metadata.ThriftConstValue(cv_map=[_fbthrift_metadata.ThriftConstValuePair(key=_fbthrift_metadata.ThriftConstValue(cv_string="cpp.noncopyable"), value=_fbthrift_metadata.ThriftConstValue(cv_string="1")), ]),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
@@ -232,6 +234,7 @@ def _fbthrift_gen_metadata_struct_NonCopyableUnion(metadata_struct: _fbthrift_me
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
         is_union=True,
         structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="thrift.DeprecatedUnvalidatedAnnotations"), fields= { "items": _fbthrift_metadata.ThriftConstValue(cv_map=[_fbthrift_metadata.ThriftConstValuePair(key=_fbthrift_metadata.ThriftConstValue(cv_string="cpp.noncopyable"), value=_fbthrift_metadata.ThriftConstValue(cv_string="1")), ]),  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)
 

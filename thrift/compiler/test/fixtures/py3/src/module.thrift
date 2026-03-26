@@ -141,13 +141,15 @@ struct ComplexStruct {
   9: foo_bar bytes_with_cpp_type;
 }
 
+@thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.noncomparable": "1"}}
 union BinaryUnion {
   1: IOBuf iobuf_val;
-} (cpp.noncomparable)
+}
 
+@thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.noncomparable": "1"}}
 struct BinaryUnionStruct {
   1: BinaryUnion u;
-} (cpp.noncomparable)
+}
 
 const bool A_BOOL = true;
 const byte A_BYTE = 8;
@@ -238,9 +240,10 @@ service SimpleService {
   SimpleStruct get_struct_hidden();
 }
 
+@thrift.DeprecatedUnvalidatedAnnotations{items = {"bar": "1", "foo": '"""'}}
 service DerivedService extends SimpleService {
   i32 get_six();
-} (foo = '"""', bar)
+}
 
 service RederivedService extends DerivedService {
   i32 get_seven();

@@ -3,17 +3,17 @@
   "thrift_module" : "module",
   "constants" : {
     "myStruct" : {
-      "lineno" : 79,
+      "lineno" : 89,
       "value" : { "major" : 42, "abstract" : "abstract", "my_enum" : 2 },
       "type_enum" : "STRUCT",
       "spec_args" : "MyStruct",
       "source_range" : {
         "begin" : {
-          "line" : 79,
+          "line" : 89,
           "column" : 1
         },
         "end" : {
-          "line" : 83,
+          "line" : 93,
           "column" : 3
         }
       }
@@ -58,7 +58,7 @@
   },
   "typedefs" : {
     "AwesomeStruct" : {
-      "lineno" : 74,
+      "lineno" : 84,
       "type_enum" : "STRUCT",
       "spec_args" : "MyStruct",
       "structured_annotations" : {
@@ -66,17 +66,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 74,
+          "line" : 84,
           "column" : 1
         },
         "end" : {
-          "line" : 75,
+          "line" : 85,
           "column" : 31
         }
       }
     },
     "FantasticStruct" : {
-      "lineno" : 76,
+      "lineno" : 86,
       "type_enum" : "STRUCT",
       "spec_args" : "MyStruct",
       "structured_annotations" : {
@@ -84,17 +84,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 76,
+          "line" : 86,
           "column" : 1
         },
         "end" : {
-          "line" : 77,
+          "line" : 87,
           "column" : 33
         }
       }
     },
     "list_string_6884" : {
-      "lineno" : 140,
+      "lineno" : 154,
       "type_enum" : "LIST",
       "spec_args" : { "type_enum" : "STRING", "spec_args" : null} ,
       "structured_annotations" : {
@@ -102,11 +102,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 140,
+          "line" : 154,
           "column" : 1
         },
         "end" : {
-          "line" : 141,
+          "line" : 155,
           "column" : 38
         }
       }
@@ -198,31 +198,19 @@
           "value" : "1",
           "source_range" : {
             "begin" : {
-              "line" : 70,
-              "column" : 3
+              "line" : 49,
+              "column" : 12
             },
             "end" : {
-              "line" : 70,
-              "column" : 27
-            }
-          }
-        }
-,
-        "thrift.uri" : {
-          "value" : "facebook.com/thrift/compiler/test/fixtures/basic_annotations/src/module/MyStruct",
-          "source_range" : {
-            "begin" : {
-              "line" : 71,
-              "column" : 3
-            },
-            "end" : {
-              "line" : 71,
-              "column" : 98
+              "line" : 49,
+              "column" : 43
             }
           }
         }
       },
       "structured_annotations" : {
+        "thrift.DeprecatedUnvalidatedAnnotations" : { "items" : { "android.generate_builder" : "1" } },
+        "thrift.Uri" : { "value" : "facebook.com/thrift/compiler/test/fixtures/basic_annotations/src/module/MyStruct" },
         "cpp.Name" : { "value" : "YourStruct" },
         "hack.Attributes" : { "attributes" : [ "\\SomeClass(\\AnotherClass::class)" ] },
         "cpp.Adapter" : { "name" : "::StaticCast" }
@@ -238,11 +226,11 @@
           },
           "source_range" : {
             "begin" : {
-              "line" : 53,
+              "line" : 59,
               "column" : 3
             },
             "end" : {
-              "line" : 55,
+              "line" : 61,
               "column" : 16
             }
           }
@@ -256,28 +244,29 @@
               "value" : "_abstract",
               "source_range" : {
                 "begin" : {
-                  "line" : 59,
-                  "column" : 23
+                  "line" : 64,
+                  "column" : 14
                 },
                 "end" : {
-                  "line" : 59,
-                  "column" : 52
+                  "line" : 64,
+                  "column" : 44
                 }
               }
             }
           },
           "structured_annotations" : {
+            "thrift.DeprecatedUnvalidatedAnnotations" : { "items" : { "java.swift.name" : "_abstract" } },
             "go.Name" : { "name" : "AbstractName" },
             "go.Tag" : { "tag" : "tag:\"some_abstract\"" }
           },
           "source_range" : {
             "begin" : {
-              "line" : 57,
+              "line" : 63,
               "column" : 3
             },
             "end" : {
-              "line" : 59,
-              "column" : 54
+              "line" : 68,
+              "column" : 22
             }
           }
         },
@@ -290,11 +279,11 @@
           },
           "source_range" : {
             "begin" : {
-              "line" : 61,
+              "line" : 70,
               "column" : 3
             },
             "end" : {
-              "line" : 62,
+              "line" : 71,
               "column" : 35
             }
           }
@@ -308,24 +297,27 @@
               "value" : "class_",
               "source_range" : {
                 "begin" : {
-                  "line" : 63,
-                  "column" : 21
+                  "line" : 73,
+                  "column" : 14
                 },
                 "end" : {
-                  "line" : 63,
-                  "column" : 47
+                  "line" : 73,
+                  "column" : 41
                 }
               }
             }
           },
+          "structured_annotations" : {
+            "thrift.DeprecatedUnvalidatedAnnotations" : { "items" : { "java.swift.name" : "class_" } }
+          },
           "source_range" : {
             "begin" : {
-              "line" : 63,
+              "line" : 72,
               "column" : 3
             },
             "end" : {
-              "line" : 63,
-              "column" : 49
+              "line" : 75,
+              "column" : 20
             }
           }
         },
@@ -338,24 +330,27 @@
               "value" : "test",
               "source_range" : {
                 "begin" : {
-                  "line" : 64,
-                  "column" : 45
+                  "line" : 76,
+                  "column" : 53
                 },
                 "end" : {
-                  "line" : 64,
-                  "column" : 60
+                  "line" : 76,
+                  "column" : 69
                 }
               }
             }
           },
+          "structured_annotations" : {
+            "thrift.DeprecatedUnvalidatedAnnotations" : { "items" : { "custom" : "test" } }
+          },
           "source_range" : {
             "begin" : {
-              "line" : 64,
+              "line" : 76,
               "column" : 3
             },
             "end" : {
-              "line" : 64,
-              "column" : 62
+              "line" : 77,
+              "column" : 44
             }
           }
         },
@@ -365,11 +360,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 65,
+              "line" : 78,
               "column" : 3
             },
             "end" : {
-              "line" : 65,
+              "line" : 78,
               "column" : 34
             }
           }
@@ -380,11 +375,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 66,
+              "line" : 79,
               "column" : 3
             },
             "end" : {
-              "line" : 66,
+              "line" : 79,
               "column" : 21
             }
           }
@@ -395,11 +390,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 67,
+              "line" : 80,
               "column" : 3
             },
             "end" : {
-              "line" : 67,
+              "line" : 80,
               "column" : 43
             }
           }
@@ -410,11 +405,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 68,
+              "line" : 81,
               "column" : 3
             },
             "end" : {
-              "line" : 68,
+              "line" : 81,
               "column" : 23
             }
           }
@@ -426,13 +421,13 @@
           "column" : 1
         },
         "end" : {
-          "line" : 72,
+          "line" : 82,
           "column" : 2
         }
       }
     },
     "SecretStruct" : {
-      "lineno" : 114,
+      "lineno" : 128,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -442,11 +437,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 115,
+              "line" : 129,
               "column" : 3
             },
             "end" : {
-              "line" : 115,
+              "line" : 129,
               "column" : 13
             }
           }
@@ -460,11 +455,11 @@
               "value" : "1",
               "source_range" : {
                 "begin" : {
-                  "line" : 116,
+                  "line" : 130,
                   "column" : 53
                 },
                 "end" : {
-                  "line" : 116,
+                  "line" : 130,
                   "column" : 74
                 }
               }
@@ -475,11 +470,11 @@
           },
           "source_range" : {
             "begin" : {
-              "line" : 116,
+              "line" : 130,
               "column" : 3
             },
             "end" : {
-              "line" : 117,
+              "line" : 131,
               "column" : 22
             }
           }
@@ -487,11 +482,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 114,
+          "line" : 128,
           "column" : 1
         },
         "end" : {
-          "line" : 118,
+          "line" : 132,
           "column" : 2
         }
       }
@@ -499,7 +494,7 @@
   },
   "services" : {
     "MyService" : {
-      "lineno" : 85,
+      "lineno" : 95,
       "functions" : {
         "MyService.ping" : {
           "return_type" : {
@@ -512,11 +507,11 @@
           ],
           "source_range" : {
             "begin" : {
-              "line" : 86,
+              "line" : 96,
               "column" : 3
             },
             "end" : {
-              "line" : 86,
+              "line" : 96,
               "column" : 48
             }
           }
@@ -530,11 +525,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 87,
+              "line" : 97,
               "column" : 3
             },
             "end" : {
-              "line" : 87,
+              "line" : 97,
               "column" : 26
             }
           }
@@ -554,11 +549,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 88,
+              "line" : 98,
               "column" : 3
             },
             "end" : {
-              "line" : 88,
+              "line" : 98,
               "column" : 31
             }
           }
@@ -581,11 +576,11 @@
           },
           "source_range" : {
             "begin" : {
-              "line" : 89,
+              "line" : 99,
               "column" : 3
             },
             "end" : {
-              "line" : 90,
+              "line" : 100,
               "column" : 33
             }
           }
@@ -613,11 +608,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 91,
+              "line" : 101,
               "column" : 3
             },
             "end" : {
-              "line" : 95,
+              "line" : 105,
               "column" : 5
             }
           }
@@ -637,32 +632,20 @@
               "name" : "data",
               "type_enum" : "STRING",
               "spec_args" : null,
-              "annotations" : {
-                "cpp.name" : {
-                  "value" : "dataStr",
-                  "source_range" : {
-                    "begin" : {
-                      "line" : 96,
-                      "column" : 54
-                    },
-                    "end" : {
-                      "line" : 96,
-                      "column" : 74
-                    }
-                  }
-                }
+              "structured_annotations" : {
+                "cpp.Name" : { "value" : "dataStr" }
               }
             }
           ],
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 96,
+              "line" : 106,
               "column" : 3
             },
             "end" : {
-              "line" : 96,
-              "column" : 77
+              "line" : 110,
+              "column" : 5
             }
           }
         },
@@ -679,11 +662,11 @@
           },
           "source_range" : {
             "begin" : {
-              "line" : 97,
+              "line" : 111,
               "column" : 3
             },
             "end" : {
-              "line" : 99,
+              "line" : 113,
               "column" : 20
             }
           }
@@ -691,18 +674,18 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 85,
+          "line" : 95,
           "column" : 1
         },
         "end" : {
-          "line" : 100,
+          "line" : 114,
           "column" : 2
         }
       }
 
     },
     "MyServicePrioParent" : {
-      "lineno" : 102,
+      "lineno" : 116,
       "functions" : {
         "MyServicePrioParent.ping" : {
           "return_type" : {
@@ -716,11 +699,11 @@
           },
           "source_range" : {
             "begin" : {
-              "line" : 103,
+              "line" : 117,
               "column" : 3
             },
             "end" : {
-              "line" : 104,
+              "line" : 118,
               "column" : 15
             }
           }
@@ -737,11 +720,11 @@
           },
           "source_range" : {
             "begin" : {
-              "line" : 105,
+              "line" : 119,
               "column" : 3
             },
             "end" : {
-              "line" : 106,
+              "line" : 120,
               "column" : 15
             }
           }
@@ -749,11 +732,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 102,
+          "line" : 116,
           "column" : 1
         },
         "end" : {
-          "line" : 107,
+          "line" : 121,
           "column" : 2
         }
       }
@@ -764,7 +747,7 @@
         "type_enum" : "SERVICE",
         "spec_args" : "MyServicePrioParent"
       },
-      "lineno" : 109,
+      "lineno" : 123,
       "functions" : {
         "MyServicePrioChild.pang" : {
           "return_type" : {
@@ -778,11 +761,11 @@
           },
           "source_range" : {
             "begin" : {
-              "line" : 110,
+              "line" : 124,
               "column" : 3
             },
             "end" : {
-              "line" : 111,
+              "line" : 125,
               "column" : 15
             }
           }
@@ -790,18 +773,18 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 109,
+          "line" : 123,
           "column" : 1
         },
         "end" : {
-          "line" : 112,
+          "line" : 126,
           "column" : 2
         }
       }
 
     },
     "BadService" : {
-      "lineno" : 125,
+      "lineno" : 139,
       "structured_annotations" : {
         "cpp.Name" : { "value" : "GoodService" }
       },
@@ -815,11 +798,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 127,
+              "line" : 141,
               "column" : 3
             },
             "end" : {
-              "line" : 127,
+              "line" : 141,
               "column" : 27
             }
           }
@@ -833,11 +816,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 128,
+              "line" : 142,
               "column" : 3
             },
             "end" : {
-              "line" : 128,
+              "line" : 142,
               "column" : 13
             }
           }
@@ -845,18 +828,18 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 125,
+          "line" : 139,
           "column" : 1
         },
         "end" : {
-          "line" : 129,
+          "line" : 143,
           "column" : 2
         }
       }
 
     },
     "FooBarBazService" : {
-      "lineno" : 131,
+      "lineno" : 145,
       "functions" : {
         "FooBarBazService.foo" : {
           "return_type" : {
@@ -870,11 +853,11 @@
           },
           "source_range" : {
             "begin" : {
-              "line" : 132,
+              "line" : 146,
               "column" : 3
             },
             "end" : {
-              "line" : 133,
+              "line" : 147,
               "column" : 14
             }
           }
@@ -891,11 +874,11 @@
           },
           "source_range" : {
             "begin" : {
-              "line" : 134,
+              "line" : 148,
               "column" : 3
             },
             "end" : {
-              "line" : 135,
+              "line" : 149,
               "column" : 14
             }
           }
@@ -909,11 +892,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 136,
+              "line" : 150,
               "column" : 3
             },
             "end" : {
-              "line" : 136,
+              "line" : 150,
               "column" : 14
             }
           }
@@ -921,11 +904,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 131,
+          "line" : 145,
           "column" : 1
         },
         "end" : {
-          "line" : 137,
+          "line" : 151,
           "column" : 2
         }
       }

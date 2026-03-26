@@ -414,6 +414,13 @@ class CustomFieldNames extends \TException implements \IThriftSyncStruct, \IThri
       'fields' => dict[
         'internal_error_message' => shape(
           'field' => dict[
+            '\facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations' => \facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations::fromShape(
+              shape(
+                "items" => dict[
+                  "java.swift.name" => "internalGreatMessage",
+                ],
+              )
+            ),
             '\facebook\thrift\annotation\ExceptionMessage' => \facebook\thrift\annotation\ExceptionMessage::withDefaultValues(),
           ],
           'type' => dict[],

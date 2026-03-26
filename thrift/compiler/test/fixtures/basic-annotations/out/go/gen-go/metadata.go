@@ -297,6 +297,39 @@ var (
             StructuredAnnotations: []*metadata.ThriftConstStruct{
                 &metadata.ThriftConstStruct{
                     Type: &metadata.ThriftStructType{
+                        Name: "thrift.DeprecatedUnvalidatedAnnotations",
+                    },
+                    Fields: map[string]*metadata.ThriftConstValue{
+                        "items":
+                            &metadata.ThriftConstValue{
+                                CvMap: []*metadata.ThriftConstValuePair{
+                                    &metadata.ThriftConstValuePair{
+                                        Key: &metadata.ThriftConstValue{
+                                        CvString: new("android.generate_builder"),
+                                    },
+                                    
+                                        Value: &metadata.ThriftConstValue{
+                                        CvString: new("1"),
+                                    },
+                                    
+                                    },
+                                },
+                            },
+                    },
+                },
+                &metadata.ThriftConstStruct{
+                    Type: &metadata.ThriftStructType{
+                        Name: "thrift.Uri",
+                    },
+                    Fields: map[string]*metadata.ThriftConstValue{
+                        "value":
+                            &metadata.ThriftConstValue{
+                                CvString: new("facebook.com/thrift/compiler/test/fixtures/basic_annotations/src/module/MyStruct"),
+                            },
+                    },
+                },
+                &metadata.ThriftConstStruct{
+                    Type: &metadata.ThriftStructType{
                         Name: "cpp.Name",
                     },
                     Fields: map[string]*metadata.ThriftConstValue{

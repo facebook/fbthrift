@@ -1255,6 +1255,20 @@ impl ::fbthrift::metadata::ThriftAnnotations for Foo {
         #[allow(unused_variables)]
         let type_id = ::std::any::TypeId::of::<T>();
 
+        if type_id == ::std::any::TypeId::of::<thrift__types::Uri>() {
+            let mut tmp = ::std::option::Option::Some(thrift__types::Uri {
+                value: "facebook.com/thrift/compiler/test/fixtures/adapter/src/module/Foo".to_owned(),
+                ..::std::default::Default::default()
+            });
+            let r: &mut dyn ::std::any::Any = &mut tmp;
+            let r: &mut ::std::option::Option<T> = r.downcast_mut().unwrap();
+            return r.take();
+        }
+
+        if let ::std::option::Option::Some(r) = <thrift__types::Uri as ::fbthrift::metadata::ThriftAnnotations>::get_structured_annotation::<T>() {
+            return ::std::option::Option::Some(r);
+        }
+
         if type_id == ::std::any::TypeId::of::<cpp__types::EnableCustomTypeOrdering>() {
             let mut tmp = ::std::option::Option::Some(cpp__types::EnableCustomTypeOrdering {
                 ..::std::default::Default::default()

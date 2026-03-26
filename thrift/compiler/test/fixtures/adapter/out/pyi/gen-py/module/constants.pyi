@@ -6,8 +6,6 @@
 #
 import typing as __T
 
-import ::my
-import my
 from module.ttypes import *
 
 var1: int

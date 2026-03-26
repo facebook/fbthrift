@@ -45,6 +45,12 @@ union MyUnion {}
 safe exception MyException {}
 
 # We intentionally keep field IDs out of order to check whether this case is handled correctly
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {"android.generate_builder": "1"},
+}
+@thrift.Uri{
+  value = "facebook.com/thrift/compiler/test/fixtures/basic_annotations/src/module/MyStruct",
+}
 @cpp.Name{value = "YourStruct"}
 @hack.Attributes{attributes = ["\SomeClass(\AnotherClass::class)"]}
 @cpp.Adapter{name = '::StaticCast'}
@@ -54,22 +60,26 @@ struct MyStruct {
   @go.Name{name = "MajorVer"}
   2: i64 major;
   # abstract is a reserved keyword in Java, Thrift should be able to handle this
+  @thrift.DeprecatedUnvalidatedAnnotations{
+    items = {"java.swift.name": "_abstract"},
+  }
   @go.Name{name = "AbstractName"}
   @go.Tag{tag = 'tag:"some_abstract"'}
-  1: string abstract (java.swift.name = '_abstract');
+  1: string abstract;
   # should generate valid code even with double quotes in an annotation
   @go.Tag{tag = 'tag:"somevalue"'}
   3: string annotation_with_quote;
-  4: string class_ (java.swift.name = 'class_');
-  5: string annotation_with_trailing_comma (custom = 'test');
+  @thrift.DeprecatedUnvalidatedAnnotations{
+    items = {"java.swift.name": "class_"},
+  }
+  4: string class_;
+  @thrift.DeprecatedUnvalidatedAnnotations{items = {"custom": "test"}}
+  5: string annotation_with_trailing_comma;
   6: string empty_annotations ();
   7: MyEnum my_enum;
   8: list_string_6884 cpp_type_annotation;
   9: MyUnion my_union;
-} (
-  android.generate_builder,
-  thrift.uri = "facebook.com/thrift/compiler/test/fixtures/basic_annotations/src/module/MyStruct",
-)
+}
 
 @go.Name{name = "IncredibleStruct"}
 typedef MyStruct AwesomeStruct
@@ -93,7 +103,11 @@ service MyService {
     @MyStructNestedAnnotation{name = "argument"}
     2: string data,
   );
-  oneway void lobDataById(1: i64 id, 2: string data (cpp.name = "dataStr"));
+  oneway void lobDataById(
+    1: i64 id,
+    @cpp.Name{value = "dataStr"}
+    2: string data,
+  );
   @cpp.Name{value = "cppDoNothing"}
   @go.Name{name = "GoDoNothing"}
   void doNothing();

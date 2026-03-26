@@ -818,6 +818,44 @@ impl ::fbthrift::metadata::ThriftAnnotations for MyStruct {
         #[allow(unused_variables)]
         let type_id = ::std::any::TypeId::of::<T>();
 
+        if type_id == ::std::any::TypeId::of::<thrift__types::DeprecatedUnvalidatedAnnotations>() {
+            let mut tmp = ::std::option::Option::Some(thrift__types::DeprecatedUnvalidatedAnnotations {
+                items: {
+                    let mut map = ::std::collections::BTreeMap::new();
+                    {
+                        #[inline(never)]
+                        fn __do_insert(map: &mut ::std::collections::BTreeMap<::std::string::String, ::std::string::String>) {
+                            map.insert("android.generate_builder".to_owned(), "1".to_owned());
+                        }
+                        __do_insert(&mut map);
+                    }
+                    map
+                },
+                ..::std::default::Default::default()
+            });
+            let r: &mut dyn ::std::any::Any = &mut tmp;
+            let r: &mut ::std::option::Option<T> = r.downcast_mut().unwrap();
+            return r.take();
+        }
+
+        if let ::std::option::Option::Some(r) = <thrift__types::DeprecatedUnvalidatedAnnotations as ::fbthrift::metadata::ThriftAnnotations>::get_structured_annotation::<T>() {
+            return ::std::option::Option::Some(r);
+        }
+
+        if type_id == ::std::any::TypeId::of::<thrift__types::Uri>() {
+            let mut tmp = ::std::option::Option::Some(thrift__types::Uri {
+                value: "facebook.com/thrift/compiler/test/fixtures/basic_annotations/src/module/MyStruct".to_owned(),
+                ..::std::default::Default::default()
+            });
+            let r: &mut dyn ::std::any::Any = &mut tmp;
+            let r: &mut ::std::option::Option<T> = r.downcast_mut().unwrap();
+            return r.take();
+        }
+
+        if let ::std::option::Option::Some(r) = <thrift__types::Uri as ::fbthrift::metadata::ThriftAnnotations>::get_structured_annotation::<T>() {
+            return ::std::option::Option::Some(r);
+        }
+
         if type_id == ::std::any::TypeId::of::<cpp__types::Name>() {
             let mut tmp = ::std::option::Option::Some(cpp__types::Name {
                 value: "YourStruct".to_owned(),
@@ -911,6 +949,30 @@ impl ::fbthrift::metadata::ThriftAnnotations for MyStruct {
             },
             1 => {
 
+                if type_id == ::std::any::TypeId::of::<thrift__types::DeprecatedUnvalidatedAnnotations>() {
+                    let mut tmp = ::std::option::Option::Some(thrift__types::DeprecatedUnvalidatedAnnotations {
+                        items: {
+                            let mut map = ::std::collections::BTreeMap::new();
+                            {
+                                #[inline(never)]
+                                fn __do_insert(map: &mut ::std::collections::BTreeMap<::std::string::String, ::std::string::String>) {
+                                    map.insert("java.swift.name".to_owned(), "_abstract".to_owned());
+                                }
+                                __do_insert(&mut map);
+                            }
+                            map
+                        },
+                        ..::std::default::Default::default()
+                    });
+                    let r: &mut dyn ::std::any::Any = &mut tmp;
+                    let r: &mut ::std::option::Option<T> = r.downcast_mut().unwrap();
+                    return r.take();
+                }
+
+                if let ::std::option::Option::Some(r) = <thrift__types::DeprecatedUnvalidatedAnnotations as ::fbthrift::metadata::ThriftAnnotations>::get_structured_annotation::<T>() {
+                    return ::std::option::Option::Some(r);
+                }
+
                 if type_id == ::std::any::TypeId::of::<go__types::Name>() {
                     let mut tmp = ::std::option::Option::Some(go__types::Name {
                         name: "AbstractName".to_owned(),
@@ -948,8 +1010,56 @@ impl ::fbthrift::metadata::ThriftAnnotations for MyStruct {
                 }
             },
             4 => {
+
+                if type_id == ::std::any::TypeId::of::<thrift__types::DeprecatedUnvalidatedAnnotations>() {
+                    let mut tmp = ::std::option::Option::Some(thrift__types::DeprecatedUnvalidatedAnnotations {
+                        items: {
+                            let mut map = ::std::collections::BTreeMap::new();
+                            {
+                                #[inline(never)]
+                                fn __do_insert(map: &mut ::std::collections::BTreeMap<::std::string::String, ::std::string::String>) {
+                                    map.insert("java.swift.name".to_owned(), "class_".to_owned());
+                                }
+                                __do_insert(&mut map);
+                            }
+                            map
+                        },
+                        ..::std::default::Default::default()
+                    });
+                    let r: &mut dyn ::std::any::Any = &mut tmp;
+                    let r: &mut ::std::option::Option<T> = r.downcast_mut().unwrap();
+                    return r.take();
+                }
+
+                if let ::std::option::Option::Some(r) = <thrift__types::DeprecatedUnvalidatedAnnotations as ::fbthrift::metadata::ThriftAnnotations>::get_structured_annotation::<T>() {
+                    return ::std::option::Option::Some(r);
+                }
             },
             5 => {
+
+                if type_id == ::std::any::TypeId::of::<thrift__types::DeprecatedUnvalidatedAnnotations>() {
+                    let mut tmp = ::std::option::Option::Some(thrift__types::DeprecatedUnvalidatedAnnotations {
+                        items: {
+                            let mut map = ::std::collections::BTreeMap::new();
+                            {
+                                #[inline(never)]
+                                fn __do_insert(map: &mut ::std::collections::BTreeMap<::std::string::String, ::std::string::String>) {
+                                    map.insert("custom".to_owned(), "test".to_owned());
+                                }
+                                __do_insert(&mut map);
+                            }
+                            map
+                        },
+                        ..::std::default::Default::default()
+                    });
+                    let r: &mut dyn ::std::any::Any = &mut tmp;
+                    let r: &mut ::std::option::Option<T> = r.downcast_mut().unwrap();
+                    return r.take();
+                }
+
+                if let ::std::option::Option::Some(r) = <thrift__types::DeprecatedUnvalidatedAnnotations as ::fbthrift::metadata::ThriftAnnotations>::get_structured_annotation::<T>() {
+                    return ::std::option::Option::Some(r);
+                }
             },
             6 => {
             },

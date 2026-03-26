@@ -26,9 +26,10 @@ typedef i64 longTypeDef
 typedef map<i16, string> mapTypedef
 typedef list<double> listTypedef
 typedef float floatTypedef
-typedef map<i32, i64> (
-  java.swift.type = "it.unimi.dsi.fastutil.ints.Int2LongArrayMap",
-) FMap
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {"java.swift.type": "it.unimi.dsi.fastutil.ints.Int2LongArrayMap"},
+}
+typedef map<i32, i64> FMap
 
 enum MyEnum {
   MyValue1 = 0,
@@ -214,14 +215,26 @@ exception complexException {
 }
 
 // The following were automatically generated and may benefit from renaming.
-typedef binary (java.swift.type = "java.nio.ByteBuffer") binary_4918
-typedef i32 (java.swift.type = "java.math.BigInteger") i32_1194
-typedef map<i32, FMap> (
-  java.swift.type = "it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap>",
-) map_i32_FMap_6797
-typedef map<i64, string> (
-  java.swift.type = "it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String>",
-) map_i64_string_5732
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {"java.swift.type": "java.nio.ByteBuffer"},
+}
+typedef binary binary_4918
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {"java.swift.type": "java.math.BigInteger"},
+}
+typedef i32 i32_1194
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {
+    "java.swift.type": "it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap>",
+  },
+}
+typedef map<i32, FMap> map_i32_FMap_6797
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {
+    "java.swift.type": "it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String>",
+  },
+}
+typedef map<i64, string> map_i64_string_5732
 
 struct Containers {
   1: list<MyStruct> struct_list;

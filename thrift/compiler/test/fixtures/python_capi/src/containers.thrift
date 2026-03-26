@@ -52,6 +52,7 @@ typedef list<fbvector_string> fbvector_fbvector_string
  * Containers we can support but don't currently work:
  * - std::list (need to switch constructor to forward iterator)
  */
+@thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.noncomparable": "1"}}
 struct TemplateLists {
   // @cpp.Type{template = "std::forward_list"}
   // 2: optional list<i64> intz;
@@ -66,7 +67,7 @@ struct TemplateLists {
   5: list<fbvector_fbvector_string> small_vector_tensor;
   // @cpp.Type{template = "std::list"}
   // 6: list<string> list_string;
-} (cpp.noncomparable)
+}
 
 @cpp.EnableCustomTypeOrdering
 struct TemplateSets {

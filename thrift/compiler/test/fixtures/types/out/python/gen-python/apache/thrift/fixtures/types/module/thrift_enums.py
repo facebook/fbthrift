@@ -112,6 +112,7 @@ def _fbthrift_gen_metadata_enum_has_bitwise_ops(metadata_struct: _fbthrift_metad
         8: "three",
     }
     structured_annotations = [
+        _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="thrift.DeprecatedUnvalidatedAnnotations"), fields= { "items": _fbthrift_metadata.ThriftConstValue(cv_map=[_fbthrift_metadata.ThriftConstValuePair(key=_fbthrift_metadata.ThriftConstValue(cv_string="cpp.declare_bitwise_ops"), value=_fbthrift_metadata.ThriftConstValue(cv_string="1")), ]),  }),
     ]
     enum_dict = dict(metadata_struct.enums)
     enum_dict[qualified_name] = _fbthrift_metadata.ThriftEnum(name=qualified_name, elements=elements, structured_annotations=structured_annotations)
@@ -134,6 +135,7 @@ def _fbthrift_gen_metadata_enum_is_unscoped(metadata_struct: _fbthrift_metadata.
         1: "world",
     }
     structured_annotations = [
+        _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="thrift.DeprecatedUnvalidatedAnnotations"), fields= { "items": _fbthrift_metadata.ThriftConstValue(cv_map=[_fbthrift_metadata.ThriftConstValuePair(key=_fbthrift_metadata.ThriftConstValue(cv_string="cpp.deprecated_enum_unscoped"), value=_fbthrift_metadata.ThriftConstValue(cv_string="1")), ]),  }),
     ]
     enum_dict = dict(metadata_struct.enums)
     enum_dict[qualified_name] = _fbthrift_metadata.ThriftEnum(name=qualified_name, elements=elements, structured_annotations=structured_annotations)

@@ -55,15 +55,18 @@ union ValUnion {
   2: Val v2;
 }
 
+@thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.virtual": "1"}}
 union VirtualComplexUnion {
   1: string thingOne;
   2: string thingTwo;
-} (cpp.virtual)
+}
 
+@thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.noncopyable": "1"}}
 struct NonCopyableStruct {
   1: i64 num;
-} (cpp.noncopyable)
+}
 
+@thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.noncopyable": "1"}}
 union NonCopyableUnion {
   1: NonCopyableStruct s;
-} (cpp.noncopyable)
+}

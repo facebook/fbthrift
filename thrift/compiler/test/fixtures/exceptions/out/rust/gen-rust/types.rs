@@ -760,6 +760,30 @@ impl ::fbthrift::metadata::ThriftAnnotations for CustomFieldNames {
             },
             2 => {
 
+                if type_id == ::std::any::TypeId::of::<thrift__types::DeprecatedUnvalidatedAnnotations>() {
+                    let mut tmp = ::std::option::Option::Some(thrift__types::DeprecatedUnvalidatedAnnotations {
+                        items: {
+                            let mut map = ::std::collections::BTreeMap::new();
+                            {
+                                #[inline(never)]
+                                fn __do_insert(map: &mut ::std::collections::BTreeMap<::std::string::String, ::std::string::String>) {
+                                    map.insert("java.swift.name".to_owned(), "internalGreatMessage".to_owned());
+                                }
+                                __do_insert(&mut map);
+                            }
+                            map
+                        },
+                        ..::std::default::Default::default()
+                    });
+                    let r: &mut dyn ::std::any::Any = &mut tmp;
+                    let r: &mut ::std::option::Option<T> = r.downcast_mut().unwrap();
+                    return r.take();
+                }
+
+                if let ::std::option::Option::Some(r) = <thrift__types::DeprecatedUnvalidatedAnnotations as ::fbthrift::metadata::ThriftAnnotations>::get_structured_annotation::<T>() {
+                    return ::std::option::Option::Some(r);
+                }
+
                 if type_id == ::std::any::TypeId::of::<thrift__types::ExceptionMessage>() {
                     let mut tmp = ::std::option::Option::Some(thrift__types::ExceptionMessage {
                         ..::std::default::Default::default()

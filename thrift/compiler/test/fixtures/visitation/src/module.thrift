@@ -44,17 +44,23 @@ enum enum2 {
   field2_2 = 2,
 }
 
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {
+    "_now.with.an.underscore": "_now.with.an.underscore",
+    "another.there": ".",
+    "duplicate_id_annotation_1": "duplicate id annotation",
+    "duplicate_id_annotation_2": "duplicate.id.annotation",
+    "one.here": "with some value associated",
+    "yet.another": "and yet more text - it's that easy",
+  },
+}
 enum enum3 {
   field0_3 = 0,
-  field1_3 = 1 (field_annotation = "field annotated"),
-} (
-  one.here = "with some value associated",
-  another.there = ".",
-  yet.another = "and yet more text - it's that easy",
-  duplicate_id_annotation_1 = "duplicate id annotation",
-  duplicate_id_annotation_2 = "duplicate.id.annotation",
-  _now.with.an.underscore = "_now.with.an.underscore",
-)
+  @thrift.DeprecatedUnvalidatedAnnotations{
+    items = {"field_annotation": "field annotated"},
+  }
+  field1_3 = 1,
+}
 
 union union1 {
   1: i32 ui;
@@ -85,26 +91,38 @@ struct structA {
 @cpp.Type{name = "test_cpp_reflection::custom_structA"}
 typedef structA my_structA
 
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {
+    "another.annotation": "some more text",
+    "sample.annotation": "some text here",
+  },
+}
 union unionA {
   1: i32 i;
   2: double d;
   3: string s;
   4: enum1 e;
   5: structA a;
-} (sample.annotation = "some text here", another.annotation = "some more text")
+}
 
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {
+    "multi_line_annotation": "line one
+line two",
+    "some.annotation": "this is its value",
+    "some.other.annotation": "this is its other value",
+  },
+}
 struct structB {
   1: double c;
-  2: bool d (
-    some.annotation = "some value",
-    another.annotation = "another value",
-  );
-} (
-  some.annotation = "this is its value",
-  some.other.annotation = "this is its other value",
-  multi_line_annotation = "line one
-line two",
-)
+  @thrift.DeprecatedUnvalidatedAnnotations{
+    items = {
+      "another.annotation": "another value",
+      "some.annotation": "some value",
+    },
+  }
+  2: bool d;
+}
 
 struct structC {
   1: i32 a;
@@ -201,7 +219,10 @@ struct struct5 {
   1: required i32 field0;
   2: optional string field1;
   3: enum1 field2;
-  4: structA field3 (annotate_here = "with text");
+  @thrift.DeprecatedUnvalidatedAnnotations{
+    items = {"annotate_here": "with text"},
+  }
+  4: structA field3;
   5: structB field4;
 }
 
@@ -221,31 +242,37 @@ struct dep_B_struct {
   3: i32 i_a;
 }
 
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {
+    "s_b_false": "false",
+    "s_b_true": "true",
+    "s_int": "10",
+    "s_int_list": "[-1, 2, 3]",
+    "s_int_map": '{"a": 1, "b": -2, "c": -3}',
+    "s_mixed_list": '["a", 1, "b", 2]',
+    "s_mixed_map": '{"a": -2, "b": "B", "c": 3}',
+    "s_str_list": '["a", "b", "c"]',
+    "s_str_map": '{"a": "A", "b": "B", "c": "C"}',
+    "s_string": '"hello"',
+  },
+}
 struct annotated {
-  1: i32 a (
-    m_b_false = 'false',
-    m_b_true = 'true',
-    m_int = '10',
-    m_string = '"hello"',
-    m_int_list = '[-1, 2, 3]',
-    m_str_list = '["a", "b", "c"]',
-    m_mixed_list = '["a", 1, "b", 2]',
-    m_int_map = '{"a": 1, "b": -2, "c": -3}',
-    m_str_map = '{"a": "A", "b": "B", "c": "C"}',
-    m_mixed_map = '{"a": -2, "b": "B", "c": 3}',
-  );
-} (
-  s_b_false = 'false',
-  s_b_true = 'true',
-  s_int = '10',
-  s_string = '"hello"',
-  s_int_list = '[-1, 2, 3]',
-  s_str_list = '["a", "b", "c"]',
-  s_mixed_list = '["a", 1, "b", 2]',
-  s_int_map = '{"a": 1, "b": -2, "c": -3}',
-  s_str_map = '{"a": "A", "b": "B", "c": "C"}',
-  s_mixed_map = '{"a": -2, "b": "B", "c": 3}',
-)
+  @thrift.DeprecatedUnvalidatedAnnotations{
+    items = {
+      "m_b_false": "false",
+      "m_b_true": "true",
+      "m_int": "10",
+      "m_int_list": "[-1, 2, 3]",
+      "m_int_map": '{"a": 1, "b": -2, "c": -3}',
+      "m_mixed_list": '["a", 1, "b", 2]',
+      "m_mixed_map": '{"a": -2, "b": "B", "c": 3}',
+      "m_str_list": '["a", "b", "c"]',
+      "m_str_map": '{"a": "A", "b": "B", "c": "C"}',
+      "m_string": '"hello"',
+    },
+  }
+  1: i32 a;
+}
 
 service service1 {
   void method1();

@@ -21,7 +21,8 @@ package;
 
 namespace cocoa example
 
+@thrift.DeprecatedUnvalidatedAnnotations{items = {"cocoa.enum_conversion": "1"}}
 enum Example {
   caseA = 1,
   caseB = 2,
-} (cocoa.enum_conversion)
+}

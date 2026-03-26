@@ -175,16 +175,7 @@ class Service_func_args implements \IThriftSyncStruct, \IThriftStructMetadata, \
                               "name" => "module.StringWithAdapter",
                               "underlyingType" => \tmeta_ThriftType::fromShape(
                                 shape(
-                                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
-                                    shape(
-                                      "name" => "module.StringWithAdapter",
-                                      "underlyingType" => \tmeta_ThriftType::fromShape(
-                                        shape(
-                                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
-                                        )
-                                      ),
-                                    )
-                                  ),
+                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                                 )
                               ),
                             )
@@ -246,6 +237,12 @@ class Service_func_args implements \IThriftSyncStruct, \IThriftStructMetadata, \
         'arg1' => shape(
           'field' => dict[],
           'type' => dict[
+            '\facebook\thrift\annotation\python\Adapter' => \facebook\thrift\annotation\python\Adapter::fromShape(
+              shape(
+                "name" => "my.Adapter2",
+                "typeHint" => "my.AdaptedStringWithAdapter[]",
+              )
+            ),
             '\facebook\thrift\annotation\AllowLegacyTypedefUri' => \facebook\thrift\annotation\AllowLegacyTypedefUri::withDefaultValues(),
           ],
         ),
@@ -263,6 +260,11 @@ class Service_func_args implements \IThriftSyncStruct, \IThriftStructMetadata, \
         'arg3' => shape(
           'field' => dict[],
           'type' => dict[
+            '\facebook\thrift\annotation\Uri' => \facebook\thrift\annotation\Uri::fromShape(
+              shape(
+                "value" => "facebook.com/thrift/compiler/test/fixtures/adapter/src/module/Foo",
+              )
+            ),
             '\facebook\thrift\annotation\cpp\EnableCustomTypeOrdering' => \facebook\thrift\annotation\cpp\EnableCustomTypeOrdering::withDefaultValues(),
           ],
         ),
@@ -377,16 +379,7 @@ class Service_func_result extends \ThriftSyncStructWithResult implements \IThrif
                               "name" => "module.MyI32",
                               "underlyingType" => \tmeta_ThriftType::fromShape(
                                 shape(
-                                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
-                                    shape(
-                                      "name" => "module.MyI32",
-                                      "underlyingType" => \tmeta_ThriftType::fromShape(
-                                        shape(
-                                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
-                                        )
-                                      ),
-                                    )
-                                  ),
+                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
                                 )
                               ),
                             )
@@ -413,6 +406,12 @@ class Service_func_result extends \ThriftSyncStructWithResult implements \IThrif
         'success' => shape(
           'field' => dict[],
           'type' => dict[
+            '\facebook\thrift\annotation\python\Adapter' => \facebook\thrift\annotation\python\Adapter::fromShape(
+              shape(
+                "name" => "my.Adapter1",
+                "typeHint" => "my.AdaptedMyI32[]",
+              )
+            ),
             '\facebook\thrift\annotation\AllowLegacyTypedefUri' => \facebook\thrift\annotation\AllowLegacyTypedefUri::withDefaultValues(),
           ],
         ),
@@ -470,16 +469,7 @@ class ServiceStaticMetadata implements \IThriftServiceStaticMetadata {
                               "name" => "module.MyI32",
                               "underlyingType" => \tmeta_ThriftType::fromShape(
                                 shape(
-                                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
-                                    shape(
-                                      "name" => "module.MyI32",
-                                      "underlyingType" => \tmeta_ThriftType::fromShape(
-                                        shape(
-                                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
-                                        )
-                                      ),
-                                    )
-                                  ),
+                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
                                 )
                               ),
                             )
@@ -506,16 +496,7 @@ class ServiceStaticMetadata implements \IThriftServiceStaticMetadata {
                                     "name" => "module.StringWithAdapter",
                                     "underlyingType" => \tmeta_ThriftType::fromShape(
                                       shape(
-                                        "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
-                                          shape(
-                                            "name" => "module.StringWithAdapter",
-                                            "underlyingType" => \tmeta_ThriftType::fromShape(
-                                              shape(
-                                                "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
-                                              )
-                                            ),
-                                          )
-                                        ),
+                                        "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                                       )
                                     ),
                                   )

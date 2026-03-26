@@ -687,8 +687,8 @@ class ServiceHandler<::py3::simple::SimpleService> : public apache::thrift::Serv
 namespace detail {
 template <> struct TSchemaAssociation<::py3::simple::SimpleService, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -4259380151706122153;
-  static constexpr ::std::string_view definitionKey = {"\xf8\x0f\x3b\x71\x9e\xe7\x66\x02\x7f\x82\xad\x37\xa4\x72\xd8\x05", 16};
+  static constexpr int64_t programId = 8390703221526770218;
+  static constexpr ::std::string_view definitionKey = {"\x34\x9d\x3a\x35\x8a\x49\x1f\xd2\xe4\xfd\x03\x8c\x2a\x57\xa0\x57", 16};
 };
 }
 } // namespace apache::thrift

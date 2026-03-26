@@ -29,6 +29,7 @@ include "thrift/annotation/rust.thrift"
 @thrift.Experimental
 package "facebook.com/thrift/test/fixtures/adapter"
 
+@python.Adapter{name = "my.Adapter2", typeHint = "my.AdaptedSet[]"}
 @thrift.AllowLegacyTypedefUri
 @hack.Adapter{name = '\\Adapter2'}
 @cpp.Adapter{name = '::my::Adapter2'}
@@ -37,7 +38,8 @@ package "facebook.com/thrift/test/fixtures/adapter"
   adapterClassName = "com.facebook.thrift.my.Adapter2",
   typeClassName = "com.facebook.thrift.my.AdaptedSet_2",
 }
-typedef set<string> (py.adapter = 'my.Adapter2') SetWithAdapter
+typedef set<string> SetWithAdapter
+@python.Adapter{name = "my.Adapter1", typeHint = "my.AdaptedString[]"}
 @thrift.AllowLegacyTypedefUri
 @hack.Adapter{name = '\\Adapter1'}
 @cpp.Adapter{name = '::my::Adapter1'}
@@ -46,7 +48,7 @@ typedef set<string> (py.adapter = 'my.Adapter2') SetWithAdapter
   adapterClassName = "com.facebook.thrift.my.Adapter1",
   typeClassName = "com.facebook.thrift.my.AdaptedString_1",
 }
-typedef string (py.adapter = 'my.Adapter1') StringWithAdapter
+typedef string StringWithAdapter
 @thrift.AllowLegacyTypedefUri
 typedef list<StringWithAdapter> ListWithElemAdapter
 @thrift.AllowLegacyTypedefUri
@@ -99,6 +101,9 @@ typedef MyI64 DoubleTypedefI64
 }
 typedef i32 MyI32
 
+@thrift.Uri{
+  value = "facebook.com/thrift/compiler/test/fixtures/adapter/src/module/Foo",
+}
 @cpp.EnableCustomTypeOrdering
 struct Foo {
   @hack.Adapter{name = '\\Adapter1'}
@@ -172,9 +177,7 @@ struct Foo {
     typeHint = "typing.Sequence[typing.Sequence[typing.Mapping[int, int]]]",
   }
   15: list<list<map<i32, i32>>> adapted_list_nested;
-} (
-  thrift.uri = "facebook.com/thrift/compiler/test/fixtures/adapter/src/module/Foo",
-)
+}
 
 @cpp.EnableCustomTypeOrdering
 union Baz {
@@ -289,15 +292,17 @@ struct TerseAdaptedFields {
   3: set<i32> set_field;
 }
 
+@python.Adapter{name = "my.Adapter2", typeHint = "my.AdaptedBar[]"}
 @thrift.AllowLegacyTypedefUri
 @hack.Adapter{name = '\\Adapter2'}
 @cpp.Adapter{name = '::my::Adapter2'}
-typedef Bar (py.adapter = 'my.Adapter2') StructWithAdapter
+typedef Bar StructWithAdapter
 
+@python.Adapter{name = "my.Adapter2", typeHint = "my.AdaptedBaz[]"}
 @thrift.AllowLegacyTypedefUri
 @hack.Adapter{name = '\\Adapter2'}
 @cpp.Adapter{name = '::my::Adapter2'}
-typedef Baz (py.adapter = 'my.Adapter2') UnionWithAdapter
+typedef Baz UnionWithAdapter
 
 struct B {
   1: AdaptedA a;
@@ -618,32 +623,47 @@ const MoveOnly nested_adapted = {"ptr": {}};
 const list<AdaptedByte> container_of_adapted = [1, 2, 3];
 
 // The following were automatically generated and may benefit from renaming.
+@python.Adapter{name = "my.Adapter1", typeHint = "my.AdaptedFooWithAdapter[]"}
 @thrift.AllowLegacyTypedefUri
-typedef FooWithAdapter (py.adapter = "my.Adapter1") FooWithAdapter_9317
+typedef FooWithAdapter FooWithAdapter_9317
+@python.Adapter{
+  name = "my.Adapter2",
+  typeHint = "my.AdaptedListWithElemAdapter[]",
+}
 @thrift.AllowLegacyTypedefUri
-typedef ListWithElemAdapter_withAdapter (
-  py.adapter = "my.Adapter2",
-) ListWithElemAdapter_withAdapter_2312
+typedef ListWithElemAdapter_withAdapter ListWithElemAdapter_withAdapter_2312
+@python.Adapter{name = "my.Adapter1", typeHint = "my.AdaptedMyI32[]"}
 @thrift.AllowLegacyTypedefUri
-typedef MyI32 (py.adapter = "my.Adapter1") MyI32_4873
+typedef MyI32 MyI32_4873
+@python.Adapter{
+  name = "my.Adapter2",
+  typeHint = "my.AdaptedStringWithAdapter[]",
+}
 @thrift.AllowLegacyTypedefUri
-typedef StringWithAdapter (py.adapter = "my.Adapter2") StringWithAdapter_7208
+typedef StringWithAdapter StringWithAdapter_7208
 
 // The following were automatically generated and may benefit from renaming.
+@python.Adapter{name = "my.Adapter1", typeHint = "my.AdaptedBaz[]"}
 @thrift.AllowLegacyTypedefUri
-typedef Baz (py.adapter = "my.Adapter1") Baz_7352
+typedef Baz Baz_7352
+@python.Adapter{name = "my.Adapter1", typeHint = "my.AdaptedFoo[]"}
 @thrift.AllowLegacyTypedefUri
-typedef Foo (py.adapter = "my.Adapter1") Foo_3943
+typedef Foo Foo_3943
+@python.Adapter{name = "::my.Adapter1", typeHint = "my.AdaptedFoo[]"}
 @thrift.AllowLegacyTypedefUri
-typedef Foo (py.adapter = "::my.Adapter1") Foo_6868
+typedef Foo Foo_6868
+@python.Adapter{name = "my.Adapter1", typeHint = "my.AdaptedBinary[]"}
 @thrift.AllowLegacyTypedefUri
-typedef binary (py.adapter = "my.Adapter1") binary_5673
+typedef binary binary_5673
+@python.Adapter{name = "my.Adapter1", typeHint = "my.AdaptedI32[]"}
 @thrift.AllowLegacyTypedefUri
-typedef i32 (py.adapter = "my.Adapter1") i32_5137
+typedef i32 i32_5137
+@python.Adapter{name = "my.Adapter3", typeHint = "my.AdaptedMap[]"}
 @thrift.AllowLegacyTypedefUri
-typedef map<string, ListWithElemAdapter_withAdapter_2312> (
-  py.adapter = "my.Adapter3",
-) map_string_ListWithElemAdapter_withAdapter_8454
+typedef map<
+  string,
+  ListWithElemAdapter_withAdapter_2312
+> map_string_ListWithElemAdapter_withAdapter_8454
 
 @cpp.Adapter{
   name = "::apache::thrift::test::StructAdapter",

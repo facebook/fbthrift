@@ -757,28 +757,19 @@ class Foo implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftShapish
                                                 shape(
                                                   "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                                                     shape(
-                                                      "name" => "module.ListWithElemAdapter_withAdapter",
+                                                      "name" => "module.ListWithElemAdapter",
                                                       "underlyingType" => \tmeta_ThriftType::fromShape(
                                                         shape(
-                                                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
+                                                          "t_list" => \tmeta_ThriftListType::fromShape(
                                                             shape(
-                                                              "name" => "module.ListWithElemAdapter",
-                                                              "underlyingType" => \tmeta_ThriftType::fromShape(
+                                                              "valueType" => \tmeta_ThriftType::fromShape(
                                                                 shape(
-                                                                  "t_list" => \tmeta_ThriftListType::fromShape(
+                                                                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                                                                     shape(
-                                                                      "valueType" => \tmeta_ThriftType::fromShape(
+                                                                      "name" => "module.StringWithAdapter",
+                                                                      "underlyingType" => \tmeta_ThriftType::fromShape(
                                                                         shape(
-                                                                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
-                                                                            shape(
-                                                                              "name" => "module.StringWithAdapter",
-                                                                              "underlyingType" => \tmeta_ThriftType::fromShape(
-                                                                                shape(
-                                                                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
-                                                                                )
-                                                                              ),
-                                                                            )
-                                                                          ),
+                                                                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                                                                         )
                                                                       ),
                                                                     )
@@ -843,28 +834,19 @@ class Foo implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftShapish
                                                 shape(
                                                   "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                                                     shape(
-                                                      "name" => "module.ListWithElemAdapter_withAdapter",
+                                                      "name" => "module.ListWithElemAdapter",
                                                       "underlyingType" => \tmeta_ThriftType::fromShape(
                                                         shape(
-                                                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
+                                                          "t_list" => \tmeta_ThriftListType::fromShape(
                                                             shape(
-                                                              "name" => "module.ListWithElemAdapter",
-                                                              "underlyingType" => \tmeta_ThriftType::fromShape(
+                                                              "valueType" => \tmeta_ThriftType::fromShape(
                                                                 shape(
-                                                                  "t_list" => \tmeta_ThriftListType::fromShape(
+                                                                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                                                                     shape(
-                                                                      "valueType" => \tmeta_ThriftType::fromShape(
+                                                                      "name" => "module.StringWithAdapter",
+                                                                      "underlyingType" => \tmeta_ThriftType::fromShape(
                                                                         shape(
-                                                                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
-                                                                            shape(
-                                                                              "name" => "module.StringWithAdapter",
-                                                                              "underlyingType" => \tmeta_ThriftType::fromShape(
-                                                                                shape(
-                                                                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
-                                                                                )
-                                                                              ),
-                                                                            )
-                                                                          ),
+                                                                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                                                                         )
                                                                       ),
                                                                     )
@@ -1099,6 +1081,11 @@ class Foo implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftShapish
   public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[
+        '\facebook\thrift\annotation\Uri' => \facebook\thrift\annotation\Uri::fromShape(
+          shape(
+            "value" => "facebook.com/thrift/compiler/test/fixtures/adapter/src/module/Foo",
+          )
+        ),
         '\facebook\thrift\annotation\cpp\EnableCustomTypeOrdering' => \facebook\thrift\annotation\cpp\EnableCustomTypeOrdering::withDefaultValues(),
       ],
       'fields' => dict[
@@ -1127,6 +1114,12 @@ class Foo implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftShapish
             ),
           ],
           'type' => dict[
+            '\facebook\thrift\annotation\python\Adapter' => \facebook\thrift\annotation\python\Adapter::fromShape(
+              shape(
+                "name" => "my.Adapter1",
+                "typeHint" => "my.AdaptedI32[]",
+              )
+            ),
             '\facebook\thrift\annotation\AllowLegacyTypedefUri' => \facebook\thrift\annotation\AllowLegacyTypedefUri::withDefaultValues(),
           ],
         ),
@@ -1155,6 +1148,12 @@ class Foo implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftShapish
             ),
           ],
           'type' => dict[
+            '\facebook\thrift\annotation\python\Adapter' => \facebook\thrift\annotation\python\Adapter::fromShape(
+              shape(
+                "name" => "my.Adapter1",
+                "typeHint" => "my.AdaptedI32[]",
+              )
+            ),
             '\facebook\thrift\annotation\AllowLegacyTypedefUri' => \facebook\thrift\annotation\AllowLegacyTypedefUri::withDefaultValues(),
           ],
         ),
@@ -1183,12 +1182,24 @@ class Foo implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftShapish
             ),
           ],
           'type' => dict[
+            '\facebook\thrift\annotation\python\Adapter' => \facebook\thrift\annotation\python\Adapter::fromShape(
+              shape(
+                "name" => "my.Adapter1",
+                "typeHint" => "my.AdaptedI32[]",
+              )
+            ),
             '\facebook\thrift\annotation\AllowLegacyTypedefUri' => \facebook\thrift\annotation\AllowLegacyTypedefUri::withDefaultValues(),
           ],
         ),
         'setField' => shape(
           'field' => dict[],
           'type' => dict[
+            '\facebook\thrift\annotation\python\Adapter' => \facebook\thrift\annotation\python\Adapter::fromShape(
+              shape(
+                "name" => "my.Adapter2",
+                "typeHint" => "my.AdaptedSet[]",
+              )
+            ),
             '\facebook\thrift\annotation\AllowLegacyTypedefUri' => \facebook\thrift\annotation\AllowLegacyTypedefUri::withDefaultValues(),
             '\facebook\thrift\annotation\hack\Adapter' => \facebook\thrift\annotation\hack\Adapter::fromShape(
               shape(
@@ -1216,6 +1227,12 @@ class Foo implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftShapish
         'optionalSetField' => shape(
           'field' => dict[],
           'type' => dict[
+            '\facebook\thrift\annotation\python\Adapter' => \facebook\thrift\annotation\python\Adapter::fromShape(
+              shape(
+                "name" => "my.Adapter2",
+                "typeHint" => "my.AdaptedSet[]",
+              )
+            ),
             '\facebook\thrift\annotation\AllowLegacyTypedefUri' => \facebook\thrift\annotation\AllowLegacyTypedefUri::withDefaultValues(),
             '\facebook\thrift\annotation\hack\Adapter' => \facebook\thrift\annotation\hack\Adapter::fromShape(
               shape(
@@ -1265,6 +1282,12 @@ class Foo implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftShapish
             ),
           ],
           'type' => dict[
+            '\facebook\thrift\annotation\python\Adapter' => \facebook\thrift\annotation\python\Adapter::fromShape(
+              shape(
+                "name" => "my.Adapter3",
+                "typeHint" => "my.AdaptedMap[]",
+              )
+            ),
             '\facebook\thrift\annotation\AllowLegacyTypedefUri' => \facebook\thrift\annotation\AllowLegacyTypedefUri::withDefaultValues(),
           ],
         ),
@@ -1293,6 +1316,12 @@ class Foo implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftShapish
             ),
           ],
           'type' => dict[
+            '\facebook\thrift\annotation\python\Adapter' => \facebook\thrift\annotation\python\Adapter::fromShape(
+              shape(
+                "name" => "my.Adapter3",
+                "typeHint" => "my.AdaptedMap[]",
+              )
+            ),
             '\facebook\thrift\annotation\AllowLegacyTypedefUri' => \facebook\thrift\annotation\AllowLegacyTypedefUri::withDefaultValues(),
           ],
         ),
@@ -1321,6 +1350,12 @@ class Foo implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftShapish
             ),
           ],
           'type' => dict[
+            '\facebook\thrift\annotation\python\Adapter' => \facebook\thrift\annotation\python\Adapter::fromShape(
+              shape(
+                "name" => "my.Adapter1",
+                "typeHint" => "my.AdaptedBinary[]",
+              )
+            ),
             '\facebook\thrift\annotation\AllowLegacyTypedefUri' => \facebook\thrift\annotation\AllowLegacyTypedefUri::withDefaultValues(),
           ],
         ),
@@ -2092,28 +2127,19 @@ class Baz implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftUnion<\
                                                 shape(
                                                   "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                                                     shape(
-                                                      "name" => "module.ListWithElemAdapter_withAdapter",
+                                                      "name" => "module.ListWithElemAdapter",
                                                       "underlyingType" => \tmeta_ThriftType::fromShape(
                                                         shape(
-                                                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
+                                                          "t_list" => \tmeta_ThriftListType::fromShape(
                                                             shape(
-                                                              "name" => "module.ListWithElemAdapter",
-                                                              "underlyingType" => \tmeta_ThriftType::fromShape(
+                                                              "valueType" => \tmeta_ThriftType::fromShape(
                                                                 shape(
-                                                                  "t_list" => \tmeta_ThriftListType::fromShape(
+                                                                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                                                                     shape(
-                                                                      "valueType" => \tmeta_ThriftType::fromShape(
+                                                                      "name" => "module.StringWithAdapter",
+                                                                      "underlyingType" => \tmeta_ThriftType::fromShape(
                                                                         shape(
-                                                                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
-                                                                            shape(
-                                                                              "name" => "module.StringWithAdapter",
-                                                                              "underlyingType" => \tmeta_ThriftType::fromShape(
-                                                                                shape(
-                                                                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
-                                                                                )
-                                                                              ),
-                                                                            )
-                                                                          ),
+                                                                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                                                                         )
                                                                       ),
                                                                     )
@@ -2224,12 +2250,24 @@ class Baz implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftUnion<\
             ),
           ],
           'type' => dict[
+            '\facebook\thrift\annotation\python\Adapter' => \facebook\thrift\annotation\python\Adapter::fromShape(
+              shape(
+                "name" => "my.Adapter1",
+                "typeHint" => "my.AdaptedI32[]",
+              )
+            ),
             '\facebook\thrift\annotation\AllowLegacyTypedefUri' => \facebook\thrift\annotation\AllowLegacyTypedefUri::withDefaultValues(),
           ],
         ),
         'setField' => shape(
           'field' => dict[],
           'type' => dict[
+            '\facebook\thrift\annotation\python\Adapter' => \facebook\thrift\annotation\python\Adapter::fromShape(
+              shape(
+                "name" => "my.Adapter2",
+                "typeHint" => "my.AdaptedSet[]",
+              )
+            ),
             '\facebook\thrift\annotation\AllowLegacyTypedefUri' => \facebook\thrift\annotation\AllowLegacyTypedefUri::withDefaultValues(),
             '\facebook\thrift\annotation\hack\Adapter' => \facebook\thrift\annotation\hack\Adapter::fromShape(
               shape(
@@ -2279,6 +2317,12 @@ class Baz implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftUnion<\
             ),
           ],
           'type' => dict[
+            '\facebook\thrift\annotation\python\Adapter' => \facebook\thrift\annotation\python\Adapter::fromShape(
+              shape(
+                "name" => "my.Adapter3",
+                "typeHint" => "my.AdaptedMap[]",
+              )
+            ),
             '\facebook\thrift\annotation\AllowLegacyTypedefUri' => \facebook\thrift\annotation\AllowLegacyTypedefUri::withDefaultValues(),
           ],
         ),
@@ -2307,6 +2351,12 @@ class Baz implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftUnion<\
             ),
           ],
           'type' => dict[
+            '\facebook\thrift\annotation\python\Adapter' => \facebook\thrift\annotation\python\Adapter::fromShape(
+              shape(
+                "name" => "my.Adapter1",
+                "typeHint" => "my.AdaptedBinary[]",
+              )
+            ),
             '\facebook\thrift\annotation\AllowLegacyTypedefUri' => \facebook\thrift\annotation\AllowLegacyTypedefUri::withDefaultValues(),
           ],
         ),
@@ -2624,18 +2674,9 @@ class Bar implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftShapish
                       "name" => "module.Foo_6868",
                       "underlyingType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
+                          "t_struct" => \tmeta_ThriftStructType::fromShape(
                             shape(
                               "name" => "module.Foo",
-                              "underlyingType" => \tmeta_ThriftType::fromShape(
-                                shape(
-                                  "t_struct" => \tmeta_ThriftStructType::fromShape(
-                                    shape(
-                                      "name" => "module.Foo",
-                                    )
-                                  ),
-                                )
-                              ),
                             )
                           ),
                         )
@@ -2657,18 +2698,9 @@ class Bar implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftShapish
                       "name" => "module.Foo_3943",
                       "underlyingType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
+                          "t_struct" => \tmeta_ThriftStructType::fromShape(
                             shape(
                               "name" => "module.Foo",
-                              "underlyingType" => \tmeta_ThriftType::fromShape(
-                                shape(
-                                  "t_struct" => \tmeta_ThriftStructType::fromShape(
-                                    shape(
-                                      "name" => "module.Foo",
-                                    )
-                                  ),
-                                )
-                              ),
                             )
                           ),
                         )
@@ -2700,18 +2732,9 @@ class Bar implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftShapish
                                       "name" => "module.FooWithAdapter",
                                       "underlyingType" => \tmeta_ThriftType::fromShape(
                                         shape(
-                                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
+                                          "t_struct" => \tmeta_ThriftStructType::fromShape(
                                             shape(
-                                              "name" => "module.FooWithAdapter",
-                                              "underlyingType" => \tmeta_ThriftType::fromShape(
-                                                shape(
-                                                  "t_struct" => \tmeta_ThriftStructType::fromShape(
-                                                    shape(
-                                                      "name" => "module.Foo",
-                                                    )
-                                                  ),
-                                                )
-                                              ),
+                                              "name" => "module.Foo",
                                             )
                                           ),
                                         )
@@ -2750,18 +2773,9 @@ class Bar implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftShapish
                                       "name" => "module.FooWithAdapter",
                                       "underlyingType" => \tmeta_ThriftType::fromShape(
                                         shape(
-                                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
+                                          "t_struct" => \tmeta_ThriftStructType::fromShape(
                                             shape(
-                                              "name" => "module.FooWithAdapter",
-                                              "underlyingType" => \tmeta_ThriftType::fromShape(
-                                                shape(
-                                                  "t_struct" => \tmeta_ThriftStructType::fromShape(
-                                                    shape(
-                                                      "name" => "module.Foo",
-                                                    )
-                                                  ),
-                                                )
-                                              ),
+                                              "name" => "module.Foo",
                                             )
                                           ),
                                         )
@@ -2792,18 +2806,9 @@ class Bar implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftShapish
                       "name" => "module.Baz_7352",
                       "underlyingType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
+                          "t_struct" => \tmeta_ThriftStructType::fromShape(
                             shape(
                               "name" => "module.Baz",
-                              "underlyingType" => \tmeta_ThriftType::fromShape(
-                                shape(
-                                  "t_struct" => \tmeta_ThriftStructType::fromShape(
-                                    shape(
-                                      "name" => "module.Baz",
-                                    )
-                                  ),
-                                )
-                              ),
                             )
                           ),
                         )
@@ -2825,18 +2830,9 @@ class Bar implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftShapish
                       "name" => "module.Baz_7352",
                       "underlyingType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
+                          "t_struct" => \tmeta_ThriftStructType::fromShape(
                             shape(
                               "name" => "module.Baz",
-                              "underlyingType" => \tmeta_ThriftType::fromShape(
-                                shape(
-                                  "t_struct" => \tmeta_ThriftStructType::fromShape(
-                                    shape(
-                                      "name" => "module.Baz",
-                                    )
-                                  ),
-                                )
-                              ),
                             )
                           ),
                         )
@@ -2921,6 +2917,12 @@ class Bar implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftShapish
             ),
           ],
           'type' => dict[
+            '\facebook\thrift\annotation\python\Adapter' => \facebook\thrift\annotation\python\Adapter::fromShape(
+              shape(
+                "name" => "::my.Adapter1",
+                "typeHint" => "my.AdaptedFoo[]",
+              )
+            ),
             '\facebook\thrift\annotation\AllowLegacyTypedefUri' => \facebook\thrift\annotation\AllowLegacyTypedefUri::withDefaultValues(),
           ],
         ),
@@ -2938,6 +2940,12 @@ class Bar implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftShapish
             ),
           ],
           'type' => dict[
+            '\facebook\thrift\annotation\python\Adapter' => \facebook\thrift\annotation\python\Adapter::fromShape(
+              shape(
+                "name" => "my.Adapter1",
+                "typeHint" => "my.AdaptedFoo[]",
+              )
+            ),
             '\facebook\thrift\annotation\AllowLegacyTypedefUri' => \facebook\thrift\annotation\AllowLegacyTypedefUri::withDefaultValues(),
           ],
         ),
@@ -2955,6 +2963,12 @@ class Bar implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftShapish
             ),
           ],
           'type' => dict[
+            '\facebook\thrift\annotation\python\Adapter' => \facebook\thrift\annotation\python\Adapter::fromShape(
+              shape(
+                "name" => "my.Adapter1",
+                "typeHint" => "my.AdaptedBaz[]",
+              )
+            ),
             '\facebook\thrift\annotation\AllowLegacyTypedefUri' => \facebook\thrift\annotation\AllowLegacyTypedefUri::withDefaultValues(),
           ],
         ),
@@ -2972,6 +2986,12 @@ class Bar implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftShapish
             ),
           ],
           'type' => dict[
+            '\facebook\thrift\annotation\python\Adapter' => \facebook\thrift\annotation\python\Adapter::fromShape(
+              shape(
+                "name" => "my.Adapter1",
+                "typeHint" => "my.AdaptedBaz[]",
+              )
+            ),
             '\facebook\thrift\annotation\AllowLegacyTypedefUri' => \facebook\thrift\annotation\AllowLegacyTypedefUri::withDefaultValues(),
           ],
         ),
@@ -4390,6 +4410,12 @@ class MyStruct implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftSh
         'set_string' => shape(
           'field' => dict[],
           'type' => dict[
+            '\facebook\thrift\annotation\python\Adapter' => \facebook\thrift\annotation\python\Adapter::fromShape(
+              shape(
+                "name" => "my.Adapter2",
+                "typeHint" => "my.AdaptedSet[]",
+              )
+            ),
             '\facebook\thrift\annotation\AllowLegacyTypedefUri' => \facebook\thrift\annotation\AllowLegacyTypedefUri::withDefaultValues(),
             '\facebook\thrift\annotation\hack\Adapter' => \facebook\thrift\annotation\hack\Adapter::fromShape(
               shape(

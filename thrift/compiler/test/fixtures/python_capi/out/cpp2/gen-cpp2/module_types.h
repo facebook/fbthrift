@@ -6397,82 +6397,82 @@ template <> struct TEnumTraits<::test::fixtures::python_capi::SomeBinary::Type> 
 namespace apache::thrift::detail {
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::MyStruct, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -5679908658500528560;
-  static constexpr ::std::string_view definitionKey = {"\x6c\xe8\x5a\x26\xe5\xc1\xba\xfe\xa0\xf3\x00\x4e\x72\x3e\x3b\x35", 16};
+  static constexpr int64_t programId = 8356597225850880439;
+  static constexpr ::std::string_view definitionKey = {"\xc6\xf5\xc0\x38\x42\x1a\x5e\x7d\x81\x08\xb7\xa0\x43\x39\x93\x25", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::MyDataItem, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -5679908658500528560;
-  static constexpr ::std::string_view definitionKey = {"\x86\x04\x74\x80\x07\xf9\xc0\x64\xf6\x47\x11\xa6\xe8\xc3\xb8\x81", 16};
+  static constexpr int64_t programId = 8356597225850880439;
+  static constexpr ::std::string_view definitionKey = {"\x7f\x84\xab\x78\xd0\x92\x23\x48\x99\xaf\x42\x5b\x5e\x95\x0f\x3a", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::TransitiveDoubler, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -5679908658500528560;
-  static constexpr ::std::string_view definitionKey = {"\xd8\x9a\x60\x5a\xf7\xfe\xea\x0e\xb6\x04\x48\xec\xfc\x9f\xb2\x6b", 16};
+  static constexpr int64_t programId = 8356597225850880439;
+  static constexpr ::std::string_view definitionKey = {"\xd6\xf3\xc3\xc1\x5a\xe2\x5b\xda\xc9\x8d\x0e\xdd\xf3\xb1\x01\xa8", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::detail::DoubledPair, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -5679908658500528560;
-  static constexpr ::std::string_view definitionKey = {"\x28\x15\x19\xa2\x76\x54\xd8\x22\xe7\xb2\xcd\x68\xc1\x90\xd1\xe4", 16};
+  static constexpr int64_t programId = 8356597225850880439;
+  static constexpr ::std::string_view definitionKey = {"\x77\x55\xec\x5d\x00\xe5\x34\xa1\xd5\x11\xa6\xd3\xfa\x4d\x46\x53", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::StringPair, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -5679908658500528560;
-  static constexpr ::std::string_view definitionKey = {"\xe4\xff\xd2\x11\x7e\xf6\xf6\x9e\x3c\x52\x79\x7b\x6f\xfd\xfd\xac", 16};
+  static constexpr int64_t programId = 8356597225850880439;
+  static constexpr ::std::string_view definitionKey = {"\x80\xbf\xbf\xb9\x29\xef\x58\xf0\xb1\x1c\x48\x4c\x2a\xdf\x64\xa1", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::VapidStruct, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -5679908658500528560;
-  static constexpr ::std::string_view definitionKey = {"\x49\xa4\x49\x6a\xa1\x42\xf2\x39\xe4\x85\x13\x87\x2c\x46\xd2\x53", 16};
+  static constexpr int64_t programId = 8356597225850880439;
+  static constexpr ::std::string_view definitionKey = {"\x80\xdd\x29\x36\xe4\xa6\x9d\x65\xc3\xa7\x3b\xba\x04\x54\x16\xe8", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::PrimitiveStruct, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -5679908658500528560;
-  static constexpr ::std::string_view definitionKey = {"\xa6\x75\xe2\x52\x16\x18\x25\x56\xe5\xa0\xe4\x04\xb3\x18\xa3\x32", 16};
+  static constexpr int64_t programId = 8356597225850880439;
+  static constexpr ::std::string_view definitionKey = {"\x96\x6b\x3e\x6a\x9c\x71\xa4\x18\xd5\xb8\x53\x1c\x41\xe7\xd4\x2b", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::AdaptedFields, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -5679908658500528560;
-  static constexpr ::std::string_view definitionKey = {"\xfe\xb9\x3d\x52\xc9\x2a\x3b\x8e\xb3\xde\x40\xbb\xe4\x8b\xa8\x72", 16};
+  static constexpr int64_t programId = 8356597225850880439;
+  static constexpr ::std::string_view definitionKey = {"\x05\x3d\xb1\x75\xbb\xd0\x32\xfd\x49\xdc\xa8\x41\x19\xcb\x01\xe0", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::ListStruct, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -5679908658500528560;
-  static constexpr ::std::string_view definitionKey = {"\x80\xf7\x54\xc7\x13\xd3\xda\x0a\x85\xbf\xf6\xf6\xf3\x2b\x44\xec", 16};
+  static constexpr int64_t programId = 8356597225850880439;
+  static constexpr ::std::string_view definitionKey = {"\x48\x37\x77\x71\x40\x26\xd8\xdb\xf7\xf9\x84\x0a\x8d\x09\x81\x16", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::SetStruct, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -5679908658500528560;
-  static constexpr ::std::string_view definitionKey = {"\x30\x71\xa0\xb0\x04\x2c\x3b\x2a\xd3\xbe\xdf\x1b\x7c\x32\x5b\xcc", 16};
+  static constexpr int64_t programId = 8356597225850880439;
+  static constexpr ::std::string_view definitionKey = {"\x93\xb5\xfa\x8a\x3d\x43\x3e\xb1\x3b\x4a\x01\xc3\xc4\xe5\xaa\xb5", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::MapStruct, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -5679908658500528560;
-  static constexpr ::std::string_view definitionKey = {"\x99\xb4\x40\xe3\x08\xc0\x04\x75\x81\xd8\xa5\x02\xf1\x13\x2e\xb0", 16};
+  static constexpr int64_t programId = 8356597225850880439;
+  static constexpr ::std::string_view definitionKey = {"\x6d\x10\xe1\xf8\xe8\x24\x36\x40\x2c\x40\xe2\x8f\x77\xfd\x44\x8c", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::ComposeStruct, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -5679908658500528560;
-  static constexpr ::std::string_view definitionKey = {"\xf7\x78\x46\x94\xbb\xc7\xe2\x96\x8c\x74\x18\x2d\x19\x0c\x78\xdd", 16};
+  static constexpr int64_t programId = 8356597225850880439;
+  static constexpr ::std::string_view definitionKey = {"\xee\xbb\xdf\x5a\x36\x91\xbb\x81\x57\xb9\x35\x43\xd6\xe1\x40\xc4", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::Shallot, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -5679908658500528560;
-  static constexpr ::std::string_view definitionKey = {"\xdc\x94\xe8\x75\x6c\x74\x60\x98\xb3\x29\x86\x88\x88\x37\x70\xbc", 16};
+  static constexpr int64_t programId = 8356597225850880439;
+  static constexpr ::std::string_view definitionKey = {"\xdf\x38\xfe\x2e\x42\x05\xb4\xe6\x87\x53\x93\x73\xd7\xcb\x75\x92", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::SomeBinary, false> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -5679908658500528560;
-  static constexpr ::std::string_view definitionKey = {"\xcc\x6d\x53\x5a\xcf\xd2\x0e\xf4\x6d\xc5\x41\x94\x36\xa2\x1d\x8a", 16};
+  static constexpr int64_t programId = 8356597225850880439;
+  static constexpr ::std::string_view definitionKey = {"\x39\x2e\x10\x83\x6d\x53\x95\xa2\x59\x81\xe0\xe1\xd9\x4a\x9e\x5f", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::MyEnum, true> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -5679908658500528560;
-  static constexpr ::std::string_view definitionKey = {"\x83\x81\xab\x41\x2a\xfe\x89\x9b\x39\x37\xbf\xca\xbc\x83\x81\x46", 16};
+  static constexpr int64_t programId = 8356597225850880439;
+  static constexpr ::std::string_view definitionKey = {"\x91\x58\x3d\xc9\x13\xfe\xd0\xeb\x89\x02\xb9\x9b\x57\x95\x83\xa6", 16};
 };
 template <> struct TSchemaAssociation<::test::fixtures::python_capi::NormalDecentEnum, true> {
   static ::folly::Range<const ::std::string_view*> bundle();
-  static constexpr int64_t programId = -5679908658500528560;
-  static constexpr ::std::string_view definitionKey = {"\x19\xaf\x0f\x44\x47\xfb\x0d\xfa\x81\xf8\xd8\x0a\xb2\x8d\x41\x5b", 16};
+  static constexpr int64_t programId = 8356597225850880439;
+  static constexpr ::std::string_view definitionKey = {"\x65\x72\xef\x40\xea\xbb\x62\x6e\xdf\x6c\x92\x54\xc3\x31\x49\x78", 16};
 };
 } // namespace apache::thrift::detail

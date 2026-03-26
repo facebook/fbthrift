@@ -39,7 +39,15 @@ class has_bitwise_ops_TEnumStaticMetadata implements \IThriftEnumStaticMetadata 
 
   public static function getAllStructuredAnnotations()[write_props]: \TEnumAnnotations {
     return shape(
-      'enum' => dict[],
+      'enum' => dict[
+        '\facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations' => \facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations::fromShape(
+          shape(
+            "items" => dict[
+              "cpp.declare_bitwise_ops" => "1",
+            ],
+          )
+        ),
+      ],
       'constants' => dict[
       ],
     );
@@ -71,7 +79,15 @@ class is_unscoped_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
 
   public static function getAllStructuredAnnotations()[write_props]: \TEnumAnnotations {
     return shape(
-      'enum' => dict[],
+      'enum' => dict[
+        '\facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations' => \facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations::fromShape(
+          shape(
+            "items" => dict[
+              "cpp.deprecated_enum_unscoped" => "1",
+            ],
+          )
+        ),
+      ],
       'constants' => dict[
       ],
     );
@@ -247,7 +263,10 @@ class decorated_struct implements \IThriftSyncStruct, \IThriftStructMetadata {
 
   public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        '\facebook\thrift\annotation\cpp\DeclareEqualToSpecialization' => \facebook\thrift\annotation\cpp\DeclareEqualToSpecialization::withDefaultValues(),
+        '\facebook\thrift\annotation\cpp\DeclareHashSpecialization' => \facebook\thrift\annotation\cpp\DeclareHashSpecialization::withDefaultValues(),
+      ],
       'fields' => dict[
       ],
     );
@@ -1079,7 +1098,15 @@ class VirtualStruct implements \IThriftSyncStruct, \IThriftStructMetadata {
 
   public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        '\facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations' => \facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations::fromShape(
+          shape(
+            "items" => dict[
+              "cpp.virtual" => "1",
+            ],
+          )
+        ),
+      ],
       'fields' => dict[
       ],
     );
@@ -2446,8 +2473,28 @@ class MyStruct implements \IThriftSyncStruct, \IThriftStructMetadata {
 
   public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        '\facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations' => \facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations::fromShape(
+          shape(
+            "items" => dict[
+              "cpp.noncomparable" => "1",
+            ],
+          )
+        ),
+      ],
       'fields' => dict[
+        'data' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations' => \facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations::fromShape(
+              shape(
+                "items" => dict[
+                  "cpp.noncomparable" => "1",
+                ],
+              )
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -2527,7 +2574,15 @@ class MyDataItem implements \IThriftSyncStruct, \IThriftStructMetadata {
 
   public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        '\facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations' => \facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations::fromShape(
+          shape(
+            "items" => dict[
+              "cpp.noncomparable" => "1",
+            ],
+          )
+        ),
+      ],
       'fields' => dict[
       ],
     );
@@ -2754,16 +2809,7 @@ class AnnotatedTypes implements \IThriftSyncStruct, \IThriftStructMetadata {
                               "name" => "module.TBinary",
                               "underlyingType" => \tmeta_ThriftType::fromShape(
                                 shape(
-                                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
-                                    shape(
-                                      "name" => "module.TBinary",
-                                      "underlyingType" => \tmeta_ThriftType::fromShape(
-                                        shape(
-                                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BINARY_TYPE,
-                                        )
-                                      ),
-                                    )
-                                  ),
+                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BINARY_TYPE,
                                 )
                               ),
                             )
@@ -2792,34 +2838,25 @@ class AnnotatedTypes implements \IThriftSyncStruct, \IThriftStructMetadata {
                               "name" => "included.SomeListOfTypeMap",
                               "underlyingType" => \tmeta_ThriftType::fromShape(
                                 shape(
-                                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
+                                  "t_list" => \tmeta_ThriftListType::fromShape(
                                     shape(
-                                      "name" => "included.SomeListOfTypeMap",
-                                      "underlyingType" => \tmeta_ThriftType::fromShape(
+                                      "valueType" => \tmeta_ThriftType::fromShape(
                                         shape(
-                                          "t_list" => \tmeta_ThriftListType::fromShape(
+                                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                                             shape(
-                                              "valueType" => \tmeta_ThriftType::fromShape(
+                                              "name" => "included.SomeMap",
+                                              "underlyingType" => \tmeta_ThriftType::fromShape(
                                                 shape(
-                                                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
+                                                  "t_map" => \tmeta_ThriftMapType::fromShape(
                                                     shape(
-                                                      "name" => "included.SomeMap",
-                                                      "underlyingType" => \tmeta_ThriftType::fromShape(
+                                                      "keyType" => \tmeta_ThriftType::fromShape(
                                                         shape(
-                                                          "t_map" => \tmeta_ThriftMapType::fromShape(
-                                                            shape(
-                                                              "keyType" => \tmeta_ThriftType::fromShape(
-                                                                shape(
-                                                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
-                                                                )
-                                                              ),
-                                                              "valueType" => \tmeta_ThriftType::fromShape(
-                                                                shape(
-                                                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
-                                                                )
-                                                              ),
-                                                            )
-                                                          ),
+                                                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                                        )
+                                                      ),
+                                                      "valueType" => \tmeta_ThriftType::fromShape(
+                                                        shape(
+                                                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                                                         )
                                                       ),
                                                     )
@@ -2860,12 +2897,26 @@ class AnnotatedTypes implements \IThriftSyncStruct, \IThriftStructMetadata {
         'binary_field' => shape(
           'field' => dict[],
           'type' => dict[
+            '\facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations' => \facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations::fromShape(
+              shape(
+                "items" => dict[
+                  "noop_annotation" => "1",
+                ],
+              )
+            ),
             '\facebook\thrift\annotation\AllowLegacyTypedefUri' => \facebook\thrift\annotation\AllowLegacyTypedefUri::withDefaultValues(),
           ],
         ),
         'list_field' => shape(
           'field' => dict[],
           'type' => dict[
+            '\facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations' => \facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations::fromShape(
+              shape(
+                "items" => dict[
+                  "noop_annotation" => "1",
+                ],
+              )
+            ),
             '\facebook\thrift\annotation\AllowLegacyTypedefUri' => \facebook\thrift\annotation\AllowLegacyTypedefUri::withDefaultValues(),
           ],
         ),
@@ -4884,29 +4935,65 @@ class AllocatorAware implements \IThriftSyncStruct, \IThriftStructMetadata {
 
   public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        '\facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations' => \facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations::fromShape(
+          shape(
+            "items" => dict[
+              "cpp.allocator" => "some_allocator",
+            ],
+          )
+        ),
+      ],
       'fields' => dict[
         'aa_list' => shape(
           'field' => dict[],
           'type' => dict[
+            '\facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations' => \facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations::fromShape(
+              shape(
+                "items" => dict[
+                  "cpp.use_allocator" => "1",
+                ],
+              )
+            ),
             '\facebook\thrift\annotation\AllowLegacyTypedefUri' => \facebook\thrift\annotation\AllowLegacyTypedefUri::withDefaultValues(),
           ],
         ),
         'aa_set' => shape(
           'field' => dict[],
           'type' => dict[
+            '\facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations' => \facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations::fromShape(
+              shape(
+                "items" => dict[
+                  "cpp.use_allocator" => "1",
+                ],
+              )
+            ),
             '\facebook\thrift\annotation\AllowLegacyTypedefUri' => \facebook\thrift\annotation\AllowLegacyTypedefUri::withDefaultValues(),
           ],
         ),
         'aa_map' => shape(
           'field' => dict[],
           'type' => dict[
+            '\facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations' => \facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations::fromShape(
+              shape(
+                "items" => dict[
+                  "cpp.use_allocator" => "1",
+                ],
+              )
+            ),
             '\facebook\thrift\annotation\AllowLegacyTypedefUri' => \facebook\thrift\annotation\AllowLegacyTypedefUri::withDefaultValues(),
           ],
         ),
         'aa_string' => shape(
           'field' => dict[],
           'type' => dict[
+            '\facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations' => \facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations::fromShape(
+              shape(
+                "items" => dict[
+                  "cpp.use_allocator" => "1",
+                ],
+              )
+            ),
             '\facebook\thrift\annotation\AllowLegacyTypedefUri' => \facebook\thrift\annotation\AllowLegacyTypedefUri::withDefaultValues(),
           ],
         ),
@@ -4920,6 +5007,13 @@ class AllocatorAware implements \IThriftSyncStruct, \IThriftStructMetadata {
             '\facebook\thrift\annotation\cpp\AllowLegacyNonOptionalRef' => \facebook\thrift\annotation\cpp\AllowLegacyNonOptionalRef::withDefaultValues(),
           ],
           'type' => dict[
+            '\facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations' => \facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations::fromShape(
+              shape(
+                "items" => dict[
+                  "cpp.use_allocator" => "1",
+                ],
+              )
+            ),
             '\facebook\thrift\annotation\AllowLegacyTypedefUri' => \facebook\thrift\annotation\AllowLegacyTypedefUri::withDefaultValues(),
           ],
         ),
@@ -4933,6 +5027,13 @@ class AllocatorAware implements \IThriftSyncStruct, \IThriftStructMetadata {
             '\facebook\thrift\annotation\cpp\AllowLegacyNonOptionalRef' => \facebook\thrift\annotation\cpp\AllowLegacyNonOptionalRef::withDefaultValues(),
           ],
           'type' => dict[
+            '\facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations' => \facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations::fromShape(
+              shape(
+                "items" => dict[
+                  "cpp.use_allocator" => "1",
+                ],
+              )
+            ),
             '\facebook\thrift\annotation\AllowLegacyTypedefUri' => \facebook\thrift\annotation\AllowLegacyTypedefUri::withDefaultValues(),
           ],
         ),
@@ -5123,7 +5224,15 @@ class AllocatorAware2 implements \IThriftSyncStruct, \IThriftStructMetadata {
 
   public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
-      'struct' => dict[],
+      'struct' => dict[
+        '\facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations' => \facebook\thrift\annotation\DeprecatedUnvalidatedAnnotations::fromShape(
+          shape(
+            "items" => dict[
+              "cpp.allocator" => "some_allocator",
+            ],
+          )
+        ),
+      ],
       'fields' => dict[
         'box_field' => shape(
           'field' => dict[

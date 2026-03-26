@@ -16,9 +16,6 @@ import sys
 if sys.version_info[0] >= 3:
   long = int
 
-import ::my
-import my
-
 
 import pprint
 import warnings
@@ -1227,14 +1224,12 @@ class Bar:
         if ftype == TType.STRUCT:
           self.structField = Foo()
           self.structField.read(iprot)
-          self.structField = ::my.Adapter1.from_thrift(self.structField)
         else:
           iprot.skip(ftype)
       elif fid == 2:
         if ftype == TType.STRUCT:
           self.optionalStructField = Foo()
           self.optionalStructField.read(iprot)
-          self.optionalStructField = my.Adapter1.from_thrift(self.optionalStructField)
         else:
           iprot.skip(ftype)
       elif fid == 3:
@@ -1245,13 +1240,11 @@ class Bar:
             for _i224 in range(_size220):
               _elem225 = Foo()
               _elem225.read(iprot)
-              _elem225 = my.Adapter1.from_thrift(_elem225)
               self.structListField.append(_elem225)
           else: 
             while iprot.peekList():
               _elem226 = Foo()
               _elem226.read(iprot)
-              _elem226 = my.Adapter1.from_thrift(_elem226)
               self.structListField.append(_elem226)
           iprot.readListEnd()
         else:
@@ -1264,13 +1257,11 @@ class Bar:
             for _i231 in range(_size227):
               _elem232 = Foo()
               _elem232.read(iprot)
-              _elem232 = my.Adapter1.from_thrift(_elem232)
               self.optionalStructListField.append(_elem232)
           else: 
             while iprot.peekList():
               _elem233 = Foo()
               _elem233.read(iprot)
-              _elem233 = my.Adapter1.from_thrift(_elem233)
               self.optionalStructListField.append(_elem233)
           iprot.readListEnd()
         else:
@@ -1279,14 +1270,12 @@ class Bar:
         if ftype == TType.STRUCT:
           self.unionField = Baz()
           self.unionField.read(iprot)
-          self.unionField = my.Adapter1.from_thrift(self.unionField)
         else:
           iprot.skip(ftype)
       elif fid == 6:
         if ftype == TType.STRUCT:
           self.optionalUnionField = Baz()
           self.optionalUnionField.read(iprot)
-          self.optionalUnionField = my.Adapter1.from_thrift(self.optionalUnionField)
         else:
           iprot.skip(ftype)
       elif fid == 7:
@@ -1327,39 +1316,33 @@ class Bar:
     oprot.writeStructBegin('Bar')
     if self.structField != None:
       oprot.writeFieldBegin('structField', TType.STRUCT, 1)
-      adpt241 = ::my.Adapter1.to_thrift(self.structField)
-      adpt241.write(oprot)
+      self.structField.write(oprot)
       oprot.writeFieldEnd()
     if self.optionalStructField != None:
       oprot.writeFieldBegin('optionalStructField', TType.STRUCT, 2)
-      adpt242 = my.Adapter1.to_thrift(self.optionalStructField)
-      adpt242.write(oprot)
+      self.optionalStructField.write(oprot)
       oprot.writeFieldEnd()
     if self.structListField != None:
       oprot.writeFieldBegin('structListField', TType.LIST, 3)
       oprot.writeListBegin(TType.STRUCT, len(self.structListField))
-      for iter243 in self.structListField:
-        adpt244 = my.Adapter1.to_thrift(iter243)
-        adpt244.write(oprot)
+      for iter241 in self.structListField:
+        iter241.write(oprot)
       oprot.writeListEnd()
       oprot.writeFieldEnd()
     if self.optionalStructListField != None:
       oprot.writeFieldBegin('optionalStructListField', TType.LIST, 4)
       oprot.writeListBegin(TType.STRUCT, len(self.optionalStructListField))
-      for iter245 in self.optionalStructListField:
-        adpt246 = my.Adapter1.to_thrift(iter245)
-        adpt246.write(oprot)
+      for iter242 in self.optionalStructListField:
+        iter242.write(oprot)
       oprot.writeListEnd()
       oprot.writeFieldEnd()
     if self.unionField != None:
       oprot.writeFieldBegin('unionField', TType.STRUCT, 5)
-      adpt247 = my.Adapter1.to_thrift(self.unionField)
-      adpt247.write(oprot)
+      self.unionField.write(oprot)
       oprot.writeFieldEnd()
     if self.optionalUnionField != None:
       oprot.writeFieldBegin('optionalUnionField', TType.STRUCT, 6)
-      adpt248 = my.Adapter1.to_thrift(self.optionalUnionField)
-      adpt248.write(oprot)
+      self.optionalUnionField.write(oprot)
       oprot.writeFieldEnd()
     if self.adaptedStructField != None:
       oprot.writeFieldBegin('adaptedStructField', TType.STRUCT, 7)
@@ -1368,8 +1351,8 @@ class Bar:
     if self.structListFieldWithTypedef != None:
       oprot.writeFieldBegin('structListFieldWithTypedef', TType.LIST, 8)
       oprot.writeListBegin(TType.STRUCT, len(self.structListFieldWithTypedef))
-      for iter249 in self.structListFieldWithTypedef:
-        iter249.write(oprot)
+      for iter243 in self.structListFieldWithTypedef:
+        iter243.write(oprot)
       oprot.writeListEnd()
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -1401,16 +1384,16 @@ class Bar:
       self.optionalStructField.readFromJson(json_obj['optionalStructField'], is_text=False, **kwargs)
     if 'structListField' in json_obj and json_obj['structListField'] is not None:
       self.structListField = []
-      for _tmp_e250 in json_obj['structListField']:
-        _struct251 = Foo()
-        _struct251.readFromJson(_tmp_e250, is_text=False, **kwargs)
-        self.structListField.append(_struct251)
+      for _tmp_e244 in json_obj['structListField']:
+        _struct245 = Foo()
+        _struct245.readFromJson(_tmp_e244, is_text=False, **kwargs)
+        self.structListField.append(_struct245)
     if 'optionalStructListField' in json_obj and json_obj['optionalStructListField'] is not None:
       self.optionalStructListField = []
-      for _tmp_e252 in json_obj['optionalStructListField']:
-        _struct253 = Foo()
-        _struct253.readFromJson(_tmp_e252, is_text=False, **kwargs)
-        self.optionalStructListField.append(_struct253)
+      for _tmp_e246 in json_obj['optionalStructListField']:
+        _struct247 = Foo()
+        _struct247.readFromJson(_tmp_e246, is_text=False, **kwargs)
+        self.optionalStructListField.append(_struct247)
     if 'unionField' in json_obj and json_obj['unionField'] is not None:
       self.unionField = Baz()
       self.unionField.readFromJson(json_obj['unionField'], is_text=False, **kwargs)
@@ -1422,10 +1405,10 @@ class Bar:
       self.adaptedStructField.readFromJson(json_obj['adaptedStructField'], is_text=False, **kwargs)
     if 'structListFieldWithTypedef' in json_obj and json_obj['structListFieldWithTypedef'] is not None:
       self.structListFieldWithTypedef = []
-      for _tmp_e254 in json_obj['structListFieldWithTypedef']:
-        _struct255 = Foo()
-        _struct255.readFromJson(_tmp_e254, is_text=False, **kwargs)
-        self.structListFieldWithTypedef.append(_struct255)
+      for _tmp_e248 in json_obj['structListFieldWithTypedef']:
+        _struct249 = Foo()
+        _struct249.readFromJson(_tmp_e248, is_text=False, **kwargs)
+        self.structListFieldWithTypedef.append(_struct249)
 
   def __repr__(self):
     L = []
@@ -1966,15 +1949,15 @@ class TerseAdaptedFields:
       elif fid == 3:
         if ftype == TType.SET:
           self.set_field = set()
-          (_etype259, _size256) = iprot.readSetBegin()
-          if _size256 >= 0:
-            for _i260 in range(_size256):
-              _elem261 = iprot.readI32()
-              self.set_field.add(_elem261)
+          (_etype253, _size250) = iprot.readSetBegin()
+          if _size250 >= 0:
+            for _i254 in range(_size250):
+              _elem255 = iprot.readI32()
+              self.set_field.add(_elem255)
           else: 
             while iprot.peekSet():
-              _elem262 = iprot.readI32()
-              self.set_field.add(_elem262)
+              _elem256 = iprot.readI32()
+              self.set_field.add(_elem256)
           iprot.readSetEnd()
         else:
           iprot.skip(ftype)
@@ -2002,8 +1985,8 @@ class TerseAdaptedFields:
     if self.set_field != None:
       oprot.writeFieldBegin('set_field', TType.SET, 3)
       oprot.writeSetBegin(TType.I32, len(self.set_field))
-      for iter263 in self.set_field:
-        oprot.writeI32(iter263)
+      for iter257 in self.set_field:
+        oprot.writeI32(iter257)
       oprot.writeSetEnd()
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -2035,10 +2018,10 @@ class TerseAdaptedFields:
       self.string_field = json_obj['string_field']
     if 'set_field' in json_obj and json_obj['set_field'] is not None:
       self.set_field = set_cls()
-      for _tmp_e264 in json_obj['set_field']:
-        if _tmp_e264 > 0x7fffffff or _tmp_e264 < -0x80000000:
+      for _tmp_e258 in json_obj['set_field']:
+        if _tmp_e258 > 0x7fffffff or _tmp_e258 < -0x80000000:
           raise TProtocolException(TProtocolException.INVALID_DATA, 'number exceeds limit in field')
-        self.set_field.add(_tmp_e264)
+        self.set_field.add(_tmp_e258)
 
   def __repr__(self):
     L = []
@@ -2466,15 +2449,15 @@ class MyStruct:
       elif fid == 2:
         if ftype == TType.SET:
           self.set_string = set()
-          (_etype268, _size265) = iprot.readSetBegin()
-          if _size265 >= 0:
-            for _i269 in range(_size265):
-              _elem270 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
-              self.set_string.add(_elem270)
+          (_etype262, _size259) = iprot.readSetBegin()
+          if _size259 >= 0:
+            for _i263 in range(_size259):
+              _elem264 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+              self.set_string.add(_elem264)
           else: 
             while iprot.peekSet():
-              _elem271 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
-              self.set_string.add(_elem271)
+              _elem265 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+              self.set_string.add(_elem265)
           iprot.readSetEnd()
         else:
           iprot.skip(ftype)
@@ -2498,8 +2481,8 @@ class MyStruct:
     if self.set_string != None:
       oprot.writeFieldBegin('set_string', TType.SET, 2)
       oprot.writeSetBegin(TType.STRING, len(self.set_string))
-      for iter272 in self.set_string:
-        oprot.writeString(iter272.encode('utf-8')) if UTF8STRINGS and not isinstance(iter272, bytes) else oprot.writeString(iter272)
+      for iter266 in self.set_string:
+        oprot.writeString(iter266.encode('utf-8')) if UTF8STRINGS and not isinstance(iter266, bytes) else oprot.writeString(iter266)
       oprot.writeSetEnd()
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -2529,8 +2512,8 @@ class MyStruct:
         raise TProtocolException(TProtocolException.INVALID_DATA, 'number exceeds limit in field')
     if 'set_string' in json_obj and json_obj['set_string'] is not None:
       self.set_string = set_cls()
-      for _tmp_e273 in json_obj['set_string']:
-        self.set_string.add(_tmp_e273)
+      for _tmp_e267 in json_obj['set_string']:
+        self.set_string.add(_tmp_e267)
 
   def __repr__(self):
     L = []
@@ -2941,47 +2924,47 @@ class AdaptTemplatedTestStruct:
       elif fid == 8:
         if ftype == TType.LIST:
           self.adaptedList = []
-          (_etype277, _size274) = iprot.readListBegin()
-          if _size274 >= 0:
-            for _i278 in range(_size274):
-              _elem279 = iprot.readI64()
-              self.adaptedList.append(_elem279)
+          (_etype271, _size268) = iprot.readListBegin()
+          if _size268 >= 0:
+            for _i272 in range(_size268):
+              _elem273 = iprot.readI64()
+              self.adaptedList.append(_elem273)
           else: 
             while iprot.peekList():
-              _elem280 = iprot.readI64()
-              self.adaptedList.append(_elem280)
+              _elem274 = iprot.readI64()
+              self.adaptedList.append(_elem274)
           iprot.readListEnd()
         else:
           iprot.skip(ftype)
       elif fid == 9:
         if ftype == TType.SET:
           self.adaptedSet = set()
-          (_etype284, _size281) = iprot.readSetBegin()
-          if _size281 >= 0:
-            for _i285 in range(_size281):
-              _elem286 = iprot.readI64()
-              self.adaptedSet.add(_elem286)
+          (_etype278, _size275) = iprot.readSetBegin()
+          if _size275 >= 0:
+            for _i279 in range(_size275):
+              _elem280 = iprot.readI64()
+              self.adaptedSet.add(_elem280)
           else: 
             while iprot.peekSet():
-              _elem287 = iprot.readI64()
-              self.adaptedSet.add(_elem287)
+              _elem281 = iprot.readI64()
+              self.adaptedSet.add(_elem281)
           iprot.readSetEnd()
         else:
           iprot.skip(ftype)
       elif fid == 10:
         if ftype == TType.MAP:
           self.adaptedMap = {}
-          (_ktype289, _vtype290, _size288 ) = iprot.readMapBegin() 
-          if _size288 >= 0:
-            for _i292 in range(_size288):
-              _key293 = iprot.readI64()
-              _val294 = iprot.readI64()
-              self.adaptedMap[_key293] = _val294
+          (_ktype283, _vtype284, _size282 ) = iprot.readMapBegin() 
+          if _size282 >= 0:
+            for _i286 in range(_size282):
+              _key287 = iprot.readI64()
+              _val288 = iprot.readI64()
+              self.adaptedMap[_key287] = _val288
           else: 
             while iprot.peekMap():
-              _key295 = iprot.readI64()
-              _val296 = iprot.readI64()
-              self.adaptedMap[_key295] = _val296
+              _key289 = iprot.readI64()
+              _val290 = iprot.readI64()
+              self.adaptedMap[_key289] = _val290
           iprot.readMapEnd()
         else:
           iprot.skip(ftype)
@@ -3028,47 +3011,47 @@ class AdaptTemplatedTestStruct:
       elif fid == 19:
         if ftype == TType.LIST:
           self.adaptedListDefault = []
-          (_etype300, _size297) = iprot.readListBegin()
-          if _size297 >= 0:
-            for _i301 in range(_size297):
-              _elem302 = iprot.readI64()
-              self.adaptedListDefault.append(_elem302)
+          (_etype294, _size291) = iprot.readListBegin()
+          if _size291 >= 0:
+            for _i295 in range(_size291):
+              _elem296 = iprot.readI64()
+              self.adaptedListDefault.append(_elem296)
           else: 
             while iprot.peekList():
-              _elem303 = iprot.readI64()
-              self.adaptedListDefault.append(_elem303)
+              _elem297 = iprot.readI64()
+              self.adaptedListDefault.append(_elem297)
           iprot.readListEnd()
         else:
           iprot.skip(ftype)
       elif fid == 20:
         if ftype == TType.SET:
           self.adaptedSetDefault = set()
-          (_etype307, _size304) = iprot.readSetBegin()
-          if _size304 >= 0:
-            for _i308 in range(_size304):
-              _elem309 = iprot.readI64()
-              self.adaptedSetDefault.add(_elem309)
+          (_etype301, _size298) = iprot.readSetBegin()
+          if _size298 >= 0:
+            for _i302 in range(_size298):
+              _elem303 = iprot.readI64()
+              self.adaptedSetDefault.add(_elem303)
           else: 
             while iprot.peekSet():
-              _elem310 = iprot.readI64()
-              self.adaptedSetDefault.add(_elem310)
+              _elem304 = iprot.readI64()
+              self.adaptedSetDefault.add(_elem304)
           iprot.readSetEnd()
         else:
           iprot.skip(ftype)
       elif fid == 21:
         if ftype == TType.MAP:
           self.adaptedMapDefault = {}
-          (_ktype312, _vtype313, _size311 ) = iprot.readMapBegin() 
-          if _size311 >= 0:
-            for _i315 in range(_size311):
-              _key316 = iprot.readI64()
-              _val317 = iprot.readI64()
-              self.adaptedMapDefault[_key316] = _val317
+          (_ktype306, _vtype307, _size305 ) = iprot.readMapBegin() 
+          if _size305 >= 0:
+            for _i309 in range(_size305):
+              _key310 = iprot.readI64()
+              _val311 = iprot.readI64()
+              self.adaptedMapDefault[_key310] = _val311
           else: 
             while iprot.peekMap():
-              _key318 = iprot.readI64()
-              _val319 = iprot.readI64()
-              self.adaptedMapDefault[_key318] = _val319
+              _key312 = iprot.readI64()
+              _val313 = iprot.readI64()
+              self.adaptedMapDefault[_key312] = _val313
           iprot.readMapEnd()
         else:
           iprot.skip(ftype)
@@ -3121,23 +3104,23 @@ class AdaptTemplatedTestStruct:
     if self.adaptedList != None:
       oprot.writeFieldBegin('adaptedList', TType.LIST, 8)
       oprot.writeListBegin(TType.I64, len(self.adaptedList))
-      for iter320 in self.adaptedList:
-        oprot.writeI64(iter320)
+      for iter314 in self.adaptedList:
+        oprot.writeI64(iter314)
       oprot.writeListEnd()
       oprot.writeFieldEnd()
     if self.adaptedSet != None:
       oprot.writeFieldBegin('adaptedSet', TType.SET, 9)
       oprot.writeSetBegin(TType.I64, len(self.adaptedSet))
-      for iter321 in self.adaptedSet:
-        oprot.writeI64(iter321)
+      for iter315 in self.adaptedSet:
+        oprot.writeI64(iter315)
       oprot.writeSetEnd()
       oprot.writeFieldEnd()
     if self.adaptedMap != None:
       oprot.writeFieldBegin('adaptedMap', TType.MAP, 10)
       oprot.writeMapBegin(TType.I64, TType.I64, len(self.adaptedMap))
-      for kiter322,viter323 in self.adaptedMap.items():
-        oprot.writeI64(kiter322)
-        oprot.writeI64(viter323)
+      for kiter316,viter317 in self.adaptedMap.items():
+        oprot.writeI64(kiter316)
+        oprot.writeI64(viter317)
       oprot.writeMapEnd()
       oprot.writeFieldEnd()
     if self.adaptedBoolDefault != None:
@@ -3175,23 +3158,23 @@ class AdaptTemplatedTestStruct:
     if self.adaptedListDefault != None:
       oprot.writeFieldBegin('adaptedListDefault', TType.LIST, 19)
       oprot.writeListBegin(TType.I64, len(self.adaptedListDefault))
-      for iter324 in self.adaptedListDefault:
-        oprot.writeI64(iter324)
+      for iter318 in self.adaptedListDefault:
+        oprot.writeI64(iter318)
       oprot.writeListEnd()
       oprot.writeFieldEnd()
     if self.adaptedSetDefault != None:
       oprot.writeFieldBegin('adaptedSetDefault', TType.SET, 20)
       oprot.writeSetBegin(TType.I64, len(self.adaptedSetDefault))
-      for iter325 in self.adaptedSetDefault:
-        oprot.writeI64(iter325)
+      for iter319 in self.adaptedSetDefault:
+        oprot.writeI64(iter319)
       oprot.writeSetEnd()
       oprot.writeFieldEnd()
     if self.adaptedMapDefault != None:
       oprot.writeFieldBegin('adaptedMapDefault', TType.MAP, 21)
       oprot.writeMapBegin(TType.I64, TType.I64, len(self.adaptedMapDefault))
-      for kiter326,viter327 in self.adaptedMapDefault.items():
-        oprot.writeI64(kiter326)
-        oprot.writeI64(viter327)
+      for kiter320,viter321 in self.adaptedMapDefault.items():
+        oprot.writeI64(kiter320)
+        oprot.writeI64(viter321)
       oprot.writeMapEnd()
       oprot.writeFieldEnd()
     if self.doubleTypedefBool != None:
@@ -3241,17 +3224,17 @@ class AdaptTemplatedTestStruct:
       self.adaptedString = json_obj['adaptedString']
     if 'adaptedList' in json_obj and json_obj['adaptedList'] is not None:
       self.adaptedList = []
-      for _tmp_e328 in json_obj['adaptedList']:
-        self.adaptedList.append(_tmp_e328)
+      for _tmp_e322 in json_obj['adaptedList']:
+        self.adaptedList.append(_tmp_e322)
     if 'adaptedSet' in json_obj and json_obj['adaptedSet'] is not None:
       self.adaptedSet = set_cls()
-      for _tmp_e329 in json_obj['adaptedSet']:
-        self.adaptedSet.add(_tmp_e329)
+      for _tmp_e323 in json_obj['adaptedSet']:
+        self.adaptedSet.add(_tmp_e323)
     if 'adaptedMap' in json_obj and json_obj['adaptedMap'] is not None:
       self.adaptedMap = dict_cls()
-      for _tmp_k330, _tmp_v331 in json_obj['adaptedMap'].items():
-        _tmp_kp332 = long(_tmp_k330)
-        self.adaptedMap[_tmp_kp332] = _tmp_v331
+      for _tmp_k324, _tmp_v325 in json_obj['adaptedMap'].items():
+        _tmp_kp326 = long(_tmp_k324)
+        self.adaptedMap[_tmp_kp326] = _tmp_v325
     if 'adaptedBoolDefault' in json_obj and json_obj['adaptedBoolDefault'] is not None:
       self.adaptedBoolDefault = json_obj['adaptedBoolDefault']
     if 'adaptedByteDefault' in json_obj and json_obj['adaptedByteDefault'] is not None:
@@ -3284,17 +3267,17 @@ class AdaptTemplatedTestStruct:
         self.adaptedEnum = ThriftEnumWrapper(ThriftAdaptedEnum, self.adaptedEnum)
     if 'adaptedListDefault' in json_obj and json_obj['adaptedListDefault'] is not None:
       self.adaptedListDefault = []
-      for _tmp_e333 in json_obj['adaptedListDefault']:
-        self.adaptedListDefault.append(_tmp_e333)
+      for _tmp_e327 in json_obj['adaptedListDefault']:
+        self.adaptedListDefault.append(_tmp_e327)
     if 'adaptedSetDefault' in json_obj and json_obj['adaptedSetDefault'] is not None:
       self.adaptedSetDefault = set_cls()
-      for _tmp_e334 in json_obj['adaptedSetDefault']:
-        self.adaptedSetDefault.add(_tmp_e334)
+      for _tmp_e328 in json_obj['adaptedSetDefault']:
+        self.adaptedSetDefault.add(_tmp_e328)
     if 'adaptedMapDefault' in json_obj and json_obj['adaptedMapDefault'] is not None:
       self.adaptedMapDefault = dict_cls()
-      for _tmp_k335, _tmp_v336 in json_obj['adaptedMapDefault'].items():
-        _tmp_kp337 = long(_tmp_k335)
-        self.adaptedMapDefault[_tmp_kp337] = _tmp_v336
+      for _tmp_k329, _tmp_v330 in json_obj['adaptedMapDefault'].items():
+        _tmp_kp331 = long(_tmp_k329)
+        self.adaptedMapDefault[_tmp_kp331] = _tmp_v330
     if 'doubleTypedefBool' in json_obj and json_obj['doubleTypedefBool'] is not None:
       self.doubleTypedefBool = json_obj['doubleTypedefBool']
 
@@ -5886,8 +5869,8 @@ DoubleTypedefI64 = MyI64
 MyI32 = UnimplementedTypedef()
 FooWithAdapter = Foo
 ListOfFooTypedef = UnimplementedTypedef()
-StructWithAdapter = my.Adapter2.Type
-UnionWithAdapter = my.Adapter2.Type
+StructWithAdapter = Bar
+UnionWithAdapter = Baz
 AdaptedA = A
 StringWithCppAdapter = UnimplementedTypedef()
 DurationMs = UnimplementedTypedef()
@@ -5907,13 +5890,13 @@ AdaptedTypedef = AdaptedStruct
 TypedefOfDirect = DirectlyAdaptedStruct
 AdaptedCircularAdaptee = CircularAdaptee
 CountingInt = UnimplementedTypedef()
-FooWithAdapter_9317 = my.Adapter1.Type
+FooWithAdapter_9317 = FooWithAdapter
 ListWithElemAdapter_withAdapter_2312 = ListWithElemAdapter_withAdapter
 MyI32_4873 = MyI32
 StringWithAdapter_7208 = StringWithAdapter
-Baz_7352 = my.Adapter1.Type
-Foo_3943 = my.Adapter1.Type
-Foo_6868 = ::my.Adapter1.Type
+Baz_7352 = Baz
+Foo_3943 = Foo
+Foo_6868 = Foo
 binary_5673 = UnimplementedTypedef()
 i32_5137 = UnimplementedTypedef()
 map_string_ListWithElemAdapter_withAdapter_8454 = UnimplementedTypedef()
@@ -5962,7 +5945,6 @@ Foo.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
 )))
 
 Foo.thrift_struct_annotations = {
-  "thrift.uri": "facebook.com/thrift/compiler/test/fixtures/adapter/src/module/Foo",
 }
 Foo.thrift_field_annotations = {
 }
@@ -6051,12 +6033,12 @@ Baz.__init__ = Baz__init__
 
 all_structs.append(Bar)
 Bar.thrift_spec = tuple(__EXPAND_THRIFT_SPEC((
-  (1, TType.STRUCT, 'structField', [Foo, Foo.thrift_spec, False, ::my.Adapter1], None, 2, ), # 1
-  (2, TType.STRUCT, 'optionalStructField', [Foo, Foo.thrift_spec, False, my.Adapter1], None, 1, ), # 2
-  (3, TType.LIST, 'structListField', (TType.STRUCT,[Foo, Foo.thrift_spec, False, my.Adapter1]), None, 2, ), # 3
-  (4, TType.LIST, 'optionalStructListField', (TType.STRUCT,[Foo, Foo.thrift_spec, False, my.Adapter1]), None, 1, ), # 4
-  (5, TType.STRUCT, 'unionField', [Baz, Baz.thrift_spec, True, my.Adapter1], None, 2, ), # 5
-  (6, TType.STRUCT, 'optionalUnionField', [Baz, Baz.thrift_spec, True, my.Adapter1], None, 1, ), # 6
+  (1, TType.STRUCT, 'structField', [Foo, Foo.thrift_spec, False], None, 2, ), # 1
+  (2, TType.STRUCT, 'optionalStructField', [Foo, Foo.thrift_spec, False], None, 1, ), # 2
+  (3, TType.LIST, 'structListField', (TType.STRUCT,[Foo, Foo.thrift_spec, False]), None, 2, ), # 3
+  (4, TType.LIST, 'optionalStructListField', (TType.STRUCT,[Foo, Foo.thrift_spec, False]), None, 1, ), # 4
+  (5, TType.STRUCT, 'unionField', [Baz, Baz.thrift_spec, True], None, 2, ), # 5
+  (6, TType.STRUCT, 'optionalUnionField', [Baz, Baz.thrift_spec, True], None, 1, ), # 6
   (7, TType.STRUCT, 'adaptedStructField', [DirectlyAdapted, DirectlyAdapted.thrift_spec, False], None, 2, ), # 7
   (8, TType.LIST, 'structListFieldWithTypedef', (TType.STRUCT,[Foo, Foo.thrift_spec, False]), None, 2, ), # 8
 )))

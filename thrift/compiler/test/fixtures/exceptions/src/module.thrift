@@ -42,8 +42,11 @@ client exception ComplexFieldNames {
 
 exception CustomFieldNames {
   1: string error_message;
+  @thrift.DeprecatedUnvalidatedAnnotations{
+    items = {"java.swift.name": "internalGreatMessage"},
+  }
   @thrift.ExceptionMessage
-  2: string internal_error_message (java.swift.name = "internalGreatMessage");
+  2: string internal_error_message;
 }
 
 exception ExceptionWithPrimitiveField {
