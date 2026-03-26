@@ -188,6 +188,13 @@ template std::uint32_t JsonWriter::writeIntegral(std::int64_t);
 
 // -- strings ----------------------------------------------------------
 
+std::uint32_t JsonWriter::writeQuotedString(std::string_view s) {
+  std::string tmp;
+  folly::json::escapeString(s, tmp, {.validate_utf8 = true});
+  out_.value().push(folly::StringPiece(tmp));
+  return static_cast<std::uint32_t>(tmp.size());
+}
+
 std::uint32_t JsonWriter::writeObjectName(std::string_view s) {
   CHECK_THROW(inContainer(ContainerType::Object), std::runtime_error);
 
@@ -201,10 +208,7 @@ std::uint32_t JsonWriter::writeObjectName(std::string_view s) {
     out_.value().push(folly::StringPiece(s));
     n += s.size();
   } else {
-    std::string tmp;
-    folly::json::escapeString(s, tmp, {.validate_utf8 = true});
-    out_.value().push(folly::StringPiece(tmp));
-    n += tmp.size();
+    n += writeQuotedString(s);
   }
   auto sep = options_.indentWidth > 0 ? ": " : ":";
   out_.value().push(folly::StringPiece(sep));
@@ -215,10 +219,7 @@ std::uint32_t JsonWriter::writeObjectName(std::string_view s) {
 std::uint32_t JsonWriter::writeString(std::string_view s) {
   std::uint32_t n = 0;
   n += beginValue();
-  std::string tmp;
-  folly::json::escapeString(s, tmp, {.validate_utf8 = true});
-  out_.value().push(folly::StringPiece(tmp));
-  n += tmp.size();
+  n += writeQuotedString(s);
   n += appendComma();
   return n;
 }

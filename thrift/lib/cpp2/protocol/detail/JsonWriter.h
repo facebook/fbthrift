@@ -134,6 +134,7 @@ class JsonWriter {
   static char getOpenBracket(ContainerType);
   static char getCloseBracket(ContainerType);
   std::uint32_t appendNewlineAndIndent();
+  std::uint32_t writeQuotedString(std::string_view s);
 
   JsonWriterOptions options_;
   std::optional<folly::io::QueueAppender> out_;
