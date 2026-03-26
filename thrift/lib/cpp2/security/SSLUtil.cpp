@@ -29,6 +29,7 @@
 namespace apache::thrift {
 
 const std::string kSecurityProtocolStopTLS = "stopTLS";
+const std::string kSecurityProtocolStopTLSV2 = "Fizz/StopTLSV2";
 const std::string kSecurityProtocolPSPV0 = "thriftPSPV0";
 
 namespace {

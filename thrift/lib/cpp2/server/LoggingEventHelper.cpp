@@ -112,7 +112,7 @@ void logSetupConnectionEventsOnce(
       if (auto transport = context.getTransport()) {
         const auto& protocol = context.getSecurityProtocol();
         if (protocol == "TLS" || protocol == "Fizz" || protocol == "stopTLS" ||
-            protocol == "Fizz/KTLS") {
+            protocol == "Fizz/KTLS" || protocol == "Fizz/StopTLSV2") {
           /*
            * We have to deal with two cases here
            * 1. no peer cert received at all

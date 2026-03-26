@@ -98,6 +98,12 @@ void ThriftFizzAcceptorHandshakeHelper::fizzHandshakeSuccess(
       return pspUpgradeFrame_->start(this);
     }
 
+    if (thriftExtension_->getNegotiatedStopTLSV2()) {
+      VLOG(5) << "StopTLSV2 negotiated, setting protocol override";
+      transport->setSecurityProtocolOverride(kSecurityProtocolStopTLSV2);
+      tinfo_.securityType = transport->getSecurityProtocol();
+    }
+
     if (thriftExtension_->getNegotiatedStopTLS()) {
       VLOG(5) << "Beginning StopTLS negotiation";
       stopTLSAsyncFrame_.reset(new AsyncStopTLS(*this));

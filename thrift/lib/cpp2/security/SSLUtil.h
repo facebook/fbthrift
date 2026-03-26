@@ -23,6 +23,7 @@
 namespace apache::thrift {
 
 extern const std::string kSecurityProtocolStopTLS;
+extern const std::string kSecurityProtocolStopTLSV2;
 extern const std::string kSecurityProtocolPSPV0;
 /*
  * Takes an existing transport and creates a new socket with the same
