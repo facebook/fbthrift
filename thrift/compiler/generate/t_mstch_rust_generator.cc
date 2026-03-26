@@ -2348,8 +2348,7 @@ class mstch_rust_struct_field : public mstch_base {
         field_(field),
         explicit_value_(explicit_value),
         depth_(depth),
-        options_(options),
-        adapter_annotation_(find_structured_adapter_annotation(*field)) {
+        options_(options) {
     register_methods(
         this,
         {
@@ -2357,12 +2356,6 @@ class mstch_rust_struct_field : public mstch_base {
             {"field:explicit_value", &mstch_rust_struct_field::explicit_value},
             {"field:default", &mstch_rust_struct_field::rust_default},
             {"field:type", &mstch_rust_struct_field::type},
-            {"field:box?", &mstch_rust_struct_field::is_boxed},
-            {"field:arc?", &mstch_rust_struct_field::is_arc},
-            {"field:docs?", &mstch_rust_struct_field::rust_has_docs},
-            {"field:has_adapter?", &mstch_rust_struct_field::has_adapter},
-            {"field:adapter_qualified",
-             &mstch_rust_struct_field::rust_adapter_qualified},
         });
   }
   whisker::object self() { return make_self(*field_); }
@@ -2390,26 +2383,12 @@ class mstch_rust_struct_field : public mstch_base {
     auto type = field_->type().get_type();
     return context_.type_factory->make_mstch_object(type, context_, pos_);
   }
-  mstch::node is_boxed() { return field_kind(*field_) == FieldKind::Box; }
-  mstch::node is_arc() { return field_kind(*field_) == FieldKind::Arc; }
-  mstch::node rust_has_docs() { return field_->has_doc(); }
-  mstch::node has_adapter() {
-    auto type = field_->type().get_type();
-    const t_type* curr_type = step_through_typedefs(type, true);
-    return adapter_annotation_ != nullptr ||
-        type_has_transitive_adapter(curr_type, false);
-  }
-  mstch::node rust_adapter_qualified() {
-    return compute_adapter_qualified(
-        adapter_annotation_, field_->type().get_type(), false, options_);
-  }
 
  private:
   const t_field* field_;
   const t_const_value* explicit_value_;
   unsigned depth_;
   const rust_codegen_options& options_;
-  const t_const* adapter_annotation_;
 };
 
 mstch::node mstch_rust_value::map_entries() {
@@ -2721,20 +2700,17 @@ void t_mstch_rust_generator::generate_program() {
     namespace_rust = program_->name();
   }
 
-  std::string namespace_cpp2 = cpp_name_resolver::gen_namespace(*program_);
-
-  std::string service_names;
-  for (const t_service* service : program_->services()) {
-    service_names += named_rust_name(service);
-    service_names += '\n';
-  }
-
   set_mstch_factories();
 
   if (options_.types_split_count > 0) {
     generate_split_types();
   }
   const auto& prog = cached_program(program_);
+  whisker::object context = whisker::make::map(
+      {{"program",
+        whisker::object(
+            render_state().prototypes->create<t_program>(*program_))}});
+
   render_to_file(prog, "types.rs", "types.rs");
   render_to_file(prog, "services.rs", "services.rs");
   render_to_file(prog, "errors.rs", "errors.rs");
@@ -2742,9 +2718,12 @@ void t_mstch_rust_generator::generate_program() {
   render_to_file(prog, "client.rs", "client.rs");
   render_to_file(prog, "server.rs", "server.rs");
   render_to_file(prog, "mock.rs", "mock.rs");
-  write_output("namespace-rust", namespace_rust + '\n');
-  write_output("namespace-cpp2", namespace_cpp2 + '\n');
-  write_output("service-names", service_names);
+  write_output("namespace-rust", fmt::format("{}\n", namespace_rust));
+  write_output(
+      "namespace-cpp2",
+      fmt::format("{}\n", cpp_name_resolver::gen_namespace(*program_)));
+  t_whisker_generator::render_to_file(
+      "service-names", "service-names", context);
 }
 
 void t_mstch_rust_generator::generate_split_types() {
