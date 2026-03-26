@@ -718,9 +718,11 @@ struct CompareThreeWay<type::adapted<Adapter, Tag>> {
 
 enum class FieldIterOrder { Declaration, FieldIdAscending };
 
-template <typename T, template <class...> class LessThanType = LessThan>
-std::weak_ordering compareStructFields(
-    const T& lhs, const T& rhs, FieldIterOrder order) {
+template <
+    FieldIterOrder Order,
+    typename T,
+    template <class...> class LessThanType = LessThan>
+std::weak_ordering compareStructFields(const T& lhs, const T& rhs) {
   std::weak_ordering result = std::weak_ordering::equivalent;
   auto compareField = [&](auto id) {
     if (result != std::weak_ordering::equivalent) {
@@ -745,7 +747,7 @@ std::weak_ordering compareStructFields(
     result = CompareThreeWay<Tag, LessThanType>{}(*lhsValue, *rhsValue);
   };
 
-  if (order == FieldIterOrder::FieldIdAscending) {
+  if constexpr (Order == FieldIterOrder::FieldIdAscending) {
     for_each_field_id_ascending<T>(compareField);
   } else {
     for_each_ordinal<T>(compareField);
@@ -755,14 +757,14 @@ std::weak_ordering compareStructFields(
 
 template <typename T, template <class...> class LessThanType = LessThan>
 std::weak_ordering compareStructFieldsByFieldId(const T& lhs, const T& rhs) {
-  return compareStructFields<T, LessThanType>(
-      lhs, rhs, FieldIterOrder::FieldIdAscending);
+  return compareStructFields<FieldIterOrder::FieldIdAscending, T, LessThanType>(
+      lhs, rhs);
 }
 
 template <typename T>
 struct CompareThreeWay<type::struct_t<T>> {
   std::weak_ordering operator()(const T& lhs, const T& rhs) const {
-    return compareStructFields<T>(lhs, rhs, FieldIterOrder::Declaration);
+    return compareStructFields<FieldIterOrder::Declaration, T>(lhs, rhs);
   }
 };
 
@@ -770,9 +772,8 @@ template <template <class...> class LessThanType = LessThan>
 struct StructLessThan {
   template <class T>
   bool operator()(const T& lhs, const T& rhs) const {
-    return compareStructFields<T, LessThanType>(
-               lhs, rhs, FieldIterOrder::Declaration) ==
-        std::weak_ordering::less;
+    return compareStructFields<FieldIterOrder::Declaration, T, LessThanType>(
+               lhs, rhs) == std::weak_ordering::less;
   }
 };
 
