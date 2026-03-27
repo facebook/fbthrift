@@ -1033,6 +1033,12 @@ class t_mstch_rust_generator : public t_mstch_generator {
     def.property("newtype?", [](const t_typedef& self) {
       return has_newtype_annotation(&self);
     });
+    def.property("inner_new_type", [&proto](const t_typedef& self) {
+      // The type (potentially a typedef) by which the value's type is known to
+      // the current crate. As of writing, only used for constant value codegen
+      return resolve_derived_t_type(
+          proto, *step_through_typedefs(&self, false));
+    });
     def.property("ord?", [](const t_typedef& self) {
       return self.has_structured_annotation(kRustOrdUri) ||
           (can_derive_ord(&self) &&
@@ -2033,23 +2039,18 @@ class mstch_rust_value : public mstch_base {
   using value_type = t_const_value::t_const_value_kind;
   mstch_rust_value(
       const t_const_value* const_value,
-      const t_type* type,
+      const t_type*,
       mstch_context& ctx,
       mstch_element_position pos,
       const rust_codegen_options& options)
       : mstch_base(ctx, pos),
         const_value_(const_value),
-        local_type_(type),
-        underlying_type_(step_through_typedefs(type, false)),
+        resolved_type_(const_value->type()->get_true_type()),
         options_(options) {
     register_methods(
         this,
         {
             {"value:self", &mstch_rust_value::self},
-            {"value:underlying_type", &mstch_rust_value::underlying_type},
-            {"value:local_type", &mstch_rust_value::local_type},
-            {"value:newtype?", &mstch_rust_value::is_newtype},
-            {"value:inner", &mstch_rust_value::inner},
             {"value:list_elements", &mstch_rust_value::list_elements},
             {"value:mapEntries", &mstch_rust_value::map_entries},
             {"value:structFields", &mstch_rust_value::struct_fields},
@@ -2060,28 +2061,11 @@ class mstch_rust_value : public mstch_base {
         });
   }
   whisker::object self() { return make_self(*const_value_); }
-  mstch::node underlying_type() {
-    return context_.type_factory->make_mstch_object(
-        underlying_type_, context_, pos_);
-  }
-  mstch::node local_type() {
-    return context_.type_factory->make_mstch_object(
-        local_type_, context_, pos_);
-  }
-  mstch::node is_newtype() { return has_newtype_annotation(underlying_type_); }
-  mstch::node inner() {
-    if (const auto* typedef_type = underlying_type_->try_as<t_typedef>()) {
-      auto inner_type = &typedef_type->type().deref();
-      return std::make_shared<mstch_rust_value>(
-          const_value_, inner_type, context_, pos_, options_);
-    }
-    return mstch::node();
-  }
   mstch::node list_elements() {
     const t_type* elem_type;
-    if (const t_set* set_type = underlying_type_->try_as<t_set>()) {
+    if (const t_set* set_type = resolved_type_->try_as<t_set>()) {
       elem_type = set_type->elem_type().get_type();
-    } else if (const t_list* list_type = underlying_type_->try_as<t_list>()) {
+    } else if (const t_list* list_type = resolved_type_->try_as<t_list>()) {
       elem_type = list_type->elem_type().get_type();
     } else {
       return mstch::node();
@@ -2099,7 +2083,7 @@ class mstch_rust_value : public mstch_base {
   mstch::node struct_fields();
   mstch::node is_exhaustive();
   mstch::node union_variant() {
-    auto struct_type = dynamic_cast<const t_structured*>(underlying_type_);
+    auto struct_type = dynamic_cast<const t_structured*>(resolved_type_);
     if (!struct_type) {
       return mstch::node();
     }
@@ -2124,7 +2108,7 @@ class mstch_rust_value : public mstch_base {
     return mstch::node();
   }
   mstch::node union_value() {
-    auto struct_type = dynamic_cast<const t_structured*>(underlying_type_);
+    auto struct_type = dynamic_cast<const t_structured*>(resolved_type_);
     if (!struct_type) {
       return mstch::node();
     }
@@ -2143,22 +2127,14 @@ class mstch_rust_value : public mstch_base {
   }
   mstch::node simple_literal() {
     // Primitives and enum variants have simple literals
-    return underlying_type_->is_bool() || underlying_type_->is_byte() ||
-        underlying_type_->is_any_int() ||
-        underlying_type_->is_floating_point() || const_value_->is_enum_value();
+    return resolved_type_->is_bool() || resolved_type_->is_byte() ||
+        resolved_type_->is_any_int() || resolved_type_->is_floating_point() ||
+        const_value_->is_enum_value();
   }
 
  private:
   const t_const_value* const_value_;
-
-  // The type (potentially a typedef) by which the value's type is known to
-  // the current crate.
-  const t_type* local_type_;
-
-  // The underlying type of the value after stepping through any non-newtype
-  // typedefs.
-  const t_type* underlying_type_;
-
+  const t_type* resolved_type_;
   const rust_codegen_options& options_;
 };
 
@@ -2251,7 +2227,7 @@ class mstch_rust_struct_field : public mstch_base {
 };
 
 mstch::node mstch_rust_value::map_entries() {
-  auto map_type = dynamic_cast<const t_map*>(underlying_type_);
+  auto map_type = dynamic_cast<const t_map*>(resolved_type_);
   if (!map_type) {
     return mstch::node();
   }
@@ -2274,7 +2250,7 @@ mstch::node mstch_rust_value::map_entries() {
 }
 
 mstch::node mstch_rust_value::struct_fields() {
-  auto struct_type = dynamic_cast<const t_structured*>(underlying_type_);
+  auto struct_type = dynamic_cast<const t_structured*>(resolved_type_);
   if (!struct_type) {
     return mstch::node();
   }
@@ -2298,7 +2274,7 @@ mstch::node mstch_rust_value::struct_fields() {
 }
 
 mstch::node mstch_rust_value::is_exhaustive() {
-  auto struct_type = dynamic_cast<const t_structured*>(underlying_type_);
+  auto struct_type = dynamic_cast<const t_structured*>(resolved_type_);
   return struct_type &&
       struct_type->has_structured_annotation(kRustExhaustiveUri);
 }
