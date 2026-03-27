@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import asyncio
 import time
+import unittest
 from typing import AsyncGenerator, Awaitable, Callable, Tuple
 from unittest import IsolatedAsyncioTestCase
 
@@ -217,6 +218,33 @@ class SinkTests(IsolatedAsyncioTestCase):
                 self.assertEqual(ex.exception.type, ApplicationErrorType.UNKNOWN)
 
                 await asyncio.sleep(2)
+
+    @unittest.expectedFailure
+    async def test_sink_cancel_propagates_during_blocked_anext(self) -> None:
+        """
+        When the server handler returns early while the client is still feeding
+        data into the sink via a blocked async generator, sink.sink() must
+        complete gracefully without hanging.
+        """
+
+        async def blocked_sink_generator() -> AsyncIntGenerator:
+            yield 5
+            await asyncio.Future()  # block forever
+
+        async with local_server() as sa:
+            ip, port = sa.ip, sa.port
+            assert ip and port
+            async with get_client(
+                TestSinkService,
+                host=ip,
+                port=port,
+                client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
+            ) as client:
+                sink = await client.rangeEarlyResponse(5, 11, 5)
+                final_resp = await asyncio.wait_for(
+                    sink.sink(blocked_sink_generator()), timeout=5.0
+                )
+                self.assertEqual(5, final_resp)
 
     async def test_unimplemented(self) -> None:
         async with local_server() as sa:

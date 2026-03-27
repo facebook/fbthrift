@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import asyncio
 import sys
+import unittest
 from typing import AsyncGenerator, Callable, Generator, Tuple, TypeVar
 from unittest import IsolatedAsyncioTestCase
 
@@ -524,6 +525,60 @@ class BidiTests(IsolatedAsyncioTestCase):
             # Client disconnected; cancelAsyncGenerator fires on server side.
             # Verify generator cleanup before server shutdown.
             await asyncio.wait_for(generator_cleanup_event.wait(), timeout=5.0)
+
+    @unittest.expectedFailure
+    async def test_bidi_sink_cancel_propagates_during_blocked_anext(self) -> None:
+        """
+        When the server handler returns while the client is still feeding data
+        into the sink via a blocked async generator, sink.sink() must complete
+        gracefully without hanging.
+        """
+        sink_blocked = asyncio.Event()
+
+        class AbruptServerHandler(BidiHandler):
+            async def echo(
+                self,
+                serverDelay: float,
+            ) -> Callable[
+                [AsyncGenerator[str, None]],
+                AsyncGenerator[str, None],
+            ]:
+                async def callback(
+                    agen: AsyncGenerator[str, None],
+                ) -> AsyncGenerator[str, None]:
+                    async for item in agen:
+                        await asyncio.sleep(serverDelay)
+                        yield item
+                        break
+                    # Handler returns after one item; server closes connection
+
+                return callback
+
+        async def blocked_sink_generator(
+            event: asyncio.Event,
+        ) -> AsyncGenerator[str, None]:
+            yield "1"
+            event.set()
+            await asyncio.Future()  # block forever
+
+        async with TestServer(handler=AbruptServerHandler(), ip="::1") as sa:
+            ip, port = sa.ip, sa.port
+            assert ip and port
+            async with get_client(
+                TestBidiService,
+                host=ip,
+                port=port,
+                client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
+            ) as client:
+                bidi = await client.echo(0.0)
+                sink_task = asyncio.ensure_future(
+                    bidi.sink.sink(blocked_sink_generator(sink_blocked))
+                )
+                await asyncio.wait_for(sink_blocked.wait(), timeout=5.0)
+                first = await bidi.stream.__anext__()
+                self.assertEqual(first, "1")
+                # sink.sink() should finish, not hang
+                await asyncio.wait_for(sink_task, timeout=5.0)
 
 
 class BidiHandler(TestBidiServiceInterface):
