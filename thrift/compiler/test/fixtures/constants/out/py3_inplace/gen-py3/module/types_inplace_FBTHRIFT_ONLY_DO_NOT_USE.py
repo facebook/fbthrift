@@ -1966,6 +1966,7 @@ __all__.append("union2")
 ### Constants
 myInt = 1337
 name = "Mark Zuckerberg"
+dollar_string = "$_presto_anonymous_$"
 multi_line_string = "This\nis a\nmulti line string.\n"
 states = List__Map__string_i32((Map__string_i32( { "San Diego": 3211000, "Sacramento": 479600, "SF": 837400 }), Map__string_i32( { "New York": 8406000, "Albany": 98400 }), ))
 x = 1

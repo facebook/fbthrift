@@ -1620,6 +1620,7 @@ cdef object Map__i32_bool__from_cpp(const cmap[cint32_t,cbool]& c_map) except *:
 
 myInt = 1337
 name = "Mark Zuckerberg"
+dollar_string = "$_presto_anonymous_$"
 multi_line_string = "This\nis a\nmulti line string.\n"
 states = List__Map__string_i32__from_cpp(_module_cbindings.cstates())
 x = 1

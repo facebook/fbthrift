@@ -19,6 +19,8 @@ public final class ModuleConstants {
 
     public static final String NAME = "Mark Zuckerberg";
 
+    public static final String DOLLAR_STRING = "$_presto_anonymous_$";
+
     public static final String MULTI_LINE_STRING = "This\nis a\nmulti line string.\n";
 
     public static final List<Map<String, Integer>> STATES = construct_STATES();

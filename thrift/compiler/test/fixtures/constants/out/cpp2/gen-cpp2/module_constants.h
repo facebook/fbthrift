@@ -28,6 +28,13 @@ namespace module_constants {
     return name_;
   }
 
+  /** Glean {"constant": "dollar_string"} */
+  constexpr const char* const dollar_string_ = "$_presto_anonymous_$";
+  /** Glean {"constant": "dollar_string"} */
+  constexpr const char* dollar_string() {
+    return dollar_string_;
+  }
+
   /** Glean {"constant": "multi_line_string"} */
   constexpr const char* const multi_line_string_ = "This\nis a\nmulti line string.\n";
   /** Glean {"constant": "multi_line_string"} */
@@ -471,9 +478,9 @@ namespace module_constants {
   /** Glean {"constant": "set_map_initializer"} */
   ::std::set<::std::int32_t> const& set_map_initializer();
 
-  FOLLY_EXPORT ::std::string_view _fbthrift_schema_3abe843eb0c6605b();
-  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_3abe843eb0c6605b_includes();
-  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_3abe843eb0c6605b_uris();
+  FOLLY_EXPORT ::std::string_view _fbthrift_schema_b3ff6e93a0ce7f99();
+  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_b3ff6e93a0ce7f99_includes();
+  FOLLY_EXPORT ::folly::Range<const ::std::string_view*> _fbthrift_schema_b3ff6e93a0ce7f99_uris();
 
 } // namespace module_constants
 } // namespace cpp2

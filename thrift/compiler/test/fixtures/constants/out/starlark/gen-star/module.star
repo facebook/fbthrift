@@ -45,6 +45,8 @@ myInt = 1337
 
 name = "Mark Zuckerberg"
 
+dollar_string = "$_presto_anonymous_$"
+
 multi_line_string = "This\nis a\nmulti line string.\n"
 
 states = [

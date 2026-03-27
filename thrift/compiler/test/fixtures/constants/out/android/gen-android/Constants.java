@@ -20,6 +20,8 @@ public class Constants {
 
   public static final String name = "Mark Zuckerberg";
 
+  public static final String dollar_string = "$_presto_anonymous_$";
+
   public static final String multi_line_string = "This\nis a\nmulti line string.\n";
 
   public static final List<Map<String,Integer>> states = new ArrayList<Map<String,Integer>>();

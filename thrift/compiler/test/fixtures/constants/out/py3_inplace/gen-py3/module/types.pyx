@@ -83,6 +83,7 @@ Map__i32_string = _fbthrift_types_inplace.Map__i32_string
 Map__i32_bool = _fbthrift_types_inplace.Map__i32_bool
 myInt = _fbthrift_types_inplace.myInt
 name = _fbthrift_types_inplace.name
+dollar_string = _fbthrift_types_inplace.dollar_string
 multi_line_string = _fbthrift_types_inplace.multi_line_string
 states = _fbthrift_types_inplace.states
 x = _fbthrift_types_inplace.x

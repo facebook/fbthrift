@@ -16,6 +16,7 @@ namespace module_constants {
 
 
 
+
 ::std::vector<::std::map<::std::string, ::std::int32_t>> const& states() {
   static folly::Indestructible<::std::vector<::std::map<::std::string, ::std::int32_t>>> const instance{ std::initializer_list<::std::map<::std::string, ::std::int32_t>>{ std::initializer_list<::std::map<::std::string, ::std::int32_t>::value_type>{ { apache::thrift::StringTraits<::std::string>::fromStringLiteral("San Diego"), static_cast<::std::int32_t>(3211000) },
   { apache::thrift::StringTraits<::std::string>::fromStringLiteral("Sacramento"), static_cast<::std::int32_t>(479600) },
@@ -338,13 +339,13 @@ namespace module_constants {
 }
 
 
-::std::string_view _fbthrift_schema_3abe843eb0c6605b() {
+::std::string_view _fbthrift_schema_b3ff6e93a0ce7f99() {
   return "";
 }
-::folly::Range<const ::std::string_view*> _fbthrift_schema_3abe843eb0c6605b_includes() {
+::folly::Range<const ::std::string_view*> _fbthrift_schema_b3ff6e93a0ce7f99_includes() {
   return {};
 }
-::folly::Range<const ::std::string_view*> _fbthrift_schema_3abe843eb0c6605b_uris() {
+::folly::Range<const ::std::string_view*> _fbthrift_schema_b3ff6e93a0ce7f99_uris() {
   return {};
 }
 

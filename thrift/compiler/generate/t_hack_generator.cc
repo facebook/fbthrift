@@ -1953,7 +1953,14 @@ bool t_hack_generator::is_hack_const_type(const t_type* type) {
 }
 
 std::string t_hack_generator::render_string(const std::string& value) {
-  return fmt::format("\"{}\"", compiler::get_escaped_string(value));
+  std::string escaped = compiler::get_escaped_string(value);
+  // Escape $ to prevent variable interpolation in Hack double-quoted strings.
+  for (std::string::size_type pos = 0;
+       (pos = escaped.find('$', pos)) != std::string::npos;
+       pos += 2) {
+    escaped.insert(pos, 1, '\\');
+  }
+  return fmt::format("\"{}\"", escaped);
 }
 
 /**

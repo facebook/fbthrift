@@ -1351,6 +1351,7 @@ namespace test.fixtures.constants
     {
         public static readonly int @myInt = 1337;
         public static readonly string @name = "Mark Zuckerberg";
+        public static readonly string @dollar_string = "$_presto_anonymous_$";
         public static readonly string @multi_line_string = "This\nis a\nmulti line string.\n";
         public static readonly List<Dictionary<string, int>> @states = new List<Dictionary<string, int>>()
 {

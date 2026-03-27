@@ -26,6 +26,7 @@ namespace csharp test.fixtures.constants
 
 const i32 myInt = 1337;
 const string name = "Mark Zuckerberg";
+const string dollar_string = "$_presto_anonymous_$";
 const string multi_line_string = "This
 is a
 multi line string.

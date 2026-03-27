@@ -21,6 +21,12 @@ class module_CONSTANTS implements \IThriftConstants {
 
   /**
    * Original thrift constant:-
+   * string dollar_string
+   */
+  const string dollar_string = "\$_presto_anonymous_\$";
+
+  /**
+   * Original thrift constant:-
    * string multi_line_string
    */
   const string multi_line_string = "This\nis a\nmulti line string.\n";
