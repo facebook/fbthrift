@@ -598,16 +598,6 @@ class DynamicPatch {
   void applyToDataFieldInsideAny(type::AnyStruct&) const;
   /// @brief Applies the patch to the given blob and returns the result as a
   /// blob. Throws if the patch is not applicable.
-  ///
-  /// Note, this method uses introspection API `extractMaskFromPatch` to avoid
-  /// full deserialization when applying Thrift Patch to serialized structured
-  /// object in a blob.
-  template <type::StandardProtocol Protocol>
-  std::unique_ptr<folly::IOBuf> applyToSerializedObject(
-      const folly::IOBuf& buf) const;
-
-  /// The behavior is identical to applyToSerializedObject(...), though
-  /// sometimes it's faster to deserialize the whole iobuf then apply patches.
   template <type::StandardProtocol Protocol>
   std::unique_ptr<folly::IOBuf> applyToSerializedObjectWithoutExtractingMask(
       const folly::IOBuf& buf) const;

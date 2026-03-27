@@ -104,7 +104,8 @@ extractMaskFromPatch(const protocol::Object& patch);
 /// @endcond
 
 template <type::StandardProtocol Protocol>
-[[deprecated("Use DynamicPatch::applyToSerializedObject instead.")]] std::
+[[deprecated(
+    "Use DynamicPatch::applyToSerializedObjectWithoutExtractingMask instead.")]] std::
     unique_ptr<folly::IOBuf>
     applyPatchToSerializedData(
         const protocol::Object& patch, const folly::IOBuf& buf);
