@@ -36,6 +36,41 @@ enum MyEnum2 {
   ME2_2 = 2,
 }
 
+@cpp.EnumType{type = cpp.EnumUnderlyingType.I8}
+enum MyEnum2I8 {
+  ME2_0 = 0,
+  ME2_1 = 1,
+  ME2_2 = 2,
+}
+
+@cpp.EnumType{type = cpp.EnumUnderlyingType.U8}
+enum MyEnum2U8 {
+  ME2_0 = 0,
+  ME2_1 = 1,
+  ME2_2 = 2,
+}
+
+@cpp.EnumType{type = cpp.EnumUnderlyingType.I16}
+enum MyEnum2I16 {
+  ME2_0 = 0,
+  ME2_1 = 1,
+  ME2_2 = 2,
+}
+
+@cpp.EnumType{type = cpp.EnumUnderlyingType.U16}
+enum MyEnum2U16 {
+  ME2_0 = 0,
+  ME2_1 = 1,
+  ME2_2 = 2,
+}
+
+@cpp.EnumType{type = cpp.EnumUnderlyingType.U32}
+enum MyEnum2U32 {
+  ME2_0 = 0,
+  ME2_1 = 1,
+  ME2_2 = 2,
+}
+
 enum MyEnum3 {
   ME3_0 = 0,
   ME3_1 = 1,
@@ -61,7 +96,7 @@ enum MyEnum5 {
 }
 
 struct MyStruct {
-  1: MyEnum2 me2_2 = ME2_2;
+  1: MyEnum2 me2_2 = MyEnum2.ME2_2;
   2: MyEnum3 me3_n2 = ME3_N2;
   4: MyEnum1 me1_t1 = 1;
   5: MyEnum1 me1_t2 = ME1_1;
