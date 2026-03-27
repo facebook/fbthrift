@@ -1,0 +1,214 @@
+{{!
+
+  Copyright (c) Meta Platforms, Inc. and affiliates.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+}}
+{{#import "lib/types" as types}}
+
+{{!
+    NOTE: This is a partial that takes a *mstch object* as input.
+    This is an intermediate step in the migration, to simplify depth management
+    in the generator code.
+}}
+{{#let export partial const_value |value depth| captures |types|}}
+{{#pragma ignore-newlines}}
+{{! The `pragma` is not inherited by nested partials, so they can still render newlines if necessary }}
+
+  {{! Nested partial for circular references `const_value` -> `field_value` -> `const_value` }}
+  {{#let partial field_value |field value depth| captures |const_value|}}
+{{#pragma ignore-newlines}}
+    {{#field}}
+{{#if field:optional?}}::std::option::Option::Some({{/if}}
+{{#if field:box?}}::std::boxed::Box::new({{/if}}
+{{#if field:arc?}}::std::sync::Arc::new({{/if}}
+{{#partial const_value value=value depth=depth}}
+{{#if field:arc?}}){{/if}}
+{{#if field:box?}}){{/if}}
+{{#if field:optional?}}){{/if}}
+    {{/field}}
+  {{/let partial}}
+
+  {{! Nested partials for collection values }}
+  {{#let partial list_value |elements| captures |types const_value value depth|}}
+    {{#let underlying_type=value.value:underlying_type.type:self}}
+    {{#let indent=(indent_4 depth)}}
+{
+            {{indent}}let mut list = ::std::vec::Vec::new();
+    {{#each elements as |elem|}}
+            {{indent}}{
+                {{indent}}#[inline(never)]
+                {{indent}}fn __do_push(list: &mut {{#if underlying_type.has_adapter?}}{{underlying_type.adapter_qualified}}::StandardType{{#else}}{{#partial types.type_name type=underlying_type}}{{/if}}) {
+                    {{indent}}list.push({{#partial const_value value=elem depth=(int.add depth 3)}});
+                {{indent}}}
+                {{indent}}__do_push(&mut list);
+            {{indent}}}
+    {{/each}}
+            {{indent}}list
+        {{indent}}}{{!
+}}{{/let partial}}
+  {{#let partial set_value |elements| captures |types const_value value depth|}}
+    {{#let underlying_type=value.value:underlying_type.type:self}}
+    {{#let indent=(indent_4 depth)}}
+{
+            {{indent}}let mut set = {{#if (string.empty? underlying_type.rust_type)}}::std::collections::BTreeSet{{#else}}::{{underlying_type.rust_type}}{{/if}}::new();
+              {{#each elements as |elem|}}
+            {{indent}}{
+                {{indent}}#[inline(never)]
+                {{indent}}fn __do_insert(set: &mut {{#if underlying_type.has_adapter?}}{{underlying_type.adapter_qualified}}::StandardType{{#else}}{{#partial types.type_name type=underlying_type}}{{/if}}) {
+                    {{indent}}set.insert({{!
+                      }}{{#if underlying_type.floating_point?}}{{!
+                        }}::fbthrift::export::OrderedFloat({{#partial const_value value=elem depth=(int.add depth 3)}}){{!
+                      }}{{#else}}{{!
+                        }}{{#partial const_value value=elem depth=(int.add depth 3)}}{{!
+                      }}{{/if underlying_type.floating_point?}});
+                {{indent}}}
+                {{indent}}__do_insert(&mut set);
+            {{indent}}}
+              {{/each}}
+            {{indent}}set
+        {{indent}}}{{!
+}}{{/let partial}}
+  {{#let partial map_value |elements| captures |types const_value value depth|}}
+    {{#let underlying_type=value.value:underlying_type.type:self}}
+    {{#let indent=(indent_4 depth)}}
+{
+            {{indent}}let mut map = {{#if (string.empty? underlying_type.rust_type)}}::std::collections::BTreeMap{{#else}}::{{underlying_type.rust_type}}{{/if}}::new();
+    {{#each elements as |elem|}}
+            {{indent}}{
+                {{indent}}#[inline(never)]
+                {{indent}}fn __do_insert(map: &mut {{!
+                  }}{{#if underlying_type.has_adapter?}}{{underlying_type.adapter_qualified}}::StandardType{{#else}}{{#partial types.type_name type=underlying_type}}{{/if}}) {
+                    {{indent}}map.insert({{!
+                      }}{{#if underlying_type.floating_point?}}{{!
+                        }}::fbthrift::export::OrderedFloat({{#partial const_value value=elem.entry:key depth=(int.add depth 3)}}){{!
+                      }}{{#else}}{{!
+                        }}{{#partial const_value value=elem.entry:key depth=(int.add depth 3)}}{{!
+                      }}{{/if underlying_type.floating_point?}}, {{!
+                    }}{{#partial const_value value=elem.entry:value depth=(int.add depth 3)}});
+                {{indent}}}
+                {{indent}}__do_insert(&mut map);
+            {{indent}}}
+    {{/each}}
+            {{indent}}map
+        {{indent}}}{{!
+}}{{/let partial}}
+
+  {{! Nested partial for structs (*not* unions) }}
+  {{#let partial single_struct_field |field| captures |field_value value depth|}}
+    {{#pragma ignore-newlines}}
+    {{#let underlying_type=value.value:underlying_type.type:self}}
+    {{#field}}
+      {{#if field:has_adapter?}}
+{{field:adapter_qualified}}::from_thrift_default::<
+        {{#if underlying_type.structured?}}
+{{underlying_type.true_type.package}}::
+{{#if underlying_type.true_type.has_adapter?}}unadapted::{{/if}}
+{{underlying_type.true_type.rust_name}}
+        {{/if underlying_type.structured?}}
+>(
+      {{/if field:has_adapter?}}
+      {{#if field:explicit_value}}
+{{#partial field_value field=field value=field:explicit_value depth=(int.add depth 1)}}
+      {{#else if field:default}}
+        {{#if (and field:optional? (not (has_compiler_option? "deprecated_optional_with_default_is_some")))}}
+::std::option::Option::None
+        {{#else}}
+{{#partial field_value field=field value=field:default depth=(int.add depth 1)}}
+        {{/if (and field:optional? (not (has_compiler_option? "deprecated_optional_with_default_is_some")))}}
+      {{#else}}
+::std::default::Default::default()
+      {{/if field:explicit_value}}
+{{#if field:has_adapter?}}, {{field:id}}){{/if}}
+    {{/field}}
+  {{/let partial}}
+
+  {{#let partial struct_value |elements exhaustive| captures |types single_struct_field value depth|}}
+    {{#let underlying_type=value.value:underlying_type.type:self}}
+    {{#let indent=(indent_4 depth)}}
+{{#partial types.type_name type=underlying_type}} {
+    {{#each elements as |elem|}}
+            {{indent}}{{elem.field:rust_name}}: {{#partial single_struct_field field=elem}},
+    {{/each}}
+    {{#if (not exhaustive)}}
+            {{indent}}..::std::default::Default::default()
+    {{/if (not exhaustive)}}
+        {{indent}}}{{!
+}}{{/let partial}}
+
+{{! Main `const_value` content }}
+  {{#value}}
+    {{#value:underlying_type}}
+      {{#if value:newtype?}}
+{{type:package}}::{{type:rust_name}}(
+{{#type:typedef}}{{#if typedef:has_adapter?}}{{typedef:adapter_qualified}}::from_thrift({{/if}}{{/type:typedef}}
+{{#partial const_value value=value:inner depth=depth}}
+{{#type:typedef}}{{#if typedef:has_adapter?}}).expect("constant Thrift value should adapt without error"){{/if}}{{/type:typedef}}
+)
+{{#else if type:bool?}}{{#if value:nonzero?}}true{{#else}}false{{/if}}
+{{#else if (or type:any_int? type:byte?)}}{{value:integer_value}}
+{{#else if type:floating_point?}}{{value:double_value}}
+{{#else if type:string?}}{{#if (string.empty? value:string_value)}}::std::string::String::new(){{#else}}{{(rust_quote value:string_value)}}.to_owned(){{/if}}
+      {{#else if type:binary?}}
+        {{#if (string.empty? value:string_value)}}
+{{#if (string.empty? type:rust_type)}}::std::vec::Vec{{#else}}<::{{type:rust_type}}>{{/if}}::new()
+        {{#else}}
+{{(rust_quote value:string_value)}}.as_bytes().into()
+        {{/if (string.empty? value:string_value)}}
+{{#else if type:list?}}{{#if value:empty_container?}}::std::vec::Vec::new(){{#else}}{{#partial list_value elements=value:list_elements}}{{/if}}
+      {{#else if type:set?}}
+        {{#if value:empty_container?}}
+{{#if (string.empty? type:rust_type)}}::std::collections::BTreeSet{{#else}}::{{type:rust_type}}{{/if}}::new()
+        {{#else}}
+{{#partial set_value elements=value:list_elements}}
+        {{/if value:empty_container?}}
+      {{#else if value:map?}}
+        {{#if value:empty_container?}}
+{{#if (string.empty? type:rust_type)}}::std::collections::BTreeMap{{#else}}::{{type:rust_type}}{{/if}}::new()
+        {{#else}}
+{{#partial map_value elements=value:mapEntries}}
+        {{/if value:empty_container?}}
+      {{#else if value:structured?}}
+        {{#if type:union?}}
+{{#partial types.type_name type=type:self}}::{{#if value:unionVariant}}{{value:unionVariant}}({{#partial const_value value=value:unionValue depth=(int.add depth 1)}}){{#else}}default(){{/if}}
+        {{#else}}
+{{#partial struct_value elements=value:structFields exhaustive=value:exhaustive?}}
+        {{/if type:union?}}
+      {{#else if value:enum?}}
+{{#value:local_type}}{{type:package}}::{{type:rust_name}}{{/value:local_type}}
+{{#if value:enum_value?}}::{{value:enum_value.rust_name}}{{#else}}({{value:integer_value}}){{/if}}
+      {{/if value:newtype?}}
+    {{/value:underlying_type}}
+  {{/value}}
+{{/let partial}}
+
+
+{{!
+    NOTE: This is a partial that takes a *mstch object* as input.
+    This is an intermediate step in the migration, to simplify depth management
+    in the generator code.
+}}
+{{! Externally visible version of the nested `field_value` partial }}
+{{#let export partial field_value |field value depth| captures |const_value|}}
+{{#pragma ignore-newlines}}
+  {{#field}}
+{{#if field:optional?}}::std::option::Option::Some({{/if}}
+{{#if field:box?}}::std::boxed::Box::new({{/if}}
+{{#if field:arc?}}::std::sync::Arc::new({{/if}}
+{{#partial const_value value=value depth=depth}}
+{{#if field:arc?}}){{/if}}
+{{#if field:box?}}){{/if}}
+{{#if field:optional?}}){{/if}}
+  {{/field}}
+{{/let partial}}

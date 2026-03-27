@@ -780,7 +780,6 @@ std::string compute_adapter_struct_qualified(
 
 mstch::node structured_annotations_node(
     const t_named& named,
-    unsigned depth,
     mstch_context& context,
     mstch_element_position pos,
     const rust_codegen_options& options) {
@@ -789,7 +788,7 @@ mstch::node structured_annotations_node(
   // Note, duplicate annotations are not allowed per the Thrift spec.
   for (const t_const& annotation : named.structured_annotations()) {
     auto direct_annotation = mstch::make_shared_node<mstch_rust_value>(
-        annotation.value(), annotation.type(), depth, context, pos, options);
+        annotation.value(), annotation.type(), context, pos, options);
 
     mstch::node transitive;
     const t_type* annotation_type = annotation.type();
@@ -876,6 +875,12 @@ class t_mstch_rust_generator : public t_mstch_generator {
           return whisker::make::string(quote(
               ctx.argument<whisker::string>(0),
               escape_backslashes.value_or(false)));
+        });
+    globals["indent_4"] = whisker::dsl::make_function(
+        "indent_4", [](whisker::dsl::function::context ctx) {
+          ctx.declare_arity(1);
+          int64_t depth = ctx.argument<whisker::i64>(0);
+          return whisker::string(4 * depth, ' ');
         });
     return globals;
   }
@@ -2016,7 +2021,7 @@ class rust_mstch_struct : public mstch_struct {
         });
   }
   mstch::node rust_structured_annotations() {
-    return structured_annotations_node(*struct_, 1, context_, pos_, options_);
+    return structured_annotations_node(*struct_, context_, pos_, options_);
   }
 
  private:
@@ -2029,7 +2034,6 @@ class mstch_rust_value : public mstch_base {
   mstch_rust_value(
       const t_const_value* const_value,
       const t_type* type,
-      unsigned depth,
       mstch_context& ctx,
       mstch_element_position pos,
       const rust_codegen_options& options)
@@ -2037,7 +2041,6 @@ class mstch_rust_value : public mstch_base {
         const_value_(const_value),
         local_type_(type),
         underlying_type_(step_through_typedefs(type, false)),
-        depth_(depth),
         options_(options) {
     register_methods(
         this,
@@ -2048,13 +2051,11 @@ class mstch_rust_value : public mstch_base {
             {"value:newtype?", &mstch_rust_value::is_newtype},
             {"value:inner", &mstch_rust_value::inner},
             {"value:list_elements", &mstch_rust_value::list_elements},
-            {"value:setMembers", &mstch_rust_value::set_members},
             {"value:mapEntries", &mstch_rust_value::map_entries},
             {"value:structFields", &mstch_rust_value::struct_fields},
             {"value:exhaustive?", &mstch_rust_value::is_exhaustive},
             {"value:unionVariant", &mstch_rust_value::union_variant},
             {"value:unionValue", &mstch_rust_value::union_value},
-            {"value:indent", &mstch_rust_value::indent},
             {"value:simpleLiteral?", &mstch_rust_value::simple_literal},
         });
   }
@@ -2072,7 +2073,7 @@ class mstch_rust_value : public mstch_base {
     if (const auto* typedef_type = underlying_type_->try_as<t_typedef>()) {
       auto inner_type = &typedef_type->type().deref();
       return std::make_shared<mstch_rust_value>(
-          const_value_, inner_type, depth_, context_, pos_, options_);
+          const_value_, inner_type, context_, pos_, options_);
     }
     return mstch::node();
   }
@@ -2090,11 +2091,10 @@ class mstch_rust_value : public mstch_base {
     for (auto elem : const_value_->get_list()) {
       elements.emplace_back(
           std::make_shared<mstch_rust_value>(
-              elem, elem_type, depth_ + 3, context_, pos_, options_));
+              elem, elem_type, context_, pos_, options_));
     }
     return elements;
   }
-  mstch::node set_members() { return list_elements(); }
   mstch::node map_entries();
   mstch::node struct_fields();
   mstch::node is_exhaustive();
@@ -2136,17 +2136,11 @@ class mstch_rust_value : public mstch_base {
     for (auto&& field : struct_type->fields()) {
       if (field.name() == variant) {
         return std::make_shared<mstch_rust_value>(
-            content,
-            field.type().get_type(),
-            depth_ + 1,
-            context_,
-            pos_,
-            options_);
+            content, field.type().get_type(), context_, pos_, options_);
       }
     }
     return mstch::node();
   }
-  mstch::node indent() { return std::string(4 * depth_, ' '); }
   mstch::node simple_literal() {
     // Primitives and enum variants have simple literals
     return underlying_type_->is_bool() || underlying_type_->is_byte() ||
@@ -2165,7 +2159,6 @@ class mstch_rust_value : public mstch_base {
   // typedefs.
   const t_type* underlying_type_;
 
-  unsigned depth_;
   const rust_codegen_options& options_;
 };
 
@@ -2176,7 +2169,6 @@ class mstch_rust_map_entry : public mstch_base {
       const t_type* key_type,
       const t_const_value* value,
       const t_type* value_type,
-      unsigned depth,
       mstch_context& ctx,
       mstch_element_position pos,
       const rust_codegen_options& options)
@@ -2185,7 +2177,6 @@ class mstch_rust_map_entry : public mstch_base {
         key_type_(key_type),
         value_(value),
         value_type_(value_type),
-        depth_(depth),
         options_(options) {
     register_methods(
         this,
@@ -2196,11 +2187,11 @@ class mstch_rust_map_entry : public mstch_base {
   }
   mstch::node key() {
     return std::make_shared<mstch_rust_value>(
-        key_, key_type_, depth_, context_, pos_, options_);
+        key_, key_type_, context_, pos_, options_);
   }
   mstch::node value() {
     return std::make_shared<mstch_rust_value>(
-        value_, value_type_, depth_, context_, pos_, options_);
+        value_, value_type_, context_, pos_, options_);
   }
 
  private:
@@ -2208,7 +2199,6 @@ class mstch_rust_map_entry : public mstch_base {
   const t_type* key_type_;
   const t_const_value* value_;
   const t_type* value_type_;
-  unsigned depth_;
   const rust_codegen_options& options_;
 };
 
@@ -2217,14 +2207,12 @@ class mstch_rust_struct_field : public mstch_base {
   mstch_rust_struct_field(
       const t_field* field,
       const t_const_value* explicit_value,
-      unsigned depth,
       mstch_context& ctx,
       mstch_element_position pos,
       const rust_codegen_options& options)
       : mstch_base(ctx, pos),
         field_(field),
         explicit_value_(explicit_value),
-        depth_(depth),
         options_(options) {
     register_methods(
         this,
@@ -2240,19 +2228,14 @@ class mstch_rust_struct_field : public mstch_base {
     if (explicit_value_) {
       auto type = field_->type().get_type();
       return std::make_shared<mstch_rust_value>(
-          explicit_value_, type, depth_, context_, pos_, options_);
+          explicit_value_, type, context_, pos_, options_);
     }
     return mstch::node();
   }
   mstch::node rust_default() {
     if (auto default_value = field_->default_value()) {
       return std::make_shared<mstch_rust_value>(
-          default_value,
-          field_->type().get_type(),
-          depth_,
-          context_,
-          pos_,
-          options_);
+          default_value, field_->type().get_type(), context_, pos_, options_);
     }
     return mstch::node();
   }
@@ -2264,7 +2247,6 @@ class mstch_rust_struct_field : public mstch_base {
  private:
   const t_field* field_;
   const t_const_value* explicit_value_;
-  unsigned depth_;
   const rust_codegen_options& options_;
 };
 
@@ -2284,7 +2266,6 @@ mstch::node mstch_rust_value::map_entries() {
             key_type,
             entry.second,
             value_type,
-            depth_ + 3,
             context_,
             pos_,
             options_));
@@ -2311,7 +2292,7 @@ mstch::node mstch_rust_value::struct_fields() {
     auto explicit_value = map_entries[field.name()];
     fields.emplace_back(
         std::make_shared<mstch_rust_struct_field>(
-            &field, explicit_value, depth_ + 1, context_, pos_, options_));
+            &field, explicit_value, context_, pos_, options_));
   }
   return fields;
 }
@@ -2339,9 +2320,8 @@ class rust_mstch_const : public mstch_const {
         });
   }
   mstch::node rust_typed_value() {
-    unsigned depth = 0;
     return std::make_shared<mstch_rust_value>(
-        const_->value(), const_->type(), depth, context_, pos_, options_);
+        const_->value(), const_->type(), context_, pos_, options_);
   }
 
  private:
@@ -2367,15 +2347,14 @@ class rust_mstch_field : public mstch_field {
   mstch::node rust_default() {
     auto value = field_->default_value();
     if (value) {
-      unsigned depth = 2; // impl Default + fn default
       auto type = field_->type().get_type();
       return std::make_shared<mstch_rust_value>(
-          value, type, depth, context_, pos_, options_);
+          value, type, context_, pos_, options_);
     }
     return mstch::node();
   }
   mstch::node rust_structured_annotations() {
-    return structured_annotations_node(*field_, 3, context_, pos_, options_);
+    return structured_annotations_node(*field_, context_, pos_, options_);
   }
 
  private:
