@@ -27,6 +27,7 @@ namespace py3 thrift.conformance
 namespace java.swift org.apache.thrift.conformance
 namespace java org.apache.thrift.conformance
 namespace go thrift.conformance.protocol
+namespace csharp Apache.Thrift.Conformance.Protocol
 
 // Standard protocols.
 enum StandardProtocol {

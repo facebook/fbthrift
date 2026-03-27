@@ -60,4 +60,20 @@ namespace {{root_program.csharp_namespace}}
 {{#if root_program.constants?}}
 {{> types/const}}
 {{/if root_program.constants?}}
+    /// <summary>
+    /// Registers all generated types from this module that have a thrift_uri.
+    /// Each module generates a uniquely-named registry class to avoid
+    /// conflicts when multiple modules share the same namespace.
+    /// </summary>
+    public static class {{root_program.csharp_name}}TypeRegistry
+    {
+        public static void RegisterTypes(Action<string, Func<IThriftSerializable>> register)
+        {
+{{#each root_program.structured_definitions as |structured|}}
+{{#if (not (string.empty? structured.uri))}}
+            register("{{structured.uri}}", () => new {{structured.csharp_name}}());
+{{/if (not (string.empty? structured.uri))}}
+{{/each}}
+        }
+    }
 }

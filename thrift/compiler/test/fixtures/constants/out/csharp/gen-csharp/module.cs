@@ -1728,4 +1728,15 @@ namespace test.fixtures.constants
         public static readonly HashSet<int> @set_map_initializer = new HashSet<int>()
 {
 };
-    }}
+    }    /// <summary>
+    /// Registers all generated types from this module that have a thrift_uri.
+    /// Each module generates a uniquely-named registry class to avoid
+    /// conflicts when multiple modules share the same namespace.
+    /// </summary>
+    public static class @moduleTypeRegistry
+    {
+        public static void RegisterTypes(Action<string, Func<IThriftSerializable>> register)
+        {
+        }
+    }
+}

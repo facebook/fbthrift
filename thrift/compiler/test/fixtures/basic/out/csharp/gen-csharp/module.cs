@@ -1445,4 +1445,23 @@ namespace test.dev.fixtures.basic
   54,
 } },
 };
-    }}
+    }    /// <summary>
+    /// Registers all generated types from this module that have a thrift_uri.
+    /// Each module generates a uniquely-named registry class to avoid
+    /// conflicts when multiple modules share the same namespace.
+    /// </summary>
+    public static class @moduleTypeRegistry
+    {
+        public static void RegisterTypes(Action<string, Func<IThriftSerializable>> register)
+        {
+            register("test.dev/fixtures/basic/MyStruct", () => new @MyStruct());
+            register("test.dev/fixtures/basic/Containers", () => new @Containers());
+            register("test.dev/fixtures/basic/MyDataItem", () => new @MyDataItem());
+            register("test.dev/fixtures/basic/MyUnion", () => new @MyUnion());
+            register("test.dev/fixtures/basic/MyException", () => new @MyException());
+            register("test.dev/fixtures/basic/MyExceptionWithMessage", () => new @MyExceptionWithMessage());
+            register("test.dev/fixtures/basic/ReservedKeyword", () => new @ReservedKeyword());
+            register("test.dev/fixtures/basic/UnionToBeRenamed", () => new @UnionToBeRenamed());
+        }
+    }
+}

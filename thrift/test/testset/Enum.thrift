@@ -21,6 +21,7 @@ namespace py thrift.test.Enum
 namespace py.asyncio thrift_asyncio.test.Enum
 namespace java.swift org.apache.thrift.test
 namespace go thrift.test.testset.Enum
+namespace csharp Apache.Thrift.Test.Enum
 
 include "thrift/annotation/compat.thrift"
 

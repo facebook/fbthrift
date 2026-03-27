@@ -50,6 +50,7 @@ namespace py thrift.test.testset
 namespace py.asyncio thrift_asyncio.test.testset
 namespace java.swift org.apache.thrift.test
 namespace go thrift.test.testset
+namespace csharp Apache.Thrift.Test.Testset
 """
 
 CPP2_HEADER = f"""// Copyright (c) Meta Platforms, Inc. and affiliates.

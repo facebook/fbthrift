@@ -461,4 +461,17 @@ namespace test.fixtures.enums
         }
     }
 
+    /// <summary>
+    /// Registers all generated types from this module that have a thrift_uri.
+    /// Each module generates a uniquely-named registry class to avoid
+    /// conflicts when multiple modules share the same namespace.
+    /// </summary>
+    public static class @moduleTypeRegistry
+    {
+        public static void RegisterTypes(Action<string, Func<IThriftSerializable>> register)
+        {
+            register("test.dev/fixtures/enums/SomeStruct", () => new @SomeStruct());
+            register("test.dev/fixtures/enums/MyStruct", () => new @MyStruct());
+        }
+    }
 }

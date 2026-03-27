@@ -1362,4 +1362,30 @@ namespace facebook.thrift.annotation.hack
         }
     }
 
+    /// <summary>
+    /// Registers all generated types from this module that have a thrift_uri.
+    /// Each module generates a uniquely-named registry class to avoid
+    /// conflicts when multiple modules share the same namespace.
+    /// </summary>
+    public static class @hackTypeRegistry
+    {
+        public static void RegisterTypes(Action<string, Func<IThriftSerializable>> register)
+        {
+            register("facebook.com/thrift/annotation/hack/FieldWrapper", () => new @FieldWrapper());
+            register("facebook.com/thrift/annotation/hack/Wrapper", () => new @Wrapper());
+            register("facebook.com/thrift/annotation/hack/Adapter", () => new @Adapter());
+            register("facebook.com/thrift/annotation/hack/SkipCodegen", () => new @SkipCodegen());
+            register("facebook.com/thrift/annotation/hack/Name", () => new @Name());
+            register("facebook.com/thrift/annotation/hack/UnionEnumAttributes", () => new @UnionEnumAttributes());
+            register("facebook.com/thrift/annotation/hack/StructTrait", () => new @StructTrait());
+            register("facebook.com/thrift/annotation/hack/Attributes", () => new @Attributes());
+            register("facebook.com/thrift/annotation/hack/StructAsTrait", () => new @StructAsTrait());
+            register("facebook.com/thrift/annotation/hack/ModuleInternal", () => new @ModuleInternal());
+            register("facebook.com/thrift/annotation/hack/GenerateClientMethodsWithHeaders", () => new @GenerateClientMethodsWithHeaders());
+            register("facebook.com/thrift/annotation/hack/MigrationBlockingAllowInheritance", () => new @MigrationBlockingAllowInheritance());
+            register("facebook.com/thrift/annotation/hack/MigrationBlockingLegacyJSONSerialization", () => new @MigrationBlockingLegacyJSONSerialization());
+            register("facebook.com/thrift/annotation/hack/FixmeWrongType", () => new @FixmeWrongType());
+            register("facebook.com/thrift/annotation/hack/UnsafeArray", () => new @UnsafeArray());
+        }
+    }
 }

@@ -33,4 +33,15 @@ namespace Test.Fixtures.Enums.Included
         @THIRD = 3
     }
 
+    /// <summary>
+    /// Registers all generated types from this module that have a thrift_uri.
+    /// Each module generates a uniquely-named registry class to avoid
+    /// conflicts when multiple modules share the same namespace.
+    /// </summary>
+    public static class @included_enumTypeRegistry
+    {
+        public static void RegisterTypes(Action<string, Func<IThriftSerializable>> register)
+        {
+        }
+    }
 }

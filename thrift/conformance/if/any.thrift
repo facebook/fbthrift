@@ -22,6 +22,7 @@ namespace py3 thrift.conformance
 namespace java.swift org.apache.thrift.conformance
 namespace java org.apache.thrift.conformance
 namespace go thrift.conformance.any
+namespace csharp Apache.Thrift.Conformance.Any
 
 cpp_include "<folly/io/IOBuf.h>"
 cpp_include "<folly/FBString.h>"

@@ -1093,4 +1093,20 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
         }
     }
 
+    /// <summary>
+    /// Registers all generated types from this module that have a thrift_uri.
+    /// Each module generates a uniquely-named registry class to avoid
+    /// conflicts when multiple modules share the same namespace.
+    /// </summary>
+    public static class @moduleTypeRegistry
+    {
+        public static void RegisterTypes(Action<string, Func<IThriftSerializable>> register)
+        {
+            register("facebook.com/thrift/compiler/test/fixtures/default_values/TrivialStruct", () => new @TrivialStruct());
+            register("facebook.com/thrift/compiler/test/fixtures/default_values/TrivialStructWithDefault", () => new @TrivialStructWithDefault());
+            register("facebook.com/thrift/compiler/test/fixtures/default_values/StructWithNoCustomDefaultValues", () => new @StructWithNoCustomDefaultValues());
+            register("facebook.com/thrift/compiler/test/fixtures/default_values/StructWithCustomDefaultValues", () => new @StructWithCustomDefaultValues());
+            register("facebook.com/thrift/compiler/test/fixtures/default_values/StructWithCollectionDefaultValues", () => new @StructWithCollectionDefaultValues());
+        }
+    }
 }

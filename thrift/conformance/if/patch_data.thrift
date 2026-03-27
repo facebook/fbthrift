@@ -21,6 +21,7 @@ namespace py thrift.conformance.patch_data
 namespace py.asyncio thrift_asyncio.conformance.patch_data
 namespace py3 thrift.conformance
 namespace java.swift org.apache.thrift.conformance
+namespace csharp Apache.Thrift.Conformance.PatchData
 
 include "thrift/conformance/if/any.thrift"
 include "thrift/annotation/thrift.thrift"

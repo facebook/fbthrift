@@ -1403,4 +1403,35 @@ namespace facebook.thrift.annotation
         }
     }
 
+    /// <summary>
+    /// Registers all generated types from this module that have a thrift_uri.
+    /// Each module generates a uniquely-named registry class to avoid
+    /// conflicts when multiple modules share the same namespace.
+    /// </summary>
+    public static class @scopeTypeRegistry
+    {
+        public static void RegisterTypes(Action<string, Func<IThriftSerializable>> register)
+        {
+            register("facebook.com/thrift/annotation/Transitive", () => new @Transitive());
+            register("facebook.com/thrift/annotation/Program", () => new @Program());
+            register("facebook.com/thrift/annotation/Struct", () => new @Struct());
+            register("facebook.com/thrift/annotation/Union", () => new @Union());
+            register("facebook.com/thrift/annotation/Exception", () => new @Exception());
+            register("facebook.com/thrift/annotation/ThrownException", () => new @ThrownException());
+            register("facebook.com/thrift/annotation/Field", () => new @Field());
+            register("facebook.com/thrift/annotation/Typedef", () => new @Typedef());
+            register("facebook.com/thrift/annotation/Service", () => new @Service());
+            register("facebook.com/thrift/annotation/Interaction", () => new @Interaction());
+            register("facebook.com/thrift/annotation/Function", () => new @Function());
+            register("facebook.com/thrift/annotation/FunctionParameter", () => new @FunctionParameter());
+            register("facebook.com/thrift/annotation/EnumValue", () => new @EnumValue());
+            register("facebook.com/thrift/annotation/Const", () => new @Const());
+            register("facebook.com/thrift/annotation/Enum", () => new @Enum());
+            register("facebook.com/thrift/annotation/Structured", () => new @Structured());
+            register("facebook.com/thrift/annotation/Interface", () => new @Interface());
+            register("facebook.com/thrift/annotation/RootDefinition", () => new @RootDefinition());
+            register("facebook.com/thrift/annotation/Definition", () => new @Definition());
+            register("facebook.com/thrift/annotation/DisableSchemaConst", () => new @DisableSchemaConst());
+        }
+    }
 }

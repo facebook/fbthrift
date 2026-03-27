@@ -2515,4 +2515,22 @@ namespace facebook.thrift.test.fixtures.terse_write
         }
     }
 
+    /// <summary>
+    /// Registers all generated types from this module that have a thrift_uri.
+    /// Each module generates a uniquely-named registry class to avoid
+    /// conflicts when multiple modules share the same namespace.
+    /// </summary>
+    public static class @terse_writeTypeRegistry
+    {
+        public static void RegisterTypes(Action<string, Func<IThriftSerializable>> register)
+        {
+            register("facebook.com/thrift/test/fixtures/terse_write/MyStruct", () => new @MyStruct());
+            register("facebook.com/thrift/test/fixtures/terse_write/MyUnion", () => new @MyUnion());
+            register("facebook.com/thrift/test/fixtures/terse_write/MyStructWithCustomDefault", () => new @MyStructWithCustomDefault());
+            register("facebook.com/thrift/test/fixtures/terse_write/StructLevelTerseStruct", () => new @StructLevelTerseStruct());
+            register("facebook.com/thrift/test/fixtures/terse_write/FieldLevelTerseStruct", () => new @FieldLevelTerseStruct());
+            register("facebook.com/thrift/test/fixtures/terse_write/AdaptedFields", () => new @AdaptedFields());
+            register("facebook.com/thrift/test/fixtures/terse_write/TerseException", () => new @TerseException());
+        }
+    }
 }

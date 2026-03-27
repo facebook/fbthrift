@@ -2122,4 +2122,40 @@ namespace facebook.thrift.annotation.cpp
         }
     }
 
+    /// <summary>
+    /// Registers all generated types from this module that have a thrift_uri.
+    /// Each module generates a uniquely-named registry class to avoid
+    /// conflicts when multiple modules share the same namespace.
+    /// </summary>
+    public static class @cppTypeRegistry
+    {
+        public static void RegisterTypes(Action<string, Func<IThriftSerializable>> register)
+        {
+            register("facebook.com/thrift/annotation/cpp/Name", () => new @Name());
+            register("facebook.com/thrift/annotation/cpp/Type", () => new @Type());
+            register("facebook.com/thrift/annotation/cpp/Ref", () => new @Ref());
+            register("facebook.com/thrift/annotation/cpp/Lazy", () => new @Lazy());
+            register("facebook.com/thrift/annotation/cpp/DisableLazyChecksum", () => new @DisableLazyChecksum());
+            register("facebook.com/thrift/annotation/cpp/Adapter", () => new @Adapter());
+            register("facebook.com/thrift/annotation/cpp/PackIsset", () => new @PackIsset());
+            register("facebook.com/thrift/annotation/cpp/MinimizePadding", () => new @MinimizePadding());
+            register("facebook.com/thrift/annotation/cpp/ScopedEnumAsUnionType", () => new @ScopedEnumAsUnionType());
+            register("facebook.com/thrift/annotation/cpp/FieldInterceptor", () => new @FieldInterceptor());
+            register("facebook.com/thrift/annotation/cpp/UseOpEncode", () => new @UseOpEncode());
+            register("facebook.com/thrift/annotation/cpp/EnumType", () => new @EnumType());
+            register("facebook.com/thrift/annotation/cpp/Frozen2Exclude", () => new @Frozen2Exclude());
+            register("facebook.com/thrift/annotation/cpp/Frozen2RequiresCompleteContainerParams", () => new @Frozen2RequiresCompleteContainerParams());
+            register("facebook.com/thrift/annotation/cpp/ProcessInEbThreadUnsafe", () => new @ProcessInEbThreadUnsafe());
+            register("facebook.com/thrift/annotation/cpp/UseCursorSerialization", () => new @UseCursorSerialization());
+            register("facebook.com/thrift/annotation/cpp/GenerateDeprecatedHeaderClientMethods", () => new @GenerateDeprecatedHeaderClientMethods());
+            register("facebook.com/thrift/annotation/cpp/AllowLegacyNonOptionalRef", () => new @AllowLegacyNonOptionalRef());
+            register("facebook.com/thrift/annotation/cpp/DeprecatedTerseWrite", () => new @DeprecatedTerseWrite());
+            register("facebook.com/thrift/annotation/cpp/AllowLegacyDeprecatedTerseWritesRef", () => new @AllowLegacyDeprecatedTerseWritesRef());
+            register("facebook.com/thrift/annotation/cpp/EnableCustomTypeOrdering", () => new @EnableCustomTypeOrdering());
+            register("facebook.com/thrift/annotation/cpp/GenerateServiceMethodDecorator", () => new @GenerateServiceMethodDecorator());
+            register("facebook.com/thrift/annotation/cpp/NonOrderable", () => new @NonOrderable());
+            register("facebook.com/thrift/annotation/cpp/DeclareHashSpecialization", () => new @DeclareHashSpecialization());
+            register("facebook.com/thrift/annotation/cpp/DeclareEqualToSpecialization", () => new @DeclareEqualToSpecialization());
+        }
+    }
 }

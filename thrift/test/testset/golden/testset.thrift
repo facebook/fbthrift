@@ -20,6 +20,7 @@ namespace py thrift.test.testset
 namespace py.asyncio thrift_asyncio.test.testset
 namespace java.swift org.apache.thrift.test
 namespace go thrift.test.testset
+namespace csharp Apache.Thrift.Test.Testset
 
 @thrift.Sealed
 struct struct_empty {

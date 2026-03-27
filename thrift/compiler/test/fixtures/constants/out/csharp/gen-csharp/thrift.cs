@@ -1984,4 +1984,40 @@ namespace facebook.thrift.annotation
         }
     }
 
+    /// <summary>
+    /// Registers all generated types from this module that have a thrift_uri.
+    /// Each module generates a uniquely-named registry class to avoid
+    /// conflicts when multiple modules share the same namespace.
+    /// </summary>
+    public static class @thriftTypeRegistry
+    {
+        public static void RegisterTypes(Action<string, Func<IThriftSerializable>> register)
+        {
+            register("facebook.com/thrift/annotation/Experimental", () => new @Experimental());
+            register("facebook.com/thrift/annotation/ReserveIds", () => new @ReserveIds());
+            register("facebook.com/thrift/annotation/RequiresBackwardCompatibility", () => new @RequiresBackwardCompatibility());
+            register("facebook.com/thrift/annotation/TerseWrite", () => new @TerseWrite());
+            register("facebook.com/thrift/annotation/Box", () => new @Box());
+            register("facebook.com/thrift/annotation/Mixin", () => new @Mixin());
+            register("facebook.com/thrift/annotation/SerializeInFieldIdOrder", () => new @SerializeInFieldIdOrder());
+            register("facebook.com/thrift/annotation/BitmaskEnum", () => new @BitmaskEnum());
+            register("facebook.com/thrift/annotation/ExceptionMessage", () => new @ExceptionMessage());
+            register("facebook.com/thrift/annotation/InternBox", () => new @InternBox());
+            register("facebook.com/thrift/annotation/Serial", () => new @Serial());
+            register("facebook.com/thrift/annotation/Uri", () => new @Uri());
+            register("facebook.com/thrift/annotation/Priority", () => new @Priority());
+            register("facebook.com/thrift/annotation/Sealed", () => new @Sealed());
+            register("facebook.com/thrift/annotation/DeprecatedUnvalidatedAnnotations", () => new @DeprecatedUnvalidatedAnnotations());
+            register("facebook.com/thrift/annotation/AllowReservedIdentifier", () => new @AllowReservedIdentifier());
+            register("facebook.com/thrift/annotation/AllowReservedFilename", () => new @AllowReservedFilename());
+            register("facebook.com/thrift/annotation/RuntimeAnnotation", () => new @RuntimeAnnotation());
+            register("facebook.com/thrift/annotation/AllowLegacyTypedefUri", () => new @AllowLegacyTypedefUri());
+            register("facebook.com/thrift/annotation/AllowUnsafeOptionalCustomDefaultValue", () => new @AllowUnsafeOptionalCustomDefaultValue());
+            register("facebook.com/thrift/annotation/AllowUnsafeUnionFieldCustomDefaultValue", () => new @AllowUnsafeUnionFieldCustomDefaultValue());
+            register("facebook.com/thrift/annotation/AllowUnsafeRequiredFieldQualifier", () => new @AllowUnsafeRequiredFieldQualifier());
+            register("facebook.com/thrift/annotation/AllowLegacyMissingUris", () => new @AllowLegacyMissingUris());
+            register("facebook.com/thrift/annotation/AllowUnsafeNonSealedKeyType", () => new @AllowUnsafeNonSealedKeyType());
+            register("facebook.com/thrift/annotation/Deprecated", () => new @Deprecated());
+        }
+    }
 }
