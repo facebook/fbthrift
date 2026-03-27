@@ -142,6 +142,115 @@ string toHex(const string& s) {
   return ret.str().substr(0, 8);
 }
 
+// Cycle detection needed: e.g. GenericMap -> GenericMapValue -> GenericMap.
+void collect_referenced_types(
+    const t_type* type,
+    std::set<std::string>& visited,
+    std::vector<const t_structured*>& structs,
+    std::vector<const t_enum*>& enums) {
+  type = type->get_true_type();
+
+  if (const auto* list = type->try_as<t_list>()) {
+    collect_referenced_types(
+        &list->elem_type().deref(), visited, structs, enums);
+  } else if (const auto* set = type->try_as<t_set>()) {
+    collect_referenced_types(
+        &set->elem_type().deref(), visited, structs, enums);
+  } else if (const auto* map = type->try_as<t_map>()) {
+    collect_referenced_types(&map->key_type().deref(), visited, structs, enums);
+    collect_referenced_types(&map->val_type().deref(), visited, structs, enums);
+  } else if (const auto* enm = type->try_as<t_enum>()) {
+    std::string fqn = fmt::format(
+        "{}.{}",
+        get_namespace_or_default(*type->program()),
+        java::mangle_java_name(type->name(), true));
+    if (visited.insert(fqn).second) {
+      enums.push_back(enm);
+    }
+  } else if (const auto* strct = type->try_as<t_structured>()) {
+    std::string fqn = fmt::format(
+        "{}.{}",
+        get_namespace_or_default(*type->program()),
+        java::mangle_java_name(type->name(), true));
+    if (visited.insert(fqn).second) {
+      structs.push_back(strct);
+      for (const auto& field : strct->fields()) {
+        collect_referenced_types(
+            field.type().get_type(), visited, structs, enums);
+      }
+    }
+  }
+}
+
+void collect_types_from_service_functions(
+    const t_interface& service,
+    std::set<std::string>& visited,
+    std::vector<const t_structured*>& structs,
+    std::vector<const t_enum*>& enums) {
+  for (const auto& func : service.functions()) {
+    if (func.is_interaction_constructor()) {
+      continue;
+    }
+    collect_referenced_types(
+        func.return_type().get_type(), visited, structs, enums);
+    for (const auto& field : func.params().fields()) {
+      collect_referenced_types(
+          field.type().get_type(), visited, structs, enums);
+    }
+    if (func.exceptions()) {
+      for (const auto& field : func.exceptions()->fields()) {
+        collect_referenced_types(
+            field.type().get_type(), visited, structs, enums);
+      }
+    }
+  }
+}
+
+whisker::object batch_whisker_array(
+    whisker::array::raw items, size_t batch_size) {
+  if (items.empty()) {
+    return whisker::make::array(whisker::array::raw{});
+  }
+  whisker::array::raw batches;
+  for (size_t i = 0; i < items.size(); i += batch_size) {
+    whisker::array::raw batch;
+    auto end = std::min(i + batch_size, items.size());
+    for (size_t j = i; j < end; ++j) {
+      batch.emplace_back(std::move(items[j]));
+    }
+    batches.emplace_back(whisker::make::array(std::move(batch)));
+  }
+  return whisker::make::array(std::move(batches));
+}
+
+constexpr size_t kValueBatchSize = 200;
+
+struct service_referenced_types {
+  std::vector<const t_structured*> structs;
+  std::vector<const t_enum*> enums;
+  std::vector<const t_structured*> exceptions;
+};
+
+service_referenced_types collect_service_referenced_types(
+    const t_interface& service) {
+  std::set<std::string> visited;
+  std::vector<const t_structured*> all_structs;
+  std::vector<const t_enum*> all_enums;
+  collect_types_from_service_functions(
+      service, visited, all_structs, all_enums);
+
+  service_referenced_types result;
+  for (const auto* s : all_structs) {
+    if (s->is<t_exception>()) {
+      result.exceptions.push_back(s);
+    } else {
+      result.structs.push_back(s);
+    }
+  }
+  result.enums = std::move(all_enums);
+  return result;
+}
+
 std::string compute_type_list_hash(const t_program& program) {
   std::string uri_concat;
   for (const auto* s : program.structured_definitions()) {
@@ -252,6 +361,24 @@ class t_mstch_java_generator : public t_mstch_generator {
  private:
   void set_mstch_factories();
 
+  void initialize_context(context_visitor& visitor) override {
+    visitor.add_service_visitor([this](
+                                    const whisker_generator_visitor_context&,
+                                    const t_service& service) {
+      service_types_map_[&service] = collect_service_referenced_types(service);
+    });
+  }
+
+  const service_referenced_types& get_service_types(
+      const t_interface& service) const {
+    auto it = service_types_map_.find(&service);
+    assert(it != service_types_map_.end());
+    return it->second;
+  }
+
+  std::unordered_map<const t_interface*, service_referenced_types>
+      service_types_map_;
+
   prototype<t_named>::ptr make_prototype_for_named(
       const prototype_database& proto) const override {
     auto base = t_whisker_generator::make_prototype_for_named(proto);
@@ -356,6 +483,16 @@ class t_mstch_java_generator : public t_mstch_generator {
             java::mangle_java_constant_name(self.find_value(0)->name()));
       }
       return whisker::make::null;
+    });
+    def.property("value_batches", [&proto](const t_enum& self) {
+      whisker::array::raw all_values;
+      for (const auto& ev : self.values()) {
+        all_values.emplace_back(proto.create<t_enum_value>(ev));
+      }
+      return batch_whisker_array(std::move(all_values), kValueBatchSize);
+    });
+    def.property("has_multiple_value_batches?", [](const t_enum& self) {
+      return self.values().size() > kValueBatchSize;
     });
     return std::move(def).make();
   }
@@ -670,6 +807,66 @@ class t_mstch_java_generator : public t_mstch_generator {
       }
       return whisker::make::array(std::move(batches));
     });
+
+    def.property("referenced_structs", [this, &proto](const t_interface& self) {
+      const auto& types = get_service_types(self);
+      whisker::array::raw result;
+      for (const auto* s : types.structs) {
+        result.emplace_back(proto.create<t_structured>(*s));
+      }
+      return whisker::make::array(std::move(result));
+    });
+
+    def.property("referenced_enums", [this, &proto](const t_interface& self) {
+      const auto& types = get_service_types(self);
+      whisker::array::raw result;
+      for (const auto* e : types.enums) {
+        result.emplace_back(proto.create<t_enum>(*e));
+      }
+      return whisker::make::array(std::move(result));
+    });
+
+    def.property(
+        "referenced_exceptions", [this, &proto](const t_interface& self) {
+          const auto& types = get_service_types(self);
+          whisker::array::raw result;
+          for (const auto* s : types.exceptions) {
+            result.emplace_back(proto.create<t_structured>(*s));
+          }
+          return whisker::make::array(std::move(result));
+        });
+
+    def.property(
+        "referenced_struct_batches", [this, &proto](const t_interface& self) {
+          const auto& types = get_service_types(self);
+          whisker::array::raw items;
+          for (const auto* s : types.structs) {
+            items.emplace_back(proto.create<t_structured>(*s));
+          }
+          return batch_whisker_array(std::move(items), 20);
+        });
+
+    def.property(
+        "referenced_enum_batches", [this, &proto](const t_interface& self) {
+          const auto& types = get_service_types(self);
+          whisker::array::raw items;
+          for (const auto* e : types.enums) {
+            items.emplace_back(proto.create<t_enum>(*e));
+          }
+          return batch_whisker_array(std::move(items), 1);
+        });
+
+    def.property(
+        "referenced_exception_batches",
+        [this, &proto](const t_interface& self) {
+          const auto& types = get_service_types(self);
+          whisker::array::raw items;
+          for (const auto* s : types.exceptions) {
+            items.emplace_back(proto.create<t_structured>(*s));
+          }
+          return batch_whisker_array(std::move(items), 50);
+        });
+
     return std::move(def).make();
   }
 

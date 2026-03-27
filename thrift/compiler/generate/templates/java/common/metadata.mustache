@@ -57,6 +57,51 @@ ThriftType.fromTStruct(new ThriftStructType.Builder().setName(
   {{/if type.typedef?}}
 {{/let partial}}
 
+{{! Like thrift_type_expression but wraps binary in ThriftListType for legacy
+    parity with the reflection-based ThriftMetadataServiceHandler.
+    type.foo? predicates resolve through typedefs for primitives; for
+    containers, struct, and enum we use type.true_type to access the
+    resolved elem_type/key_type/val_type and package/name. }}
+{{#let export partial thrift_type_expression_metadata |type|}}
+  {{#pragma ignore-newlines}}
+{{! binary wrapped in ThriftListType: Swift codec maps binary to byte[]
+    (ThriftProtocolType.BINARY), and convertType() wraps that in
+    ThriftListType(THRIFT_BINARY_TYPE). }}
+{{#if type.binary?}}ThriftType.fromTList(new ThriftListType.Builder().setValueType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_BINARY_TYPE)).build())
+{{#else if type.void?}}ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE)
+{{#else if type.bool?}}ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_BOOL_TYPE)
+{{#else if type.byte?}}ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_BYTE_TYPE)
+{{#else if type.i16?}}ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I16_TYPE)
+{{#else if type.i32?}}ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE)
+{{#else if type.i64?}}ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I64_TYPE)
+{{#else if type.float?}}ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_FLOAT_TYPE)
+{{#else if type.double?}}ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_DOUBLE_TYPE)
+{{#else if type.string?}}ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_STRING_TYPE)
+{{#else if type.list?}}
+ThriftType.fromTList(new ThriftListType.Builder().setValueType(
+{{#partial thrift_type_expression_metadata type=type.true_type.elem_type}}
+).build())
+{{#else if type.set?}}
+ThriftType.fromTSet(new ThriftSetType.Builder().setValueType(
+{{#partial thrift_type_expression_metadata type=type.true_type.elem_type}}
+).build())
+{{#else if type.map?}}
+ThriftType.fromTMap(new ThriftMapType.Builder().setKeyType(
+{{#partial thrift_type_expression_metadata type=type.true_type.key_type}}
+).setValueType(
+{{#partial thrift_type_expression_metadata type=type.true_type.val_type}}
+).build())
+{{#else if type.enum?}}
+ThriftType.fromTEnum(new ThriftEnumType.Builder().setName(
+"{{type.true_type.program.javaPackage}}.{{type.true_type.javaCapitalName}}"
+).build())
+{{#else if type.structured?}}
+ThriftType.fromTStruct(new ThriftStructType.Builder().setName(
+"{{type.true_type.program.javaPackage}}.{{type.true_type.javaCapitalName}}"
+).build())
+{{/if type.binary?}}
+{{/let partial}}
+
 {{! Renders a ThriftFunction metadata entry for a given t_function object.
     Uses whisker properties on t_function rather than mstch metaFunction:* properties.
     Exception fields use synthetic names (exception_<id>) matching legacy behavior. }}
