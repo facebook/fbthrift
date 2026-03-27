@@ -1279,6 +1279,71 @@ class t_mstch_rust_generator : public t_mstch_generator {
     return std::move(def).make();
   }
 
+  prototype<t_interface>::ptr make_prototype_for_interface(
+      const prototype_database& proto) const override {
+    auto base = t_whisker_generator::make_prototype_for_interface(proto);
+    auto def =
+        whisker::dsl::prototype_builder<h_interface>::extends(std::move(base));
+
+    def.property("all_exception_sources", [&proto](const t_interface& self) {
+      struct name_less {
+        bool operator()(const t_type* lhs, const t_type* rhs) const {
+          return lhs->get_scoped_name() < rhs->get_scoped_name();
+        }
+      };
+      struct exception_sources {
+        whisker::array::raw functions;
+        whisker::array::raw sinks;
+        whisker::array::raw streams;
+      };
+      std::map<const t_type*, exception_sources, name_less> source_map;
+      for (const t_function& fn : self.functions()) {
+        for (const t_field& exc : get_elems(fn.exceptions())) {
+          source_map[&exc.type().deref()].functions.emplace_back(
+              whisker::make::map({
+                  {"function", proto.create_nullable<t_function>(&fn)},
+                  {"field", proto.create_nullable<t_field>(&exc)},
+              }));
+        }
+        if (fn.stream() != nullptr) {
+          for (const t_field& exc : get_elems(fn.stream()->exceptions())) {
+            source_map[&exc.type().deref()].streams.emplace_back(
+                whisker::make::map({
+                    {"function", proto.create_nullable<t_function>(&fn)},
+                    {"field", proto.create_nullable<t_field>(&exc)},
+                }));
+          }
+        }
+        if (fn.sink() != nullptr) {
+          for (const t_field& exc : get_elems(fn.sink()->sink_exceptions())) {
+            source_map[&exc.type().deref()].sinks.emplace_back(
+                whisker::make::map({
+                    {"function", proto.create_nullable<t_function>(&fn)},
+                    {"field", proto.create_nullable<t_field>(&exc)},
+                }));
+          }
+        }
+      }
+
+      whisker::array::raw output;
+      for (const auto& [type, sources] : source_map) {
+        output.emplace_back(
+            whisker::make::map({
+                {"exception", resolve_derived_t_type(proto, *type)},
+                {"function_sources",
+                 whisker::make::array(std::move(sources.functions))},
+                {"sink_sources",
+                 whisker::make::array(std::move(sources.sinks))},
+                {"stream_sources",
+                 whisker::make::array(std::move(sources.streams))},
+            }));
+      }
+      return whisker::make::array(std::move(output));
+    });
+
+    return std::move(def).make();
+  }
+
   prototype<t_service>::ptr make_prototype_for_service(
       const prototype_database& proto) const override {
     auto base = t_whisker_generator::make_prototype_for_service(proto);
@@ -1956,8 +2021,7 @@ class rust_mstch_service : public mstch_service {
         options_(*options) {
     register_methods(
         this,
-        {{"service:rust_exceptions", &rust_mstch_service::rust_all_exceptions},
-         {"service:extendedClients",
+        {{"service:extendedClients",
           &rust_mstch_service::rust_extended_clients}});
   }
   mstch::node rust_extended_clients() {
@@ -1978,8 +2042,6 @@ class rust_mstch_service : public mstch_service {
     return extended_services;
   }
 
-  whisker::object rust_all_exceptions();
-
  private:
   const rust_codegen_options& options_;
 };
@@ -1997,91 +2059,6 @@ class rust_mstch_interaction : public rust_mstch_service {
       : rust_mstch_service(interaction, ctx, pos, options, containing_service) {
   }
 };
-
-whisker::object rust_mstch_service::rust_all_exceptions() {
-  struct name_less {
-    bool operator()(const t_type* lhs, const t_type* rhs) const {
-      return lhs->get_scoped_name() < rhs->get_scoped_name();
-    }
-  };
-  enum exception_source_enum {
-    FUNCTION = 1,
-    SINK = 2,
-    STREAM = 3,
-  };
-  struct exception_source {
-    exception_source_enum source_enum;
-    const t_function* function;
-    const t_field* field;
-  };
-  using sources_t = std::vector<exception_source>;
-  using source_map_t = std::map<const t_type*, sources_t, name_less>;
-
-  source_map_t source_map;
-
-  for (const auto& fun : service_->functions()) {
-    for (const t_field& fld : get_elems(fun.exceptions())) {
-      source_map[&fld.type().deref()].push_back(
-          exception_source{
-              .source_enum = exception_source_enum::FUNCTION,
-              .function = &fun,
-              .field = &fld});
-    }
-    if (fun.stream()) {
-      for (const t_field& fld : get_elems(fun.stream()->exceptions())) {
-        source_map[&fld.type().deref()].push_back(
-            exception_source{
-                .source_enum = exception_source_enum::STREAM,
-                .function = &fun,
-                .field = &fld});
-      }
-    }
-    if (fun.sink()) {
-      for (const t_field& fld : get_elems(fun.sink()->sink_exceptions())) {
-        source_map[&fld.type().deref()].push_back(
-            exception_source{
-                .source_enum = exception_source_enum::SINK,
-                .function = &fun,
-                .field = &fld});
-      }
-    }
-  }
-
-  whisker::array::raw output;
-  for (const auto& sources : source_map) {
-    whisker::map::raw data;
-    data["rust_exception:type"] =
-        resolve_derived_t_type(*context_.prototypes, *sources.first);
-
-    whisker::array::raw function_data;
-    whisker::array::raw stream_data;
-    whisker::array::raw sink_data;
-    for (const auto& source : sources.second) {
-      whisker::map::raw inner;
-      inner["rust_exception_function:function"] =
-          context_.prototypes->create<t_function>(*source.function);
-      inner["rust_exception_function:field"] =
-          context_.prototypes->create<t_field>(*source.field);
-
-      if (source.source_enum == exception_source_enum::FUNCTION) {
-        function_data.emplace_back(whisker::make::map(std::move(inner)));
-      } else if (source.source_enum == exception_source_enum::STREAM) {
-        stream_data.emplace_back(whisker::make::map(std::move(inner)));
-      } else if (source.source_enum == exception_source_enum::SINK) {
-        sink_data.emplace_back(whisker::make::map(std::move(inner)));
-      }
-    }
-
-    data["rust_exception:functions"] =
-        whisker::make::array(std::move(function_data));
-    data["rust_exception:streams"] =
-        whisker::make::array(std::move(stream_data));
-    data["rust_exception:sinks"] = whisker::make::array(std::move(sink_data));
-    output.emplace_back(whisker::make::map(std::move(data)));
-  }
-
-  return whisker::make::array(std::move(output));
-}
 
 void t_mstch_rust_generator::process_options(
     const std::map<std::string, std::string>& options) {

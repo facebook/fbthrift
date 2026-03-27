@@ -18,41 +18,35 @@
 /// Error definitions for `{{service:rust_name}}`.
 pub mod {{service:snake}} {
 
-    {{#service:rust_exceptions}}
-    pub trait As{{rust_exception:type.rust_name}} {
-        fn as_{{rust_exception:type.rust_name_snake}}(&self) -> ::std::option::Option<&{{#partial types.type_name type=rust_exception:type}}>;
+    {{#each service:all_exception_sources as |exception_sources|}}
+    pub trait As{{exception_sources.exception.rust_name}} {
+        fn as_{{exception_sources.exception.rust_name_snake}}(&self) -> ::std::option::Option<&{{#partial types.type_name type=exception_sources.exception}}>;
     }
 
-    impl As{{rust_exception:type.rust_name}} for ::anyhow::Error {
-        fn as_{{rust_exception:type.rust_name_snake}}(&self) -> ::std::option::Option<&{{#partial types.type_name type=rust_exception:type}}> {
+    impl As{{exception_sources.exception.rust_name}} for ::anyhow::Error {
+        fn as_{{exception_sources.exception.rust_name_snake}}(&self) -> ::std::option::Option<&{{#partial types.type_name type=exception_sources.exception}}> {
             for cause in self.chain() {
-            {{#rust_exception:functions}}
-            {{#rust_exception_function:function}}
-                if let ::std::option::Option::Some({{function:upcamel}}Error::{{rust_exception_function:field.rust_name}}(e)) = cause.downcast_ref::<{{function:upcamel}}Error>() {
+            {{#each exception_sources.function_sources as |source|}}
+                if let ::std::option::Option::Some({{source.function.upcamel}}Error::{{source.field.rust_name}}(e)) = cause.downcast_ref::<{{source.function.upcamel}}Error>() {
                     return ::std::option::Option::Some(e);
                 }
-            {{/rust_exception_function:function}}
-            {{/rust_exception:functions}}
-            {{#rust_exception:streams}}
-            {{#rust_exception_function:function}}
-                if let ::std::option::Option::Some({{function:upcamel}}StreamError::{{rust_exception_function:field.rust_name}}(e)) = cause.downcast_ref::<{{function:upcamel}}StreamError>() {
+            {{/each}}
+            {{#each exception_sources.stream_sources as |source|}}
+                if let ::std::option::Option::Some({{source.function.upcamel}}StreamError::{{source.field.rust_name}}(e)) = cause.downcast_ref::<{{source.function.upcamel}}StreamError>() {
                     return ::std::option::Option::Some(e);
                 }
-            {{/rust_exception_function:function}}
-            {{/rust_exception:streams}}
-            {{#rust_exception:sinks}}
-            {{#rust_exception_function:function}}
-                if let ::std::option::Option::Some({{function:upcamel}}SinkError::{{rust_exception_function:field.rust_name}}(e)) = cause.downcast_ref::<{{function:upcamel}}SinkError>() {
+            {{/each}}
+            {{#each exception_sources.sink_sources as |source|}}
+                if let ::std::option::Option::Some({{source.function.upcamel}}SinkError::{{source.field.rust_name}}(e)) = cause.downcast_ref::<{{source.function.upcamel}}SinkError>() {
                     return ::std::option::Option::Some(e);
                 }
-            {{/rust_exception_function:function}}
-            {{/rust_exception:sinks}}
+            {{/each}}
             }
             ::std::option::Option::None
         }
     }
 
-    {{/service:rust_exceptions}}
+    {{/each}}
     {{#service:functions}}
     {{#if (not function:starts_interaction?)}}
     {{#if function:exceptions?}}
