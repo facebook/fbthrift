@@ -113,7 +113,7 @@ public final class {{struct:javaCapitalName}} implements com.facebook.thrift.pay
     @Deprecated{{/field:deprecated?}}
     {{> ThriftFieldAnnotation}}
 
-    public {{> FieldType}} {{#partial types.getter_name field=field:self}}() {
+    public {{> FieldType}} {{> GetterName}}() {
         if (this.id != {{field:id}}) {
             throw new IllegalStateException("Not a {{field:name}} element!");
         }
@@ -155,7 +155,7 @@ public final class {{struct:javaCapitalName}} implements com.facebook.thrift.pay
     public <T> T accept(Visitor<T> visitor) {
     {{#struct:fields}}
         if (isSet{{field:javaCapitalName}}()) {
-            return visitor.visit{{field:javaCapitalName}}({{#partial types.getter_name field=field:self}}());
+            return visitor.visit{{field:javaCapitalName}}({{> GetterName}}());
         }
     {{/struct:fields}}
 

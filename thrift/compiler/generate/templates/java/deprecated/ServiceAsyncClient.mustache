@@ -87,20 +87,20 @@ public class {{service:javaCapitalName}}AsyncClientImpl extends {{#if (object.no
 
     @java.lang.Override
     public ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}
-        {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) {
+        {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) {
         return {{function:java_name}}({{#function:args}}{{field:javaName}}, {{/function:args}}RpcOptions.EMPTY);
     }
 
     @java.lang.Override
     public ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}
-        {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}},{{/function:args}}
+        {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
         RpcOptions rpcOptions) {
         return FutureUtil.transform({{function:java_name}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}rpcOptions));
     }
 
     @java.lang.Override
     public ListenableFuture<ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:java_name}}Wrapper({{#function:args}}
-        {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}},{{/function:args}}
+        {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
         RpcOptions rpcOptions) {
         try {
           return executeWrapperWithOptions({{function:java_name}}MethodHandler, {{function:java_name}}Exceptions, rpcOptions{{#function:args}}, {{field:javaName}}{{/function:args}});

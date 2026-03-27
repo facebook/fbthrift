@@ -39,21 +39,21 @@ public class {{service:javaCapitalName}}AsyncReactiveWrapper {{#if (object.notnu
 
     {{#service:singleRequestFunctions}}
     @java.lang.Override
-    public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+    public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
         return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegate.{{function:java_name}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}));
     }
 
     {{/service:singleRequestFunctions}}
     {{#service:streamingFunctions}}
     @java.lang.Override
-    public reactor.core.publisher.Flux<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+    public reactor.core.publisher.Flux<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
         throw new UnsupportedOperationException();
     }
 
     {{/service:streamingFunctions}}
     {{#service:sinkFunctions}}
     @java.lang.Override
-    public {{#function:return_type}}{{> SinkReturnType}}{{/function:return_type}} {{function:java_name}}({{#function:args}}final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#function:return_type}}{{#function:sink_elem_type}}{{> BoxedType}}{{/function:sink_elem_type}}{{/function:return_type}}> payloads) {
+    public {{#function:return_type}}{{> SinkReturnType}}{{/function:return_type}} {{function:java_name}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#function:return_type}}{{#function:sink_elem_type}}{{> BoxedType}}{{/function:sink_elem_type}}{{/function:return_type}}> payloads) {
         throw new UnsupportedOperationException();
     }
 
@@ -68,22 +68,22 @@ public class {{service:javaCapitalName}}AsyncReactiveWrapper {{#if (object.notnu
 
         {{#service:singleRequestFunctions}}
         public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}
-        final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) {
+        final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) {
             return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.{{function:java_name}}({{#function:args}}{{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}));
         }
 
-        public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
+        public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
             return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.{{function:java_name}}({{#function:args}}{{field:javaName}},{{/function:args}} rpcOptions));
         }
 
-        public reactor.core.publisher.Mono<ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:java_name}}Wrapper({{#function:args}}final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
+        public reactor.core.publisher.Mono<ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:java_name}}Wrapper({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
             return com.facebook.thrift.util.FutureUtil.toMono(() -> _delegateInteraction.{{function:java_name}}Wrapper({{#function:args}}{{field:javaName}},{{/function:args}} rpcOptions));
         }
 
         {{/service:singleRequestFunctions}}
         {{#service:streamingFunctions}}
         @java.lang.Override
-        public reactor.core.publisher.Flux<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+        public reactor.core.publisher.Flux<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
             throw new UnsupportedOperationException();
         }
 

@@ -14,12 +14,4 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{!
-}}{{#field:hasAdapter?}}{{!
-  }}{{#field:hasFieldAdapter?}}{{field:fieldAdapterTypeClassName}}{{/field:hasFieldAdapter?}}{{!
-  }}{{^field:hasFieldAdapter?}}{{field:typeAdapterTypeClassName}}{{/field:hasFieldAdapter?}}{{!
-}}{{/field:hasAdapter?}}{{!
-}}{{^field:hasAdapter?}}{{!
-  }}{{#field:optional?}}{{#field:type}}{{> BoxedType}}{{/field:type}}{{/field:optional?}}{{!
-  }}{{^field:optional?}}{{#field:type}}{{> Type}}{{/field:type}}{{/field:optional?}}{{!
-}}{{/field:hasAdapter?}}
+}}{{#field:type}}{{#type:bool?}}is{{/type:bool?}}{{^type:bool?}}get{{/type:bool?}}{{/field:type}}{{field:javaCapitalName}}

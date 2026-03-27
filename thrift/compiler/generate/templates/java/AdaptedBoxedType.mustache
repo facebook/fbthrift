@@ -20,20 +20,23 @@
 }}{{^type:javaType}}{{!
 
   }}{{#type:typedef?}}{{!
-    }}{{#type:hasAdapter?}}{{!
-      }}{{#type:typedef_type}}{{type:setAdapter}}{{> ThriftType}}{{type:unsetAdapter}}{{/type:typedef_type}}{{!
-    }}{{/type:hasAdapter?}}{{!
-    }}{{^type:hasAdapter?}}{{!
-      }}{{#type:isAdapterSet?}}{{!
-        }}{{#type:typedef_type}}{{type:setAdapter}}{{> ThriftType}}{{/type:typedef_type}}{{!
-      }}{{/type:isAdapterSet?}}{{!
-      }}{{^type:isAdapterSet?}}{{!
-        }}{{#type:typedef_type}}{{> ThriftType}}{{/type:typedef_type}}{{!
-      }}{{/type:isAdapterSet?}}{{!
-    }}{{/type:hasAdapter?}}{{!
+    }}{{#type:isBinaryString?}}{{!
+      }}{{#type:isAdapterSet?}}io.netty.buffer.ByteBuf{{/type:isAdapterSet?}}{{!
+      }}{{^type:isAdapterSet?}}{{#field:hasAdapter?}}io.netty.buffer.ByteBuf{{/field:hasAdapter?}}{{^field:hasAdapter?}}byte[]{{/field:hasAdapter?}}{{/type:isAdapterSet?}}{{!
+    }}{{/type:isBinaryString?}}{{!
+    }}{{^type:isBinaryString?}}{{!
+    }}{{#type:typedef_type}}{{!
+      }}{{#type:self.lastAdapter?}}{{!
+        }}{{type:setAdapter}}{{> AdaptedBoxedType}}{{!
+      }}{{/type:self.lastAdapter?}}{{!
+      }}{{^type:self.lastAdapter?}}{{!
+        }}{{type:typeClassName}}{{!
+      }}{{/type:self.lastAdapter?}}{{!
+    }}{{/type:typedef_type}}{{!
+    }}{{/type:isBinaryString?}}{{!
+  }}{{/type:typedef?}}{{!
+  }}{{^type:typedef?}}{{!
+    }}{{> BoxedType}}{{!
   }}{{/type:typedef?}}{{!
 
-  }}{{^type:typedef?}}{{!
-    }}{{> Type}}{{!
-  }}{{/type:typedef?}}{{!
 }}{{/type:javaType}}

@@ -163,7 +163,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
   public void dispose() {}
 
   {{#service:singleRequestFunctions}}
-  private com.facebook.thrift.payload.Writer _create{{function:java_name}}Writer({{#function:args}}final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+  private com.facebook.thrift.payload.Writer _create{{function:java_name}}Writer({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
     return oprot -> {
       try {
         {{#function:args}}
@@ -192,7 +192,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
     }}{{^function:void?}}{{#function:return_type}}{{> TypeReader }}{{/function:return_type}}{{/function:void?}};
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:java_name}}Wrapper({{#function:args}}final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}, {{/function:args}} final com.facebook.thrift.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:java_name}}Wrapper({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} final com.facebook.thrift.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> getHeaders(rpcOptions).flatMap(headers -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -218,20 +218,20 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
   }
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}, {{/function:args}} final com.facebook.thrift.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} final com.facebook.thrift.client.RpcOptions rpcOptions) {
     return {{function:java_name}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}} rpcOptions){{#function:oneway?}}.then(){{/function:oneway?}}{{!
         }}{{^function:oneway?}}{{^function:voidType}}.map(_p -> _p.getData()){{/function:voidType}}{{/function:oneway?}}{{!
         }}{{^function:oneway?}}{{#function:voidType}}.then(){{/function:voidType}}{{/function:oneway?}};
   }
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+  public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
     return {{function:java_name}}({{#function:args}}{{field:javaName}}, {{/function:args}} com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
   {{/service:singleRequestFunctions}}
   {{#service:streamingFunctions}}
-  private com.facebook.thrift.payload.Writer _create{{function:java_name}}Writer({{#function:args}}final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+  private com.facebook.thrift.payload.Writer _create{{function:java_name}}Writer({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
     return oprot -> {
       try {
         {{#function:args}}
@@ -266,7 +266,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
   {{/function:stream_has_first_response?}}{{/function:return_type}}
 
   @java.lang.Override
-  public reactor.core.publisher.Flux<com.facebook.thrift.client.ResponseWrapper<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}>> {{function:java_name}}Wrapper({{#function:args}}final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}, {{/function:args}} final com.facebook.thrift.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Flux<com.facebook.thrift.client.ResponseWrapper<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}>> {{function:java_name}}Wrapper({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} final com.facebook.thrift.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMapMany(_rpc -> getHeaders(rpcOptions).flatMapMany(headers -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -296,19 +296,19 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
   }
 
   @java.lang.Override
-  public reactor.core.publisher.Flux<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}, {{/function:args}} final com.facebook.thrift.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Flux<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} final com.facebook.thrift.client.RpcOptions rpcOptions) {
       return {{function:java_name}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}} rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override
-  public reactor.core.publisher.Flux<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+  public reactor.core.publisher.Flux<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
     return {{function:java_name}}({{#function:args}}{{field:javaName}}, {{/function:args}} com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
   {{/service:streamingFunctions}}
 
   {{#service:sinkFunctions}}
-  private com.facebook.thrift.payload.Writer _create{{function:java_name}}Writer({{#function:args}}final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+  private com.facebook.thrift.payload.Writer _create{{function:java_name}}Writer({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
     return oprot -> {
       try {
         {{#function:args}}
@@ -360,7 +360,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
   {{/function:sink_has_first_response?}}{{/function:return_type}}
 
   @java.lang.Override
-  public {{#function:return_type}}{{> SinkWrapperReturnType}}{{/function:return_type}} {{function:java_name}}Wrapper({{#function:args}}final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#function:return_type}}{{#function:sink_elem_type}}{{> BoxedType}}{{/function:sink_elem_type}}{{/function:return_type}}> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {
+  public {{#function:return_type}}{{> SinkWrapperReturnType}}{{/function:return_type}} {{function:java_name}}Wrapper({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#function:return_type}}{{#function:sink_elem_type}}{{> BoxedType}}{{/function:sink_elem_type}}{{/function:return_type}}> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMapMany(_rpc -> getHeaders(rpcOptions).flatMapMany(headers -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -402,12 +402,12 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
   }
 
   @java.lang.Override
-  public {{#function:return_type}}{{> SinkReturnType}}{{/function:return_type}} {{function:java_name}}({{#function:args}}final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#function:return_type}}{{#function:sink_elem_type}}{{> BoxedType}}{{/function:sink_elem_type}}{{/function:return_type}}> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {
+  public {{#function:return_type}}{{> SinkReturnType}}{{/function:return_type}} {{function:java_name}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#function:return_type}}{{#function:sink_elem_type}}{{> BoxedType}}{{/function:sink_elem_type}}{{/function:return_type}}> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {
       return {{function:java_name}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}} payloads, rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override
-  public {{#function:return_type}}{{> SinkReturnType}}{{/function:return_type}} {{function:java_name}}({{#function:args}}final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#function:return_type}}{{#function:sink_elem_type}}{{> BoxedType}}{{/function:sink_elem_type}}{{/function:return_type}}> payloads) {
+  public {{#function:return_type}}{{> SinkReturnType}}{{/function:return_type}} {{function:java_name}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#function:return_type}}{{#function:sink_elem_type}}{{> BoxedType}}{{/function:sink_elem_type}}{{/function:return_type}}> payloads) {
       return {{function:java_name}}({{#function:args}}{{field:javaName}}, {{/function:args}} payloads, com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
@@ -430,7 +430,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
     {{/service:singleRequestFunctions}}
 
     {{#service:singleRequestFunctions}}
-    private com.facebook.thrift.payload.Writer _create{{function:java_name}}Writer({{#function:args}}final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+    private com.facebook.thrift.payload.Writer _create{{function:java_name}}Writer({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
       return oprot -> {
         try {
           {{#function:args}}
@@ -459,21 +459,21 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
       }}{{^function:void?}}{{#function:return_type}}{{> TypeReader }}{{/function:return_type}}{{/function:void?}};
 
     public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}
-    final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) {
+    final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) {
       return {{function:java_name}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}} com.facebook.thrift.client.RpcOptions.EMPTY){{#function:oneway?}}.then(){{/function:oneway?}}{{!
         }}{{^function:oneway?}}{{^function:voidType}}.map(_p -> _p.getData()){{/function:voidType}}{{/function:oneway?}}{{!
         }}{{^function:oneway?}}{{#function:voidType}}.then(){{/function:voidType}}{{/function:oneway?}};
     }
 
     @java.lang.Override
-    public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions)  {
+    public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions)  {
       return {{function:java_name}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}} rpcOptions){{#function:oneway?}}.then(){{/function:oneway?}}{{!
         }}{{^function:oneway?}}{{^function:voidType}}.map(_p -> _p.getData()){{/function:voidType}}{{/function:oneway?}}{{!
         }}{{^function:oneway?}}{{#function:voidType}}.then(){{/function:voidType}}{{/function:oneway?}};
     }
 
     @java.lang.Override
-    public reactor.core.publisher.Mono<ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:java_name}}Wrapper({{#function:args}}final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions)  {
+    public reactor.core.publisher.Mono<ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:java_name}}Wrapper({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions)  {
       return _rpcClient
         .contextWrite(ctx -> ctx.put(STICKY_HASH_KEY, interactionId))
         .flatMap(_rpc -> getHeaders(rpcOptions).flatMap(headers -> {
@@ -515,7 +515,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
 
     {{/service:singleRequestFunctions}}
     {{#service:streamingFunctions}}
-    private com.facebook.thrift.payload.Writer _create{{function:java_name}}Writer({{#function:args}}final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+    private com.facebook.thrift.payload.Writer _create{{function:java_name}}Writer({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
       return oprot -> {
         try {
           {{#function:args}}
@@ -550,7 +550,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
     {{/function:stream_has_first_response?}}{{/function:return_type}}
 
     @java.lang.Override
-    public reactor.core.publisher.Flux<com.facebook.thrift.client.ResponseWrapper<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}>> {{function:java_name}}Wrapper({{#function:args}}final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}, {{/function:args}} final com.facebook.thrift.client.RpcOptions rpcOptions) {
+    public reactor.core.publisher.Flux<com.facebook.thrift.client.ResponseWrapper<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}>> {{function:java_name}}Wrapper({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} final com.facebook.thrift.client.RpcOptions rpcOptions) {
       return _rpcClient
         .contextWrite(ctx -> ctx.put(STICKY_HASH_KEY, interactionId))
         .flatMapMany(_rpc -> getHeaders(rpcOptions).flatMapMany(headers -> {
@@ -595,12 +595,12 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
     }
 
     @java.lang.Override
-    public reactor.core.publisher.Flux<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}, {{/function:args}} final com.facebook.thrift.client.RpcOptions rpcOptions) {
+    public reactor.core.publisher.Flux<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} final com.facebook.thrift.client.RpcOptions rpcOptions) {
         return {{function:java_name}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}} rpcOptions).map(_p -> _p.getData());
     }
 
     @java.lang.Override
-    public reactor.core.publisher.Flux<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+    public reactor.core.publisher.Flux<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
       return {{function:java_name}}({{#function:args}}{{field:javaName}}, {{/function:args}} com.facebook.thrift.client.RpcOptions.EMPTY);
     }
 

@@ -85,16 +85,16 @@ public class {{service:javaCapitalName}}ClientImpl extends {{#if (object.notnull
     {{#service:singleRequestFunctions}}
 
     @java.lang.Override
-    public {{#function:return_type}}{{#partial types.java_type type=type:self}}{{/function:return_type}} {{function:java_name}}({{#function:args}}
-        {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}){{!
+    public {{#function:return_type}}{{> Type}}{{/function:return_type}} {{function:java_name}}({{#function:args}}
+        {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}){{!
           Exceptions
         }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
       {{#function:return_type}}{{^type:void?}}return {{/type:void?}}{{/function:return_type}}{{function:java_name}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}RpcOptions.EMPTY).getData();
     }
 
     @java.lang.Override
-    public {{#function:return_type}}{{#partial types.java_type type=type:self}}{{/function:return_type}} {{function:java_name}}({{#function:args}}
-        {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}},{{/function:args}}
+    public {{#function:return_type}}{{> Type}}{{/function:return_type}} {{function:java_name}}({{#function:args}}
+        {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
         RpcOptions rpcOptions){{!
           Exceptions
         }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
@@ -103,7 +103,7 @@ public class {{service:javaCapitalName}}ClientImpl extends {{#if (object.notnull
 
     @java.lang.Override
     public ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}Wrapper({{#function:args}}
-        {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}},{{/function:args}}
+        {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
         RpcOptions rpcOptions){{!
           Exceptions
         }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {

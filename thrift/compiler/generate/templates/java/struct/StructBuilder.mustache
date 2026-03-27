@@ -45,7 +45,7 @@ public static class Builder {
     }
     {{/field:hasWrapper?}}
 
-    public {{> FieldType}} {{#partial types.getter_name field=field:self}}() { return {{field:javaName}}; }
+    public {{> FieldType}} {{> GetterName}}() { return {{field:javaName}}; }
 
     {{/struct:fields}}{{!
 

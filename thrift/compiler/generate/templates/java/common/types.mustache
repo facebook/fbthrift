@@ -165,20 +165,3 @@ Map<{{#partial adapted_inner_boxed_type type=type.key_type}}, {{#partial adapted
 {{#else}}null
 {{/if type.typedef?}}
 {{/let partial}}
-
-{{! Outputs the Java getter name for a field.
-    Uses "is" prefix for boolean fields, "get" for all others. }}
-{{#let export partial getter_name |field|}}
-  {{#pragma ignore-newlines}}
-{{#if field.type.bool?}}is{{#else}}get{{/if field.type.bool?}}{{field.javaCapitalName}}
-{{/let partial}}
-
-{{! Outputs the adapted type name for a container element.
-    Uses javaType if set, typeClassName if has adapter, otherwise java_type. }}
-{{#let export partial adapted_type |type| captures |java_type|}}
-  {{#pragma ignore-newlines}}
-{{#if (not (string.empty? type.javaType))}}{{type.javaType}}
-{{#else if type.hasAdapter?}}{{type.typeClassName}}
-{{#else}}{{#partial java_type type=type}}
-{{/if (not (string.empty? type.javaType))}}
-{{/let partial}}

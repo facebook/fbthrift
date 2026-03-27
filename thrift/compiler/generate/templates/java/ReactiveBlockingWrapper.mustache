@@ -42,7 +42,7 @@ public class {{service:javaCapitalName}}ReactiveBlockingWrapper {{#if (object.no
 
   {{#service:singleRequestFunctions}}
   @java.lang.Override
-  public {{#function:return_type}}{{#partial types.java_type type=type:self}}{{/function:return_type}} {{function:java_name}}({{#function:args}} final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}){{!
+  public {{#function:return_type}}{{> Type}}{{/function:return_type}} {{function:java_name}}({{#function:args}} final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}){{!
           Exceptions
         }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
     {{#function:voidType}}
@@ -54,8 +54,8 @@ public class {{service:javaCapitalName}}ReactiveBlockingWrapper {{#if (object.no
   }
 
   @java.lang.Override
-  public {{#function:return_type}}{{#partial types.java_type type=type:self}}{{/function:return_type}} {{function:java_name}}({{#function:args}}
-        final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}},{{/function:args}}
+  public {{#function:return_type}}{{> Type}}{{/function:return_type}} {{function:java_name}}({{#function:args}}
+        final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
         com.facebook.thrift.client.RpcOptions rpcOptions){{!
           Exceptions
         }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
@@ -69,7 +69,7 @@ public class {{service:javaCapitalName}}ReactiveBlockingWrapper {{#if (object.no
 
   @java.lang.Override
   public com.facebook.thrift.client.ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}Wrapper({{#function:args}}
-    final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}},{{/function:args}}
+    final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
     com.facebook.thrift.client.RpcOptions rpcOptions){{!
       Exceptions
     }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {

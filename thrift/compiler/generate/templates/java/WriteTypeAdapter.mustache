@@ -19,7 +19,7 @@
 }}{{field:nestedDepth++}}{{!
   }}{{#type:hasAdapter?}}{{!
     }}{{type:setAdapter}}{{!
-    }}{{#partial types.adapted_boxed_type type=type:self}} _iter{{field:nestedDepth}} = __{{type:name}}_Adapter{{!
+    }}{{> AdaptedBoxedType}} _iter{{field:nestedDepth}} = __{{type:name}}_Adapter{{!
     }}.toThrift(_iter{{field:prevNestedDepth}});
     {{field:nestedDepth++}}{{!
   }}{{/type:hasAdapter?}}{{!
