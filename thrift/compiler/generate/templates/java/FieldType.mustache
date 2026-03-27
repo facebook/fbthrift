@@ -23,6 +23,6 @@
   }}{{/field:hasAdapter?}}{{!
   }}{{^field:hasAdapter?}}{{!
     }}{{#field:optional?}}{{#field:type}}{{> BoxedType}}{{/field:type}}{{/field:optional?}}{{!
-    }}{{^field:optional?}}{{#field:type}}{{> Type}}{{/field:type}}{{/field:optional?}}{{!
+    }}{{^field:optional?}}{{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}}{{/field:optional?}}{{!
   }}{{/field:hasAdapter?}}{{!
 }}{{/field:hasWrapper?}}

@@ -33,7 +33,7 @@
                 {{> ReadTypeContainerNestedValue }}
                 {{/type:container?}}
                 {{^type:container?}}
-                {{#type:hasAdapter?}}{{> ThriftType}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _value1 = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
+                {{#type:hasAdapter?}}{{> ThriftType}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{#partial types.java_type type=type:self}}{{/type:hasAdapter?}} _value1 = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
                 {{/type:container?}}{{!
                 }}{{field:javaName}}.add({{#type:hasAdapter?}}__{{type:name}}_Adapter.fromThrift({{/type:hasAdapter?}}_value1){{#type:hasAdapter?}}){{/type:hasAdapter?}};
                 {{/type:set_elem_type}}
@@ -56,7 +56,7 @@
                 {{> ReadTypeContainerNestedValue }}
                 {{/type:container?}}
                 {{^type:container?}}
-                {{#type:hasAdapter?}}{{> ThriftType}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _value1 = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
+                {{#type:hasAdapter?}}{{> ThriftType}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{#partial types.java_type type=type:self}}{{/type:hasAdapter?}} _value1 = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
                 {{/type:container?}}{{!
                 }}{{field:javaName}}.add({{#type:hasAdapter?}}__{{type:name}}_Adapter.fromThrift({{/type:hasAdapter?}}_value1){{#type:hasAdapter?}}){{/type:hasAdapter?}};
                 {{/type:list_elem_type}}
@@ -79,7 +79,7 @@
                 {{> ReadTypeContainerNestedKey }}
                 {{/type:container?}}
                 {{^type:container?}}
-                {{#type:hasAdapter?}}{{> ThriftType}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _key1 = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
+                {{#type:hasAdapter?}}{{> ThriftType}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{#partial types.java_type type=type:self}}{{/type:hasAdapter?}} _key1 = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
                 {{/type:container?}}
                 {{/type:key_type}}
                 {{#type:value_type}}
@@ -87,7 +87,7 @@
                 {{> ReadTypeContainerNestedValue }}
                 {{/type:container?}}
                 {{^type:container?}}
-                {{#type:hasAdapter?}}{{> ThriftType}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _value1 = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
+                {{#type:hasAdapter?}}{{> ThriftType}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{#partial types.java_type type=type:self}}{{/type:hasAdapter?}} _value1 = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
                 {{/type:container?}}
                 {{/type:value_type}}
                 {{field:javaName}}.put({{!

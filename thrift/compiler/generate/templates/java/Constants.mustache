@@ -33,13 +33,13 @@ public final class {{program:constantClassName}} {
     {{^constant:javaIgnoreConstant?}}{{!
     }}{{#constant:type}}{{!
     }}{{#type:primitive?}}
-    public static final {{> Type}} {{constant:javaCapitalName}} = {{!
+    public static final {{#partial types.java_type type=type:self}} {{constant:javaCapitalName}} = {{!
       }}{{#partial const_value.const_value value=constant:self.value root_const=constant:self as_bean=false field_hasAdapter=false }};
     {{/type:primitive?}}{{!
     }}{{^type:primitive?}}
-    public static final {{> Type}} {{constant:javaCapitalName}} = construct_{{constant:javaCapitalName}}();
+    public static final {{#partial types.java_type type=type:self}} {{constant:javaCapitalName}} = construct_{{constant:javaCapitalName}}();
 
-    private static {{#constant:type}}{{> Type}}{{/constant:type}} construct_{{constant:javaCapitalName}}() {
+    private static {{#constant:type}}{{#partial types.java_type type=type:self}}{{/constant:type}} construct_{{constant:javaCapitalName}}() {
       return {{#partial const_value.const_value value=constant:self.value root_const=constant:self as_bean=false field_hasAdapter=false }};
     }
     {{/type:primitive?}}{{!

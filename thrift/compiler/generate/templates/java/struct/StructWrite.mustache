@@ -25,7 +25,7 @@ public void write0(TProtocol oprot) throws TException {
   {{#struct:fields_in_serialization_order}}
   {
   {{#field:hasAdapterOrWrapper?}}
-  {{#field:type}}{{> AdaptedBoxedType}}{{/field:type}} {{field:javaName}} = {{> ToThriftStart}}this.{{field:javaName}}{{> ToThriftEnd}};
+  {{#field:type}}{{#partial types.adapted_boxed_type type=type:self}}{{/field:type}} {{field:javaName}} = {{> ToThriftStart}}this.{{field:javaName}}{{> ToThriftEnd}};
   {{/field:hasAdapterOrWrapper?}}
   {{#field:isNullableOrOptionalNotEnum?}}
   {{#field:terse?}}

@@ -76,7 +76,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
     _delegate_{{function:java_name}} = (java.util.List<Object> _list) -> {
         java.util.Iterator _iterator = _list.iterator();
         {{#function:args}}
-        {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}} = ({{#field:type}}{{> Type}}{{/field:type}}) _iterator.next();
+        {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}} = ({{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}}) _iterator.next();
         {{/function:args}}
 
         return _delegate.{{function:java_name}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}});
@@ -132,7 +132,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
         {{^function:voidType}}
         {{#function:return_type}}
         {{#function:stream_elem_type}}
-        {{> Type}} _iter0 = ({{> Type}})_o;
+        {{#partial types.java_type type=type:self}} _iter0 = ({{#partial types.java_type type=type:self}})_o;
         oprot.writeFieldBegin({{#partial codec.rpc_field_type type=type:self}});
         {{#partial codec.write_response_type type=type:self depth=0}}
         {{/function:stream_elem_type}}
@@ -160,7 +160,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
         {{^function:voidType}}
         {{#function:return_type}}
         {{#function:stream_first_response_type}}
-        {{> Type}} _iter0 = ({{> Type}})_o;
+        {{#partial types.java_type type=type:self}} _iter0 = ({{#partial types.java_type type=type:self}})_o;
         oprot.writeFieldBegin({{#partial codec.rpc_field_type type=type:self}});
         {{#partial codec.write_response_type type=type:self depth=0}}
         {{/function:stream_first_response_type}}
@@ -204,7 +204,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
 
         {{^function:voidType}}
         {{#function:return_type}}
-        {{> Type}} _iter0 = ({{> Type}})_r;
+        {{#partial types.java_type type=type:self}} _iter0 = ({{#partial types.java_type type=type:self}})_r;
         oprot.writeFieldBegin({{#partial codec.rpc_field_type type=type:self}});
         {{#partial codec.write_response_type type=type:self depth=0}}
         oprot.writeFieldEnd();
@@ -262,7 +262,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
           java.util.Iterator<java.lang.Object> _iterator = _data.iterator();
 
           {{#function:args}}
-          {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}} = ({{#field:type}}{{> Type}}{{/field:type}}) _iterator.next();
+          {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}} = ({{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}}) _iterator.next();
           {{/function:args}}
 
           _chain.postRead(_data);
@@ -301,7 +301,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
                 {{#function:exceptions}}
-                if (_t instanceof {{#field:type}}{{> Type}}{{/field:type}}) {
+                if (_t instanceof {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}}) {
                     com.facebook.thrift.payload.Writer _exceptionWriter = _create_{{function:java_name}}_exception_writer(_t, _chain, _payload.getMessageSeqId(), (short) {{field:id}});
                     com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
                       com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
@@ -358,7 +358,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
     java.util.Iterator<java.lang.Object> _iterator = _data.iterator();
 
     {{#function:args}}
-    {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}} = ({{#field:type}}{{> Type}}{{/field:type}}) _iterator.next();
+    {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}} = ({{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}}) _iterator.next();
     {{/function:args}}
 
     _chain.postRead(_data);

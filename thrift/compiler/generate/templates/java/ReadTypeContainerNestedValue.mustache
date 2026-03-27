@@ -34,7 +34,7 @@
                 {{/type:container?}}
                 {{^type:container?}}
                 {{field:nestedDepth++}}
-                {{#type:hasAdapter?}}{{> ThriftType}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _value{{field:nestedDepth}} = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
+                {{#type:hasAdapter?}}{{> ThriftType}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{#partial types.java_type type=type:self}}{{/type:hasAdapter?}} _value{{field:nestedDepth}} = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
                 {{field:nestedDepth--}}
                 {{/type:container?}}
                 {{field:nestedDepth++}}
@@ -61,7 +61,7 @@
                 {{/type:container?}}
                 {{^type:container?}}
                 {{field:nestedDepth++}}
-                {{#type:hasAdapter?}}{{> ThriftType}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _value{{field:nestedDepth}} = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
+                {{#type:hasAdapter?}}{{> ThriftType}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{#partial types.java_type type=type:self}}{{/type:hasAdapter?}} _value{{field:nestedDepth}} = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
                 {{field:nestedDepth--}}
                 {{/type:container?}}
                 {{field:nestedDepth++}}
@@ -88,7 +88,7 @@
                 {{/type:container?}}
                 {{^type:container?}}
                 {{field:nestedDepth++}}
-                {{#type:hasAdapter?}}{{> ThriftType}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _key{{field:nestedDepth}} = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
+                {{#type:hasAdapter?}}{{> ThriftType}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{#partial types.java_type type=type:self}}{{/type:hasAdapter?}} _key{{field:nestedDepth}} = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
                 {{field:nestedDepth--}}
                 {{/type:container?}}
                 {{/type:key_type}}
@@ -99,7 +99,7 @@
                 {{/type:container?}}
                 {{^type:container?}}
                 {{field:nestedDepth++}}
-                {{#type:hasAdapter?}}{{> ThriftType}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _value{{field:nestedDepth}} = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
+                {{#type:hasAdapter?}}{{> ThriftType}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{#partial types.java_type type=type:self}}{{/type:hasAdapter?}} _value{{field:nestedDepth}} = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
                 {{field:nestedDepth--}}
                 {{/type:container?}}
                 {{/type:value_type}}

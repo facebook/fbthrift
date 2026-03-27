@@ -42,20 +42,20 @@ public class {{service:javaCapitalName}}ReactiveAsyncWrapper {{#if (object.notnu
 
   {{#service:singleRequestFunctions}}
   @java.lang.Override
-  public com.google.common.util.concurrent.ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+  public com.google.common.util.concurrent.ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
       return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.{{function:java_name}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}));
   }
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}
-    final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
+    final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}},{{/function:args}}
     com.facebook.thrift.client.RpcOptions rpcOptions) {
       return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.{{function:java_name}}({{#function:args}}{{field:javaName}},{{/function:args}} rpcOptions));
   }
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:java_name}}Wrapper({{#function:args}}
-    final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
+    final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}},{{/function:args}}
     com.facebook.thrift.client.RpcOptions rpcOptions) {
     return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.{{function:java_name}}Wrapper({{#function:args}}{{field:javaName}},{{/function:args}} rpcOptions));
   }
@@ -65,20 +65,20 @@ public class {{service:javaCapitalName}}ReactiveAsyncWrapper {{#if (object.notnu
   public class {{service:name}}Impl implements {{service:name}} {
     {{#service:singleRequestFunctions}}
     @java.lang.Override
-    public com.google.common.util.concurrent.ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+    public com.google.common.util.concurrent.ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
         throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveAsyncWrapper Interfaces!");
     }
 
     @java.lang.Override
     public com.google.common.util.concurrent.ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}
-      final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
+      final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}},{{/function:args}}
       com.facebook.thrift.client.RpcOptions rpcOptions) {
         throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveAsyncWrapper Interfaces!");
     }
 
     @java.lang.Override
     public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:java_name}}Wrapper({{#function:args}}
-      final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
+      final {{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}} {{field:javaName}},{{/function:args}}
       com.facebook.thrift.client.RpcOptions rpcOptions) {
       throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveAsyncWrapper Interfaces!");
     }

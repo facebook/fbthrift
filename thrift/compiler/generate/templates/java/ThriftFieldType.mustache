@@ -15,5 +15,5 @@
   limitations under the License.
 
 }}{{!
-}}{{#field:optional?}}{{#field:type}}{{#type:hasAdapter?}}{{> AdaptedBoxedType}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> BoxedType}}{{/type:hasAdapter?}} {{/field:type}}{{/field:optional?}}{{!
-}}{{^field:optional?}}{{#field:type}}{{> Type}}{{/field:type}}{{/field:optional?}}
+}}{{#field:optional?}}{{#field:type}}{{#type:hasAdapter?}}{{#partial types.adapted_boxed_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> BoxedType}}{{/type:hasAdapter?}} {{/field:type}}{{/field:optional?}}{{!
+}}{{^field:optional?}}{{#field:type}}{{#partial types.java_type type=type:self}}{{/field:type}}{{/field:optional?}}
