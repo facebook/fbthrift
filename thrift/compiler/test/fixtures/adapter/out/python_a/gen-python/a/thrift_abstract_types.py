@@ -21,9 +21,9 @@ import folly.iobuf as _fbthrift_iobuf
 import thrift.python.abstract_types as _fbthrift_python_abstract_types
 import b.thrift_abstract_types as _fbthrift__b__thrift_abstract_types
 import c.thrift_abstract_types as _fbthrift__c__thrift_abstract_types
+import typeshed_one
 import typeshed_three
 import typeshed_two
-import typeshed_one
 
 class MyStruct(_abc.ABC):
     # pyre-ignore[16]: Module `_fbthrift_builtins` has no attribute `property`.

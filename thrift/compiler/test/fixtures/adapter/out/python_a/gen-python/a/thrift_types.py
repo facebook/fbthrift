@@ -20,9 +20,9 @@ import b.thrift_types as _fbthrift__b__thrift_types
 
 import c.thrift_types
 import c.thrift_types as _fbthrift__c__thrift_types
+import one
 import three
 import two
-import one
 
 
 class MyStruct(metaclass=_fbthrift_python_types.StructMeta):

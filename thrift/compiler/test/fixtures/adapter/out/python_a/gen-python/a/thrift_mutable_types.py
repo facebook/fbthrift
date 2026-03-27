@@ -23,9 +23,9 @@ import b.thrift_mutable_types as _fbthrift__b__thrift_mutable_types
 
 import c.thrift_mutable_types
 import c.thrift_mutable_types as _fbthrift__c__thrift_mutable_types
+import one
 import three
 import two
-import one
 
 
 class MyStruct(metaclass=_fbthrift_python_mutable_types.MutableStructMeta):

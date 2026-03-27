@@ -19,9 +19,9 @@ import thrift.python.exceptions as _fbthrift_python_exceptions
 import b.thrift_types as _fbthrift__b__thrift_types
 
 import c.thrift_types as _fbthrift__c__thrift_types
+import typeshed_one
 import typeshed_three
 import typeshed_two
-import typeshed_one
 
 
 @_typing.final

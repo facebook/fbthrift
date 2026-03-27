@@ -24,12 +24,12 @@ import a.thrift_mutable_types as _fbthrift__a__thrift_mutable_types
 import a.thrift_metadata as _fbthrift__a__thrift_metadata
 import b.thrift_mutable_types as _fbthrift__b__thrift_mutable_types
 import c.thrift_mutable_types as _fbthrift__c__thrift_mutable_types
+import one
 import three
 import two
-import one
+import typeshed_one
 import typeshed_three
 import typeshed_two
-import typeshed_one
 
 class MyServiceInterface(
     _fbthrift_ServiceInterface,

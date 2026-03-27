@@ -911,9 +911,13 @@ class t_mstch_python_prototypes_generator : public t_whisker_generator {
         throw whisker::eval_error(
             "Property adapter_modules is only supported for the root program");
       }
+      std::vector<std::string_view> sorted(
+          python_context_->adapter_modules().begin(),
+          python_context_->adapter_modules().end());
+      std::sort(sorted.begin(), sorted.end());
       whisker::array::raw a;
-      a.reserve(python_context_->adapter_modules().size());
-      for (const auto& m : python_context_->adapter_modules()) {
+      a.reserve(sorted.size());
+      for (const auto& m : sorted) {
         a.emplace_back(whisker::make::string(m));
       }
       return whisker::make::array(std::move(a));
@@ -923,9 +927,13 @@ class t_mstch_python_prototypes_generator : public t_whisker_generator {
         throw whisker::eval_error(
             "Property adapter_type_hint_modules is only supported for the root program");
       }
+      std::vector<std::string_view> sorted(
+          python_context_->adapter_type_hint_modules().begin(),
+          python_context_->adapter_type_hint_modules().end());
+      std::sort(sorted.begin(), sorted.end());
       whisker::array::raw a;
-      a.reserve(python_context_->adapter_type_hint_modules().size());
-      for (const auto& m : python_context_->adapter_type_hint_modules()) {
+      a.reserve(sorted.size());
+      for (const auto& m : sorted) {
         a.emplace_back(whisker::make::string(m));
       }
       return whisker::make::array(std::move(a));
