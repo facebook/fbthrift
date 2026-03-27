@@ -1375,6 +1375,15 @@ class t_mstch_rust_generator : public t_mstch_generator {
     def.property("requestContext?", [](const t_service& self) {
       return self.has_structured_annotation(kRustRequestContextUri);
     });
+    def.property("all_parent_services", [&proto](const t_service& self) {
+      whisker::array::raw parents;
+      const t_service* current = &self;
+      while (const t_service* parent = current->extends()) {
+        parents.emplace_back(proto.create<t_service>(*parent));
+        current = parent;
+      }
+      return whisker::make::array(std::move(parents));
+    });
     return std::move(def).make();
   }
 
@@ -2009,57 +2018,6 @@ class rust_mstch_program : public mstch_program {
   }
 };
 
-class rust_mstch_service : public mstch_service {
- public:
-  rust_mstch_service(
-      const t_service* service,
-      mstch_context& ctx,
-      mstch_element_position pos,
-      const rust_codegen_options* options,
-      const t_service* containing_service = nullptr)
-      : mstch_service(service, ctx, pos, containing_service),
-        options_(*options) {
-    register_methods(
-        this,
-        {{"service:extendedClients",
-          &rust_mstch_service::rust_extended_clients}});
-  }
-  mstch::node rust_extended_clients() {
-    mstch::array extended_services;
-    const t_service* service = service_;
-    std::string as_ref_impl = "&self.parent";
-    while (const t_service* parent_service = service->extends()) {
-      mstch::map node;
-      node["extendedService:packagePrefix"] =
-          get_client_import_name(parent_service->program(), options_);
-      node["extendedService:asRefImpl"] = as_ref_impl;
-      node["extendedService:service"] =
-          make_mstch_extended_service_cached(parent_service);
-      extended_services.emplace_back(node);
-      as_ref_impl = "self.parent.as_ref()";
-      service = parent_service;
-    }
-    return extended_services;
-  }
-
- private:
-  const rust_codegen_options& options_;
-};
-
-class rust_mstch_interaction : public rust_mstch_service {
- public:
-  using ast_type = t_interaction;
-
-  rust_mstch_interaction(
-      const t_interaction* interaction,
-      mstch_context& ctx,
-      mstch_element_position pos,
-      const t_service* containing_service,
-      const rust_codegen_options* options)
-      : rust_mstch_service(interaction, ctx, pos, options, containing_service) {
-  }
-};
-
 void t_mstch_rust_generator::process_options(
     const std::map<std::string, std::string>& options) {
   t_mstch_generator::process_options(options);
@@ -2208,8 +2166,6 @@ void t_mstch_rust_generator::generate_split_types() {
 
 void t_mstch_rust_generator::set_mstch_factories() {
   mstch_context_.add<rust_mstch_program>(&options_);
-  mstch_context_.add<rust_mstch_service>(&options_);
-  mstch_context_.add<rust_mstch_interaction>(&options_);
 }
 
 void validate_struct_annotations(

@@ -75,11 +75,12 @@ where
         ::fbthrift::help::GetTransport::transport(self)
     }
 
+    {{#let parent_service_name = service:name}}
     {{#service:interactions}}
     const NAMES_{{service:rust_name}}: {{service:client_package}}::{{service:rust_name}}Names = {{service:client_package}}::{{service:rust_name}}Names {
-        service: c"{{service:parent_service_name}}",
+        service: c"{{parent_service_name}}",
         {{#service:functions}}
-        method_{{function:name}}: c"{{service:parent_service_name}}.{{service:name}}.{{function:name}}",
+        method_{{function:name}}: c"{{parent_service_name}}.{{service:name}}.{{function:name}}",
         {{/service:functions}}
     };
     {{/service:interactions}}
@@ -425,12 +426,10 @@ where
     }
 }
 
-{{#service:extendedClients}}
+{{#each (array.enumerate service:all_parent_services with_first=true) as |_index ancestor first?|}}
 #[allow(deprecated)]{{! `dependencies` modules are deprecated other than for packagePrefix to use }}
 impl<'a, P, T, S> {{!
-    }}{{#extendedService:service}}{{!
-    }}::std::convert::AsRef<dyn {{extendedService:packagePrefix}}::{{service:rust_name}} + 'a> {{!
-    }}{{/extendedService:service}}{{!
+    }}::std::convert::AsRef<dyn {{ancestor.client_package}}::{{ancestor.rust_name}} + 'a> {{!
     }}for {{service:rust_name}}Impl<P, T, S>
 where
     P: ::fbthrift::Protocol,
@@ -441,20 +440,17 @@ where
     P::Deserializer: ::std::marker::Send,
     S: ::fbthrift::help::Spawner,
 {
-    fn as_ref(&self) -> &(dyn {{#extendedService:service}}{{!
-        }}{{extendedService:packagePrefix}}::{{service:rust_name}}{{!
-        }}{{/extendedService:service}}{{!
+    fn as_ref(&self) -> &(dyn {{!
+        }}{{ancestor.client_package}}::{{ancestor.rust_name}}{{!
         }} + 'a)
     {
-        {{extendedService:asRefImpl}}
+        {{#if first?}}&self.parent{{#else}}self.parent.as_ref(){{/if}}
     }
 }
 
 #[allow(deprecated)]{{! `dependencies` modules are deprecated other than for packagePrefix to use }}
 impl<'a, P, T, S> {{!
-    }}{{#extendedService:service}}{{!
-    }}::std::convert::AsRef<dyn {{extendedService:packagePrefix}}::{{service:rust_name}}Ext<T> + 'a> {{!
-    }}{{/extendedService:service}}{{!
+    }}::std::convert::AsRef<dyn {{ancestor.client_package}}::{{ancestor.rust_name}}Ext<T> + 'a> {{!
     }}for {{service:rust_name}}Impl<P, T, S>
 where
     P: ::fbthrift::Protocol,
@@ -465,16 +461,15 @@ where
     P::Deserializer: ::std::marker::Send,
     S: ::fbthrift::help::Spawner,
 {
-    fn as_ref(&self) -> &(dyn {{#extendedService:service}}{{!
-        }}{{extendedService:packagePrefix}}::{{service:rust_name}}Ext<T>{{!
-        }}{{/extendedService:service}}{{!
+    fn as_ref(&self) -> &(dyn {{!
+        }}{{ancestor.client_package}}::{{ancestor.rust_name}}Ext<T>{{!
         }} + 'a)
     {
-        {{extendedService:asRefImpl}}
+        {{#if first?}}&self.parent{{#else}}self.parent.as_ref(){{/if}}
     }
 }
 
-{{/service:extendedClients}}
+{{/each}}
 
 {{#service:functions}}{{#if (not function:starts_interaction?)}}
 
@@ -585,12 +580,12 @@ where
     }
     {{/if (not function:starts_interaction?)}}
     {{/service:functions}}
-    {{#if (not service:extendedClients)}}
+    {{#if (array.empty? service:all_parent_services)}}
 
     fn transport(&self) -> &T {
         self.transport()
     }
-    {{/if (not service:extendedClients)}}
+    {{/if (array.empty? service:all_parent_services)}}
 }
 
 {{#if service:interaction?}}

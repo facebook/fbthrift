@@ -240,12 +240,12 @@ where
     }
     {{/if (not function:starts_interaction?)}}
     {{/service:functions}}
-    {{#if (not service:extendedClients)}}
+    {{#if (array.empty? service:all_parent_services)}}
 
     fn transport(&self) -> &T {
         ::fbthrift::help::GetTransport::transport(self)
     }
-    {{/if (not service:extendedClients)}}
+    {{/if (array.empty? service:all_parent_services)}}
 }
 
 impl<'mock, T> ::fbthrift::help::GetTransport<T> for {{service:rust_name}}<'mock>
@@ -257,38 +257,30 @@ where
     }
 }
 
-{{#service:extendedClients}}
+{{#each service:all_parent_services as |ancestor|}}
 #[allow(deprecated)]{{! `dependencies` modules are deprecated other than for packagePrefix to use }}
 impl<'mock> {{!
-    }}{{#extendedService:service}}{{!
-    }}::std::convert::AsRef<dyn {{extendedService:packagePrefix}}::{{service:rust_name}} + 'mock> {{!
-    }}{{/extendedService:service}}{{!
+    }}::std::convert::AsRef<dyn {{ancestor.client_package}}::{{ancestor.rust_name}} + 'mock> {{!
     }}for {{service:rust_name}}<'mock>
 {
-    {{#extendedService:service}}
-    fn as_ref(&self) -> &(dyn {{extendedService:packagePrefix}}::{{service:rust_name}} + 'mock) {
+    fn as_ref(&self) -> &(dyn {{ancestor.client_package}}::{{ancestor.rust_name}} + 'mock) {
         &self.parent
     }
-    {{/extendedService:service}}
 }
 
 #[allow(deprecated)]{{! `dependencies` modules are deprecated other than for packagePrefix to use }}
 impl<'mock, T> {{!
-    }}{{#extendedService:service}}{{!
-    }}::std::convert::AsRef<dyn {{extendedService:packagePrefix}}::{{service:rust_name}}Ext<T> + 'mock> {{!
-    }}{{/extendedService:service}}{{!
+    }}::std::convert::AsRef<dyn {{ancestor.client_package}}::{{ancestor.rust_name}}Ext<T> + 'mock> {{!
     }}for {{service:rust_name}}<'mock>
 where
     T: ::fbthrift::Transport,
 {
-    {{#extendedService:service}}
-    fn as_ref(&self) -> &(dyn {{extendedService:packagePrefix}}::{{service:rust_name}}Ext<T> + 'mock) {
+    fn as_ref(&self) -> &(dyn {{ancestor.client_package}}::{{ancestor.rust_name}}Ext<T> + 'mock) {
         &self.parent
     }
-    {{/extendedService:service}}
 }
 
-{{/service:extendedClients}}{{!
+{{/each}}{{!
 }}{{/program:services}}
 pub mod r#impl \{{{!
 }}{{#program:services}}

@@ -61,21 +61,19 @@ where
     ) -> {{> lib/client_return_type}};
     {{/if (not function:starts_interaction?)}}
     {{/service:functions}}
-    {{#if (not service:extendedClients)}}
+    {{#if (array.empty? service:all_parent_services)}}
 
     fn transport(&self) -> &T;
-    {{/if (not service:extendedClients)}}
+    {{/if (array.empty? service:all_parent_services)}}
 }
 
 #[allow(deprecated)]{{! `dependencies` modules are deprecated other than for packagePrefix to use }}
 impl<'a, S> {{service:rust_name}} for S
 where
     S: ::std::convert::AsRef<dyn {{service:rust_name}} + 'a>,
-    {{#service:extendedClients}}
-    {{#extendedService:service}}
-    S: {{extendedService:packagePrefix}}::{{service:rust_name}},
-    {{/extendedService:service}}
-    {{/service:extendedClients}}
+    {{#each service:all_parent_services as |ancestor|}}
+    S: {{ancestor.client_package}}::{{ancestor.rust_name}},
+    {{/each}}
     S: ::std::marker::Send,
 {
     {{#service:functions}}
@@ -107,11 +105,9 @@ where
 impl<'a, S, T> {{service:rust_name}}Ext<T> for S
 where
     S: ::std::convert::AsRef<dyn {{service:rust_name}} + 'a> + ::std::convert::AsRef<dyn {{service:rust_name}}Ext<T> + 'a>,
-    {{#service:extendedClients}}
-    {{#extendedService:service}}
-    S: {{extendedService:packagePrefix}}::{{service:rust_name}} + {{extendedService:packagePrefix}}::{{service:rust_name}}Ext<T>,
-    {{/extendedService:service}}
-    {{/service:extendedClients}}
+    {{#each service:all_parent_services as |ancestor|}}
+    S: {{ancestor.client_package}}::{{ancestor.rust_name}} + {{ancestor.client_package}}::{{ancestor.rust_name}}Ext<T>,
+    {{/each}}
     S: ::std::marker::Send + ::fbthrift::help::GetTransport<T>,
     T: ::fbthrift::Transport,
 {
@@ -133,10 +129,10 @@ where
     }
     {{/if (not function:starts_interaction?)}}
     {{/service:functions}}
-    {{#if (not service:extendedClients)}}
+    {{#if (array.empty? service:all_parent_services)}}
 
     fn transport(&self) -> &T {
         ::fbthrift::help::GetTransport::transport(self)
     }
-    {{/if (not service:extendedClients)}}
+    {{/if (array.empty? service:all_parent_services)}}
 }

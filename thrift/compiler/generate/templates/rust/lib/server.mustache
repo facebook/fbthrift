@@ -20,6 +20,8 @@
 }}pub mod {{service:snake}} {
     use super::*;
 
+    {{! Capture service name before `service:*` is switched to interaction context }}
+    {{#let parent_service_name = service:name}}
     {{#service:interactions}}
     {{> lib/server}}
     {{/service:interactions}}
@@ -101,9 +103,9 @@ where
         use ::futures::FutureExt as _;
         use ::fbthrift::ExceptionInfo;
 
-        const SERVICE_NAME: &::std::ffi::CStr = c"{{service:parent_service_name}}";
-        const METHOD_NAME: &::std::ffi::CStr = c"{{#if service:interaction?}}{{service:name}}.{{/if service:interaction?}}{{function:name}}";
-        const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"{{service:parent_service_name}}.{{#if service:interaction?}}{{service:name}}.{{/if service:interaction?}}{{function:name}}";
+        const SERVICE_NAME: &::std::ffi::CStr = c"{{#if service:interaction?}}{{parent_service_name}}{{#else}}{{service:name}}{{/if}}";
+        const METHOD_NAME: &::std::ffi::CStr = c"{{#if service:interaction?}}{{service:name}}.{{/if}}{{function:name}}";
+        const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"{{#if service:interaction?}}{{parent_service_name}}.{{/if}}{{service:name}}.{{function:name}}";
         let mut ctx_stack = req_ctxt.get_context_stack(SERVICE_NAME, SERVICE_METHOD_NAME)?;
         ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
         let _args: self::Args_{{service:rust_name}}_{{function:name}} = ::fbthrift::Deserialize::rs_thrift_read(p)?;
