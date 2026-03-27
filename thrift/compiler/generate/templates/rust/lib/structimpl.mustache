@@ -21,24 +21,24 @@
 impl ::std::default::Default for self::{{struct:rust_name}} {
     fn default() -> Self {
         Self \{{{!
-        }}{{#each struct:fields as |struct_field|}}{{#struct_field}}
+        }}{{#struct:fields}}
             {{field:rust_name}}: {{!
-                }}{{#field:default}}{{!
+                }}{{#field:default_value}}{{!
                     }}{{#if field:optional?}}{{!
                         }}{{#if (has_compiler_option? "deprecated_optional_with_default_is_some")}}{{!
                             }}{{#if field:has_adapter?}}{{field:adapter_struct_qualified}}::from_thrift_default::<{{struct:rust_name}}>({{/if field:has_adapter?}}{{!
-                            }}{{#partial constants.field_value field=struct_field value=field:default depth=2}}{{!
+                            }}{{#partial constants.field_value field=field:self value=field:self.default_value depth=2}}{{!
                             }}{{#if field:has_adapter?}}, {{field:id}}){{/if field:has_adapter?}}{{!
                         }}{{#else}}{{!
                             }}::std::option::Option::None{{!
                         }}{{/if (has_compiler_option? "deprecated_optional_with_default_is_some")}}{{!
                     }}{{#else}}{{!
                         }}{{#if field:has_adapter?}}{{field:adapter_struct_qualified}}::from_thrift_default::<{{struct:rust_name}}>({{/if field:has_adapter?}}{{!
-                        }}{{#partial constants.field_value field=struct_field value=field:default depth=2}}{{!
+                        }}{{#partial constants.field_value field=field:self value=field:self.default_value depth=2}}{{!
                         }}{{#if field:has_adapter?}}, {{field:id}}){{/if field:has_adapter?}}{{!
                     }}{{/if field:optional?}}{{!
-                }}{{/field:default}}{{!
-                }}{{^field:default}}{{!
+                }}{{/field:default_value}}{{!
+                }}{{^field:default_value}}{{!
                     }}{{#if field:optional?}}{{!
                         }}::std::option::Option::None{{!
                     }}{{#else}}{{!
@@ -46,9 +46,9 @@ impl ::std::default::Default for self::{{struct:rust_name}} {
                         }}::std::default::Default::default(){{!
                         }}{{#if field:has_adapter?}}, {{field:id}}){{/if field:has_adapter?}}{{!
                     }}{{/if field:optional?}}{{!
-                }}{{/field:default}}{{!
+                }}{{/field:default_value}}{{!
             }},{{!
-        }}{{/struct_field}}{{/each}}
+        }}{{/struct:fields}}
             {{> lib/structvalue_epilogue}}
 
         }
@@ -252,18 +252,21 @@ where
                 }}{{#if (not field:optional?)}}{{!
                     }}{{#if field:has_adapter?}}{{!
                         }}.unwrap_or_else(|| {{field:adapter_struct_qualified}}::from_thrift_default::<{{struct:rust_name}}>({{!
-                        }}{{#if field:default}}{{#partial constants.const_value value=field:default depth=2}}{{#else}}::std::default::Default::default(){{/if}}{{!
+                        }}{{#if field:default_value}}{{#partial constants.const_value value=field:default_value depth=2}}{{#else}}::std::default::Default::default(){{/if}}{{!
                         }}, {{field:id}})){{!
                     }}{{#else}}{{!
-                        }}{{#if field:default}}{{!
-                            }}{{#if field:default.value:simpleLiteral?}}{{!
-                                }}.unwrap_or({{#partial constants.const_value value=field:default depth=2}}){{!
+                        }}{{#if field:default_value}}{{!
+                                Primitives and enum variants have simple literals
+                            }}{{#let simple_literal=(or field:default_value.bool? field:default_value.enum?
+                                        field:default_value.integer? field:default_value.double?)}}{{!
+                            }}{{#if simple_literal}}{{!
+                                }}.unwrap_or({{#partial constants.const_value value=field:default_value depth=2}}){{!
                             }}{{#else}}{{!
-                                }}.unwrap_or_else(|| {{#partial constants.const_value value=field:default depth=2}}){{!
-                            }}{{/if field:default.value:simpleLiteral?}}{{!
+                                }}.unwrap_or_else(|| {{#partial constants.const_value value=field:default_value depth=2}}){{!
+                            }}{{/if simple_literal}}{{!
                         }}{{#else}}{{!
                             }}.unwrap_or_default(){{!
-                        }}{{/if field:default}}{{!
+                        }}{{/if field:default_value}}{{!
                     }}{{/if field:has_adapter?}}{{!
                 }}{{/if (not field:optional?)}}{{!
             }},{{!
