@@ -56,9 +56,11 @@ typedef set<i32> CustomSetCppTypeTypedef;
 @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
 typedef set<i32> CustomSetAdapterTypedef;
 
-typedef set<i32> CustomSetUnstructuredCppTemplateTypedef (cpp.template = "std::unordered_set");
+@cpp.Type{template = "std::unordered_set"}
+typedef set<i32> CustomSetUnstructuredCppTemplateTypedef;
 
-typedef set<i32> CustomSetUnstructuredCppTypeTypedef (cpp.type = "std::unordered_set<int32_t>");
+@cpp.Type{name = "std::unordered_set<int32_t>"}
+typedef set<i32> CustomSetUnstructuredCppTypeTypedef;
 
 // ----------------------------------------------------------------------------
 // The following structs all have custom sets/maps fields (either directly or
