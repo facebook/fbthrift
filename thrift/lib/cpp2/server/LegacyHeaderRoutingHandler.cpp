@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
-#include <thrift/lib/cpp/protocol/TCompactProtocol.h>
 #include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/server/LegacyHeaderRoutingHandler.h>
 
 namespace apache::thrift {
@@ -35,11 +35,11 @@ void LegacyHeaderRoutingHandler::stopListening() {
 bool compactFramed(uint32_t magic) {
   int8_t protocolId = (magic >> 24);
   int8_t protocolVersion =
-      (magic >> 16) & (uint32_t)protocol::TCompactProtocol::VERSION_MASK;
+      (magic >> 16) & (uint32_t)CompactProtocolReader::VERSION_MASK;
   return (
-      (protocolId == protocol::TCompactProtocol::PROTOCOL_ID) &&
-      (protocolVersion <= protocol::TCompactProtocol::VERSION_N) &&
-      (protocolVersion >= protocol::TCompactProtocol::VERSION_LOW));
+      (protocolId == detail::compact::PROTOCOL_ID) &&
+      (protocolVersion <= detail::compact::VERSION_N) &&
+      (protocolVersion >= detail::compact::VERSION_LOW));
 }
 
 bool LegacyHeaderRoutingHandler::canAcceptConnection(
@@ -51,8 +51,8 @@ bool LegacyHeaderRoutingHandler::canAcceptConnection(
   uint32_t firstWord =
       bytes[0] << 24 | bytes[1] << 16 | bytes[2] << 8 | bytes[3];
   // logic from THeader::analyzeFirst32bit
-  if ((firstWord & protocol::TBinaryProtocol::VERSION_MASK) ==
-      static_cast<uint32_t>(protocol::TBinaryProtocol::VERSION_1)) {
+  if ((firstWord & BinaryProtocolReader::VERSION_MASK) ==
+      static_cast<uint32_t>(BinaryProtocolReader::VERSION_1)) {
     // unframed
     return true;
   } else if (compactFramed(firstWord)) {
@@ -70,8 +70,8 @@ bool LegacyHeaderRoutingHandler::canAcceptConnection(
   uint32_t secondWord =
       bytes[4] << 24 | bytes[5] << 16 | bytes[6] << 8 | bytes[7];
   // logic from THeader::analyzeSecond32bit
-  if ((secondWord & protocol::TBinaryProtocol::VERSION_MASK) ==
-      static_cast<uint32_t>(protocol::TBinaryProtocol::VERSION_1)) {
+  if ((secondWord & BinaryProtocolReader::VERSION_MASK) ==
+      static_cast<uint32_t>(BinaryProtocolReader::VERSION_1)) {
     // framed
     return true;
   } else if (compactFramed(secondWord)) {

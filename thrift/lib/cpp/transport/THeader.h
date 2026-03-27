@@ -509,9 +509,7 @@ class THeader final {
       CLIENT_TYPE clientType,
       uint32_t sz);
 
-  template <
-      template <class BaseProt> class ProtocolClass,
-      protocol::PROTOCOL_TYPES ProtocolID>
+  template <class ProtocolReader, protocol::PROTOCOL_TYPES ProtocolID>
   std::unique_ptr<folly::IOBuf> removeUnframed(
       folly::IOBufQueue* queue, size_t& needed);
   std::unique_ptr<folly::IOBuf> removeHttpServer(folly::IOBufQueue* queue);

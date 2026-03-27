@@ -16,6 +16,8 @@
 
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp/util/THttpParser.h>
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 
 #include <memory>
 #include <folly/Random.h>
@@ -217,6 +219,98 @@ TEST(THeaderTest, clientLoggingEnabled3) {
   ctx.logSampleRatio() = 0;
   ctx.logErrorSampleRatio() = 0;
   ASSERT_FALSE(header.isClientLoggingEnabled());
+}
+
+// Helper: serialize a complete unframed message using the given ProtocolWriter.
+// Writes messageBegin + an empty struct (just STOP field) + messageEnd.
+template <typename ProtocolWriter>
+std::unique_ptr<IOBuf> makeUnframedMessage(
+    const std::string& methodName, MessageType msgType, int32_t seqId) {
+  IOBufQueue queue(IOBufQueue::cacheChainLength());
+  ProtocolWriter writer;
+  writer.setOutput(&queue);
+  writer.writeMessageBegin(methodName, msgType, seqId);
+  writer.writeStructBegin("args");
+  writer.writeFieldStop();
+  writer.writeStructEnd();
+  writer.writeMessageEnd();
+  return queue.move();
+}
+
+TEST(THeaderTest, removeUnframedBinaryProtocol) {
+  auto msg = makeUnframedMessage<BinaryProtocolWriter>(
+      "myMethod", MessageType::T_CALL, 42);
+  auto expectedSize = msg->computeChainDataLength();
+
+  IOBufQueue queue(IOBufQueue::cacheChainLength());
+  queue.append(std::move(msg));
+  queue.append(IOBuf::copyBuffer("trailing"));
+
+  THeader header;
+  size_t needed = 0;
+  THeader::StringToStringMap persistentHeaders;
+  auto result = header.removeHeader(&queue, needed, persistentHeaders);
+
+  ASSERT_NE(result, nullptr);
+  EXPECT_EQ(result->computeChainDataLength(), expectedSize);
+  EXPECT_EQ(queue.chainLength(), 8); // "trailing"
+}
+
+TEST(THeaderTest, removeUnframedCompactProtocol) {
+  auto msg = makeUnframedMessage<CompactProtocolWriter>(
+      "myMethod", MessageType::T_CALL, 42);
+  auto expectedSize = msg->computeChainDataLength();
+
+  IOBufQueue queue(IOBufQueue::cacheChainLength());
+  queue.append(std::move(msg));
+  queue.append(IOBuf::copyBuffer("trailing"));
+
+  THeader header;
+  size_t needed = 0;
+  THeader::StringToStringMap persistentHeaders;
+  auto result = header.removeHeader(&queue, needed, persistentHeaders);
+
+  ASSERT_NE(result, nullptr);
+  EXPECT_EQ(result->computeChainDataLength(), expectedSize);
+  EXPECT_EQ(queue.chainLength(), 8);
+}
+
+TEST(THeaderTest, removeUnframedBinaryIncompleteData) {
+  auto msg = makeUnframedMessage<BinaryProtocolWriter>(
+      "myMethod", MessageType::T_CALL, 1);
+  auto fullSize = msg->computeChainDataLength();
+  ASSERT_GT(fullSize, 4u);
+
+  IOBufQueue queue(IOBufQueue::cacheChainLength());
+  queue.append(IOBuf::copyBuffer(msg->data(), 4));
+
+  THeader header;
+  size_t needed = 0;
+  THeader::StringToStringMap persistentHeaders;
+  auto result = header.removeHeader(&queue, needed, persistentHeaders);
+
+  EXPECT_EQ(result, nullptr);
+  EXPECT_EQ(needed, 1u);
+}
+
+TEST(THeaderTest, removeUnframedCompactIncompleteData) {
+  auto msg = makeUnframedMessage<CompactProtocolWriter>(
+      "myMethod", MessageType::T_CALL, 1);
+  auto fullSize = msg->computeChainDataLength();
+
+  // Provide all but the last byte (the struct STOP field) so that
+  // readMessageBegin succeeds but skip(T_STRUCT) fails with out_of_range.
+  ASSERT_GT(fullSize, 1u);
+  IOBufQueue queue(IOBufQueue::cacheChainLength());
+  queue.append(IOBuf::copyBuffer(msg->data(), fullSize - 1));
+
+  THeader header;
+  size_t needed = 0;
+  THeader::StringToStringMap persistentHeaders;
+  auto result = header.removeHeader(&queue, needed, persistentHeaders);
+
+  EXPECT_EQ(result, nullptr);
+  EXPECT_GE(needed, 1u);
 }
 
 } // namespace apache::thrift::transport

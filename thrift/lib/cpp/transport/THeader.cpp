@@ -27,10 +27,7 @@
 #include <folly/lang/Bits.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
-#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
-#include <thrift/lib/cpp/protocol/TCompactProtocol.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
-#include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include <thrift/lib/cpp/util/THttpParser.h>
 #include <thrift/lib/cpp/util/VarintUtils.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
@@ -73,7 +70,6 @@ using namespace apache::thrift::protocol;
 using namespace apache::thrift::util;
 using namespace folly;
 using namespace folly::io;
-using apache::thrift::protocol::TBinaryProtocol;
 
 std::string getReadableChars(Cursor c, size_t limit) {
   size_t size = 0;
@@ -108,46 +104,33 @@ int8_t THeader::getProtocolVersion() const {
 bool THeader::compactFramed(uint32_t magic) {
   int8_t protocolId = (magic >> 24);
   int8_t protocolVersion =
-      (magic >> 16) & (uint32_t)TCompactProtocol::VERSION_MASK;
+      (magic >> 16) & (uint32_t)CompactProtocolReader::VERSION_MASK;
   return (
-      (protocolId == TCompactProtocol::PROTOCOL_ID) &&
-      (protocolVersion <= TCompactProtocol::VERSION_N) &&
-      (protocolVersion >= TCompactProtocol::VERSION_LOW));
+      (protocolId == apache::thrift::detail::compact::PROTOCOL_ID) &&
+      (protocolVersion <= apache::thrift::detail::compact::VERSION_N) &&
+      (protocolVersion >= apache::thrift::detail::compact::VERSION_LOW));
 }
 
-template <
-    template <class BaseProt> class ProtocolClass,
-    PROTOCOL_TYPES ProtocolID>
+template <class ProtocolReader, PROTOCOL_TYPES ProtocolID>
 unique_ptr<IOBuf> THeader::removeUnframed(IOBufQueue* queue, size_t& needed) {
-  auto buf = queue->move();
-  auto range = buf->coalesce();
-  queue->append(std::move(buf));
-
-  // Test skip using the protocol to detect the end of the message
-  TMemoryBuffer memBuffer(
-      const_cast<uint8_t*>(range.begin()),
-      range.size(),
-      TMemoryBuffer::OBSERVE);
   c_.protoId_ = ProtocolID;
-  ProtocolClass<TBufferBase> proto(&memBuffer);
-  uint32_t msgSize = 0;
+  ProtocolReader proto;
+  proto.setInput(queue->front());
   try {
     std::string name;
-    protocol::TMessageType messageType;
+    MessageType messageType;
     int32_t seqid;
-    msgSize += proto.readMessageBegin(name, messageType, seqid);
-    msgSize += protocol::skip(proto, protocol::T_STRUCT);
-    msgSize += proto.readMessageEnd();
-  } catch (const TTransportException& ex) {
-    if (ex.getType() == TTransportException::END_OF_FILE) {
-      // We don't have the full data yet.  We can't tell exactly
-      // how many bytes we need, but it is at least one.
-      needed = 1;
-      return nullptr;
-    }
+    proto.readMessageBegin(name, messageType, seqid);
+    proto.skip(TType::T_STRUCT);
+    proto.readMessageEnd();
+  } catch (const std::out_of_range&) {
+    // We don't have the full data yet.  We can't tell exactly
+    // how many bytes we need, but it is at least one.
+    needed = 1;
+    return nullptr;
   }
 
-  return queue->split(msgSize);
+  return queue->split(proto.getCursorPosition());
 }
 
 unique_ptr<IOBuf> THeader::removeHttpServer(IOBufQueue* queue) {
@@ -198,8 +181,8 @@ unique_ptr<IOBuf> THeader::removeFramed(uint32_t sz, IOBufQueue* queue) {
 }
 
 folly::Optional<CLIENT_TYPE> THeader::analyzeFirst32bit(uint32_t w) {
-  if ((w & TBinaryProtocol::VERSION_MASK) ==
-      static_cast<uint32_t>(TBinaryProtocol::VERSION_1)) {
+  if ((w & BinaryProtocolReader::VERSION_MASK) ==
+      static_cast<uint32_t>(BinaryProtocolReader::VERSION_1)) {
     return THRIFT_UNFRAMED_DEPRECATED;
   } else if (compactFramed(w)) {
     return THRIFT_UNFRAMED_COMPACT_DEPRECATED;
@@ -214,8 +197,8 @@ folly::Optional<CLIENT_TYPE> THeader::analyzeFirst32bit(uint32_t w) {
 }
 
 CLIENT_TYPE THeader::analyzeSecond32bit(uint32_t w) {
-  if ((w & TBinaryProtocol::VERSION_MASK) ==
-      static_cast<uint32_t>(TBinaryProtocol::VERSION_1)) {
+  if ((w & BinaryProtocolReader::VERSION_MASK) ==
+      static_cast<uint32_t>(BinaryProtocolReader::VERSION_1)) {
     return THRIFT_FRAMED_DEPRECATED;
   }
   if (compactFramed(w)) {
@@ -279,13 +262,14 @@ unique_ptr<IOBuf> THeader::removeNonHeader(
       c_.protoId_ = T_COMPACT_PROTOCOL;
       return removeFramed(sz, queue);
     case THRIFT_UNFRAMED_DEPRECATED:
-      return removeUnframed<TBinaryProtocolT, T_BINARY_PROTOCOL>(queue, needed);
+      return removeUnframed<BinaryProtocolReader, T_BINARY_PROTOCOL>(
+          queue, needed);
     case THRIFT_HTTP_SERVER_TYPE:
       return removeHttpServer(queue);
     case THRIFT_HTTP_CLIENT_TYPE:
       return removeHttpClient(queue, needed);
     case THRIFT_UNFRAMED_COMPACT_DEPRECATED:
-      return removeUnframed<TCompactProtocolT, T_COMPACT_PROTOCOL>(
+      return removeUnframed<CompactProtocolReader, T_COMPACT_PROTOCOL>(
           queue, needed);
     default:
       // Fallback to sniffing out the magic for Header
