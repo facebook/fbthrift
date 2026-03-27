@@ -393,30 +393,46 @@ public final class Limits implements com.facebook.thrift.payload.ThriftSerializa
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       oprot.writeFieldBegin(MAX_I64_FIELD_FIELD_DESC);
       oprot.writeI64(this.maxI64Field);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MIN_I64_FIELD_FIELD_DESC);
       oprot.writeI64(this.minI64Field);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MAX_I32_FIELD_FIELD_DESC);
       oprot.writeI32(this.maxI32Field);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MIN_I32_FIELD_FIELD_DESC);
       oprot.writeI32(this.minI32Field);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MAX_I16_FIELD_FIELD_DESC);
       oprot.writeI16(this.maxI16Field);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MIN_I16_FIELD_FIELD_DESC);
       oprot.writeI16(this.minI16Field);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MAX_BYTE_FIELD_FIELD_DESC);
       oprot.writeByte(this.maxByteField);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MIN_BYTE_FIELD_FIELD_DESC);
       oprot.writeByte(this.minByteField);
       oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }

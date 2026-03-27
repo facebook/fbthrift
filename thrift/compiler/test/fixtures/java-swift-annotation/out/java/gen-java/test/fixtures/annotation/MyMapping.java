@@ -315,6 +315,7 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       if (lsMap != null) {
         oprot.writeFieldBegin(LS_MAP_FIELD_DESC);
         com.foo.FastLongStringMap _iter0 = lsMap;
@@ -332,6 +333,8 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (ioMap != null) {
         oprot.writeFieldBegin(IO_MAP_FIELD_DESC);
         com.foo.FastIntObjectMap<com.foo.FastIntLongMap> _iter0 = ioMap;
@@ -360,6 +363,8 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (binaryMap != null) {
         oprot.writeFieldBegin(BINARY_MAP_FIELD_DESC);
         Map<String, byte[]> _iter0 = binaryMap;
@@ -377,6 +382,8 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (regularBinary != null) {
         oprot.writeFieldBegin(REGULAR_BINARY_FIELD_DESC);
         Map<String, byte[]> _iter0 = regularBinary;
@@ -393,6 +400,7 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

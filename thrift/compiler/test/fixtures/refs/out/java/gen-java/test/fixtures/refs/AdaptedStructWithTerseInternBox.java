@@ -186,6 +186,7 @@ public final class AdaptedStructWithTerseInternBox implements com.facebook.thrif
       int structStart = 0;
       int pos = 0;
       com.facebook.thrift.protocol.ByteBufTProtocol p = (com.facebook.thrift.protocol.ByteBufTProtocol) oprot;
+      {
       java.util.Objects.requireNonNull(field1, "field1 must not be null");
       structStart = p.mark();
         oprot.writeFieldBegin(FIELD1_FIELD_DESC);
@@ -196,6 +197,8 @@ public final class AdaptedStructWithTerseInternBox implements com.facebook.thrif
         } else {
           p.rollback(structStart);
         }
+      }
+      {
       java.util.Objects.requireNonNull(field2, "field2 must not be null");
       structStart = p.mark();
         oprot.writeFieldBegin(FIELD2_FIELD_DESC);
@@ -206,6 +209,7 @@ public final class AdaptedStructWithTerseInternBox implements com.facebook.thrif
         } else {
           p.rollback(structStart);
         }
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }

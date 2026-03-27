@@ -184,12 +184,16 @@ public final class LegacyStruct implements com.facebook.thrift.payload.ThriftSer
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       oprot.writeFieldBegin(NORMAL_FIELD_DESC);
       oprot.writeI32(this.normal);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(BAD_FIELD_DESC);
       oprot.writeI32(this.bad);
       oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }

@@ -273,14 +273,19 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       oprot.writeFieldBegin(MY_INTEGER_FIELD_DESC);
       oprot.writeI32(this.myInteger);
       oprot.writeFieldEnd();
+      }
+      {
       if (myString != null) {
         oprot.writeFieldBegin(MY_STRING_FIELD_DESC);
         oprot.writeString(this.myString);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (myBools != null) {
         oprot.writeFieldBegin(MY_BOOLS_FIELD_DESC);
         List<Boolean> _iter0 = myBools;
@@ -291,6 +296,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (myNumbers != null) {
         oprot.writeFieldBegin(MY_NUMBERS_FIELD_DESC);
         List<Integer> _iter0 = myNumbers;
@@ -300,6 +307,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

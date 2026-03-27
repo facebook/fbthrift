@@ -218,20 +218,26 @@ public final class StructWithRefTypeShared implements com.facebook.thrift.payloa
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       if (defField != null) {
         oprot.writeFieldBegin(DEF_FIELD_FIELD_DESC);
         this.defField.write0(oprot);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (optField != null) {
         oprot.writeFieldBegin(OPT_FIELD_FIELD_DESC);
         this.optField.write0(oprot);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (reqField != null) {
         oprot.writeFieldBegin(REQ_FIELD_FIELD_DESC);
         this.reqField.write0(oprot);
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

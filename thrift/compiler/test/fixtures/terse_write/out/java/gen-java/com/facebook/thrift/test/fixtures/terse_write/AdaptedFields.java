@@ -224,21 +224,27 @@ public final class AdaptedFields implements com.facebook.thrift.payload.ThriftSe
       int structStart = 0;
       int pos = 0;
       com.facebook.thrift.protocol.ByteBufTProtocol p = (com.facebook.thrift.protocol.ByteBufTProtocol) oprot;
+      {
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(field1)) {
         oprot.writeFieldBegin(FIELD1_FIELD_DESC);
         oprot.writeI32(this.field1);
         oprot.writeFieldEnd();
       };
+      }
+      {
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(field2)) {
         oprot.writeFieldBegin(FIELD2_FIELD_DESC);
         oprot.writeI32(this.field2);
         oprot.writeFieldEnd();
       };
+      }
+      {
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(field3)) {
         oprot.writeFieldBegin(FIELD3_FIELD_DESC);
         oprot.writeI32(this.field3);
         oprot.writeFieldEnd();
       };
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }

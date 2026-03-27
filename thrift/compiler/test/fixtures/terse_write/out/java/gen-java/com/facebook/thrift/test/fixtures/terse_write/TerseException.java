@@ -122,12 +122,14 @@ public final class TerseException extends org.apache.thrift.TBaseException imple
       int structStart = 0;
       int pos = 0;
       com.facebook.thrift.protocol.ByteBufTProtocol p = (com.facebook.thrift.protocol.ByteBufTProtocol) oprot;
+      {
       java.util.Objects.requireNonNull(msg, "msg must not be null");
       
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(msg)) {
         oprot.writeFieldBegin(MSG_FIELD_DESC);
         oprot.writeString(this.msg);
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

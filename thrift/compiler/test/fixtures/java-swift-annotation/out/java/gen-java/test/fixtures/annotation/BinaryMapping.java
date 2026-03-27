@@ -205,6 +205,7 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       if (binaryMap != null) {
         oprot.writeFieldBegin(BINARY_MAP_FIELD_DESC);
         Map<String, byte[]> _iter0 = binaryMap;
@@ -222,6 +223,8 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (regularBinary != null) {
         oprot.writeFieldBegin(REGULAR_BINARY_FIELD_DESC);
         Map<String, byte[]> _iter0 = regularBinary;
@@ -238,6 +241,7 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

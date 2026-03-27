@@ -253,25 +253,33 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       if (stringField != null) {
         oprot.writeFieldBegin(STRING_FIELD_FIELD_DESC);
         oprot.writeString(this.stringField);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (injectedField != null) {
         oprot.writeFieldBegin(INJECTED_FIELD_FIELD_DESC);
         oprot.writeString(this.injectedField);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (injectedStructuredAnnotationField != null) {
         oprot.writeFieldBegin(INJECTED_STRUCTURED_ANNOTATION_FIELD_FIELD_DESC);
         oprot.writeString(this.injectedStructuredAnnotationField);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (injectedUnstructuredAnnotationField != null) {
         oprot.writeFieldBegin(INJECTED_UNSTRUCTURED_ANNOTATION_FIELD_FIELD_DESC);
         oprot.writeString(this.injectedUnstructuredAnnotationField);
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

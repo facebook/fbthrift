@@ -1163,114 +1163,174 @@ public final class MyNomralStruct implements com.facebook.thrift.payload.ThriftS
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       if (msg1 != null) {
         oprot.writeFieldBegin(MSG1_FIELD_DESC);
         oprot.writeString(this.msg1);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (msg2 != null) {
         oprot.writeFieldBegin(MSG2_FIELD_DESC);
         oprot.writeString(this.msg2);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (msg3 != null) {
         oprot.writeFieldBegin(MSG3_FIELD_DESC);
         oprot.writeString(this.msg3);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (msg4 != null) {
         oprot.writeFieldBegin(MSG4_FIELD_DESC);
         oprot.writeString(this.msg4);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (msg5 != null) {
         oprot.writeFieldBegin(MSG5_FIELD_DESC);
         oprot.writeString(this.msg5);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (msg6 != null) {
         oprot.writeFieldBegin(MSG6_FIELD_DESC);
         oprot.writeString(this.msg6);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (msg7 != null) {
         oprot.writeFieldBegin(MSG7_FIELD_DESC);
         oprot.writeString(this.msg7);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (msg8 != null) {
         oprot.writeFieldBegin(MSG8_FIELD_DESC);
         oprot.writeString(this.msg8);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (msg9 != null) {
         oprot.writeFieldBegin(MSG9_FIELD_DESC);
         oprot.writeString(this.msg9);
         oprot.writeFieldEnd();
       }
+      }
+      {
       oprot.writeFieldBegin(MY_INT_FIELD10_FIELD_DESC);
       oprot.writeI32(this.myIntField10);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_INT_FIELD11_FIELD_DESC);
       oprot.writeI32(this.myIntField11);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_INT_FIELD12_FIELD_DESC);
       oprot.writeI32(this.myIntField12);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_INT_FIELD13_FIELD_DESC);
       oprot.writeI32(this.myIntField13);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_INT_FIELD14_FIELD_DESC);
       oprot.writeI32(this.myIntField14);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_INT_FIELD15_FIELD_DESC);
       oprot.writeI32(this.myIntField15);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_INT_FIELD16_FIELD_DESC);
       oprot.writeI32(this.myIntField16);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_INT_FIELD17_FIELD_DESC);
       oprot.writeI32(this.myIntField17);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_INT_FIELD18_FIELD_DESC);
       oprot.writeI32(this.myIntField18);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_INT_FIELD19_FIELD_DESC);
       oprot.writeI32(this.myIntField19);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_INT_FIELD20_FIELD_DESC);
       oprot.writeI32(this.myIntField20);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_DOUBLE_FIELD21_FIELD_DESC);
       oprot.writeDouble(this.myDoubleField21);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_DOUBLE_FIELD22_FIELD_DESC);
       oprot.writeDouble(this.myDoubleField22);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_DOUBLE_FIELD23_FIELD_DESC);
       oprot.writeDouble(this.myDoubleField23);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_DOUBLE_FIELD24_FIELD_DESC);
       oprot.writeDouble(this.myDoubleField24);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_DOUBLE_FIELD25_FIELD_DESC);
       oprot.writeDouble(this.myDoubleField25);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_DOUBLE_FIELD26_FIELD_DESC);
       oprot.writeDouble(this.myDoubleField26);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_DOUBLE_FIELD27_FIELD_DESC);
       oprot.writeDouble(this.myDoubleField27);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_DOUBLE_FIELD28_FIELD_DESC);
       oprot.writeDouble(this.myDoubleField28);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_DOUBLE_FIELD29_FIELD_DESC);
       oprot.writeDouble(this.myDoubleField29);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_DOUBLE_FIELD30_FIELD_DESC);
       oprot.writeDouble(this.myDoubleField30);
       oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }

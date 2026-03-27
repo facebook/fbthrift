@@ -288,11 +288,14 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       if (message != null) {
         oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
         oprot.writeString(this.message);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (listStrings != null) {
         oprot.writeFieldBegin(LIST_STRINGS_FIELD_DESC);
         List<String> _iter0 = listStrings;
@@ -303,19 +306,27 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       oprot.writeFieldBegin(ERROR_ENUM_FIELD_DESC);
       oprot.writeI32(this.errorEnum == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(this.errorEnum));
       oprot.writeFieldEnd();
+      }
+      {
       if (unionError != null) {
         oprot.writeFieldBegin(UNION_ERROR_FIELD_DESC);
         this.unionError.write0(oprot);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (structError != null) {
         oprot.writeFieldBegin(STRUCT_ERROR_FIELD_DESC);
         this.structError.write0(oprot);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (lsMap != null) {
         oprot.writeFieldBegin(LS_MAP_FIELD_DESC);
         it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> _iter0 = lsMap;
@@ -332,6 +343,7 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

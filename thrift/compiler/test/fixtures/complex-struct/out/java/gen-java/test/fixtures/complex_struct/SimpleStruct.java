@@ -183,13 +183,17 @@ public final class SimpleStruct implements com.facebook.thrift.payload.ThriftSer
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       oprot.writeFieldBegin(AGE_FIELD_DESC);
       oprot.writeI64(this.age);
       oprot.writeFieldEnd();
+      }
+      {
       if (name != null) {
         oprot.writeFieldBegin(NAME_FIELD_DESC);
         oprot.writeString(this.name);
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

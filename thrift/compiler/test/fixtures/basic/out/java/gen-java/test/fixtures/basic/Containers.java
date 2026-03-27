@@ -252,6 +252,7 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       if (i32List != null) {
         oprot.writeFieldBegin(I32_LIST_FIELD_DESC);
         List<Integer> _iter0 = i32List;
@@ -262,6 +263,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (stringSet != null) {
         oprot.writeFieldBegin(STRING_SET_FIELD_DESC);
         Set<String> _iter0 = stringSet;
@@ -272,6 +275,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (stringToI64Map != null) {
         oprot.writeFieldBegin(STRING_TO_I64_MAP_FIELD_DESC);
         Map<String, Long> _iter0 = stringToI64Map;
@@ -288,6 +293,7 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

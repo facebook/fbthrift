@@ -288,30 +288,40 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       if (color != null) {
         oprot.writeFieldBegin(COLOR_FIELD_DESC);
         this.color.write0(oprot);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (licensePlate != null) {
         oprot.writeFieldBegin(LICENSE_PLATE_FIELD_DESC);
         oprot.writeString(this.licensePlate);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (description != null) {
         oprot.writeFieldBegin(DESCRIPTION_FIELD_DESC);
         oprot.writeString(this.description);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (name != null) {
         oprot.writeFieldBegin(NAME_FIELD_DESC);
         oprot.writeString(this.name);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (hasAC != null) {
         oprot.writeFieldBegin(HAS_AC_FIELD_DESC);
         oprot.writeBool(this.hasAC);
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

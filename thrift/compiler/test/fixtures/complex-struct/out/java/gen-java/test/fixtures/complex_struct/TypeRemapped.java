@@ -293,6 +293,7 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       if (lsMap != null) {
         oprot.writeFieldBegin(LS_MAP_FIELD_DESC);
         it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> _iter0 = lsMap;
@@ -310,6 +311,8 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (ioMap != null) {
         oprot.writeFieldBegin(IO_MAP_FIELD_DESC);
         it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> _iter0 = ioMap;
@@ -338,13 +341,18 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       oprot.writeFieldBegin(BIG_INTEGER_FIELD_DESC);
       oprot.writeI32(this.bigInteger);
       oprot.writeFieldEnd();
+      }
+      {
       if (binaryTestBuffer != null) {
         oprot.writeFieldBegin(BINARY_TEST_BUFFER_FIELD_DESC);
         oprot.writeBinary(this.binaryTestBuffer);
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

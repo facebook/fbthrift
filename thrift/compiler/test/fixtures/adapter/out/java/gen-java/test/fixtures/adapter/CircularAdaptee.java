@@ -151,10 +151,12 @@ public final class CircularAdaptee implements com.facebook.thrift.payload.Thrift
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       if (field != null) {
         oprot.writeFieldBegin(FIELD_FIELD_DESC);
         this.field.write0(oprot);
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

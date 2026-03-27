@@ -184,15 +184,19 @@ public final class MyStruct2 implements com.facebook.thrift.payload.ThriftSerial
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       if (myStruct1 != null) {
         oprot.writeFieldBegin(MY_STRUCT1_FIELD_DESC);
         this.myStruct1.write0(oprot);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (myString != null) {
         oprot.writeFieldBegin(MY_STRING_FIELD_DESC);
         oprot.writeString(this.myString);
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

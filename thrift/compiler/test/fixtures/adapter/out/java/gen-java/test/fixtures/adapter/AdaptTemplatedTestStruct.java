@@ -960,29 +960,44 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       oprot.writeFieldBegin(ADAPTED_BOOL_FIELD_DESC);
       oprot.writeBool(this.adaptedBool);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(ADAPTED_BYTE_FIELD_DESC);
       oprot.writeByte(this.adaptedByte);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(ADAPTED_SHORT_FIELD_DESC);
       oprot.writeI16(this.adaptedShort);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(ADAPTED_INTEGER_FIELD_DESC);
       oprot.writeI32(this.adaptedInteger);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(ADAPTED_LONG_FIELD_DESC);
       oprot.writeI64(this.adaptedLong);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(ADAPTED_DOUBLE_FIELD_DESC);
       oprot.writeDouble(this.adaptedDouble);
       oprot.writeFieldEnd();
+      }
+      {
       if (adaptedString != null) {
         oprot.writeFieldBegin(ADAPTED_STRING_FIELD_DESC);
         oprot.writeString(this.adaptedString);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (adaptedList != null) {
         oprot.writeFieldBegin(ADAPTED_LIST_FIELD_DESC);
         List<Long> _iter0 = adaptedList;
@@ -993,6 +1008,8 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (adaptedSet != null) {
         oprot.writeFieldBegin(ADAPTED_SET_FIELD_DESC);
         Set<Long> _iter0 = adaptedSet;
@@ -1003,6 +1020,8 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (adaptedMap != null) {
         oprot.writeFieldBegin(ADAPTED_MAP_FIELD_DESC);
         Map<Long, Long> _iter0 = adaptedMap;
@@ -1020,32 +1039,50 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       oprot.writeFieldBegin(ADAPTED_BOOL_DEFAULT_FIELD_DESC);
       oprot.writeBool(this.adaptedBoolDefault);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(ADAPTED_BYTE_DEFAULT_FIELD_DESC);
       oprot.writeByte(this.adaptedByteDefault);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(ADAPTED_SHORT_DEFAULT_FIELD_DESC);
       oprot.writeI16(this.adaptedShortDefault);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(ADAPTED_INTEGER_DEFAULT_FIELD_DESC);
       oprot.writeI32(this.adaptedIntegerDefault);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(ADAPTED_LONG_DEFAULT_FIELD_DESC);
       oprot.writeI64(this.adaptedLongDefault);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(ADAPTED_DOUBLE_DEFAULT_FIELD_DESC);
       oprot.writeDouble(this.adaptedDoubleDefault);
       oprot.writeFieldEnd();
+      }
+      {
       if (adaptedStringDefault != null) {
         oprot.writeFieldBegin(ADAPTED_STRING_DEFAULT_FIELD_DESC);
         oprot.writeString(this.adaptedStringDefault);
         oprot.writeFieldEnd();
       }
+      }
+      {
       oprot.writeFieldBegin(ADAPTED_ENUM_FIELD_DESC);
       oprot.writeI32(this.adaptedEnum == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(this.adaptedEnum));
       oprot.writeFieldEnd();
+      }
+      {
       if (adaptedListDefault != null) {
         oprot.writeFieldBegin(ADAPTED_LIST_DEFAULT_FIELD_DESC);
         List<Long> _iter0 = adaptedListDefault;
@@ -1056,6 +1093,8 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (adaptedSetDefault != null) {
         oprot.writeFieldBegin(ADAPTED_SET_DEFAULT_FIELD_DESC);
         Set<Long> _iter0 = adaptedSetDefault;
@@ -1066,6 +1105,8 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (adaptedMapDefault != null) {
         oprot.writeFieldBegin(ADAPTED_MAP_DEFAULT_FIELD_DESC);
         Map<Long, Long> _iter0 = adaptedMapDefault;
@@ -1083,9 +1124,12 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       oprot.writeFieldBegin(DOUBLE_TYPEDEF_BOOL_FIELD_DESC);
       oprot.writeBool(this.doubleTypedefBool);
       oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }

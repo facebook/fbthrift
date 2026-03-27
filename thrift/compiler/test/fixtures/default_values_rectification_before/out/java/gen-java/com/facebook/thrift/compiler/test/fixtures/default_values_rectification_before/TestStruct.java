@@ -418,12 +418,17 @@ public final class TestStruct implements com.facebook.thrift.payload.ThriftSeria
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       oprot.writeFieldBegin(UNQUALIFIED_INT_FIELD_FIELD_DESC);
       oprot.writeI32(this.unqualifiedIntField);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(UNQUALIFIED_BOOL_FIELD_FIELD_DESC);
       oprot.writeBool(this.unqualifiedBoolField);
       oprot.writeFieldEnd();
+      }
+      {
       if (unqualifiedListField != null) {
         oprot.writeFieldBegin(UNQUALIFIED_LIST_FIELD_FIELD_DESC);
         List<Integer> _iter0 = unqualifiedListField;
@@ -434,21 +439,29 @@ public final class TestStruct implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (unqualifiedStructField != null) {
         oprot.writeFieldBegin(UNQUALIFIED_STRUCT_FIELD_FIELD_DESC);
         this.unqualifiedStructField.write0(oprot);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (optionalIntField != null) {
         oprot.writeFieldBegin(OPTIONAL_INT_FIELD_FIELD_DESC);
         oprot.writeI32(this.optionalIntField);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (optionalBoolField != null) {
         oprot.writeFieldBegin(OPTIONAL_BOOL_FIELD_FIELD_DESC);
         oprot.writeBool(this.optionalBoolField);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (optionalListField != null) {
         oprot.writeFieldBegin(OPTIONAL_LIST_FIELD_FIELD_DESC);
         List<Integer>  _iter0 = optionalListField;
@@ -459,10 +472,13 @@ public final class TestStruct implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (optionalStructField != null) {
         oprot.writeFieldBegin(OPTIONAL_STRUCT_FIELD_FIELD_DESC);
         this.optionalStructField.write0(oprot);
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

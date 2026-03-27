@@ -221,20 +221,26 @@ public final class CountingStruct implements com.facebook.thrift.payload.ThriftS
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       if (regularInt != null) {
         oprot.writeFieldBegin(REGULAR_INT_FIELD_DESC);
         oprot.writeI64(this.regularInt);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (countingInt != null) {
         oprot.writeFieldBegin(COUNTING_INT_FIELD_DESC);
         oprot.writeI64(this.countingInt);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (regularString != null) {
         oprot.writeFieldBegin(REGULAR_STRING_FIELD_DESC);
         oprot.writeString(this.regularString);
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

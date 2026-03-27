@@ -2209,6 +2209,7 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       if (structList != null) {
         oprot.writeFieldBegin(STRUCT_LIST_FIELD_DESC);
         List<test.fixtures.complex_struct.MyStruct> _iter0 = structList;
@@ -2219,6 +2220,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (unionList != null) {
         oprot.writeFieldBegin(UNION_LIST_FIELD_DESC);
         List<test.fixtures.complex_struct.MyUnion> _iter0 = unionList;
@@ -2229,6 +2232,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (enumList != null) {
         oprot.writeFieldBegin(ENUM_LIST_FIELD_DESC);
         List<test.fixtures.complex_struct.MyEnum> _iter0 = enumList;
@@ -2239,6 +2244,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (structSet != null) {
         oprot.writeFieldBegin(STRUCT_SET_FIELD_DESC);
         Set<test.fixtures.complex_struct.MyStruct> _iter0 = structSet;
@@ -2249,6 +2256,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (unionSet != null) {
         oprot.writeFieldBegin(UNION_SET_FIELD_DESC);
         Set<test.fixtures.complex_struct.MyUnion> _iter0 = unionSet;
@@ -2259,6 +2268,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (enumSet != null) {
         oprot.writeFieldBegin(ENUM_SET_FIELD_DESC);
         Set<test.fixtures.complex_struct.MyEnum> _iter0 = enumSet;
@@ -2269,6 +2280,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (structMap != null) {
         oprot.writeFieldBegin(STRUCT_MAP_FIELD_DESC);
         Map<test.fixtures.complex_struct.MyStruct, Long> _iter0 = structMap;
@@ -2286,6 +2299,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (unionMap != null) {
         oprot.writeFieldBegin(UNION_MAP_FIELD_DESC);
         Map<test.fixtures.complex_struct.MyUnion, Long> _iter0 = unionMap;
@@ -2303,6 +2318,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (enumMap != null) {
         oprot.writeFieldBegin(ENUM_MAP_FIELD_DESC);
         Map<test.fixtures.complex_struct.MyEnum, Long> _iter0 = enumMap;
@@ -2320,6 +2337,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (structMap2 != null) {
         oprot.writeFieldBegin(STRUCT_MAP2_FIELD_DESC);
         Map<Integer, test.fixtures.complex_struct.MyStruct> _iter0 = structMap2;
@@ -2337,6 +2356,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (unionMap2 != null) {
         oprot.writeFieldBegin(UNION_MAP2_FIELD_DESC);
         Map<Integer, test.fixtures.complex_struct.MyUnion> _iter0 = unionMap2;
@@ -2354,6 +2375,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (enumMap2 != null) {
         oprot.writeFieldBegin(ENUM_MAP2_FIELD_DESC);
         Map<Integer, test.fixtures.complex_struct.MyEnum> _iter0 = enumMap2;
@@ -2371,6 +2394,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (listMap != null) {
         oprot.writeFieldBegin(LIST_MAP_FIELD_DESC);
         Map<List<Integer>, Integer> _iter0 = listMap;
@@ -2392,6 +2417,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (listMap2 != null) {
         oprot.writeFieldBegin(LIST_MAP2_FIELD_DESC);
         Map<Integer, List<Integer>> _iter0 = listMap2;
@@ -2413,6 +2440,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (setMap != null) {
         oprot.writeFieldBegin(SET_MAP_FIELD_DESC);
         Map<Set<Integer>, Integer> _iter0 = setMap;
@@ -2434,6 +2463,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (setMap2 != null) {
         oprot.writeFieldBegin(SET_MAP2_FIELD_DESC);
         Map<Integer, Set<Integer>> _iter0 = setMap2;
@@ -2455,6 +2486,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (mapMap != null) {
         oprot.writeFieldBegin(MAP_MAP_FIELD_DESC);
         Map<Map<Integer, Integer>, Integer> _iter0 = mapMap;
@@ -2483,6 +2516,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (mapMap2 != null) {
         oprot.writeFieldBegin(MAP_MAP2_FIELD_DESC);
         Map<Integer, Map<Integer, Integer>> _iter0 = mapMap2;
@@ -2511,6 +2546,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (listListI32 != null) {
         oprot.writeFieldBegin(LIST_LIST_I32_FIELD_DESC);
         List<List<Integer>> _iter0 = listListI32;
@@ -2525,6 +2562,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (listListStruct != null) {
         oprot.writeFieldBegin(LIST_LIST_STRUCT_FIELD_DESC);
         List<List<test.fixtures.complex_struct.MyStruct>> _iter0 = listListStruct;
@@ -2539,6 +2578,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (listSetI32 != null) {
         oprot.writeFieldBegin(LIST_SET_I32_FIELD_DESC);
         List<Set<Integer>> _iter0 = listSetI32;
@@ -2553,6 +2594,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (listSetStruct != null) {
         oprot.writeFieldBegin(LIST_SET_STRUCT_FIELD_DESC);
         List<Set<test.fixtures.complex_struct.MyStruct>> _iter0 = listSetStruct;
@@ -2567,6 +2610,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (listMapI32I32 != null) {
         oprot.writeFieldBegin(LIST_MAP_I32_I32_FIELD_DESC);
         List<Map<Integer, Integer>> _iter0 = listMapI32I32;
@@ -2588,6 +2633,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (listMapI32Struct != null) {
         oprot.writeFieldBegin(LIST_MAP_I32_STRUCT_FIELD_DESC);
         List<Map<Integer, test.fixtures.complex_struct.MyStruct>> _iter0 = listMapI32Struct;
@@ -2609,6 +2656,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (listMapStructI32 != null) {
         oprot.writeFieldBegin(LIST_MAP_STRUCT_I32_FIELD_DESC);
         List<Map<test.fixtures.complex_struct.MyStruct, Integer>> _iter0 = listMapStructI32;
@@ -2630,6 +2679,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (setListI32 != null) {
         oprot.writeFieldBegin(SET_LIST_I32_FIELD_DESC);
         Set<List<Integer>> _iter0 = setListI32;
@@ -2644,6 +2695,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (setListStruct != null) {
         oprot.writeFieldBegin(SET_LIST_STRUCT_FIELD_DESC);
         Set<List<test.fixtures.complex_struct.MyStruct>> _iter0 = setListStruct;
@@ -2658,6 +2711,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (setSetI32 != null) {
         oprot.writeFieldBegin(SET_SET_I32_FIELD_DESC);
         Set<Set<Integer>> _iter0 = setSetI32;
@@ -2672,6 +2727,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (setSetStruct != null) {
         oprot.writeFieldBegin(SET_SET_STRUCT_FIELD_DESC);
         Set<Set<test.fixtures.complex_struct.MyStruct>> _iter0 = setSetStruct;
@@ -2686,6 +2743,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (setMapI32I32 != null) {
         oprot.writeFieldBegin(SET_MAP_I32_I32_FIELD_DESC);
         Set<Map<Integer, Integer>> _iter0 = setMapI32I32;
@@ -2707,6 +2766,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (setMapI32Struct != null) {
         oprot.writeFieldBegin(SET_MAP_I32_STRUCT_FIELD_DESC);
         Set<Map<Integer, test.fixtures.complex_struct.MyStruct>> _iter0 = setMapI32Struct;
@@ -2728,6 +2789,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (setMapStructI32 != null) {
         oprot.writeFieldBegin(SET_MAP_STRUCT_I32_FIELD_DESC);
         Set<Map<test.fixtures.complex_struct.MyStruct, Integer>> _iter0 = setMapStructI32;
@@ -2749,6 +2812,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (mapI32MapI32I32 != null) {
         oprot.writeFieldBegin(MAP_I32_MAP_I32_I32_FIELD_DESC);
         Map<Integer, Map<Integer, Integer>> _iter0 = mapI32MapI32I32;
@@ -2777,6 +2842,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (mapI32MapStructI32 != null) {
         oprot.writeFieldBegin(MAP_I32_MAP_STRUCT_I32_FIELD_DESC);
         Map<Integer, Map<test.fixtures.complex_struct.MyStruct, Integer>> _iter0 = mapI32MapStructI32;
@@ -2805,6 +2872,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (mapI32MapI32Struct != null) {
         oprot.writeFieldBegin(MAP_I32_MAP_I32_STRUCT_FIELD_DESC);
         Map<Integer, Map<Integer, test.fixtures.complex_struct.MyStruct>> _iter0 = mapI32MapI32Struct;
@@ -2833,6 +2902,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (mapI32MapListI32I32 != null) {
         oprot.writeFieldBegin(MAP_I32_MAP_LIST_I32_I32_FIELD_DESC);
         Map<Integer, List<Map<Integer, Integer>>> _iter0 = mapI32MapListI32I32;
@@ -2865,6 +2936,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (mapI32MapListStructI32 != null) {
         oprot.writeFieldBegin(MAP_I32_MAP_LIST_STRUCT_I32_FIELD_DESC);
         Map<Integer, List<Map<test.fixtures.complex_struct.MyStruct, Integer>>> _iter0 = mapI32MapListStructI32;
@@ -2896,6 +2969,7 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

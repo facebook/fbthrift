@@ -1106,43 +1106,66 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       oprot.writeFieldBegin(MY_LONG_DFSET_FIELD_DESC);
       oprot.writeI64(this.myLongDFset);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_LONG_DF_FIELD_DESC);
       oprot.writeI64(this.myLongDF);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(PORT_DFSET_FIELD_DESC);
       oprot.writeI32(this.portDFset);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(PORT_NUM_FIELD_DESC);
       oprot.writeI32(this.portNum);
       oprot.writeFieldEnd();
+      }
+      {
       if (myBinaryDFset != null) {
         oprot.writeFieldBegin(MY_BINARY_DFSET_FIELD_DESC);
         oprot.writeBinary(java.nio.ByteBuffer.wrap(this.myBinaryDFset));
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (myBinary != null) {
         oprot.writeFieldBegin(MY_BINARY_FIELD_DESC);
         oprot.writeBinary(java.nio.ByteBuffer.wrap(this.myBinary));
         oprot.writeFieldEnd();
       }
+      }
+      {
       oprot.writeFieldBegin(MY_BYTE_DFSET_FIELD_DESC);
       oprot.writeByte(this.myByteDFSet);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_BYTE_FIELD_DESC);
       oprot.writeByte(this.myByte);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_DOUBLE_DFSET_FIELD_DESC);
       oprot.writeDouble(this.myDoubleDFset);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_DOUBLE_DFZERO_FIELD_DESC);
       oprot.writeDouble(this.myDoubleDFZero);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_DOUBLE_FIELD_DESC);
       oprot.writeDouble(this.myDouble);
       oprot.writeFieldEnd();
+      }
+      {
       if (field3 != null) {
         oprot.writeFieldBegin(FIELD3_FIELD_DESC);
         Map<Integer, String> _iter0 = field3;
@@ -1160,6 +1183,8 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (myList != null) {
         oprot.writeFieldBegin(MY_LIST_FIELD_DESC);
         List<test.fixtures.complex_struct.MyEnum> _iter0 = myList;
@@ -1170,6 +1195,8 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (mySet != null) {
         oprot.writeFieldBegin(MY_SET_FIELD_DESC);
         Set<String> _iter0 = mySet;
@@ -1180,11 +1207,15 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (simpleStruct != null) {
         oprot.writeFieldBegin(SIMPLE_STRUCT_FIELD_DESC);
         this.simpleStruct.write0(oprot);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (listStructDFset != null) {
         oprot.writeFieldBegin(LIST_STRUCT_DFSET_FIELD_DESC);
         List<test.fixtures.complex_struct.SimpleStruct> _iter0 = listStructDFset;
@@ -1195,11 +1226,15 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (myUnion != null) {
         oprot.writeFieldBegin(MY_UNION_FIELD_DESC);
         this.myUnion.write0(oprot);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (listUnionDFset != null) {
         oprot.writeFieldBegin(LIST_UNION_DFSET_FIELD_DESC);
         List<test.fixtures.complex_struct.MyUnion> _iter0 = listUnionDFset;
@@ -1210,6 +1245,8 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (mapNestlistStructDfSet != null) {
         oprot.writeFieldBegin(MAP_NESTLIST_STRUCT_DF_SET_FIELD_DESC);
         Map<Integer, List<test.fixtures.complex_struct.SimpleStruct>> _iter0 = mapNestlistStructDfSet;
@@ -1231,6 +1268,8 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (mapJavaTypeDFset != null) {
         oprot.writeFieldBegin(MAP_JAVA_TYPE_DFSET_FIELD_DESC);
         it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> _iter0 = mapJavaTypeDFset;
@@ -1248,6 +1287,8 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (emptyMap != null) {
         oprot.writeFieldBegin(EMPTY_MAP_FIELD_DESC);
         Map<Long, Integer> _iter0 = emptyMap;
@@ -1265,6 +1306,8 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (enumMapDFset != null) {
         oprot.writeFieldBegin(ENUM_MAP_DFSET_FIELD_DESC);
         Map<String, Map<Integer, test.fixtures.complex_struct.MyEnum>> _iter0 = enumMapDFset;
@@ -1292,6 +1335,7 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

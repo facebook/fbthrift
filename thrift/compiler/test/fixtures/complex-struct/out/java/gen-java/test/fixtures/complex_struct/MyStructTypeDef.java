@@ -508,22 +508,31 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       oprot.writeFieldBegin(MY_LONG_FIELD_FIELD_DESC);
       oprot.writeI64(this.myLongField);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_LONG_TYPE_DEF_FIELD_DESC);
       oprot.writeI64(this.myLongTypeDef);
       oprot.writeFieldEnd();
+      }
+      {
       if (myStringField != null) {
         oprot.writeFieldBegin(MY_STRING_FIELD_FIELD_DESC);
         oprot.writeString(this.myStringField);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (myStringTypedef != null) {
         oprot.writeFieldBegin(MY_STRING_TYPEDEF_FIELD_DESC);
         oprot.writeString(this.myStringTypedef);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (myMapField != null) {
         oprot.writeFieldBegin(MY_MAP_FIELD_FIELD_DESC);
         Map<Short, String> _iter0 = myMapField;
@@ -541,6 +550,8 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (myMapTypedef != null) {
         oprot.writeFieldBegin(MY_MAP_TYPEDEF_FIELD_DESC);
         Map<Short, String> _iter0 = myMapTypedef;
@@ -558,6 +569,8 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (myListField != null) {
         oprot.writeFieldBegin(MY_LIST_FIELD_FIELD_DESC);
         List<Double> _iter0 = myListField;
@@ -568,6 +581,8 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (myListTypedef != null) {
         oprot.writeFieldBegin(MY_LIST_TYPEDEF_FIELD_DESC);
         List<Double> _iter0 = myListTypedef;
@@ -578,6 +593,8 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (myMapListOfTypeDef != null) {
         oprot.writeFieldBegin(MY_MAP_LIST_OF_TYPE_DEF_FIELD_DESC);
         Map<Short, List<List<Double>>> _iter0 = myMapListOfTypeDef;
@@ -602,6 +619,7 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

@@ -183,13 +183,17 @@ public final class Included implements com.facebook.thrift.payload.ThriftSeriali
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       oprot.writeFieldBegin(MY_INT_FIELD_FIELD_DESC);
       oprot.writeI64(this.myIntField);
       oprot.writeFieldEnd();
+      }
+      {
       if (myTransitiveField != null) {
         oprot.writeFieldBegin(MY_TRANSITIVE_FIELD_FIELD_DESC);
         this.myTransitiveField.write0(oprot);
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

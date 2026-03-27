@@ -1876,11 +1876,14 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       if (justAnA != null) {
         oprot.writeFieldBegin(JUST_AN_A_FIELD_DESC);
         this.justAnA.write0(oprot);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (setOfI32 != null) {
         oprot.writeFieldBegin(SET_OF_I32_FIELD_DESC);
         Set<Integer> _iter0 = setOfI32;
@@ -1891,6 +1894,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (listOfI32 != null) {
         oprot.writeFieldBegin(LIST_OF_I32_FIELD_DESC);
         List<Integer> _iter0 = listOfI32;
@@ -1901,6 +1906,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (listOfString != null) {
         oprot.writeFieldBegin(LIST_OF_STRING_FIELD_DESC);
         List<String> _iter0 = listOfString;
@@ -1911,6 +1918,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (mapOfStringToI32 != null) {
         oprot.writeFieldBegin(MAP_OF_STRING_TO_I32_FIELD_DESC);
         Map<String, Integer> _iter0 = mapOfStringToI32;
@@ -1928,6 +1937,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (mapOfStringToA != null) {
         oprot.writeFieldBegin(MAP_OF_STRING_TO_A_FIELD_DESC);
         Map<String, test.fixtures.shapes.A> _iter0 = mapOfStringToA;
@@ -1945,6 +1956,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (mapOfStringToListOfI32 != null) {
         oprot.writeFieldBegin(MAP_OF_STRING_TO_LIST_OF_I32_FIELD_DESC);
         Map<String, List<Integer>> _iter0 = mapOfStringToListOfI32;
@@ -1966,6 +1979,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (mapOfStringToListOfA != null) {
         oprot.writeFieldBegin(MAP_OF_STRING_TO_LIST_OF_A_FIELD_DESC);
         Map<String, List<test.fixtures.shapes.A>> _iter0 = mapOfStringToListOfA;
@@ -1987,6 +2002,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (mapOfStringToSetOfI32 != null) {
         oprot.writeFieldBegin(MAP_OF_STRING_TO_SET_OF_I32_FIELD_DESC);
         Map<String, Set<Integer>> _iter0 = mapOfStringToSetOfI32;
@@ -2008,6 +2025,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (mapOfStringToMapOfStringToI32 != null) {
         oprot.writeFieldBegin(MAP_OF_STRING_TO_MAP_OF_STRING_TO_I32_FIELD_DESC);
         Map<String, Map<String, Integer>> _iter0 = mapOfStringToMapOfStringToI32;
@@ -2036,6 +2055,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (mapOfStringToMapOfStringToA != null) {
         oprot.writeFieldBegin(MAP_OF_STRING_TO_MAP_OF_STRING_TO_A_FIELD_DESC);
         Map<String, Map<String, test.fixtures.shapes.A>> _iter0 = mapOfStringToMapOfStringToA;
@@ -2064,6 +2085,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (listOfSetOfI32 != null) {
         oprot.writeFieldBegin(LIST_OF_SET_OF_I32_FIELD_DESC);
         List<Set<Integer>> _iter0 = listOfSetOfI32;
@@ -2078,6 +2101,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (listOfMapOfStringToListOfA != null) {
         oprot.writeFieldBegin(LIST_OF_MAP_OF_STRING_TO_LIST_OF_A_FIELD_DESC);
         List<Map<String, List<test.fixtures.shapes.A>>> _iter0 = listOfMapOfStringToListOfA;
@@ -2103,6 +2128,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (listOfMapOfStringToA != null) {
         oprot.writeFieldBegin(LIST_OF_MAP_OF_STRING_TO_A_FIELD_DESC);
         List<Map<String, test.fixtures.shapes.A>> _iter0 = listOfMapOfStringToA;
@@ -2124,19 +2151,27 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       oprot.writeFieldBegin(JUST_AN_ENUM_FIELD_DESC);
       oprot.writeI32(this.justAnEnum == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(this.justAnEnum));
       oprot.writeFieldEnd();
+      }
+      {
       if (justAUnion != null) {
         oprot.writeFieldBegin(JUST_AUNION_FIELD_DESC);
         this.justAUnion.write0(oprot);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (optionalJustAnA != null) {
         oprot.writeFieldBegin(OPTIONAL_JUST_AN_A_FIELD_DESC);
         this.optionalJustAnA.write0(oprot);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (optionalSetOfI32 != null) {
         oprot.writeFieldBegin(OPTIONAL_SET_OF_I32_FIELD_DESC);
         Set<Integer>  _iter0 = optionalSetOfI32;
@@ -2147,6 +2182,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (optionalListOfI32 != null) {
         oprot.writeFieldBegin(OPTIONAL_LIST_OF_I32_FIELD_DESC);
         List<Integer>  _iter0 = optionalListOfI32;
@@ -2157,6 +2194,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (optionalListOfString != null) {
         oprot.writeFieldBegin(OPTIONAL_LIST_OF_STRING_FIELD_DESC);
         List<String>  _iter0 = optionalListOfString;
@@ -2167,6 +2206,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (optionalMapOfStringToI32 != null) {
         oprot.writeFieldBegin(OPTIONAL_MAP_OF_STRING_TO_I32_FIELD_DESC);
         Map<String, Integer>  _iter0 = optionalMapOfStringToI32;
@@ -2184,6 +2225,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (optionalMapOfStringToA != null) {
         oprot.writeFieldBegin(OPTIONAL_MAP_OF_STRING_TO_A_FIELD_DESC);
         Map<String, test.fixtures.shapes.A>  _iter0 = optionalMapOfStringToA;
@@ -2201,6 +2244,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (optionalMapOfStringToListOfI32 != null) {
         oprot.writeFieldBegin(OPTIONAL_MAP_OF_STRING_TO_LIST_OF_I32_FIELD_DESC);
         Map<String, List<Integer>>  _iter0 = optionalMapOfStringToListOfI32;
@@ -2222,6 +2267,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (optionalMapOfStringToListOfA != null) {
         oprot.writeFieldBegin(OPTIONAL_MAP_OF_STRING_TO_LIST_OF_A_FIELD_DESC);
         Map<String, List<test.fixtures.shapes.A>>  _iter0 = optionalMapOfStringToListOfA;
@@ -2243,6 +2290,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (optionalMapOfStringToSetOfI32 != null) {
         oprot.writeFieldBegin(OPTIONAL_MAP_OF_STRING_TO_SET_OF_I32_FIELD_DESC);
         Map<String, Set<Integer>>  _iter0 = optionalMapOfStringToSetOfI32;
@@ -2264,33 +2313,49 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (optionalEnum != null) {
         oprot.writeFieldBegin(OPTIONAL_ENUM_FIELD_DESC);
         oprot.writeI32(this.optionalEnum == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(this.optionalEnum));
         oprot.writeFieldEnd();
       }
+      }
+      {
       oprot.writeFieldBegin(REQUIRED_ENUM_WITH_DEFAULT_FIELD_DESC);
       oprot.writeI32(this.requiredEnumWithDefault == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(this.requiredEnumWithDefault));
       oprot.writeFieldEnd();
+      }
+      {
       if (stringWithDefaultValue != null) {
         oprot.writeFieldBegin(STRING_WITH_DEFAULT_VALUE_FIELD_DESC);
         oprot.writeString(this.stringWithDefaultValue);
         oprot.writeFieldEnd();
       }
+      }
+      {
       oprot.writeFieldBegin(I32_WITH_DEFAULT_VALUE_FIELD_DESC);
       oprot.writeI32(this.i32WithDefaultValue);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(DOUBLE_WITH_DEFAULT_VALUE_FIELD_DESC);
       oprot.writeDouble(this.doubleWithDefaultValue);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(ENUM_WITH_DEFAULT_VALUE_FIELD_DESC);
       oprot.writeI32(this.enumWithDefaultValue == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(this.enumWithDefaultValue));
       oprot.writeFieldEnd();
+      }
+      {
       if (aWithDefaultValue != null) {
         oprot.writeFieldBegin(A_WITH_DEFAULT_VALUE_FIELD_DESC);
         this.aWithDefaultValue.write0(oprot);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (setOfI32WithDefaultValue != null) {
         oprot.writeFieldBegin(SET_OF_I32_WITH_DEFAULT_VALUE_FIELD_DESC);
         Set<Integer> _iter0 = setOfI32WithDefaultValue;
@@ -2301,6 +2366,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (mapOfI32ToStringWithDefaultValue != null) {
         oprot.writeFieldBegin(MAP_OF_I32_TO_STRING_WITH_DEFAULT_VALUE_FIELD_DESC);
         Map<Integer, String> _iter0 = mapOfI32ToStringWithDefaultValue;
@@ -2318,6 +2385,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (listOfStringWithDefaultValue != null) {
         oprot.writeFieldBegin(LIST_OF_STRING_WITH_DEFAULT_VALUE_FIELD_DESC);
         List<String> _iter0 = listOfStringWithDefaultValue;
@@ -2328,6 +2397,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (mapOfStringToListOfI32WithDefaultValue != null) {
         oprot.writeFieldBegin(MAP_OF_STRING_TO_LIST_OF_I32_WITH_DEFAULT_VALUE_FIELD_DESC);
         Map<String, List<Integer>> _iter0 = mapOfStringToListOfI32WithDefaultValue;
@@ -2348,6 +2419,7 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

@@ -466,45 +466,65 @@ public final class AdaptTestStruct implements com.facebook.thrift.payload.Thrift
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       oprot.writeFieldBegin(DELAY_FIELD_DESC);
       oprot.writeI64(this.delay);
       oprot.writeFieldEnd();
+      }
+      {
       if (custom != null) {
         oprot.writeFieldBegin(CUSTOM_FIELD_DESC);
         oprot.writeBinary(java.nio.ByteBuffer.wrap(this.custom));
         oprot.writeFieldEnd();
       }
+      }
+      {
       oprot.writeFieldBegin(TIMEOUT_FIELD_DESC);
       oprot.writeI64(this.timeout);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(DATA_FIELD_DESC);
       oprot.writeI64(this.data);
       oprot.writeFieldEnd();
+      }
+      {
       if (meta != null) {
         oprot.writeFieldBegin(META_FIELD_DESC);
         oprot.writeString(this.meta);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (indirectionString != null) {
         oprot.writeFieldBegin(INDIRECTION_STRING_FIELD_DESC);
         oprot.writeString(this.indirectionString);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (stringData != null) {
         oprot.writeFieldBegin(STRING_DATA_FIELD_DESC);
         oprot.writeString(this.stringData);
         oprot.writeFieldEnd();
       }
+      }
+      {
       oprot.writeFieldBegin(DOUBLE_WRAPPED_BOOL_FIELD_DESC);
       oprot.writeBool(this.doubleWrappedBool);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(DOUBLE_WRAPPED_INTEGER_FIELD_DESC);
       oprot.writeI32(this.doubleWrappedInteger);
       oprot.writeFieldEnd();
+      }
+      {
       if (binaryData != null) {
         oprot.writeFieldBegin(BINARY_DATA_FIELD_DESC);
         oprot.writeBinary(java.nio.ByteBuffer.wrap(this.binaryData));
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

@@ -256,25 +256,33 @@ public final class StructFieldAdaptedStruct implements com.facebook.thrift.paylo
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       if (adaptedStruct != null) {
         oprot.writeFieldBegin(ADAPTED_STRUCT_FIELD_DESC);
         this.adaptedStruct.write0(oprot);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (adaptedTypedef != null) {
         oprot.writeFieldBegin(ADAPTED_TYPEDEF_FIELD_DESC);
         this.adaptedTypedef.write0(oprot);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (directlyAdapted != null) {
         oprot.writeFieldBegin(DIRECTLY_ADAPTED_FIELD_DESC);
         this.directlyAdapted.write0(oprot);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (typedefOfAdapted != null) {
         oprot.writeFieldBegin(TYPEDEF_OF_ADAPTED_FIELD_DESC);
         this.typedefOfAdapted.write0(oprot);
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

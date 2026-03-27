@@ -494,29 +494,40 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       oprot.writeFieldBegin(ID_FIELD_DESC);
       oprot.writeI64(this.id);
       oprot.writeFieldEnd();
+      }
+      {
       if (name != null) {
         oprot.writeFieldBegin(NAME_FIELD_DESC);
         oprot.writeString(this.name);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (age != null) {
         oprot.writeFieldBegin(AGE_FIELD_DESC);
         oprot.writeI16(this.age);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (address != null) {
         oprot.writeFieldBegin(ADDRESS_FIELD_DESC);
         oprot.writeString(this.address);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (favoriteColor != null) {
         oprot.writeFieldBegin(FAVORITE_COLOR_FIELD_DESC);
         this.favoriteColor.write0(oprot);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (friends != null) {
         oprot.writeFieldBegin(FRIENDS_FIELD_DESC);
         Set<Long>  _iter0 = friends;
@@ -527,11 +538,15 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (bestFriend != null) {
         oprot.writeFieldBegin(BEST_FRIEND_FIELD_DESC);
         oprot.writeI64(this.bestFriend);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (petNames != null) {
         oprot.writeFieldBegin(PET_NAMES_FIELD_DESC);
         Map<test.fixtures.optionals.Animal, String>  _iter0 = petNames;
@@ -549,11 +564,15 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (afraidOfAnimal != null) {
         oprot.writeFieldBegin(AFRAID_OF_ANIMAL_FIELD_DESC);
         oprot.writeI32(this.afraidOfAnimal == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(this.afraidOfAnimal));
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (vehicles != null) {
         oprot.writeFieldBegin(VEHICLES_FIELD_DESC);
         List<test.fixtures.optionals.Vehicle>  _iter0 = vehicles;
@@ -563,6 +582,7 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

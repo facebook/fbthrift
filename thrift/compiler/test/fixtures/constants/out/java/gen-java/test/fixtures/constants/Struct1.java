@@ -183,13 +183,17 @@ public final class Struct1 implements com.facebook.thrift.payload.ThriftSerializ
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       oprot.writeFieldBegin(A_FIELD_DESC);
       oprot.writeI32(this.a);
       oprot.writeFieldEnd();
+      }
+      {
       if (b != null) {
         oprot.writeFieldBegin(B_FIELD_DESC);
         oprot.writeString(this.b);
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

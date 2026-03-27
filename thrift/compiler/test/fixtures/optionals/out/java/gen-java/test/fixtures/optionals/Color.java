@@ -253,18 +253,26 @@ public final class Color implements com.facebook.thrift.payload.ThriftSerializab
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       oprot.writeFieldBegin(RED_FIELD_DESC);
       oprot.writeDouble(this.red);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(GREEN_FIELD_DESC);
       oprot.writeDouble(this.green);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(BLUE_FIELD_DESC);
       oprot.writeDouble(this.blue);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(ALPHA_FIELD_DESC);
       oprot.writeDouble(this.alpha);
       oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }

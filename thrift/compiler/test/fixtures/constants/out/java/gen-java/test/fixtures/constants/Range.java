@@ -183,12 +183,16 @@ public final class Range implements com.facebook.thrift.payload.ThriftSerializab
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       oprot.writeFieldBegin(MIN_FIELD_DESC);
       oprot.writeI32(this.min);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MAX_FIELD_DESC);
       oprot.writeI32(this.max);
       oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }

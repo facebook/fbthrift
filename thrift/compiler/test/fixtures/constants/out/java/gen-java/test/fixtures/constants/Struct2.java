@@ -263,19 +263,26 @@ public final class Struct2 implements com.facebook.thrift.payload.ThriftSerializ
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       oprot.writeFieldBegin(A_FIELD_DESC);
       oprot.writeI32(this.a);
       oprot.writeFieldEnd();
+      }
+      {
       if (b != null) {
         oprot.writeFieldBegin(B_FIELD_DESC);
         oprot.writeString(this.b);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (c != null) {
         oprot.writeFieldBegin(C_FIELD_DESC);
         this.c.write0(oprot);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (d != null) {
         oprot.writeFieldBegin(D_FIELD_DESC);
         List<Integer> _iter0 = d;
@@ -285,6 +292,7 @@ public final class Struct2 implements com.facebook.thrift.payload.ThriftSerializ
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

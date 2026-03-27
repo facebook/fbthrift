@@ -384,6 +384,7 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       if (listRef != null) {
         oprot.writeFieldBegin(LIST_REF_FIELD_DESC);
         List<Integer> _iter0 = listRef;
@@ -394,6 +395,8 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (setRef != null) {
         oprot.writeFieldBegin(SET_REF_FIELD_DESC);
         Set<Integer> _iter0 = setRef;
@@ -404,6 +407,8 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (mapRef != null) {
         oprot.writeFieldBegin(MAP_REF_FIELD_DESC);
         Map<Integer, Integer> _iter0 = mapRef;
@@ -421,6 +426,8 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (listRefUnique != null) {
         oprot.writeFieldBegin(LIST_REF_UNIQUE_FIELD_DESC);
         List<Integer> _iter0 = listRefUnique;
@@ -431,6 +438,8 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (setRefShared != null) {
         oprot.writeFieldBegin(SET_REF_SHARED_FIELD_DESC);
         Set<Integer> _iter0 = setRefShared;
@@ -441,6 +450,8 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (listRefSharedConst != null) {
         oprot.writeFieldBegin(LIST_REF_SHARED_CONST_FIELD_DESC);
         List<Integer> _iter0 = listRefSharedConst;
@@ -450,6 +461,7 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

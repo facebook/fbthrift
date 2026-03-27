@@ -258,25 +258,33 @@ public final class StructWithFieldAdapter implements com.facebook.thrift.payload
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       Integer field = _field_Adapter.toThrift(this.field);
       if (field != null) {
         oprot.writeFieldBegin(FIELD_FIELD_DESC);
         oprot.writeI32(field);
         oprot.writeFieldEnd();
       }
+      }
+      {
       oprot.writeFieldBegin(SHARED_FIELD_FIELD_DESC);
       oprot.writeI32(this.sharedField);
       oprot.writeFieldEnd();
+      }
+      {
       Integer optSharedField = _optSharedField_Adapter.toThrift(this.optSharedField);
       if (optSharedField != null) {
         oprot.writeFieldBegin(OPT_SHARED_FIELD_FIELD_DESC);
         oprot.writeI32(optSharedField);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (optBoxedField != null) {
         oprot.writeFieldBegin(OPT_BOXED_FIELD_FIELD_DESC);
         oprot.writeI32(this.optBoxedField);
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

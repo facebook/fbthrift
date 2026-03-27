@@ -293,28 +293,38 @@ public final class User implements com.facebook.thrift.payload.ThriftSerializabl
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       oprot.writeFieldBegin(ID_FIELD_DESC);
       oprot.writeI64(this.id);
       oprot.writeFieldEnd();
+      }
+      {
       if (name != null) {
         oprot.writeFieldBegin(NAME_FIELD_DESC);
         oprot.writeString(this.name);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (fullName != null) {
         oprot.writeFieldBegin(FULL_NAME_FIELD_DESC);
         oprot.writeString(this.fullName);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (email != null) {
         oprot.writeFieldBegin(EMAIL_FIELD_DESC);
         oprot.writeString(this.email);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (emailAddress != null) {
         oprot.writeFieldBegin(EMAIL_ADDRESS_FIELD_DESC);
         oprot.writeString(this.emailAddress);
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

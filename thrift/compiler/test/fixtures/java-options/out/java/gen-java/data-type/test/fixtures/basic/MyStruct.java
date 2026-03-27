@@ -441,31 +441,46 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       oprot.writeFieldBegin(MY_INT_FIELD_FIELD_DESC);
       oprot.writeI64(this.myIntField);
       oprot.writeFieldEnd();
+      }
+      {
       if (myStringField != null) {
         oprot.writeFieldBegin(MY_STRING_FIELD_FIELD_DESC);
         oprot.writeString(this.myStringField);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (myDataField != null) {
         oprot.writeFieldBegin(MY_DATA_FIELD_FIELD_DESC);
         this.myDataField.write0(oprot);
         oprot.writeFieldEnd();
       }
+      }
+      {
       oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
       oprot.writeI32(this.myEnum == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(this.myEnum));
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(ONEWAY_FIELD_DESC);
       oprot.writeBool(this.oneway);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(READONLY_FIELD_DESC);
       oprot.writeBool(this.readonly);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(IDEMPOTENT_FIELD_DESC);
       oprot.writeBool(this.idempotent);
       oprot.writeFieldEnd();
+      }
+      {
       if (floatSet != null) {
         oprot.writeFieldBegin(FLOAT_SET_FIELD_DESC);
         Set<Float> _iter0 = floatSet;
@@ -476,10 +491,13 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (noHackCodegenField != null) {
         oprot.writeFieldBegin(NO_HACK_CODEGEN_FIELD_FIELD_DESC);
         oprot.writeString(this.noHackCodegenField);
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

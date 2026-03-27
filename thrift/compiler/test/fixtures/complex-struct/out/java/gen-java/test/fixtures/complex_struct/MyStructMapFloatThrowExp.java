@@ -221,9 +221,12 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       oprot.writeFieldBegin(MY_LONG_FIELD_FIELD_DESC);
       oprot.writeI64(this.myLongField);
       oprot.writeFieldEnd();
+      }
+      {
       if (mapListOfFloats != null) {
         oprot.writeFieldBegin(MAP_LIST_OF_FLOATS_FIELD_DESC);
         Map<Integer, List<List<Float>>> _iter0 = mapListOfFloats;
@@ -248,6 +251,7 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

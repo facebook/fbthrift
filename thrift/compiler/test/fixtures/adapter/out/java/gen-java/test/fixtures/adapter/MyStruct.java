@@ -197,9 +197,12 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       oprot.writeFieldBegin(FIELD_FIELD_DESC);
       oprot.writeI32(this.field);
       oprot.writeFieldEnd();
+      }
+      {
       Set<String> setString = __SetWithAdapter_Adapter.toThrift(this.setString);
       if (setString != null) {
         oprot.writeFieldBegin(SET_STRING_FIELD_DESC);
@@ -210,6 +213,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             }
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

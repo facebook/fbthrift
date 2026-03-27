@@ -148,10 +148,12 @@ public final class ShouldBeBoxed implements com.facebook.thrift.payload.ThriftSe
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       if (sessionId != null) {
         oprot.writeFieldBegin(SESSION_ID_FIELD_DESC);
         oprot.writeString(this.sessionId);
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

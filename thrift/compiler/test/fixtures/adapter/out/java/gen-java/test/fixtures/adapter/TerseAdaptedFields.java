@@ -234,11 +234,14 @@ public final class TerseAdaptedFields implements com.facebook.thrift.payload.Thr
       int structStart = 0;
       int pos = 0;
       com.facebook.thrift.protocol.ByteBufTProtocol p = (com.facebook.thrift.protocol.ByteBufTProtocol) oprot;
+      {
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(intField)) {
         oprot.writeFieldBegin(INT_FIELD_FIELD_DESC);
         oprot.writeI32(this.intField);
         oprot.writeFieldEnd();
       };
+      }
+      {
       java.util.Objects.requireNonNull(stringField, "stringField must not be null");
       
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(stringField)) {
@@ -246,6 +249,8 @@ public final class TerseAdaptedFields implements com.facebook.thrift.payload.Thr
         oprot.writeString(this.stringField);
         oprot.writeFieldEnd();
       }
+      }
+      {
       java.util.Objects.requireNonNull(setField, "setField must not be null");
       
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(setField)) {
@@ -257,6 +262,7 @@ public final class TerseAdaptedFields implements com.facebook.thrift.payload.Thr
             }
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

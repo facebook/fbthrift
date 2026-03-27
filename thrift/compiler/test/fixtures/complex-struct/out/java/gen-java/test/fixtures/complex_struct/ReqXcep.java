@@ -143,14 +143,18 @@ public final class ReqXcep extends org.apache.thrift.TBaseException implements c
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       if (message != null) {
         oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
         oprot.writeString(this.message);
         oprot.writeFieldEnd();
       }
+      }
+      {
       oprot.writeFieldBegin(ERROR_CODE_FIELD_DESC);
       oprot.writeI32(this.errorCode);
       oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }

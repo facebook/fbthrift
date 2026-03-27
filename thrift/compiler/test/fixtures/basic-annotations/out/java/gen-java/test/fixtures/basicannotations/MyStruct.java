@@ -441,37 +441,52 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       oprot.writeFieldBegin(MAJOR_FIELD_DESC);
       oprot.writeI64(this.major);
       oprot.writeFieldEnd();
+      }
+      {
       if (_abstract != null) {
         oprot.writeFieldBegin(_ABSTRACT_FIELD_DESC);
         oprot.writeString(this._abstract);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (annotationWithQuote != null) {
         oprot.writeFieldBegin(ANNOTATION_WITH_QUOTE_FIELD_DESC);
         oprot.writeString(this.annotationWithQuote);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (class_ != null) {
         oprot.writeFieldBegin(CLASS__FIELD_DESC);
         oprot.writeString(this.class_);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (annotationWithTrailingComma != null) {
         oprot.writeFieldBegin(ANNOTATION_WITH_TRAILING_COMMA_FIELD_DESC);
         oprot.writeString(this.annotationWithTrailingComma);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (emptyAnnotations != null) {
         oprot.writeFieldBegin(EMPTY_ANNOTATIONS_FIELD_DESC);
         oprot.writeString(this.emptyAnnotations);
         oprot.writeFieldEnd();
       }
+      }
+      {
       oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
       oprot.writeI32(this.myEnum == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(this.myEnum));
       oprot.writeFieldEnd();
+      }
+      {
       if (cppTypeAnnotation != null) {
         oprot.writeFieldBegin(CPP_TYPE_ANNOTATION_FIELD_DESC);
         List<String> _iter0 = cppTypeAnnotation;
@@ -482,10 +497,13 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (myUnion != null) {
         oprot.writeFieldBegin(MY_UNION_FIELD_DESC);
         this.myUnion.write0(oprot);
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

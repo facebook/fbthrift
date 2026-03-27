@@ -690,26 +690,39 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       oprot.writeFieldBegin(MY_INT16_FIELD_DESC);
       oprot.writeI16(this.myInt16);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_INT32_FIELD_DESC);
       oprot.writeI32(this.myInt32);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_INT64_FIELD_DESC);
       oprot.writeI64(this.myInt64);
       oprot.writeFieldEnd();
+      }
+      {
       if (myString != null) {
         oprot.writeFieldBegin(MY_STRING_FIELD_DESC);
         oprot.writeString(this.myString);
         oprot.writeFieldEnd();
       }
+      }
+      {
       oprot.writeFieldBegin(MY_BOOL_FIELD_DESC);
       oprot.writeBool(this.myBool);
       oprot.writeFieldEnd();
+      }
+      {
       oprot.writeFieldBegin(MY_DOUBLE_FIELD_DESC);
       oprot.writeDouble(this.myDouble);
       oprot.writeFieldEnd();
+      }
+      {
       if (mySet != null) {
         oprot.writeFieldBegin(MY_SET_FIELD_DESC);
         Set<String> _iter0 = mySet;
@@ -720,11 +733,15 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (myDataItem != null) {
         oprot.writeFieldBegin(MY_DATA_ITEM_FIELD_DESC);
         this.myDataItem.write0(oprot);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (myList != null) {
         oprot.writeFieldBegin(MY_LIST_FIELD_DESC);
         List<test.fixtures.basic_swift_bean.MyDataItem> _iter0 = myList;
@@ -735,6 +752,8 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (myMapList != null) {
         oprot.writeFieldBegin(MY_MAP_LIST_FIELD_DESC);
         Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _iter0 = myMapList;
@@ -756,6 +775,8 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (myEmptyList != null) {
         oprot.writeFieldBegin(MY_EMPTY_LIST_FIELD_DESC);
         List<test.fixtures.basic_swift_bean.MyDataItem> _iter0 = myEmptyList;
@@ -766,6 +787,8 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (myEmptyMapList != null) {
         oprot.writeFieldBegin(MY_EMPTY_MAP_LIST_FIELD_DESC);
         Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _iter0 = myEmptyMapList;
@@ -786,6 +809,7 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
             }
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

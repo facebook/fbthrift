@@ -151,10 +151,12 @@ public final class MoveOnly implements com.facebook.thrift.payload.ThriftSeriali
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       if (ptr != null) {
         oprot.writeFieldBegin(PTR_FIELD_DESC);
         this.ptr.write0(oprot);
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

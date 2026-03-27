@@ -23,6 +23,7 @@ public void write0(TProtocol oprot) throws TException {
   com.facebook.thrift.protocol.ByteBufTProtocol p = (com.facebook.thrift.protocol.ByteBufTProtocol) oprot;
   {{/struct:hasTerseField?}}
   {{#struct:fields_in_serialization_order}}
+  {
   {{#field:hasAdapterOrWrapper?}}
   {{#field:type}}{{> AdaptedBoxedType}}{{/field:type}} {{field:javaName}} = {{> ToThriftStart}}this.{{field:javaName}}{{> ToThriftEnd}};
   {{/field:hasAdapterOrWrapper?}}
@@ -115,6 +116,7 @@ public void write0(TProtocol oprot) throws TException {
   {{/field:hasAdapterOrWrapper?}}{{!
   }}{{/field:terse?}}{{!
   }}{{/field:isNullableOrOptionalNotEnum?}}
+  }
   {{/struct:fields_in_serialization_order}}
   oprot.writeFieldStop();
   oprot.writeStructEnd();

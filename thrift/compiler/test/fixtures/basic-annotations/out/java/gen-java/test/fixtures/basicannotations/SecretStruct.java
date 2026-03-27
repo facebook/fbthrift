@@ -185,13 +185,17 @@ public final class SecretStruct implements com.facebook.thrift.payload.ThriftSer
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       oprot.writeFieldBegin(ID_FIELD_DESC);
       oprot.writeI64(this.id);
       oprot.writeFieldEnd();
+      }
+      {
       if (password != null) {
         oprot.writeFieldBegin(PASSWORD_FIELD_DESC);
         oprot.writeString(this.password);
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

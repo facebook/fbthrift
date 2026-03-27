@@ -336,19 +336,26 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       oprot.writeFieldBegin(INT_FIELD_FIELD_DESC);
       oprot.writeI64(this.intField);
       oprot.writeFieldEnd();
+      }
+      {
       if (stringField != null) {
         oprot.writeFieldBegin(STRING_FIELD_FIELD_DESC);
         oprot.writeString(this.stringField);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (detailField != null) {
         oprot.writeFieldBegin(DETAIL_FIELD_FIELD_DESC);
         oprot.writeString(this.detailField);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (detailMap != null) {
         oprot.writeFieldBegin(DETAIL_MAP_FIELD_DESC);
         com.foo.FastIntLongMap _iter0 = detailMap;
@@ -366,15 +373,20 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (toto != null) {
         oprot.writeFieldBegin(TOTO_FIELD_DESC);
         oprot.writeString(this.toto);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (password != null) {
         oprot.writeFieldBegin(PASSWORD_FIELD_DESC);
         oprot.writeString(this.password);
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

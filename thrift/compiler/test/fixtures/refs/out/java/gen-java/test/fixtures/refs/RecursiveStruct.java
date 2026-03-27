@@ -158,6 +158,7 @@ public final class RecursiveStruct implements com.facebook.thrift.payload.Thrift
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       if (mes != null) {
         oprot.writeFieldBegin(MES_FIELD_DESC);
         List<test.fixtures.refs.RecursiveStruct>  _iter0 = mes;
@@ -167,6 +168,7 @@ public final class RecursiveStruct implements com.facebook.thrift.payload.Thrift
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

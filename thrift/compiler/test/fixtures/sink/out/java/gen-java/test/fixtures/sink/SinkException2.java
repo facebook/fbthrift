@@ -112,9 +112,11 @@ public final class SinkException2 extends org.apache.thrift.TBaseException imple
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       oprot.writeFieldBegin(REASON_FIELD_DESC);
       oprot.writeI64(this.reason);
       oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }

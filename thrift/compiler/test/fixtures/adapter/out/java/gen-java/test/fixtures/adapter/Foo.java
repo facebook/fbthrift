@@ -796,24 +796,31 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       Integer intField = _intField_Adapter.toThrift(this.intField);
       if (intField != null) {
         oprot.writeFieldBegin(INT_FIELD_FIELD_DESC);
         oprot.writeI32(intField);
         oprot.writeFieldEnd();
       }
+      }
+      {
       Integer optionalIntField = _optionalIntField_Adapter.toThrift(this.optionalIntField);
       if (optionalIntField != null) {
         oprot.writeFieldBegin(OPTIONAL_INT_FIELD_FIELD_DESC);
         oprot.writeI32(optionalIntField);
         oprot.writeFieldEnd();
       }
+      }
+      {
       Integer intFieldWithDefault = _intFieldWithDefault_Adapter.toThrift(this.intFieldWithDefault);
       if (intFieldWithDefault != null) {
         oprot.writeFieldBegin(INT_FIELD_WITH_DEFAULT_FIELD_DESC);
         oprot.writeI32(intFieldWithDefault);
         oprot.writeFieldEnd();
       }
+      }
+      {
       Set<String> setField = __SetWithAdapter_Adapter.toThrift(this.setField);
       if (setField != null) {
         oprot.writeFieldBegin(SET_FIELD_FIELD_DESC);
@@ -825,6 +832,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       Set<String> optionalSetField = __SetWithAdapter_Adapter.toThrift(this.optionalSetField);
       if (optionalSetField != null) {
         oprot.writeFieldBegin(OPTIONAL_SET_FIELD_FIELD_DESC);
@@ -836,6 +845,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       Map<String, com.facebook.thrift.my.AdaptedList_2> mapField = _mapField_Adapter.toThrift(this.mapField);
       if (mapField != null) {
         oprot.writeFieldBegin(MAP_FIELD_FIELD_DESC);
@@ -859,6 +870,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       Map<String, com.facebook.thrift.my.AdaptedList_2> optionalMapField = _optionalMapField_Adapter.toThrift(this.optionalMapField);
       if (optionalMapField != null) {
         oprot.writeFieldBegin(OPTIONAL_MAP_FIELD_FIELD_DESC);
@@ -882,30 +895,40 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       io.netty.buffer.ByteBuf binaryField = _binaryField_Adapter.toThrift(this.binaryField);
       if (binaryField != null) {
         oprot.writeFieldBegin(BINARY_FIELD_FIELD_DESC);
         org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, binaryField);
         oprot.writeFieldEnd();
       }
+      }
+      {
       Long longField = __MyI64_Adapter.toThrift(this.longField);
       if (longField != null) {
         oprot.writeFieldBegin(LONG_FIELD_FIELD_DESC);
         oprot.writeI64(longField);
         oprot.writeFieldEnd();
       }
+      }
+      {
       Long adaptedLongField = __MyI64_Adapter.toThrift(_adaptedLongField_Adapter.toThrift(this.adaptedLongField));
       if (adaptedLongField != null) {
         oprot.writeFieldBegin(ADAPTED_LONG_FIELD_FIELD_DESC);
         oprot.writeI64(adaptedLongField);
         oprot.writeFieldEnd();
       }
+      }
+      {
       Long doubleAdaptedField = __DoubleTypedefI64_Adapter.toThrift(this.doubleAdaptedField);
       if (doubleAdaptedField != null) {
         oprot.writeFieldBegin(DOUBLE_ADAPTED_FIELD_FIELD_DESC);
         oprot.writeI64(doubleAdaptedField);
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (adaptedList != null) {
         oprot.writeFieldBegin(ADAPTED_LIST_FIELD_DESC);
         List<Integer> _iter0 = adaptedList;
@@ -916,6 +939,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (adaptedSet != null) {
         oprot.writeFieldBegin(ADAPTED_SET_FIELD_DESC);
         Set<Integer> _iter0 = adaptedSet;
@@ -926,6 +951,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (adaptedMap != null) {
         oprot.writeFieldBegin(ADAPTED_MAP_FIELD_DESC);
         Map<String, Integer> _iter0 = adaptedMap;
@@ -943,6 +970,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       if (adaptedListNested != null) {
         oprot.writeFieldBegin(ADAPTED_LIST_NESTED_FIELD_DESC);
         List<List<Map<Integer, Integer>>> _iter0 = adaptedListNested;
@@ -967,6 +996,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();
+      }
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();

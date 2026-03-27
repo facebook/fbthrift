@@ -675,41 +675,56 @@ public final class StructLevelTerseStruct implements com.facebook.thrift.payload
       int structStart = 0;
       int pos = 0;
       com.facebook.thrift.protocol.ByteBufTProtocol p = (com.facebook.thrift.protocol.ByteBufTProtocol) oprot;
+      {
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(boolField)) {
         oprot.writeFieldBegin(BOOL_FIELD_FIELD_DESC);
         oprot.writeBool(this.boolField);
         oprot.writeFieldEnd();
       };
+      }
+      {
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(byteField)) {
         oprot.writeFieldBegin(BYTE_FIELD_FIELD_DESC);
         oprot.writeByte(this.byteField);
         oprot.writeFieldEnd();
       };
+      }
+      {
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(shortField)) {
         oprot.writeFieldBegin(SHORT_FIELD_FIELD_DESC);
         oprot.writeI16(this.shortField);
         oprot.writeFieldEnd();
       };
+      }
+      {
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(intField)) {
         oprot.writeFieldBegin(INT_FIELD_FIELD_DESC);
         oprot.writeI32(this.intField);
         oprot.writeFieldEnd();
       };
+      }
+      {
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(longField)) {
         oprot.writeFieldBegin(LONG_FIELD_FIELD_DESC);
         oprot.writeI64(this.longField);
         oprot.writeFieldEnd();
       };
+      }
+      {
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(floatField)) {
         oprot.writeFieldBegin(FLOAT_FIELD_FIELD_DESC);
         oprot.writeFloat(this.floatField);
         oprot.writeFieldEnd();
       };
+      }
+      {
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(doubleField)) {
         oprot.writeFieldBegin(DOUBLE_FIELD_FIELD_DESC);
         oprot.writeDouble(this.doubleField);
         oprot.writeFieldEnd();
       };
+      }
+      {
       java.util.Objects.requireNonNull(stringField, "stringField must not be null");
       
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(stringField)) {
@@ -717,6 +732,8 @@ public final class StructLevelTerseStruct implements com.facebook.thrift.payload
         oprot.writeString(this.stringField);
         oprot.writeFieldEnd();
       }
+      }
+      {
       java.util.Objects.requireNonNull(binaryField, "binaryField must not be null");
       
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(binaryField)) {
@@ -724,12 +741,16 @@ public final class StructLevelTerseStruct implements com.facebook.thrift.payload
         oprot.writeBinary(java.nio.ByteBuffer.wrap(this.binaryField));
         oprot.writeFieldEnd();
       }
+      }
+      {
       java.util.Objects.requireNonNull(enumField, "enumField must not be null");
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(com.facebook.thrift.util.EnumUtil.getValue(enumField))) {
         oprot.writeFieldBegin(ENUM_FIELD_FIELD_DESC);
         oprot.writeI32(this.enumField == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(this.enumField));
         oprot.writeFieldEnd();
       };
+      }
+      {
       java.util.Objects.requireNonNull(listField, "listField must not be null");
       
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(listField)) {
@@ -742,6 +763,8 @@ public final class StructLevelTerseStruct implements com.facebook.thrift.payload
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       java.util.Objects.requireNonNull(setField, "setField must not be null");
       
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(setField)) {
@@ -754,6 +777,8 @@ public final class StructLevelTerseStruct implements com.facebook.thrift.payload
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       java.util.Objects.requireNonNull(mapField, "mapField must not be null");
       
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(mapField)) {
@@ -773,6 +798,8 @@ public final class StructLevelTerseStruct implements com.facebook.thrift.payload
             oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      }
+      {
       java.util.Objects.requireNonNull(structField, "structField must not be null");
       structStart = p.mark();
         oprot.writeFieldBegin(STRUCT_FIELD_FIELD_DESC);
@@ -783,6 +810,8 @@ public final class StructLevelTerseStruct implements com.facebook.thrift.payload
         } else {
           p.rollback(structStart);
         }
+      }
+      {
       java.util.Objects.requireNonNull(unionField, "unionField must not be null");
       structStart = p.mark();
         oprot.writeFieldBegin(UNION_FIELD_FIELD_DESC);
@@ -793,6 +822,7 @@ public final class StructLevelTerseStruct implements com.facebook.thrift.payload
         } else {
           p.rollback(structStart);
         }
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }

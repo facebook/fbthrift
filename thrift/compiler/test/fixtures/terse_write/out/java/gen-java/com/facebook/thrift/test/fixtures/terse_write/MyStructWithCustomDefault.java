@@ -151,9 +151,11 @@ public final class MyStructWithCustomDefault implements com.facebook.thrift.payl
 
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
+      {
       oprot.writeFieldBegin(FIELD1_FIELD_DESC);
       oprot.writeI64(this.field1);
       oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
