@@ -696,6 +696,8 @@ myInt = 1337
 
 name = "Mark Zuckerberg"
 
+dollar_string = "$_presto_anonymous_$"
+
 multi_line_string = "This\nis a\nmulti line string.\n"
 
 states = _fbthrift_python_types.List(_fbthrift_python_mutable_typeinfos.MutableMapTypeInfo(_fbthrift_python_types.typeinfo_string, _fbthrift_python_types.typeinfo_i32), (_fbthrift_python_types.Map(_fbthrift_python_types.typeinfo_string, _fbthrift_python_types.typeinfo_i32, { "San Diego": 3211000, "Sacramento": 479600, "SF": 837400}), _fbthrift_python_types.Map(_fbthrift_python_types.typeinfo_string, _fbthrift_python_types.typeinfo_i32, { "New York": 8406000, "Albany": 98400}), ))
