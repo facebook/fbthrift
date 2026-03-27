@@ -17,6 +17,7 @@
 }}{{#pragma ignore-newlines}}
 {{#import "common/const_value" as const_value}}
 {{#import "common/types" as types}}
+{{#import "codec/codec" as codec}}
 {{#if struct:union?}}{{> Union}}
 {{#else if struct:exception?}}{{> Exception}}
 {{#else}}{{> Struct}}
