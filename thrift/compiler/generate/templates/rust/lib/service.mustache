@@ -21,7 +21,7 @@ pub mod {{service:snake}} \{{{!
     }}{{#if service:docs?}}
     #![doc = {{service:docs}}]
     {{/if service:docs?}}{{!
-    }}{{#service:rustFunctions}}{{#if (not function:starts_interaction?)}}{{#if function:stream?}}
+    }}{{#service:functions}}{{#if (not function:starts_interaction?)}}{{#if function:stream?}}
 
     #[derive(Clone, Debug)]
     pub enum {{function:upcamel}}StreamExn {
@@ -70,14 +70,14 @@ pub mod {{service:snake}} \{{{!
             }
         }
     }{{!
-    }}{{#function:uniqueStreamExceptions}}
+    }}{{#function:stream.unique_exceptions}}
 
-    impl ::std::convert::From<{{#partial types.type_name type=field:self.type}}> for {{function:upcamel}}StreamExn {
-        fn from(exn: {{#partial types.type_name type=field:self.type}}) -> Self {
+    impl ::std::convert::From<{{#partial types.type_name type=field:type}}> for {{function:upcamel}}StreamExn {
+        fn from(exn: {{#partial types.type_name type=field:type}}) -> Self {
             Self::{{field:rust_name}}(exn)
         }
     }{{!
-    }}{{/function:uniqueStreamExceptions}}
+    }}{{/function:stream.unique_exceptions}}
 
     impl ::std::convert::From<::fbthrift::ApplicationException> for {{function:upcamel}}StreamExn {
         fn from(exn: ::fbthrift::ApplicationException) -> Self {
@@ -236,14 +236,14 @@ pub mod {{service:snake}} \{{{!
             }
         }
     }{{!
-    }}{{#function:uniqueSinkExceptions}}
+    }}{{#function:sink.unique_exceptions}}
 
-    impl ::std::convert::From<{{#partial types.type_name type=field:self.type}}> for {{function:upcamel}}SinkExn {
-        fn from(exn: {{#partial types.type_name type=field:self.type}}) -> Self {
+    impl ::std::convert::From<{{#partial types.type_name type=field:type}}> for {{function:upcamel}}SinkExn {
+        fn from(exn: {{#partial types.type_name type=field:type}}) -> Self {
             Self::{{field:rust_name}}(exn)
         }
     }{{!
-    }}{{/function:uniqueSinkExceptions}}
+    }}{{/function:sink.unique_exceptions}}
 
     impl ::std::convert::From<::fbthrift::ApplicationException> for {{function:upcamel}}SinkExn {
         fn from(exn: ::fbthrift::ApplicationException) -> Self {
@@ -417,14 +417,14 @@ pub mod {{service:snake}} \{{{!
             }
         }
     }{{!
-    }}{{#function:uniqueSinkFinalExceptions}}
+    }}{{#function:sink.unique_final_exceptions}}
 
-    impl ::std::convert::From<{{#partial types.type_name type=field:self.type}}> for {{function:upcamel}}SinkFinalExn {
-        fn from(exn: {{#partial types.type_name type=field:self.type}}) -> Self {
+    impl ::std::convert::From<{{#partial types.type_name type=field:type}}> for {{function:upcamel}}SinkFinalExn {
+        fn from(exn: {{#partial types.type_name type=field:type}}) -> Self {
             Self::{{field:rust_name}}(exn)
         }
     }{{!
-    }}{{/function:uniqueSinkFinalExceptions}}
+    }}{{/function:sink.unique_final_exceptions}}
 
     impl ::std::convert::From<::fbthrift::ApplicationException> for {{function:upcamel}}SinkFinalExn {
         fn from(exn: ::fbthrift::ApplicationException) -> Self {
@@ -498,14 +498,14 @@ pub mod {{service:snake}} \{{{!
         }}{{/function:exceptions}}
         ApplicationException(::fbthrift::ApplicationException),
     }{{!
-    }}{{#function:uniqueExceptions}}
+    }}{{#function:unique_exceptions}}
 
-    impl ::std::convert::From<{{#partial types.type_name type=field:self.type}}> for {{function:upcamel}}Exn {
-        fn from(exn: {{#partial types.type_name type=field:self.type}}) -> Self {
+    impl ::std::convert::From<{{#partial types.type_name type=field:type}}> for {{function:upcamel}}Exn {
+        fn from(exn: {{#partial types.type_name type=field:type}}) -> Self {
             Self::{{field:rust_name}}(exn)
         }
     }{{!
-    }}{{/function:uniqueExceptions}}
+    }}{{/function:unique_exceptions}}
     {{#if function:enable_anyhow_to_application_exn}}
 
     impl ::std::convert::From<::anyhow::Error> for {{function:upcamel}}Exn {
@@ -656,5 +656,5 @@ pub mod {{service:snake}} \{{{!
             p.write_struct_end();
         }
     }
-    {{/if (not function:starts_interaction?)}}{{/service:rustFunctions}}
+    {{/if (not function:starts_interaction?)}}{{/service:functions}}
 }

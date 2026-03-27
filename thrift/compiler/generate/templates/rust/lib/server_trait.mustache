@@ -23,7 +23,7 @@ pub trait {{service:rust_name}}: ::std::marker::Send + ::std::marker::Sync + 'st
 }}{{#if service:requestContext?}}
     type RequestContext: ::std::marker::Sync;{{!
 }}{{/if service:requestContext?}}
-{{#service:rustFunctions}}{{#if (not function:starts_interaction?)}}
+{{#service:functions}}{{#if (not function:starts_interaction?)}}
     {{#if function:docs?}}
     #[doc = {{function:docs}}]
     {{/if function:docs?}}
@@ -52,7 +52,7 @@ pub trait {{service:rust_name}}: ::std::marker::Send + ::std::marker::Sync + 'st
     ) -> ::anyhow::Result<::std::boxed::Box<dyn {{function:interaction_name}}>> {
         ::anyhow::bail!("{{service:name}}.{{function:name}} not implemented");
     }
-{{/if function:starts_interaction?}}{{/service:rustFunctions}}
+{{/if function:starts_interaction?}}{{/service:functions}}
 {{#if service:interaction?}}
     async fn on_termination(&self) {}
 {{/if service:interaction?}}
@@ -65,7 +65,7 @@ where
 \{{{#if service:requestContext?}}
     type RequestContext = T::RequestContext;{{!
 }}{{/if service:requestContext?}}
-{{#service:rustFunctions}}{{#if (not function:starts_interaction?)}}
+{{#service:functions}}{{#if (not function:starts_interaction?)}}
     async fn {{function:rust_name}}(
         &self,{{!
         }}{{#if service:requestContext?}}
@@ -90,7 +90,7 @@ where
     ) -> ::anyhow::Result<::std::boxed::Box<dyn {{function:interaction_name}}>> {
         (**self).{{function:rust_name}}()
     }
-{{/if function:starts_interaction?}}{{/service:rustFunctions}}
+{{/if function:starts_interaction?}}{{/service:functions}}
 {{#if service:interaction?}}
     async fn on_termination(&self) {
         (**self).on_termination().await;
@@ -105,7 +105,7 @@ where
 \{{{#if service:requestContext?}}
     type RequestContext = T::RequestContext;{{!
 }}{{/if service:requestContext?}}
-{{#service:rustFunctions}}{{#if (not function:starts_interaction?)}}
+{{#service:functions}}{{#if (not function:starts_interaction?)}}
     async fn {{function:rust_name}}(
         &self,{{!
         }}{{#if service:requestContext?}}
@@ -130,7 +130,7 @@ where
     ) -> ::anyhow::Result<::std::boxed::Box<dyn {{function:interaction_name}}>> {
         (**self).{{function:rust_name}}()
     }
-{{/if function:starts_interaction?}}{{/service:rustFunctions}}
+{{/if function:starts_interaction?}}{{/service:functions}}
 {{#if service:interaction?}}
     async fn on_termination(&self) {
         (**self).on_termination().await;
