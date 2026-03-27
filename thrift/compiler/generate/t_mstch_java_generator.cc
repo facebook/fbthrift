@@ -1290,8 +1290,6 @@ class mstch_java_type : public mstch_type {
              {with_no_caching, &mstch_java_type::unset_adapter}},
             {"type:isAdapterSet?",
              {with_no_caching, &mstch_java_type::is_adapter_set}},
-            {"type:lastAdapter?",
-             {with_no_caching, &mstch_java_type::is_last_type_adapter}},
             {"type:setTypeName",
              {with_no_caching, &mstch_java_type::set_type_name}},
             {"type:getTypeName",
@@ -1312,30 +1310,9 @@ class mstch_java_type : public mstch_type {
 
   mstch::node is_adapter_set() { return hasTypeAdapter; }
 
-  int32_t nested_adapter_count() {
-    int32_t count = 0;
-    auto type = type_;
-    while (type) {
-      if (type_->is<t_typedef>() &&
-          type->has_structured_annotation(kJavaAdapterUri)) {
-        count++;
-        if (const auto* as_typedef = type->try_as<t_typedef>()) {
-          type = &as_typedef->type().deref();
-        } else {
-          type = nullptr;
-        }
-      } else {
-        type = nullptr;
-      }
-    }
-
-    return count;
-  }
-
-  mstch::node is_last_type_adapter() { return nested_adapter_count() < 2; }
-
   mstch::node set_type_name() {
-    if (nested_adapter_count() > 0) {
+    if (type_->is<t_typedef>() &&
+        type_->has_structured_annotation(kJavaAdapterUri)) {
       prevTypeName = type_->name();
     }
 

@@ -26,12 +26,12 @@
     }}{{/type:isBinaryString?}}{{!
     }}{{^type:isBinaryString?}}{{!
     }}{{#type:typedef_type}}{{!
-      }}{{#type:lastAdapter?}}{{!
+      }}{{#type:self.lastAdapter?}}{{!
         }}{{type:setAdapter}}{{> AdaptedBoxedType}}{{!
-      }}{{/type:lastAdapter?}}{{!
-      }}{{^type:lastAdapter?}}{{!
+      }}{{/type:self.lastAdapter?}}{{!
+      }}{{^type:self.lastAdapter?}}{{!
         }}{{type:typeClassName}}{{!
-      }}{{/type:lastAdapter?}}{{!
+      }}{{/type:self.lastAdapter?}}{{!
     }}{{/type:typedef_type}}{{!
     }}{{/type:isBinaryString?}}{{!
   }}{{/type:typedef?}}{{!
