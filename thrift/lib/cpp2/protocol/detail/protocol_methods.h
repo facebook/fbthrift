@@ -39,6 +39,7 @@
 
 #include <thrift/lib/cpp/protocol/TProtocolException.h>
 #include <thrift/lib/cpp/protocol/TType.h>
+#include <thrift/lib/cpp/util/EnumUtils.h>
 #include <thrift/lib/cpp2/TypeClass.h>
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
@@ -509,8 +510,16 @@ struct enum_protocol_methods {
 
   template <typename Protocol>
   static std::size_t write(Protocol& protocol, const Type& in) {
-    int_type tmp = static_cast<int_type>(in);
-    return int_methods::template write<Protocol>(protocol, tmp);
+    if constexpr (
+        std::is_same_v<TypeClass, type_class::enumeration> &&
+        requires { protocol.writeEnum(std::string_view{}, std::int32_t{}); }) {
+      const auto value = static_cast<std::int32_t>(in);
+      const char* name = ::apache::thrift::util::enumName(in);
+      return protocol.writeEnum(name ? name : "", value);
+    } else {
+      int_type tmp = static_cast<int_type>(in);
+      return int_methods::template write<Protocol>(protocol, tmp);
+    }
   }
 
   template <bool ZeroCopy, typename Protocol>

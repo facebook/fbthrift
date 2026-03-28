@@ -25,7 +25,6 @@
 #include <folly/Utility.h>
 #include <folly/container/Reserve.h>
 #include <thrift/lib/cpp/protocol/TType.h>
-#include <thrift/lib/cpp/util/EnumUtils.h>
 #include <thrift/lib/cpp2/FieldRef.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/op/Clear.h>
@@ -314,7 +313,9 @@ template <bool ZeroCopy, typename T>
 struct SerializedSize<ZeroCopy, type::enum_t<T>> {
   template <typename Protocol>
   uint32_t operator()(Protocol& prot, const T& s) const {
-    return prot.serializedSizeI32(static_cast<int32_t>(s));
+    return apache::thrift::detail::pm::protocol_methods<
+        type_class::enumeration,
+        T>::template serializedSize<ZeroCopy>(prot, s);
   }
 };
 
@@ -612,16 +613,8 @@ template <typename T>
 struct Encode<type::enum_t<T>> {
   template <typename Protocol>
   uint32_t operator()(Protocol& prot, const T& s) const {
-    const auto value = static_cast<std::int32_t>(s);
-    if constexpr (requires {
-                    prot.writeEnum(std::string_view{}, std::int32_t{});
-                  }) {
-      const char* name = ::apache::thrift::util::enumName(s);
-      return prot.writeEnum(name ? name : "", value);
-    } else {
-      // TODO: add writeEnum to all protocols and delete this branch
-      return prot.writeI32(value);
-    }
+    return apache::thrift::detail::pm::
+        protocol_methods<type_class::enumeration, T>::write(prot, s);
   }
 };
 
@@ -950,13 +943,8 @@ template <typename T>
 struct Decode<type::enum_t<T>> {
   template <typename Protocol>
   void operator()(Protocol& prot, T& t) const {
-    if constexpr (requires { prot.readEnum(t); }) {
-      prot.readEnum(t);
-      return;
-    }
-    int32_t i;
-    prot.readI32(i);
-    t = static_cast<T>(i);
+    apache::thrift::detail::pm::protocol_methods<type_class::enumeration, T>::
+        read(prot, t);
   }
 };
 
