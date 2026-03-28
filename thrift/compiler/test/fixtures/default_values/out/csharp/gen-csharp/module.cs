@@ -125,6 +125,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
         public static readonly string __fbthrift_uri = "facebook.com/thrift/compiler/test/fixtures/default_values/TrivialStructWithDefault";
         /// <summary>Gets or sets the int_value_1 field.</summary>
         public int @int_value_1 { get; set; }
+    
         /// <summary>Gets or sets the int_value_2 field.</summary>
         public int @int_value_2 { get; set; } = 42;
     
@@ -244,10 +245,13 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
         public static readonly string __fbthrift_uri = "facebook.com/thrift/compiler/test/fixtures/default_values/StructWithNoCustomDefaultValues";
         /// <summary>Gets or sets the unqualified_integer field.</summary>
         public int @unqualified_integer { get; set; }
+    
         /// <summary>Gets or sets the optional_integer field (optional).</summary>
         public int? @optional_integer { get; set; }
+    
         /// <summary>Gets or sets the required_integer field.</summary>
         public int @required_integer { get; set; }
+    
         /// <summary>Gets or sets the unqualified_struct field.</summary>
         private @TrivialStruct _unqualified_struct = new @TrivialStruct();
         public @TrivialStruct @unqualified_struct
@@ -259,8 +263,10 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 _unqualified_struct = value;
             }
         }
+    
         /// <summary>Gets or sets the optional_struct field (optional).</summary>
         public @TrivialStruct? @optional_struct { get; set; }
+    
         /// <summary>Gets or sets the required_struct field.</summary>
         private @TrivialStruct _required_struct = new @TrivialStruct();
         public @TrivialStruct @required_struct
@@ -488,10 +494,13 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
         public static readonly string __fbthrift_uri = "facebook.com/thrift/compiler/test/fixtures/default_values/StructWithCustomDefaultValues";
         /// <summary>Gets or sets the unqualified_integer field.</summary>
         public int @unqualified_integer { get; set; } = 42;
+    
         /// <summary>Gets or sets the optional_integer field (optional).</summary>
         public int? @optional_integer { get; set; }
+    
         /// <summary>Gets or sets the required_integer field.</summary>
         public int @required_integer { get; set; } = 44;
+    
         /// <summary>Gets or sets the unqualified_struct field.</summary>
         private @TrivialStruct _unqualified_struct = new @TrivialStruct()
         {
@@ -506,8 +515,10 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 _unqualified_struct = value;
             }
         }
+    
         /// <summary>Gets or sets the optional_struct field (optional).</summary>
         public @TrivialStruct? @optional_struct { get; set; }
+    
         /// <summary>Gets or sets the required_struct field.</summary>
         private @TrivialStruct _required_struct = new @TrivialStruct()
         {
@@ -522,6 +533,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 _required_struct = value;
             }
         }
+    
         /// <summary>Gets or sets the struct_with_default_unspecified field.</summary>
         private @TrivialStructWithDefault _struct_with_default_unspecified = new @TrivialStructWithDefault()
         {
@@ -535,6 +547,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 _struct_with_default_unspecified = value;
             }
         }
+    
         /// <summary>Gets or sets the struct_with_default_specified field.</summary>
         private @TrivialStructWithDefault _struct_with_default_specified = new @TrivialStructWithDefault()
         {
@@ -837,6 +850,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 _list_with_list_value = value;
             }
         }
+    
         /// <summary>Gets or sets the set_with_list_value field.</summary>
         private HashSet<int> _set_with_list_value = new HashSet<int>()
         {
@@ -850,6 +864,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 _set_with_list_value = value;
             }
         }
+    
         /// <summary>Gets or sets the map_with_map_value field.</summary>
         private Dictionary<int, int> _map_with_map_value = new Dictionary<int, int>()
         {
@@ -863,6 +878,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 _map_with_map_value = value;
             }
         }
+    
         /// <summary>Gets or sets the list_with_map_value field.</summary>
         private List<int> _list_with_map_value = new List<int>()
         {
@@ -876,6 +892,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 _list_with_map_value = value;
             }
         }
+    
         /// <summary>Gets or sets the set_with_map_value field.</summary>
         private HashSet<int> _set_with_map_value = new HashSet<int>()
         {
@@ -889,6 +906,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 _set_with_map_value = value;
             }
         }
+    
         /// <summary>Gets or sets the map_with_list_value field.</summary>
         private Dictionary<int, int> _map_with_list_value = new Dictionary<int, int>()
         {

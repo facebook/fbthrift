@@ -112,10 +112,13 @@ namespace test.fixtures.enums
         public static readonly string __fbthrift_uri = "test.dev/fixtures/enums/SomeStruct";
         /// <summary>Gets or sets the reasonable field.</summary>
         public @Metasyntactic @reasonable { get; set; } = @Metasyntactic.@FOO;
+    
         /// <summary>Gets or sets the fine field.</summary>
         public @Metasyntactic @fine { get; set; } = @Metasyntactic.@BAR;
+    
         /// <summary>Gets or sets the questionable field.</summary>
         public @Metasyntactic @questionable { get; set; } = (@Metasyntactic)-1;
+    
         /// <summary>Gets or sets the tags field.</summary>
         private HashSet<int> _tags = new HashSet<int>()
         {
@@ -307,10 +310,13 @@ namespace test.fixtures.enums
         public static readonly string __fbthrift_uri = "test.dev/fixtures/enums/MyStruct";
         /// <summary>Gets or sets the me2_3 field.</summary>
         public @MyEnum2 @me2_3 { get; set; } = (@MyEnum2)3;
+    
         /// <summary>Gets or sets the me3_n3 field.</summary>
         public @MyEnum3 @me3_n3 { get; set; } = (@MyEnum3)-3;
+    
         /// <summary>Gets or sets the me1_t1 field.</summary>
         public @MyEnum1 @me1_t1 { get; set; } = @MyEnum1.@ME1_1;
+    
         /// <summary>Gets or sets the me1_t2 field.</summary>
         public @MyEnum1 @me1_t2 { get; set; } = @MyEnum1.@ME1_1;
     

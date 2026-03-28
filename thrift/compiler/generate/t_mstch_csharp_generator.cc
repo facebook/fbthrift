@@ -71,10 +71,6 @@ class t_csharp_EXPERIMENTAL_generator : public t_whisker_generator {
       return "@" + csharp::get_csharp_property_name(std::string(self.name()));
     });
 
-    def.property("is_message?", [](const t_field& self) {
-      return self.name() == "message";
-    });
-
     return std::move(def).make();
   }
 

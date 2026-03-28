@@ -52,6 +52,7 @@ namespace test.dev.fixtures.basic
         public static readonly string __fbthrift_uri = "test.dev/fixtures/basic/MyStruct";
         /// <summary>Gets or sets the MyIntField field.</summary>
         public long @MyIntField { get; set; }
+    
         /// <summary>Gets or sets the MyStringField field.</summary>
         private string _MyStringField = string.Empty;
         public string @MyStringField
@@ -63,6 +64,7 @@ namespace test.dev.fixtures.basic
                 _MyStringField = value;
             }
         }
+    
         /// <summary>Gets or sets the MyDataField field.</summary>
         private @MyDataItemAlias _MyDataField = new @MyDataItemAlias();
         public @MyDataItemAlias @MyDataField
@@ -74,14 +76,19 @@ namespace test.dev.fixtures.basic
                 _MyDataField = value;
             }
         }
+    
         /// <summary>Gets or sets the myEnum field.</summary>
         public @MyEnum @myEnum { get; set; }
+    
         /// <summary>Gets or sets the oneway field.</summary>
         public bool @oneway { get; set; }
+    
         /// <summary>Gets or sets the readonly field.</summary>
         public bool @readonly { get; set; }
+    
         /// <summary>Gets or sets the idempotent field.</summary>
         public bool @idempotent { get; set; }
+    
         /// <summary>Gets or sets the floatSet field.</summary>
         private HashSet<float> _floatSet = new HashSet<float>();
         public HashSet<float> @floatSet
@@ -93,6 +100,7 @@ namespace test.dev.fixtures.basic
                 _floatSet = value;
             }
         }
+    
         /// <summary>Gets or sets the no_hack_codegen_field field.</summary>
         private string _no_hack_codegen_field = string.Empty;
         public string @no_hack_codegen_field
@@ -404,6 +412,7 @@ namespace test.dev.fixtures.basic
                 _I32List = value;
             }
         }
+    
         /// <summary>Gets or sets the StringSet field.</summary>
         private HashSet<string> _StringSet = new HashSet<string>();
         public HashSet<string> @StringSet
@@ -415,6 +424,7 @@ namespace test.dev.fixtures.basic
                 _StringSet = value;
             }
         }
+    
         /// <summary>Gets or sets the StringToI64Map field.</summary>
         private Dictionary<string, long> _StringToI64Map = new Dictionary<string, long>();
         public Dictionary<string, long> @StringToI64Map
@@ -607,7 +617,6 @@ namespace test.dev.fixtures.basic
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "test.dev/fixtures/basic/MyDataItem";
-    
         public @MyDataItem()
         {
         }
@@ -909,12 +918,42 @@ namespace test.dev.fixtures.basic
         public static readonly string __fbthrift_uri = "test.dev/fixtures/basic/MyException";
         /// <summary>Gets or sets the MyIntField field.</summary>
         public long @MyIntField { get; set; }
+    
         /// <summary>Gets or sets the MyStringField field.</summary>
-        public string @MyStringField { get; set; } = string.Empty;
+        private string _MyStringField = string.Empty;
+        public string @MyStringField
+        {
+            get => _MyStringField;
+            set
+            {
+                ThriftNullGuard.ThrowIfNull(value, "MyStringField");
+                _MyStringField = value;
+            }
+        }
+    
         /// <summary>Gets or sets the myStruct field.</summary>
-        public @MyStruct @myStruct { get; set; } = new @MyStruct();
+        private @MyStruct _myStruct = new @MyStruct();
+        public @MyStruct @myStruct
+        {
+            get => _myStruct;
+            set
+            {
+                ThriftNullGuard.ThrowIfNull(value, "myStruct");
+                _myStruct = value;
+            }
+        }
+    
         /// <summary>Gets or sets the myUnion field.</summary>
-        public @MyUnion @myUnion { get; set; } = new @MyUnion();
+        private @MyUnion _myUnion = new @MyUnion();
+        public @MyUnion @myUnion
+        {
+            get => _myUnion;
+            set
+            {
+                ThriftNullGuard.ThrowIfNull(value, "myUnion");
+                _myUnion = value;
+            }
+        }
     
         public @MyException()
         {
@@ -1080,12 +1119,45 @@ namespace test.dev.fixtures.basic
         public static readonly string __fbthrift_uri = "test.dev/fixtures/basic/MyExceptionWithMessage";
         /// <summary>Gets or sets the MyIntField field.</summary>
         public long @MyIntField { get; set; }
+    
         /// <summary>Gets or sets the MyStringField field.</summary>
-        public string @MyStringField { get; set; } = string.Empty;
+        private string _MyStringField = string.Empty;
+        public string @MyStringField
+        {
+            get => _MyStringField;
+            set
+            {
+                ThriftNullGuard.ThrowIfNull(value, "MyStringField");
+                _MyStringField = value;
+            }
+        }
+    
         /// <summary>Gets or sets the myStruct field.</summary>
-        public @MyStruct @myStruct { get; set; } = new @MyStruct();
+        private @MyStruct _myStruct = new @MyStruct();
+        public @MyStruct @myStruct
+        {
+            get => _myStruct;
+            set
+            {
+                ThriftNullGuard.ThrowIfNull(value, "myStruct");
+                _myStruct = value;
+            }
+        }
+    
         /// <summary>Gets or sets the myUnion field.</summary>
-        public @MyUnion @myUnion { get; set; } = new @MyUnion();
+        private @MyUnion _myUnion = new @MyUnion();
+        public @MyUnion @myUnion
+        {
+            get => _myUnion;
+            set
+            {
+                ThriftNullGuard.ThrowIfNull(value, "myUnion");
+                _myUnion = value;
+            }
+        }
+    
+        /// <summary>Returns the exception message from the @thrift.ExceptionMessage field.</summary>
+        public override string Message => @MyStringField;
     
         public @MyExceptionWithMessage()
         {

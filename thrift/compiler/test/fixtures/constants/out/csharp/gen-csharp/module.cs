@@ -63,6 +63,7 @@ namespace test.fixtures.constants
     {
         /// <summary>Gets or sets the weeks field.</summary>
         public int @weeks { get; set; }
+    
         /// <summary>Gets or sets the title field.</summary>
         private string _title = string.Empty;
         public string @title
@@ -74,10 +75,13 @@ namespace test.fixtures.constants
                 _title = value;
             }
         }
+    
         /// <summary>Gets or sets the employer field (optional).</summary>
         public @Company? @employer { get; set; }
+    
         /// <summary>Gets or sets the compensation field (optional).</summary>
         public double? @compensation { get; set; }
+    
         /// <summary>Gets or sets the school field (optional).</summary>
         public string? @school { get; set; }
     
@@ -273,6 +277,7 @@ namespace test.fixtures.constants
     {
         /// <summary>Gets or sets the min field.</summary>
         public int @min { get; set; }
+    
         /// <summary>Gets or sets the max field.</summary>
         public int @max { get; set; }
     
@@ -389,6 +394,7 @@ namespace test.fixtures.constants
     {
         /// <summary>Gets or sets the a field.</summary>
         public int @a { get; set; } = 1234567;
+    
         /// <summary>Gets or sets the b field.</summary>
         private string _b = "<uninitialized>";
         public string @b
@@ -516,6 +522,7 @@ namespace test.fixtures.constants
     {
         /// <summary>Gets or sets the a field.</summary>
         public int @a { get; set; }
+    
         /// <summary>Gets or sets the b field.</summary>
         private string _b = string.Empty;
         public string @b
@@ -527,6 +534,7 @@ namespace test.fixtures.constants
                 _b = value;
             }
         }
+    
         /// <summary>Gets or sets the c field.</summary>
         private @struct1 _c = new @struct1();
         public @struct1 @c
@@ -538,6 +546,7 @@ namespace test.fixtures.constants
                 _c = value;
             }
         }
+    
         /// <summary>Gets or sets the d field.</summary>
         private List<int> _d = new List<int>();
         public List<int> @d
@@ -734,8 +743,10 @@ namespace test.fixtures.constants
                 _a = value;
             }
         }
+    
         /// <summary>Gets or sets the b field.</summary>
         public int @b { get; set; }
+    
         /// <summary>Gets or sets the c field.</summary>
         private @struct2 _c = new @struct2();
         public @struct2 @c
@@ -886,8 +897,10 @@ namespace test.fixtures.constants
     {
         /// <summary>Gets or sets the a field.</summary>
         public int @a { get; set; }
+    
         /// <summary>Gets or sets the b field (optional).</summary>
         public double? @b { get; set; }
+    
         /// <summary>Gets or sets the c field (optional).</summary>
         public sbyte? @c { get; set; }
     

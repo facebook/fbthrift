@@ -15,6 +15,7 @@
  */
 
 namespace java.swift test.fixtures.exceptions
+namespace csharp test.fixtures.exceptions
 
 include "thrift/annotation/thrift.thrift"
 include "thrift/annotation/python.thrift"

@@ -30,7 +30,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/Transitive";
-    
         public @Transitive()
         {
         }
@@ -99,7 +98,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/Program";
-    
         public @Program()
         {
         }
@@ -168,7 +166,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/Struct";
-    
         public @Struct()
         {
         }
@@ -237,7 +234,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/Union";
-    
         public @Union()
         {
         }
@@ -306,7 +302,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/Exception";
-    
         public @Exception()
         {
         }
@@ -375,7 +370,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/ThrownException";
-    
         public @ThrownException()
         {
         }
@@ -444,7 +438,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/Field";
-    
         public @Field()
         {
         }
@@ -513,7 +506,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/Typedef";
-    
         public @Typedef()
         {
         }
@@ -582,7 +574,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/Service";
-    
         public @Service()
         {
         }
@@ -651,7 +642,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/Interaction";
-    
         public @Interaction()
         {
         }
@@ -720,7 +710,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/Function";
-    
         public @Function()
         {
         }
@@ -789,7 +778,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/FunctionParameter";
-    
         public @FunctionParameter()
         {
         }
@@ -858,7 +846,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/EnumValue";
-    
         public @EnumValue()
         {
         }
@@ -927,7 +914,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/Const";
-    
         public @Const()
         {
         }
@@ -996,7 +982,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/Enum";
-    
         public @Enum()
         {
         }
@@ -1065,7 +1050,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/Structured";
-    
         public @Structured()
         {
         }
@@ -1134,7 +1118,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/Interface";
-    
         public @Interface()
         {
         }
@@ -1203,7 +1186,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/RootDefinition";
-    
         public @RootDefinition()
         {
         }
@@ -1272,7 +1254,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/Definition";
-    
         public @Definition()
         {
         }
@@ -1341,7 +1322,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/DisableSchemaConst";
-    
         public @DisableSchemaConst()
         {
         }

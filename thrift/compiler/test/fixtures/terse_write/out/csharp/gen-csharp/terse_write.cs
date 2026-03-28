@@ -39,7 +39,6 @@ namespace facebook.thrift.test.fixtures.terse_write
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/test/fixtures/terse_write/MyStruct";
-    
         public @MyStruct()
         {
         }
@@ -770,18 +769,25 @@ namespace facebook.thrift.test.fixtures.terse_write
         public static readonly string __fbthrift_uri = "facebook.com/thrift/test/fixtures/terse_write/StructLevelTerseStruct";
         /// <summary>Gets or sets the bool_field field.</summary>
         public bool @bool_field { get; set; }
+    
         /// <summary>Gets or sets the byte_field field.</summary>
         public sbyte @byte_field { get; set; }
+    
         /// <summary>Gets or sets the short_field field.</summary>
         public short @short_field { get; set; }
+    
         /// <summary>Gets or sets the int_field field.</summary>
         public int @int_field { get; set; }
+    
         /// <summary>Gets or sets the long_field field.</summary>
         public long @long_field { get; set; }
+    
         /// <summary>Gets or sets the float_field field.</summary>
         public float @float_field { get; set; }
+    
         /// <summary>Gets or sets the double_field field.</summary>
         public double @double_field { get; set; }
+    
         /// <summary>Gets or sets the string_field field.</summary>
         private string _string_field = string.Empty;
         public string @string_field
@@ -793,6 +799,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _string_field = value;
             }
         }
+    
         /// <summary>Gets or sets the binary_field field.</summary>
         private byte[] _binary_field = Array.Empty<byte>();
         public byte[] @binary_field
@@ -804,8 +811,10 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _binary_field = value;
             }
         }
+    
         /// <summary>Gets or sets the enum_field field.</summary>
         public @MyEnum @enum_field { get; set; }
+    
         /// <summary>Gets or sets the list_field field.</summary>
         private List<short> _list_field = new List<short>();
         public List<short> @list_field
@@ -817,6 +826,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _list_field = value;
             }
         }
+    
         /// <summary>Gets or sets the set_field field.</summary>
         private HashSet<short> _set_field = new HashSet<short>();
         public HashSet<short> @set_field
@@ -828,6 +838,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _set_field = value;
             }
         }
+    
         /// <summary>Gets or sets the map_field field.</summary>
         private Dictionary<short, short> _map_field = new Dictionary<short, short>();
         public Dictionary<short, short> @map_field
@@ -839,6 +850,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _map_field = value;
             }
         }
+    
         /// <summary>Gets or sets the struct_field field.</summary>
         private @MyStruct _struct_field = new @MyStruct();
         public @MyStruct @struct_field
@@ -850,6 +862,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _struct_field = value;
             }
         }
+    
         /// <summary>Gets or sets the union_field field.</summary>
         private @MyUnion _union_field = new @MyUnion();
         public @MyUnion @union_field
@@ -1371,18 +1384,25 @@ namespace facebook.thrift.test.fixtures.terse_write
         public static readonly string __fbthrift_uri = "facebook.com/thrift/test/fixtures/terse_write/FieldLevelTerseStruct";
         /// <summary>Gets or sets the terse_bool_field field.</summary>
         public bool @terse_bool_field { get; set; }
+    
         /// <summary>Gets or sets the terse_byte_field field.</summary>
         public sbyte @terse_byte_field { get; set; }
+    
         /// <summary>Gets or sets the terse_short_field field.</summary>
         public short @terse_short_field { get; set; }
+    
         /// <summary>Gets or sets the terse_int_field field.</summary>
         public int @terse_int_field { get; set; }
+    
         /// <summary>Gets or sets the terse_long_field field.</summary>
         public long @terse_long_field { get; set; }
+    
         /// <summary>Gets or sets the terse_float_field field.</summary>
         public float @terse_float_field { get; set; }
+    
         /// <summary>Gets or sets the terse_double_field field.</summary>
         public double @terse_double_field { get; set; }
+    
         /// <summary>Gets or sets the terse_string_field field.</summary>
         private string _terse_string_field = string.Empty;
         public string @terse_string_field
@@ -1394,6 +1414,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _terse_string_field = value;
             }
         }
+    
         /// <summary>Gets or sets the terse_binary_field field.</summary>
         private byte[] _terse_binary_field = Array.Empty<byte>();
         public byte[] @terse_binary_field
@@ -1405,8 +1426,10 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _terse_binary_field = value;
             }
         }
+    
         /// <summary>Gets or sets the terse_enum_field field.</summary>
         public @MyEnum @terse_enum_field { get; set; }
+    
         /// <summary>Gets or sets the terse_list_field field.</summary>
         private List<short> _terse_list_field = new List<short>();
         public List<short> @terse_list_field
@@ -1418,6 +1441,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _terse_list_field = value;
             }
         }
+    
         /// <summary>Gets or sets the terse_set_field field.</summary>
         private HashSet<short> _terse_set_field = new HashSet<short>();
         public HashSet<short> @terse_set_field
@@ -1429,6 +1453,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _terse_set_field = value;
             }
         }
+    
         /// <summary>Gets or sets the terse_map_field field.</summary>
         private Dictionary<short, short> _terse_map_field = new Dictionary<short, short>();
         public Dictionary<short, short> @terse_map_field
@@ -1440,6 +1465,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _terse_map_field = value;
             }
         }
+    
         /// <summary>Gets or sets the terse_struct_field field.</summary>
         private @MyStruct _terse_struct_field = new @MyStruct();
         public @MyStruct @terse_struct_field
@@ -1451,6 +1477,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _terse_struct_field = value;
             }
         }
+    
         /// <summary>Gets or sets the terse_union_field field.</summary>
         private @MyUnion _terse_union_field = new @MyUnion();
         public @MyUnion @terse_union_field
@@ -1462,20 +1489,28 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _terse_union_field = value;
             }
         }
+    
         /// <summary>Gets or sets the bool_field field.</summary>
         public bool @bool_field { get; set; }
+    
         /// <summary>Gets or sets the byte_field field.</summary>
         public sbyte @byte_field { get; set; }
+    
         /// <summary>Gets or sets the short_field field.</summary>
         public short @short_field { get; set; }
+    
         /// <summary>Gets or sets the int_field field.</summary>
         public int @int_field { get; set; }
+    
         /// <summary>Gets or sets the long_field field.</summary>
         public long @long_field { get; set; }
+    
         /// <summary>Gets or sets the float_field field.</summary>
         public float @float_field { get; set; }
+    
         /// <summary>Gets or sets the double_field field.</summary>
         public double @double_field { get; set; }
+    
         /// <summary>Gets or sets the string_field field.</summary>
         private string _string_field = string.Empty;
         public string @string_field
@@ -1487,6 +1522,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _string_field = value;
             }
         }
+    
         /// <summary>Gets or sets the binary_field field.</summary>
         private byte[] _binary_field = Array.Empty<byte>();
         public byte[] @binary_field
@@ -1498,8 +1534,10 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _binary_field = value;
             }
         }
+    
         /// <summary>Gets or sets the enum_field field.</summary>
         public @MyEnum @enum_field { get; set; }
+    
         /// <summary>Gets or sets the list_field field.</summary>
         private List<short> _list_field = new List<short>();
         public List<short> @list_field
@@ -1511,6 +1549,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _list_field = value;
             }
         }
+    
         /// <summary>Gets or sets the set_field field.</summary>
         private HashSet<short> _set_field = new HashSet<short>();
         public HashSet<short> @set_field
@@ -1522,6 +1561,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _set_field = value;
             }
         }
+    
         /// <summary>Gets or sets the map_field field.</summary>
         private Dictionary<short, short> _map_field = new Dictionary<short, short>();
         public Dictionary<short, short> @map_field
@@ -1533,6 +1573,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _map_field = value;
             }
         }
+    
         /// <summary>Gets or sets the struct_field field.</summary>
         private @MyStruct _struct_field = new @MyStruct();
         public @MyStruct @struct_field
@@ -1544,6 +1585,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _struct_field = value;
             }
         }
+    
         /// <summary>Gets or sets the union_field field.</summary>
         private @MyUnion _union_field = new @MyUnion();
         public @MyUnion @union_field
@@ -2460,8 +2502,10 @@ namespace facebook.thrift.test.fixtures.terse_write
         public static readonly string __fbthrift_uri = "facebook.com/thrift/test/fixtures/terse_write/AdaptedFields";
         /// <summary>Gets or sets the field1 field.</summary>
         public int /* MyInteger */ @field1 { get; set; }
+    
         /// <summary>Gets or sets the field2 field.</summary>
         public int @field2 { get; set; }
+    
         /// <summary>Gets or sets the field3 field.</summary>
         public int /* MyInteger */ @field3 { get; set; }
     
@@ -2611,7 +2655,19 @@ namespace facebook.thrift.test.fixtures.terse_write
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/test/fixtures/terse_write/TerseException";
         /// <summary>Gets or sets the msg field.</summary>
-        public string @msg { get; set; } = string.Empty;
+        private string _msg = string.Empty;
+        public string @msg
+        {
+            get => _msg;
+            set
+            {
+                ThriftNullGuard.ThrowIfNull(value, "msg");
+                _msg = value;
+            }
+        }
+    
+        /// <summary>Returns the exception message from the @thrift.ExceptionMessage field.</summary>
+        public override string Message => @msg;
     
         public @TerseException()
         {

@@ -166,6 +166,7 @@ namespace facebook.thrift.annotation.cpp
                 _name = value;
             }
         }
+    
         /// <summary>Gets or sets the template field.</summary>
         private string _template = string.Empty;
         public string @template
@@ -480,7 +481,6 @@ namespace facebook.thrift.annotation.cpp
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/cpp/DisableLazyChecksum";
-    
         public @DisableLazyChecksum()
         {
         }
@@ -560,6 +560,7 @@ namespace facebook.thrift.annotation.cpp
                 _name = value;
             }
         }
+    
         /// <summary>Gets or sets the adaptedType field.</summary>
         private string _adaptedType = string.Empty;
         public string @adaptedType
@@ -571,6 +572,7 @@ namespace facebook.thrift.annotation.cpp
                 _adaptedType = value;
             }
         }
+    
         /// <summary>Gets or sets the underlyingName field.</summary>
         private string _underlyingName = string.Empty;
         public string @underlyingName
@@ -582,6 +584,7 @@ namespace facebook.thrift.annotation.cpp
                 _underlyingName = value;
             }
         }
+    
         /// <summary>Gets or sets the extraNamespace field.</summary>
         private string _extraNamespace = string.Empty;
         public string @extraNamespace
@@ -593,6 +596,7 @@ namespace facebook.thrift.annotation.cpp
                 _extraNamespace = value;
             }
         }
+    
         /// <summary>Gets or sets the moveOnly field.</summary>
         public bool @moveOnly { get; set; }
     
@@ -876,7 +880,6 @@ namespace facebook.thrift.annotation.cpp
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/cpp/MinimizePadding";
-    
         public @MinimizePadding()
         {
         }
@@ -945,7 +948,6 @@ namespace facebook.thrift.annotation.cpp
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/cpp/ScopedEnumAsUnionType";
-    
         public @ScopedEnumAsUnionType()
         {
         }
@@ -1025,6 +1027,7 @@ namespace facebook.thrift.annotation.cpp
                 _name = value;
             }
         }
+    
         /// <summary>Gets or sets the noinline field.</summary>
         public bool @noinline { get; set; }
     
@@ -1142,7 +1145,6 @@ namespace facebook.thrift.annotation.cpp
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/cpp/UseOpEncode";
-    
         public @UseOpEncode()
         {
         }
@@ -1304,7 +1306,6 @@ namespace facebook.thrift.annotation.cpp
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/cpp/Frozen2Exclude";
-    
         public @Frozen2Exclude()
         {
         }
@@ -1373,7 +1374,6 @@ namespace facebook.thrift.annotation.cpp
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/cpp/Frozen2RequiresCompleteContainerParams";
-    
         public @Frozen2RequiresCompleteContainerParams()
         {
         }
@@ -1442,7 +1442,6 @@ namespace facebook.thrift.annotation.cpp
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/cpp/ProcessInEbThreadUnsafe";
-    
         public @ProcessInEbThreadUnsafe()
         {
         }
@@ -1511,7 +1510,6 @@ namespace facebook.thrift.annotation.cpp
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/cpp/UseCursorSerialization";
-    
         public @UseCursorSerialization()
         {
         }
@@ -1580,7 +1578,6 @@ namespace facebook.thrift.annotation.cpp
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/cpp/GenerateDeprecatedHeaderClientMethods";
-    
         public @GenerateDeprecatedHeaderClientMethods()
         {
         }
@@ -1649,7 +1646,6 @@ namespace facebook.thrift.annotation.cpp
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/cpp/AllowLegacyNonOptionalRef";
-    
         public @AllowLegacyNonOptionalRef()
         {
         }
@@ -1718,7 +1714,6 @@ namespace facebook.thrift.annotation.cpp
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/cpp/DeprecatedTerseWrite";
-    
         public @DeprecatedTerseWrite()
         {
         }
@@ -1787,7 +1782,6 @@ namespace facebook.thrift.annotation.cpp
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/cpp/AllowLegacyDeprecatedTerseWritesRef";
-    
         public @AllowLegacyDeprecatedTerseWritesRef()
         {
         }
@@ -1856,7 +1850,6 @@ namespace facebook.thrift.annotation.cpp
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/cpp/EnableCustomTypeOrdering";
-    
         public @EnableCustomTypeOrdering()
         {
         }
@@ -1925,7 +1918,6 @@ namespace facebook.thrift.annotation.cpp
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/cpp/GenerateServiceMethodDecorator";
-    
         public @GenerateServiceMethodDecorator()
         {
         }
@@ -1994,7 +1986,6 @@ namespace facebook.thrift.annotation.cpp
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/cpp/NonOrderable";
-    
         public @NonOrderable()
         {
         }
@@ -2063,7 +2054,6 @@ namespace facebook.thrift.annotation.cpp
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/cpp/DeclareHashSpecialization";
-    
         public @DeclareHashSpecialization()
         {
         }
@@ -2132,7 +2122,6 @@ namespace facebook.thrift.annotation.cpp
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/cpp/DeclareEqualToSpecialization";
-    
         public @DeclareEqualToSpecialization()
         {
         }

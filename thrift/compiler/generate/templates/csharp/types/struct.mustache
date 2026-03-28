@@ -38,19 +38,14 @@ public class {{structured.csharp_name}} : {{#if structured.exception?}}Exception
     public static readonly string __fbthrift_uri = "{{structured.uri}}";
 {{/if (not (string.empty? structured.uri))}}
 {{#each structured.fields as |field|}}
-{{#if structured.exception?}}
-{{#if field.optional?}}
-    /// <summary>Gets or sets the {{field.name}} field (optional).</summary>
-    public {{#partial types.csharp_type type=field.type}}{{#if field.type.csharp_primitive?}}?{{/if field.type.csharp_primitive?}}{{#if field.type.enum?}}?{{/if field.type.enum?}}{{#if (not field.type.csharp_primitive?)}}{{#if (not field.type.enum?)}}?{{/if (not field.type.enum?)}}{{/if (not field.type.csharp_primitive?)}} {{field.csharp_property_name}} { get; set; }
-{{#else}}
-    /// <summary>Gets or sets the {{field.name}} field.</summary>
-    public {{#if field.is_message?}}new {{/if field.is_message?}}{{#partial types.csharp_type type=field.type}} {{field.csharp_property_name}} { get; set; }{{#if field.type.nullable?}} = {{#partial defaults.csharp_default_value type=field.type}};{{/if field.type.nullable?}}
-{{/if field.optional?}}
-{{#else}}
     {{#partial props.struct_properties field=field structured=structured}}
-{{/if structured.exception?}}
-{{/each}}
 
+{{/each}}
+{{#if (and structured.exception? (object.notnull? structured.message_field))}}
+    /// <summary>Returns the exception message from the @thrift.ExceptionMessage field.</summary>
+    public override string Message => {{structured.message_field.csharp_property_name}}{{#if structured.message_field.optional?}} ?? ""{{/if}};
+
+{{/if (and structured.exception? (object.notnull? structured.message_field))}}
     {{#partial ctor.struct_ctor structured=structured}}
 
     {{#partial clr.struct_clear structured=structured}}

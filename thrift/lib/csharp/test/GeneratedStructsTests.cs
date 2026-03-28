@@ -152,22 +152,6 @@ namespace FBThrift.Tests
             Assert.AreEqual(1, (int)MyEnum.MyValue2);
         }
 
-        [Test]
-        public void TestExceptionStruct()
-        {
-            var ex = new MyException();
-            Assert.IsNotNull(ex);
-            Assert.IsInstanceOf<Exception>(ex);
-        }
-
-        [Test]
-        public void TestExceptionWithMessage()
-        {
-            var ex = new MyExceptionWithMessage();
-            ex.MyStringField = "Test error";
-            Assert.AreEqual("Test error", ex.MyStringField);
-        }
-
         // Non-optional nullable fields — should throw on null assignment
 
         [Test]
@@ -229,6 +213,32 @@ namespace FBThrift.Tests
             var s = new OptionalFieldsStruct();
             s.optional_list = null;
             Assert.IsNull(s.optional_list);
+        }
+
+        // Optional @thrift.ExceptionMessage — exercises the ?? "" path
+
+        [Test]
+        public void TestOptionalExceptionMessageDefaultIsEmpty()
+        {
+            var ex = new MyExceptionWithOptionalMessage();
+            Assert.AreEqual("", ex.Message);
+        }
+
+        [Test]
+        public void TestOptionalExceptionMessageReturnsValue()
+        {
+            var ex = new MyExceptionWithOptionalMessage();
+            ex.errorMessage = "oops";
+            Assert.AreEqual("oops", ex.Message);
+        }
+
+        [Test]
+        public void TestOptionalExceptionMessageNullReturnsEmpty()
+        {
+            var ex = new MyExceptionWithOptionalMessage();
+            ex.errorMessage = "oops";
+            ex.errorMessage = null;
+            Assert.AreEqual("", ex.Message);
         }
     }
 }

@@ -72,3 +72,8 @@ exception MyExceptionWithMessage {
   @thrift.ExceptionMessage
   2: string MyStringField;
 }
+
+exception MyExceptionWithOptionalMessage {
+  @thrift.ExceptionMessage
+  1: optional string errorMessage;
+}

@@ -42,7 +42,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/Experimental";
-    
         public @Experimental()
         {
         }
@@ -122,6 +121,7 @@ namespace facebook.thrift.annotation
                 _ids = value;
             }
         }
+    
         /// <summary>Gets or sets the id_ranges field.</summary>
         private Dictionary<int, int> _id_ranges = new Dictionary<int, int>();
         public Dictionary<int, int> @id_ranges
@@ -374,7 +374,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/TerseWrite";
-    
         public @TerseWrite()
         {
         }
@@ -443,7 +442,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/Box";
-    
         public @Box()
         {
         }
@@ -512,7 +510,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/Mixin";
-    
         public @Mixin()
         {
         }
@@ -581,7 +578,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/SerializeInFieldIdOrder";
-    
         public @SerializeInFieldIdOrder()
         {
         }
@@ -650,7 +646,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/BitmaskEnum";
-    
         public @BitmaskEnum()
         {
         }
@@ -719,7 +714,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/ExceptionMessage";
-    
         public @ExceptionMessage()
         {
         }
@@ -788,7 +782,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/InternBox";
-    
         public @InternBox()
         {
         }
@@ -857,7 +850,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/Serial";
-    
         public @Serial()
         {
         }
@@ -1122,7 +1114,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/Sealed";
-    
         public @Sealed()
         {
         }
@@ -1312,7 +1303,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/AllowReservedIdentifier";
-    
         public @AllowReservedIdentifier()
         {
         }
@@ -1381,7 +1371,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/AllowReservedFilename";
-    
         public @AllowReservedFilename()
         {
         }
@@ -1450,7 +1439,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/RuntimeAnnotation";
-    
         public @RuntimeAnnotation()
         {
         }
@@ -1519,7 +1507,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/AllowLegacyTypedefUri";
-    
         public @AllowLegacyTypedefUri()
         {
         }
@@ -1588,7 +1575,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/AllowUnsafeOptionalCustomDefaultValue";
-    
         public @AllowUnsafeOptionalCustomDefaultValue()
         {
         }
@@ -1657,7 +1643,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/AllowUnsafeUnionFieldCustomDefaultValue";
-    
         public @AllowUnsafeUnionFieldCustomDefaultValue()
         {
         }
@@ -1726,7 +1711,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/AllowUnsafeRequiredFieldQualifier";
-    
         public @AllowUnsafeRequiredFieldQualifier()
         {
         }
@@ -1795,7 +1779,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/AllowLegacyMissingUris";
-    
         public @AllowLegacyMissingUris()
         {
         }
@@ -1864,7 +1847,6 @@ namespace facebook.thrift.annotation
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/AllowUnsafeNonSealedKeyType";
-    
         public @AllowUnsafeNonSealedKeyType()
         {
         }

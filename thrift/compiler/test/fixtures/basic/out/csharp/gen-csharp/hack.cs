@@ -144,6 +144,7 @@ namespace facebook.thrift.annotation.hack
                 _name = value;
             }
         }
+    
         /// <summary>Gets or sets the underlyingName field.</summary>
         private string _underlyingName = string.Empty;
         public string @underlyingName
@@ -155,6 +156,7 @@ namespace facebook.thrift.annotation.hack
                 _underlyingName = value;
             }
         }
+    
         /// <summary>Gets or sets the extraNamespace field.</summary>
         private string _extraNamespace = "thrift_adapted_types";
         public string @extraNamespace
@@ -523,6 +525,7 @@ namespace facebook.thrift.annotation.hack
                 _name = value;
             }
         }
+    
         /// <summary>Gets or sets the reason field.</summary>
         private string _reason = string.Empty;
         public string @reason
@@ -985,7 +988,6 @@ namespace facebook.thrift.annotation.hack
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/hack/StructAsTrait";
-    
         public @StructAsTrait()
         {
         }
@@ -1054,7 +1056,6 @@ namespace facebook.thrift.annotation.hack
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/hack/ModuleInternal";
-    
         public @ModuleInternal()
         {
         }
@@ -1123,7 +1124,6 @@ namespace facebook.thrift.annotation.hack
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/hack/GenerateClientMethodsWithHeaders";
-    
         public @GenerateClientMethodsWithHeaders()
         {
         }
@@ -1192,7 +1192,6 @@ namespace facebook.thrift.annotation.hack
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/hack/MigrationBlockingAllowInheritance";
-    
         public @MigrationBlockingAllowInheritance()
         {
         }
@@ -1261,7 +1260,6 @@ namespace facebook.thrift.annotation.hack
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/hack/MigrationBlockingLegacyJSONSerialization";
-    
         public @MigrationBlockingLegacyJSONSerialization()
         {
         }
@@ -1330,7 +1328,6 @@ namespace facebook.thrift.annotation.hack
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/hack/FixmeWrongType";
-    
         public @FixmeWrongType()
         {
         }
@@ -1399,7 +1396,6 @@ namespace facebook.thrift.annotation.hack
     {
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/hack/UnsafeArray";
-    
         public @UnsafeArray()
         {
         }
