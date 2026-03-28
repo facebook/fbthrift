@@ -125,10 +125,7 @@ namespace test.fixtures.enums
             get => _tags;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'tags' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "tags");
                 _tags = value;
             }
         }
@@ -172,10 +169,6 @@ namespace test.fixtures.enums
             writer.WriteFieldBegin(ThriftWireType.I32, 3);
             writer.WriteI32((int)@questionable);
             // Field 4: tags (HashSet<int>)
-            if (@tags == null)
-            {
-                throw new InvalidOperationException("Struct field 'tags' is required but contains a null value");
-            }
             writer.WriteFieldBegin(ThriftWireType.Set, 4);
             writer.WriteSetBegin(ThriftWireType.I32, @tags.Count);
             foreach (var _elem in @tags)

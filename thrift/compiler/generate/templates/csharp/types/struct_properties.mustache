@@ -31,10 +31,7 @@ public {{#partial types.csharp_type type=field.type}} {{field.csharp_property_na
     get => _{{field.name}};
     set
     {
-        if (value == null)
-        {
-            throw new ArgumentNullException(nameof(value), "Struct field '{{field.name}}' cannot be set to null");
-        }
+        ThriftNullGuard.ThrowIfNull(value, "{{field.name}}");
         _{{field.name}} = value;
     }
 }

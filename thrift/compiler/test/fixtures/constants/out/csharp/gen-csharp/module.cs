@@ -70,10 +70,7 @@ namespace test.fixtures.constants
             get => _title;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'title' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "title");
                 _title = value;
             }
         }
@@ -114,10 +111,6 @@ namespace test.fixtures.constants
             writer.WriteFieldBegin(ThriftWireType.I32, 1);
             writer.WriteI32(@weeks);
             // Field 2: title (string)
-            if (@title == null)
-            {
-                throw new InvalidOperationException("Struct field 'title' is required but contains a null value");
-            }
             writer.WriteFieldBegin(ThriftWireType.String, 2);
             writer.WriteString(@title);
             // Field 3: employer (@Company)
@@ -403,10 +396,7 @@ namespace test.fixtures.constants
             get => _b;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'b' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "b");
                 _b = value;
             }
         }
@@ -436,10 +426,6 @@ namespace test.fixtures.constants
             writer.WriteFieldBegin(ThriftWireType.I32, 1);
             writer.WriteI32(@a);
             // Field 2: b (string)
-            if (@b == null)
-            {
-                throw new InvalidOperationException("Struct field 'b' is required but contains a null value");
-            }
             writer.WriteFieldBegin(ThriftWireType.String, 2);
             writer.WriteString(@b);
             writer.WriteFieldStop();
@@ -537,10 +523,7 @@ namespace test.fixtures.constants
             get => _b;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'b' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "b");
                 _b = value;
             }
         }
@@ -551,10 +534,7 @@ namespace test.fixtures.constants
             get => _c;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'c' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "c");
                 _c = value;
             }
         }
@@ -565,10 +545,7 @@ namespace test.fixtures.constants
             get => _d;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'd' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "d");
                 _d = value;
             }
         }
@@ -603,24 +580,12 @@ namespace test.fixtures.constants
             writer.WriteFieldBegin(ThriftWireType.I32, 1);
             writer.WriteI32(@a);
             // Field 2: b (string)
-            if (@b == null)
-            {
-                throw new InvalidOperationException("Struct field 'b' is required but contains a null value");
-            }
             writer.WriteFieldBegin(ThriftWireType.String, 2);
             writer.WriteString(@b);
             // Field 3: c (@struct1)
-            if (@c == null)
-            {
-                throw new InvalidOperationException("Struct field 'c' is required but contains a null value");
-            }
             writer.WriteFieldBegin(ThriftWireType.Struct, 3);
             writer.WriteStruct(@c);
             // Field 4: d (List<int>)
-            if (@d == null)
-            {
-                throw new InvalidOperationException("Struct field 'd' is required but contains a null value");
-            }
             writer.WriteFieldBegin(ThriftWireType.List, 4);
             writer.WriteListBegin(ThriftWireType.I32, @d.Count);
             foreach (var _elem in @d)
@@ -765,10 +730,7 @@ namespace test.fixtures.constants
             get => _a;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'a' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "a");
                 _a = value;
             }
         }
@@ -781,10 +743,7 @@ namespace test.fixtures.constants
             get => _c;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'c' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "c");
                 _c = value;
             }
         }
@@ -813,20 +772,12 @@ namespace test.fixtures.constants
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: a (string)
-            if (@a == null)
-            {
-                throw new InvalidOperationException("Struct field 'a' is required but contains a null value");
-            }
             writer.WriteFieldBegin(ThriftWireType.String, 1);
             writer.WriteString(@a);
             // Field 2: b (int)
             writer.WriteFieldBegin(ThriftWireType.I32, 2);
             writer.WriteI32(@b);
             // Field 3: c (@struct2)
-            if (@c == null)
-            {
-                throw new InvalidOperationException("Struct field 'c' is required but contains a null value");
-            }
             writer.WriteFieldBegin(ThriftWireType.Struct, 3);
             writer.WriteStruct(@c);
             writer.WriteFieldStop();
@@ -1122,10 +1073,7 @@ namespace test.fixtures.constants
                 get => _type == Type.@i ? (int)_value! : null;
                 set
                 {
-                    if (value == null)
-                    {
-                        throw new ArgumentNullException(nameof(value), "Union field 'i' cannot be set to null");
-                    }
+                    ThriftNullGuard.ThrowIfNullUnion(value, "i");
                     _type = Type.@i;
                     _value = value;
                 }
@@ -1141,10 +1089,7 @@ namespace test.fixtures.constants
                 get => _type == Type.@d ? (double)_value! : null;
                 set
                 {
-                    if (value == null)
-                    {
-                        throw new ArgumentNullException(nameof(value), "Union field 'd' cannot be set to null");
-                    }
+                    ThriftNullGuard.ThrowIfNullUnion(value, "d");
                     _type = Type.@d;
                     _value = value;
                 }
@@ -1288,10 +1233,7 @@ namespace test.fixtures.constants
                 get => _type == Type.@i ? (int)_value! : null;
                 set
                 {
-                    if (value == null)
-                    {
-                        throw new ArgumentNullException(nameof(value), "Union field 'i' cannot be set to null");
-                    }
+                    ThriftNullGuard.ThrowIfNullUnion(value, "i");
                     _type = Type.@i;
                     _value = value;
                 }
@@ -1307,10 +1249,7 @@ namespace test.fixtures.constants
                 get => _type == Type.@d ? (double)_value! : null;
                 set
                 {
-                    if (value == null)
-                    {
-                        throw new ArgumentNullException(nameof(value), "Union field 'd' cannot be set to null");
-                    }
+                    ThriftNullGuard.ThrowIfNullUnion(value, "d");
                     _type = Type.@d;
                     _value = value;
                 }
@@ -1326,10 +1265,7 @@ namespace test.fixtures.constants
                 get => _type == Type.@s ? (@struct1)_value! : null;
                 set
                 {
-                    if (value == null)
-                    {
-                        throw new ArgumentNullException(nameof(value), "Union field 's' cannot be set to null");
-                    }
+                    ThriftNullGuard.ThrowIfNullUnion(value, "s");
                     _type = Type.@s;
                     _value = value;
                 }
@@ -1345,10 +1281,7 @@ namespace test.fixtures.constants
                 get => _type == Type.@u ? (@union1)_value! : null;
                 set
                 {
-                    if (value == null)
-                    {
-                        throw new ArgumentNullException(nameof(value), "Union field 'u' cannot be set to null");
-                    }
+                    ThriftNullGuard.ThrowIfNullUnion(value, "u");
                     _type = Type.@u;
                     _value = value;
                 }
@@ -1367,18 +1300,10 @@ namespace test.fixtures.constants
                             writer.WriteValue((double)_value!);
                         break;
                     case Type.@s:
-                        if (_value == null)
-                        {
-                            throw new InvalidOperationException("Union field 's' is set but contains a null value");
-                        }
                             writer.WriteFieldBegin(ThriftWireType.Struct, 3);
                             writer.WriteStruct((IThriftSerializable)_value!);
                         break;
                     case Type.@u:
-                        if (_value == null)
-                        {
-                            throw new InvalidOperationException("Union field 'u' is set but contains a null value");
-                        }
                             writer.WriteFieldBegin(ThriftWireType.Struct, 4);
                             writer.WriteStruct((IThriftSerializable)_value!);
                         break;

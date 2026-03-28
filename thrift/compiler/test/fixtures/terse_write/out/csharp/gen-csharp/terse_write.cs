@@ -162,10 +162,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 get => _type == Type.@bool_field ? (bool)_value! : null;
                 set
                 {
-                    if (value == null)
-                    {
-                        throw new ArgumentNullException(nameof(value), "Union field 'bool_field' cannot be set to null");
-                    }
+                    ThriftNullGuard.ThrowIfNullUnion(value, "bool_field");
                     _type = Type.@bool_field;
                     _value = value;
                 }
@@ -181,10 +178,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 get => _type == Type.@byte_field ? (sbyte)_value! : null;
                 set
                 {
-                    if (value == null)
-                    {
-                        throw new ArgumentNullException(nameof(value), "Union field 'byte_field' cannot be set to null");
-                    }
+                    ThriftNullGuard.ThrowIfNullUnion(value, "byte_field");
                     _type = Type.@byte_field;
                     _value = value;
                 }
@@ -200,10 +194,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 get => _type == Type.@short_field ? (short)_value! : null;
                 set
                 {
-                    if (value == null)
-                    {
-                        throw new ArgumentNullException(nameof(value), "Union field 'short_field' cannot be set to null");
-                    }
+                    ThriftNullGuard.ThrowIfNullUnion(value, "short_field");
                     _type = Type.@short_field;
                     _value = value;
                 }
@@ -219,10 +210,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 get => _type == Type.@int_field ? (int)_value! : null;
                 set
                 {
-                    if (value == null)
-                    {
-                        throw new ArgumentNullException(nameof(value), "Union field 'int_field' cannot be set to null");
-                    }
+                    ThriftNullGuard.ThrowIfNullUnion(value, "int_field");
                     _type = Type.@int_field;
                     _value = value;
                 }
@@ -238,10 +226,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 get => _type == Type.@long_field ? (long)_value! : null;
                 set
                 {
-                    if (value == null)
-                    {
-                        throw new ArgumentNullException(nameof(value), "Union field 'long_field' cannot be set to null");
-                    }
+                    ThriftNullGuard.ThrowIfNullUnion(value, "long_field");
                     _type = Type.@long_field;
                     _value = value;
                 }
@@ -257,10 +242,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 get => _type == Type.@float_field ? (float)_value! : null;
                 set
                 {
-                    if (value == null)
-                    {
-                        throw new ArgumentNullException(nameof(value), "Union field 'float_field' cannot be set to null");
-                    }
+                    ThriftNullGuard.ThrowIfNullUnion(value, "float_field");
                     _type = Type.@float_field;
                     _value = value;
                 }
@@ -276,10 +258,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 get => _type == Type.@double_field ? (double)_value! : null;
                 set
                 {
-                    if (value == null)
-                    {
-                        throw new ArgumentNullException(nameof(value), "Union field 'double_field' cannot be set to null");
-                    }
+                    ThriftNullGuard.ThrowIfNullUnion(value, "double_field");
                     _type = Type.@double_field;
                     _value = value;
                 }
@@ -295,10 +274,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 get => _type == Type.@string_field ? (string)_value! : null;
                 set
                 {
-                    if (value == null)
-                    {
-                        throw new ArgumentNullException(nameof(value), "Union field 'string_field' cannot be set to null");
-                    }
+                    ThriftNullGuard.ThrowIfNullUnion(value, "string_field");
                     _type = Type.@string_field;
                     _value = value;
                 }
@@ -314,10 +290,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 get => _type == Type.@binary_field ? (byte[])_value! : null;
                 set
                 {
-                    if (value == null)
-                    {
-                        throw new ArgumentNullException(nameof(value), "Union field 'binary_field' cannot be set to null");
-                    }
+                    ThriftNullGuard.ThrowIfNullUnion(value, "binary_field");
                     _type = Type.@binary_field;
                     _value = value;
                 }
@@ -333,10 +306,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 get => _type == Type.@enum_field ? (@MyEnum)_value! : null;
                 set
                 {
-                    if (value == null)
-                    {
-                        throw new ArgumentNullException(nameof(value), "Union field 'enum_field' cannot be set to null");
-                    }
+                    ThriftNullGuard.ThrowIfNullUnion(value, "enum_field");
                     _type = Type.@enum_field;
                     _value = value;
                 }
@@ -352,10 +322,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 get => _type == Type.@list_field ? (List<short>)_value! : null;
                 set
                 {
-                    if (value == null)
-                    {
-                        throw new ArgumentNullException(nameof(value), "Union field 'list_field' cannot be set to null");
-                    }
+                    ThriftNullGuard.ThrowIfNullUnion(value, "list_field");
                     _type = Type.@list_field;
                     _value = value;
                 }
@@ -371,10 +338,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 get => _type == Type.@set_field ? (HashSet<short>)_value! : null;
                 set
                 {
-                    if (value == null)
-                    {
-                        throw new ArgumentNullException(nameof(value), "Union field 'set_field' cannot be set to null");
-                    }
+                    ThriftNullGuard.ThrowIfNullUnion(value, "set_field");
                     _type = Type.@set_field;
                     _value = value;
                 }
@@ -390,10 +354,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 get => _type == Type.@map_field ? (Dictionary<short, short>)_value! : null;
                 set
                 {
-                    if (value == null)
-                    {
-                        throw new ArgumentNullException(nameof(value), "Union field 'map_field' cannot be set to null");
-                    }
+                    ThriftNullGuard.ThrowIfNullUnion(value, "map_field");
                     _type = Type.@map_field;
                     _value = value;
                 }
@@ -409,10 +370,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 get => _type == Type.@struct_field ? (@MyStruct)_value! : null;
                 set
                 {
-                    if (value == null)
-                    {
-                        throw new ArgumentNullException(nameof(value), "Union field 'struct_field' cannot be set to null");
-                    }
+                    ThriftNullGuard.ThrowIfNullUnion(value, "struct_field");
                     _type = Type.@struct_field;
                     _value = value;
                 }
@@ -451,18 +409,10 @@ namespace facebook.thrift.test.fixtures.terse_write
                             writer.WriteValue((double)_value!);
                         break;
                     case Type.@string_field:
-                        if (_value == null)
-                        {
-                            throw new InvalidOperationException("Union field 'string_field' is set but contains a null value");
-                        }
                             writer.WriteFieldBegin(ThriftWireType.String, 8);
                             writer.WriteValue((string)_value!);
                         break;
                     case Type.@binary_field:
-                        if (_value == null)
-                        {
-                            throw new InvalidOperationException("Union field 'binary_field' is set but contains a null value");
-                        }
                             writer.WriteFieldBegin(ThriftWireType.String, 9);
                             writer.WriteValue((byte[])_value!);
                         break;
@@ -471,10 +421,6 @@ namespace facebook.thrift.test.fixtures.terse_write
                             writer.WriteI32((int)(@MyEnum)_value!);
                         break;
                     case Type.@list_field:
-                        if (_value == null)
-                        {
-                            throw new InvalidOperationException("Union field 'list_field' is set but contains a null value");
-                        }
                             writer.WriteFieldBegin(ThriftWireType.List, 11);
                             {
                                 var _list = (List<short>)_value!;
@@ -486,10 +432,6 @@ namespace facebook.thrift.test.fixtures.terse_write
                             }
                         break;
                     case Type.@set_field:
-                        if (_value == null)
-                        {
-                            throw new InvalidOperationException("Union field 'set_field' is set but contains a null value");
-                        }
                             writer.WriteFieldBegin(ThriftWireType.Set, 12);
                             {
                                 var _set = (HashSet<short>)_value!;
@@ -501,10 +443,6 @@ namespace facebook.thrift.test.fixtures.terse_write
                             }
                         break;
                     case Type.@map_field:
-                        if (_value == null)
-                        {
-                            throw new InvalidOperationException("Union field 'map_field' is set but contains a null value");
-                        }
                             writer.WriteFieldBegin(ThriftWireType.Map, 13);
                             {
                                 var _map = (Dictionary<short, short>)_value!;
@@ -517,10 +455,6 @@ namespace facebook.thrift.test.fixtures.terse_write
                             }
                         break;
                     case Type.@struct_field:
-                        if (_value == null)
-                        {
-                            throw new InvalidOperationException("Union field 'struct_field' is set but contains a null value");
-                        }
                             writer.WriteFieldBegin(ThriftWireType.Struct, 14);
                             writer.WriteStruct((IThriftSerializable)_value!);
                         break;
@@ -855,10 +789,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             get => _string_field;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'string_field' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "string_field");
                 _string_field = value;
             }
         }
@@ -869,10 +800,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             get => _binary_field;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'binary_field' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "binary_field");
                 _binary_field = value;
             }
         }
@@ -885,10 +813,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             get => _list_field;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'list_field' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "list_field");
                 _list_field = value;
             }
         }
@@ -899,10 +824,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             get => _set_field;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'set_field' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "set_field");
                 _set_field = value;
             }
         }
@@ -913,10 +835,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             get => _map_field;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'map_field' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "map_field");
                 _map_field = value;
             }
         }
@@ -927,10 +846,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             get => _struct_field;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'struct_field' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "struct_field");
                 _struct_field = value;
             }
         }
@@ -941,10 +857,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             get => _union_field;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'union_field' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "union_field");
                 _union_field = value;
             }
         }
@@ -1477,10 +1390,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             get => _terse_string_field;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'terse_string_field' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "terse_string_field");
                 _terse_string_field = value;
             }
         }
@@ -1491,10 +1401,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             get => _terse_binary_field;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'terse_binary_field' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "terse_binary_field");
                 _terse_binary_field = value;
             }
         }
@@ -1507,10 +1414,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             get => _terse_list_field;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'terse_list_field' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "terse_list_field");
                 _terse_list_field = value;
             }
         }
@@ -1521,10 +1425,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             get => _terse_set_field;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'terse_set_field' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "terse_set_field");
                 _terse_set_field = value;
             }
         }
@@ -1535,10 +1436,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             get => _terse_map_field;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'terse_map_field' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "terse_map_field");
                 _terse_map_field = value;
             }
         }
@@ -1549,10 +1447,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             get => _terse_struct_field;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'terse_struct_field' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "terse_struct_field");
                 _terse_struct_field = value;
             }
         }
@@ -1563,10 +1458,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             get => _terse_union_field;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'terse_union_field' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "terse_union_field");
                 _terse_union_field = value;
             }
         }
@@ -1591,10 +1483,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             get => _string_field;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'string_field' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "string_field");
                 _string_field = value;
             }
         }
@@ -1605,10 +1494,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             get => _binary_field;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'binary_field' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "binary_field");
                 _binary_field = value;
             }
         }
@@ -1621,10 +1507,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             get => _list_field;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'list_field' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "list_field");
                 _list_field = value;
             }
         }
@@ -1635,10 +1518,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             get => _set_field;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'set_field' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "set_field");
                 _set_field = value;
             }
         }
@@ -1649,10 +1529,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             get => _map_field;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'map_field' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "map_field");
                 _map_field = value;
             }
         }
@@ -1663,10 +1540,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             get => _struct_field;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'struct_field' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "struct_field");
                 _struct_field = value;
             }
         }
@@ -1677,10 +1551,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             get => _union_field;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Struct field 'union_field' cannot be set to null");
-                }
+                ThriftNullGuard.ThrowIfNull(value, "union_field");
                 _union_field = value;
             }
         }
@@ -1899,27 +1770,15 @@ namespace facebook.thrift.test.fixtures.terse_write
             writer.WriteFieldBegin(ThriftWireType.Double, 21);
             writer.WriteDouble(@double_field);
             // Field 22: string_field (string)
-            if (@string_field == null)
-            {
-                throw new InvalidOperationException("Struct field 'string_field' is required but contains a null value");
-            }
             writer.WriteFieldBegin(ThriftWireType.String, 22);
             writer.WriteString(@string_field);
             // Field 23: binary_field (byte[])
-            if (@binary_field == null)
-            {
-                throw new InvalidOperationException("Struct field 'binary_field' is required but contains a null value");
-            }
             writer.WriteFieldBegin(ThriftWireType.String, 23);
             writer.WriteBinary(@binary_field);
             // Field 24: enum_field (@MyEnum)
             writer.WriteFieldBegin(ThriftWireType.I32, 24);
             writer.WriteI32((int)@enum_field);
             // Field 25: list_field (List<short>)
-            if (@list_field == null)
-            {
-                throw new InvalidOperationException("Struct field 'list_field' is required but contains a null value");
-            }
             writer.WriteFieldBegin(ThriftWireType.List, 25);
             writer.WriteListBegin(ThriftWireType.I16, @list_field.Count);
             foreach (var _elem in @list_field)
@@ -1927,10 +1786,6 @@ namespace facebook.thrift.test.fixtures.terse_write
                 writer.WriteI16(_elem);
             }
             // Field 26: set_field (HashSet<short>)
-            if (@set_field == null)
-            {
-                throw new InvalidOperationException("Struct field 'set_field' is required but contains a null value");
-            }
             writer.WriteFieldBegin(ThriftWireType.Set, 26);
             writer.WriteSetBegin(ThriftWireType.I16, @set_field.Count);
             foreach (var _elem in @set_field)
@@ -1938,10 +1793,6 @@ namespace facebook.thrift.test.fixtures.terse_write
                 writer.WriteI16(_elem);
             }
             // Field 27: map_field (Dictionary<short, short>)
-            if (@map_field == null)
-            {
-                throw new InvalidOperationException("Struct field 'map_field' is required but contains a null value");
-            }
             writer.WriteFieldBegin(ThriftWireType.Map, 27);
             writer.WriteMapBegin(ThriftWireType.I16, ThriftWireType.I16, @map_field.Count);
             foreach (var _entry in @map_field)
@@ -1950,17 +1801,9 @@ namespace facebook.thrift.test.fixtures.terse_write
                 writer.WriteI16(_entry.Value);
             }
             // Field 28: struct_field (@MyStruct)
-            if (@struct_field == null)
-            {
-                throw new InvalidOperationException("Struct field 'struct_field' is required but contains a null value");
-            }
             writer.WriteFieldBegin(ThriftWireType.Struct, 28);
             writer.WriteStruct(@struct_field);
             // Field 30: union_field (@MyUnion)
-            if (@union_field == null)
-            {
-                throw new InvalidOperationException("Struct field 'union_field' is required but contains a null value");
-            }
             writer.WriteFieldBegin(ThriftWireType.Struct, 30);
             writer.WriteStruct(@union_field);
             writer.WriteFieldStop();

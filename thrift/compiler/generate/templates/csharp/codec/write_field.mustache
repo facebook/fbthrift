@@ -118,12 +118,6 @@ if ({{field.csharp_property_name}} != default)
   {{/if field.type.structured?}}
 {{#else}}
 {{! Unqualified or required — always write }}
-  {{#if field.type.nullable?}}
-if ({{field.csharp_property_name}} == null)
-{
-    throw new InvalidOperationException("Struct field '{{field.name}}' is required but contains a null value");
-}
-  {{/if field.type.nullable?}}
   {{#if field.type.structured?}}
 writer.WriteFieldBegin({{#partial ttype.csharp_ttype_name type=field.type}}, {{field.id}});
 writer.WriteStruct({{field.csharp_property_name}});
