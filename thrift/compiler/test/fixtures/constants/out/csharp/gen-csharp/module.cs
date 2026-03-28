@@ -1010,6 +1010,10 @@ namespace test.fixtures.constants
                 get => _type == Type.@i ? (int)_value! : null;
                 set
                 {
+                    if (value == null)
+                    {
+                        throw new ArgumentNullException(nameof(value), "Union field 'i' cannot be set to null");
+                    }
                     _type = Type.@i;
                     _value = value;
                 }
@@ -1025,6 +1029,10 @@ namespace test.fixtures.constants
                 get => _type == Type.@d ? (double)_value! : null;
                 set
                 {
+                    if (value == null)
+                    {
+                        throw new ArgumentNullException(nameof(value), "Union field 'd' cannot be set to null");
+                    }
                     _type = Type.@d;
                     _value = value;
                 }
@@ -1168,6 +1176,10 @@ namespace test.fixtures.constants
                 get => _type == Type.@i ? (int)_value! : null;
                 set
                 {
+                    if (value == null)
+                    {
+                        throw new ArgumentNullException(nameof(value), "Union field 'i' cannot be set to null");
+                    }
                     _type = Type.@i;
                     _value = value;
                 }
@@ -1183,6 +1195,10 @@ namespace test.fixtures.constants
                 get => _type == Type.@d ? (double)_value! : null;
                 set
                 {
+                    if (value == null)
+                    {
+                        throw new ArgumentNullException(nameof(value), "Union field 'd' cannot be set to null");
+                    }
                     _type = Type.@d;
                     _value = value;
                 }
@@ -1198,6 +1214,10 @@ namespace test.fixtures.constants
                 get => _type == Type.@s ? (@struct1)_value! : null;
                 set
                 {
+                    if (value == null)
+                    {
+                        throw new ArgumentNullException(nameof(value), "Union field 's' cannot be set to null");
+                    }
                     _type = Type.@s;
                     _value = value;
                 }
@@ -1213,6 +1233,10 @@ namespace test.fixtures.constants
                 get => _type == Type.@u ? (@union1)_value! : null;
                 set
                 {
+                    if (value == null)
+                    {
+                        throw new ArgumentNullException(nameof(value), "Union field 'u' cannot be set to null");
+                    }
                     _type = Type.@u;
                     _value = value;
                 }
@@ -1231,18 +1255,20 @@ namespace test.fixtures.constants
                             writer.WriteValue((double)_value!);
                         break;
                     case Type.@s:
-                        if (_value != null)
+                        if (_value == null)
                         {
+                            throw new InvalidOperationException("Union field 's' is set but contains a null value");
+                        }
                             writer.WriteFieldBegin(ThriftWireType.Struct, 3);
                             writer.WriteStruct((IThriftSerializable)_value!);
-                        }
                         break;
                     case Type.@u:
-                        if (_value != null)
+                        if (_value == null)
                         {
+                            throw new InvalidOperationException("Union field 'u' is set but contains a null value");
+                        }
                             writer.WriteFieldBegin(ThriftWireType.Struct, 4);
                             writer.WriteStruct((IThriftSerializable)_value!);
-                        }
                         break;
                 }
                 writer.WriteFieldStop();

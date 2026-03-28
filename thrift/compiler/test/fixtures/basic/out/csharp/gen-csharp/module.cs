@@ -657,6 +657,10 @@ namespace test.dev.fixtures.basic
                 get => _type == Type.@myEnum ? (@MyEnumAlias)_value! : null;
                 set
                 {
+                    if (value == null)
+                    {
+                        throw new ArgumentNullException(nameof(value), "Union field 'myEnum' cannot be set to null");
+                    }
                     _type = Type.@myEnum;
                     _value = value;
                 }
@@ -672,6 +676,10 @@ namespace test.dev.fixtures.basic
                 get => _type == Type.@myStruct ? (@MyStruct)_value! : null;
                 set
                 {
+                    if (value == null)
+                    {
+                        throw new ArgumentNullException(nameof(value), "Union field 'myStruct' cannot be set to null");
+                    }
                     _type = Type.@myStruct;
                     _value = value;
                 }
@@ -687,6 +695,10 @@ namespace test.dev.fixtures.basic
                 get => _type == Type.@myDataItem ? (@MyDataItem)_value! : null;
                 set
                 {
+                    if (value == null)
+                    {
+                        throw new ArgumentNullException(nameof(value), "Union field 'myDataItem' cannot be set to null");
+                    }
                     _type = Type.@myDataItem;
                     _value = value;
                 }
@@ -702,6 +714,10 @@ namespace test.dev.fixtures.basic
                 get => _type == Type.@floatSet ? (HashSet<float>)_value! : null;
                 set
                 {
+                    if (value == null)
+                    {
+                        throw new ArgumentNullException(nameof(value), "Union field 'floatSet' cannot be set to null");
+                    }
                     _type = Type.@floatSet;
                     _value = value;
                 }
@@ -716,22 +732,26 @@ namespace test.dev.fixtures.basic
                             writer.WriteI32((int)(@MyEnumAlias)_value!);
                         break;
                     case Type.@myStruct:
-                        if (_value != null)
+                        if (_value == null)
                         {
+                            throw new InvalidOperationException("Union field 'myStruct' is set but contains a null value");
+                        }
                             writer.WriteFieldBegin(ThriftWireType.Struct, 2);
                             writer.WriteStruct((IThriftSerializable)_value!);
-                        }
                         break;
                     case Type.@myDataItem:
-                        if (_value != null)
+                        if (_value == null)
                         {
+                            throw new InvalidOperationException("Union field 'myDataItem' is set but contains a null value");
+                        }
                             writer.WriteFieldBegin(ThriftWireType.Struct, 3);
                             writer.WriteStruct((IThriftSerializable)_value!);
-                        }
                         break;
                     case Type.@floatSet:
-                        if (_value != null)
+                        if (_value == null)
                         {
+                            throw new InvalidOperationException("Union field 'floatSet' is set but contains a null value");
+                        }
                             writer.WriteFieldBegin(ThriftWireType.Set, 4);
                             {
                                 var _set = (HashSet<float>)_value!;
@@ -741,7 +761,6 @@ namespace test.dev.fixtures.basic
                                     writer.WriteFloat(_elem);
                                 }
                             }
-                        }
                         break;
                 }
                 writer.WriteFieldStop();
@@ -1325,6 +1344,10 @@ namespace test.dev.fixtures.basic
                 get => _type == Type.@reserved_field ? (int)_value! : null;
                 set
                 {
+                    if (value == null)
+                    {
+                        throw new ArgumentNullException(nameof(value), "Union field 'reserved_field' cannot be set to null");
+                    }
                     _type = Type.@reserved_field;
                     _value = value;
                 }

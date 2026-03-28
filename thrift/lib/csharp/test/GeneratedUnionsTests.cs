@@ -105,5 +105,33 @@ namespace FBThrift.Tests
             var u = new UnionToBeRenamed();
             Assert.IsNotNull(u);
         }
+
+        [Test]
+        public void TestUnionSetNullEnumFieldThrows()
+        {
+            var u = new MyUnion();
+            Assert.Throws<ArgumentNullException>(() => u.myEnum = null);
+        }
+
+        [Test]
+        public void TestUnionSetNullStructFieldThrows()
+        {
+            var u = new MyUnion();
+            Assert.Throws<ArgumentNullException>(() => u.myDataItem = null);
+        }
+
+        [Test]
+        public void TestUnionSetNullPrimitiveFieldThrows()
+        {
+            var u = new UnionToBeRenamed();
+            Assert.Throws<ArgumentNullException>(() => u.reserved_field = null);
+        }
+
+        [Test]
+        public void TestUnionSetNullContainerFieldThrows()
+        {
+            var u = new TypedefContainerUnion();
+            Assert.Throws<ArgumentNullException>(() => u.int_list_field = null);
+        }
     }
 }

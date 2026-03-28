@@ -27,8 +27,10 @@ public void __fbthrift_write(IThriftProtocolWriter writer)
 {{#each structured.fields as |field|}}
         case Type.{{field.csharp_property_name}}:
 {{#if field.type.nullable?}}
-            if (_value != null)
+            if (_value == null)
             {
+                throw new InvalidOperationException("Union field '{{field.name}}' is set but contains a null value");
+            }
 {{/if field.type.nullable?}}
                 writer.WriteFieldBegin({{#partial ttype.csharp_ttype_name type=field.type}}, {{field.id}});
 {{#if field.type.structured?}}
@@ -66,9 +68,6 @@ public void __fbthrift_write(IThriftProtocolWriter writer)
 {{#else}}
                 writer.WriteValue(({{#partial types.csharp_type type=field.type}})_value!);
 {{/if field.type.structured?}}
-{{#if field.type.nullable?}}
-            }
-{{/if field.type.nullable?}}
             break;
 {{/each}}
     }
@@ -172,6 +171,10 @@ public void __fbthrift_read(IThriftProtocolReader reader)
             get => _type == Type.{{field.csharp_property_name}} ? ({{#partial types.csharp_type type=field.type}})_value! : null;
             set
             {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Union field '{{field.name}}' cannot be set to null");
+                }
                 _type = Type.{{field.csharp_property_name}};
                 _value = value;
             }
