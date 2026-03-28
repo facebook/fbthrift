@@ -1046,54 +1046,19 @@ struct Decode<type::list<Tag>> {
   }
 };
 
-template <typename Container, typename... Args>
-using emplace_hint_t = decltype(FOLLY_DECLVAL(Container).emplace_hint(
-    FOLLY_DECLVAL(Container).end(), FOLLY_DECLVAL(Args)...));
-template <typename Container, typename... Args>
-using emplace_t = decltype(FOLLY_DECLVAL(Container).emplace(
-    FOLLY_DECLVAL(Container).end(), FOLLY_DECLVAL(Args)...));
-template <typename Container, typename Key, typename Value>
-auto& emplace_at_end(Container& container, Key&& key, Value&& val) {
-  if constexpr (folly::is_detected_v<emplace_hint_t, Container&, Key, Value>) {
-    return container
-        .emplace_hint(
-            container.end(), std::forward<Key>(key), std::forward<Value>(val))
-        ->second;
-  } else if constexpr (folly::
-                           is_detected_v<emplace_t, Container&, Key, Value>) {
-    return container.emplace(std::forward<Key>(key), std::forward<Value>(val))
-        .first->second;
-  } else {
-    return container[std::forward<Key>(key)];
-  }
-}
-template <typename Container, typename Value>
-void emplace_at_end(Container& container, Value&& val) {
-  if constexpr (folly::is_detected_v<emplace_hint_t, Container&, Value>) {
-    container.emplace_hint(container.end(), std::forward<Value>(val));
-  } else if constexpr (folly::is_detected_v<emplace_t, Container&, Value>) {
-    container.emplace(std::forward<Value>(val));
-  } else {
-    container.insert(std::forward<Value>(val));
-  }
-}
-
 template <typename Tag>
 struct Decode<type::set<Tag>> {
   template <typename Protocol, typename SetType>
   void operator()(Protocol& prot, SetType& set) const {
-    auto consumeElem = [&] {
-      typename SetType::value_type value;
-      Decode<Tag>{}(prot, value);
-      emplace_at_end(set, std::move(value));
-    };
     TType t;
     uint32_t s;
     prot.readSetBegin(t, s);
     set = SetType();
     if (prot.kOmitsContainerSizes()) {
       while (prot.peekSet()) {
-        consumeElem();
+        typename SetType::value_type value;
+        Decode<Tag>{}(prot, value);
+        set.insert(std::move(value));
       }
     } else if (typeTagToTType<Tag> == t) {
       if (!canReadNElements(prot, s, {t})) {
@@ -1113,21 +1078,15 @@ template <typename Key, typename Value>
 struct Decode<type::map<Key, Value>> {
   template <typename Protocol, typename MapType>
   void operator()(Protocol& prot, MapType& map) const {
-    auto consumeElem = [&] {
-      typename MapType::key_type key;
-      Decode<Key>{}(prot, key);
-      auto& val =
-          emplace_at_end(map, std::move(key), typename MapType::mapped_type{});
-      Decode<Value>{}(prot, val);
-    };
-
     TType keyType, valueType;
     uint32_t s;
     prot.readMapBegin(keyType, valueType, s);
     map = MapType();
     if (prot.kOmitsContainerSizes()) {
       while (prot.peekMap()) {
-        consumeElem();
+        typename MapType::key_type key;
+        Decode<Key>{}(prot, key);
+        Decode<Value>{}(prot, map[key]);
       }
     } else if (
         typeTagToTType<Key> == keyType && typeTagToTType<Value> == valueType) {
