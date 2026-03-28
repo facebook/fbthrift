@@ -14,22 +14,24 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/gen/module_types_cpp.h>
-
+#include <thrift/lib/cpp2/detail/Enum.h>
 namespace apache::thrift::detail::st {
 
-FOLLY_NOINLINE void translate_field_name(
-    std::string_view fname,
-    int16_t& fid,
-    protocol::TType& ftype,
-    const translate_field_name_table& table) noexcept {
-  for (size_t i = 0; i < table.size; ++i) {
-    if (fname == table.names[i]) {
-      fid = table.ids[i];
-      ftype = table.types[i];
-      break;
-    }
-  }
-}
+template struct enum_find<int>;
+
+static_assert(
+    folly::is_instantiation_of_v<
+        folly::F14FastMap,
+        enum_find<int>::find_name_map_t>,
+    "mismatch");
+static_assert(
+    folly::is_instantiation_of_v<
+        folly::F14FastMap,
+        enum_find<int>::find_value_map_t>,
+    "mismatch");
+static_assert(
+    !FOLLY_F14_VECTOR_INTRINSICS_AVAILABLE || !folly::has_extended_alignment ||
+        sizeof(enum_find<int>) <= folly::cacheline_align_v,
+    "oversized");
 
 } // namespace apache::thrift::detail::st

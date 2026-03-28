@@ -69,6 +69,7 @@ add_library(
 
   ${metadata-cpp2-SOURCES}
   gen/module_types_cpp.cpp
+  detail/Enum.cpp
   protocol/CompactProtocol.cpp # can't link against thriftprotocol, dep cycle
   ../cpp/protocol/TProtocolException.cpp
   ../cpp/util/VarintUtils.cpp
@@ -249,6 +250,7 @@ add_library(
 
   ${RpcMetadata-cpp2-SOURCES}
   gen/module_types_cpp.cpp
+  detail/Enum.cpp
   protocol/CompactProtocol.cpp # can't link against thriftprotocol, dep cycle
   protocol/JSONProtocolCommon.cpp
   ../cpp/protocol/TBase64Utils.cpp
@@ -374,6 +376,7 @@ add_library(
   async/processor/ServiceHandlerBase.cpp
   gen/module_constants_cpp.cpp
   gen/module_types_cpp.cpp
+  detail/Enum.cpp
   logging/ThriftConnectionLog.cpp
   logging/ThriftSinkLog.cpp
   logging/ThriftStreamLog.cpp

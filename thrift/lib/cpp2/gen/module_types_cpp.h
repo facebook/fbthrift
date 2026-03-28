@@ -34,8 +34,6 @@ namespace apache::thrift::detail {
 
 namespace st {
 
-extern template struct enum_find<int>;
-
 //  copy_field_fn
 //  copy_field
 //

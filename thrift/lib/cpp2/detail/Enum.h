@@ -217,4 +217,6 @@ FOLLY_ERASE bool enum_find_value(
   return r && ((*uout = r.result), true);
 }
 
+extern template struct enum_find<int>;
+
 } // namespace apache::thrift::detail::st
