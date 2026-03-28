@@ -38,29 +38,29 @@ public void __fbthrift_write(IThriftProtocolWriter writer)
 {{#else if field.type.list?}}
                 {
                     var _list = ({{#partial types.csharp_type type=field.type}})_value!;
-                    writer.WriteListBegin({{#partial ttype.csharp_ttype_name type=field.type.elem_type}}, _list.Count);
+                    writer.WriteListBegin({{#partial ttype.csharp_ttype_name type=field.type.true_type.elem_type}}, _list.Count);
                     foreach (var _elem in _list)
                     {
-                        {{#partial write.csharp_write_expr type=field.type.elem_type value="_elem"}};
+                        {{#partial write.csharp_write_expr type=field.type.true_type.elem_type value="_elem"}};
                     }
                 }
 {{#else if field.type.set?}}
                 {
                     var _set = ({{#partial types.csharp_type type=field.type}})_value!;
-                    writer.WriteSetBegin({{#partial ttype.csharp_ttype_name type=field.type.elem_type}}, _set.Count);
+                    writer.WriteSetBegin({{#partial ttype.csharp_ttype_name type=field.type.true_type.elem_type}}, _set.Count);
                     foreach (var _elem in _set)
                     {
-                        {{#partial write.csharp_write_expr type=field.type.elem_type value="_elem"}};
+                        {{#partial write.csharp_write_expr type=field.type.true_type.elem_type value="_elem"}};
                     }
                 }
 {{#else if field.type.map?}}
                 {
                     var _map = ({{#partial types.csharp_type type=field.type}})_value!;
-                    writer.WriteMapBegin({{#partial ttype.csharp_ttype_name type=field.type.key_type}}, {{#partial ttype.csharp_ttype_name type=field.type.val_type}}, _map.Count);
+                    writer.WriteMapBegin({{#partial ttype.csharp_ttype_name type=field.type.true_type.key_type}}, {{#partial ttype.csharp_ttype_name type=field.type.true_type.val_type}}, _map.Count);
                     foreach (var _entry in _map)
                     {
-                        {{#partial write.csharp_write_expr type=field.type.key_type value="_entry.Key"}};
-                        {{#partial write.csharp_write_expr type=field.type.val_type value="_entry.Value"}};
+                        {{#partial write.csharp_write_expr type=field.type.true_type.key_type value="_entry.Key"}};
+                        {{#partial write.csharp_write_expr type=field.type.true_type.val_type value="_entry.Value"}};
                     }
                 }
 {{#else}}

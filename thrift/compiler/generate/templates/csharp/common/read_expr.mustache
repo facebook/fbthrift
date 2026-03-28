@@ -36,8 +36,8 @@
 {{#else if type.binary?}}reader.ReadBinary()
 {{#else if type.enum?}}({{#partial types.csharp_type type=type}})reader.ReadI32()
 {{#else if type.structured?}}reader.ReadStruct<{{#partial types.csharp_type type=type}}>()
-{{#else if type.list?}}reader.ReadList<{{#partial types.csharp_type type=type.elem_type}}>()
-{{#else if type.set?}}reader.ReadSet<{{#partial types.csharp_type type=type.elem_type}}>()
-{{#else if type.map?}}reader.ReadMap<{{#partial types.csharp_type type=type.key_type}}, {{#partial types.csharp_type type=type.val_type}}>()
+{{#else if type.list?}}reader.ReadList<{{#partial types.csharp_type type=type.true_type.elem_type}}>()
+{{#else if type.set?}}reader.ReadSet<{{#partial types.csharp_type type=type.true_type.elem_type}}>()
+{{#else if type.map?}}reader.ReadMap<{{#partial types.csharp_type type=type.true_type.key_type}}, {{#partial types.csharp_type type=type.true_type.val_type}}>()
 {{/if type.bool?}}
 {{/let partial}}
