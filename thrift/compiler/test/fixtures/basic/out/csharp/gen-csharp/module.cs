@@ -53,9 +53,33 @@ namespace test.dev.fixtures.basic
         /// <summary>Gets or sets the MyIntField field.</summary>
         public long @MyIntField { get; set; }
         /// <summary>Gets or sets the MyStringField field.</summary>
-        public string @MyStringField { get; set; } = string.Empty;
+        private string _MyStringField = string.Empty;
+        public string @MyStringField
+        {
+            get => _MyStringField;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'MyStringField' cannot be set to null");
+                }
+                _MyStringField = value;
+            }
+        }
         /// <summary>Gets or sets the MyDataField field.</summary>
-        public @MyDataItemAlias @MyDataField { get; set; } = new @MyDataItemAlias();
+        private @MyDataItemAlias _MyDataField = new @MyDataItemAlias();
+        public @MyDataItemAlias @MyDataField
+        {
+            get => _MyDataField;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'MyDataField' cannot be set to null");
+                }
+                _MyDataField = value;
+            }
+        }
         /// <summary>Gets or sets the myEnum field.</summary>
         public @MyEnum @myEnum { get; set; }
         /// <summary>Gets or sets the oneway field.</summary>
@@ -65,9 +89,33 @@ namespace test.dev.fixtures.basic
         /// <summary>Gets or sets the idempotent field.</summary>
         public bool @idempotent { get; set; }
         /// <summary>Gets or sets the floatSet field.</summary>
-        public HashSet<float> @floatSet { get; set; } = new HashSet<float>();
+        private HashSet<float> _floatSet = new HashSet<float>();
+        public HashSet<float> @floatSet
+        {
+            get => _floatSet;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'floatSet' cannot be set to null");
+                }
+                _floatSet = value;
+            }
+        }
         /// <summary>Gets or sets the no_hack_codegen_field field.</summary>
-        public string @no_hack_codegen_field { get; set; } = string.Empty;
+        private string _no_hack_codegen_field = string.Empty;
+        public string @no_hack_codegen_field
+        {
+            get => _no_hack_codegen_field;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'no_hack_codegen_field' cannot be set to null");
+                }
+                _no_hack_codegen_field = value;
+            }
+        }
     
         public @MyStruct()
         {
@@ -110,9 +158,17 @@ namespace test.dev.fixtures.basic
             writer.WriteFieldBegin(ThriftWireType.I64, 1);
             writer.WriteI64(@MyIntField);
             // Field 2: MyStringField (string)
+            if (@MyStringField == null)
+            {
+                throw new InvalidOperationException("Struct field 'MyStringField' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.String, 2);
             writer.WriteString(@MyStringField);
             // Field 3: MyDataField (@MyDataItemAlias)
+            if (@MyDataField == null)
+            {
+                throw new InvalidOperationException("Struct field 'MyDataField' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.Struct, 3);
             writer.WriteStruct(@MyDataField);
             // Field 4: myEnum (@MyEnum)
@@ -128,6 +184,10 @@ namespace test.dev.fixtures.basic
             writer.WriteFieldBegin(ThriftWireType.Bool, 7);
             writer.WriteBool(@idempotent);
             // Field 8: floatSet (HashSet<float>)
+            if (@floatSet == null)
+            {
+                throw new InvalidOperationException("Struct field 'floatSet' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.Set, 8);
             writer.WriteSetBegin(ThriftWireType.Float, @floatSet.Count);
             foreach (var _elem in @floatSet)
@@ -135,6 +195,10 @@ namespace test.dev.fixtures.basic
                 writer.WriteFloat(_elem);
             }
             // Field 9: no_hack_codegen_field (string)
+            if (@no_hack_codegen_field == null)
+            {
+                throw new InvalidOperationException("Struct field 'no_hack_codegen_field' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.String, 9);
             writer.WriteString(@no_hack_codegen_field);
             writer.WriteFieldStop();
@@ -358,11 +422,47 @@ namespace test.dev.fixtures.basic
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "test.dev/fixtures/basic/Containers";
         /// <summary>Gets or sets the I32List field.</summary>
-        public List<int> @I32List { get; set; } = new List<int>();
+        private List<int> _I32List = new List<int>();
+        public List<int> @I32List
+        {
+            get => _I32List;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'I32List' cannot be set to null");
+                }
+                _I32List = value;
+            }
+        }
         /// <summary>Gets or sets the StringSet field.</summary>
-        public HashSet<string> @StringSet { get; set; } = new HashSet<string>();
+        private HashSet<string> _StringSet = new HashSet<string>();
+        public HashSet<string> @StringSet
+        {
+            get => _StringSet;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'StringSet' cannot be set to null");
+                }
+                _StringSet = value;
+            }
+        }
         /// <summary>Gets or sets the StringToI64Map field.</summary>
-        public Dictionary<string, long> @StringToI64Map { get; set; } = new Dictionary<string, long>();
+        private Dictionary<string, long> _StringToI64Map = new Dictionary<string, long>();
+        public Dictionary<string, long> @StringToI64Map
+        {
+            get => _StringToI64Map;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'StringToI64Map' cannot be set to null");
+                }
+                _StringToI64Map = value;
+            }
+        }
     
         public @Containers()
         {
@@ -389,6 +489,10 @@ namespace test.dev.fixtures.basic
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: I32List (List<int>)
+            if (@I32List == null)
+            {
+                throw new InvalidOperationException("Struct field 'I32List' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.List, 1);
             writer.WriteListBegin(ThriftWireType.I32, @I32List.Count);
             foreach (var _elem in @I32List)
@@ -396,6 +500,10 @@ namespace test.dev.fixtures.basic
                 writer.WriteI32(_elem);
             }
             // Field 2: StringSet (HashSet<string>)
+            if (@StringSet == null)
+            {
+                throw new InvalidOperationException("Struct field 'StringSet' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.Set, 2);
             writer.WriteSetBegin(ThriftWireType.String, @StringSet.Count);
             foreach (var _elem in @StringSet)
@@ -403,6 +511,10 @@ namespace test.dev.fixtures.basic
                 writer.WriteString(_elem);
             }
             // Field 3: StringToI64Map (Dictionary<string, long>)
+            if (@StringToI64Map == null)
+            {
+                throw new InvalidOperationException("Struct field 'StringToI64Map' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.Map, 3);
             writer.WriteMapBegin(ThriftWireType.String, ThriftWireType.I64, @StringToI64Map.Count);
             foreach (var _entry in @StringToI64Map)
@@ -907,12 +1019,24 @@ namespace test.dev.fixtures.basic
             writer.WriteFieldBegin(ThriftWireType.I64, 1);
             writer.WriteI64(@MyIntField);
             // Field 2: MyStringField (string)
+            if (@MyStringField == null)
+            {
+                throw new InvalidOperationException("Struct field 'MyStringField' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.String, 2);
             writer.WriteString(@MyStringField);
             // Field 3: myStruct (@MyStruct)
+            if (@myStruct == null)
+            {
+                throw new InvalidOperationException("Struct field 'myStruct' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.Struct, 3);
             writer.WriteStruct(@myStruct);
             // Field 4: myUnion (@MyUnion)
+            if (@myUnion == null)
+            {
+                throw new InvalidOperationException("Struct field 'myUnion' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.Struct, 4);
             writer.WriteStruct(@myUnion);
             writer.WriteFieldStop();
@@ -1078,12 +1202,24 @@ namespace test.dev.fixtures.basic
             writer.WriteFieldBegin(ThriftWireType.I64, 1);
             writer.WriteI64(@MyIntField);
             // Field 2: MyStringField (string)
+            if (@MyStringField == null)
+            {
+                throw new InvalidOperationException("Struct field 'MyStringField' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.String, 2);
             writer.WriteString(@MyStringField);
             // Field 3: myStruct (@MyStruct)
+            if (@myStruct == null)
+            {
+                throw new InvalidOperationException("Struct field 'myStruct' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.Struct, 3);
             writer.WriteStruct(@myStruct);
             // Field 4: myUnion (@MyUnion)
+            if (@myUnion == null)
+            {
+                throw new InvalidOperationException("Struct field 'myUnion' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.Struct, 4);
             writer.WriteStruct(@myUnion);
             writer.WriteFieldStop();

@@ -53,7 +53,19 @@ namespace facebook.thrift.annotation.cpp
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/cpp/Name";
         /// <summary>Gets or sets the value field.</summary>
-        public string @value { get; set; } = string.Empty;
+        private string _value = string.Empty;
+        public string @value
+        {
+            get => _value;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'value' cannot be set to null");
+                }
+                _value = value;
+            }
+        }
     
         public @Name()
         {
@@ -74,6 +86,10 @@ namespace facebook.thrift.annotation.cpp
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: value (string)
+            if (@value == null)
+            {
+                throw new InvalidOperationException("Struct field 'value' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.String, 1);
             writer.WriteString(@value);
             writer.WriteFieldStop();
@@ -147,9 +163,33 @@ namespace facebook.thrift.annotation.cpp
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/cpp/Type";
         /// <summary>Gets or sets the name field.</summary>
-        public string @name { get; set; } = string.Empty;
+        private string _name = string.Empty;
+        public string @name
+        {
+            get => _name;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'name' cannot be set to null");
+                }
+                _name = value;
+            }
+        }
         /// <summary>Gets or sets the template field.</summary>
-        public string @template { get; set; } = string.Empty;
+        private string _template = string.Empty;
+        public string @template
+        {
+            get => _template;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'template' cannot be set to null");
+                }
+                _template = value;
+            }
+        }
     
         public @Type()
         {
@@ -173,9 +213,17 @@ namespace facebook.thrift.annotation.cpp
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: name (string)
+            if (@name == null)
+            {
+                throw new InvalidOperationException("Struct field 'name' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.String, 1);
             writer.WriteString(@name);
             // Field 2: template (string)
+            if (@template == null)
+            {
+                throw new InvalidOperationException("Struct field 'template' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.String, 2);
             writer.WriteString(@template);
             writer.WriteFieldStop();
@@ -523,13 +571,61 @@ namespace facebook.thrift.annotation.cpp
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/cpp/Adapter";
         /// <summary>Gets or sets the name field.</summary>
-        public string @name { get; set; } = string.Empty;
+        private string _name = string.Empty;
+        public string @name
+        {
+            get => _name;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'name' cannot be set to null");
+                }
+                _name = value;
+            }
+        }
         /// <summary>Gets or sets the adaptedType field.</summary>
-        public string @adaptedType { get; set; } = string.Empty;
+        private string _adaptedType = string.Empty;
+        public string @adaptedType
+        {
+            get => _adaptedType;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'adaptedType' cannot be set to null");
+                }
+                _adaptedType = value;
+            }
+        }
         /// <summary>Gets or sets the underlyingName field.</summary>
-        public string @underlyingName { get; set; } = string.Empty;
+        private string _underlyingName = string.Empty;
+        public string @underlyingName
+        {
+            get => _underlyingName;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'underlyingName' cannot be set to null");
+                }
+                _underlyingName = value;
+            }
+        }
         /// <summary>Gets or sets the extraNamespace field.</summary>
-        public string @extraNamespace { get; set; } = string.Empty;
+        private string _extraNamespace = string.Empty;
+        public string @extraNamespace
+        {
+            get => _extraNamespace;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'extraNamespace' cannot be set to null");
+                }
+                _extraNamespace = value;
+            }
+        }
         /// <summary>Gets or sets the moveOnly field.</summary>
         public bool @moveOnly { get; set; }
     
@@ -563,15 +659,31 @@ namespace facebook.thrift.annotation.cpp
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: name (string)
+            if (@name == null)
+            {
+                throw new InvalidOperationException("Struct field 'name' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.String, 1);
             writer.WriteString(@name);
             // Field 2: adaptedType (string)
+            if (@adaptedType == null)
+            {
+                throw new InvalidOperationException("Struct field 'adaptedType' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.String, 2);
             writer.WriteString(@adaptedType);
             // Field 3: underlyingName (string)
+            if (@underlyingName == null)
+            {
+                throw new InvalidOperationException("Struct field 'underlyingName' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.String, 3);
             writer.WriteString(@underlyingName);
             // Field 4: extraNamespace (string)
+            if (@extraNamespace == null)
+            {
+                throw new InvalidOperationException("Struct field 'extraNamespace' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.String, 4);
             writer.WriteString(@extraNamespace);
             // Field 5: moveOnly (bool)
@@ -952,7 +1064,19 @@ namespace facebook.thrift.annotation.cpp
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/cpp/FieldInterceptor";
         /// <summary>Gets or sets the name field.</summary>
-        public string @name { get; set; } = string.Empty;
+        private string _name = string.Empty;
+        public string @name
+        {
+            get => _name;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'name' cannot be set to null");
+                }
+                _name = value;
+            }
+        }
         /// <summary>Gets or sets the noinline field.</summary>
         public bool @noinline { get; set; }
     
@@ -977,6 +1101,10 @@ namespace facebook.thrift.annotation.cpp
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: name (string)
+            if (@name == null)
+            {
+                throw new InvalidOperationException("Struct field 'name' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.String, 1);
             writer.WriteString(@name);
             // Field 2: noinline (bool)

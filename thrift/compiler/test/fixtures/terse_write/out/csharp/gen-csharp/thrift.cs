@@ -112,9 +112,33 @@ namespace facebook.thrift.annotation
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/ReserveIds";
         /// <summary>Gets or sets the ids field.</summary>
-        public List<int> @ids { get; set; } = new List<int>();
+        private List<int> _ids = new List<int>();
+        public List<int> @ids
+        {
+            get => _ids;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'ids' cannot be set to null");
+                }
+                _ids = value;
+            }
+        }
         /// <summary>Gets or sets the id_ranges field.</summary>
-        public Dictionary<int, int> @id_ranges { get; set; } = new Dictionary<int, int>();
+        private Dictionary<int, int> _id_ranges = new Dictionary<int, int>();
+        public Dictionary<int, int> @id_ranges
+        {
+            get => _id_ranges;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'id_ranges' cannot be set to null");
+                }
+                _id_ranges = value;
+            }
+        }
     
         public @ReserveIds()
         {
@@ -138,6 +162,10 @@ namespace facebook.thrift.annotation
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: ids (List<int>)
+            if (@ids == null)
+            {
+                throw new InvalidOperationException("Struct field 'ids' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.List, 1);
             writer.WriteListBegin(ThriftWireType.I32, @ids.Count);
             foreach (var _elem in @ids)
@@ -145,6 +173,10 @@ namespace facebook.thrift.annotation
                 writer.WriteI32(_elem);
             }
             // Field 2: id_ranges (Dictionary<int, int>)
+            if (@id_ranges == null)
+            {
+                throw new InvalidOperationException("Struct field 'id_ranges' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.Map, 2);
             writer.WriteMapBegin(ThriftWireType.I32, ThriftWireType.I32, @id_ranges.Count);
             foreach (var _entry in @id_ranges)
@@ -909,7 +941,19 @@ namespace facebook.thrift.annotation
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/Uri";
         /// <summary>Gets or sets the value field.</summary>
-        public string @value { get; set; } = string.Empty;
+        private string _value = string.Empty;
+        public string @value
+        {
+            get => _value;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'value' cannot be set to null");
+                }
+                _value = value;
+            }
+        }
     
         public @Uri()
         {
@@ -930,6 +974,10 @@ namespace facebook.thrift.annotation
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: value (string)
+            if (@value == null)
+            {
+                throw new InvalidOperationException("Struct field 'value' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.String, 1);
             writer.WriteString(@value);
             writer.WriteFieldStop();
@@ -1165,7 +1213,19 @@ namespace facebook.thrift.annotation
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/DeprecatedUnvalidatedAnnotations";
         /// <summary>Gets or sets the items field.</summary>
-        public Dictionary<string, string> @items { get; set; } = new Dictionary<string, string>();
+        private Dictionary<string, string> _items = new Dictionary<string, string>();
+        public Dictionary<string, string> @items
+        {
+            get => _items;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'items' cannot be set to null");
+                }
+                _items = value;
+            }
+        }
     
         public @DeprecatedUnvalidatedAnnotations()
         {
@@ -1186,6 +1246,10 @@ namespace facebook.thrift.annotation
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: items (Dictionary<string, string>)
+            if (@items == null)
+            {
+                throw new InvalidOperationException("Struct field 'items' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.Map, 1);
             writer.WriteMapBegin(ThriftWireType.String, ThriftWireType.String, @items.Count);
             foreach (var _entry in @items)
@@ -1898,7 +1962,19 @@ namespace facebook.thrift.annotation
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/annotation/Deprecated";
         /// <summary>Gets or sets the message field.</summary>
-        public string @message { get; set; } = string.Empty;
+        private string _message = string.Empty;
+        public string @message
+        {
+            get => _message;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'message' cannot be set to null");
+                }
+                _message = value;
+            }
+        }
     
         public @Deprecated()
         {
@@ -1919,6 +1995,10 @@ namespace facebook.thrift.annotation
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: message (string)
+            if (@message == null)
+            {
+                throw new InvalidOperationException("Struct field 'message' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.String, 1);
             writer.WriteString(@message);
             writer.WriteFieldStop();

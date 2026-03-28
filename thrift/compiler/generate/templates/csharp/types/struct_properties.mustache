@@ -20,15 +20,27 @@
 {{#import "common/constants" as constants}}
 
 {{#let export partial struct_properties |field structured| captures |types defaults constants|}}
-{{#if field.optional?}}
-/// <summary>Gets or sets the {{field.name}} field (optional).</summary>
-public {{#partial types.csharp_type type=field.type}}{{#if field.type.csharp_primitive?}}?{{/if field.type.csharp_primitive?}}{{#if field.type.enum?}}?{{/if field.type.enum?}}{{#if (not field.type.csharp_primitive?)}}{{#if (not field.type.enum?)}}?{{/if (not field.type.enum?)}}{{/if (not field.type.csharp_primitive?)}} {{field.csharp_property_name}} { get; set; }
-{{#else}}
-/// <summary>Gets or sets the {{field.name}} field.</summary>
-{{#if (object.notnull? field.default_value)}}
+/// <summary>Gets or sets the {{field.name}} field{{#if field.optional?}} (optional){{/if field.optional?}}.</summary>
+  {{#if field.optional?}}
+public {{#partial types.csharp_type type=field.type}}? {{field.csharp_property_name}} { get; set; }
+  {{#else if field.type.nullable?}}
+private {{#partial types.csharp_type type=field.type}} _{{field.name}} = {{!
+    }}{{#if (object.notnull? field.default_value)}}{{#partial constants.csharp_const_value value=field.default_value}}{{#else}}{{#partial defaults.csharp_default_value type=field.type}}{{/if (object.notnull? field.default_value)}};
+public {{#partial types.csharp_type type=field.type}} {{field.csharp_property_name}}
+{
+    get => _{{field.name}};
+    set
+    {
+        if (value == null)
+        {
+            throw new ArgumentNullException(nameof(value), "Struct field '{{field.name}}' cannot be set to null");
+        }
+        _{{field.name}} = value;
+    }
+}
+  {{#else if (object.notnull? field.default_value)}}
 public {{#partial types.csharp_type type=field.type}} {{field.csharp_property_name}} { get; set; } = {{#partial constants.csharp_const_value value=field.default_value}};
-{{#else}}
-public {{#partial types.csharp_type type=field.type}} {{field.csharp_property_name}} { get; set; }{{#if field.type.nullable?}} = {{#partial defaults.csharp_default_value type=field.type}};{{/if field.type.nullable?}}
-{{/if (object.notnull? field.default_value)}}
-{{/if field.optional?}}
+  {{#else}}
+public {{#partial types.csharp_type type=field.type}} {{field.csharp_property_name}} { get; set; }
+  {{/if field.optional?}}
 {{/let partial}}

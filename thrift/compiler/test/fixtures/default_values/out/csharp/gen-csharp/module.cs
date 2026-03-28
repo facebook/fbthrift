@@ -249,11 +249,35 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
         /// <summary>Gets or sets the required_integer field.</summary>
         public int @required_integer { get; set; }
         /// <summary>Gets or sets the unqualified_struct field.</summary>
-        public @TrivialStruct @unqualified_struct { get; set; } = new @TrivialStruct();
+        private @TrivialStruct _unqualified_struct = new @TrivialStruct();
+        public @TrivialStruct @unqualified_struct
+        {
+            get => _unqualified_struct;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'unqualified_struct' cannot be set to null");
+                }
+                _unqualified_struct = value;
+            }
+        }
         /// <summary>Gets or sets the optional_struct field (optional).</summary>
         public @TrivialStruct? @optional_struct { get; set; }
         /// <summary>Gets or sets the required_struct field.</summary>
-        public @TrivialStruct @required_struct { get; set; } = new @TrivialStruct();
+        private @TrivialStruct _required_struct = new @TrivialStruct();
+        public @TrivialStruct @required_struct
+        {
+            get => _required_struct;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'required_struct' cannot be set to null");
+                }
+                _required_struct = value;
+            }
+        }
     
         public @StructWithNoCustomDefaultValues()
         {
@@ -297,6 +321,10 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
             writer.WriteFieldBegin(ThriftWireType.I32, 3);
             writer.WriteI32(@required_integer);
             // Field 4: unqualified_struct (@TrivialStruct)
+            if (@unqualified_struct == null)
+            {
+                throw new InvalidOperationException("Struct field 'unqualified_struct' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.Struct, 4);
             writer.WriteStruct(@unqualified_struct);
             // Field 5: optional_struct (@TrivialStruct)
@@ -306,6 +334,10 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 writer.WriteStruct(@optional_struct);
             }
             // Field 6: required_struct (@TrivialStruct)
+            if (@required_struct == null)
+            {
+                throw new InvalidOperationException("Struct field 'required_struct' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.Struct, 6);
             writer.WriteStruct(@required_struct);
             writer.WriteFieldStop();
@@ -475,26 +507,74 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
         /// <summary>Gets or sets the required_integer field.</summary>
         public int @required_integer { get; set; } = 44;
         /// <summary>Gets or sets the unqualified_struct field.</summary>
-        public @TrivialStruct @unqualified_struct { get; set; } = new @TrivialStruct()
+        private @TrivialStruct _unqualified_struct = new @TrivialStruct()
         {
           @int_value = 123,
         };
+        public @TrivialStruct @unqualified_struct
+        {
+            get => _unqualified_struct;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'unqualified_struct' cannot be set to null");
+                }
+                _unqualified_struct = value;
+            }
+        }
         /// <summary>Gets or sets the optional_struct field (optional).</summary>
         public @TrivialStruct? @optional_struct { get; set; }
         /// <summary>Gets or sets the required_struct field.</summary>
-        public @TrivialStruct @required_struct { get; set; } = new @TrivialStruct()
+        private @TrivialStruct _required_struct = new @TrivialStruct()
         {
           @int_value = 789,
         };
+        public @TrivialStruct @required_struct
+        {
+            get => _required_struct;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'required_struct' cannot be set to null");
+                }
+                _required_struct = value;
+            }
+        }
         /// <summary>Gets or sets the struct_with_default_unspecified field.</summary>
-        public @TrivialStructWithDefault @struct_with_default_unspecified { get; set; } = new @TrivialStructWithDefault()
+        private @TrivialStructWithDefault _struct_with_default_unspecified = new @TrivialStructWithDefault()
         {
         };
+        public @TrivialStructWithDefault @struct_with_default_unspecified
+        {
+            get => _struct_with_default_unspecified;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'struct_with_default_unspecified' cannot be set to null");
+                }
+                _struct_with_default_unspecified = value;
+            }
+        }
         /// <summary>Gets or sets the struct_with_default_specified field.</summary>
-        public @TrivialStructWithDefault @struct_with_default_specified { get; set; } = new @TrivialStructWithDefault()
+        private @TrivialStructWithDefault _struct_with_default_specified = new @TrivialStructWithDefault()
         {
           @int_value_1 = 123,
         };
+        public @TrivialStructWithDefault @struct_with_default_specified
+        {
+            get => _struct_with_default_specified;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'struct_with_default_specified' cannot be set to null");
+                }
+                _struct_with_default_specified = value;
+            }
+        }
     
         public @StructWithCustomDefaultValues()
         {
@@ -557,6 +637,10 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
             writer.WriteFieldBegin(ThriftWireType.I32, 3);
             writer.WriteI32(@required_integer);
             // Field 4: unqualified_struct (@TrivialStruct)
+            if (@unqualified_struct == null)
+            {
+                throw new InvalidOperationException("Struct field 'unqualified_struct' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.Struct, 4);
             writer.WriteStruct(@unqualified_struct);
             // Field 5: optional_struct (@TrivialStruct)
@@ -566,12 +650,24 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 writer.WriteStruct(@optional_struct);
             }
             // Field 6: required_struct (@TrivialStruct)
+            if (@required_struct == null)
+            {
+                throw new InvalidOperationException("Struct field 'required_struct' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.Struct, 6);
             writer.WriteStruct(@required_struct);
             // Field 7: struct_with_default_unspecified (@TrivialStructWithDefault)
+            if (@struct_with_default_unspecified == null)
+            {
+                throw new InvalidOperationException("Struct field 'struct_with_default_unspecified' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.Struct, 7);
             writer.WriteStruct(@struct_with_default_unspecified);
             // Field 8: struct_with_default_specified (@TrivialStructWithDefault)
+            if (@struct_with_default_specified == null)
+            {
+                throw new InvalidOperationException("Struct field 'struct_with_default_specified' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.Struct, 8);
             writer.WriteStruct(@struct_with_default_specified);
             writer.WriteFieldStop();
@@ -771,29 +867,101 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
         /// <summary>The Thrift URI for this type, used for type registration.</summary>
         public static readonly string __fbthrift_uri = "facebook.com/thrift/compiler/test/fixtures/default_values/StructWithCollectionDefaultValues";
         /// <summary>Gets or sets the list_with_list_value field.</summary>
-        public List<int> @list_with_list_value { get; set; } = new List<int>()
+        private List<int> _list_with_list_value = new List<int>()
         {
         };
+        public List<int> @list_with_list_value
+        {
+            get => _list_with_list_value;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'list_with_list_value' cannot be set to null");
+                }
+                _list_with_list_value = value;
+            }
+        }
         /// <summary>Gets or sets the set_with_list_value field.</summary>
-        public HashSet<int> @set_with_list_value { get; set; } = new HashSet<int>()
+        private HashSet<int> _set_with_list_value = new HashSet<int>()
         {
         };
+        public HashSet<int> @set_with_list_value
+        {
+            get => _set_with_list_value;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'set_with_list_value' cannot be set to null");
+                }
+                _set_with_list_value = value;
+            }
+        }
         /// <summary>Gets or sets the map_with_map_value field.</summary>
-        public Dictionary<int, int> @map_with_map_value { get; set; } = new Dictionary<int, int>()
+        private Dictionary<int, int> _map_with_map_value = new Dictionary<int, int>()
         {
         };
+        public Dictionary<int, int> @map_with_map_value
+        {
+            get => _map_with_map_value;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'map_with_map_value' cannot be set to null");
+                }
+                _map_with_map_value = value;
+            }
+        }
         /// <summary>Gets or sets the list_with_map_value field.</summary>
-        public List<int> @list_with_map_value { get; set; } = new List<int>()
+        private List<int> _list_with_map_value = new List<int>()
         {
         };
+        public List<int> @list_with_map_value
+        {
+            get => _list_with_map_value;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'list_with_map_value' cannot be set to null");
+                }
+                _list_with_map_value = value;
+            }
+        }
         /// <summary>Gets or sets the set_with_map_value field.</summary>
-        public HashSet<int> @set_with_map_value { get; set; } = new HashSet<int>()
+        private HashSet<int> _set_with_map_value = new HashSet<int>()
         {
         };
+        public HashSet<int> @set_with_map_value
+        {
+            get => _set_with_map_value;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'set_with_map_value' cannot be set to null");
+                }
+                _set_with_map_value = value;
+            }
+        }
         /// <summary>Gets or sets the map_with_list_value field.</summary>
-        public Dictionary<int, int> @map_with_list_value { get; set; } = new Dictionary<int, int>()
+        private Dictionary<int, int> _map_with_list_value = new Dictionary<int, int>()
         {
         };
+        public Dictionary<int, int> @map_with_list_value
+        {
+            get => _map_with_list_value;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'map_with_list_value' cannot be set to null");
+                }
+                _map_with_list_value = value;
+            }
+        }
     
         public @StructWithCollectionDefaultValues()
         {
@@ -841,6 +1009,10 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: list_with_list_value (List<int>)
+            if (@list_with_list_value == null)
+            {
+                throw new InvalidOperationException("Struct field 'list_with_list_value' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.List, 1);
             writer.WriteListBegin(ThriftWireType.I32, @list_with_list_value.Count);
             foreach (var _elem in @list_with_list_value)
@@ -848,6 +1020,10 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 writer.WriteI32(_elem);
             }
             // Field 2: set_with_list_value (HashSet<int>)
+            if (@set_with_list_value == null)
+            {
+                throw new InvalidOperationException("Struct field 'set_with_list_value' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.Set, 2);
             writer.WriteSetBegin(ThriftWireType.I32, @set_with_list_value.Count);
             foreach (var _elem in @set_with_list_value)
@@ -855,6 +1031,10 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 writer.WriteI32(_elem);
             }
             // Field 3: map_with_map_value (Dictionary<int, int>)
+            if (@map_with_map_value == null)
+            {
+                throw new InvalidOperationException("Struct field 'map_with_map_value' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.Map, 3);
             writer.WriteMapBegin(ThriftWireType.I32, ThriftWireType.I32, @map_with_map_value.Count);
             foreach (var _entry in @map_with_map_value)
@@ -863,6 +1043,10 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 writer.WriteI32(_entry.Value);
             }
             // Field 4: list_with_map_value (List<int>)
+            if (@list_with_map_value == null)
+            {
+                throw new InvalidOperationException("Struct field 'list_with_map_value' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.List, 4);
             writer.WriteListBegin(ThriftWireType.I32, @list_with_map_value.Count);
             foreach (var _elem in @list_with_map_value)
@@ -870,6 +1054,10 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 writer.WriteI32(_elem);
             }
             // Field 5: set_with_map_value (HashSet<int>)
+            if (@set_with_map_value == null)
+            {
+                throw new InvalidOperationException("Struct field 'set_with_map_value' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.Set, 5);
             writer.WriteSetBegin(ThriftWireType.I32, @set_with_map_value.Count);
             foreach (var _elem in @set_with_map_value)
@@ -877,6 +1065,10 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 writer.WriteI32(_elem);
             }
             // Field 6: map_with_list_value (Dictionary<int, int>)
+            if (@map_with_list_value == null)
+            {
+                throw new InvalidOperationException("Struct field 'map_with_list_value' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.Map, 6);
             writer.WriteMapBegin(ThriftWireType.I32, ThriftWireType.I32, @map_with_list_value.Count);
             foreach (var _entry in @map_with_list_value)

@@ -64,7 +64,19 @@ namespace test.fixtures.constants
         /// <summary>Gets or sets the weeks field.</summary>
         public int @weeks { get; set; }
         /// <summary>Gets or sets the title field.</summary>
-        public string @title { get; set; } = string.Empty;
+        private string _title = string.Empty;
+        public string @title
+        {
+            get => _title;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'title' cannot be set to null");
+                }
+                _title = value;
+            }
+        }
         /// <summary>Gets or sets the employer field (optional).</summary>
         public @Company? @employer { get; set; }
         /// <summary>Gets or sets the compensation field (optional).</summary>
@@ -102,6 +114,10 @@ namespace test.fixtures.constants
             writer.WriteFieldBegin(ThriftWireType.I32, 1);
             writer.WriteI32(@weeks);
             // Field 2: title (string)
+            if (@title == null)
+            {
+                throw new InvalidOperationException("Struct field 'title' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.String, 2);
             writer.WriteString(@title);
             // Field 3: employer (@Company)
@@ -381,7 +397,19 @@ namespace test.fixtures.constants
         /// <summary>Gets or sets the a field.</summary>
         public int @a { get; set; } = 1234567;
         /// <summary>Gets or sets the b field.</summary>
-        public string @b { get; set; } = "<uninitialized>";
+        private string _b = "<uninitialized>";
+        public string @b
+        {
+            get => _b;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'b' cannot be set to null");
+                }
+                _b = value;
+            }
+        }
     
         public @struct1()
         {
@@ -408,6 +436,10 @@ namespace test.fixtures.constants
             writer.WriteFieldBegin(ThriftWireType.I32, 1);
             writer.WriteI32(@a);
             // Field 2: b (string)
+            if (@b == null)
+            {
+                throw new InvalidOperationException("Struct field 'b' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.String, 2);
             writer.WriteString(@b);
             writer.WriteFieldStop();
@@ -499,11 +531,47 @@ namespace test.fixtures.constants
         /// <summary>Gets or sets the a field.</summary>
         public int @a { get; set; }
         /// <summary>Gets or sets the b field.</summary>
-        public string @b { get; set; } = string.Empty;
+        private string _b = string.Empty;
+        public string @b
+        {
+            get => _b;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'b' cannot be set to null");
+                }
+                _b = value;
+            }
+        }
         /// <summary>Gets or sets the c field.</summary>
-        public @struct1 @c { get; set; } = new @struct1();
+        private @struct1 _c = new @struct1();
+        public @struct1 @c
+        {
+            get => _c;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'c' cannot be set to null");
+                }
+                _c = value;
+            }
+        }
         /// <summary>Gets or sets the d field.</summary>
-        public List<int> @d { get; set; } = new List<int>();
+        private List<int> _d = new List<int>();
+        public List<int> @d
+        {
+            get => _d;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'd' cannot be set to null");
+                }
+                _d = value;
+            }
+        }
     
         public @struct2()
         {
@@ -535,12 +603,24 @@ namespace test.fixtures.constants
             writer.WriteFieldBegin(ThriftWireType.I32, 1);
             writer.WriteI32(@a);
             // Field 2: b (string)
+            if (@b == null)
+            {
+                throw new InvalidOperationException("Struct field 'b' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.String, 2);
             writer.WriteString(@b);
             // Field 3: c (@struct1)
+            if (@c == null)
+            {
+                throw new InvalidOperationException("Struct field 'c' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.Struct, 3);
             writer.WriteStruct(@c);
             // Field 4: d (List<int>)
+            if (@d == null)
+            {
+                throw new InvalidOperationException("Struct field 'd' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.List, 4);
             writer.WriteListBegin(ThriftWireType.I32, @d.Count);
             foreach (var _elem in @d)
@@ -679,11 +759,35 @@ namespace test.fixtures.constants
     public class @struct3 : IThriftSerializable
     {
         /// <summary>Gets or sets the a field.</summary>
-        public string @a { get; set; } = string.Empty;
+        private string _a = string.Empty;
+        public string @a
+        {
+            get => _a;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'a' cannot be set to null");
+                }
+                _a = value;
+            }
+        }
         /// <summary>Gets or sets the b field.</summary>
         public int @b { get; set; }
         /// <summary>Gets or sets the c field.</summary>
-        public @struct2 @c { get; set; } = new @struct2();
+        private @struct2 _c = new @struct2();
+        public @struct2 @c
+        {
+            get => _c;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'c' cannot be set to null");
+                }
+                _c = value;
+            }
+        }
     
         public @struct3()
         {
@@ -709,12 +813,20 @@ namespace test.fixtures.constants
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: a (string)
+            if (@a == null)
+            {
+                throw new InvalidOperationException("Struct field 'a' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.String, 1);
             writer.WriteString(@a);
             // Field 2: b (int)
             writer.WriteFieldBegin(ThriftWireType.I32, 2);
             writer.WriteI32(@b);
             // Field 3: c (@struct2)
+            if (@c == null)
+            {
+                throw new InvalidOperationException("Struct field 'c' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.Struct, 3);
             writer.WriteStruct(@c);
             writer.WriteFieldStop();

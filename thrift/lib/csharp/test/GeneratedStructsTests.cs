@@ -167,5 +167,68 @@ namespace FBThrift.Tests
             ex.MyStringField = "Test error";
             Assert.AreEqual("Test error", ex.MyStringField);
         }
+
+        // Non-optional nullable fields — should throw on null assignment
+
+        [Test]
+        public void TestStructSetNullStringFieldThrows()
+        {
+            var s = new MyStruct();
+            Assert.Throws<ArgumentNullException>(() => s.MyStringField = null!);
+        }
+
+        [Test]
+        public void TestStructSetNullStructFieldThrows()
+        {
+            var s = new MyStruct();
+            Assert.Throws<ArgumentNullException>(() => s.MyDataField = null!);
+        }
+
+        [Test]
+        public void TestStructSetNullContainerFieldThrows()
+        {
+            var c = new Containers();
+            Assert.Throws<ArgumentNullException>(() => c.I32List = null!);
+        }
+
+        [Test]
+        public void TestStructSetNullSetFieldThrows()
+        {
+            var c = new Containers();
+            Assert.Throws<ArgumentNullException>(() => c.StringSet = null!);
+        }
+
+        [Test]
+        public void TestStructSetNullMapFieldThrows()
+        {
+            var c = new Containers();
+            Assert.Throws<ArgumentNullException>(() => c.StringToI64Map = null!);
+        }
+
+        // Optional fields — should allow null assignment
+
+        [Test]
+        public void TestStructSetNullOptionalStringFieldAllowed()
+        {
+            var s = new OptionalFieldsStruct();
+            s.optional_string = null;
+            Assert.IsNull(s.optional_string);
+        }
+
+        [Test]
+        public void TestStructSetNullOptionalStructFieldAllowed()
+        {
+            var s = new OptionalFieldsStruct();
+            s.optional_struct = null;
+            Assert.IsNull(s.optional_struct);
+        }
+
+        [Test]
+        public void TestStructSetNullOptionalListFieldAllowed()
+        {
+            var s = new OptionalFieldsStruct();
+            s.optional_list = null;
+            Assert.IsNull(s.optional_list);
+        }
     }
 }

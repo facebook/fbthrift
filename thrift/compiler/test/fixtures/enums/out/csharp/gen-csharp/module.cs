@@ -117,9 +117,21 @@ namespace test.fixtures.enums
         /// <summary>Gets or sets the questionable field.</summary>
         public @Metasyntactic @questionable { get; set; } = (@Metasyntactic)-1;
         /// <summary>Gets or sets the tags field.</summary>
-        public HashSet<int> @tags { get; set; } = new HashSet<int>()
+        private HashSet<int> _tags = new HashSet<int>()
         {
         };
+        public HashSet<int> @tags
+        {
+            get => _tags;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'tags' cannot be set to null");
+                }
+                _tags = value;
+            }
+        }
     
         public @SomeStruct()
         {
@@ -160,6 +172,10 @@ namespace test.fixtures.enums
             writer.WriteFieldBegin(ThriftWireType.I32, 3);
             writer.WriteI32((int)@questionable);
             // Field 4: tags (HashSet<int>)
+            if (@tags == null)
+            {
+                throw new InvalidOperationException("Struct field 'tags' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.Set, 4);
             writer.WriteSetBegin(ThriftWireType.I32, @tags.Count);
             foreach (var _elem in @tags)

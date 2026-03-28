@@ -56,6 +56,12 @@ struct TypedefContainerStruct {
   3: StringToI64Map string_map_field;
 }
 
+struct OptionalFieldsStruct {
+  1: optional string optional_string;
+  2: optional MyDataItem optional_struct;
+  3: optional list<i32> optional_list;
+}
+
 exception MyException {
   1: i64 MyIntField;
   2: string MyStringField;

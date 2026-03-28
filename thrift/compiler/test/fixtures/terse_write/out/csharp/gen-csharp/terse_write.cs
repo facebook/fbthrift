@@ -849,21 +849,105 @@ namespace facebook.thrift.test.fixtures.terse_write
         /// <summary>Gets or sets the double_field field.</summary>
         public double @double_field { get; set; }
         /// <summary>Gets or sets the string_field field.</summary>
-        public string @string_field { get; set; } = string.Empty;
+        private string _string_field = string.Empty;
+        public string @string_field
+        {
+            get => _string_field;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'string_field' cannot be set to null");
+                }
+                _string_field = value;
+            }
+        }
         /// <summary>Gets or sets the binary_field field.</summary>
-        public byte[] @binary_field { get; set; } = Array.Empty<byte>();
+        private byte[] _binary_field = Array.Empty<byte>();
+        public byte[] @binary_field
+        {
+            get => _binary_field;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'binary_field' cannot be set to null");
+                }
+                _binary_field = value;
+            }
+        }
         /// <summary>Gets or sets the enum_field field.</summary>
         public @MyEnum @enum_field { get; set; }
         /// <summary>Gets or sets the list_field field.</summary>
-        public List<short> @list_field { get; set; } = new List<short>();
+        private List<short> _list_field = new List<short>();
+        public List<short> @list_field
+        {
+            get => _list_field;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'list_field' cannot be set to null");
+                }
+                _list_field = value;
+            }
+        }
         /// <summary>Gets or sets the set_field field.</summary>
-        public HashSet<short> @set_field { get; set; } = new HashSet<short>();
+        private HashSet<short> _set_field = new HashSet<short>();
+        public HashSet<short> @set_field
+        {
+            get => _set_field;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'set_field' cannot be set to null");
+                }
+                _set_field = value;
+            }
+        }
         /// <summary>Gets or sets the map_field field.</summary>
-        public Dictionary<short, short> @map_field { get; set; } = new Dictionary<short, short>();
+        private Dictionary<short, short> _map_field = new Dictionary<short, short>();
+        public Dictionary<short, short> @map_field
+        {
+            get => _map_field;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'map_field' cannot be set to null");
+                }
+                _map_field = value;
+            }
+        }
         /// <summary>Gets or sets the struct_field field.</summary>
-        public @MyStruct @struct_field { get; set; } = new @MyStruct();
+        private @MyStruct _struct_field = new @MyStruct();
+        public @MyStruct @struct_field
+        {
+            get => _struct_field;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'struct_field' cannot be set to null");
+                }
+                _struct_field = value;
+            }
+        }
         /// <summary>Gets or sets the union_field field.</summary>
-        public @MyUnion @union_field { get; set; } = new @MyUnion();
+        private @MyUnion _union_field = new @MyUnion();
+        public @MyUnion @union_field
+        {
+            get => _union_field;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'union_field' cannot be set to null");
+                }
+                _union_field = value;
+            }
+        }
     
         public @StructLevelTerseStruct()
         {
@@ -1387,21 +1471,105 @@ namespace facebook.thrift.test.fixtures.terse_write
         /// <summary>Gets or sets the terse_double_field field.</summary>
         public double @terse_double_field { get; set; }
         /// <summary>Gets or sets the terse_string_field field.</summary>
-        public string @terse_string_field { get; set; } = string.Empty;
+        private string _terse_string_field = string.Empty;
+        public string @terse_string_field
+        {
+            get => _terse_string_field;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'terse_string_field' cannot be set to null");
+                }
+                _terse_string_field = value;
+            }
+        }
         /// <summary>Gets or sets the terse_binary_field field.</summary>
-        public byte[] @terse_binary_field { get; set; } = Array.Empty<byte>();
+        private byte[] _terse_binary_field = Array.Empty<byte>();
+        public byte[] @terse_binary_field
+        {
+            get => _terse_binary_field;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'terse_binary_field' cannot be set to null");
+                }
+                _terse_binary_field = value;
+            }
+        }
         /// <summary>Gets or sets the terse_enum_field field.</summary>
         public @MyEnum @terse_enum_field { get; set; }
         /// <summary>Gets or sets the terse_list_field field.</summary>
-        public List<short> @terse_list_field { get; set; } = new List<short>();
+        private List<short> _terse_list_field = new List<short>();
+        public List<short> @terse_list_field
+        {
+            get => _terse_list_field;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'terse_list_field' cannot be set to null");
+                }
+                _terse_list_field = value;
+            }
+        }
         /// <summary>Gets or sets the terse_set_field field.</summary>
-        public HashSet<short> @terse_set_field { get; set; } = new HashSet<short>();
+        private HashSet<short> _terse_set_field = new HashSet<short>();
+        public HashSet<short> @terse_set_field
+        {
+            get => _terse_set_field;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'terse_set_field' cannot be set to null");
+                }
+                _terse_set_field = value;
+            }
+        }
         /// <summary>Gets or sets the terse_map_field field.</summary>
-        public Dictionary<short, short> @terse_map_field { get; set; } = new Dictionary<short, short>();
+        private Dictionary<short, short> _terse_map_field = new Dictionary<short, short>();
+        public Dictionary<short, short> @terse_map_field
+        {
+            get => _terse_map_field;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'terse_map_field' cannot be set to null");
+                }
+                _terse_map_field = value;
+            }
+        }
         /// <summary>Gets or sets the terse_struct_field field.</summary>
-        public @MyStruct @terse_struct_field { get; set; } = new @MyStruct();
+        private @MyStruct _terse_struct_field = new @MyStruct();
+        public @MyStruct @terse_struct_field
+        {
+            get => _terse_struct_field;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'terse_struct_field' cannot be set to null");
+                }
+                _terse_struct_field = value;
+            }
+        }
         /// <summary>Gets or sets the terse_union_field field.</summary>
-        public @MyUnion @terse_union_field { get; set; } = new @MyUnion();
+        private @MyUnion _terse_union_field = new @MyUnion();
+        public @MyUnion @terse_union_field
+        {
+            get => _terse_union_field;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'terse_union_field' cannot be set to null");
+                }
+                _terse_union_field = value;
+            }
+        }
         /// <summary>Gets or sets the bool_field field.</summary>
         public bool @bool_field { get; set; }
         /// <summary>Gets or sets the byte_field field.</summary>
@@ -1417,21 +1585,105 @@ namespace facebook.thrift.test.fixtures.terse_write
         /// <summary>Gets or sets the double_field field.</summary>
         public double @double_field { get; set; }
         /// <summary>Gets or sets the string_field field.</summary>
-        public string @string_field { get; set; } = string.Empty;
+        private string _string_field = string.Empty;
+        public string @string_field
+        {
+            get => _string_field;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'string_field' cannot be set to null");
+                }
+                _string_field = value;
+            }
+        }
         /// <summary>Gets or sets the binary_field field.</summary>
-        public byte[] @binary_field { get; set; } = Array.Empty<byte>();
+        private byte[] _binary_field = Array.Empty<byte>();
+        public byte[] @binary_field
+        {
+            get => _binary_field;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'binary_field' cannot be set to null");
+                }
+                _binary_field = value;
+            }
+        }
         /// <summary>Gets or sets the enum_field field.</summary>
         public @MyEnum @enum_field { get; set; }
         /// <summary>Gets or sets the list_field field.</summary>
-        public List<short> @list_field { get; set; } = new List<short>();
+        private List<short> _list_field = new List<short>();
+        public List<short> @list_field
+        {
+            get => _list_field;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'list_field' cannot be set to null");
+                }
+                _list_field = value;
+            }
+        }
         /// <summary>Gets or sets the set_field field.</summary>
-        public HashSet<short> @set_field { get; set; } = new HashSet<short>();
+        private HashSet<short> _set_field = new HashSet<short>();
+        public HashSet<short> @set_field
+        {
+            get => _set_field;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'set_field' cannot be set to null");
+                }
+                _set_field = value;
+            }
+        }
         /// <summary>Gets or sets the map_field field.</summary>
-        public Dictionary<short, short> @map_field { get; set; } = new Dictionary<short, short>();
+        private Dictionary<short, short> _map_field = new Dictionary<short, short>();
+        public Dictionary<short, short> @map_field
+        {
+            get => _map_field;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'map_field' cannot be set to null");
+                }
+                _map_field = value;
+            }
+        }
         /// <summary>Gets or sets the struct_field field.</summary>
-        public @MyStruct @struct_field { get; set; } = new @MyStruct();
+        private @MyStruct _struct_field = new @MyStruct();
+        public @MyStruct @struct_field
+        {
+            get => _struct_field;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'struct_field' cannot be set to null");
+                }
+                _struct_field = value;
+            }
+        }
         /// <summary>Gets or sets the union_field field.</summary>
-        public @MyUnion @union_field { get; set; } = new @MyUnion();
+        private @MyUnion _union_field = new @MyUnion();
+        public @MyUnion @union_field
+        {
+            get => _union_field;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Struct field 'union_field' cannot be set to null");
+                }
+                _union_field = value;
+            }
+        }
     
         public @FieldLevelTerseStruct()
         {
@@ -1647,15 +1899,27 @@ namespace facebook.thrift.test.fixtures.terse_write
             writer.WriteFieldBegin(ThriftWireType.Double, 21);
             writer.WriteDouble(@double_field);
             // Field 22: string_field (string)
+            if (@string_field == null)
+            {
+                throw new InvalidOperationException("Struct field 'string_field' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.String, 22);
             writer.WriteString(@string_field);
             // Field 23: binary_field (byte[])
+            if (@binary_field == null)
+            {
+                throw new InvalidOperationException("Struct field 'binary_field' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.String, 23);
             writer.WriteBinary(@binary_field);
             // Field 24: enum_field (@MyEnum)
             writer.WriteFieldBegin(ThriftWireType.I32, 24);
             writer.WriteI32((int)@enum_field);
             // Field 25: list_field (List<short>)
+            if (@list_field == null)
+            {
+                throw new InvalidOperationException("Struct field 'list_field' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.List, 25);
             writer.WriteListBegin(ThriftWireType.I16, @list_field.Count);
             foreach (var _elem in @list_field)
@@ -1663,6 +1927,10 @@ namespace facebook.thrift.test.fixtures.terse_write
                 writer.WriteI16(_elem);
             }
             // Field 26: set_field (HashSet<short>)
+            if (@set_field == null)
+            {
+                throw new InvalidOperationException("Struct field 'set_field' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.Set, 26);
             writer.WriteSetBegin(ThriftWireType.I16, @set_field.Count);
             foreach (var _elem in @set_field)
@@ -1670,6 +1938,10 @@ namespace facebook.thrift.test.fixtures.terse_write
                 writer.WriteI16(_elem);
             }
             // Field 27: map_field (Dictionary<short, short>)
+            if (@map_field == null)
+            {
+                throw new InvalidOperationException("Struct field 'map_field' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.Map, 27);
             writer.WriteMapBegin(ThriftWireType.I16, ThriftWireType.I16, @map_field.Count);
             foreach (var _entry in @map_field)
@@ -1678,9 +1950,17 @@ namespace facebook.thrift.test.fixtures.terse_write
                 writer.WriteI16(_entry.Value);
             }
             // Field 28: struct_field (@MyStruct)
+            if (@struct_field == null)
+            {
+                throw new InvalidOperationException("Struct field 'struct_field' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.Struct, 28);
             writer.WriteStruct(@struct_field);
             // Field 30: union_field (@MyUnion)
+            if (@union_field == null)
+            {
+                throw new InvalidOperationException("Struct field 'union_field' is required but contains a null value");
+            }
             writer.WriteFieldBegin(ThriftWireType.Struct, 30);
             writer.WriteStruct(@union_field);
             writer.WriteFieldStop();
