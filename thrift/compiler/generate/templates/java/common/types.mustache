@@ -138,6 +138,13 @@ Map<{{#partial adapted_inner_boxed_type type=type.key_type}}, {{#partial adapted
 {{/if type.typedef?}}
 {{/let partial}}
 
+{{! Generates the getter method name for a field.
+    Returns "is<Name>" for boolean fields and "get<Name>" for all others. }}
+{{#let export partial getter_name |field|}}
+  {{#pragma ignore-newlines}}
+{{#if field.type.bool?}}is{{#else}}get{{/if}}{{field.javaCapitalName}}
+{{/let partial}}
+
 {{! Maps a field's qualifier to the Java Requiredness enum constant. }}
 {{#let export partial requiredness |field|}}
   {{#pragma ignore-newlines}}

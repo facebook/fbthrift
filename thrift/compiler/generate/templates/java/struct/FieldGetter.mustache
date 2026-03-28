@@ -22,5 +22,5 @@
 
 {{> ThriftFieldAnnotation}}
 
-public {{> FieldType}} {{#field:hasWrapper?}}get{{field:javaCapitalName}}{{/field:hasWrapper?}}{{^field:hasWrapper?}}{{> GetterName}}{{/field:hasWrapper?}}() { return {{field:javaName}}; }
+public {{> FieldType}} {{#if field:hasWrapper?}}get{{field:javaCapitalName}}{{#else}}{{#partial types.getter_name field=field:self}}{{/if}}() { return {{field:javaName}}; }
 {{! terminate with newline }}
