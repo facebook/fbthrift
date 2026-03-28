@@ -184,7 +184,7 @@ public final class StructWithBox implements com.facebook.thrift.payload.ThriftSe
         switch (__field.id) {
         case _A:
           if (__field.type == TType.STRING) {
-            String  a = oprot.readString();
+            String a = oprot.readString();
             builder.setA(a);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -238,7 +238,7 @@ public final class StructWithBox implements com.facebook.thrift.payload.ThriftSe
       {
       if (b != null) {
         oprot.writeFieldBegin(B_FIELD_DESC);
-        List<Long>  _iter0 = b;
+        List<Long> _iter0 = b;
         oprot.writeListBegin(new TList(TType.I64, _iter0.size()));
             for (long _iter1 : _iter0) {
               oprot.writeI64(_iter1);

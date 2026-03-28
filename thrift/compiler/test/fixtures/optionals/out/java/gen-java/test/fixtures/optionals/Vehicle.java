@@ -246,7 +246,7 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
           break;
         case _LICENSEPLATE:
           if (__field.type == TType.STRING) {
-            String  licensePlate = oprot.readString();
+            String licensePlate = oprot.readString();
             builder.setLicensePlate(licensePlate);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -254,7 +254,7 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
           break;
         case _DESCRIPTION:
           if (__field.type == TType.STRING) {
-            String  description = oprot.readString();
+            String description = oprot.readString();
             builder.setDescription(description);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -262,7 +262,7 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
           break;
         case _NAME:
           if (__field.type == TType.STRING) {
-            String  name = oprot.readString();
+            String name = oprot.readString();
             builder.setName(name);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -270,7 +270,7 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
           break;
         case _HASAC:
           if (__field.type == TType.BOOL) {
-            Boolean  hasAC = oprot.readBool();
+            Boolean hasAC = oprot.readBool();
             builder.setHasAC(hasAC);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

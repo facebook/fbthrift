@@ -254,7 +254,7 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
           break;
         case _EMPLOYER:
           if (__field.type == TType.I32) {
-            test.fixtures.constants.Company  employer = test.fixtures.constants.Company .fromInteger(oprot.readI32());
+            test.fixtures.constants.Company employer = test.fixtures.constants.Company.fromInteger(oprot.readI32());
             builder.setEmployer(employer);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -262,7 +262,7 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
           break;
         case _COMPENSATION:
           if (__field.type == TType.DOUBLE) {
-            Double  compensation = oprot.readDouble();
+            Double compensation = oprot.readDouble();
             builder.setCompensation(compensation);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -270,7 +270,7 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
           break;
         case _SCHOOL:
           if (__field.type == TType.STRING) {
-            String  school = oprot.readString();
+            String school = oprot.readString();
             builder.setSchool(school);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

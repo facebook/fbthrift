@@ -457,7 +457,7 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
       {
       if (optionalStructListField != null) {
         oprot.writeFieldBegin(OPTIONAL_STRUCT_LIST_FIELD_FIELD_DESC);
-        List<com.facebook.thrift.my.AdaptedFoo_1>  _iter0 = optionalStructListField;
+        List<com.facebook.thrift.my.AdaptedFoo_1> _iter0 = optionalStructListField;
         oprot.writeListBegin(new TList(TType.STRUCT, _iter0.size()));
             for (com.facebook.thrift.my.AdaptedFoo_1 _iter1 : _iter0) {
               __FooWithAdapter_Adapter.toThrift(_iter1).write0(oprot);

@@ -366,7 +366,7 @@ public final class TestStruct implements com.facebook.thrift.payload.ThriftSeria
           break;
         case _OPTIONAL_INT_FIELD:
           if (__field.type == TType.I32) {
-            Integer  optionalIntField = oprot.readI32();
+            Integer optionalIntField = oprot.readI32();
             builder.setOptionalIntField(optionalIntField);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -374,7 +374,7 @@ public final class TestStruct implements com.facebook.thrift.payload.ThriftSeria
           break;
         case _OPTIONAL_BOOL_FIELD:
           if (__field.type == TType.BOOL) {
-            Boolean  optionalBoolField = oprot.readBool();
+            Boolean optionalBoolField = oprot.readBool();
             builder.setOptionalBoolField(optionalBoolField);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -464,7 +464,7 @@ public final class TestStruct implements com.facebook.thrift.payload.ThriftSeria
       {
       if (optionalListField != null) {
         oprot.writeFieldBegin(OPTIONAL_LIST_FIELD_FIELD_DESC);
-        List<Integer>  _iter0 = optionalListField;
+        List<Integer> _iter0 = optionalListField;
         oprot.writeListBegin(new TList(TType.I32, _iter0.size()));
             for (int _iter1 : _iter0) {
               oprot.writeI32(_iter1);

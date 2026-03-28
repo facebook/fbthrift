@@ -389,7 +389,7 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
           break;
         case _AGE:
           if (__field.type == TType.I16) {
-            Short  age = oprot.readI16();
+            Short age = oprot.readI16();
             builder.setAge(age);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -397,7 +397,7 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
           break;
         case _ADDRESS:
           if (__field.type == TType.STRING) {
-            String  address = oprot.readString();
+            String address = oprot.readString();
             builder.setAddress(address);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -431,7 +431,7 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
           break;
         case _BESTFRIEND:
           if (__field.type == TType.I64) {
-            Long  bestFriend = oprot.readI64();
+            Long bestFriend = oprot.readI64();
             builder.setBestFriend(bestFriend);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -458,7 +458,7 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
           break;
         case _AFRAIDOFANIMAL:
           if (__field.type == TType.I32) {
-            test.fixtures.optionals.Animal  afraidOfAnimal = test.fixtures.optionals.Animal .fromInteger(oprot.readI32());
+            test.fixtures.optionals.Animal afraidOfAnimal = test.fixtures.optionals.Animal.fromInteger(oprot.readI32());
             builder.setAfraidOfAnimal(afraidOfAnimal);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -530,7 +530,7 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
       {
       if (friends != null) {
         oprot.writeFieldBegin(FRIENDS_FIELD_DESC);
-        Set<Long>  _iter0 = friends;
+        Set<Long> _iter0 = friends;
         oprot.writeSetBegin(new TSet(TType.I64, _iter0.size()));
             for (long _iter1 : _iter0) {
               oprot.writeI64(_iter1);
@@ -549,7 +549,7 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
       {
       if (petNames != null) {
         oprot.writeFieldBegin(PET_NAMES_FIELD_DESC);
-        Map<test.fixtures.optionals.Animal, String>  _iter0 = petNames;
+        Map<test.fixtures.optionals.Animal, String> _iter0 = petNames;
         oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, _iter0.size()));
             for (Map.Entry<test.fixtures.optionals.Animal, String> _iter1 : _iter0.entrySet()) {
               {
@@ -575,7 +575,7 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
       {
       if (vehicles != null) {
         oprot.writeFieldBegin(VEHICLES_FIELD_DESC);
-        List<test.fixtures.optionals.Vehicle>  _iter0 = vehicles;
+        List<test.fixtures.optionals.Vehicle> _iter0 = vehicles;
         oprot.writeListBegin(new TList(TType.STRUCT, _iter0.size()));
             for (test.fixtures.optionals.Vehicle _iter1 : _iter0) {
               _iter1.write0(oprot);

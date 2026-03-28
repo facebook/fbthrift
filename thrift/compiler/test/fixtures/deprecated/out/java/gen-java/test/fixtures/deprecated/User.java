@@ -267,7 +267,7 @@ public final class User implements com.facebook.thrift.payload.ThriftSerializabl
           break;
         case _EMAIL:
           if (__field.type == TType.STRING) {
-            String  email = oprot.readString();
+            String email = oprot.readString();
             builder.setEmail(email);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -275,7 +275,7 @@ public final class User implements com.facebook.thrift.payload.ThriftSerializabl
           break;
         case _EMAIL_ADDRESS:
           if (__field.type == TType.STRING) {
-            String  emailAddress = oprot.readString();
+            String emailAddress = oprot.readString();
             builder.setEmailAddress(emailAddress);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

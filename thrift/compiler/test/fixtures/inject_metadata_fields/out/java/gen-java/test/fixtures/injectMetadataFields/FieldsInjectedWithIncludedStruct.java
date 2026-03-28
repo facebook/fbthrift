@@ -227,7 +227,7 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
           break;
         case _INJECTED_STRUCTURED_ANNOTATION_FIELD:
           if (__field.type == TType.STRING) {
-            String  injectedStructuredAnnotationField = oprot.readString();
+            String injectedStructuredAnnotationField = oprot.readString();
             builder.setInjectedStructuredAnnotationField(injectedStructuredAnnotationField);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -235,7 +235,7 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
           break;
         case _INJECTED_UNSTRUCTURED_ANNOTATION_FIELD:
           if (__field.type == TType.STRING) {
-            String  injectedUnstructuredAnnotationField = oprot.readString();
+            String injectedUnstructuredAnnotationField = oprot.readString();
             builder.setInjectedUnstructuredAnnotationField(injectedUnstructuredAnnotationField);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

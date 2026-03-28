@@ -232,7 +232,7 @@ public final class StructWithFieldAdapter implements com.facebook.thrift.payload
           break;
         case _OPT_SHARED_FIELD:
           if (__field.type == TType.I32) {
-            Integer  optSharedField = oprot.readI32();
+            Integer optSharedField = oprot.readI32();
             builder.setOptSharedField(_optSharedField_Adapter.fromThrift(optSharedField));
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -240,7 +240,7 @@ public final class StructWithFieldAdapter implements com.facebook.thrift.payload
           break;
         case _OPT_BOXED_FIELD:
           if (__field.type == TType.I32) {
-            Integer  optBoxedField = oprot.readI32();
+            Integer optBoxedField = oprot.readI32();
             builder.setOptBoxedField(optBoxedField);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

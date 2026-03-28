@@ -98,7 +98,7 @@ public final class Serious extends org.apache.thrift.TBaseException implements c
         switch (__field.id) {
         case _SONNET:
           if (__field.type == TType.STRING) {
-            String  sonnet = oprot.readString();
+            String sonnet = oprot.readString();
             builder.setSonnet(sonnet);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

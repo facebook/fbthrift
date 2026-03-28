@@ -1722,7 +1722,7 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
           break;
         case _OPTIONAL_ENUM:
           if (__field.type == TType.I32) {
-            test.fixtures.shapes.Enum  optionalEnum = test.fixtures.shapes.Enum .fromInteger(oprot.readI32());
+            test.fixtures.shapes.Enum optionalEnum = test.fixtures.shapes.Enum.fromInteger(oprot.readI32());
             builder.setOptionalEnum(optionalEnum);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -2174,7 +2174,7 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
       {
       if (optionalSetOfI32 != null) {
         oprot.writeFieldBegin(OPTIONAL_SET_OF_I32_FIELD_DESC);
-        Set<Integer>  _iter0 = optionalSetOfI32;
+        Set<Integer> _iter0 = optionalSetOfI32;
         oprot.writeSetBegin(new TSet(TType.I32, _iter0.size()));
             for (int _iter1 : _iter0) {
               oprot.writeI32(_iter1);
@@ -2186,7 +2186,7 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
       {
       if (optionalListOfI32 != null) {
         oprot.writeFieldBegin(OPTIONAL_LIST_OF_I32_FIELD_DESC);
-        List<Integer>  _iter0 = optionalListOfI32;
+        List<Integer> _iter0 = optionalListOfI32;
         oprot.writeListBegin(new TList(TType.I32, _iter0.size()));
             for (int _iter1 : _iter0) {
               oprot.writeI32(_iter1);
@@ -2198,7 +2198,7 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
       {
       if (optionalListOfString != null) {
         oprot.writeFieldBegin(OPTIONAL_LIST_OF_STRING_FIELD_DESC);
-        List<String>  _iter0 = optionalListOfString;
+        List<String> _iter0 = optionalListOfString;
         oprot.writeListBegin(new TList(TType.STRING, _iter0.size()));
             for (String _iter1 : _iter0) {
               oprot.writeString(_iter1);
@@ -2210,7 +2210,7 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
       {
       if (optionalMapOfStringToI32 != null) {
         oprot.writeFieldBegin(OPTIONAL_MAP_OF_STRING_TO_I32_FIELD_DESC);
-        Map<String, Integer>  _iter0 = optionalMapOfStringToI32;
+        Map<String, Integer> _iter0 = optionalMapOfStringToI32;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.I32, _iter0.size()));
             for (Map.Entry<String, Integer> _iter1 : _iter0.entrySet()) {
               {
@@ -2229,7 +2229,7 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
       {
       if (optionalMapOfStringToA != null) {
         oprot.writeFieldBegin(OPTIONAL_MAP_OF_STRING_TO_A_FIELD_DESC);
-        Map<String, test.fixtures.shapes.A>  _iter0 = optionalMapOfStringToA;
+        Map<String, test.fixtures.shapes.A> _iter0 = optionalMapOfStringToA;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.STRUCT, _iter0.size()));
             for (Map.Entry<String, test.fixtures.shapes.A> _iter1 : _iter0.entrySet()) {
               {
@@ -2248,7 +2248,7 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
       {
       if (optionalMapOfStringToListOfI32 != null) {
         oprot.writeFieldBegin(OPTIONAL_MAP_OF_STRING_TO_LIST_OF_I32_FIELD_DESC);
-        Map<String, List<Integer>>  _iter0 = optionalMapOfStringToListOfI32;
+        Map<String, List<Integer>> _iter0 = optionalMapOfStringToListOfI32;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter0.size()));
             for (Map.Entry<String, List<Integer>> _iter1 : _iter0.entrySet()) {
               {
@@ -2271,7 +2271,7 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
       {
       if (optionalMapOfStringToListOfA != null) {
         oprot.writeFieldBegin(OPTIONAL_MAP_OF_STRING_TO_LIST_OF_A_FIELD_DESC);
-        Map<String, List<test.fixtures.shapes.A>>  _iter0 = optionalMapOfStringToListOfA;
+        Map<String, List<test.fixtures.shapes.A>> _iter0 = optionalMapOfStringToListOfA;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter0.size()));
             for (Map.Entry<String, List<test.fixtures.shapes.A>> _iter1 : _iter0.entrySet()) {
               {
@@ -2294,7 +2294,7 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
       {
       if (optionalMapOfStringToSetOfI32 != null) {
         oprot.writeFieldBegin(OPTIONAL_MAP_OF_STRING_TO_SET_OF_I32_FIELD_DESC);
-        Map<String, Set<Integer>>  _iter0 = optionalMapOfStringToSetOfI32;
+        Map<String, Set<Integer>> _iter0 = optionalMapOfStringToSetOfI32;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.SET, _iter0.size()));
             for (Map.Entry<String, Set<Integer>> _iter1 : _iter0.entrySet()) {
               {

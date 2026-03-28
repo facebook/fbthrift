@@ -346,7 +346,7 @@ public final class MyField implements com.facebook.thrift.payload.ThriftSerializ
         switch (__field.id) {
         case _OPT_VALUE:
           if (__field.type == TType.I64) {
-            Long  optValue = oprot.readI64();
+            Long optValue = oprot.readI64();
             builder.setOptValue(optValue);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -370,7 +370,7 @@ public final class MyField implements com.facebook.thrift.payload.ThriftSerializ
           break;
         case _OPT_ENUM_VALUE:
           if (__field.type == TType.I32) {
-            test.fixtures.refs.MyEnum  optEnumValue = test.fixtures.refs.MyEnum .fromInteger(oprot.readI32());
+            test.fixtures.refs.MyEnum optEnumValue = test.fixtures.refs.MyEnum.fromInteger(oprot.readI32());
             builder.setOptEnumValue(optEnumValue);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -394,7 +394,7 @@ public final class MyField implements com.facebook.thrift.payload.ThriftSerializ
           break;
         case _OPT_STR_VALUE:
           if (__field.type == TType.STRING) {
-            String  optStrValue = oprot.readString();
+            String optStrValue = oprot.readString();
             builder.setOptStrValue(optStrValue);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

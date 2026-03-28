@@ -219,7 +219,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
           break;
         case _MYSTRING:
           if (__field.type == TType.STRING) {
-            String  myString = oprot.readString();
+            String myString = oprot.readString();
             builder.setMyString(myString);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

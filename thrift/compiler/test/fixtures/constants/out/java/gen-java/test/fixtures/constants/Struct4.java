@@ -192,7 +192,7 @@ public final class Struct4 implements com.facebook.thrift.payload.ThriftSerializ
           break;
         case _B:
           if (__field.type == TType.DOUBLE) {
-            Double  b = oprot.readDouble();
+            Double b = oprot.readDouble();
             builder.setB(b);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -200,7 +200,7 @@ public final class Struct4 implements com.facebook.thrift.payload.ThriftSerializ
           break;
         case _C:
           if (__field.type == TType.BYTE) {
-            Byte  c = oprot.readByte();
+            Byte c = oprot.readByte();
             builder.setC(c);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

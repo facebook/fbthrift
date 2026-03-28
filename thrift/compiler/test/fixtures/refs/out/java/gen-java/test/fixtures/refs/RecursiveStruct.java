@@ -161,7 +161,7 @@ public final class RecursiveStruct implements com.facebook.thrift.payload.Thrift
       {
       if (mes != null) {
         oprot.writeFieldBegin(MES_FIELD_DESC);
-        List<test.fixtures.refs.RecursiveStruct>  _iter0 = mes;
+        List<test.fixtures.refs.RecursiveStruct> _iter0 = mes;
         oprot.writeListBegin(new TList(TType.STRUCT, _iter0.size()));
             for (test.fixtures.refs.RecursiveStruct _iter1 : _iter0) {
               _iter1.write0(oprot);

@@ -200,7 +200,7 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
           break;
         case _EMPLOYER:
           if (__field.type == TType.I32) {
-            test.fixtures.lazy_constants.Company  employer = test.fixtures.lazy_constants.Company .fromInteger(oprot.readI32());
+            test.fixtures.lazy_constants.Company employer = test.fixtures.lazy_constants.Company.fromInteger(oprot.readI32());
             builder.setEmployer(employer);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

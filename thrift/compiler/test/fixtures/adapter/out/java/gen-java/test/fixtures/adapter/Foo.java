@@ -532,7 +532,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
           break;
         case _OPTIONALINTFIELD:
           if (__field.type == TType.I32) {
-            Integer  optionalIntField = oprot.readI32();
+            Integer optionalIntField = oprot.readI32();
             builder.setOptionalIntField(_optionalIntField_Adapter.fromThrift(optionalIntField));
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -837,7 +837,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       Set<String> optionalSetField = __SetWithAdapter_Adapter.toThrift(this.optionalSetField);
       if (optionalSetField != null) {
         oprot.writeFieldBegin(OPTIONAL_SET_FIELD_FIELD_DESC);
-        Set<String>  _iter0 = optionalSetField;
+        Set<String> _iter0 = optionalSetField;
         oprot.writeSetBegin(new TSet(TType.STRING, _iter0.size()));
             for (String _iter1 : _iter0) {
               oprot.writeString(_iter1);
@@ -875,7 +875,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       Map<String, com.facebook.thrift.my.AdaptedList_2> optionalMapField = _optionalMapField_Adapter.toThrift(this.optionalMapField);
       if (optionalMapField != null) {
         oprot.writeFieldBegin(OPTIONAL_MAP_FIELD_FIELD_DESC);
-        Map<String, com.facebook.thrift.my.AdaptedList_2>  _iter0 = optionalMapField;
+        Map<String, com.facebook.thrift.my.AdaptedList_2> _iter0 = optionalMapField;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter0.size()));
             for (Map.Entry<String, com.facebook.thrift.my.AdaptedList_2> _iter1 : _iter0.entrySet()) {
               {
