@@ -36,13 +36,6 @@ public void write0(TProtocol oprot) throws TException {
       {{> ThriftFieldType}} _iter{{field:nestedDepth}} = {{field:javaName}};
       {{/field:self.type.container?}}{{!
 
-      }}{{#type:typedef_type}}
-      {{> ThriftFieldType}} _iter{{field:nestedDepth}} = {{field:javaName}};
-      {{/type:typedef_type}}{{!
-
-      }}{{^field:self.type.container?}}{{^type:typedef_type}}{{!
-      }}{{/type:typedef_type}}{{/field:self.type.container?}}{{!
-
       }}{{#field:type}}
       {{field:nestedDepth++}}{{> WriteType }}{{field:nestedDepth--}}
       {{/field:type}}
@@ -54,14 +47,9 @@ public void write0(TProtocol oprot) throws TException {
     {{#field:self.type.container?}}
     {{> FieldType}} _iter{{field:nestedDepth}} = ({{> FieldType}})this.value;
     {{/field:self.type.container?}}{{!
-
-    }}{{#type:typedef_type}}
-    {{> FieldType}} _iter{{field:nestedDepth}} = ({{> FieldType}})this.value;
-    {{/type:typedef_type}}{{!
-
-    }}{{^field:self.type.container?}}{{^type:typedef_type}}
+    }}{{^field:self.type.container?}}
     {{> FieldType}} {{field:javaName}} = ({{> FieldType}})this.value;
-    {{/type:typedef_type}}{{/field:self.type.container?}}{{!
+    {{/field:self.type.container?}}{{!
 
     }}{{#field:type}}
     {{field:nestedDepth++}}{{> WriteType }}{{field:nestedDepth--}}

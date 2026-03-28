@@ -37,19 +37,11 @@ public void write0(TProtocol oprot) throws TException {
     oprot.writeFieldBegin({{field:javaTFieldName}});
     {{#field:self.type.container?}}
     {{> ThriftFieldType}} _iter{{field:nestedDepth}} = {{field:javaName}};
-    {{/field:self.type.container?}}{{!
-
-    }}{{#type:typedef_type}}
-    {{> ThriftFieldType}} _iter{{field:nestedDepth}} = {{field:javaName}};
-    {{/type:typedef_type}}{{!
-
-    }}{{#field:type}}
+    {{/field:self.type.container?}}
     {{#if field:self.type.structured?}}
     pos = p.mark();
     {{/if field:self.type.structured?}}
     {{#field:type}}{{field:nestedDepth++}}{{> WriteType}}{{field:nestedDepth--}}{{/field:type}}
-    {{/field:type}}{{!
-    }}
     {{#if field:self.type.structured?}}
     if (p.mark() - pos > p.getEmptyStructSize()) {
       p.writeFieldEnd();
@@ -69,10 +61,6 @@ public void write0(TProtocol oprot) throws TException {
     {{#field:self.type.container?}}
     {{> ThriftFieldType}} _iter{{field:nestedDepth}} = {{field:javaName}};
     {{/field:self.type.container?}}{{!
-
-    }}{{#type:typedef_type}}
-    {{> ThriftFieldType}} _iter{{field:nestedDepth}} = {{field:javaName}};
-    {{/type:typedef_type}}{{!
 
     }}{{#field:type}}
     {{field:nestedDepth++}}{{> WriteType}}{{field:nestedDepth--}}
