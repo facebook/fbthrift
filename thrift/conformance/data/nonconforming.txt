@@ -1,6 +1,8 @@
 # TODO(afuller): Fix equivelence check in GTestHarness.
 cpp2/CompatibilityTest/testset.binary.string/ChangeFieldType/bad_utf8.Binary
 cpp2/CompatibilityTest/testset.binary.string/ChangeFieldType/bad_utf8.Compact
+csharp/CompatibilityTest/testset.binary.string/ChangeFieldType/bad_utf8.Binary
+csharp/CompatibilityTest/testset.binary.string/ChangeFieldType/bad_utf8.Compact
 # Thrift Patch stores elements to remove in a set.
 # After changing protocol::Value::setValue to a hash set,
 #
