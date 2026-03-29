@@ -23,7 +23,6 @@
 #include <folly/io/IOBuf.h>
 #include <thrift/lib/cpp2/protocol/ProtocolReaderStructReadState.h>
 #include <thrift/lib/cpp2/protocol/ProtocolReaderWireTypeInfo.h>
-#include <thrift/lib/cpp2/type/Tag.h>
 
 namespace apache::thrift::detail {
 
@@ -494,23 +493,8 @@ size_t writeThriftValue(
       // as a user error if the value is a nullptr.
     case protocol::TType::T_MAP: {
       const auto& ext = *static_cast<const MapFieldExt*>(typeInfo.typeExt);
-      const auto mapSize = ext.size(value.object);
-      size_t written;
-      if constexpr (requires {
-                      // Some protocols (e.g., JSON5) require type tag
-                      // information richer than TType to serialize maps
-                      // correctly. For example, TType alone cannot distinguish
-                      // string keys (serialized as {"k": "v"}) from binary keys
-                      // (serialized as [{"key": "k", "value": "v"}]).
-                      // These protocols provide a typed writeMapBegin overload.
-                      iprot->template writeMapBegin<type::i32_t, type::i32_t>(
-                          uint32_t{});
-                    }) {
-        throw std::runtime_error("Not Implemented");
-      } else {
-        written =
-            iprot->writeMapBegin(ext.keyInfo->type, ext.valInfo->type, mapSize);
-      }
+      size_t written = iprot->writeMapBegin(
+          ext.keyInfo->type, ext.valInfo->type, ext.size(value.object));
 
       struct Context {
         const TypeInfo* keyInfo;
