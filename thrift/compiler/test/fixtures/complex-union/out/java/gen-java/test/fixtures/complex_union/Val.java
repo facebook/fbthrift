@@ -230,21 +230,23 @@ public final class Val implements com.facebook.thrift.payload.ThriftSerializable
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      if (strVal != null) {
+      String _iter0 = this.strVal;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(STR_VAL_FIELD_DESC);
-        oprot.writeString(this.strVal);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
+      int _iter0 = this.intVal;
       oprot.writeFieldBegin(INT_VAL_FIELD_DESC);
-      oprot.writeI32(this.intVal);
+      oprot.writeI32(_iter0);
       oprot.writeFieldEnd();
       }
       {
-      if (typedefValue != null) {
+      Map<Short, String> _iter0 = this.typedefValue;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(TYPEDEF_VALUE_FIELD_DESC);
-        Map<Short, String> _iter0 = typedefValue;
         oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, _iter0.size()));
             for (Map.Entry<Short, String> _iter1 : _iter0.entrySet()) {
               {

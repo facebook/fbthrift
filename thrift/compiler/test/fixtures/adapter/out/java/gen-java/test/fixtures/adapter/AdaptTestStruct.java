@@ -467,62 +467,72 @@ public final class AdaptTestStruct implements com.facebook.thrift.payload.Thrift
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
+      long _iter0 = this.delay;
       oprot.writeFieldBegin(DELAY_FIELD_DESC);
-      oprot.writeI64(this.delay);
+      oprot.writeI64(_iter0);
       oprot.writeFieldEnd();
       }
       {
-      if (custom != null) {
+      byte[] _iter0 = this.custom;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(CUSTOM_FIELD_DESC);
-        oprot.writeBinary(java.nio.ByteBuffer.wrap(this.custom));
+        oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
         oprot.writeFieldEnd();
       }
       }
       {
+      long _iter0 = this.timeout;
       oprot.writeFieldBegin(TIMEOUT_FIELD_DESC);
-      oprot.writeI64(this.timeout);
+      oprot.writeI64(_iter0);
       oprot.writeFieldEnd();
       }
       {
+      long _iter0 = this.data;
       oprot.writeFieldBegin(DATA_FIELD_DESC);
-      oprot.writeI64(this.data);
+      oprot.writeI64(_iter0);
       oprot.writeFieldEnd();
       }
       {
-      if (meta != null) {
+      String _iter0 = this.meta;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(META_FIELD_DESC);
-        oprot.writeString(this.meta);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (indirectionString != null) {
+      String _iter0 = this.indirectionString;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(INDIRECTION_STRING_FIELD_DESC);
-        oprot.writeString(this.indirectionString);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (stringData != null) {
+      String _iter0 = this.stringData;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(STRING_DATA_FIELD_DESC);
-        oprot.writeString(this.stringData);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
+      boolean _iter0 = this.doubleWrappedBool;
       oprot.writeFieldBegin(DOUBLE_WRAPPED_BOOL_FIELD_DESC);
-      oprot.writeBool(this.doubleWrappedBool);
+      oprot.writeBool(_iter0);
       oprot.writeFieldEnd();
       }
       {
+      int _iter0 = this.doubleWrappedInteger;
       oprot.writeFieldBegin(DOUBLE_WRAPPED_INTEGER_FIELD_DESC);
-      oprot.writeI32(this.doubleWrappedInteger);
+      oprot.writeI32(_iter0);
       oprot.writeFieldEnd();
       }
       {
-      if (binaryData != null) {
+      byte[] _iter0 = this.binaryData;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(BINARY_DATA_FIELD_DESC);
-        oprot.writeBinary(java.nio.ByteBuffer.wrap(this.binaryData));
+        oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
         oprot.writeFieldEnd();
       }
       }

@@ -219,21 +219,24 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
+      int _iter0 = this.weeks;
       oprot.writeFieldBegin(WEEKS_FIELD_DESC);
-      oprot.writeI32(this.weeks);
+      oprot.writeI32(_iter0);
       oprot.writeFieldEnd();
       }
       {
-      if (title != null) {
+      String _iter0 = this.title;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(TITLE_FIELD_DESC);
-        oprot.writeString(this.title);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (employer != null) {
+      test.fixtures.lazy_constants.Company _iter0 = this.employer;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(EMPLOYER_FIELD_DESC);
-        oprot.writeI32(this.employer == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(this.employer));
+        oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
         oprot.writeFieldEnd();
       }
       }

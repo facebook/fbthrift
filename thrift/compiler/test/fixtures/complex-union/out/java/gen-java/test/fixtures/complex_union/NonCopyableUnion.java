@@ -198,8 +198,9 @@ public final class NonCopyableUnion implements com.facebook.thrift.payload.Thrif
       switch (this.id) {
       case _S: {
         oprot.writeFieldBegin(S_FIELD_DESC);
-        test.fixtures.complex_union.NonCopyableStruct s = (test.fixtures.complex_union.NonCopyableStruct)this.value;
-        s.write0(oprot);
+        test.fixtures.complex_union.NonCopyableStruct _iter0 = (test.fixtures.complex_union.NonCopyableStruct)this.value;
+    
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
         break;
       }

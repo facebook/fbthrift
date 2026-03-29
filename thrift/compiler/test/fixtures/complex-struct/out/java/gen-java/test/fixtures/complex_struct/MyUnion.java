@@ -426,43 +426,49 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       switch (this.id) {
       case _MYENUM: {
         oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
-        test.fixtures.complex_struct.MyEnum myEnum = (test.fixtures.complex_struct.MyEnum)this.value;
-        oprot.writeI32(myEnum == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(myEnum));
+        test.fixtures.complex_struct.MyEnum _iter0 = (test.fixtures.complex_struct.MyEnum)this.value;
+    
+        oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
         oprot.writeFieldEnd();
         break;
       }
       case _MYSTRUCT: {
         oprot.writeFieldBegin(MY_STRUCT_FIELD_DESC);
-        test.fixtures.complex_struct.MyStruct myStruct = (test.fixtures.complex_struct.MyStruct)this.value;
-        myStruct.write0(oprot);
+        test.fixtures.complex_struct.MyStruct _iter0 = (test.fixtures.complex_struct.MyStruct)this.value;
+    
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
         break;
       }
       case _MYDATAITEM: {
         oprot.writeFieldBegin(MY_DATA_ITEM_FIELD_DESC);
-        test.fixtures.complex_struct.MyDataItem myDataItem = (test.fixtures.complex_struct.MyDataItem)this.value;
-        myDataItem.write0(oprot);
+        test.fixtures.complex_struct.MyDataItem _iter0 = (test.fixtures.complex_struct.MyDataItem)this.value;
+    
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
         break;
       }
       case _COMPLEXNESTEDSTRUCT: {
         oprot.writeFieldBegin(COMPLEX_NESTED_STRUCT_FIELD_DESC);
-        test.fixtures.complex_struct.ComplexNestedStruct complexNestedStruct = (test.fixtures.complex_struct.ComplexNestedStruct)this.value;
-        complexNestedStruct.write0(oprot);
+        test.fixtures.complex_struct.ComplexNestedStruct _iter0 = (test.fixtures.complex_struct.ComplexNestedStruct)this.value;
+    
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
         break;
       }
       case _LONGVALUE: {
         oprot.writeFieldBegin(LONG_VALUE_FIELD_DESC);
-        long longValue = (long)this.value;
-        oprot.writeI64(longValue);
+        long _iter0 = (long)this.value;
+    
+        oprot.writeI64(_iter0);
         oprot.writeFieldEnd();
         break;
       }
       case _INTVALUE: {
         oprot.writeFieldBegin(INT_VALUE_FIELD_DESC);
-        int intValue = (int)this.value;
-        oprot.writeI32(intValue);
+        int _iter0 = (int)this.value;
+    
+        oprot.writeI32(_iter0);
         oprot.writeFieldEnd();
         break;
       }

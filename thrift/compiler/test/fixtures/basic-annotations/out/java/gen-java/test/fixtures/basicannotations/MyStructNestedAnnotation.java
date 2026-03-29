@@ -149,9 +149,10 @@ public final class MyStructNestedAnnotation implements com.facebook.thrift.paylo
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      if (name != null) {
+      String _iter0 = this.name;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(NAME_FIELD_DESC);
-        oprot.writeString(this.name);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }

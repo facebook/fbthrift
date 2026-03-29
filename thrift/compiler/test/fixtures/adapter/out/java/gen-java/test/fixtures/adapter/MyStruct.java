@@ -198,15 +198,15 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
+      int _iter0 = this.field;
       oprot.writeFieldBegin(FIELD_FIELD_DESC);
-      oprot.writeI32(this.field);
+      oprot.writeI32(_iter0);
       oprot.writeFieldEnd();
       }
       {
-      Set<String> setString = __SetWithAdapter_Adapter.toThrift(this.setString);
-      if (setString != null) {
+      Set<String> _iter0 = __SetWithAdapter_Adapter.toThrift(this.setString);
+      if (_iter0 != null) {
         oprot.writeFieldBegin(SET_STRING_FIELD_DESC);
-        Set<String> _iter0 = setString;
         oprot.writeSetBegin(new TSet(TType.STRING, _iter0.size()));
             for (String _iter1 : _iter0) {
               oprot.writeString(_iter1);

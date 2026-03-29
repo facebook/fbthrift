@@ -152,8 +152,9 @@ public final class AlsoMoveOnly implements com.facebook.thrift.payload.ThriftSer
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
+      long _iter0 = this.ptr;
       oprot.writeFieldBegin(PTR_FIELD_DESC);
-      oprot.writeI64(this.ptr);
+      oprot.writeI64(_iter0);
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

@@ -209,28 +209,32 @@ public final class MyException extends org.apache.thrift.TBaseException implemen
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
+      long _iter0 = this.myIntField;
       oprot.writeFieldBegin(MY_INT_FIELD_FIELD_DESC);
-      oprot.writeI64(this.myIntField);
+      oprot.writeI64(_iter0);
       oprot.writeFieldEnd();
       }
       {
-      if (myStringField != null) {
+      String _iter0 = this.myStringField;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MY_STRING_FIELD_FIELD_DESC);
-        oprot.writeString(this.myStringField);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (myStruct != null) {
+      test.fixtures.basic.MyStruct _iter0 = this.myStruct;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MY_STRUCT_FIELD_DESC);
-        this.myStruct.write0(oprot);
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (myUnion != null) {
+      test.fixtures.basic.MyUnion _iter0 = this.myUnion;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MY_UNION_FIELD_DESC);
-        this.myUnion.write0(oprot);
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }

@@ -330,29 +330,33 @@ public final class Union2 implements com.facebook.thrift.payload.ThriftSerializa
       switch (this.id) {
       case _I: {
         oprot.writeFieldBegin(I_FIELD_DESC);
-        int i = (int)this.value;
-        oprot.writeI32(i);
+        int _iter0 = (int)this.value;
+    
+        oprot.writeI32(_iter0);
         oprot.writeFieldEnd();
         break;
       }
       case _D: {
         oprot.writeFieldBegin(D_FIELD_DESC);
-        double d = (double)this.value;
-        oprot.writeDouble(d);
+        double _iter0 = (double)this.value;
+    
+        oprot.writeDouble(_iter0);
         oprot.writeFieldEnd();
         break;
       }
       case _S: {
         oprot.writeFieldBegin(S_FIELD_DESC);
-        test.fixtures.constants.Struct1 s = (test.fixtures.constants.Struct1)this.value;
-        s.write0(oprot);
+        test.fixtures.constants.Struct1 _iter0 = (test.fixtures.constants.Struct1)this.value;
+    
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
         break;
       }
       case _U: {
         oprot.writeFieldBegin(U_FIELD_DESC);
-        test.fixtures.constants.Union1 u = (test.fixtures.constants.Union1)this.value;
-        u.write0(oprot);
+        test.fixtures.constants.Union1 _iter0 = (test.fixtures.constants.Union1)this.value;
+    
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
         break;
       }

@@ -187,13 +187,15 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
+      test.fixtures.swift.enumstrict.MyEnum _iter0 = this.myEnum;
       oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
-      oprot.writeI32(this.myEnum == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(this.myEnum));
+      oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
       oprot.writeFieldEnd();
       }
       {
+      test.fixtures.swift.enumstrict.MyBigEnum _iter0 = this.myBigEnum;
       oprot.writeFieldBegin(MY_BIG_ENUM_FIELD_DESC);
-      oprot.writeI32(this.myBigEnum == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(this.myBigEnum));
+      oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

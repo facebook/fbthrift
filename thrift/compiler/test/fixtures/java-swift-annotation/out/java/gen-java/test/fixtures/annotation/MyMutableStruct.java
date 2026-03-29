@@ -185,14 +185,16 @@ public final class MyMutableStruct implements com.facebook.thrift.payload.Thrift
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
+      long _iter0 = this.intField;
       oprot.writeFieldBegin(INT_FIELD_FIELD_DESC);
-      oprot.writeI64(this.intField);
+      oprot.writeI64(_iter0);
       oprot.writeFieldEnd();
       }
       {
-      if (stringField != null) {
+      String _iter0 = this.stringField;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(STRING_FIELD_FIELD_DESC);
-        oprot.writeString(this.stringField);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }

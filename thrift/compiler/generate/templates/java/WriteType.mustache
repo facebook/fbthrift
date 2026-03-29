@@ -22,25 +22,13 @@
   }}{{/type:isAdapterSet?}}{{!
   }}{{^type:isAdapterSet?}}{{!
     }}{{#type:isBinaryString?}}{{!
-      }}{{#field:isNested?}}{{!
-        }}{{^field:hasAdapterOrWrapper?}}oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter{{field:prevNestedDepth}}));{{/field:hasAdapterOrWrapper?}}{{!
-        }}{{#field:hasAdapterOrWrapper?}}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter{{field:prevNestedDepth}});{{/field:hasAdapterOrWrapper?}}{{!
-      }}{{/field:isNested?}}{{!
-      }}{{^field:isNested?}}{{!
-        }}{{^field:hasAdapterOrWrapper?}}oprot.writeBinary({{^type:javaType}}java.nio.ByteBuffer.wrap{{/type:javaType}}({{^struct:union?}}this.{{/struct:union?}}{{field:javaName}}));{{/field:hasAdapterOrWrapper?}}{{!
-        }}{{#field:hasAdapterOrWrapper?}}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, {{field:javaName}});{{/field:hasAdapterOrWrapper?}}{{!
-      }}{{/field:isNested?}}{{!
+      }}{{^field:hasAdapterOrWrapper?}}oprot.writeBinary(java.nio.ByteBuffer.wrap({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}}));{{/field:hasAdapterOrWrapper?}}{{!
+      }}{{#field:hasAdapterOrWrapper?}}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, {{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}});{{/field:hasAdapterOrWrapper?}}{{!
     }}{{/type:isBinaryString?}}{{!
     }}{{^type:isBinaryString?}}{{!
     }}{{#type:javaType}}{{#type:binary?}}{{!
-      }}{{#field:isNested?}}{{!
-        }}{{^field:hasAdapterOrWrapper?}}oprot.writeBinary(_iter{{field:prevNestedDepth}});{{/field:hasAdapterOrWrapper?}}{{!
-        }}{{#field:hasAdapterOrWrapper?}}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter{{field:prevNestedDepth}});{{/field:hasAdapterOrWrapper?}}{{!
-      }}{{/field:isNested?}}{{!
-      }}{{^field:isNested?}}{{!
-        }}{{^field:hasAdapterOrWrapper?}}oprot.writeBinary({{^struct:union?}}this.{{/struct:union?}}{{field:javaName}});{{/field:hasAdapterOrWrapper?}}{{!
-        }}{{#field:hasAdapterOrWrapper?}}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, {{field:javaName}});{{/field:hasAdapterOrWrapper?}}{{!
-      }}{{/field:isNested?}}{{!
+      }}{{^field:hasAdapterOrWrapper?}}oprot.writeBinary({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}});{{/field:hasAdapterOrWrapper?}}{{!
+      }}{{#field:hasAdapterOrWrapper?}}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, {{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}});{{/field:hasAdapterOrWrapper?}}{{!
     }}{{/type:binary?}}{{^type:binary?}}{{!
     }}{{#type:typedef_type}}{{> WriteType}}{{/type:typedef_type}}{{!
     }}{{/type:binary?}}{{/type:javaType}}{{!
@@ -103,90 +91,54 @@
 }}{{/type:map?}}{{!
 
 }}{{#type:structured?}}{{!
-}}{{#field:isNested?}}{{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=type:isAdapterSet? depth=field:prevNestedDepth}}.write0(oprot);{{!
-}}{{/field:isNested?}}{{!
-}}{{^field:isNested?}}{{^struct:union?}}{{^field:hasAdapterOrWrapper?}}this.{{/field:hasAdapterOrWrapper?}}{{/struct:union?}}{{field:javaName}}.write0(oprot);{{/field:isNested?}}{{!
+}}{{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}}.write0(oprot);{{!
 }}{{/type:structured?}}{{!
 
 }}{{#type:enum?}}{{!
-}}{{#field:isNested?}}oprot.writeI32(_iter{{field:prevNestedDepth}} == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=type:isAdapterSet? depth=field:prevNestedDepth}}));{{!
-}}{{/field:isNested?}}{{!
-}}{{^field:isNested?}}oprot.writeI32({{^struct:union?}}{{^field:hasAdapterOrWrapper?}}this.{{/field:hasAdapterOrWrapper?}}{{/struct:union?}}{{field:javaName}} == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue({{^struct:union?}}{{^field:hasAdapterOrWrapper?}}this.{{/field:hasAdapterOrWrapper?}}{{/struct:union?}}{{field:javaName}}));{{/field:isNested?}}{{!
+}}oprot.writeI32({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}} == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}}));{{!
 }}{{/type:enum?}}{{!
 
 }}{{#type:binary?}}{{!
-}}{{#field:isNested?}}{{!
-}}{{^field:hasAdapterOrWrapper?}}{{#type:isAdapterSet?}}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, {{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=type:isAdapterSet? depth=field:prevNestedDepth}});{{/type:isAdapterSet?}}{{^type:isAdapterSet?}}oprot.writeBinary({{^type:javaType}}java.nio.ByteBuffer.wrap{{/type:javaType}}({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=type:isAdapterSet? depth=field:prevNestedDepth}}));{{/type:isAdapterSet?}}{{/field:hasAdapterOrWrapper?}}{{!
-}}{{#field:hasAdapterOrWrapper?}}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, {{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=type:isAdapterSet? depth=field:prevNestedDepth}});{{/field:hasAdapterOrWrapper?}}{{!
-}}{{/field:isNested?}}{{!
-}}{{^field:isNested?}}{{!
-}}{{^field:hasAdapterOrWrapper?}}oprot.writeBinary({{^type:javaType}}java.nio.ByteBuffer.wrap{{/type:javaType}}({{^struct:union?}}this.{{/struct:union?}}{{field:javaName}}));{{/field:hasAdapterOrWrapper?}}{{!
-}}{{#field:hasAdapterOrWrapper?}}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, {{field:javaName}});{{/field:hasAdapterOrWrapper?}}{{!
-}}{{/field:isNested?}}{{!
+}}{{^field:hasAdapterOrWrapper?}}{{#type:isAdapterSet?}}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, {{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}});{{/type:isAdapterSet?}}{{^type:isAdapterSet?}}oprot.writeBinary({{^type:javaType}}java.nio.ByteBuffer.wrap{{/type:javaType}}({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}}));{{/type:isAdapterSet?}}{{/field:hasAdapterOrWrapper?}}{{!
+}}{{#field:hasAdapterOrWrapper?}}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, {{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}});{{/field:hasAdapterOrWrapper?}}{{!
 }}{{/type:binary?}}{{!
 
 }}{{#type:string?}}{{!
-}}{{#field:isNested?}}{{!
   }}{{#type:isBinaryString?}}{{!
-  }}{{^field:hasAdapterOrWrapper?}}{{#type:isAdapterSet?}}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, {{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=type:isAdapterSet? depth=field:prevNestedDepth}});{{/type:isAdapterSet?}}{{^type:isAdapterSet?}}oprot.writeBinary(java.nio.ByteBuffer.wrap({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=type:isAdapterSet? depth=field:prevNestedDepth}}));{{/type:isAdapterSet?}}{{/field:hasAdapterOrWrapper?}}{{!
-  }}{{#field:hasAdapterOrWrapper?}}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, {{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=type:isAdapterSet? depth=field:prevNestedDepth}});{{/field:hasAdapterOrWrapper?}}{{!
+  }}{{^field:hasAdapterOrWrapper?}}{{#type:isAdapterSet?}}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, {{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}});{{/type:isAdapterSet?}}{{^type:isAdapterSet?}}oprot.writeBinary(java.nio.ByteBuffer.wrap({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}}));{{/type:isAdapterSet?}}{{/field:hasAdapterOrWrapper?}}{{!
+  }}{{#field:hasAdapterOrWrapper?}}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, {{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}});{{/field:hasAdapterOrWrapper?}}{{!
   }}{{/type:isBinaryString?}}{{!
   }}{{^type:isBinaryString?}}{{!
-    }}oprot.writeString({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=type:isAdapterSet? depth=field:prevNestedDepth}});{{!
+    }}oprot.writeString({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}});{{!
 }}{{/type:isBinaryString?}}{{!
-}}{{/field:isNested?}}{{!
-}}{{^field:isNested?}}{{!
-  }}{{#type:isBinaryString?}}{{!
-  }}{{^field:hasAdapterOrWrapper?}}oprot.writeBinary({{^type:javaType}}java.nio.ByteBuffer.wrap{{/type:javaType}}({{^struct:union?}}this.{{/struct:union?}}{{field:javaName}}));{{/field:hasAdapterOrWrapper?}}{{!
-  }}{{#field:hasAdapterOrWrapper?}}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, {{field:javaName}});{{/field:hasAdapterOrWrapper?}}{{!
-  }}{{/type:isBinaryString?}}{{!
-  }}{{^type:isBinaryString?}}{{!
-    }}oprot.writeString({{^struct:union?}}{{^field:hasAdapterOrWrapper?}}this.{{/field:hasAdapterOrWrapper?}}{{/struct:union?}}{{field:javaName}});{{!
-  }}{{/type:isBinaryString?}}{{!
-
-}}{{/field:isNested?}}{{!
 }}{{/type:string?}}{{!
 
 }}{{#type:bool?}}{{!
-}}{{#field:isNested?}}oprot.writeBool({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=type:isAdapterSet? depth=field:prevNestedDepth}});{{!
-}}{{/field:isNested?}}{{!
-}}{{^field:isNested?}}oprot.writeBool({{^struct:union?}}{{^field:hasAdapterOrWrapper?}}this.{{/field:hasAdapterOrWrapper?}}{{/struct:union?}}{{field:javaName}});{{/field:isNested?}}{{!
+}}oprot.writeBool({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}});{{!
 }}{{/type:bool?}}{{!
 
 }}{{#type:byte?}}{{!
-}}{{#field:isNested?}}oprot.writeByte({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=type:isAdapterSet? depth=field:prevNestedDepth}});{{!
-}}{{/field:isNested?}}{{!
-}}{{^field:isNested?}}oprot.writeByte({{^struct:union?}}{{^field:hasAdapterOrWrapper?}}this.{{/field:hasAdapterOrWrapper?}}{{/struct:union?}}{{field:javaName}});{{/field:isNested?}}{{!
+}}oprot.writeByte({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}});{{!
 }}{{/type:byte?}}{{!
 
 }}{{#type:i16?}}{{!
-}}{{#field:isNested?}}oprot.writeI16({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=type:isAdapterSet? depth=field:prevNestedDepth}});{{!
-}}{{/field:isNested?}}{{!
-}}{{^field:isNested?}}oprot.writeI16({{^struct:union?}}{{^field:hasAdapterOrWrapper?}}this.{{/field:hasAdapterOrWrapper?}}{{/struct:union?}}{{field:javaName}});{{/field:isNested?}}{{!
+}}oprot.writeI16({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}});{{!
 }}{{/type:i16?}}{{!
 
 }}{{#type:i32?}}{{!
-}}{{#field:isNested?}}oprot.writeI32({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=type:isAdapterSet? depth=field:prevNestedDepth}});{{!
-}}{{/field:isNested?}}{{!
-}}{{^field:isNested?}}oprot.writeI32({{^struct:union?}}{{^field:hasAdapterOrWrapper?}}this.{{/field:hasAdapterOrWrapper?}}{{/struct:union?}}{{field:javaName}});{{/field:isNested?}}{{!
+}}oprot.writeI32({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}});{{!
 }}{{/type:i32?}}{{!
 
 }}{{#type:i64?}}{{!
-}}{{#field:isNested?}}oprot.writeI64({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=type:isAdapterSet? depth=field:prevNestedDepth}});{{!
-}}{{/field:isNested?}}{{!
-}}{{^field:isNested?}}oprot.writeI64({{^struct:union?}}{{^field:hasAdapterOrWrapper?}}this.{{/field:hasAdapterOrWrapper?}}{{/struct:union?}}{{field:javaName}});{{/field:isNested?}}{{!
+}}oprot.writeI64({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}});{{!
 }}{{/type:i64?}}{{!
 
 }}{{#type:float?}}{{!
-}}{{#field:isNested?}}oprot.writeFloat({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=type:isAdapterSet? depth=field:prevNestedDepth}});{{!
-}}{{/field:isNested?}}{{!
-}}{{^field:isNested?}}oprot.writeFloat({{^struct:union?}}{{^field:hasAdapterOrWrapper?}}this.{{/field:hasAdapterOrWrapper?}}{{/struct:union?}}{{field:javaName}});{{/field:isNested?}}{{!
+}}oprot.writeFloat({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}});{{!
 }}{{/type:float?}}{{!
 
 }}{{#type:double?}}{{!
-}}{{#field:isNested?}}oprot.writeDouble({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=type:isAdapterSet? depth=field:prevNestedDepth}});{{!
-}}{{/field:isNested?}}{{!
-}}{{^field:isNested?}}oprot.writeDouble({{^struct:union?}}{{^field:hasAdapterOrWrapper?}}this.{{/field:hasAdapterOrWrapper?}}{{/struct:union?}}{{field:javaName}});{{/field:isNested?}}{{!
+}}oprot.writeDouble({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}});{{!
 }}{{/type:double?}}{{!
 
 }}{{/type:typedef?}}

@@ -289,16 +289,17 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      if (message != null) {
+      String _iter0 = this.message;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
-        oprot.writeString(this.message);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (listStrings != null) {
+      List<String> _iter0 = this.listStrings;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(LIST_STRINGS_FIELD_DESC);
-        List<String> _iter0 = listStrings;
         oprot.writeListBegin(new TList(TType.STRING, _iter0.size()));
             for (String _iter1 : _iter0) {
               oprot.writeString(_iter1);
@@ -308,28 +309,31 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
       }
       }
       {
+      test.fixtures.complex_struct.MyEnum _iter0 = this.errorEnum;
       oprot.writeFieldBegin(ERROR_ENUM_FIELD_DESC);
-      oprot.writeI32(this.errorEnum == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(this.errorEnum));
+      oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
       oprot.writeFieldEnd();
       }
       {
-      if (unionError != null) {
+      test.fixtures.complex_struct.MyUnion _iter0 = this.unionError;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(UNION_ERROR_FIELD_DESC);
-        this.unionError.write0(oprot);
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (structError != null) {
+      test.fixtures.complex_struct.MyStruct _iter0 = this.structError;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(STRUCT_ERROR_FIELD_DESC);
-        this.structError.write0(oprot);
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (lsMap != null) {
+      it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> _iter0 = this.lsMap;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(LS_MAP_FIELD_DESC);
-        it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> _iter0 = lsMap;
         oprot.writeMapBegin(new TMap(TType.I64, TType.STRING, _iter0.size()));
             for (Map.Entry<Long, String> _iter1 : _iter0.entrySet()) {
               {

@@ -149,8 +149,9 @@ public final class NonCopyableStruct implements com.facebook.thrift.payload.Thri
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
+      long _iter0 = this.num;
       oprot.writeFieldBegin(NUM_FIELD_DESC);
-      oprot.writeI64(this.num);
+      oprot.writeI64(_iter0);
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

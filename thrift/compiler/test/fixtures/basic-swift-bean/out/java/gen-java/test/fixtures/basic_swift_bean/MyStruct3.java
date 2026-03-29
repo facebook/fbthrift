@@ -691,41 +691,47 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
+      short _iter0 = this.myInt16;
       oprot.writeFieldBegin(MY_INT16_FIELD_DESC);
-      oprot.writeI16(this.myInt16);
+      oprot.writeI16(_iter0);
       oprot.writeFieldEnd();
       }
       {
+      int _iter0 = this.myInt32;
       oprot.writeFieldBegin(MY_INT32_FIELD_DESC);
-      oprot.writeI32(this.myInt32);
+      oprot.writeI32(_iter0);
       oprot.writeFieldEnd();
       }
       {
+      long _iter0 = this.myInt64;
       oprot.writeFieldBegin(MY_INT64_FIELD_DESC);
-      oprot.writeI64(this.myInt64);
+      oprot.writeI64(_iter0);
       oprot.writeFieldEnd();
       }
       {
-      if (myString != null) {
+      String _iter0 = this.myString;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MY_STRING_FIELD_DESC);
-        oprot.writeString(this.myString);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
+      boolean _iter0 = this.myBool;
       oprot.writeFieldBegin(MY_BOOL_FIELD_DESC);
-      oprot.writeBool(this.myBool);
+      oprot.writeBool(_iter0);
       oprot.writeFieldEnd();
       }
       {
+      double _iter0 = this.myDouble;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD_DESC);
-      oprot.writeDouble(this.myDouble);
+      oprot.writeDouble(_iter0);
       oprot.writeFieldEnd();
       }
       {
-      if (mySet != null) {
+      Set<String> _iter0 = this.mySet;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MY_SET_FIELD_DESC);
-        Set<String> _iter0 = mySet;
         oprot.writeSetBegin(new TSet(TType.STRING, _iter0.size()));
             for (String _iter1 : _iter0) {
               oprot.writeString(_iter1);
@@ -735,16 +741,17 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
       }
       }
       {
-      if (myDataItem != null) {
+      test.fixtures.basic_swift_bean.MyDataItem _iter0 = this.myDataItem;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MY_DATA_ITEM_FIELD_DESC);
-        this.myDataItem.write0(oprot);
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (myList != null) {
+      List<test.fixtures.basic_swift_bean.MyDataItem> _iter0 = this.myList;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MY_LIST_FIELD_DESC);
-        List<test.fixtures.basic_swift_bean.MyDataItem> _iter0 = myList;
         oprot.writeListBegin(new TList(TType.STRUCT, _iter0.size()));
             for (test.fixtures.basic_swift_bean.MyDataItem _iter1 : _iter0) {
               _iter1.write0(oprot);
@@ -754,9 +761,9 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
       }
       }
       {
-      if (myMapList != null) {
+      Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _iter0 = this.myMapList;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MY_MAP_LIST_FIELD_DESC);
-        Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _iter0 = myMapList;
         oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _iter0.size()));
             for (Map.Entry<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _iter1 : _iter0.entrySet()) {
               {
@@ -777,9 +784,9 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
       }
       }
       {
-      if (myEmptyList != null) {
+      List<test.fixtures.basic_swift_bean.MyDataItem> _iter0 = this.myEmptyList;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MY_EMPTY_LIST_FIELD_DESC);
-        List<test.fixtures.basic_swift_bean.MyDataItem> _iter0 = myEmptyList;
         oprot.writeListBegin(new TList(TType.STRUCT, _iter0.size()));
             for (test.fixtures.basic_swift_bean.MyDataItem _iter1 : _iter0) {
               _iter1.write0(oprot);
@@ -789,9 +796,9 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
       }
       }
       {
-      if (myEmptyMapList != null) {
+      Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _iter0 = this.myEmptyMapList;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MY_EMPTY_MAP_LIST_FIELD_DESC);
-        Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _iter0 = myEmptyMapList;
         oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _iter0.size()));
             for (Map.Entry<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _iter1 : _iter0.entrySet()) {
               {

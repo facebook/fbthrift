@@ -337,28 +337,31 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
+      long _iter0 = this.intField;
       oprot.writeFieldBegin(INT_FIELD_FIELD_DESC);
-      oprot.writeI64(this.intField);
+      oprot.writeI64(_iter0);
       oprot.writeFieldEnd();
       }
       {
-      if (stringField != null) {
+      String _iter0 = this.stringField;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(STRING_FIELD_FIELD_DESC);
-        oprot.writeString(this.stringField);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (detailField != null) {
+      String _iter0 = this.detailField;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(DETAIL_FIELD_FIELD_DESC);
-        oprot.writeString(this.detailField);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (detailMap != null) {
+      com.foo.FastIntLongMap _iter0 = this.detailMap;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(DETAIL_MAP_FIELD_DESC);
-        com.foo.FastIntLongMap _iter0 = detailMap;
         oprot.writeMapBegin(new TMap(TType.I32, TType.I64, _iter0.size()));
             for (Map.Entry<Integer, Long> _iter1 : _iter0.entrySet()) {
               {
@@ -375,16 +378,18 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       }
       }
       {
-      if (toto != null) {
+      String _iter0 = this.toto;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(TOTO_FIELD_DESC);
-        oprot.writeString(this.toto);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (password != null) {
+      String _iter0 = this.password;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(PASSWORD_FIELD_DESC);
-        oprot.writeString(this.password);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }

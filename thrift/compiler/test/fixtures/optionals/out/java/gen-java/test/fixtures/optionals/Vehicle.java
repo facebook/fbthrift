@@ -289,37 +289,42 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      if (color != null) {
+      test.fixtures.optionals.Color _iter0 = this.color;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(COLOR_FIELD_DESC);
-        this.color.write0(oprot);
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (licensePlate != null) {
+      String _iter0 = this.licensePlate;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(LICENSE_PLATE_FIELD_DESC);
-        oprot.writeString(this.licensePlate);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (description != null) {
+      String _iter0 = this.description;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(DESCRIPTION_FIELD_DESC);
-        oprot.writeString(this.description);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (name != null) {
+      String _iter0 = this.name;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(NAME_FIELD_DESC);
-        oprot.writeString(this.name);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (hasAC != null) {
+      Boolean _iter0 = this.hasAC;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(HAS_AC_FIELD_DESC);
-        oprot.writeBool(this.hasAC);
+        oprot.writeBool(_iter0);
         oprot.writeFieldEnd();
       }
       }

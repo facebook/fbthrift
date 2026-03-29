@@ -184,16 +184,18 @@ public final class StructWithInternBox implements com.facebook.thrift.payload.Th
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      if (field1 != null) {
+      test.fixtures.refs.Empty _iter0 = this.field1;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(FIELD1_FIELD_DESC);
-        this.field1.write0(oprot);
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (field2 != null) {
+      test.fixtures.refs.MyField _iter0 = this.field2;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(FIELD2_FIELD_DESC);
-        this.field2.write0(oprot);
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }

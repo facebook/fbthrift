@@ -417,19 +417,21 @@ public final class TestStruct implements com.facebook.thrift.payload.ThriftSeria
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
+      int _iter0 = this.unqualifiedIntField;
       oprot.writeFieldBegin(UNQUALIFIED_INT_FIELD_FIELD_DESC);
-      oprot.writeI32(this.unqualifiedIntField);
+      oprot.writeI32(_iter0);
       oprot.writeFieldEnd();
       }
       {
+      boolean _iter0 = this.unqualifiedBoolField;
       oprot.writeFieldBegin(UNQUALIFIED_BOOL_FIELD_FIELD_DESC);
-      oprot.writeBool(this.unqualifiedBoolField);
+      oprot.writeBool(_iter0);
       oprot.writeFieldEnd();
       }
       {
-      if (unqualifiedListField != null) {
+      List<Integer> _iter0 = this.unqualifiedListField;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(UNQUALIFIED_LIST_FIELD_FIELD_DESC);
-        List<Integer> _iter0 = unqualifiedListField;
         oprot.writeListBegin(new TList(TType.I32, _iter0.size()));
             for (int _iter1 : _iter0) {
               oprot.writeI32(_iter1);
@@ -439,30 +441,33 @@ public final class TestStruct implements com.facebook.thrift.payload.ThriftSeria
       }
       }
       {
-      if (unqualifiedStructField != null) {
+      com.facebook.thrift.compiler.test.fixtures.default_values_rectification_after.EmptyStruct _iter0 = this.unqualifiedStructField;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(UNQUALIFIED_STRUCT_FIELD_FIELD_DESC);
-        this.unqualifiedStructField.write0(oprot);
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (optionalIntField != null) {
+      Integer _iter0 = this.optionalIntField;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(OPTIONAL_INT_FIELD_FIELD_DESC);
-        oprot.writeI32(this.optionalIntField);
+        oprot.writeI32(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (optionalBoolField != null) {
+      Boolean _iter0 = this.optionalBoolField;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(OPTIONAL_BOOL_FIELD_FIELD_DESC);
-        oprot.writeBool(this.optionalBoolField);
+        oprot.writeBool(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (optionalListField != null) {
+      List<Integer> _iter0 = this.optionalListField;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(OPTIONAL_LIST_FIELD_FIELD_DESC);
-        List<Integer> _iter0 = optionalListField;
         oprot.writeListBegin(new TList(TType.I32, _iter0.size()));
             for (int _iter1 : _iter0) {
               oprot.writeI32(_iter1);
@@ -472,9 +477,10 @@ public final class TestStruct implements com.facebook.thrift.payload.ThriftSeria
       }
       }
       {
-      if (optionalStructField != null) {
+      com.facebook.thrift.compiler.test.fixtures.default_values_rectification_after.EmptyStruct _iter0 = this.optionalStructField;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(OPTIONAL_STRUCT_FIELD_FIELD_DESC);
-        this.optionalStructField.write0(oprot);
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }

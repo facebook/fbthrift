@@ -240,15 +240,17 @@ public final class UnfortunateUnion implements com.facebook.thrift.payload.Thrif
       switch (this.id) {
       case _AN_SNAKE_STRING: {
         oprot.writeFieldBegin(AN_SNAKE_STRING_FIELD_DESC);
-        String anSnakeString = (String)this.value;
-        oprot.writeString(anSnakeString);
+        String _iter0 = (String)this.value;
+    
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
         break;
       }
       case _ACAMELI32: {
         oprot.writeFieldBegin(A_CAMEL_I32_FIELD_DESC);
-        int aCamelI32 = (int)this.value;
-        oprot.writeI32(aCamelI32);
+        int _iter0 = (int)this.value;
+    
+        oprot.writeI32(_iter0);
         oprot.writeFieldEnd();
         break;
       }

@@ -152,8 +152,9 @@ public final class DirectlyAdapted implements com.facebook.thrift.payload.Thrift
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
+      int _iter0 = this.field;
       oprot.writeFieldBegin(FIELD_FIELD_DESC);
-      oprot.writeI32(this.field);
+      oprot.writeI32(_iter0);
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

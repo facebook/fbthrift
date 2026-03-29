@@ -316,9 +316,9 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      if (lsMap != null) {
+      com.foo.FastLongStringMap _iter0 = this.lsMap;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(LS_MAP_FIELD_DESC);
-        com.foo.FastLongStringMap _iter0 = lsMap;
         oprot.writeMapBegin(new TMap(TType.I64, TType.STRING, _iter0.size()));
             for (Map.Entry<Long, String> _iter1 : _iter0.entrySet()) {
               {
@@ -335,9 +335,9 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
       }
       }
       {
-      if (ioMap != null) {
+      com.foo.FastIntObjectMap<com.foo.FastIntLongMap> _iter0 = this.ioMap;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(IO_MAP_FIELD_DESC);
-        com.foo.FastIntObjectMap<com.foo.FastIntLongMap> _iter0 = ioMap;
         oprot.writeMapBegin(new TMap(TType.I32, TType.MAP, _iter0.size()));
             for (Map.Entry<Integer, com.foo.FastIntLongMap> _iter1 : _iter0.entrySet()) {
               {
@@ -365,9 +365,9 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
       }
       }
       {
-      if (binaryMap != null) {
+      Map<String, byte[]> _iter0 = this.binaryMap;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(BINARY_MAP_FIELD_DESC);
-        Map<String, byte[]> _iter0 = binaryMap;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.STRING, _iter0.size()));
             for (Map.Entry<String, byte[]> _iter1 : _iter0.entrySet()) {
               {
@@ -384,9 +384,9 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
       }
       }
       {
-      if (regularBinary != null) {
+      Map<String, byte[]> _iter0 = this.regularBinary;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(REGULAR_BINARY_FIELD_DESC);
-        Map<String, byte[]> _iter0 = regularBinary;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.STRING, _iter0.size()));
             for (Map.Entry<String, byte[]> _iter1 : _iter0.entrySet()) {
               {

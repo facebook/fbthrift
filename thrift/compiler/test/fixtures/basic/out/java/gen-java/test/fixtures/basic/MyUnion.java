@@ -345,28 +345,32 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       switch (this.id) {
       case _MYENUM: {
         oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
-        test.fixtures.basic.MyEnum myEnum = (test.fixtures.basic.MyEnum)this.value;
-        oprot.writeI32(myEnum == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(myEnum));
+        test.fixtures.basic.MyEnum _iter0 = (test.fixtures.basic.MyEnum)this.value;
+    
+        oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
         oprot.writeFieldEnd();
         break;
       }
       case _MYSTRUCT: {
         oprot.writeFieldBegin(MY_STRUCT_FIELD_DESC);
-        test.fixtures.basic.MyStruct myStruct = (test.fixtures.basic.MyStruct)this.value;
-        myStruct.write0(oprot);
+        test.fixtures.basic.MyStruct _iter0 = (test.fixtures.basic.MyStruct)this.value;
+    
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
         break;
       }
       case _MYDATAITEM: {
         oprot.writeFieldBegin(MY_DATA_ITEM_FIELD_DESC);
-        test.fixtures.basic.MyDataItem myDataItem = (test.fixtures.basic.MyDataItem)this.value;
-        myDataItem.write0(oprot);
+        test.fixtures.basic.MyDataItem _iter0 = (test.fixtures.basic.MyDataItem)this.value;
+    
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
         break;
       }
       case _FLOATSET: {
         oprot.writeFieldBegin(FLOAT_SET_FIELD_DESC);
         Set<Float> _iter0 = (Set<Float>)this.value;
+    
         oprot.writeSetBegin(new TSet(TType.FLOAT, _iter0.size()));
             for (float _iter1 : _iter0) {
               oprot.writeFloat(_iter1);

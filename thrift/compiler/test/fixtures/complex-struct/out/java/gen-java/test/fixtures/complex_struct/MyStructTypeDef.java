@@ -509,33 +509,37 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
+      long _iter0 = this.myLongField;
       oprot.writeFieldBegin(MY_LONG_FIELD_FIELD_DESC);
-      oprot.writeI64(this.myLongField);
+      oprot.writeI64(_iter0);
       oprot.writeFieldEnd();
       }
       {
+      long _iter0 = this.myLongTypeDef;
       oprot.writeFieldBegin(MY_LONG_TYPE_DEF_FIELD_DESC);
-      oprot.writeI64(this.myLongTypeDef);
+      oprot.writeI64(_iter0);
       oprot.writeFieldEnd();
       }
       {
-      if (myStringField != null) {
+      String _iter0 = this.myStringField;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MY_STRING_FIELD_FIELD_DESC);
-        oprot.writeString(this.myStringField);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (myStringTypedef != null) {
+      String _iter0 = this.myStringTypedef;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MY_STRING_TYPEDEF_FIELD_DESC);
-        oprot.writeString(this.myStringTypedef);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (myMapField != null) {
+      Map<Short, String> _iter0 = this.myMapField;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MY_MAP_FIELD_FIELD_DESC);
-        Map<Short, String> _iter0 = myMapField;
         oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, _iter0.size()));
             for (Map.Entry<Short, String> _iter1 : _iter0.entrySet()) {
               {
@@ -552,9 +556,9 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
       }
       }
       {
-      if (myMapTypedef != null) {
+      Map<Short, String> _iter0 = this.myMapTypedef;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MY_MAP_TYPEDEF_FIELD_DESC);
-        Map<Short, String> _iter0 = myMapTypedef;
         oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, _iter0.size()));
             for (Map.Entry<Short, String> _iter1 : _iter0.entrySet()) {
               {
@@ -571,9 +575,9 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
       }
       }
       {
-      if (myListField != null) {
+      List<Double> _iter0 = this.myListField;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MY_LIST_FIELD_FIELD_DESC);
-        List<Double> _iter0 = myListField;
         oprot.writeListBegin(new TList(TType.DOUBLE, _iter0.size()));
             for (double _iter1 : _iter0) {
               oprot.writeDouble(_iter1);
@@ -583,9 +587,9 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
       }
       }
       {
-      if (myListTypedef != null) {
+      List<Double> _iter0 = this.myListTypedef;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MY_LIST_TYPEDEF_FIELD_DESC);
-        List<Double> _iter0 = myListTypedef;
         oprot.writeListBegin(new TList(TType.DOUBLE, _iter0.size()));
             for (double _iter1 : _iter0) {
               oprot.writeDouble(_iter1);
@@ -595,9 +599,9 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
       }
       }
       {
-      if (myMapListOfTypeDef != null) {
+      Map<Short, List<List<Double>>> _iter0 = this.myMapListOfTypeDef;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MY_MAP_LIST_OF_TYPE_DEF_FIELD_DESC);
-        Map<Short, List<List<Double>>> _iter0 = myMapListOfTypeDef;
         oprot.writeMapBegin(new TMap(TType.I16, TType.LIST, _iter0.size()));
             for (Map.Entry<Short, List<List<Double>>> _iter1 : _iter0.entrySet()) {
               {

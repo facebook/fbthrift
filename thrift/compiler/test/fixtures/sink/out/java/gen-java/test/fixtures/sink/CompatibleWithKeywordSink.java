@@ -149,9 +149,10 @@ public final class CompatibleWithKeywordSink implements com.facebook.thrift.payl
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      if (sink != null) {
+      String _iter0 = this.sink;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(SINK_FIELD_DESC);
-        oprot.writeString(this.sink);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }

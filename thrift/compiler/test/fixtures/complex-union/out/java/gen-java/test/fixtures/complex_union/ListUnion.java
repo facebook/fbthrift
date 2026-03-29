@@ -239,6 +239,7 @@ public final class ListUnion implements com.facebook.thrift.payload.ThriftSerial
       case _INTLISTVALUE: {
         oprot.writeFieldBegin(INT_LIST_VALUE_FIELD_DESC);
         List<Long> _iter0 = (List<Long>)this.value;
+    
         oprot.writeListBegin(new TList(TType.I64, _iter0.size()));
             for (long _iter1 : _iter0) {
               oprot.writeI64(_iter1);
@@ -250,6 +251,7 @@ public final class ListUnion implements com.facebook.thrift.payload.ThriftSerial
       case _STRINGLISTVALUE: {
         oprot.writeFieldBegin(STRING_LIST_VALUE_FIELD_DESC);
         List<String> _iter0 = (List<String>)this.value;
+    
         oprot.writeListBegin(new TList(TType.STRING, _iter0.size()));
             for (String _iter1 : _iter0) {
               oprot.writeString(_iter1);

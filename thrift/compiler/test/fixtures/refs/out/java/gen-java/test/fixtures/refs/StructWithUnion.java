@@ -219,21 +219,24 @@ public final class StructWithUnion implements com.facebook.thrift.payload.Thrift
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      if (u != null) {
+      test.fixtures.refs.MyUnion _iter0 = this.u;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(U_FIELD_DESC);
-        this.u.write0(oprot);
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
+      double _iter0 = this.aDouble;
       oprot.writeFieldBegin(A_DOUBLE_FIELD_DESC);
-      oprot.writeDouble(this.aDouble);
+      oprot.writeDouble(_iter0);
       oprot.writeFieldEnd();
       }
       {
-      if (f != null) {
+      test.fixtures.refs.MyField _iter0 = this.f;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(F_FIELD_DESC);
-        this.f.write0(oprot);
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }

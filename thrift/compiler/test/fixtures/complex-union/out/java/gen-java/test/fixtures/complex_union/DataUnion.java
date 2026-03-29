@@ -246,15 +246,17 @@ public final class DataUnion implements com.facebook.thrift.payload.ThriftSerial
       switch (this.id) {
       case _BINARYDATA: {
         oprot.writeFieldBegin(BINARY_DATA_FIELD_DESC);
-        byte[] binaryData = (byte[])this.value;
-        oprot.writeBinary(java.nio.ByteBuffer.wrap(binaryData));
+        byte[] _iter0 = (byte[])this.value;
+    
+        oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
         oprot.writeFieldEnd();
         break;
       }
       case _STRINGDATA: {
         oprot.writeFieldBegin(STRING_DATA_FIELD_DESC);
-        String stringData = (String)this.value;
-        oprot.writeString(stringData);
+        String _iter0 = (String)this.value;
+    
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
         break;
       }

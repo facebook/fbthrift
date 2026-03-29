@@ -289,37 +289,42 @@ public final class StructWithString implements com.facebook.thrift.payload.Thrif
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      if (defUniqueStringRef != null) {
+      String _iter0 = this.defUniqueStringRef;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(DEF_UNIQUE_STRING_REF_FIELD_DESC);
-        oprot.writeString(this.defUniqueStringRef);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (defSharedStringRef != null) {
+      String _iter0 = this.defSharedStringRef;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(DEF_SHARED_STRING_REF_FIELD_DESC);
-        oprot.writeString(this.defSharedStringRef);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (defSharedStringConstRef != null) {
+      String _iter0 = this.defSharedStringConstRef;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(DEF_SHARED_STRING_CONST_REF_FIELD_DESC);
-        oprot.writeString(this.defSharedStringConstRef);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (uniqueStringRef != null) {
+      String _iter0 = this.uniqueStringRef;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(UNIQUE_STRING_REF_FIELD_DESC);
-        oprot.writeString(this.uniqueStringRef);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (sharedStringRef != null) {
+      String _iter0 = this.sharedStringRef;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(SHARED_STRING_REF_FIELD_DESC);
-        oprot.writeString(this.sharedStringRef);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }

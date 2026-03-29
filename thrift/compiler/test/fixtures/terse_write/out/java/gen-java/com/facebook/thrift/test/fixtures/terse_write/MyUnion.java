@@ -783,77 +783,88 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       switch (this.id) {
       case _BOOL_FIELD: {
         oprot.writeFieldBegin(BOOL_FIELD_FIELD_DESC);
-        boolean boolField = (boolean)this.value;
-        oprot.writeBool(boolField);
+        boolean _iter0 = (boolean)this.value;
+    
+        oprot.writeBool(_iter0);
         oprot.writeFieldEnd();
         break;
       }
       case _BYTE_FIELD: {
         oprot.writeFieldBegin(BYTE_FIELD_FIELD_DESC);
-        byte byteField = (byte)this.value;
-        oprot.writeByte(byteField);
+        byte _iter0 = (byte)this.value;
+    
+        oprot.writeByte(_iter0);
         oprot.writeFieldEnd();
         break;
       }
       case _SHORT_FIELD: {
         oprot.writeFieldBegin(SHORT_FIELD_FIELD_DESC);
-        short shortField = (short)this.value;
-        oprot.writeI16(shortField);
+        short _iter0 = (short)this.value;
+    
+        oprot.writeI16(_iter0);
         oprot.writeFieldEnd();
         break;
       }
       case _INT_FIELD: {
         oprot.writeFieldBegin(INT_FIELD_FIELD_DESC);
-        int intField = (int)this.value;
-        oprot.writeI32(intField);
+        int _iter0 = (int)this.value;
+    
+        oprot.writeI32(_iter0);
         oprot.writeFieldEnd();
         break;
       }
       case _LONG_FIELD: {
         oprot.writeFieldBegin(LONG_FIELD_FIELD_DESC);
-        long longField = (long)this.value;
-        oprot.writeI64(longField);
+        long _iter0 = (long)this.value;
+    
+        oprot.writeI64(_iter0);
         oprot.writeFieldEnd();
         break;
       }
       case _FLOAT_FIELD: {
         oprot.writeFieldBegin(FLOAT_FIELD_FIELD_DESC);
-        float floatField = (float)this.value;
-        oprot.writeFloat(floatField);
+        float _iter0 = (float)this.value;
+    
+        oprot.writeFloat(_iter0);
         oprot.writeFieldEnd();
         break;
       }
       case _DOUBLE_FIELD: {
         oprot.writeFieldBegin(DOUBLE_FIELD_FIELD_DESC);
-        double doubleField = (double)this.value;
-        oprot.writeDouble(doubleField);
+        double _iter0 = (double)this.value;
+    
+        oprot.writeDouble(_iter0);
         oprot.writeFieldEnd();
         break;
       }
       case _STRING_FIELD: {
         oprot.writeFieldBegin(STRING_FIELD_FIELD_DESC);
-        String stringField = (String)this.value;
-        oprot.writeString(stringField);
+        String _iter0 = (String)this.value;
+    
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
         break;
       }
       case _BINARY_FIELD: {
         oprot.writeFieldBegin(BINARY_FIELD_FIELD_DESC);
-        byte[] binaryField = (byte[])this.value;
-        oprot.writeBinary(java.nio.ByteBuffer.wrap(binaryField));
+        byte[] _iter0 = (byte[])this.value;
+    
+        oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
         oprot.writeFieldEnd();
         break;
       }
       case _ENUM_FIELD: {
         oprot.writeFieldBegin(ENUM_FIELD_FIELD_DESC);
-        com.facebook.thrift.test.fixtures.terse_write.MyEnum enumField = (com.facebook.thrift.test.fixtures.terse_write.MyEnum)this.value;
-        oprot.writeI32(enumField == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(enumField));
+        com.facebook.thrift.test.fixtures.terse_write.MyEnum _iter0 = (com.facebook.thrift.test.fixtures.terse_write.MyEnum)this.value;
+    
+        oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
         oprot.writeFieldEnd();
         break;
       }
       case _LIST_FIELD: {
         oprot.writeFieldBegin(LIST_FIELD_FIELD_DESC);
         List<Short> _iter0 = (List<Short>)this.value;
+    
         oprot.writeListBegin(new TList(TType.I16, _iter0.size()));
             for (short _iter1 : _iter0) {
               oprot.writeI16(_iter1);
@@ -865,6 +876,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       case _SET_FIELD: {
         oprot.writeFieldBegin(SET_FIELD_FIELD_DESC);
         Set<Short> _iter0 = (Set<Short>)this.value;
+    
         oprot.writeSetBegin(new TSet(TType.I16, _iter0.size()));
             for (short _iter1 : _iter0) {
               oprot.writeI16(_iter1);
@@ -876,6 +888,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       case _MAP_FIELD: {
         oprot.writeFieldBegin(MAP_FIELD_FIELD_DESC);
         Map<Short, Short> _iter0 = (Map<Short, Short>)this.value;
+    
         oprot.writeMapBegin(new TMap(TType.I16, TType.I16, _iter0.size()));
             for (Map.Entry<Short, Short> _iter1 : _iter0.entrySet()) {
               {
@@ -893,8 +906,9 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       }
       case _STRUCT_FIELD: {
         oprot.writeFieldBegin(STRUCT_FIELD_FIELD_DESC);
-        com.facebook.thrift.test.fixtures.terse_write.MyStruct structField = (com.facebook.thrift.test.fixtures.terse_write.MyStruct)this.value;
-        structField.write0(oprot);
+        com.facebook.thrift.test.fixtures.terse_write.MyStruct _iter0 = (com.facebook.thrift.test.fixtures.terse_write.MyStruct)this.value;
+    
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
         break;
       }

@@ -253,9 +253,9 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      if (i32List != null) {
+      List<Integer> _iter0 = this.i32List;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(I32_LIST_FIELD_DESC);
-        List<Integer> _iter0 = i32List;
         oprot.writeListBegin(new TList(TType.I32, _iter0.size()));
             for (int _iter1 : _iter0) {
               oprot.writeI32(_iter1);
@@ -265,9 +265,9 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       }
       }
       {
-      if (stringSet != null) {
+      Set<String> _iter0 = this.stringSet;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(STRING_SET_FIELD_DESC);
-        Set<String> _iter0 = stringSet;
         oprot.writeSetBegin(new TSet(TType.STRING, _iter0.size()));
             for (String _iter1 : _iter0) {
               oprot.writeString(_iter1);
@@ -277,9 +277,9 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       }
       }
       {
-      if (stringToI64Map != null) {
+      Map<String, Long> _iter0 = this.stringToI64Map;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(STRING_TO_I64_MAP_FIELD_DESC);
-        Map<String, Long> _iter0 = stringToI64Map;
         oprot.writeMapBegin(new TMap(TType.STRING, TType.I64, _iter0.size()));
             for (Map.Entry<String, Long> _iter1 : _iter0.entrySet()) {
               {

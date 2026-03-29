@@ -411,21 +411,24 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
       switch (this.id) {
       case _INTVALUE: {
         oprot.writeFieldBegin(INT_VALUE_FIELD_DESC);
-        long intValue = (long)this.value;
-        oprot.writeI64(intValue);
+        long _iter0 = (long)this.value;
+    
+        oprot.writeI64(_iter0);
         oprot.writeFieldEnd();
         break;
       }
       case _STRINGVALUE: {
         oprot.writeFieldBegin(STRING_VALUE_FIELD_DESC);
-        String stringValue = (String)this.value;
-        oprot.writeString(stringValue);
+        String _iter0 = (String)this.value;
+    
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
         break;
       }
       case _INTLISTVALUE: {
         oprot.writeFieldBegin(INT_LIST_VALUE_FIELD_DESC);
         List<Long> _iter0 = (List<Long>)this.value;
+    
         oprot.writeListBegin(new TList(TType.I64, _iter0.size()));
             for (long _iter1 : _iter0) {
               oprot.writeI64(_iter1);
@@ -437,6 +440,7 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
       case _STRINGLISTVALUE: {
         oprot.writeFieldBegin(STRING_LIST_VALUE_FIELD_DESC);
         List<String> _iter0 = (List<String>)this.value;
+    
         oprot.writeListBegin(new TList(TType.STRING, _iter0.size()));
             for (String _iter1 : _iter0) {
               oprot.writeString(_iter1);
@@ -448,6 +452,7 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
       case _TYPEDEFVALUE: {
         oprot.writeFieldBegin(TYPEDEF_VALUE_FIELD_DESC);
         Map<Short, String> _iter0 = (Map<Short, String>)this.value;
+    
         oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, _iter0.size()));
             for (Map.Entry<Short, String> _iter1 : _iter0.entrySet()) {
               {
@@ -465,8 +470,9 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
       }
       case _STRINGREF: {
         oprot.writeFieldBegin(STRING_REF_FIELD_DESC);
-        String stringRef = (String)this.value;
-        oprot.writeString(stringRef);
+        String _iter0 = (String)this.value;
+    
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
         break;
       }

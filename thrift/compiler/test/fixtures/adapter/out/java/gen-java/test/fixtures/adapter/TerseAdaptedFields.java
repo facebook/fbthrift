@@ -235,27 +235,29 @@ public final class TerseAdaptedFields implements com.facebook.thrift.payload.Thr
       int pos = 0;
       com.facebook.thrift.protocol.ByteBufTProtocol p = (com.facebook.thrift.protocol.ByteBufTProtocol) oprot;
       {
-      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(intField)) {
+      int _iter0 = this.intField;
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_iter0)) {
         oprot.writeFieldBegin(INT_FIELD_FIELD_DESC);
-        oprot.writeI32(this.intField);
+        oprot.writeI32(_iter0);
         oprot.writeFieldEnd();
       };
       }
       {
-      java.util.Objects.requireNonNull(stringField, "stringField must not be null");
+      String _iter0 = this.stringField;
+      java.util.Objects.requireNonNull(_iter0, "stringField must not be null");
       
-      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(stringField)) {
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_iter0)) {
         oprot.writeFieldBegin(STRING_FIELD_FIELD_DESC);
-        oprot.writeString(this.stringField);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      java.util.Objects.requireNonNull(setField, "setField must not be null");
+      Set<Integer> _iter0 = this.setField;
+      java.util.Objects.requireNonNull(_iter0, "setField must not be null");
       
-      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(setField)) {
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_iter0)) {
         oprot.writeFieldBegin(SET_FIELD_FIELD_DESC);
-        Set<Integer> _iter0 = setField;
         oprot.writeSetBegin(new TSet(TType.I32, _iter0.size()));
             for (int _iter1 : _iter0) {
               oprot.writeI32(_iter1);

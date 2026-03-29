@@ -187,15 +187,17 @@ public final class MyAnnotation implements com.facebook.thrift.payload.ThriftSer
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      if (signature != null) {
+      String _iter0 = this.signature;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(SIGNATURE_FIELD_DESC);
-        oprot.writeString(this.signature);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
+      test.fixtures.adapter.Color _iter0 = this.color;
       oprot.writeFieldBegin(COLOR_FIELD_DESC);
-      oprot.writeI32(this.color == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(this.color));
+      oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

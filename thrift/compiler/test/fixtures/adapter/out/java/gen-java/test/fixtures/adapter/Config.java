@@ -152,9 +152,10 @@ public final class Config implements com.facebook.thrift.payload.ThriftSerializa
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      if (path != null) {
+      String _iter0 = this.path;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(PATH_FIELD_DESC);
-        oprot.writeString(this.path);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }

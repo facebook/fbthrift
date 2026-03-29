@@ -429,57 +429,66 @@ public final class MyField implements com.facebook.thrift.payload.ThriftSerializ
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      if (optValue != null) {
+      Long _iter0 = this.optValue;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(OPT_VALUE_FIELD_DESC);
-        oprot.writeI64(this.optValue);
+        oprot.writeI64(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
+      long _iter0 = this.value;
       oprot.writeFieldBegin(VALUE_FIELD_DESC);
-      oprot.writeI64(this.value);
+      oprot.writeI64(_iter0);
       oprot.writeFieldEnd();
       }
       {
+      long _iter0 = this.reqValue;
       oprot.writeFieldBegin(REQ_VALUE_FIELD_DESC);
-      oprot.writeI64(this.reqValue);
+      oprot.writeI64(_iter0);
       oprot.writeFieldEnd();
       }
       {
-      if (optEnumValue != null) {
+      test.fixtures.refs.MyEnum _iter0 = this.optEnumValue;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(OPT_ENUM_VALUE_FIELD_DESC);
-        oprot.writeI32(this.optEnumValue == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(this.optEnumValue));
+        oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
         oprot.writeFieldEnd();
       }
       }
       {
+      test.fixtures.refs.MyEnum _iter0 = this.enumValue;
       oprot.writeFieldBegin(ENUM_VALUE_FIELD_DESC);
-      oprot.writeI32(this.enumValue == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(this.enumValue));
+      oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
       oprot.writeFieldEnd();
       }
       {
+      test.fixtures.refs.MyEnum _iter0 = this.reqEnumValue;
       oprot.writeFieldBegin(REQ_ENUM_VALUE_FIELD_DESC);
-      oprot.writeI32(this.reqEnumValue == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(this.reqEnumValue));
+      oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
       oprot.writeFieldEnd();
       }
       {
-      if (optStrValue != null) {
+      String _iter0 = this.optStrValue;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(OPT_STR_VALUE_FIELD_DESC);
-        oprot.writeString(this.optStrValue);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (strValue != null) {
+      String _iter0 = this.strValue;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(STR_VALUE_FIELD_DESC);
-        oprot.writeString(this.strValue);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (reqStrValue != null) {
+      String _iter0 = this.reqStrValue;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(REQ_STR_VALUE_FIELD_DESC);
-        oprot.writeString(this.reqStrValue);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }

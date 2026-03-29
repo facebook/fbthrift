@@ -152,9 +152,10 @@ public final class AdaptTemplatedNestedTestStruct implements com.facebook.thrift
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      if (adaptedStruct != null) {
+      test.fixtures.adapter.AdaptTemplatedTestStruct _iter0 = this.adaptedStruct;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(ADAPTED_STRUCT_FIELD_DESC);
-        this.adaptedStruct.write0(oprot);
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }

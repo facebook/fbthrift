@@ -184,15 +184,17 @@ public final class NoEffect implements com.facebook.thrift.payload.ThriftSeriali
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      if (anSnakeString != null) {
+      String _iter0 = this.anSnakeString;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(AN_SNAKE_STRING_FIELD_DESC);
-        oprot.writeString(this.anSnakeString);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
+      int _iter0 = this.aCamelI32;
       oprot.writeFieldBegin(A_CAMEL_I32_FIELD_DESC);
-      oprot.writeI32(this.aCamelI32);
+      oprot.writeI32(_iter0);
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

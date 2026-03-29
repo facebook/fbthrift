@@ -342,14 +342,16 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
       switch (this.id) {
       case _MYENUM: {
         oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
-        test.fixtures.complex_struct.MyEnum myEnum = (test.fixtures.complex_struct.MyEnum)this.value;
-        oprot.writeI32(myEnum == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(myEnum));
+        test.fixtures.complex_struct.MyEnum _iter0 = (test.fixtures.complex_struct.MyEnum)this.value;
+    
+        oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
         oprot.writeFieldEnd();
         break;
       }
       case _SETFLOAT: {
         oprot.writeFieldBegin(SET_FLOAT_FIELD_DESC);
         List<List<Float>> _iter0 = (List<List<Float>>)this.value;
+    
         oprot.writeListBegin(new TList(TType.LIST, _iter0.size()));
             for (List<Float> _iter1 : _iter0) {
               oprot.writeListBegin(new TList(TType.FLOAT, _iter1.size()));
@@ -364,15 +366,17 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
       }
       case _MYDATAITEM: {
         oprot.writeFieldBegin(MY_DATA_ITEM_FIELD_DESC);
-        test.fixtures.complex_struct.MyDataItem myDataItem = (test.fixtures.complex_struct.MyDataItem)this.value;
-        myDataItem.write0(oprot);
+        test.fixtures.complex_struct.MyDataItem _iter0 = (test.fixtures.complex_struct.MyDataItem)this.value;
+    
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
         break;
       }
       case _COMPLEXNESTEDSTRUCT: {
         oprot.writeFieldBegin(COMPLEX_NESTED_STRUCT_FIELD_DESC);
-        test.fixtures.complex_struct.ComplexNestedStruct complexNestedStruct = (test.fixtures.complex_struct.ComplexNestedStruct)this.value;
-        complexNestedStruct.write0(oprot);
+        test.fixtures.complex_struct.ComplexNestedStruct _iter0 = (test.fixtures.complex_struct.ComplexNestedStruct)this.value;
+    
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
         break;
       }

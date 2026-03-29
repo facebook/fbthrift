@@ -8588,1759 +8588,2016 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      if (msg1 != null) {
+      String _iter0 = this.msg1;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG1_FIELD_DESC);
-        oprot.writeString(this.msg1);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg2 != null) {
+      String _iter0 = this.msg2;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG2_FIELD_DESC);
-        oprot.writeString(this.msg2);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg3 != null) {
+      String _iter0 = this.msg3;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG3_FIELD_DESC);
-        oprot.writeString(this.msg3);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg4 != null) {
+      String _iter0 = this.msg4;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG4_FIELD_DESC);
-        oprot.writeString(this.msg4);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg5 != null) {
+      String _iter0 = this.msg5;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG5_FIELD_DESC);
-        oprot.writeString(this.msg5);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg6 != null) {
+      String _iter0 = this.msg6;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG6_FIELD_DESC);
-        oprot.writeString(this.msg6);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg7 != null) {
+      String _iter0 = this.msg7;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG7_FIELD_DESC);
-        oprot.writeString(this.msg7);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg8 != null) {
+      String _iter0 = this.msg8;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG8_FIELD_DESC);
-        oprot.writeString(this.msg8);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg9 != null) {
+      String _iter0 = this.msg9;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG9_FIELD_DESC);
-        oprot.writeString(this.msg9);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
+      int _iter0 = this.myIntField10;
       oprot.writeFieldBegin(MY_INT_FIELD10_FIELD_DESC);
-      oprot.writeI32(this.myIntField10);
+      oprot.writeI32(_iter0);
       oprot.writeFieldEnd();
       }
       {
+      int _iter0 = this.myIntField11;
       oprot.writeFieldBegin(MY_INT_FIELD11_FIELD_DESC);
-      oprot.writeI32(this.myIntField11);
+      oprot.writeI32(_iter0);
       oprot.writeFieldEnd();
       }
       {
+      int _iter0 = this.myIntField12;
       oprot.writeFieldBegin(MY_INT_FIELD12_FIELD_DESC);
-      oprot.writeI32(this.myIntField12);
+      oprot.writeI32(_iter0);
       oprot.writeFieldEnd();
       }
       {
+      int _iter0 = this.myIntField13;
       oprot.writeFieldBegin(MY_INT_FIELD13_FIELD_DESC);
-      oprot.writeI32(this.myIntField13);
+      oprot.writeI32(_iter0);
       oprot.writeFieldEnd();
       }
       {
+      int _iter0 = this.myIntField14;
       oprot.writeFieldBegin(MY_INT_FIELD14_FIELD_DESC);
-      oprot.writeI32(this.myIntField14);
+      oprot.writeI32(_iter0);
       oprot.writeFieldEnd();
       }
       {
+      int _iter0 = this.myIntField15;
       oprot.writeFieldBegin(MY_INT_FIELD15_FIELD_DESC);
-      oprot.writeI32(this.myIntField15);
+      oprot.writeI32(_iter0);
       oprot.writeFieldEnd();
       }
       {
+      int _iter0 = this.myIntField16;
       oprot.writeFieldBegin(MY_INT_FIELD16_FIELD_DESC);
-      oprot.writeI32(this.myIntField16);
+      oprot.writeI32(_iter0);
       oprot.writeFieldEnd();
       }
       {
+      int _iter0 = this.myIntField17;
       oprot.writeFieldBegin(MY_INT_FIELD17_FIELD_DESC);
-      oprot.writeI32(this.myIntField17);
+      oprot.writeI32(_iter0);
       oprot.writeFieldEnd();
       }
       {
+      int _iter0 = this.myIntField18;
       oprot.writeFieldBegin(MY_INT_FIELD18_FIELD_DESC);
-      oprot.writeI32(this.myIntField18);
+      oprot.writeI32(_iter0);
       oprot.writeFieldEnd();
       }
       {
+      int _iter0 = this.myIntField19;
       oprot.writeFieldBegin(MY_INT_FIELD19_FIELD_DESC);
-      oprot.writeI32(this.myIntField19);
+      oprot.writeI32(_iter0);
       oprot.writeFieldEnd();
       }
       {
+      int _iter0 = this.myIntField20;
       oprot.writeFieldBegin(MY_INT_FIELD20_FIELD_DESC);
-      oprot.writeI32(this.myIntField20);
+      oprot.writeI32(_iter0);
       oprot.writeFieldEnd();
       }
       {
+      double _iter0 = this.myDoubleField21;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD21_FIELD_DESC);
-      oprot.writeDouble(this.myDoubleField21);
+      oprot.writeDouble(_iter0);
       oprot.writeFieldEnd();
       }
       {
+      double _iter0 = this.myDoubleField22;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD22_FIELD_DESC);
-      oprot.writeDouble(this.myDoubleField22);
+      oprot.writeDouble(_iter0);
       oprot.writeFieldEnd();
       }
       {
+      double _iter0 = this.myDoubleField23;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD23_FIELD_DESC);
-      oprot.writeDouble(this.myDoubleField23);
+      oprot.writeDouble(_iter0);
       oprot.writeFieldEnd();
       }
       {
+      double _iter0 = this.myDoubleField24;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD24_FIELD_DESC);
-      oprot.writeDouble(this.myDoubleField24);
+      oprot.writeDouble(_iter0);
       oprot.writeFieldEnd();
       }
       {
+      double _iter0 = this.myDoubleField25;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD25_FIELD_DESC);
-      oprot.writeDouble(this.myDoubleField25);
+      oprot.writeDouble(_iter0);
       oprot.writeFieldEnd();
       }
       {
+      double _iter0 = this.myDoubleField26;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD26_FIELD_DESC);
-      oprot.writeDouble(this.myDoubleField26);
+      oprot.writeDouble(_iter0);
       oprot.writeFieldEnd();
       }
       {
+      double _iter0 = this.myDoubleField27;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD27_FIELD_DESC);
-      oprot.writeDouble(this.myDoubleField27);
+      oprot.writeDouble(_iter0);
       oprot.writeFieldEnd();
       }
       {
+      double _iter0 = this.myDoubleField28;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD28_FIELD_DESC);
-      oprot.writeDouble(this.myDoubleField28);
+      oprot.writeDouble(_iter0);
       oprot.writeFieldEnd();
       }
       {
+      double _iter0 = this.myDoubleField29;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD29_FIELD_DESC);
-      oprot.writeDouble(this.myDoubleField29);
+      oprot.writeDouble(_iter0);
       oprot.writeFieldEnd();
       }
       {
+      double _iter0 = this.myDoubleField30;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD30_FIELD_DESC);
-      oprot.writeDouble(this.myDoubleField30);
+      oprot.writeDouble(_iter0);
       oprot.writeFieldEnd();
       }
       {
-      if (msg31 != null) {
+      String _iter0 = this.msg31;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG31_FIELD_DESC);
-        oprot.writeString(this.msg31);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg32 != null) {
+      String _iter0 = this.msg32;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG32_FIELD_DESC);
-        oprot.writeString(this.msg32);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg33 != null) {
+      String _iter0 = this.msg33;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG33_FIELD_DESC);
-        oprot.writeString(this.msg33);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg34 != null) {
+      String _iter0 = this.msg34;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG34_FIELD_DESC);
-        oprot.writeString(this.msg34);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg35 != null) {
+      String _iter0 = this.msg35;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG35_FIELD_DESC);
-        oprot.writeString(this.msg35);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg36 != null) {
+      String _iter0 = this.msg36;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG36_FIELD_DESC);
-        oprot.writeString(this.msg36);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg37 != null) {
+      String _iter0 = this.msg37;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG37_FIELD_DESC);
-        oprot.writeString(this.msg37);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg38 != null) {
+      String _iter0 = this.msg38;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG38_FIELD_DESC);
-        oprot.writeString(this.msg38);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg39 != null) {
+      String _iter0 = this.msg39;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG39_FIELD_DESC);
-        oprot.writeString(this.msg39);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg40 != null) {
+      String _iter0 = this.msg40;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG40_FIELD_DESC);
-        oprot.writeString(this.msg40);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg41 != null) {
+      String _iter0 = this.msg41;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG41_FIELD_DESC);
-        oprot.writeString(this.msg41);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg42 != null) {
+      String _iter0 = this.msg42;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG42_FIELD_DESC);
-        oprot.writeString(this.msg42);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg43 != null) {
+      String _iter0 = this.msg43;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG43_FIELD_DESC);
-        oprot.writeString(this.msg43);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg44 != null) {
+      String _iter0 = this.msg44;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG44_FIELD_DESC);
-        oprot.writeString(this.msg44);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg45 != null) {
+      String _iter0 = this.msg45;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG45_FIELD_DESC);
-        oprot.writeString(this.msg45);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg46 != null) {
+      String _iter0 = this.msg46;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG46_FIELD_DESC);
-        oprot.writeString(this.msg46);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg47 != null) {
+      String _iter0 = this.msg47;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG47_FIELD_DESC);
-        oprot.writeString(this.msg47);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg48 != null) {
+      String _iter0 = this.msg48;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG48_FIELD_DESC);
-        oprot.writeString(this.msg48);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg49 != null) {
+      String _iter0 = this.msg49;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG49_FIELD_DESC);
-        oprot.writeString(this.msg49);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg50 != null) {
+      String _iter0 = this.msg50;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG50_FIELD_DESC);
-        oprot.writeString(this.msg50);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg51 != null) {
+      String _iter0 = this.msg51;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG51_FIELD_DESC);
-        oprot.writeString(this.msg51);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg52 != null) {
+      String _iter0 = this.msg52;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG52_FIELD_DESC);
-        oprot.writeString(this.msg52);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg53 != null) {
+      String _iter0 = this.msg53;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG53_FIELD_DESC);
-        oprot.writeString(this.msg53);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg54 != null) {
+      String _iter0 = this.msg54;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG54_FIELD_DESC);
-        oprot.writeString(this.msg54);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg55 != null) {
+      String _iter0 = this.msg55;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG55_FIELD_DESC);
-        oprot.writeString(this.msg55);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg56 != null) {
+      String _iter0 = this.msg56;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG56_FIELD_DESC);
-        oprot.writeString(this.msg56);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg57 != null) {
+      String _iter0 = this.msg57;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG57_FIELD_DESC);
-        oprot.writeString(this.msg57);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg58 != null) {
+      String _iter0 = this.msg58;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG58_FIELD_DESC);
-        oprot.writeString(this.msg58);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg59 != null) {
+      String _iter0 = this.msg59;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG59_FIELD_DESC);
-        oprot.writeString(this.msg59);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg60 != null) {
+      String _iter0 = this.msg60;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG60_FIELD_DESC);
-        oprot.writeString(this.msg60);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg61 != null) {
+      String _iter0 = this.msg61;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG61_FIELD_DESC);
-        oprot.writeString(this.msg61);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg62 != null) {
+      String _iter0 = this.msg62;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG62_FIELD_DESC);
-        oprot.writeString(this.msg62);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg63 != null) {
+      String _iter0 = this.msg63;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG63_FIELD_DESC);
-        oprot.writeString(this.msg63);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg64 != null) {
+      String _iter0 = this.msg64;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG64_FIELD_DESC);
-        oprot.writeString(this.msg64);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg65 != null) {
+      String _iter0 = this.msg65;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG65_FIELD_DESC);
-        oprot.writeString(this.msg65);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg66 != null) {
+      String _iter0 = this.msg66;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG66_FIELD_DESC);
-        oprot.writeString(this.msg66);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg67 != null) {
+      String _iter0 = this.msg67;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG67_FIELD_DESC);
-        oprot.writeString(this.msg67);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg68 != null) {
+      String _iter0 = this.msg68;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG68_FIELD_DESC);
-        oprot.writeString(this.msg68);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg69 != null) {
+      String _iter0 = this.msg69;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG69_FIELD_DESC);
-        oprot.writeString(this.msg69);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg70 != null) {
+      String _iter0 = this.msg70;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG70_FIELD_DESC);
-        oprot.writeString(this.msg70);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg71 != null) {
+      String _iter0 = this.msg71;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG71_FIELD_DESC);
-        oprot.writeString(this.msg71);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg72 != null) {
+      String _iter0 = this.msg72;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG72_FIELD_DESC);
-        oprot.writeString(this.msg72);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg73 != null) {
+      String _iter0 = this.msg73;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG73_FIELD_DESC);
-        oprot.writeString(this.msg73);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg74 != null) {
+      String _iter0 = this.msg74;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG74_FIELD_DESC);
-        oprot.writeString(this.msg74);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg75 != null) {
+      String _iter0 = this.msg75;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG75_FIELD_DESC);
-        oprot.writeString(this.msg75);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg76 != null) {
+      String _iter0 = this.msg76;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG76_FIELD_DESC);
-        oprot.writeString(this.msg76);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg77 != null) {
+      String _iter0 = this.msg77;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG77_FIELD_DESC);
-        oprot.writeString(this.msg77);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg78 != null) {
+      String _iter0 = this.msg78;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG78_FIELD_DESC);
-        oprot.writeString(this.msg78);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg79 != null) {
+      String _iter0 = this.msg79;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG79_FIELD_DESC);
-        oprot.writeString(this.msg79);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg80 != null) {
+      String _iter0 = this.msg80;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG80_FIELD_DESC);
-        oprot.writeString(this.msg80);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg81 != null) {
+      String _iter0 = this.msg81;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG81_FIELD_DESC);
-        oprot.writeString(this.msg81);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg82 != null) {
+      String _iter0 = this.msg82;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG82_FIELD_DESC);
-        oprot.writeString(this.msg82);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg83 != null) {
+      String _iter0 = this.msg83;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG83_FIELD_DESC);
-        oprot.writeString(this.msg83);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg84 != null) {
+      String _iter0 = this.msg84;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG84_FIELD_DESC);
-        oprot.writeString(this.msg84);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg85 != null) {
+      String _iter0 = this.msg85;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG85_FIELD_DESC);
-        oprot.writeString(this.msg85);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg86 != null) {
+      String _iter0 = this.msg86;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG86_FIELD_DESC);
-        oprot.writeString(this.msg86);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg87 != null) {
+      String _iter0 = this.msg87;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG87_FIELD_DESC);
-        oprot.writeString(this.msg87);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg88 != null) {
+      String _iter0 = this.msg88;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG88_FIELD_DESC);
-        oprot.writeString(this.msg88);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg89 != null) {
+      String _iter0 = this.msg89;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG89_FIELD_DESC);
-        oprot.writeString(this.msg89);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg90 != null) {
+      String _iter0 = this.msg90;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG90_FIELD_DESC);
-        oprot.writeString(this.msg90);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg91 != null) {
+      String _iter0 = this.msg91;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG91_FIELD_DESC);
-        oprot.writeString(this.msg91);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg92 != null) {
+      String _iter0 = this.msg92;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG92_FIELD_DESC);
-        oprot.writeString(this.msg92);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg93 != null) {
+      String _iter0 = this.msg93;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG93_FIELD_DESC);
-        oprot.writeString(this.msg93);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg94 != null) {
+      String _iter0 = this.msg94;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG94_FIELD_DESC);
-        oprot.writeString(this.msg94);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg95 != null) {
+      String _iter0 = this.msg95;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG95_FIELD_DESC);
-        oprot.writeString(this.msg95);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg96 != null) {
+      String _iter0 = this.msg96;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG96_FIELD_DESC);
-        oprot.writeString(this.msg96);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg97 != null) {
+      String _iter0 = this.msg97;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG97_FIELD_DESC);
-        oprot.writeString(this.msg97);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg98 != null) {
+      String _iter0 = this.msg98;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG98_FIELD_DESC);
-        oprot.writeString(this.msg98);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg99 != null) {
+      String _iter0 = this.msg99;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG99_FIELD_DESC);
-        oprot.writeString(this.msg99);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg100 != null) {
+      String _iter0 = this.msg100;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG100_FIELD_DESC);
-        oprot.writeString(this.msg100);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg101 != null) {
+      String _iter0 = this.msg101;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG101_FIELD_DESC);
-        oprot.writeString(this.msg101);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg102 != null) {
+      String _iter0 = this.msg102;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG102_FIELD_DESC);
-        oprot.writeString(this.msg102);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg103 != null) {
+      String _iter0 = this.msg103;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG103_FIELD_DESC);
-        oprot.writeString(this.msg103);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg104 != null) {
+      String _iter0 = this.msg104;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG104_FIELD_DESC);
-        oprot.writeString(this.msg104);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg105 != null) {
+      String _iter0 = this.msg105;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG105_FIELD_DESC);
-        oprot.writeString(this.msg105);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg106 != null) {
+      String _iter0 = this.msg106;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG106_FIELD_DESC);
-        oprot.writeString(this.msg106);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg107 != null) {
+      String _iter0 = this.msg107;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG107_FIELD_DESC);
-        oprot.writeString(this.msg107);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg108 != null) {
+      String _iter0 = this.msg108;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG108_FIELD_DESC);
-        oprot.writeString(this.msg108);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg109 != null) {
+      String _iter0 = this.msg109;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG109_FIELD_DESC);
-        oprot.writeString(this.msg109);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg110 != null) {
+      String _iter0 = this.msg110;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG110_FIELD_DESC);
-        oprot.writeString(this.msg110);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg111 != null) {
+      String _iter0 = this.msg111;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG111_FIELD_DESC);
-        oprot.writeString(this.msg111);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg112 != null) {
+      String _iter0 = this.msg112;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG112_FIELD_DESC);
-        oprot.writeString(this.msg112);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg113 != null) {
+      String _iter0 = this.msg113;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG113_FIELD_DESC);
-        oprot.writeString(this.msg113);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg114 != null) {
+      String _iter0 = this.msg114;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG114_FIELD_DESC);
-        oprot.writeString(this.msg114);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg115 != null) {
+      String _iter0 = this.msg115;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG115_FIELD_DESC);
-        oprot.writeString(this.msg115);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg116 != null) {
+      String _iter0 = this.msg116;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG116_FIELD_DESC);
-        oprot.writeString(this.msg116);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg117 != null) {
+      String _iter0 = this.msg117;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG117_FIELD_DESC);
-        oprot.writeString(this.msg117);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg118 != null) {
+      String _iter0 = this.msg118;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG118_FIELD_DESC);
-        oprot.writeString(this.msg118);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg119 != null) {
+      String _iter0 = this.msg119;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG119_FIELD_DESC);
-        oprot.writeString(this.msg119);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg120 != null) {
+      String _iter0 = this.msg120;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG120_FIELD_DESC);
-        oprot.writeString(this.msg120);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg121 != null) {
+      String _iter0 = this.msg121;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG121_FIELD_DESC);
-        oprot.writeString(this.msg121);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg122 != null) {
+      String _iter0 = this.msg122;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG122_FIELD_DESC);
-        oprot.writeString(this.msg122);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg123 != null) {
+      String _iter0 = this.msg123;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG123_FIELD_DESC);
-        oprot.writeString(this.msg123);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg124 != null) {
+      String _iter0 = this.msg124;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG124_FIELD_DESC);
-        oprot.writeString(this.msg124);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg125 != null) {
+      String _iter0 = this.msg125;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG125_FIELD_DESC);
-        oprot.writeString(this.msg125);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg126 != null) {
+      String _iter0 = this.msg126;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG126_FIELD_DESC);
-        oprot.writeString(this.msg126);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg127 != null) {
+      String _iter0 = this.msg127;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG127_FIELD_DESC);
-        oprot.writeString(this.msg127);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg128 != null) {
+      String _iter0 = this.msg128;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG128_FIELD_DESC);
-        oprot.writeString(this.msg128);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg129 != null) {
+      String _iter0 = this.msg129;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG129_FIELD_DESC);
-        oprot.writeString(this.msg129);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg130 != null) {
+      String _iter0 = this.msg130;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG130_FIELD_DESC);
-        oprot.writeString(this.msg130);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg131 != null) {
+      String _iter0 = this.msg131;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG131_FIELD_DESC);
-        oprot.writeString(this.msg131);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg132 != null) {
+      String _iter0 = this.msg132;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG132_FIELD_DESC);
-        oprot.writeString(this.msg132);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg133 != null) {
+      String _iter0 = this.msg133;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG133_FIELD_DESC);
-        oprot.writeString(this.msg133);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg134 != null) {
+      String _iter0 = this.msg134;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG134_FIELD_DESC);
-        oprot.writeString(this.msg134);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg135 != null) {
+      String _iter0 = this.msg135;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG135_FIELD_DESC);
-        oprot.writeString(this.msg135);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg136 != null) {
+      String _iter0 = this.msg136;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG136_FIELD_DESC);
-        oprot.writeString(this.msg136);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg137 != null) {
+      String _iter0 = this.msg137;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG137_FIELD_DESC);
-        oprot.writeString(this.msg137);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg138 != null) {
+      String _iter0 = this.msg138;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG138_FIELD_DESC);
-        oprot.writeString(this.msg138);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg139 != null) {
+      String _iter0 = this.msg139;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG139_FIELD_DESC);
-        oprot.writeString(this.msg139);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg140 != null) {
+      String _iter0 = this.msg140;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG140_FIELD_DESC);
-        oprot.writeString(this.msg140);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg141 != null) {
+      String _iter0 = this.msg141;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG141_FIELD_DESC);
-        oprot.writeString(this.msg141);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg142 != null) {
+      String _iter0 = this.msg142;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG142_FIELD_DESC);
-        oprot.writeString(this.msg142);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg143 != null) {
+      String _iter0 = this.msg143;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG143_FIELD_DESC);
-        oprot.writeString(this.msg143);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg144 != null) {
+      String _iter0 = this.msg144;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG144_FIELD_DESC);
-        oprot.writeString(this.msg144);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg145 != null) {
+      String _iter0 = this.msg145;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG145_FIELD_DESC);
-        oprot.writeString(this.msg145);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg146 != null) {
+      String _iter0 = this.msg146;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG146_FIELD_DESC);
-        oprot.writeString(this.msg146);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg147 != null) {
+      String _iter0 = this.msg147;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG147_FIELD_DESC);
-        oprot.writeString(this.msg147);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg148 != null) {
+      String _iter0 = this.msg148;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG148_FIELD_DESC);
-        oprot.writeString(this.msg148);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg149 != null) {
+      String _iter0 = this.msg149;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG149_FIELD_DESC);
-        oprot.writeString(this.msg149);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg150 != null) {
+      String _iter0 = this.msg150;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG150_FIELD_DESC);
-        oprot.writeString(this.msg150);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg151 != null) {
+      String _iter0 = this.msg151;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG151_FIELD_DESC);
-        oprot.writeString(this.msg151);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg152 != null) {
+      String _iter0 = this.msg152;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG152_FIELD_DESC);
-        oprot.writeString(this.msg152);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg153 != null) {
+      String _iter0 = this.msg153;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG153_FIELD_DESC);
-        oprot.writeString(this.msg153);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg154 != null) {
+      String _iter0 = this.msg154;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG154_FIELD_DESC);
-        oprot.writeString(this.msg154);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg155 != null) {
+      String _iter0 = this.msg155;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG155_FIELD_DESC);
-        oprot.writeString(this.msg155);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg156 != null) {
+      String _iter0 = this.msg156;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG156_FIELD_DESC);
-        oprot.writeString(this.msg156);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg157 != null) {
+      String _iter0 = this.msg157;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG157_FIELD_DESC);
-        oprot.writeString(this.msg157);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg158 != null) {
+      String _iter0 = this.msg158;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG158_FIELD_DESC);
-        oprot.writeString(this.msg158);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg159 != null) {
+      String _iter0 = this.msg159;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG159_FIELD_DESC);
-        oprot.writeString(this.msg159);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg160 != null) {
+      String _iter0 = this.msg160;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG160_FIELD_DESC);
-        oprot.writeString(this.msg160);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg161 != null) {
+      String _iter0 = this.msg161;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG161_FIELD_DESC);
-        oprot.writeString(this.msg161);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg162 != null) {
+      String _iter0 = this.msg162;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG162_FIELD_DESC);
-        oprot.writeString(this.msg162);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg163 != null) {
+      String _iter0 = this.msg163;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG163_FIELD_DESC);
-        oprot.writeString(this.msg163);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg164 != null) {
+      String _iter0 = this.msg164;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG164_FIELD_DESC);
-        oprot.writeString(this.msg164);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg165 != null) {
+      String _iter0 = this.msg165;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG165_FIELD_DESC);
-        oprot.writeString(this.msg165);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg166 != null) {
+      String _iter0 = this.msg166;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG166_FIELD_DESC);
-        oprot.writeString(this.msg166);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg167 != null) {
+      String _iter0 = this.msg167;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG167_FIELD_DESC);
-        oprot.writeString(this.msg167);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg168 != null) {
+      String _iter0 = this.msg168;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG168_FIELD_DESC);
-        oprot.writeString(this.msg168);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg169 != null) {
+      String _iter0 = this.msg169;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG169_FIELD_DESC);
-        oprot.writeString(this.msg169);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg170 != null) {
+      String _iter0 = this.msg170;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG170_FIELD_DESC);
-        oprot.writeString(this.msg170);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg171 != null) {
+      String _iter0 = this.msg171;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG171_FIELD_DESC);
-        oprot.writeString(this.msg171);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg172 != null) {
+      String _iter0 = this.msg172;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG172_FIELD_DESC);
-        oprot.writeString(this.msg172);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg173 != null) {
+      String _iter0 = this.msg173;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG173_FIELD_DESC);
-        oprot.writeString(this.msg173);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg174 != null) {
+      String _iter0 = this.msg174;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG174_FIELD_DESC);
-        oprot.writeString(this.msg174);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg175 != null) {
+      String _iter0 = this.msg175;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG175_FIELD_DESC);
-        oprot.writeString(this.msg175);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg176 != null) {
+      String _iter0 = this.msg176;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG176_FIELD_DESC);
-        oprot.writeString(this.msg176);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg177 != null) {
+      String _iter0 = this.msg177;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG177_FIELD_DESC);
-        oprot.writeString(this.msg177);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg178 != null) {
+      String _iter0 = this.msg178;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG178_FIELD_DESC);
-        oprot.writeString(this.msg178);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg179 != null) {
+      String _iter0 = this.msg179;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG179_FIELD_DESC);
-        oprot.writeString(this.msg179);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg180 != null) {
+      String _iter0 = this.msg180;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG180_FIELD_DESC);
-        oprot.writeString(this.msg180);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg181 != null) {
+      String _iter0 = this.msg181;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG181_FIELD_DESC);
-        oprot.writeString(this.msg181);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg182 != null) {
+      String _iter0 = this.msg182;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG182_FIELD_DESC);
-        oprot.writeString(this.msg182);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg183 != null) {
+      String _iter0 = this.msg183;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG183_FIELD_DESC);
-        oprot.writeString(this.msg183);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg184 != null) {
+      String _iter0 = this.msg184;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG184_FIELD_DESC);
-        oprot.writeString(this.msg184);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg185 != null) {
+      String _iter0 = this.msg185;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG185_FIELD_DESC);
-        oprot.writeString(this.msg185);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg186 != null) {
+      String _iter0 = this.msg186;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG186_FIELD_DESC);
-        oprot.writeString(this.msg186);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg187 != null) {
+      String _iter0 = this.msg187;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG187_FIELD_DESC);
-        oprot.writeString(this.msg187);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg188 != null) {
+      String _iter0 = this.msg188;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG188_FIELD_DESC);
-        oprot.writeString(this.msg188);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg189 != null) {
+      String _iter0 = this.msg189;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG189_FIELD_DESC);
-        oprot.writeString(this.msg189);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg190 != null) {
+      String _iter0 = this.msg190;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG190_FIELD_DESC);
-        oprot.writeString(this.msg190);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg191 != null) {
+      String _iter0 = this.msg191;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG191_FIELD_DESC);
-        oprot.writeString(this.msg191);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg192 != null) {
+      String _iter0 = this.msg192;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG192_FIELD_DESC);
-        oprot.writeString(this.msg192);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg193 != null) {
+      String _iter0 = this.msg193;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG193_FIELD_DESC);
-        oprot.writeString(this.msg193);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg194 != null) {
+      String _iter0 = this.msg194;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG194_FIELD_DESC);
-        oprot.writeString(this.msg194);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg195 != null) {
+      String _iter0 = this.msg195;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG195_FIELD_DESC);
-        oprot.writeString(this.msg195);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg196 != null) {
+      String _iter0 = this.msg196;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG196_FIELD_DESC);
-        oprot.writeString(this.msg196);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg197 != null) {
+      String _iter0 = this.msg197;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG197_FIELD_DESC);
-        oprot.writeString(this.msg197);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg198 != null) {
+      String _iter0 = this.msg198;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG198_FIELD_DESC);
-        oprot.writeString(this.msg198);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg199 != null) {
+      String _iter0 = this.msg199;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG199_FIELD_DESC);
-        oprot.writeString(this.msg199);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg200 != null) {
+      String _iter0 = this.msg200;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG200_FIELD_DESC);
-        oprot.writeString(this.msg200);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg201 != null) {
+      String _iter0 = this.msg201;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG201_FIELD_DESC);
-        oprot.writeString(this.msg201);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg202 != null) {
+      String _iter0 = this.msg202;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG202_FIELD_DESC);
-        oprot.writeString(this.msg202);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg203 != null) {
+      String _iter0 = this.msg203;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG203_FIELD_DESC);
-        oprot.writeString(this.msg203);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg204 != null) {
+      String _iter0 = this.msg204;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG204_FIELD_DESC);
-        oprot.writeString(this.msg204);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg205 != null) {
+      String _iter0 = this.msg205;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG205_FIELD_DESC);
-        oprot.writeString(this.msg205);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg206 != null) {
+      String _iter0 = this.msg206;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG206_FIELD_DESC);
-        oprot.writeString(this.msg206);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg207 != null) {
+      String _iter0 = this.msg207;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG207_FIELD_DESC);
-        oprot.writeString(this.msg207);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg208 != null) {
+      String _iter0 = this.msg208;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG208_FIELD_DESC);
-        oprot.writeString(this.msg208);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg209 != null) {
+      String _iter0 = this.msg209;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG209_FIELD_DESC);
-        oprot.writeString(this.msg209);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg210 != null) {
+      String _iter0 = this.msg210;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG210_FIELD_DESC);
-        oprot.writeString(this.msg210);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg211 != null) {
+      String _iter0 = this.msg211;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG211_FIELD_DESC);
-        oprot.writeString(this.msg211);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg212 != null) {
+      String _iter0 = this.msg212;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG212_FIELD_DESC);
-        oprot.writeString(this.msg212);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg213 != null) {
+      String _iter0 = this.msg213;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG213_FIELD_DESC);
-        oprot.writeString(this.msg213);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg214 != null) {
+      String _iter0 = this.msg214;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG214_FIELD_DESC);
-        oprot.writeString(this.msg214);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg215 != null) {
+      String _iter0 = this.msg215;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG215_FIELD_DESC);
-        oprot.writeString(this.msg215);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg216 != null) {
+      String _iter0 = this.msg216;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG216_FIELD_DESC);
-        oprot.writeString(this.msg216);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg217 != null) {
+      String _iter0 = this.msg217;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG217_FIELD_DESC);
-        oprot.writeString(this.msg217);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg218 != null) {
+      String _iter0 = this.msg218;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG218_FIELD_DESC);
-        oprot.writeString(this.msg218);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg219 != null) {
+      String _iter0 = this.msg219;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG219_FIELD_DESC);
-        oprot.writeString(this.msg219);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg220 != null) {
+      String _iter0 = this.msg220;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG220_FIELD_DESC);
-        oprot.writeString(this.msg220);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg221 != null) {
+      String _iter0 = this.msg221;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG221_FIELD_DESC);
-        oprot.writeString(this.msg221);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg222 != null) {
+      String _iter0 = this.msg222;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG222_FIELD_DESC);
-        oprot.writeString(this.msg222);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg223 != null) {
+      String _iter0 = this.msg223;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG223_FIELD_DESC);
-        oprot.writeString(this.msg223);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg224 != null) {
+      String _iter0 = this.msg224;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG224_FIELD_DESC);
-        oprot.writeString(this.msg224);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg225 != null) {
+      String _iter0 = this.msg225;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG225_FIELD_DESC);
-        oprot.writeString(this.msg225);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg226 != null) {
+      String _iter0 = this.msg226;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG226_FIELD_DESC);
-        oprot.writeString(this.msg226);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg227 != null) {
+      String _iter0 = this.msg227;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG227_FIELD_DESC);
-        oprot.writeString(this.msg227);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg228 != null) {
+      String _iter0 = this.msg228;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG228_FIELD_DESC);
-        oprot.writeString(this.msg228);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg229 != null) {
+      String _iter0 = this.msg229;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG229_FIELD_DESC);
-        oprot.writeString(this.msg229);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg230 != null) {
+      String _iter0 = this.msg230;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG230_FIELD_DESC);
-        oprot.writeString(this.msg230);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg231 != null) {
+      String _iter0 = this.msg231;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG231_FIELD_DESC);
-        oprot.writeString(this.msg231);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg232 != null) {
+      String _iter0 = this.msg232;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG232_FIELD_DESC);
-        oprot.writeString(this.msg232);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg233 != null) {
+      String _iter0 = this.msg233;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG233_FIELD_DESC);
-        oprot.writeString(this.msg233);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg234 != null) {
+      String _iter0 = this.msg234;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG234_FIELD_DESC);
-        oprot.writeString(this.msg234);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg235 != null) {
+      String _iter0 = this.msg235;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG235_FIELD_DESC);
-        oprot.writeString(this.msg235);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg236 != null) {
+      String _iter0 = this.msg236;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG236_FIELD_DESC);
-        oprot.writeString(this.msg236);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg237 != null) {
+      String _iter0 = this.msg237;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG237_FIELD_DESC);
-        oprot.writeString(this.msg237);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg238 != null) {
+      String _iter0 = this.msg238;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG238_FIELD_DESC);
-        oprot.writeString(this.msg238);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg239 != null) {
+      String _iter0 = this.msg239;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG239_FIELD_DESC);
-        oprot.writeString(this.msg239);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg240 != null) {
+      String _iter0 = this.msg240;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG240_FIELD_DESC);
-        oprot.writeString(this.msg240);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg241 != null) {
+      String _iter0 = this.msg241;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG241_FIELD_DESC);
-        oprot.writeString(this.msg241);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg242 != null) {
+      String _iter0 = this.msg242;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG242_FIELD_DESC);
-        oprot.writeString(this.msg242);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg243 != null) {
+      String _iter0 = this.msg243;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG243_FIELD_DESC);
-        oprot.writeString(this.msg243);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg244 != null) {
+      String _iter0 = this.msg244;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG244_FIELD_DESC);
-        oprot.writeString(this.msg244);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg245 != null) {
+      String _iter0 = this.msg245;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG245_FIELD_DESC);
-        oprot.writeString(this.msg245);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg246 != null) {
+      String _iter0 = this.msg246;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG246_FIELD_DESC);
-        oprot.writeString(this.msg246);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg247 != null) {
+      String _iter0 = this.msg247;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG247_FIELD_DESC);
-        oprot.writeString(this.msg247);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg248 != null) {
+      String _iter0 = this.msg248;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG248_FIELD_DESC);
-        oprot.writeString(this.msg248);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg249 != null) {
+      String _iter0 = this.msg249;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG249_FIELD_DESC);
-        oprot.writeString(this.msg249);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg250 != null) {
+      String _iter0 = this.msg250;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG250_FIELD_DESC);
-        oprot.writeString(this.msg250);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg251 != null) {
+      String _iter0 = this.msg251;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG251_FIELD_DESC);
-        oprot.writeString(this.msg251);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg252 != null) {
+      String _iter0 = this.msg252;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG252_FIELD_DESC);
-        oprot.writeString(this.msg252);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg253 != null) {
+      String _iter0 = this.msg253;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG253_FIELD_DESC);
-        oprot.writeString(this.msg253);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg254 != null) {
+      String _iter0 = this.msg254;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG254_FIELD_DESC);
-        oprot.writeString(this.msg254);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg255 != null) {
+      String _iter0 = this.msg255;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG255_FIELD_DESC);
-        oprot.writeString(this.msg255);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg256 != null) {
+      String _iter0 = this.msg256;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG256_FIELD_DESC);
-        oprot.writeString(this.msg256);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (msg257 != null) {
+      String _iter0 = this.msg257;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MSG257_FIELD_DESC);
-        oprot.writeString(this.msg257);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }

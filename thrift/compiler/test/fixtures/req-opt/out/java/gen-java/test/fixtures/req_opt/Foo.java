@@ -274,21 +274,23 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
+      int _iter0 = this.myInteger;
       oprot.writeFieldBegin(MY_INTEGER_FIELD_DESC);
-      oprot.writeI32(this.myInteger);
+      oprot.writeI32(_iter0);
       oprot.writeFieldEnd();
       }
       {
-      if (myString != null) {
+      String _iter0 = this.myString;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MY_STRING_FIELD_DESC);
-        oprot.writeString(this.myString);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (myBools != null) {
+      List<Boolean> _iter0 = this.myBools;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MY_BOOLS_FIELD_DESC);
-        List<Boolean> _iter0 = myBools;
         oprot.writeListBegin(new TList(TType.BOOL, _iter0.size()));
             for (boolean _iter1 : _iter0) {
               oprot.writeBool(_iter1);
@@ -298,9 +300,9 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       }
       }
       {
-      if (myNumbers != null) {
+      List<Integer> _iter0 = this.myNumbers;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MY_NUMBERS_FIELD_DESC);
-        List<Integer> _iter0 = myNumbers;
         oprot.writeListBegin(new TList(TType.I32, _iter0.size()));
             for (int _iter1 : _iter0) {
               oprot.writeI32(_iter1);

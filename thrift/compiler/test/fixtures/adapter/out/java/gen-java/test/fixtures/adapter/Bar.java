@@ -429,23 +429,25 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      if (structField != null) {
+      test.fixtures.adapter.Foo _iter0 = this.structField;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(STRUCT_FIELD_FIELD_DESC);
-        this.structField.write0(oprot);
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (optionalStructField != null) {
+      test.fixtures.adapter.Foo _iter0 = this.optionalStructField;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(OPTIONAL_STRUCT_FIELD_FIELD_DESC);
-        this.optionalStructField.write0(oprot);
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (structListField != null) {
+      List<com.facebook.thrift.my.AdaptedFoo_1> _iter0 = this.structListField;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(STRUCT_LIST_FIELD_FIELD_DESC);
-        List<com.facebook.thrift.my.AdaptedFoo_1> _iter0 = structListField;
         oprot.writeListBegin(new TList(TType.STRUCT, _iter0.size()));
             for (com.facebook.thrift.my.AdaptedFoo_1 _iter1 : _iter0) {
               __FooWithAdapter_Adapter.toThrift(_iter1).write0(oprot);
@@ -455,9 +457,9 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
       }
       }
       {
-      if (optionalStructListField != null) {
+      List<com.facebook.thrift.my.AdaptedFoo_1> _iter0 = this.optionalStructListField;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(OPTIONAL_STRUCT_LIST_FIELD_FIELD_DESC);
-        List<com.facebook.thrift.my.AdaptedFoo_1> _iter0 = optionalStructListField;
         oprot.writeListBegin(new TList(TType.STRUCT, _iter0.size()));
             for (com.facebook.thrift.my.AdaptedFoo_1 _iter1 : _iter0) {
               __FooWithAdapter_Adapter.toThrift(_iter1).write0(oprot);
@@ -467,30 +469,33 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
       }
       }
       {
-      if (unionField != null) {
+      test.fixtures.adapter.Baz _iter0 = this.unionField;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(UNION_FIELD_FIELD_DESC);
-        this.unionField.write0(oprot);
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (optionalUnionField != null) {
+      test.fixtures.adapter.Baz _iter0 = this.optionalUnionField;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(OPTIONAL_UNION_FIELD_FIELD_DESC);
-        this.optionalUnionField.write0(oprot);
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (adaptedStructField != null) {
+      test.fixtures.adapter.DirectlyAdapted _iter0 = this.adaptedStructField;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(ADAPTED_STRUCT_FIELD_FIELD_DESC);
-        this.adaptedStructField.write0(oprot);
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (structListFieldWithTypedef != null) {
+      List<test.fixtures.adapter.Foo> _iter0 = this.structListFieldWithTypedef;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(STRUCT_LIST_FIELD_WITH_TYPEDEF_FIELD_DESC);
-        List<test.fixtures.adapter.Foo> _iter0 = structListFieldWithTypedef;
         oprot.writeListBegin(new TList(TType.STRUCT, _iter0.size()));
             for (test.fixtures.adapter.Foo _iter1 : _iter0) {
               _iter1.write0(oprot);

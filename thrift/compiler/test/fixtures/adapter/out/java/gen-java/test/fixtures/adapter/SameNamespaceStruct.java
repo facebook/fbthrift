@@ -152,8 +152,9 @@ public final class SameNamespaceStruct implements com.facebook.thrift.payload.Th
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
+      long _iter0 = this.data;
       oprot.writeFieldBegin(DATA_FIELD_DESC);
-      oprot.writeI64(this.data);
+      oprot.writeI64(_iter0);
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

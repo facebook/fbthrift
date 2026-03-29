@@ -495,42 +495,47 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
+      long _iter0 = this.id;
       oprot.writeFieldBegin(ID_FIELD_DESC);
-      oprot.writeI64(this.id);
+      oprot.writeI64(_iter0);
       oprot.writeFieldEnd();
       }
       {
-      if (name != null) {
+      String _iter0 = this.name;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(NAME_FIELD_DESC);
-        oprot.writeString(this.name);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (age != null) {
+      Short _iter0 = this.age;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(AGE_FIELD_DESC);
-        oprot.writeI16(this.age);
+        oprot.writeI16(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (address != null) {
+      String _iter0 = this.address;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(ADDRESS_FIELD_DESC);
-        oprot.writeString(this.address);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (favoriteColor != null) {
+      test.fixtures.optionals.Color _iter0 = this.favoriteColor;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(FAVORITE_COLOR_FIELD_DESC);
-        this.favoriteColor.write0(oprot);
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (friends != null) {
+      Set<Long> _iter0 = this.friends;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(FRIENDS_FIELD_DESC);
-        Set<Long> _iter0 = friends;
         oprot.writeSetBegin(new TSet(TType.I64, _iter0.size()));
             for (long _iter1 : _iter0) {
               oprot.writeI64(_iter1);
@@ -540,16 +545,17 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
       }
       }
       {
-      if (bestFriend != null) {
+      Long _iter0 = this.bestFriend;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(BEST_FRIEND_FIELD_DESC);
-        oprot.writeI64(this.bestFriend);
+        oprot.writeI64(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (petNames != null) {
+      Map<test.fixtures.optionals.Animal, String> _iter0 = this.petNames;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(PET_NAMES_FIELD_DESC);
-        Map<test.fixtures.optionals.Animal, String> _iter0 = petNames;
         oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, _iter0.size()));
             for (Map.Entry<test.fixtures.optionals.Animal, String> _iter1 : _iter0.entrySet()) {
               {
@@ -566,16 +572,17 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
       }
       }
       {
-      if (afraidOfAnimal != null) {
+      test.fixtures.optionals.Animal _iter0 = this.afraidOfAnimal;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(AFRAID_OF_ANIMAL_FIELD_DESC);
-        oprot.writeI32(this.afraidOfAnimal == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(this.afraidOfAnimal));
+        oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
         oprot.writeFieldEnd();
       }
       }
       {
-      if (vehicles != null) {
+      List<test.fixtures.optionals.Vehicle> _iter0 = this.vehicles;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(VEHICLES_FIELD_DESC);
-        List<test.fixtures.optionals.Vehicle> _iter0 = vehicles;
         oprot.writeListBegin(new TList(TType.STRUCT, _iter0.size()));
             for (test.fixtures.optionals.Vehicle _iter1 : _iter0) {
               _iter1.write0(oprot);

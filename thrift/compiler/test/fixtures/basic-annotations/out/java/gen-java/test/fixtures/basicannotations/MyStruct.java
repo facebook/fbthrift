@@ -442,54 +442,61 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
+      long _iter0 = this.major;
       oprot.writeFieldBegin(MAJOR_FIELD_DESC);
-      oprot.writeI64(this.major);
+      oprot.writeI64(_iter0);
       oprot.writeFieldEnd();
       }
       {
-      if (_abstract != null) {
+      String _iter0 = this._abstract;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(_ABSTRACT_FIELD_DESC);
-        oprot.writeString(this._abstract);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (annotationWithQuote != null) {
+      String _iter0 = this.annotationWithQuote;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(ANNOTATION_WITH_QUOTE_FIELD_DESC);
-        oprot.writeString(this.annotationWithQuote);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (class_ != null) {
+      String _iter0 = this.class_;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(CLASS__FIELD_DESC);
-        oprot.writeString(this.class_);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (annotationWithTrailingComma != null) {
+      String _iter0 = this.annotationWithTrailingComma;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(ANNOTATION_WITH_TRAILING_COMMA_FIELD_DESC);
-        oprot.writeString(this.annotationWithTrailingComma);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (emptyAnnotations != null) {
+      String _iter0 = this.emptyAnnotations;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(EMPTY_ANNOTATIONS_FIELD_DESC);
-        oprot.writeString(this.emptyAnnotations);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
+      test.fixtures.basicannotations.MyEnum _iter0 = this.myEnum;
       oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
-      oprot.writeI32(this.myEnum == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(this.myEnum));
+      oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
       oprot.writeFieldEnd();
       }
       {
-      if (cppTypeAnnotation != null) {
+      List<String> _iter0 = this.cppTypeAnnotation;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(CPP_TYPE_ANNOTATION_FIELD_DESC);
-        List<String> _iter0 = cppTypeAnnotation;
         oprot.writeListBegin(new TList(TType.STRING, _iter0.size()));
             for (String _iter1 : _iter0) {
               oprot.writeString(_iter1);
@@ -499,9 +506,10 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       }
       }
       {
-      if (myUnion != null) {
+      test.fixtures.basicannotations.MyUnion _iter0 = this.myUnion;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MY_UNION_FIELD_DESC);
-        this.myUnion.write0(oprot);
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }

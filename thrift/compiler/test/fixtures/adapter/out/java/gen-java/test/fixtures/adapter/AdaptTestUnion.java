@@ -243,15 +243,17 @@ public final class AdaptTestUnion implements com.facebook.thrift.payload.ThriftS
       switch (this.id) {
       case _DELAY: {
         oprot.writeFieldBegin(DELAY_FIELD_DESC);
-        long delay = (long)this.value;
-        oprot.writeI64(delay);
+        long _iter0 = (long)this.value;
+    
+        oprot.writeI64(_iter0);
         oprot.writeFieldEnd();
         break;
       }
       case _CUSTOM: {
         oprot.writeFieldBegin(CUSTOM_FIELD_DESC);
-        byte[] custom = (byte[])this.value;
-        oprot.writeBinary(java.nio.ByteBuffer.wrap(custom));
+        byte[] _iter0 = (byte[])this.value;
+    
+        oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
         oprot.writeFieldEnd();
         break;
       }

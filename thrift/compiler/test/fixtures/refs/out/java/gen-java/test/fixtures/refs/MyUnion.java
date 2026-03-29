@@ -240,15 +240,17 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       switch (this.id) {
       case _ANINTEGER: {
         oprot.writeFieldBegin(AN_INTEGER_FIELD_DESC);
-        int anInteger = (int)this.value;
-        oprot.writeI32(anInteger);
+        int _iter0 = (int)this.value;
+    
+        oprot.writeI32(_iter0);
         oprot.writeFieldEnd();
         break;
       }
       case _ASTRING: {
         oprot.writeFieldBegin(A_STRING_FIELD_DESC);
-        String aString = (String)this.value;
-        oprot.writeString(aString);
+        String _iter0 = (String)this.value;
+    
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
         break;
       }

@@ -184,16 +184,18 @@ public final class FieldsInjectedToStruct implements com.facebook.thrift.payload
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      if (stringField != null) {
+      String _iter0 = this.stringField;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(STRING_FIELD_FIELD_DESC);
-        oprot.writeString(this.stringField);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (injectedField != null) {
+      String _iter0 = this.injectedField;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(INJECTED_FIELD_FIELD_DESC);
-        oprot.writeString(this.injectedField);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }

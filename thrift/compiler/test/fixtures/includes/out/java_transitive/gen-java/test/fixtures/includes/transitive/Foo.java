@@ -149,8 +149,9 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
+      long _iter0 = this.a;
       oprot.writeFieldBegin(A_FIELD_DESC);
-      oprot.writeI64(this.a);
+      oprot.writeI64(_iter0);
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

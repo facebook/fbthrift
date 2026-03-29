@@ -286,22 +286,25 @@ public final class ExampleUnion implements com.facebook.thrift.payload.ThriftSer
       switch (this.id) {
       case _STRINGVALUE: {
         oprot.writeFieldBegin(STRING_VALUE_FIELD_DESC);
-        String stringValue = (String)this.value;
-        oprot.writeString(stringValue);
+        String _iter0 = (String)this.value;
+    
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
         break;
       }
       case _INTVALUE: {
         oprot.writeFieldBegin(INT_VALUE_FIELD_DESC);
-        int intValue = (int)this.value;
-        oprot.writeI32(intValue);
+        int _iter0 = (int)this.value;
+    
+        oprot.writeI32(_iter0);
         oprot.writeFieldEnd();
         break;
       }
       case _DOUBLEVALUE: {
         oprot.writeFieldBegin(DOUBLE_VALUE_FIELD_DESC);
-        double doubleValue = (double)this.value;
-        oprot.writeDouble(doubleValue);
+        double _iter0 = (double)this.value;
+    
+        oprot.writeDouble(_iter0);
         oprot.writeFieldEnd();
         break;
       }

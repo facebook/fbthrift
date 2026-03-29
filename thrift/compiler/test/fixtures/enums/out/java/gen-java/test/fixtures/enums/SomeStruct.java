@@ -269,24 +269,27 @@ public final class SomeStruct implements com.facebook.thrift.payload.ThriftSeria
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
+      test.fixtures.enums.Metasyntactic _iter0 = this.reasonable;
       oprot.writeFieldBegin(REASONABLE_FIELD_DESC);
-      oprot.writeI32(this.reasonable == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(this.reasonable));
+      oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
       oprot.writeFieldEnd();
       }
       {
+      test.fixtures.enums.Metasyntactic _iter0 = this.fine;
       oprot.writeFieldBegin(FINE_FIELD_DESC);
-      oprot.writeI32(this.fine == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(this.fine));
+      oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
       oprot.writeFieldEnd();
       }
       {
+      test.fixtures.enums.Metasyntactic _iter0 = this.questionable;
       oprot.writeFieldBegin(QUESTIONABLE_FIELD_DESC);
-      oprot.writeI32(this.questionable == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(this.questionable));
+      oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
       oprot.writeFieldEnd();
       }
       {
-      if (tags != null) {
+      Set<Integer> _iter0 = this.tags;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(TAGS_FIELD_DESC);
-        Set<Integer> _iter0 = tags;
         oprot.writeSetBegin(new TSet(TType.I32, _iter0.size()));
             for (int _iter1 : _iter0) {
               oprot.writeI32(_iter1);

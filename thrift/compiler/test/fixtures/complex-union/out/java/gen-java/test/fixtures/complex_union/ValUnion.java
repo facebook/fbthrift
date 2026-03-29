@@ -238,15 +238,17 @@ public final class ValUnion implements com.facebook.thrift.payload.ThriftSeriali
       switch (this.id) {
       case _V1: {
         oprot.writeFieldBegin(V1_FIELD_DESC);
-        test.fixtures.complex_union.Val v1 = (test.fixtures.complex_union.Val)this.value;
-        v1.write0(oprot);
+        test.fixtures.complex_union.Val _iter0 = (test.fixtures.complex_union.Val)this.value;
+    
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
         break;
       }
       case _V2: {
         oprot.writeFieldBegin(V2_FIELD_DESC);
-        test.fixtures.complex_union.Val v2 = (test.fixtures.complex_union.Val)this.value;
-        v2.write0(oprot);
+        test.fixtures.complex_union.Val _iter0 = (test.fixtures.complex_union.Val)this.value;
+    
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
         break;
       }

@@ -254,27 +254,31 @@ public final class MyStruct1 implements com.facebook.thrift.payload.ThriftSerial
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
+      long _iter0 = this.myIntField;
       oprot.writeFieldBegin(MY_INT_FIELD_FIELD_DESC);
-      oprot.writeI64(this.myIntField);
+      oprot.writeI64(_iter0);
       oprot.writeFieldEnd();
       }
       {
-      if (myStringField != null) {
+      String _iter0 = this.myStringField;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MY_STRING_FIELD_FIELD_DESC);
-        oprot.writeString(this.myStringField);
+        oprot.writeString(_iter0);
         oprot.writeFieldEnd();
       }
       }
       {
-      if (myDataField != null) {
+      test.fixtures.basic_swift_bean.MyDataItem _iter0 = this.myDataField;
+      if (_iter0 != null) {
         oprot.writeFieldBegin(MY_DATA_FIELD_FIELD_DESC);
-        this.myDataField.write0(oprot);
+        _iter0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
+      long _iter0 = this.major;
       oprot.writeFieldBegin(MAJOR_FIELD_DESC);
-      oprot.writeI64(this.major);
+      oprot.writeI64(_iter0);
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
