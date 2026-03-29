@@ -18,9 +18,12 @@
 
 /// Contains the unadapted version of any adapted Thrift structs.
 pub mod unadapted {
-  {{#program:adapted_structs}}
+  {{#program:structs}}
+    {{! Iterate structs and unions with adapters }}
+    {{#if (and (not struct:exception?) struct:has_adapter?)}}
   {{> lib/struct}}
   {{> lib/structimpl}}
-  {{/program:adapted_structs}}
+    {{/if (and (not struct:exception?) struct:has_adapter?)}}
+  {{/program:structs}}
 
 }

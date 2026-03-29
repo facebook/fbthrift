@@ -504,18 +504,32 @@ class t_whisker_generator : public t_generator {
   }
 
   /**
-   * Converts a container of `t_type` instances to a Whisker array, resolving
-   * the most derived prototype for each element.
+   * Converts an iterator of `t_type` points or references to a Whisker array,
+   * resolving the most derived prototype for each element.
+   */
+  template <typename Iterator>
+  static auto to_type_array(
+      const prototype_database& proto, Iterator begin, Iterator end) {
+    whisker::array::raw refs;
+    for (; begin != end; ++begin) {
+      if constexpr (std::is_pointer_v<
+                        typename std::iterator_traits<Iterator>::value_type>) {
+        refs.emplace_back(resolve_derived_t_type(proto, **begin));
+      } else {
+        refs.emplace_back(resolve_derived_t_type(proto, *begin));
+      }
+    }
+    return whisker::make::array(std::move(refs));
+  }
+
+  /**
+   * Converts a container of `t_type` pointers or references to a Whisker array,
+   * resolving the most derived prototype for each element.
    */
   template <typename T>
   static auto to_type_array(
-      const std::vector<T*>& nodes, const prototype_database& proto) {
-    whisker::array::raw refs;
-    refs.reserve(nodes.size());
-    for (const T* ref : nodes) {
-      refs.emplace_back(resolve_derived_t_type(proto, *ref));
-    }
-    return whisker::make::array(std::move(refs));
+      const std::vector<T>& nodes, const whisker::prototype_database& proto) {
+    return to_type_array(proto, nodes.cbegin(), nodes.cend());
   }
 
   /**

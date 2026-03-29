@@ -117,10 +117,10 @@ mod dot_dot \{{{!
 #[deprecated]
 #[allow(hidden_glob_reexports)]
 pub mod __constructors {
-    {{#program:types_with_constructors}}
-    mod {{.}} {
-        pub use {{program:crate}}::{{.}};
+    {{#each program:types_with_constructors as |type|}}
+    mod {{type.rust_name}} {
+        pub use {{program:crate}}::{{type.rust_name}};
     }
-    pub use self::{{.}}::*;
-    {{/program:types_with_constructors}}
+    pub use self::{{type.rust_name}}::*;
+    {{/each}}
 }

@@ -42,14 +42,14 @@ pub(crate) use {{program:crate}} as types;
 }}
 {{#if program:split_mode_enabled?}}
 
-{{#program:type_splits}}
+  {{#each program:type_splits as |split_num|}}
 #[allow(unused_imports)]
-pub use {{program:types}}_split{{.}}::*;
-{{/program:type_splits}}
+pub use {{program:types}}_split{{split_num}}::*;
+  {{/each}}
 pub mod __constructors {
-{{#program:type_splits}}
-  pub use {{program:types}}_split{{.}}::__constructors::*;
-{{/program:type_splits}}
+  {{#each program:type_splits as |split_num|}}
+  pub use {{program:types}}_split{{split_num}}::__constructors::*;
+  {{/each}}
 }
 {{/if program:split_mode_enabled?}}
 {{!
@@ -162,12 +162,12 @@ pub(crate) mod r#impl \{{{> lib/mod.impl}}}
 #[deprecated]
 #[allow(hidden_glob_reexports)]
 pub mod __constructors {
-    {{#program:types_with_constructors}}
-    mod {{.}} {
-        pub use {{program:crate}}::{{.}};
+    {{#each program:types_with_constructors as |type|}}
+    mod {{type.rust_name}} {
+        pub use {{program:crate}}::{{type.rust_name}};
     }
-    pub use self::{{.}}::*;
-    {{/program:types_with_constructors}}
+    pub use self::{{type.rust_name}}::*;
+    {{/each}}
 }
 {{!
 --------------------------------------------------------------------------------

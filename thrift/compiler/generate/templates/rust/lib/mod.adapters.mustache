@@ -18,16 +18,16 @@
 
 /// Type aliases for the adapter used on an adapted typedef or struct.
 pub mod adapters {
-    {{#program:adapters}}
-    pub type {{type:rust_name}} = {{!
-        }}{{#type:typedef}}{{!
-            }}{{#if typedef:has_adapter?}}{{typedef:adapter_name}}{{/if typedef:has_adapter?}}{{!
-        }}{{/type:typedef}}{{!
-        }}{{^type:typedef}}{{!
-            }}{{#type:structured}}{{!
-                }}{{#if struct:has_adapter?}}{{struct:adapter_name}}{{/if struct:has_adapter?}}{{!
-            }}{{/type:structured}}{{!
-        }}{{/type:typedef}}{{!
-    }};
-    {{/program:adapters}}
+    {{! Structs and unions with adapters }}
+    {{#each program:structured_definitions as |def|}}
+        {{#if (and (not def.exception?) def.has_adapter?)}}
+    pub type {{def.rust_name}} = {{def.adapter_name}};
+        {{/if (and (not def.exception?) def.has_adapter?)}}
+    {{/each}}
+    {{! Typedefs with *direct* adapters (not including transitive, or a type in the resolution chain) }}
+    {{#each program:self.typedefs as |typedef|}}
+        {{#if typedef.has_direct_adapter?}}
+    pub type {{typedef.rust_name}} = {{typedef.adapter_name}};
+        {{/if typedef.has_direct_adapter?}}
+    {{/each}}
 }

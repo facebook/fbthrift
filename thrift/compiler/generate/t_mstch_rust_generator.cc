@@ -856,7 +856,17 @@ class t_mstch_rust_generator : public t_mstch_generator {
  private:
   void set_mstch_factories();
   rust_codegen_options options_;
+  // NOTE: these two fields are not initialized/used unless splitting is used
   std::vector<rust_split_info> split_info_;
+  const rust_split_info* current_split_ = nullptr;
+
+  const rust_split_info& current_split() const {
+    if (current_split_ == nullptr) {
+      throw whisker::eval_error(
+          "Current split property used in non-split render context");
+    }
+    return *current_split_;
+  }
 
   // Checks whether a type is defined within the current program, recursively
   // checking through container element types. When a program-local type is
@@ -1176,6 +1186,10 @@ class t_mstch_rust_generator : public t_mstch_generator {
       return adapter_annotation != nullptr ||
           type_has_transitive_adapter(curr_type, false);
     });
+    // Typedef unfortunately already has a pre-existing property called
+    // `has_adapter`, with usages, so we need to have a different one for
+    // testing if this specific typedef is annotated with an adapter
+    def.property("has_direct_adapter?", &node_has_adapter);
     def.property("adapter_name", [this](const t_typedef& self) {
       auto adapter_annotation = find_structured_adapter_annotation(self);
       return compute_adapter_name(
@@ -1293,9 +1307,7 @@ class t_mstch_rust_generator : public t_mstch_generator {
       }
       return true;
     });
-    def.property("has_adapter?", [](const t_structured& self) {
-      return node_has_adapter(self);
-    });
+    def.property("has_adapter?", &node_has_adapter);
     def.property("adapter_name", [this](const t_structured& self) {
       auto adapter_annotation = find_structured_adapter_annotation(self);
       // Structs cannot have transitive types, so ignore transitive check.
@@ -1497,8 +1509,8 @@ class t_mstch_rust_generator : public t_mstch_generator {
               type_name));
       std::sort(returns.begin(), returns.end());
       whisker::array::raw result;
-      for (const std::string& ret : returns) {
-        result.emplace_back(whisker::make::string(ret));
+      for (std::string& ret : returns) {
+        result.emplace_back(std::move(ret));
       }
       return whisker::make::array(std::move(result));
     });
@@ -1727,6 +1739,52 @@ class t_mstch_rust_generator : public t_mstch_generator {
       }
       return whisker::make::array(std::move(structs));
     });
+    def.property(
+        "types_with_constructors", [this, &proto](const t_program& self) {
+          // Types that this crate defines in both the type namespace and value
+          // namespace: enums (E is a type, E(0) is an expression), newtype
+          // typedefs, and non-newtype typedefs referring to these.
+          struct type_rust_name_less {
+            bool operator()(const t_type* lhs, const t_type* rhs) const {
+              return type_rust_name(lhs) < type_rust_name(rhs);
+            }
+          };
+          std::set<const t_type*, type_rust_name_less> types;
+          if (current_split_ != nullptr) {
+            types.insert(
+                current_split_->enums.cbegin(), current_split_->enums.cend());
+            for (const t_typedef* t : current_split_->typedefs) {
+              if (typedef_has_constructor_expression(t)) {
+                types.insert(t);
+              }
+            }
+          } else {
+            types.insert(self.enums().cbegin(), self.enums().cend());
+            for (const t_typedef* t : self.typedefs()) {
+              if (typedef_has_constructor_expression(t)) {
+                types.insert(t);
+              }
+            }
+          }
+          return to_type_array(proto, types.begin(), types.end());
+        });
+    def.property("current_split_structs", [this, &proto](const t_program&) {
+      return to_array(current_split().structs, proto.of<t_structured>());
+    });
+    def.property("current_split_typedefs", [this, &proto](const t_program&) {
+      return to_array(current_split().typedefs, proto.of<t_typedef>());
+    });
+    def.property("current_split_enums", [this, &proto](const t_program&) {
+      return to_array(current_split().enums, proto.of<t_enum>());
+    });
+    def.property("type_splits", [this](const t_program&) {
+      whisker::array::raw split_indices;
+      split_indices.reserve(options_.types_split_count + 1);
+      for (int i = 0; i <= options_.types_split_count; i++) {
+        split_indices.emplace_back(whisker::i64{i});
+      }
+      return whisker::make::array(std::move(split_indices));
+    });
     return std::move(def).make();
   }
 };
@@ -1746,13 +1804,12 @@ class rust_mstch_program : public mstch_program {
       mstch_context& ctx,
       mstch_element_position pos,
       data d,
-      const int split_id = 0)
+      const size_t split_id = 0)
       : mstch_program(program, ctx, pos),
         options_(d.options),
         current_split_(
-            split_id < static_cast<int>(d.split_info.size())
-                ? d.split_info[split_id]
-                : empty_split()) {
+            split_id < d.split_info.size() ? d.split_info[split_id]
+                                           : empty_split()) {
     register_methods(
         this,
         {
@@ -1760,18 +1817,12 @@ class rust_mstch_program : public mstch_program {
              &rust_mstch_program::rust_nonstandard_types},
             {"program:nonstandardFields",
              &rust_mstch_program::rust_nonstandard_fields},
-            {"program:adapted_structs",
-             &rust_mstch_program::rust_adapted_structs},
-            {"program:adapters", &rust_mstch_program::rust_adapters},
-            {"program:types_with_constructors",
-             &rust_mstch_program::rust_types_with_constructors},
             {"program:current_split_structs",
              &rust_mstch_program::current_split_structs},
             {"program:current_split_typedefs",
              &rust_mstch_program::current_split_typedefs},
             {"program:current_split_enums",
              &rust_mstch_program::current_split_enums},
-            {"program:type_splits", &rust_mstch_program::type_splits},
         });
   }
 
@@ -1812,67 +1863,6 @@ class rust_mstch_program : public mstch_program {
     return make_mstch_fields(
         std::vector<const t_field*>(fields.begin(), fields.end()));
   }
-  mstch::node rust_adapted_structs() {
-    mstch::array strcts;
-
-    for (const t_structured* strct : program_->structs_and_unions()) {
-      if (node_has_adapter(*strct)) {
-        strcts.emplace_back(
-            context_.struct_factory->make_mstch_object(strct, context_, pos_));
-      }
-    }
-
-    return strcts;
-  }
-
-  mstch::node rust_adapters() {
-    mstch::array types_with_direct_adapters;
-
-    for (const t_structured* strct : program_->structs_and_unions()) {
-      if (node_has_adapter(*strct)) {
-        types_with_direct_adapters.emplace_back(
-            context_.type_factory->make_mstch_object(strct, context_, pos_));
-      }
-    }
-
-    for (const t_typedef* t : program_->typedefs()) {
-      if (node_has_adapter(*t)) {
-        types_with_direct_adapters.emplace_back(
-            context_.type_factory->make_mstch_object(t, context_, pos_));
-      }
-    }
-
-    return types_with_direct_adapters;
-  }
-
-  mstch::node rust_types_with_constructors() {
-    // Names that this Thrift crate defines in both the type namespace and value
-    // namespace. This is the case for enums, where `E` is a type and `E(0)` is
-    // an expression, and for newtype typedefs, where `T` is a type and
-    // `T(inner)` is an expression, and also for non-newtype typedefs referring
-    // to these.
-    std::set<std::string> types;
-    if (options_.types_split_count > 0) {
-      for (const t_enum* t : current_split_.enums) {
-        types.insert(type_rust_name(t));
-      }
-      for (const t_typedef* t : current_split_.typedefs) {
-        if (typedef_has_constructor_expression(t)) {
-          types.insert(type_rust_name(t));
-        }
-      }
-    } else {
-      for (const t_enum* t : program_->enums()) {
-        types.insert(type_rust_name(t));
-      }
-      for (const t_typedef* t : program_->typedefs()) {
-        if (typedef_has_constructor_expression(t)) {
-          types.insert(type_rust_name(t));
-        }
-      }
-    }
-    return mstch::array(types.begin(), types.end());
-  }
 
   mstch::node current_split_structs() {
     std::string id =
@@ -1893,14 +1883,6 @@ class rust_mstch_program : public mstch_program {
         program_cache_id(program_, get_program_namespace(program_));
     return make_mstch_array_cached(
         current_split_.enums, *context_.enum_factory, context_.enum_cache, id);
-  }
-
-  mstch::node type_splits() {
-    mstch::array split_indices(options_.types_split_count + 1);
-    for (int i = 0; i < options_.types_split_count + 1; i++) {
-      split_indices[i] = i;
-    }
-    return split_indices;
   }
 
  private:
@@ -2143,7 +2125,12 @@ void t_mstch_rust_generator::generate_split_types() {
   }
 
   // Generate individual split files
-  for (int split_id = 0; split_id <= options_.types_split_count; ++split_id) {
+  for (size_t split_id = 0;
+       static_cast<int>(split_id) <= options_.types_split_count;
+       ++split_id) {
+    // Set current split on the generator, so Whisker properties can access it
+    assert(split_info_.size() > split_id); // For the linter
+    current_split_ = &split_info_[split_id];
     auto split_program = std::make_shared<rust_mstch_program>(
         program_,
         mstch_context_,
@@ -2152,10 +2139,9 @@ void t_mstch_rust_generator::generate_split_types() {
         split_id);
 
     render_to_file(
-        std::shared_ptr<mstch_base>(split_program),
-        "lib/types_split",
-        fmt::format("types_{}.rs", split_id));
+        split_program, "lib/types_split", fmt::format("types_{}.rs", split_id));
   }
+  current_split_ = nullptr;
 }
 
 void t_mstch_rust_generator::set_mstch_factories() {
