@@ -474,43 +474,43 @@ void Hasher::hash(
 
 void Hasher::hash(const SerializableRecordUnion& record) {
   hash(record.getType());
-  if (auto v = record.boolDatum()) {
-    hash(*v);
-  } else if (auto v = record.int8Datum()) {
-    hash(*v);
-  } else if (auto v = record.int16Datum()) {
-    hash(*v);
-  } else if (auto v = record.int32Datum()) {
-    hash(*v);
-  } else if (auto v = record.int64Datum()) {
-    hash(*v);
-  } else if (auto v = record.float32Datum()) {
-    hash(*v);
-  } else if (auto v = record.float64Datum()) {
-    hash(*v);
-  } else if (auto v = record.textDatum()) {
-    hash(std::string_view{*v});
-  } else if (auto v = record.byteArrayDatum()) {
-    hash(*v);
-  } else if (auto v = record.fieldSetDatum()) {
+  if (auto boolVal = record.boolDatum()) {
+    hash(*boolVal);
+  } else if (auto int8Val = record.int8Datum()) {
+    hash(*int8Val);
+  } else if (auto int16Val = record.int16Datum()) {
+    hash(*int16Val);
+  } else if (auto int32Val = record.int32Datum()) {
+    hash(*int32Val);
+  } else if (auto int64Val = record.int64Datum()) {
+    hash(*int64Val);
+  } else if (auto float32Val = record.float32Datum()) {
+    hash(*float32Val);
+  } else if (auto float64Val = record.float64Datum()) {
+    hash(*float64Val);
+  } else if (auto textVal = record.textDatum()) {
+    hash(std::string_view{*textVal});
+  } else if (auto byteArrayVal = record.byteArrayDatum()) {
+    hash(*byteArrayVal);
+  } else if (auto fieldSetVal = record.fieldSetDatum()) {
     forEachSortedByKey(
-        *v,
+        *fieldSetVal,
         [](const auto& entry) { return static_cast<int16_t>(entry.first); },
         [this](int16_t id, const auto& entry) {
           hash(id);
           hash(entry.second);
         });
-  } else if (auto v = record.listDatum()) {
-    for (const auto& elem : *v) {
+  } else if (auto listVal = record.listDatum()) {
+    for (const auto& elem : *listVal) {
       hash(elem);
     }
-  } else if (auto v = record.setDatum()) {
+  } else if (auto setVal = record.setDatum()) {
     hashUnorderedByDigest(
-        *v, [](Hasher& h, const auto& elem) { h.hash(elem); });
-  } else if (auto v = record.mapDatum()) {
+        *setVal, [](Hasher& h, const auto& elem) { h.hash(elem); });
+  } else if (auto mapVal = record.mapDatum()) {
     // Sort by key digest, then hash key+value pairs in order
     hashMapByKeyDigest(
-        *v,
+        *mapVal,
         [](Hasher& h, const auto& entry) { h.hash(*entry.key()); },
         [](Hasher& h, const auto& entry) {
           h.hash(*entry.key());
