@@ -259,6 +259,7 @@ impl ::fbthrift::ThriftEnum for E1 {
         ]
     }
 
+    #[allow(clippy::unnecessary_cast)]
     fn inner_value(&self) -> i32 {
         self.0 as i32
     }
@@ -292,6 +293,7 @@ impl ::std::convert::From<::std::primitive::i32> for E1 {
     }
 }
 
+#[allow(clippy::unnecessary_cast)]
 impl ::std::fmt::Display for E1 {
     fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         static VARIANTS_BY_NUMBER: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
@@ -308,6 +310,7 @@ impl ::std::fmt::Debug for E1 {
     }
 }
 
+#[allow(clippy::unnecessary_cast)]
 impl ::std::str::FromStr for E1 {
     type Err = ::anyhow::Error;
 
@@ -329,6 +332,7 @@ where
     P: ::fbthrift::ProtocolWriter,
 {
     #[inline]
+    #[allow(clippy::unnecessary_cast)]
     fn rs_thrift_write(&self, p: &mut P) {
         p.write_i32(self.0 as i32)
     }
@@ -369,6 +373,7 @@ impl ::fbthrift::ThriftEnum for F2 {
         ]
     }
 
+    #[allow(clippy::unnecessary_cast)]
     fn inner_value(&self) -> i32 {
         self.0 as i32
     }
@@ -402,6 +407,7 @@ impl ::std::convert::From<::std::primitive::i32> for F2 {
     }
 }
 
+#[allow(clippy::unnecessary_cast)]
 impl ::std::fmt::Display for F2 {
     fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         static VARIANTS_BY_NUMBER: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
@@ -416,6 +422,7 @@ impl ::std::fmt::Debug for F2 {
     }
 }
 
+#[allow(clippy::unnecessary_cast)]
 impl ::std::str::FromStr for F2 {
     type Err = ::anyhow::Error;
 
@@ -435,6 +442,7 @@ where
     P: ::fbthrift::ProtocolWriter,
 {
     #[inline]
+    #[allow(clippy::unnecessary_cast)]
     fn rs_thrift_write(&self, p: &mut P) {
         p.write_i32(self.0 as i32)
     }
@@ -483,6 +491,7 @@ impl ::fbthrift::ThriftEnum for EnumWithDerives {
         ]
     }
 
+    #[allow(clippy::unnecessary_cast)]
     fn inner_value(&self) -> i32 {
         self.0 as i32
     }
@@ -516,6 +525,7 @@ impl ::std::convert::From<::std::primitive::i32> for EnumWithDerives {
     }
 }
 
+#[allow(clippy::unnecessary_cast)]
 impl ::std::fmt::Display for EnumWithDerives {
     fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         static VARIANTS_BY_NUMBER: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
@@ -532,6 +542,7 @@ impl ::std::fmt::Debug for EnumWithDerives {
     }
 }
 
+#[allow(clippy::unnecessary_cast)]
 impl ::std::str::FromStr for EnumWithDerives {
     type Err = ::anyhow::Error;
 
@@ -553,6 +564,7 @@ where
     P: ::fbthrift::ProtocolWriter,
 {
     #[inline]
+    #[allow(clippy::unnecessary_cast)]
     fn rs_thrift_write(&self, p: &mut P) {
         p.write_i32(self.0 as i32)
     }

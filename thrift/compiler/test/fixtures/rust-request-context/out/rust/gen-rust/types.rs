@@ -98,6 +98,7 @@ impl ::fbthrift::ThriftEnum for MyEnum {
         ]
     }
 
+    #[allow(clippy::unnecessary_cast)]
     fn inner_value(&self) -> i32 {
         self.0 as i32
     }
@@ -131,6 +132,7 @@ impl ::std::convert::From<::std::primitive::i32> for MyEnum {
     }
 }
 
+#[allow(clippy::unnecessary_cast)]
 impl ::std::fmt::Display for MyEnum {
     fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         static VARIANTS_BY_NUMBER: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
@@ -147,6 +149,7 @@ impl ::std::fmt::Debug for MyEnum {
     }
 }
 
+#[allow(clippy::unnecessary_cast)]
 impl ::std::str::FromStr for MyEnum {
     type Err = ::anyhow::Error;
 
@@ -168,6 +171,7 @@ where
     P: ::fbthrift::ProtocolWriter,
 {
     #[inline]
+    #[allow(clippy::unnecessary_cast)]
     fn rs_thrift_write(&self, p: &mut P) {
         p.write_i32(self.0 as i32)
     }

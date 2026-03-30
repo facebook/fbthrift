@@ -140,6 +140,7 @@ impl ::fbthrift::ThriftEnum for EmptyEnum {
         ]
     }
 
+    #[allow(clippy::unnecessary_cast)]
     fn inner_value(&self) -> i32 {
         self.0 as i32
     }
@@ -173,6 +174,7 @@ impl ::std::convert::From<::std::primitive::i32> for EmptyEnum {
     }
 }
 
+#[allow(clippy::unnecessary_cast)]
 impl ::std::fmt::Display for EmptyEnum {
     fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         static VARIANTS_BY_NUMBER: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
@@ -187,6 +189,7 @@ impl ::std::fmt::Debug for EmptyEnum {
     }
 }
 
+#[allow(clippy::unnecessary_cast)]
 impl ::std::str::FromStr for EmptyEnum {
     type Err = ::anyhow::Error;
 
@@ -206,6 +209,7 @@ where
     P: ::fbthrift::ProtocolWriter,
 {
     #[inline]
+    #[allow(clippy::unnecessary_cast)]
     fn rs_thrift_write(&self, p: &mut P) {
         p.write_i32(self.0 as i32)
     }
@@ -262,6 +266,7 @@ impl ::fbthrift::ThriftEnum for City {
         ]
     }
 
+    #[allow(clippy::unnecessary_cast)]
     fn inner_value(&self) -> i32 {
         self.0 as i32
     }
@@ -295,6 +300,7 @@ impl ::std::convert::From<::std::primitive::i32> for City {
     }
 }
 
+#[allow(clippy::unnecessary_cast)]
 impl ::std::fmt::Display for City {
     fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         static VARIANTS_BY_NUMBER: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
@@ -313,6 +319,7 @@ impl ::std::fmt::Debug for City {
     }
 }
 
+#[allow(clippy::unnecessary_cast)]
 impl ::std::str::FromStr for City {
     type Err = ::anyhow::Error;
 
@@ -336,6 +343,7 @@ where
     P: ::fbthrift::ProtocolWriter,
 {
     #[inline]
+    #[allow(clippy::unnecessary_cast)]
     fn rs_thrift_write(&self, p: &mut P) {
         p.write_i32(self.0 as i32)
     }
@@ -396,6 +404,7 @@ impl ::fbthrift::ThriftEnum for Company {
         ]
     }
 
+    #[allow(clippy::unnecessary_cast)]
     fn inner_value(&self) -> i32 {
         self.0 as i32
     }
@@ -429,6 +438,7 @@ impl ::std::convert::From<::std::primitive::i32> for Company {
     }
 }
 
+#[allow(clippy::unnecessary_cast)]
 impl ::std::fmt::Display for Company {
     fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         static VARIANTS_BY_NUMBER: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
@@ -448,6 +458,7 @@ impl ::std::fmt::Debug for Company {
     }
 }
 
+#[allow(clippy::unnecessary_cast)]
 impl ::std::str::FromStr for Company {
     type Err = ::anyhow::Error;
 
@@ -472,6 +483,7 @@ where
     P: ::fbthrift::ProtocolWriter,
 {
     #[inline]
+    #[allow(clippy::unnecessary_cast)]
     fn rs_thrift_write(&self, p: &mut P) {
         p.write_i32(self.0 as i32)
     }
