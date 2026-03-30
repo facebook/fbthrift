@@ -26,7 +26,6 @@ from tabulate import tabulate
 class Flavor(Enum):
     PYTHON = 0
     PY3 = 1
-    PY_DEPRECATED = 2
     PYTHON_FULLY_POPULATE_CACHE = 3
     MUTABLE_PYTHON = 4
 
@@ -35,7 +34,6 @@ def import_statement(flavor: Flavor) -> str:
     NAMESPACES = {
         Flavor.PYTHON: "thrift_types",
         Flavor.PY3: "types",
-        Flavor.PY_DEPRECATED: "ttypes",
         Flavor.PYTHON_FULLY_POPULATE_CACHE: "thrift_types",
         Flavor.MUTABLE_PYTHON: "thrift_mutable_types",
     }
@@ -179,30 +177,11 @@ inst = MyStruct(
 """
 
 
-# pyre-fixme[7]: Expected `str` but got implicit return value of `None`.
 def import_serializer_statement(flavor: Flavor) -> str:
     if flavor == Flavor.PYTHON:
         return "from thrift.python.serializer import deserialize, serialize"
     elif flavor == Flavor.PY3:
         return "from thrift.py3.serializer import deserialize, serialize"
-    elif flavor == Flavor.PY_DEPRECATED:
-        return """
-from thrift.util.Serializer import deserialize as d, serialize as s
-from thrift.protocol.TCompactProtocol import TCompactProtocolFactory
-
-def serialize(inst):
-    return s(
-        TCompactProtocolFactory(),
-        inst,
-    )
-
-def deserialize(klass, bytes):
-    return d(
-        TCompactProtocolFactory(),
-        bytes,
-        klass()
-    )
-"""
     elif flavor == Flavor.PYTHON_FULLY_POPULATE_CACHE:
         return """
 from thrift.python.serializer import deserialize as d, serialize
@@ -212,6 +191,7 @@ def deserialize(klass, bytes):
 """
     elif flavor == Flavor.MUTABLE_PYTHON:
         return "from thrift.python.mutable_serializer import deserialize, serialize"
+    raise ValueError(f"Unknown flavor: {flavor}")
 
 
 def serialze_statement(flavor: Flavor) -> str:
