@@ -29,7 +29,7 @@ The argument and result types for functions on thrift services (and interactions
 
 class {{#partial m_functions.args_type service=service function=function}}({{#partial m_types.struct_base}}):
     {{#each function.params.fields as |field|}}
-    {{field.py_name}}: _typing.Final[{{#partial typehints.pep484_type type=field.type}}] = ...
+    {{field.py_name}}: _typing.Final[{{#partial typehints.field_pep484_type field=field}}] = ...
     {{/each}}
 
     def __init__(
@@ -39,7 +39,7 @@ class {{#partial m_functions.args_type service=service function=function}}({{#pa
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
         builtins.str,
         _typing.Union[None{{#each function.params.fields as |field|}}, {{!
-            }}{{#partial typehints.pep484_type type=field.type}}{{!
+            }}{{#partial typehints.field_pep484_type field=field}}{{!
         }}{{/each}}]]]: ...
   {{#if (not function.oneway?)}}
 
@@ -48,13 +48,13 @@ class _fbthrift_{{service.name}}_{{function.name}}_result({{#partial m_types.str
    {{#let regular_response_type = function.return_type.true_type}}
     success: _typing.Final[{{#partial typehints.pep484_type type=regular_response_type}}]
     {{#each function.exceptions as |field|}}
-    {{field.py_name}}: _typing.Final[{{#partial typehints.pep484_type type=field.type}}]
+    {{field.py_name}}: _typing.Final[{{#partial typehints.field_pep484_type field=field}}]
     {{/each}}
 
     def __init__(
         self, *, success: _typing.Optional[{{#partial typehints.pep484_type type=regular_response_type}}] = ...{{!
         }}{{#each (array.enumerate function.exceptions) as |index field|}}{{!
-        }}, {{#partial m_fields.exception_field_name field=field index=index }}: _typing.Optional[{{#partial typehints.pep484_type type=field.type}}]=...{{!
+        }}, {{#partial m_fields.exception_field_name field=field index=index }}: _typing.Optional[{{#partial typehints.field_pep484_type field=field}}]=...{{!
         }}{{/each}}
     ) -> None: ...
 
@@ -63,7 +63,7 @@ class _fbthrift_{{service.name}}_{{function.name}}_result({{#partial m_types.str
         _typing.Union[
             {{#partial typehints.pep484_type type=regular_response_type}},
             {{#each function.exceptions as |field|}}
-            {{#partial typehints.pep484_type type=field.type}},
+            {{#partial typehints.field_pep484_type field=field}},
             {{/each}}
         ]]]: ...
   {{/if (not function.oneway?)}}
@@ -75,13 +75,13 @@ class _fbthrift_{{service.name}}_{{function.name}}_result_stream_elem({{!
 }}{{#if python.generate_immutable_types?}}_fbthrift_python_types._fbthrift_ResponseStreamResult{{/if}}{{!
 }}[{{#partial typehints.pep484_type type=function.stream.elem_type}}]):
     {{#each function.stream.exceptions as |field|}}
-    {{field.py_name}}: _typing.Final[{{#partial typehints.pep484_type type=field.type}}]
+    {{field.py_name}}: _typing.Final[{{#partial typehints.field_pep484_type field=field}}]
     {{/each}}
 
     def __init__(
         self, *, success: _typing.Optional[{{#partial typehints.pep484_type type=function.stream.elem_type}}] = ...{{!
         }}{{#each (array.enumerate function.stream.exceptions) as |index field|}}{{!
-        }}, {{#partial m_fields.exception_field_name field=field index=index}}: _typing.Optional[{{#partial typehints.pep484_type type=field.type}}]=...{{!
+        }}, {{#partial m_fields.exception_field_name field=field index=index}}: _typing.Optional[{{#partial typehints.field_pep484_type field=field}}]=...{{!
         }}{{/each}}
     ) -> None: ...
 
@@ -91,7 +91,7 @@ class _fbthrift_{{service.name}}_{{function.name}}_result_stream_elem({{!
         _typing.Union[
             {{#partial typehints.pep484_type type=function.stream.elem_type}},
             {{#each function.stream.exceptions as |field|}}
-            {{#partial typehints.pep484_type type=field.type}},
+            {{#partial typehints.field_pep484_type field=field}},
             {{/each}}
         ]]]: ...
   {{/if function.stream?}}
@@ -102,7 +102,7 @@ class _fbthrift_{{service.name}}_{{function.name}}_result_sink_elem({{!
 }}{{#partial m_types.sink_result_base}}{{!
 }}[{{#partial typehints.pep484_type type=function.sink.elem_type}}]):
     {{#each function.sink.exceptions as |field|}}
-    {{field.py_name}}: _typing.Final[{{#partial typehints.pep484_type type=field.type}}]
+    {{field.py_name}}: _typing.Final[{{#partial typehints.field_pep484_type field=field}}]
     {{/each}}
 
     def __init__(
@@ -110,7 +110,7 @@ class _fbthrift_{{service.name}}_{{function.name}}_result_sink_elem({{!
         *,
         success: _typing.Optional[{{#partial typehints.pep484_type type=function.sink.elem_type}}] = ...{{!
         }}{{#each (array.enumerate function.sink.exceptions) as |index field|}}{{!
-        }}, {{#partial m_fields.exception_field_name field=field index=index}}: _typing.Optional[{{#partial typehints.pep484_type type=field.type}}]=...{{!
+        }}, {{#partial m_fields.exception_field_name field=field index=index}}: _typing.Optional[{{#partial typehints.field_pep484_type field=field}}]=...{{!
         }}{{/each}}
     ) -> None: ...
 
@@ -119,7 +119,7 @@ class _fbthrift_{{service.name}}_{{function.name}}_result_sink_elem({{!
         _typing.Union[
             {{#partial typehints.pep484_type type=function.sink.elem_type}},
             {{#each function.sink.exceptions as |field|}}
-            {{#partial typehints.pep484_type type=field.type}},
+            {{#partial typehints.field_pep484_type field=field}},
             {{/each}}
         ]]]: ...
 
@@ -129,7 +129,7 @@ class _fbthrift_{{service.name}}_{{function.name}}_result_sink_final({{!
 }}{{#partial m_types.sink_final_result_base}}{{!
 }}[{{#partial typehints.pep484_type type=function.sink.final_response_type}}]):
     {{#each function.sink.final_response_exceptions as |field|}}
-    {{field.py_name}}: _typing.Final[{{#partial typehints.pep484_type type=field.type}}]
+    {{field.py_name}}: _typing.Final[{{#partial typehints.field_pep484_type field=field}}]
     {{/each}}
 
     def __init__(
@@ -137,7 +137,7 @@ class _fbthrift_{{service.name}}_{{function.name}}_result_sink_final({{!
         *,
         success: _typing.Optional[{{#partial typehints.pep484_type type=function.sink.final_response_type}}] = ...{{!
         }}{{#each (array.enumerate function.sink.final_response_exceptions) as |index field|}}{{!
-        }}, {{#partial m_fields.exception_field_name field=field index=index}}: _typing.Optional[{{#partial typehints.pep484_type type=field.type}}]=...{{!
+        }}, {{#partial m_fields.exception_field_name field=field index=index}}: _typing.Optional[{{#partial typehints.field_pep484_type field=field}}]=...{{!
         }}{{/each}}
     ) -> None: ...
 
@@ -146,7 +146,7 @@ class _fbthrift_{{service.name}}_{{function.name}}_result_sink_final({{!
         _typing.Union[
             {{#partial typehints.pep484_type type=function.sink.final_response_type}},
             {{#each function.sink.final_response_exceptions as |field|}}
-            {{#partial typehints.pep484_type type=field.type}},
+            {{#partial typehints.field_pep484_type field=field}},
             {{/each}}
         ]]]: ...
     {{/if (not function.bidirectional_stream?)}}

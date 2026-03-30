@@ -111,6 +111,17 @@ None
 {{/let partial}}
 
 
+{{! Field-aware pep484 type: checks field-level @cpp.Type for IOBuf before
+    delegating to the type-level pep484_type partial. }}
+{{#let export partial field_pep484_type |field| captures |pep484_type|}}
+{{#pragma ignore-newlines}}
+{{#if (and field.is_type_iobuf? (not field.has_adapter?) (not field.type.has_adapter?))}}
+_fbthrift_iobuf.IOBuf
+{{#else}}
+{{#partial pep484_type type=field.type}}
+{{/if (and field.is_type_iobuf? (not field.has_adapter?) (not field.type.has_adapter?))}}
+{{/let partial}}
+
 {{! Const PEP484 type }}
 {{#let export partial const_type |type| captures |pep484_type|}}
 {{#pragma ignore-newlines}}

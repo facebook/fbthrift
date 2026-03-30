@@ -216,3 +216,14 @@ None
 )
   {{/if type.has_adapter?}}
 {{/let partial}}
+
+{{! Field-aware typeinfo: checks field-level @cpp.Type for IOBuf before
+    delegating to the type-level typeinfo partial. }}
+{{#let export partial field_typeinfo |field| captures |typeinfo|}}
+{{#pragma ignore-newlines}}
+{{#if (and field.is_type_iobuf? (not field.has_adapter?) (not field.type.has_adapter?))}}
+_fbthrift_python_types.typeinfo_iobuf
+{{#else}}
+{{#if (not field.type.primitive?)}}lambda: {{/if}}{{#partial typeinfo type=field.type}}
+{{/if (and field.is_type_iobuf? (not field.has_adapter?) (not field.type.has_adapter?))}}
+{{/let partial}}

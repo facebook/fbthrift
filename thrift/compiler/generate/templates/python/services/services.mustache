@@ -101,7 +101,7 @@ class {{service.name}}Interface(
 
     {{#if (not function.bidirectional_stream?)}}{{#if (not function.stream?)}}async {{/if}}{{#if function.stream_has_first_response?}}async {{/if}}def {{function.name}}(
             self{{#each function.params.fields as |field|}},
-            {{field.py_name}}: {{#partial typehints.pep484_type type=field.type}}{{/each}}
+            {{field.py_name}}: {{#partial typehints.field_pep484_type field=field}}{{/each}}
         ) -> {{> services/service_func_return_type }}:
         raise NotImplementedError("async def {{function.name}} is not implemented")
 
@@ -171,7 +171,7 @@ class {{service.name}}Interface(
 
     async def {{function.name}}(
             self{{#each function.params.fields as |field|}},
-            {{field.py_name}}: {{#partial typehints.pep484_type type=field.type}}{{/each}}
+            {{field.py_name}}: {{#partial typehints.field_pep484_type field=field}}{{/each}}
         ) -> {{> services/service_func_return_type }}:
             raise NotImplementedError("async def {{function.name}} is not implemented")
 

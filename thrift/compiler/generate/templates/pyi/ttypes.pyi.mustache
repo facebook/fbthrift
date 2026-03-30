@@ -109,5 +109,8 @@ class {{struct:name}}{{#struct:exception?}}(Thrift.TException){{/struct:exceptio
 
 
 {{#program:typedefs}}
-{{typedef:name}} = {{#partial common.type_name type=typedef:resolved}}
+{{#let td_adapter=typedef:adapter}}
+{{#if (object.notnull? td_adapter)}}{{typedef:name}} = {{td_adapter}}.Type
+{{#else}}{{typedef:name}} = {{#partial common.type_name type=typedef:resolved}}
+{{/if (object.notnull? td_adapter)}}
 {{/program:typedefs}}

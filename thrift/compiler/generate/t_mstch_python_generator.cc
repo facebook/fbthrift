@@ -19,6 +19,7 @@
 #include <optional>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 #include <fmt/format.h>
@@ -367,7 +368,7 @@ class python_generator_context {
       if (&ctx.program() != root_program_) {
         return; // Skip visiting non-root (included) programs
       }
-      visit_type(&ctx.program(), *f.type());
+      visit_type(&ctx.program(), *f.type().get_type());
       visit_adapter_annotation(
           find_structured_adapter_annotation(f),
           /*add_type_hint_to_adapter_modules=*/false);
@@ -735,6 +736,12 @@ class t_mstch_python_prototypes_generator : public t_whisker_generator {
       const prototype_database& proto) const override {
     auto base = t_whisker_generator::make_prototype_for_field(proto);
     auto def = whisker::dsl::prototype_builder<h_field>::extends(base);
+
+    // Check if the field's type is IOBuf, considering both type-level and
+    // field-level @cpp.Type annotations.
+    def.property("is_type_iobuf?", [](const t_field& self) {
+      return is_type_iobuf(self);
+    });
 
     def.property("py_name", [this](const t_field& self) {
       const std::string py_name = python::get_py3_name(self);

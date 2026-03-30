@@ -39,7 +39,7 @@ _fbthrift_python_types.FieldInfo(
     _fbthrift_python_types.FieldQualifier.Optional, # qualifier
     "_ex{{index}}__{{field.name}}",  # name
     "{{#partial m_fields.exception_field_name field=field index=index}}",  # python name (from @python.Name annotation)
-    {{#if (not field.type.primitive?)}}lambda: {{/if}}{{#partial m_types.typeinfo type=field.type}},  # typeinfo
+    {{#partial m_types.field_typeinfo field=field}},  # typeinfo
     None,  # default value
     {{#partial m_common.adapter_info node=field}},  # adapter info
     {{#partial m_types.is_primitive type=field.type}}, # field type is primitive
@@ -61,7 +61,7 @@ class {{#partial m_functions.args_type service=service function=function}}(metac
             _fbthrift_python_types.FieldQualifier.Unqualified, # qualifier
             "{{param.name}}",  # name
             "{{param.py_name}}",  # python name (from @python.Name annotation)
-            {{#if (not param.type.primitive?)}}lambda: {{/if}}{{#partial m_types.typeinfo type=param.type}},  # typeinfo
+            {{#partial m_types.field_typeinfo field=param}},  # typeinfo
             None,  # default value
             {{#partial m_common.adapter_info node=param}},  # adapter info
             {{#partial m_types.is_primitive type=param.type}}, # field type is primitive

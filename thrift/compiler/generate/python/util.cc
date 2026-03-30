@@ -45,6 +45,21 @@ bool is_type_iobuf(const t_type* type) {
   return false;
 }
 
+bool is_type_iobuf(const t_field& field) {
+  if (!field.type()->get_true_type()->is_binary()) {
+    return false;
+  }
+  // Check field-level @cpp.Type annotation.
+  if (auto* annot = field.find_structured_annotation_or_null(kCppTypeUri)) {
+    if (auto* name =
+            annot->get_value_from_structured_annotation_or_null("name")) {
+      return is_type_iobuf(name->get_string());
+    }
+  }
+  // Fall back to type-level check.
+  return is_type_iobuf(field.type().get_type());
+}
+
 bool is_patch_program(const t_program* prog) {
   return prog ? (prog->name().starts_with("gen_patch_") ||
                  prog->name().starts_with("gen_safe_patch_"))

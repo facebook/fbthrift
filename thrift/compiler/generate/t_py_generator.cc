@@ -1059,7 +1059,11 @@ void t_py_generator::generate_typedef(const t_typedef* ttypedef) {
   // hand, base types are implicit, so it is not as helpful to support
   // creating aliases to their Python analogs.  That said, if you need it,
   // add an `else if` below.
-  if (const auto* adapter = get_py_adapter(type)) {
+  // Check the typedef itself for py.adapter (annotations from deprecated
+  // type-reference syntax are transferred to the typedef definition).
+  if (const auto* adapter = get_py_adapter(ttypedef)) {
+    f_types_ << varname << " = " << *adapter << ".Type" << endl;
+  } else if (const auto* adapter = get_py_adapter(type)) {
     f_types_ << varname << " = " << *adapter << ".Type" << endl;
   } else if (
       type->is<t_typedef>() || type->is<t_enum>() || type->is<t_structured>()) {

@@ -77,19 +77,28 @@ None
 {{/let partial}}
 
 {{! Generate the type hints for fields }}
-{{#let export partial field_type_pyi |field| captures |adapted_type_pyi|}}
+{{#let export partial field_type_pyi |field| captures |adapted_type_pyi typehints|}}
   {{#pragma ignore-newlines}}
 {{#if field.optional?}}_typing.Optional[{{/if}}
+{{#if (and field.is_type_iobuf? (not field.has_adapter?) (not field.type.has_adapter?))}}
+_fbthrift_iobuf.IOBuf
+{{#else}}
 {{#partial adapted_type_pyi type=field.type adapter=field.adapter}}
+{{/if (and field.is_type_iobuf? (not field.has_adapter?) (not field.type.has_adapter?))}}
 {{#if field.optional?}}]{{/if}}
 {{/let partial}}
 
-{{#let export partial iter_return_type |fields| captures |adapted_type_pyi|}}
+{{#let export partial iter_return_type |fields| captures |adapted_type_pyi typehints|}}
 {{! `__iter__()` return type }}
 {{#pragma ignore-newlines}}
 _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[
   {{#each (array.enumerate fields with_first=true) as |i field first?|}}
-{{#if (not first?)}}, {{/if}}{{#partial adapted_type_pyi type=field.type adapter=field.adapter}}
+{{#if (not first?)}}, {{/if}}
+{{#if (and field.is_type_iobuf? (not field.has_adapter?) (not field.type.has_adapter?))}}
+_fbthrift_iobuf.IOBuf
+{{#else}}
+{{#partial adapted_type_pyi type=field.type adapter=field.adapter}}
+{{/if (and field.is_type_iobuf? (not field.has_adapter?) (not field.type.has_adapter?))}}
     {{#else}}
 None
   {{/each}}

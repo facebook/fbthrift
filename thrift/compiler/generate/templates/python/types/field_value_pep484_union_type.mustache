@@ -19,5 +19,5 @@ Typing for a union field
 }}{{#pragma ignore-newlines}}
 _typing.Union[None
 {{#each struct.fields_ordered_by_id as |field|}}
-, {{#partial typehints.pep484_type type=field.type}}
+, {{#partial typehints.field_pep484_type field=field}}
 {{/each}}]
