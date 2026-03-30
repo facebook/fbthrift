@@ -519,7 +519,7 @@ TEST(UtilTest, structs_and_typedefs_dependency_graph) {
       source_mgr,
       R"(
     struct ContainsList {
-      1: list<S> (cpp.template = "dependent") l;
+      1: list<S> l;
     }
     struct TransitiveContainsDependentList {
       1: Dependent l;
@@ -531,9 +531,9 @@ TEST(UtilTest, structs_and_typedefs_dependency_graph) {
       1: AlsoS s;
     }
     struct TransitiveContainsStructRef {
-      1: AlsoS s (cpp.ref);
+      1: AlsoS s;
     }
-    typedef list<S> (cpp.template = "dependent") Dependent
+    typedef list<S> Dependent
     typedef list<S> Independent
     typedef S AlsoS
 
@@ -541,6 +541,25 @@ TEST(UtilTest, structs_and_typedefs_dependency_graph) {
   )",
       {},
       {});
+
+  // Set annotations programmatically since the parser rejects unstructured
+  // annotations.
+  for (auto* strct : program->structured_definitions()) {
+    if (strct->name() == "ContainsList") {
+      auto& field = strct->fields()[0];
+      const_cast<t_type*>(field.type().get_type())
+          ->set_unstructured_annotation("cpp.template", "dependent");
+    } else if (strct->name() == "TransitiveContainsStructRef") {
+      auto& field = strct->fields()[0];
+      const_cast<t_field&>(field).set_unstructured_annotation("cpp.ref", "1");
+    }
+  }
+  for (auto* typedf : program->typedefs()) {
+    if (typedf->name() == "Dependent") {
+      const_cast<t_type*>(typedf->type().get_type())
+          ->set_unstructured_annotation("cpp.template", "dependent");
+    }
+  }
 
   std::vector<const t_type*> objects(
       program->structured_definitions().begin(),

@@ -33,12 +33,45 @@ class AnnotateDeprecatedTerseWritesFieldsTest(unittest.TestCase):
         os.chdir(self.tmp)
         self.maxDiff = None
 
+    def _write_annotation_stubs(self):
+        """Create stub thrift annotation files so structured annotations resolve."""
+        write_file(
+            "thrift/annotation/thrift.thrift",
+            textwrap.dedent(
+                """\
+                package "facebook.com/thrift/annotation"
+
+                struct TerseWrite {}
+                """
+            ),
+        )
+        write_file(
+            "thrift/annotation/cpp.thrift",
+            textwrap.dedent(
+                """\
+                package "facebook.com/thrift/annotation/cpp"
+
+                enum RefType {
+                    Unique = 0,
+                    Shared = 1,
+                    SharedMutable = 2,
+                }
+                struct Ref {
+                    1: RefType type;
+                }
+                struct DeprecatedTerseWrite {}
+                """
+            ),
+        )
+
     def test_basic_replace(self):
+        self._write_annotation_stubs()
         write_file(
             "foo.thrift",
             textwrap.dedent(
                 """\
-                struct TerseWrite {} (thrift.uri = "facebook.com/thrift/annotation/TerseWrite")
+                include "thrift/annotation/cpp.thrift"
+                include "thrift/annotation/thrift.thrift"
 
                 struct MyStruct{}
                 union MyUnion {}
@@ -47,12 +80,13 @@ class AnnotateDeprecatedTerseWritesFieldsTest(unittest.TestCase):
                 struct NoOpFields {
                     1: optional i32 a;
                     2: required i32 b;
-                    @TerseWrite
+                    @thrift.TerseWrite
                     3: i32 c;
                     4: MyStruct d;
                     5: MyUnion e;
                     6: MyException f;
-                    7: MyStruct g (cpp.ref_type = "shared");
+                    @cpp.Ref{type = cpp.RefType.SharedMutable}
+                    7: MyStruct g;
                 }
 
                 union NoOpFieldsUnion {
@@ -61,16 +95,22 @@ class AnnotateDeprecatedTerseWritesFieldsTest(unittest.TestCase):
 
                 struct ShouldAnnotateFields {
                     1: string a;
-                    2: string b (cpp.ref = "true");
-                    3: MyStruct c (cpp.ref = "true");
-                    4: string d (cpp.ref_type = "shared");
+                    @cpp.Ref{type = cpp.RefType.Unique}
+                    2: string b;
+                    @cpp.Ref{type = cpp.RefType.Unique}
+                    3: MyStruct c;
+                    @cpp.Ref{type = cpp.RefType.SharedMutable}
+                    4: string d;
                 }
 
                 exception ShouldAnnotateFieldsException {
                     1: string a;
-                    2: string b (cpp.ref = "true");
-                    3: MyStruct c (cpp.ref = "true");
-                    4: string d (cpp.ref_type = "shared");
+                    @cpp.Ref{type = cpp.RefType.Unique}
+                    2: string b;
+                    @cpp.Ref{type = cpp.RefType.Unique}
+                    3: MyStruct c;
+                    @cpp.Ref{type = cpp.RefType.SharedMutable}
+                    4: string d;
                 }
                 """
             ),
@@ -84,8 +124,7 @@ class AnnotateDeprecatedTerseWritesFieldsTest(unittest.TestCase):
             textwrap.dedent(
                 """\
                 include "thrift/annotation/cpp.thrift"
-
-                struct TerseWrite {} (thrift.uri = "facebook.com/thrift/annotation/TerseWrite")
+                include "thrift/annotation/thrift.thrift"
 
                 struct MyStruct{}
                 union MyUnion {}
@@ -94,12 +133,13 @@ class AnnotateDeprecatedTerseWritesFieldsTest(unittest.TestCase):
                 struct NoOpFields {
                     1: optional i32 a;
                     2: required i32 b;
-                    @TerseWrite
+                    @thrift.TerseWrite
                     3: i32 c;
                     4: MyStruct d;
                     5: MyUnion e;
                     6: MyException f;
-                    7: MyStruct g (cpp.ref_type = "shared");
+                    @cpp.Ref{type = cpp.RefType.SharedMutable}
+                    7: MyStruct g;
                 }
 
                 union NoOpFieldsUnion {
@@ -109,23 +149,29 @@ class AnnotateDeprecatedTerseWritesFieldsTest(unittest.TestCase):
                 struct ShouldAnnotateFields {
                     @cpp.DeprecatedTerseWrite
                     1: string a;
+                    @cpp.Ref{type = cpp.RefType.Unique}
                     @cpp.DeprecatedTerseWrite
-                    2: string b (cpp.ref = "true");
+                    2: string b;
+                    @cpp.Ref{type = cpp.RefType.Unique}
                     @cpp.DeprecatedTerseWrite
-                    3: MyStruct c (cpp.ref = "true");
+                    3: MyStruct c;
+                    @cpp.Ref{type = cpp.RefType.SharedMutable}
                     @cpp.DeprecatedTerseWrite
-                    4: string d (cpp.ref_type = "shared");
+                    4: string d;
                 }
 
                 exception ShouldAnnotateFieldsException {
                     @cpp.DeprecatedTerseWrite
                     1: string a;
+                    @cpp.Ref{type = cpp.RefType.Unique}
                     @cpp.DeprecatedTerseWrite
-                    2: string b (cpp.ref = "true");
+                    2: string b;
+                    @cpp.Ref{type = cpp.RefType.Unique}
                     @cpp.DeprecatedTerseWrite
-                    3: MyStruct c (cpp.ref = "true");
+                    3: MyStruct c;
+                    @cpp.Ref{type = cpp.RefType.SharedMutable}
                     @cpp.DeprecatedTerseWrite
-                    4: string d (cpp.ref_type = "shared");
+                    4: string d;
                 }
                 """
             ),

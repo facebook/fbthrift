@@ -33,11 +33,35 @@ class AnnotateNonOptionalCppRefFieldsTest(unittest.TestCase):
         os.chdir(self.tmp)
         self.maxDiff = None
 
+    def _write_annotation_stubs(self):
+        """Create stub thrift annotation files so structured annotations resolve."""
+        write_file(
+            "thrift/annotation/cpp.thrift",
+            textwrap.dedent(
+                """\
+                package "facebook.com/thrift/annotation/cpp"
+
+                enum RefType {
+                    Unique = 0,
+                    Shared = 1,
+                    SharedMutable = 2,
+                }
+                struct Ref {
+                    1: RefType type;
+                }
+                struct AllowLegacyNonOptionalRef {}
+                """
+            ),
+        )
+
     def test_basic_replace(self):
+        self._write_annotation_stubs()
         write_file(
             "foo.thrift",
             textwrap.dedent(
                 """\
+                include "thrift/annotation/cpp.thrift"
+
                 struct NoRefField {
                     // No-op
                     1: i32 a;
@@ -45,21 +69,29 @@ class AnnotateNonOptionalCppRefFieldsTest(unittest.TestCase):
 
                 // Should annotate
                 struct A {
-                    1: string field1 (cpp.ref = "true");
+                    @cpp.Ref{type = cpp.RefType.Unique}
+                    1: string field1;
 
-                    2: string field2 (cpp2.ref = "true");
+                    @cpp.Ref{type = cpp.RefType.Unique}
+                    2: string field2;
 
-                    3: string field3 (cpp.ref_type = "shared");
+                    @cpp.Ref{type = cpp.RefType.SharedMutable}
+                    3: string field3;
 
-                    4: string field4 (cpp2.ref_type = "shared");
+                    @cpp.Ref{type = cpp.RefType.Shared}
+                    4: string field4;
 
-                    5: optional string optional_field1 (cpp.ref = "true");
+                    @cpp.Ref{type = cpp.RefType.Unique}
+                    5: optional string optional_field1;
 
-                    6: optional string optional_field2 (cpp2.ref = "true");
+                    @cpp.Ref{type = cpp.RefType.Unique}
+                    6: optional string optional_field2;
 
-                    7: optional string optional_field3 (cpp.ref_type = "shared");
+                    @cpp.Ref{type = cpp.RefType.SharedMutable}
+                    7: optional string optional_field3;
 
-                    8: optional string optional_field4 (cpp2.ref_type = "shared");
+                    @cpp.Ref{type = cpp.RefType.Shared}
+                    8: optional string optional_field4;
                 }
                 """
             ),
@@ -81,25 +113,33 @@ class AnnotateNonOptionalCppRefFieldsTest(unittest.TestCase):
 
                 // Should annotate
                 struct A {
+                    @cpp.Ref{type = cpp.RefType.Unique}
                     @cpp.AllowLegacyNonOptionalRef
-                    1: string field1 (cpp.ref = "true");
+                    1: string field1;
 
+                    @cpp.Ref{type = cpp.RefType.Unique}
                     @cpp.AllowLegacyNonOptionalRef
-                    2: string field2 (cpp2.ref = "true");
+                    2: string field2;
 
+                    @cpp.Ref{type = cpp.RefType.SharedMutable}
                     @cpp.AllowLegacyNonOptionalRef
-                    3: string field3 (cpp.ref_type = "shared");
+                    3: string field3;
 
+                    @cpp.Ref{type = cpp.RefType.Shared}
                     @cpp.AllowLegacyNonOptionalRef
-                    4: string field4 (cpp2.ref_type = "shared");
+                    4: string field4;
 
-                    5: optional string optional_field1 (cpp.ref = "true");
+                    @cpp.Ref{type = cpp.RefType.Unique}
+                    5: optional string optional_field1;
 
-                    6: optional string optional_field2 (cpp2.ref = "true");
+                    @cpp.Ref{type = cpp.RefType.Unique}
+                    6: optional string optional_field2;
 
-                    7: optional string optional_field3 (cpp.ref_type = "shared");
+                    @cpp.Ref{type = cpp.RefType.SharedMutable}
+                    7: optional string optional_field3;
 
-                    8: optional string optional_field4 (cpp2.ref_type = "shared");
+                    @cpp.Ref{type = cpp.RefType.Shared}
+                    8: optional string optional_field4;
                 }
                 """
             ),

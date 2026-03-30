@@ -2031,9 +2031,6 @@ struct ValidateAnnotationPositions {
     }
   }
   void operator()(sema_context& ctx, const t_typedef& node) {
-    if (!ctx.sema_parameters().forbid_unstructured_annotations) {
-      return;
-    }
     if (owns_annotations(node.type())) {
       err(ctx);
     }
@@ -2197,10 +2194,6 @@ void deprecate_annotations(sema_context& ctx, const t_named& node) {
             " Use `@thrift.Deprecated` or a comment instead.");
         continue;
       }
-      if (v.from == deprecated_annotation_value::origin::unstructured &&
-          ctx.sema_parameters().forbid_unstructured_annotations) {
-        ctx.error("Unstructured annotations are not allowed: `{}`.", k);
-      }
       continue;
     }
     std::string replacement;
@@ -2223,10 +2216,7 @@ void deprecate_annotations(sema_context& ctx, const t_named& node) {
     if (directly_deprecated &&
         node.has_structured_annotation(deprecations.at(k).c_str())) {
       ctx.error("Duplicate annotations {} and {}.", k, replacement);
-    } else if (
-        removed_annotations.count(k) != 0 || prefix ||
-        (v.from == deprecated_annotation_value::origin::unstructured &&
-         ctx.sema_parameters().forbid_unstructured_annotations)) {
+    } else if (removed_annotations.count(k) != 0 || prefix) {
       ctx.error(
           "The annotation {} has been removed. Please use {} instead.",
           k,

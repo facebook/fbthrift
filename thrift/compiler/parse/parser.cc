@@ -323,40 +323,35 @@ class parser {
   // deprecated_annotation:
   //   identifier ["=" (bool_literal | integer | string_literal)]
   std::unique_ptr<deprecated_annotations> try_parse_deprecated_annotations() {
-    auto loc = token_.range.begin;
     if (!try_consume_token('(')) {
       return {};
     }
-    auto annotations = std::unique_ptr<deprecated_annotations>();
     while (token_.kind != ')') {
-      if (!annotations) {
-        annotations = std::make_unique<deprecated_annotations>();
-        annotations->loc = loc;
-      }
-      auto range = track_range();
       auto key = parse_identifier();
-      auto value = std::string("1");
       if (try_consume_token('=')) {
         if (token_.kind == tok::string_literal) {
-          value = lex_string_literal(consume_token());
+          lex_string_literal(consume_token());
         } else if (token_.kind == tok::bool_literal) {
-          value = fmt::to_string(consume_token().bool_value() ? 1 : 0);
+          consume_token();
         } else if (auto integer = try_parse_integer()) {
-          value = fmt::to_string(*integer);
+          // consumed
         } else {
           report_expected("integer, bool or string");
         }
       }
-      annotations->strings[fmt::to_string(key.str)] = {
-          range,
-          std::move(value),
-          deprecated_annotation_value::origin::unstructured};
+      auto key_str = fmt::to_string(key.str);
+      if (!key_str.starts_with("hs.")) {
+        report_error(
+            "Unstructured annotation `{}` is not allowed. "
+            "Use a structured annotation instead.",
+            key_str);
+      }
       if (!try_parse_comma_or_semicolon()) {
         break;
       }
     }
     expect_and_consume(')');
-    return annotations;
+    return {};
   }
 
   void try_parse_deprecated_annotations(std::unique_ptr<attributes>& attrs) {

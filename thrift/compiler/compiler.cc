@@ -939,11 +939,8 @@ std::string parse_args(
           validators, *arg, [](char c) { return c == ','; });
       for (const std::string& validator : validators) {
         if (validator == "unstructured_annotations") {
-          sparams.forbid_unstructured_annotations = true;
-          continue;
-        }
-        if (validator == "allow_unstructured_annotations") {
-          sparams.forbid_unstructured_annotations = false;
+          // No-op: unstructured annotations are now always rejected at
+          // parse time.
           continue;
         }
         if (validator == "warn_on_redundant_custom_default_values") {
@@ -1283,10 +1280,6 @@ void record_invocation_params(
       std::to_string(
           sparams.redundant_custom_default_values ==
           sema_params::validation_level::warn));
-  sema_params_metric.add(
-      "forbid_unstructured_annotations=" +
-      std::to_string(sparams.forbid_unstructured_annotations));
-
   metrics.get(detail::metrics::StringValue::INPUT_FILENAME).set(input_filename);
 }
 
