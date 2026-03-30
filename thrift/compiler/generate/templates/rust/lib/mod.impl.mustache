@@ -229,7 +229,7 @@
 }}{{#program:nonstandardFields}}{{#field:type}}{{!
     }}{{#if type:set?}}
 
-    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{> lib/annfieldtype}}>
+    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{#partial fields.annotated_type_name field=field:self}}>
     where
         P: ::fbthrift::ProtocolWriter,
     {
@@ -247,7 +247,7 @@
         }
     }
 
-    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{> lib/annfieldtype}}>
+    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{#partial fields.annotated_type_name field=field:self}}>
     where
         P: ::fbthrift::ProtocolReader,
     {
@@ -258,7 +258,7 @@
             }
 
             let (_elem_ty, len) = p.read_set_begin(P::min_size::<{{#partial types.type_name type=type:true_type.elem_type}}>())?;
-            let mut set = <{{> lib/annfieldtype}}>::with_capacity(len.unwrap_or(0));
+            let mut set = <{{#partial fields.annotated_type_name field=field:self}}>::with_capacity(len.unwrap_or(0));
 
             if let ::std::option::Option::Some(0) = len {
                 return ::std::result::Result::Ok(LocalImpl(set));
@@ -287,7 +287,7 @@
 
     }}{{#if type:map?}}
 
-    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{> lib/annfieldtype}}>
+    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{#partial fields.annotated_type_name field=field:self}}>
     where
         P: ::fbthrift::ProtocolWriter,
     {
@@ -308,7 +308,7 @@
         }
     }
 
-    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{> lib/annfieldtype}}>
+    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{#partial fields.annotated_type_name field=field:self}}>
     where
         P: ::fbthrift::ProtocolReader,
     {
@@ -321,7 +321,7 @@
             }
 
             let (_key_ty, _val_ty, len) = p.read_map_begin(P::min_size::<{{#partial types.type_name type=type:true_type.key_type}}>() + P::min_size::<{{#partial types.type_name type=type:true_type.val_type}}>())?;
-            let mut map = <{{> lib/annfieldtype}}>::with_capacity(len.unwrap_or(0));
+            let mut map = <{{#partial fields.annotated_type_name field=field:self}}>::with_capacity(len.unwrap_or(0));
 
             if let ::std::option::Option::Some(0) = len {
                 return ::std::result::Result::Ok(LocalImpl(map));
@@ -352,7 +352,7 @@
 
     }}{{#if type:binary?}}
 
-    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{> lib/annfieldtype}}>
+    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{#partial fields.annotated_type_name field=field:self}}>
     where
         P: ::fbthrift::ProtocolWriter,
     {
@@ -362,7 +362,7 @@
         }
     }
 
-    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{> lib/annfieldtype}}>
+    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{#partial fields.annotated_type_name field=field:self}}>
     where
         P: ::fbthrift::ProtocolReader,
     {
@@ -372,9 +372,9 @@
         }
     }
 
-    impl ::fbthrift::binary_type::BinaryType for LocalImpl<{{> lib/annfieldtype}}> {
+    impl ::fbthrift::binary_type::BinaryType for LocalImpl<{{#partial fields.annotated_type_name field=field:self}}> {
         fn with_safe_capacity(capacity: usize) -> Self {
-            LocalImpl(<{{> lib/annfieldtype}}>::with_capacity(capacity))
+            LocalImpl(<{{#partial fields.annotated_type_name field=field:self}}>::with_capacity(capacity))
         }
         fn extend_from_slice(&mut self, other: &[::std::primitive::u8]) {
             self.0.extend_from_slice(other)
@@ -387,10 +387,10 @@
 
     }}{{#if (not typedef:newtype?)}}{{#if type:i64?}}
 
-    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{> lib/annfieldtype}}>
+    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{#partial fields.annotated_type_name field=field:self}}>
     where
         P: ::fbthrift::ProtocolWriter,
-        {{> lib/annfieldtype}}: ::fbthrift::Serialize<P>,
+        {{#partial fields.annotated_type_name field=field:self}}: ::fbthrift::Serialize<P>,
     {
         #[inline]
         fn rs_thrift_write(&self, p: &mut P) {
@@ -398,14 +398,14 @@
         }
     }
 
-    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{> lib/annfieldtype}}>
+    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{#partial fields.annotated_type_name field=field:self}}>
     where
         P: ::fbthrift::ProtocolReader,
-        {{> lib/annfieldtype}}: ::fbthrift::Deserialize<P>,
+        {{#partial fields.annotated_type_name field=field:self}}: ::fbthrift::Deserialize<P>,
     {
         #[inline]
         fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
-            ::std::result::Result::Ok(LocalImpl({{> lib/annfieldtype}}::rs_thrift_read(p)?))
+            ::std::result::Result::Ok(LocalImpl({{#partial fields.annotated_type_name field=field:self}}::rs_thrift_read(p)?))
         }
     }{{!
 

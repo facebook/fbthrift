@@ -18,9 +18,9 @@
 {{#service:functions}}{{#if (not function:starts_interaction?)}}
 
 struct Args_{{service:rust_name}}_{{function:name}} {
-    {{#function:args}}
-    {{field:rust_name}}: {{> lib/fieldtype}},
-    {{/function:args}}
+    {{#each function:params.fields as |param|}}
+    {{param.rust_name}}: {{#partial fields.type_name field=param}},
+    {{/each}}
 }
 
 impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_{{service:rust_name}}_{{function:name}} {

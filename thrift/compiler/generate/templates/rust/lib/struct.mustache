@@ -15,56 +15,74 @@
   limitations under the License.
 
 }}
+{{#let partial struct_derive_attribute |struct|}}
+{{#pragma ignore-newlines}}
+#[derive(
+{{#if struct.copy?}}Copy, {{/if}}
+Clone, PartialEq
+{{#if struct.ord?}}, Eq, PartialOrd, Ord, Hash{{/if}}
+{{#if struct.union?}}, Debug{{/if}}
+{{#if struct.serde?}}, ::serde_derive::Serialize, ::serde_derive::Deserialize{{/if}}
+{{#if struct.program.valuable?}}, ::valuable::Valuable{{/if}}
+{{#if (not (string.empty? struct.derive))}}, {{struct.derive}}{{/if}}
+)]
+{{/let partial}}
 
-#[derive({{!
-    }}{{#if struct:copy?}}Copy, {{/if struct:copy?}}{{!
-    }}Clone, PartialEq{{!
-    }}{{#if struct:ord?}}, Eq, PartialOrd, Ord, Hash{{/if struct:ord?}}{{!
-    }}{{#if struct:union?}}, Debug{{/if struct:union?}}{{!
-    }}{{#if struct:serde?}}, ::serde_derive::Serialize, ::serde_derive::Deserialize{{/if struct:serde?}}{{!
-    }}{{#if program:valuable?}}, ::valuable::Valuable{{/if program:valuable?}}{{!
-    }}{{#if struct:exception?}}{{#if struct:union?}}, ::thiserror::Error{{/if struct:union?}}{{/if struct:exception?}}{{!
-    }}{{#if (not (string.empty? struct:derive))}}, {{struct:derive}}{{/if (not (string.empty? struct:derive))}}{{!
-}})]
+{{#partial struct_derive_attribute struct=struct:self}}
+
 {{#if struct:docs?}}
 #[doc = {{struct:docs}}]
-{{/if struct:docs?}}{{!
-}}{{#if (not struct:union?)}}
-pub struct {{struct:rust_name}} \{{{!
-}}{{#struct:fields}}{{!
-    }}{{#if struct:serde?}}{{#if field:rename?}}
-    #[serde(rename = "{{field:name}}")]{{!
-    }}{{/if field:rename?}}{{#if (not field:optional?)}}
-    #[serde(default)]{{!
-    }}{{/if (not field:optional?)}}{{!
-    }}{{#if field:optional?}}{{#if struct:serde?}}{{#if program:skip_none_serialization?}}
-    #[serde(skip_serializing_if = "::std::option::Option::is_none")]{{!
-    }}{{/if program:skip_none_serialization?}}{{/if struct:serde?}}{{/if field:optional?}}{{!
-    }}{{/if struct:serde?}}{{#if field:docs?}}
-    #[doc = {{field:docs}}]{{!
-    }}{{/if field:docs?}}{{#if field:deprecated?}}
-    #[deprecated(note = "{{field:deprecation_message}}")]{{!
-    }}{{/if field:deprecated?}}
-    pub {{field:rust_name}}: {{> lib/fieldtype}},{{!
-}}{{/struct:fields}}{{!
-}}{{#if (not struct:exhaustive?)}}
+{{/if struct:docs?}}
+{{#if struct:union?}}
+pub enum {{struct:rust_name}} {
+  {{#each struct:self.fields as |field|}}
+    {{#if field.docs?}}
+    #[doc = {{field.docs}}]
+    {{/if field.docs?}}
+    {{#if field.deprecated?}}
+    #[deprecated(note = "{{field.deprecation_message}}")]
+    {{/if field.deprecated?}}
+    {{#if struct:exception?}}
+    #[error("{0:?}")]
+    {{/if struct:exception?}}
+    {{field.rust_name}}({{#partial fields.type_name field=field}}),
+  {{/each}}
+    UnknownField(::std::primitive::i32),
+}
+{{#else}}
+pub struct {{struct:rust_name}} {
+  {{#each struct:self.fields as |field|}}
+    {{#if struct:serde?}}
+      {{#if field.rename?}}
+    #[serde(rename = "{{field.name}}")]
+      {{/if field.rename?}}
+      {{#if (not field.optional?)}}
+    #[serde(default)]
+      {{#else if program:skip_none_serialization?}}
+    #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+      {{/if (not field.optional?)}}
+    {{/if struct:serde?}}
+    {{#if field.docs?}}
+    #[doc = {{field.docs}}]
+    {{/if field.docs?}}
+    {{#if field.deprecated?}}
+    #[deprecated(note = "{{field.deprecation_message}}")]
+    {{/if field.deprecated?}}
+    pub {{field.rust_name}}: {{#partial fields.type_name field=field}},
+  {{/each}}
+  {{#if (not struct:exhaustive?)}}
     // This field forces `..Default::default()` when instantiating this
     // struct, to make code future-proof against new fields added later to
     // the definition in Thrift. If you don't want this, add the annotation
     // `@rust.Exhaustive` to the Thrift struct to eliminate this field.
-    #[doc(hidden)]{{!
-    }}{{#if struct:serde?}}
-    #[serde(skip, default = "self::dot_dot::default_for_serde_deserialize")]{{!
-    }}{{/if struct:serde?}}
-    pub _dot_dot_Default_default: {{!
-      }}{{#if struct:has_adapter?}}{{!
-      }}super::dot_dot::OtherFields,{{!
-      }}{{#else}}{{!
-      }}self::dot_dot::OtherFields,{{!
-      }}{{/if struct:has_adapter?}}{{!
-}}{{/if (not struct:exhaustive?)}}
+    #[doc(hidden)]
+    {{#if struct:serde?}}
+    #[serde(skip, default = "self::dot_dot::default_for_serde_deserialize")]
+    {{/if struct:serde?}}
+    pub _dot_dot_Default_default: {{#if struct:has_adapter?}}super{{#else}}self{{/if}}::dot_dot::OtherFields,
+  {{/if (not struct:exhaustive?)}}
 }
-{{#if struct:exception?}}
+  {{#if struct:exception?}}
 
 impl ::fbthrift::ExceptionInfo for {{struct:rust_name}} {
     fn exn_value(&self) -> String {
@@ -87,22 +105,5 @@ impl ::std::fmt::Display for {{struct:rust_name}} {
         {{/if (and struct:exception? (object.notnull? exception:message_field))}}
     }
 }
-{{/if struct:exception?}}
-{{/if (not struct:union?)}}
-{{#if struct:union?}}
-pub enum {{struct:rust_name}} \{{{!
-}}{{#struct:fields}}
-    {{#if field:docs?}}
-    #[doc = {{field:docs}}]
-    {{/if field:docs?}}
-    {{#if field:deprecated?}}
-    #[deprecated(note = "{{field:deprecation_message}}")]
-    {{/if field:deprecated?}}
-    {{#if struct:exception?}}
-    #[error("{0:?}")]
-    {{/if struct:exception?}}
-    {{field:rust_name}}({{> lib/fieldtype}}),{{!
-}}{{/struct:fields}}
-    UnknownField(::std::primitive::i32),
-}
+  {{/if struct:exception?}}
 {{/if struct:union?}}
