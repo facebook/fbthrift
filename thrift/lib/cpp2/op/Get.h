@@ -325,7 +325,7 @@ inline constexpr type::Ordinal get_ordinal_v = get_ordinal<T, Id>::value;
 
 /// Calls the given function with ordinal<1> to ordinal<N>.
 template <typename T, typename F>
-constexpr void for_each_ordinal(F&& f) {
+FOLLY_ALWAYS_INLINE constexpr void for_each_ordinal(F&& f) {
   detail::for_each_ordinal_impl(
       std::forward<F>(f), std::make_integer_sequence<size_t, num_fields<T>>{});
 }
@@ -360,16 +360,33 @@ using get_field_id = type::field_id<
 template <typename T, typename Id>
 inline constexpr FieldId get_field_id_v = get_field_id<T, Id>::value;
 
+namespace detail {
+
+// Functor adapter that maps ordinals to field IDs before calling f.
+// Used by for_each_field_id to replace the intermediate wrapping lambda,
+// allowing FOLLY_ALWAYS_INLINE to propagate through the call chain.
+template <typename T, typename F>
+struct ForEachFieldIdAdapter {
+  F& f;
+  template <typename Ord>
+  FOLLY_ALWAYS_INLINE constexpr void operator()(Ord) const {
+    f(get_field_id<T, Ord>{});
+  }
+};
+
+} // namespace detail
+
 /// Calls the given function with each field_id<{id}> in a Thrift struct.
 template <typename T, typename F>
-constexpr void for_each_field_id(F&& f) {
-  for_each_ordinal<T>([&](auto ord) { f(get_field_id<T, decltype(ord)>{}); });
+FOLLY_ALWAYS_INLINE constexpr void for_each_field_id(F&& f) {
+  using Adapter = detail::ForEachFieldIdAdapter<T, folly::remove_cvref_t<F>>;
+  for_each_ordinal<T>(Adapter{f});
 }
 
 /// Calls the given function with each field_id<{id}> in a Thrift struct,
 /// in ascending order of field id values.
 template <typename T, typename F>
-constexpr void for_each_field_id_ascending(F&& f) {
+FOLLY_ALWAYS_INLINE constexpr void for_each_field_id_ascending(F&& f) {
   detail::for_each_field_id_ascending_impl<T>(
       std::forward<F>(f), std::make_integer_sequence<size_t, num_fields<T>>{});
 }
@@ -473,7 +490,8 @@ using get_field_ref =
 namespace detail {
 
 template <size_t... I, typename F>
-constexpr void for_each_ordinal_impl(F&& f, std::index_sequence<I...>) {
+FOLLY_ALWAYS_INLINE constexpr void for_each_ordinal_impl(
+    F&& f, std::index_sequence<I...>) {
   // This doesn't use fold expression (from C++17) as this file is used in
   // C++14 environment as well.
   int unused[] = {0, (f(type::detail::pos_to_ordinal<I>{}), 0)...};
@@ -481,7 +499,7 @@ constexpr void for_each_ordinal_impl(F&& f, std::index_sequence<I...>) {
 }
 
 template <typename T, typename F, size_t... I>
-constexpr void for_each_field_id_ascending_impl(
+FOLLY_ALWAYS_INLINE constexpr void for_each_field_id_ascending_impl(
     F&& f, std::integer_sequence<size_t, I...>) {
   constexpr auto sortedFieldIds = std::invoke([] {
     constexpr size_t N = sizeof...(I);

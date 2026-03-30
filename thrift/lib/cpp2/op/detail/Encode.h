@@ -20,6 +20,7 @@
 #include <utility>
 #include <vector>
 
+#include <folly/CPortability.h>
 #include <folly/Overload.h>
 #include <folly/Range.h>
 #include <folly/Utility.h>
@@ -553,22 +554,7 @@ struct StructEncode {
   uint32_t operator()(Protocol& prot, const T& t) const {
     uint32_t s = 0;
     s += prot.writeStructBegin(op::get_class_name_v<T>.data());
-    auto writeField = [&]<class Id>(Id) {
-      static_assert(type::is_field_id_v<Id>);
-      using TypeTag = op::get_type_tag<T, Id>;
-      using FieldTag = op::get_field_tag<T, Id>;
-      auto&& field = op::get<Id>(t);
-      if (!should_write<FieldTag>(field)) {
-        return;
-      }
-
-      s += prot.writeFieldBegin(
-          &*op::get_name_v<T, Id>.begin(),
-          typeTagToTType<TypeTag>,
-          folly::to_underlying(Id::value));
-      s += Encode<TypeTag>{}(prot, *field);
-      s += prot.writeFieldEnd();
-    };
+    WriteField<Protocol> writeField{prot, t, s};
     if (getFieldOrder(prot) == FieldOrder::Serialization &&
         !apache::thrift::detail::st::private_access::
             has_serialize_in_field_id_order<T>) {
@@ -580,6 +566,35 @@ struct StructEncode {
     s += prot.writeStructEnd();
     return s;
   }
+
+ private:
+  // Functor with FOLLY_ALWAYS_INLINE operator() to ensure the per-field
+  // write logic is inlined into the call site. for_each_field_id uses a
+  // matching FOLLY_ALWAYS_INLINE adapter internally, so the entire chain
+  // from pack expansion through to the field write is force-inlined,
+  // matching the codegen quality of the old hand-generated write() methods.
+  template <typename Protocol>
+  struct WriteField {
+    Protocol& prot;
+    const T& t;
+    uint32_t& s;
+
+    template <typename Id>
+    FOLLY_ALWAYS_INLINE void operator()(Id) const {
+      using TypeTag = op::get_type_tag<T, Id>;
+      using FieldTag = op::get_field_tag<T, Id>;
+      auto&& field = op::get<Id>(t);
+      if (!should_write<FieldTag>(field)) {
+        return;
+      }
+      s += prot.writeFieldBegin(
+          &*op::get_name_v<T, Id>.begin(),
+          typeTagToTType<TypeTag>,
+          folly::to_underlying(Id::value));
+      s += Encode<TypeTag>{}(prot, *field);
+      s += prot.writeFieldEnd();
+    }
+  };
 };
 
 template <typename T>
