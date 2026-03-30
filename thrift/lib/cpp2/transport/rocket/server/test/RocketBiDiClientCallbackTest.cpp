@@ -607,3 +607,189 @@ TEST_F(RocketBiDiClientCallbackTest, NoSinkTimeoutWithoutSetChunkTimeout) {
   EXPECT_CALL(connection_, scheduleSinkTimeout(_, _)).Times(0);
   callback_->onSinkRequestN(5);
 }
+
+// --- serverCallback_ lifetime safety tests ---
+
+TEST_F(RocketBiDiClientCallbackTest, HandleConnectionCloseNullsServerCallback) {
+  makeReady();
+
+  EXPECT_CALL(serverCallback_, onSinkError(_)).Times(1);
+  EXPECT_CALL(serverCallback_, onStreamCancel()).Times(1);
+
+  callback_->handleConnectionClose();
+
+  // After connection close, serverCallback_ should be cleared to prevent
+  // use-after-free if the server callback object is destroyed.
+  EXPECT_FALSE(callback_->serverCallbackReady());
+}
+
+TEST_F(
+    RocketBiDiClientCallbackTest,
+    HandleConnectionCloseNullsServerCallbackBeforeCalls) {
+  makeReady();
+
+  // Verify that serverCallback_ is already nulled DURING the onSinkError call.
+  // This prevents use-after-free if the bridge's onSinkError destroys the
+  // server callback, which would make the subsequent onStreamCancel call crash.
+  EXPECT_CALL(serverCallback_, onSinkError(_))
+      .WillOnce([this](folly::exception_wrapper) {
+        EXPECT_FALSE(callback_->serverCallbackReady());
+        return true;
+      });
+  EXPECT_CALL(serverCallback_, onStreamCancel()).WillOnce(Return(true));
+
+  callback_->handleConnectionClose();
+}
+
+TEST_F(RocketBiDiClientCallbackTest, HandleConnectionCloseWithOnlySinkOpen) {
+  makeReady();
+
+  // Close the stream direction first.
+  callback_->onStreamComplete();
+
+  // Only onSinkError should be called (stream is already closed).
+  EXPECT_CALL(serverCallback_, onSinkError(_)).Times(1);
+  EXPECT_CALL(serverCallback_, onStreamCancel()).Times(0);
+
+  callback_->handleConnectionClose();
+  EXPECT_FALSE(callback_->serverCallbackReady());
+}
+
+TEST_F(RocketBiDiClientCallbackTest, HandleConnectionCloseWithOnlyStreamOpen) {
+  makeReady();
+
+  // Close the sink direction first.
+  callback_->onSinkCancel();
+
+  // Only onStreamCancel should be called (sink is already closed).
+  EXPECT_CALL(serverCallback_, onSinkError(_)).Times(0);
+  EXPECT_CALL(serverCallback_, onStreamCancel()).Times(1);
+
+  callback_->handleConnectionClose();
+  EXPECT_FALSE(callback_->serverCallbackReady());
+}
+
+TEST_F(RocketBiDiClientCallbackTest, SinkErrorAfterStreamCloseFreesStream) {
+  makeReady();
+
+  // Close the stream direction from the server side.
+  callback_->onStreamComplete();
+
+  // Now close sink via error — state becomes terminal. The stream should be
+  // freed and the callback should report not-alive.
+  EXPECT_CALL(serverCallback_, onSinkError(_)).WillOnce(Return(true));
+  EXPECT_CALL(connection_, freeStream(kStreamId, true)).Times(1);
+
+  bool alive = callback_->onSinkError(
+      folly::make_exception_wrapper<std::runtime_error>("test error"));
+  EXPECT_FALSE(alive);
+  EXPECT_FALSE(callback_->serverCallbackReady());
+}
+
+TEST_F(RocketBiDiClientCallbackTest, SinkCompleteAfterStreamCloseFreesStream) {
+  makeReady();
+
+  // Close the stream direction from the server side.
+  callback_->onStreamComplete();
+
+  // Now complete sink — state becomes terminal.
+  EXPECT_CALL(serverCallback_, onSinkComplete()).WillOnce(Return(true));
+  EXPECT_CALL(connection_, freeStream(kStreamId, true)).Times(1);
+
+  bool alive = callback_->onSinkComplete();
+  EXPECT_FALSE(alive);
+  EXPECT_FALSE(callback_->serverCallbackReady());
+}
+
+TEST_F(RocketBiDiClientCallbackTest, StreamCancelAfterSinkCloseFreesStream) {
+  makeReady();
+
+  // Close the sink direction from the server side.
+  callback_->onSinkCancel();
+
+  // Now cancel stream — state becomes terminal.
+  EXPECT_CALL(serverCallback_, onStreamCancel()).WillOnce(Return(true));
+  EXPECT_CALL(connection_, freeStream(kStreamId, true)).Times(1);
+
+  bool alive = callback_->onStreamCancel();
+  EXPECT_FALSE(alive);
+  EXPECT_FALSE(callback_->serverCallbackReady());
+}
+
+// --- Terminal state + server callback returns false (contract violation) ---
+
+TEST_F(
+    RocketBiDiClientCallbackTest,
+    SinkErrorContractViolationAfterStreamCloseFreesStream) {
+  makeReady();
+
+  callback_->onStreamComplete();
+
+  // Server callback returns false (contract violation) but state is terminal.
+  // The stream should still be freed and serverCallback_ nulled.
+  EXPECT_CALL(serverCallback_, onSinkError(_)).WillOnce(Return(false));
+  EXPECT_CALL(connection_, freeStream(kStreamId, true)).Times(1);
+
+  bool alive = callback_->onSinkError(
+      folly::make_exception_wrapper<std::runtime_error>("test error"));
+  EXPECT_FALSE(alive);
+  EXPECT_FALSE(callback_->serverCallbackReady());
+}
+
+TEST_F(
+    RocketBiDiClientCallbackTest,
+    SinkCompleteContractViolationAfterStreamCloseFreesStream) {
+  makeReady();
+
+  callback_->onStreamComplete();
+
+  EXPECT_CALL(serverCallback_, onSinkComplete()).WillOnce(Return(false));
+  EXPECT_CALL(connection_, freeStream(kStreamId, true)).Times(1);
+
+  bool alive = callback_->onSinkComplete();
+  EXPECT_FALSE(alive);
+  EXPECT_FALSE(callback_->serverCallbackReady());
+}
+
+TEST_F(
+    RocketBiDiClientCallbackTest,
+    StreamCancelContractViolationAfterSinkCloseFreesStream) {
+  makeReady();
+
+  callback_->onSinkCancel();
+
+  EXPECT_CALL(serverCallback_, onStreamCancel()).WillOnce(Return(false));
+  EXPECT_CALL(connection_, freeStream(kStreamId, true)).Times(1);
+
+  bool alive = callback_->onStreamCancel();
+  EXPECT_FALSE(alive);
+  EXPECT_FALSE(callback_->serverCallbackReady());
+}
+
+// --- Regression test for P2251980525 crash ---
+// Simulates the production crash path: stream completes from the server side,
+// then an ErrorFrame arrives from the client. The ErrorFrame's onSinkError
+// closes the last open direction (terminal state). Without the fix, the stream
+// would not be freed and serverCallback_ would be left dangling for subsequent
+// frames.
+
+TEST_F(RocketBiDiClientCallbackTest, ErrorFrameAfterStreamCompleteFreesStream) {
+  makeReady();
+
+  // Step 1: Server completes the stream direction.
+  callback_->onStreamComplete();
+
+  // Step 2: ErrorFrame arrives from client — handleFrame dispatches to
+  // onSinkError, which closes the last direction (terminal state).
+  EXPECT_CALL(serverCallback_, onSinkError(_)).WillOnce(Return(true));
+  EXPECT_CALL(connection_, freeStream(kStreamId, true)).Times(1);
+
+  ErrorFrame frame(kStreamId, ErrorCode::CANCELED, Payload{});
+  callback_->handleFrame(std::move(frame));
+
+  // The stream should be freed and serverCallback_ nulled, preventing any
+  // subsequent frame from reaching the freed server callback object.
+  EXPECT_FALSE(callback_->serverCallbackReady());
+  EXPECT_FALSE(callback_->isSinkOpen());
+  EXPECT_FALSE(callback_->isStreamOpen());
+}

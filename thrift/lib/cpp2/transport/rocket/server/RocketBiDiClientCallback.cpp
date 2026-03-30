@@ -176,9 +176,14 @@ bool RocketBiDiClientCallback::onStreamCancel() {
   bool wasTerminal = state_.isTerminal();
   if (!serverCallback_->onStreamCancel()) {
     if (wasTerminal) {
+      serverCallback_ = nullptr;
       return freeStreamAndReturn(false);
     }
     return false;
+  }
+  if (wasTerminal) {
+    serverCallback_ = nullptr;
+    return freeStreamAndReturn(false);
   }
   DCHECK(state_.isAlive());
   return true;
@@ -202,9 +207,14 @@ bool RocketBiDiClientCallback::onSinkError(folly::exception_wrapper ew) {
   bool wasTerminal = state_.isTerminal();
   if (!serverCallback_->onSinkError(std::move(ew))) {
     if (wasTerminal) {
+      serverCallback_ = nullptr;
       return freeStreamAndReturn(false);
     }
     return false;
+  }
+  if (wasTerminal) {
+    serverCallback_ = nullptr;
+    return freeStreamAndReturn(false);
   }
   DCHECK(state_.isAlive());
   return true;
@@ -218,9 +228,14 @@ bool RocketBiDiClientCallback::onSinkComplete() {
   bool wasTerminal = state_.isTerminal();
   if (!serverCallback_->onSinkComplete()) {
     if (wasTerminal) {
+      serverCallback_ = nullptr;
       return freeStreamAndReturn(false);
     }
     return false;
+  }
+  if (wasTerminal) {
+    serverCallback_ = nullptr;
+    return freeStreamAndReturn(false);
   }
   DCHECK(state_.isAlive());
   return true;
@@ -418,7 +433,12 @@ void RocketBiDiClientCallback::handleFrame(ExtFrame&& extFrame) {
 void RocketBiDiClientCallback::handleConnectionClose() {
   cancelTimeout();
   cancelSinkTimeout();
-  if (!serverCallbackReady()) {
+  // Null out serverCallback_ before calling through it. This prevents
+  // use-after-free if the bridge's onSinkError destroys the server callback
+  // (the subsequent onStreamCancel would otherwise call a dangling pointer).
+  // It also prevents reentrant handleFrame calls from seeing a stale pointer.
+  auto* cb = std::exchange(serverCallback_, nullptr);
+  if (!cb) {
     return;
   }
 
@@ -427,12 +447,12 @@ void RocketBiDiClientCallback::handleConnectionClose() {
   // when both transitions happen in sequence (terminal state after second).
   // The connection handles cleanup (freeStream, requestComplete) separately.
   if (isSinkOpen()) {
-    std::ignore = serverCallback_->onSinkError(
+    std::ignore = cb->onSinkError(
         folly::make_exception_wrapper<TApplicationException>(
             TApplicationException::TApplicationExceptionType::INTERRUPTION));
   }
   if (isStreamOpen()) {
-    std::ignore = serverCallback_->onStreamCancel();
+    std::ignore = cb->onStreamCancel();
   }
 }
 
@@ -441,6 +461,14 @@ void RocketBiDiClientCallback::timeoutExpired() noexcept {
   cancelSinkTimeout();
 
   // Credit timeout is fatal for the entire bidi interaction.
+  // Null out serverCallback_ before calling through it. This prevents
+  // use-after-free if the bridge's onSinkError destroys the server callback
+  // (the subsequent onStreamCancel would otherwise call a dangling pointer).
+  auto* cb = std::exchange(serverCallback_, nullptr);
+  if (!cb) {
+    return;
+  }
+
   // Notify sink error through the Stapler BEFORE cancelling the stream.
   // Cancelling the stream triggers cleanup of the sink bridge's input
   // generator, which posts a deferred canceled() callback. If the sink is
@@ -451,14 +479,14 @@ void RocketBiDiClientCallback::timeoutExpired() noexcept {
   bool sinkWasOpen = isSinkOpen();
   if (sinkWasOpen) {
     state_.onSinkCancel();
-    std::ignore = serverCallback_->onSinkError(
+    std::ignore = cb->onSinkError(
         folly::make_exception_wrapper<TApplicationException>(
             TApplicationException::TApplicationExceptionType::TIMEOUT,
             "BiDi stream credit timeout"));
   }
   if (isStreamOpen()) {
     state_.onStreamCancel();
-    std::ignore = serverCallback_->onStreamCancel();
+    std::ignore = cb->onStreamCancel();
   }
 
   // Send cancel for the sink direction so the client stops sending.
@@ -503,13 +531,21 @@ void RocketBiDiClientCallback::sinkChunkTimeoutExpired() noexcept {
   cancelSinkTimeout();
 
   // Chunk timeout is fatal for the entire bidi interaction.
+  // Null out serverCallback_ before calling through it. This prevents
+  // use-after-free if the bridge's onSinkError destroys the server callback
+  // (the subsequent onStreamCancel would otherwise call a dangling pointer).
+  auto* cb = std::exchange(serverCallback_, nullptr);
+  if (!cb) {
+    return;
+  }
+
   // Cancel the sink half first. We must not delegate to onSinkError() because
   // it calls freeStreamAndReturn() when both halves are closed, which would
   // destroy `this` before we finish cleanup.
   bool sinkWasOpen = state_.isSinkOpen();
   if (sinkWasOpen) {
     state_.onSinkCancel();
-    std::ignore = serverCallback_->onSinkError(
+    std::ignore = cb->onSinkError(
         folly::make_exception_wrapper<TApplicationException>(
             TApplicationException::TApplicationExceptionType::TIMEOUT,
             "Sink chunk timeout"));
@@ -519,7 +555,7 @@ void RocketBiDiClientCallback::sinkChunkTimeoutExpired() noexcept {
   if (state_.isStreamOpen()) {
     cancelTimeout();
     state_.onStreamCancel();
-    std::ignore = serverCallback_->onStreamCancel();
+    std::ignore = cb->onStreamCancel();
   }
 
   // Send cancel for the sink direction so the client stops sending.
