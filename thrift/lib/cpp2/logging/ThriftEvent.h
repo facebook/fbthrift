@@ -22,8 +22,6 @@
 #include <string_view>
 #include <variant>
 
-namespace apache::thrift {
-
 /**
  * Typed event structs for the unified Thrift stream/sink metric logging layer.
  *
@@ -32,7 +30,7 @@ namespace apache::thrift {
  * (completion-time structured logging). The variants below group events
  * by stream vs. sink to allow type-safe dispatch in the log classes.
  */
-namespace detail {
+namespace apache::thrift::detail {
 
 // ---------------------------------------------------------------------------
 // Stream events
@@ -120,5 +118,4 @@ using SinkEvent = std::variant<
     SinkCreditEvent,
     SinkCompleteEvent>;
 
-} // namespace detail
-} // namespace apache::thrift
+} // namespace apache::thrift::detail
