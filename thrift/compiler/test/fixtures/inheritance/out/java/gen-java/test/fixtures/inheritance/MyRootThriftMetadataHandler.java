@@ -8,9 +8,6 @@
 package test.fixtures.inheritance;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.facebook.thrift.metadata.ThriftEnum;
@@ -46,9 +43,6 @@ public class MyRootThriftMetadataHandler implements com.facebook.thrift.server.T
   }
 
   private static final ThriftService THRIFT_SERVICE;
-  private static final Map<String, ThriftEnum> ENUMS;
-  private static final Map<String, ThriftStruct> STRUCTS;
-  private static final Map<String, ThriftException> EXCEPTIONS;
 
 
   static {
@@ -58,15 +52,6 @@ public class MyRootThriftMetadataHandler implements com.facebook.thrift.server.T
         .setName("test.fixtures.inheritance.MyRoot")
         .setFunctions(functions)
         .build();
-
-    Map<String, ThriftEnum> enums = new HashMap<>();
-    ENUMS = Collections.unmodifiableMap(enums);
-
-    Map<String, ThriftStruct> structs = new HashMap<>();
-    STRUCTS = Collections.unmodifiableMap(structs);
-
-    Map<String, ThriftException> exceptions = new HashMap<>();
-    EXCEPTIONS = Collections.unmodifiableMap(exceptions);
   }
 
   @Override
@@ -96,16 +81,16 @@ public class MyRootThriftMetadataHandler implements com.facebook.thrift.server.T
 
   @Override
   public Map<String, ThriftEnum> getEnums() {
-    return ENUMS;
+    return MyRootThriftMetadataHandlerEnums.getEnums();
   }
 
   @Override
   public Map<String, ThriftStruct> getStructs() {
-    return STRUCTS;
+    return MyRootThriftMetadataHandlerStructs.getStructs();
   }
 
   @Override
   public Map<String, ThriftException> getExceptions() {
-    return EXCEPTIONS;
+    return MyRootThriftMetadataHandlerExceptions.getExceptions();
   }
 }

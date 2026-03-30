@@ -8,9 +8,6 @@
 package test.fixtures.bidi;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.facebook.thrift.metadata.ThriftEnum;
@@ -78,9 +75,6 @@ public class BiDiServiceThriftMetadataHandler implements com.facebook.thrift.ser
   }
 
   private static final ThriftService THRIFT_SERVICE;
-  private static final Map<String, ThriftEnum> ENUMS;
-  private static final Map<String, ThriftStruct> STRUCTS;
-  private static final Map<String, ThriftException> EXCEPTIONS;
 
 
   static {
@@ -90,15 +84,6 @@ public class BiDiServiceThriftMetadataHandler implements com.facebook.thrift.ser
         .setName("test.fixtures.bidi.BiDiService")
         .setFunctions(functions)
         .build();
-
-    Map<String, ThriftEnum> enums = new HashMap<>();
-    ENUMS = Collections.unmodifiableMap(enums);
-
-    Map<String, ThriftStruct> structs = new HashMap<>();
-    STRUCTS = Collections.unmodifiableMap(structs);
-
-    Map<String, ThriftException> exceptions = new HashMap<>();
-    EXCEPTIONS = Collections.unmodifiableMap(exceptions);
   }
 
   @Override
@@ -128,16 +113,16 @@ public class BiDiServiceThriftMetadataHandler implements com.facebook.thrift.ser
 
   @Override
   public Map<String, ThriftEnum> getEnums() {
-    return ENUMS;
+    return BiDiServiceThriftMetadataHandlerEnums.getEnums();
   }
 
   @Override
   public Map<String, ThriftStruct> getStructs() {
-    return STRUCTS;
+    return BiDiServiceThriftMetadataHandlerStructs.getStructs();
   }
 
   @Override
   public Map<String, ThriftException> getExceptions() {
-    return EXCEPTIONS;
+    return BiDiServiceThriftMetadataHandlerExceptions.getExceptions();
   }
 }

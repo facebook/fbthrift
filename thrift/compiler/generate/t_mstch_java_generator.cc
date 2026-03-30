@@ -1284,6 +1284,22 @@ class t_mstch_java_generator : public t_mstch_generator {
           cache[metadata_handler_id],
           "ThriftMetadataHandler",
           package_dir / metadata_handler_filename);
+      render_to_file(
+          cache[metadata_handler_id],
+          "ThriftMetadataHandlerEnums",
+          package_dir /
+              fmt::format("{}ThriftMetadataHandlerEnums.java", service_name));
+      render_to_file(
+          cache[metadata_handler_id],
+          "ThriftMetadataHandlerStructs",
+          package_dir /
+              fmt::format("{}ThriftMetadataHandlerStructs.java", service_name));
+      render_to_file(
+          cache[metadata_handler_id],
+          "ThriftMetadataHandlerExceptions",
+          package_dir /
+              fmt::format(
+                  "{}ThriftMetadataHandlerExceptions.java", service_name));
     }
   }
 

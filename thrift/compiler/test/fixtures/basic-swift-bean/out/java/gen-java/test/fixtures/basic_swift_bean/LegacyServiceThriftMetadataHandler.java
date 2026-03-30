@@ -8,9 +8,6 @@
 package test.fixtures.basic_swift_bean;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.facebook.thrift.metadata.ThriftEnum;
@@ -58,9 +55,6 @@ public class LegacyServiceThriftMetadataHandler implements com.facebook.thrift.s
   }
 
   private static final ThriftService THRIFT_SERVICE;
-  private static final Map<String, ThriftEnum> ENUMS;
-  private static final Map<String, ThriftStruct> STRUCTS;
-  private static final Map<String, ThriftException> EXCEPTIONS;
 
 
   static {
@@ -70,15 +64,6 @@ public class LegacyServiceThriftMetadataHandler implements com.facebook.thrift.s
         .setName("test.fixtures.basic_swift_bean.LegacyService")
         .setFunctions(functions)
         .build();
-
-    Map<String, ThriftEnum> enums = new HashMap<>();
-    ENUMS = Collections.unmodifiableMap(enums);
-
-    Map<String, ThriftStruct> structs = new HashMap<>();
-    STRUCTS = Collections.unmodifiableMap(structs);
-
-    Map<String, ThriftException> exceptions = new HashMap<>();
-    EXCEPTIONS = Collections.unmodifiableMap(exceptions);
   }
 
   @Override
@@ -108,16 +93,16 @@ public class LegacyServiceThriftMetadataHandler implements com.facebook.thrift.s
 
   @Override
   public Map<String, ThriftEnum> getEnums() {
-    return ENUMS;
+    return LegacyServiceThriftMetadataHandlerEnums.getEnums();
   }
 
   @Override
   public Map<String, ThriftStruct> getStructs() {
-    return STRUCTS;
+    return LegacyServiceThriftMetadataHandlerStructs.getStructs();
   }
 
   @Override
   public Map<String, ThriftException> getExceptions() {
-    return EXCEPTIONS;
+    return LegacyServiceThriftMetadataHandlerExceptions.getExceptions();
   }
 }
