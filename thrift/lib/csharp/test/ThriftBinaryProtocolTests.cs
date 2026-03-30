@@ -28,13 +28,14 @@ namespace FBThrift.Tests
     [TestFixture]
     public class ThriftProtocolRoundTripTests
     {
-        private IThriftProtocolWriter CreateWriter(MemoryStream ms)
+        private static ThriftBinaryWriter MakeWriter()
         {
-            return new ThriftBinaryWriter(ms);
+            return new ThriftBinaryWriter(new MemoryStream());
         }
 
-        private IThriftProtocolReader CreateReader(MemoryStream ms)
+        private static ThriftBinaryReader MakeReader(ThriftBinaryWriter writer)
         {
+            var ms = (MemoryStream)writer.BaseStream;
             ms.Position = 0;
             return new ThriftBinaryReader(ms);
         }
@@ -44,36 +45,33 @@ namespace FBThrift.Tests
         [Test]
         public void TestBoolTrue()
         {
-            using var ms = new MemoryStream();
-            var writer = CreateWriter(ms);
+            var writer = MakeWriter();
             writer.WriteBool(true);
 
-            var reader = CreateReader(ms);
+            var reader = MakeReader(writer);
             Assert.AreEqual(true, reader.ReadBool());
         }
 
         [Test]
         public void TestBoolFalse()
         {
-            using var ms = new MemoryStream();
-            var writer = CreateWriter(ms);
+            var writer = MakeWriter();
             writer.WriteBool(false);
 
-            var reader = CreateReader(ms);
+            var reader = MakeReader(writer);
             Assert.AreEqual(false, reader.ReadBool());
         }
 
         [Test]
         public void TestByte()
         {
-            using var ms = new MemoryStream();
-            var writer = CreateWriter(ms);
+            var writer = MakeWriter();
             writer.WriteByte(42);
             writer.WriteByte(-1);
             writer.WriteByte(sbyte.MaxValue);
             writer.WriteByte(sbyte.MinValue);
 
-            var reader = CreateReader(ms);
+            var reader = MakeReader(writer);
             Assert.AreEqual((sbyte)42, reader.ReadByte());
             Assert.AreEqual((sbyte)-1, reader.ReadByte());
             Assert.AreEqual(sbyte.MaxValue, reader.ReadByte());
@@ -83,14 +81,13 @@ namespace FBThrift.Tests
         [Test]
         public void TestI16()
         {
-            using var ms = new MemoryStream();
-            var writer = CreateWriter(ms);
+            var writer = MakeWriter();
             writer.WriteI16(12345);
             writer.WriteI16(-12345);
             writer.WriteI16(short.MaxValue);
             writer.WriteI16(short.MinValue);
 
-            var reader = CreateReader(ms);
+            var reader = MakeReader(writer);
             Assert.AreEqual((short)12345, reader.ReadI16());
             Assert.AreEqual((short)-12345, reader.ReadI16());
             Assert.AreEqual(short.MaxValue, reader.ReadI16());
@@ -100,14 +97,13 @@ namespace FBThrift.Tests
         [Test]
         public void TestI32()
         {
-            using var ms = new MemoryStream();
-            var writer = CreateWriter(ms);
+            var writer = MakeWriter();
             writer.WriteI32(123456789);
             writer.WriteI32(-123456789);
             writer.WriteI32(int.MaxValue);
             writer.WriteI32(int.MinValue);
 
-            var reader = CreateReader(ms);
+            var reader = MakeReader(writer);
             Assert.AreEqual(123456789, reader.ReadI32());
             Assert.AreEqual(-123456789, reader.ReadI32());
             Assert.AreEqual(int.MaxValue, reader.ReadI32());
@@ -117,14 +113,13 @@ namespace FBThrift.Tests
         [Test]
         public void TestI64()
         {
-            using var ms = new MemoryStream();
-            var writer = CreateWriter(ms);
+            var writer = MakeWriter();
             writer.WriteI64(1234567890123456789L);
             writer.WriteI64(-1234567890123456789L);
             writer.WriteI64(long.MaxValue);
             writer.WriteI64(long.MinValue);
 
-            var reader = CreateReader(ms);
+            var reader = MakeReader(writer);
             Assert.AreEqual(1234567890123456789L, reader.ReadI64());
             Assert.AreEqual(-1234567890123456789L, reader.ReadI64());
             Assert.AreEqual(long.MaxValue, reader.ReadI64());
@@ -134,15 +129,14 @@ namespace FBThrift.Tests
         [Test]
         public void TestFloat()
         {
-            using var ms = new MemoryStream();
-            var writer = CreateWriter(ms);
+            var writer = MakeWriter();
             writer.WriteFloat(3.14159f);
             writer.WriteFloat(-2.71828f);
             writer.WriteFloat(float.MaxValue);
             writer.WriteFloat(float.MinValue);
             writer.WriteFloat(0.0f);
 
-            var reader = CreateReader(ms);
+            var reader = MakeReader(writer);
             Assert.AreEqual(3.14159f, reader.ReadFloat());
             Assert.AreEqual(-2.71828f, reader.ReadFloat());
             Assert.AreEqual(float.MaxValue, reader.ReadFloat());
@@ -153,15 +147,14 @@ namespace FBThrift.Tests
         [Test]
         public void TestDouble()
         {
-            using var ms = new MemoryStream();
-            var writer = CreateWriter(ms);
+            var writer = MakeWriter();
             writer.WriteDouble(3.14159265358979);
             writer.WriteDouble(-2.71828182845904);
             writer.WriteDouble(double.MaxValue);
             writer.WriteDouble(double.MinValue);
             writer.WriteDouble(0.0);
 
-            var reader = CreateReader(ms);
+            var reader = MakeReader(writer);
             Assert.AreEqual(3.14159265358979, reader.ReadDouble());
             Assert.AreEqual(-2.71828182845904, reader.ReadDouble());
             Assert.AreEqual(double.MaxValue, reader.ReadDouble());
@@ -172,13 +165,12 @@ namespace FBThrift.Tests
         [Test]
         public void TestString()
         {
-            using var ms = new MemoryStream();
-            var writer = CreateWriter(ms);
+            var writer = MakeWriter();
             writer.WriteString("Hello, World!");
             writer.WriteString("日本語テスト");
             writer.WriteString("🎉 Emoji test");
 
-            var reader = CreateReader(ms);
+            var reader = MakeReader(writer);
             Assert.AreEqual("Hello, World!", reader.ReadString());
             Assert.AreEqual("日本語テスト", reader.ReadString());
             Assert.AreEqual("🎉 Emoji test", reader.ReadString());
@@ -187,11 +179,10 @@ namespace FBThrift.Tests
         [Test]
         public void TestEmptyString()
         {
-            using var ms = new MemoryStream();
-            var writer = CreateWriter(ms);
+            var writer = MakeWriter();
             writer.WriteString("");
 
-            var reader = CreateReader(ms);
+            var reader = MakeReader(writer);
             Assert.AreEqual("", reader.ReadString());
         }
 
@@ -200,25 +191,22 @@ namespace FBThrift.Tests
         {
             // Construct a stream with a valid i32 length prefix followed by invalid UTF-8 bytes.
             // ReadString() uses StrictUtf8 encoding which should throw on invalid sequences.
-            using var ms = new MemoryStream();
-            var writer = new ThriftBinaryWriter(ms);
+            var writer = MakeWriter();
             writer.WriteI32(3);
-            ms.Write(new byte[] { 0x72, 0x01, 0xFF });
+            ((MemoryStream)writer.BaseStream).Write(new byte[] { 0x72, 0x01, 0xFF });
 
-            ms.Position = 0;
-            var reader = new ThriftBinaryReader(ms);
+            var reader = MakeReader(writer);
             Assert.Throws<System.Text.DecoderFallbackException>(() => reader.ReadString());
         }
 
         [Test]
         public void TestBinaryWithHighBytes()
         {
-            using var ms = new MemoryStream();
-            var writer = CreateWriter(ms);
+            var writer = MakeWriter();
             var bytes = new byte[] { 0x01, 0x02, 0x03, 0xFF, 0xFE };
             writer.WriteBinary(bytes);
 
-            var reader = CreateReader(ms);
+            var reader = MakeReader(writer);
             Assert.AreEqual(bytes, reader.ReadBinary());
         }
 
@@ -230,8 +218,7 @@ namespace FBThrift.Tests
             // Binary fields should handle this without UTF-8 decoding errors.
             var badUtf8Bytes = new byte[] { 0x72, 0x01, 0xFF };
 
-            using var ms = new MemoryStream();
-            var writer = CreateWriter(ms);
+            var writer = MakeWriter();
 
             // Write a struct with a binary field (field id 1, type STRING=11 for binary)
             writer.WriteFieldBegin(ThriftWireType.String, 1);
@@ -239,7 +226,7 @@ namespace FBThrift.Tests
             writer.WriteFieldStop();
 
             // Read it back
-            var reader = CreateReader(ms);
+            var reader = MakeReader(writer);
             var (fieldType, fieldId) = reader.ReadFieldBegin();
             Assert.AreEqual(ThriftWireType.String, fieldType);
             Assert.AreEqual(1, fieldId);
@@ -257,8 +244,7 @@ namespace FBThrift.Tests
             // may contain invalid UTF-8 sequences like 0xFF.
             var badUtf8Bytes = new byte[] { 0x72, 0x01, 0xFF };
 
-            using var ms = new MemoryStream();
-            var writer = CreateWriter(ms);
+            var writer = MakeWriter();
 
             // Write a struct with a binary field (field id 1), then another field
             writer.WriteFieldBegin(ThriftWireType.String, 1);
@@ -268,7 +254,7 @@ namespace FBThrift.Tests
             writer.WriteFieldStop();
 
             // Read back, skip field 1 (binary with bad UTF-8), read field 2
-            var reader = CreateReader(ms);
+            var reader = MakeReader(writer);
             var (fieldType1, fieldId1) = reader.ReadFieldBegin();
             Assert.AreEqual(ThriftWireType.String, fieldType1);
             Assert.AreEqual(1, fieldId1);
@@ -287,11 +273,10 @@ namespace FBThrift.Tests
         [Test]
         public void TestEmptyBinary()
         {
-            using var ms = new MemoryStream();
-            var writer = CreateWriter(ms);
+            var writer = MakeWriter();
             writer.WriteBinary(Array.Empty<byte>());
 
-            var reader = CreateReader(ms);
+            var reader = MakeReader(writer);
             Assert.AreEqual(0, reader.ReadBinary().Length);
         }
 
@@ -300,14 +285,13 @@ namespace FBThrift.Tests
         [Test]
         public void TestListBegin()
         {
-            using var ms = new MemoryStream();
-            var writer = CreateWriter(ms);
+            var writer = MakeWriter();
             writer.WriteListBegin(ThriftWireType.I32, 3);
             writer.WriteI32(1);
             writer.WriteI32(2);
             writer.WriteI32(3);
 
-            var reader = CreateReader(ms);
+            var reader = MakeReader(writer);
             var (elemType, size) = reader.ReadListBegin();
             Assert.AreEqual(ThriftWireType.I32, elemType);
             Assert.AreEqual(3, size);
@@ -316,13 +300,12 @@ namespace FBThrift.Tests
         [Test]
         public void TestSetBegin()
         {
-            using var ms = new MemoryStream();
-            var writer = CreateWriter(ms);
+            var writer = MakeWriter();
             writer.WriteSetBegin(ThriftWireType.String, 2);
             writer.WriteString("a");
             writer.WriteString("b");
 
-            var reader = CreateReader(ms);
+            var reader = MakeReader(writer);
             var (elemType, size) = reader.ReadSetBegin();
             Assert.AreEqual(ThriftWireType.String, elemType);
             Assert.AreEqual(2, size);
@@ -331,15 +314,14 @@ namespace FBThrift.Tests
         [Test]
         public void TestMapBegin()
         {
-            using var ms = new MemoryStream();
-            var writer = CreateWriter(ms);
+            var writer = MakeWriter();
             writer.WriteMapBegin(ThriftWireType.String, ThriftWireType.I64, 2);
             writer.WriteString("k1");
             writer.WriteI64(1L);
             writer.WriteString("k2");
             writer.WriteI64(2L);
 
-            var reader = CreateReader(ms);
+            var reader = MakeReader(writer);
             var (keyType, valType, size) = reader.ReadMapBegin();
             Assert.AreEqual(ThriftWireType.String, keyType);
             Assert.AreEqual(ThriftWireType.I64, valType);
@@ -351,12 +333,11 @@ namespace FBThrift.Tests
         [Test]
         public void TestSkipBool()
         {
-            using var ms = new MemoryStream();
-            var writer = CreateWriter(ms);
+            var writer = MakeWriter();
             writer.WriteBool(true);
             writer.WriteI32(42);
 
-            var reader = CreateReader(ms);
+            var reader = MakeReader(writer);
             reader.Skip(ThriftWireType.Bool);
             Assert.AreEqual(42, reader.ReadI32());
         }
@@ -364,12 +345,11 @@ namespace FBThrift.Tests
         [Test]
         public void TestSkipString()
         {
-            using var ms = new MemoryStream();
-            var writer = CreateWriter(ms);
+            var writer = MakeWriter();
             writer.WriteString("Skip this string");
             writer.WriteI32(42);
 
-            var reader = CreateReader(ms);
+            var reader = MakeReader(writer);
             reader.Skip(ThriftWireType.String);
             Assert.AreEqual(42, reader.ReadI32());
         }
@@ -377,15 +357,14 @@ namespace FBThrift.Tests
         [Test]
         public void TestSkipList()
         {
-            using var ms = new MemoryStream();
-            var writer = CreateWriter(ms);
+            var writer = MakeWriter();
             writer.WriteListBegin(ThriftWireType.I32, 3);
             writer.WriteI32(1);
             writer.WriteI32(2);
             writer.WriteI32(3);
             writer.WriteI64(42L);
 
-            var reader = CreateReader(ms);
+            var reader = MakeReader(writer);
             reader.Skip(ThriftWireType.List);
             Assert.AreEqual(42L, reader.ReadI64());
         }
@@ -393,8 +372,7 @@ namespace FBThrift.Tests
         [Test]
         public void TestSkipMap()
         {
-            using var ms = new MemoryStream();
-            var writer = CreateWriter(ms);
+            var writer = MakeWriter();
             writer.WriteMapBegin(ThriftWireType.String, ThriftWireType.I32, 2);
             writer.WriteString("key1");
             writer.WriteI32(1);
@@ -402,7 +380,7 @@ namespace FBThrift.Tests
             writer.WriteI32(2);
             writer.WriteI64(42L);
 
-            var reader = CreateReader(ms);
+            var reader = MakeReader(writer);
             reader.Skip(ThriftWireType.Map);
             Assert.AreEqual(42L, reader.ReadI64());
         }
@@ -410,8 +388,7 @@ namespace FBThrift.Tests
         [Test]
         public void TestSkipStruct()
         {
-            using var ms = new MemoryStream();
-            var writer = CreateWriter(ms);
+            var writer = MakeWriter();
             writer.WriteFieldBegin(ThriftWireType.I32, 1);
             writer.WriteI32(100);
             writer.WriteFieldBegin(ThriftWireType.String, 2);
@@ -419,7 +396,7 @@ namespace FBThrift.Tests
             writer.WriteFieldStop();
             writer.WriteI64(42L);
 
-            var reader = CreateReader(ms);
+            var reader = MakeReader(writer);
             reader.Skip(ThriftWireType.Struct);
             Assert.AreEqual(42L, reader.ReadI64());
         }
@@ -428,8 +405,7 @@ namespace FBThrift.Tests
         public void TestSkipModerateNestingSucceeds()
         {
             const int depth = 10;
-            using var ms = new MemoryStream();
-            var writer = CreateWriter(ms);
+            var writer = MakeWriter();
 
             for (int i = 0; i < depth; i++)
             {
@@ -442,7 +418,7 @@ namespace FBThrift.Tests
             writer.WriteFieldStop();
             writer.WriteI64(42L);
 
-            var reader = CreateReader(ms);
+            var reader = MakeReader(writer);
             Assert.DoesNotThrow(() => reader.Skip(ThriftWireType.Struct));
             Assert.AreEqual(42L, reader.ReadI64());
         }
@@ -452,11 +428,10 @@ namespace FBThrift.Tests
         [Test]
         public void TestReadStringRejectsExceedingStringSizeLimit()
         {
-            using var ms = new MemoryStream();
-            var writer = CreateWriter(ms);
+            var writer = MakeWriter();
             writer.WriteString(new string('x', 100));
 
-            var reader = CreateReader(ms);
+            var reader = MakeReader(writer);
             reader.StringSizeLimit = 50;
             Assert.Throws<ThriftProtocolException>(() => reader.ReadString());
         }
@@ -464,11 +439,10 @@ namespace FBThrift.Tests
         [Test]
         public void TestReadBinaryRejectsExceedingStringSizeLimit()
         {
-            using var ms = new MemoryStream();
-            var writer = CreateWriter(ms);
+            var writer = MakeWriter();
             writer.WriteBinary(new byte[100]);
 
-            var reader = CreateReader(ms);
+            var reader = MakeReader(writer);
             reader.StringSizeLimit = 50;
             Assert.Throws<ThriftProtocolException>(() => reader.ReadBinary());
         }
@@ -476,11 +450,10 @@ namespace FBThrift.Tests
         [Test]
         public void TestReadStringSucceedsWithinStringSizeLimit()
         {
-            using var ms = new MemoryStream();
-            var writer = CreateWriter(ms);
+            var writer = MakeWriter();
             writer.WriteString("hello");
 
-            var reader = CreateReader(ms);
+            var reader = MakeReader(writer);
             reader.StringSizeLimit = 1024;
             Assert.AreEqual("hello", reader.ReadString());
         }
@@ -488,19 +461,17 @@ namespace FBThrift.Tests
         [Test]
         public void TestReadStringSucceedsWithDefaultNoLimit()
         {
-            using var ms = new MemoryStream();
-            var writer = CreateWriter(ms);
+            var writer = MakeWriter();
             writer.WriteString("hello");
 
-            var reader = CreateReader(ms);
+            var reader = MakeReader(writer);
             Assert.AreEqual("hello", reader.ReadString());
         }
 
         [Test]
         public void TestStringSizeLimitDefaultsToZero()
         {
-            using var ms = new MemoryStream();
-            var reader = CreateReader(ms);
+            var reader = new ThriftBinaryReader(new MemoryStream());
             Assert.AreEqual(0, reader.StringSizeLimit);
         }
 
@@ -539,16 +510,27 @@ namespace FBThrift.Tests
     [TestFixture]
     public class ThriftBinarySpecificTests
     {
+        private static ThriftBinaryWriter MakeWriter()
+        {
+            return new ThriftBinaryWriter(new MemoryStream());
+        }
+
+        private static ThriftBinaryReader MakeReader(ThriftBinaryWriter writer)
+        {
+            var ms = (MemoryStream)writer.BaseStream;
+            ms.Position = 0;
+            return new ThriftBinaryReader(ms);
+        }
+
         // === Big-endian byte order tests ===
 
         [Test]
         public void TestI16BigEndian()
         {
-            using var ms = new MemoryStream();
-            var writer = new ThriftBinaryWriter(ms);
+            var writer = MakeWriter();
             writer.WriteI16(0x1234);
 
-            var bytes = ms.ToArray();
+            var bytes = ((MemoryStream)writer.BaseStream).ToArray();
             Assert.AreEqual((byte)0x12, bytes[0]);
             Assert.AreEqual((byte)0x34, bytes[1]);
         }
@@ -556,11 +538,10 @@ namespace FBThrift.Tests
         [Test]
         public void TestI32BigEndian()
         {
-            using var ms = new MemoryStream();
-            var writer = new ThriftBinaryWriter(ms);
+            var writer = MakeWriter();
             writer.WriteI32(0x12345678);
 
-            var bytes = ms.ToArray();
+            var bytes = ((MemoryStream)writer.BaseStream).ToArray();
             Assert.AreEqual((byte)0x12, bytes[0]);
             Assert.AreEqual((byte)0x34, bytes[1]);
             Assert.AreEqual((byte)0x56, bytes[2]);
@@ -570,11 +551,10 @@ namespace FBThrift.Tests
         [Test]
         public void TestI64BigEndian()
         {
-            using var ms = new MemoryStream();
-            var writer = new ThriftBinaryWriter(ms);
+            var writer = MakeWriter();
             writer.WriteI64(0x123456789ABCDEF0L);
 
-            var bytes = ms.ToArray();
+            var bytes = ((MemoryStream)writer.BaseStream).ToArray();
             Assert.AreEqual((byte)0x12, bytes[0]);
             Assert.AreEqual((byte)0x34, bytes[1]);
             Assert.AreEqual((byte)0x56, bytes[2]);
@@ -588,11 +568,10 @@ namespace FBThrift.Tests
         [Test]
         public void TestFloatBigEndian()
         {
-            using var ms = new MemoryStream();
-            var writer = new ThriftBinaryWriter(ms);
+            var writer = MakeWriter();
             writer.WriteFloat(1.0f);
 
-            var bytes = ms.ToArray();
+            var bytes = ((MemoryStream)writer.BaseStream).ToArray();
             // IEEE 754: 1.0f = 0x3F800000 in big-endian
             Assert.AreEqual((byte)0x3F, bytes[0]);
             Assert.AreEqual((byte)0x80, bytes[1]);
@@ -603,11 +582,10 @@ namespace FBThrift.Tests
         [Test]
         public void TestDoubleBigEndian()
         {
-            using var ms = new MemoryStream();
-            var writer = new ThriftBinaryWriter(ms);
+            var writer = MakeWriter();
             writer.WriteDouble(1.0);
 
-            var bytes = ms.ToArray();
+            var bytes = ((MemoryStream)writer.BaseStream).ToArray();
             // IEEE 754: 1.0d = 0x3FF0000000000000 in big-endian
             Assert.AreEqual((byte)0x3F, bytes[0]);
             Assert.AreEqual((byte)0xF0, bytes[1]);
@@ -624,16 +602,14 @@ namespace FBThrift.Tests
         [Test]
         public void TestWriteBinaryNullThrows()
         {
-            using var ms = new MemoryStream();
-            var writer = new ThriftBinaryWriter(ms);
+            var writer = MakeWriter();
             Assert.Throws<ArgumentNullException>(() => writer.WriteBinary(null));
         }
 
         [Test]
         public void TestWriteStringNullThrows()
         {
-            using var ms = new MemoryStream();
-            var writer = new ThriftBinaryWriter(ms);
+            var writer = MakeWriter();
             Assert.Throws<ArgumentNullException>(() => writer.WriteString(null));
         }
 
@@ -642,8 +618,7 @@ namespace FBThrift.Tests
         [Test]
         public void TestBoolRejectsInvalidValue()
         {
-            using var ms = new MemoryStream(new byte[] { 0x02 });
-            var reader = new ThriftBinaryReader(ms);
+            var reader = new ThriftBinaryReader(new MemoryStream(new byte[] { 0x02 }));
             Assert.Throws<ThriftProtocolException>(() => reader.ReadBool());
         }
 
@@ -665,7 +640,7 @@ namespace FBThrift.Tests
         [Test]
         public void TestReadStringRejectsNegativeLength()
         {
-            using var ms = MakeStringPayload(-1, 0);
+            var ms = MakeStringPayload(-1, 0);
             var reader = new ThriftBinaryReader(ms);
             Assert.Throws<ThriftProtocolException>(() => reader.ReadString());
         }
@@ -673,7 +648,7 @@ namespace FBThrift.Tests
         [Test]
         public void TestReadBinaryRejectsNegativeLength()
         {
-            using var ms = MakeStringPayload(-1, 0);
+            var ms = MakeStringPayload(-1, 0);
             var reader = new ThriftBinaryReader(ms);
             Assert.Throws<ThriftProtocolException>(() => reader.ReadBinary());
         }
@@ -681,7 +656,7 @@ namespace FBThrift.Tests
         [Test]
         public void TestReadStringRejectsLengthExceedingRemainingBytes()
         {
-            using var ms = MakeStringPayload(1000, 10);
+            var ms = MakeStringPayload(1000, 10);
             var reader = new ThriftBinaryReader(ms);
             Assert.Throws<ThriftProtocolException>(() => reader.ReadString());
         }
@@ -689,7 +664,7 @@ namespace FBThrift.Tests
         [Test]
         public void TestReadBinaryRejectsLengthExceedingRemainingBytes()
         {
-            using var ms = MakeStringPayload(1000, 10);
+            var ms = MakeStringPayload(1000, 10);
             var reader = new ThriftBinaryReader(ms);
             Assert.Throws<ThriftProtocolException>(() => reader.ReadBinary());
         }
@@ -700,8 +675,7 @@ namespace FBThrift.Tests
         public void TestSkipDeeplyNestedStructThrowsDepthExceeded()
         {
             const int depth = 200;
-            using var ms = new MemoryStream();
-            var writer = new ThriftBinaryWriter(ms);
+            var writer = MakeWriter();
 
             for (int i = 0; i < depth; i++)
             {
@@ -712,8 +686,7 @@ namespace FBThrift.Tests
                 writer.WriteFieldStop();
             }
 
-            ms.Position = 0;
-            var reader = new ThriftBinaryReader(ms);
+            var reader = MakeReader(writer);
             Assert.Throws<ThriftProtocolException>(() => reader.Skip(ThriftWireType.Struct));
         }
 
@@ -724,8 +697,7 @@ namespace FBThrift.Tests
         {
             const int depth = 200;
             const short fieldId = 7;
-            using var ms = new MemoryStream();
-            var writer = new ThriftBinaryWriter(ms);
+            var writer = MakeWriter();
 
             for (int i = 0; i < depth; i++)
             {
@@ -736,8 +708,7 @@ namespace FBThrift.Tests
                 writer.WriteFieldStop();
             }
 
-            ms.Position = 0;
-            var reader = new ThriftBinaryReader(ms);
+            var reader = MakeReader(writer);
             var ex = Assert.Throws<ThriftProtocolException>(() => reader.Skip(ThriftWireType.Struct));
             StringAssert.Contains($"field id={fieldId}", ex.Message);
             StringAssert.Contains("Struct", ex.Message);
@@ -746,8 +717,7 @@ namespace FBThrift.Tests
         [Test]
         public void TestSkipDepthExceededWithoutFieldIdShowsType()
         {
-            using var ms = new MemoryStream();
-            var writer = new ThriftBinaryWriter(ms);
+            var writer = MakeWriter();
 
             for (int i = 0; i < 200; i++)
             {
@@ -758,8 +728,7 @@ namespace FBThrift.Tests
                 writer.WriteFieldStop();
             }
 
-            ms.Position = 0;
-            var reader = new ThriftBinaryReader(ms);
+            var reader = MakeReader(writer);
             var ex = Assert.Throws<ThriftProtocolException>(() => reader.Skip(ThriftWireType.Struct));
             StringAssert.Contains("exceeded while skipping", ex.Message);
             StringAssert.Contains("Struct", ex.Message);
@@ -768,8 +737,7 @@ namespace FBThrift.Tests
         [Test]
         public void TestSkipWithExplicitFieldIdIncludesItInError()
         {
-            using var ms = new MemoryStream();
-            var reader = new ThriftBinaryReader(ms);
+            var reader = new ThriftBinaryReader(new MemoryStream());
             var ex = Assert.Throws<ThriftProtocolException>(
                 () => reader.Skip((ThriftWireType)99, fieldId: 42));
             StringAssert.Contains("field id=42", ex.Message);
@@ -780,13 +748,11 @@ namespace FBThrift.Tests
         [Test]
         public void TestReadWriteValueListRoundTrip()
         {
-            using var ms = new MemoryStream();
-            var writer = new ThriftBinaryWriter(ms);
+            var writer = MakeWriter();
             var original = new System.Collections.Generic.List<int> { 1, 2, 3, 4, 5 };
             ThriftProtocolHelper.WriteValue(writer, original);
 
-            ms.Position = 0;
-            var reader = new ThriftBinaryReader(ms);
+            var reader = MakeReader(writer);
             var result = ThriftProtocolHelper.ReadValue<System.Collections.Generic.List<int>>(reader);
             Assert.AreEqual(original.Count, result.Count);
             for (int i = 0; i < original.Count; i++)
@@ -798,8 +764,7 @@ namespace FBThrift.Tests
         [Test]
         public void TestReadWriteValueDictionaryRoundTrip()
         {
-            using var ms = new MemoryStream();
-            var writer = new ThriftBinaryWriter(ms);
+            var writer = MakeWriter();
             var original = new System.Collections.Generic.Dictionary<string, int>
             {
                 { "alpha", 1 },
@@ -808,8 +773,7 @@ namespace FBThrift.Tests
             };
             ThriftProtocolHelper.WriteValue(writer, original);
 
-            ms.Position = 0;
-            var reader = new ThriftBinaryReader(ms);
+            var reader = MakeReader(writer);
             var result = ThriftProtocolHelper.ReadValue<System.Collections.Generic.Dictionary<string, int>>(reader);
             Assert.AreEqual(original.Count, result.Count);
             foreach (var kvp in original)
@@ -822,13 +786,11 @@ namespace FBThrift.Tests
         [Test]
         public void TestReadWriteValueHashSetRoundTrip()
         {
-            using var ms = new MemoryStream();
-            var writer = new ThriftBinaryWriter(ms);
+            var writer = MakeWriter();
             var original = new System.Collections.Generic.HashSet<string> { "x", "y", "z" };
             ThriftProtocolHelper.WriteValue(writer, original);
 
-            ms.Position = 0;
-            var reader = new ThriftBinaryReader(ms);
+            var reader = MakeReader(writer);
             var result = ThriftProtocolHelper.ReadValue<System.Collections.Generic.HashSet<string>>(reader);
             Assert.AreEqual(original.Count, result.Count);
             foreach (var item in original)
@@ -840,8 +802,7 @@ namespace FBThrift.Tests
         [Test]
         public void TestReadWriteValueNestedListRoundTrip()
         {
-            using var ms = new MemoryStream();
-            var writer = new ThriftBinaryWriter(ms);
+            var writer = MakeWriter();
             var original = new System.Collections.Generic.List<System.Collections.Generic.List<int>>
             {
                 new System.Collections.Generic.List<int> { 1, 2 },
@@ -849,8 +810,7 @@ namespace FBThrift.Tests
             };
             ThriftProtocolHelper.WriteValue(writer, original);
 
-            ms.Position = 0;
-            var reader = new ThriftBinaryReader(ms);
+            var reader = MakeReader(writer);
             var result = ThriftProtocolHelper.ReadValue<System.Collections.Generic.List<System.Collections.Generic.List<int>>>(reader);
             Assert.AreEqual(original.Count, result.Count);
             for (int i = 0; i < original.Count; i++)
@@ -866,15 +826,13 @@ namespace FBThrift.Tests
         [Test]
         public void TestReadWriteValueRepeatedCallsExerciseCache()
         {
-            using var ms = new MemoryStream();
-            var writer = new ThriftBinaryWriter(ms);
+            var writer = MakeWriter();
             for (int i = 0; i < 100; i++)
             {
                 ThriftProtocolHelper.WriteValue(writer, new System.Collections.Generic.List<int> { i, i * 2 });
             }
 
-            ms.Position = 0;
-            var reader = new ThriftBinaryReader(ms);
+            var reader = MakeReader(writer);
             for (int i = 0; i < 100; i++)
             {
                 var result = ThriftProtocolHelper.ReadValue<System.Collections.Generic.List<int>>(reader);
@@ -887,8 +845,7 @@ namespace FBThrift.Tests
         [Test]
         public void TestReadWriteValueMapRepeatedCallsExerciseCache()
         {
-            using var ms = new MemoryStream();
-            var writer = new ThriftBinaryWriter(ms);
+            var writer = MakeWriter();
             for (int i = 0; i < 50; i++)
             {
                 var dict = new System.Collections.Generic.Dictionary<string, long>
@@ -898,8 +855,7 @@ namespace FBThrift.Tests
                 ThriftProtocolHelper.WriteValue(writer, dict);
             }
 
-            ms.Position = 0;
-            var reader = new ThriftBinaryReader(ms);
+            var reader = MakeReader(writer);
             for (int i = 0; i < 50; i++)
             {
                 var result = ThriftProtocolHelper.ReadValue<System.Collections.Generic.Dictionary<string, long>>(reader);
@@ -917,25 +873,23 @@ namespace FBThrift.Tests
             // This matches the conformance test: testset.union.bool/true.Binary
             //
             // Expected Binary wire format:
-            //   field header: type=BOOL(2), field_id=1 → bytes: 02, 00, 01
-            //   bool value: true → byte: 01
-            //   field stop → byte: 00
+            //   field header: type=BOOL(2), field_id=1 -> bytes: 02, 00, 01
+            //   bool value: true -> byte: 01
+            //   field stop -> byte: 00
             var expected = new byte[] { 0x02, 0x00, 0x01, 0x01, 0x00 };
 
             // Write: manually construct the same wire bytes
-            using var writeMs = new MemoryStream();
-            var writer = new ThriftBinaryWriter(writeMs);
+            var writer = MakeWriter();
             writer.WriteFieldBegin(ThriftWireType.Bool, 1);
             writer.WriteBool(true);
             writer.WriteFieldStop();
-            var written = writeMs.ToArray();
+            var written = ((MemoryStream)writer.BaseStream).ToArray();
 
             Assert.AreEqual(expected, written,
                 $"Written bytes mismatch.");
 
             // Read back and verify
-            using var readMs = new MemoryStream(written);
-            var reader = new ThriftBinaryReader(readMs);
+            var reader = new ThriftBinaryReader(new MemoryStream(written));
             var (fieldType, fieldId) = reader.ReadFieldBegin();
             Assert.AreEqual(ThriftWireType.Bool, fieldType);
             Assert.AreEqual((short)1, fieldId);
@@ -944,21 +898,89 @@ namespace FBThrift.Tests
             Assert.AreEqual(ThriftWireType.Stop, stopType);
 
             // Full round-trip: read then write again, compare bytes
-            using var readMs2 = new MemoryStream(expected);
-            var reader2 = new ThriftBinaryReader(readMs2);
+            var reader2 = new ThriftBinaryReader(new MemoryStream(expected));
             var (ft2, fid2) = reader2.ReadFieldBegin();
             var boolVal = reader2.ReadBool();
             var (stop2, _) = reader2.ReadFieldBegin();
 
-            using var writeMs2 = new MemoryStream();
-            var writer2 = new ThriftBinaryWriter(writeMs2);
+            var writer2 = MakeWriter();
             writer2.WriteFieldBegin(ft2, fid2);
             writer2.WriteBool(boolVal);
             writer2.WriteFieldStop();
-            var roundTripped = writeMs2.ToArray();
+            var roundTripped = ((MemoryStream)writer2.BaseStream).ToArray();
 
             Assert.AreEqual(expected, roundTripped,
                 $"Round-trip bytes mismatch.");
+        }
+
+        // === Field ID context in error messages ===
+
+        [Test]
+        public void TestReadValueEnumAcceptsUndefinedValue()
+        {
+            // Unknown enum values are intentionally allowed for schema evolution
+            // (open enums). The raw integer value is preserved via Enum.ToObject.
+            var writer = MakeWriter();
+            writer.WriteI32(999);
+
+            var reader = MakeReader(writer);
+            var result = reader.ReadValue<TestEnum>();
+            Assert.AreEqual(999, (int)result);
+        }
+
+        [Test]
+        public void TestReadValueEnumAcceptsDefinedValue()
+        {
+            var writer = MakeWriter();
+            writer.WriteI32(2);
+
+            var reader = MakeReader(writer);
+            Assert.AreEqual(TestEnum.Bar, reader.ReadValue<TestEnum>());
+        }
+
+        private enum TestEnum
+        {
+            Foo = 1,
+            Bar = 2,
+            Baz = 3,
+        }
+
+        [Test]
+        public void TestErrorMessageIncludesFieldIdAfterReadFieldBegin()
+        {
+            var writer = MakeWriter();
+            writer.WriteFieldBegin(ThriftWireType.String, 42);
+            writer.WriteI32(999999);
+
+            var reader = MakeReader(writer);
+
+            var (fieldType, fieldId) = reader.ReadFieldBegin();
+            Assert.AreEqual(ThriftWireType.String, fieldType);
+            Assert.AreEqual((short)42, fieldId);
+
+            var ex = Assert.Throws<ThriftProtocolException>(() => reader.ReadString());
+            StringAssert.Contains("field id=42", ex.Message);
+        }
+
+        [Test]
+        public void TestErrorMessageClearsFieldIdAfterFieldStop()
+        {
+            var writer = MakeWriter();
+            writer.WriteFieldBegin(ThriftWireType.I32, 10);
+            writer.WriteI32(100);
+            writer.WriteFieldStop();
+            writer.WriteI32(-1);
+
+            var reader = MakeReader(writer);
+
+            reader.ReadFieldBegin();
+            reader.ReadI32();
+
+            var (stopType, _) = reader.ReadFieldBegin();
+            Assert.AreEqual(ThriftWireType.Stop, stopType);
+
+            var ex = Assert.Throws<ThriftProtocolException>(() => reader.ReadString());
+            Assert.IsFalse(ex.Message.Contains("field id="), "Field ID should be cleared after FieldStop");
         }
     }
 }

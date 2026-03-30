@@ -114,6 +114,7 @@ namespace FBThrift
         private readonly Stream _stream;
         private readonly byte[] _buffer = new byte[8];
         private short _lastFieldId;
+        private short? _currentFieldId;
         private bool _pendingBoolValue;
         private bool _hasPendingBool;
 
@@ -146,11 +147,18 @@ namespace FBThrift
             ? _stream.Length - _stream.Position
             : long.MaxValue;
 
+        /// <summary>
+        /// Returns a context string for error messages including field ID if available.
+        /// </summary>
+        private string ErrorContext => _currentFieldId.HasValue
+            ? $" (field id={_currentFieldId.Value})"
+            : "";
         public (ThriftWireType fieldType, short fieldId) ReadFieldBegin()
         {
             var header = ReadRawByte();
             if (header == (byte)CompactType.Stop)
             {
+                _currentFieldId = null;
                 return (ThriftWireType.Stop, 0);
             }
 
@@ -167,6 +175,7 @@ namespace FBThrift
                 fieldId = ReadI16();
             }
             _lastFieldId = fieldId;
+            _currentFieldId = fieldId;
 
             if (compactType == CompactType.BoolTrue)
             {
@@ -233,12 +242,12 @@ namespace FBThrift
             var length = (int)ReadVarint32();
             if (length < 0)
             {
-                throw new ThriftProtocolException($"Negative string length: {length}");
+                throw new ThriftProtocolException($"Negative string length: {length}{ErrorContext}");
             }
             if (StringSizeLimit > 0 && length > StringSizeLimit)
             {
                 throw new ThriftProtocolException(
-                    $"String/binary length {length} exceeds size limit {StringSizeLimit}");
+                    $"String/binary length {length} exceeds size limit {StringSizeLimit}{ErrorContext}");
             }
             if (length == 0)
             {
@@ -261,12 +270,12 @@ namespace FBThrift
             var length = (int)ReadVarint32();
             if (length < 0)
             {
-                throw new ThriftProtocolException($"Negative binary length: {length}");
+                throw new ThriftProtocolException($"Negative binary length: {length}{ErrorContext}");
             }
             if (StringSizeLimit > 0 && length > StringSizeLimit)
             {
                 throw new ThriftProtocolException(
-                    $"String/binary length {length} exceeds size limit {StringSizeLimit}");
+                    $"String/binary length {length} exceeds size limit {StringSizeLimit}{ErrorContext}");
             }
             if (length == 0)
             {
@@ -481,13 +490,13 @@ namespace FBThrift
         {
             if (size < 0)
             {
-                throw new ThriftProtocolException($"Negative collection size: {size}");
+                throw new ThriftProtocolException($"Negative collection size: {size}{ErrorContext}");
             }
             var minRequired = (long)size * minBytesPerElement;
             if (minRequired > RemainingBytes)
             {
                 throw new ThriftProtocolException(
-                    $"Collection size {size} exceeds remaining bytes {RemainingBytes}");
+                    $"Collection size {size} exceeds remaining bytes {RemainingBytes}{ErrorContext}");
             }
         }
 
