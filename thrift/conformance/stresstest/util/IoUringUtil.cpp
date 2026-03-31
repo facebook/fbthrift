@@ -46,6 +46,10 @@ DEFINE_int32(
     io_zcrx_hw_queues,
     0,
     "Number of HW queues for ZC Rx. If 0, assumes nr of io_threads == HW queues and skips buffer pool import/export.");
+DEFINE_bool(
+    io_uring_async_socket,
+    false,
+    "Use AsyncSocket with IoUringBackend nativeAsyncSocketSupport instead of AsyncIoUringSocket");
 #if FOLLY_HAS_LIBURING
 
 namespace apache::thrift::stress {
@@ -150,6 +154,10 @@ folly::IoUringBackend::Options getIoUringOptions() {
         folly::IoUringArena::base(),
         folly::IoUringArena::regionSize(),
         folly::IoUringArena::arenaIndex());
+  }
+
+  if (FLAGS_io_uring_async_socket) {
+    options.setNativeAsyncSocketSupport(true);
   }
 
   return options;

@@ -214,7 +214,9 @@ std::shared_ptr<ThriftServer> createStressTestServer(
   auto server = std::make_shared<ThriftServer>();
   server->setInterface(std::move(handler));
   server->setPort(FLAGS_port);
-  server->setPreferIoUring(FLAGS_io_uring);
+  if (FLAGS_io_uring) {
+    server->setPreferIoUring(!FLAGS_io_uring_async_socket);
+  }
   auto ioThreadPool = getIOThreadPool("thrift_eventbase", FLAGS_io_threads);
   server->setIOThreadPool(ioThreadPool);
   server->setNumCPUWorkerThreads(numCpuWorkerThreads);
