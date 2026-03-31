@@ -450,7 +450,8 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
         oprot.writeFieldBegin(STRUCT_LIST_FIELD_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.STRUCT, _iter0.size()));
             for (com.facebook.thrift.my.AdaptedFoo_1 _iter1 : _iter0) {
-              __FooWithAdapter_Adapter.toThrift(_iter1).write0(oprot);
+              test.fixtures.adapter.Foo _iter2 = __FooWithAdapter_9317_Adapter.toThrift(_iter1);
+              _iter2.write0(oprot);
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();
@@ -462,7 +463,8 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
         oprot.writeFieldBegin(OPTIONAL_STRUCT_LIST_FIELD_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.STRUCT, _iter0.size()));
             for (com.facebook.thrift.my.AdaptedFoo_1 _iter1 : _iter0) {
-              __FooWithAdapter_Adapter.toThrift(_iter1).write0(oprot);
+              test.fixtures.adapter.Foo _iter2 = __FooWithAdapter_9317_Adapter.toThrift(_iter1);
+              _iter2.write0(oprot);
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();

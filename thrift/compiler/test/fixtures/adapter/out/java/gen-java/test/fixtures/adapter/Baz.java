@@ -425,9 +425,10 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
               {
                 com.facebook.thrift.my.AdaptedList_2 _iter2 = _iter1.getValue();
                 List<com.facebook.thrift.my.AdaptedString_1> _iter3 = __ListWithElemAdapter_withAdapter_2312_Adapter.toThrift(_iter2);
-        oprot.writeListBegin(new TList(TType.STRING, _iter3.size()));
+                oprot.writeListBegin(new TList(TType.STRING, _iter3.size()));
             for (com.facebook.thrift.my.AdaptedString_1 _iter4 : _iter3) {
-              oprot.writeString(__StringWithAdapter_Adapter.toThrift(_iter4));
+              String _iter5 = __StringWithAdapter_Adapter.toThrift(_iter4);
+              oprot.writeString(_iter5);
             }
             oprot.writeListEnd();
               }

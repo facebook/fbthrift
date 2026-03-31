@@ -17,38 +17,33 @@
 }}
 {{#type:typedef?}}{{!
   }}{{type:setTypeName}}{{!
-  }}{{#type:isAdapterSet?}}{{!
-    }}{{#type:typedef_type}}{{type:setAdapter}}{{> WriteType}}{{/type:typedef_type}}{{!
-  }}{{/type:isAdapterSet?}}{{!
-  }}{{^type:isAdapterSet?}}{{!
-    }}{{#type:isBinaryString?}}{{!
-      }}{{^field:hasAdapterOrWrapper?}}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter{{field:prevNestedDepth}});{{/field:hasAdapterOrWrapper?}}{{!
-      }}{{#field:hasAdapterOrWrapper?}}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter{{field:prevNestedDepth}});{{/field:hasAdapterOrWrapper?}}{{!
-    }}{{/type:isBinaryString?}}{{!
-    }}{{^type:isBinaryString?}}{{!
-      }}{{#type:javaType}}{{!
-        }}{{#type:binary?}}{{!
-          }}{{^field:hasAdapterOrWrapper?}}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter{{field:prevNestedDepth}});{{/field:hasAdapterOrWrapper?}}{{!
-          }}{{#field:hasAdapterOrWrapper?}}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter{{field:prevNestedDepth}});{{/field:hasAdapterOrWrapper?}}{{!
-        }}{{/type:binary?}}{{!
-        }}{{^type:binary?}}{{!
-          }}{{#type:typedef_type}}{{> WriteType}}{{/type:typedef_type}}{{!
-        }}{{/type:binary?}}{{!
-      }}{{/type:javaType}}{{!
-      }}{{^type:javaType}}{{!
+  }}{{#type:isBinaryString?}}{{!
+    }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter{{field:prevNestedDepth}});{{!
+  }}{{/type:isBinaryString?}}{{!
+  }}{{^type:isBinaryString?}}{{!
+    }}{{#type:javaType}}{{!
+      }}{{#type:binary?}}{{!
+        }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter{{field:prevNestedDepth}});{{!
+      }}{{/type:binary?}}{{!
+      }}{{^type:binary?}}{{!
         }}{{#type:typedef_type}}{{> WriteType}}{{/type:typedef_type}}{{!
-      }}{{/type:javaType}}{{!
-    }}{{/type:isBinaryString?}}{{!
-  }}{{/type:isAdapterSet?}}{{!
+      }}{{/type:binary?}}{{!
+    }}{{/type:javaType}}{{!
+    }}{{^type:javaType}}{{!
+      }}{{#type:typedef_type}}{{> WriteType}}{{/type:typedef_type}}{{!
+    }}{{/type:javaType}}{{!
+  }}{{/type:isBinaryString?}}{{!
 }}{{/type:typedef?}}{{!
 }}{{^type:typedef?}}{{!
 }}{{#type:set?}}oprot.writeSetBegin(new TSet(TType.{{#type:set_elem_type}}{{#partial types.ttype type=type:self}}{{/type:set_elem_type}}, _iter{{field:prevNestedDepth}}.size()));
         for ({{#type:set_elem_type}}{{> AdaptedType}}{{/type:set_elem_type}} _iter{{field:nestedDepth}} : _iter{{field:prevNestedDepth}}) {
           {{field:setIsNested}}{{!
           }}{{#type:set_elem_type}}{{!
-          }}{{#type:container?}}{{> WriteTypeAdapter}}{{/type:container?}}{{!
-          }}{{^type:container?}}{{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{field:nestedDepth++}}{{> WriteType}}{{field:nestedDepth--}}{{!
-          }}{{/type:container?}}{{/type:set_elem_type}}
+          }}{{#type:hasAdapter?}}{{!
+          }}{{field:nestedDepth++}}{{#partial types.adapted_boxed_type type=type:self}} _iter{{field:nestedDepth}} = __{{type:name}}_Adapter.toThrift(_iter{{field:prevNestedDepth}});
+          {{/type:hasAdapter?}}{{field:nestedDepth++}}{{> WriteType}}{{field:nestedDepth--}}{{!
+          }}{{#type:hasAdapter?}}{{field:nestedDepth--}}{{/type:hasAdapter?}}{{!
+          }}{{/type:set_elem_type}}
         }
         oprot.writeSetEnd();{{!
 }}{{/type:set?}}{{!
@@ -58,9 +53,11 @@
         for ({{#type:list_elem_type}}{{> AdaptedType}}{{/type:list_elem_type}} _iter{{field:nestedDepth}} : _iter{{field:prevNestedDepth}}) {
           {{field:setIsNested}}{{!
           }}{{#type:list_elem_type}}{{!
-          }}{{#type:container?}}{{> WriteTypeAdapter}}{{/type:container?}}{{!
-          }}{{^type:container?}}{{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{field:nestedDepth++}}{{> WriteType}}{{field:nestedDepth--}}{{!
-          }}{{/type:container?}}{{/type:list_elem_type}}
+          }}{{#type:hasAdapter?}}{{!
+          }}{{field:nestedDepth++}}{{#partial types.adapted_boxed_type type=type:self}} _iter{{field:nestedDepth}} = __{{type:name}}_Adapter.toThrift(_iter{{field:prevNestedDepth}});
+          {{/type:hasAdapter?}}{{field:nestedDepth++}}{{> WriteType}}{{field:nestedDepth--}}{{!
+          }}{{#type:hasAdapter?}}{{field:nestedDepth--}}{{/type:hasAdapter?}}{{!
+          }}{{/type:list_elem_type}}
         }
         oprot.writeListEnd();{{!
 }}{{/type:list?}}{{!
@@ -73,9 +70,8 @@
             {{#type:key_type}}{{!
             }}{{field:nestedDepth++}}{{!
             }}{{> BoxedType}} _iter{{field:nestedDepth}} = _iter{{field:prevNestedDepth}}.getKey();
-            {{#type:container?}}{{> WriteTypeAdapter}}{{/type:container?}}{{!
-            }}{{^type:container?}}{{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{field:nestedDepth++}}{{> WriteType}}{{field:nestedDepth--}}{{!
-            }}{{/type:container?}}{{!
+            {{#type:hasAdapter?}}{{field:nestedDepth++}}{{#partial types.adapted_boxed_type type=type:self}} _iter{{field:nestedDepth}} = __{{type:name}}_Adapter.toThrift(_iter{{field:prevNestedDepth}});
+            {{/type:hasAdapter?}}{{field:nestedDepth++}}{{> WriteType}}{{field:nestedDepth--}}{{#type:hasAdapter?}}{{field:nestedDepth--}}{{/type:hasAdapter?}}{{!
             }}{{field:nestedDepth--}}{{!
             }}{{/type:key_type}}
           }
@@ -83,9 +79,8 @@
             {{#type:value_type}}{{!
             }}{{field:nestedDepth++}}{{!
             }}{{> BoxedType}} _iter{{field:nestedDepth}} = _iter{{field:prevNestedDepth}}.getValue();
-            {{#type:container?}}{{> WriteTypeAdapter}}{{/type:container?}}{{!
-            }}{{^type:container?}}{{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{field:nestedDepth++}}{{> WriteType}}{{field:nestedDepth--}}{{!
-            }}{{/type:container?}}{{!
+            {{#type:hasAdapter?}}{{field:nestedDepth++}}{{#partial types.adapted_boxed_type type=type:self}} _iter{{field:nestedDepth}} = __{{type:name}}_Adapter.toThrift(_iter{{field:prevNestedDepth}});
+            {{/type:hasAdapter?}}{{field:nestedDepth++}}{{> WriteType}}{{field:nestedDepth--}}{{#type:hasAdapter?}}{{field:nestedDepth--}}{{/type:hasAdapter?}}{{!
             }}{{field:nestedDepth--}}{{!
             }}{{/type:value_type}}
           }
@@ -103,12 +98,7 @@
 
 }}{{#type:binary?}}{{!
   }}{{^field:hasAdapterOrWrapper?}}{{!
-    }}{{#type:isAdapterSet?}}{{!
-      }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, {{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=field:isNested? depth=field:prevNestedDepth}});{{!
-    }}{{/type:isAdapterSet?}}{{!
-    }}{{^type:isAdapterSet?}}{{!
-      }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter{{field:prevNestedDepth}});{{!
-    }}{{/type:isAdapterSet?}}{{!
+    }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter{{field:prevNestedDepth}});{{!
   }}{{/field:hasAdapterOrWrapper?}}{{!
   }}{{#field:hasAdapterOrWrapper?}}{{!
     }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, {{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}});{{!
@@ -118,12 +108,7 @@
 }}{{#type:string?}}{{!
   }}{{#type:isBinaryString?}}{{!
     }}{{^field:hasAdapterOrWrapper?}}{{!
-      }}{{#type:isAdapterSet?}}{{!
-        }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, {{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=field:isNested? depth=field:prevNestedDepth}});{{!
-      }}{{/type:isAdapterSet?}}{{!
-      }}{{^type:isAdapterSet?}}{{!
-        }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter{{field:prevNestedDepth}});{{!
-      }}{{/type:isAdapterSet?}}{{!
+      }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter{{field:prevNestedDepth}});{{!
     }}{{/field:hasAdapterOrWrapper?}}{{!
     }}{{#field:hasAdapterOrWrapper?}}{{!
       }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, {{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}});{{!
