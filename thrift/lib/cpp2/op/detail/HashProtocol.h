@@ -126,7 +126,11 @@ class HashProtocol {
   }
   uint32_t writeFieldEnd() { return (acc_.endOrdered(), 0); }
   uint32_t writeFieldStop() { return 0; }
-  uint32_t writeMapBegin(protocol::TType, protocol::TType, uint32_t size) {
+  uint32_t writeMapBegin(
+      protocol::TType,
+      protocol::TType,
+      uint32_t size,
+      bool /*alternativeKeyForm*/ = false) {
     return (beginContainer(acc_, size), acc_.beginUnordered(), 0);
   }
   uint32_t writeMapValueBegin() { return (acc_.beginOrdered(), 0); }

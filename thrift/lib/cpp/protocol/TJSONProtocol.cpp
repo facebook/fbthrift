@@ -637,7 +637,10 @@ uint32_t TJSONProtocol::writeFieldStop() {
 }
 
 uint32_t TJSONProtocol::writeMapBegin(
-    const TType keyType, const TType valType, const uint32_t size) {
+    const TType keyType,
+    const TType valType,
+    const uint32_t size,
+    bool /*alternativeKeyForm*/) {
   uint32_t result = writeJSONArrayStart();
   result += writeJSONString(getTypeNameForTypeID(keyType));
   result += writeJSONString(getTypeNameForTypeID(valType));

@@ -230,7 +230,10 @@ uint32_t TDebugProtocol::writeFieldStop() {
 }
 
 uint32_t TDebugProtocol::writeMapBegin(
-    const TType keyType, const TType valType, const uint32_t size) {
+    const TType keyType,
+    const TType valType,
+    const uint32_t size,
+    bool /*alternativeKeyForm*/) {
   // TODO(dreiss): Optimize short maps?
   uint32_t bsize = 0;
   bsize += startItem();

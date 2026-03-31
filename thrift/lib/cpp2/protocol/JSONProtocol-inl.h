@@ -183,7 +183,7 @@ uint32_t JSONProtocolWriter::writeFieldStop() {
 }
 
 uint32_t JSONProtocolWriter::writeMapBegin(
-    TType keyType, TType valType, uint32_t size) {
+    TType keyType, TType valType, uint32_t size, bool /*alternativeKeyForm*/) {
   descend();
 
   auto ret = writeContext();

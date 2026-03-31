@@ -179,7 +179,10 @@ inline uint32_t CompactProtocolWriter::writeFieldStop() {
 }
 
 inline uint32_t CompactProtocolWriter::writeMapBegin(
-    const TType keyType, TType valType, uint32_t size) {
+    const TType keyType,
+    TType valType,
+    uint32_t size,
+    bool /*alternativeKeyForm*/) {
   descend();
 
   uint32_t wsize = 0;

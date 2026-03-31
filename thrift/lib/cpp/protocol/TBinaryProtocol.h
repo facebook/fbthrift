@@ -112,7 +112,10 @@ class TBinaryProtocolT : public TVirtualProtocol<TBinaryProtocolT<Transport_>> {
   inline uint32_t writeFieldStop();
 
   inline uint32_t writeMapBegin(
-      const TType keyType, const TType valType, const uint32_t size);
+      const TType keyType,
+      const TType valType,
+      const uint32_t size,
+      bool /*alternativeKeyForm*/ = false);
 
   inline uint32_t writeMapEnd();
 

@@ -114,7 +114,8 @@ class CompactProtocolWriter : public detail::ProtocolBase {
       const char* name, TType fieldType, int16_t fieldId, int16_t previousId);
   uint32_t writeFieldEnd();
   uint32_t writeFieldStop();
-  uint32_t writeMapBegin(TType keyType, TType valType, uint32_t size);
+  uint32_t writeMapBegin(
+      TType keyType, TType valType, uint32_t size, bool = false);
   uint32_t writeMapEnd();
   uint32_t writeListBegin(TType elemType, uint32_t size);
   uint32_t writeListEnd();

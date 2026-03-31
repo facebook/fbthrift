@@ -51,7 +51,10 @@ uint32_t TSimpleJSONProtocol::writeFieldEnd() {
 }
 
 uint32_t TSimpleJSONProtocol::writeMapBegin(
-    const TType /*keyType*/, const TType /*valType*/, const uint32_t /*size*/) {
+    const TType /*keyType*/,
+    const TType /*valType*/,
+    const uint32_t /*size*/,
+    bool /*alternativeKeyForm*/) {
   return writeJSONObjectStart();
 }
 

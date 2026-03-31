@@ -173,7 +173,10 @@ uint32_t TCompactProtocolT<Transport_>::writeSetBegin(
  */
 template <class Transport_>
 uint32_t TCompactProtocolT<Transport_>::writeMapBegin(
-    const TType keyType, const TType valType, const uint32_t size) {
+    const TType keyType,
+    const TType valType,
+    const uint32_t size,
+    bool /*alternativeKeyForm*/) {
   uint32_t wsize = 0;
 
   if (size == 0) {

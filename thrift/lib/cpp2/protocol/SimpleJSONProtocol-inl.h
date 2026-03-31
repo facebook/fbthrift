@@ -57,7 +57,10 @@ uint32_t SimpleJSONProtocolWriter::writeFieldStop() {
 }
 
 uint32_t SimpleJSONProtocolWriter::writeMapBegin(
-    const TType /*keyType*/, TType /*valType*/, uint32_t /*size*/) {
+    const TType /*keyType*/,
+    TType /*valType*/,
+    uint32_t /*size*/,
+    bool /*alternativeKeyForm*/) {
   descend();
 
   auto ret = writeContext();

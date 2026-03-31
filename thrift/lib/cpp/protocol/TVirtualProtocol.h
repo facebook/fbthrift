@@ -259,7 +259,8 @@ class TProtocolDefaults : public TProtocol {
   [[noreturn]] uint32_t writeMapBegin(
       const TType /*keyType*/,
       const TType /*valType*/,
-      const uint32_t /*size*/) {
+      const uint32_t /*size*/,
+      bool /*alternativeKeyForm*/ = false) {
     throw TProtocolException(
         TProtocolException::NOT_IMPLEMENTED,
         "this protocol does not support writing (yet).");

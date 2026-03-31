@@ -54,7 +54,10 @@ class TSimpleJSONProtocol
   uint32_t writeFieldEnd();
 
   uint32_t writeMapBegin(
-      const TType keyType, const TType valType, const uint32_t size);
+      const TType keyType,
+      const TType valType,
+      const uint32_t size,
+      bool /*alternativeKeyForm*/ = false);
 
   uint32_t writeMapEnd();
 

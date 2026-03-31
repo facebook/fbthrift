@@ -150,7 +150,11 @@ class EncodeValueRecorder {
     return 0;
   }
 
-  uint32_t writeMapBegin(TType keyType, TType valType, uint32_t size) {
+  uint32_t writeMapBegin(
+      TType keyType,
+      TType valType,
+      uint32_t size,
+      bool /*alternativeKeyForm*/ = false) {
     auto& mapBegin = next().writeMapBegin().ensure();
     mapBegin.keyType() = type::toBaseType(keyType);
     mapBegin.valueType() = type::toBaseType(valType);

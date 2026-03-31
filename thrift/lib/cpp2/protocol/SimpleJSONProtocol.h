@@ -61,7 +61,8 @@ class SimpleJSONProtocolWriter : public JSONProtocolWriterCommon {
       const char* name, TType fieldType, int16_t fieldId);
   inline uint32_t writeFieldEnd();
   inline uint32_t writeFieldStop();
-  inline uint32_t writeMapBegin(TType keyType, TType valType, uint32_t size);
+  inline uint32_t writeMapBegin(
+      TType keyType, TType valType, uint32_t size, bool = false);
   inline uint32_t writeMapEnd();
   inline uint32_t writeListBegin(TType elemType, uint32_t size);
   inline uint32_t writeListEnd();

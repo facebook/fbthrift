@@ -225,7 +225,10 @@ uint32_t DebugProtocolWriter::writeFieldStop() {
 }
 
 uint32_t DebugProtocolWriter::writeMapBegin(
-    TType keyType, TType valueType, uint32_t size) {
+    TType keyType,
+    TType valueType,
+    uint32_t size,
+    bool /*alternativeKeyForm*/) {
   startItem();
   writePlain(
       "map<{},{}>[{}] {{\n",

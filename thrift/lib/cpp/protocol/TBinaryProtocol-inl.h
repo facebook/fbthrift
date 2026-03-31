@@ -83,7 +83,10 @@ uint32_t TBinaryProtocolT<Transport_>::writeFieldStop() {
 
 template <class Transport_>
 uint32_t TBinaryProtocolT<Transport_>::writeMapBegin(
-    const TType keyType, const TType valType, const uint32_t size) {
+    const TType keyType,
+    const TType valType,
+    const uint32_t size,
+    bool /*alternativeKeyForm*/) {
   uint32_t wsize = 0;
   wsize += writeByte((int8_t)keyType);
   wsize += writeByte((int8_t)valType);

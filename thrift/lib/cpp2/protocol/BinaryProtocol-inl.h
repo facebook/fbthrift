@@ -66,7 +66,10 @@ inline uint32_t BinaryProtocolWriter::writeFieldStop() {
 }
 
 inline uint32_t BinaryProtocolWriter::writeMapBegin(
-    const TType keyType, TType valType, uint32_t size) {
+    const TType keyType,
+    TType valType,
+    uint32_t size,
+    bool /*alternativeKeyForm*/) {
   descend();
   uint32_t wsize = 0;
   wsize += writeByte((int8_t)keyType);

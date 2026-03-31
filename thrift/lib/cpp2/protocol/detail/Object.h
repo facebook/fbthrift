@@ -214,7 +214,10 @@ class ObjectWriter : public BaseObjectAdapter {
   static uint32_t writeFieldStop() { return 0; }
 
   uint32_t writeMapBegin(
-      const TType /*keyType*/, TType /*valType*/, uint32_t size) {
+      const TType /*keyType*/,
+      TType /*valType*/,
+      uint32_t size,
+      bool /*alternativeKeyForm*/ = false) {
     // We cannot push reference to map elements on stack without first inserting
     // map elements. So push reference to temporary buffer on stack instead.
     allocBufferPushOnStack((size_t)size * 2);

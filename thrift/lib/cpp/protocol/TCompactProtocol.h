@@ -155,7 +155,10 @@ class TCompactProtocolT
   uint32_t writeSetBegin(const TType elemType, const uint32_t size);
 
   virtual uint32_t writeMapBegin(
-      const TType keyType, const TType valType, const uint32_t size);
+      const TType keyType,
+      const TType valType,
+      const uint32_t size,
+      bool /*alternativeKeyForm*/ = false);
 
   uint32_t writeBool(const bool value);
 

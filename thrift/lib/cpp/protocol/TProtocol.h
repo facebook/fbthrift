@@ -286,7 +286,10 @@ class TProtocol {
   uint32_t writeFieldStop() { return writeFieldStop_virt(); }
 
   uint32_t writeMapBegin(
-      const TType keyType, const TType valType, const uint32_t size) {
+      const TType keyType,
+      const TType valType,
+      const uint32_t size,
+      bool /*alternativeKeyForm*/ = false) {
     return writeMapBegin_virt(keyType, valType, size);
   }
 
