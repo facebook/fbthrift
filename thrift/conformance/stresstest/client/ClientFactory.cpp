@@ -65,6 +65,8 @@ folly::AsyncTransport::UniquePtr createTLSSocket(
 folly::AsyncTransport::UniquePtr createFizzSocket(
     folly::EventBase* evb, const ClientConnectionConfig& cfg);
 #if FOLLY_HAS_LIBURING
+folly::AsyncIoUringSocket::Options getIoUringSocketOptions(
+    const ClientConnectionConfig& cfg);
 folly::AsyncTransport::UniquePtr createIOUring(
     folly::EventBase* evb, const ClientConnectionConfig& cfg);
 folly::AsyncTransport::UniquePtr createIOUringTLS(
@@ -183,8 +185,31 @@ folly::AsyncTransport::UniquePtr createSocketWithIOUring(
       return createIOUring(evb, cfg);
     case ClientSecurity::TLS:
       return createIOUringTLS(evb, cfg);
-    case ClientSecurity::FIZZ:
-      return createIOUringFizz(evb, cfg);
+    case ClientSecurity::FIZZ: {
+      if (cfg.stopTLSv1) {
+        folly::ScopedEventBaseThread connThread;
+        FizzStopTLSConnector connector;
+        auto fut =
+            connector.connect(cfg.serverHost, connThread.getEventBase(), evb);
+        try {
+          auto result = std::move(fut).get(std::chrono::seconds(10));
+          auto [fd, zeroCopyBufId] = connector.getSocketParams();
+          auto sock = folly::AsyncIoUringSocket::UniquePtr(
+              new folly::AsyncIoUringSocket(
+                  evb, fd, getIoUringSocketOptions(cfg)));
+          if (cfg.connectCb) {
+            cfg.connectCb->connectSuccess();
+          }
+          return sock;
+        } catch (const std::exception& e) {
+          LOG(ERROR) << "StopTLSv1 negotiation failed: " << e.what()
+                     << ". Falling back to regular FIZZ connection.";
+          return createIOUringFizz(evb, cfg);
+        }
+      } else {
+        return createIOUringFizz(evb, cfg);
+      }
+    }
   }
 }
 #endif
