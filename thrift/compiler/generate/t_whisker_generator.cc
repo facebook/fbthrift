@@ -27,7 +27,6 @@
 #include <thrift/compiler/whisker/standard_library.h>
 
 #include <cassert>
-#include <cstddef>
 #include <fstream>
 
 #include <fmt/ranges.h>
@@ -346,12 +345,11 @@ prototype<t_field>::ptr t_whisker_generator::make_prototype_for_field(
       if (const t_const_value* msg_value =
               deprecated_annotation
                   ->get_value_from_structured_annotation_or_null("message")) {
-        return whisker::make::string(
-            get_escaped_string(msg_value->get_string()));
+        return w::string(get_escaped_string(msg_value->get_string()));
       }
-      return whisker::make::string("This field is deprecated");
+      return w::string("This field is deprecated");
     }
-    return whisker::make::null;
+    return w::null;
   });
   return std::move(def).make();
 }
@@ -500,7 +498,7 @@ t_whisker_generator::make_prototype_for_const_value(
                w::native_handle(proto.create<t_const_value>(*val_const_val))},
           }));
     }
-    return w::array(result);
+    return w::array(std::move(result));
   });
 
   def.property("list_elements", [&proto](const t_const_value& self) {
@@ -525,7 +523,7 @@ t_whisker_generator::make_prototype_for_const_value(
                w::native_handle(proto.create<t_const_value>(*val_const_val))},
           }));
     }
-    return w::array(result);
+    return w::array(std::move(result));
   });
   def.property("owner", mem_fn(&t_const_value::get_owner, proto.of<t_const>()));
   def.function(
@@ -599,7 +597,7 @@ prototype<t_program>::ptr t_whisker_generator::make_prototype_for_program(
         includes.emplace_back(proto.create<t_include>(*include));
       }
     }
-    return whisker::make::array(std::move(includes));
+    return w::array(std::move(includes));
   });
   def.property("autogen_path", [](const t_program& self) {
     std::string path = self.path();
