@@ -20,6 +20,7 @@
 #include <thrift/lib/cpp2/op/Encode.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/protocol/GetStandardProtocol.h>
 #include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
 #include <thrift/lib/cpp2/type/detail/Wrap.h>
 #include <thrift/lib/thrift/gen-cpp2/any_rep_types.h>
@@ -125,13 +126,7 @@ AnyData AnyData::toAny(const native_type<Tag>& v) {
           Protocol == StandardProtocol::SimpleJson,
       "Unsupported protocol");
 
-  using Writer = std::conditional_t<
-      Protocol == StandardProtocol::Binary,
-      BinaryProtocolWriter,
-      std::conditional_t<
-          Protocol == StandardProtocol::Compact,
-          CompactProtocolWriter,
-          SimpleJSONProtocolWriter>>;
+  using Writer = protocol::ProtocolWriterFor<Protocol>;
 
   Writer writer;
   folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
