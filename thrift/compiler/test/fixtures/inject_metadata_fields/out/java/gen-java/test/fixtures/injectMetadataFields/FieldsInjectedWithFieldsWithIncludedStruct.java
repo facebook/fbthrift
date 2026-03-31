@@ -32,7 +32,7 @@ public final class FieldsInjectedWithFieldsWithIncludedStruct implements com.fac
         this.stringField = stringField;
         this.injectedField = injectedField;
     }
-    
+
     @ThriftConstructor
     protected FieldsInjectedWithFieldsWithIncludedStruct() {
       this.stringField = null;
@@ -50,27 +50,27 @@ public final class FieldsInjectedWithFieldsWithIncludedStruct implements com.fac
     public static class Builder {
         private String stringField = null;
         private test.fixtures.injectMetadataFields.InjectedField injectedField = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="string_field", requiredness=Requiredness.NONE)    public Builder setStringField(String stringField) {
             this.stringField = stringField;
             return this;
         }
-    
+
         public String getStringField() { return stringField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=-1001, name="injected_field", isLegacyId=true, requiredness=Requiredness.NONE)    public Builder setInjectedField(test.fixtures.injectMetadataFields.InjectedField injectedField) {
             this.injectedField = injectedField;
             return this;
         }
-    
+
         public test.fixtures.injectMetadataFields.InjectedField getInjectedField() { return injectedField; }
-    
+
         public Builder() { }
         public Builder(FieldsInjectedWithFieldsWithIncludedStruct other) {
             this.stringField = other.stringField;
             this.injectedField = other.injectedField;
         }
-    
+
         @ThriftConstructor
         public FieldsInjectedWithFieldsWithIncludedStruct build() {
             FieldsInjectedWithFieldsWithIncludedStruct result = new FieldsInjectedWithFieldsWithIncludedStruct (
@@ -125,9 +125,9 @@ public final class FieldsInjectedWithFieldsWithIncludedStruct implements com.fac
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         FieldsInjectedWithFieldsWithIncludedStruct other = (FieldsInjectedWithFieldsWithIncludedStruct)o;
-    
+
         return
             Objects.equals(stringField, other.stringField) &&
             Objects.equals(injectedField, other.injectedField) &&
@@ -146,7 +146,7 @@ public final class FieldsInjectedWithFieldsWithIncludedStruct implements com.fac
     public static com.facebook.thrift.payload.Reader<FieldsInjectedWithFieldsWithIncludedStruct> asReader() {
       return FieldsInjectedWithFieldsWithIncludedStruct::read0;
     }
-    
+
     public static FieldsInjectedWithFieldsWithIncludedStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(FieldsInjectedWithFieldsWithIncludedStruct.NAMES_TO_IDS, FieldsInjectedWithFieldsWithIncludedStruct.THRIFT_NAMES_TO_IDS, FieldsInjectedWithFieldsWithIncludedStruct.FIELD_METADATA);
@@ -206,7 +206,7 @@ public final class FieldsInjectedWithFieldsWithIncludedStruct implements com.fac
     private static class _FieldsInjectedWithFieldsWithIncludedStructLazy {
         private static final FieldsInjectedWithFieldsWithIncludedStruct _DEFAULT = new FieldsInjectedWithFieldsWithIncludedStruct.Builder().build();
     }
-    
+
     public static FieldsInjectedWithFieldsWithIncludedStruct defaultInstance() {
         return  _FieldsInjectedWithFieldsWithIncludedStructLazy._DEFAULT;
     }

@@ -38,7 +38,7 @@ public final class User implements com.facebook.thrift.payload.ThriftSerializabl
         this.email = email;
         this.emailAddress = emailAddress;
     }
-    
+
     @ThriftConstructor
     protected User() {
       this.id = 0L;
@@ -62,42 +62,42 @@ public final class User implements com.facebook.thrift.payload.ThriftSerializabl
         private String fullName = null;
         private String email = null;
         private String emailAddress = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE)    public Builder setId(long id) {
             this.id = id;
             return this;
         }
-    
+
         public long getId() { return id; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="name", requiredness=Requiredness.NONE)    public Builder setName(String name) {
             this.name = name;
             return this;
         }
-    
+
         public String getName() { return name; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="full_name", requiredness=Requiredness.NONE)    public Builder setFullName(String fullName) {
             this.fullName = fullName;
             return this;
         }
-    
+
         public String getFullName() { return fullName; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=4, name="email", requiredness=Requiredness.OPTIONAL)    public Builder setEmail(String email) {
             this.email = email;
             return this;
         }
-    
+
         public String getEmail() { return email; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=5, name="email_address", requiredness=Requiredness.OPTIONAL)    public Builder setEmailAddress(String emailAddress) {
             this.emailAddress = emailAddress;
             return this;
         }
-    
+
         public String getEmailAddress() { return emailAddress; }
-    
+
         public Builder() { }
         public Builder(User other) {
             this.id = other.id;
@@ -106,7 +106,7 @@ public final class User implements com.facebook.thrift.payload.ThriftSerializabl
             this.email = other.email;
             this.emailAddress = other.emailAddress;
         }
-    
+
         @ThriftConstructor
         public User build() {
             User result = new User (
@@ -160,7 +160,7 @@ public final class User implements com.facebook.thrift.payload.ThriftSerializabl
         User.class, User::read0));
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE)
     public long getId() { return id; }
 
@@ -205,9 +205,9 @@ public final class User implements com.facebook.thrift.payload.ThriftSerializabl
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         User other = (User)o;
-    
+
         return
             Objects.equals(id, other.id) &&
             Objects.equals(name, other.name) &&
@@ -232,7 +232,7 @@ public final class User implements com.facebook.thrift.payload.ThriftSerializabl
     public static com.facebook.thrift.payload.Reader<User> asReader() {
       return User::read0;
     }
-    
+
     public static User read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(User.NAMES_TO_IDS, User.THRIFT_NAMES_TO_IDS, User.FIELD_METADATA);
@@ -338,7 +338,7 @@ public final class User implements com.facebook.thrift.payload.ThriftSerializabl
     private static class _UserLazy {
         private static final User _DEFAULT = new User.Builder().build();
     }
-    
+
     public static User defaultInstance() {
         return  _UserLazy._DEFAULT;
     }

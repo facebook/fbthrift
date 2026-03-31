@@ -40,7 +40,7 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
         this.setRefShared = setRefShared;
         this.listRefSharedConst = listRefSharedConst;
     }
-    
+
     @ThriftConstructor
     protected StructWithContainers() {
       this.listRef = null;
@@ -66,49 +66,49 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
         private List<Integer> listRefUnique = null;
         private Set<Integer> setRefShared = null;
         private List<Integer> listRefSharedConst = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="list_ref", requiredness=Requiredness.NONE)    public Builder setListRef(List<Integer> listRef) {
             this.listRef = listRef;
             return this;
         }
-    
+
         public List<Integer> getListRef() { return listRef; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="set_ref", requiredness=Requiredness.NONE)    public Builder setSetRef(Set<Integer> setRef) {
             this.setRef = setRef;
             return this;
         }
-    
+
         public Set<Integer> getSetRef() { return setRef; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="map_ref", requiredness=Requiredness.NONE)    public Builder setMapRef(Map<Integer, Integer> mapRef) {
             this.mapRef = mapRef;
             return this;
         }
-    
+
         public Map<Integer, Integer> getMapRef() { return mapRef; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=4, name="list_ref_unique", requiredness=Requiredness.NONE)    public Builder setListRefUnique(List<Integer> listRefUnique) {
             this.listRefUnique = listRefUnique;
             return this;
         }
-    
+
         public List<Integer> getListRefUnique() { return listRefUnique; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=5, name="set_ref_shared", requiredness=Requiredness.NONE)    public Builder setSetRefShared(Set<Integer> setRefShared) {
             this.setRefShared = setRefShared;
             return this;
         }
-    
+
         public Set<Integer> getSetRefShared() { return setRefShared; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=6, name="list_ref_shared_const", requiredness=Requiredness.NONE)    public Builder setListRefSharedConst(List<Integer> listRefSharedConst) {
             this.listRefSharedConst = listRefSharedConst;
             return this;
         }
-    
+
         public List<Integer> getListRefSharedConst() { return listRefSharedConst; }
-    
+
         public Builder() { }
         public Builder(StructWithContainers other) {
             this.listRef = other.listRef;
@@ -118,7 +118,7 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
             this.setRefShared = other.setRefShared;
             this.listRefSharedConst = other.listRefSharedConst;
         }
-    
+
         @ThriftConstructor
         public StructWithContainers build() {
             StructWithContainers result = new StructWithContainers (
@@ -225,9 +225,9 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         StructWithContainers other = (StructWithContainers)o;
-    
+
         return
             Objects.equals(listRef, other.listRef) &&
             Objects.equals(setRef, other.setRef) &&
@@ -254,7 +254,7 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
     public static com.facebook.thrift.payload.Reader<StructWithContainers> asReader() {
       return StructWithContainers::read0;
     }
-    
+
     public static StructWithContainers read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(StructWithContainers.NAMES_TO_IDS, StructWithContainers.THRIFT_NAMES_TO_IDS, StructWithContainers.FIELD_METADATA);
@@ -470,7 +470,7 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
     private static class _StructWithContainersLazy {
         private static final StructWithContainers _DEFAULT = new StructWithContainers.Builder().build();
     }
-    
+
     public static StructWithContainers defaultInstance() {
         return  _StructWithContainersLazy._DEFAULT;
     }

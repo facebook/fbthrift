@@ -47,7 +47,7 @@ public final class TerseException extends org.apache.thrift.TBaseException imple
     ) {
         this.msg = msg;
     }
-    
+
     @ThriftConstructor
     protected TerseException() {
       this.msg = com.facebook.thrift.util.IntrinsicDefaults.defaultString();
@@ -55,19 +55,19 @@ public final class TerseException extends org.apache.thrift.TBaseException imple
 
     public static class Builder {
         private String msg = com.facebook.thrift.util.IntrinsicDefaults.defaultString();
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="msg", requiredness=Requiredness.TERSE)    public Builder setMsg(String msg) {
             this.msg = msg;
             return this;
         }
-    
+
         public String getMsg() { return msg; }
-    
+
         public Builder() { }
         public Builder(TerseException other) {
             this.msg = other.msg;
         }
-    
+
         @ThriftConstructor
         public TerseException build() {
             TerseException result = new TerseException (
@@ -90,7 +90,7 @@ public final class TerseException extends org.apache.thrift.TBaseException imple
     public static com.facebook.thrift.payload.Reader<TerseException> asReader() {
       return TerseException::read0;
     }
-    
+
     public static TerseException read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(TerseException.NAMES_TO_IDS, TerseException.THRIFT_NAMES_TO_IDS, TerseException.FIELD_METADATA);
@@ -139,7 +139,7 @@ public final class TerseException extends org.apache.thrift.TBaseException imple
     private static class _TerseExceptionLazy {
         private static final TerseException _DEFAULT = new TerseException.Builder().build();
     }
-    
+
     public static TerseException defaultInstance() {
         return  _TerseExceptionLazy._DEFAULT;
     }}

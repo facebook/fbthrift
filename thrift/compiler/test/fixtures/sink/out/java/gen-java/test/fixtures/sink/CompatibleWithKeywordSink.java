@@ -30,7 +30,7 @@ public final class CompatibleWithKeywordSink implements com.facebook.thrift.payl
     ) {
         this.sink = sink;
     }
-    
+
     @ThriftConstructor
     protected CompatibleWithKeywordSink() {
       this.sink = null;
@@ -46,19 +46,19 @@ public final class CompatibleWithKeywordSink implements com.facebook.thrift.payl
 
     public static class Builder {
         private String sink = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="sink", requiredness=Requiredness.NONE)    public Builder setSink(String sink) {
             this.sink = sink;
             return this;
         }
-    
+
         public String getSink() { return sink; }
-    
+
         public Builder() { }
         public Builder(CompatibleWithKeywordSink other) {
             this.sink = other.sink;
         }
-    
+
         @ThriftConstructor
         public CompatibleWithKeywordSink build() {
             CompatibleWithKeywordSink result = new CompatibleWithKeywordSink (
@@ -100,9 +100,9 @@ public final class CompatibleWithKeywordSink implements com.facebook.thrift.payl
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         CompatibleWithKeywordSink other = (CompatibleWithKeywordSink)o;
-    
+
         return
             Objects.equals(sink, other.sink) &&
             true;
@@ -119,7 +119,7 @@ public final class CompatibleWithKeywordSink implements com.facebook.thrift.payl
     public static com.facebook.thrift.payload.Reader<CompatibleWithKeywordSink> asReader() {
       return CompatibleWithKeywordSink::read0;
     }
-    
+
     public static CompatibleWithKeywordSink read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(CompatibleWithKeywordSink.NAMES_TO_IDS, CompatibleWithKeywordSink.THRIFT_NAMES_TO_IDS, CompatibleWithKeywordSink.FIELD_METADATA);
@@ -163,7 +163,7 @@ public final class CompatibleWithKeywordSink implements com.facebook.thrift.payl
     private static class _CompatibleWithKeywordSinkLazy {
         private static final CompatibleWithKeywordSink _DEFAULT = new CompatibleWithKeywordSink.Builder().build();
     }
-    
+
     public static CompatibleWithKeywordSink defaultInstance() {
         return  _CompatibleWithKeywordSinkLazy._DEFAULT;
     }

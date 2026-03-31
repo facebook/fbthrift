@@ -41,9 +41,9 @@ public class PubSubStreamingServiceThriftMetadataHandler implements com.facebook
               .setName("i32_to")
               .setIsOptional(false)
               .build());
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("returnstream")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
@@ -60,9 +60,9 @@ public class PubSubStreamingServiceThriftMetadataHandler implements com.facebook
               .setName("foo")
               .setIsOptional(false)
               .build());
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("streamthrows")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
@@ -79,7 +79,7 @@ public class PubSubStreamingServiceThriftMetadataHandler implements com.facebook
               .setName("foo")
               .setIsOptional(false)
               .build());
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
           exceptions.add(new ThriftField.Builder()
               .setId(1)
@@ -87,7 +87,7 @@ public class PubSubStreamingServiceThriftMetadataHandler implements com.facebook
               .setName("exception_1")
               .setIsOptional(false)
               .build());
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("servicethrows")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
@@ -104,7 +104,7 @@ public class PubSubStreamingServiceThriftMetadataHandler implements com.facebook
               .setName("foo")
               .setIsOptional(false)
               .build());
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
           exceptions.add(new ThriftField.Builder()
               .setId(1)
@@ -118,7 +118,7 @@ public class PubSubStreamingServiceThriftMetadataHandler implements com.facebook
               .setName("exception_2")
               .setIsOptional(false)
               .build());
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("servicethrows2")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
@@ -135,7 +135,7 @@ public class PubSubStreamingServiceThriftMetadataHandler implements com.facebook
               .setName("foo")
               .setIsOptional(false)
               .build());
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
           exceptions.add(new ThriftField.Builder()
               .setId(1)
@@ -143,7 +143,7 @@ public class PubSubStreamingServiceThriftMetadataHandler implements com.facebook
               .setName("exception_1")
               .setIsOptional(false)
               .build());
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("boththrows")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
@@ -160,9 +160,9 @@ public class PubSubStreamingServiceThriftMetadataHandler implements com.facebook
               .setName("foo")
               .setIsOptional(false)
               .build());
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("responseandstreamstreamthrows")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE))
@@ -179,7 +179,7 @@ public class PubSubStreamingServiceThriftMetadataHandler implements com.facebook
               .setName("foo")
               .setIsOptional(false)
               .build());
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
           exceptions.add(new ThriftField.Builder()
               .setId(1)
@@ -187,7 +187,7 @@ public class PubSubStreamingServiceThriftMetadataHandler implements com.facebook
               .setName("exception_1")
               .setIsOptional(false)
               .build());
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("responseandstreamservicethrows")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE))
@@ -204,7 +204,7 @@ public class PubSubStreamingServiceThriftMetadataHandler implements com.facebook
               .setName("foo")
               .setIsOptional(false)
               .build());
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
           exceptions.add(new ThriftField.Builder()
               .setId(1)
@@ -212,7 +212,7 @@ public class PubSubStreamingServiceThriftMetadataHandler implements com.facebook
               .setName("exception_1")
               .setIsOptional(false)
               .build());
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("responseandstreamboththrows")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE))
@@ -235,9 +235,9 @@ public class PubSubStreamingServiceThriftMetadataHandler implements com.facebook
               .setName("i32_to")
               .setIsOptional(false)
               .build());
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("returnstreamFast")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))

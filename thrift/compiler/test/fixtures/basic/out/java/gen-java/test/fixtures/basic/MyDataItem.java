@@ -28,8 +28,8 @@ public final class MyDataItem implements com.facebook.thrift.payload.ThriftSeria
     public MyDataItem(
     ) {
     }
-    
-    
+
+
 
     public static Builder builder() {
       return new Builder();
@@ -40,11 +40,11 @@ public final class MyDataItem implements com.facebook.thrift.payload.ThriftSeria
     }
 
     public static class Builder {
-    
+
     public Builder() { }
         public Builder(MyDataItem other) {
         }
-    
+
         @ThriftConstructor
         public MyDataItem build() {
             MyDataItem result = new MyDataItem (
@@ -76,9 +76,9 @@ static {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         MyDataItem other = (MyDataItem)o;
-    
+
         return
             true;
     }
@@ -93,7 +93,7 @@ static {
     public static com.facebook.thrift.payload.Reader<MyDataItem> asReader() {
       return MyDataItem::read0;
     }
-    
+
     public static MyDataItem read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(MyDataItem.NAMES_TO_IDS, MyDataItem.THRIFT_NAMES_TO_IDS, MyDataItem.FIELD_METADATA);
@@ -121,7 +121,7 @@ static {
     private static class _MyDataItemLazy {
         private static final MyDataItem _DEFAULT = new MyDataItem.Builder().build();
     }
-    
+
     public static MyDataItem defaultInstance() {
         return  _MyDataItemLazy._DEFAULT;
     }

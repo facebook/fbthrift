@@ -36,7 +36,7 @@ public final class StructFieldAdaptedStruct implements com.facebook.thrift.paylo
         this.directlyAdapted = directlyAdapted;
         this.typedefOfAdapted = typedefOfAdapted;
     }
-    
+
     @ThriftConstructor
     protected StructFieldAdaptedStruct() {
       this.adaptedStruct = null;
@@ -58,35 +58,35 @@ public final class StructFieldAdaptedStruct implements com.facebook.thrift.paylo
         private test.fixtures.adapter.AdaptedStruct adaptedTypedef = null;
         private test.fixtures.adapter.DirectlyAdaptedStruct directlyAdapted = null;
         private test.fixtures.adapter.DirectlyAdaptedStruct typedefOfAdapted = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="adaptedStruct", requiredness=Requiredness.NONE)    public Builder setAdaptedStruct(test.fixtures.adapter.AdaptedStruct adaptedStruct) {
             this.adaptedStruct = adaptedStruct;
             return this;
         }
-    
+
         public test.fixtures.adapter.AdaptedStruct getAdaptedStruct() { return adaptedStruct; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="adaptedTypedef", requiredness=Requiredness.NONE)    public Builder setAdaptedTypedef(test.fixtures.adapter.AdaptedStruct adaptedTypedef) {
             this.adaptedTypedef = adaptedTypedef;
             return this;
         }
-    
+
         public test.fixtures.adapter.AdaptedStruct getAdaptedTypedef() { return adaptedTypedef; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="directlyAdapted", requiredness=Requiredness.NONE)    public Builder setDirectlyAdapted(test.fixtures.adapter.DirectlyAdaptedStruct directlyAdapted) {
             this.directlyAdapted = directlyAdapted;
             return this;
         }
-    
+
         public test.fixtures.adapter.DirectlyAdaptedStruct getDirectlyAdapted() { return directlyAdapted; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=4, name="typedefOfAdapted", requiredness=Requiredness.NONE)    public Builder setTypedefOfAdapted(test.fixtures.adapter.DirectlyAdaptedStruct typedefOfAdapted) {
             this.typedefOfAdapted = typedefOfAdapted;
             return this;
         }
-    
+
         public test.fixtures.adapter.DirectlyAdaptedStruct getTypedefOfAdapted() { return typedefOfAdapted; }
-    
+
         public Builder() { }
         public Builder(StructFieldAdaptedStruct other) {
             this.adaptedStruct = other.adaptedStruct;
@@ -94,7 +94,7 @@ public final class StructFieldAdaptedStruct implements com.facebook.thrift.paylo
             this.directlyAdapted = other.directlyAdapted;
             this.typedefOfAdapted = other.typedefOfAdapted;
         }
-    
+
         @ThriftConstructor
         public StructFieldAdaptedStruct build() {
             StructFieldAdaptedStruct result = new StructFieldAdaptedStruct (
@@ -178,9 +178,9 @@ public final class StructFieldAdaptedStruct implements com.facebook.thrift.paylo
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         StructFieldAdaptedStruct other = (StructFieldAdaptedStruct)o;
-    
+
         return
             Objects.equals(adaptedStruct, other.adaptedStruct) &&
             Objects.equals(adaptedTypedef, other.adaptedTypedef) &&
@@ -203,7 +203,7 @@ public final class StructFieldAdaptedStruct implements com.facebook.thrift.paylo
     public static com.facebook.thrift.payload.Reader<StructFieldAdaptedStruct> asReader() {
       return StructFieldAdaptedStruct::read0;
     }
-    
+
     public static StructFieldAdaptedStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(StructFieldAdaptedStruct.NAMES_TO_IDS, StructFieldAdaptedStruct.THRIFT_NAMES_TO_IDS, StructFieldAdaptedStruct.FIELD_METADATA);
@@ -295,7 +295,7 @@ public final class StructFieldAdaptedStruct implements com.facebook.thrift.paylo
     private static class _StructFieldAdaptedStructLazy {
         private static final StructFieldAdaptedStruct _DEFAULT = new StructFieldAdaptedStruct.Builder().build();
     }
-    
+
     public static StructFieldAdaptedStruct defaultInstance() {
         return  _StructFieldAdaptedStructLazy._DEFAULT;
     }

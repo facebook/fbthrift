@@ -52,7 +52,7 @@ public final class UnfortunateException extends org.apache.thrift.TBaseException
         this.anSnakeString = anSnakeString;
         this.aCamelI32 = aCamelI32;
     }
-    
+
     @ThriftConstructor
     protected UnfortunateException() {
       this.anSnakeString = null;
@@ -62,27 +62,27 @@ public final class UnfortunateException extends org.apache.thrift.TBaseException
     public static class Builder {
         private String anSnakeString = null;
         private int aCamelI32 = 0;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="an_snake_string", requiredness=Requiredness.NONE)    public Builder setAnSnakeString(String anSnakeString) {
             this.anSnakeString = anSnakeString;
             return this;
         }
-    
+
         public String getAnSnakeString() { return anSnakeString; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="aCamelI32", requiredness=Requiredness.NONE)    public Builder setACamelI32(int aCamelI32) {
             this.aCamelI32 = aCamelI32;
             return this;
         }
-    
+
         public int getACamelI32() { return aCamelI32; }
-    
+
         public Builder() { }
         public Builder(UnfortunateException other) {
             this.anSnakeString = other.anSnakeString;
             this.aCamelI32 = other.aCamelI32;
         }
-    
+
         @ThriftConstructor
         public UnfortunateException build() {
             UnfortunateException result = new UnfortunateException (
@@ -98,7 +98,7 @@ public final class UnfortunateException extends org.apache.thrift.TBaseException
     @com.facebook.swift.codec.ThriftField(value=1, name="an_snake_string", requiredness=Requiredness.NONE)
     public String getAnSnakeString() { return anSnakeString; }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="aCamelI32", requiredness=Requiredness.NONE)
     public int getACamelI32() { return aCamelI32; }
 
@@ -106,7 +106,7 @@ public final class UnfortunateException extends org.apache.thrift.TBaseException
     public static com.facebook.thrift.payload.Reader<UnfortunateException> asReader() {
       return UnfortunateException::read0;
     }
-    
+
     public static UnfortunateException read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(UnfortunateException.NAMES_TO_IDS, UnfortunateException.THRIFT_NAMES_TO_IDS, UnfortunateException.FIELD_METADATA);
@@ -164,7 +164,7 @@ public final class UnfortunateException extends org.apache.thrift.TBaseException
     private static class _UnfortunateExceptionLazy {
         private static final UnfortunateException _DEFAULT = new UnfortunateException.Builder().build();
     }
-    
+
     public static UnfortunateException defaultInstance() {
         return  _UnfortunateExceptionLazy._DEFAULT;
     }}

@@ -126,7 +126,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
     @ThriftConstructor
     public MyUnion() {
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public MyUnion(final test.fixtures.complex_struct.MyEnum myEnum) {
@@ -136,7 +136,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         this.value = myEnum;
         this.id = 1;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public MyUnion(final test.fixtures.complex_struct.MyStruct myStruct) {
@@ -146,7 +146,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         this.value = myStruct;
         this.id = 2;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public MyUnion(final test.fixtures.complex_struct.MyDataItem myDataItem) {
@@ -156,7 +156,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         this.value = myDataItem;
         this.id = 3;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public MyUnion(final test.fixtures.complex_struct.ComplexNestedStruct complexNestedStruct) {
@@ -166,21 +166,21 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         this.value = complexNestedStruct;
         this.id = 4;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public MyUnion(final long longValue) {
         this.value = longValue;
         this.id = 5;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public MyUnion(final int intValue) {
         this.value = intValue;
         this.id = 6;
     }
-    
+
     public static MyUnion fromMyEnum(final test.fixtures.complex_struct.MyEnum myEnum) {
         MyUnion res = new MyUnion();
         if (!MyUnion.allowNullFieldValues && myEnum == null) {
@@ -190,7 +190,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         res.id = 1;
         return res;
     }
-    
+
     public static MyUnion fromMyStruct(final test.fixtures.complex_struct.MyStruct myStruct) {
         MyUnion res = new MyUnion();
         if (!MyUnion.allowNullFieldValues && myStruct == null) {
@@ -200,7 +200,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         res.id = 2;
         return res;
     }
-    
+
     public static MyUnion fromMyDataItem(final test.fixtures.complex_struct.MyDataItem myDataItem) {
         MyUnion res = new MyUnion();
         if (!MyUnion.allowNullFieldValues && myDataItem == null) {
@@ -210,7 +210,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         res.id = 3;
         return res;
     }
-    
+
     public static MyUnion fromComplexNestedStruct(final test.fixtures.complex_struct.ComplexNestedStruct complexNestedStruct) {
         MyUnion res = new MyUnion();
         if (!MyUnion.allowNullFieldValues && complexNestedStruct == null) {
@@ -220,14 +220,14 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         res.id = 4;
         return res;
     }
-    
+
     public static MyUnion fromLongValue(final long longValue) {
         MyUnion res = new MyUnion();
         res.value = longValue;
         res.id = 5;
         return res;
     }
-    
+
     public static MyUnion fromIntValue(final int intValue) {
         MyUnion res = new MyUnion();
         res.value = intValue;
@@ -427,7 +427,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       case _MYENUM: {
         oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
         test.fixtures.complex_struct.MyEnum _iter0 = (test.fixtures.complex_struct.MyEnum)this.value;
-    
+
         oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
         oprot.writeFieldEnd();
         break;
@@ -435,7 +435,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       case _MYSTRUCT: {
         oprot.writeFieldBegin(MY_STRUCT_FIELD_DESC);
         test.fixtures.complex_struct.MyStruct _iter0 = (test.fixtures.complex_struct.MyStruct)this.value;
-    
+
         _iter0.write0(oprot);
         oprot.writeFieldEnd();
         break;
@@ -443,7 +443,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       case _MYDATAITEM: {
         oprot.writeFieldBegin(MY_DATA_ITEM_FIELD_DESC);
         test.fixtures.complex_struct.MyDataItem _iter0 = (test.fixtures.complex_struct.MyDataItem)this.value;
-    
+
         _iter0.write0(oprot);
         oprot.writeFieldEnd();
         break;
@@ -451,7 +451,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       case _COMPLEXNESTEDSTRUCT: {
         oprot.writeFieldBegin(COMPLEX_NESTED_STRUCT_FIELD_DESC);
         test.fixtures.complex_struct.ComplexNestedStruct _iter0 = (test.fixtures.complex_struct.ComplexNestedStruct)this.value;
-    
+
         _iter0.write0(oprot);
         oprot.writeFieldEnd();
         break;
@@ -459,7 +459,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       case _LONGVALUE: {
         oprot.writeFieldBegin(LONG_VALUE_FIELD_DESC);
         long _iter0 = (long)this.value;
-    
+
         oprot.writeI64(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -467,7 +467,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       case _INTVALUE: {
         oprot.writeFieldBegin(INT_VALUE_FIELD_DESC);
         int _iter0 = (int)this.value;
-    
+
         oprot.writeI32(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -483,7 +483,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
     public static com.facebook.thrift.payload.Reader<MyUnion> asReader() {
       return MyUnion::read0;
     }
-    
+
     public static MyUnion read0(TProtocol oprot) throws TException {
       MyUnion res = new MyUnion();
       res.value = null;

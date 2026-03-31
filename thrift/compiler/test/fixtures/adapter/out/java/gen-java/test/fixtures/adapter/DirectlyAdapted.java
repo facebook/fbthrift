@@ -30,7 +30,7 @@ public final class DirectlyAdapted implements com.facebook.thrift.payload.Thrift
     ) {
         this.field = field;
     }
-    
+
     @ThriftConstructor
     protected DirectlyAdapted() {
       this.field = 0;
@@ -46,19 +46,19 @@ public final class DirectlyAdapted implements com.facebook.thrift.payload.Thrift
 
     public static class Builder {
         private int field = 0;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="field", requiredness=Requiredness.NONE)    public Builder setField(int field) {
             this.field = field;
             return this;
         }
-    
+
         public int getField() { return field; }
-    
+
         public Builder() { }
         public Builder(DirectlyAdapted other) {
             this.field = other.field;
         }
-    
+
         @ThriftConstructor
         public DirectlyAdapted build() {
             DirectlyAdapted result = new DirectlyAdapted (
@@ -84,7 +84,7 @@ public final class DirectlyAdapted implements com.facebook.thrift.payload.Thrift
         DirectlyAdapted.class, DirectlyAdapted::read0));
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="field", requiredness=Requiredness.NONE)
     public int getField() { return field; }
 
@@ -103,9 +103,9 @@ public final class DirectlyAdapted implements com.facebook.thrift.payload.Thrift
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         DirectlyAdapted other = (DirectlyAdapted)o;
-    
+
         return
             Objects.equals(field, other.field) &&
             true;
@@ -122,7 +122,7 @@ public final class DirectlyAdapted implements com.facebook.thrift.payload.Thrift
     public static com.facebook.thrift.payload.Reader<DirectlyAdapted> asReader() {
       return DirectlyAdapted::read0;
     }
-    
+
     public static DirectlyAdapted read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(DirectlyAdapted.NAMES_TO_IDS, DirectlyAdapted.THRIFT_NAMES_TO_IDS, DirectlyAdapted.FIELD_METADATA);
@@ -164,7 +164,7 @@ public final class DirectlyAdapted implements com.facebook.thrift.payload.Thrift
     private static class _DirectlyAdaptedLazy {
         private static final DirectlyAdapted _DEFAULT = new DirectlyAdapted.Builder().build();
     }
-    
+
     public static DirectlyAdapted defaultInstance() {
         return  _DirectlyAdaptedLazy._DEFAULT;
     }

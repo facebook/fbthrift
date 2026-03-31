@@ -29,9 +29,9 @@ public class InteractWithSharedThriftMetadataHandler implements com.facebook.thr
   private static void addFunctions_0(List<ThriftFunction> functions) {
         {
           List<ThriftField> args = new ArrayList<>();
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("do_some_similar_things")
               .setReturnType(ThriftType.fromTStruct(new ThriftStructType.Builder().setName("test.fixtures.another_interactions.DoSomethingResult").build()))

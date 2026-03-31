@@ -32,7 +32,7 @@ public final class Range implements com.facebook.thrift.payload.ThriftSerializab
         this.min = min;
         this.max = max;
     }
-    
+
     @ThriftConstructor
     protected Range() {
       this.min = 0;
@@ -50,27 +50,27 @@ public final class Range implements com.facebook.thrift.payload.ThriftSerializab
     public static class Builder {
         private int min = 0;
         private int max = 0;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="min", requiredness=Requiredness.REQUIRED)    public Builder setMin(int min) {
             this.min = min;
             return this;
         }
-    
+
         public int getMin() { return min; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="max", requiredness=Requiredness.REQUIRED)    public Builder setMax(int max) {
             this.max = max;
             return this;
         }
-    
+
         public int getMax() { return max; }
-    
+
         public Builder() { }
         public Builder(Range other) {
             this.min = other.min;
             this.max = other.max;
         }
-    
+
         @ThriftConstructor
         public Range build() {
             Range result = new Range (
@@ -100,12 +100,12 @@ public final class Range implements com.facebook.thrift.payload.ThriftSerializab
       FIELD_METADATA.put(2, MAX_FIELD_DESC);
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="min", requiredness=Requiredness.REQUIRED)
     public int getMin() { return min; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="max", requiredness=Requiredness.REQUIRED)
     public int getMax() { return max; }
 
@@ -125,9 +125,9 @@ public final class Range implements com.facebook.thrift.payload.ThriftSerializab
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         Range other = (Range)o;
-    
+
         return
             Objects.equals(min, other.min) &&
             Objects.equals(max, other.max) &&
@@ -146,7 +146,7 @@ public final class Range implements com.facebook.thrift.payload.ThriftSerializab
     public static com.facebook.thrift.payload.Reader<Range> asReader() {
       return Range::read0;
     }
-    
+
     public static Range read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(Range.NAMES_TO_IDS, Range.THRIFT_NAMES_TO_IDS, Range.FIELD_METADATA);
@@ -202,7 +202,7 @@ public final class Range implements com.facebook.thrift.payload.ThriftSerializab
     private static class _RangeLazy {
         private static final Range _DEFAULT = new Range.Builder().build();
     }
-    
+
     public static Range defaultInstance() {
         return  _RangeLazy._DEFAULT;
     }

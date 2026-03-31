@@ -30,7 +30,7 @@ public final class AlsoMoveOnly implements com.facebook.thrift.payload.ThriftSer
     ) {
         this.ptr = ptr;
     }
-    
+
     @ThriftConstructor
     protected AlsoMoveOnly() {
       this.ptr = 0L;
@@ -46,19 +46,19 @@ public final class AlsoMoveOnly implements com.facebook.thrift.payload.ThriftSer
 
     public static class Builder {
         private long ptr = 0L;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="ptr", requiredness=Requiredness.NONE)    public Builder setPtr(long ptr) {
             this.ptr = ptr;
             return this;
         }
-    
+
         public long getPtr() { return ptr; }
-    
+
         public Builder() { }
         public Builder(AlsoMoveOnly other) {
             this.ptr = other.ptr;
         }
-    
+
         @ThriftConstructor
         public AlsoMoveOnly build() {
             AlsoMoveOnly result = new AlsoMoveOnly (
@@ -84,7 +84,7 @@ public final class AlsoMoveOnly implements com.facebook.thrift.payload.ThriftSer
         AlsoMoveOnly.class, AlsoMoveOnly::read0));
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="ptr", requiredness=Requiredness.NONE)
     public long getPtr() { return ptr; }
 
@@ -103,9 +103,9 @@ public final class AlsoMoveOnly implements com.facebook.thrift.payload.ThriftSer
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         AlsoMoveOnly other = (AlsoMoveOnly)o;
-    
+
         return
             Objects.equals(ptr, other.ptr) &&
             true;
@@ -122,7 +122,7 @@ public final class AlsoMoveOnly implements com.facebook.thrift.payload.ThriftSer
     public static com.facebook.thrift.payload.Reader<AlsoMoveOnly> asReader() {
       return AlsoMoveOnly::read0;
     }
-    
+
     public static AlsoMoveOnly read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(AlsoMoveOnly.NAMES_TO_IDS, AlsoMoveOnly.THRIFT_NAMES_TO_IDS, AlsoMoveOnly.FIELD_METADATA);
@@ -164,7 +164,7 @@ public final class AlsoMoveOnly implements com.facebook.thrift.payload.ThriftSer
     private static class _AlsoMoveOnlyLazy {
         private static final AlsoMoveOnly _DEFAULT = new AlsoMoveOnly.Builder().build();
     }
-    
+
     public static AlsoMoveOnly defaultInstance() {
         return  _AlsoMoveOnlyLazy._DEFAULT;
     }

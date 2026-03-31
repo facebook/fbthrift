@@ -32,7 +32,7 @@ public final class Struct1 implements com.facebook.thrift.payload.ThriftSerializ
         this.a = a;
         this.b = b;
     }
-    
+
     @ThriftConstructor
     protected Struct1() {
       this.a = 1234567;
@@ -50,27 +50,27 @@ public final class Struct1 implements com.facebook.thrift.payload.ThriftSerializ
     public static class Builder {
         private int a = 1234567;
         private String b = "<uninitialized>";
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.NONE)    public Builder setA(int a) {
             this.a = a;
             return this;
         }
-    
+
         public int getA() { return a; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="b", requiredness=Requiredness.NONE)    public Builder setB(String b) {
             this.b = b;
             return this;
         }
-    
+
         public String getB() { return b; }
-    
+
         public Builder() { }
         public Builder(Struct1 other) {
             this.a = other.a;
             this.b = other.b;
         }
-    
+
         @ThriftConstructor
         public Struct1 build() {
             Struct1 result = new Struct1 (
@@ -100,7 +100,7 @@ public final class Struct1 implements com.facebook.thrift.payload.ThriftSerializ
       FIELD_METADATA.put(2, B_FIELD_DESC);
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
     public int getA() { return a; }
 
@@ -125,9 +125,9 @@ public final class Struct1 implements com.facebook.thrift.payload.ThriftSerializ
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         Struct1 other = (Struct1)o;
-    
+
         return
             Objects.equals(a, other.a) &&
             Objects.equals(b, other.b) &&
@@ -146,7 +146,7 @@ public final class Struct1 implements com.facebook.thrift.payload.ThriftSerializ
     public static com.facebook.thrift.payload.Reader<Struct1> asReader() {
       return Struct1::read0;
     }
-    
+
     public static Struct1 read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(Struct1.NAMES_TO_IDS, Struct1.THRIFT_NAMES_TO_IDS, Struct1.FIELD_METADATA);
@@ -204,7 +204,7 @@ public final class Struct1 implements com.facebook.thrift.payload.ThriftSerializ
     private static class _Struct1Lazy {
         private static final Struct1 _DEFAULT = new Struct1.Builder().build();
     }
-    
+
     public static Struct1 defaultInstance() {
         return  _Struct1Lazy._DEFAULT;
     }

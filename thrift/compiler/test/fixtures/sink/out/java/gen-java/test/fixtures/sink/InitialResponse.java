@@ -30,7 +30,7 @@ public final class InitialResponse implements com.facebook.thrift.payload.Thrift
     ) {
         this.content = content;
     }
-    
+
     @ThriftConstructor
     protected InitialResponse() {
       this.content = null;
@@ -46,19 +46,19 @@ public final class InitialResponse implements com.facebook.thrift.payload.Thrift
 
     public static class Builder {
         private String content = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="content", requiredness=Requiredness.NONE)    public Builder setContent(String content) {
             this.content = content;
             return this;
         }
-    
+
         public String getContent() { return content; }
-    
+
         public Builder() { }
         public Builder(InitialResponse other) {
             this.content = other.content;
         }
-    
+
         @ThriftConstructor
         public InitialResponse build() {
             InitialResponse result = new InitialResponse (
@@ -100,9 +100,9 @@ public final class InitialResponse implements com.facebook.thrift.payload.Thrift
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         InitialResponse other = (InitialResponse)o;
-    
+
         return
             Objects.equals(content, other.content) &&
             true;
@@ -119,7 +119,7 @@ public final class InitialResponse implements com.facebook.thrift.payload.Thrift
     public static com.facebook.thrift.payload.Reader<InitialResponse> asReader() {
       return InitialResponse::read0;
     }
-    
+
     public static InitialResponse read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(InitialResponse.NAMES_TO_IDS, InitialResponse.THRIFT_NAMES_TO_IDS, InitialResponse.FIELD_METADATA);
@@ -163,7 +163,7 @@ public final class InitialResponse implements com.facebook.thrift.payload.Thrift
     private static class _InitialResponseLazy {
         private static final InitialResponse _DEFAULT = new InitialResponse.Builder().build();
     }
-    
+
     public static InitialResponse defaultInstance() {
         return  _InitialResponseLazy._DEFAULT;
     }

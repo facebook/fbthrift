@@ -35,9 +35,9 @@ public class BoxServiceThriftMetadataHandler implements com.facebook.thrift.serv
               .setName("req")
               .setIsOptional(false)
               .build());
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("getABoxSession")
               .setReturnType(ThriftType.fromTStruct(new ThriftStructType.Builder().setName("test.fixtures.interactions.ShouldBeBoxed").build()))

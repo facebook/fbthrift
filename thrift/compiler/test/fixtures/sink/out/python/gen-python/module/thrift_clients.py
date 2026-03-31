@@ -33,33 +33,33 @@ class SinkService(_fbthrift_python_Client["SinkService.Async", "SinkService.Sync
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.SinkService"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__module__thrift_metadata.gen_metadata_service_SinkService()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.SinkService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__module__thrift_metadata.gen_metadata_service_SinkService()
-    
+
         async def method(
             self,
             *,
@@ -77,7 +77,7 @@ class SinkService(_fbthrift_python_Client["SinkService.Async", "SinkService.Sync
             _fbthrift_resp, _fbthrift_sink_or_stream = _fbthrift_resp
             assert isinstance(_fbthrift_sink_or_stream, _fbthrift_ClientSink)
             return _fbthrift_sink_or_stream
-    
+
         async def methodAndReponse(
             self,
             *,
@@ -101,7 +101,7 @@ class SinkService(_fbthrift_python_Client["SinkService.Async", "SinkService.Sync
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def methodThrow(
             self,
             *,
@@ -122,7 +122,7 @@ class SinkService(_fbthrift_python_Client["SinkService.Async", "SinkService.Sync
             if (_fbthrift_ex := _fbthrift_resp._ex0__ex) is not None:
                 raise _fbthrift_ex
             return _fbthrift_sink_or_stream
-    
+
         async def methodSinkThrow(
             self,
             *,
@@ -140,7 +140,7 @@ class SinkService(_fbthrift_python_Client["SinkService.Async", "SinkService.Sync
             _fbthrift_resp, _fbthrift_sink_or_stream = _fbthrift_resp
             assert isinstance(_fbthrift_sink_or_stream, _fbthrift_ClientSink)
             return _fbthrift_sink_or_stream
-    
+
         async def methodFinalThrow(
             self,
             *,
@@ -158,7 +158,7 @@ class SinkService(_fbthrift_python_Client["SinkService.Async", "SinkService.Sync
             _fbthrift_resp, _fbthrift_sink_or_stream = _fbthrift_resp
             assert isinstance(_fbthrift_sink_or_stream, _fbthrift_ClientSink)
             return _fbthrift_sink_or_stream
-    
+
         async def methodBothThrow(
             self,
             *,
@@ -176,7 +176,7 @@ class SinkService(_fbthrift_python_Client["SinkService.Async", "SinkService.Sync
             _fbthrift_resp, _fbthrift_sink_or_stream = _fbthrift_resp
             assert isinstance(_fbthrift_sink_or_stream, _fbthrift_ClientSink)
             return _fbthrift_sink_or_stream
-    
+
         async def methodFast(
             self,
             *,
@@ -194,8 +194,8 @@ class SinkService(_fbthrift_python_Client["SinkService.Async", "SinkService.Sync
             _fbthrift_resp, _fbthrift_sink_or_stream = _fbthrift_resp
             assert isinstance(_fbthrift_sink_or_stream, _fbthrift_ClientSink)
             return _fbthrift_sink_or_stream
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     method = Async.method
     # pyre-ignore[4]: Missing annotation.
@@ -210,16 +210,16 @@ class SinkService(_fbthrift_python_Client["SinkService.Async", "SinkService.Sync
     methodBothThrow = Async.methodBothThrow
     # pyre-ignore[4]: Missing annotation.
     methodFast = Async.methodFast
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.SinkService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__module__thrift_metadata.gen_metadata_service_SinkService()

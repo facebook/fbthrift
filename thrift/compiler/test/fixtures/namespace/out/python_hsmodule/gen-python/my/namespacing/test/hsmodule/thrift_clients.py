@@ -32,33 +32,33 @@ class HsTestService(_fbthrift_python_Client["HsTestService.Async", "HsTestServic
     @staticmethod
     def __get_thrift_name__() -> str:
         return "hsmodule.HsTestService"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return python_module_root__my__namespacing__test__hsmodule__thrift_metadata.gen_metadata_service_HsTestService()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "hsmodule.HsTestService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return python_module_root__my__namespacing__test__hsmodule__thrift_metadata.gen_metadata_service_HsTestService()
-    
+
         async def init(
             self,
             int1: builtins.int,
@@ -82,24 +82,24 @@ class HsTestService(_fbthrift_python_Client["HsTestService.Async", "HsTestServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     init = Async.init
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "hsmodule.HsTestService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return python_module_root__my__namespacing__test__hsmodule__thrift_metadata.gen_metadata_service_HsTestService()
-    
+
         def init(
             self,
             int1: builtins.int,

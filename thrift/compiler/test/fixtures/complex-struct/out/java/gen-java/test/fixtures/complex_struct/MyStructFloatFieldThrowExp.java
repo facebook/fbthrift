@@ -36,7 +36,7 @@ public final class MyStructFloatFieldThrowExp implements com.facebook.thrift.pay
         this.myStringField = myStringField;
         this.myFloatField = myFloatField;
     }
-    
+
     @ThriftConstructor
     protected MyStructFloatFieldThrowExp() {
       this.myLongField = 0L;
@@ -58,35 +58,35 @@ public final class MyStructFloatFieldThrowExp implements com.facebook.thrift.pay
         private byte myByteField = 0;
         private String myStringField = null;
         private float myFloatField = 0.f;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)    public Builder setMyLongField(long myLongField) {
             this.myLongField = myLongField;
             return this;
         }
-    
+
         public long getMyLongField() { return myLongField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="MyByteField", requiredness=Requiredness.NONE)    public Builder setMyByteField(byte myByteField) {
             this.myByteField = myByteField;
             return this;
         }
-    
+
         public byte getMyByteField() { return myByteField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="myStringField", requiredness=Requiredness.NONE)    public Builder setMyStringField(String myStringField) {
             this.myStringField = myStringField;
             return this;
         }
-    
+
         public String getMyStringField() { return myStringField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=4, name="myFloatField", requiredness=Requiredness.NONE)    public Builder setMyFloatField(float myFloatField) {
             this.myFloatField = myFloatField;
             return this;
         }
-    
+
         public float getMyFloatField() { return myFloatField; }
-    
+
         public Builder() { }
         public Builder(MyStructFloatFieldThrowExp other) {
             this.myLongField = other.myLongField;
@@ -94,7 +94,7 @@ public final class MyStructFloatFieldThrowExp implements com.facebook.thrift.pay
             this.myStringField = other.myStringField;
             this.myFloatField = other.myFloatField;
         }
-    
+
         @ThriftConstructor
         public MyStructFloatFieldThrowExp build() {
             MyStructFloatFieldThrowExp result = new MyStructFloatFieldThrowExp (
@@ -138,12 +138,12 @@ public final class MyStructFloatFieldThrowExp implements com.facebook.thrift.pay
       FIELD_METADATA.put(4, MY_FLOAT_FIELD_FIELD_DESC);
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
     public long getMyLongField() { return myLongField; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="MyByteField", requiredness=Requiredness.NONE)
     public byte getMyByteField() { return myByteField; }
 
@@ -153,7 +153,7 @@ public final class MyStructFloatFieldThrowExp implements com.facebook.thrift.pay
     public String getMyStringField() { return myStringField; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=4, name="myFloatField", requiredness=Requiredness.NONE)
     public float getMyFloatField() { return myFloatField; }
 
@@ -175,9 +175,9 @@ public final class MyStructFloatFieldThrowExp implements com.facebook.thrift.pay
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         MyStructFloatFieldThrowExp other = (MyStructFloatFieldThrowExp)o;
-    
+
         return
             Objects.equals(myLongField, other.myLongField) &&
             Objects.equals(myByteField, other.myByteField) &&
@@ -200,7 +200,7 @@ public final class MyStructFloatFieldThrowExp implements com.facebook.thrift.pay
     public static com.facebook.thrift.payload.Reader<MyStructFloatFieldThrowExp> asReader() {
       return MyStructFloatFieldThrowExp::read0;
     }
-    
+
     public static MyStructFloatFieldThrowExp read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(MyStructFloatFieldThrowExp.NAMES_TO_IDS, MyStructFloatFieldThrowExp.THRIFT_NAMES_TO_IDS, MyStructFloatFieldThrowExp.FIELD_METADATA);
@@ -286,7 +286,7 @@ public final class MyStructFloatFieldThrowExp implements com.facebook.thrift.pay
     private static class _MyStructFloatFieldThrowExpLazy {
         private static final MyStructFloatFieldThrowExp _DEFAULT = new MyStructFloatFieldThrowExp.Builder().build();
     }
-    
+
     public static MyStructFloatFieldThrowExp defaultInstance() {
         return  _MyStructFloatFieldThrowExpLazy._DEFAULT;
     }

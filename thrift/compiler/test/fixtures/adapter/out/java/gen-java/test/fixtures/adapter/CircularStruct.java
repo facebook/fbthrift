@@ -30,7 +30,7 @@ public final class CircularStruct implements com.facebook.thrift.payload.ThriftS
     ) {
         this.field = field;
     }
-    
+
     @ThriftConstructor
     protected CircularStruct() {
       this.field = null;
@@ -46,19 +46,19 @@ public final class CircularStruct implements com.facebook.thrift.payload.ThriftS
 
     public static class Builder {
         private test.fixtures.adapter.CircularAdaptee field = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="field", requiredness=Requiredness.OPTIONAL)    public Builder setField(test.fixtures.adapter.CircularAdaptee field) {
             this.field = field;
             return this;
         }
-    
+
         public test.fixtures.adapter.CircularAdaptee getField() { return field; }
-    
+
         public Builder() { }
         public Builder(CircularStruct other) {
             this.field = other.field;
         }
-    
+
         @ThriftConstructor
         public CircularStruct build() {
             CircularStruct result = new CircularStruct (
@@ -103,9 +103,9 @@ public final class CircularStruct implements com.facebook.thrift.payload.ThriftS
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         CircularStruct other = (CircularStruct)o;
-    
+
         return
             Objects.equals(field, other.field) &&
             true;
@@ -122,7 +122,7 @@ public final class CircularStruct implements com.facebook.thrift.payload.ThriftS
     public static com.facebook.thrift.payload.Reader<CircularStruct> asReader() {
       return CircularStruct::read0;
     }
-    
+
     public static CircularStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(CircularStruct.NAMES_TO_IDS, CircularStruct.THRIFT_NAMES_TO_IDS, CircularStruct.FIELD_METADATA);
@@ -166,7 +166,7 @@ public final class CircularStruct implements com.facebook.thrift.payload.ThriftS
     private static class _CircularStructLazy {
         private static final CircularStruct _DEFAULT = new CircularStruct.Builder().build();
     }
-    
+
     public static CircularStruct defaultInstance() {
         return  _CircularStructLazy._DEFAULT;
     }

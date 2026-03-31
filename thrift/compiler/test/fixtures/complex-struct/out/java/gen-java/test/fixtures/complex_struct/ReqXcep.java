@@ -52,7 +52,7 @@ public final class ReqXcep extends org.apache.thrift.TBaseException implements c
         this.message = message;
         this.errorCode = errorCode;
     }
-    
+
     @ThriftConstructor
     protected ReqXcep() {
       this.message = null;
@@ -62,27 +62,27 @@ public final class ReqXcep extends org.apache.thrift.TBaseException implements c
     public static class Builder {
         private String message = null;
         private int errorCode = 0;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED)    public Builder setMessage(String message) {
             this.message = message;
             return this;
         }
-    
+
         public String getMessage() { return message; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="errorCode", requiredness=Requiredness.REQUIRED)    public Builder setErrorCode(int errorCode) {
             this.errorCode = errorCode;
             return this;
         }
-    
+
         public int getErrorCode() { return errorCode; }
-    
+
         public Builder() { }
         public Builder(ReqXcep other) {
             this.message = other.message;
             this.errorCode = other.errorCode;
         }
-    
+
         @ThriftConstructor
         public ReqXcep build() {
             ReqXcep result = new ReqXcep (
@@ -94,11 +94,11 @@ public final class ReqXcep extends org.apache.thrift.TBaseException implements c
     }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED)
     public String getMessage() { return message; }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="errorCode", requiredness=Requiredness.REQUIRED)
     public int getErrorCode() { return errorCode; }
 
@@ -106,7 +106,7 @@ public final class ReqXcep extends org.apache.thrift.TBaseException implements c
     public static com.facebook.thrift.payload.Reader<ReqXcep> asReader() {
       return ReqXcep::read0;
     }
-    
+
     public static ReqXcep read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(ReqXcep.NAMES_TO_IDS, ReqXcep.THRIFT_NAMES_TO_IDS, ReqXcep.FIELD_METADATA);
@@ -164,7 +164,7 @@ public final class ReqXcep extends org.apache.thrift.TBaseException implements c
     private static class _ReqXcepLazy {
         private static final ReqXcep _DEFAULT = new ReqXcep.Builder().build();
     }
-    
+
     public static ReqXcep defaultInstance() {
         return  _ReqXcepLazy._DEFAULT;
     }}

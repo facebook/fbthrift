@@ -30,7 +30,7 @@ public final class MyStructWithCustomDefault implements com.facebook.thrift.payl
     ) {
         this.field1 = field1;
     }
-    
+
     @ThriftConstructor
     protected MyStructWithCustomDefault() {
       this.field1 = 1L;
@@ -46,19 +46,19 @@ public final class MyStructWithCustomDefault implements com.facebook.thrift.payl
 
     public static class Builder {
         private long field1 = 1L;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="field1", requiredness=Requiredness.NONE)    public Builder setField1(long field1) {
             this.field1 = field1;
             return this;
         }
-    
+
         public long getField1() { return field1; }
-    
+
         public Builder() { }
         public Builder(MyStructWithCustomDefault other) {
             this.field1 = other.field1;
         }
-    
+
         @ThriftConstructor
         public MyStructWithCustomDefault build() {
             MyStructWithCustomDefault result = new MyStructWithCustomDefault (
@@ -84,7 +84,7 @@ public final class MyStructWithCustomDefault implements com.facebook.thrift.payl
         MyStructWithCustomDefault.class, MyStructWithCustomDefault::read0));
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="field1", requiredness=Requiredness.NONE)
     public long getField1() { return field1; }
 
@@ -103,9 +103,9 @@ public final class MyStructWithCustomDefault implements com.facebook.thrift.payl
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         MyStructWithCustomDefault other = (MyStructWithCustomDefault)o;
-    
+
         return
             Objects.equals(field1, other.field1) &&
             true;
@@ -122,7 +122,7 @@ public final class MyStructWithCustomDefault implements com.facebook.thrift.payl
     public static com.facebook.thrift.payload.Reader<MyStructWithCustomDefault> asReader() {
       return MyStructWithCustomDefault::read0;
     }
-    
+
     public static MyStructWithCustomDefault read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(MyStructWithCustomDefault.NAMES_TO_IDS, MyStructWithCustomDefault.THRIFT_NAMES_TO_IDS, MyStructWithCustomDefault.FIELD_METADATA);
@@ -164,7 +164,7 @@ public final class MyStructWithCustomDefault implements com.facebook.thrift.payl
     private static class _MyStructWithCustomDefaultLazy {
         private static final MyStructWithCustomDefault _DEFAULT = new MyStructWithCustomDefault.Builder().build();
     }
-    
+
     public static MyStructWithCustomDefault defaultInstance() {
         return  _MyStructWithCustomDefaultLazy._DEFAULT;
     }

@@ -36,7 +36,7 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
         this.binaryMap = binaryMap;
         this.regularBinary = regularBinary;
     }
-    
+
     @ThriftConstructor
     protected MyMapping() {
       this.lsMap = null;
@@ -58,35 +58,35 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
         private com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap = null;
         private Map<String, byte[]> binaryMap = null;
         private Map<String, byte[]> regularBinary = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE)    public Builder setLsMap(com.foo.FastLongStringMap lsMap) {
             this.lsMap = lsMap;
             return this;
         }
-    
+
         public com.foo.FastLongStringMap getLsMap() { return lsMap; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)    public Builder setIoMap(com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap) {
             this.ioMap = ioMap;
             return this;
         }
-    
+
         public com.foo.FastIntObjectMap<com.foo.FastIntLongMap> getIoMap() { return ioMap; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="binaryMap", requiredness=Requiredness.NONE)    public Builder setBinaryMap(Map<String, byte[]> binaryMap) {
             this.binaryMap = binaryMap;
             return this;
         }
-    
+
         public Map<String, byte[]> getBinaryMap() { return binaryMap; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=4, name="regularBinary", requiredness=Requiredness.NONE)    public Builder setRegularBinary(Map<String, byte[]> regularBinary) {
             this.regularBinary = regularBinary;
             return this;
         }
-    
+
         public Map<String, byte[]> getRegularBinary() { return regularBinary; }
-    
+
         public Builder() { }
         public Builder(MyMapping other) {
             this.lsMap = other.lsMap;
@@ -94,7 +94,7 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
             this.binaryMap = other.binaryMap;
             this.regularBinary = other.regularBinary;
         }
-    
+
         @ThriftConstructor
         public MyMapping build() {
             MyMapping result = new MyMapping (
@@ -175,9 +175,9 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         MyMapping other = (MyMapping)o;
-    
+
         return
             Objects.equals(lsMap, other.lsMap) &&
             Objects.equals(ioMap, other.ioMap) &&
@@ -200,7 +200,7 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
     public static com.facebook.thrift.payload.Reader<MyMapping> asReader() {
       return MyMapping::read0;
     }
-    
+
     public static MyMapping read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(MyMapping.NAMES_TO_IDS, MyMapping.THRIFT_NAMES_TO_IDS, MyMapping.FIELD_METADATA);
@@ -246,7 +246,7 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
                                     
                                     int _key2 = oprot.readI32();
                                     
-                    
+
                                     
                                     long _value2 = oprot.readI64();
                                     
@@ -409,7 +409,7 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
     private static class _MyMappingLazy {
         private static final MyMapping _DEFAULT = new MyMapping.Builder().build();
     }
-    
+
     public static MyMapping defaultInstance() {
         return  _MyMappingLazy._DEFAULT;
     }

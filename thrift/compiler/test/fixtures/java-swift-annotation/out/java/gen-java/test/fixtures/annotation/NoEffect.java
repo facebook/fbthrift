@@ -32,7 +32,7 @@ public final class NoEffect implements com.facebook.thrift.payload.ThriftSeriali
         this.anSnakeString = anSnakeString;
         this.aCamelI32 = aCamelI32;
     }
-    
+
     @ThriftConstructor
     protected NoEffect() {
       this.anSnakeString = null;
@@ -50,27 +50,27 @@ public final class NoEffect implements com.facebook.thrift.payload.ThriftSeriali
     public static class Builder {
         private String anSnakeString = null;
         private int aCamelI32 = 0;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="an_snake_string", requiredness=Requiredness.NONE)    public Builder setAnSnakeString(String anSnakeString) {
             this.anSnakeString = anSnakeString;
             return this;
         }
-    
+
         public String getAnSnakeString() { return anSnakeString; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="aCamelI32", requiredness=Requiredness.NONE)    public Builder setACamelI32(int aCamelI32) {
             this.aCamelI32 = aCamelI32;
             return this;
         }
-    
+
         public int getACamelI32() { return aCamelI32; }
-    
+
         public Builder() { }
         public Builder(NoEffect other) {
             this.anSnakeString = other.anSnakeString;
             this.aCamelI32 = other.aCamelI32;
         }
-    
+
         @ThriftConstructor
         public NoEffect build() {
             NoEffect result = new NoEffect (
@@ -105,7 +105,7 @@ public final class NoEffect implements com.facebook.thrift.payload.ThriftSeriali
     public String getAnSnakeString() { return anSnakeString; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="aCamelI32", requiredness=Requiredness.NONE)
     public int getACamelI32() { return aCamelI32; }
 
@@ -125,9 +125,9 @@ public final class NoEffect implements com.facebook.thrift.payload.ThriftSeriali
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         NoEffect other = (NoEffect)o;
-    
+
         return
             Objects.equals(anSnakeString, other.anSnakeString) &&
             Objects.equals(aCamelI32, other.aCamelI32) &&
@@ -146,7 +146,7 @@ public final class NoEffect implements com.facebook.thrift.payload.ThriftSeriali
     public static com.facebook.thrift.payload.Reader<NoEffect> asReader() {
       return NoEffect::read0;
     }
-    
+
     public static NoEffect read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(NoEffect.NAMES_TO_IDS, NoEffect.THRIFT_NAMES_TO_IDS, NoEffect.FIELD_METADATA);
@@ -204,7 +204,7 @@ public final class NoEffect implements com.facebook.thrift.payload.ThriftSeriali
     private static class _NoEffectLazy {
         private static final NoEffect _DEFAULT = new NoEffect.Builder().build();
     }
-    
+
     public static NoEffect defaultInstance() {
         return  _NoEffectLazy._DEFAULT;
     }

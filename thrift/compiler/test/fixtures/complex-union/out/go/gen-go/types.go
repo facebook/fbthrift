@@ -36,7 +36,7 @@ func WriteContainerTypedef(item ContainerTypedef, p thrift.Encoder) error {
                 return err
             }
         }
-    
+
         {
             item := v
             if err := p.WriteString(item); err != nil {
@@ -57,7 +57,7 @@ func ReadContainerTypedef(p thrift.Decoder) (ContainerTypedef, error) {
         if err != nil {
             return thrift.PrependError("error reading map begin: ", err)
         }
-        
+
         mapResult := make(map[int16]string, size)
         for i := 0; i < size; i++ {
             var key int16
@@ -68,7 +68,7 @@ func ReadContainerTypedef(p thrift.Decoder) (ContainerTypedef, error) {
                 }
                 key = result
             }
-        
+
             var value string
             {
                 result, err := p.ReadString()
@@ -77,10 +77,10 @@ func ReadContainerTypedef(p thrift.Decoder) (ContainerTypedef, error) {
                 }
                 value = result
             }
-        
+
             mapResult[key] = value
         }
-        
+
         if err := p.ReadMapEnd(); err != nil {
             return thrift.PrependError("error reading map end: ", err)
         }
@@ -215,7 +215,7 @@ func (x *ComplexUnion) readField2(p thrift.Decoder) error {  // IntListValue
     if err != nil {
         return thrift.PrependError("error reading list begin: ", err)
     }
-    
+
     listResult := make([]int64, 0, size)
     for i := 0; i < size; i++ {
         var elem int64
@@ -228,7 +228,7 @@ func (x *ComplexUnion) readField2(p thrift.Decoder) error {  // IntListValue
         }
         listResult = append(listResult, elem)
     }
-    
+
     if err := p.ReadListEnd(); err != nil {
         return thrift.PrependError("error reading list end: ", err)
     }
@@ -296,7 +296,7 @@ func (x *ComplexUnion) readField3(p thrift.Decoder) error {  // StringListValue
     if err != nil {
         return thrift.PrependError("error reading list begin: ", err)
     }
-    
+
     listResult := make([]string, 0, size)
     for i := 0; i < size; i++ {
         var elem string
@@ -309,7 +309,7 @@ func (x *ComplexUnion) readField3(p thrift.Decoder) error {  // StringListValue
         }
         listResult = append(listResult, elem)
     }
-    
+
     if err := p.ReadListEnd(); err != nil {
         return thrift.PrependError("error reading list end: ", err)
     }
@@ -668,7 +668,7 @@ func (x *ListUnion) readField2(p thrift.Decoder) error {  // IntListValue
     if err != nil {
         return thrift.PrependError("error reading list begin: ", err)
     }
-    
+
     listResult := make([]int64, 0, size)
     for i := 0; i < size; i++ {
         var elem int64
@@ -681,7 +681,7 @@ func (x *ListUnion) readField2(p thrift.Decoder) error {  // IntListValue
         }
         listResult = append(listResult, elem)
     }
-    
+
     if err := p.ReadListEnd(); err != nil {
         return thrift.PrependError("error reading list end: ", err)
     }
@@ -749,7 +749,7 @@ func (x *ListUnion) readField3(p thrift.Decoder) error {  // StringListValue
     if err != nil {
         return thrift.PrependError("error reading list begin: ", err)
     }
-    
+
     listResult := make([]string, 0, size)
     for i := 0; i < size; i++ {
         var elem string
@@ -762,7 +762,7 @@ func (x *ListUnion) readField3(p thrift.Decoder) error {  // StringListValue
         }
         listResult = append(listResult, elem)
     }
-    
+
     if err := p.ReadListEnd(); err != nil {
         return thrift.PrependError("error reading list end: ", err)
     }

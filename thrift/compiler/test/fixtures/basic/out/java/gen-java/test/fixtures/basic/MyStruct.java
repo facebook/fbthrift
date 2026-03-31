@@ -46,7 +46,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         this.floatSet = floatSet;
         this.noHackCodegenField = noHackCodegenField;
     }
-    
+
     @ThriftConstructor
     protected MyStruct() {
       this.myIntField = 0L;
@@ -78,70 +78,70 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         private boolean idempotent = false;
         private Set<Float> floatSet = null;
         private String noHackCodegenField = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)    public Builder setMyIntField(long myIntField) {
             this.myIntField = myIntField;
             return this;
         }
-    
+
         public long getMyIntField() { return myIntField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)    public Builder setMyStringField(String myStringField) {
             this.myStringField = myStringField;
             return this;
         }
-    
+
         public String getMyStringField() { return myStringField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)    public Builder setMyDataField(test.fixtures.basic.MyDataItem myDataField) {
             this.myDataField = myDataField;
             return this;
         }
-    
+
         public test.fixtures.basic.MyDataItem getMyDataField() { return myDataField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=4, name="myEnum", requiredness=Requiredness.NONE)    public Builder setMyEnum(test.fixtures.basic.MyEnum myEnum) {
             this.myEnum = myEnum;
             return this;
         }
-    
+
         public test.fixtures.basic.MyEnum getMyEnum() { return myEnum; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=5, name="oneway", requiredness=Requiredness.NONE)    public Builder setOneway(boolean oneway) {
             this.oneway = oneway;
             return this;
         }
-    
+
         public boolean isOneway() { return oneway; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=6, name="readonly", requiredness=Requiredness.NONE)    public Builder setReadonly(boolean readonly) {
             this.readonly = readonly;
             return this;
         }
-    
+
         public boolean isReadonly() { return readonly; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=7, name="idempotent", requiredness=Requiredness.NONE)    public Builder setIdempotent(boolean idempotent) {
             this.idempotent = idempotent;
             return this;
         }
-    
+
         public boolean isIdempotent() { return idempotent; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=8, name="floatSet", requiredness=Requiredness.NONE)    public Builder setFloatSet(Set<Float> floatSet) {
             this.floatSet = floatSet;
             return this;
         }
-    
+
         public Set<Float> getFloatSet() { return floatSet; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=9, name="no_hack_codegen_field", requiredness=Requiredness.NONE)    public Builder setNoHackCodegenField(String noHackCodegenField) {
             this.noHackCodegenField = noHackCodegenField;
             return this;
         }
-    
+
         public String getNoHackCodegenField() { return noHackCodegenField; }
-    
+
         public Builder() { }
         public Builder(MyStruct other) {
             this.myIntField = other.myIntField;
@@ -154,7 +154,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             this.floatSet = other.floatSet;
             this.noHackCodegenField = other.noHackCodegenField;
         }
-    
+
         @ThriftConstructor
         public MyStruct build() {
             MyStruct result = new MyStruct (
@@ -236,7 +236,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         MyStruct.class, MyStruct::read0));
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
     public long getMyIntField() { return myIntField; }
 
@@ -256,17 +256,17 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public test.fixtures.basic.MyEnum getMyEnum() { return myEnum; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=5, name="oneway", requiredness=Requiredness.NONE)
     public boolean isOneway() { return oneway; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=6, name="readonly", requiredness=Requiredness.NONE)
     public boolean isReadonly() { return readonly; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=7, name="idempotent", requiredness=Requiredness.NONE)
     public boolean isIdempotent() { return idempotent; }
 
@@ -303,9 +303,9 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         MyStruct other = (MyStruct)o;
-    
+
         return
             Objects.equals(myIntField, other.myIntField) &&
             Objects.equals(myStringField, other.myStringField) &&
@@ -338,7 +338,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public static com.facebook.thrift.payload.Reader<MyStruct> asReader() {
       return MyStruct::read0;
     }
-    
+
     public static MyStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(MyStruct.NAMES_TO_IDS, MyStruct.THRIFT_NAMES_TO_IDS, MyStruct.FIELD_METADATA);
@@ -514,7 +514,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     private static class _MyStructLazy {
         private static final MyStruct _DEFAULT = new MyStruct.Builder().build();
     }
-    
+
     public static MyStruct defaultInstance() {
         return  _MyStructLazy._DEFAULT;
     }

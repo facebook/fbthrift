@@ -30,7 +30,7 @@ public final class CircularAdaptee implements com.facebook.thrift.payload.Thrift
     ) {
         this.field = field;
     }
-    
+
     @ThriftConstructor
     protected CircularAdaptee() {
       this.field = null;
@@ -46,19 +46,19 @@ public final class CircularAdaptee implements com.facebook.thrift.payload.Thrift
 
     public static class Builder {
         private test.fixtures.adapter.CircularStruct field = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="field", requiredness=Requiredness.NONE)    public Builder setField(test.fixtures.adapter.CircularStruct field) {
             this.field = field;
             return this;
         }
-    
+
         public test.fixtures.adapter.CircularStruct getField() { return field; }
-    
+
         public Builder() { }
         public Builder(CircularAdaptee other) {
             this.field = other.field;
         }
-    
+
         @ThriftConstructor
         public CircularAdaptee build() {
             CircularAdaptee result = new CircularAdaptee (
@@ -103,9 +103,9 @@ public final class CircularAdaptee implements com.facebook.thrift.payload.Thrift
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         CircularAdaptee other = (CircularAdaptee)o;
-    
+
         return
             Objects.equals(field, other.field) &&
             true;
@@ -122,7 +122,7 @@ public final class CircularAdaptee implements com.facebook.thrift.payload.Thrift
     public static com.facebook.thrift.payload.Reader<CircularAdaptee> asReader() {
       return CircularAdaptee::read0;
     }
-    
+
     public static CircularAdaptee read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(CircularAdaptee.NAMES_TO_IDS, CircularAdaptee.THRIFT_NAMES_TO_IDS, CircularAdaptee.FIELD_METADATA);
@@ -166,7 +166,7 @@ public final class CircularAdaptee implements com.facebook.thrift.payload.Thrift
     private static class _CircularAdapteeLazy {
         private static final CircularAdaptee _DEFAULT = new CircularAdaptee.Builder().build();
     }
-    
+
     public static CircularAdaptee defaultInstance() {
         return  _CircularAdapteeLazy._DEFAULT;
     }

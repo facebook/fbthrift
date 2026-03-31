@@ -86,7 +86,7 @@ public final class UnfortunateUnion implements com.facebook.thrift.payload.Thrif
     @ThriftConstructor
     public UnfortunateUnion() {
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public UnfortunateUnion(final String anSnakeString) {
@@ -96,14 +96,14 @@ public final class UnfortunateUnion implements com.facebook.thrift.payload.Thrif
         this.value = anSnakeString;
         this.id = 1;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public UnfortunateUnion(final int aCamelI32) {
         this.value = aCamelI32;
         this.id = 2;
     }
-    
+
     public static UnfortunateUnion fromAnSnakeString(final String anSnakeString) {
         UnfortunateUnion res = new UnfortunateUnion();
         if (!UnfortunateUnion.allowNullFieldValues && anSnakeString == null) {
@@ -113,7 +113,7 @@ public final class UnfortunateUnion implements com.facebook.thrift.payload.Thrif
         res.id = 1;
         return res;
     }
-    
+
     public static UnfortunateUnion fromACamelI32(final int aCamelI32) {
         UnfortunateUnion res = new UnfortunateUnion();
         res.value = aCamelI32;
@@ -241,7 +241,7 @@ public final class UnfortunateUnion implements com.facebook.thrift.payload.Thrif
       case _AN_SNAKE_STRING: {
         oprot.writeFieldBegin(AN_SNAKE_STRING_FIELD_DESC);
         String _iter0 = (String)this.value;
-    
+
         oprot.writeString(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -249,7 +249,7 @@ public final class UnfortunateUnion implements com.facebook.thrift.payload.Thrif
       case _ACAMELI32: {
         oprot.writeFieldBegin(A_CAMEL_I32_FIELD_DESC);
         int _iter0 = (int)this.value;
-    
+
         oprot.writeI32(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -265,7 +265,7 @@ public final class UnfortunateUnion implements com.facebook.thrift.payload.Thrif
     public static com.facebook.thrift.payload.Reader<UnfortunateUnion> asReader() {
       return UnfortunateUnion::read0;
     }
-    
+
     public static UnfortunateUnion read0(TProtocol oprot) throws TException {
       UnfortunateUnion res = new UnfortunateUnion();
       res.value = null;

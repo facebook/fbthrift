@@ -48,7 +48,7 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
         this.afraidOfAnimal = afraidOfAnimal;
         this.vehicles = vehicles;
     }
-    
+
     @ThriftConstructor
     protected Person() {
       this.id = 0L;
@@ -82,77 +82,77 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
         private Map<test.fixtures.optionals.Animal, String> petNames = null;
         private test.fixtures.optionals.Animal afraidOfAnimal = null;
         private List<test.fixtures.optionals.Vehicle> vehicles = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE)    public Builder setId(long id) {
             this.id = id;
             return this;
         }
-    
+
         public long getId() { return id; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="name", requiredness=Requiredness.NONE)    public Builder setName(String name) {
             this.name = name;
             return this;
         }
-    
+
         public String getName() { return name; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="age", requiredness=Requiredness.OPTIONAL)    public Builder setAge(Short age) {
             this.age = age;
             return this;
         }
-    
+
         public Short getAge() { return age; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=4, name="address", requiredness=Requiredness.OPTIONAL)    public Builder setAddress(String address) {
             this.address = address;
             return this;
         }
-    
+
         public String getAddress() { return address; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=5, name="favoriteColor", requiredness=Requiredness.OPTIONAL)    public Builder setFavoriteColor(test.fixtures.optionals.Color favoriteColor) {
             this.favoriteColor = favoriteColor;
             return this;
         }
-    
+
         public test.fixtures.optionals.Color getFavoriteColor() { return favoriteColor; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=6, name="friends", requiredness=Requiredness.OPTIONAL)    public Builder setFriends(Set<Long> friends) {
             this.friends = friends;
             return this;
         }
-    
+
         public Set<Long> getFriends() { return friends; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=7, name="bestFriend", requiredness=Requiredness.OPTIONAL)    public Builder setBestFriend(Long bestFriend) {
             this.bestFriend = bestFriend;
             return this;
         }
-    
+
         public Long getBestFriend() { return bestFriend; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=8, name="petNames", requiredness=Requiredness.OPTIONAL)    public Builder setPetNames(Map<test.fixtures.optionals.Animal, String> petNames) {
             this.petNames = petNames;
             return this;
         }
-    
+
         public Map<test.fixtures.optionals.Animal, String> getPetNames() { return petNames; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=9, name="afraidOfAnimal", requiredness=Requiredness.OPTIONAL)    public Builder setAfraidOfAnimal(test.fixtures.optionals.Animal afraidOfAnimal) {
             this.afraidOfAnimal = afraidOfAnimal;
             return this;
         }
-    
+
         public test.fixtures.optionals.Animal getAfraidOfAnimal() { return afraidOfAnimal; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=10, name="vehicles", requiredness=Requiredness.OPTIONAL)    public Builder setVehicles(List<test.fixtures.optionals.Vehicle> vehicles) {
             this.vehicles = vehicles;
             return this;
         }
-    
+
         public List<test.fixtures.optionals.Vehicle> getVehicles() { return vehicles; }
-    
+
         public Builder() { }
         public Builder(Person other) {
             this.id = other.id;
@@ -166,7 +166,7 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
             this.afraidOfAnimal = other.afraidOfAnimal;
             this.vehicles = other.vehicles;
         }
-    
+
         @ThriftConstructor
         public Person build() {
             Person result = new Person (
@@ -252,7 +252,7 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
       FIELD_METADATA.put(10, VEHICLES_FIELD_DESC);
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE)
     public long getId() { return id; }
 
@@ -325,9 +325,9 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         Person other = (Person)o;
-    
+
         return
             Objects.equals(id, other.id) &&
             Objects.equals(name, other.name) &&
@@ -362,7 +362,7 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
     public static com.facebook.thrift.payload.Reader<Person> asReader() {
       return Person::read0;
     }
-    
+
     public static Person read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(Person.NAMES_TO_IDS, Person.THRIFT_NAMES_TO_IDS, Person.FIELD_METADATA);
@@ -598,7 +598,7 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
     private static class _PersonLazy {
         private static final Person _DEFAULT = new Person.Builder().build();
     }
-    
+
     public static Person defaultInstance() {
         return  _PersonLazy._DEFAULT;
     }

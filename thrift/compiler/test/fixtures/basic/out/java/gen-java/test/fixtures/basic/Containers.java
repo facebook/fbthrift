@@ -34,7 +34,7 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
         this.stringSet = stringSet;
         this.stringToI64Map = stringToI64Map;
     }
-    
+
     @ThriftConstructor
     protected Containers() {
       this.i32List = null;
@@ -54,35 +54,35 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
         private List<Integer> i32List = null;
         private Set<String> stringSet = null;
         private Map<String, Long> stringToI64Map = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="I32List", requiredness=Requiredness.NONE)    public Builder setI32List(List<Integer> i32List) {
             this.i32List = i32List;
             return this;
         }
-    
+
         public List<Integer> getI32List() { return i32List; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="StringSet", requiredness=Requiredness.NONE)    public Builder setStringSet(Set<String> stringSet) {
             this.stringSet = stringSet;
             return this;
         }
-    
+
         public Set<String> getStringSet() { return stringSet; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="StringToI64Map", requiredness=Requiredness.NONE)    public Builder setStringToI64Map(Map<String, Long> stringToI64Map) {
             this.stringToI64Map = stringToI64Map;
             return this;
         }
-    
+
         public Map<String, Long> getStringToI64Map() { return stringToI64Map; }
-    
+
         public Builder() { }
         public Builder(Containers other) {
             this.i32List = other.i32List;
             this.stringSet = other.stringSet;
             this.stringToI64Map = other.stringToI64Map;
         }
-    
+
         @ThriftConstructor
         public Containers build() {
             Containers result = new Containers (
@@ -153,9 +153,9 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         Containers other = (Containers)o;
-    
+
         return
             Objects.equals(i32List, other.i32List) &&
             Objects.equals(stringSet, other.stringSet) &&
@@ -176,7 +176,7 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
     public static com.facebook.thrift.payload.Reader<Containers> asReader() {
       return Containers::read0;
     }
-    
+
     public static Containers read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(Containers.NAMES_TO_IDS, Containers.THRIFT_NAMES_TO_IDS, Containers.FIELD_METADATA);
@@ -302,7 +302,7 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
     private static class _ContainersLazy {
         private static final Containers _DEFAULT = new Containers.Builder().build();
     }
-    
+
     public static Containers defaultInstance() {
         return  _ContainersLazy._DEFAULT;
     }

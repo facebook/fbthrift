@@ -30,7 +30,7 @@ public final class RecursiveStruct implements com.facebook.thrift.payload.Thrift
     ) {
         this.mes = mes;
     }
-    
+
     @ThriftConstructor
     protected RecursiveStruct() {
       this.mes = null;
@@ -46,19 +46,19 @@ public final class RecursiveStruct implements com.facebook.thrift.payload.Thrift
 
     public static class Builder {
         private List<test.fixtures.refs.RecursiveStruct> mes = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="mes", requiredness=Requiredness.OPTIONAL, isRecursive=Recursiveness.TRUE)    public Builder setMes(List<test.fixtures.refs.RecursiveStruct> mes) {
             this.mes = mes;
             return this;
         }
-    
+
         public List<test.fixtures.refs.RecursiveStruct> getMes() { return mes; }
-    
+
         public Builder() { }
         public Builder(RecursiveStruct other) {
             this.mes = other.mes;
         }
-    
+
         @ThriftConstructor
         public RecursiveStruct build() {
             RecursiveStruct result = new RecursiveStruct (
@@ -100,9 +100,9 @@ public final class RecursiveStruct implements com.facebook.thrift.payload.Thrift
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         RecursiveStruct other = (RecursiveStruct)o;
-    
+
         return
             Objects.equals(mes, other.mes) &&
             true;
@@ -119,7 +119,7 @@ public final class RecursiveStruct implements com.facebook.thrift.payload.Thrift
     public static com.facebook.thrift.payload.Reader<RecursiveStruct> asReader() {
       return RecursiveStruct::read0;
     }
-    
+
     public static RecursiveStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(RecursiveStruct.NAMES_TO_IDS, RecursiveStruct.THRIFT_NAMES_TO_IDS, RecursiveStruct.FIELD_METADATA);
@@ -177,7 +177,7 @@ public final class RecursiveStruct implements com.facebook.thrift.payload.Thrift
     private static class _RecursiveStructLazy {
         private static final RecursiveStruct _DEFAULT = new RecursiveStruct.Builder().build();
     }
-    
+
     public static RecursiveStruct defaultInstance() {
         return  _RecursiveStructLazy._DEFAULT;
     }

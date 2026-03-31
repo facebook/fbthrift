@@ -79,14 +79,14 @@ public final class UnionToBeRenamed implements com.facebook.thrift.payload.Thrif
     @ThriftConstructor
     public UnionToBeRenamed() {
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public UnionToBeRenamed(final int reservedField) {
         this.value = reservedField;
         this.id = 1;
     }
-    
+
     public static UnionToBeRenamed fromReservedField(final int reservedField) {
         UnionToBeRenamed res = new UnionToBeRenamed();
         res.value = reservedField;
@@ -196,7 +196,7 @@ public final class UnionToBeRenamed implements com.facebook.thrift.payload.Thrif
       case _RESERVED_FIELD: {
         oprot.writeFieldBegin(RESERVED_FIELD_FIELD_DESC);
         int _iter0 = (int)this.value;
-    
+
         oprot.writeI32(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -212,7 +212,7 @@ public final class UnionToBeRenamed implements com.facebook.thrift.payload.Thrif
     public static com.facebook.thrift.payload.Reader<UnionToBeRenamed> asReader() {
       return UnionToBeRenamed::read0;
     }
-    
+
     public static UnionToBeRenamed read0(TProtocol oprot) throws TException {
       UnionToBeRenamed res = new UnionToBeRenamed();
       res.value = null;

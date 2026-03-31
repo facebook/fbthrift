@@ -30,7 +30,7 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
     ) {
         this.a = a;
     }
-    
+
     @ThriftConstructor
     protected B() {
       this.a = null;
@@ -46,19 +46,19 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
 
     public static class Builder {
         private test.fixtures.adapter.A a = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.NONE)    public Builder setA(test.fixtures.adapter.A a) {
             this.a = a;
             return this;
         }
-    
+
         public test.fixtures.adapter.A getA() { return a; }
-    
+
         public Builder() { }
         public Builder(B other) {
             this.a = other.a;
         }
-    
+
         @ThriftConstructor
         public B build() {
             B result = new B (
@@ -103,9 +103,9 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         B other = (B)o;
-    
+
         return
             Objects.equals(a, other.a) &&
             true;
@@ -122,7 +122,7 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
     public static com.facebook.thrift.payload.Reader<B> asReader() {
       return B::read0;
     }
-    
+
     public static B read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(B.NAMES_TO_IDS, B.THRIFT_NAMES_TO_IDS, B.FIELD_METADATA);
@@ -166,7 +166,7 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
     private static class _BLazy {
         private static final B _DEFAULT = new B.Builder().build();
     }
-    
+
     public static B defaultInstance() {
         return  _BLazy._DEFAULT;
     }

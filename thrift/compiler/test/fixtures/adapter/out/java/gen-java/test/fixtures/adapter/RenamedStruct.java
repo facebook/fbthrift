@@ -30,7 +30,7 @@ public final class RenamedStruct implements com.facebook.thrift.payload.ThriftSe
     ) {
         this.data = data;
     }
-    
+
     @ThriftConstructor
     protected RenamedStruct() {
       this.data = 0L;
@@ -46,19 +46,19 @@ public final class RenamedStruct implements com.facebook.thrift.payload.ThriftSe
 
     public static class Builder {
         private long data = 0L;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="data", requiredness=Requiredness.NONE)    public Builder setData(long data) {
             this.data = data;
             return this;
         }
-    
+
         public long getData() { return data; }
-    
+
         public Builder() { }
         public Builder(RenamedStruct other) {
             this.data = other.data;
         }
-    
+
         @ThriftConstructor
         public RenamedStruct build() {
             RenamedStruct result = new RenamedStruct (
@@ -84,7 +84,7 @@ public final class RenamedStruct implements com.facebook.thrift.payload.ThriftSe
         RenamedStruct.class, RenamedStruct::read0));
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="data", requiredness=Requiredness.NONE)
     public long getData() { return data; }
 
@@ -103,9 +103,9 @@ public final class RenamedStruct implements com.facebook.thrift.payload.ThriftSe
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         RenamedStruct other = (RenamedStruct)o;
-    
+
         return
             Objects.equals(data, other.data) &&
             true;
@@ -122,7 +122,7 @@ public final class RenamedStruct implements com.facebook.thrift.payload.ThriftSe
     public static com.facebook.thrift.payload.Reader<RenamedStruct> asReader() {
       return RenamedStruct::read0;
     }
-    
+
     public static RenamedStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(RenamedStruct.NAMES_TO_IDS, RenamedStruct.THRIFT_NAMES_TO_IDS, RenamedStruct.FIELD_METADATA);
@@ -164,7 +164,7 @@ public final class RenamedStruct implements com.facebook.thrift.payload.ThriftSe
     private static class _RenamedStructLazy {
         private static final RenamedStruct _DEFAULT = new RenamedStruct.Builder().build();
     }
-    
+
     public static RenamedStruct defaultInstance() {
         return  _RenamedStructLazy._DEFAULT;
     }

@@ -34,7 +34,7 @@ public final class StructWithSharedConst implements com.facebook.thrift.payload.
         this.sharedConst = sharedConst;
         this.reqSharedConst = reqSharedConst;
     }
-    
+
     @ThriftConstructor
     protected StructWithSharedConst() {
       this.optSharedConst = null;
@@ -54,35 +54,35 @@ public final class StructWithSharedConst implements com.facebook.thrift.payload.
         private test.fixtures.refs.MyField optSharedConst = null;
         private test.fixtures.refs.MyField sharedConst = null;
         private test.fixtures.refs.MyField reqSharedConst = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="opt_shared_const", requiredness=Requiredness.OPTIONAL)    public Builder setOptSharedConst(test.fixtures.refs.MyField optSharedConst) {
             this.optSharedConst = optSharedConst;
             return this;
         }
-    
+
         public test.fixtures.refs.MyField getOptSharedConst() { return optSharedConst; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="shared_const", requiredness=Requiredness.NONE)    public Builder setSharedConst(test.fixtures.refs.MyField sharedConst) {
             this.sharedConst = sharedConst;
             return this;
         }
-    
+
         public test.fixtures.refs.MyField getSharedConst() { return sharedConst; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="req_shared_const", requiredness=Requiredness.REQUIRED)    public Builder setReqSharedConst(test.fixtures.refs.MyField reqSharedConst) {
             this.reqSharedConst = reqSharedConst;
             return this;
         }
-    
+
         public test.fixtures.refs.MyField getReqSharedConst() { return reqSharedConst; }
-    
+
         public Builder() { }
         public Builder(StructWithSharedConst other) {
             this.optSharedConst = other.optSharedConst;
             this.sharedConst = other.sharedConst;
             this.reqSharedConst = other.reqSharedConst;
         }
-    
+
         @ThriftConstructor
         public StructWithSharedConst build() {
             StructWithSharedConst result = new StructWithSharedConst (
@@ -129,7 +129,7 @@ public final class StructWithSharedConst implements com.facebook.thrift.payload.
     public test.fixtures.refs.MyField getSharedConst() { return sharedConst; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=3, name="req_shared_const", requiredness=Requiredness.REQUIRED)
     public test.fixtures.refs.MyField getReqSharedConst() { return reqSharedConst; }
 
@@ -150,9 +150,9 @@ public final class StructWithSharedConst implements com.facebook.thrift.payload.
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         StructWithSharedConst other = (StructWithSharedConst)o;
-    
+
         return
             Objects.equals(optSharedConst, other.optSharedConst) &&
             Objects.equals(sharedConst, other.sharedConst) &&
@@ -173,7 +173,7 @@ public final class StructWithSharedConst implements com.facebook.thrift.payload.
     public static com.facebook.thrift.payload.Reader<StructWithSharedConst> asReader() {
       return StructWithSharedConst::read0;
     }
-    
+
     public static StructWithSharedConst read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(StructWithSharedConst.NAMES_TO_IDS, StructWithSharedConst.THRIFT_NAMES_TO_IDS, StructWithSharedConst.FIELD_METADATA);
@@ -249,7 +249,7 @@ public final class StructWithSharedConst implements com.facebook.thrift.payload.
     private static class _StructWithSharedConstLazy {
         private static final StructWithSharedConst _DEFAULT = new StructWithSharedConst.Builder().build();
     }
-    
+
     public static StructWithSharedConst defaultInstance() {
         return  _StructWithSharedConstLazy._DEFAULT;
     }

@@ -69,7 +69,7 @@ func (x *reqNestedContainersMapList) writeField1(p thrift.Encoder) error {  // F
                 return err
             }
         }
-    
+
         {
             item := v
             if err := p.WriteListBegin(thrift.I32, len(item)); err != nil {
@@ -103,7 +103,7 @@ func (x *reqNestedContainersMapList) readField1(p thrift.Decoder) error {  // Fo
     if err != nil {
         return thrift.PrependError("error reading map begin: ", err)
     }
-    
+
     mapResult := make(map[int32][]int32, size)
     for i := 0; i < size; i++ {
         var key int32
@@ -114,14 +114,14 @@ func (x *reqNestedContainersMapList) readField1(p thrift.Decoder) error {  // Fo
             }
             key = result
         }
-    
+
         var value []int32
         {
             _ /* elemType */, size, err := p.ReadListBegin()
             if err != nil {
                 return thrift.PrependError("error reading list begin: ", err)
             }
-            
+
             listResult := make([]int32, 0, size)
             for i := 0; i < size; i++ {
                 var elem int32
@@ -134,17 +134,17 @@ func (x *reqNestedContainersMapList) readField1(p thrift.Decoder) error {  // Fo
                 }
                 listResult = append(listResult, elem)
             }
-            
+
             if err := p.ReadListEnd(); err != nil {
                 return thrift.PrependError("error reading list end: ", err)
             }
             result := listResult
             value = result
         }
-    
+
         mapResult[key] = value
     }
-    
+
     if err := p.ReadMapEnd(); err != nil {
         return thrift.PrependError("error reading map end: ", err)
     }
@@ -356,7 +356,7 @@ func (x *reqNestedContainersMapSet) writeField1(p thrift.Encoder) error {  // Fo
                 return err
             }
         }
-    
+
         {
             item := v
             if err := p.WriteSetBegin(thrift.I32, len(item)); err != nil {
@@ -390,7 +390,7 @@ func (x *reqNestedContainersMapSet) readField1(p thrift.Decoder) error {  // Foo
     if err != nil {
         return thrift.PrependError("error reading map begin: ", err)
     }
-    
+
     mapResult := make(map[int32][]int32, size)
     for i := 0; i < size; i++ {
         var key int32
@@ -401,14 +401,14 @@ func (x *reqNestedContainersMapSet) readField1(p thrift.Decoder) error {  // Foo
             }
             key = result
         }
-    
+
         var value []int32
         {
             _ /* elemType */, size, err := p.ReadSetBegin()
             if err != nil {
                 return thrift.PrependError("error reading set begin: ", err)
             }
-            
+
             setResult := make([]int32, 0, size)
             for i := 0; i < size; i++ {
                 var elem int32
@@ -421,17 +421,17 @@ func (x *reqNestedContainersMapSet) readField1(p thrift.Decoder) error {  // Foo
                 }
                 setResult = append(setResult, elem)
             }
-            
+
             if err := p.ReadSetEnd(); err != nil {
                 return thrift.PrependError("error reading set end: ", err)
             }
             result := setResult
             value = result
         }
-    
+
         mapResult[key] = value
     }
-    
+
     if err := p.ReadMapEnd(); err != nil {
         return thrift.PrependError("error reading map end: ", err)
     }
@@ -649,7 +649,7 @@ func (x *reqNestedContainersListMap) writeField1(p thrift.Encoder) error {  // F
                         return err
                     }
                 }
-            
+
                 {
                     item := v
                     if err := p.WriteI32(item); err != nil {
@@ -677,7 +677,7 @@ func (x *reqNestedContainersListMap) readField1(p thrift.Decoder) error {  // Fo
     if err != nil {
         return thrift.PrependError("error reading list begin: ", err)
     }
-    
+
     listResult := make([]map[int32]int32, 0, size)
     for i := 0; i < size; i++ {
         var elem map[int32]int32
@@ -686,7 +686,7 @@ func (x *reqNestedContainersListMap) readField1(p thrift.Decoder) error {  // Fo
             if err != nil {
                 return thrift.PrependError("error reading map begin: ", err)
             }
-            
+
             mapResult := make(map[int32]int32, size)
             for i := 0; i < size; i++ {
                 var key int32
@@ -697,7 +697,7 @@ func (x *reqNestedContainersListMap) readField1(p thrift.Decoder) error {  // Fo
                     }
                     key = result
                 }
-            
+
                 var value int32
                 {
                     result, err := p.ReadI32()
@@ -706,10 +706,10 @@ func (x *reqNestedContainersListMap) readField1(p thrift.Decoder) error {  // Fo
                     }
                     value = result
                 }
-            
+
                 mapResult[key] = value
             }
-            
+
             if err := p.ReadMapEnd(); err != nil {
                 return thrift.PrependError("error reading map end: ", err)
             }
@@ -718,7 +718,7 @@ func (x *reqNestedContainersListMap) readField1(p thrift.Decoder) error {  // Fo
         }
         listResult = append(listResult, elem)
     }
-    
+
     if err := p.ReadListEnd(); err != nil {
         return thrift.PrependError("error reading list end: ", err)
     }
@@ -957,7 +957,7 @@ func (x *reqNestedContainersListSet) readField1(p thrift.Decoder) error {  // Fo
     if err != nil {
         return thrift.PrependError("error reading list begin: ", err)
     }
-    
+
     listResult := make([][]int32, 0, size)
     for i := 0; i < size; i++ {
         var elem []int32
@@ -966,7 +966,7 @@ func (x *reqNestedContainersListSet) readField1(p thrift.Decoder) error {  // Fo
             if err != nil {
                 return thrift.PrependError("error reading set begin: ", err)
             }
-            
+
             setResult := make([]int32, 0, size)
             for i := 0; i < size; i++ {
                 var elem int32
@@ -979,7 +979,7 @@ func (x *reqNestedContainersListSet) readField1(p thrift.Decoder) error {  // Fo
                 }
                 setResult = append(setResult, elem)
             }
-            
+
             if err := p.ReadSetEnd(); err != nil {
                 return thrift.PrependError("error reading set end: ", err)
             }
@@ -988,7 +988,7 @@ func (x *reqNestedContainersListSet) readField1(p thrift.Decoder) error {  // Fo
         }
         listResult = append(listResult, elem)
     }
-    
+
     if err := p.ReadListEnd(); err != nil {
         return thrift.PrependError("error reading list end: ", err)
     }
@@ -1212,7 +1212,7 @@ func (x *reqNestedContainersTurtles) writeField1(p thrift.Encoder) error {  // F
                                 return err
                             }
                         }
-                    
+
                         {
                             item := v
                             if err := p.WriteMapBegin(thrift.I32, thrift.SET, len(item)); err != nil {
@@ -1225,7 +1225,7 @@ func (x *reqNestedContainersTurtles) writeField1(p thrift.Encoder) error {  // F
                                         return err
                                     }
                                 }
-                            
+
                                 {
                                     item := v
                                     if err := p.WriteSetBegin(thrift.I32, len(item)); err != nil {
@@ -1274,7 +1274,7 @@ func (x *reqNestedContainersTurtles) readField1(p thrift.Decoder) error {  // Fo
     if err != nil {
         return thrift.PrependError("error reading list begin: ", err)
     }
-    
+
     listResult := make([][]map[int32]map[int32][]int32, 0, size)
     for i := 0; i < size; i++ {
         var elem []map[int32]map[int32][]int32
@@ -1283,7 +1283,7 @@ func (x *reqNestedContainersTurtles) readField1(p thrift.Decoder) error {  // Fo
             if err != nil {
                 return thrift.PrependError("error reading list begin: ", err)
             }
-            
+
             listResult := make([]map[int32]map[int32][]int32, 0, size)
             for i := 0; i < size; i++ {
                 var elem map[int32]map[int32][]int32
@@ -1292,7 +1292,7 @@ func (x *reqNestedContainersTurtles) readField1(p thrift.Decoder) error {  // Fo
                     if err != nil {
                         return thrift.PrependError("error reading map begin: ", err)
                     }
-                    
+
                     mapResult := make(map[int32]map[int32][]int32, size)
                     for i := 0; i < size; i++ {
                         var key int32
@@ -1303,14 +1303,14 @@ func (x *reqNestedContainersTurtles) readField1(p thrift.Decoder) error {  // Fo
                             }
                             key = result
                         }
-                    
+
                         var value map[int32][]int32
                         {
                             _ /* keyType */, _ /* valueType */, size, err := p.ReadMapBegin()
                             if err != nil {
                                 return thrift.PrependError("error reading map begin: ", err)
                             }
-                            
+
                             mapResult := make(map[int32][]int32, size)
                             for i := 0; i < size; i++ {
                                 var key int32
@@ -1321,14 +1321,14 @@ func (x *reqNestedContainersTurtles) readField1(p thrift.Decoder) error {  // Fo
                                     }
                                     key = result
                                 }
-                            
+
                                 var value []int32
                                 {
                                     _ /* elemType */, size, err := p.ReadSetBegin()
                                     if err != nil {
                                         return thrift.PrependError("error reading set begin: ", err)
                                     }
-                                    
+
                                     setResult := make([]int32, 0, size)
                                     for i := 0; i < size; i++ {
                                         var elem int32
@@ -1341,27 +1341,27 @@ func (x *reqNestedContainersTurtles) readField1(p thrift.Decoder) error {  // Fo
                                         }
                                         setResult = append(setResult, elem)
                                     }
-                                    
+
                                     if err := p.ReadSetEnd(); err != nil {
                                         return thrift.PrependError("error reading set end: ", err)
                                     }
                                     result := setResult
                                     value = result
                                 }
-                            
+
                                 mapResult[key] = value
                             }
-                            
+
                             if err := p.ReadMapEnd(); err != nil {
                                 return thrift.PrependError("error reading map end: ", err)
                             }
                             result := mapResult
                             value = result
                         }
-                    
+
                         mapResult[key] = value
                     }
-                    
+
                     if err := p.ReadMapEnd(); err != nil {
                         return thrift.PrependError("error reading map end: ", err)
                     }
@@ -1370,7 +1370,7 @@ func (x *reqNestedContainersTurtles) readField1(p thrift.Decoder) error {  // Fo
                 }
                 listResult = append(listResult, elem)
             }
-            
+
             if err := p.ReadListEnd(); err != nil {
                 return thrift.PrependError("error reading list end: ", err)
             }
@@ -1379,7 +1379,7 @@ func (x *reqNestedContainersTurtles) readField1(p thrift.Decoder) error {  // Fo
         }
         listResult = append(listResult, elem)
     }
-    
+
     if err := p.ReadListEnd(); err != nil {
         return thrift.PrependError("error reading list end: ", err)
     }

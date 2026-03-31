@@ -30,7 +30,7 @@ public final class Config implements com.facebook.thrift.payload.ThriftSerializa
     ) {
         this.path = path;
     }
-    
+
     @ThriftConstructor
     protected Config() {
       this.path = null;
@@ -46,19 +46,19 @@ public final class Config implements com.facebook.thrift.payload.ThriftSerializa
 
     public static class Builder {
         private String path = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="path", requiredness=Requiredness.NONE)    public Builder setPath(String path) {
             this.path = path;
             return this;
         }
-    
+
         public String getPath() { return path; }
-    
+
         public Builder() { }
         public Builder(Config other) {
             this.path = other.path;
         }
-    
+
         @ThriftConstructor
         public Config build() {
             Config result = new Config (
@@ -103,9 +103,9 @@ public final class Config implements com.facebook.thrift.payload.ThriftSerializa
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         Config other = (Config)o;
-    
+
         return
             Objects.equals(path, other.path) &&
             true;
@@ -122,7 +122,7 @@ public final class Config implements com.facebook.thrift.payload.ThriftSerializa
     public static com.facebook.thrift.payload.Reader<Config> asReader() {
       return Config::read0;
     }
-    
+
     public static Config read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(Config.NAMES_TO_IDS, Config.THRIFT_NAMES_TO_IDS, Config.FIELD_METADATA);
@@ -166,7 +166,7 @@ public final class Config implements com.facebook.thrift.payload.ThriftSerializa
     private static class _ConfigLazy {
         private static final Config _DEFAULT = new Config.Builder().build();
     }
-    
+
     public static Config defaultInstance() {
         return  _ConfigLazy._DEFAULT;
     }

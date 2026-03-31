@@ -30,7 +30,7 @@ public final class ShouldBeBoxed implements com.facebook.thrift.payload.ThriftSe
     ) {
         this.sessionId = sessionId;
     }
-    
+
     @ThriftConstructor
     protected ShouldBeBoxed() {
       this.sessionId = null;
@@ -46,19 +46,19 @@ public final class ShouldBeBoxed implements com.facebook.thrift.payload.ThriftSe
 
     public static class Builder {
         private String sessionId = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="sessionId", requiredness=Requiredness.NONE)    public Builder setSessionId(String sessionId) {
             this.sessionId = sessionId;
             return this;
         }
-    
+
         public String getSessionId() { return sessionId; }
-    
+
         public Builder() { }
         public Builder(ShouldBeBoxed other) {
             this.sessionId = other.sessionId;
         }
-    
+
         @ThriftConstructor
         public ShouldBeBoxed build() {
             ShouldBeBoxed result = new ShouldBeBoxed (
@@ -100,9 +100,9 @@ public final class ShouldBeBoxed implements com.facebook.thrift.payload.ThriftSe
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         ShouldBeBoxed other = (ShouldBeBoxed)o;
-    
+
         return
             Objects.equals(sessionId, other.sessionId) &&
             true;
@@ -119,7 +119,7 @@ public final class ShouldBeBoxed implements com.facebook.thrift.payload.ThriftSe
     public static com.facebook.thrift.payload.Reader<ShouldBeBoxed> asReader() {
       return ShouldBeBoxed::read0;
     }
-    
+
     public static ShouldBeBoxed read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(ShouldBeBoxed.NAMES_TO_IDS, ShouldBeBoxed.THRIFT_NAMES_TO_IDS, ShouldBeBoxed.FIELD_METADATA);
@@ -163,7 +163,7 @@ public final class ShouldBeBoxed implements com.facebook.thrift.payload.ThriftSe
     private static class _ShouldBeBoxedLazy {
         private static final ShouldBeBoxed _DEFAULT = new ShouldBeBoxed.Builder().build();
     }
-    
+
     public static ShouldBeBoxed defaultInstance() {
         return  _ShouldBeBoxedLazy._DEFAULT;
     }

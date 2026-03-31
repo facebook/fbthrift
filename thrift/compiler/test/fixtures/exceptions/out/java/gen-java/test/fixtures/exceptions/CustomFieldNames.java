@@ -52,7 +52,7 @@ public final class CustomFieldNames extends org.apache.thrift.TBaseException imp
         this.errorMessage = errorMessage;
         this.internalGreatMessage = internalGreatMessage;
     }
-    
+
     @ThriftConstructor
     protected CustomFieldNames() {
       this.errorMessage = null;
@@ -62,27 +62,27 @@ public final class CustomFieldNames extends org.apache.thrift.TBaseException imp
     public static class Builder {
         private String errorMessage = null;
         private String internalGreatMessage = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="error_message", requiredness=Requiredness.NONE)    public Builder setErrorMessage(String errorMessage) {
             this.errorMessage = errorMessage;
             return this;
         }
-    
+
         public String getErrorMessage() { return errorMessage; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="internal_error_message", requiredness=Requiredness.NONE)    public Builder setInternalGreatMessage(String internalGreatMessage) {
             this.internalGreatMessage = internalGreatMessage;
             return this;
         }
-    
+
         public String getInternalGreatMessage() { return internalGreatMessage; }
-    
+
         public Builder() { }
         public Builder(CustomFieldNames other) {
             this.errorMessage = other.errorMessage;
             this.internalGreatMessage = other.internalGreatMessage;
         }
-    
+
         @ThriftConstructor
         public CustomFieldNames build() {
             CustomFieldNames result = new CustomFieldNames (
@@ -110,7 +110,7 @@ public final class CustomFieldNames extends org.apache.thrift.TBaseException imp
     public static com.facebook.thrift.payload.Reader<CustomFieldNames> asReader() {
       return CustomFieldNames::read0;
     }
-    
+
     public static CustomFieldNames read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(CustomFieldNames.NAMES_TO_IDS, CustomFieldNames.THRIFT_NAMES_TO_IDS, CustomFieldNames.FIELD_METADATA);
@@ -170,7 +170,7 @@ public final class CustomFieldNames extends org.apache.thrift.TBaseException imp
     private static class _CustomFieldNamesLazy {
         private static final CustomFieldNames _DEFAULT = new CustomFieldNames.Builder().build();
     }
-    
+
     public static CustomFieldNames defaultInstance() {
         return  _CustomFieldNamesLazy._DEFAULT;
     }}

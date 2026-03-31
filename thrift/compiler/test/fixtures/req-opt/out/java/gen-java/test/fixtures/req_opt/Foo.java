@@ -36,7 +36,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         this.myBools = myBools;
         this.myNumbers = myNumbers;
     }
-    
+
     @ThriftConstructor
     protected Foo() {
       this.myInteger = 0;
@@ -58,35 +58,35 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         private String myString = null;
         private List<Boolean> myBools = null;
         private List<Integer> myNumbers = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="myInteger", requiredness=Requiredness.REQUIRED)    public Builder setMyInteger(int myInteger) {
             this.myInteger = myInteger;
             return this;
         }
-    
+
         public int getMyInteger() { return myInteger; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="myString", requiredness=Requiredness.OPTIONAL)    public Builder setMyString(String myString) {
             this.myString = myString;
             return this;
         }
-    
+
         public String getMyString() { return myString; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="myBools", requiredness=Requiredness.NONE)    public Builder setMyBools(List<Boolean> myBools) {
             this.myBools = myBools;
             return this;
         }
-    
+
         public List<Boolean> getMyBools() { return myBools; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=4, name="myNumbers", requiredness=Requiredness.REQUIRED)    public Builder setMyNumbers(List<Integer> myNumbers) {
             this.myNumbers = myNumbers;
             return this;
         }
-    
+
         public List<Integer> getMyNumbers() { return myNumbers; }
-    
+
         public Builder() { }
         public Builder(Foo other) {
             this.myInteger = other.myInteger;
@@ -94,7 +94,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
             this.myBools = other.myBools;
             this.myNumbers = other.myNumbers;
         }
-    
+
         @ThriftConstructor
         public Foo build() {
             Foo result = new Foo (
@@ -138,7 +138,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       FIELD_METADATA.put(4, MY_NUMBERS_FIELD_DESC);
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="myInteger", requiredness=Requiredness.REQUIRED)
     public int getMyInteger() { return myInteger; }
 
@@ -153,7 +153,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     public List<Boolean> getMyBools() { return myBools; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=4, name="myNumbers", requiredness=Requiredness.REQUIRED)
     public List<Integer> getMyNumbers() { return myNumbers; }
 
@@ -175,9 +175,9 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         Foo other = (Foo)o;
-    
+
         return
             Objects.equals(myInteger, other.myInteger) &&
             Objects.equals(myString, other.myString) &&
@@ -200,7 +200,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     public static com.facebook.thrift.payload.Reader<Foo> asReader() {
       return Foo::read0;
     }
-    
+
     public static Foo read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(Foo.NAMES_TO_IDS, Foo.THRIFT_NAMES_TO_IDS, Foo.FIELD_METADATA);
@@ -318,7 +318,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     private static class _FooLazy {
         private static final Foo _DEFAULT = new Foo.Builder().build();
     }
-    
+
     public static Foo defaultInstance() {
         return  _FooLazy._DEFAULT;
     }

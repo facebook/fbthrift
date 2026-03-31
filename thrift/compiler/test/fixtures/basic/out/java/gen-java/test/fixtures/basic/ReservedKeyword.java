@@ -30,7 +30,7 @@ public final class ReservedKeyword implements com.facebook.thrift.payload.Thrift
     ) {
         this.reservedField = reservedField;
     }
-    
+
     @ThriftConstructor
     protected ReservedKeyword() {
       this.reservedField = 0;
@@ -46,19 +46,19 @@ public final class ReservedKeyword implements com.facebook.thrift.payload.Thrift
 
     public static class Builder {
         private int reservedField = 0;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="reserved_field", requiredness=Requiredness.NONE)    public Builder setReservedField(int reservedField) {
             this.reservedField = reservedField;
             return this;
         }
-    
+
         public int getReservedField() { return reservedField; }
-    
+
         public Builder() { }
         public Builder(ReservedKeyword other) {
             this.reservedField = other.reservedField;
         }
-    
+
         @ThriftConstructor
         public ReservedKeyword build() {
             ReservedKeyword result = new ReservedKeyword (
@@ -84,7 +84,7 @@ public final class ReservedKeyword implements com.facebook.thrift.payload.Thrift
         ReservedKeyword.class, ReservedKeyword::read0));
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="reserved_field", requiredness=Requiredness.NONE)
     public int getReservedField() { return reservedField; }
 
@@ -103,9 +103,9 @@ public final class ReservedKeyword implements com.facebook.thrift.payload.Thrift
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         ReservedKeyword other = (ReservedKeyword)o;
-    
+
         return
             Objects.equals(reservedField, other.reservedField) &&
             true;
@@ -122,7 +122,7 @@ public final class ReservedKeyword implements com.facebook.thrift.payload.Thrift
     public static com.facebook.thrift.payload.Reader<ReservedKeyword> asReader() {
       return ReservedKeyword::read0;
     }
-    
+
     public static ReservedKeyword read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(ReservedKeyword.NAMES_TO_IDS, ReservedKeyword.THRIFT_NAMES_TO_IDS, ReservedKeyword.FIELD_METADATA);
@@ -164,7 +164,7 @@ public final class ReservedKeyword implements com.facebook.thrift.payload.Thrift
     private static class _ReservedKeywordLazy {
         private static final ReservedKeyword _DEFAULT = new ReservedKeyword.Builder().build();
     }
-    
+
     public static ReservedKeyword defaultInstance() {
         return  _ReservedKeywordLazy._DEFAULT;
     }

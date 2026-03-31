@@ -34,7 +34,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         this.myOtherIncludedField = myOtherIncludedField;
         this.myIncludedInt = myIncludedInt;
     }
-    
+
     @ThriftConstructor
     protected MyStruct() {
       this.myIncludedField = test.fixtures.includes.includes.Constants.EXAMPLE_INCLUDED;
@@ -54,35 +54,35 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         private test.fixtures.includes.includes.Included myIncludedField = test.fixtures.includes.includes.Constants.EXAMPLE_INCLUDED;
         private test.fixtures.includes.includes.Included myOtherIncludedField = null;
         private long myIncludedInt = 42L;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="MyIncludedField", requiredness=Requiredness.NONE)    public Builder setMyIncludedField(test.fixtures.includes.includes.Included myIncludedField) {
             this.myIncludedField = myIncludedField;
             return this;
         }
-    
+
         public test.fixtures.includes.includes.Included getMyIncludedField() { return myIncludedField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="MyOtherIncludedField", requiredness=Requiredness.NONE)    public Builder setMyOtherIncludedField(test.fixtures.includes.includes.Included myOtherIncludedField) {
             this.myOtherIncludedField = myOtherIncludedField;
             return this;
         }
-    
+
         public test.fixtures.includes.includes.Included getMyOtherIncludedField() { return myOtherIncludedField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="MyIncludedInt", requiredness=Requiredness.NONE)    public Builder setMyIncludedInt(long myIncludedInt) {
             this.myIncludedInt = myIncludedInt;
             return this;
         }
-    
+
         public long getMyIncludedInt() { return myIncludedInt; }
-    
+
         public Builder() { }
         public Builder(MyStruct other) {
             this.myIncludedField = other.myIncludedField;
             this.myOtherIncludedField = other.myOtherIncludedField;
             this.myIncludedInt = other.myIncludedInt;
         }
-    
+
         @ThriftConstructor
         public MyStruct build() {
             MyStruct result = new MyStruct (
@@ -129,7 +129,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public test.fixtures.includes.includes.Included getMyOtherIncludedField() { return myOtherIncludedField; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=3, name="MyIncludedInt", requiredness=Requiredness.NONE)
     public long getMyIncludedInt() { return myIncludedInt; }
 
@@ -150,9 +150,9 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         MyStruct other = (MyStruct)o;
-    
+
         return
             Objects.equals(myIncludedField, other.myIncludedField) &&
             Objects.equals(myOtherIncludedField, other.myOtherIncludedField) &&
@@ -173,7 +173,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public static com.facebook.thrift.payload.Reader<MyStruct> asReader() {
       return MyStruct::read0;
     }
-    
+
     public static MyStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(MyStruct.NAMES_TO_IDS, MyStruct.THRIFT_NAMES_TO_IDS, MyStruct.FIELD_METADATA);
@@ -247,7 +247,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     private static class _MyStructLazy {
         private static final MyStruct _DEFAULT = new MyStruct.Builder().build();
     }
-    
+
     public static MyStruct defaultInstance() {
         return  _MyStructLazy._DEFAULT;
     }

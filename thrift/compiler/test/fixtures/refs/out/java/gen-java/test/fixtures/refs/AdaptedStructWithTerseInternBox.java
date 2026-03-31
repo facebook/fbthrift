@@ -32,7 +32,7 @@ public final class AdaptedStructWithTerseInternBox implements com.facebook.thrif
         this.field1 = field1;
         this.field2 = field2;
     }
-    
+
     @ThriftConstructor
     protected AdaptedStructWithTerseInternBox() {
       this.field1 = test.fixtures.refs.Empty.defaultInstance();
@@ -50,27 +50,27 @@ public final class AdaptedStructWithTerseInternBox implements com.facebook.thrif
     public static class Builder {
         private test.fixtures.refs.Empty field1 = test.fixtures.refs.Empty.defaultInstance();
         private test.fixtures.refs.MyField field2 = test.fixtures.refs.MyField.defaultInstance();
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="field1", requiredness=Requiredness.TERSE)    public Builder setField1(test.fixtures.refs.Empty field1) {
             this.field1 = field1;
             return this;
         }
-    
+
         public test.fixtures.refs.Empty getField1() { return field1; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="field2", requiredness=Requiredness.TERSE)    public Builder setField2(test.fixtures.refs.MyField field2) {
             this.field2 = field2;
             return this;
         }
-    
+
         public test.fixtures.refs.MyField getField2() { return field2; }
-    
+
         public Builder() { }
         public Builder(AdaptedStructWithTerseInternBox other) {
             this.field1 = other.field1;
             this.field2 = other.field2;
         }
-    
+
         @ThriftConstructor
         public AdaptedStructWithTerseInternBox build() {
             AdaptedStructWithTerseInternBox result = new AdaptedStructWithTerseInternBox (
@@ -125,9 +125,9 @@ public final class AdaptedStructWithTerseInternBox implements com.facebook.thrif
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         AdaptedStructWithTerseInternBox other = (AdaptedStructWithTerseInternBox)o;
-    
+
         return
             Objects.equals(field1, other.field1) &&
             Objects.equals(field2, other.field2) &&
@@ -146,7 +146,7 @@ public final class AdaptedStructWithTerseInternBox implements com.facebook.thrif
     public static com.facebook.thrift.payload.Reader<AdaptedStructWithTerseInternBox> asReader() {
       return AdaptedStructWithTerseInternBox::read0;
     }
-    
+
     public static AdaptedStructWithTerseInternBox read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(AdaptedStructWithTerseInternBox.NAMES_TO_IDS, AdaptedStructWithTerseInternBox.THRIFT_NAMES_TO_IDS, AdaptedStructWithTerseInternBox.FIELD_METADATA);
@@ -219,7 +219,7 @@ public final class AdaptedStructWithTerseInternBox implements com.facebook.thrif
     private static class _AdaptedStructWithTerseInternBoxLazy {
         private static final AdaptedStructWithTerseInternBox _DEFAULT = new AdaptedStructWithTerseInternBox.Builder().build();
     }
-    
+
     public static AdaptedStructWithTerseInternBox defaultInstance() {
         return  _AdaptedStructWithTerseInternBoxLazy._DEFAULT;
     }

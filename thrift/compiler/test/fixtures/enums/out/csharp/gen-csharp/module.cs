@@ -112,13 +112,13 @@ namespace test.fixtures.enums
         public static readonly string __fbthrift_uri = "test.dev/fixtures/enums/SomeStruct";
         /// <summary>Gets or sets the reasonable field.</summary>
         public @Metasyntactic @reasonable { get; set; } = @Metasyntactic.@FOO;
-    
+
         /// <summary>Gets or sets the fine field.</summary>
         public @Metasyntactic @fine { get; set; } = @Metasyntactic.@BAR;
-    
+
         /// <summary>Gets or sets the questionable field.</summary>
         public @Metasyntactic @questionable { get; set; } = (@Metasyntactic)-1;
-    
+
         /// <summary>Gets or sets the tags field.</summary>
         private HashSet<int> _tags = new HashSet<int>()
         {
@@ -132,7 +132,7 @@ namespace test.fixtures.enums
                 _tags = value;
             }
         }
-    
+
         public @SomeStruct()
         {
             @reasonable = @Metasyntactic.@FOO;
@@ -142,7 +142,7 @@ namespace test.fixtures.enums
         {
         };
         }
-    
+
         public void __fbthrift_clear()
         {
             @reasonable = default;
@@ -150,7 +150,7 @@ namespace test.fixtures.enums
             @questionable = default;
             @tags = new HashSet<int>();
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@reasonable != default) { return false; }
@@ -159,7 +159,7 @@ namespace test.fixtures.enums
             if (@tags != null && @tags.Count != 0) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: reasonable (@Metasyntactic)
@@ -180,7 +180,7 @@ namespace test.fixtures.enums
             }
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -190,7 +190,7 @@ namespace test.fixtures.enums
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // reasonable
@@ -239,7 +239,7 @@ namespace test.fixtures.enums
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @SomeStruct other)
@@ -265,7 +265,7 @@ namespace test.fixtures.enums
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
@@ -280,7 +280,7 @@ namespace test.fixtures.enums
             }
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -310,16 +310,16 @@ namespace test.fixtures.enums
         public static readonly string __fbthrift_uri = "test.dev/fixtures/enums/MyStruct";
         /// <summary>Gets or sets the me2_3 field.</summary>
         public @MyEnum2 @me2_3 { get; set; } = (@MyEnum2)3;
-    
+
         /// <summary>Gets or sets the me3_n3 field.</summary>
         public @MyEnum3 @me3_n3 { get; set; } = (@MyEnum3)-3;
-    
+
         /// <summary>Gets or sets the me1_t1 field.</summary>
         public @MyEnum1 @me1_t1 { get; set; } = @MyEnum1.@ME1_1;
-    
+
         /// <summary>Gets or sets the me1_t2 field.</summary>
         public @MyEnum1 @me1_t2 { get; set; } = @MyEnum1.@ME1_1;
-    
+
         public @MyStruct()
         {
             @me2_3 = (@MyEnum2)3;
@@ -327,7 +327,7 @@ namespace test.fixtures.enums
             @me1_t1 = @MyEnum1.@ME1_1;
             @me1_t2 = @MyEnum1.@ME1_1;
         }
-    
+
         public void __fbthrift_clear()
         {
             @me2_3 = default;
@@ -335,7 +335,7 @@ namespace test.fixtures.enums
             @me1_t1 = default;
             @me1_t2 = default;
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@me2_3 != default) { return false; }
@@ -344,7 +344,7 @@ namespace test.fixtures.enums
             if (@me1_t2 != default) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: me2_3 (@MyEnum2)
@@ -361,7 +361,7 @@ namespace test.fixtures.enums
             writer.WriteI32((int)@me1_t2);
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -371,7 +371,7 @@ namespace test.fixtures.enums
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // me2_3
@@ -420,7 +420,7 @@ namespace test.fixtures.enums
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @MyStruct other)
@@ -445,7 +445,7 @@ namespace test.fixtures.enums
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
@@ -455,7 +455,7 @@ namespace test.fixtures.enums
             hashCode.Add(@me1_t2);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();

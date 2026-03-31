@@ -41,27 +41,27 @@ public final class MyDataItem implements com.facebook.thrift.payload.ThriftSeria
     public static class Builder {
         private int field1 = 0;
         private int field2 = 0;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="field1", requiredness=Requiredness.NONE)    public Builder setField1(int field1) {
             this.field1 = field1;
             return this;
         }
-    
+
         public int getField1() { return field1; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="field2", requiredness=Requiredness.NONE)    public Builder setField2(int field2) {
             this.field2 = field2;
             return this;
         }
-    
+
         public int getField2() { return field2; }
-    
+
         public Builder() { }
         public Builder(MyDataItem other) {
             this.field1 = other.field1;
             this.field2 = other.field2;
         }
-    
+
         @ThriftConstructor
         public MyDataItem build() {
             MyDataItem result = new MyDataItem();
@@ -89,7 +89,7 @@ public final class MyDataItem implements com.facebook.thrift.payload.ThriftSeria
       FIELD_METADATA.put(2, FIELD2_FIELD_DESC);
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="field1", requiredness=Requiredness.NONE)
     public int getField1() { return field1; }
 
@@ -100,7 +100,7 @@ public final class MyDataItem implements com.facebook.thrift.payload.ThriftSeria
     }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="field2", requiredness=Requiredness.NONE)
     public int getField2() { return field2; }
 
@@ -126,9 +126,9 @@ public final class MyDataItem implements com.facebook.thrift.payload.ThriftSeria
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         MyDataItem other = (MyDataItem)o;
-    
+
         return
             Objects.equals(field1, other.field1) &&
             Objects.equals(field2, other.field2) &&
@@ -147,7 +147,7 @@ public final class MyDataItem implements com.facebook.thrift.payload.ThriftSeria
     public static com.facebook.thrift.payload.Reader<MyDataItem> asReader() {
       return MyDataItem::read0;
     }
-    
+
     public static MyDataItem read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(MyDataItem.NAMES_TO_IDS, MyDataItem.THRIFT_NAMES_TO_IDS, MyDataItem.FIELD_METADATA);

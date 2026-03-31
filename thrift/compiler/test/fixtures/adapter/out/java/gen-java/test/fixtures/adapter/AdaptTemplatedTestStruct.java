@@ -72,7 +72,7 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
         this.adaptedMapDefault = adaptedMapDefault;
         this.doubleTypedefBool = doubleTypedefBool;
     }
-    
+
     @ThriftConstructor
     protected AdaptTemplatedTestStruct() {
       this.adaptedBool = false;
@@ -142,161 +142,161 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
             .put(1L, 1L)
             .build();
         private boolean doubleTypedefBool = false;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="adaptedBool", requiredness=Requiredness.NONE)    public Builder setAdaptedBool(boolean adaptedBool) {
             this.adaptedBool = adaptedBool;
             return this;
         }
-    
+
         public boolean isAdaptedBool() { return adaptedBool; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="adaptedByte", requiredness=Requiredness.NONE)    public Builder setAdaptedByte(byte adaptedByte) {
             this.adaptedByte = adaptedByte;
             return this;
         }
-    
+
         public byte getAdaptedByte() { return adaptedByte; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="adaptedShort", requiredness=Requiredness.NONE)    public Builder setAdaptedShort(short adaptedShort) {
             this.adaptedShort = adaptedShort;
             return this;
         }
-    
+
         public short getAdaptedShort() { return adaptedShort; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=4, name="adaptedInteger", requiredness=Requiredness.NONE)    public Builder setAdaptedInteger(int adaptedInteger) {
             this.adaptedInteger = adaptedInteger;
             return this;
         }
-    
+
         public int getAdaptedInteger() { return adaptedInteger; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=5, name="adaptedLong", requiredness=Requiredness.NONE)    public Builder setAdaptedLong(long adaptedLong) {
             this.adaptedLong = adaptedLong;
             return this;
         }
-    
+
         public long getAdaptedLong() { return adaptedLong; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=6, name="adaptedDouble", requiredness=Requiredness.NONE)    public Builder setAdaptedDouble(double adaptedDouble) {
             this.adaptedDouble = adaptedDouble;
             return this;
         }
-    
+
         public double getAdaptedDouble() { return adaptedDouble; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=7, name="adaptedString", requiredness=Requiredness.NONE)    public Builder setAdaptedString(String adaptedString) {
             this.adaptedString = adaptedString;
             return this;
         }
-    
+
         public String getAdaptedString() { return adaptedString; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=8, name="adaptedList", requiredness=Requiredness.NONE)    public Builder setAdaptedList(List<Long> adaptedList) {
             this.adaptedList = adaptedList;
             return this;
         }
-    
+
         public List<Long> getAdaptedList() { return adaptedList; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=9, name="adaptedSet", requiredness=Requiredness.NONE)    public Builder setAdaptedSet(Set<Long> adaptedSet) {
             this.adaptedSet = adaptedSet;
             return this;
         }
-    
+
         public Set<Long> getAdaptedSet() { return adaptedSet; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=10, name="adaptedMap", requiredness=Requiredness.NONE)    public Builder setAdaptedMap(Map<Long, Long> adaptedMap) {
             this.adaptedMap = adaptedMap;
             return this;
         }
-    
+
         public Map<Long, Long> getAdaptedMap() { return adaptedMap; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=11, name="adaptedBoolDefault", requiredness=Requiredness.NONE)    public Builder setAdaptedBoolDefault(boolean adaptedBoolDefault) {
             this.adaptedBoolDefault = adaptedBoolDefault;
             return this;
         }
-    
+
         public boolean isAdaptedBoolDefault() { return adaptedBoolDefault; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=12, name="adaptedByteDefault", requiredness=Requiredness.NONE)    public Builder setAdaptedByteDefault(byte adaptedByteDefault) {
             this.adaptedByteDefault = adaptedByteDefault;
             return this;
         }
-    
+
         public byte getAdaptedByteDefault() { return adaptedByteDefault; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=13, name="adaptedShortDefault", requiredness=Requiredness.NONE)    public Builder setAdaptedShortDefault(short adaptedShortDefault) {
             this.adaptedShortDefault = adaptedShortDefault;
             return this;
         }
-    
+
         public short getAdaptedShortDefault() { return adaptedShortDefault; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=14, name="adaptedIntegerDefault", requiredness=Requiredness.NONE)    public Builder setAdaptedIntegerDefault(int adaptedIntegerDefault) {
             this.adaptedIntegerDefault = adaptedIntegerDefault;
             return this;
         }
-    
+
         public int getAdaptedIntegerDefault() { return adaptedIntegerDefault; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=15, name="adaptedLongDefault", requiredness=Requiredness.NONE)    public Builder setAdaptedLongDefault(long adaptedLongDefault) {
             this.adaptedLongDefault = adaptedLongDefault;
             return this;
         }
-    
+
         public long getAdaptedLongDefault() { return adaptedLongDefault; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=16, name="adaptedDoubleDefault", requiredness=Requiredness.NONE)    public Builder setAdaptedDoubleDefault(double adaptedDoubleDefault) {
             this.adaptedDoubleDefault = adaptedDoubleDefault;
             return this;
         }
-    
+
         public double getAdaptedDoubleDefault() { return adaptedDoubleDefault; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=17, name="adaptedStringDefault", requiredness=Requiredness.NONE)    public Builder setAdaptedStringDefault(String adaptedStringDefault) {
             this.adaptedStringDefault = adaptedStringDefault;
             return this;
         }
-    
+
         public String getAdaptedStringDefault() { return adaptedStringDefault; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=18, name="adaptedEnum", requiredness=Requiredness.NONE)    public Builder setAdaptedEnum(test.fixtures.adapter.ThriftAdaptedEnum adaptedEnum) {
             this.adaptedEnum = adaptedEnum;
             return this;
         }
-    
+
         public test.fixtures.adapter.ThriftAdaptedEnum getAdaptedEnum() { return adaptedEnum; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=19, name="adaptedListDefault", requiredness=Requiredness.NONE)    public Builder setAdaptedListDefault(List<Long> adaptedListDefault) {
             this.adaptedListDefault = adaptedListDefault;
             return this;
         }
-    
+
         public List<Long> getAdaptedListDefault() { return adaptedListDefault; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=20, name="adaptedSetDefault", requiredness=Requiredness.NONE)    public Builder setAdaptedSetDefault(Set<Long> adaptedSetDefault) {
             this.adaptedSetDefault = adaptedSetDefault;
             return this;
         }
-    
+
         public Set<Long> getAdaptedSetDefault() { return adaptedSetDefault; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=21, name="adaptedMapDefault", requiredness=Requiredness.NONE)    public Builder setAdaptedMapDefault(Map<Long, Long> adaptedMapDefault) {
             this.adaptedMapDefault = adaptedMapDefault;
             return this;
         }
-    
+
         public Map<Long, Long> getAdaptedMapDefault() { return adaptedMapDefault; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=22, name="doubleTypedefBool", requiredness=Requiredness.NONE)    public Builder setDoubleTypedefBool(boolean doubleTypedefBool) {
             this.doubleTypedefBool = doubleTypedefBool;
             return this;
         }
-    
+
         public boolean isDoubleTypedefBool() { return doubleTypedefBool; }
-    
+
         public Builder() { }
         public Builder(AdaptTemplatedTestStruct other) {
             this.adaptedBool = other.adaptedBool;
@@ -322,7 +322,7 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
             this.adaptedMapDefault = other.adaptedMapDefault;
             this.doubleTypedefBool = other.doubleTypedefBool;
         }
-    
+
         @ThriftConstructor
         public AdaptTemplatedTestStruct build() {
             AdaptTemplatedTestStruct result = new AdaptTemplatedTestStruct (
@@ -495,32 +495,32 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
         AdaptTemplatedTestStruct.class, AdaptTemplatedTestStruct::read0));
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="adaptedBool", requiredness=Requiredness.NONE)
     public boolean isAdaptedBool() { return adaptedBool; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="adaptedByte", requiredness=Requiredness.NONE)
     public byte getAdaptedByte() { return adaptedByte; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=3, name="adaptedShort", requiredness=Requiredness.NONE)
     public short getAdaptedShort() { return adaptedShort; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=4, name="adaptedInteger", requiredness=Requiredness.NONE)
     public int getAdaptedInteger() { return adaptedInteger; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=5, name="adaptedLong", requiredness=Requiredness.NONE)
     public long getAdaptedLong() { return adaptedLong; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=6, name="adaptedDouble", requiredness=Requiredness.NONE)
     public double getAdaptedDouble() { return adaptedDouble; }
 
@@ -545,32 +545,32 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
     public Map<Long, Long> getAdaptedMap() { return adaptedMap; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=11, name="adaptedBoolDefault", requiredness=Requiredness.NONE)
     public boolean isAdaptedBoolDefault() { return adaptedBoolDefault; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=12, name="adaptedByteDefault", requiredness=Requiredness.NONE)
     public byte getAdaptedByteDefault() { return adaptedByteDefault; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=13, name="adaptedShortDefault", requiredness=Requiredness.NONE)
     public short getAdaptedShortDefault() { return adaptedShortDefault; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=14, name="adaptedIntegerDefault", requiredness=Requiredness.NONE)
     public int getAdaptedIntegerDefault() { return adaptedIntegerDefault; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=15, name="adaptedLongDefault", requiredness=Requiredness.NONE)
     public long getAdaptedLongDefault() { return adaptedLongDefault; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=16, name="adaptedDoubleDefault", requiredness=Requiredness.NONE)
     public double getAdaptedDoubleDefault() { return adaptedDoubleDefault; }
 
@@ -600,7 +600,7 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
     public Map<Long, Long> getAdaptedMapDefault() { return adaptedMapDefault; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=22, name="doubleTypedefBool", requiredness=Requiredness.NONE)
     public boolean isDoubleTypedefBool() { return doubleTypedefBool; }
 
@@ -640,9 +640,9 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         AdaptTemplatedTestStruct other = (AdaptTemplatedTestStruct)o;
-    
+
         return
             Objects.equals(adaptedBool, other.adaptedBool) &&
             Objects.equals(adaptedByte, other.adaptedByte) &&
@@ -701,7 +701,7 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
     public static com.facebook.thrift.payload.Reader<AdaptTemplatedTestStruct> asReader() {
       return AdaptTemplatedTestStruct::read0;
     }
-    
+
     public static AdaptTemplatedTestStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(AdaptTemplatedTestStruct.NAMES_TO_IDS, AdaptTemplatedTestStruct.THRIFT_NAMES_TO_IDS, AdaptTemplatedTestStruct.FIELD_METADATA);
@@ -1153,7 +1153,7 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
     private static class _AdaptTemplatedTestStructLazy {
         private static final AdaptTemplatedTestStruct _DEFAULT = new AdaptTemplatedTestStruct.Builder().build();
     }
-    
+
     public static AdaptTemplatedTestStruct defaultInstance() {
         return  _AdaptTemplatedTestStructLazy._DEFAULT;
     }

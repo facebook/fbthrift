@@ -2109,8 +2109,8 @@ pub mod bad_service {
     use super::*;
 
     
-    
-    
+
+
     /// Processor for BadInteraction's methods.
     #[derive(Clone, Debug)]
     pub struct BadInteractionProcessor<P, H, R, RS> {
@@ -2118,7 +2118,7 @@ pub mod bad_service {
         supa: ::fbthrift::NullServiceProcessor<P, R, RS>,
         _phantom: ::std::marker::PhantomData<(P, H, R, RS)>,
     }
-    
+
     impl<P, H, R, RS> BadInteractionProcessor<P, H, R, RS>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
@@ -2139,11 +2139,11 @@ pub mod bad_service {
                 _phantom: ::std::marker::PhantomData,
             }
         }
-    
+
         pub fn into_inner(self) -> H {
             self.service
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "BadInteraction.foo"))]
         async fn handle_foo<'a>(
             &'a self,
@@ -2155,7 +2155,7 @@ pub mod bad_service {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"BadService";
             const METHOD_NAME: &::std::ffi::CStr = c"BadInteraction.foo";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"BadService.BadInteraction.foo";
@@ -2169,14 +2169,14 @@ pub mod bad_service {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.foo(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -2193,7 +2193,7 @@ pub mod bad_service {
                     ::std::result::Result::Err(crate::services::bad_interaction::FooExn::ApplicationException(aexn))
                 }
             };
-    
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::bad_interaction::FooExn>(
                 "foo",
                 METHOD_NAME,
@@ -2206,7 +2206,7 @@ pub mod bad_service {
             ::std::result::Result::Ok(())
         }
     }
-    
+
     #[::async_trait::async_trait]
     impl<P, H, R, RS> ::fbthrift::ServiceProcessor<P> for BadInteractionProcessor<P, H, R, RS>
     where
@@ -2223,7 +2223,7 @@ pub mod bad_service {
     {
         type RequestContext = R;
         type ReplyState = RS;
-    
+
         #[inline]
         fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
             match name {
@@ -2231,7 +2231,7 @@ pub mod bad_service {
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
@@ -2253,7 +2253,7 @@ pub mod bad_service {
                 ),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &::std::primitive::str) -> ::anyhow::Result<::std::primitive::usize> {
@@ -2261,7 +2261,7 @@ pub mod bad_service {
                 _ => ::anyhow::bail!("Unknown interaction"),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
@@ -2277,12 +2277,12 @@ pub mod bad_service {
                 ),
             }
         }
-    
+
         async fn handle_on_termination(&self) {
             self.service.on_termination().await
         }
     }
-    
+
     #[::async_trait::async_trait]
     impl<P, H, R, RS> ::fbthrift::ThriftService<P::Frame> for BadInteractionProcessor<P, H, R, RS>
     where
@@ -2302,7 +2302,7 @@ pub mod bad_service {
         type Handler = ();
         type RequestContext = R;
         type ReplyState = RS;
-    
+
         #[tracing::instrument(level="trace", skip_all, fields(service = "BadInteraction"))]
         async fn call(
             &self,
@@ -2327,10 +2327,10 @@ pub mod bad_service {
             };
             self.handle_method(idx, &mut p, req, req_ctxt, reply_state, seqid).await?;
             p.read_message_end()?;
-    
+
             ::std::result::Result::Ok(())
         }
-    
+
         fn create_interaction(
             &self,
             name: &::std::primitive::str,
@@ -2347,7 +2347,7 @@ pub mod bad_service {
             };
             self.handle_create_interaction(idx)
         }
-    
+
         fn get_method_metadata(&self) -> &'static [::fbthrift::processor::MethodMetadata] {
             &[
                 // From module.BadInteraction:
@@ -2355,13 +2355,13 @@ pub mod bad_service {
                 // They are always queried from the "main" processor.
             ]
         }
-    
+
         async fn on_termination(&self) {
             use ::fbthrift::{ServiceProcessor as _};
             self.handle_on_termination().await
         }
     }
-    
+
 
 }
 

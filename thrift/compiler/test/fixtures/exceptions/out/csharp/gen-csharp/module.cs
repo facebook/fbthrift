@@ -39,26 +39,26 @@ namespace test.fixtures.exceptions
                 _message = value;
             }
         }
-    
+
         /// <summary>Returns the exception message from the @thrift.ExceptionMessage field.</summary>
         public override string Message => @message;
-    
+
         public @Fiery()
         {
             @message = string.Empty;
         }
-    
+
         public void __fbthrift_clear()
         {
             @message = string.Empty;
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@message != null && @message.Length != 0) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: message (string)
@@ -66,7 +66,7 @@ namespace test.fixtures.exceptions
             writer.WriteString(@message);
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -76,7 +76,7 @@ namespace test.fixtures.exceptions
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // message
@@ -95,7 +95,7 @@ namespace test.fixtures.exceptions
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @Fiery other)
@@ -108,14 +108,14 @@ namespace test.fixtures.exceptions
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
             hashCode.Add(@message);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -134,25 +134,25 @@ namespace test.fixtures.exceptions
     {
         /// <summary>Gets or sets the sonnet field (optional).</summary>
         public string? @sonnet { get; set; }
-    
+
         /// <summary>Returns the exception message from the @thrift.ExceptionMessage field.</summary>
         public override string Message => @sonnet ?? "";
-    
+
         public @Serious()
         {
         }
-    
+
         public void __fbthrift_clear()
         {
             @sonnet = null;
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@sonnet != null) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: sonnet (string)
@@ -163,7 +163,7 @@ namespace test.fixtures.exceptions
             }
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -173,7 +173,7 @@ namespace test.fixtures.exceptions
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // sonnet
@@ -192,7 +192,7 @@ namespace test.fixtures.exceptions
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @Serious other)
@@ -205,14 +205,14 @@ namespace test.fixtures.exceptions
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
             hashCode.Add(@sonnet);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -240,7 +240,7 @@ namespace test.fixtures.exceptions
                 _error_message = value;
             }
         }
-    
+
         /// <summary>Gets or sets the internal_error_message field.</summary>
         private string _internal_error_message = string.Empty;
         public string @internal_error_message
@@ -252,29 +252,29 @@ namespace test.fixtures.exceptions
                 _internal_error_message = value;
             }
         }
-    
+
         /// <summary>Returns the exception message from the @thrift.ExceptionMessage field.</summary>
         public override string Message => @internal_error_message;
-    
+
         public @ComplexFieldNames()
         {
             @error_message = string.Empty;
             @internal_error_message = string.Empty;
         }
-    
+
         public void __fbthrift_clear()
         {
             @error_message = string.Empty;
             @internal_error_message = string.Empty;
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@error_message != null && @error_message.Length != 0) { return false; }
             if (@internal_error_message != null && @internal_error_message.Length != 0) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: error_message (string)
@@ -285,7 +285,7 @@ namespace test.fixtures.exceptions
             writer.WriteString(@internal_error_message);
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -295,7 +295,7 @@ namespace test.fixtures.exceptions
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // error_message
@@ -324,7 +324,7 @@ namespace test.fixtures.exceptions
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @ComplexFieldNames other)
@@ -341,7 +341,7 @@ namespace test.fixtures.exceptions
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
@@ -349,7 +349,7 @@ namespace test.fixtures.exceptions
             hashCode.Add(@internal_error_message);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -380,7 +380,7 @@ namespace test.fixtures.exceptions
                 _error_message = value;
             }
         }
-    
+
         /// <summary>Gets or sets the internal_error_message field.</summary>
         private string _internal_error_message = string.Empty;
         public string @internal_error_message
@@ -392,29 +392,29 @@ namespace test.fixtures.exceptions
                 _internal_error_message = value;
             }
         }
-    
+
         /// <summary>Returns the exception message from the @thrift.ExceptionMessage field.</summary>
         public override string Message => @internal_error_message;
-    
+
         public @CustomFieldNames()
         {
             @error_message = string.Empty;
             @internal_error_message = string.Empty;
         }
-    
+
         public void __fbthrift_clear()
         {
             @error_message = string.Empty;
             @internal_error_message = string.Empty;
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@error_message != null && @error_message.Length != 0) { return false; }
             if (@internal_error_message != null && @internal_error_message.Length != 0) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: error_message (string)
@@ -425,7 +425,7 @@ namespace test.fixtures.exceptions
             writer.WriteString(@internal_error_message);
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -435,7 +435,7 @@ namespace test.fixtures.exceptions
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // error_message
@@ -464,7 +464,7 @@ namespace test.fixtures.exceptions
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @CustomFieldNames other)
@@ -481,7 +481,7 @@ namespace test.fixtures.exceptions
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
@@ -489,7 +489,7 @@ namespace test.fixtures.exceptions
             hashCode.Add(@internal_error_message);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -520,31 +520,31 @@ namespace test.fixtures.exceptions
                 _message = value;
             }
         }
-    
+
         /// <summary>Gets or sets the error_code field.</summary>
         public int @error_code { get; set; }
-    
+
         /// <summary>Returns the exception message from the @thrift.ExceptionMessage field.</summary>
         public override string Message => @message;
-    
+
         public @ExceptionWithPrimitiveField()
         {
             @message = string.Empty;
         }
-    
+
         public void __fbthrift_clear()
         {
             @message = string.Empty;
             @error_code = default;
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@message != null && @message.Length != 0) { return false; }
             if (@error_code != default) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: message (string)
@@ -555,7 +555,7 @@ namespace test.fixtures.exceptions
             writer.WriteI32(@error_code);
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -565,7 +565,7 @@ namespace test.fixtures.exceptions
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // message
@@ -594,7 +594,7 @@ namespace test.fixtures.exceptions
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @ExceptionWithPrimitiveField other)
@@ -611,7 +611,7 @@ namespace test.fixtures.exceptions
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
@@ -619,7 +619,7 @@ namespace test.fixtures.exceptions
             hashCode.Add(@error_code);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -650,31 +650,31 @@ namespace test.fixtures.exceptions
                 _message_field = value;
             }
         }
-    
+
         /// <summary>Gets or sets the error_code field.</summary>
         public int @error_code { get; set; }
-    
+
         /// <summary>Returns the exception message from the @thrift.ExceptionMessage field.</summary>
         public override string Message => @message_field;
-    
+
         public @ExceptionWithStructuredAnnotation()
         {
             @message_field = string.Empty;
         }
-    
+
         public void __fbthrift_clear()
         {
             @message_field = string.Empty;
             @error_code = default;
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@message_field != null && @message_field.Length != 0) { return false; }
             if (@error_code != default) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: message_field (string)
@@ -685,7 +685,7 @@ namespace test.fixtures.exceptions
             writer.WriteI32(@error_code);
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -695,7 +695,7 @@ namespace test.fixtures.exceptions
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // message_field
@@ -724,7 +724,7 @@ namespace test.fixtures.exceptions
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @ExceptionWithStructuredAnnotation other)
@@ -741,7 +741,7 @@ namespace test.fixtures.exceptions
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
@@ -749,7 +749,7 @@ namespace test.fixtures.exceptions
             hashCode.Add(@error_code);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -772,21 +772,21 @@ namespace test.fixtures.exceptions
         public @Banal()
         {
         }
-    
+
         public void __fbthrift_clear()
         {
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -796,7 +796,7 @@ namespace test.fixtures.exceptions
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     default:
@@ -805,7 +805,7 @@ namespace test.fixtures.exceptions
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @Banal other)
@@ -814,13 +814,13 @@ namespace test.fixtures.exceptions
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();

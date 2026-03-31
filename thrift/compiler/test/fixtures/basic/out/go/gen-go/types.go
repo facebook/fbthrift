@@ -536,7 +536,7 @@ func (x *MyStruct) readField8(p thrift.Decoder) error {  // FloatSet
     if err != nil {
         return thrift.PrependError("error reading set begin: ", err)
     }
-    
+
     setResult := make([]float32, 0, size)
     for i := 0; i < size; i++ {
         var elem float32
@@ -549,7 +549,7 @@ func (x *MyStruct) readField8(p thrift.Decoder) error {  // FloatSet
         }
         setResult = append(setResult, elem)
     }
-    
+
     if err := p.ReadSetEnd(); err != nil {
         return thrift.PrependError("error reading set end: ", err)
     }
@@ -789,7 +789,7 @@ func (x *Containers) readField1(p thrift.Decoder) error {  // I32List
     if err != nil {
         return thrift.PrependError("error reading list begin: ", err)
     }
-    
+
     listResult := make([]int32, 0, size)
     for i := 0; i < size; i++ {
         var elem int32
@@ -802,7 +802,7 @@ func (x *Containers) readField1(p thrift.Decoder) error {  // I32List
         }
         listResult = append(listResult, elem)
     }
-    
+
     if err := p.ReadListEnd(); err != nil {
         return thrift.PrependError("error reading list end: ", err)
     }
@@ -866,7 +866,7 @@ func (x *Containers) readField2(p thrift.Decoder) error {  // StringSet
     if err != nil {
         return thrift.PrependError("error reading set begin: ", err)
     }
-    
+
     setResult := make([]string, 0, size)
     for i := 0; i < size; i++ {
         var elem string
@@ -879,7 +879,7 @@ func (x *Containers) readField2(p thrift.Decoder) error {  // StringSet
         }
         setResult = append(setResult, elem)
     }
-    
+
     if err := p.ReadSetEnd(); err != nil {
         return thrift.PrependError("error reading set end: ", err)
     }
@@ -927,7 +927,7 @@ func (x *Containers) writeField3(p thrift.Encoder) error {  // StringToI64Map
                 return err
             }
         }
-    
+
         {
             item := v
             if err := p.WriteI64(item); err != nil {
@@ -950,7 +950,7 @@ func (x *Containers) readField3(p thrift.Decoder) error {  // StringToI64Map
     if err != nil {
         return thrift.PrependError("error reading map begin: ", err)
     }
-    
+
     mapResult := make(map[string]int64, size)
     for i := 0; i < size; i++ {
         var key string
@@ -961,7 +961,7 @@ func (x *Containers) readField3(p thrift.Decoder) error {  // StringToI64Map
             }
             key = result
         }
-    
+
         var value int64
         {
             result, err := p.ReadI64()
@@ -970,10 +970,10 @@ func (x *Containers) readField3(p thrift.Decoder) error {  // StringToI64Map
             }
             value = result
         }
-    
+
         mapResult[key] = value
     }
-    
+
     if err := p.ReadMapEnd(); err != nil {
         return thrift.PrependError("error reading map end: ", err)
     }
@@ -1376,7 +1376,7 @@ func (x *MyUnion) readField4(p thrift.Decoder) error {  // FloatSet
     if err != nil {
         return thrift.PrependError("error reading set begin: ", err)
     }
-    
+
     setResult := make([]float32, 0, size)
     for i := 0; i < size; i++ {
         var elem float32
@@ -1389,7 +1389,7 @@ func (x *MyUnion) readField4(p thrift.Decoder) error {  // FloatSet
         }
         setResult = append(setResult, elem)
     }
-    
+
     if err := p.ReadSetEnd(); err != nil {
         return thrift.PrependError("error reading set end: ", err)
     }
@@ -4777,7 +4777,7 @@ func (x *respMyServiceInvalidReturnForHack) readField0(p thrift.Decoder) error {
     if err != nil {
         return thrift.PrependError("error reading set begin: ", err)
     }
-    
+
     setResult := make([]float32, 0, size)
     for i := 0; i < size; i++ {
         var elem float32
@@ -4790,7 +4790,7 @@ func (x *respMyServiceInvalidReturnForHack) readField0(p thrift.Decoder) error {
         }
         setResult = append(setResult, elem)
     }
-    
+
     if err := p.ReadSetEnd(); err != nil {
         return thrift.PrependError("error reading set end: ", err)
     }

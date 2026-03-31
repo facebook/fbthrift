@@ -28,8 +28,8 @@ public final class HeapAllocated implements com.facebook.thrift.payload.ThriftSe
     public HeapAllocated(
     ) {
     }
-    
-    
+
+
 
     public static Builder builder() {
       return new Builder();
@@ -40,11 +40,11 @@ public final class HeapAllocated implements com.facebook.thrift.payload.ThriftSe
     }
 
     public static class Builder {
-    
+
     public Builder() { }
         public Builder(HeapAllocated other) {
         }
-    
+
         @ThriftConstructor
         public HeapAllocated build() {
             HeapAllocated result = new HeapAllocated (
@@ -76,9 +76,9 @@ static {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         HeapAllocated other = (HeapAllocated)o;
-    
+
         return
             true;
     }
@@ -93,7 +93,7 @@ static {
     public static com.facebook.thrift.payload.Reader<HeapAllocated> asReader() {
       return HeapAllocated::read0;
     }
-    
+
     public static HeapAllocated read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(HeapAllocated.NAMES_TO_IDS, HeapAllocated.THRIFT_NAMES_TO_IDS, HeapAllocated.FIELD_METADATA);
@@ -121,7 +121,7 @@ static {
     private static class _HeapAllocatedLazy {
         private static final HeapAllocated _DEFAULT = new HeapAllocated.Builder().build();
     }
-    
+
     public static HeapAllocated defaultInstance() {
         return  _HeapAllocatedLazy._DEFAULT;
     }

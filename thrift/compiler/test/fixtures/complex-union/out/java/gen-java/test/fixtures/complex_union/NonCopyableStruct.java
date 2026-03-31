@@ -30,7 +30,7 @@ public final class NonCopyableStruct implements com.facebook.thrift.payload.Thri
     ) {
         this.num = num;
     }
-    
+
     @ThriftConstructor
     protected NonCopyableStruct() {
       this.num = 0L;
@@ -46,19 +46,19 @@ public final class NonCopyableStruct implements com.facebook.thrift.payload.Thri
 
     public static class Builder {
         private long num = 0L;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="num", requiredness=Requiredness.NONE)    public Builder setNum(long num) {
             this.num = num;
             return this;
         }
-    
+
         public long getNum() { return num; }
-    
+
         public Builder() { }
         public Builder(NonCopyableStruct other) {
             this.num = other.num;
         }
-    
+
         @ThriftConstructor
         public NonCopyableStruct build() {
             NonCopyableStruct result = new NonCopyableStruct (
@@ -81,7 +81,7 @@ public final class NonCopyableStruct implements com.facebook.thrift.payload.Thri
       FIELD_METADATA.put(1, NUM_FIELD_DESC);
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="num", requiredness=Requiredness.NONE)
     public long getNum() { return num; }
 
@@ -100,9 +100,9 @@ public final class NonCopyableStruct implements com.facebook.thrift.payload.Thri
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         NonCopyableStruct other = (NonCopyableStruct)o;
-    
+
         return
             Objects.equals(num, other.num) &&
             true;
@@ -119,7 +119,7 @@ public final class NonCopyableStruct implements com.facebook.thrift.payload.Thri
     public static com.facebook.thrift.payload.Reader<NonCopyableStruct> asReader() {
       return NonCopyableStruct::read0;
     }
-    
+
     public static NonCopyableStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(NonCopyableStruct.NAMES_TO_IDS, NonCopyableStruct.THRIFT_NAMES_TO_IDS, NonCopyableStruct.FIELD_METADATA);
@@ -161,7 +161,7 @@ public final class NonCopyableStruct implements com.facebook.thrift.payload.Thri
     private static class _NonCopyableStructLazy {
         private static final NonCopyableStruct _DEFAULT = new NonCopyableStruct.Builder().build();
     }
-    
+
     public static NonCopyableStruct defaultInstance() {
         return  _NonCopyableStructLazy._DEFAULT;
     }

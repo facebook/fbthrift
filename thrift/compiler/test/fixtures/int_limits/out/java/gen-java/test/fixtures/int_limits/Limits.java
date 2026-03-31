@@ -44,7 +44,7 @@ public final class Limits implements com.facebook.thrift.payload.ThriftSerializa
         this.maxByteField = maxByteField;
         this.minByteField = minByteField;
     }
-    
+
     @ThriftConstructor
     protected Limits() {
       this.maxI64Field = 9223372036854775807L;
@@ -74,63 +74,63 @@ public final class Limits implements com.facebook.thrift.payload.ThriftSerializa
         private short minI16Field = (short)-32768;
         private byte maxByteField = (byte)127;
         private byte minByteField = (byte)-128;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="max_i64_field", requiredness=Requiredness.NONE)    public Builder setMaxI64Field(long maxI64Field) {
             this.maxI64Field = maxI64Field;
             return this;
         }
-    
+
         public long getMaxI64Field() { return maxI64Field; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="min_i64_field", requiredness=Requiredness.NONE)    public Builder setMinI64Field(long minI64Field) {
             this.minI64Field = minI64Field;
             return this;
         }
-    
+
         public long getMinI64Field() { return minI64Field; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="max_i32_field", requiredness=Requiredness.NONE)    public Builder setMaxI32Field(int maxI32Field) {
             this.maxI32Field = maxI32Field;
             return this;
         }
-    
+
         public int getMaxI32Field() { return maxI32Field; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=4, name="min_i32_field", requiredness=Requiredness.NONE)    public Builder setMinI32Field(int minI32Field) {
             this.minI32Field = minI32Field;
             return this;
         }
-    
+
         public int getMinI32Field() { return minI32Field; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=5, name="max_i16_field", requiredness=Requiredness.NONE)    public Builder setMaxI16Field(short maxI16Field) {
             this.maxI16Field = maxI16Field;
             return this;
         }
-    
+
         public short getMaxI16Field() { return maxI16Field; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=6, name="min_i16_field", requiredness=Requiredness.NONE)    public Builder setMinI16Field(short minI16Field) {
             this.minI16Field = minI16Field;
             return this;
         }
-    
+
         public short getMinI16Field() { return minI16Field; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=7, name="max_byte_field", requiredness=Requiredness.NONE)    public Builder setMaxByteField(byte maxByteField) {
             this.maxByteField = maxByteField;
             return this;
         }
-    
+
         public byte getMaxByteField() { return maxByteField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=8, name="min_byte_field", requiredness=Requiredness.NONE)    public Builder setMinByteField(byte minByteField) {
             this.minByteField = minByteField;
             return this;
         }
-    
+
         public byte getMinByteField() { return minByteField; }
-    
+
         public Builder() { }
         public Builder(Limits other) {
             this.maxI64Field = other.maxI64Field;
@@ -142,7 +142,7 @@ public final class Limits implements com.facebook.thrift.payload.ThriftSerializa
             this.maxByteField = other.maxByteField;
             this.minByteField = other.minByteField;
         }
-    
+
         @ThriftConstructor
         public Limits build() {
             Limits result = new Limits (
@@ -214,42 +214,42 @@ public final class Limits implements com.facebook.thrift.payload.ThriftSerializa
       FIELD_METADATA.put(8, MIN_BYTE_FIELD_FIELD_DESC);
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="max_i64_field", requiredness=Requiredness.NONE)
     public long getMaxI64Field() { return maxI64Field; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="min_i64_field", requiredness=Requiredness.NONE)
     public long getMinI64Field() { return minI64Field; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=3, name="max_i32_field", requiredness=Requiredness.NONE)
     public int getMaxI32Field() { return maxI32Field; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=4, name="min_i32_field", requiredness=Requiredness.NONE)
     public int getMinI32Field() { return minI32Field; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=5, name="max_i16_field", requiredness=Requiredness.NONE)
     public short getMaxI16Field() { return maxI16Field; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=6, name="min_i16_field", requiredness=Requiredness.NONE)
     public short getMinI16Field() { return minI16Field; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=7, name="max_byte_field", requiredness=Requiredness.NONE)
     public byte getMaxByteField() { return maxByteField; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=8, name="min_byte_field", requiredness=Requiredness.NONE)
     public byte getMinByteField() { return minByteField; }
 
@@ -275,9 +275,9 @@ public final class Limits implements com.facebook.thrift.payload.ThriftSerializa
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         Limits other = (Limits)o;
-    
+
         return
             Objects.equals(maxI64Field, other.maxI64Field) &&
             Objects.equals(minI64Field, other.minI64Field) &&
@@ -308,7 +308,7 @@ public final class Limits implements com.facebook.thrift.payload.ThriftSerializa
     public static com.facebook.thrift.payload.Reader<Limits> asReader() {
       return Limits::read0;
     }
-    
+
     public static Limits read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(Limits.NAMES_TO_IDS, Limits.THRIFT_NAMES_TO_IDS, Limits.FIELD_METADATA);
@@ -448,7 +448,7 @@ public final class Limits implements com.facebook.thrift.payload.ThriftSerializa
     private static class _LimitsLazy {
         private static final Limits _DEFAULT = new Limits.Builder().build();
     }
-    
+
     public static Limits defaultInstance() {
         return  _LimitsLazy._DEFAULT;
     }

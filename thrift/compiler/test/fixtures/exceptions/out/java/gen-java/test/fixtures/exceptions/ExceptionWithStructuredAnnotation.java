@@ -52,7 +52,7 @@ public final class ExceptionWithStructuredAnnotation extends org.apache.thrift.T
         this.messageField = messageField;
         this.errorCode = errorCode;
     }
-    
+
     @ThriftConstructor
     protected ExceptionWithStructuredAnnotation() {
       this.messageField = null;
@@ -62,27 +62,27 @@ public final class ExceptionWithStructuredAnnotation extends org.apache.thrift.T
     public static class Builder {
         private String messageField = null;
         private int errorCode = 0;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="message_field", requiredness=Requiredness.NONE)    public Builder setMessageField(String messageField) {
             this.messageField = messageField;
             return this;
         }
-    
+
         public String getMessageField() { return messageField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="error_code", requiredness=Requiredness.NONE)    public Builder setErrorCode(int errorCode) {
             this.errorCode = errorCode;
             return this;
         }
-    
+
         public int getErrorCode() { return errorCode; }
-    
+
         public Builder() { }
         public Builder(ExceptionWithStructuredAnnotation other) {
             this.messageField = other.messageField;
             this.errorCode = other.errorCode;
         }
-    
+
         @ThriftConstructor
         public ExceptionWithStructuredAnnotation build() {
             ExceptionWithStructuredAnnotation result = new ExceptionWithStructuredAnnotation (
@@ -98,7 +98,7 @@ public final class ExceptionWithStructuredAnnotation extends org.apache.thrift.T
     @com.facebook.swift.codec.ThriftField(value=1, name="message_field", requiredness=Requiredness.NONE)
     public String getMessageField() { return messageField; }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="error_code", requiredness=Requiredness.NONE)
     public int getErrorCode() { return errorCode; }
     
@@ -110,7 +110,7 @@ public final class ExceptionWithStructuredAnnotation extends org.apache.thrift.T
     public static com.facebook.thrift.payload.Reader<ExceptionWithStructuredAnnotation> asReader() {
       return ExceptionWithStructuredAnnotation::read0;
     }
-    
+
     public static ExceptionWithStructuredAnnotation read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(ExceptionWithStructuredAnnotation.NAMES_TO_IDS, ExceptionWithStructuredAnnotation.THRIFT_NAMES_TO_IDS, ExceptionWithStructuredAnnotation.FIELD_METADATA);
@@ -168,7 +168,7 @@ public final class ExceptionWithStructuredAnnotation extends org.apache.thrift.T
     private static class _ExceptionWithStructuredAnnotationLazy {
         private static final ExceptionWithStructuredAnnotation _DEFAULT = new ExceptionWithStructuredAnnotation.Builder().build();
     }
-    
+
     public static ExceptionWithStructuredAnnotation defaultInstance() {
         return  _ExceptionWithStructuredAnnotationLazy._DEFAULT;
     }}

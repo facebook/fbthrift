@@ -29,7 +29,7 @@ public class MyServiceThriftMetadataHandler implements com.facebook.thrift.serve
   private static void addFunctions_0(List<ThriftFunction> functions) {
         {
           List<ThriftField> args = new ArrayList<>();
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
           exceptions.add(new ThriftField.Builder()
               .setId(1)
@@ -37,7 +37,7 @@ public class MyServiceThriftMetadataHandler implements com.facebook.thrift.serve
               .setName("exception_1")
               .setIsOptional(false)
               .build());
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("ping")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
@@ -48,9 +48,9 @@ public class MyServiceThriftMetadataHandler implements com.facebook.thrift.serve
         }
         {
           List<ThriftField> args = new ArrayList<>();
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("getRandomData")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_STRING_TYPE))
@@ -67,9 +67,9 @@ public class MyServiceThriftMetadataHandler implements com.facebook.thrift.serve
               .setName("id")
               .setIsOptional(false)
               .build());
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("hasDataById")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_BOOL_TYPE))
@@ -86,9 +86,9 @@ public class MyServiceThriftMetadataHandler implements com.facebook.thrift.serve
               .setName("id")
               .setIsOptional(false)
               .build());
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("getDataById")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_STRING_TYPE))
@@ -111,9 +111,9 @@ public class MyServiceThriftMetadataHandler implements com.facebook.thrift.serve
               .setName("data")
               .setIsOptional(false)
               .build());
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("putDataById")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
@@ -136,9 +136,9 @@ public class MyServiceThriftMetadataHandler implements com.facebook.thrift.serve
               .setName("data")
               .setIsOptional(false)
               .build());
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("lobDataById")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
@@ -149,9 +149,9 @@ public class MyServiceThriftMetadataHandler implements com.facebook.thrift.serve
         }
         {
           List<ThriftField> args = new ArrayList<>();
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("doNothing")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))

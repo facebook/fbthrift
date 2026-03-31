@@ -34,7 +34,7 @@ public final class StructWithRefTypeShared implements com.facebook.thrift.payloa
         this.optField = optField;
         this.reqField = reqField;
     }
-    
+
     @ThriftConstructor
     protected StructWithRefTypeShared() {
       this.defField = null;
@@ -54,35 +54,35 @@ public final class StructWithRefTypeShared implements com.facebook.thrift.payloa
         private test.fixtures.refs.Empty defField = null;
         private test.fixtures.refs.Empty optField = null;
         private test.fixtures.refs.Empty reqField = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)    public Builder setDefField(test.fixtures.refs.Empty defField) {
             this.defField = defField;
             return this;
         }
-    
+
         public test.fixtures.refs.Empty getDefField() { return defField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="opt_field", requiredness=Requiredness.OPTIONAL)    public Builder setOptField(test.fixtures.refs.Empty optField) {
             this.optField = optField;
             return this;
         }
-    
+
         public test.fixtures.refs.Empty getOptField() { return optField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="req_field", requiredness=Requiredness.REQUIRED)    public Builder setReqField(test.fixtures.refs.Empty reqField) {
             this.reqField = reqField;
             return this;
         }
-    
+
         public test.fixtures.refs.Empty getReqField() { return reqField; }
-    
+
         public Builder() { }
         public Builder(StructWithRefTypeShared other) {
             this.defField = other.defField;
             this.optField = other.optField;
             this.reqField = other.reqField;
         }
-    
+
         @ThriftConstructor
         public StructWithRefTypeShared build() {
             StructWithRefTypeShared result = new StructWithRefTypeShared (
@@ -129,7 +129,7 @@ public final class StructWithRefTypeShared implements com.facebook.thrift.payloa
     public test.fixtures.refs.Empty getOptField() { return optField; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=3, name="req_field", requiredness=Requiredness.REQUIRED)
     public test.fixtures.refs.Empty getReqField() { return reqField; }
 
@@ -150,9 +150,9 @@ public final class StructWithRefTypeShared implements com.facebook.thrift.payloa
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         StructWithRefTypeShared other = (StructWithRefTypeShared)o;
-    
+
         return
             Objects.equals(defField, other.defField) &&
             Objects.equals(optField, other.optField) &&
@@ -173,7 +173,7 @@ public final class StructWithRefTypeShared implements com.facebook.thrift.payloa
     public static com.facebook.thrift.payload.Reader<StructWithRefTypeShared> asReader() {
       return StructWithRefTypeShared::read0;
     }
-    
+
     public static StructWithRefTypeShared read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(StructWithRefTypeShared.NAMES_TO_IDS, StructWithRefTypeShared.THRIFT_NAMES_TO_IDS, StructWithRefTypeShared.FIELD_METADATA);
@@ -249,7 +249,7 @@ public final class StructWithRefTypeShared implements com.facebook.thrift.payloa
     private static class _StructWithRefTypeSharedLazy {
         private static final StructWithRefTypeShared _DEFAULT = new StructWithRefTypeShared.Builder().build();
     }
-    
+
     public static StructWithRefTypeShared defaultInstance() {
         return  _StructWithRefTypeSharedLazy._DEFAULT;
     }

@@ -104,7 +104,7 @@ func ReadListString_6884(p thrift.Decoder) (ListString_6884, error) {
         if err != nil {
             return thrift.PrependError("error reading list begin: ", err)
         }
-        
+
         listResult := make([]string, 0, size)
         for i := 0; i < size; i++ {
             var elem string
@@ -117,7 +117,7 @@ func ReadListString_6884(p thrift.Decoder) (ListString_6884, error) {
             }
             listResult = append(listResult, elem)
         }
-        
+
         if err := p.ReadListEnd(); err != nil {
             return thrift.PrependError("error reading list end: ", err)
         }

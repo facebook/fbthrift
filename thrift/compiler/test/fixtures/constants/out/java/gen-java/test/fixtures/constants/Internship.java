@@ -38,7 +38,7 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
         this.compensation = compensation;
         this.school = school;
     }
-    
+
     @ThriftConstructor
     protected Internship() {
       this.weeks = 0;
@@ -62,42 +62,42 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
         private test.fixtures.constants.Company employer = null;
         private Double compensation = null;
         private String school = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED)    public Builder setWeeks(int weeks) {
             this.weeks = weeks;
             return this;
         }
-    
+
         public int getWeeks() { return weeks; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="title", requiredness=Requiredness.NONE)    public Builder setTitle(String title) {
             this.title = title;
             return this;
         }
-    
+
         public String getTitle() { return title; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL)    public Builder setEmployer(test.fixtures.constants.Company employer) {
             this.employer = employer;
             return this;
         }
-    
+
         public test.fixtures.constants.Company getEmployer() { return employer; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=4, name="compensation", requiredness=Requiredness.OPTIONAL)    public Builder setCompensation(Double compensation) {
             this.compensation = compensation;
             return this;
         }
-    
+
         public Double getCompensation() { return compensation; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=5, name="school", requiredness=Requiredness.OPTIONAL)    public Builder setSchool(String school) {
             this.school = school;
             return this;
         }
-    
+
         public String getSchool() { return school; }
-    
+
         public Builder() { }
         public Builder(Internship other) {
             this.weeks = other.weeks;
@@ -106,7 +106,7 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
             this.compensation = other.compensation;
             this.school = other.school;
         }
-    
+
         @ThriftConstructor
         public Internship build() {
             Internship result = new Internship (
@@ -157,7 +157,7 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
       FIELD_METADATA.put(5, SCHOOL_FIELD_DESC);
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED)
     public int getWeeks() { return weeks; }
 
@@ -200,9 +200,9 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         Internship other = (Internship)o;
-    
+
         return
             Objects.equals(weeks, other.weeks) &&
             Objects.equals(title, other.title) &&
@@ -227,7 +227,7 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
     public static com.facebook.thrift.payload.Reader<Internship> asReader() {
       return Internship::read0;
     }
-    
+
     public static Internship read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(Internship.NAMES_TO_IDS, Internship.THRIFT_NAMES_TO_IDS, Internship.FIELD_METADATA);
@@ -333,7 +333,7 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
     private static class _InternshipLazy {
         private static final Internship _DEFAULT = new Internship.Builder().build();
     }
-    
+
     public static Internship defaultInstance() {
         return  _InternshipLazy._DEFAULT;
     }

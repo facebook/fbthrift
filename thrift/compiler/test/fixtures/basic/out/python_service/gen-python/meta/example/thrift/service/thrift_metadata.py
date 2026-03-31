@@ -93,10 +93,10 @@ def gen_metadata_service_EchoService() -> _fbthrift_metadata.ThriftMetadata:
 
 def _fbthrift_gen_metadata_service_EchoService(metadata_struct: _fbthrift_metadata.ThriftMetadata) -> _fbthrift_metadata.ThriftMetadata:
     qualified_name = "service.EchoService"
-    
+
     if qualified_name in metadata_struct.services:
         return metadata_struct
-    
+
     functions = [
         _fbthrift_metadata.ThriftFunction(name="echo", return_type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="service.EchoResponse")), arguments=[
             _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="service.EchoRequest")), name="request", is_optional=False, structured_annotations=[
@@ -107,19 +107,19 @@ def _fbthrift_gen_metadata_service_EchoService(metadata_struct: _fbthrift_metada
         ], is_oneway=False, structured_annotations=[
         ]),
     ]
-    
+
     service_dict = dict(metadata_struct.services)
     service_dict[qualified_name] = _fbthrift_metadata.ThriftService(name=qualified_name, functions=functions,  structured_annotations=[
     ])
     new_struct = metadata_struct(services=service_dict)
-    
+
     new_struct = _fbthrift_gen_metadata_struct_EchoRequest(new_struct) # request
-    
+
     new_struct = _fbthrift_gen_metadata_exception_WhisperException(new_struct) # ex
-    
+
     new_struct = _fbthrift_gen_metadata_struct_EchoResponse(new_struct) # return value
-    
-    
+
+
     return new_struct
 
 def _fbthrift_metadata_service_response_EchoService() -> _fbthrift_metadata.ThriftServiceMetadataResponse:
@@ -134,10 +134,10 @@ def gen_metadata_service_ExtendedEchoService() -> _fbthrift_metadata.ThriftMetad
 
 def _fbthrift_gen_metadata_service_ExtendedEchoService(metadata_struct: _fbthrift_metadata.ThriftMetadata) -> _fbthrift_metadata.ThriftMetadata:
     qualified_name = "service.ExtendedEchoService"
-    
+
     if qualified_name in metadata_struct.services:
         return metadata_struct
-    
+
     functions = [
         _fbthrift_metadata.ThriftFunction(name="echo_2", return_type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="service.EchoResponse")), arguments=[
             _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="service.EchoRequest")), name="request", is_optional=False, structured_annotations=[
@@ -148,20 +148,20 @@ def _fbthrift_gen_metadata_service_ExtendedEchoService(metadata_struct: _fbthrif
         ], is_oneway=False, structured_annotations=[
         ]),
     ]
-    
+
     service_dict = dict(metadata_struct.services)
     service_dict[qualified_name] = _fbthrift_metadata.ThriftService(name=qualified_name, functions=functions, parent="service.EchoService", structured_annotations=[
     ])
     new_struct = metadata_struct(services=service_dict)
     new_struct = _fbthrift_gen_metadata_service_EchoService(new_struct)
-    
+
     new_struct = _fbthrift_gen_metadata_struct_EchoRequest(new_struct) # request
-    
+
     new_struct = _fbthrift_gen_metadata_exception_WhisperException(new_struct) # ex
-    
+
     new_struct = _fbthrift_gen_metadata_struct_EchoResponse(new_struct) # return value
-    
-    
+
+
     return new_struct
 
 def _fbthrift_metadata_service_response_ExtendedEchoService() -> _fbthrift_metadata.ThriftServiceMetadataResponse:
@@ -176,10 +176,10 @@ def gen_metadata_service_ExtendedMyService() -> _fbthrift_metadata.ThriftMetadat
 
 def _fbthrift_gen_metadata_service_ExtendedMyService(metadata_struct: _fbthrift_metadata.ThriftMetadata) -> _fbthrift_metadata.ThriftMetadata:
     qualified_name = "service.ExtendedMyService"
-    
+
     if qualified_name in metadata_struct.services:
         return metadata_struct
-    
+
     functions = [
         _fbthrift_metadata.ThriftFunction(name="putDataById_2", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_VOID_TYPE), arguments=[
             _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I64_TYPE), name="id", is_optional=False, structured_annotations=[
@@ -190,20 +190,20 @@ def _fbthrift_gen_metadata_service_ExtendedMyService(metadata_struct: _fbthrift_
         ], is_oneway=False, structured_annotations=[
         ]),
     ]
-    
+
     service_dict = dict(metadata_struct.services)
     service_dict[qualified_name] = _fbthrift_metadata.ThriftService(name=qualified_name, functions=functions, parent="module.MyService", structured_annotations=[
     ])
     new_struct = metadata_struct(services=service_dict)
     new_struct = _fbthrift__test__fixtures__basic__module__thrift_metadata._fbthrift_gen_metadata_service_MyService(new_struct)
-    
+
      # id
      # data
-    
-    
+
+
      # return value
-    
-    
+
+
     return new_struct
 
 def _fbthrift_metadata_service_response_ExtendedMyService() -> _fbthrift_metadata.ThriftServiceMetadataResponse:

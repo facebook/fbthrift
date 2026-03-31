@@ -32,22 +32,22 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
         public static readonly string __fbthrift_uri = "facebook.com/thrift/compiler/test/fixtures/default_values/TrivialStruct";
         /// <summary>Gets or sets the int_value field.</summary>
         public int @int_value { get; set; }
-    
+
         public @TrivialStruct()
         {
         }
-    
+
         public void __fbthrift_clear()
         {
             @int_value = default;
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@int_value != default) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: int_value (int)
@@ -55,7 +55,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
             writer.WriteI32(@int_value);
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -65,7 +65,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // int_value
@@ -84,7 +84,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @TrivialStruct other)
@@ -97,14 +97,14 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
             hashCode.Add(@int_value);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -125,28 +125,28 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
         public static readonly string __fbthrift_uri = "facebook.com/thrift/compiler/test/fixtures/default_values/TrivialStructWithDefault";
         /// <summary>Gets or sets the int_value_1 field.</summary>
         public int @int_value_1 { get; set; }
-    
+
         /// <summary>Gets or sets the int_value_2 field.</summary>
         public int @int_value_2 { get; set; } = 42;
-    
+
         public @TrivialStructWithDefault()
         {
             @int_value_2 = 42;
         }
-    
+
         public void __fbthrift_clear()
         {
             @int_value_1 = default;
             @int_value_2 = default;
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@int_value_1 != default) { return false; }
             if (@int_value_2 != default) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: int_value_1 (int)
@@ -157,7 +157,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
             writer.WriteI32(@int_value_2);
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -167,7 +167,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // int_value_1
@@ -196,7 +196,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @TrivialStructWithDefault other)
@@ -213,7 +213,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
@@ -221,7 +221,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
             hashCode.Add(@int_value_2);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -245,13 +245,13 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
         public static readonly string __fbthrift_uri = "facebook.com/thrift/compiler/test/fixtures/default_values/StructWithNoCustomDefaultValues";
         /// <summary>Gets or sets the unqualified_integer field.</summary>
         public int @unqualified_integer { get; set; }
-    
+
         /// <summary>Gets or sets the optional_integer field (optional).</summary>
         public int? @optional_integer { get; set; }
-    
+
         /// <summary>Gets or sets the required_integer field.</summary>
         public int @required_integer { get; set; }
-    
+
         /// <summary>Gets or sets the unqualified_struct field.</summary>
         private @TrivialStruct _unqualified_struct = new @TrivialStruct();
         public @TrivialStruct @unqualified_struct
@@ -263,10 +263,10 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 _unqualified_struct = value;
             }
         }
-    
+
         /// <summary>Gets or sets the optional_struct field (optional).</summary>
         public @TrivialStruct? @optional_struct { get; set; }
-    
+
         /// <summary>Gets or sets the required_struct field.</summary>
         private @TrivialStruct _required_struct = new @TrivialStruct();
         public @TrivialStruct @required_struct
@@ -278,13 +278,13 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 _required_struct = value;
             }
         }
-    
+
         public @StructWithNoCustomDefaultValues()
         {
             @unqualified_struct = new @TrivialStruct();
             @required_struct = new @TrivialStruct();
         }
-    
+
         public void __fbthrift_clear()
         {
             @unqualified_integer = default;
@@ -294,7 +294,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
             @optional_struct = null;
             @required_struct = new @TrivialStruct();
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@unqualified_integer != default) { return false; }
@@ -305,7 +305,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
             if (@required_struct != null && !@required_struct.__fbthrift_is_empty()) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: unqualified_integer (int)
@@ -334,7 +334,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
             writer.WriteStruct(@required_struct);
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -344,7 +344,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // unqualified_integer
@@ -413,7 +413,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @StructWithNoCustomDefaultValues other)
@@ -446,7 +446,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
@@ -458,7 +458,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
             hashCode.Add(@required_struct);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -494,13 +494,13 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
         public static readonly string __fbthrift_uri = "facebook.com/thrift/compiler/test/fixtures/default_values/StructWithCustomDefaultValues";
         /// <summary>Gets or sets the unqualified_integer field.</summary>
         public int @unqualified_integer { get; set; } = 42;
-    
+
         /// <summary>Gets or sets the optional_integer field (optional).</summary>
         public int? @optional_integer { get; set; }
-    
+
         /// <summary>Gets or sets the required_integer field.</summary>
         public int @required_integer { get; set; } = 44;
-    
+
         /// <summary>Gets or sets the unqualified_struct field.</summary>
         private @TrivialStruct _unqualified_struct = new @TrivialStruct()
         {
@@ -515,10 +515,10 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 _unqualified_struct = value;
             }
         }
-    
+
         /// <summary>Gets or sets the optional_struct field (optional).</summary>
         public @TrivialStruct? @optional_struct { get; set; }
-    
+
         /// <summary>Gets or sets the required_struct field.</summary>
         private @TrivialStruct _required_struct = new @TrivialStruct()
         {
@@ -533,7 +533,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 _required_struct = value;
             }
         }
-    
+
         /// <summary>Gets or sets the struct_with_default_unspecified field.</summary>
         private @TrivialStructWithDefault _struct_with_default_unspecified = new @TrivialStructWithDefault()
         {
@@ -547,7 +547,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 _struct_with_default_unspecified = value;
             }
         }
-    
+
         /// <summary>Gets or sets the struct_with_default_specified field.</summary>
         private @TrivialStructWithDefault _struct_with_default_specified = new @TrivialStructWithDefault()
         {
@@ -562,7 +562,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 _struct_with_default_specified = value;
             }
         }
-    
+
         public @StructWithCustomDefaultValues()
         {
             @unqualified_integer = 42;
@@ -583,7 +583,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
           @int_value_1 = 123,
         };
         }
-    
+
         public void __fbthrift_clear()
         {
             @unqualified_integer = default;
@@ -595,7 +595,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
             @struct_with_default_unspecified = new @TrivialStructWithDefault();
             @struct_with_default_specified = new @TrivialStructWithDefault();
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@unqualified_integer != default) { return false; }
@@ -608,7 +608,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
             if (@struct_with_default_specified != null && !@struct_with_default_specified.__fbthrift_is_empty()) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: unqualified_integer (int)
@@ -643,7 +643,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
             writer.WriteStruct(@struct_with_default_specified);
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -653,7 +653,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // unqualified_integer
@@ -742,7 +742,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @StructWithCustomDefaultValues other)
@@ -783,7 +783,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
@@ -797,7 +797,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
             hashCode.Add(@struct_with_default_specified);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -850,7 +850,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 _list_with_list_value = value;
             }
         }
-    
+
         /// <summary>Gets or sets the set_with_list_value field.</summary>
         private HashSet<int> _set_with_list_value = new HashSet<int>()
         {
@@ -864,7 +864,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 _set_with_list_value = value;
             }
         }
-    
+
         /// <summary>Gets or sets the map_with_map_value field.</summary>
         private Dictionary<int, int> _map_with_map_value = new Dictionary<int, int>()
         {
@@ -878,7 +878,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 _map_with_map_value = value;
             }
         }
-    
+
         /// <summary>Gets or sets the list_with_map_value field.</summary>
         private List<int> _list_with_map_value = new List<int>()
         {
@@ -892,7 +892,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 _list_with_map_value = value;
             }
         }
-    
+
         /// <summary>Gets or sets the set_with_map_value field.</summary>
         private HashSet<int> _set_with_map_value = new HashSet<int>()
         {
@@ -906,7 +906,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 _set_with_map_value = value;
             }
         }
-    
+
         /// <summary>Gets or sets the map_with_list_value field.</summary>
         private Dictionary<int, int> _map_with_list_value = new Dictionary<int, int>()
         {
@@ -920,7 +920,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 _map_with_list_value = value;
             }
         }
-    
+
         public @StructWithCollectionDefaultValues()
         {
             @list_with_list_value = new List<int>()
@@ -942,7 +942,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
         {
         };
         }
-    
+
         public void __fbthrift_clear()
         {
             @list_with_list_value = new List<int>();
@@ -952,7 +952,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
             @set_with_map_value = new HashSet<int>();
             @map_with_list_value = new Dictionary<int, int>();
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@list_with_list_value != null && @list_with_list_value.Count != 0) { return false; }
@@ -963,7 +963,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
             if (@map_with_list_value != null && @map_with_list_value.Count != 0) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: list_with_list_value (List<int>)
@@ -1012,7 +1012,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
             }
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -1022,7 +1022,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // list_with_list_value
@@ -1091,7 +1091,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @StructWithCollectionDefaultValues other)
@@ -1158,7 +1158,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
@@ -1192,7 +1192,7 @@ namespace facebook.thrift.compiler.test.fixtures.default_values
             }
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();

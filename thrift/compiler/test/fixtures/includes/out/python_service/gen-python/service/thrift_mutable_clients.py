@@ -38,33 +38,33 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "service.MyService"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__service__thrift_metadata.gen_metadata_service_MyService()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "service.MyService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__service__thrift_metadata.gen_metadata_service_MyService()
-    
+
         async def query(
             self,
             s: _fbthrift__module__thrift_mutable_types.MyStruct,
@@ -84,7 +84,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 rpc_options=rpc_options,
                 is_mutable_types=True,
             )
-    
+
         async def has_arg_docs(
             self,
             s: _fbthrift__module__thrift_mutable_types.MyStruct,
@@ -104,26 +104,26 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 rpc_options=rpc_options,
                 is_mutable_types=True,
             )
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     query = Async.query
     # pyre-ignore[4]: Missing annotation.
     has_arg_docs = Async.has_arg_docs
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "service.MyService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__service__thrift_metadata.gen_metadata_service_MyService()
-    
+
         def query(
             self,
             s: _fbthrift__module__thrift_mutable_types.MyStruct,
@@ -142,7 +142,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 rpc_options=rpc_options,
                 is_mutable_types=True,
             )
-    
+
         def has_arg_docs(
             self,
             s: _fbthrift__module__thrift_mutable_types.MyStruct,

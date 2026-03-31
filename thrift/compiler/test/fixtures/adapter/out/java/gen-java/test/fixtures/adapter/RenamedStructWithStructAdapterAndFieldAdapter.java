@@ -30,7 +30,7 @@ public final class RenamedStructWithStructAdapterAndFieldAdapter implements com.
     ) {
         this.field = field;
     }
-    
+
     @ThriftConstructor
     protected RenamedStructWithStructAdapterAndFieldAdapter() {
       this.field = 0;
@@ -46,19 +46,19 @@ public final class RenamedStructWithStructAdapterAndFieldAdapter implements com.
 
     public static class Builder {
         private int field = 0;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="field", requiredness=Requiredness.NONE)    public Builder setField(int field) {
             this.field = field;
             return this;
         }
-    
+
         public int getField() { return field; }
-    
+
         public Builder() { }
         public Builder(RenamedStructWithStructAdapterAndFieldAdapter other) {
             this.field = other.field;
         }
-    
+
         @ThriftConstructor
         public RenamedStructWithStructAdapterAndFieldAdapter build() {
             RenamedStructWithStructAdapterAndFieldAdapter result = new RenamedStructWithStructAdapterAndFieldAdapter (
@@ -84,7 +84,7 @@ public final class RenamedStructWithStructAdapterAndFieldAdapter implements com.
         RenamedStructWithStructAdapterAndFieldAdapter.class, RenamedStructWithStructAdapterAndFieldAdapter::read0));
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="field", requiredness=Requiredness.NONE)
     public int getField() { return field; }
 
@@ -103,9 +103,9 @@ public final class RenamedStructWithStructAdapterAndFieldAdapter implements com.
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         RenamedStructWithStructAdapterAndFieldAdapter other = (RenamedStructWithStructAdapterAndFieldAdapter)o;
-    
+
         return
             Objects.equals(field, other.field) &&
             true;
@@ -122,7 +122,7 @@ public final class RenamedStructWithStructAdapterAndFieldAdapter implements com.
     public static com.facebook.thrift.payload.Reader<RenamedStructWithStructAdapterAndFieldAdapter> asReader() {
       return RenamedStructWithStructAdapterAndFieldAdapter::read0;
     }
-    
+
     public static RenamedStructWithStructAdapterAndFieldAdapter read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(RenamedStructWithStructAdapterAndFieldAdapter.NAMES_TO_IDS, RenamedStructWithStructAdapterAndFieldAdapter.THRIFT_NAMES_TO_IDS, RenamedStructWithStructAdapterAndFieldAdapter.FIELD_METADATA);
@@ -164,7 +164,7 @@ public final class RenamedStructWithStructAdapterAndFieldAdapter implements com.
     private static class _RenamedStructWithStructAdapterAndFieldAdapterLazy {
         private static final RenamedStructWithStructAdapterAndFieldAdapter _DEFAULT = new RenamedStructWithStructAdapterAndFieldAdapter.Builder().build();
     }
-    
+
     public static RenamedStructWithStructAdapterAndFieldAdapter defaultInstance() {
         return  _RenamedStructWithStructAdapterAndFieldAdapterLazy._DEFAULT;
     }

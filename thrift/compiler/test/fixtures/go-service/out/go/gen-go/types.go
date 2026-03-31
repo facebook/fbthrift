@@ -378,7 +378,7 @@ func (x *NonComparableStruct) readField2(p thrift.Decoder) error {  // Bar
     if err != nil {
         return thrift.PrependError("error reading list begin: ", err)
     }
-    
+
     listResult := make([]string, 0, size)
     for i := 0; i < size; i++ {
         var elem string
@@ -391,7 +391,7 @@ func (x *NonComparableStruct) readField2(p thrift.Decoder) error {  // Bar
         }
         listResult = append(listResult, elem)
     }
-    
+
     if err := p.ReadListEnd(); err != nil {
         return thrift.PrependError("error reading list end: ", err)
     }
@@ -436,14 +436,14 @@ func (x *NonComparableStruct) writeField3(p thrift.Encoder) error {  // Baz
         if k == nil {
             return fmt.Errorf("%T write map: nil key is not allowed.", item)
         }
-    
+
         {
             item := k
             if err := item.Write(p); err != nil {
                 return err
             }
         }
-    
+
         {
             item := v
             if err := p.WriteI64(item); err != nil {
@@ -466,7 +466,7 @@ func (x *NonComparableStruct) readField3(p thrift.Decoder) error {  // Baz
     if err != nil {
         return thrift.PrependError("error reading map begin: ", err)
     }
-    
+
     mapResult := make(map[*NonComparableStruct]int64, size)
     for i := 0; i < size; i++ {
         var key *NonComparableStruct
@@ -478,7 +478,7 @@ func (x *NonComparableStruct) readField3(p thrift.Decoder) error {  // Baz
             }
             key = result
         }
-    
+
         var value int64
         {
             result, err := p.ReadI64()
@@ -487,10 +487,10 @@ func (x *NonComparableStruct) readField3(p thrift.Decoder) error {  // Baz
             }
             value = result
         }
-    
+
         mapResult[key] = value
     }
-    
+
     if err := p.ReadMapEnd(); err != nil {
         return thrift.PrependError("error reading map end: ", err)
     }
@@ -2715,7 +2715,7 @@ func (x *respGetEntityGetMap) writeField0(p thrift.Encoder) error {  // Success
                 return err
             }
         }
-    
+
         {
             item := v
             if err := p.WriteString(item); err != nil {
@@ -2738,7 +2738,7 @@ func (x *respGetEntityGetMap) readField0(p thrift.Decoder) error {  // Success
     if err != nil {
         return thrift.PrependError("error reading map begin: ", err)
     }
-    
+
     mapResult := make(map[string]string, size)
     for i := 0; i < size; i++ {
         var key string
@@ -2749,7 +2749,7 @@ func (x *respGetEntityGetMap) readField0(p thrift.Decoder) error {  // Success
             }
             key = result
         }
-    
+
         var value string
         {
             result, err := p.ReadString()
@@ -2758,10 +2758,10 @@ func (x *respGetEntityGetMap) readField0(p thrift.Decoder) error {  // Success
             }
             value = result
         }
-    
+
         mapResult[key] = value
     }
-    
+
     if err := p.ReadMapEnd(); err != nil {
         return thrift.PrependError("error reading map end: ", err)
     }
@@ -2992,7 +2992,7 @@ func (x *respGetEntityGetSet) readField0(p thrift.Decoder) error {  // Success
     if err != nil {
         return thrift.PrependError("error reading set begin: ", err)
     }
-    
+
     setResult := make([]string, 0, size)
     for i := 0; i < size; i++ {
         var elem string
@@ -3005,7 +3005,7 @@ func (x *respGetEntityGetSet) readField0(p thrift.Decoder) error {  // Success
         }
         setResult = append(setResult, elem)
     }
-    
+
     if err := p.ReadSetEnd(); err != nil {
         return thrift.PrependError("error reading set end: ", err)
     }
@@ -3236,7 +3236,7 @@ func (x *respGetEntityGetList) readField0(p thrift.Decoder) error {  // Success
     if err != nil {
         return thrift.PrependError("error reading list begin: ", err)
     }
-    
+
     listResult := make([]string, 0, size)
     for i := 0; i < size; i++ {
         var elem string
@@ -3249,7 +3249,7 @@ func (x *respGetEntityGetList) readField0(p thrift.Decoder) error {  // Success
         }
         listResult = append(listResult, elem)
     }
-    
+
     if err := p.ReadListEnd(); err != nil {
         return thrift.PrependError("error reading list end: ", err)
     }

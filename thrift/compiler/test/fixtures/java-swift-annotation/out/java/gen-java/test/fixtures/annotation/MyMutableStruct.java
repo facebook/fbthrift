@@ -41,27 +41,27 @@ public final class MyMutableStruct implements com.facebook.thrift.payload.Thrift
     public static class Builder {
         private long intField = 0L;
         private String stringField = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)    public Builder setIntField(long intField) {
             this.intField = intField;
             return this;
         }
-    
+
         public long getIntField() { return intField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)    public Builder setStringField(String stringField) {
             this.stringField = stringField;
             return this;
         }
-    
+
         public String getStringField() { return stringField; }
-    
+
         public Builder() { }
         public Builder(MyMutableStruct other) {
             this.intField = other.intField;
             this.stringField = other.stringField;
         }
-    
+
         @ThriftConstructor
         public MyMutableStruct build() {
             MyMutableStruct result = new MyMutableStruct();
@@ -89,7 +89,7 @@ public final class MyMutableStruct implements com.facebook.thrift.payload.Thrift
       FIELD_METADATA.put(2, STRING_FIELD_FIELD_DESC);
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
     public long getIntField() { return intField; }
 
@@ -126,9 +126,9 @@ public final class MyMutableStruct implements com.facebook.thrift.payload.Thrift
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         MyMutableStruct other = (MyMutableStruct)o;
-    
+
         return
             Objects.equals(intField, other.intField) &&
             Objects.equals(stringField, other.stringField) &&
@@ -147,7 +147,7 @@ public final class MyMutableStruct implements com.facebook.thrift.payload.Thrift
     public static com.facebook.thrift.payload.Reader<MyMutableStruct> asReader() {
       return MyMutableStruct::read0;
     }
-    
+
     public static MyMutableStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(MyMutableStruct.NAMES_TO_IDS, MyMutableStruct.THRIFT_NAMES_TO_IDS, MyMutableStruct.FIELD_METADATA);

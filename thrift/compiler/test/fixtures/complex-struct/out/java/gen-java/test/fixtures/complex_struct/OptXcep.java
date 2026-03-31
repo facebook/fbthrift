@@ -52,7 +52,7 @@ public final class OptXcep extends org.apache.thrift.TBaseException implements c
         this.message = message;
         this.errorCode = errorCode;
     }
-    
+
     @ThriftConstructor
     protected OptXcep() {
       this.message = null;
@@ -62,27 +62,27 @@ public final class OptXcep extends org.apache.thrift.TBaseException implements c
     public static class Builder {
         private String message = null;
         private Integer errorCode = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.OPTIONAL)    public Builder setMessage(String message) {
             this.message = message;
             return this;
         }
-    
+
         public String getMessage() { return message; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="errorCode", requiredness=Requiredness.OPTIONAL)    public Builder setErrorCode(Integer errorCode) {
             this.errorCode = errorCode;
             return this;
         }
-    
+
         public Integer getErrorCode() { return errorCode; }
-    
+
         public Builder() { }
         public Builder(OptXcep other) {
             this.message = other.message;
             this.errorCode = other.errorCode;
         }
-    
+
         @ThriftConstructor
         public OptXcep build() {
             OptXcep result = new OptXcep (
@@ -106,7 +106,7 @@ public final class OptXcep extends org.apache.thrift.TBaseException implements c
     public static com.facebook.thrift.payload.Reader<OptXcep> asReader() {
       return OptXcep::read0;
     }
-    
+
     public static OptXcep read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(OptXcep.NAMES_TO_IDS, OptXcep.THRIFT_NAMES_TO_IDS, OptXcep.FIELD_METADATA);
@@ -166,7 +166,7 @@ public final class OptXcep extends org.apache.thrift.TBaseException implements c
     private static class _OptXcepLazy {
         private static final OptXcep _DEFAULT = new OptXcep.Builder().build();
     }
-    
+
     public static OptXcep defaultInstance() {
         return  _OptXcepLazy._DEFAULT;
     }}

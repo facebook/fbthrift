@@ -30,7 +30,7 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor implements com.faceb
     ) {
         this.defField = defField;
     }
-    
+
     @ThriftConstructor
     protected StructWithRefAndAnnotCppNoexceptMoveCtor() {
       this.defField = null;
@@ -46,19 +46,19 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor implements com.faceb
 
     public static class Builder {
         private test.fixtures.refs.Empty defField = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)    public Builder setDefField(test.fixtures.refs.Empty defField) {
             this.defField = defField;
             return this;
         }
-    
+
         public test.fixtures.refs.Empty getDefField() { return defField; }
-    
+
         public Builder() { }
         public Builder(StructWithRefAndAnnotCppNoexceptMoveCtor other) {
             this.defField = other.defField;
         }
-    
+
         @ThriftConstructor
         public StructWithRefAndAnnotCppNoexceptMoveCtor build() {
             StructWithRefAndAnnotCppNoexceptMoveCtor result = new StructWithRefAndAnnotCppNoexceptMoveCtor (
@@ -100,9 +100,9 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor implements com.faceb
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         StructWithRefAndAnnotCppNoexceptMoveCtor other = (StructWithRefAndAnnotCppNoexceptMoveCtor)o;
-    
+
         return
             Objects.equals(defField, other.defField) &&
             true;
@@ -119,7 +119,7 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor implements com.faceb
     public static com.facebook.thrift.payload.Reader<StructWithRefAndAnnotCppNoexceptMoveCtor> asReader() {
       return StructWithRefAndAnnotCppNoexceptMoveCtor::read0;
     }
-    
+
     public static StructWithRefAndAnnotCppNoexceptMoveCtor read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(StructWithRefAndAnnotCppNoexceptMoveCtor.NAMES_TO_IDS, StructWithRefAndAnnotCppNoexceptMoveCtor.THRIFT_NAMES_TO_IDS, StructWithRefAndAnnotCppNoexceptMoveCtor.FIELD_METADATA);
@@ -163,7 +163,7 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor implements com.faceb
     private static class _StructWithRefAndAnnotCppNoexceptMoveCtorLazy {
         private static final StructWithRefAndAnnotCppNoexceptMoveCtor _DEFAULT = new StructWithRefAndAnnotCppNoexceptMoveCtor.Builder().build();
     }
-    
+
     public static StructWithRefAndAnnotCppNoexceptMoveCtor defaultInstance() {
         return  _StructWithRefAndAnnotCppNoexceptMoveCtorLazy._DEFAULT;
     }

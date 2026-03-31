@@ -32,7 +32,7 @@ public final class StructWithTerseInternBox implements com.facebook.thrift.paylo
         this.field1 = field1;
         this.field2 = field2;
     }
-    
+
     @ThriftConstructor
     protected StructWithTerseInternBox() {
       this.field1 = test.fixtures.refs.Empty.defaultInstance();
@@ -50,27 +50,27 @@ public final class StructWithTerseInternBox implements com.facebook.thrift.paylo
     public static class Builder {
         private test.fixtures.refs.Empty field1 = test.fixtures.refs.Empty.defaultInstance();
         private test.fixtures.refs.MyField field2 = test.fixtures.refs.MyField.defaultInstance();
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="field1", requiredness=Requiredness.TERSE)    public Builder setField1(test.fixtures.refs.Empty field1) {
             this.field1 = field1;
             return this;
         }
-    
+
         public test.fixtures.refs.Empty getField1() { return field1; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="field2", requiredness=Requiredness.TERSE)    public Builder setField2(test.fixtures.refs.MyField field2) {
             this.field2 = field2;
             return this;
         }
-    
+
         public test.fixtures.refs.MyField getField2() { return field2; }
-    
+
         public Builder() { }
         public Builder(StructWithTerseInternBox other) {
             this.field1 = other.field1;
             this.field2 = other.field2;
         }
-    
+
         @ThriftConstructor
         public StructWithTerseInternBox build() {
             StructWithTerseInternBox result = new StructWithTerseInternBox (
@@ -125,9 +125,9 @@ public final class StructWithTerseInternBox implements com.facebook.thrift.paylo
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         StructWithTerseInternBox other = (StructWithTerseInternBox)o;
-    
+
         return
             Objects.equals(field1, other.field1) &&
             Objects.equals(field2, other.field2) &&
@@ -146,7 +146,7 @@ public final class StructWithTerseInternBox implements com.facebook.thrift.paylo
     public static com.facebook.thrift.payload.Reader<StructWithTerseInternBox> asReader() {
       return StructWithTerseInternBox::read0;
     }
-    
+
     public static StructWithTerseInternBox read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(StructWithTerseInternBox.NAMES_TO_IDS, StructWithTerseInternBox.THRIFT_NAMES_TO_IDS, StructWithTerseInternBox.FIELD_METADATA);
@@ -219,7 +219,7 @@ public final class StructWithTerseInternBox implements com.facebook.thrift.paylo
     private static class _StructWithTerseInternBoxLazy {
         private static final StructWithTerseInternBox _DEFAULT = new StructWithTerseInternBox.Builder().build();
     }
-    
+
     public static StructWithTerseInternBox defaultInstance() {
         return  _StructWithTerseInternBoxLazy._DEFAULT;
     }

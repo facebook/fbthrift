@@ -88,10 +88,10 @@ def gen_metadata_service_BiDiService() -> _fbthrift_metadata.ThriftMetadata:
 
 def _fbthrift_gen_metadata_service_BiDiService(metadata_struct: _fbthrift_metadata.ThriftMetadata) -> _fbthrift_metadata.ThriftMetadata:
     qualified_name = "module.BiDiService"
-    
+
     if qualified_name in metadata_struct.services:
         return metadata_struct
-    
+
     functions = [
         _fbthrift_metadata.ThriftFunction(name="simple", return_type=_fbthrift_metadata.ThriftType(t_bidi=_fbthrift_metadata.ThriftBidiType(sinkElemType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE),streamElemType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE))), arguments=[
         ], exceptions = [
@@ -108,37 +108,37 @@ def _fbthrift_gen_metadata_service_BiDiService(metadata_struct: _fbthrift_metada
         ], is_oneway=False, structured_annotations=[
         ]),
     ]
-    
+
     service_dict = dict(metadata_struct.services)
     service_dict[qualified_name] = _fbthrift_metadata.ThriftService(name=qualified_name, functions=functions,  structured_annotations=[
     ])
     new_struct = metadata_struct(services=service_dict)
-    
-    
-    
+
+
+
      # elem
      # response  # elem
      # final response
      # first response  # return value
-    
-    
-    
-    
+
+
+
+
      # elem
      # response  # elem
      # final response
      # first response  # return value
-    
-    
-    
+
+
+
     new_struct = _fbthrift_gen_metadata_exception_BiDiMethodException(new_struct) # ex
-    
+
      # elem
      # response  # elem
      # final response
      # first response  # return value
-    
-    
+
+
     return new_struct
 
 def _fbthrift_metadata_service_response_BiDiService() -> _fbthrift_metadata.ThriftServiceMetadataResponse:

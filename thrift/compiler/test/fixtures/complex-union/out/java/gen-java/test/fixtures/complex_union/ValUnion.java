@@ -86,7 +86,7 @@ public final class ValUnion implements com.facebook.thrift.payload.ThriftSeriali
     @ThriftConstructor
     public ValUnion() {
     }
-    
+
     public static ValUnion fromV1(final test.fixtures.complex_union.Val v1) {
         ValUnion res = new ValUnion();
         if (!ValUnion.allowNullFieldValues && v1 == null) {
@@ -96,7 +96,7 @@ public final class ValUnion implements com.facebook.thrift.payload.ThriftSeriali
         res.id = 1;
         return res;
     }
-    
+
     public static ValUnion fromV2(final test.fixtures.complex_union.Val v2) {
         ValUnion res = new ValUnion();
         if (!ValUnion.allowNullFieldValues && v2 == null) {
@@ -239,7 +239,7 @@ public final class ValUnion implements com.facebook.thrift.payload.ThriftSeriali
       case _V1: {
         oprot.writeFieldBegin(V1_FIELD_DESC);
         test.fixtures.complex_union.Val _iter0 = (test.fixtures.complex_union.Val)this.value;
-    
+
         _iter0.write0(oprot);
         oprot.writeFieldEnd();
         break;
@@ -247,7 +247,7 @@ public final class ValUnion implements com.facebook.thrift.payload.ThriftSeriali
       case _V2: {
         oprot.writeFieldBegin(V2_FIELD_DESC);
         test.fixtures.complex_union.Val _iter0 = (test.fixtures.complex_union.Val)this.value;
-    
+
         _iter0.write0(oprot);
         oprot.writeFieldEnd();
         break;
@@ -263,7 +263,7 @@ public final class ValUnion implements com.facebook.thrift.payload.ThriftSeriali
     public static com.facebook.thrift.payload.Reader<ValUnion> asReader() {
       return ValUnion::read0;
     }
-    
+
     public static ValUnion read0(TProtocol oprot) throws TException {
       ValUnion res = new ValUnion();
       res.value = null;

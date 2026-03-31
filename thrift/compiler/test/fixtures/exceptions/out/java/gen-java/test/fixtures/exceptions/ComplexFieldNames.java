@@ -52,7 +52,7 @@ public final class ComplexFieldNames extends org.apache.thrift.TBaseException im
         this.errorMessage = errorMessage;
         this.internalErrorMessage = internalErrorMessage;
     }
-    
+
     @ThriftConstructor
     protected ComplexFieldNames() {
       this.errorMessage = null;
@@ -62,27 +62,27 @@ public final class ComplexFieldNames extends org.apache.thrift.TBaseException im
     public static class Builder {
         private String errorMessage = null;
         private String internalErrorMessage = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="error_message", requiredness=Requiredness.NONE)    public Builder setErrorMessage(String errorMessage) {
             this.errorMessage = errorMessage;
             return this;
         }
-    
+
         public String getErrorMessage() { return errorMessage; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="internal_error_message", requiredness=Requiredness.NONE)    public Builder setInternalErrorMessage(String internalErrorMessage) {
             this.internalErrorMessage = internalErrorMessage;
             return this;
         }
-    
+
         public String getInternalErrorMessage() { return internalErrorMessage; }
-    
+
         public Builder() { }
         public Builder(ComplexFieldNames other) {
             this.errorMessage = other.errorMessage;
             this.internalErrorMessage = other.internalErrorMessage;
         }
-    
+
         @ThriftConstructor
         public ComplexFieldNames build() {
             ComplexFieldNames result = new ComplexFieldNames (
@@ -110,7 +110,7 @@ public final class ComplexFieldNames extends org.apache.thrift.TBaseException im
     public static com.facebook.thrift.payload.Reader<ComplexFieldNames> asReader() {
       return ComplexFieldNames::read0;
     }
-    
+
     public static ComplexFieldNames read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(ComplexFieldNames.NAMES_TO_IDS, ComplexFieldNames.THRIFT_NAMES_TO_IDS, ComplexFieldNames.FIELD_METADATA);
@@ -170,7 +170,7 @@ public final class ComplexFieldNames extends org.apache.thrift.TBaseException im
     private static class _ComplexFieldNamesLazy {
         private static final ComplexFieldNames _DEFAULT = new ComplexFieldNames.Builder().build();
     }
-    
+
     public static ComplexFieldNames defaultInstance() {
         return  _ComplexFieldNamesLazy._DEFAULT;
     }}

@@ -34,7 +34,7 @@ public final class AdaptedFields implements com.facebook.thrift.payload.ThriftSe
         this.field2 = field2;
         this.field3 = field3;
     }
-    
+
     @ThriftConstructor
     protected AdaptedFields() {
       this.field1 = 0;
@@ -54,35 +54,35 @@ public final class AdaptedFields implements com.facebook.thrift.payload.ThriftSe
         private int field1 = 0;
         private int field2 = 0;
         private int field3 = 0;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="field1", requiredness=Requiredness.TERSE)    public Builder setField1(int field1) {
             this.field1 = field1;
             return this;
         }
-    
+
         public int getField1() { return field1; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="field2", requiredness=Requiredness.TERSE)    public Builder setField2(int field2) {
             this.field2 = field2;
             return this;
         }
-    
+
         public int getField2() { return field2; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="field3", requiredness=Requiredness.TERSE)    public Builder setField3(int field3) {
             this.field3 = field3;
             return this;
         }
-    
+
         public int getField3() { return field3; }
-    
+
         public Builder() { }
         public Builder(AdaptedFields other) {
             this.field1 = other.field1;
             this.field2 = other.field2;
             this.field3 = other.field3;
         }
-    
+
         @ThriftConstructor
         public AdaptedFields build() {
             AdaptedFields result = new AdaptedFields (
@@ -122,17 +122,17 @@ public final class AdaptedFields implements com.facebook.thrift.payload.ThriftSe
         AdaptedFields.class, AdaptedFields::read0));
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="field1", requiredness=Requiredness.TERSE)
     public int getField1() { return field1; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="field2", requiredness=Requiredness.TERSE)
     public int getField2() { return field2; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=3, name="field3", requiredness=Requiredness.TERSE)
     public int getField3() { return field3; }
 
@@ -153,9 +153,9 @@ public final class AdaptedFields implements com.facebook.thrift.payload.ThriftSe
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         AdaptedFields other = (AdaptedFields)o;
-    
+
         return
             Objects.equals(field1, other.field1) &&
             Objects.equals(field2, other.field2) &&
@@ -176,7 +176,7 @@ public final class AdaptedFields implements com.facebook.thrift.payload.ThriftSe
     public static com.facebook.thrift.payload.Reader<AdaptedFields> asReader() {
       return AdaptedFields::read0;
     }
-    
+
     public static AdaptedFields read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(AdaptedFields.NAMES_TO_IDS, AdaptedFields.THRIFT_NAMES_TO_IDS, AdaptedFields.FIELD_METADATA);
@@ -255,7 +255,7 @@ public final class AdaptedFields implements com.facebook.thrift.payload.ThriftSe
     private static class _AdaptedFieldsLazy {
         private static final AdaptedFields _DEFAULT = new AdaptedFields.Builder().build();
     }
-    
+
     public static AdaptedFields defaultInstance() {
         return  _AdaptedFieldsLazy._DEFAULT;
     }

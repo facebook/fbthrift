@@ -35,9 +35,9 @@ public class DbMixedStackArgumentsThriftMetadataHandler implements com.facebook.
               .setName("key")
               .setIsOptional(false)
               .build());
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("getDataByKey0")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_BINARY_TYPE))
@@ -54,9 +54,9 @@ public class DbMixedStackArgumentsThriftMetadataHandler implements com.facebook.
               .setName("key")
               .setIsOptional(false)
               .build());
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("getDataByKey1")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_BINARY_TYPE))

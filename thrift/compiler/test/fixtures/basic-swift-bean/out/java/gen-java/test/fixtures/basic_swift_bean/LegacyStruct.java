@@ -41,27 +41,27 @@ public final class LegacyStruct implements com.facebook.thrift.payload.ThriftSer
     public static class Builder {
         private int normal = 0;
         private int bad = 0;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="normal", requiredness=Requiredness.NONE)    public Builder setNormal(int normal) {
             this.normal = normal;
             return this;
         }
-    
+
         public int getNormal() { return normal; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=-1, name="bad", isLegacyId=true, requiredness=Requiredness.NONE)    public Builder setBad(int bad) {
             this.bad = bad;
             return this;
         }
-    
+
         public int getBad() { return bad; }
-    
+
         public Builder() { }
         public Builder(LegacyStruct other) {
             this.normal = other.normal;
             this.bad = other.bad;
         }
-    
+
         @ThriftConstructor
         public LegacyStruct build() {
             LegacyStruct result = new LegacyStruct();
@@ -89,7 +89,7 @@ public final class LegacyStruct implements com.facebook.thrift.payload.ThriftSer
       FIELD_METADATA.put(-1, BAD_FIELD_DESC);
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="normal", requiredness=Requiredness.NONE)
     public int getNormal() { return normal; }
 
@@ -100,7 +100,7 @@ public final class LegacyStruct implements com.facebook.thrift.payload.ThriftSer
     }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=-1, name="bad", isLegacyId=true, requiredness=Requiredness.NONE)
     public int getBad() { return bad; }
 
@@ -126,9 +126,9 @@ public final class LegacyStruct implements com.facebook.thrift.payload.ThriftSer
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         LegacyStruct other = (LegacyStruct)o;
-    
+
         return
             Objects.equals(normal, other.normal) &&
             Objects.equals(bad, other.bad) &&
@@ -147,7 +147,7 @@ public final class LegacyStruct implements com.facebook.thrift.payload.ThriftSer
     public static com.facebook.thrift.payload.Reader<LegacyStruct> asReader() {
       return LegacyStruct::read0;
     }
-    
+
     public static LegacyStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(LegacyStruct.NAMES_TO_IDS, LegacyStruct.THRIFT_NAMES_TO_IDS, LegacyStruct.FIELD_METADATA);

@@ -29,9 +29,9 @@ public class FactoriesThriftMetadataHandler implements com.facebook.thrift.serve
   private static void addFunctions_0(List<ThriftFunction> functions) {
         {
           List<ThriftField> args = new ArrayList<>();
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("foo")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
@@ -48,9 +48,9 @@ public class FactoriesThriftMetadataHandler implements com.facebook.thrift.serve
               .setName("arg")
               .setIsOptional(false)
               .build());
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("interact")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
@@ -61,9 +61,9 @@ public class FactoriesThriftMetadataHandler implements com.facebook.thrift.serve
         }
         {
           List<ThriftField> args = new ArrayList<>();
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("interactFast")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE))
@@ -74,9 +74,9 @@ public class FactoriesThriftMetadataHandler implements com.facebook.thrift.serve
         }
         {
           List<ThriftField> args = new ArrayList<>();
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("serialize")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE))

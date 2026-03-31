@@ -250,7 +250,7 @@ func (x *TestStruct) readField3(p thrift.Decoder) error {  // UnqualifiedListFie
     if err != nil {
         return thrift.PrependError("error reading list begin: ", err)
     }
-    
+
     listResult := make([]int32, 0, size)
     for i := 0; i < size; i++ {
         var elem int32
@@ -263,7 +263,7 @@ func (x *TestStruct) readField3(p thrift.Decoder) error {  // UnqualifiedListFie
         }
         listResult = append(listResult, elem)
     }
-    
+
     if err := p.ReadListEnd(); err != nil {
         return thrift.PrependError("error reading list end: ", err)
     }
@@ -488,7 +488,7 @@ func (x *TestStruct) readField7(p thrift.Decoder) error {  // OptionalListField
     if err != nil {
         return thrift.PrependError("error reading list begin: ", err)
     }
-    
+
     listResult := make([]int32, 0, size)
     for i := 0; i < size; i++ {
         var elem int32
@@ -501,7 +501,7 @@ func (x *TestStruct) readField7(p thrift.Decoder) error {  // OptionalListField
         }
         listResult = append(listResult, elem)
     }
-    
+
     if err := p.ReadListEnd(); err != nil {
         return thrift.PrependError("error reading list end: ", err)
     }

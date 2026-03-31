@@ -76,14 +76,14 @@ public final class NonTriviallyDestructibleUnion implements com.facebook.thrift.
     @ThriftConstructor
     public NonTriviallyDestructibleUnion() {
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public NonTriviallyDestructibleUnion(final int intField) {
         this.value = intField;
         this.id = 1;
     }
-    
+
     public static NonTriviallyDestructibleUnion fromIntField(final int intField) {
         NonTriviallyDestructibleUnion res = new NonTriviallyDestructibleUnion();
         res.value = intField;
@@ -193,7 +193,7 @@ public final class NonTriviallyDestructibleUnion implements com.facebook.thrift.
       case _INT_FIELD: {
         oprot.writeFieldBegin(INT_FIELD_FIELD_DESC);
         int _iter0 = (int)this.value;
-    
+
         oprot.writeI32(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -209,7 +209,7 @@ public final class NonTriviallyDestructibleUnion implements com.facebook.thrift.
     public static com.facebook.thrift.payload.Reader<NonTriviallyDestructibleUnion> asReader() {
       return NonTriviallyDestructibleUnion::read0;
     }
-    
+
     public static NonTriviallyDestructibleUnion read0(TProtocol oprot) throws TException {
       NonTriviallyDestructibleUnion res = new NonTriviallyDestructibleUnion();
       res.value = null;

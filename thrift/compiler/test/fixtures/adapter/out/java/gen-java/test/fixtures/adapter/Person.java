@@ -30,7 +30,7 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
     ) {
         this.name = name;
     }
-    
+
     @ThriftConstructor
     protected Person() {
       this.name = null;
@@ -46,19 +46,19 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
 
     public static class Builder {
         private String name = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="name", requiredness=Requiredness.NONE)    public Builder setName(String name) {
             this.name = name;
             return this;
         }
-    
+
         public String getName() { return name; }
-    
+
         public Builder() { }
         public Builder(Person other) {
             this.name = other.name;
         }
-    
+
         @ThriftConstructor
         public Person build() {
             Person result = new Person (
@@ -103,9 +103,9 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         Person other = (Person)o;
-    
+
         return
             Objects.equals(name, other.name) &&
             true;
@@ -122,7 +122,7 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
     public static com.facebook.thrift.payload.Reader<Person> asReader() {
       return Person::read0;
     }
-    
+
     public static Person read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(Person.NAMES_TO_IDS, Person.THRIFT_NAMES_TO_IDS, Person.FIELD_METADATA);
@@ -166,7 +166,7 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
     private static class _PersonLazy {
         private static final Person _DEFAULT = new Person.Builder().build();
     }
-    
+
     public static Person defaultInstance() {
         return  _PersonLazy._DEFAULT;
     }

@@ -28,8 +28,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public MyStruct(
     ) {
     }
-    
-    
+
+
 
     public static Builder builder() {
       return new Builder();
@@ -40,11 +40,11 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     }
 
     public static class Builder {
-    
+
     public Builder() { }
         public Builder(MyStruct other) {
         }
-    
+
         @ThriftConstructor
         public MyStruct build() {
             MyStruct result = new MyStruct (
@@ -76,9 +76,9 @@ static {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         MyStruct other = (MyStruct)o;
-    
+
         return
             true;
     }
@@ -93,7 +93,7 @@ static {
     public static com.facebook.thrift.payload.Reader<MyStruct> asReader() {
       return MyStruct::read0;
     }
-    
+
     public static MyStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(MyStruct.NAMES_TO_IDS, MyStruct.THRIFT_NAMES_TO_IDS, MyStruct.FIELD_METADATA);
@@ -121,7 +121,7 @@ static {
     private static class _MyStructLazy {
         private static final MyStruct _DEFAULT = new MyStruct.Builder().build();
     }
-    
+
     public static MyStruct defaultInstance() {
         return  _MyStructLazy._DEFAULT;
     }

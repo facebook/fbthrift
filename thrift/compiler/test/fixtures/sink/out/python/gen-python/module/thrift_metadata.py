@@ -184,10 +184,10 @@ def gen_metadata_service_SinkService() -> _fbthrift_metadata.ThriftMetadata:
 
 def _fbthrift_gen_metadata_service_SinkService(metadata_struct: _fbthrift_metadata.ThriftMetadata) -> _fbthrift_metadata.ThriftMetadata:
     qualified_name = "module.SinkService"
-    
+
     if qualified_name in metadata_struct.services:
         return metadata_struct
-    
+
     functions = [
         _fbthrift_metadata.ThriftFunction(name="method", return_type=_fbthrift_metadata.ThriftType(t_sink=_fbthrift_metadata.ThriftSinkType(elemType=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.SinkPayload")),finalResponseType=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.FinalResponse")))), arguments=[
         ], exceptions = [
@@ -221,62 +221,62 @@ def _fbthrift_gen_metadata_service_SinkService(metadata_struct: _fbthrift_metada
             _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="cpp.ProcessInEbThreadUnsafe"), fields= {  }),
         ]),
     ]
-    
+
     service_dict = dict(metadata_struct.services)
     service_dict[qualified_name] = _fbthrift_metadata.ThriftService(name=qualified_name, functions=functions,  structured_annotations=[
     ])
     new_struct = metadata_struct(services=service_dict)
-    
-    
-    
+
+
+
     new_struct = _fbthrift_gen_metadata_struct_SinkPayload(new_struct) # elem
     new_struct = _fbthrift_gen_metadata_struct_FinalResponse(new_struct) # final response
      # first response  # return value
-    
-    
-    
-    
+
+
+
+
     new_struct = _fbthrift_gen_metadata_struct_SinkPayload(new_struct) # elem
     new_struct = _fbthrift_gen_metadata_struct_FinalResponse(new_struct) # final response
     new_struct = _fbthrift_gen_metadata_struct_InitialResponse(new_struct) # first response  # return value
-    
-    
-    
+
+
+
     new_struct = _fbthrift_gen_metadata_exception_InitialException(new_struct) # ex
-    
+
     new_struct = _fbthrift_gen_metadata_struct_SinkPayload(new_struct) # elem
     new_struct = _fbthrift_gen_metadata_struct_FinalResponse(new_struct) # final response
      # first response  # return value
-    
-    
-    
-    
+
+
+
+
     new_struct = _fbthrift_gen_metadata_struct_SinkPayload(new_struct) # elem
     new_struct = _fbthrift_gen_metadata_struct_FinalResponse(new_struct) # final response
      # first response  # return value
-    
-    
-    
-    
+
+
+
+
     new_struct = _fbthrift_gen_metadata_struct_SinkPayload(new_struct) # elem
     new_struct = _fbthrift_gen_metadata_struct_FinalResponse(new_struct) # final response
      # first response  # return value
-    
-    
-    
-    
+
+
+
+
     new_struct = _fbthrift_gen_metadata_struct_SinkPayload(new_struct) # elem
     new_struct = _fbthrift_gen_metadata_struct_FinalResponse(new_struct) # final response
      # first response  # return value
-    
-    
-    
-    
+
+
+
+
     new_struct = _fbthrift_gen_metadata_struct_SinkPayload(new_struct) # elem
     new_struct = _fbthrift_gen_metadata_struct_FinalResponse(new_struct) # final response
      # first response  # return value
-    
-    
+
+
     return new_struct
 
 def _fbthrift_metadata_service_response_SinkService() -> _fbthrift_metadata.ThriftServiceMetadataResponse:

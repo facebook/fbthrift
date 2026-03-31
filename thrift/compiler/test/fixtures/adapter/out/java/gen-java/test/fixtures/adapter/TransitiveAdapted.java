@@ -28,8 +28,8 @@ public final class TransitiveAdapted implements com.facebook.thrift.payload.Thri
     public TransitiveAdapted(
     ) {
     }
-    
-    
+
+
 
     public static Builder builder() {
       return new Builder();
@@ -40,11 +40,11 @@ public final class TransitiveAdapted implements com.facebook.thrift.payload.Thri
     }
 
     public static class Builder {
-    
+
     public Builder() { }
         public Builder(TransitiveAdapted other) {
         }
-    
+
         @ThriftConstructor
         public TransitiveAdapted build() {
             TransitiveAdapted result = new TransitiveAdapted (
@@ -76,9 +76,9 @@ static {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         TransitiveAdapted other = (TransitiveAdapted)o;
-    
+
         return
             true;
     }
@@ -93,7 +93,7 @@ static {
     public static com.facebook.thrift.payload.Reader<TransitiveAdapted> asReader() {
       return TransitiveAdapted::read0;
     }
-    
+
     public static TransitiveAdapted read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(TransitiveAdapted.NAMES_TO_IDS, TransitiveAdapted.THRIFT_NAMES_TO_IDS, TransitiveAdapted.FIELD_METADATA);
@@ -121,7 +121,7 @@ static {
     private static class _TransitiveAdaptedLazy {
         private static final TransitiveAdapted _DEFAULT = new TransitiveAdapted.Builder().build();
     }
-    
+
     public static TransitiveAdapted defaultInstance() {
         return  _TransitiveAdaptedLazy._DEFAULT;
     }

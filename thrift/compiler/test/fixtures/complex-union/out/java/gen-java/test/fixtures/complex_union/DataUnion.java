@@ -86,7 +86,7 @@ public final class DataUnion implements com.facebook.thrift.payload.ThriftSerial
     @ThriftConstructor
     public DataUnion() {
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public DataUnion(final byte[] binaryData) {
@@ -96,7 +96,7 @@ public final class DataUnion implements com.facebook.thrift.payload.ThriftSerial
         this.value = binaryData;
         this.id = 1;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public DataUnion(final String stringData) {
@@ -106,7 +106,7 @@ public final class DataUnion implements com.facebook.thrift.payload.ThriftSerial
         this.value = stringData;
         this.id = 2;
     }
-    
+
     public static DataUnion fromBinaryData(final byte[] binaryData) {
         DataUnion res = new DataUnion();
         if (!DataUnion.allowNullFieldValues && binaryData == null) {
@@ -116,7 +116,7 @@ public final class DataUnion implements com.facebook.thrift.payload.ThriftSerial
         res.id = 1;
         return res;
     }
-    
+
     public static DataUnion fromStringData(final String stringData) {
         DataUnion res = new DataUnion();
         if (!DataUnion.allowNullFieldValues && stringData == null) {
@@ -247,7 +247,7 @@ public final class DataUnion implements com.facebook.thrift.payload.ThriftSerial
       case _BINARYDATA: {
         oprot.writeFieldBegin(BINARY_DATA_FIELD_DESC);
         byte[] _iter0 = (byte[])this.value;
-    
+
         oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
         oprot.writeFieldEnd();
         break;
@@ -255,7 +255,7 @@ public final class DataUnion implements com.facebook.thrift.payload.ThriftSerial
       case _STRINGDATA: {
         oprot.writeFieldBegin(STRING_DATA_FIELD_DESC);
         String _iter0 = (String)this.value;
-    
+
         oprot.writeString(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -271,7 +271,7 @@ public final class DataUnion implements com.facebook.thrift.payload.ThriftSerial
     public static com.facebook.thrift.payload.Reader<DataUnion> asReader() {
       return DataUnion::read0;
     }
-    
+
     public static DataUnion read0(TProtocol oprot) throws TException {
       DataUnion res = new DataUnion();
       res.value = null;

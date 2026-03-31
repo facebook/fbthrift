@@ -28,8 +28,8 @@ public final class EmptyStruct implements com.facebook.thrift.payload.ThriftSeri
     public EmptyStruct(
     ) {
     }
-    
-    
+
+
 
     public static Builder builder() {
       return new Builder();
@@ -40,11 +40,11 @@ public final class EmptyStruct implements com.facebook.thrift.payload.ThriftSeri
     }
 
     public static class Builder {
-    
+
     public Builder() { }
         public Builder(EmptyStruct other) {
         }
-    
+
         @ThriftConstructor
         public EmptyStruct build() {
             EmptyStruct result = new EmptyStruct (
@@ -76,9 +76,9 @@ static {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         EmptyStruct other = (EmptyStruct)o;
-    
+
         return
             true;
     }
@@ -93,7 +93,7 @@ static {
     public static com.facebook.thrift.payload.Reader<EmptyStruct> asReader() {
       return EmptyStruct::read0;
     }
-    
+
     public static EmptyStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(EmptyStruct.NAMES_TO_IDS, EmptyStruct.THRIFT_NAMES_TO_IDS, EmptyStruct.FIELD_METADATA);
@@ -121,7 +121,7 @@ static {
     private static class _EmptyStructLazy {
         private static final EmptyStruct _DEFAULT = new EmptyStruct.Builder().build();
     }
-    
+
     public static EmptyStruct defaultInstance() {
         return  _EmptyStructLazy._DEFAULT;
     }

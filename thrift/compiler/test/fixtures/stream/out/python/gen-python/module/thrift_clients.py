@@ -32,33 +32,33 @@ class PubSubStreamingService(_fbthrift_python_Client["PubSubStreamingService.Asy
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.PubSubStreamingService"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__module__thrift_metadata.gen_metadata_service_PubSubStreamingService()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.PubSubStreamingService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__module__thrift_metadata.gen_metadata_service_PubSubStreamingService()
-    
+
         async def returnstream(
             self,
             i32_from: builtins.int,
@@ -79,7 +79,7 @@ class PubSubStreamingService(_fbthrift_python_Client["PubSubStreamingService.Asy
             )
             _fbthrift_resp, _fbthrift_sink_or_stream = _fbthrift_resp
             return _fbthrift_sink_or_stream
-    
+
         async def streamthrows(
             self,
             foo: builtins.int,
@@ -98,7 +98,7 @@ class PubSubStreamingService(_fbthrift_python_Client["PubSubStreamingService.Asy
             )
             _fbthrift_resp, _fbthrift_sink_or_stream = _fbthrift_resp
             return _fbthrift_sink_or_stream
-    
+
         async def servicethrows(
             self,
             foo: builtins.int,
@@ -120,7 +120,7 @@ class PubSubStreamingService(_fbthrift_python_Client["PubSubStreamingService.Asy
             if (_fbthrift_ex := _fbthrift_resp._ex0__e) is not None:
                 raise _fbthrift_ex
             return _fbthrift_sink_or_stream
-    
+
         async def servicethrows2(
             self,
             foo: builtins.int,
@@ -145,7 +145,7 @@ class PubSubStreamingService(_fbthrift_python_Client["PubSubStreamingService.Asy
             if (_fbthrift_ex := _fbthrift_resp._ex1__e2) is not None:
                 raise _fbthrift_ex
             return _fbthrift_sink_or_stream
-    
+
         async def boththrows(
             self,
             foo: builtins.int,
@@ -167,7 +167,7 @@ class PubSubStreamingService(_fbthrift_python_Client["PubSubStreamingService.Asy
             if (_fbthrift_ex := _fbthrift_resp._ex0__e) is not None:
                 raise _fbthrift_ex
             return _fbthrift_sink_or_stream
-    
+
         async def responseandstreamstreamthrows(
             self,
             foo: builtins.int,
@@ -192,7 +192,7 @@ class PubSubStreamingService(_fbthrift_python_Client["PubSubStreamingService.Asy
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def responseandstreamservicethrows(
             self,
             foo: builtins.int,
@@ -220,7 +220,7 @@ class PubSubStreamingService(_fbthrift_python_Client["PubSubStreamingService.Asy
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def responseandstreamboththrows(
             self,
             foo: builtins.int,
@@ -248,7 +248,7 @@ class PubSubStreamingService(_fbthrift_python_Client["PubSubStreamingService.Asy
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def returnstreamFast(
             self,
             i32_from: builtins.int,
@@ -269,8 +269,8 @@ class PubSubStreamingService(_fbthrift_python_Client["PubSubStreamingService.Asy
             )
             _fbthrift_resp, _fbthrift_sink_or_stream = _fbthrift_resp
             return _fbthrift_sink_or_stream
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     returnstream = Async.returnstream
     # pyre-ignore[4]: Missing annotation.
@@ -289,16 +289,16 @@ class PubSubStreamingService(_fbthrift_python_Client["PubSubStreamingService.Asy
     responseandstreamboththrows = Async.responseandstreamboththrows
     # pyre-ignore[4]: Missing annotation.
     returnstreamFast = Async.returnstreamFast
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.PubSubStreamingService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__module__thrift_metadata.gen_metadata_service_PubSubStreamingService()

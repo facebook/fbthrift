@@ -36,15 +36,15 @@ public final class FooStreamEx extends org.apache.thrift.TBaseException implemen
     public FooStreamEx(
     ) {
     }
-    
-    
+
+
 
     public static class Builder {
-    
+
     public Builder() { }
         public Builder(FooStreamEx other) {
         }
-    
+
         @ThriftConstructor
         public FooStreamEx build() {
             FooStreamEx result = new FooStreamEx (
@@ -58,7 +58,7 @@ public final class FooStreamEx extends org.apache.thrift.TBaseException implemen
     public static com.facebook.thrift.payload.Reader<FooStreamEx> asReader() {
       return FooStreamEx::read0;
     }
-    
+
     public static FooStreamEx read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(FooStreamEx.NAMES_TO_IDS, FooStreamEx.THRIFT_NAMES_TO_IDS, FooStreamEx.FIELD_METADATA);
@@ -86,7 +86,7 @@ public final class FooStreamEx extends org.apache.thrift.TBaseException implemen
     private static class _FooStreamExLazy {
         private static final FooStreamEx _DEFAULT = new FooStreamEx.Builder().build();
     }
-    
+
     public static FooStreamEx defaultInstance() {
         return  _FooStreamExLazy._DEFAULT;
     }}

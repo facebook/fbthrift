@@ -36,7 +36,7 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
         this.injectedStructuredAnnotationField = injectedStructuredAnnotationField;
         this.injectedUnstructuredAnnotationField = injectedUnstructuredAnnotationField;
     }
-    
+
     @ThriftConstructor
     protected FieldsInjectedWithIncludedStruct() {
       this.stringField = null;
@@ -58,35 +58,35 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
         private String injectedField = null;
         private String injectedStructuredAnnotationField = null;
         private String injectedUnstructuredAnnotationField = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="string_field", requiredness=Requiredness.NONE)    public Builder setStringField(String stringField) {
             this.stringField = stringField;
             return this;
         }
-    
+
         public String getStringField() { return stringField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=-1100, name="injected_field", isLegacyId=true, requiredness=Requiredness.NONE)    public Builder setInjectedField(String injectedField) {
             this.injectedField = injectedField;
             return this;
         }
-    
+
         public String getInjectedField() { return injectedField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=-1101, name="injected_structured_annotation_field", isLegacyId=true, requiredness=Requiredness.OPTIONAL)    public Builder setInjectedStructuredAnnotationField(String injectedStructuredAnnotationField) {
             this.injectedStructuredAnnotationField = injectedStructuredAnnotationField;
             return this;
         }
-    
+
         public String getInjectedStructuredAnnotationField() { return injectedStructuredAnnotationField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=-1102, name="injected_unstructured_annotation_field", isLegacyId=true, requiredness=Requiredness.OPTIONAL)    public Builder setInjectedUnstructuredAnnotationField(String injectedUnstructuredAnnotationField) {
             this.injectedUnstructuredAnnotationField = injectedUnstructuredAnnotationField;
             return this;
         }
-    
+
         public String getInjectedUnstructuredAnnotationField() { return injectedUnstructuredAnnotationField; }
-    
+
         public Builder() { }
         public Builder(FieldsInjectedWithIncludedStruct other) {
             this.stringField = other.stringField;
@@ -94,7 +94,7 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
             this.injectedStructuredAnnotationField = other.injectedStructuredAnnotationField;
             this.injectedUnstructuredAnnotationField = other.injectedUnstructuredAnnotationField;
         }
-    
+
         @ThriftConstructor
         public FieldsInjectedWithIncludedStruct build() {
             FieldsInjectedWithIncludedStruct result = new FieldsInjectedWithIncludedStruct (
@@ -175,9 +175,9 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         FieldsInjectedWithIncludedStruct other = (FieldsInjectedWithIncludedStruct)o;
-    
+
         return
             Objects.equals(stringField, other.stringField) &&
             Objects.equals(injectedField, other.injectedField) &&
@@ -200,7 +200,7 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
     public static com.facebook.thrift.payload.Reader<FieldsInjectedWithIncludedStruct> asReader() {
       return FieldsInjectedWithIncludedStruct::read0;
     }
-    
+
     public static FieldsInjectedWithIncludedStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(FieldsInjectedWithIncludedStruct.NAMES_TO_IDS, FieldsInjectedWithIncludedStruct.THRIFT_NAMES_TO_IDS, FieldsInjectedWithIncludedStruct.FIELD_METADATA);
@@ -292,7 +292,7 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
     private static class _FieldsInjectedWithIncludedStructLazy {
         private static final FieldsInjectedWithIncludedStruct _DEFAULT = new FieldsInjectedWithIncludedStruct.Builder().build();
     }
-    
+
     public static FieldsInjectedWithIncludedStruct defaultInstance() {
         return  _FieldsInjectedWithIncludedStructLazy._DEFAULT;
     }

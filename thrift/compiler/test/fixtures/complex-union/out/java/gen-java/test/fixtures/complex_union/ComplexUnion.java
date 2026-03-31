@@ -126,14 +126,14 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
     @ThriftConstructor
     public ComplexUnion() {
     }
-    
+
     public static ComplexUnion fromIntValue(final long intValue) {
         ComplexUnion res = new ComplexUnion();
         res.value = intValue;
         res.id = 1;
         return res;
     }
-    
+
     public static ComplexUnion fromStringValue(final String stringValue) {
         ComplexUnion res = new ComplexUnion();
         if (!ComplexUnion.allowNullFieldValues && stringValue == null) {
@@ -143,7 +143,7 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
         res.id = 5;
         return res;
     }
-    
+
     public static ComplexUnion fromIntListValue(final List<Long> intListValue) {
         ComplexUnion res = new ComplexUnion();
         if (!ComplexUnion.allowNullFieldValues && intListValue == null) {
@@ -153,7 +153,7 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
         res.id = 2;
         return res;
     }
-    
+
     public static ComplexUnion fromStringListValue(final List<String> stringListValue) {
         ComplexUnion res = new ComplexUnion();
         if (!ComplexUnion.allowNullFieldValues && stringListValue == null) {
@@ -163,7 +163,7 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
         res.id = 3;
         return res;
     }
-    
+
     public static ComplexUnion fromTypedefValue(final Map<Short, String> typedefValue) {
         ComplexUnion res = new ComplexUnion();
         if (!ComplexUnion.allowNullFieldValues && typedefValue == null) {
@@ -173,7 +173,7 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
         res.id = 9;
         return res;
     }
-    
+
     public static ComplexUnion fromStringRef(final String stringRef) {
         ComplexUnion res = new ComplexUnion();
         if (!ComplexUnion.allowNullFieldValues && stringRef == null) {
@@ -412,7 +412,7 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
       case _INTVALUE: {
         oprot.writeFieldBegin(INT_VALUE_FIELD_DESC);
         long _iter0 = (long)this.value;
-    
+
         oprot.writeI64(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -420,7 +420,7 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
       case _STRINGVALUE: {
         oprot.writeFieldBegin(STRING_VALUE_FIELD_DESC);
         String _iter0 = (String)this.value;
-    
+
         oprot.writeString(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -428,7 +428,7 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
       case _INTLISTVALUE: {
         oprot.writeFieldBegin(INT_LIST_VALUE_FIELD_DESC);
         List<Long> _iter0 = (List<Long>)this.value;
-    
+
         oprot.writeListBegin(new TList(TType.I64, _iter0.size()));
             for (long _iter1 : _iter0) {
               oprot.writeI64(_iter1);
@@ -440,7 +440,7 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
       case _STRINGLISTVALUE: {
         oprot.writeFieldBegin(STRING_LIST_VALUE_FIELD_DESC);
         List<String> _iter0 = (List<String>)this.value;
-    
+
         oprot.writeListBegin(new TList(TType.STRING, _iter0.size()));
             for (String _iter1 : _iter0) {
               oprot.writeString(_iter1);
@@ -452,7 +452,7 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
       case _TYPEDEFVALUE: {
         oprot.writeFieldBegin(TYPEDEF_VALUE_FIELD_DESC);
         Map<Short, String> _iter0 = (Map<Short, String>)this.value;
-    
+
         oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, _iter0.size()));
             for (Map.Entry<Short, String> _iter1 : _iter0.entrySet()) {
               {
@@ -471,7 +471,7 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
       case _STRINGREF: {
         oprot.writeFieldBegin(STRING_REF_FIELD_DESC);
         String _iter0 = (String)this.value;
-    
+
         oprot.writeString(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -487,7 +487,7 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
     public static com.facebook.thrift.payload.Reader<ComplexUnion> asReader() {
       return ComplexUnion::read0;
     }
-    
+
     public static ComplexUnion read0(TProtocol oprot) throws TException {
       ComplexUnion res = new ComplexUnion();
       res.value = null;

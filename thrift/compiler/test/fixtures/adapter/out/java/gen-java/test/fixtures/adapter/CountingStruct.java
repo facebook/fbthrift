@@ -34,7 +34,7 @@ public final class CountingStruct implements com.facebook.thrift.payload.ThriftS
         this.countingInt = countingInt;
         this.regularString = regularString;
     }
-    
+
     @ThriftConstructor
     protected CountingStruct() {
       this.regularInt = null;
@@ -54,35 +54,35 @@ public final class CountingStruct implements com.facebook.thrift.payload.ThriftS
         private Long regularInt = null;
         private Long countingInt = null;
         private String regularString = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="regularInt", requiredness=Requiredness.OPTIONAL)    public Builder setRegularInt(Long regularInt) {
             this.regularInt = regularInt;
             return this;
         }
-    
+
         public Long getRegularInt() { return regularInt; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="countingInt", requiredness=Requiredness.OPTIONAL)    public Builder setCountingInt(Long countingInt) {
             this.countingInt = countingInt;
             return this;
         }
-    
+
         public Long getCountingInt() { return countingInt; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="regularString", requiredness=Requiredness.OPTIONAL)    public Builder setRegularString(String regularString) {
             this.regularString = regularString;
             return this;
         }
-    
+
         public String getRegularString() { return regularString; }
-    
+
         public Builder() { }
         public Builder(CountingStruct other) {
             this.regularInt = other.regularInt;
             this.countingInt = other.countingInt;
             this.regularString = other.regularString;
         }
-    
+
         @ThriftConstructor
         public CountingStruct build() {
             CountingStruct result = new CountingStruct (
@@ -153,9 +153,9 @@ public final class CountingStruct implements com.facebook.thrift.payload.ThriftS
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         CountingStruct other = (CountingStruct)o;
-    
+
         return
             Objects.equals(regularInt, other.regularInt) &&
             Objects.equals(countingInt, other.countingInt) &&
@@ -176,7 +176,7 @@ public final class CountingStruct implements com.facebook.thrift.payload.ThriftS
     public static com.facebook.thrift.payload.Reader<CountingStruct> asReader() {
       return CountingStruct::read0;
     }
-    
+
     public static CountingStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(CountingStruct.NAMES_TO_IDS, CountingStruct.THRIFT_NAMES_TO_IDS, CountingStruct.FIELD_METADATA);
@@ -252,7 +252,7 @@ public final class CountingStruct implements com.facebook.thrift.payload.ThriftS
     private static class _CountingStructLazy {
         private static final CountingStruct _DEFAULT = new CountingStruct.Builder().build();
     }
-    
+
     public static CountingStruct defaultInstance() {
         return  _CountingStructLazy._DEFAULT;
     }

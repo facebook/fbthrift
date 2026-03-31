@@ -38,7 +38,7 @@ public final class StructWithString implements com.facebook.thrift.payload.Thrif
         this.uniqueStringRef = uniqueStringRef;
         this.sharedStringRef = sharedStringRef;
     }
-    
+
     @ThriftConstructor
     protected StructWithString() {
       this.defUniqueStringRef = "...";
@@ -62,42 +62,42 @@ public final class StructWithString implements com.facebook.thrift.payload.Thrif
         private String defSharedStringConstRef = "...";
         private String uniqueStringRef = null;
         private String sharedStringRef = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="def_unique_string_ref", requiredness=Requiredness.NONE)    public Builder setDefUniqueStringRef(String defUniqueStringRef) {
             this.defUniqueStringRef = defUniqueStringRef;
             return this;
         }
-    
+
         public String getDefUniqueStringRef() { return defUniqueStringRef; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="def_shared_string_ref", requiredness=Requiredness.NONE)    public Builder setDefSharedStringRef(String defSharedStringRef) {
             this.defSharedStringRef = defSharedStringRef;
             return this;
         }
-    
+
         public String getDefSharedStringRef() { return defSharedStringRef; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="def_shared_string_const_ref", requiredness=Requiredness.NONE)    public Builder setDefSharedStringConstRef(String defSharedStringConstRef) {
             this.defSharedStringConstRef = defSharedStringConstRef;
             return this;
         }
-    
+
         public String getDefSharedStringConstRef() { return defSharedStringConstRef; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=4, name="unique_string_ref", requiredness=Requiredness.NONE)    public Builder setUniqueStringRef(String uniqueStringRef) {
             this.uniqueStringRef = uniqueStringRef;
             return this;
         }
-    
+
         public String getUniqueStringRef() { return uniqueStringRef; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=5, name="shared_string_ref", requiredness=Requiredness.NONE)    public Builder setSharedStringRef(String sharedStringRef) {
             this.sharedStringRef = sharedStringRef;
             return this;
         }
-    
+
         public String getSharedStringRef() { return sharedStringRef; }
-    
+
         public Builder() { }
         public Builder(StructWithString other) {
             this.defUniqueStringRef = other.defUniqueStringRef;
@@ -106,7 +106,7 @@ public final class StructWithString implements com.facebook.thrift.payload.Thrif
             this.uniqueStringRef = other.uniqueStringRef;
             this.sharedStringRef = other.sharedStringRef;
         }
-    
+
         @ThriftConstructor
         public StructWithString build() {
             StructWithString result = new StructWithString (
@@ -200,9 +200,9 @@ public final class StructWithString implements com.facebook.thrift.payload.Thrif
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         StructWithString other = (StructWithString)o;
-    
+
         return
             Objects.equals(defUniqueStringRef, other.defUniqueStringRef) &&
             Objects.equals(defSharedStringRef, other.defSharedStringRef) &&
@@ -227,7 +227,7 @@ public final class StructWithString implements com.facebook.thrift.payload.Thrif
     public static com.facebook.thrift.payload.Reader<StructWithString> asReader() {
       return StructWithString::read0;
     }
-    
+
     public static StructWithString read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(StructWithString.NAMES_TO_IDS, StructWithString.THRIFT_NAMES_TO_IDS, StructWithString.FIELD_METADATA);
@@ -335,7 +335,7 @@ public final class StructWithString implements com.facebook.thrift.payload.Thrif
     private static class _StructWithStringLazy {
         private static final StructWithString _DEFAULT = new StructWithString.Builder().build();
     }
-    
+
     public static StructWithString defaultInstance() {
         return  _StructWithStringLazy._DEFAULT;
     }

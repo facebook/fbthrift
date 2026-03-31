@@ -35,9 +35,9 @@ public class TestServiceThriftMetadataHandler implements com.facebook.thrift.ser
               .setName("int1")
               .setIsOptional(false)
               .build());
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("init")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I64_TYPE))

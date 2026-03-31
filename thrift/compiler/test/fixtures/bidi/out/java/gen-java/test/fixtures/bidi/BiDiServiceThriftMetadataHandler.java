@@ -29,9 +29,9 @@ public class BiDiServiceThriftMetadataHandler implements com.facebook.thrift.ser
   private static void addFunctions_0(List<ThriftFunction> functions) {
         {
           List<ThriftField> args = new ArrayList<>();
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("simple")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
@@ -42,9 +42,9 @@ public class BiDiServiceThriftMetadataHandler implements com.facebook.thrift.ser
         }
         {
           List<ThriftField> args = new ArrayList<>();
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("response")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_STRING_TYPE))
@@ -55,7 +55,7 @@ public class BiDiServiceThriftMetadataHandler implements com.facebook.thrift.ser
         }
         {
           List<ThriftField> args = new ArrayList<>();
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
           exceptions.add(new ThriftField.Builder()
               .setId(1)
@@ -63,7 +63,7 @@ public class BiDiServiceThriftMetadataHandler implements com.facebook.thrift.ser
               .setName("exception_1")
               .setIsOptional(false)
               .build());
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("canThrow")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))

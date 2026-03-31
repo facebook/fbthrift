@@ -32,7 +32,7 @@ public final class AdaptedStructWithInternBox implements com.facebook.thrift.pay
         this.field1 = field1;
         this.field2 = field2;
     }
-    
+
     @ThriftConstructor
     protected AdaptedStructWithInternBox() {
       this.field1 = null;
@@ -50,27 +50,27 @@ public final class AdaptedStructWithInternBox implements com.facebook.thrift.pay
     public static class Builder {
         private test.fixtures.refs.Empty field1 = null;
         private test.fixtures.refs.MyField field2 = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="field1", requiredness=Requiredness.NONE)    public Builder setField1(test.fixtures.refs.Empty field1) {
             this.field1 = field1;
             return this;
         }
-    
+
         public test.fixtures.refs.Empty getField1() { return field1; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="field2", requiredness=Requiredness.NONE)    public Builder setField2(test.fixtures.refs.MyField field2) {
             this.field2 = field2;
             return this;
         }
-    
+
         public test.fixtures.refs.MyField getField2() { return field2; }
-    
+
         public Builder() { }
         public Builder(AdaptedStructWithInternBox other) {
             this.field1 = other.field1;
             this.field2 = other.field2;
         }
-    
+
         @ThriftConstructor
         public AdaptedStructWithInternBox build() {
             AdaptedStructWithInternBox result = new AdaptedStructWithInternBox (
@@ -125,9 +125,9 @@ public final class AdaptedStructWithInternBox implements com.facebook.thrift.pay
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         AdaptedStructWithInternBox other = (AdaptedStructWithInternBox)o;
-    
+
         return
             Objects.equals(field1, other.field1) &&
             Objects.equals(field2, other.field2) &&
@@ -146,7 +146,7 @@ public final class AdaptedStructWithInternBox implements com.facebook.thrift.pay
     public static com.facebook.thrift.payload.Reader<AdaptedStructWithInternBox> asReader() {
       return AdaptedStructWithInternBox::read0;
     }
-    
+
     public static AdaptedStructWithInternBox read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(AdaptedStructWithInternBox.NAMES_TO_IDS, AdaptedStructWithInternBox.THRIFT_NAMES_TO_IDS, AdaptedStructWithInternBox.FIELD_METADATA);
@@ -206,7 +206,7 @@ public final class AdaptedStructWithInternBox implements com.facebook.thrift.pay
     private static class _AdaptedStructWithInternBoxLazy {
         private static final AdaptedStructWithInternBox _DEFAULT = new AdaptedStructWithInternBox.Builder().build();
     }
-    
+
     public static AdaptedStructWithInternBox defaultInstance() {
         return  _AdaptedStructWithInternBoxLazy._DEFAULT;
     }

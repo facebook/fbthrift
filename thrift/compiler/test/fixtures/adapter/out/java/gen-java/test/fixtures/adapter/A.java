@@ -28,8 +28,8 @@ public final class A implements com.facebook.thrift.payload.ThriftSerializable {
     public A(
     ) {
     }
-    
-    
+
+
 
     public static Builder builder() {
       return new Builder();
@@ -40,11 +40,11 @@ public final class A implements com.facebook.thrift.payload.ThriftSerializable {
     }
 
     public static class Builder {
-    
+
     public Builder() { }
         public Builder(A other) {
         }
-    
+
         @ThriftConstructor
         public A build() {
             A result = new A (
@@ -76,9 +76,9 @@ static {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         A other = (A)o;
-    
+
         return
             true;
     }
@@ -93,7 +93,7 @@ static {
     public static com.facebook.thrift.payload.Reader<A> asReader() {
       return A::read0;
     }
-    
+
     public static A read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(A.NAMES_TO_IDS, A.THRIFT_NAMES_TO_IDS, A.FIELD_METADATA);
@@ -121,7 +121,7 @@ static {
     private static class _ALazy {
         private static final A _DEFAULT = new A.Builder().build();
     }
-    
+
     public static A defaultInstance() {
         return  _ALazy._DEFAULT;
     }

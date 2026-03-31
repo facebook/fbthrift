@@ -73,10 +73,10 @@ def gen_metadata_service_lambda() -> _fbthrift_metadata.ThriftMetadata:
 
 def _fbthrift_gen_metadata_service_lambda(metadata_struct: _fbthrift_metadata.ThriftMetadata) -> _fbthrift_metadata.ThriftMetadata:
     qualified_name = "test.lambda"
-    
+
     if qualified_name in metadata_struct.services:
         return metadata_struct
-    
+
     functions = [
         _fbthrift_metadata.ThriftFunction(name="global", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BOOL_TYPE), arguments=[
             _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I64_TYPE), name="raise", is_optional=False, structured_annotations=[
@@ -89,23 +89,23 @@ def _fbthrift_gen_metadata_service_lambda(metadata_struct: _fbthrift_metadata.Th
         ], is_oneway=False, structured_annotations=[
         ]),
     ]
-    
+
     service_dict = dict(metadata_struct.services)
     service_dict[qualified_name] = _fbthrift_metadata.ThriftService(name=qualified_name, functions=functions,  structured_annotations=[
     ])
     new_struct = metadata_struct(services=service_dict)
-    
+
      # raise
-    
-    
+
+
      # return value
-    
-    
-    
-    
+
+
+
+
     new_struct = _fbthrift_gen_metadata_struct_def_(new_struct) # return value
-    
-    
+
+
     return new_struct
 
 def _fbthrift_metadata_service_response_lambda() -> _fbthrift_metadata.ThriftServiceMetadataResponse:

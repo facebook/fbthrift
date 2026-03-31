@@ -41,23 +41,23 @@ namespace facebook.thrift.annotation.hack
                 _name = value;
             }
         }
-    
+
         public @FieldWrapper()
         {
             @name = string.Empty;
         }
-    
+
         public void __fbthrift_clear()
         {
             @name = string.Empty;
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@name != null && @name.Length != 0) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: name (string)
@@ -65,7 +65,7 @@ namespace facebook.thrift.annotation.hack
             writer.WriteString(@name);
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -75,7 +75,7 @@ namespace facebook.thrift.annotation.hack
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // name
@@ -94,7 +94,7 @@ namespace facebook.thrift.annotation.hack
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @FieldWrapper other)
@@ -107,14 +107,14 @@ namespace facebook.thrift.annotation.hack
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
             hashCode.Add(@name);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -144,7 +144,7 @@ namespace facebook.thrift.annotation.hack
                 _name = value;
             }
         }
-    
+
         /// <summary>Gets or sets the underlyingName field.</summary>
         private string _underlyingName = string.Empty;
         public string @underlyingName
@@ -156,7 +156,7 @@ namespace facebook.thrift.annotation.hack
                 _underlyingName = value;
             }
         }
-    
+
         /// <summary>Gets or sets the extraNamespace field.</summary>
         private string _extraNamespace = "thrift_adapted_types";
         public string @extraNamespace
@@ -168,21 +168,21 @@ namespace facebook.thrift.annotation.hack
                 _extraNamespace = value;
             }
         }
-    
+
         public @Wrapper()
         {
             @name = string.Empty;
             @underlyingName = string.Empty;
             @extraNamespace = "thrift_adapted_types";
         }
-    
+
         public void __fbthrift_clear()
         {
             @name = string.Empty;
             @underlyingName = string.Empty;
             @extraNamespace = string.Empty;
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@name != null && @name.Length != 0) { return false; }
@@ -190,7 +190,7 @@ namespace facebook.thrift.annotation.hack
             if (@extraNamespace != null && @extraNamespace.Length != 0) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: name (string)
@@ -204,7 +204,7 @@ namespace facebook.thrift.annotation.hack
             writer.WriteString(@extraNamespace);
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -214,7 +214,7 @@ namespace facebook.thrift.annotation.hack
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // name
@@ -253,7 +253,7 @@ namespace facebook.thrift.annotation.hack
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @Wrapper other)
@@ -274,7 +274,7 @@ namespace facebook.thrift.annotation.hack
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
@@ -283,7 +283,7 @@ namespace facebook.thrift.annotation.hack
             hashCode.Add(@extraNamespace);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -319,23 +319,23 @@ namespace facebook.thrift.annotation.hack
                 _name = value;
             }
         }
-    
+
         public @Adapter()
         {
             @name = string.Empty;
         }
-    
+
         public void __fbthrift_clear()
         {
             @name = string.Empty;
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@name != null && @name.Length != 0) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: name (string)
@@ -343,7 +343,7 @@ namespace facebook.thrift.annotation.hack
             writer.WriteString(@name);
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -353,7 +353,7 @@ namespace facebook.thrift.annotation.hack
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // name
@@ -372,7 +372,7 @@ namespace facebook.thrift.annotation.hack
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @Adapter other)
@@ -385,14 +385,14 @@ namespace facebook.thrift.annotation.hack
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
             hashCode.Add(@name);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -422,23 +422,23 @@ namespace facebook.thrift.annotation.hack
                 _reason = value;
             }
         }
-    
+
         public @SkipCodegen()
         {
             @reason = string.Empty;
         }
-    
+
         public void __fbthrift_clear()
         {
             @reason = string.Empty;
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@reason != null && @reason.Length != 0) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: reason (string)
@@ -446,7 +446,7 @@ namespace facebook.thrift.annotation.hack
             writer.WriteString(@reason);
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -456,7 +456,7 @@ namespace facebook.thrift.annotation.hack
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // reason
@@ -475,7 +475,7 @@ namespace facebook.thrift.annotation.hack
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @SkipCodegen other)
@@ -488,14 +488,14 @@ namespace facebook.thrift.annotation.hack
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
             hashCode.Add(@reason);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -525,7 +525,7 @@ namespace facebook.thrift.annotation.hack
                 _name = value;
             }
         }
-    
+
         /// <summary>Gets or sets the reason field.</summary>
         private string _reason = string.Empty;
         public string @reason
@@ -537,26 +537,26 @@ namespace facebook.thrift.annotation.hack
                 _reason = value;
             }
         }
-    
+
         public @Name()
         {
             @name = string.Empty;
             @reason = string.Empty;
         }
-    
+
         public void __fbthrift_clear()
         {
             @name = string.Empty;
             @reason = string.Empty;
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@name != null && @name.Length != 0) { return false; }
             if (@reason != null && @reason.Length != 0) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: name (string)
@@ -567,7 +567,7 @@ namespace facebook.thrift.annotation.hack
             writer.WriteString(@reason);
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -577,7 +577,7 @@ namespace facebook.thrift.annotation.hack
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // name
@@ -606,7 +606,7 @@ namespace facebook.thrift.annotation.hack
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @Name other)
@@ -623,7 +623,7 @@ namespace facebook.thrift.annotation.hack
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
@@ -631,7 +631,7 @@ namespace facebook.thrift.annotation.hack
             hashCode.Add(@reason);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -664,23 +664,23 @@ namespace facebook.thrift.annotation.hack
                 _attributes = value;
             }
         }
-    
+
         public @UnionEnumAttributes()
         {
             @attributes = new List<string>();
         }
-    
+
         public void __fbthrift_clear()
         {
             @attributes = new List<string>();
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@attributes != null && @attributes.Count != 0) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: attributes (List<string>)
@@ -692,7 +692,7 @@ namespace facebook.thrift.annotation.hack
             }
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -702,7 +702,7 @@ namespace facebook.thrift.annotation.hack
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // attributes
@@ -721,7 +721,7 @@ namespace facebook.thrift.annotation.hack
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @UnionEnumAttributes other)
@@ -742,7 +742,7 @@ namespace facebook.thrift.annotation.hack
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
@@ -750,7 +750,7 @@ namespace facebook.thrift.annotation.hack
                 foreach (var item in @attributes) hashCode.Add(item);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -780,23 +780,23 @@ namespace facebook.thrift.annotation.hack
                 _name = value;
             }
         }
-    
+
         public @StructTrait()
         {
             @name = string.Empty;
         }
-    
+
         public void __fbthrift_clear()
         {
             @name = string.Empty;
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@name != null && @name.Length != 0) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: name (string)
@@ -804,7 +804,7 @@ namespace facebook.thrift.annotation.hack
             writer.WriteString(@name);
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -814,7 +814,7 @@ namespace facebook.thrift.annotation.hack
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // name
@@ -833,7 +833,7 @@ namespace facebook.thrift.annotation.hack
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @StructTrait other)
@@ -846,14 +846,14 @@ namespace facebook.thrift.annotation.hack
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
             hashCode.Add(@name);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -883,23 +883,23 @@ namespace facebook.thrift.annotation.hack
                 _attributes = value;
             }
         }
-    
+
         public @Attributes()
         {
             @attributes = new List<string>();
         }
-    
+
         public void __fbthrift_clear()
         {
             @attributes = new List<string>();
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@attributes != null && @attributes.Count != 0) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: attributes (List<string>)
@@ -911,7 +911,7 @@ namespace facebook.thrift.annotation.hack
             }
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -921,7 +921,7 @@ namespace facebook.thrift.annotation.hack
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // attributes
@@ -940,7 +940,7 @@ namespace facebook.thrift.annotation.hack
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @Attributes other)
@@ -961,7 +961,7 @@ namespace facebook.thrift.annotation.hack
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
@@ -969,7 +969,7 @@ namespace facebook.thrift.annotation.hack
                 foreach (var item in @attributes) hashCode.Add(item);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -991,21 +991,21 @@ namespace facebook.thrift.annotation.hack
         public @StructAsTrait()
         {
         }
-    
+
         public void __fbthrift_clear()
         {
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -1015,7 +1015,7 @@ namespace facebook.thrift.annotation.hack
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     default:
@@ -1024,7 +1024,7 @@ namespace facebook.thrift.annotation.hack
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @StructAsTrait other)
@@ -1033,13 +1033,13 @@ namespace facebook.thrift.annotation.hack
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -1059,21 +1059,21 @@ namespace facebook.thrift.annotation.hack
         public @ModuleInternal()
         {
         }
-    
+
         public void __fbthrift_clear()
         {
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -1083,7 +1083,7 @@ namespace facebook.thrift.annotation.hack
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     default:
@@ -1092,7 +1092,7 @@ namespace facebook.thrift.annotation.hack
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @ModuleInternal other)
@@ -1101,13 +1101,13 @@ namespace facebook.thrift.annotation.hack
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -1127,21 +1127,21 @@ namespace facebook.thrift.annotation.hack
         public @GenerateClientMethodsWithHeaders()
         {
         }
-    
+
         public void __fbthrift_clear()
         {
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -1151,7 +1151,7 @@ namespace facebook.thrift.annotation.hack
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     default:
@@ -1160,7 +1160,7 @@ namespace facebook.thrift.annotation.hack
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @GenerateClientMethodsWithHeaders other)
@@ -1169,13 +1169,13 @@ namespace facebook.thrift.annotation.hack
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -1195,21 +1195,21 @@ namespace facebook.thrift.annotation.hack
         public @MigrationBlockingAllowInheritance()
         {
         }
-    
+
         public void __fbthrift_clear()
         {
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -1219,7 +1219,7 @@ namespace facebook.thrift.annotation.hack
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     default:
@@ -1228,7 +1228,7 @@ namespace facebook.thrift.annotation.hack
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @MigrationBlockingAllowInheritance other)
@@ -1237,13 +1237,13 @@ namespace facebook.thrift.annotation.hack
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -1263,21 +1263,21 @@ namespace facebook.thrift.annotation.hack
         public @MigrationBlockingLegacyJSONSerialization()
         {
         }
-    
+
         public void __fbthrift_clear()
         {
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -1287,7 +1287,7 @@ namespace facebook.thrift.annotation.hack
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     default:
@@ -1296,7 +1296,7 @@ namespace facebook.thrift.annotation.hack
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @MigrationBlockingLegacyJSONSerialization other)
@@ -1305,13 +1305,13 @@ namespace facebook.thrift.annotation.hack
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -1331,21 +1331,21 @@ namespace facebook.thrift.annotation.hack
         public @FixmeWrongType()
         {
         }
-    
+
         public void __fbthrift_clear()
         {
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -1355,7 +1355,7 @@ namespace facebook.thrift.annotation.hack
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     default:
@@ -1364,7 +1364,7 @@ namespace facebook.thrift.annotation.hack
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @FixmeWrongType other)
@@ -1373,13 +1373,13 @@ namespace facebook.thrift.annotation.hack
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -1399,21 +1399,21 @@ namespace facebook.thrift.annotation.hack
         public @UnsafeArray()
         {
         }
-    
+
         public void __fbthrift_clear()
         {
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -1423,7 +1423,7 @@ namespace facebook.thrift.annotation.hack
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     default:
@@ -1432,7 +1432,7 @@ namespace facebook.thrift.annotation.hack
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @UnsafeArray other)
@@ -1441,13 +1441,13 @@ namespace facebook.thrift.annotation.hack
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();

@@ -33,33 +33,33 @@ class SomeService(_fbthrift_python_Client["SomeService.Async", "SomeService.Sync
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.SomeService"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return "apache.org/thrift/fixtures/types/SomeService"
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__apache__thrift__fixtures__types__module__thrift_metadata.gen_metadata_service_SomeService()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.SomeService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return "apache.org/thrift/fixtures/types/SomeService"
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__apache__thrift__fixtures__types__module__thrift_metadata.gen_metadata_service_SomeService()
-    
+
         async def bounce_map(
             self,
             m: _typing.Mapping[builtins.int, builtins.str],
@@ -83,7 +83,7 @@ class SomeService(_fbthrift_python_Client["SomeService.Async", "SomeService.Sync
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def binary_keyed_map(
             self,
             r: _typing.Sequence[builtins.int],
@@ -107,26 +107,26 @@ class SomeService(_fbthrift_python_Client["SomeService.Async", "SomeService.Sync
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     bounce_map = Async.bounce_map
     # pyre-ignore[4]: Missing annotation.
     binary_keyed_map = Async.binary_keyed_map
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.SomeService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return "apache.org/thrift/fixtures/types/SomeService"
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__apache__thrift__fixtures__types__module__thrift_metadata.gen_metadata_service_SomeService()
-    
+
         def bounce_map(
             self,
             m: _typing.Mapping[builtins.int, builtins.str],
@@ -149,7 +149,7 @@ class SomeService(_fbthrift_python_Client["SomeService.Async", "SomeService.Sync
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def binary_keyed_map(
             self,
             r: _typing.Sequence[builtins.int],

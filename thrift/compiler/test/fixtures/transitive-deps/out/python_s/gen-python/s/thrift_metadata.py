@@ -25,10 +25,10 @@ def gen_metadata_service_TestService() -> _fbthrift_metadata.ThriftMetadata:
 
 def _fbthrift_gen_metadata_service_TestService(metadata_struct: _fbthrift_metadata.ThriftMetadata) -> _fbthrift_metadata.ThriftMetadata:
     qualified_name = "s.TestService"
-    
+
     if qualified_name in metadata_struct.services:
         return metadata_struct
-    
+
     functions = [
         _fbthrift_metadata.ThriftFunction(name="test", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_VOID_TYPE), arguments=[
         ], exceptions = [
@@ -37,18 +37,18 @@ def _fbthrift_gen_metadata_service_TestService(metadata_struct: _fbthrift_metada
         ], is_oneway=False, structured_annotations=[
         ]),
     ]
-    
+
     service_dict = dict(metadata_struct.services)
     service_dict[qualified_name] = _fbthrift_metadata.ThriftService(name=qualified_name, functions=functions,  structured_annotations=[
     ])
     new_struct = metadata_struct(services=service_dict)
-    
-    
+
+
     new_struct = c.thrift_metadata._fbthrift_gen_metadata_exception_E(new_struct) # ex
-    
+
      # return value
-    
-    
+
+
     return new_struct
 
 def _fbthrift_metadata_service_response_TestService() -> _fbthrift_metadata.ThriftServiceMetadataResponse:

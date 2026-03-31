@@ -32,7 +32,7 @@ public final class StructWithInternBox implements com.facebook.thrift.payload.Th
         this.field1 = field1;
         this.field2 = field2;
     }
-    
+
     @ThriftConstructor
     protected StructWithInternBox() {
       this.field1 = null;
@@ -50,27 +50,27 @@ public final class StructWithInternBox implements com.facebook.thrift.payload.Th
     public static class Builder {
         private test.fixtures.refs.Empty field1 = null;
         private test.fixtures.refs.MyField field2 = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="field1", requiredness=Requiredness.NONE)    public Builder setField1(test.fixtures.refs.Empty field1) {
             this.field1 = field1;
             return this;
         }
-    
+
         public test.fixtures.refs.Empty getField1() { return field1; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="field2", requiredness=Requiredness.NONE)    public Builder setField2(test.fixtures.refs.MyField field2) {
             this.field2 = field2;
             return this;
         }
-    
+
         public test.fixtures.refs.MyField getField2() { return field2; }
-    
+
         public Builder() { }
         public Builder(StructWithInternBox other) {
             this.field1 = other.field1;
             this.field2 = other.field2;
         }
-    
+
         @ThriftConstructor
         public StructWithInternBox build() {
             StructWithInternBox result = new StructWithInternBox (
@@ -125,9 +125,9 @@ public final class StructWithInternBox implements com.facebook.thrift.payload.Th
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         StructWithInternBox other = (StructWithInternBox)o;
-    
+
         return
             Objects.equals(field1, other.field1) &&
             Objects.equals(field2, other.field2) &&
@@ -146,7 +146,7 @@ public final class StructWithInternBox implements com.facebook.thrift.payload.Th
     public static com.facebook.thrift.payload.Reader<StructWithInternBox> asReader() {
       return StructWithInternBox::read0;
     }
-    
+
     public static StructWithInternBox read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(StructWithInternBox.NAMES_TO_IDS, StructWithInternBox.THRIFT_NAMES_TO_IDS, StructWithInternBox.FIELD_METADATA);
@@ -206,7 +206,7 @@ public final class StructWithInternBox implements com.facebook.thrift.payload.Th
     private static class _StructWithInternBoxLazy {
         private static final StructWithInternBox _DEFAULT = new StructWithInternBox.Builder().build();
     }
-    
+
     public static StructWithInternBox defaultInstance() {
         return  _StructWithInternBoxLazy._DEFAULT;
     }

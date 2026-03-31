@@ -36,7 +36,7 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
         this.bigInteger = bigInteger;
         this.binaryTestBuffer = binaryTestBuffer;
     }
-    
+
     @ThriftConstructor
     protected TypeRemapped() {
       this.lsMap = null;
@@ -58,35 +58,35 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
         private it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> ioMap = null;
         private java.math.BigInteger bigInteger = 0;
         private java.nio.ByteBuffer binaryTestBuffer = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE)    public Builder setLsMap(it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap) {
             this.lsMap = lsMap;
             return this;
         }
-    
+
         public it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> getLsMap() { return lsMap; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)    public Builder setIoMap(it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> ioMap) {
             this.ioMap = ioMap;
             return this;
         }
-    
+
         public it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> getIoMap() { return ioMap; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="BigInteger", requiredness=Requiredness.NONE)    public Builder setBigInteger(java.math.BigInteger bigInteger) {
             this.bigInteger = bigInteger;
             return this;
         }
-    
+
         public java.math.BigInteger getBigInteger() { return bigInteger; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=4, name="binaryTestBuffer", requiredness=Requiredness.NONE)    public Builder setBinaryTestBuffer(java.nio.ByteBuffer binaryTestBuffer) {
             this.binaryTestBuffer = binaryTestBuffer;
             return this;
         }
-    
+
         public java.nio.ByteBuffer getBinaryTestBuffer() { return binaryTestBuffer; }
-    
+
         public Builder() { }
         public Builder(TypeRemapped other) {
             this.lsMap = other.lsMap;
@@ -94,7 +94,7 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
             this.bigInteger = other.bigInteger;
             this.binaryTestBuffer = other.binaryTestBuffer;
         }
-    
+
         @ThriftConstructor
         public TypeRemapped build() {
             TypeRemapped result = new TypeRemapped (
@@ -148,7 +148,7 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
     public it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> getIoMap() { return ioMap; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=3, name="BigInteger", requiredness=Requiredness.NONE)
     public java.math.BigInteger getBigInteger() { return bigInteger; }
 
@@ -175,9 +175,9 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         TypeRemapped other = (TypeRemapped)o;
-    
+
         return
             Objects.equals(lsMap, other.lsMap) &&
             Objects.equals(ioMap, other.ioMap) &&
@@ -200,7 +200,7 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
     public static com.facebook.thrift.payload.Reader<TypeRemapped> asReader() {
       return TypeRemapped::read0;
     }
-    
+
     public static TypeRemapped read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(TypeRemapped.NAMES_TO_IDS, TypeRemapped.THRIFT_NAMES_TO_IDS, TypeRemapped.FIELD_METADATA);
@@ -246,7 +246,7 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
                                     
                                     int _key2 = oprot.readI32();
                                     
-                    
+
                                     
                                     long _value2 = oprot.readI64();
                                     
@@ -363,7 +363,7 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
     private static class _TypeRemappedLazy {
         private static final TypeRemapped _DEFAULT = new TypeRemapped.Builder().build();
     }
-    
+
     public static TypeRemapped defaultInstance() {
         return  _TypeRemappedLazy._DEFAULT;
     }

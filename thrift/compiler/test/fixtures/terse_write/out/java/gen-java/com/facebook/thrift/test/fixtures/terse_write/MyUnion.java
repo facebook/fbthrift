@@ -209,56 +209,56 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
     @ThriftConstructor
     public MyUnion() {
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public MyUnion(final boolean boolField) {
         this.value = boolField;
         this.id = 1;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public MyUnion(final byte byteField) {
         this.value = byteField;
         this.id = 2;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public MyUnion(final short shortField) {
         this.value = shortField;
         this.id = 3;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public MyUnion(final int intField) {
         this.value = intField;
         this.id = 4;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public MyUnion(final long longField) {
         this.value = longField;
         this.id = 5;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public MyUnion(final float floatField) {
         this.value = floatField;
         this.id = 6;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public MyUnion(final double doubleField) {
         this.value = doubleField;
         this.id = 7;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public MyUnion(final String stringField) {
@@ -268,7 +268,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         this.value = stringField;
         this.id = 8;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public MyUnion(final byte[] binaryField) {
@@ -278,7 +278,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         this.value = binaryField;
         this.id = 9;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public MyUnion(final com.facebook.thrift.test.fixtures.terse_write.MyEnum enumField) {
@@ -288,7 +288,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         this.value = enumField;
         this.id = 10;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public MyUnion(final List<Short> listField) {
@@ -298,7 +298,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         this.value = listField;
         this.id = 11;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public MyUnion(final Set<Short> setField) {
@@ -308,7 +308,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         this.value = setField;
         this.id = 12;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public MyUnion(final Map<Short, Short> mapField) {
@@ -318,7 +318,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         this.value = mapField;
         this.id = 13;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public MyUnion(final com.facebook.thrift.test.fixtures.terse_write.MyStruct structField) {
@@ -328,56 +328,56 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         this.value = structField;
         this.id = 14;
     }
-    
+
     public static MyUnion fromBoolField(final boolean boolField) {
         MyUnion res = new MyUnion();
         res.value = boolField;
         res.id = 1;
         return res;
     }
-    
+
     public static MyUnion fromByteField(final byte byteField) {
         MyUnion res = new MyUnion();
         res.value = byteField;
         res.id = 2;
         return res;
     }
-    
+
     public static MyUnion fromShortField(final short shortField) {
         MyUnion res = new MyUnion();
         res.value = shortField;
         res.id = 3;
         return res;
     }
-    
+
     public static MyUnion fromIntField(final int intField) {
         MyUnion res = new MyUnion();
         res.value = intField;
         res.id = 4;
         return res;
     }
-    
+
     public static MyUnion fromLongField(final long longField) {
         MyUnion res = new MyUnion();
         res.value = longField;
         res.id = 5;
         return res;
     }
-    
+
     public static MyUnion fromFloatField(final float floatField) {
         MyUnion res = new MyUnion();
         res.value = floatField;
         res.id = 6;
         return res;
     }
-    
+
     public static MyUnion fromDoubleField(final double doubleField) {
         MyUnion res = new MyUnion();
         res.value = doubleField;
         res.id = 7;
         return res;
     }
-    
+
     public static MyUnion fromStringField(final String stringField) {
         MyUnion res = new MyUnion();
         if (!MyUnion.allowNullFieldValues && stringField == null) {
@@ -387,7 +387,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         res.id = 8;
         return res;
     }
-    
+
     public static MyUnion fromBinaryField(final byte[] binaryField) {
         MyUnion res = new MyUnion();
         if (!MyUnion.allowNullFieldValues && binaryField == null) {
@@ -397,7 +397,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         res.id = 9;
         return res;
     }
-    
+
     public static MyUnion fromEnumField(final com.facebook.thrift.test.fixtures.terse_write.MyEnum enumField) {
         MyUnion res = new MyUnion();
         if (!MyUnion.allowNullFieldValues && enumField == null) {
@@ -407,7 +407,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         res.id = 10;
         return res;
     }
-    
+
     public static MyUnion fromListField(final List<Short> listField) {
         MyUnion res = new MyUnion();
         if (!MyUnion.allowNullFieldValues && listField == null) {
@@ -417,7 +417,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         res.id = 11;
         return res;
     }
-    
+
     public static MyUnion fromSetField(final Set<Short> setField) {
         MyUnion res = new MyUnion();
         if (!MyUnion.allowNullFieldValues && setField == null) {
@@ -427,7 +427,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         res.id = 12;
         return res;
     }
-    
+
     public static MyUnion fromMapField(final Map<Short, Short> mapField) {
         MyUnion res = new MyUnion();
         if (!MyUnion.allowNullFieldValues && mapField == null) {
@@ -437,7 +437,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         res.id = 13;
         return res;
     }
-    
+
     public static MyUnion fromStructField(final com.facebook.thrift.test.fixtures.terse_write.MyStruct structField) {
         MyUnion res = new MyUnion();
         if (!MyUnion.allowNullFieldValues && structField == null) {
@@ -784,7 +784,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       case _BOOL_FIELD: {
         oprot.writeFieldBegin(BOOL_FIELD_FIELD_DESC);
         boolean _iter0 = (boolean)this.value;
-    
+
         oprot.writeBool(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -792,7 +792,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       case _BYTE_FIELD: {
         oprot.writeFieldBegin(BYTE_FIELD_FIELD_DESC);
         byte _iter0 = (byte)this.value;
-    
+
         oprot.writeByte(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -800,7 +800,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       case _SHORT_FIELD: {
         oprot.writeFieldBegin(SHORT_FIELD_FIELD_DESC);
         short _iter0 = (short)this.value;
-    
+
         oprot.writeI16(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -808,7 +808,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       case _INT_FIELD: {
         oprot.writeFieldBegin(INT_FIELD_FIELD_DESC);
         int _iter0 = (int)this.value;
-    
+
         oprot.writeI32(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -816,7 +816,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       case _LONG_FIELD: {
         oprot.writeFieldBegin(LONG_FIELD_FIELD_DESC);
         long _iter0 = (long)this.value;
-    
+
         oprot.writeI64(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -824,7 +824,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       case _FLOAT_FIELD: {
         oprot.writeFieldBegin(FLOAT_FIELD_FIELD_DESC);
         float _iter0 = (float)this.value;
-    
+
         oprot.writeFloat(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -832,7 +832,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       case _DOUBLE_FIELD: {
         oprot.writeFieldBegin(DOUBLE_FIELD_FIELD_DESC);
         double _iter0 = (double)this.value;
-    
+
         oprot.writeDouble(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -840,7 +840,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       case _STRING_FIELD: {
         oprot.writeFieldBegin(STRING_FIELD_FIELD_DESC);
         String _iter0 = (String)this.value;
-    
+
         oprot.writeString(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -848,7 +848,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       case _BINARY_FIELD: {
         oprot.writeFieldBegin(BINARY_FIELD_FIELD_DESC);
         byte[] _iter0 = (byte[])this.value;
-    
+
         oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
         oprot.writeFieldEnd();
         break;
@@ -856,7 +856,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       case _ENUM_FIELD: {
         oprot.writeFieldBegin(ENUM_FIELD_FIELD_DESC);
         com.facebook.thrift.test.fixtures.terse_write.MyEnum _iter0 = (com.facebook.thrift.test.fixtures.terse_write.MyEnum)this.value;
-    
+
         oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
         oprot.writeFieldEnd();
         break;
@@ -864,7 +864,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       case _LIST_FIELD: {
         oprot.writeFieldBegin(LIST_FIELD_FIELD_DESC);
         List<Short> _iter0 = (List<Short>)this.value;
-    
+
         oprot.writeListBegin(new TList(TType.I16, _iter0.size()));
             for (short _iter1 : _iter0) {
               oprot.writeI16(_iter1);
@@ -876,7 +876,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       case _SET_FIELD: {
         oprot.writeFieldBegin(SET_FIELD_FIELD_DESC);
         Set<Short> _iter0 = (Set<Short>)this.value;
-    
+
         oprot.writeSetBegin(new TSet(TType.I16, _iter0.size()));
             for (short _iter1 : _iter0) {
               oprot.writeI16(_iter1);
@@ -888,7 +888,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       case _MAP_FIELD: {
         oprot.writeFieldBegin(MAP_FIELD_FIELD_DESC);
         Map<Short, Short> _iter0 = (Map<Short, Short>)this.value;
-    
+
         oprot.writeMapBegin(new TMap(TType.I16, TType.I16, _iter0.size()));
             for (Map.Entry<Short, Short> _iter1 : _iter0.entrySet()) {
               {
@@ -907,7 +907,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       case _STRUCT_FIELD: {
         oprot.writeFieldBegin(STRUCT_FIELD_FIELD_DESC);
         com.facebook.thrift.test.fixtures.terse_write.MyStruct _iter0 = (com.facebook.thrift.test.fixtures.terse_write.MyStruct)this.value;
-    
+
         _iter0.write0(oprot);
         oprot.writeFieldEnd();
         break;
@@ -923,7 +923,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
     public static com.facebook.thrift.payload.Reader<MyUnion> asReader() {
       return MyUnion::read0;
     }
-    
+
     public static MyUnion read0(TProtocol oprot) throws TException {
       MyUnion res = new MyUnion();
       res.value = null;

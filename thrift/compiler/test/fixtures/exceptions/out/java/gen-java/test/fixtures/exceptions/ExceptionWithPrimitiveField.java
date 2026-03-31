@@ -52,7 +52,7 @@ public final class ExceptionWithPrimitiveField extends org.apache.thrift.TBaseEx
         this.message = message;
         this.errorCode = errorCode;
     }
-    
+
     @ThriftConstructor
     protected ExceptionWithPrimitiveField() {
       this.message = null;
@@ -62,27 +62,27 @@ public final class ExceptionWithPrimitiveField extends org.apache.thrift.TBaseEx
     public static class Builder {
         private String message = null;
         private int errorCode = 0;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.NONE)    public Builder setMessage(String message) {
             this.message = message;
             return this;
         }
-    
+
         public String getMessage() { return message; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="error_code", requiredness=Requiredness.NONE)    public Builder setErrorCode(int errorCode) {
             this.errorCode = errorCode;
             return this;
         }
-    
+
         public int getErrorCode() { return errorCode; }
-    
+
         public Builder() { }
         public Builder(ExceptionWithPrimitiveField other) {
             this.message = other.message;
             this.errorCode = other.errorCode;
         }
-    
+
         @ThriftConstructor
         public ExceptionWithPrimitiveField build() {
             ExceptionWithPrimitiveField result = new ExceptionWithPrimitiveField (
@@ -98,7 +98,7 @@ public final class ExceptionWithPrimitiveField extends org.apache.thrift.TBaseEx
     @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.NONE)
     public String getMessage() { return message; }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="error_code", requiredness=Requiredness.NONE)
     public int getErrorCode() { return errorCode; }
 
@@ -106,7 +106,7 @@ public final class ExceptionWithPrimitiveField extends org.apache.thrift.TBaseEx
     public static com.facebook.thrift.payload.Reader<ExceptionWithPrimitiveField> asReader() {
       return ExceptionWithPrimitiveField::read0;
     }
-    
+
     public static ExceptionWithPrimitiveField read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(ExceptionWithPrimitiveField.NAMES_TO_IDS, ExceptionWithPrimitiveField.THRIFT_NAMES_TO_IDS, ExceptionWithPrimitiveField.FIELD_METADATA);
@@ -164,7 +164,7 @@ public final class ExceptionWithPrimitiveField extends org.apache.thrift.TBaseEx
     private static class _ExceptionWithPrimitiveFieldLazy {
         private static final ExceptionWithPrimitiveField _DEFAULT = new ExceptionWithPrimitiveField.Builder().build();
     }
-    
+
     public static ExceptionWithPrimitiveField defaultInstance() {
         return  _ExceptionWithPrimitiveFieldLazy._DEFAULT;
     }}

@@ -46,7 +46,7 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
         this.myListTypedef = myListTypedef;
         this.myMapListOfTypeDef = myMapListOfTypeDef;
     }
-    
+
     @ThriftConstructor
     protected MyStructTypeDef() {
       this.myLongField = 0L;
@@ -78,70 +78,70 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
         private List<Double> myListField = null;
         private List<Double> myListTypedef = null;
         private Map<Short, List<List<Double>>> myMapListOfTypeDef = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)    public Builder setMyLongField(long myLongField) {
             this.myLongField = myLongField;
             return this;
         }
-    
+
         public long getMyLongField() { return myLongField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="myLongTypeDef", requiredness=Requiredness.NONE)    public Builder setMyLongTypeDef(long myLongTypeDef) {
             this.myLongTypeDef = myLongTypeDef;
             return this;
         }
-    
+
         public long getMyLongTypeDef() { return myLongTypeDef; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="myStringField", requiredness=Requiredness.NONE)    public Builder setMyStringField(String myStringField) {
             this.myStringField = myStringField;
             return this;
         }
-    
+
         public String getMyStringField() { return myStringField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=4, name="myStringTypedef", requiredness=Requiredness.NONE)    public Builder setMyStringTypedef(String myStringTypedef) {
             this.myStringTypedef = myStringTypedef;
             return this;
         }
-    
+
         public String getMyStringTypedef() { return myStringTypedef; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=5, name="myMapField", requiredness=Requiredness.NONE)    public Builder setMyMapField(Map<Short, String> myMapField) {
             this.myMapField = myMapField;
             return this;
         }
-    
+
         public Map<Short, String> getMyMapField() { return myMapField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=6, name="myMapTypedef", requiredness=Requiredness.NONE)    public Builder setMyMapTypedef(Map<Short, String> myMapTypedef) {
             this.myMapTypedef = myMapTypedef;
             return this;
         }
-    
+
         public Map<Short, String> getMyMapTypedef() { return myMapTypedef; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=7, name="myListField", requiredness=Requiredness.NONE)    public Builder setMyListField(List<Double> myListField) {
             this.myListField = myListField;
             return this;
         }
-    
+
         public List<Double> getMyListField() { return myListField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=8, name="myListTypedef", requiredness=Requiredness.NONE)    public Builder setMyListTypedef(List<Double> myListTypedef) {
             this.myListTypedef = myListTypedef;
             return this;
         }
-    
+
         public List<Double> getMyListTypedef() { return myListTypedef; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=9, name="myMapListOfTypeDef", requiredness=Requiredness.NONE)    public Builder setMyMapListOfTypeDef(Map<Short, List<List<Double>>> myMapListOfTypeDef) {
             this.myMapListOfTypeDef = myMapListOfTypeDef;
             return this;
         }
-    
+
         public Map<Short, List<List<Double>>> getMyMapListOfTypeDef() { return myMapListOfTypeDef; }
-    
+
         public Builder() { }
         public Builder(MyStructTypeDef other) {
             this.myLongField = other.myLongField;
@@ -154,7 +154,7 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
             this.myListTypedef = other.myListTypedef;
             this.myMapListOfTypeDef = other.myMapListOfTypeDef;
         }
-    
+
         @ThriftConstructor
         public MyStructTypeDef build() {
             MyStructTypeDef result = new MyStructTypeDef (
@@ -233,12 +233,12 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
       FIELD_METADATA.put(9, MY_MAP_LIST_OF_TYPE_DEF_FIELD_DESC);
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
     public long getMyLongField() { return myLongField; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="myLongTypeDef", requiredness=Requiredness.NONE)
     public long getMyLongTypeDef() { return myLongTypeDef; }
 
@@ -300,9 +300,9 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         MyStructTypeDef other = (MyStructTypeDef)o;
-    
+
         return
             Objects.equals(myLongField, other.myLongField) &&
             Objects.equals(myLongTypeDef, other.myLongTypeDef) &&
@@ -335,7 +335,7 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
     public static com.facebook.thrift.payload.Reader<MyStructTypeDef> asReader() {
       return MyStructTypeDef::read0;
     }
-    
+
     public static MyStructTypeDef read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(MyStructTypeDef.NAMES_TO_IDS, MyStructTypeDef.THRIFT_NAMES_TO_IDS, MyStructTypeDef.FIELD_METADATA);
@@ -480,7 +480,7 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
                                 }
                                 oprot.readListEnd();
                                 }
-                    
+
                                     
                                     _value1.add(_value2);
                                     
@@ -632,7 +632,7 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
     private static class _MyStructTypeDefLazy {
         private static final MyStructTypeDef _DEFAULT = new MyStructTypeDef.Builder().build();
     }
-    
+
     public static MyStructTypeDef defaultInstance() {
         return  _MyStructTypeDefLazy._DEFAULT;
     }

@@ -1045,7 +1045,7 @@ func (x *Person) readField6(p thrift.Decoder) error {  // Friends
     if err != nil {
         return thrift.PrependError("error reading set begin: ", err)
     }
-    
+
     setResult := make([]PersonID, 0, size)
     for i := 0; i < size; i++ {
         var elem PersonID
@@ -1058,7 +1058,7 @@ func (x *Person) readField6(p thrift.Decoder) error {  // Friends
         }
         setResult = append(setResult, elem)
     }
-    
+
     if err := p.ReadSetEnd(); err != nil {
         return thrift.PrependError("error reading set end: ", err)
     }
@@ -1163,7 +1163,7 @@ func (x *Person) writeField8(p thrift.Encoder) error {  // PetNames
                 return err
             }
         }
-    
+
         {
             item := v
             if err := p.WriteString(item); err != nil {
@@ -1186,7 +1186,7 @@ func (x *Person) readField8(p thrift.Decoder) error {  // PetNames
     if err != nil {
         return thrift.PrependError("error reading map begin: ", err)
     }
-    
+
     mapResult := make(map[Animal]string, size)
     for i := 0; i < size; i++ {
         var key Animal
@@ -1198,7 +1198,7 @@ func (x *Person) readField8(p thrift.Decoder) error {  // PetNames
             result := Animal(enumResult)
             key = result
         }
-    
+
         var value string
         {
             result, err := p.ReadString()
@@ -1207,10 +1207,10 @@ func (x *Person) readField8(p thrift.Decoder) error {  // PetNames
             }
             value = result
         }
-    
+
         mapResult[key] = value
     }
-    
+
     if err := p.ReadMapEnd(); err != nil {
         return thrift.PrependError("error reading map end: ", err)
     }
@@ -1331,7 +1331,7 @@ func (x *Person) readField10(p thrift.Decoder) error {  // Vehicles
     if err != nil {
         return thrift.PrependError("error reading list begin: ", err)
     }
-    
+
     listResult := make([]*Vehicle, 0, size)
     for i := 0; i < size; i++ {
         var elem *Vehicle
@@ -1345,7 +1345,7 @@ func (x *Person) readField10(p thrift.Decoder) error {  // Vehicles
         }
         listResult = append(listResult, elem)
     }
-    
+
     if err := p.ReadListEnd(); err != nil {
         return thrift.PrependError("error reading list end: ", err)
     }

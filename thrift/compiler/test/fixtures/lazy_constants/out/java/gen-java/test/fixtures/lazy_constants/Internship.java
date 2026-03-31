@@ -34,7 +34,7 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
         this.title = title;
         this.employer = employer;
     }
-    
+
     @ThriftConstructor
     protected Internship() {
       this.weeks = 0;
@@ -54,35 +54,35 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
         private int weeks = 0;
         private String title = null;
         private test.fixtures.lazy_constants.Company employer = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED)    public Builder setWeeks(int weeks) {
             this.weeks = weeks;
             return this;
         }
-    
+
         public int getWeeks() { return weeks; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="title", requiredness=Requiredness.NONE)    public Builder setTitle(String title) {
             this.title = title;
             return this;
         }
-    
+
         public String getTitle() { return title; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL)    public Builder setEmployer(test.fixtures.lazy_constants.Company employer) {
             this.employer = employer;
             return this;
         }
-    
+
         public test.fixtures.lazy_constants.Company getEmployer() { return employer; }
-    
+
         public Builder() { }
         public Builder(Internship other) {
             this.weeks = other.weeks;
             this.title = other.title;
             this.employer = other.employer;
         }
-    
+
         @ThriftConstructor
         public Internship build() {
             Internship result = new Internship (
@@ -119,7 +119,7 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
       FIELD_METADATA.put(3, EMPLOYER_FIELD_DESC);
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED)
     public int getWeeks() { return weeks; }
 
@@ -150,9 +150,9 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         Internship other = (Internship)o;
-    
+
         return
             Objects.equals(weeks, other.weeks) &&
             Objects.equals(title, other.title) &&
@@ -173,7 +173,7 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
     public static com.facebook.thrift.payload.Reader<Internship> asReader() {
       return Internship::read0;
     }
-    
+
     public static Internship read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(Internship.NAMES_TO_IDS, Internship.THRIFT_NAMES_TO_IDS, Internship.FIELD_METADATA);
@@ -247,7 +247,7 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
     private static class _InternshipLazy {
         private static final Internship _DEFAULT = new Internship.Builder().build();
     }
-    
+
     public static Internship defaultInstance() {
         return  _InternshipLazy._DEFAULT;
     }

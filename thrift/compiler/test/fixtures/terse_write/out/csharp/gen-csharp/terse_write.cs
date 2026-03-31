@@ -42,21 +42,21 @@ namespace facebook.thrift.test.fixtures.terse_write
         public @MyStruct()
         {
         }
-    
+
         public void __fbthrift_clear()
         {
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -66,7 +66,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     default:
@@ -75,7 +75,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @MyStruct other)
@@ -84,13 +84,13 @@ namespace facebook.thrift.test.fixtures.terse_write
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -128,20 +128,20 @@ namespace facebook.thrift.test.fixtures.terse_write
                 @map_field = 13,
                 @struct_field = 14,
             }
-    
+
             private Type _type = Type.Empty;
             private object? _value;
-    
+
             /// <summary>
             /// Gets the type of the currently set field
             /// </summary>
             public Type GetUnionType() => _type;
-    
+
             /// <summary>
             /// Returns true if this union has no value set
             /// </summary>
             public bool __fbthrift_is_empty() => _type == Type.Empty;
-    
+
             /// <summary>
             /// Clears the union value
             /// </summary>
@@ -150,7 +150,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _type = Type.Empty;
                 _value = null;
             }
-    
+
             /// <summary>
             /// Gets or sets the bool_field field.
             /// Setting this field clears any previously set field.
@@ -166,7 +166,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                     _value = value;
                 }
             }
-    
+
             /// <summary>
             /// Gets or sets the byte_field field.
             /// Setting this field clears any previously set field.
@@ -182,7 +182,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                     _value = value;
                 }
             }
-    
+
             /// <summary>
             /// Gets or sets the short_field field.
             /// Setting this field clears any previously set field.
@@ -198,7 +198,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                     _value = value;
                 }
             }
-    
+
             /// <summary>
             /// Gets or sets the int_field field.
             /// Setting this field clears any previously set field.
@@ -214,7 +214,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                     _value = value;
                 }
             }
-    
+
             /// <summary>
             /// Gets or sets the long_field field.
             /// Setting this field clears any previously set field.
@@ -230,7 +230,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                     _value = value;
                 }
             }
-    
+
             /// <summary>
             /// Gets or sets the float_field field.
             /// Setting this field clears any previously set field.
@@ -246,7 +246,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                     _value = value;
                 }
             }
-    
+
             /// <summary>
             /// Gets or sets the double_field field.
             /// Setting this field clears any previously set field.
@@ -262,7 +262,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                     _value = value;
                 }
             }
-    
+
             /// <summary>
             /// Gets or sets the string_field field.
             /// Setting this field clears any previously set field.
@@ -278,7 +278,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                     _value = value;
                 }
             }
-    
+
             /// <summary>
             /// Gets or sets the binary_field field.
             /// Setting this field clears any previously set field.
@@ -294,7 +294,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                     _value = value;
                 }
             }
-    
+
             /// <summary>
             /// Gets or sets the enum_field field.
             /// Setting this field clears any previously set field.
@@ -310,7 +310,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                     _value = value;
                 }
             }
-    
+
             /// <summary>
             /// Gets or sets the list_field field.
             /// Setting this field clears any previously set field.
@@ -326,7 +326,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                     _value = value;
                 }
             }
-    
+
             /// <summary>
             /// Gets or sets the set_field field.
             /// Setting this field clears any previously set field.
@@ -342,7 +342,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                     _value = value;
                 }
             }
-    
+
             /// <summary>
             /// Gets or sets the map_field field.
             /// Setting this field clears any previously set field.
@@ -358,7 +358,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                     _value = value;
                 }
             }
-    
+
             /// <summary>
             /// Gets or sets the struct_field field.
             /// Setting this field clears any previously set field.
@@ -374,7 +374,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                     _value = value;
                 }
             }
-    
+
             public void __fbthrift_write(IThriftProtocolWriter writer)
             {
                 switch (_type)
@@ -460,7 +460,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 }
                 writer.WriteFieldStop();
             }
-    
+
             public void __fbthrift_read(IThriftProtocolReader reader)
             {
                 __fbthrift_clear();
@@ -472,13 +472,13 @@ namespace facebook.thrift.test.fixtures.terse_write
                     {
                         break;
                     }
-            
+
                     if (_fieldSeen)
                     {
                         throw new ThriftProtocolException("Union cannot have multiple fields set");
                     }
                     _fieldSeen = true;
-            
+
                     switch (fieldId)
                     {
                         case 1: // bool_field
@@ -641,7 +641,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                     }
                 }
             }
-    
+
             public override bool Equals(object? obj)
             {
                 if (obj is not @MyUnion other)
@@ -654,12 +654,12 @@ namespace facebook.thrift.test.fixtures.terse_write
                 }
                 return Equals(_value, other._value);
             }
-    
+
             public override int GetHashCode()
             {
                 return HashCode.Combine(_type, _value);
             }
-    
+
             public override string ToString()
             {
                 return $"MyUnion({_type}={_value})";
@@ -675,23 +675,23 @@ namespace facebook.thrift.test.fixtures.terse_write
         public static readonly string __fbthrift_uri = "facebook.com/thrift/test/fixtures/terse_write/MyStructWithCustomDefault";
         /// <summary>Gets or sets the field1 field.</summary>
         public long @field1 { get; set; } = 1L;
-    
+
         public @MyStructWithCustomDefault()
         {
             @field1 = 1L;
         }
-    
+
         public void __fbthrift_clear()
         {
             @field1 = default;
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@field1 != default) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: field1 (long)
@@ -699,7 +699,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             writer.WriteI64(@field1);
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -709,7 +709,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // field1
@@ -728,7 +728,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @MyStructWithCustomDefault other)
@@ -741,14 +741,14 @@ namespace facebook.thrift.test.fixtures.terse_write
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
             hashCode.Add(@field1);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -769,25 +769,25 @@ namespace facebook.thrift.test.fixtures.terse_write
         public static readonly string __fbthrift_uri = "facebook.com/thrift/test/fixtures/terse_write/StructLevelTerseStruct";
         /// <summary>Gets or sets the bool_field field.</summary>
         public bool @bool_field { get; set; }
-    
+
         /// <summary>Gets or sets the byte_field field.</summary>
         public sbyte @byte_field { get; set; }
-    
+
         /// <summary>Gets or sets the short_field field.</summary>
         public short @short_field { get; set; }
-    
+
         /// <summary>Gets or sets the int_field field.</summary>
         public int @int_field { get; set; }
-    
+
         /// <summary>Gets or sets the long_field field.</summary>
         public long @long_field { get; set; }
-    
+
         /// <summary>Gets or sets the float_field field.</summary>
         public float @float_field { get; set; }
-    
+
         /// <summary>Gets or sets the double_field field.</summary>
         public double @double_field { get; set; }
-    
+
         /// <summary>Gets or sets the string_field field.</summary>
         private string _string_field = string.Empty;
         public string @string_field
@@ -799,7 +799,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _string_field = value;
             }
         }
-    
+
         /// <summary>Gets or sets the binary_field field.</summary>
         private byte[] _binary_field = Array.Empty<byte>();
         public byte[] @binary_field
@@ -811,10 +811,10 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _binary_field = value;
             }
         }
-    
+
         /// <summary>Gets or sets the enum_field field.</summary>
         public @MyEnum @enum_field { get; set; }
-    
+
         /// <summary>Gets or sets the list_field field.</summary>
         private List<short> _list_field = new List<short>();
         public List<short> @list_field
@@ -826,7 +826,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _list_field = value;
             }
         }
-    
+
         /// <summary>Gets or sets the set_field field.</summary>
         private HashSet<short> _set_field = new HashSet<short>();
         public HashSet<short> @set_field
@@ -838,7 +838,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _set_field = value;
             }
         }
-    
+
         /// <summary>Gets or sets the map_field field.</summary>
         private Dictionary<short, short> _map_field = new Dictionary<short, short>();
         public Dictionary<short, short> @map_field
@@ -850,7 +850,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _map_field = value;
             }
         }
-    
+
         /// <summary>Gets or sets the struct_field field.</summary>
         private @MyStruct _struct_field = new @MyStruct();
         public @MyStruct @struct_field
@@ -862,7 +862,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _struct_field = value;
             }
         }
-    
+
         /// <summary>Gets or sets the union_field field.</summary>
         private @MyUnion _union_field = new @MyUnion();
         public @MyUnion @union_field
@@ -874,7 +874,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _union_field = value;
             }
         }
-    
+
         public @StructLevelTerseStruct()
         {
             @string_field = string.Empty;
@@ -885,7 +885,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             @struct_field = new @MyStruct();
             @union_field = new @MyUnion();
         }
-    
+
         public void __fbthrift_clear()
         {
             @bool_field = default;
@@ -904,7 +904,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             @struct_field = new @MyStruct();
             @union_field = new @MyUnion();
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@bool_field != default) { return false; }
@@ -924,7 +924,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             if (@union_field != null && !@union_field.__fbthrift_is_empty()) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: bool_field (bool)
@@ -1032,7 +1032,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             }
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -1042,7 +1042,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // bool_field
@@ -1201,7 +1201,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @StructLevelTerseStruct other)
@@ -1288,7 +1288,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
@@ -1321,7 +1321,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             hashCode.Add(@union_field);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -1384,25 +1384,25 @@ namespace facebook.thrift.test.fixtures.terse_write
         public static readonly string __fbthrift_uri = "facebook.com/thrift/test/fixtures/terse_write/FieldLevelTerseStruct";
         /// <summary>Gets or sets the terse_bool_field field.</summary>
         public bool @terse_bool_field { get; set; }
-    
+
         /// <summary>Gets or sets the terse_byte_field field.</summary>
         public sbyte @terse_byte_field { get; set; }
-    
+
         /// <summary>Gets or sets the terse_short_field field.</summary>
         public short @terse_short_field { get; set; }
-    
+
         /// <summary>Gets or sets the terse_int_field field.</summary>
         public int @terse_int_field { get; set; }
-    
+
         /// <summary>Gets or sets the terse_long_field field.</summary>
         public long @terse_long_field { get; set; }
-    
+
         /// <summary>Gets or sets the terse_float_field field.</summary>
         public float @terse_float_field { get; set; }
-    
+
         /// <summary>Gets or sets the terse_double_field field.</summary>
         public double @terse_double_field { get; set; }
-    
+
         /// <summary>Gets or sets the terse_string_field field.</summary>
         private string _terse_string_field = string.Empty;
         public string @terse_string_field
@@ -1414,7 +1414,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _terse_string_field = value;
             }
         }
-    
+
         /// <summary>Gets or sets the terse_binary_field field.</summary>
         private byte[] _terse_binary_field = Array.Empty<byte>();
         public byte[] @terse_binary_field
@@ -1426,10 +1426,10 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _terse_binary_field = value;
             }
         }
-    
+
         /// <summary>Gets or sets the terse_enum_field field.</summary>
         public @MyEnum @terse_enum_field { get; set; }
-    
+
         /// <summary>Gets or sets the terse_list_field field.</summary>
         private List<short> _terse_list_field = new List<short>();
         public List<short> @terse_list_field
@@ -1441,7 +1441,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _terse_list_field = value;
             }
         }
-    
+
         /// <summary>Gets or sets the terse_set_field field.</summary>
         private HashSet<short> _terse_set_field = new HashSet<short>();
         public HashSet<short> @terse_set_field
@@ -1453,7 +1453,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _terse_set_field = value;
             }
         }
-    
+
         /// <summary>Gets or sets the terse_map_field field.</summary>
         private Dictionary<short, short> _terse_map_field = new Dictionary<short, short>();
         public Dictionary<short, short> @terse_map_field
@@ -1465,7 +1465,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _terse_map_field = value;
             }
         }
-    
+
         /// <summary>Gets or sets the terse_struct_field field.</summary>
         private @MyStruct _terse_struct_field = new @MyStruct();
         public @MyStruct @terse_struct_field
@@ -1477,7 +1477,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _terse_struct_field = value;
             }
         }
-    
+
         /// <summary>Gets or sets the terse_union_field field.</summary>
         private @MyUnion _terse_union_field = new @MyUnion();
         public @MyUnion @terse_union_field
@@ -1489,28 +1489,28 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _terse_union_field = value;
             }
         }
-    
+
         /// <summary>Gets or sets the bool_field field.</summary>
         public bool @bool_field { get; set; }
-    
+
         /// <summary>Gets or sets the byte_field field.</summary>
         public sbyte @byte_field { get; set; }
-    
+
         /// <summary>Gets or sets the short_field field.</summary>
         public short @short_field { get; set; }
-    
+
         /// <summary>Gets or sets the int_field field.</summary>
         public int @int_field { get; set; }
-    
+
         /// <summary>Gets or sets the long_field field.</summary>
         public long @long_field { get; set; }
-    
+
         /// <summary>Gets or sets the float_field field.</summary>
         public float @float_field { get; set; }
-    
+
         /// <summary>Gets or sets the double_field field.</summary>
         public double @double_field { get; set; }
-    
+
         /// <summary>Gets or sets the string_field field.</summary>
         private string _string_field = string.Empty;
         public string @string_field
@@ -1522,7 +1522,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _string_field = value;
             }
         }
-    
+
         /// <summary>Gets or sets the binary_field field.</summary>
         private byte[] _binary_field = Array.Empty<byte>();
         public byte[] @binary_field
@@ -1534,10 +1534,10 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _binary_field = value;
             }
         }
-    
+
         /// <summary>Gets or sets the enum_field field.</summary>
         public @MyEnum @enum_field { get; set; }
-    
+
         /// <summary>Gets or sets the list_field field.</summary>
         private List<short> _list_field = new List<short>();
         public List<short> @list_field
@@ -1549,7 +1549,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _list_field = value;
             }
         }
-    
+
         /// <summary>Gets or sets the set_field field.</summary>
         private HashSet<short> _set_field = new HashSet<short>();
         public HashSet<short> @set_field
@@ -1561,7 +1561,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _set_field = value;
             }
         }
-    
+
         /// <summary>Gets or sets the map_field field.</summary>
         private Dictionary<short, short> _map_field = new Dictionary<short, short>();
         public Dictionary<short, short> @map_field
@@ -1573,7 +1573,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _map_field = value;
             }
         }
-    
+
         /// <summary>Gets or sets the struct_field field.</summary>
         private @MyStruct _struct_field = new @MyStruct();
         public @MyStruct @struct_field
@@ -1585,7 +1585,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _struct_field = value;
             }
         }
-    
+
         /// <summary>Gets or sets the union_field field.</summary>
         private @MyUnion _union_field = new @MyUnion();
         public @MyUnion @union_field
@@ -1597,7 +1597,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _union_field = value;
             }
         }
-    
+
         public @FieldLevelTerseStruct()
         {
             @terse_string_field = string.Empty;
@@ -1615,7 +1615,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             @struct_field = new @MyStruct();
             @union_field = new @MyUnion();
         }
-    
+
         public void __fbthrift_clear()
         {
             @terse_bool_field = default;
@@ -1649,7 +1649,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             @struct_field = new @MyStruct();
             @union_field = new @MyUnion();
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@terse_bool_field != default) { return false; }
@@ -1684,7 +1684,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             if (@union_field != null && !@union_field.__fbthrift_is_empty()) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: terse_bool_field (bool)
@@ -1850,7 +1850,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             writer.WriteStruct(@union_field);
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -1860,7 +1860,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // terse_bool_field
@@ -2169,7 +2169,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @FieldLevelTerseStruct other)
@@ -2334,7 +2334,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
@@ -2394,7 +2394,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             hashCode.Add(@union_field);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -2502,24 +2502,24 @@ namespace facebook.thrift.test.fixtures.terse_write
         public static readonly string __fbthrift_uri = "facebook.com/thrift/test/fixtures/terse_write/AdaptedFields";
         /// <summary>Gets or sets the field1 field.</summary>
         public int /* MyInteger */ @field1 { get; set; }
-    
+
         /// <summary>Gets or sets the field2 field.</summary>
         public int @field2 { get; set; }
-    
+
         /// <summary>Gets or sets the field3 field.</summary>
         public int /* MyInteger */ @field3 { get; set; }
-    
+
         public @AdaptedFields()
         {
         }
-    
+
         public void __fbthrift_clear()
         {
             @field1 = default;
             @field2 = default;
             @field3 = default;
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@field1 != default) { return false; }
@@ -2527,7 +2527,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             if (@field3 != default) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: field1 (int /* MyInteger */)
@@ -2550,7 +2550,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             }
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -2560,7 +2560,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // field1
@@ -2599,7 +2599,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @AdaptedFields other)
@@ -2620,7 +2620,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
@@ -2629,7 +2629,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             hashCode.Add(@field3);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -2665,26 +2665,26 @@ namespace facebook.thrift.test.fixtures.terse_write
                 _msg = value;
             }
         }
-    
+
         /// <summary>Returns the exception message from the @thrift.ExceptionMessage field.</summary>
         public override string Message => @msg;
-    
+
         public @TerseException()
         {
             @msg = string.Empty;
         }
-    
+
         public void __fbthrift_clear()
         {
             @msg = string.Empty;
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@msg != null && @msg.Length != 0) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: msg (string)
@@ -2695,7 +2695,7 @@ namespace facebook.thrift.test.fixtures.terse_write
             }
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -2705,7 +2705,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // msg
@@ -2724,7 +2724,7 @@ namespace facebook.thrift.test.fixtures.terse_write
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @TerseException other)
@@ -2737,14 +2737,14 @@ namespace facebook.thrift.test.fixtures.terse_write
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
             hashCode.Add(@msg);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();

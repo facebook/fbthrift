@@ -86,7 +86,7 @@ public final class VirtualComplexUnion implements com.facebook.thrift.payload.Th
     @ThriftConstructor
     public VirtualComplexUnion() {
     }
-    
+
     public static VirtualComplexUnion fromThingOne(final String thingOne) {
         VirtualComplexUnion res = new VirtualComplexUnion();
         if (!VirtualComplexUnion.allowNullFieldValues && thingOne == null) {
@@ -96,7 +96,7 @@ public final class VirtualComplexUnion implements com.facebook.thrift.payload.Th
         res.id = 1;
         return res;
     }
-    
+
     public static VirtualComplexUnion fromThingTwo(final String thingTwo) {
         VirtualComplexUnion res = new VirtualComplexUnion();
         if (!VirtualComplexUnion.allowNullFieldValues && thingTwo == null) {
@@ -239,7 +239,7 @@ public final class VirtualComplexUnion implements com.facebook.thrift.payload.Th
       case _THINGONE: {
         oprot.writeFieldBegin(THING_ONE_FIELD_DESC);
         String _iter0 = (String)this.value;
-    
+
         oprot.writeString(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -247,7 +247,7 @@ public final class VirtualComplexUnion implements com.facebook.thrift.payload.Th
       case _THINGTWO: {
         oprot.writeFieldBegin(THING_TWO_FIELD_DESC);
         String _iter0 = (String)this.value;
-    
+
         oprot.writeString(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -263,7 +263,7 @@ public final class VirtualComplexUnion implements com.facebook.thrift.payload.Th
     public static com.facebook.thrift.payload.Reader<VirtualComplexUnion> asReader() {
       return VirtualComplexUnion::read0;
     }
-    
+
     public static VirtualComplexUnion read0(TProtocol oprot) throws TException {
       VirtualComplexUnion res = new VirtualComplexUnion();
       res.value = null;

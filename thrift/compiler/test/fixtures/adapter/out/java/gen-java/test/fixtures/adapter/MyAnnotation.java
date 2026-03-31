@@ -32,7 +32,7 @@ public final class MyAnnotation implements com.facebook.thrift.payload.ThriftSer
         this.signature = signature;
         this.color = color;
     }
-    
+
     @ThriftConstructor
     protected MyAnnotation() {
       this.signature = null;
@@ -50,27 +50,27 @@ public final class MyAnnotation implements com.facebook.thrift.payload.ThriftSer
     public static class Builder {
         private String signature = null;
         private test.fixtures.adapter.Color color = test.fixtures.adapter.Color.RED;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="signature", requiredness=Requiredness.NONE)    public Builder setSignature(String signature) {
             this.signature = signature;
             return this;
         }
-    
+
         public String getSignature() { return signature; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="color", requiredness=Requiredness.NONE)    public Builder setColor(test.fixtures.adapter.Color color) {
             this.color = color;
             return this;
         }
-    
+
         public test.fixtures.adapter.Color getColor() { return color; }
-    
+
         public Builder() { }
         public Builder(MyAnnotation other) {
             this.signature = other.signature;
             this.color = other.color;
         }
-    
+
         @ThriftConstructor
         public MyAnnotation build() {
             MyAnnotation result = new MyAnnotation (
@@ -128,9 +128,9 @@ public final class MyAnnotation implements com.facebook.thrift.payload.ThriftSer
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         MyAnnotation other = (MyAnnotation)o;
-    
+
         return
             Objects.equals(signature, other.signature) &&
             Objects.equals(color, other.color) &&
@@ -149,7 +149,7 @@ public final class MyAnnotation implements com.facebook.thrift.payload.ThriftSer
     public static com.facebook.thrift.payload.Reader<MyAnnotation> asReader() {
       return MyAnnotation::read0;
     }
-    
+
     public static MyAnnotation read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(MyAnnotation.NAMES_TO_IDS, MyAnnotation.THRIFT_NAMES_TO_IDS, MyAnnotation.FIELD_METADATA);
@@ -207,7 +207,7 @@ public final class MyAnnotation implements com.facebook.thrift.payload.ThriftSer
     private static class _MyAnnotationLazy {
         private static final MyAnnotation _DEFAULT = new MyAnnotation.Builder().build();
     }
-    
+
     public static MyAnnotation defaultInstance() {
         return  _MyAnnotationLazy._DEFAULT;
     }

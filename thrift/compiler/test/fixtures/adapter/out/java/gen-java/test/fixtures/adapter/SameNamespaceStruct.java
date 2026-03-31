@@ -30,7 +30,7 @@ public final class SameNamespaceStruct implements com.facebook.thrift.payload.Th
     ) {
         this.data = data;
     }
-    
+
     @ThriftConstructor
     protected SameNamespaceStruct() {
       this.data = 0L;
@@ -46,19 +46,19 @@ public final class SameNamespaceStruct implements com.facebook.thrift.payload.Th
 
     public static class Builder {
         private long data = 0L;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="data", requiredness=Requiredness.NONE)    public Builder setData(long data) {
             this.data = data;
             return this;
         }
-    
+
         public long getData() { return data; }
-    
+
         public Builder() { }
         public Builder(SameNamespaceStruct other) {
             this.data = other.data;
         }
-    
+
         @ThriftConstructor
         public SameNamespaceStruct build() {
             SameNamespaceStruct result = new SameNamespaceStruct (
@@ -84,7 +84,7 @@ public final class SameNamespaceStruct implements com.facebook.thrift.payload.Th
         SameNamespaceStruct.class, SameNamespaceStruct::read0));
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="data", requiredness=Requiredness.NONE)
     public long getData() { return data; }
 
@@ -103,9 +103,9 @@ public final class SameNamespaceStruct implements com.facebook.thrift.payload.Th
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         SameNamespaceStruct other = (SameNamespaceStruct)o;
-    
+
         return
             Objects.equals(data, other.data) &&
             true;
@@ -122,7 +122,7 @@ public final class SameNamespaceStruct implements com.facebook.thrift.payload.Th
     public static com.facebook.thrift.payload.Reader<SameNamespaceStruct> asReader() {
       return SameNamespaceStruct::read0;
     }
-    
+
     public static SameNamespaceStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(SameNamespaceStruct.NAMES_TO_IDS, SameNamespaceStruct.THRIFT_NAMES_TO_IDS, SameNamespaceStruct.FIELD_METADATA);
@@ -164,7 +164,7 @@ public final class SameNamespaceStruct implements com.facebook.thrift.payload.Th
     private static class _SameNamespaceStructLazy {
         private static final SameNamespaceStruct _DEFAULT = new SameNamespaceStruct.Builder().build();
     }
-    
+
     public static SameNamespaceStruct defaultInstance() {
         return  _SameNamespaceStructLazy._DEFAULT;
     }

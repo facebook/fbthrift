@@ -32,7 +32,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         this.myEnum = myEnum;
         this.myBigEnum = myBigEnum;
     }
-    
+
     @ThriftConstructor
     protected MyStruct() {
       this.myEnum = test.fixtures.swift.enumstrict.MyEnum.fromInteger(0);
@@ -50,27 +50,27 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public static class Builder {
         private test.fixtures.swift.enumstrict.MyEnum myEnum = test.fixtures.swift.enumstrict.MyEnum.fromInteger(0);
         private test.fixtures.swift.enumstrict.MyBigEnum myBigEnum = test.fixtures.swift.enumstrict.MyBigEnum.ONE;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE)    public Builder setMyEnum(test.fixtures.swift.enumstrict.MyEnum myEnum) {
             this.myEnum = myEnum;
             return this;
         }
-    
+
         public test.fixtures.swift.enumstrict.MyEnum getMyEnum() { return myEnum; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="myBigEnum", requiredness=Requiredness.NONE)    public Builder setMyBigEnum(test.fixtures.swift.enumstrict.MyBigEnum myBigEnum) {
             this.myBigEnum = myBigEnum;
             return this;
         }
-    
+
         public test.fixtures.swift.enumstrict.MyBigEnum getMyBigEnum() { return myBigEnum; }
-    
+
         public Builder() { }
         public Builder(MyStruct other) {
             this.myEnum = other.myEnum;
             this.myBigEnum = other.myBigEnum;
         }
-    
+
         @ThriftConstructor
         public MyStruct build() {
             MyStruct result = new MyStruct (
@@ -128,9 +128,9 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         MyStruct other = (MyStruct)o;
-    
+
         return
             Objects.equals(myEnum, other.myEnum) &&
             Objects.equals(myBigEnum, other.myBigEnum) &&
@@ -149,7 +149,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public static com.facebook.thrift.payload.Reader<MyStruct> asReader() {
       return MyStruct::read0;
     }
-    
+
     public static MyStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(MyStruct.NAMES_TO_IDS, MyStruct.THRIFT_NAMES_TO_IDS, MyStruct.FIELD_METADATA);
@@ -205,7 +205,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     private static class _MyStructLazy {
         private static final MyStruct _DEFAULT = new MyStruct.Builder().build();
     }
-    
+
     public static MyStruct defaultInstance() {
         return  _MyStructLazy._DEFAULT;
     }

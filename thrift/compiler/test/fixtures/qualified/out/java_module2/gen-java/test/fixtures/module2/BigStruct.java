@@ -32,7 +32,7 @@ public final class BigStruct implements com.facebook.thrift.payload.ThriftSerial
         this.s = s;
         this.id = id;
     }
-    
+
     @ThriftConstructor
     protected BigStruct() {
       this.s = null;
@@ -50,27 +50,27 @@ public final class BigStruct implements com.facebook.thrift.payload.ThriftSerial
     public static class Builder {
         private test.fixtures.module2.Struct s = null;
         private int id = 0;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="s", requiredness=Requiredness.NONE)    public Builder setS(test.fixtures.module2.Struct s) {
             this.s = s;
             return this;
         }
-    
+
         public test.fixtures.module2.Struct getS() { return s; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="id", requiredness=Requiredness.NONE)    public Builder setId(int id) {
             this.id = id;
             return this;
         }
-    
+
         public int getId() { return id; }
-    
+
         public Builder() { }
         public Builder(BigStruct other) {
             this.s = other.s;
             this.id = other.id;
         }
-    
+
         @ThriftConstructor
         public BigStruct build() {
             BigStruct result = new BigStruct (
@@ -105,7 +105,7 @@ public final class BigStruct implements com.facebook.thrift.payload.ThriftSerial
     public test.fixtures.module2.Struct getS() { return s; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="id", requiredness=Requiredness.NONE)
     public int getId() { return id; }
 
@@ -125,9 +125,9 @@ public final class BigStruct implements com.facebook.thrift.payload.ThriftSerial
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         BigStruct other = (BigStruct)o;
-    
+
         return
             Objects.equals(s, other.s) &&
             Objects.equals(id, other.id) &&
@@ -146,7 +146,7 @@ public final class BigStruct implements com.facebook.thrift.payload.ThriftSerial
     public static com.facebook.thrift.payload.Reader<BigStruct> asReader() {
       return BigStruct::read0;
     }
-    
+
     public static BigStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(BigStruct.NAMES_TO_IDS, BigStruct.THRIFT_NAMES_TO_IDS, BigStruct.FIELD_METADATA);
@@ -204,7 +204,7 @@ public final class BigStruct implements com.facebook.thrift.payload.ThriftSerial
     private static class _BigStructLazy {
         private static final BigStruct _DEFAULT = new BigStruct.Builder().build();
     }
-    
+
     public static BigStruct defaultInstance() {
         return  _BigStructLazy._DEFAULT;
     }

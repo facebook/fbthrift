@@ -145,6 +145,30 @@ TEST_F(PartialsTest, StandaloneIndentation) {
                 "|\n"}})));
 }
 
+// Blank lines within a partial should not receive standalone indentation,
+// to avoid trailing whitespace.
+TEST_F(PartialsTest, StandaloneIndentationBlankLines) {
+  EXPECT_EQ(
+      R"(\
+ |
+
+ |
+/
+)",
+      *render(
+          R"(\
+ {{>partial}}
+/
+)",
+          w::map(),
+          sources(
+              {{"partial",
+                R"(|
+
+|
+)"}})));
+}
+
 // Superfluous in-tag whitespace should be ignored.
 //   https://github.com/mustache/spec/blob/v1.4.2/specs/partials.yml#L111-L116
 TEST_F(PartialsTest, PaddingWhitespace) {

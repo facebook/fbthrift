@@ -159,7 +159,7 @@ public final class Nada implements com.facebook.thrift.payload.ThriftSerializabl
     public static com.facebook.thrift.payload.Reader<Nada> asReader() {
       return Nada::read0;
     }
-    
+
     public static Nada read0(TProtocol oprot) throws TException {
       Nada res = new Nada();
       res.value = null;

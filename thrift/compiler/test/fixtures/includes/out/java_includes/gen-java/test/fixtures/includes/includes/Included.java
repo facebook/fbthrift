@@ -32,7 +32,7 @@ public final class Included implements com.facebook.thrift.payload.ThriftSeriali
         this.myIntField = myIntField;
         this.myTransitiveField = myTransitiveField;
     }
-    
+
     @ThriftConstructor
     protected Included() {
       this.myIntField = 0L;
@@ -50,27 +50,27 @@ public final class Included implements com.facebook.thrift.payload.ThriftSeriali
     public static class Builder {
         private long myIntField = 0L;
         private test.fixtures.includes.transitive.Foo myTransitiveField = test.fixtures.includes.transitive.Constants.EXAMPLE_FOO;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)    public Builder setMyIntField(long myIntField) {
             this.myIntField = myIntField;
             return this;
         }
-    
+
         public long getMyIntField() { return myIntField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="MyTransitiveField", requiredness=Requiredness.NONE)    public Builder setMyTransitiveField(test.fixtures.includes.transitive.Foo myTransitiveField) {
             this.myTransitiveField = myTransitiveField;
             return this;
         }
-    
+
         public test.fixtures.includes.transitive.Foo getMyTransitiveField() { return myTransitiveField; }
-    
+
         public Builder() { }
         public Builder(Included other) {
             this.myIntField = other.myIntField;
             this.myTransitiveField = other.myTransitiveField;
         }
-    
+
         @ThriftConstructor
         public Included build() {
             Included result = new Included (
@@ -100,7 +100,7 @@ public final class Included implements com.facebook.thrift.payload.ThriftSeriali
       FIELD_METADATA.put(2, MY_TRANSITIVE_FIELD_FIELD_DESC);
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
     public long getMyIntField() { return myIntField; }
 
@@ -125,9 +125,9 @@ public final class Included implements com.facebook.thrift.payload.ThriftSeriali
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         Included other = (Included)o;
-    
+
         return
             Objects.equals(myIntField, other.myIntField) &&
             Objects.equals(myTransitiveField, other.myTransitiveField) &&
@@ -146,7 +146,7 @@ public final class Included implements com.facebook.thrift.payload.ThriftSeriali
     public static com.facebook.thrift.payload.Reader<Included> asReader() {
       return Included::read0;
     }
-    
+
     public static Included read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(Included.NAMES_TO_IDS, Included.THRIFT_NAMES_TO_IDS, Included.FIELD_METADATA);
@@ -204,7 +204,7 @@ public final class Included implements com.facebook.thrift.payload.ThriftSeriali
     private static class _IncludedLazy {
         private static final Included _DEFAULT = new Included.Builder().build();
     }
-    
+
     public static Included defaultInstance() {
         return  _IncludedLazy._DEFAULT;
     }

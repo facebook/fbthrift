@@ -32,33 +32,33 @@ class Raiser(_fbthrift_python_Client["Raiser.Async", "Raiser.Sync"]):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.Raiser"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__module__thrift_metadata.gen_metadata_service_Raiser()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.Raiser"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__module__thrift_metadata.gen_metadata_service_Raiser()
-    
+
         async def doBland(
             self,
             *,
@@ -73,7 +73,7 @@ class Raiser(_fbthrift_python_Client["Raiser.Async", "Raiser.Sync"]):
                 uri_or_name="Raiser",
                 rpc_options=rpc_options,
             )
-    
+
         async def doRaise(
             self,
             *,
@@ -97,7 +97,7 @@ class Raiser(_fbthrift_python_Client["Raiser.Async", "Raiser.Sync"]):
             # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `_ex2__s`
             if (_fbthrift_ex := _fbthrift_resp._ex2__s) is not None:
                 raise _fbthrift_ex
-    
+
         async def get200(
             self,
             *,
@@ -119,7 +119,7 @@ class Raiser(_fbthrift_python_Client["Raiser.Async", "Raiser.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def get500(
             self,
             *,
@@ -150,8 +150,8 @@ class Raiser(_fbthrift_python_Client["Raiser.Async", "Raiser.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     doBland = Async.doBland
     # pyre-ignore[4]: Missing annotation.
@@ -160,20 +160,20 @@ class Raiser(_fbthrift_python_Client["Raiser.Async", "Raiser.Sync"]):
     get200 = Async.get200
     # pyre-ignore[4]: Missing annotation.
     get500 = Async.get500
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.Raiser"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__module__thrift_metadata.gen_metadata_service_Raiser()
-    
+
         def doBland(
             self,
             *,
@@ -187,7 +187,7 @@ class Raiser(_fbthrift_python_Client["Raiser.Async", "Raiser.Sync"]):
                 uri_or_name="Raiser",
                 rpc_options=rpc_options,
             )
-    
+
         def doRaise(
             self,
             *,
@@ -210,7 +210,7 @@ class Raiser(_fbthrift_python_Client["Raiser.Async", "Raiser.Sync"]):
             # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `_ex2__s`
             if (_fbthrift_ex := _fbthrift_resp._ex2__s) is not None:
                 raise _fbthrift_ex
-    
+
         def get200(
             self,
             *,
@@ -231,7 +231,7 @@ class Raiser(_fbthrift_python_Client["Raiser.Async", "Raiser.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def get500(
             self,
             *,

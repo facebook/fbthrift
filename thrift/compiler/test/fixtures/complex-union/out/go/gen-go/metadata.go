@@ -290,11 +290,11 @@ var (
                                         Key: &metadata.ThriftConstValue{
                                         CvString: new("cpp.virtual"),
                                     },
-                                    
+
                                         Value: &metadata.ThriftConstValue{
                                         CvString: new("1"),
                                     },
-                                    
+
                                     },
                                 },
                             },
@@ -327,11 +327,11 @@ var (
                                         Key: &metadata.ThriftConstValue{
                                         CvString: new("cpp.noncopyable"),
                                     },
-                                    
+
                                         Value: &metadata.ThriftConstValue{
                                         CvString: new("1"),
                                     },
-                                    
+
                                     },
                                 },
                             },
@@ -364,11 +364,11 @@ var (
                                         Key: &metadata.ThriftConstValue{
                                         CvString: new("cpp.noncopyable"),
                                     },
-                                    
+
                                         Value: &metadata.ThriftConstValue{
                                         CvString: new("1"),
                                     },
-                                    
+
                                     },
                                 },
                             },

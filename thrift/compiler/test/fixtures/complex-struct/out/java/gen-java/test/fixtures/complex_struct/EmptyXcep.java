@@ -36,15 +36,15 @@ public final class EmptyXcep extends org.apache.thrift.TBaseException implements
     public EmptyXcep(
     ) {
     }
-    
-    
+
+
 
     public static class Builder {
-    
+
     public Builder() { }
         public Builder(EmptyXcep other) {
         }
-    
+
         @ThriftConstructor
         public EmptyXcep build() {
             EmptyXcep result = new EmptyXcep (
@@ -58,7 +58,7 @@ public final class EmptyXcep extends org.apache.thrift.TBaseException implements
     public static com.facebook.thrift.payload.Reader<EmptyXcep> asReader() {
       return EmptyXcep::read0;
     }
-    
+
     public static EmptyXcep read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(EmptyXcep.NAMES_TO_IDS, EmptyXcep.THRIFT_NAMES_TO_IDS, EmptyXcep.FIELD_METADATA);
@@ -86,7 +86,7 @@ public final class EmptyXcep extends org.apache.thrift.TBaseException implements
     private static class _EmptyXcepLazy {
         private static final EmptyXcep _DEFAULT = new EmptyXcep.Builder().build();
     }
-    
+
     public static EmptyXcep defaultInstance() {
         return  _EmptyXcepLazy._DEFAULT;
     }}

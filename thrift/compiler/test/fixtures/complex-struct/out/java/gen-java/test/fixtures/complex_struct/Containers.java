@@ -102,7 +102,7 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
         this.mapI32MapListI32I32 = mapI32MapListI32I32;
         this.mapI32MapListStructI32 = mapI32MapListStructI32;
     }
-    
+
     @ThriftConstructor
     protected Containers() {
       this.structList = null;
@@ -190,266 +190,266 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
         private Map<Integer, Map<Integer, test.fixtures.complex_struct.MyStruct>> mapI32MapI32Struct = null;
         private Map<Integer, List<Map<Integer, Integer>>> mapI32MapListI32I32 = null;
         private Map<Integer, List<Map<test.fixtures.complex_struct.MyStruct, Integer>>> mapI32MapListStructI32 = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="struct_list", requiredness=Requiredness.NONE)    public Builder setStructList(List<test.fixtures.complex_struct.MyStruct> structList) {
             this.structList = structList;
             return this;
         }
-    
+
         public List<test.fixtures.complex_struct.MyStruct> getStructList() { return structList; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="union_list", requiredness=Requiredness.NONE)    public Builder setUnionList(List<test.fixtures.complex_struct.MyUnion> unionList) {
             this.unionList = unionList;
             return this;
         }
-    
+
         public List<test.fixtures.complex_struct.MyUnion> getUnionList() { return unionList; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="enum_list", requiredness=Requiredness.NONE)    public Builder setEnumList(List<test.fixtures.complex_struct.MyEnum> enumList) {
             this.enumList = enumList;
             return this;
         }
-    
+
         public List<test.fixtures.complex_struct.MyEnum> getEnumList() { return enumList; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=4, name="struct_set", requiredness=Requiredness.NONE)    public Builder setStructSet(Set<test.fixtures.complex_struct.MyStruct> structSet) {
             this.structSet = structSet;
             return this;
         }
-    
+
         public Set<test.fixtures.complex_struct.MyStruct> getStructSet() { return structSet; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=5, name="union_set", requiredness=Requiredness.NONE)    public Builder setUnionSet(Set<test.fixtures.complex_struct.MyUnion> unionSet) {
             this.unionSet = unionSet;
             return this;
         }
-    
+
         public Set<test.fixtures.complex_struct.MyUnion> getUnionSet() { return unionSet; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=6, name="enum_set", requiredness=Requiredness.NONE)    public Builder setEnumSet(Set<test.fixtures.complex_struct.MyEnum> enumSet) {
             this.enumSet = enumSet;
             return this;
         }
-    
+
         public Set<test.fixtures.complex_struct.MyEnum> getEnumSet() { return enumSet; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=7, name="struct_map", requiredness=Requiredness.NONE)    public Builder setStructMap(Map<test.fixtures.complex_struct.MyStruct, Long> structMap) {
             this.structMap = structMap;
             return this;
         }
-    
+
         public Map<test.fixtures.complex_struct.MyStruct, Long> getStructMap() { return structMap; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=8, name="union_map", requiredness=Requiredness.NONE)    public Builder setUnionMap(Map<test.fixtures.complex_struct.MyUnion, Long> unionMap) {
             this.unionMap = unionMap;
             return this;
         }
-    
+
         public Map<test.fixtures.complex_struct.MyUnion, Long> getUnionMap() { return unionMap; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=9, name="enum_map", requiredness=Requiredness.NONE)    public Builder setEnumMap(Map<test.fixtures.complex_struct.MyEnum, Long> enumMap) {
             this.enumMap = enumMap;
             return this;
         }
-    
+
         public Map<test.fixtures.complex_struct.MyEnum, Long> getEnumMap() { return enumMap; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=10, name="struct_map_2", requiredness=Requiredness.NONE)    public Builder setStructMap2(Map<Integer, test.fixtures.complex_struct.MyStruct> structMap2) {
             this.structMap2 = structMap2;
             return this;
         }
-    
+
         public Map<Integer, test.fixtures.complex_struct.MyStruct> getStructMap2() { return structMap2; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=11, name="union_map_2", requiredness=Requiredness.NONE)    public Builder setUnionMap2(Map<Integer, test.fixtures.complex_struct.MyUnion> unionMap2) {
             this.unionMap2 = unionMap2;
             return this;
         }
-    
+
         public Map<Integer, test.fixtures.complex_struct.MyUnion> getUnionMap2() { return unionMap2; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=12, name="enum_map_2", requiredness=Requiredness.NONE)    public Builder setEnumMap2(Map<Integer, test.fixtures.complex_struct.MyEnum> enumMap2) {
             this.enumMap2 = enumMap2;
             return this;
         }
-    
+
         public Map<Integer, test.fixtures.complex_struct.MyEnum> getEnumMap2() { return enumMap2; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=13, name="list_map", requiredness=Requiredness.NONE)    public Builder setListMap(Map<List<Integer>, Integer> listMap) {
             this.listMap = listMap;
             return this;
         }
-    
+
         public Map<List<Integer>, Integer> getListMap() { return listMap; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=14, name="list_map_2", requiredness=Requiredness.NONE)    public Builder setListMap2(Map<Integer, List<Integer>> listMap2) {
             this.listMap2 = listMap2;
             return this;
         }
-    
+
         public Map<Integer, List<Integer>> getListMap2() { return listMap2; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=15, name="set_map", requiredness=Requiredness.NONE)    public Builder setSetMap(Map<Set<Integer>, Integer> setMap) {
             this.setMap = setMap;
             return this;
         }
-    
+
         public Map<Set<Integer>, Integer> getSetMap() { return setMap; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=16, name="set_map_2", requiredness=Requiredness.NONE)    public Builder setSetMap2(Map<Integer, Set<Integer>> setMap2) {
             this.setMap2 = setMap2;
             return this;
         }
-    
+
         public Map<Integer, Set<Integer>> getSetMap2() { return setMap2; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=17, name="map_map", requiredness=Requiredness.NONE)    public Builder setMapMap(Map<Map<Integer, Integer>, Integer> mapMap) {
             this.mapMap = mapMap;
             return this;
         }
-    
+
         public Map<Map<Integer, Integer>, Integer> getMapMap() { return mapMap; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=18, name="map_map_2", requiredness=Requiredness.NONE)    public Builder setMapMap2(Map<Integer, Map<Integer, Integer>> mapMap2) {
             this.mapMap2 = mapMap2;
             return this;
         }
-    
+
         public Map<Integer, Map<Integer, Integer>> getMapMap2() { return mapMap2; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=19, name="list_list_i32", requiredness=Requiredness.NONE)    public Builder setListListI32(List<List<Integer>> listListI32) {
             this.listListI32 = listListI32;
             return this;
         }
-    
+
         public List<List<Integer>> getListListI32() { return listListI32; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=20, name="list_list_struct", requiredness=Requiredness.NONE)    public Builder setListListStruct(List<List<test.fixtures.complex_struct.MyStruct>> listListStruct) {
             this.listListStruct = listListStruct;
             return this;
         }
-    
+
         public List<List<test.fixtures.complex_struct.MyStruct>> getListListStruct() { return listListStruct; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=21, name="list_set_i32", requiredness=Requiredness.NONE)    public Builder setListSetI32(List<Set<Integer>> listSetI32) {
             this.listSetI32 = listSetI32;
             return this;
         }
-    
+
         public List<Set<Integer>> getListSetI32() { return listSetI32; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=22, name="list_set_struct", requiredness=Requiredness.NONE)    public Builder setListSetStruct(List<Set<test.fixtures.complex_struct.MyStruct>> listSetStruct) {
             this.listSetStruct = listSetStruct;
             return this;
         }
-    
+
         public List<Set<test.fixtures.complex_struct.MyStruct>> getListSetStruct() { return listSetStruct; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=23, name="list_map_i32_i32", requiredness=Requiredness.NONE)    public Builder setListMapI32I32(List<Map<Integer, Integer>> listMapI32I32) {
             this.listMapI32I32 = listMapI32I32;
             return this;
         }
-    
+
         public List<Map<Integer, Integer>> getListMapI32I32() { return listMapI32I32; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=24, name="list_map_i32_struct", requiredness=Requiredness.NONE)    public Builder setListMapI32Struct(List<Map<Integer, test.fixtures.complex_struct.MyStruct>> listMapI32Struct) {
             this.listMapI32Struct = listMapI32Struct;
             return this;
         }
-    
+
         public List<Map<Integer, test.fixtures.complex_struct.MyStruct>> getListMapI32Struct() { return listMapI32Struct; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=25, name="list_map_struct_i32", requiredness=Requiredness.NONE)    public Builder setListMapStructI32(List<Map<test.fixtures.complex_struct.MyStruct, Integer>> listMapStructI32) {
             this.listMapStructI32 = listMapStructI32;
             return this;
         }
-    
+
         public List<Map<test.fixtures.complex_struct.MyStruct, Integer>> getListMapStructI32() { return listMapStructI32; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=26, name="set_list_i32", requiredness=Requiredness.NONE)    public Builder setSetListI32(Set<List<Integer>> setListI32) {
             this.setListI32 = setListI32;
             return this;
         }
-    
+
         public Set<List<Integer>> getSetListI32() { return setListI32; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=27, name="set_list_struct", requiredness=Requiredness.NONE)    public Builder setSetListStruct(Set<List<test.fixtures.complex_struct.MyStruct>> setListStruct) {
             this.setListStruct = setListStruct;
             return this;
         }
-    
+
         public Set<List<test.fixtures.complex_struct.MyStruct>> getSetListStruct() { return setListStruct; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=28, name="set_set_i32", requiredness=Requiredness.NONE)    public Builder setSetSetI32(Set<Set<Integer>> setSetI32) {
             this.setSetI32 = setSetI32;
             return this;
         }
-    
+
         public Set<Set<Integer>> getSetSetI32() { return setSetI32; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=29, name="set_set_struct", requiredness=Requiredness.NONE)    public Builder setSetSetStruct(Set<Set<test.fixtures.complex_struct.MyStruct>> setSetStruct) {
             this.setSetStruct = setSetStruct;
             return this;
         }
-    
+
         public Set<Set<test.fixtures.complex_struct.MyStruct>> getSetSetStruct() { return setSetStruct; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=30, name="set_map_i32_i32", requiredness=Requiredness.NONE)    public Builder setSetMapI32I32(Set<Map<Integer, Integer>> setMapI32I32) {
             this.setMapI32I32 = setMapI32I32;
             return this;
         }
-    
+
         public Set<Map<Integer, Integer>> getSetMapI32I32() { return setMapI32I32; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=31, name="set_map_i32_struct", requiredness=Requiredness.NONE)    public Builder setSetMapI32Struct(Set<Map<Integer, test.fixtures.complex_struct.MyStruct>> setMapI32Struct) {
             this.setMapI32Struct = setMapI32Struct;
             return this;
         }
-    
+
         public Set<Map<Integer, test.fixtures.complex_struct.MyStruct>> getSetMapI32Struct() { return setMapI32Struct; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=32, name="set_map_struct_i32", requiredness=Requiredness.NONE)    public Builder setSetMapStructI32(Set<Map<test.fixtures.complex_struct.MyStruct, Integer>> setMapStructI32) {
             this.setMapStructI32 = setMapStructI32;
             return this;
         }
-    
+
         public Set<Map<test.fixtures.complex_struct.MyStruct, Integer>> getSetMapStructI32() { return setMapStructI32; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=33, name="map_i32_map_i32_i32", requiredness=Requiredness.NONE)    public Builder setMapI32MapI32I32(Map<Integer, Map<Integer, Integer>> mapI32MapI32I32) {
             this.mapI32MapI32I32 = mapI32MapI32I32;
             return this;
         }
-    
+
         public Map<Integer, Map<Integer, Integer>> getMapI32MapI32I32() { return mapI32MapI32I32; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=34, name="map_i32_map_struct_i32", requiredness=Requiredness.NONE)    public Builder setMapI32MapStructI32(Map<Integer, Map<test.fixtures.complex_struct.MyStruct, Integer>> mapI32MapStructI32) {
             this.mapI32MapStructI32 = mapI32MapStructI32;
             return this;
         }
-    
+
         public Map<Integer, Map<test.fixtures.complex_struct.MyStruct, Integer>> getMapI32MapStructI32() { return mapI32MapStructI32; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=35, name="map_i32_map_i32_struct", requiredness=Requiredness.NONE)    public Builder setMapI32MapI32Struct(Map<Integer, Map<Integer, test.fixtures.complex_struct.MyStruct>> mapI32MapI32Struct) {
             this.mapI32MapI32Struct = mapI32MapI32Struct;
             return this;
         }
-    
+
         public Map<Integer, Map<Integer, test.fixtures.complex_struct.MyStruct>> getMapI32MapI32Struct() { return mapI32MapI32Struct; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=36, name="map_i32_map_list_i32_i32", requiredness=Requiredness.NONE)    public Builder setMapI32MapListI32I32(Map<Integer, List<Map<Integer, Integer>>> mapI32MapListI32I32) {
             this.mapI32MapListI32I32 = mapI32MapListI32I32;
             return this;
         }
-    
+
         public Map<Integer, List<Map<Integer, Integer>>> getMapI32MapListI32I32() { return mapI32MapListI32I32; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=37, name="map_i32_map_list_struct_i32", requiredness=Requiredness.NONE)    public Builder setMapI32MapListStructI32(Map<Integer, List<Map<test.fixtures.complex_struct.MyStruct, Integer>>> mapI32MapListStructI32) {
             this.mapI32MapListStructI32 = mapI32MapListStructI32;
             return this;
         }
-    
+
         public Map<Integer, List<Map<test.fixtures.complex_struct.MyStruct, Integer>>> getMapI32MapListStructI32() { return mapI32MapListStructI32; }
-    
+
         public Builder() { }
         public Builder(Containers other) {
             this.structList = other.structList;
@@ -490,7 +490,7 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             this.mapI32MapListI32I32 = other.mapI32MapListI32I32;
             this.mapI32MapListStructI32 = other.mapI32MapListStructI32;
         }
-    
+
         @ThriftConstructor
         public Containers build() {
             Containers result = new Containers (
@@ -1000,9 +1000,9 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         Containers other = (Containers)o;
-    
+
         return
             Objects.equals(structList, other.structList) &&
             Objects.equals(unionList, other.unionList) &&
@@ -1091,7 +1091,7 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
     public static com.facebook.thrift.payload.Reader<Containers> asReader() {
       return Containers::read0;
     }
-    
+
     public static Containers read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(Containers.NAMES_TO_IDS, Containers.THRIFT_NAMES_TO_IDS, Containers.FIELD_METADATA);
@@ -1461,7 +1461,7 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                                     
                                     int _key2 = oprot.readI32();
-                    
+
                                     int _value2 = oprot.readI32();
                                     _key1.put(_key2, _value2);
                                 }
@@ -1495,7 +1495,7 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                     
                                     int _key2 = oprot.readI32();
                                     
-                    
+
                                     
                                     int _value2 = oprot.readI32();
                                     
@@ -1659,7 +1659,7 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                     
                                     int _key2 = oprot.readI32();
                                     
-                    
+
                                     
                                     int _value2 = oprot.readI32();
                                     
@@ -1695,7 +1695,7 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                     
                                     int _key2 = oprot.readI32();
                                     
-                    
+
                                     
                                     test.fixtures.complex_struct.MyStruct _value2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                                     
@@ -1731,7 +1731,7 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                     
                                     test.fixtures.complex_struct.MyStruct _key2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                                     
-                    
+
                                     
                                     int _value2 = oprot.readI32();
                                     
@@ -1895,7 +1895,7 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                     
                                     int _key2 = oprot.readI32();
                                     
-                    
+
                                     
                                     int _value2 = oprot.readI32();
                                     
@@ -1931,7 +1931,7 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                     
                                     int _key2 = oprot.readI32();
                                     
-                    
+
                                     
                                     test.fixtures.complex_struct.MyStruct _value2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                                     
@@ -1967,7 +1967,7 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                     
                                     test.fixtures.complex_struct.MyStruct _key2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                                     
-                    
+
                                     
                                     int _value2 = oprot.readI32();
                                     
@@ -2004,7 +2004,7 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                     
                                     int _key2 = oprot.readI32();
                                     
-                    
+
                                     
                                     int _value2 = oprot.readI32();
                                     
@@ -2041,7 +2041,7 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                     
                                     test.fixtures.complex_struct.MyStruct _key2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                                     
-                    
+
                                     
                                     int _value2 = oprot.readI32();
                                     
@@ -2078,7 +2078,7 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                     
                                     int _key2 = oprot.readI32();
                                     
-                    
+
                                     
                                     test.fixtures.complex_struct.MyStruct _value2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                                     
@@ -2121,7 +2121,7 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                     
                                     int _key3 = oprot.readI32();
                                     
-                    
+
                                     
                                     int _value3 = oprot.readI32();
                                     
@@ -2131,7 +2131,7 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                 }
                                 }
                                 oprot.readMapEnd();
-                    
+
                                     
                                     _value1.add(_value2);
                                     
@@ -2171,7 +2171,7 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                     
                                     test.fixtures.complex_struct.MyStruct _key3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                                     
-                    
+
                                     
                                     int _value3 = oprot.readI32();
                                     
@@ -2181,7 +2181,7 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                 }
                                 }
                                 oprot.readMapEnd();
-                    
+
                                     
                                     _value1.add(_value2);
                                     
@@ -2978,7 +2978,7 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
     private static class _ContainersLazy {
         private static final Containers _DEFAULT = new Containers.Builder().build();
     }
-    
+
     public static Containers defaultInstance() {
         return  _ContainersLazy._DEFAULT;
     }

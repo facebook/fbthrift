@@ -3672,7 +3672,7 @@ func (x *respMyInteractionEncode) readField0(p thrift.Decoder) error {  // Succe
     if err != nil {
         return thrift.PrependError("error reading set begin: ", err)
     }
-    
+
     setResult := make([]int32, 0, size)
     for i := 0; i < size; i++ {
         var elem int32
@@ -3685,7 +3685,7 @@ func (x *respMyInteractionEncode) readField0(p thrift.Decoder) error {  // Succe
         }
         setResult = append(setResult, elem)
     }
-    
+
     if err := p.ReadSetEnd(); err != nil {
         return thrift.PrependError("error reading set end: ", err)
     }
@@ -4862,7 +4862,7 @@ func (x *respMyInteractionFastEncode) readField0(p thrift.Decoder) error {  // S
     if err != nil {
         return thrift.PrependError("error reading set begin: ", err)
     }
-    
+
     setResult := make([]int32, 0, size)
     for i := 0; i < size; i++ {
         var elem int32
@@ -4875,7 +4875,7 @@ func (x *respMyInteractionFastEncode) readField0(p thrift.Decoder) error {  // S
         }
         setResult = append(setResult, elem)
     }
-    
+
     if err := p.ReadSetEnd(); err != nil {
         return thrift.PrependError("error reading set end: ", err)
     }

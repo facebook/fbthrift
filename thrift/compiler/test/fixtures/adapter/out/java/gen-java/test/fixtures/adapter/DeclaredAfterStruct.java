@@ -28,8 +28,8 @@ public final class DeclaredAfterStruct implements com.facebook.thrift.payload.Th
     public DeclaredAfterStruct(
     ) {
     }
-    
-    
+
+
 
     public static Builder builder() {
       return new Builder();
@@ -40,11 +40,11 @@ public final class DeclaredAfterStruct implements com.facebook.thrift.payload.Th
     }
 
     public static class Builder {
-    
+
     public Builder() { }
         public Builder(DeclaredAfterStruct other) {
         }
-    
+
         @ThriftConstructor
         public DeclaredAfterStruct build() {
             DeclaredAfterStruct result = new DeclaredAfterStruct (
@@ -76,9 +76,9 @@ static {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         DeclaredAfterStruct other = (DeclaredAfterStruct)o;
-    
+
         return
             true;
     }
@@ -93,7 +93,7 @@ static {
     public static com.facebook.thrift.payload.Reader<DeclaredAfterStruct> asReader() {
       return DeclaredAfterStruct::read0;
     }
-    
+
     public static DeclaredAfterStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(DeclaredAfterStruct.NAMES_TO_IDS, DeclaredAfterStruct.THRIFT_NAMES_TO_IDS, DeclaredAfterStruct.FIELD_METADATA);
@@ -121,7 +121,7 @@ static {
     private static class _DeclaredAfterStructLazy {
         private static final DeclaredAfterStruct _DEFAULT = new DeclaredAfterStruct.Builder().build();
     }
-    
+
     public static DeclaredAfterStruct defaultInstance() {
         return  _DeclaredAfterStructLazy._DEFAULT;
     }

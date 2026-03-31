@@ -76,7 +76,7 @@ public final class NonCopyableUnion implements com.facebook.thrift.payload.Thrif
     @ThriftConstructor
     public NonCopyableUnion() {
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public NonCopyableUnion(final test.fixtures.complex_union.NonCopyableStruct s) {
@@ -86,7 +86,7 @@ public final class NonCopyableUnion implements com.facebook.thrift.payload.Thrif
         this.value = s;
         this.id = 1;
     }
-    
+
     public static NonCopyableUnion fromS(final test.fixtures.complex_union.NonCopyableStruct s) {
         NonCopyableUnion res = new NonCopyableUnion();
         if (!NonCopyableUnion.allowNullFieldValues && s == null) {
@@ -199,7 +199,7 @@ public final class NonCopyableUnion implements com.facebook.thrift.payload.Thrif
       case _S: {
         oprot.writeFieldBegin(S_FIELD_DESC);
         test.fixtures.complex_union.NonCopyableStruct _iter0 = (test.fixtures.complex_union.NonCopyableStruct)this.value;
-    
+
         _iter0.write0(oprot);
         oprot.writeFieldEnd();
         break;
@@ -215,7 +215,7 @@ public final class NonCopyableUnion implements com.facebook.thrift.payload.Thrif
     public static com.facebook.thrift.payload.Reader<NonCopyableUnion> asReader() {
       return NonCopyableUnion::read0;
     }
-    
+
     public static NonCopyableUnion read0(TProtocol oprot) throws TException {
       NonCopyableUnion res = new NonCopyableUnion();
       res.value = null;

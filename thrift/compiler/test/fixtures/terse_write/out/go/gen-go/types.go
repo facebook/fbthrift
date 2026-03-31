@@ -759,7 +759,7 @@ func (x *MyUnion) readField11(p thrift.Decoder) error {  // ListField
     if err != nil {
         return thrift.PrependError("error reading list begin: ", err)
     }
-    
+
     listResult := make([]int16, 0, size)
     for i := 0; i < size; i++ {
         var elem int16
@@ -772,7 +772,7 @@ func (x *MyUnion) readField11(p thrift.Decoder) error {  // ListField
         }
         listResult = append(listResult, elem)
     }
-    
+
     if err := p.ReadListEnd(); err != nil {
         return thrift.PrependError("error reading list end: ", err)
     }
@@ -840,7 +840,7 @@ func (x *MyUnion) readField12(p thrift.Decoder) error {  // SetField
     if err != nil {
         return thrift.PrependError("error reading set begin: ", err)
     }
-    
+
     setResult := make([]int16, 0, size)
     for i := 0; i < size; i++ {
         var elem int16
@@ -853,7 +853,7 @@ func (x *MyUnion) readField12(p thrift.Decoder) error {  // SetField
         }
         setResult = append(setResult, elem)
     }
-    
+
     if err := p.ReadSetEnd(); err != nil {
         return thrift.PrependError("error reading set end: ", err)
     }
@@ -905,7 +905,7 @@ func (x *MyUnion) writeField13(p thrift.Encoder) error {  // MapField
                 return err
             }
         }
-    
+
         {
             item := v
             if err := p.WriteI16(item); err != nil {
@@ -928,7 +928,7 @@ func (x *MyUnion) readField13(p thrift.Decoder) error {  // MapField
     if err != nil {
         return thrift.PrependError("error reading map begin: ", err)
     }
-    
+
     mapResult := make(map[int16]int16, size)
     for i := 0; i < size; i++ {
         var key int16
@@ -939,7 +939,7 @@ func (x *MyUnion) readField13(p thrift.Decoder) error {  // MapField
             }
             key = result
         }
-    
+
         var value int16
         {
             result, err := p.ReadI16()
@@ -948,10 +948,10 @@ func (x *MyUnion) readField13(p thrift.Decoder) error {  // MapField
             }
             value = result
         }
-    
+
         mapResult[key] = value
     }
-    
+
     if err := p.ReadMapEnd(); err != nil {
         return thrift.PrependError("error reading map end: ", err)
     }
@@ -1833,7 +1833,7 @@ func (x *StructLevelTerseStruct) readField11(p thrift.Decoder) error {  // ListF
     if err != nil {
         return thrift.PrependError("error reading list begin: ", err)
     }
-    
+
     listResult := make([]int16, 0, size)
     for i := 0; i < size; i++ {
         var elem int16
@@ -1846,7 +1846,7 @@ func (x *StructLevelTerseStruct) readField11(p thrift.Decoder) error {  // ListF
         }
         listResult = append(listResult, elem)
     }
-    
+
     if err := p.ReadListEnd(); err != nil {
         return thrift.PrependError("error reading list end: ", err)
     }
@@ -1910,7 +1910,7 @@ func (x *StructLevelTerseStruct) readField12(p thrift.Decoder) error {  // SetFi
     if err != nil {
         return thrift.PrependError("error reading set begin: ", err)
     }
-    
+
     setResult := make([]int16, 0, size)
     for i := 0; i < size; i++ {
         var elem int16
@@ -1923,7 +1923,7 @@ func (x *StructLevelTerseStruct) readField12(p thrift.Decoder) error {  // SetFi
         }
         setResult = append(setResult, elem)
     }
-    
+
     if err := p.ReadSetEnd(); err != nil {
         return thrift.PrependError("error reading set end: ", err)
     }
@@ -1971,7 +1971,7 @@ func (x *StructLevelTerseStruct) writeField13(p thrift.Encoder) error {  // MapF
                 return err
             }
         }
-    
+
         {
             item := v
             if err := p.WriteI16(item); err != nil {
@@ -1994,7 +1994,7 @@ func (x *StructLevelTerseStruct) readField13(p thrift.Decoder) error {  // MapFi
     if err != nil {
         return thrift.PrependError("error reading map begin: ", err)
     }
-    
+
     mapResult := make(map[int16]int16, size)
     for i := 0; i < size; i++ {
         var key int16
@@ -2005,7 +2005,7 @@ func (x *StructLevelTerseStruct) readField13(p thrift.Decoder) error {  // MapFi
             }
             key = result
         }
-    
+
         var value int16
         {
             result, err := p.ReadI16()
@@ -2014,10 +2014,10 @@ func (x *StructLevelTerseStruct) readField13(p thrift.Decoder) error {  // MapFi
             }
             value = result
         }
-    
+
         mapResult[key] = value
     }
-    
+
     if err := p.ReadMapEnd(); err != nil {
         return thrift.PrependError("error reading map end: ", err)
     }
@@ -2812,7 +2812,7 @@ func (x *FieldLevelTerseStruct) readField11(p thrift.Decoder) error {  // TerseL
     if err != nil {
         return thrift.PrependError("error reading list begin: ", err)
     }
-    
+
     listResult := make([]int16, 0, size)
     for i := 0; i < size; i++ {
         var elem int16
@@ -2825,7 +2825,7 @@ func (x *FieldLevelTerseStruct) readField11(p thrift.Decoder) error {  // TerseL
         }
         listResult = append(listResult, elem)
     }
-    
+
     if err := p.ReadListEnd(); err != nil {
         return thrift.PrependError("error reading list end: ", err)
     }
@@ -2889,7 +2889,7 @@ func (x *FieldLevelTerseStruct) readField12(p thrift.Decoder) error {  // TerseS
     if err != nil {
         return thrift.PrependError("error reading set begin: ", err)
     }
-    
+
     setResult := make([]int16, 0, size)
     for i := 0; i < size; i++ {
         var elem int16
@@ -2902,7 +2902,7 @@ func (x *FieldLevelTerseStruct) readField12(p thrift.Decoder) error {  // TerseS
         }
         setResult = append(setResult, elem)
     }
-    
+
     if err := p.ReadSetEnd(); err != nil {
         return thrift.PrependError("error reading set end: ", err)
     }
@@ -2950,7 +2950,7 @@ func (x *FieldLevelTerseStruct) writeField13(p thrift.Encoder) error {  // Terse
                 return err
             }
         }
-    
+
         {
             item := v
             if err := p.WriteI16(item); err != nil {
@@ -2973,7 +2973,7 @@ func (x *FieldLevelTerseStruct) readField13(p thrift.Decoder) error {  // TerseM
     if err != nil {
         return thrift.PrependError("error reading map begin: ", err)
     }
-    
+
     mapResult := make(map[int16]int16, size)
     for i := 0; i < size; i++ {
         var key int16
@@ -2984,7 +2984,7 @@ func (x *FieldLevelTerseStruct) readField13(p thrift.Decoder) error {  // TerseM
             }
             key = result
         }
-    
+
         var value int16
         {
             result, err := p.ReadI16()
@@ -2993,10 +2993,10 @@ func (x *FieldLevelTerseStruct) readField13(p thrift.Decoder) error {  // TerseM
             }
             value = result
         }
-    
+
         mapResult[key] = value
     }
-    
+
     if err := p.ReadMapEnd(); err != nil {
         return thrift.PrependError("error reading map end: ", err)
     }
@@ -3541,7 +3541,7 @@ func (x *FieldLevelTerseStruct) readField25(p thrift.Decoder) error {  // ListFi
     if err != nil {
         return thrift.PrependError("error reading list begin: ", err)
     }
-    
+
     listResult := make([]int16, 0, size)
     for i := 0; i < size; i++ {
         var elem int16
@@ -3554,7 +3554,7 @@ func (x *FieldLevelTerseStruct) readField25(p thrift.Decoder) error {  // ListFi
         }
         listResult = append(listResult, elem)
     }
-    
+
     if err := p.ReadListEnd(); err != nil {
         return thrift.PrependError("error reading list end: ", err)
     }
@@ -3618,7 +3618,7 @@ func (x *FieldLevelTerseStruct) readField26(p thrift.Decoder) error {  // SetFie
     if err != nil {
         return thrift.PrependError("error reading set begin: ", err)
     }
-    
+
     setResult := make([]int16, 0, size)
     for i := 0; i < size; i++ {
         var elem int16
@@ -3631,7 +3631,7 @@ func (x *FieldLevelTerseStruct) readField26(p thrift.Decoder) error {  // SetFie
         }
         setResult = append(setResult, elem)
     }
-    
+
     if err := p.ReadSetEnd(); err != nil {
         return thrift.PrependError("error reading set end: ", err)
     }
@@ -3679,7 +3679,7 @@ func (x *FieldLevelTerseStruct) writeField27(p thrift.Encoder) error {  // MapFi
                 return err
             }
         }
-    
+
         {
             item := v
             if err := p.WriteI16(item); err != nil {
@@ -3702,7 +3702,7 @@ func (x *FieldLevelTerseStruct) readField27(p thrift.Decoder) error {  // MapFie
     if err != nil {
         return thrift.PrependError("error reading map begin: ", err)
     }
-    
+
     mapResult := make(map[int16]int16, size)
     for i := 0; i < size; i++ {
         var key int16
@@ -3713,7 +3713,7 @@ func (x *FieldLevelTerseStruct) readField27(p thrift.Decoder) error {  // MapFie
             }
             key = result
         }
-    
+
         var value int16
         {
             result, err := p.ReadI16()
@@ -3722,10 +3722,10 @@ func (x *FieldLevelTerseStruct) readField27(p thrift.Decoder) error {  // MapFie
             }
             value = result
         }
-    
+
         mapResult[key] = value
     }
-    
+
     if err := p.ReadMapEnd(); err != nil {
         return thrift.PrependError("error reading map end: ", err)
     }

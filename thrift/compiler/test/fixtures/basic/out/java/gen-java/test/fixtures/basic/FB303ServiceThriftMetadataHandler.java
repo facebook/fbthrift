@@ -35,9 +35,9 @@ public class FB303ServiceThriftMetadataHandler implements com.facebook.thrift.se
               .setName("int_parameter")
               .setIsOptional(false)
               .build());
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("simple_rpc")
               .setReturnType(ThriftType.fromTStruct(new ThriftStructType.Builder().setName("test.fixtures.basic.ReservedKeyword").build()))

@@ -44,7 +44,7 @@ public final class SinkException2 extends org.apache.thrift.TBaseException imple
     ) {
         this.reason = reason;
     }
-    
+
     @ThriftConstructor
     protected SinkException2() {
       this.reason = 0L;
@@ -52,19 +52,19 @@ public final class SinkException2 extends org.apache.thrift.TBaseException imple
 
     public static class Builder {
         private long reason = 0L;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="reason", requiredness=Requiredness.NONE)    public Builder setReason(long reason) {
             this.reason = reason;
             return this;
         }
-    
+
         public long getReason() { return reason; }
-    
+
         public Builder() { }
         public Builder(SinkException2 other) {
             this.reason = other.reason;
         }
-    
+
         @ThriftConstructor
         public SinkException2 build() {
             SinkException2 result = new SinkException2 (
@@ -75,7 +75,7 @@ public final class SinkException2 extends org.apache.thrift.TBaseException imple
     }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="reason", requiredness=Requiredness.NONE)
     public long getReason() { return reason; }
 
@@ -83,7 +83,7 @@ public final class SinkException2 extends org.apache.thrift.TBaseException imple
     public static com.facebook.thrift.payload.Reader<SinkException2> asReader() {
       return SinkException2::read0;
     }
-    
+
     public static SinkException2 read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(SinkException2.NAMES_TO_IDS, SinkException2.THRIFT_NAMES_TO_IDS, SinkException2.FIELD_METADATA);
@@ -125,7 +125,7 @@ public final class SinkException2 extends org.apache.thrift.TBaseException imple
     private static class _SinkException2Lazy {
         private static final SinkException2 _DEFAULT = new SinkException2.Builder().build();
     }
-    
+
     public static SinkException2 defaultInstance() {
         return  _SinkException2Lazy._DEFAULT;
     }}

@@ -29,9 +29,9 @@ public class AdapterServiceThriftMetadataHandler implements com.facebook.thrift.
   private static void addFunctions_0(List<ThriftFunction> functions) {
         {
           List<ThriftField> args = new ArrayList<>();
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("count")
               .setReturnType(ThriftType.fromTStruct(new ThriftStructType.Builder().setName("test.fixtures.adapter.CountingStruct").build()))
@@ -48,9 +48,9 @@ public class AdapterServiceThriftMetadataHandler implements com.facebook.thrift.
               .setName("arg")
               .setIsOptional(false)
               .build());
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("adaptedTypes")
               .setReturnType(ThriftType.fromTStruct(new ThriftStructType.Builder().setName("test.fixtures.adapter.HeapAllocated").build()))

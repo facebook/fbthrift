@@ -32,33 +32,33 @@ class TestService(_fbthrift_python_Client["TestService.Async", "TestService.Sync
     @staticmethod
     def __get_thrift_name__() -> str:
         return "emptyns.TestService"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__emptyns__thrift_metadata.gen_metadata_service_TestService()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "emptyns.TestService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__emptyns__thrift_metadata.gen_metadata_service_TestService()
-    
+
         async def init(
             self,
             int1: builtins.int,
@@ -82,24 +82,24 @@ class TestService(_fbthrift_python_Client["TestService.Async", "TestService.Sync
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     init = Async.init
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "emptyns.TestService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__emptyns__thrift_metadata.gen_metadata_service_TestService()
-    
+
         def init(
             self,
             int1: builtins.int,

@@ -30,7 +30,7 @@ public final class MyStructNestedAnnotation implements com.facebook.thrift.paylo
     ) {
         this.name = name;
     }
-    
+
     @ThriftConstructor
     protected MyStructNestedAnnotation() {
       this.name = null;
@@ -46,19 +46,19 @@ public final class MyStructNestedAnnotation implements com.facebook.thrift.paylo
 
     public static class Builder {
         private String name = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="name", requiredness=Requiredness.NONE)    public Builder setName(String name) {
             this.name = name;
             return this;
         }
-    
+
         public String getName() { return name; }
-    
+
         public Builder() { }
         public Builder(MyStructNestedAnnotation other) {
             this.name = other.name;
         }
-    
+
         @ThriftConstructor
         public MyStructNestedAnnotation build() {
             MyStructNestedAnnotation result = new MyStructNestedAnnotation (
@@ -100,9 +100,9 @@ public final class MyStructNestedAnnotation implements com.facebook.thrift.paylo
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         MyStructNestedAnnotation other = (MyStructNestedAnnotation)o;
-    
+
         return
             Objects.equals(name, other.name) &&
             true;
@@ -119,7 +119,7 @@ public final class MyStructNestedAnnotation implements com.facebook.thrift.paylo
     public static com.facebook.thrift.payload.Reader<MyStructNestedAnnotation> asReader() {
       return MyStructNestedAnnotation::read0;
     }
-    
+
     public static MyStructNestedAnnotation read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(MyStructNestedAnnotation.NAMES_TO_IDS, MyStructNestedAnnotation.THRIFT_NAMES_TO_IDS, MyStructNestedAnnotation.FIELD_METADATA);
@@ -163,7 +163,7 @@ public final class MyStructNestedAnnotation implements com.facebook.thrift.paylo
     private static class _MyStructNestedAnnotationLazy {
         private static final MyStructNestedAnnotation _DEFAULT = new MyStructNestedAnnotation.Builder().build();
     }
-    
+
     public static MyStructNestedAnnotation defaultInstance() {
         return  _MyStructNestedAnnotationLazy._DEFAULT;
     }

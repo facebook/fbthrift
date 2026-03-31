@@ -30,7 +30,7 @@ public final class FieldsInjectedToEmptyStruct implements com.facebook.thrift.pa
     ) {
         this.injectedField = injectedField;
     }
-    
+
     @ThriftConstructor
     protected FieldsInjectedToEmptyStruct() {
       this.injectedField = null;
@@ -46,19 +46,19 @@ public final class FieldsInjectedToEmptyStruct implements com.facebook.thrift.pa
 
     public static class Builder {
         private String injectedField = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=-1100, name="injected_field", isLegacyId=true, requiredness=Requiredness.NONE)    public Builder setInjectedField(String injectedField) {
             this.injectedField = injectedField;
             return this;
         }
-    
+
         public String getInjectedField() { return injectedField; }
-    
+
         public Builder() { }
         public Builder(FieldsInjectedToEmptyStruct other) {
             this.injectedField = other.injectedField;
         }
-    
+
         @ThriftConstructor
         public FieldsInjectedToEmptyStruct build() {
             FieldsInjectedToEmptyStruct result = new FieldsInjectedToEmptyStruct (
@@ -100,9 +100,9 @@ public final class FieldsInjectedToEmptyStruct implements com.facebook.thrift.pa
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         FieldsInjectedToEmptyStruct other = (FieldsInjectedToEmptyStruct)o;
-    
+
         return
             Objects.equals(injectedField, other.injectedField) &&
             true;
@@ -119,7 +119,7 @@ public final class FieldsInjectedToEmptyStruct implements com.facebook.thrift.pa
     public static com.facebook.thrift.payload.Reader<FieldsInjectedToEmptyStruct> asReader() {
       return FieldsInjectedToEmptyStruct::read0;
     }
-    
+
     public static FieldsInjectedToEmptyStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(FieldsInjectedToEmptyStruct.NAMES_TO_IDS, FieldsInjectedToEmptyStruct.THRIFT_NAMES_TO_IDS, FieldsInjectedToEmptyStruct.FIELD_METADATA);
@@ -163,7 +163,7 @@ public final class FieldsInjectedToEmptyStruct implements com.facebook.thrift.pa
     private static class _FieldsInjectedToEmptyStructLazy {
         private static final FieldsInjectedToEmptyStruct _DEFAULT = new FieldsInjectedToEmptyStruct.Builder().build();
     }
-    
+
     public static FieldsInjectedToEmptyStruct defaultInstance() {
         return  _FieldsInjectedToEmptyStructLazy._DEFAULT;
     }

@@ -2244,6 +2244,25 @@ TEST_F(RenderTest, partials_capture_error) {
           error_backtrace("#0 path/to/test.whisker <line:1, col:30>\n")));
 }
 
+TEST_F(RenderTest, partials_indentation_blank_lines) {
+  auto result = render(
+      R"({{#let partial foo}}
+line1
+
+line2
+{{/let partial}}
+  {{#partial foo}}
+)",
+      w::map());
+  EXPECT_THAT(diagnostics(), testing::IsEmpty());
+  EXPECT_EQ(
+      *result,
+      R"(  line1
+
+  line2
+)");
+}
+
 TEST_F(RenderTest, macros) {
   auto result = render(
       "{{> some/file /path}}\n"
@@ -2347,6 +2366,29 @@ TEST_F(RenderTest, macros_indentation) {
       "  bar (from macro)\n"
       "  A second line\n"
       "after\n");
+}
+
+TEST_F(RenderTest, macros_indentation_blank_lines) {
+  auto result = render(
+      R"(before
+  {{>some/file/path}}
+after
+)",
+      w::map({{"value", w::i64(42)}}),
+      sources(
+          {{"some/file/path",
+            R"({{value}} (from macro)
+
+A second line
+)"}}));
+  EXPECT_EQ(
+      *result,
+      R"(before
+  42 (from macro)
+
+  A second line
+after
+)");
 }
 
 TEST_F(RenderTest, macros_indentation_nested) {

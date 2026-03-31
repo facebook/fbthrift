@@ -36,7 +36,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         this.me1T1 = me1T1;
         this.me1T2 = me1T2;
     }
-    
+
     @ThriftConstructor
     protected MyStruct() {
       this.me23 = test.fixtures.enums.MyEnum2.fromInteger(3);
@@ -58,35 +58,35 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         private test.fixtures.enums.MyEnum3 me3N3 = test.fixtures.enums.MyEnum3.fromInteger(-3);
         private test.fixtures.enums.MyEnum1 me1T1 = test.fixtures.enums.MyEnum1.ME1_1;
         private test.fixtures.enums.MyEnum1 me1T2 = test.fixtures.enums.MyEnum1.ME1_1;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="me2_3", requiredness=Requiredness.NONE)    public Builder setMe23(test.fixtures.enums.MyEnum2 me23) {
             this.me23 = me23;
             return this;
         }
-    
+
         public test.fixtures.enums.MyEnum2 getMe23() { return me23; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="me3_n3", requiredness=Requiredness.NONE)    public Builder setMe3N3(test.fixtures.enums.MyEnum3 me3N3) {
             this.me3N3 = me3N3;
             return this;
         }
-    
+
         public test.fixtures.enums.MyEnum3 getMe3N3() { return me3N3; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=4, name="me1_t1", requiredness=Requiredness.NONE)    public Builder setMe1T1(test.fixtures.enums.MyEnum1 me1T1) {
             this.me1T1 = me1T1;
             return this;
         }
-    
+
         public test.fixtures.enums.MyEnum1 getMe1T1() { return me1T1; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=6, name="me1_t2", requiredness=Requiredness.NONE)    public Builder setMe1T2(test.fixtures.enums.MyEnum1 me1T2) {
             this.me1T2 = me1T2;
             return this;
         }
-    
+
         public test.fixtures.enums.MyEnum1 getMe1T2() { return me1T2; }
-    
+
         public Builder() { }
         public Builder(MyStruct other) {
             this.me23 = other.me23;
@@ -94,7 +94,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             this.me1T1 = other.me1T1;
             this.me1T2 = other.me1T2;
         }
-    
+
         @ThriftConstructor
         public MyStruct build() {
             MyStruct result = new MyStruct (
@@ -178,9 +178,9 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         MyStruct other = (MyStruct)o;
-    
+
         return
             Objects.equals(me23, other.me23) &&
             Objects.equals(me3N3, other.me3N3) &&
@@ -203,7 +203,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public static com.facebook.thrift.payload.Reader<MyStruct> asReader() {
       return MyStruct::read0;
     }
-    
+
     public static MyStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(MyStruct.NAMES_TO_IDS, MyStruct.THRIFT_NAMES_TO_IDS, MyStruct.FIELD_METADATA);
@@ -287,7 +287,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     private static class _MyStructLazy {
         private static final MyStruct _DEFAULT = new MyStruct.Builder().build();
     }
-    
+
     public static MyStruct defaultInstance() {
         return  _MyStructLazy._DEFAULT;
     }

@@ -30,7 +30,7 @@ public final class FinalResponse implements com.facebook.thrift.payload.ThriftSe
     ) {
         this.content = content;
     }
-    
+
     @ThriftConstructor
     protected FinalResponse() {
       this.content = null;
@@ -46,19 +46,19 @@ public final class FinalResponse implements com.facebook.thrift.payload.ThriftSe
 
     public static class Builder {
         private String content = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="content", requiredness=Requiredness.NONE)    public Builder setContent(String content) {
             this.content = content;
             return this;
         }
-    
+
         public String getContent() { return content; }
-    
+
         public Builder() { }
         public Builder(FinalResponse other) {
             this.content = other.content;
         }
-    
+
         @ThriftConstructor
         public FinalResponse build() {
             FinalResponse result = new FinalResponse (
@@ -100,9 +100,9 @@ public final class FinalResponse implements com.facebook.thrift.payload.ThriftSe
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         FinalResponse other = (FinalResponse)o;
-    
+
         return
             Objects.equals(content, other.content) &&
             true;
@@ -119,7 +119,7 @@ public final class FinalResponse implements com.facebook.thrift.payload.ThriftSe
     public static com.facebook.thrift.payload.Reader<FinalResponse> asReader() {
       return FinalResponse::read0;
     }
-    
+
     public static FinalResponse read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(FinalResponse.NAMES_TO_IDS, FinalResponse.THRIFT_NAMES_TO_IDS, FinalResponse.FIELD_METADATA);
@@ -163,7 +163,7 @@ public final class FinalResponse implements com.facebook.thrift.payload.ThriftSe
     private static class _FinalResponseLazy {
         private static final FinalResponse _DEFAULT = new FinalResponse.Builder().build();
     }
-    
+
     public static FinalResponse defaultInstance() {
         return  _FinalResponseLazy._DEFAULT;
     }

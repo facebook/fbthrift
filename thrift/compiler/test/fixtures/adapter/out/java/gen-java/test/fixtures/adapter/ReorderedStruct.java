@@ -30,7 +30,7 @@ public final class ReorderedStruct implements com.facebook.thrift.payload.Thrift
     ) {
         this.reorderedDependentAdapted = reorderedDependentAdapted;
     }
-    
+
     @ThriftConstructor
     protected ReorderedStruct() {
       this.reorderedDependentAdapted = null;
@@ -46,19 +46,19 @@ public final class ReorderedStruct implements com.facebook.thrift.payload.Thrift
 
     public static class Builder {
         private test.fixtures.adapter.DeclaredAfterStruct reorderedDependentAdapted = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="reordered_dependent_adapted", requiredness=Requiredness.NONE)    public Builder setReorderedDependentAdapted(test.fixtures.adapter.DeclaredAfterStruct reorderedDependentAdapted) {
             this.reorderedDependentAdapted = reorderedDependentAdapted;
             return this;
         }
-    
+
         public test.fixtures.adapter.DeclaredAfterStruct getReorderedDependentAdapted() { return reorderedDependentAdapted; }
-    
+
         public Builder() { }
         public Builder(ReorderedStruct other) {
             this.reorderedDependentAdapted = other.reorderedDependentAdapted;
         }
-    
+
         @ThriftConstructor
         public ReorderedStruct build() {
             ReorderedStruct result = new ReorderedStruct (
@@ -103,9 +103,9 @@ public final class ReorderedStruct implements com.facebook.thrift.payload.Thrift
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         ReorderedStruct other = (ReorderedStruct)o;
-    
+
         return
             Objects.equals(reorderedDependentAdapted, other.reorderedDependentAdapted) &&
             true;
@@ -122,7 +122,7 @@ public final class ReorderedStruct implements com.facebook.thrift.payload.Thrift
     public static com.facebook.thrift.payload.Reader<ReorderedStruct> asReader() {
       return ReorderedStruct::read0;
     }
-    
+
     public static ReorderedStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(ReorderedStruct.NAMES_TO_IDS, ReorderedStruct.THRIFT_NAMES_TO_IDS, ReorderedStruct.FIELD_METADATA);
@@ -166,7 +166,7 @@ public final class ReorderedStruct implements com.facebook.thrift.payload.Thrift
     private static class _ReorderedStructLazy {
         private static final ReorderedStruct _DEFAULT = new ReorderedStruct.Builder().build();
     }
-    
+
     public static ReorderedStruct defaultInstance() {
         return  _ReorderedStructLazy._DEFAULT;
     }

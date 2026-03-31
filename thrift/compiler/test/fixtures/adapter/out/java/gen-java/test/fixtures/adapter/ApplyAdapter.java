@@ -28,8 +28,8 @@ public final class ApplyAdapter implements com.facebook.thrift.payload.ThriftSer
     public ApplyAdapter(
     ) {
     }
-    
-    
+
+
 
     public static Builder builder() {
       return new Builder();
@@ -40,11 +40,11 @@ public final class ApplyAdapter implements com.facebook.thrift.payload.ThriftSer
     }
 
     public static class Builder {
-    
+
     public Builder() { }
         public Builder(ApplyAdapter other) {
         }
-    
+
         @ThriftConstructor
         public ApplyAdapter build() {
             ApplyAdapter result = new ApplyAdapter (
@@ -76,9 +76,9 @@ static {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         ApplyAdapter other = (ApplyAdapter)o;
-    
+
         return
             true;
     }
@@ -93,7 +93,7 @@ static {
     public static com.facebook.thrift.payload.Reader<ApplyAdapter> asReader() {
       return ApplyAdapter::read0;
     }
-    
+
     public static ApplyAdapter read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(ApplyAdapter.NAMES_TO_IDS, ApplyAdapter.THRIFT_NAMES_TO_IDS, ApplyAdapter.FIELD_METADATA);
@@ -121,7 +121,7 @@ static {
     private static class _ApplyAdapterLazy {
         private static final ApplyAdapter _DEFAULT = new ApplyAdapter.Builder().build();
     }
-    
+
     public static ApplyAdapter defaultInstance() {
         return  _ApplyAdapterLazy._DEFAULT;
     }

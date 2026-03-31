@@ -89,14 +89,14 @@ public final class AdaptTestUnion implements com.facebook.thrift.payload.ThriftS
     @ThriftConstructor
     public AdaptTestUnion() {
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public AdaptTestUnion(final long delay) {
         this.value = delay;
         this.id = 1;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public AdaptTestUnion(final byte[] custom) {
@@ -106,14 +106,14 @@ public final class AdaptTestUnion implements com.facebook.thrift.payload.ThriftS
         this.value = custom;
         this.id = 2;
     }
-    
+
     public static AdaptTestUnion fromDelay(final long delay) {
         AdaptTestUnion res = new AdaptTestUnion();
         res.value = delay;
         res.id = 1;
         return res;
     }
-    
+
     public static AdaptTestUnion fromCustom(final byte[] custom) {
         AdaptTestUnion res = new AdaptTestUnion();
         if (!AdaptTestUnion.allowNullFieldValues && custom == null) {
@@ -244,7 +244,7 @@ public final class AdaptTestUnion implements com.facebook.thrift.payload.ThriftS
       case _DELAY: {
         oprot.writeFieldBegin(DELAY_FIELD_DESC);
         long _iter0 = (long)this.value;
-    
+
         oprot.writeI64(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -252,7 +252,7 @@ public final class AdaptTestUnion implements com.facebook.thrift.payload.ThriftS
       case _CUSTOM: {
         oprot.writeFieldBegin(CUSTOM_FIELD_DESC);
         byte[] _iter0 = (byte[])this.value;
-    
+
         oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
         oprot.writeFieldEnd();
         break;
@@ -268,7 +268,7 @@ public final class AdaptTestUnion implements com.facebook.thrift.payload.ThriftS
     public static com.facebook.thrift.payload.Reader<AdaptTestUnion> asReader() {
       return AdaptTestUnion::read0;
     }
-    
+
     public static AdaptTestUnion read0(TProtocol oprot) throws TException {
       AdaptTestUnion res = new AdaptTestUnion();
       res.value = null;

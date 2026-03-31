@@ -34,33 +34,33 @@ class TestService(_fbthrift_python_Client["TestService.Async", "TestService.Sync
     @staticmethod
     def __get_thrift_name__() -> str:
         return "s.TestService"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__s__thrift_metadata.gen_metadata_service_TestService()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "s.TestService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__s__thrift_metadata.gen_metadata_service_TestService()
-    
+
         async def test(
             self,
             *,
@@ -78,24 +78,24 @@ class TestService(_fbthrift_python_Client["TestService.Async", "TestService.Sync
             # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `_ex0__ex`
             if (_fbthrift_ex := _fbthrift_resp._ex0__ex) is not None:
                 raise _fbthrift_ex
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     test = Async.test
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "s.TestService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__s__thrift_metadata.gen_metadata_service_TestService()
-    
+
         def test(
             self,
             *,

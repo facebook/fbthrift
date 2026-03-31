@@ -99,7 +99,7 @@ public final class ExampleUnion implements com.facebook.thrift.payload.ThriftSer
     @ThriftConstructor
     public ExampleUnion() {
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public ExampleUnion(final String stringValue) {
@@ -109,21 +109,21 @@ public final class ExampleUnion implements com.facebook.thrift.payload.ThriftSer
         this.value = stringValue;
         this.id = 1;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public ExampleUnion(final int intValue) {
         this.value = intValue;
         this.id = 2;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public ExampleUnion(final double doubleValue) {
         this.value = doubleValue;
         this.id = 3;
     }
-    
+
     public static ExampleUnion fromStringValue(final String stringValue) {
         ExampleUnion res = new ExampleUnion();
         if (!ExampleUnion.allowNullFieldValues && stringValue == null) {
@@ -133,14 +133,14 @@ public final class ExampleUnion implements com.facebook.thrift.payload.ThriftSer
         res.id = 1;
         return res;
     }
-    
+
     public static ExampleUnion fromIntValue(final int intValue) {
         ExampleUnion res = new ExampleUnion();
         res.value = intValue;
         res.id = 2;
         return res;
     }
-    
+
     public static ExampleUnion fromDoubleValue(final double doubleValue) {
         ExampleUnion res = new ExampleUnion();
         res.value = doubleValue;
@@ -287,7 +287,7 @@ public final class ExampleUnion implements com.facebook.thrift.payload.ThriftSer
       case _STRINGVALUE: {
         oprot.writeFieldBegin(STRING_VALUE_FIELD_DESC);
         String _iter0 = (String)this.value;
-    
+
         oprot.writeString(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -295,7 +295,7 @@ public final class ExampleUnion implements com.facebook.thrift.payload.ThriftSer
       case _INTVALUE: {
         oprot.writeFieldBegin(INT_VALUE_FIELD_DESC);
         int _iter0 = (int)this.value;
-    
+
         oprot.writeI32(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -303,7 +303,7 @@ public final class ExampleUnion implements com.facebook.thrift.payload.ThriftSer
       case _DOUBLEVALUE: {
         oprot.writeFieldBegin(DOUBLE_VALUE_FIELD_DESC);
         double _iter0 = (double)this.value;
-    
+
         oprot.writeDouble(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -319,7 +319,7 @@ public final class ExampleUnion implements com.facebook.thrift.payload.ThriftSer
     public static com.facebook.thrift.payload.Reader<ExampleUnion> asReader() {
       return ExampleUnion::read0;
     }
-    
+
     public static ExampleUnion read0(TProtocol oprot) throws TException {
       ExampleUnion res = new ExampleUnion();
       res.value = null;

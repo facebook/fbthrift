@@ -86,7 +86,7 @@ public final class ListUnion implements com.facebook.thrift.payload.ThriftSerial
     @ThriftConstructor
     public ListUnion() {
     }
-    
+
     public static ListUnion fromIntListValue(final List<Long> intListValue) {
         ListUnion res = new ListUnion();
         if (!ListUnion.allowNullFieldValues && intListValue == null) {
@@ -96,7 +96,7 @@ public final class ListUnion implements com.facebook.thrift.payload.ThriftSerial
         res.id = 2;
         return res;
     }
-    
+
     public static ListUnion fromStringListValue(final List<String> stringListValue) {
         ListUnion res = new ListUnion();
         if (!ListUnion.allowNullFieldValues && stringListValue == null) {
@@ -239,7 +239,7 @@ public final class ListUnion implements com.facebook.thrift.payload.ThriftSerial
       case _INTLISTVALUE: {
         oprot.writeFieldBegin(INT_LIST_VALUE_FIELD_DESC);
         List<Long> _iter0 = (List<Long>)this.value;
-    
+
         oprot.writeListBegin(new TList(TType.I64, _iter0.size()));
             for (long _iter1 : _iter0) {
               oprot.writeI64(_iter1);
@@ -251,7 +251,7 @@ public final class ListUnion implements com.facebook.thrift.payload.ThriftSerial
       case _STRINGLISTVALUE: {
         oprot.writeFieldBegin(STRING_LIST_VALUE_FIELD_DESC);
         List<String> _iter0 = (List<String>)this.value;
-    
+
         oprot.writeListBegin(new TList(TType.STRING, _iter0.size()));
             for (String _iter1 : _iter0) {
               oprot.writeString(_iter1);
@@ -271,7 +271,7 @@ public final class ListUnion implements com.facebook.thrift.payload.ThriftSerial
     public static com.facebook.thrift.payload.Reader<ListUnion> asReader() {
       return ListUnion::read0;
     }
-    
+
     public static ListUnion read0(TProtocol oprot) throws TException {
       ListUnion res = new ListUnion();
       res.value = null;

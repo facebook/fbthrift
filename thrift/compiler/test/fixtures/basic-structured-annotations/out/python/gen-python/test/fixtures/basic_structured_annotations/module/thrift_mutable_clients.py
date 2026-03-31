@@ -37,33 +37,33 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.MyService"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return "test.dev/fixtures/basic_structured_annotations/MyService"
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__test__fixtures__basic_structured_annotations__module__thrift_metadata.gen_metadata_service_MyService()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.MyService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return "test.dev/fixtures/basic_structured_annotations/MyService"
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__basic_structured_annotations__module__thrift_metadata.gen_metadata_service_MyService()
-    
+
         async def first(
             self,
             *,
@@ -86,7 +86,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def second(
             self,
             count: builtins.int,
@@ -111,26 +111,26 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     first = Async.first
     # pyre-ignore[4]: Missing annotation.
     second = Async.second
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.MyService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return "test.dev/fixtures/basic_structured_annotations/MyService"
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__basic_structured_annotations__module__thrift_metadata.gen_metadata_service_MyService()
-    
+
         def first(
             self,
             *,
@@ -152,7 +152,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def second(
             self,
             count: builtins.int,

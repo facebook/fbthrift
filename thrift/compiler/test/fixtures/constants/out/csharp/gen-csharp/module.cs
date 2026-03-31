@@ -63,7 +63,7 @@ namespace test.fixtures.constants
     {
         /// <summary>Gets or sets the weeks field.</summary>
         public int @weeks { get; set; }
-    
+
         /// <summary>Gets or sets the title field.</summary>
         private string _title = string.Empty;
         public string @title
@@ -75,21 +75,21 @@ namespace test.fixtures.constants
                 _title = value;
             }
         }
-    
+
         /// <summary>Gets or sets the employer field (optional).</summary>
         public @Company? @employer { get; set; }
-    
+
         /// <summary>Gets or sets the compensation field (optional).</summary>
         public double? @compensation { get; set; }
-    
+
         /// <summary>Gets or sets the school field (optional).</summary>
         public string? @school { get; set; }
-    
+
         public @Internship()
         {
             @title = string.Empty;
         }
-    
+
         public void __fbthrift_clear()
         {
             @weeks = default;
@@ -98,7 +98,7 @@ namespace test.fixtures.constants
             @compensation = null;
             @school = null;
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@weeks != default) { return false; }
@@ -108,7 +108,7 @@ namespace test.fixtures.constants
             if (@school != null) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: weeks (int)
@@ -137,7 +137,7 @@ namespace test.fixtures.constants
             }
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -147,7 +147,7 @@ namespace test.fixtures.constants
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // weeks
@@ -206,7 +206,7 @@ namespace test.fixtures.constants
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @Internship other)
@@ -235,7 +235,7 @@ namespace test.fixtures.constants
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
@@ -246,7 +246,7 @@ namespace test.fixtures.constants
             hashCode.Add(@school);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -277,27 +277,27 @@ namespace test.fixtures.constants
     {
         /// <summary>Gets or sets the min field.</summary>
         public int @min { get; set; }
-    
+
         /// <summary>Gets or sets the max field.</summary>
         public int @max { get; set; }
-    
+
         public @Range()
         {
         }
-    
+
         public void __fbthrift_clear()
         {
             @min = default;
             @max = default;
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@min != default) { return false; }
             if (@max != default) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: min (int)
@@ -308,7 +308,7 @@ namespace test.fixtures.constants
             writer.WriteI32(@max);
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -318,7 +318,7 @@ namespace test.fixtures.constants
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // min
@@ -347,7 +347,7 @@ namespace test.fixtures.constants
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @Range other)
@@ -364,7 +364,7 @@ namespace test.fixtures.constants
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
@@ -372,7 +372,7 @@ namespace test.fixtures.constants
             hashCode.Add(@max);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -394,7 +394,7 @@ namespace test.fixtures.constants
     {
         /// <summary>Gets or sets the a field.</summary>
         public int @a { get; set; } = 1234567;
-    
+
         /// <summary>Gets or sets the b field.</summary>
         private string _b = "<uninitialized>";
         public string @b
@@ -406,26 +406,26 @@ namespace test.fixtures.constants
                 _b = value;
             }
         }
-    
+
         public @struct1()
         {
             @a = 1234567;
             @b = "<uninitialized>";
         }
-    
+
         public void __fbthrift_clear()
         {
             @a = default;
             @b = string.Empty;
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@a != default) { return false; }
             if (@b != null && @b.Length != 0) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: a (int)
@@ -436,7 +436,7 @@ namespace test.fixtures.constants
             writer.WriteString(@b);
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -446,7 +446,7 @@ namespace test.fixtures.constants
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // a
@@ -475,7 +475,7 @@ namespace test.fixtures.constants
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @struct1 other)
@@ -492,7 +492,7 @@ namespace test.fixtures.constants
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
@@ -500,7 +500,7 @@ namespace test.fixtures.constants
             hashCode.Add(@b);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -522,7 +522,7 @@ namespace test.fixtures.constants
     {
         /// <summary>Gets or sets the a field.</summary>
         public int @a { get; set; }
-    
+
         /// <summary>Gets or sets the b field.</summary>
         private string _b = string.Empty;
         public string @b
@@ -534,7 +534,7 @@ namespace test.fixtures.constants
                 _b = value;
             }
         }
-    
+
         /// <summary>Gets or sets the c field.</summary>
         private @struct1 _c = new @struct1();
         public @struct1 @c
@@ -546,7 +546,7 @@ namespace test.fixtures.constants
                 _c = value;
             }
         }
-    
+
         /// <summary>Gets or sets the d field.</summary>
         private List<int> _d = new List<int>();
         public List<int> @d
@@ -558,14 +558,14 @@ namespace test.fixtures.constants
                 _d = value;
             }
         }
-    
+
         public @struct2()
         {
             @b = string.Empty;
             @c = new @struct1();
             @d = new List<int>();
         }
-    
+
         public void __fbthrift_clear()
         {
             @a = default;
@@ -573,7 +573,7 @@ namespace test.fixtures.constants
             @c = new @struct1();
             @d = new List<int>();
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@a != default) { return false; }
@@ -582,7 +582,7 @@ namespace test.fixtures.constants
             if (@d != null && @d.Count != 0) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: a (int)
@@ -603,7 +603,7 @@ namespace test.fixtures.constants
             }
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -613,7 +613,7 @@ namespace test.fixtures.constants
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // a
@@ -662,7 +662,7 @@ namespace test.fixtures.constants
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @struct2 other)
@@ -695,7 +695,7 @@ namespace test.fixtures.constants
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
@@ -706,7 +706,7 @@ namespace test.fixtures.constants
                 foreach (var item in @d) hashCode.Add(item);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -743,10 +743,10 @@ namespace test.fixtures.constants
                 _a = value;
             }
         }
-    
+
         /// <summary>Gets or sets the b field.</summary>
         public int @b { get; set; }
-    
+
         /// <summary>Gets or sets the c field.</summary>
         private @struct2 _c = new @struct2();
         public @struct2 @c
@@ -758,20 +758,20 @@ namespace test.fixtures.constants
                 _c = value;
             }
         }
-    
+
         public @struct3()
         {
             @a = string.Empty;
             @c = new @struct2();
         }
-    
+
         public void __fbthrift_clear()
         {
             @a = string.Empty;
             @b = default;
             @c = new @struct2();
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@a != null && @a.Length != 0) { return false; }
@@ -779,7 +779,7 @@ namespace test.fixtures.constants
             if (@c != null && !@c.__fbthrift_is_empty()) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: a (string)
@@ -793,7 +793,7 @@ namespace test.fixtures.constants
             writer.WriteStruct(@c);
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -803,7 +803,7 @@ namespace test.fixtures.constants
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // a
@@ -842,7 +842,7 @@ namespace test.fixtures.constants
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @struct3 other)
@@ -863,7 +863,7 @@ namespace test.fixtures.constants
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
@@ -872,7 +872,7 @@ namespace test.fixtures.constants
             hashCode.Add(@c);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -897,24 +897,24 @@ namespace test.fixtures.constants
     {
         /// <summary>Gets or sets the a field.</summary>
         public int @a { get; set; }
-    
+
         /// <summary>Gets or sets the b field (optional).</summary>
         public double? @b { get; set; }
-    
+
         /// <summary>Gets or sets the c field (optional).</summary>
         public sbyte? @c { get; set; }
-    
+
         public @struct4()
         {
         }
-    
+
         public void __fbthrift_clear()
         {
             @a = default;
             @b = null;
             @c = null;
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@a != default) { return false; }
@@ -922,7 +922,7 @@ namespace test.fixtures.constants
             if (@c != null) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: a (int)
@@ -942,7 +942,7 @@ namespace test.fixtures.constants
             }
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -952,7 +952,7 @@ namespace test.fixtures.constants
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // a
@@ -991,7 +991,7 @@ namespace test.fixtures.constants
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @struct4 other)
@@ -1012,7 +1012,7 @@ namespace test.fixtures.constants
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
@@ -1021,7 +1021,7 @@ namespace test.fixtures.constants
             hashCode.Add(@c);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -1053,20 +1053,20 @@ namespace test.fixtures.constants
                 @i = 1,
                 @d = 2,
             }
-    
+
             private Type _type = Type.Empty;
             private object? _value;
-    
+
             /// <summary>
             /// Gets the type of the currently set field
             /// </summary>
             public Type GetUnionType() => _type;
-    
+
             /// <summary>
             /// Returns true if this union has no value set
             /// </summary>
             public bool __fbthrift_is_empty() => _type == Type.Empty;
-    
+
             /// <summary>
             /// Clears the union value
             /// </summary>
@@ -1075,7 +1075,7 @@ namespace test.fixtures.constants
                 _type = Type.Empty;
                 _value = null;
             }
-    
+
             /// <summary>
             /// Gets or sets the i field.
             /// Setting this field clears any previously set field.
@@ -1091,7 +1091,7 @@ namespace test.fixtures.constants
                     _value = value;
                 }
             }
-    
+
             /// <summary>
             /// Gets or sets the d field.
             /// Setting this field clears any previously set field.
@@ -1107,7 +1107,7 @@ namespace test.fixtures.constants
                     _value = value;
                 }
             }
-    
+
             public void __fbthrift_write(IThriftProtocolWriter writer)
             {
                 switch (_type)
@@ -1123,7 +1123,7 @@ namespace test.fixtures.constants
                 }
                 writer.WriteFieldStop();
             }
-    
+
             public void __fbthrift_read(IThriftProtocolReader reader)
             {
                 __fbthrift_clear();
@@ -1135,13 +1135,13 @@ namespace test.fixtures.constants
                     {
                         break;
                     }
-            
+
                     if (_fieldSeen)
                     {
                         throw new ThriftProtocolException("Union cannot have multiple fields set");
                     }
                     _fieldSeen = true;
-            
+
                     switch (fieldId)
                     {
                         case 1: // i
@@ -1172,7 +1172,7 @@ namespace test.fixtures.constants
                     }
                 }
             }
-    
+
             public override bool Equals(object? obj)
             {
                 if (obj is not @union1 other)
@@ -1185,12 +1185,12 @@ namespace test.fixtures.constants
                 }
                 return Equals(_value, other._value);
             }
-    
+
             public override int GetHashCode()
             {
                 return HashCode.Combine(_type, _value);
             }
-    
+
             public override string ToString()
             {
                 return $"union1({_type}={_value})";
@@ -1213,20 +1213,20 @@ namespace test.fixtures.constants
                 @s = 3,
                 @u = 4,
             }
-    
+
             private Type _type = Type.Empty;
             private object? _value;
-    
+
             /// <summary>
             /// Gets the type of the currently set field
             /// </summary>
             public Type GetUnionType() => _type;
-    
+
             /// <summary>
             /// Returns true if this union has no value set
             /// </summary>
             public bool __fbthrift_is_empty() => _type == Type.Empty;
-    
+
             /// <summary>
             /// Clears the union value
             /// </summary>
@@ -1235,7 +1235,7 @@ namespace test.fixtures.constants
                 _type = Type.Empty;
                 _value = null;
             }
-    
+
             /// <summary>
             /// Gets or sets the i field.
             /// Setting this field clears any previously set field.
@@ -1251,7 +1251,7 @@ namespace test.fixtures.constants
                     _value = value;
                 }
             }
-    
+
             /// <summary>
             /// Gets or sets the d field.
             /// Setting this field clears any previously set field.
@@ -1267,7 +1267,7 @@ namespace test.fixtures.constants
                     _value = value;
                 }
             }
-    
+
             /// <summary>
             /// Gets or sets the s field.
             /// Setting this field clears any previously set field.
@@ -1283,7 +1283,7 @@ namespace test.fixtures.constants
                     _value = value;
                 }
             }
-    
+
             /// <summary>
             /// Gets or sets the u field.
             /// Setting this field clears any previously set field.
@@ -1299,7 +1299,7 @@ namespace test.fixtures.constants
                     _value = value;
                 }
             }
-    
+
             public void __fbthrift_write(IThriftProtocolWriter writer)
             {
                 switch (_type)
@@ -1323,7 +1323,7 @@ namespace test.fixtures.constants
                 }
                 writer.WriteFieldStop();
             }
-    
+
             public void __fbthrift_read(IThriftProtocolReader reader)
             {
                 __fbthrift_clear();
@@ -1335,13 +1335,13 @@ namespace test.fixtures.constants
                     {
                         break;
                     }
-            
+
                     if (_fieldSeen)
                     {
                         throw new ThriftProtocolException("Union cannot have multiple fields set");
                     }
                     _fieldSeen = true;
-            
+
                     switch (fieldId)
                     {
                         case 1: // i
@@ -1394,7 +1394,7 @@ namespace test.fixtures.constants
                     }
                 }
             }
-    
+
             public override bool Equals(object? obj)
             {
                 if (obj is not @union2 other)
@@ -1407,12 +1407,12 @@ namespace test.fixtures.constants
                 }
                 return Equals(_value, other._value);
             }
-    
+
             public override int GetHashCode()
             {
                 return HashCode.Combine(_type, _value);
             }
-    
+
             public override string ToString()
             {
                 return $"union2({_type}={_value})";

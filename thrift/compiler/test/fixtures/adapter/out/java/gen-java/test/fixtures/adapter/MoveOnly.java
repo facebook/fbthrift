@@ -30,7 +30,7 @@ public final class MoveOnly implements com.facebook.thrift.payload.ThriftSeriali
     ) {
         this.ptr = ptr;
     }
-    
+
     @ThriftConstructor
     protected MoveOnly() {
       this.ptr = null;
@@ -46,19 +46,19 @@ public final class MoveOnly implements com.facebook.thrift.payload.ThriftSeriali
 
     public static class Builder {
         private test.fixtures.adapter.HeapAllocated ptr = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="ptr", requiredness=Requiredness.NONE)    public Builder setPtr(test.fixtures.adapter.HeapAllocated ptr) {
             this.ptr = ptr;
             return this;
         }
-    
+
         public test.fixtures.adapter.HeapAllocated getPtr() { return ptr; }
-    
+
         public Builder() { }
         public Builder(MoveOnly other) {
             this.ptr = other.ptr;
         }
-    
+
         @ThriftConstructor
         public MoveOnly build() {
             MoveOnly result = new MoveOnly (
@@ -103,9 +103,9 @@ public final class MoveOnly implements com.facebook.thrift.payload.ThriftSeriali
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         MoveOnly other = (MoveOnly)o;
-    
+
         return
             Objects.equals(ptr, other.ptr) &&
             true;
@@ -122,7 +122,7 @@ public final class MoveOnly implements com.facebook.thrift.payload.ThriftSeriali
     public static com.facebook.thrift.payload.Reader<MoveOnly> asReader() {
       return MoveOnly::read0;
     }
-    
+
     public static MoveOnly read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(MoveOnly.NAMES_TO_IDS, MoveOnly.THRIFT_NAMES_TO_IDS, MoveOnly.FIELD_METADATA);
@@ -166,7 +166,7 @@ public final class MoveOnly implements com.facebook.thrift.payload.ThriftSeriali
     private static class _MoveOnlyLazy {
         private static final MoveOnly _DEFAULT = new MoveOnly.Builder().build();
     }
-    
+
     public static MoveOnly defaultInstance() {
         return  _MoveOnlyLazy._DEFAULT;
     }

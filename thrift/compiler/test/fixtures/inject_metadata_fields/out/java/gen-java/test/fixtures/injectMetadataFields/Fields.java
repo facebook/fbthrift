@@ -30,7 +30,7 @@ public final class Fields implements com.facebook.thrift.payload.ThriftSerializa
     ) {
         this.injectedField = injectedField;
     }
-    
+
     @ThriftConstructor
     protected Fields() {
       this.injectedField = null;
@@ -46,19 +46,19 @@ public final class Fields implements com.facebook.thrift.payload.ThriftSerializa
 
     public static class Builder {
         private String injectedField = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=100, name="injected_field", requiredness=Requiredness.NONE)    public Builder setInjectedField(String injectedField) {
             this.injectedField = injectedField;
             return this;
         }
-    
+
         public String getInjectedField() { return injectedField; }
-    
+
         public Builder() { }
         public Builder(Fields other) {
             this.injectedField = other.injectedField;
         }
-    
+
         @ThriftConstructor
         public Fields build() {
             Fields result = new Fields (
@@ -100,9 +100,9 @@ public final class Fields implements com.facebook.thrift.payload.ThriftSerializa
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         Fields other = (Fields)o;
-    
+
         return
             Objects.equals(injectedField, other.injectedField) &&
             true;
@@ -119,7 +119,7 @@ public final class Fields implements com.facebook.thrift.payload.ThriftSerializa
     public static com.facebook.thrift.payload.Reader<Fields> asReader() {
       return Fields::read0;
     }
-    
+
     public static Fields read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(Fields.NAMES_TO_IDS, Fields.THRIFT_NAMES_TO_IDS, Fields.FIELD_METADATA);
@@ -163,7 +163,7 @@ public final class Fields implements com.facebook.thrift.payload.ThriftSerializa
     private static class _FieldsLazy {
         private static final Fields _DEFAULT = new Fields.Builder().build();
     }
-    
+
     public static Fields defaultInstance() {
         return  _FieldsLazy._DEFAULT;
     }

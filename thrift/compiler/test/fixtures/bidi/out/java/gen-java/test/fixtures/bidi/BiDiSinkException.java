@@ -44,7 +44,7 @@ public final class BiDiSinkException extends org.apache.thrift.TBaseException im
     ) {
         this.message = message;
     }
-    
+
     @ThriftConstructor
     protected BiDiSinkException() {
       this.message = null;
@@ -52,19 +52,19 @@ public final class BiDiSinkException extends org.apache.thrift.TBaseException im
 
     public static class Builder {
         private String message = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.NONE)    public Builder setMessage(String message) {
             this.message = message;
             return this;
         }
-    
+
         public String getMessage() { return message; }
-    
+
         public Builder() { }
         public Builder(BiDiSinkException other) {
             this.message = other.message;
         }
-    
+
         @ThriftConstructor
         public BiDiSinkException build() {
             BiDiSinkException result = new BiDiSinkException (
@@ -83,7 +83,7 @@ public final class BiDiSinkException extends org.apache.thrift.TBaseException im
     public static com.facebook.thrift.payload.Reader<BiDiSinkException> asReader() {
       return BiDiSinkException::read0;
     }
-    
+
     public static BiDiSinkException read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(BiDiSinkException.NAMES_TO_IDS, BiDiSinkException.THRIFT_NAMES_TO_IDS, BiDiSinkException.FIELD_METADATA);
@@ -127,7 +127,7 @@ public final class BiDiSinkException extends org.apache.thrift.TBaseException im
     private static class _BiDiSinkExceptionLazy {
         private static final BiDiSinkException _DEFAULT = new BiDiSinkException.Builder().build();
     }
-    
+
     public static BiDiSinkException defaultInstance() {
         return  _BiDiSinkExceptionLazy._DEFAULT;
     }}

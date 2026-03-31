@@ -30,7 +30,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     ) {
         this.a = a;
     }
-    
+
     @ThriftConstructor
     protected Foo() {
       this.a = 2L;
@@ -46,19 +46,19 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
 
     public static class Builder {
         private long a = 2L;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.NONE)    public Builder setA(long a) {
             this.a = a;
             return this;
         }
-    
+
         public long getA() { return a; }
-    
+
         public Builder() { }
         public Builder(Foo other) {
             this.a = other.a;
         }
-    
+
         @ThriftConstructor
         public Foo build() {
             Foo result = new Foo (
@@ -81,7 +81,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       FIELD_METADATA.put(1, A_FIELD_DESC);
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
     public long getA() { return a; }
 
@@ -100,9 +100,9 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         Foo other = (Foo)o;
-    
+
         return
             Objects.equals(a, other.a) &&
             true;
@@ -119,7 +119,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     public static com.facebook.thrift.payload.Reader<Foo> asReader() {
       return Foo::read0;
     }
-    
+
     public static Foo read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(Foo.NAMES_TO_IDS, Foo.THRIFT_NAMES_TO_IDS, Foo.FIELD_METADATA);
@@ -161,7 +161,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     private static class _FooLazy {
         private static final Foo _DEFAULT = new Foo.Builder().build();
     }
-    
+
     public static Foo defaultInstance() {
         return  _FooLazy._DEFAULT;
     }

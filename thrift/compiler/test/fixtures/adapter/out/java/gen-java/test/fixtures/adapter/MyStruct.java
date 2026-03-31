@@ -32,7 +32,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         this.field = field;
         this.setString = setString;
     }
-    
+
     @ThriftConstructor
     protected MyStruct() {
       this.field = 0;
@@ -50,27 +50,27 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public static class Builder {
         private int field = 0;
         private com.facebook.thrift.my.AdaptedSet_2 setString = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="field", requiredness=Requiredness.NONE)    public Builder setField(int field) {
             this.field = field;
             return this;
         }
-    
+
         public int getField() { return field; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="set_string", requiredness=Requiredness.NONE)    public Builder setSetString(com.facebook.thrift.my.AdaptedSet_2 setString) {
             this.setString = setString;
             return this;
         }
-    
+
         public com.facebook.thrift.my.AdaptedSet_2 getSetString() { return setString; }
-    
+
         public Builder() { }
         public Builder(MyStruct other) {
             this.field = other.field;
             this.setString = other.setString;
         }
-    
+
         @ThriftConstructor
         public MyStruct build() {
             MyStruct result = new MyStruct (
@@ -104,7 +104,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         MyStruct.class, MyStruct::read0));
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="field", requiredness=Requiredness.NONE)
     public int getField() { return field; }
 
@@ -129,9 +129,9 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         MyStruct other = (MyStruct)o;
-    
+
         return
             Objects.equals(field, other.field) &&
             __SetWithAdapter_Adapter.equals(setString, other.setString) && 
@@ -150,7 +150,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public static com.facebook.thrift.payload.Reader<MyStruct> asReader() {
       return MyStruct::read0;
     }
-    
+
     public static MyStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(MyStruct.NAMES_TO_IDS, MyStruct.THRIFT_NAMES_TO_IDS, MyStruct.FIELD_METADATA);
@@ -222,7 +222,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     private static class _MyStructLazy {
         private static final MyStruct _DEFAULT = new MyStruct.Builder().build();
     }
-    
+
     public static MyStruct defaultInstance() {
         return  _MyStructLazy._DEFAULT;
     }

@@ -134,7 +134,7 @@ func WriteMyMapIdentifier(item MyMapIdentifier, p thrift.Encoder) error {
                 return err
             }
         }
-    
+
         {
             item := v
             if err := p.WriteString(item); err != nil {
@@ -155,7 +155,7 @@ func ReadMyMapIdentifier(p thrift.Decoder) (MyMapIdentifier, error) {
         if err != nil {
             return thrift.PrependError("error reading map begin: ", err)
         }
-        
+
         mapResult := make(map[string]string, size)
         for i := 0; i < size; i++ {
             var key string
@@ -166,7 +166,7 @@ func ReadMyMapIdentifier(p thrift.Decoder) (MyMapIdentifier, error) {
                 }
                 key = result
             }
-        
+
             var value string
             {
                 result, err := p.ReadString()
@@ -175,10 +175,10 @@ func ReadMyMapIdentifier(p thrift.Decoder) (MyMapIdentifier, error) {
                 }
                 value = result
             }
-        
+
             mapResult[key] = value
         }
-        
+
         if err := p.ReadMapEnd(); err != nil {
             return thrift.PrependError("error reading map end: ", err)
         }
@@ -206,7 +206,7 @@ func WriteCompanyLocationsMap(item CompanyLocationsMap, p thrift.Encoder) error 
                 return err
             }
         }
-    
+
         {
             item := v
             if err := p.WriteListBegin(thrift.I32, len(item)); err != nil {
@@ -238,7 +238,7 @@ func ReadCompanyLocationsMap(p thrift.Decoder) (CompanyLocationsMap, error) {
         if err != nil {
             return thrift.PrependError("error reading map begin: ", err)
         }
-        
+
         mapResult := make(map[Company][]City, size)
         for i := 0; i < size; i++ {
             var key Company
@@ -250,14 +250,14 @@ func ReadCompanyLocationsMap(p thrift.Decoder) (CompanyLocationsMap, error) {
                 result := Company(enumResult)
                 key = result
             }
-        
+
             var value []City
             {
                 _ /* elemType */, size, err := p.ReadListBegin()
                 if err != nil {
                     return thrift.PrependError("error reading list begin: ", err)
                 }
-                
+
                 listResult := make([]City, 0, size)
                 for i := 0; i < size; i++ {
                     var elem City
@@ -271,17 +271,17 @@ func ReadCompanyLocationsMap(p thrift.Decoder) (CompanyLocationsMap, error) {
                     }
                     listResult = append(listResult, elem)
                 }
-                
+
                 if err := p.ReadListEnd(); err != nil {
                     return thrift.PrependError("error reading list end: ", err)
                 }
                 result := listResult
                 value = result
             }
-        
+
             mapResult[key] = value
         }
-        
+
         if err := p.ReadMapEnd(); err != nil {
             return thrift.PrependError("error reading map end: ", err)
         }
@@ -1309,7 +1309,7 @@ func (x *Struct2) readField4(p thrift.Decoder) error {  // D
     if err != nil {
         return thrift.PrependError("error reading list begin: ", err)
     }
-    
+
     listResult := make([]int32, 0, size)
     for i := 0; i < size; i++ {
         var elem int32
@@ -1322,7 +1322,7 @@ func (x *Struct2) readField4(p thrift.Decoder) error {  // D
         }
         listResult = append(listResult, elem)
     }
-    
+
     if err := p.ReadListEnd(); err != nil {
         return thrift.PrependError("error reading list end: ", err)
     }

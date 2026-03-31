@@ -41,9 +41,9 @@ public class ExtendedServiceThriftMetadataHandler implements com.facebook.thrift
               .setName("param1")
               .setIsOptional(false)
               .build());
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("init")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I64_TYPE))

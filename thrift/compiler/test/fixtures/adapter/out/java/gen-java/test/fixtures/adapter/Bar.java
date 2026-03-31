@@ -44,7 +44,7 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
         this.adaptedStructField = adaptedStructField;
         this.structListFieldWithTypedef = structListFieldWithTypedef;
     }
-    
+
     @ThriftConstructor
     protected Bar() {
       this.structField = null;
@@ -74,63 +74,63 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
         private test.fixtures.adapter.Baz optionalUnionField = null;
         private test.fixtures.adapter.DirectlyAdapted adaptedStructField = null;
         private List<test.fixtures.adapter.Foo> structListFieldWithTypedef = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="structField", requiredness=Requiredness.NONE)    public Builder setStructField(test.fixtures.adapter.Foo structField) {
             this.structField = structField;
             return this;
         }
-    
+
         public test.fixtures.adapter.Foo getStructField() { return structField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="optionalStructField", requiredness=Requiredness.OPTIONAL)    public Builder setOptionalStructField(test.fixtures.adapter.Foo optionalStructField) {
             this.optionalStructField = optionalStructField;
             return this;
         }
-    
+
         public test.fixtures.adapter.Foo getOptionalStructField() { return optionalStructField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="structListField", requiredness=Requiredness.NONE)    public Builder setStructListField(List<com.facebook.thrift.my.AdaptedFoo_1> structListField) {
             this.structListField = structListField;
             return this;
         }
-    
+
         public List<com.facebook.thrift.my.AdaptedFoo_1> getStructListField() { return structListField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=4, name="optionalStructListField", requiredness=Requiredness.OPTIONAL)    public Builder setOptionalStructListField(List<com.facebook.thrift.my.AdaptedFoo_1> optionalStructListField) {
             this.optionalStructListField = optionalStructListField;
             return this;
         }
-    
+
         public List<com.facebook.thrift.my.AdaptedFoo_1> getOptionalStructListField() { return optionalStructListField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=5, name="unionField", requiredness=Requiredness.NONE)    public Builder setUnionField(test.fixtures.adapter.Baz unionField) {
             this.unionField = unionField;
             return this;
         }
-    
+
         public test.fixtures.adapter.Baz getUnionField() { return unionField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=6, name="optionalUnionField", requiredness=Requiredness.OPTIONAL)    public Builder setOptionalUnionField(test.fixtures.adapter.Baz optionalUnionField) {
             this.optionalUnionField = optionalUnionField;
             return this;
         }
-    
+
         public test.fixtures.adapter.Baz getOptionalUnionField() { return optionalUnionField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=7, name="adaptedStructField", requiredness=Requiredness.NONE)    public Builder setAdaptedStructField(test.fixtures.adapter.DirectlyAdapted adaptedStructField) {
             this.adaptedStructField = adaptedStructField;
             return this;
         }
-    
+
         public test.fixtures.adapter.DirectlyAdapted getAdaptedStructField() { return adaptedStructField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=8, name="structListFieldWithTypedef", requiredness=Requiredness.NONE)    public Builder setStructListFieldWithTypedef(List<test.fixtures.adapter.Foo> structListFieldWithTypedef) {
             this.structListFieldWithTypedef = structListFieldWithTypedef;
             return this;
         }
-    
+
         public List<test.fixtures.adapter.Foo> getStructListFieldWithTypedef() { return structListFieldWithTypedef; }
-    
+
         public Builder() { }
         public Builder(Bar other) {
             this.structField = other.structField;
@@ -142,7 +142,7 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
             this.adaptedStructField = other.adaptedStructField;
             this.structListFieldWithTypedef = other.structListFieldWithTypedef;
         }
-    
+
         @ThriftConstructor
         public Bar build() {
             Bar result = new Bar (
@@ -280,9 +280,9 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         Bar other = (Bar)o;
-    
+
         return
             Objects.equals(structField, other.structField) &&
             Objects.equals(optionalStructField, other.optionalStructField) &&
@@ -313,7 +313,7 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
     public static com.facebook.thrift.payload.Reader<Bar> asReader() {
       return Bar::read0;
     }
-    
+
     public static Bar read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(Bar.NAMES_TO_IDS, Bar.THRIFT_NAMES_TO_IDS, Bar.FIELD_METADATA);
@@ -511,7 +511,7 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
     private static class _BarLazy {
         private static final Bar _DEFAULT = new Bar.Builder().build();
     }
-    
+
     public static Bar defaultInstance() {
         return  _BarLazy._DEFAULT;
     }

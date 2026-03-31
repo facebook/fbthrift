@@ -29,9 +29,9 @@ public class RaiserThriftMetadataHandler implements com.facebook.thrift.server.T
   private static void addFunctions_0(List<ThriftFunction> functions) {
         {
           List<ThriftField> args = new ArrayList<>();
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("doBland")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
@@ -42,7 +42,7 @@ public class RaiserThriftMetadataHandler implements com.facebook.thrift.server.T
         }
         {
           List<ThriftField> args = new ArrayList<>();
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
           exceptions.add(new ThriftField.Builder()
               .setId(1)
@@ -62,7 +62,7 @@ public class RaiserThriftMetadataHandler implements com.facebook.thrift.server.T
               .setName("exception_3")
               .setIsOptional(false)
               .build());
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("doRaise")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
@@ -73,9 +73,9 @@ public class RaiserThriftMetadataHandler implements com.facebook.thrift.server.T
         }
         {
           List<ThriftField> args = new ArrayList<>();
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("get200")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_STRING_TYPE))
@@ -86,7 +86,7 @@ public class RaiserThriftMetadataHandler implements com.facebook.thrift.server.T
         }
         {
           List<ThriftField> args = new ArrayList<>();
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
           exceptions.add(new ThriftField.Builder()
               .setId(1)
@@ -106,7 +106,7 @@ public class RaiserThriftMetadataHandler implements com.facebook.thrift.server.T
               .setName("exception_3")
               .setIsOptional(false)
               .build());
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("get500")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_STRING_TYPE))

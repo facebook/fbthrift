@@ -32,7 +32,7 @@ public final class FieldsInjectedToStruct implements com.facebook.thrift.payload
         this.stringField = stringField;
         this.injectedField = injectedField;
     }
-    
+
     @ThriftConstructor
     protected FieldsInjectedToStruct() {
       this.stringField = null;
@@ -50,27 +50,27 @@ public final class FieldsInjectedToStruct implements com.facebook.thrift.payload
     public static class Builder {
         private String stringField = null;
         private String injectedField = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="string_field", requiredness=Requiredness.NONE)    public Builder setStringField(String stringField) {
             this.stringField = stringField;
             return this;
         }
-    
+
         public String getStringField() { return stringField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=-1100, name="injected_field", isLegacyId=true, requiredness=Requiredness.NONE)    public Builder setInjectedField(String injectedField) {
             this.injectedField = injectedField;
             return this;
         }
-    
+
         public String getInjectedField() { return injectedField; }
-    
+
         public Builder() { }
         public Builder(FieldsInjectedToStruct other) {
             this.stringField = other.stringField;
             this.injectedField = other.injectedField;
         }
-    
+
         @ThriftConstructor
         public FieldsInjectedToStruct build() {
             FieldsInjectedToStruct result = new FieldsInjectedToStruct (
@@ -125,9 +125,9 @@ public final class FieldsInjectedToStruct implements com.facebook.thrift.payload
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         FieldsInjectedToStruct other = (FieldsInjectedToStruct)o;
-    
+
         return
             Objects.equals(stringField, other.stringField) &&
             Objects.equals(injectedField, other.injectedField) &&
@@ -146,7 +146,7 @@ public final class FieldsInjectedToStruct implements com.facebook.thrift.payload
     public static com.facebook.thrift.payload.Reader<FieldsInjectedToStruct> asReader() {
       return FieldsInjectedToStruct::read0;
     }
-    
+
     public static FieldsInjectedToStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(FieldsInjectedToStruct.NAMES_TO_IDS, FieldsInjectedToStruct.THRIFT_NAMES_TO_IDS, FieldsInjectedToStruct.FIELD_METADATA);
@@ -206,7 +206,7 @@ public final class FieldsInjectedToStruct implements com.facebook.thrift.payload
     private static class _FieldsInjectedToStructLazy {
         private static final FieldsInjectedToStruct _DEFAULT = new FieldsInjectedToStruct.Builder().build();
     }
-    
+
     public static FieldsInjectedToStruct defaultInstance() {
         return  _FieldsInjectedToStructLazy._DEFAULT;
     }

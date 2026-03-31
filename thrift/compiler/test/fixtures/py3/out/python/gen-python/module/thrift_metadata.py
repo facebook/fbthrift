@@ -504,10 +504,10 @@ def gen_metadata_service_SimpleService() -> _fbthrift_metadata.ThriftMetadata:
 
 def _fbthrift_gen_metadata_service_SimpleService(metadata_struct: _fbthrift_metadata.ThriftMetadata) -> _fbthrift_metadata.ThriftMetadata:
     qualified_name = "module.SimpleService"
-    
+
     if qualified_name in metadata_struct.services:
         return metadata_struct
-    
+
     functions = [
         _fbthrift_metadata.ThriftFunction(name="get_five", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), arguments=[
         ], exceptions = [
@@ -761,271 +761,271 @@ def _fbthrift_gen_metadata_service_SimpleService(metadata_struct: _fbthrift_meta
             _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="python.Py3Hidden"), fields= {  }),
         ]),
     ]
-    
+
     service_dict = dict(metadata_struct.services)
     service_dict[qualified_name] = _fbthrift_metadata.ThriftService(name=qualified_name, functions=functions,  structured_annotations=[
     ])
     new_struct = metadata_struct(services=service_dict)
-    
-    
-    
+
+
+
      # return value
-    
-    
+
+
      # num
-    
-    
+
+
      # return value
-    
-    
-    
-    
+
+
+
+
      # return value
-    
-    
+
+
      # first
      # second
-    
-    
+
+
      # return value
-    
-    
+
+
     new_struct = _fbthrift_gen_metadata_struct_SimpleStruct(new_struct) # simple_struct
-    
-    
+
+
      # return value
-    
-    
+
+
      # input
-    
-    
+
+
      # return value
-    
-    
+
+
      # input
-    
-    
+
+
      # return value
-    
-    
+
+
      # input
-    
-    
+
+
      # return value
-    
-    
+
+
      # input
-    
-    
+
+
      # return value
-    
-    
+
+
      # input
-    
-    
+
+
      # return value
-    
-    
-    
+
+
+
     new_struct = _fbthrift_gen_metadata_exception_SimpleException(new_struct) # se
-    
+
      # return value
-    
-    
-    
-    
+
+
+
+
      # return value
-    
-    
+
+
      # numbers
-    
-    
+
+
      # return value
-    
-    
+
+
      # numbers
-    
-    
+
+
      # return value
-    
-    
+
+
      # numbers
-    
-    
+
+
      # return value
-    
-    
+
+
      # words
-    
-    
+
+
      # return value
-    
-    
+
+
     new_struct = _fbthrift_gen_metadata_struct_SimpleStruct(new_struct) # items
-    
-    
+
+
      # return value
-    
-    
+
+
      # numbers
-    
-    
+
+
      # return value
-    
-    
+
+
      # words
      # word
-    
-    
+
+
      # return value
-    
-    
+
+
      # key
      # val  # words
      # key
-    
-    
+
+
      # return value
-    
-    
+
+
      # key
     new_struct = _fbthrift_gen_metadata_struct_SimpleStruct(new_struct) # val  # items
-    
-    
+
+
      # return value
-    
-    
+
+
      # key
      # val  # items
-    
-    
+
+
      # return value
-    
-    
+
+
     new_struct = _fbthrift_gen_metadata_struct_ComplexStruct(new_struct) # counter
-    
-    
+
+
      # return value
-    
-    
+
+
     new_struct = _fbthrift_gen_metadata_struct_ComplexStruct(new_struct) # counter
-    
-    
+
+
      # return value
-    
-    
-    
-    
+
+
+
+
     new_struct = _fbthrift_gen_metadata_struct_SimpleStruct(new_struct) # return value
-    
-    
+
+
      # n
-    
-    
+
+
      # return value
-    
-    
+
+
      # words
-    
-    
+
+
      # return value
-    
-    
+
+
      # words
-    
-    
+
+
      # key
      # val  # return value
-    
-    
+
+
     new_struct = module.thrift_enums._fbthrift_gen_metadata_enum_AnEnum(new_struct) # in_enum
-    
-    
+
+
     new_struct = module.thrift_enums._fbthrift_gen_metadata_enum_AnEnum(new_struct) # return value
-    
-    
+
+
      # num_lists
      # num_items
-    
-    
+
+
      # return value
-    
-    
+
+
      # sentence
-    
-    
+
+
      # key
      # key
      # val  # val  # return value
-    
-    
+
+
      # some_words
-    
-    
+
+
      # return value
-    
-    
+
+
      # key
     new_struct = _fbthrift_gen_metadata_struct_SimpleStruct(new_struct) # val  # struct_map
-    
-    
+
+
      # return value
-    
-    
+
+
      # word_chars
-    
-    
+
+
      # return value
-    
-    
+
+
      # sets
-    
-    
+
+
      # return value
-    
-    
+
+
      # key
      # val  # string_map
-    
-    
+
+
      # return value
-    
-    
+
+
      # key
-    
-    
+
+
      # return value
-    
-    
+
+
      # something
-    
-    
+
+
      # return value
-    
-    
+
+
      # binaries
-    
-    
+
+
      # return value
-    
-    
+
+
     new_struct = module.thrift_enums._fbthrift_gen_metadata_enum_AnEnum(new_struct) # the_enum
-    
-    
+
+
     new_struct = module.thrift_enums._fbthrift_gen_metadata_enum_AnEnum(new_struct) # return value
-    
-    
+
+
     new_struct = _fbthrift_gen_metadata_struct_BinaryUnion(new_struct) # u
-    
-    
+
+
     new_struct = _fbthrift_gen_metadata_struct_BinaryUnionStruct(new_struct) # return value
-    
-    
-    
-    
+
+
+
+
     new_struct = _fbthrift_gen_metadata_struct_SimpleStruct(new_struct) # return value
-    
-    
+
+
     return new_struct
 
 def _fbthrift_metadata_service_response_SimpleService() -> _fbthrift_metadata.ThriftServiceMetadataResponse:
@@ -1040,29 +1040,29 @@ def gen_metadata_service_DerivedService() -> _fbthrift_metadata.ThriftMetadata:
 
 def _fbthrift_gen_metadata_service_DerivedService(metadata_struct: _fbthrift_metadata.ThriftMetadata) -> _fbthrift_metadata.ThriftMetadata:
     qualified_name = "module.DerivedService"
-    
+
     if qualified_name in metadata_struct.services:
         return metadata_struct
-    
+
     functions = [
         _fbthrift_metadata.ThriftFunction(name="get_six", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), arguments=[
         ], exceptions = [
         ], is_oneway=False, structured_annotations=[
         ]),
     ]
-    
+
     service_dict = dict(metadata_struct.services)
     service_dict[qualified_name] = _fbthrift_metadata.ThriftService(name=qualified_name, functions=functions, parent="module.SimpleService", structured_annotations=[
         _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="thrift.DeprecatedUnvalidatedAnnotations"), fields= { "items": _fbthrift_metadata.ThriftConstValue(cv_map=[_fbthrift_metadata.ThriftConstValuePair(key=_fbthrift_metadata.ThriftConstValue(cv_string="bar"), value=_fbthrift_metadata.ThriftConstValue(cv_string="1")), _fbthrift_metadata.ThriftConstValuePair(key=_fbthrift_metadata.ThriftConstValue(cv_string="foo"), value=_fbthrift_metadata.ThriftConstValue(cv_string="\"\"\"")), ]),  }),
     ])
     new_struct = metadata_struct(services=service_dict)
     new_struct = _fbthrift_gen_metadata_service_SimpleService(new_struct)
-    
-    
-    
+
+
+
      # return value
-    
-    
+
+
     return new_struct
 
 def _fbthrift_metadata_service_response_DerivedService() -> _fbthrift_metadata.ThriftServiceMetadataResponse:
@@ -1077,28 +1077,28 @@ def gen_metadata_service_RederivedService() -> _fbthrift_metadata.ThriftMetadata
 
 def _fbthrift_gen_metadata_service_RederivedService(metadata_struct: _fbthrift_metadata.ThriftMetadata) -> _fbthrift_metadata.ThriftMetadata:
     qualified_name = "module.RederivedService"
-    
+
     if qualified_name in metadata_struct.services:
         return metadata_struct
-    
+
     functions = [
         _fbthrift_metadata.ThriftFunction(name="get_seven", return_type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I32_TYPE), arguments=[
         ], exceptions = [
         ], is_oneway=False, structured_annotations=[
         ]),
     ]
-    
+
     service_dict = dict(metadata_struct.services)
     service_dict[qualified_name] = _fbthrift_metadata.ThriftService(name=qualified_name, functions=functions, parent="module.DerivedService", structured_annotations=[
     ])
     new_struct = metadata_struct(services=service_dict)
     new_struct = _fbthrift_gen_metadata_service_DerivedService(new_struct)
-    
-    
-    
+
+
+
      # return value
-    
-    
+
+
     return new_struct
 
 def _fbthrift_metadata_service_response_RederivedService() -> _fbthrift_metadata.ThriftServiceMetadataResponse:

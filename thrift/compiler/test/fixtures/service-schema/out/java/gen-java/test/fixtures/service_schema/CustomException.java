@@ -55,7 +55,7 @@ public final class CustomException extends org.apache.thrift.TBaseException impl
         this.name = name;
         this.result = result;
     }
-    
+
     @ThriftConstructor
     protected CustomException() {
       this.name = null;
@@ -65,27 +65,27 @@ public final class CustomException extends org.apache.thrift.TBaseException impl
     public static class Builder {
         private String name = null;
         private test.fixtures.service_schema.Result result = test.fixtures.service_schema.Result.SO_SO;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="name", requiredness=Requiredness.NONE)    public Builder setName(String name) {
             this.name = name;
             return this;
         }
-    
+
         public String getName() { return name; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="result", requiredness=Requiredness.NONE)    public Builder setResult(test.fixtures.service_schema.Result result) {
             this.result = result;
             return this;
         }
-    
+
         public test.fixtures.service_schema.Result getResult() { return result; }
-    
+
         public Builder() { }
         public Builder(CustomException other) {
             this.name = other.name;
             this.result = other.result;
         }
-    
+
         @ThriftConstructor
         public CustomException build() {
             CustomException result = new CustomException (
@@ -109,7 +109,7 @@ public final class CustomException extends org.apache.thrift.TBaseException impl
     public static com.facebook.thrift.payload.Reader<CustomException> asReader() {
       return CustomException::read0;
     }
-    
+
     public static CustomException read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(CustomException.NAMES_TO_IDS, CustomException.THRIFT_NAMES_TO_IDS, CustomException.FIELD_METADATA);
@@ -167,7 +167,7 @@ public final class CustomException extends org.apache.thrift.TBaseException impl
     private static class _CustomExceptionLazy {
         private static final CustomException _DEFAULT = new CustomException.Builder().build();
     }
-    
+
     public static CustomException defaultInstance() {
         return  _CustomExceptionLazy._DEFAULT;
     }}

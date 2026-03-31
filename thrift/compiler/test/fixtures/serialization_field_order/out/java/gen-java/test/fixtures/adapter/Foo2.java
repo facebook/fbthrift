@@ -34,7 +34,7 @@ public final class Foo2 implements com.facebook.thrift.payload.ThriftSerializabl
         this.field2 = field2;
         this.field3 = field3;
     }
-    
+
     @ThriftConstructor
     protected Foo2() {
       this.field1 = 0;
@@ -54,35 +54,35 @@ public final class Foo2 implements com.facebook.thrift.payload.ThriftSerializabl
         private int field1 = 0;
         private int field2 = 0;
         private int field3 = 0;
-    
+
         @com.facebook.swift.codec.ThriftField(value=3, name="field1", requiredness=Requiredness.NONE)    public Builder setField1(int field1) {
             this.field1 = field1;
             return this;
         }
-    
+
         public int getField1() { return field1; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=1, name="field2", requiredness=Requiredness.NONE)    public Builder setField2(int field2) {
             this.field2 = field2;
             return this;
         }
-    
+
         public int getField2() { return field2; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="field3", requiredness=Requiredness.NONE)    public Builder setField3(int field3) {
             this.field3 = field3;
             return this;
         }
-    
+
         public int getField3() { return field3; }
-    
+
         public Builder() { }
         public Builder(Foo2 other) {
             this.field1 = other.field1;
             this.field2 = other.field2;
             this.field3 = other.field3;
         }
-    
+
         @ThriftConstructor
         public Foo2 build() {
             Foo2 result = new Foo2 (
@@ -119,17 +119,17 @@ public final class Foo2 implements com.facebook.thrift.payload.ThriftSerializabl
       FIELD_METADATA.put(2, FIELD3_FIELD_DESC);
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=3, name="field1", requiredness=Requiredness.NONE)
     public int getField1() { return field1; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="field2", requiredness=Requiredness.NONE)
     public int getField2() { return field2; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="field3", requiredness=Requiredness.NONE)
     public int getField3() { return field3; }
 
@@ -150,9 +150,9 @@ public final class Foo2 implements com.facebook.thrift.payload.ThriftSerializabl
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         Foo2 other = (Foo2)o;
-    
+
         return
             Objects.equals(field1, other.field1) &&
             Objects.equals(field2, other.field2) &&
@@ -173,7 +173,7 @@ public final class Foo2 implements com.facebook.thrift.payload.ThriftSerializabl
     public static com.facebook.thrift.payload.Reader<Foo2> asReader() {
       return Foo2::read0;
     }
-    
+
     public static Foo2 read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(Foo2.NAMES_TO_IDS, Foo2.THRIFT_NAMES_TO_IDS, Foo2.FIELD_METADATA);
@@ -243,7 +243,7 @@ public final class Foo2 implements com.facebook.thrift.payload.ThriftSerializabl
     private static class _Foo2Lazy {
         private static final Foo2 _DEFAULT = new Foo2.Builder().build();
     }
-    
+
     public static Foo2 defaultInstance() {
         return  _Foo2Lazy._DEFAULT;
     }

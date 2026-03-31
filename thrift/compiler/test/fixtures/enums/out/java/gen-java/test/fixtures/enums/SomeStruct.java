@@ -36,7 +36,7 @@ public final class SomeStruct implements com.facebook.thrift.payload.ThriftSeria
         this.questionable = questionable;
         this.tags = tags;
     }
-    
+
     @ThriftConstructor
     protected SomeStruct() {
       this.reasonable = test.fixtures.enums.Metasyntactic.FOO;
@@ -60,35 +60,35 @@ public final class SomeStruct implements com.facebook.thrift.payload.ThriftSeria
         private test.fixtures.enums.Metasyntactic questionable = test.fixtures.enums.Metasyntactic.fromInteger(-1);
         private Set<Integer> tags = ImmutableSet.<Integer>builder()
             .build();
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="reasonable", requiredness=Requiredness.NONE)    public Builder setReasonable(test.fixtures.enums.Metasyntactic reasonable) {
             this.reasonable = reasonable;
             return this;
         }
-    
+
         public test.fixtures.enums.Metasyntactic getReasonable() { return reasonable; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="fine", requiredness=Requiredness.NONE)    public Builder setFine(test.fixtures.enums.Metasyntactic fine) {
             this.fine = fine;
             return this;
         }
-    
+
         public test.fixtures.enums.Metasyntactic getFine() { return fine; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="questionable", requiredness=Requiredness.NONE)    public Builder setQuestionable(test.fixtures.enums.Metasyntactic questionable) {
             this.questionable = questionable;
             return this;
         }
-    
+
         public test.fixtures.enums.Metasyntactic getQuestionable() { return questionable; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=4, name="tags", requiredness=Requiredness.NONE)    public Builder setTags(Set<Integer> tags) {
             this.tags = tags;
             return this;
         }
-    
+
         public Set<Integer> getTags() { return tags; }
-    
+
         public Builder() { }
         public Builder(SomeStruct other) {
             this.reasonable = other.reasonable;
@@ -96,7 +96,7 @@ public final class SomeStruct implements com.facebook.thrift.payload.ThriftSeria
             this.questionable = other.questionable;
             this.tags = other.tags;
         }
-    
+
         @ThriftConstructor
         public SomeStruct build() {
             SomeStruct result = new SomeStruct (
@@ -180,9 +180,9 @@ public final class SomeStruct implements com.facebook.thrift.payload.ThriftSeria
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         SomeStruct other = (SomeStruct)o;
-    
+
         return
             Objects.equals(reasonable, other.reasonable) &&
             Objects.equals(fine, other.fine) &&
@@ -205,7 +205,7 @@ public final class SomeStruct implements com.facebook.thrift.payload.ThriftSeria
     public static com.facebook.thrift.payload.Reader<SomeStruct> asReader() {
       return SomeStruct::read0;
     }
-    
+
     public static SomeStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(SomeStruct.NAMES_TO_IDS, SomeStruct.THRIFT_NAMES_TO_IDS, SomeStruct.FIELD_METADATA);
@@ -305,7 +305,7 @@ public final class SomeStruct implements com.facebook.thrift.payload.ThriftSeria
     private static class _SomeStructLazy {
         private static final SomeStruct _DEFAULT = new SomeStruct.Builder().build();
     }
-    
+
     public static SomeStruct defaultInstance() {
         return  _SomeStructLazy._DEFAULT;
     }

@@ -44,7 +44,7 @@ public final class CustomException extends org.apache.thrift.TBaseException impl
     ) {
         this.message = message;
     }
-    
+
     @ThriftConstructor
     protected CustomException() {
       this.message = null;
@@ -52,19 +52,19 @@ public final class CustomException extends org.apache.thrift.TBaseException impl
 
     public static class Builder {
         private String message = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.NONE)    public Builder setMessage(String message) {
             this.message = message;
             return this;
         }
-    
+
         public String getMessage() { return message; }
-    
+
         public Builder() { }
         public Builder(CustomException other) {
             this.message = other.message;
         }
-    
+
         @ThriftConstructor
         public CustomException build() {
             CustomException result = new CustomException (
@@ -83,7 +83,7 @@ public final class CustomException extends org.apache.thrift.TBaseException impl
     public static com.facebook.thrift.payload.Reader<CustomException> asReader() {
       return CustomException::read0;
     }
-    
+
     public static CustomException read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(CustomException.NAMES_TO_IDS, CustomException.THRIFT_NAMES_TO_IDS, CustomException.FIELD_METADATA);
@@ -127,7 +127,7 @@ public final class CustomException extends org.apache.thrift.TBaseException impl
     private static class _CustomExceptionLazy {
         private static final CustomException _DEFAULT = new CustomException.Builder().build();
     }
-    
+
     public static CustomException defaultInstance() {
         return  _CustomExceptionLazy._DEFAULT;
     }}

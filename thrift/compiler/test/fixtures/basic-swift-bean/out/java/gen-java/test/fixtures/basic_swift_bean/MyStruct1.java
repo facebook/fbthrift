@@ -36,7 +36,7 @@ public final class MyStruct1 implements com.facebook.thrift.payload.ThriftSerial
         this.myDataField = myDataField;
         this.major = major;
     }
-    
+
     @ThriftConstructor
     protected MyStruct1() {
       this.myIntField = 0L;
@@ -58,35 +58,35 @@ public final class MyStruct1 implements com.facebook.thrift.payload.ThriftSerial
         private String myStringField = null;
         private test.fixtures.basic_swift_bean.MyDataItem myDataField = null;
         private long major = 0L;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)    public Builder setMyIntField(long myIntField) {
             this.myIntField = myIntField;
             return this;
         }
-    
+
         public long getMyIntField() { return myIntField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)    public Builder setMyStringField(String myStringField) {
             this.myStringField = myStringField;
             return this;
         }
-    
+
         public String getMyStringField() { return myStringField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)    public Builder setMyDataField(test.fixtures.basic_swift_bean.MyDataItem myDataField) {
             this.myDataField = myDataField;
             return this;
         }
-    
+
         public test.fixtures.basic_swift_bean.MyDataItem getMyDataField() { return myDataField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=4, name="major", requiredness=Requiredness.NONE)    public Builder setMajor(long major) {
             this.major = major;
             return this;
         }
-    
+
         public long getMajor() { return major; }
-    
+
         public Builder() { }
         public Builder(MyStruct1 other) {
             this.myIntField = other.myIntField;
@@ -94,7 +94,7 @@ public final class MyStruct1 implements com.facebook.thrift.payload.ThriftSerial
             this.myDataField = other.myDataField;
             this.major = other.major;
         }
-    
+
         @ThriftConstructor
         public MyStruct1 build() {
             MyStruct1 result = new MyStruct1 (
@@ -138,7 +138,7 @@ public final class MyStruct1 implements com.facebook.thrift.payload.ThriftSerial
       FIELD_METADATA.put(4, MAJOR_FIELD_DESC);
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
     public long getMyIntField() { return myIntField; }
 
@@ -153,7 +153,7 @@ public final class MyStruct1 implements com.facebook.thrift.payload.ThriftSerial
     public test.fixtures.basic_swift_bean.MyDataItem getMyDataField() { return myDataField; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=4, name="major", requiredness=Requiredness.NONE)
     public long getMajor() { return major; }
 
@@ -175,9 +175,9 @@ public final class MyStruct1 implements com.facebook.thrift.payload.ThriftSerial
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         MyStruct1 other = (MyStruct1)o;
-    
+
         return
             Objects.equals(myIntField, other.myIntField) &&
             Objects.equals(myStringField, other.myStringField) &&
@@ -200,7 +200,7 @@ public final class MyStruct1 implements com.facebook.thrift.payload.ThriftSerial
     public static com.facebook.thrift.payload.Reader<MyStruct1> asReader() {
       return MyStruct1::read0;
     }
-    
+
     public static MyStruct1 read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(MyStruct1.NAMES_TO_IDS, MyStruct1.THRIFT_NAMES_TO_IDS, MyStruct1.FIELD_METADATA);
@@ -288,7 +288,7 @@ public final class MyStruct1 implements com.facebook.thrift.payload.ThriftSerial
     private static class _MyStruct1Lazy {
         private static final MyStruct1 _DEFAULT = new MyStruct1.Builder().build();
     }
-    
+
     public static MyStruct1 defaultInstance() {
         return  _MyStruct1Lazy._DEFAULT;
     }

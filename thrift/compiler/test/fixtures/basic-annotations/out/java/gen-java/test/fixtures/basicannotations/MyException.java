@@ -36,15 +36,15 @@ public final class MyException extends org.apache.thrift.TBaseException implemen
     public MyException(
     ) {
     }
-    
-    
+
+
 
     public static class Builder {
-    
+
     public Builder() { }
         public Builder(MyException other) {
         }
-    
+
         @ThriftConstructor
         public MyException build() {
             MyException result = new MyException (
@@ -58,7 +58,7 @@ public final class MyException extends org.apache.thrift.TBaseException implemen
     public static com.facebook.thrift.payload.Reader<MyException> asReader() {
       return MyException::read0;
     }
-    
+
     public static MyException read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(MyException.NAMES_TO_IDS, MyException.THRIFT_NAMES_TO_IDS, MyException.FIELD_METADATA);
@@ -86,7 +86,7 @@ public final class MyException extends org.apache.thrift.TBaseException implemen
     private static class _MyExceptionLazy {
         private static final MyException _DEFAULT = new MyException.Builder().build();
     }
-    
+
     public static MyException defaultInstance() {
         return  _MyExceptionLazy._DEFAULT;
     }}

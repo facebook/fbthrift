@@ -30,7 +30,7 @@ public final class AdaptedStruct implements com.facebook.thrift.payload.ThriftSe
     ) {
         this.data = data;
     }
-    
+
     @ThriftConstructor
     protected AdaptedStruct() {
       this.data = 0L;
@@ -46,19 +46,19 @@ public final class AdaptedStruct implements com.facebook.thrift.payload.ThriftSe
 
     public static class Builder {
         private long data = 0L;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="data", requiredness=Requiredness.NONE)    public Builder setData(long data) {
             this.data = data;
             return this;
         }
-    
+
         public long getData() { return data; }
-    
+
         public Builder() { }
         public Builder(AdaptedStruct other) {
             this.data = other.data;
         }
-    
+
         @ThriftConstructor
         public AdaptedStruct build() {
             AdaptedStruct result = new AdaptedStruct (
@@ -84,7 +84,7 @@ public final class AdaptedStruct implements com.facebook.thrift.payload.ThriftSe
         AdaptedStruct.class, AdaptedStruct::read0));
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="data", requiredness=Requiredness.NONE)
     public long getData() { return data; }
 
@@ -103,9 +103,9 @@ public final class AdaptedStruct implements com.facebook.thrift.payload.ThriftSe
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         AdaptedStruct other = (AdaptedStruct)o;
-    
+
         return
             Objects.equals(data, other.data) &&
             true;
@@ -122,7 +122,7 @@ public final class AdaptedStruct implements com.facebook.thrift.payload.ThriftSe
     public static com.facebook.thrift.payload.Reader<AdaptedStruct> asReader() {
       return AdaptedStruct::read0;
     }
-    
+
     public static AdaptedStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(AdaptedStruct.NAMES_TO_IDS, AdaptedStruct.THRIFT_NAMES_TO_IDS, AdaptedStruct.FIELD_METADATA);
@@ -164,7 +164,7 @@ public final class AdaptedStruct implements com.facebook.thrift.payload.ThriftSe
     private static class _AdaptedStructLazy {
         private static final AdaptedStruct _DEFAULT = new AdaptedStruct.Builder().build();
     }
-    
+
     public static AdaptedStruct defaultInstance() {
         return  _AdaptedStructLazy._DEFAULT;
     }

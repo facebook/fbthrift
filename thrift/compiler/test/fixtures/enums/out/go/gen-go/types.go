@@ -551,7 +551,7 @@ func (x *SomeStruct) readField4(p thrift.Decoder) error {  // Tags
     if err != nil {
         return thrift.PrependError("error reading set begin: ", err)
     }
-    
+
     setResult := make([]int32, 0, size)
     for i := 0; i < size; i++ {
         var elem int32
@@ -564,7 +564,7 @@ func (x *SomeStruct) readField4(p thrift.Decoder) error {  // Tags
         }
         setResult = append(setResult, elem)
     }
-    
+
     if err := p.ReadSetEnd(); err != nil {
         return thrift.PrependError("error reading set end: ", err)
     }

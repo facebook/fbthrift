@@ -40,7 +40,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         this.toto = toto;
         this.password = password;
     }
-    
+
     @ThriftConstructor
     protected MyStruct() {
       this.intField = 0L;
@@ -66,50 +66,50 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         private com.foo.FastIntLongMap detailMap = null;
         private String toto = null;
         private String password = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)    public Builder setIntField(long intField) {
             this.intField = intField;
             return this;
         }
-    
+
         public long getIntField() { return intField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)    public Builder setStringField(String stringField) {
             this.stringField = stringField;
             return this;
         }
-    
+
         public String getStringField() { return stringField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE)    public Builder setDetailField(String detailField) {
             this.detailField = detailField;
             return this;
         }
-    
+
         public String getDetailField() { return detailField; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE)    public Builder setDetailMap(com.foo.FastIntLongMap detailMap) {
             this.detailMap = detailMap;
             return this;
         }
-    
+
         public com.foo.FastIntLongMap getDetailMap() { return detailMap; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=5, name="titi", requiredness=Requiredness.NONE)    public Builder setToto(String toto) {
             this.toto = toto;
             return this;
         }
-    
+
         public String getToto() { return toto; }
-    
+
             @org.apache.thrift.annotations.Sensitive
         @com.facebook.swift.codec.ThriftField(value=6, name="password", requiredness=Requiredness.NONE)    public Builder setPassword(String password) {
             this.password = password;
             return this;
         }
-    
+
         public String getPassword() { return password; }
-    
+
         public Builder() { }
         public Builder(MyStruct other) {
             this.intField = other.intField;
@@ -119,7 +119,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             this.toto = other.toto;
             this.password = other.password;
         }
-    
+
         @ThriftConstructor
         public MyStruct build() {
             MyStruct result = new MyStruct (
@@ -178,7 +178,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       FIELD_METADATA.put(6, PASSWORD_FIELD_DESC);
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
     public long getIntField() { return intField; }
 
@@ -227,9 +227,9 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         MyStruct other = (MyStruct)o;
-    
+
         return
             Objects.equals(intField, other.intField) &&
             Objects.equals(stringField, other.stringField) &&
@@ -256,7 +256,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public static com.facebook.thrift.payload.Reader<MyStruct> asReader() {
       return MyStruct::read0;
     }
-    
+
     public static MyStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(MyStruct.NAMES_TO_IDS, MyStruct.THRIFT_NAMES_TO_IDS, MyStruct.FIELD_METADATA);
@@ -400,7 +400,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     private static class _MyStructLazy {
         private static final MyStruct _DEFAULT = new MyStruct.Builder().build();
     }
-    
+
     public static MyStruct defaultInstance() {
         return  _MyStructLazy._DEFAULT;
     }

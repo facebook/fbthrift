@@ -648,8 +648,8 @@ pub mod my_service {
     use super::*;
 
     
-    
-    
+
+
     /// Processor for MyInteraction's methods.
     #[derive(Clone, Debug)]
     pub struct MyInteractionProcessor<P, H, R, RS> {
@@ -657,7 +657,7 @@ pub mod my_service {
         supa: ::fbthrift::NullServiceProcessor<P, R, RS>,
         _phantom: ::std::marker::PhantomData<(P, H, R, RS)>,
     }
-    
+
     impl<P, H, R, RS> MyInteractionProcessor<P, H, R, RS>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
@@ -678,11 +678,11 @@ pub mod my_service {
                 _phantom: ::std::marker::PhantomData,
             }
         }
-    
+
         pub fn into_inner(self) -> H {
             self.service
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteraction.frobnicate"))]
         async fn handle_frobnicate<'a>(
             &'a self,
@@ -694,7 +694,7 @@ pub mod my_service {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"MyService";
             const METHOD_NAME: &::std::ffi::CStr = c"MyInteraction.frobnicate";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"MyService.MyInteraction.frobnicate";
@@ -708,14 +708,14 @@ pub mod my_service {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.frobnicate(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -732,7 +732,7 @@ pub mod my_service {
                     ::std::result::Result::Err(crate::services::my_interaction::FrobnicateExn::ApplicationException(aexn))
                 }
             };
-    
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction::FrobnicateExn>(
                 "frobnicate",
                 METHOD_NAME,
@@ -744,7 +744,7 @@ pub mod my_service {
             reply_state.send_reply(env);
             ::std::result::Result::Ok(())
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteraction.ping"))]
         async fn handle_ping<'a>(
             &'a self,
@@ -756,7 +756,7 @@ pub mod my_service {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"MyService";
             const METHOD_NAME: &::std::ffi::CStr = c"MyInteraction.ping";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"MyService.MyInteraction.ping";
@@ -770,14 +770,14 @@ pub mod my_service {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.ping(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -794,7 +794,7 @@ pub mod my_service {
                     ::std::result::Result::Err(crate::services::my_interaction::PingExn::ApplicationException(aexn))
                 }
             };
-    
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction::PingExn>(
                 "ping",
                 METHOD_NAME,
@@ -806,7 +806,7 @@ pub mod my_service {
             reply_state.send_reply(env);
             ::std::result::Result::Ok(())
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteraction.truthify"))]
         async fn handle_truthify<'a>(
             &'a self,
@@ -818,7 +818,7 @@ pub mod my_service {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"MyService";
             const METHOD_NAME: &::std::ffi::CStr = c"MyInteraction.truthify";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"MyService.MyInteraction.truthify";
@@ -832,14 +832,14 @@ pub mod my_service {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.truthify(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -855,14 +855,14 @@ pub mod my_service {
                     ::std::result::Result::Err(crate::services::my_interaction::TruthifyExn::ApplicationException(aexn))
                 }
             };
-    
+
             use ::futures::StreamExt as _;
-    
+
             let (response, stream) = match res {
                 ::std::result::Result::Ok(res) => {
                     let response = ::std::result::Result::Ok(());
                     let stream = res;
-    
+
                     let stream = ::std::panic::AssertUnwindSafe(stream)
                         .catch_unwind()
                         .map(|item| {
@@ -890,7 +890,7 @@ pub mod my_service {
                 },
                 ::std::result::Result::Err(exn) => (::std::result::Result::Err(exn), ::std::option::Option::None),
             };
-    
+
             let response = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction::TruthifyExn>(
                 "truthify",
                 METHOD_NAME,
@@ -899,13 +899,13 @@ pub mod my_service {
                 &mut ctx_stack,
                 response,
             )?;
-    
+
             reply_state.set_stream_method_name("MyInteraction.truthify");
             reply_state.set_stream_context_stack(ctx_stack);
             let _ = reply_state.send_stream_reply(response, stream, P::PROTOCOL_ID);
             ::std::result::Result::Ok(())
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteraction.encode"))]
         async fn handle_encode<'a>(
             &'a self,
@@ -917,7 +917,7 @@ pub mod my_service {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"MyService";
             const METHOD_NAME: &::std::ffi::CStr = c"MyInteraction.encode";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"MyService.MyInteraction.encode";
@@ -931,14 +931,14 @@ pub mod my_service {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.encode(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -955,11 +955,11 @@ pub mod my_service {
                     ::std::result::Result::Err(crate::services::my_interaction::EncodeExn::ApplicationException(aexn))
                 }
             };
-    
+
             // Process the Thrift SINK encoded request
-    
+
             use ::futures::StreamExt as _;
-    
+
             let (first_result, stream_fn, buffer_size, chunk_timeout): (
                 ::std::result::Result::<::std::collections::BTreeSet<::std::primitive::i32>, crate::services::my_interaction::EncodeExn>,
                 ::std::boxed::Box<dyn ::std::ops::FnOnce(
@@ -981,7 +981,7 @@ pub mod my_service {
                     ::std::result::Result::Err(crate::services::my_interaction::EncodeSinkFinalExn::ApplicationException(aexn))
                 }.boxed()), 100, ::std::time::Duration::ZERO),
             };
-    
+
             let first_result_enc = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction::EncodeExn>(
                 "encode",
                 METHOD_NAME,
@@ -1039,7 +1039,7 @@ pub mod my_service {
             ::std::result::Result::Ok(())
         }
     }
-    
+
     #[::async_trait::async_trait]
     impl<P, H, R, RS> ::fbthrift::ServiceProcessor<P> for MyInteractionProcessor<P, H, R, RS>
     where
@@ -1056,7 +1056,7 @@ pub mod my_service {
     {
         type RequestContext = R;
         type ReplyState = RS;
-    
+
         #[inline]
         fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
             match name {
@@ -1067,7 +1067,7 @@ pub mod my_service {
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
@@ -1098,7 +1098,7 @@ pub mod my_service {
                 ),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &::std::primitive::str) -> ::anyhow::Result<::std::primitive::usize> {
@@ -1106,7 +1106,7 @@ pub mod my_service {
                 _ => ::anyhow::bail!("Unknown interaction"),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
@@ -1122,12 +1122,12 @@ pub mod my_service {
                 ),
             }
         }
-    
+
         async fn handle_on_termination(&self) {
             self.service.on_termination().await
         }
     }
-    
+
     #[::async_trait::async_trait]
     impl<P, H, R, RS> ::fbthrift::ThriftService<P::Frame> for MyInteractionProcessor<P, H, R, RS>
     where
@@ -1147,7 +1147,7 @@ pub mod my_service {
         type Handler = ();
         type RequestContext = R;
         type ReplyState = RS;
-    
+
         #[tracing::instrument(level="trace", skip_all, fields(service = "MyInteraction"))]
         async fn call(
             &self,
@@ -1172,10 +1172,10 @@ pub mod my_service {
             };
             self.handle_method(idx, &mut p, req, req_ctxt, reply_state, seqid).await?;
             p.read_message_end()?;
-    
+
             ::std::result::Result::Ok(())
         }
-    
+
         fn create_interaction(
             &self,
             name: &::std::primitive::str,
@@ -1192,7 +1192,7 @@ pub mod my_service {
             };
             self.handle_create_interaction(idx)
         }
-    
+
         fn get_method_metadata(&self) -> &'static [::fbthrift::processor::MethodMetadata] {
             &[
                 // From module.MyInteraction:
@@ -1200,16 +1200,16 @@ pub mod my_service {
                 // They are always queried from the "main" processor.
             ]
         }
-    
+
         async fn on_termination(&self) {
             use ::fbthrift::{ServiceProcessor as _};
             self.handle_on_termination().await
         }
     }
+
     
-    
-    
-    
+
+
     /// Processor for MyInteractionFast's methods.
     #[derive(Clone, Debug)]
     pub struct MyInteractionFastProcessor<P, H, R, RS> {
@@ -1217,7 +1217,7 @@ pub mod my_service {
         supa: ::fbthrift::NullServiceProcessor<P, R, RS>,
         _phantom: ::std::marker::PhantomData<(P, H, R, RS)>,
     }
-    
+
     impl<P, H, R, RS> MyInteractionFastProcessor<P, H, R, RS>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
@@ -1238,11 +1238,11 @@ pub mod my_service {
                 _phantom: ::std::marker::PhantomData,
             }
         }
-    
+
         pub fn into_inner(self) -> H {
             self.service
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteractionFast.frobnicate"))]
         async fn handle_frobnicate<'a>(
             &'a self,
@@ -1254,7 +1254,7 @@ pub mod my_service {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"MyService";
             const METHOD_NAME: &::std::ffi::CStr = c"MyInteractionFast.frobnicate";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"MyService.MyInteractionFast.frobnicate";
@@ -1268,14 +1268,14 @@ pub mod my_service {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.frobnicate(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -1292,7 +1292,7 @@ pub mod my_service {
                     ::std::result::Result::Err(crate::services::my_interaction_fast::FrobnicateExn::ApplicationException(aexn))
                 }
             };
-    
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction_fast::FrobnicateExn>(
                 "frobnicate",
                 METHOD_NAME,
@@ -1304,7 +1304,7 @@ pub mod my_service {
             reply_state.send_reply(env);
             ::std::result::Result::Ok(())
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteractionFast.ping"))]
         async fn handle_ping<'a>(
             &'a self,
@@ -1316,7 +1316,7 @@ pub mod my_service {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"MyService";
             const METHOD_NAME: &::std::ffi::CStr = c"MyInteractionFast.ping";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"MyService.MyInteractionFast.ping";
@@ -1330,14 +1330,14 @@ pub mod my_service {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.ping(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -1354,7 +1354,7 @@ pub mod my_service {
                     ::std::result::Result::Err(crate::services::my_interaction_fast::PingExn::ApplicationException(aexn))
                 }
             };
-    
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction_fast::PingExn>(
                 "ping",
                 METHOD_NAME,
@@ -1366,7 +1366,7 @@ pub mod my_service {
             reply_state.send_reply(env);
             ::std::result::Result::Ok(())
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteractionFast.truthify"))]
         async fn handle_truthify<'a>(
             &'a self,
@@ -1378,7 +1378,7 @@ pub mod my_service {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"MyService";
             const METHOD_NAME: &::std::ffi::CStr = c"MyInteractionFast.truthify";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"MyService.MyInteractionFast.truthify";
@@ -1392,14 +1392,14 @@ pub mod my_service {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.truthify(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -1415,14 +1415,14 @@ pub mod my_service {
                     ::std::result::Result::Err(crate::services::my_interaction_fast::TruthifyExn::ApplicationException(aexn))
                 }
             };
-    
+
             use ::futures::StreamExt as _;
-    
+
             let (response, stream) = match res {
                 ::std::result::Result::Ok(res) => {
                     let response = ::std::result::Result::Ok(());
                     let stream = res;
-    
+
                     let stream = ::std::panic::AssertUnwindSafe(stream)
                         .catch_unwind()
                         .map(|item| {
@@ -1450,7 +1450,7 @@ pub mod my_service {
                 },
                 ::std::result::Result::Err(exn) => (::std::result::Result::Err(exn), ::std::option::Option::None),
             };
-    
+
             let response = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction_fast::TruthifyExn>(
                 "truthify",
                 METHOD_NAME,
@@ -1459,13 +1459,13 @@ pub mod my_service {
                 &mut ctx_stack,
                 response,
             )?;
-    
+
             reply_state.set_stream_method_name("MyInteractionFast.truthify");
             reply_state.set_stream_context_stack(ctx_stack);
             let _ = reply_state.send_stream_reply(response, stream, P::PROTOCOL_ID);
             ::std::result::Result::Ok(())
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteractionFast.encode"))]
         async fn handle_encode<'a>(
             &'a self,
@@ -1477,7 +1477,7 @@ pub mod my_service {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"MyService";
             const METHOD_NAME: &::std::ffi::CStr = c"MyInteractionFast.encode";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"MyService.MyInteractionFast.encode";
@@ -1491,14 +1491,14 @@ pub mod my_service {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.encode(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -1515,11 +1515,11 @@ pub mod my_service {
                     ::std::result::Result::Err(crate::services::my_interaction_fast::EncodeExn::ApplicationException(aexn))
                 }
             };
-    
+
             // Process the Thrift SINK encoded request
-    
+
             use ::futures::StreamExt as _;
-    
+
             let (first_result, stream_fn, buffer_size, chunk_timeout): (
                 ::std::result::Result::<::std::collections::BTreeSet<::std::primitive::i32>, crate::services::my_interaction_fast::EncodeExn>,
                 ::std::boxed::Box<dyn ::std::ops::FnOnce(
@@ -1541,7 +1541,7 @@ pub mod my_service {
                     ::std::result::Result::Err(crate::services::my_interaction_fast::EncodeSinkFinalExn::ApplicationException(aexn))
                 }.boxed()), 100, ::std::time::Duration::ZERO),
             };
-    
+
             let first_result_enc = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction_fast::EncodeExn>(
                 "encode",
                 METHOD_NAME,
@@ -1599,7 +1599,7 @@ pub mod my_service {
             ::std::result::Result::Ok(())
         }
     }
-    
+
     #[::async_trait::async_trait]
     impl<P, H, R, RS> ::fbthrift::ServiceProcessor<P> for MyInteractionFastProcessor<P, H, R, RS>
     where
@@ -1616,7 +1616,7 @@ pub mod my_service {
     {
         type RequestContext = R;
         type ReplyState = RS;
-    
+
         #[inline]
         fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
             match name {
@@ -1627,7 +1627,7 @@ pub mod my_service {
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
@@ -1658,7 +1658,7 @@ pub mod my_service {
                 ),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &::std::primitive::str) -> ::anyhow::Result<::std::primitive::usize> {
@@ -1666,7 +1666,7 @@ pub mod my_service {
                 _ => ::anyhow::bail!("Unknown interaction"),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
@@ -1682,12 +1682,12 @@ pub mod my_service {
                 ),
             }
         }
-    
+
         async fn handle_on_termination(&self) {
             self.service.on_termination().await
         }
     }
-    
+
     #[::async_trait::async_trait]
     impl<P, H, R, RS> ::fbthrift::ThriftService<P::Frame> for MyInteractionFastProcessor<P, H, R, RS>
     where
@@ -1707,7 +1707,7 @@ pub mod my_service {
         type Handler = ();
         type RequestContext = R;
         type ReplyState = RS;
-    
+
         #[tracing::instrument(level="trace", skip_all, fields(service = "MyInteractionFast"))]
         async fn call(
             &self,
@@ -1732,10 +1732,10 @@ pub mod my_service {
             };
             self.handle_method(idx, &mut p, req, req_ctxt, reply_state, seqid).await?;
             p.read_message_end()?;
-    
+
             ::std::result::Result::Ok(())
         }
-    
+
         fn create_interaction(
             &self,
             name: &::std::primitive::str,
@@ -1752,7 +1752,7 @@ pub mod my_service {
             };
             self.handle_create_interaction(idx)
         }
-    
+
         fn get_method_metadata(&self) -> &'static [::fbthrift::processor::MethodMetadata] {
             &[
                 // From module.MyInteractionFast:
@@ -1760,16 +1760,16 @@ pub mod my_service {
                 // They are always queried from the "main" processor.
             ]
         }
-    
+
         async fn on_termination(&self) {
             use ::fbthrift::{ServiceProcessor as _};
             self.handle_on_termination().await
         }
     }
+
     
-    
-    
-    
+
+
     /// Processor for SerialInteraction's methods.
     #[derive(Clone, Debug)]
     pub struct SerialInteractionProcessor<P, H, R, RS> {
@@ -1777,7 +1777,7 @@ pub mod my_service {
         supa: ::fbthrift::NullServiceProcessor<P, R, RS>,
         _phantom: ::std::marker::PhantomData<(P, H, R, RS)>,
     }
-    
+
     impl<P, H, R, RS> SerialInteractionProcessor<P, H, R, RS>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
@@ -1798,11 +1798,11 @@ pub mod my_service {
                 _phantom: ::std::marker::PhantomData,
             }
         }
-    
+
         pub fn into_inner(self) -> H {
             self.service
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "SerialInteraction.frobnicate"))]
         async fn handle_frobnicate<'a>(
             &'a self,
@@ -1814,7 +1814,7 @@ pub mod my_service {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"MyService";
             const METHOD_NAME: &::std::ffi::CStr = c"SerialInteraction.frobnicate";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"MyService.SerialInteraction.frobnicate";
@@ -1828,14 +1828,14 @@ pub mod my_service {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.frobnicate(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -1852,7 +1852,7 @@ pub mod my_service {
                     ::std::result::Result::Err(crate::services::serial_interaction::FrobnicateExn::ApplicationException(aexn))
                 }
             };
-    
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::serial_interaction::FrobnicateExn>(
                 "frobnicate",
                 METHOD_NAME,
@@ -1865,7 +1865,7 @@ pub mod my_service {
             ::std::result::Result::Ok(())
         }
     }
-    
+
     #[::async_trait::async_trait]
     impl<P, H, R, RS> ::fbthrift::ServiceProcessor<P> for SerialInteractionProcessor<P, H, R, RS>
     where
@@ -1882,7 +1882,7 @@ pub mod my_service {
     {
         type RequestContext = R;
         type ReplyState = RS;
-    
+
         #[inline]
         fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
             match name {
@@ -1890,7 +1890,7 @@ pub mod my_service {
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
@@ -1912,7 +1912,7 @@ pub mod my_service {
                 ),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &::std::primitive::str) -> ::anyhow::Result<::std::primitive::usize> {
@@ -1920,7 +1920,7 @@ pub mod my_service {
                 _ => ::anyhow::bail!("Unknown interaction"),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
@@ -1936,12 +1936,12 @@ pub mod my_service {
                 ),
             }
         }
-    
+
         async fn handle_on_termination(&self) {
             self.service.on_termination().await
         }
     }
-    
+
     #[::async_trait::async_trait]
     impl<P, H, R, RS> ::fbthrift::ThriftService<P::Frame> for SerialInteractionProcessor<P, H, R, RS>
     where
@@ -1961,7 +1961,7 @@ pub mod my_service {
         type Handler = ();
         type RequestContext = R;
         type ReplyState = RS;
-    
+
         #[tracing::instrument(level="trace", skip_all, fields(service = "SerialInteraction"))]
         async fn call(
             &self,
@@ -1986,10 +1986,10 @@ pub mod my_service {
             };
             self.handle_method(idx, &mut p, req, req_ctxt, reply_state, seqid).await?;
             p.read_message_end()?;
-    
+
             ::std::result::Result::Ok(())
         }
-    
+
         fn create_interaction(
             &self,
             name: &::std::primitive::str,
@@ -2006,7 +2006,7 @@ pub mod my_service {
             };
             self.handle_create_interaction(idx)
         }
-    
+
         fn get_method_metadata(&self) -> &'static [::fbthrift::processor::MethodMetadata] {
             &[
                 // From module.SerialInteraction:
@@ -2014,13 +2014,13 @@ pub mod my_service {
                 // They are always queried from the "main" processor.
             ]
         }
-    
+
         async fn on_termination(&self) {
             use ::fbthrift::{ServiceProcessor as _};
             self.handle_on_termination().await
         }
     }
-    
+
 
 }
 
@@ -2953,8 +2953,8 @@ pub mod factories {
     use super::*;
 
     
-    
-    
+
+
     /// Processor for MyInteraction's methods.
     #[derive(Clone, Debug)]
     pub struct MyInteractionProcessor<P, H, R, RS> {
@@ -2962,7 +2962,7 @@ pub mod factories {
         supa: ::fbthrift::NullServiceProcessor<P, R, RS>,
         _phantom: ::std::marker::PhantomData<(P, H, R, RS)>,
     }
-    
+
     impl<P, H, R, RS> MyInteractionProcessor<P, H, R, RS>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
@@ -2983,11 +2983,11 @@ pub mod factories {
                 _phantom: ::std::marker::PhantomData,
             }
         }
-    
+
         pub fn into_inner(self) -> H {
             self.service
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteraction.frobnicate"))]
         async fn handle_frobnicate<'a>(
             &'a self,
@@ -2999,7 +2999,7 @@ pub mod factories {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"Factories";
             const METHOD_NAME: &::std::ffi::CStr = c"MyInteraction.frobnicate";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"Factories.MyInteraction.frobnicate";
@@ -3013,14 +3013,14 @@ pub mod factories {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.frobnicate(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -3037,7 +3037,7 @@ pub mod factories {
                     ::std::result::Result::Err(crate::services::my_interaction::FrobnicateExn::ApplicationException(aexn))
                 }
             };
-    
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction::FrobnicateExn>(
                 "frobnicate",
                 METHOD_NAME,
@@ -3049,7 +3049,7 @@ pub mod factories {
             reply_state.send_reply(env);
             ::std::result::Result::Ok(())
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteraction.ping"))]
         async fn handle_ping<'a>(
             &'a self,
@@ -3061,7 +3061,7 @@ pub mod factories {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"Factories";
             const METHOD_NAME: &::std::ffi::CStr = c"MyInteraction.ping";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"Factories.MyInteraction.ping";
@@ -3075,14 +3075,14 @@ pub mod factories {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.ping(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -3099,7 +3099,7 @@ pub mod factories {
                     ::std::result::Result::Err(crate::services::my_interaction::PingExn::ApplicationException(aexn))
                 }
             };
-    
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction::PingExn>(
                 "ping",
                 METHOD_NAME,
@@ -3111,7 +3111,7 @@ pub mod factories {
             reply_state.send_reply(env);
             ::std::result::Result::Ok(())
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteraction.truthify"))]
         async fn handle_truthify<'a>(
             &'a self,
@@ -3123,7 +3123,7 @@ pub mod factories {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"Factories";
             const METHOD_NAME: &::std::ffi::CStr = c"MyInteraction.truthify";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"Factories.MyInteraction.truthify";
@@ -3137,14 +3137,14 @@ pub mod factories {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.truthify(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -3160,14 +3160,14 @@ pub mod factories {
                     ::std::result::Result::Err(crate::services::my_interaction::TruthifyExn::ApplicationException(aexn))
                 }
             };
-    
+
             use ::futures::StreamExt as _;
-    
+
             let (response, stream) = match res {
                 ::std::result::Result::Ok(res) => {
                     let response = ::std::result::Result::Ok(());
                     let stream = res;
-    
+
                     let stream = ::std::panic::AssertUnwindSafe(stream)
                         .catch_unwind()
                         .map(|item| {
@@ -3195,7 +3195,7 @@ pub mod factories {
                 },
                 ::std::result::Result::Err(exn) => (::std::result::Result::Err(exn), ::std::option::Option::None),
             };
-    
+
             let response = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction::TruthifyExn>(
                 "truthify",
                 METHOD_NAME,
@@ -3204,13 +3204,13 @@ pub mod factories {
                 &mut ctx_stack,
                 response,
             )?;
-    
+
             reply_state.set_stream_method_name("MyInteraction.truthify");
             reply_state.set_stream_context_stack(ctx_stack);
             let _ = reply_state.send_stream_reply(response, stream, P::PROTOCOL_ID);
             ::std::result::Result::Ok(())
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteraction.encode"))]
         async fn handle_encode<'a>(
             &'a self,
@@ -3222,7 +3222,7 @@ pub mod factories {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"Factories";
             const METHOD_NAME: &::std::ffi::CStr = c"MyInteraction.encode";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"Factories.MyInteraction.encode";
@@ -3236,14 +3236,14 @@ pub mod factories {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.encode(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -3260,11 +3260,11 @@ pub mod factories {
                     ::std::result::Result::Err(crate::services::my_interaction::EncodeExn::ApplicationException(aexn))
                 }
             };
-    
+
             // Process the Thrift SINK encoded request
-    
+
             use ::futures::StreamExt as _;
-    
+
             let (first_result, stream_fn, buffer_size, chunk_timeout): (
                 ::std::result::Result::<::std::collections::BTreeSet<::std::primitive::i32>, crate::services::my_interaction::EncodeExn>,
                 ::std::boxed::Box<dyn ::std::ops::FnOnce(
@@ -3286,7 +3286,7 @@ pub mod factories {
                     ::std::result::Result::Err(crate::services::my_interaction::EncodeSinkFinalExn::ApplicationException(aexn))
                 }.boxed()), 100, ::std::time::Duration::ZERO),
             };
-    
+
             let first_result_enc = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction::EncodeExn>(
                 "encode",
                 METHOD_NAME,
@@ -3344,7 +3344,7 @@ pub mod factories {
             ::std::result::Result::Ok(())
         }
     }
-    
+
     #[::async_trait::async_trait]
     impl<P, H, R, RS> ::fbthrift::ServiceProcessor<P> for MyInteractionProcessor<P, H, R, RS>
     where
@@ -3361,7 +3361,7 @@ pub mod factories {
     {
         type RequestContext = R;
         type ReplyState = RS;
-    
+
         #[inline]
         fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
             match name {
@@ -3372,7 +3372,7 @@ pub mod factories {
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
@@ -3403,7 +3403,7 @@ pub mod factories {
                 ),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &::std::primitive::str) -> ::anyhow::Result<::std::primitive::usize> {
@@ -3411,7 +3411,7 @@ pub mod factories {
                 _ => ::anyhow::bail!("Unknown interaction"),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
@@ -3427,12 +3427,12 @@ pub mod factories {
                 ),
             }
         }
-    
+
         async fn handle_on_termination(&self) {
             self.service.on_termination().await
         }
     }
-    
+
     #[::async_trait::async_trait]
     impl<P, H, R, RS> ::fbthrift::ThriftService<P::Frame> for MyInteractionProcessor<P, H, R, RS>
     where
@@ -3452,7 +3452,7 @@ pub mod factories {
         type Handler = ();
         type RequestContext = R;
         type ReplyState = RS;
-    
+
         #[tracing::instrument(level="trace", skip_all, fields(service = "MyInteraction"))]
         async fn call(
             &self,
@@ -3477,10 +3477,10 @@ pub mod factories {
             };
             self.handle_method(idx, &mut p, req, req_ctxt, reply_state, seqid).await?;
             p.read_message_end()?;
-    
+
             ::std::result::Result::Ok(())
         }
-    
+
         fn create_interaction(
             &self,
             name: &::std::primitive::str,
@@ -3497,7 +3497,7 @@ pub mod factories {
             };
             self.handle_create_interaction(idx)
         }
-    
+
         fn get_method_metadata(&self) -> &'static [::fbthrift::processor::MethodMetadata] {
             &[
                 // From module.MyInteraction:
@@ -3505,16 +3505,16 @@ pub mod factories {
                 // They are always queried from the "main" processor.
             ]
         }
-    
+
         async fn on_termination(&self) {
             use ::fbthrift::{ServiceProcessor as _};
             self.handle_on_termination().await
         }
     }
+
     
-    
-    
-    
+
+
     /// Processor for MyInteractionFast's methods.
     #[derive(Clone, Debug)]
     pub struct MyInteractionFastProcessor<P, H, R, RS> {
@@ -3522,7 +3522,7 @@ pub mod factories {
         supa: ::fbthrift::NullServiceProcessor<P, R, RS>,
         _phantom: ::std::marker::PhantomData<(P, H, R, RS)>,
     }
-    
+
     impl<P, H, R, RS> MyInteractionFastProcessor<P, H, R, RS>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
@@ -3543,11 +3543,11 @@ pub mod factories {
                 _phantom: ::std::marker::PhantomData,
             }
         }
-    
+
         pub fn into_inner(self) -> H {
             self.service
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteractionFast.frobnicate"))]
         async fn handle_frobnicate<'a>(
             &'a self,
@@ -3559,7 +3559,7 @@ pub mod factories {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"Factories";
             const METHOD_NAME: &::std::ffi::CStr = c"MyInteractionFast.frobnicate";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"Factories.MyInteractionFast.frobnicate";
@@ -3573,14 +3573,14 @@ pub mod factories {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.frobnicate(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -3597,7 +3597,7 @@ pub mod factories {
                     ::std::result::Result::Err(crate::services::my_interaction_fast::FrobnicateExn::ApplicationException(aexn))
                 }
             };
-    
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction_fast::FrobnicateExn>(
                 "frobnicate",
                 METHOD_NAME,
@@ -3609,7 +3609,7 @@ pub mod factories {
             reply_state.send_reply(env);
             ::std::result::Result::Ok(())
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteractionFast.ping"))]
         async fn handle_ping<'a>(
             &'a self,
@@ -3621,7 +3621,7 @@ pub mod factories {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"Factories";
             const METHOD_NAME: &::std::ffi::CStr = c"MyInteractionFast.ping";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"Factories.MyInteractionFast.ping";
@@ -3635,14 +3635,14 @@ pub mod factories {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.ping(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -3659,7 +3659,7 @@ pub mod factories {
                     ::std::result::Result::Err(crate::services::my_interaction_fast::PingExn::ApplicationException(aexn))
                 }
             };
-    
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction_fast::PingExn>(
                 "ping",
                 METHOD_NAME,
@@ -3671,7 +3671,7 @@ pub mod factories {
             reply_state.send_reply(env);
             ::std::result::Result::Ok(())
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteractionFast.truthify"))]
         async fn handle_truthify<'a>(
             &'a self,
@@ -3683,7 +3683,7 @@ pub mod factories {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"Factories";
             const METHOD_NAME: &::std::ffi::CStr = c"MyInteractionFast.truthify";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"Factories.MyInteractionFast.truthify";
@@ -3697,14 +3697,14 @@ pub mod factories {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.truthify(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -3720,14 +3720,14 @@ pub mod factories {
                     ::std::result::Result::Err(crate::services::my_interaction_fast::TruthifyExn::ApplicationException(aexn))
                 }
             };
-    
+
             use ::futures::StreamExt as _;
-    
+
             let (response, stream) = match res {
                 ::std::result::Result::Ok(res) => {
                     let response = ::std::result::Result::Ok(());
                     let stream = res;
-    
+
                     let stream = ::std::panic::AssertUnwindSafe(stream)
                         .catch_unwind()
                         .map(|item| {
@@ -3755,7 +3755,7 @@ pub mod factories {
                 },
                 ::std::result::Result::Err(exn) => (::std::result::Result::Err(exn), ::std::option::Option::None),
             };
-    
+
             let response = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction_fast::TruthifyExn>(
                 "truthify",
                 METHOD_NAME,
@@ -3764,13 +3764,13 @@ pub mod factories {
                 &mut ctx_stack,
                 response,
             )?;
-    
+
             reply_state.set_stream_method_name("MyInteractionFast.truthify");
             reply_state.set_stream_context_stack(ctx_stack);
             let _ = reply_state.send_stream_reply(response, stream, P::PROTOCOL_ID);
             ::std::result::Result::Ok(())
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteractionFast.encode"))]
         async fn handle_encode<'a>(
             &'a self,
@@ -3782,7 +3782,7 @@ pub mod factories {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"Factories";
             const METHOD_NAME: &::std::ffi::CStr = c"MyInteractionFast.encode";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"Factories.MyInteractionFast.encode";
@@ -3796,14 +3796,14 @@ pub mod factories {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.encode(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -3820,11 +3820,11 @@ pub mod factories {
                     ::std::result::Result::Err(crate::services::my_interaction_fast::EncodeExn::ApplicationException(aexn))
                 }
             };
-    
+
             // Process the Thrift SINK encoded request
-    
+
             use ::futures::StreamExt as _;
-    
+
             let (first_result, stream_fn, buffer_size, chunk_timeout): (
                 ::std::result::Result::<::std::collections::BTreeSet<::std::primitive::i32>, crate::services::my_interaction_fast::EncodeExn>,
                 ::std::boxed::Box<dyn ::std::ops::FnOnce(
@@ -3846,7 +3846,7 @@ pub mod factories {
                     ::std::result::Result::Err(crate::services::my_interaction_fast::EncodeSinkFinalExn::ApplicationException(aexn))
                 }.boxed()), 100, ::std::time::Duration::ZERO),
             };
-    
+
             let first_result_enc = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction_fast::EncodeExn>(
                 "encode",
                 METHOD_NAME,
@@ -3904,7 +3904,7 @@ pub mod factories {
             ::std::result::Result::Ok(())
         }
     }
-    
+
     #[::async_trait::async_trait]
     impl<P, H, R, RS> ::fbthrift::ServiceProcessor<P> for MyInteractionFastProcessor<P, H, R, RS>
     where
@@ -3921,7 +3921,7 @@ pub mod factories {
     {
         type RequestContext = R;
         type ReplyState = RS;
-    
+
         #[inline]
         fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
             match name {
@@ -3932,7 +3932,7 @@ pub mod factories {
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
@@ -3963,7 +3963,7 @@ pub mod factories {
                 ),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &::std::primitive::str) -> ::anyhow::Result<::std::primitive::usize> {
@@ -3971,7 +3971,7 @@ pub mod factories {
                 _ => ::anyhow::bail!("Unknown interaction"),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
@@ -3987,12 +3987,12 @@ pub mod factories {
                 ),
             }
         }
-    
+
         async fn handle_on_termination(&self) {
             self.service.on_termination().await
         }
     }
-    
+
     #[::async_trait::async_trait]
     impl<P, H, R, RS> ::fbthrift::ThriftService<P::Frame> for MyInteractionFastProcessor<P, H, R, RS>
     where
@@ -4012,7 +4012,7 @@ pub mod factories {
         type Handler = ();
         type RequestContext = R;
         type ReplyState = RS;
-    
+
         #[tracing::instrument(level="trace", skip_all, fields(service = "MyInteractionFast"))]
         async fn call(
             &self,
@@ -4037,10 +4037,10 @@ pub mod factories {
             };
             self.handle_method(idx, &mut p, req, req_ctxt, reply_state, seqid).await?;
             p.read_message_end()?;
-    
+
             ::std::result::Result::Ok(())
         }
-    
+
         fn create_interaction(
             &self,
             name: &::std::primitive::str,
@@ -4057,7 +4057,7 @@ pub mod factories {
             };
             self.handle_create_interaction(idx)
         }
-    
+
         fn get_method_metadata(&self) -> &'static [::fbthrift::processor::MethodMetadata] {
             &[
                 // From module.MyInteractionFast:
@@ -4065,16 +4065,16 @@ pub mod factories {
                 // They are always queried from the "main" processor.
             ]
         }
-    
+
         async fn on_termination(&self) {
             use ::fbthrift::{ServiceProcessor as _};
             self.handle_on_termination().await
         }
     }
+
     
-    
-    
-    
+
+
     /// Processor for SerialInteraction's methods.
     #[derive(Clone, Debug)]
     pub struct SerialInteractionProcessor<P, H, R, RS> {
@@ -4082,7 +4082,7 @@ pub mod factories {
         supa: ::fbthrift::NullServiceProcessor<P, R, RS>,
         _phantom: ::std::marker::PhantomData<(P, H, R, RS)>,
     }
-    
+
     impl<P, H, R, RS> SerialInteractionProcessor<P, H, R, RS>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
@@ -4103,11 +4103,11 @@ pub mod factories {
                 _phantom: ::std::marker::PhantomData,
             }
         }
-    
+
         pub fn into_inner(self) -> H {
             self.service
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "SerialInteraction.frobnicate"))]
         async fn handle_frobnicate<'a>(
             &'a self,
@@ -4119,7 +4119,7 @@ pub mod factories {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"Factories";
             const METHOD_NAME: &::std::ffi::CStr = c"SerialInteraction.frobnicate";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"Factories.SerialInteraction.frobnicate";
@@ -4133,14 +4133,14 @@ pub mod factories {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.frobnicate(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -4157,7 +4157,7 @@ pub mod factories {
                     ::std::result::Result::Err(crate::services::serial_interaction::FrobnicateExn::ApplicationException(aexn))
                 }
             };
-    
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::serial_interaction::FrobnicateExn>(
                 "frobnicate",
                 METHOD_NAME,
@@ -4170,7 +4170,7 @@ pub mod factories {
             ::std::result::Result::Ok(())
         }
     }
-    
+
     #[::async_trait::async_trait]
     impl<P, H, R, RS> ::fbthrift::ServiceProcessor<P> for SerialInteractionProcessor<P, H, R, RS>
     where
@@ -4187,7 +4187,7 @@ pub mod factories {
     {
         type RequestContext = R;
         type ReplyState = RS;
-    
+
         #[inline]
         fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
             match name {
@@ -4195,7 +4195,7 @@ pub mod factories {
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
@@ -4217,7 +4217,7 @@ pub mod factories {
                 ),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &::std::primitive::str) -> ::anyhow::Result<::std::primitive::usize> {
@@ -4225,7 +4225,7 @@ pub mod factories {
                 _ => ::anyhow::bail!("Unknown interaction"),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
@@ -4241,12 +4241,12 @@ pub mod factories {
                 ),
             }
         }
-    
+
         async fn handle_on_termination(&self) {
             self.service.on_termination().await
         }
     }
-    
+
     #[::async_trait::async_trait]
     impl<P, H, R, RS> ::fbthrift::ThriftService<P::Frame> for SerialInteractionProcessor<P, H, R, RS>
     where
@@ -4266,7 +4266,7 @@ pub mod factories {
         type Handler = ();
         type RequestContext = R;
         type ReplyState = RS;
-    
+
         #[tracing::instrument(level="trace", skip_all, fields(service = "SerialInteraction"))]
         async fn call(
             &self,
@@ -4291,10 +4291,10 @@ pub mod factories {
             };
             self.handle_method(idx, &mut p, req, req_ctxt, reply_state, seqid).await?;
             p.read_message_end()?;
-    
+
             ::std::result::Result::Ok(())
         }
-    
+
         fn create_interaction(
             &self,
             name: &::std::primitive::str,
@@ -4311,7 +4311,7 @@ pub mod factories {
             };
             self.handle_create_interaction(idx)
         }
-    
+
         fn get_method_metadata(&self) -> &'static [::fbthrift::processor::MethodMetadata] {
             &[
                 // From module.SerialInteraction:
@@ -4319,13 +4319,13 @@ pub mod factories {
                 // They are always queried from the "main" processor.
             ]
         }
-    
+
         async fn on_termination(&self) {
             use ::fbthrift::{ServiceProcessor as _};
             self.handle_on_termination().await
         }
     }
-    
+
 
 }
 
@@ -5177,8 +5177,8 @@ pub mod perform {
     use super::*;
 
     
-    
-    
+
+
     /// Processor for MyInteraction's methods.
     #[derive(Clone, Debug)]
     pub struct MyInteractionProcessor<P, H, R, RS> {
@@ -5186,7 +5186,7 @@ pub mod perform {
         supa: ::fbthrift::NullServiceProcessor<P, R, RS>,
         _phantom: ::std::marker::PhantomData<(P, H, R, RS)>,
     }
-    
+
     impl<P, H, R, RS> MyInteractionProcessor<P, H, R, RS>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
@@ -5207,11 +5207,11 @@ pub mod perform {
                 _phantom: ::std::marker::PhantomData,
             }
         }
-    
+
         pub fn into_inner(self) -> H {
             self.service
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteraction.frobnicate"))]
         async fn handle_frobnicate<'a>(
             &'a self,
@@ -5223,7 +5223,7 @@ pub mod perform {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"Perform";
             const METHOD_NAME: &::std::ffi::CStr = c"MyInteraction.frobnicate";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"Perform.MyInteraction.frobnicate";
@@ -5237,14 +5237,14 @@ pub mod perform {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.frobnicate(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -5261,7 +5261,7 @@ pub mod perform {
                     ::std::result::Result::Err(crate::services::my_interaction::FrobnicateExn::ApplicationException(aexn))
                 }
             };
-    
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction::FrobnicateExn>(
                 "frobnicate",
                 METHOD_NAME,
@@ -5273,7 +5273,7 @@ pub mod perform {
             reply_state.send_reply(env);
             ::std::result::Result::Ok(())
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteraction.ping"))]
         async fn handle_ping<'a>(
             &'a self,
@@ -5285,7 +5285,7 @@ pub mod perform {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"Perform";
             const METHOD_NAME: &::std::ffi::CStr = c"MyInteraction.ping";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"Perform.MyInteraction.ping";
@@ -5299,14 +5299,14 @@ pub mod perform {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.ping(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -5323,7 +5323,7 @@ pub mod perform {
                     ::std::result::Result::Err(crate::services::my_interaction::PingExn::ApplicationException(aexn))
                 }
             };
-    
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction::PingExn>(
                 "ping",
                 METHOD_NAME,
@@ -5335,7 +5335,7 @@ pub mod perform {
             reply_state.send_reply(env);
             ::std::result::Result::Ok(())
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteraction.truthify"))]
         async fn handle_truthify<'a>(
             &'a self,
@@ -5347,7 +5347,7 @@ pub mod perform {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"Perform";
             const METHOD_NAME: &::std::ffi::CStr = c"MyInteraction.truthify";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"Perform.MyInteraction.truthify";
@@ -5361,14 +5361,14 @@ pub mod perform {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.truthify(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -5384,14 +5384,14 @@ pub mod perform {
                     ::std::result::Result::Err(crate::services::my_interaction::TruthifyExn::ApplicationException(aexn))
                 }
             };
-    
+
             use ::futures::StreamExt as _;
-    
+
             let (response, stream) = match res {
                 ::std::result::Result::Ok(res) => {
                     let response = ::std::result::Result::Ok(());
                     let stream = res;
-    
+
                     let stream = ::std::panic::AssertUnwindSafe(stream)
                         .catch_unwind()
                         .map(|item| {
@@ -5419,7 +5419,7 @@ pub mod perform {
                 },
                 ::std::result::Result::Err(exn) => (::std::result::Result::Err(exn), ::std::option::Option::None),
             };
-    
+
             let response = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction::TruthifyExn>(
                 "truthify",
                 METHOD_NAME,
@@ -5428,13 +5428,13 @@ pub mod perform {
                 &mut ctx_stack,
                 response,
             )?;
-    
+
             reply_state.set_stream_method_name("MyInteraction.truthify");
             reply_state.set_stream_context_stack(ctx_stack);
             let _ = reply_state.send_stream_reply(response, stream, P::PROTOCOL_ID);
             ::std::result::Result::Ok(())
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteraction.encode"))]
         async fn handle_encode<'a>(
             &'a self,
@@ -5446,7 +5446,7 @@ pub mod perform {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"Perform";
             const METHOD_NAME: &::std::ffi::CStr = c"MyInteraction.encode";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"Perform.MyInteraction.encode";
@@ -5460,14 +5460,14 @@ pub mod perform {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.encode(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -5484,11 +5484,11 @@ pub mod perform {
                     ::std::result::Result::Err(crate::services::my_interaction::EncodeExn::ApplicationException(aexn))
                 }
             };
-    
+
             // Process the Thrift SINK encoded request
-    
+
             use ::futures::StreamExt as _;
-    
+
             let (first_result, stream_fn, buffer_size, chunk_timeout): (
                 ::std::result::Result::<::std::collections::BTreeSet<::std::primitive::i32>, crate::services::my_interaction::EncodeExn>,
                 ::std::boxed::Box<dyn ::std::ops::FnOnce(
@@ -5510,7 +5510,7 @@ pub mod perform {
                     ::std::result::Result::Err(crate::services::my_interaction::EncodeSinkFinalExn::ApplicationException(aexn))
                 }.boxed()), 100, ::std::time::Duration::ZERO),
             };
-    
+
             let first_result_enc = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction::EncodeExn>(
                 "encode",
                 METHOD_NAME,
@@ -5568,7 +5568,7 @@ pub mod perform {
             ::std::result::Result::Ok(())
         }
     }
-    
+
     #[::async_trait::async_trait]
     impl<P, H, R, RS> ::fbthrift::ServiceProcessor<P> for MyInteractionProcessor<P, H, R, RS>
     where
@@ -5585,7 +5585,7 @@ pub mod perform {
     {
         type RequestContext = R;
         type ReplyState = RS;
-    
+
         #[inline]
         fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
             match name {
@@ -5596,7 +5596,7 @@ pub mod perform {
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
@@ -5627,7 +5627,7 @@ pub mod perform {
                 ),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &::std::primitive::str) -> ::anyhow::Result<::std::primitive::usize> {
@@ -5635,7 +5635,7 @@ pub mod perform {
                 _ => ::anyhow::bail!("Unknown interaction"),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
@@ -5651,12 +5651,12 @@ pub mod perform {
                 ),
             }
         }
-    
+
         async fn handle_on_termination(&self) {
             self.service.on_termination().await
         }
     }
-    
+
     #[::async_trait::async_trait]
     impl<P, H, R, RS> ::fbthrift::ThriftService<P::Frame> for MyInteractionProcessor<P, H, R, RS>
     where
@@ -5676,7 +5676,7 @@ pub mod perform {
         type Handler = ();
         type RequestContext = R;
         type ReplyState = RS;
-    
+
         #[tracing::instrument(level="trace", skip_all, fields(service = "MyInteraction"))]
         async fn call(
             &self,
@@ -5701,10 +5701,10 @@ pub mod perform {
             };
             self.handle_method(idx, &mut p, req, req_ctxt, reply_state, seqid).await?;
             p.read_message_end()?;
-    
+
             ::std::result::Result::Ok(())
         }
-    
+
         fn create_interaction(
             &self,
             name: &::std::primitive::str,
@@ -5721,7 +5721,7 @@ pub mod perform {
             };
             self.handle_create_interaction(idx)
         }
-    
+
         fn get_method_metadata(&self) -> &'static [::fbthrift::processor::MethodMetadata] {
             &[
                 // From module.MyInteraction:
@@ -5729,16 +5729,16 @@ pub mod perform {
                 // They are always queried from the "main" processor.
             ]
         }
-    
+
         async fn on_termination(&self) {
             use ::fbthrift::{ServiceProcessor as _};
             self.handle_on_termination().await
         }
     }
+
     
-    
-    
-    
+
+
     /// Processor for MyInteractionFast's methods.
     #[derive(Clone, Debug)]
     pub struct MyInteractionFastProcessor<P, H, R, RS> {
@@ -5746,7 +5746,7 @@ pub mod perform {
         supa: ::fbthrift::NullServiceProcessor<P, R, RS>,
         _phantom: ::std::marker::PhantomData<(P, H, R, RS)>,
     }
-    
+
     impl<P, H, R, RS> MyInteractionFastProcessor<P, H, R, RS>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
@@ -5767,11 +5767,11 @@ pub mod perform {
                 _phantom: ::std::marker::PhantomData,
             }
         }
-    
+
         pub fn into_inner(self) -> H {
             self.service
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteractionFast.frobnicate"))]
         async fn handle_frobnicate<'a>(
             &'a self,
@@ -5783,7 +5783,7 @@ pub mod perform {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"Perform";
             const METHOD_NAME: &::std::ffi::CStr = c"MyInteractionFast.frobnicate";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"Perform.MyInteractionFast.frobnicate";
@@ -5797,14 +5797,14 @@ pub mod perform {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.frobnicate(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -5821,7 +5821,7 @@ pub mod perform {
                     ::std::result::Result::Err(crate::services::my_interaction_fast::FrobnicateExn::ApplicationException(aexn))
                 }
             };
-    
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction_fast::FrobnicateExn>(
                 "frobnicate",
                 METHOD_NAME,
@@ -5833,7 +5833,7 @@ pub mod perform {
             reply_state.send_reply(env);
             ::std::result::Result::Ok(())
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteractionFast.ping"))]
         async fn handle_ping<'a>(
             &'a self,
@@ -5845,7 +5845,7 @@ pub mod perform {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"Perform";
             const METHOD_NAME: &::std::ffi::CStr = c"MyInteractionFast.ping";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"Perform.MyInteractionFast.ping";
@@ -5859,14 +5859,14 @@ pub mod perform {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.ping(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -5883,7 +5883,7 @@ pub mod perform {
                     ::std::result::Result::Err(crate::services::my_interaction_fast::PingExn::ApplicationException(aexn))
                 }
             };
-    
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction_fast::PingExn>(
                 "ping",
                 METHOD_NAME,
@@ -5895,7 +5895,7 @@ pub mod perform {
             reply_state.send_reply(env);
             ::std::result::Result::Ok(())
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteractionFast.truthify"))]
         async fn handle_truthify<'a>(
             &'a self,
@@ -5907,7 +5907,7 @@ pub mod perform {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"Perform";
             const METHOD_NAME: &::std::ffi::CStr = c"MyInteractionFast.truthify";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"Perform.MyInteractionFast.truthify";
@@ -5921,14 +5921,14 @@ pub mod perform {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.truthify(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -5944,14 +5944,14 @@ pub mod perform {
                     ::std::result::Result::Err(crate::services::my_interaction_fast::TruthifyExn::ApplicationException(aexn))
                 }
             };
-    
+
             use ::futures::StreamExt as _;
-    
+
             let (response, stream) = match res {
                 ::std::result::Result::Ok(res) => {
                     let response = ::std::result::Result::Ok(());
                     let stream = res;
-    
+
                     let stream = ::std::panic::AssertUnwindSafe(stream)
                         .catch_unwind()
                         .map(|item| {
@@ -5979,7 +5979,7 @@ pub mod perform {
                 },
                 ::std::result::Result::Err(exn) => (::std::result::Result::Err(exn), ::std::option::Option::None),
             };
-    
+
             let response = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction_fast::TruthifyExn>(
                 "truthify",
                 METHOD_NAME,
@@ -5988,13 +5988,13 @@ pub mod perform {
                 &mut ctx_stack,
                 response,
             )?;
-    
+
             reply_state.set_stream_method_name("MyInteractionFast.truthify");
             reply_state.set_stream_context_stack(ctx_stack);
             let _ = reply_state.send_stream_reply(response, stream, P::PROTOCOL_ID);
             ::std::result::Result::Ok(())
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteractionFast.encode"))]
         async fn handle_encode<'a>(
             &'a self,
@@ -6006,7 +6006,7 @@ pub mod perform {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"Perform";
             const METHOD_NAME: &::std::ffi::CStr = c"MyInteractionFast.encode";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"Perform.MyInteractionFast.encode";
@@ -6020,14 +6020,14 @@ pub mod perform {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.encode(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -6044,11 +6044,11 @@ pub mod perform {
                     ::std::result::Result::Err(crate::services::my_interaction_fast::EncodeExn::ApplicationException(aexn))
                 }
             };
-    
+
             // Process the Thrift SINK encoded request
-    
+
             use ::futures::StreamExt as _;
-    
+
             let (first_result, stream_fn, buffer_size, chunk_timeout): (
                 ::std::result::Result::<::std::collections::BTreeSet<::std::primitive::i32>, crate::services::my_interaction_fast::EncodeExn>,
                 ::std::boxed::Box<dyn ::std::ops::FnOnce(
@@ -6070,7 +6070,7 @@ pub mod perform {
                     ::std::result::Result::Err(crate::services::my_interaction_fast::EncodeSinkFinalExn::ApplicationException(aexn))
                 }.boxed()), 100, ::std::time::Duration::ZERO),
             };
-    
+
             let first_result_enc = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction_fast::EncodeExn>(
                 "encode",
                 METHOD_NAME,
@@ -6128,7 +6128,7 @@ pub mod perform {
             ::std::result::Result::Ok(())
         }
     }
-    
+
     #[::async_trait::async_trait]
     impl<P, H, R, RS> ::fbthrift::ServiceProcessor<P> for MyInteractionFastProcessor<P, H, R, RS>
     where
@@ -6145,7 +6145,7 @@ pub mod perform {
     {
         type RequestContext = R;
         type ReplyState = RS;
-    
+
         #[inline]
         fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
             match name {
@@ -6156,7 +6156,7 @@ pub mod perform {
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
@@ -6187,7 +6187,7 @@ pub mod perform {
                 ),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &::std::primitive::str) -> ::anyhow::Result<::std::primitive::usize> {
@@ -6195,7 +6195,7 @@ pub mod perform {
                 _ => ::anyhow::bail!("Unknown interaction"),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
@@ -6211,12 +6211,12 @@ pub mod perform {
                 ),
             }
         }
-    
+
         async fn handle_on_termination(&self) {
             self.service.on_termination().await
         }
     }
-    
+
     #[::async_trait::async_trait]
     impl<P, H, R, RS> ::fbthrift::ThriftService<P::Frame> for MyInteractionFastProcessor<P, H, R, RS>
     where
@@ -6236,7 +6236,7 @@ pub mod perform {
         type Handler = ();
         type RequestContext = R;
         type ReplyState = RS;
-    
+
         #[tracing::instrument(level="trace", skip_all, fields(service = "MyInteractionFast"))]
         async fn call(
             &self,
@@ -6261,10 +6261,10 @@ pub mod perform {
             };
             self.handle_method(idx, &mut p, req, req_ctxt, reply_state, seqid).await?;
             p.read_message_end()?;
-    
+
             ::std::result::Result::Ok(())
         }
-    
+
         fn create_interaction(
             &self,
             name: &::std::primitive::str,
@@ -6281,7 +6281,7 @@ pub mod perform {
             };
             self.handle_create_interaction(idx)
         }
-    
+
         fn get_method_metadata(&self) -> &'static [::fbthrift::processor::MethodMetadata] {
             &[
                 // From module.MyInteractionFast:
@@ -6289,16 +6289,16 @@ pub mod perform {
                 // They are always queried from the "main" processor.
             ]
         }
-    
+
         async fn on_termination(&self) {
             use ::fbthrift::{ServiceProcessor as _};
             self.handle_on_termination().await
         }
     }
+
     
-    
-    
-    
+
+
     /// Processor for SerialInteraction's methods.
     #[derive(Clone, Debug)]
     pub struct SerialInteractionProcessor<P, H, R, RS> {
@@ -6306,7 +6306,7 @@ pub mod perform {
         supa: ::fbthrift::NullServiceProcessor<P, R, RS>,
         _phantom: ::std::marker::PhantomData<(P, H, R, RS)>,
     }
-    
+
     impl<P, H, R, RS> SerialInteractionProcessor<P, H, R, RS>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
@@ -6327,11 +6327,11 @@ pub mod perform {
                 _phantom: ::std::marker::PhantomData,
             }
         }
-    
+
         pub fn into_inner(self) -> H {
             self.service
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "SerialInteraction.frobnicate"))]
         async fn handle_frobnicate<'a>(
             &'a self,
@@ -6343,7 +6343,7 @@ pub mod perform {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"Perform";
             const METHOD_NAME: &::std::ffi::CStr = c"SerialInteraction.frobnicate";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"Perform.SerialInteraction.frobnicate";
@@ -6357,14 +6357,14 @@ pub mod perform {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.frobnicate(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -6381,7 +6381,7 @@ pub mod perform {
                     ::std::result::Result::Err(crate::services::serial_interaction::FrobnicateExn::ApplicationException(aexn))
                 }
             };
-    
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::serial_interaction::FrobnicateExn>(
                 "frobnicate",
                 METHOD_NAME,
@@ -6394,7 +6394,7 @@ pub mod perform {
             ::std::result::Result::Ok(())
         }
     }
-    
+
     #[::async_trait::async_trait]
     impl<P, H, R, RS> ::fbthrift::ServiceProcessor<P> for SerialInteractionProcessor<P, H, R, RS>
     where
@@ -6411,7 +6411,7 @@ pub mod perform {
     {
         type RequestContext = R;
         type ReplyState = RS;
-    
+
         #[inline]
         fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
             match name {
@@ -6419,7 +6419,7 @@ pub mod perform {
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
@@ -6441,7 +6441,7 @@ pub mod perform {
                 ),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &::std::primitive::str) -> ::anyhow::Result<::std::primitive::usize> {
@@ -6449,7 +6449,7 @@ pub mod perform {
                 _ => ::anyhow::bail!("Unknown interaction"),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
@@ -6465,12 +6465,12 @@ pub mod perform {
                 ),
             }
         }
-    
+
         async fn handle_on_termination(&self) {
             self.service.on_termination().await
         }
     }
-    
+
     #[::async_trait::async_trait]
     impl<P, H, R, RS> ::fbthrift::ThriftService<P::Frame> for SerialInteractionProcessor<P, H, R, RS>
     where
@@ -6490,7 +6490,7 @@ pub mod perform {
         type Handler = ();
         type RequestContext = R;
         type ReplyState = RS;
-    
+
         #[tracing::instrument(level="trace", skip_all, fields(service = "SerialInteraction"))]
         async fn call(
             &self,
@@ -6515,10 +6515,10 @@ pub mod perform {
             };
             self.handle_method(idx, &mut p, req, req_ctxt, reply_state, seqid).await?;
             p.read_message_end()?;
-    
+
             ::std::result::Result::Ok(())
         }
-    
+
         fn create_interaction(
             &self,
             name: &::std::primitive::str,
@@ -6535,7 +6535,7 @@ pub mod perform {
             };
             self.handle_create_interaction(idx)
         }
-    
+
         fn get_method_metadata(&self) -> &'static [::fbthrift::processor::MethodMetadata] {
             &[
                 // From module.SerialInteraction:
@@ -6543,13 +6543,13 @@ pub mod perform {
                 // They are always queried from the "main" processor.
             ]
         }
-    
+
         async fn on_termination(&self) {
             use ::fbthrift::{ServiceProcessor as _};
             self.handle_on_termination().await
         }
     }
-    
+
 
 }
 
@@ -7050,8 +7050,8 @@ pub mod interact_with_shared {
     use super::*;
 
     
-    
-    
+
+
     /// Processor for MyInteraction's methods.
     #[derive(Clone, Debug)]
     pub struct MyInteractionProcessor<P, H, R, RS> {
@@ -7059,7 +7059,7 @@ pub mod interact_with_shared {
         supa: ::fbthrift::NullServiceProcessor<P, R, RS>,
         _phantom: ::std::marker::PhantomData<(P, H, R, RS)>,
     }
-    
+
     impl<P, H, R, RS> MyInteractionProcessor<P, H, R, RS>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
@@ -7080,11 +7080,11 @@ pub mod interact_with_shared {
                 _phantom: ::std::marker::PhantomData,
             }
         }
-    
+
         pub fn into_inner(self) -> H {
             self.service
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteraction.frobnicate"))]
         async fn handle_frobnicate<'a>(
             &'a self,
@@ -7096,7 +7096,7 @@ pub mod interact_with_shared {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"InteractWithShared";
             const METHOD_NAME: &::std::ffi::CStr = c"MyInteraction.frobnicate";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"InteractWithShared.MyInteraction.frobnicate";
@@ -7110,14 +7110,14 @@ pub mod interact_with_shared {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.frobnicate(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -7134,7 +7134,7 @@ pub mod interact_with_shared {
                     ::std::result::Result::Err(crate::services::my_interaction::FrobnicateExn::ApplicationException(aexn))
                 }
             };
-    
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction::FrobnicateExn>(
                 "frobnicate",
                 METHOD_NAME,
@@ -7146,7 +7146,7 @@ pub mod interact_with_shared {
             reply_state.send_reply(env);
             ::std::result::Result::Ok(())
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteraction.ping"))]
         async fn handle_ping<'a>(
             &'a self,
@@ -7158,7 +7158,7 @@ pub mod interact_with_shared {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"InteractWithShared";
             const METHOD_NAME: &::std::ffi::CStr = c"MyInteraction.ping";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"InteractWithShared.MyInteraction.ping";
@@ -7172,14 +7172,14 @@ pub mod interact_with_shared {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.ping(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -7196,7 +7196,7 @@ pub mod interact_with_shared {
                     ::std::result::Result::Err(crate::services::my_interaction::PingExn::ApplicationException(aexn))
                 }
             };
-    
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction::PingExn>(
                 "ping",
                 METHOD_NAME,
@@ -7208,7 +7208,7 @@ pub mod interact_with_shared {
             reply_state.send_reply(env);
             ::std::result::Result::Ok(())
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteraction.truthify"))]
         async fn handle_truthify<'a>(
             &'a self,
@@ -7220,7 +7220,7 @@ pub mod interact_with_shared {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"InteractWithShared";
             const METHOD_NAME: &::std::ffi::CStr = c"MyInteraction.truthify";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"InteractWithShared.MyInteraction.truthify";
@@ -7234,14 +7234,14 @@ pub mod interact_with_shared {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.truthify(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -7257,14 +7257,14 @@ pub mod interact_with_shared {
                     ::std::result::Result::Err(crate::services::my_interaction::TruthifyExn::ApplicationException(aexn))
                 }
             };
-    
+
             use ::futures::StreamExt as _;
-    
+
             let (response, stream) = match res {
                 ::std::result::Result::Ok(res) => {
                     let response = ::std::result::Result::Ok(());
                     let stream = res;
-    
+
                     let stream = ::std::panic::AssertUnwindSafe(stream)
                         .catch_unwind()
                         .map(|item| {
@@ -7292,7 +7292,7 @@ pub mod interact_with_shared {
                 },
                 ::std::result::Result::Err(exn) => (::std::result::Result::Err(exn), ::std::option::Option::None),
             };
-    
+
             let response = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction::TruthifyExn>(
                 "truthify",
                 METHOD_NAME,
@@ -7301,13 +7301,13 @@ pub mod interact_with_shared {
                 &mut ctx_stack,
                 response,
             )?;
-    
+
             reply_state.set_stream_method_name("MyInteraction.truthify");
             reply_state.set_stream_context_stack(ctx_stack);
             let _ = reply_state.send_stream_reply(response, stream, P::PROTOCOL_ID);
             ::std::result::Result::Ok(())
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "MyInteraction.encode"))]
         async fn handle_encode<'a>(
             &'a self,
@@ -7319,7 +7319,7 @@ pub mod interact_with_shared {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"InteractWithShared";
             const METHOD_NAME: &::std::ffi::CStr = c"MyInteraction.encode";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"InteractWithShared.MyInteraction.encode";
@@ -7333,14 +7333,14 @@ pub mod interact_with_shared {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.encode(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -7357,11 +7357,11 @@ pub mod interact_with_shared {
                     ::std::result::Result::Err(crate::services::my_interaction::EncodeExn::ApplicationException(aexn))
                 }
             };
-    
+
             // Process the Thrift SINK encoded request
-    
+
             use ::futures::StreamExt as _;
-    
+
             let (first_result, stream_fn, buffer_size, chunk_timeout): (
                 ::std::result::Result::<::std::collections::BTreeSet<::std::primitive::i32>, crate::services::my_interaction::EncodeExn>,
                 ::std::boxed::Box<dyn ::std::ops::FnOnce(
@@ -7383,7 +7383,7 @@ pub mod interact_with_shared {
                     ::std::result::Result::Err(crate::services::my_interaction::EncodeSinkFinalExn::ApplicationException(aexn))
                 }.boxed()), 100, ::std::time::Duration::ZERO),
             };
-    
+
             let first_result_enc = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::my_interaction::EncodeExn>(
                 "encode",
                 METHOD_NAME,
@@ -7441,7 +7441,7 @@ pub mod interact_with_shared {
             ::std::result::Result::Ok(())
         }
     }
-    
+
     #[::async_trait::async_trait]
     impl<P, H, R, RS> ::fbthrift::ServiceProcessor<P> for MyInteractionProcessor<P, H, R, RS>
     where
@@ -7458,7 +7458,7 @@ pub mod interact_with_shared {
     {
         type RequestContext = R;
         type ReplyState = RS;
-    
+
         #[inline]
         fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
             match name {
@@ -7469,7 +7469,7 @@ pub mod interact_with_shared {
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
@@ -7500,7 +7500,7 @@ pub mod interact_with_shared {
                 ),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &::std::primitive::str) -> ::anyhow::Result<::std::primitive::usize> {
@@ -7508,7 +7508,7 @@ pub mod interact_with_shared {
                 _ => ::anyhow::bail!("Unknown interaction"),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
@@ -7524,12 +7524,12 @@ pub mod interact_with_shared {
                 ),
             }
         }
-    
+
         async fn handle_on_termination(&self) {
             self.service.on_termination().await
         }
     }
-    
+
     #[::async_trait::async_trait]
     impl<P, H, R, RS> ::fbthrift::ThriftService<P::Frame> for MyInteractionProcessor<P, H, R, RS>
     where
@@ -7549,7 +7549,7 @@ pub mod interact_with_shared {
         type Handler = ();
         type RequestContext = R;
         type ReplyState = RS;
-    
+
         #[tracing::instrument(level="trace", skip_all, fields(service = "MyInteraction"))]
         async fn call(
             &self,
@@ -7574,10 +7574,10 @@ pub mod interact_with_shared {
             };
             self.handle_method(idx, &mut p, req, req_ctxt, reply_state, seqid).await?;
             p.read_message_end()?;
-    
+
             ::std::result::Result::Ok(())
         }
-    
+
         fn create_interaction(
             &self,
             name: &::std::primitive::str,
@@ -7594,7 +7594,7 @@ pub mod interact_with_shared {
             };
             self.handle_create_interaction(idx)
         }
-    
+
         fn get_method_metadata(&self) -> &'static [::fbthrift::processor::MethodMetadata] {
             &[
                 // From module.MyInteraction:
@@ -7602,16 +7602,16 @@ pub mod interact_with_shared {
                 // They are always queried from the "main" processor.
             ]
         }
-    
+
         async fn on_termination(&self) {
             use ::fbthrift::{ServiceProcessor as _};
             self.handle_on_termination().await
         }
     }
+
     
-    
-    
-    
+
+
     /// Processor for SharedInteraction's methods.
     #[derive(Clone, Debug)]
     pub struct SharedInteractionProcessor<P, H, R, RS> {
@@ -7619,7 +7619,7 @@ pub mod interact_with_shared {
         supa: ::fbthrift::NullServiceProcessor<P, R, RS>,
         _phantom: ::std::marker::PhantomData<(P, H, R, RS)>,
     }
-    
+
     impl<P, H, R, RS> SharedInteractionProcessor<P, H, R, RS>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
@@ -7640,11 +7640,11 @@ pub mod interact_with_shared {
                 _phantom: ::std::marker::PhantomData,
             }
         }
-    
+
         pub fn into_inner(self) -> H {
             self.service
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "SharedInteraction.init"))]
         async fn handle_init<'a>(
             &'a self,
@@ -7656,7 +7656,7 @@ pub mod interact_with_shared {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"InteractWithShared";
             const METHOD_NAME: &::std::ffi::CStr = c"SharedInteraction.init";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"InteractWithShared.SharedInteraction.init";
@@ -7670,14 +7670,14 @@ pub mod interact_with_shared {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.init(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -7694,7 +7694,7 @@ pub mod interact_with_shared {
                     ::std::result::Result::Err(crate::services::shared_interaction::InitExn::ApplicationException(aexn))
                 }
             };
-    
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::shared_interaction::InitExn>(
                 "init",
                 METHOD_NAME,
@@ -7706,7 +7706,7 @@ pub mod interact_with_shared {
             reply_state.send_reply(env);
             ::std::result::Result::Ok(())
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "SharedInteraction.do_something"))]
         async fn handle_do_something<'a>(
             &'a self,
@@ -7718,7 +7718,7 @@ pub mod interact_with_shared {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"InteractWithShared";
             const METHOD_NAME: &::std::ffi::CStr = c"SharedInteraction.do_something";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"InteractWithShared.SharedInteraction.do_something";
@@ -7732,14 +7732,14 @@ pub mod interact_with_shared {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.do_something(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -7756,7 +7756,7 @@ pub mod interact_with_shared {
                     ::std::result::Result::Err(crate::services::shared_interaction::DoSomethingExn::ApplicationException(aexn))
                 }
             };
-    
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::shared_interaction::DoSomethingExn>(
                 "do_something",
                 METHOD_NAME,
@@ -7768,7 +7768,7 @@ pub mod interact_with_shared {
             reply_state.send_reply(env);
             ::std::result::Result::Ok(())
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "SharedInteraction.tear_down"))]
         async fn handle_tear_down<'a>(
             &'a self,
@@ -7780,7 +7780,7 @@ pub mod interact_with_shared {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"InteractWithShared";
             const METHOD_NAME: &::std::ffi::CStr = c"SharedInteraction.tear_down";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"InteractWithShared.SharedInteraction.tear_down";
@@ -7794,14 +7794,14 @@ pub mod interact_with_shared {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.tear_down(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -7818,7 +7818,7 @@ pub mod interact_with_shared {
                     ::std::result::Result::Err(crate::services::shared_interaction::TearDownExn::ApplicationException(aexn))
                 }
             };
-    
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::shared_interaction::TearDownExn>(
                 "tear_down",
                 METHOD_NAME,
@@ -7831,7 +7831,7 @@ pub mod interact_with_shared {
             ::std::result::Result::Ok(())
         }
     }
-    
+
     #[::async_trait::async_trait]
     impl<P, H, R, RS> ::fbthrift::ServiceProcessor<P> for SharedInteractionProcessor<P, H, R, RS>
     where
@@ -7848,7 +7848,7 @@ pub mod interact_with_shared {
     {
         type RequestContext = R;
         type ReplyState = RS;
-    
+
         #[inline]
         fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
             match name {
@@ -7858,7 +7858,7 @@ pub mod interact_with_shared {
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
@@ -7886,7 +7886,7 @@ pub mod interact_with_shared {
                 ),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &::std::primitive::str) -> ::anyhow::Result<::std::primitive::usize> {
@@ -7894,7 +7894,7 @@ pub mod interact_with_shared {
                 _ => ::anyhow::bail!("Unknown interaction"),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
@@ -7910,12 +7910,12 @@ pub mod interact_with_shared {
                 ),
             }
         }
-    
+
         async fn handle_on_termination(&self) {
             self.service.on_termination().await
         }
     }
-    
+
     #[::async_trait::async_trait]
     impl<P, H, R, RS> ::fbthrift::ThriftService<P::Frame> for SharedInteractionProcessor<P, H, R, RS>
     where
@@ -7935,7 +7935,7 @@ pub mod interact_with_shared {
         type Handler = ();
         type RequestContext = R;
         type ReplyState = RS;
-    
+
         #[tracing::instrument(level="trace", skip_all, fields(service = "SharedInteraction"))]
         async fn call(
             &self,
@@ -7960,10 +7960,10 @@ pub mod interact_with_shared {
             };
             self.handle_method(idx, &mut p, req, req_ctxt, reply_state, seqid).await?;
             p.read_message_end()?;
-    
+
             ::std::result::Result::Ok(())
         }
-    
+
         fn create_interaction(
             &self,
             name: &::std::primitive::str,
@@ -7980,7 +7980,7 @@ pub mod interact_with_shared {
             };
             self.handle_create_interaction(idx)
         }
-    
+
         fn get_method_metadata(&self) -> &'static [::fbthrift::processor::MethodMetadata] {
             &[
                 // From shared.SharedInteraction:
@@ -7988,13 +7988,13 @@ pub mod interact_with_shared {
                 // They are always queried from the "main" processor.
             ]
         }
-    
+
         async fn on_termination(&self) {
             use ::fbthrift::{ServiceProcessor as _};
             self.handle_on_termination().await
         }
     }
-    
+
 
 }
 
@@ -8454,8 +8454,8 @@ pub mod box_service {
     use super::*;
 
     
-    
-    
+
+
     /// Processor for BoxedInteraction's methods.
     #[derive(Clone, Debug)]
     pub struct BoxedInteractionProcessor<P, H, R, RS> {
@@ -8463,7 +8463,7 @@ pub mod box_service {
         supa: ::fbthrift::NullServiceProcessor<P, R, RS>,
         _phantom: ::std::marker::PhantomData<(P, H, R, RS)>,
     }
-    
+
     impl<P, H, R, RS> BoxedInteractionProcessor<P, H, R, RS>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
@@ -8484,11 +8484,11 @@ pub mod box_service {
                 _phantom: ::std::marker::PhantomData,
             }
         }
-    
+
         pub fn into_inner(self) -> H {
             self.service
         }
-    
+
         #[::tracing::instrument(skip_all, name = "handler", fields(method = "BoxedInteraction.getABox"))]
         async fn handle_getABox<'a>(
             &'a self,
@@ -8500,7 +8500,7 @@ pub mod box_service {
         ) -> ::anyhow::Result<()> {
             use ::futures::FutureExt as _;
             use ::fbthrift::ExceptionInfo;
-    
+
             const SERVICE_NAME: &::std::ffi::CStr = c"BoxService";
             const METHOD_NAME: &::std::ffi::CStr = c"BoxedInteraction.getABox";
             const SERVICE_METHOD_NAME: &::std::ffi::CStr = c"BoxService.BoxedInteraction.getABox";
@@ -8514,14 +8514,14 @@ pub mod box_service {
                 buffer: req,
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, bytes_read)?;
-    
+
             let res = ::std::panic::AssertUnwindSafe(
                 self.service.getABox(
                 )
             )
             .catch_unwind()
             .await;
-    
+
             // nested results - panic catch on the outside, method on the inside
             let res = match res {
                 ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
@@ -8538,7 +8538,7 @@ pub mod box_service {
                     ::std::result::Result::Err(crate::services::boxed_interaction::GetABoxExn::ApplicationException(aexn))
                 }
             };
-    
+
             let env = ::fbthrift::help::serialize_result_envelope::<P, R, crate::services::boxed_interaction::GetABoxExn>(
                 "getABox",
                 METHOD_NAME,
@@ -8551,7 +8551,7 @@ pub mod box_service {
             ::std::result::Result::Ok(())
         }
     }
-    
+
     #[::async_trait::async_trait]
     impl<P, H, R, RS> ::fbthrift::ServiceProcessor<P> for BoxedInteractionProcessor<P, H, R, RS>
     where
@@ -8568,7 +8568,7 @@ pub mod box_service {
     {
         type RequestContext = R;
         type ReplyState = RS;
-    
+
         #[inline]
         fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
             match name {
@@ -8576,7 +8576,7 @@ pub mod box_service {
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         async fn handle_method(
             &self,
@@ -8598,7 +8598,7 @@ pub mod box_service {
                 ),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         #[inline]
         fn create_interaction_idx(&self, name: &::std::primitive::str) -> ::anyhow::Result<::std::primitive::usize> {
@@ -8606,7 +8606,7 @@ pub mod box_service {
                 _ => ::anyhow::bail!("Unknown interaction"),
             }
         }
-    
+
         #[allow(clippy::match_single_binding)]
         fn handle_create_interaction(
             &self,
@@ -8622,12 +8622,12 @@ pub mod box_service {
                 ),
             }
         }
-    
+
         async fn handle_on_termination(&self) {
             self.service.on_termination().await
         }
     }
-    
+
     #[::async_trait::async_trait]
     impl<P, H, R, RS> ::fbthrift::ThriftService<P::Frame> for BoxedInteractionProcessor<P, H, R, RS>
     where
@@ -8647,7 +8647,7 @@ pub mod box_service {
         type Handler = ();
         type RequestContext = R;
         type ReplyState = RS;
-    
+
         #[tracing::instrument(level="trace", skip_all, fields(service = "BoxedInteraction"))]
         async fn call(
             &self,
@@ -8672,10 +8672,10 @@ pub mod box_service {
             };
             self.handle_method(idx, &mut p, req, req_ctxt, reply_state, seqid).await?;
             p.read_message_end()?;
-    
+
             ::std::result::Result::Ok(())
         }
-    
+
         fn create_interaction(
             &self,
             name: &::std::primitive::str,
@@ -8692,7 +8692,7 @@ pub mod box_service {
             };
             self.handle_create_interaction(idx)
         }
-    
+
         fn get_method_metadata(&self) -> &'static [::fbthrift::processor::MethodMetadata] {
             &[
                 // From module.BoxedInteraction:
@@ -8700,13 +8700,13 @@ pub mod box_service {
                 // They are always queried from the "main" processor.
             ]
         }
-    
+
         async fn on_termination(&self) {
             use ::fbthrift::{ServiceProcessor as _};
             self.handle_on_termination().await
         }
     }
-    
+
 
 }
 

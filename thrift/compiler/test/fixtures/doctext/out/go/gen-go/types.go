@@ -1176,7 +1176,7 @@ func (x *reqCThing) readField3(p thrift.Decoder) error {  // C
     if err != nil {
         return thrift.PrependError("error reading set begin: ", err)
     }
-    
+
     setResult := make([]int32, 0, size)
     for i := 0; i < size; i++ {
         var elem int32
@@ -1189,7 +1189,7 @@ func (x *reqCThing) readField3(p thrift.Decoder) error {  // C
         }
         setResult = append(setResult, elem)
     }
-    
+
     if err := p.ReadSetEnd(); err != nil {
         return thrift.PrependError("error reading set end: ", err)
     }

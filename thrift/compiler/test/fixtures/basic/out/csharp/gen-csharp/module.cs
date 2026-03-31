@@ -52,7 +52,7 @@ namespace test.dev.fixtures.basic
         public static readonly string __fbthrift_uri = "test.dev/fixtures/basic/MyStruct";
         /// <summary>Gets or sets the MyIntField field.</summary>
         public long @MyIntField { get; set; }
-    
+
         /// <summary>Gets or sets the MyStringField field.</summary>
         private string _MyStringField = string.Empty;
         public string @MyStringField
@@ -64,7 +64,7 @@ namespace test.dev.fixtures.basic
                 _MyStringField = value;
             }
         }
-    
+
         /// <summary>Gets or sets the MyDataField field.</summary>
         private @MyDataItemAlias _MyDataField = new @MyDataItemAlias();
         public @MyDataItemAlias @MyDataField
@@ -76,19 +76,19 @@ namespace test.dev.fixtures.basic
                 _MyDataField = value;
             }
         }
-    
+
         /// <summary>Gets or sets the myEnum field.</summary>
         public @MyEnum @myEnum { get; set; }
-    
+
         /// <summary>Gets or sets the oneway field.</summary>
         public bool @oneway { get; set; }
-    
+
         /// <summary>Gets or sets the readonly field.</summary>
         public bool @readonly { get; set; }
-    
+
         /// <summary>Gets or sets the idempotent field.</summary>
         public bool @idempotent { get; set; }
-    
+
         /// <summary>Gets or sets the floatSet field.</summary>
         private HashSet<float> _floatSet = new HashSet<float>();
         public HashSet<float> @floatSet
@@ -100,7 +100,7 @@ namespace test.dev.fixtures.basic
                 _floatSet = value;
             }
         }
-    
+
         /// <summary>Gets or sets the no_hack_codegen_field field.</summary>
         private string _no_hack_codegen_field = string.Empty;
         public string @no_hack_codegen_field
@@ -112,7 +112,7 @@ namespace test.dev.fixtures.basic
                 _no_hack_codegen_field = value;
             }
         }
-    
+
         public @MyStruct()
         {
             @MyStringField = string.Empty;
@@ -120,7 +120,7 @@ namespace test.dev.fixtures.basic
             @floatSet = new HashSet<float>();
             @no_hack_codegen_field = string.Empty;
         }
-    
+
         public void __fbthrift_clear()
         {
             @MyIntField = default;
@@ -133,7 +133,7 @@ namespace test.dev.fixtures.basic
             @floatSet = new HashSet<float>();
             @no_hack_codegen_field = string.Empty;
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@MyIntField != default) { return false; }
@@ -147,7 +147,7 @@ namespace test.dev.fixtures.basic
             if (@no_hack_codegen_field != null && @no_hack_codegen_field.Length != 0) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: MyIntField (long)
@@ -183,7 +183,7 @@ namespace test.dev.fixtures.basic
             writer.WriteString(@no_hack_codegen_field);
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -193,7 +193,7 @@ namespace test.dev.fixtures.basic
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // MyIntField
@@ -292,7 +292,7 @@ namespace test.dev.fixtures.basic
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @MyStruct other)
@@ -338,7 +338,7 @@ namespace test.dev.fixtures.basic
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
@@ -358,7 +358,7 @@ namespace test.dev.fixtures.basic
             hashCode.Add(@no_hack_codegen_field);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -412,7 +412,7 @@ namespace test.dev.fixtures.basic
                 _I32List = value;
             }
         }
-    
+
         /// <summary>Gets or sets the StringSet field.</summary>
         private HashSet<string> _StringSet = new HashSet<string>();
         public HashSet<string> @StringSet
@@ -424,7 +424,7 @@ namespace test.dev.fixtures.basic
                 _StringSet = value;
             }
         }
-    
+
         /// <summary>Gets or sets the StringToI64Map field.</summary>
         private Dictionary<string, long> _StringToI64Map = new Dictionary<string, long>();
         public Dictionary<string, long> @StringToI64Map
@@ -436,21 +436,21 @@ namespace test.dev.fixtures.basic
                 _StringToI64Map = value;
             }
         }
-    
+
         public @Containers()
         {
             @I32List = new List<int>();
             @StringSet = new HashSet<string>();
             @StringToI64Map = new Dictionary<string, long>();
         }
-    
+
         public void __fbthrift_clear()
         {
             @I32List = new List<int>();
             @StringSet = new HashSet<string>();
             @StringToI64Map = new Dictionary<string, long>();
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@I32List != null && @I32List.Count != 0) { return false; }
@@ -458,7 +458,7 @@ namespace test.dev.fixtures.basic
             if (@StringToI64Map != null && @StringToI64Map.Count != 0) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: I32List (List<int>)
@@ -485,7 +485,7 @@ namespace test.dev.fixtures.basic
             }
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -495,7 +495,7 @@ namespace test.dev.fixtures.basic
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // I32List
@@ -534,7 +534,7 @@ namespace test.dev.fixtures.basic
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @Containers other)
@@ -572,7 +572,7 @@ namespace test.dev.fixtures.basic
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
@@ -592,7 +592,7 @@ namespace test.dev.fixtures.basic
             }
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -620,21 +620,21 @@ namespace test.dev.fixtures.basic
         public @MyDataItem()
         {
         }
-    
+
         public void __fbthrift_clear()
         {
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -644,7 +644,7 @@ namespace test.dev.fixtures.basic
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     default:
@@ -653,7 +653,7 @@ namespace test.dev.fixtures.basic
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @MyDataItem other)
@@ -662,13 +662,13 @@ namespace test.dev.fixtures.basic
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -696,20 +696,20 @@ namespace test.dev.fixtures.basic
                 @myDataItem = 3,
                 @floatSet = 4,
             }
-    
+
             private Type _type = Type.Empty;
             private object? _value;
-    
+
             /// <summary>
             /// Gets the type of the currently set field
             /// </summary>
             public Type GetUnionType() => _type;
-    
+
             /// <summary>
             /// Returns true if this union has no value set
             /// </summary>
             public bool __fbthrift_is_empty() => _type == Type.Empty;
-    
+
             /// <summary>
             /// Clears the union value
             /// </summary>
@@ -718,7 +718,7 @@ namespace test.dev.fixtures.basic
                 _type = Type.Empty;
                 _value = null;
             }
-    
+
             /// <summary>
             /// Gets or sets the myEnum field.
             /// Setting this field clears any previously set field.
@@ -734,7 +734,7 @@ namespace test.dev.fixtures.basic
                     _value = value;
                 }
             }
-    
+
             /// <summary>
             /// Gets or sets the myStruct field.
             /// Setting this field clears any previously set field.
@@ -750,7 +750,7 @@ namespace test.dev.fixtures.basic
                     _value = value;
                 }
             }
-    
+
             /// <summary>
             /// Gets or sets the myDataItem field.
             /// Setting this field clears any previously set field.
@@ -766,7 +766,7 @@ namespace test.dev.fixtures.basic
                     _value = value;
                 }
             }
-    
+
             /// <summary>
             /// Gets or sets the floatSet field.
             /// Setting this field clears any previously set field.
@@ -782,7 +782,7 @@ namespace test.dev.fixtures.basic
                     _value = value;
                 }
             }
-    
+
             public void __fbthrift_write(IThriftProtocolWriter writer)
             {
                 switch (_type)
@@ -813,7 +813,7 @@ namespace test.dev.fixtures.basic
                 }
                 writer.WriteFieldStop();
             }
-    
+
             public void __fbthrift_read(IThriftProtocolReader reader)
             {
                 __fbthrift_clear();
@@ -825,13 +825,13 @@ namespace test.dev.fixtures.basic
                     {
                         break;
                     }
-            
+
                     if (_fieldSeen)
                     {
                         throw new ThriftProtocolException("Union cannot have multiple fields set");
                     }
                     _fieldSeen = true;
-            
+
                     switch (fieldId)
                     {
                         case 1: // myEnum
@@ -884,7 +884,7 @@ namespace test.dev.fixtures.basic
                     }
                 }
             }
-    
+
             public override bool Equals(object? obj)
             {
                 if (obj is not @MyUnion other)
@@ -897,12 +897,12 @@ namespace test.dev.fixtures.basic
                 }
                 return Equals(_value, other._value);
             }
-    
+
             public override int GetHashCode()
             {
                 return HashCode.Combine(_type, _value);
             }
-    
+
             public override string ToString()
             {
                 return $"MyUnion({_type}={_value})";
@@ -918,7 +918,7 @@ namespace test.dev.fixtures.basic
         public static readonly string __fbthrift_uri = "test.dev/fixtures/basic/MyException";
         /// <summary>Gets or sets the MyIntField field.</summary>
         public long @MyIntField { get; set; }
-    
+
         /// <summary>Gets or sets the MyStringField field.</summary>
         private string _MyStringField = string.Empty;
         public string @MyStringField
@@ -930,7 +930,7 @@ namespace test.dev.fixtures.basic
                 _MyStringField = value;
             }
         }
-    
+
         /// <summary>Gets or sets the myStruct field.</summary>
         private @MyStruct _myStruct = new @MyStruct();
         public @MyStruct @myStruct
@@ -942,7 +942,7 @@ namespace test.dev.fixtures.basic
                 _myStruct = value;
             }
         }
-    
+
         /// <summary>Gets or sets the myUnion field.</summary>
         private @MyUnion _myUnion = new @MyUnion();
         public @MyUnion @myUnion
@@ -954,14 +954,14 @@ namespace test.dev.fixtures.basic
                 _myUnion = value;
             }
         }
-    
+
         public @MyException()
         {
             @MyStringField = string.Empty;
             @myStruct = new @MyStruct();
             @myUnion = new @MyUnion();
         }
-    
+
         public void __fbthrift_clear()
         {
             @MyIntField = default;
@@ -969,7 +969,7 @@ namespace test.dev.fixtures.basic
             @myStruct = new @MyStruct();
             @myUnion = new @MyUnion();
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@MyIntField != default) { return false; }
@@ -978,7 +978,7 @@ namespace test.dev.fixtures.basic
             if (@myUnion != null && !@myUnion.__fbthrift_is_empty()) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: MyIntField (long)
@@ -995,7 +995,7 @@ namespace test.dev.fixtures.basic
             writer.WriteStruct(@myUnion);
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -1005,7 +1005,7 @@ namespace test.dev.fixtures.basic
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // MyIntField
@@ -1054,7 +1054,7 @@ namespace test.dev.fixtures.basic
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @MyException other)
@@ -1079,7 +1079,7 @@ namespace test.dev.fixtures.basic
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
@@ -1089,7 +1089,7 @@ namespace test.dev.fixtures.basic
             hashCode.Add(@myUnion);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -1119,7 +1119,7 @@ namespace test.dev.fixtures.basic
         public static readonly string __fbthrift_uri = "test.dev/fixtures/basic/MyExceptionWithMessage";
         /// <summary>Gets or sets the MyIntField field.</summary>
         public long @MyIntField { get; set; }
-    
+
         /// <summary>Gets or sets the MyStringField field.</summary>
         private string _MyStringField = string.Empty;
         public string @MyStringField
@@ -1131,7 +1131,7 @@ namespace test.dev.fixtures.basic
                 _MyStringField = value;
             }
         }
-    
+
         /// <summary>Gets or sets the myStruct field.</summary>
         private @MyStruct _myStruct = new @MyStruct();
         public @MyStruct @myStruct
@@ -1143,7 +1143,7 @@ namespace test.dev.fixtures.basic
                 _myStruct = value;
             }
         }
-    
+
         /// <summary>Gets or sets the myUnion field.</summary>
         private @MyUnion _myUnion = new @MyUnion();
         public @MyUnion @myUnion
@@ -1155,17 +1155,17 @@ namespace test.dev.fixtures.basic
                 _myUnion = value;
             }
         }
-    
+
         /// <summary>Returns the exception message from the @thrift.ExceptionMessage field.</summary>
         public override string Message => @MyStringField;
-    
+
         public @MyExceptionWithMessage()
         {
             @MyStringField = string.Empty;
             @myStruct = new @MyStruct();
             @myUnion = new @MyUnion();
         }
-    
+
         public void __fbthrift_clear()
         {
             @MyIntField = default;
@@ -1173,7 +1173,7 @@ namespace test.dev.fixtures.basic
             @myStruct = new @MyStruct();
             @myUnion = new @MyUnion();
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@MyIntField != default) { return false; }
@@ -1182,7 +1182,7 @@ namespace test.dev.fixtures.basic
             if (@myUnion != null && !@myUnion.__fbthrift_is_empty()) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: MyIntField (long)
@@ -1199,7 +1199,7 @@ namespace test.dev.fixtures.basic
             writer.WriteStruct(@myUnion);
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -1209,7 +1209,7 @@ namespace test.dev.fixtures.basic
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // MyIntField
@@ -1258,7 +1258,7 @@ namespace test.dev.fixtures.basic
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @MyExceptionWithMessage other)
@@ -1283,7 +1283,7 @@ namespace test.dev.fixtures.basic
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
@@ -1293,7 +1293,7 @@ namespace test.dev.fixtures.basic
             hashCode.Add(@myUnion);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -1323,22 +1323,22 @@ namespace test.dev.fixtures.basic
         public static readonly string __fbthrift_uri = "test.dev/fixtures/basic/ReservedKeyword";
         /// <summary>Gets or sets the reserved_field field.</summary>
         public int @reserved_field { get; set; }
-    
+
         public @ReservedKeyword()
         {
         }
-    
+
         public void __fbthrift_clear()
         {
             @reserved_field = default;
         }
-    
+
         public bool __fbthrift_is_empty()
         {
             if (@reserved_field != default) { return false; }
             return true;
         }
-    
+
         public void __fbthrift_write(IThriftProtocolWriter writer)
         {
             // Field 1: reserved_field (int)
@@ -1346,7 +1346,7 @@ namespace test.dev.fixtures.basic
             writer.WriteI32(@reserved_field);
             writer.WriteFieldStop();
         }
-    
+
         public void __fbthrift_read(IThriftProtocolReader reader)
         {
             while (true)
@@ -1356,7 +1356,7 @@ namespace test.dev.fixtures.basic
                 {
                     break;
                 }
-        
+
                 switch (fieldId)
                 {
                     case 1: // reserved_field
@@ -1375,7 +1375,7 @@ namespace test.dev.fixtures.basic
                 }
             }
         }
-    
+
         public override bool Equals(object? obj)
         {
             if (obj is not @ReservedKeyword other)
@@ -1388,14 +1388,14 @@ namespace test.dev.fixtures.basic
             }
             return true;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCode = new HashCode();
             hashCode.Add(@reserved_field);
             return hashCode.ToHashCode();
         }
-    
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();
@@ -1422,20 +1422,20 @@ namespace test.dev.fixtures.basic
                 Empty = 0,
                 @reserved_field = 1,
             }
-    
+
             private Type _type = Type.Empty;
             private object? _value;
-    
+
             /// <summary>
             /// Gets the type of the currently set field
             /// </summary>
             public Type GetUnionType() => _type;
-    
+
             /// <summary>
             /// Returns true if this union has no value set
             /// </summary>
             public bool __fbthrift_is_empty() => _type == Type.Empty;
-    
+
             /// <summary>
             /// Clears the union value
             /// </summary>
@@ -1444,7 +1444,7 @@ namespace test.dev.fixtures.basic
                 _type = Type.Empty;
                 _value = null;
             }
-    
+
             /// <summary>
             /// Gets or sets the reserved_field field.
             /// Setting this field clears any previously set field.
@@ -1460,7 +1460,7 @@ namespace test.dev.fixtures.basic
                     _value = value;
                 }
             }
-    
+
             public void __fbthrift_write(IThriftProtocolWriter writer)
             {
                 switch (_type)
@@ -1472,7 +1472,7 @@ namespace test.dev.fixtures.basic
                 }
                 writer.WriteFieldStop();
             }
-    
+
             public void __fbthrift_read(IThriftProtocolReader reader)
             {
                 __fbthrift_clear();
@@ -1484,13 +1484,13 @@ namespace test.dev.fixtures.basic
                     {
                         break;
                     }
-            
+
                     if (_fieldSeen)
                     {
                         throw new ThriftProtocolException("Union cannot have multiple fields set");
                     }
                     _fieldSeen = true;
-            
+
                     switch (fieldId)
                     {
                         case 1: // reserved_field
@@ -1510,7 +1510,7 @@ namespace test.dev.fixtures.basic
                     }
                 }
             }
-    
+
             public override bool Equals(object? obj)
             {
                 if (obj is not @UnionToBeRenamed other)
@@ -1523,12 +1523,12 @@ namespace test.dev.fixtures.basic
                 }
                 return Equals(_value, other._value);
             }
-    
+
             public override int GetHashCode()
             {
                 return HashCode.Combine(_type, _value);
             }
-    
+
             public override string ToString()
             {
                 return $"UnionToBeRenamed({_type}={_value})";

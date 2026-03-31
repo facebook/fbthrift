@@ -109,7 +109,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
     @ThriftConstructor
     public MyUnion() {
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public MyUnion(final test.fixtures.basic.MyEnum myEnum) {
@@ -119,7 +119,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         this.value = myEnum;
         this.id = 1;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public MyUnion(final test.fixtures.basic.MyStruct myStruct) {
@@ -129,7 +129,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         this.value = myStruct;
         this.id = 2;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public MyUnion(final test.fixtures.basic.MyDataItem myDataItem) {
@@ -139,7 +139,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         this.value = myDataItem;
         this.id = 3;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public MyUnion(final Set<Float> floatSet) {
@@ -149,7 +149,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         this.value = floatSet;
         this.id = 4;
     }
-    
+
     public static MyUnion fromMyEnum(final test.fixtures.basic.MyEnum myEnum) {
         MyUnion res = new MyUnion();
         if (!MyUnion.allowNullFieldValues && myEnum == null) {
@@ -159,7 +159,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         res.id = 1;
         return res;
     }
-    
+
     public static MyUnion fromMyStruct(final test.fixtures.basic.MyStruct myStruct) {
         MyUnion res = new MyUnion();
         if (!MyUnion.allowNullFieldValues && myStruct == null) {
@@ -169,7 +169,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         res.id = 2;
         return res;
     }
-    
+
     public static MyUnion fromMyDataItem(final test.fixtures.basic.MyDataItem myDataItem) {
         MyUnion res = new MyUnion();
         if (!MyUnion.allowNullFieldValues && myDataItem == null) {
@@ -179,7 +179,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         res.id = 3;
         return res;
     }
-    
+
     public static MyUnion fromFloatSet(final Set<Float> floatSet) {
         MyUnion res = new MyUnion();
         if (!MyUnion.allowNullFieldValues && floatSet == null) {
@@ -346,7 +346,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       case _MYENUM: {
         oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
         test.fixtures.basic.MyEnum _iter0 = (test.fixtures.basic.MyEnum)this.value;
-    
+
         oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
         oprot.writeFieldEnd();
         break;
@@ -354,7 +354,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       case _MYSTRUCT: {
         oprot.writeFieldBegin(MY_STRUCT_FIELD_DESC);
         test.fixtures.basic.MyStruct _iter0 = (test.fixtures.basic.MyStruct)this.value;
-    
+
         _iter0.write0(oprot);
         oprot.writeFieldEnd();
         break;
@@ -362,7 +362,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       case _MYDATAITEM: {
         oprot.writeFieldBegin(MY_DATA_ITEM_FIELD_DESC);
         test.fixtures.basic.MyDataItem _iter0 = (test.fixtures.basic.MyDataItem)this.value;
-    
+
         _iter0.write0(oprot);
         oprot.writeFieldEnd();
         break;
@@ -370,7 +370,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       case _FLOATSET: {
         oprot.writeFieldBegin(FLOAT_SET_FIELD_DESC);
         Set<Float> _iter0 = (Set<Float>)this.value;
-    
+
         oprot.writeSetBegin(new TSet(TType.FLOAT, _iter0.size()));
             for (float _iter1 : _iter0) {
               oprot.writeFloat(_iter1);
@@ -390,7 +390,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
     public static com.facebook.thrift.payload.Reader<MyUnion> asReader() {
       return MyUnion::read0;
     }
-    
+
     public static MyUnion read0(TProtocol oprot) throws TException {
       MyUnion res = new MyUnion();
       res.value = null;

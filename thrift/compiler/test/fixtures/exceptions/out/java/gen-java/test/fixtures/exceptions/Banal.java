@@ -36,15 +36,15 @@ public final class Banal extends org.apache.thrift.TBaseException implements com
     public Banal(
     ) {
     }
-    
-    
+
+
 
     public static class Builder {
-    
+
     public Builder() { }
         public Builder(Banal other) {
         }
-    
+
         @ThriftConstructor
         public Banal build() {
             Banal result = new Banal (
@@ -58,7 +58,7 @@ public final class Banal extends org.apache.thrift.TBaseException implements com
     public static com.facebook.thrift.payload.Reader<Banal> asReader() {
       return Banal::read0;
     }
-    
+
     public static Banal read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(Banal.NAMES_TO_IDS, Banal.THRIFT_NAMES_TO_IDS, Banal.FIELD_METADATA);
@@ -86,7 +86,7 @@ public final class Banal extends org.apache.thrift.TBaseException implements com
     private static class _BanalLazy {
         private static final Banal _DEFAULT = new Banal.Builder().build();
     }
-    
+
     public static Banal defaultInstance() {
         return  _BanalLazy._DEFAULT;
     }}

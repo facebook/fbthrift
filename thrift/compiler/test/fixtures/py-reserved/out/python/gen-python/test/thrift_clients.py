@@ -32,33 +32,33 @@ class lambda(_fbthrift_python_Client["lambda.Async", "lambda.Sync"]):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "test.lambda"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__test__thrift_metadata.gen_metadata_service_lambda()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "test.lambda"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__thrift_metadata.gen_metadata_service_lambda()
-    
+
         async def global(
             self,
             raise_: builtins.int,
@@ -82,7 +82,7 @@ class lambda(_fbthrift_python_Client["lambda.Async", "lambda.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def import(
             self,
             *,
@@ -104,26 +104,26 @@ class lambda(_fbthrift_python_Client["lambda.Async", "lambda.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     global = Async.global
     # pyre-ignore[4]: Missing annotation.
     import = Async.import
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "test.lambda"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__thrift_metadata.gen_metadata_service_lambda()
-    
+
         def global(
             self,
             raise_: builtins.int,
@@ -146,7 +146,7 @@ class lambda(_fbthrift_python_Client["lambda.Async", "lambda.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def import(
             self,
             *,

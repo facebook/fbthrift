@@ -41,27 +41,27 @@ public final class MyStruct2 implements com.facebook.thrift.payload.ThriftSerial
     public static class Builder {
         private test.fixtures.basic_swift_bean.MyStruct1 myStruct1 = null;
         private String myString = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="myStruct1", requiredness=Requiredness.NONE)    public Builder setMyStruct1(test.fixtures.basic_swift_bean.MyStruct1 myStruct1) {
             this.myStruct1 = myStruct1;
             return this;
         }
-    
+
         public test.fixtures.basic_swift_bean.MyStruct1 getMyStruct1() { return myStruct1; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="myString", requiredness=Requiredness.NONE)    public Builder setMyString(String myString) {
             this.myString = myString;
             return this;
         }
-    
+
         public String getMyString() { return myString; }
-    
+
         public Builder() { }
         public Builder(MyStruct2 other) {
             this.myStruct1 = other.myStruct1;
             this.myString = other.myString;
         }
-    
+
         @ThriftConstructor
         public MyStruct2 build() {
             MyStruct2 result = new MyStruct2();
@@ -126,9 +126,9 @@ public final class MyStruct2 implements com.facebook.thrift.payload.ThriftSerial
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         MyStruct2 other = (MyStruct2)o;
-    
+
         return
             Objects.equals(myStruct1, other.myStruct1) &&
             Objects.equals(myString, other.myString) &&
@@ -147,7 +147,7 @@ public final class MyStruct2 implements com.facebook.thrift.payload.ThriftSerial
     public static com.facebook.thrift.payload.Reader<MyStruct2> asReader() {
       return MyStruct2::read0;
     }
-    
+
     public static MyStruct2 read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(MyStruct2.NAMES_TO_IDS, MyStruct2.THRIFT_NAMES_TO_IDS, MyStruct2.FIELD_METADATA);

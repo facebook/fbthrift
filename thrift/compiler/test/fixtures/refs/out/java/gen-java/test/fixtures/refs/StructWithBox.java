@@ -34,7 +34,7 @@ public final class StructWithBox implements com.facebook.thrift.payload.ThriftSe
         this.b = b;
         this.c = c;
     }
-    
+
     @ThriftConstructor
     protected StructWithBox() {
       this.a = null;
@@ -54,35 +54,35 @@ public final class StructWithBox implements com.facebook.thrift.payload.ThriftSe
         private String a = null;
         private List<Long> b = null;
         private test.fixtures.refs.StructWithRef c = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.OPTIONAL)    public Builder setA(String a) {
             this.a = a;
             return this;
         }
-    
+
         public String getA() { return a; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="b", requiredness=Requiredness.OPTIONAL)    public Builder setB(List<Long> b) {
             this.b = b;
             return this;
         }
-    
+
         public List<Long> getB() { return b; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="c", requiredness=Requiredness.OPTIONAL)    public Builder setC(test.fixtures.refs.StructWithRef c) {
             this.c = c;
             return this;
         }
-    
+
         public test.fixtures.refs.StructWithRef getC() { return c; }
-    
+
         public Builder() { }
         public Builder(StructWithBox other) {
             this.a = other.a;
             this.b = other.b;
             this.c = other.c;
         }
-    
+
         @ThriftConstructor
         public StructWithBox build() {
             StructWithBox result = new StructWithBox (
@@ -150,9 +150,9 @@ public final class StructWithBox implements com.facebook.thrift.payload.ThriftSe
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         StructWithBox other = (StructWithBox)o;
-    
+
         return
             Objects.equals(a, other.a) &&
             Objects.equals(b, other.b) &&
@@ -173,7 +173,7 @@ public final class StructWithBox implements com.facebook.thrift.payload.ThriftSe
     public static com.facebook.thrift.payload.Reader<StructWithBox> asReader() {
       return StructWithBox::read0;
     }
-    
+
     public static StructWithBox read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(StructWithBox.NAMES_TO_IDS, StructWithBox.THRIFT_NAMES_TO_IDS, StructWithBox.FIELD_METADATA);
@@ -263,7 +263,7 @@ public final class StructWithBox implements com.facebook.thrift.payload.ThriftSe
     private static class _StructWithBoxLazy {
         private static final StructWithBox _DEFAULT = new StructWithBox.Builder().build();
     }
-    
+
     public static StructWithBox defaultInstance() {
         return  _StructWithBoxLazy._DEFAULT;
     }

@@ -19,6 +19,7 @@
 #include <thrift/compiler/whisker/eval_context.h>
 #include <thrift/compiler/whisker/render.h>
 
+#include <algorithm>
 #include <cmath>
 #include <concepts>
 #include <exception>
@@ -153,7 +154,14 @@ class outputter {
   void writeln_to_sink() {
     assert(current_line_.has_value());
     assert(!current_line_->buffer.empty());
-    sink_ << current_line_->indent << current_line_->buffer;
+    // Don't indent blank lines to avoid trailing whitespace.
+    if (!std::all_of(
+            current_line_->buffer.begin(),
+            current_line_->buffer.end(),
+            &detail::is_newline)) {
+      sink_ << current_line_->indent;
+    }
+    sink_ << current_line_->buffer;
     current_line_ = std::nullopt;
   }
 

@@ -32,7 +32,7 @@ public final class SimpleStruct implements com.facebook.thrift.payload.ThriftSer
         this.age = age;
         this.name = name;
     }
-    
+
     @ThriftConstructor
     protected SimpleStruct() {
       this.age = 60L;
@@ -50,27 +50,27 @@ public final class SimpleStruct implements com.facebook.thrift.payload.ThriftSer
     public static class Builder {
         private long age = 60L;
         private String name = "Batman";
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="age", requiredness=Requiredness.NONE)    public Builder setAge(long age) {
             this.age = age;
             return this;
         }
-    
+
         public long getAge() { return age; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="name", requiredness=Requiredness.NONE)    public Builder setName(String name) {
             this.name = name;
             return this;
         }
-    
+
         public String getName() { return name; }
-    
+
         public Builder() { }
         public Builder(SimpleStruct other) {
             this.age = other.age;
             this.name = other.name;
         }
-    
+
         @ThriftConstructor
         public SimpleStruct build() {
             SimpleStruct result = new SimpleStruct (
@@ -100,7 +100,7 @@ public final class SimpleStruct implements com.facebook.thrift.payload.ThriftSer
       FIELD_METADATA.put(2, NAME_FIELD_DESC);
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="age", requiredness=Requiredness.NONE)
     public long getAge() { return age; }
 
@@ -125,9 +125,9 @@ public final class SimpleStruct implements com.facebook.thrift.payload.ThriftSer
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         SimpleStruct other = (SimpleStruct)o;
-    
+
         return
             Objects.equals(age, other.age) &&
             Objects.equals(name, other.name) &&
@@ -146,7 +146,7 @@ public final class SimpleStruct implements com.facebook.thrift.payload.ThriftSer
     public static com.facebook.thrift.payload.Reader<SimpleStruct> asReader() {
       return SimpleStruct::read0;
     }
-    
+
     public static SimpleStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(SimpleStruct.NAMES_TO_IDS, SimpleStruct.THRIFT_NAMES_TO_IDS, SimpleStruct.FIELD_METADATA);
@@ -204,7 +204,7 @@ public final class SimpleStruct implements com.facebook.thrift.payload.ThriftSer
     private static class _SimpleStructLazy {
         private static final SimpleStruct _DEFAULT = new SimpleStruct.Builder().build();
     }
-    
+
     public static SimpleStruct defaultInstance() {
         return  _SimpleStructLazy._DEFAULT;
     }

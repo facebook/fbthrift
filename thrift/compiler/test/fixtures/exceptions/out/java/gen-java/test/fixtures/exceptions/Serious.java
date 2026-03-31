@@ -44,7 +44,7 @@ public final class Serious extends org.apache.thrift.TBaseException implements c
     ) {
         this.sonnet = sonnet;
     }
-    
+
     @ThriftConstructor
     protected Serious() {
       this.sonnet = null;
@@ -52,19 +52,19 @@ public final class Serious extends org.apache.thrift.TBaseException implements c
 
     public static class Builder {
         private String sonnet = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="sonnet", requiredness=Requiredness.OPTIONAL)    public Builder setSonnet(String sonnet) {
             this.sonnet = sonnet;
             return this;
         }
-    
+
         public String getSonnet() { return sonnet; }
-    
+
         public Builder() { }
         public Builder(Serious other) {
             this.sonnet = other.sonnet;
         }
-    
+
         @ThriftConstructor
         public Serious build() {
             Serious result = new Serious (
@@ -87,7 +87,7 @@ public final class Serious extends org.apache.thrift.TBaseException implements c
     public static com.facebook.thrift.payload.Reader<Serious> asReader() {
       return Serious::read0;
     }
-    
+
     public static Serious read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(Serious.NAMES_TO_IDS, Serious.THRIFT_NAMES_TO_IDS, Serious.FIELD_METADATA);
@@ -131,7 +131,7 @@ public final class Serious extends org.apache.thrift.TBaseException implements c
     private static class _SeriousLazy {
         private static final Serious _DEFAULT = new Serious.Builder().build();
     }
-    
+
     public static Serious defaultInstance() {
         return  _SeriousLazy._DEFAULT;
     }}

@@ -34,33 +34,33 @@ class EchoService(_fbthrift_python_Client["EchoService.Async", "EchoService.Sync
     @staticmethod
     def __get_thrift_name__() -> str:
         return "service.EchoService"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return "test.dev/fixtures/basic/EchoService"
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__meta__example__thrift__service__thrift_metadata.gen_metadata_service_EchoService()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "service.EchoService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return "test.dev/fixtures/basic/EchoService"
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__meta__example__thrift__service__thrift_metadata.gen_metadata_service_EchoService()
-    
+
         async def echo(
             self,
             request: _fbthrift__meta__example__thrift__service__thrift_types.EchoRequest,
@@ -87,24 +87,24 @@ class EchoService(_fbthrift_python_Client["EchoService.Async", "EchoService.Sync
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     echo = Async.echo
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "service.EchoService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return "test.dev/fixtures/basic/EchoService"
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__meta__example__thrift__service__thrift_metadata.gen_metadata_service_EchoService()
-    
+
         def echo(
             self,
             request: _fbthrift__meta__example__thrift__service__thrift_types.EchoRequest,
@@ -138,33 +138,33 @@ class ExtendedEchoService(_fbthrift_python_Client["ExtendedEchoService.Async", "
     @staticmethod
     def __get_thrift_name__() -> str:
         return "service.ExtendedEchoService"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return "test.dev/fixtures/basic/ExtendedEchoService"
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__meta__example__thrift__service__thrift_metadata.gen_metadata_service_ExtendedEchoService()
-    
+
     class Async(EchoService.Async):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "service.ExtendedEchoService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return "test.dev/fixtures/basic/ExtendedEchoService"
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__meta__example__thrift__service__thrift_metadata.gen_metadata_service_ExtendedEchoService()
-    
+
         async def echo_2(
             self,
             request: _fbthrift__meta__example__thrift__service__thrift_types.EchoRequest,
@@ -191,24 +191,24 @@ class ExtendedEchoService(_fbthrift_python_Client["ExtendedEchoService.Async", "
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     echo_2 = Async.echo_2
-    
+
     class Sync(EchoService.Sync):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "service.ExtendedEchoService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return "test.dev/fixtures/basic/ExtendedEchoService"
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__meta__example__thrift__service__thrift_metadata.gen_metadata_service_ExtendedEchoService()
-    
+
         def echo_2(
             self,
             request: _fbthrift__meta__example__thrift__service__thrift_types.EchoRequest,
@@ -242,33 +242,33 @@ class ExtendedMyService(_fbthrift_python_Client["ExtendedMyService.Async", "Exte
     @staticmethod
     def __get_thrift_name__() -> str:
         return "service.ExtendedMyService"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return "test.dev/fixtures/basic/ExtendedMyService"
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__meta__example__thrift__service__thrift_metadata.gen_metadata_service_ExtendedMyService()
-    
+
     class Async(test.fixtures.basic.module.thrift_clients.MyService.Async):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "service.ExtendedMyService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return "test.dev/fixtures/basic/ExtendedMyService"
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__meta__example__thrift__service__thrift_metadata.gen_metadata_service_ExtendedMyService()
-    
+
         async def putDataById_2(
             self,
             id: builtins.int,
@@ -287,24 +287,24 @@ class ExtendedMyService(_fbthrift_python_Client["ExtendedMyService.Async", "Exte
                 uri_or_name="test.dev/fixtures/basic/ExtendedMyService",
                 rpc_options=rpc_options,
             )
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     putDataById_2 = Async.putDataById_2
-    
+
     class Sync(test.fixtures.basic.module.thrift_clients.MyService.Sync):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "service.ExtendedMyService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return "test.dev/fixtures/basic/ExtendedMyService"
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__meta__example__thrift__service__thrift_metadata.gen_metadata_service_ExtendedMyService()
-    
+
         def putDataById_2(
             self,
             id: builtins.int,

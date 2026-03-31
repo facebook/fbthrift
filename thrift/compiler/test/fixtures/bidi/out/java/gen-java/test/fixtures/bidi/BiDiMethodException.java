@@ -44,7 +44,7 @@ public final class BiDiMethodException extends org.apache.thrift.TBaseException 
     ) {
         this.message = message;
     }
-    
+
     @ThriftConstructor
     protected BiDiMethodException() {
       this.message = null;
@@ -52,19 +52,19 @@ public final class BiDiMethodException extends org.apache.thrift.TBaseException 
 
     public static class Builder {
         private String message = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.NONE)    public Builder setMessage(String message) {
             this.message = message;
             return this;
         }
-    
+
         public String getMessage() { return message; }
-    
+
         public Builder() { }
         public Builder(BiDiMethodException other) {
             this.message = other.message;
         }
-    
+
         @ThriftConstructor
         public BiDiMethodException build() {
             BiDiMethodException result = new BiDiMethodException (
@@ -83,7 +83,7 @@ public final class BiDiMethodException extends org.apache.thrift.TBaseException 
     public static com.facebook.thrift.payload.Reader<BiDiMethodException> asReader() {
       return BiDiMethodException::read0;
     }
-    
+
     public static BiDiMethodException read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(BiDiMethodException.NAMES_TO_IDS, BiDiMethodException.THRIFT_NAMES_TO_IDS, BiDiMethodException.FIELD_METADATA);
@@ -127,7 +127,7 @@ public final class BiDiMethodException extends org.apache.thrift.TBaseException 
     private static class _BiDiMethodExceptionLazy {
         private static final BiDiMethodException _DEFAULT = new BiDiMethodException.Builder().build();
     }
-    
+
     public static BiDiMethodException defaultInstance() {
         return  _BiDiMethodExceptionLazy._DEFAULT;
     }}

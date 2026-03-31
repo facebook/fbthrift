@@ -97,91 +97,91 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
             .build());
         private Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myEmptyMapList = com.google.common.collect.Maps.newHashMap(ImmutableMap.<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>builder()
             .build());
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="myInt16", requiredness=Requiredness.NONE)    public Builder setMyInt16(short myInt16) {
             this.myInt16 = myInt16;
             return this;
         }
-    
+
         public short getMyInt16() { return myInt16; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="myInt32", requiredness=Requiredness.NONE)    public Builder setMyInt32(int myInt32) {
             this.myInt32 = myInt32;
             return this;
         }
-    
+
         public int getMyInt32() { return myInt32; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="myInt64", requiredness=Requiredness.NONE)    public Builder setMyInt64(long myInt64) {
             this.myInt64 = myInt64;
             return this;
         }
-    
+
         public long getMyInt64() { return myInt64; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=4, name="myString", requiredness=Requiredness.NONE)    public Builder setMyString(String myString) {
             this.myString = myString;
             return this;
         }
-    
+
         public String getMyString() { return myString; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=5, name="myBool", requiredness=Requiredness.NONE)    public Builder setMyBool(boolean myBool) {
             this.myBool = myBool;
             return this;
         }
-    
+
         public boolean isMyBool() { return myBool; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=6, name="myDouble", requiredness=Requiredness.NONE)    public Builder setMyDouble(double myDouble) {
             this.myDouble = myDouble;
             return this;
         }
-    
+
         public double getMyDouble() { return myDouble; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=7, name="mySet", requiredness=Requiredness.NONE)    public Builder setMySet(Set<String> mySet) {
             this.mySet = mySet;
             return this;
         }
-    
+
         public Set<String> getMySet() { return mySet; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=8, name="MyDataItem", requiredness=Requiredness.NONE)    public Builder setMyDataItem(test.fixtures.basic_swift_bean.MyDataItem myDataItem) {
             this.myDataItem = myDataItem;
             return this;
         }
-    
+
         public test.fixtures.basic_swift_bean.MyDataItem getMyDataItem() { return myDataItem; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=9, name="myList", requiredness=Requiredness.NONE)    public Builder setMyList(List<test.fixtures.basic_swift_bean.MyDataItem> myList) {
             this.myList = myList;
             return this;
         }
-    
+
         public List<test.fixtures.basic_swift_bean.MyDataItem> getMyList() { return myList; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=10, name="myMapList", requiredness=Requiredness.NONE)    public Builder setMyMapList(Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myMapList) {
             this.myMapList = myMapList;
             return this;
         }
-    
+
         public Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> getMyMapList() { return myMapList; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=11, name="myEmptyList", requiredness=Requiredness.NONE)    public Builder setMyEmptyList(List<test.fixtures.basic_swift_bean.MyDataItem> myEmptyList) {
             this.myEmptyList = myEmptyList;
             return this;
         }
-    
+
         public List<test.fixtures.basic_swift_bean.MyDataItem> getMyEmptyList() { return myEmptyList; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=12, name="myEmptyMapList", requiredness=Requiredness.NONE)    public Builder setMyEmptyMapList(Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myEmptyMapList) {
             this.myEmptyMapList = myEmptyMapList;
             return this;
         }
-    
+
         public Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> getMyEmptyMapList() { return myEmptyMapList; }
-    
+
         public Builder() { }
         public Builder(MyStruct3 other) {
             this.myInt16 = other.myInt16;
@@ -197,7 +197,7 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
             this.myEmptyList = other.myEmptyList;
             this.myEmptyMapList = other.myEmptyMapList;
         }
-    
+
         @ThriftConstructor
         public MyStruct3 build() {
             MyStruct3 result = new MyStruct3();
@@ -295,7 +295,7 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
       FIELD_METADATA.put(12, MY_EMPTY_MAP_LIST_FIELD_DESC);
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="myInt16", requiredness=Requiredness.NONE)
     public short getMyInt16() { return myInt16; }
 
@@ -306,7 +306,7 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
     }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="myInt32", requiredness=Requiredness.NONE)
     public int getMyInt32() { return myInt32; }
 
@@ -317,7 +317,7 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
     }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=3, name="myInt64", requiredness=Requiredness.NONE)
     public long getMyInt64() { return myInt64; }
 
@@ -339,7 +339,7 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
     }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=5, name="myBool", requiredness=Requiredness.NONE)
     public boolean isMyBool() { return myBool; }
 
@@ -350,7 +350,7 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
     }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=6, name="myDouble", requiredness=Requiredness.NONE)
     public double getMyDouble() { return myDouble; }
 
@@ -452,9 +452,9 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         MyStruct3 other = (MyStruct3)o;
-    
+
         return
             Objects.equals(myInt16, other.myInt16) &&
             Objects.equals(myInt32, other.myInt32) &&
@@ -493,7 +493,7 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
     public static com.facebook.thrift.payload.Reader<MyStruct3> asReader() {
       return MyStruct3::read0;
     }
-    
+
     public static MyStruct3 read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(MyStruct3.NAMES_TO_IDS, MyStruct3.THRIFT_NAMES_TO_IDS, MyStruct3.FIELD_METADATA);

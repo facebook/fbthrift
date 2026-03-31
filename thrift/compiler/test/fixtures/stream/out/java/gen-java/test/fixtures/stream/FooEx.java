@@ -36,15 +36,15 @@ public final class FooEx extends org.apache.thrift.TBaseException implements com
     public FooEx(
     ) {
     }
-    
-    
+
+
 
     public static class Builder {
-    
+
     public Builder() { }
         public Builder(FooEx other) {
         }
-    
+
         @ThriftConstructor
         public FooEx build() {
             FooEx result = new FooEx (
@@ -58,7 +58,7 @@ public final class FooEx extends org.apache.thrift.TBaseException implements com
     public static com.facebook.thrift.payload.Reader<FooEx> asReader() {
       return FooEx::read0;
     }
-    
+
     public static FooEx read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(FooEx.NAMES_TO_IDS, FooEx.THRIFT_NAMES_TO_IDS, FooEx.FIELD_METADATA);
@@ -86,7 +86,7 @@ public final class FooEx extends org.apache.thrift.TBaseException implements com
     private static class _FooExLazy {
         private static final FooEx _DEFAULT = new FooEx.Builder().build();
     }
-    
+
     public static FooEx defaultInstance() {
         return  _FooExLazy._DEFAULT;
     }}

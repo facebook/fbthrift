@@ -30,7 +30,7 @@ public final class SinkPayload implements com.facebook.thrift.payload.ThriftSeri
     ) {
         this.content = content;
     }
-    
+
     @ThriftConstructor
     protected SinkPayload() {
       this.content = null;
@@ -46,19 +46,19 @@ public final class SinkPayload implements com.facebook.thrift.payload.ThriftSeri
 
     public static class Builder {
         private String content = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="content", requiredness=Requiredness.NONE)    public Builder setContent(String content) {
             this.content = content;
             return this;
         }
-    
+
         public String getContent() { return content; }
-    
+
         public Builder() { }
         public Builder(SinkPayload other) {
             this.content = other.content;
         }
-    
+
         @ThriftConstructor
         public SinkPayload build() {
             SinkPayload result = new SinkPayload (
@@ -100,9 +100,9 @@ public final class SinkPayload implements com.facebook.thrift.payload.ThriftSeri
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         SinkPayload other = (SinkPayload)o;
-    
+
         return
             Objects.equals(content, other.content) &&
             true;
@@ -119,7 +119,7 @@ public final class SinkPayload implements com.facebook.thrift.payload.ThriftSeri
     public static com.facebook.thrift.payload.Reader<SinkPayload> asReader() {
       return SinkPayload::read0;
     }
-    
+
     public static SinkPayload read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(SinkPayload.NAMES_TO_IDS, SinkPayload.THRIFT_NAMES_TO_IDS, SinkPayload.FIELD_METADATA);
@@ -163,7 +163,7 @@ public final class SinkPayload implements com.facebook.thrift.payload.ThriftSeri
     private static class _SinkPayloadLazy {
         private static final SinkPayload _DEFAULT = new SinkPayload.Builder().build();
     }
-    
+
     public static SinkPayload defaultInstance() {
         return  _SinkPayloadLazy._DEFAULT;
     }

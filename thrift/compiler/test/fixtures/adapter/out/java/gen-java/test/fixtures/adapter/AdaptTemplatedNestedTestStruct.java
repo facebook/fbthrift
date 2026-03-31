@@ -30,7 +30,7 @@ public final class AdaptTemplatedNestedTestStruct implements com.facebook.thrift
     ) {
         this.adaptedStruct = adaptedStruct;
     }
-    
+
     @ThriftConstructor
     protected AdaptTemplatedNestedTestStruct() {
       this.adaptedStruct = null;
@@ -46,19 +46,19 @@ public final class AdaptTemplatedNestedTestStruct implements com.facebook.thrift
 
     public static class Builder {
         private test.fixtures.adapter.AdaptTemplatedTestStruct adaptedStruct = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="adaptedStruct", requiredness=Requiredness.NONE)    public Builder setAdaptedStruct(test.fixtures.adapter.AdaptTemplatedTestStruct adaptedStruct) {
             this.adaptedStruct = adaptedStruct;
             return this;
         }
-    
+
         public test.fixtures.adapter.AdaptTemplatedTestStruct getAdaptedStruct() { return adaptedStruct; }
-    
+
         public Builder() { }
         public Builder(AdaptTemplatedNestedTestStruct other) {
             this.adaptedStruct = other.adaptedStruct;
         }
-    
+
         @ThriftConstructor
         public AdaptTemplatedNestedTestStruct build() {
             AdaptTemplatedNestedTestStruct result = new AdaptTemplatedNestedTestStruct (
@@ -103,9 +103,9 @@ public final class AdaptTemplatedNestedTestStruct implements com.facebook.thrift
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         AdaptTemplatedNestedTestStruct other = (AdaptTemplatedNestedTestStruct)o;
-    
+
         return
             Objects.equals(adaptedStruct, other.adaptedStruct) &&
             true;
@@ -122,7 +122,7 @@ public final class AdaptTemplatedNestedTestStruct implements com.facebook.thrift
     public static com.facebook.thrift.payload.Reader<AdaptTemplatedNestedTestStruct> asReader() {
       return AdaptTemplatedNestedTestStruct::read0;
     }
-    
+
     public static AdaptTemplatedNestedTestStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(AdaptTemplatedNestedTestStruct.NAMES_TO_IDS, AdaptTemplatedNestedTestStruct.THRIFT_NAMES_TO_IDS, AdaptTemplatedNestedTestStruct.FIELD_METADATA);
@@ -166,7 +166,7 @@ public final class AdaptTemplatedNestedTestStruct implements com.facebook.thrift
     private static class _AdaptTemplatedNestedTestStructLazy {
         private static final AdaptTemplatedNestedTestStruct _DEFAULT = new AdaptTemplatedNestedTestStruct.Builder().build();
     }
-    
+
     public static AdaptTemplatedNestedTestStruct defaultInstance() {
         return  _AdaptTemplatedNestedTestStructLazy._DEFAULT;
     }

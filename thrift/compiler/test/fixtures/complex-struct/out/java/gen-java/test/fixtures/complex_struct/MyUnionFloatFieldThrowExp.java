@@ -106,7 +106,7 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
     @ThriftConstructor
     public MyUnionFloatFieldThrowExp() {
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public MyUnionFloatFieldThrowExp(final test.fixtures.complex_struct.MyEnum myEnum) {
@@ -116,7 +116,7 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
         this.value = myEnum;
         this.id = 1;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public MyUnionFloatFieldThrowExp(final List<List<Float>> setFloat) {
@@ -126,7 +126,7 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
         this.value = setFloat;
         this.id = 2;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public MyUnionFloatFieldThrowExp(final test.fixtures.complex_struct.MyDataItem myDataItem) {
@@ -136,7 +136,7 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
         this.value = myDataItem;
         this.id = 3;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public MyUnionFloatFieldThrowExp(final test.fixtures.complex_struct.ComplexNestedStruct complexNestedStruct) {
@@ -146,7 +146,7 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
         this.value = complexNestedStruct;
         this.id = 4;
     }
-    
+
     public static MyUnionFloatFieldThrowExp fromMyEnum(final test.fixtures.complex_struct.MyEnum myEnum) {
         MyUnionFloatFieldThrowExp res = new MyUnionFloatFieldThrowExp();
         if (!MyUnionFloatFieldThrowExp.allowNullFieldValues && myEnum == null) {
@@ -156,7 +156,7 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
         res.id = 1;
         return res;
     }
-    
+
     public static MyUnionFloatFieldThrowExp fromSetFloat(final List<List<Float>> setFloat) {
         MyUnionFloatFieldThrowExp res = new MyUnionFloatFieldThrowExp();
         if (!MyUnionFloatFieldThrowExp.allowNullFieldValues && setFloat == null) {
@@ -166,7 +166,7 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
         res.id = 2;
         return res;
     }
-    
+
     public static MyUnionFloatFieldThrowExp fromMyDataItem(final test.fixtures.complex_struct.MyDataItem myDataItem) {
         MyUnionFloatFieldThrowExp res = new MyUnionFloatFieldThrowExp();
         if (!MyUnionFloatFieldThrowExp.allowNullFieldValues && myDataItem == null) {
@@ -176,7 +176,7 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
         res.id = 3;
         return res;
     }
-    
+
     public static MyUnionFloatFieldThrowExp fromComplexNestedStruct(final test.fixtures.complex_struct.ComplexNestedStruct complexNestedStruct) {
         MyUnionFloatFieldThrowExp res = new MyUnionFloatFieldThrowExp();
         if (!MyUnionFloatFieldThrowExp.allowNullFieldValues && complexNestedStruct == null) {
@@ -343,7 +343,7 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
       case _MYENUM: {
         oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
         test.fixtures.complex_struct.MyEnum _iter0 = (test.fixtures.complex_struct.MyEnum)this.value;
-    
+
         oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
         oprot.writeFieldEnd();
         break;
@@ -351,7 +351,7 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
       case _SETFLOAT: {
         oprot.writeFieldBegin(SET_FLOAT_FIELD_DESC);
         List<List<Float>> _iter0 = (List<List<Float>>)this.value;
-    
+
         oprot.writeListBegin(new TList(TType.LIST, _iter0.size()));
             for (List<Float> _iter1 : _iter0) {
               oprot.writeListBegin(new TList(TType.FLOAT, _iter1.size()));
@@ -367,7 +367,7 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
       case _MYDATAITEM: {
         oprot.writeFieldBegin(MY_DATA_ITEM_FIELD_DESC);
         test.fixtures.complex_struct.MyDataItem _iter0 = (test.fixtures.complex_struct.MyDataItem)this.value;
-    
+
         _iter0.write0(oprot);
         oprot.writeFieldEnd();
         break;
@@ -375,7 +375,7 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
       case _COMPLEXNESTEDSTRUCT: {
         oprot.writeFieldBegin(COMPLEX_NESTED_STRUCT_FIELD_DESC);
         test.fixtures.complex_struct.ComplexNestedStruct _iter0 = (test.fixtures.complex_struct.ComplexNestedStruct)this.value;
-    
+
         _iter0.write0(oprot);
         oprot.writeFieldEnd();
         break;
@@ -391,7 +391,7 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
     public static com.facebook.thrift.payload.Reader<MyUnionFloatFieldThrowExp> asReader() {
       return MyUnionFloatFieldThrowExp::read0;
     }
-    
+
     public static MyUnionFloatFieldThrowExp read0(TProtocol oprot) throws TException {
       MyUnionFloatFieldThrowExp res = new MyUnionFloatFieldThrowExp();
       res.value = null;

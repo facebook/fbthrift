@@ -29,9 +29,9 @@ public class SinkServiceThriftMetadataHandler implements com.facebook.thrift.ser
   private static void addFunctions_0(List<ThriftFunction> functions) {
         {
           List<ThriftField> args = new ArrayList<>();
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("method")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
@@ -42,9 +42,9 @@ public class SinkServiceThriftMetadataHandler implements com.facebook.thrift.ser
         }
         {
           List<ThriftField> args = new ArrayList<>();
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("methodAndReponse")
               .setReturnType(ThriftType.fromTStruct(new ThriftStructType.Builder().setName("test.fixtures.sink.InitialResponse").build()))
@@ -55,7 +55,7 @@ public class SinkServiceThriftMetadataHandler implements com.facebook.thrift.ser
         }
         {
           List<ThriftField> args = new ArrayList<>();
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
           exceptions.add(new ThriftField.Builder()
               .setId(1)
@@ -63,7 +63,7 @@ public class SinkServiceThriftMetadataHandler implements com.facebook.thrift.ser
               .setName("exception_1")
               .setIsOptional(false)
               .build());
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("methodThrow")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
@@ -74,9 +74,9 @@ public class SinkServiceThriftMetadataHandler implements com.facebook.thrift.ser
         }
         {
           List<ThriftField> args = new ArrayList<>();
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("methodSinkThrow")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
@@ -87,9 +87,9 @@ public class SinkServiceThriftMetadataHandler implements com.facebook.thrift.ser
         }
         {
           List<ThriftField> args = new ArrayList<>();
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("methodFinalThrow")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
@@ -100,9 +100,9 @@ public class SinkServiceThriftMetadataHandler implements com.facebook.thrift.ser
         }
         {
           List<ThriftField> args = new ArrayList<>();
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("methodBothThrow")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))
@@ -113,9 +113,9 @@ public class SinkServiceThriftMetadataHandler implements com.facebook.thrift.ser
         }
         {
           List<ThriftField> args = new ArrayList<>();
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("methodFast")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_VOID_TYPE))

@@ -307,11 +307,11 @@ var (
                                         Key: &metadata.ThriftConstValue{
                                         CvString: new("android.generate_builder"),
                                     },
-                                    
+
                                         Value: &metadata.ThriftConstValue{
                                         CvString: new("1"),
                                     },
-                                    
+
                                     },
                                 },
                             },

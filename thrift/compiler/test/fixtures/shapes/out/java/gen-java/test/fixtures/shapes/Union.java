@@ -86,14 +86,14 @@ public final class Union implements com.facebook.thrift.payload.ThriftSerializab
     @ThriftConstructor
     public Union() {
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public Union(final long intValue) {
         this.value = intValue;
         this.id = 1;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public Union(final String stringValue) {
@@ -103,14 +103,14 @@ public final class Union implements com.facebook.thrift.payload.ThriftSerializab
         this.value = stringValue;
         this.id = 5;
     }
-    
+
     public static Union fromIntValue(final long intValue) {
         Union res = new Union();
         res.value = intValue;
         res.id = 1;
         return res;
     }
-    
+
     public static Union fromStringValue(final String stringValue) {
         Union res = new Union();
         if (!Union.allowNullFieldValues && stringValue == null) {
@@ -241,7 +241,7 @@ public final class Union implements com.facebook.thrift.payload.ThriftSerializab
       case _INTVALUE: {
         oprot.writeFieldBegin(INT_VALUE_FIELD_DESC);
         long _iter0 = (long)this.value;
-    
+
         oprot.writeI64(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -249,7 +249,7 @@ public final class Union implements com.facebook.thrift.payload.ThriftSerializab
       case _STRINGVALUE: {
         oprot.writeFieldBegin(STRING_VALUE_FIELD_DESC);
         String _iter0 = (String)this.value;
-    
+
         oprot.writeString(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -265,7 +265,7 @@ public final class Union implements com.facebook.thrift.payload.ThriftSerializab
     public static com.facebook.thrift.payload.Reader<Union> asReader() {
       return Union::read0;
     }
-    
+
     public static Union read0(TProtocol oprot) throws TException {
       Union res = new Union();
       res.value = null;

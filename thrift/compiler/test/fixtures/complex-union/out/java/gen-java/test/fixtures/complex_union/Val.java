@@ -34,7 +34,7 @@ public final class Val implements com.facebook.thrift.payload.ThriftSerializable
         this.intVal = intVal;
         this.typedefValue = typedefValue;
     }
-    
+
     @ThriftConstructor
     protected Val() {
       this.strVal = null;
@@ -54,35 +54,35 @@ public final class Val implements com.facebook.thrift.payload.ThriftSerializable
         private String strVal = null;
         private int intVal = 0;
         private Map<Short, String> typedefValue = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="strVal", requiredness=Requiredness.NONE)    public Builder setStrVal(String strVal) {
             this.strVal = strVal;
             return this;
         }
-    
+
         public String getStrVal() { return strVal; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="intVal", requiredness=Requiredness.NONE)    public Builder setIntVal(int intVal) {
             this.intVal = intVal;
             return this;
         }
-    
+
         public int getIntVal() { return intVal; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=9, name="typedefValue", requiredness=Requiredness.NONE)    public Builder setTypedefValue(Map<Short, String> typedefValue) {
             this.typedefValue = typedefValue;
             return this;
         }
-    
+
         public Map<Short, String> getTypedefValue() { return typedefValue; }
-    
+
         public Builder() { }
         public Builder(Val other) {
             this.strVal = other.strVal;
             this.intVal = other.intVal;
             this.typedefValue = other.typedefValue;
         }
-    
+
         @ThriftConstructor
         public Val build() {
             Val result = new Val (
@@ -124,7 +124,7 @@ public final class Val implements com.facebook.thrift.payload.ThriftSerializable
     public String getStrVal() { return strVal; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="intVal", requiredness=Requiredness.NONE)
     public int getIntVal() { return intVal; }
 
@@ -150,9 +150,9 @@ public final class Val implements com.facebook.thrift.payload.ThriftSerializable
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         Val other = (Val)o;
-    
+
         return
             Objects.equals(strVal, other.strVal) &&
             Objects.equals(intVal, other.intVal) &&
@@ -173,7 +173,7 @@ public final class Val implements com.facebook.thrift.payload.ThriftSerializable
     public static com.facebook.thrift.payload.Reader<Val> asReader() {
       return Val::read0;
     }
-    
+
     public static Val read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(Val.NAMES_TO_IDS, Val.THRIFT_NAMES_TO_IDS, Val.FIELD_METADATA);
@@ -269,7 +269,7 @@ public final class Val implements com.facebook.thrift.payload.ThriftSerializable
     private static class _ValLazy {
         private static final Val _DEFAULT = new Val.Builder().build();
     }
-    
+
     public static Val defaultInstance() {
         return  _ValLazy._DEFAULT;
     }

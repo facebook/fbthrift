@@ -34,33 +34,33 @@ class BiDiService(_fbthrift_python_Client["BiDiService.Async", "BiDiService.Sync
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.BiDiService"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__module__thrift_metadata.gen_metadata_service_BiDiService()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.BiDiService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__module__thrift_metadata.gen_metadata_service_BiDiService()
-    
+
         async def simple(
             self,
             *,
@@ -78,7 +78,7 @@ class BiDiService(_fbthrift_python_Client["BiDiService.Async", "BiDiService.Sync
             _fbthrift_resp, _fbthrift_sink_or_stream = _fbthrift_resp
             assert isinstance(_fbthrift_sink_or_stream, _fbthrift_BidirectionalStream)
             return _fbthrift_sink_or_stream
-    
+
         async def response(
             self,
             *,
@@ -102,7 +102,7 @@ class BiDiService(_fbthrift_python_Client["BiDiService.Async", "BiDiService.Sync
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def canThrow(
             self,
             *,
@@ -123,24 +123,24 @@ class BiDiService(_fbthrift_python_Client["BiDiService.Async", "BiDiService.Sync
             if (_fbthrift_ex := _fbthrift_resp._ex0__ex) is not None:
                 raise _fbthrift_ex
             return _fbthrift_sink_or_stream
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     simple = Async.simple
     # pyre-ignore[4]: Missing annotation.
     response = Async.response
     # pyre-ignore[4]: Missing annotation.
     canThrow = Async.canThrow
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.BiDiService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__module__thrift_metadata.gen_metadata_service_BiDiService()

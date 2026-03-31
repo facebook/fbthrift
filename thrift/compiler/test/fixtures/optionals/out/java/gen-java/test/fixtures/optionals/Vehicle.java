@@ -38,7 +38,7 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
         this.name = name;
         this.hasAC = hasAC;
     }
-    
+
     @ThriftConstructor
     protected Vehicle() {
       this.color = null;
@@ -62,42 +62,42 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
         private String description = null;
         private String name = null;
         private Boolean hasAC = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="color", requiredness=Requiredness.NONE)    public Builder setColor(test.fixtures.optionals.Color color) {
             this.color = color;
             return this;
         }
-    
+
         public test.fixtures.optionals.Color getColor() { return color; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="licensePlate", requiredness=Requiredness.OPTIONAL)    public Builder setLicensePlate(String licensePlate) {
             this.licensePlate = licensePlate;
             return this;
         }
-    
+
         public String getLicensePlate() { return licensePlate; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="description", requiredness=Requiredness.OPTIONAL)    public Builder setDescription(String description) {
             this.description = description;
             return this;
         }
-    
+
         public String getDescription() { return description; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=4, name="name", requiredness=Requiredness.OPTIONAL)    public Builder setName(String name) {
             this.name = name;
             return this;
         }
-    
+
         public String getName() { return name; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=5, name="hasAC", requiredness=Requiredness.OPTIONAL)    public Builder setHasAC(Boolean hasAC) {
             this.hasAC = hasAC;
             return this;
         }
-    
+
         public Boolean isHasAC() { return hasAC; }
-    
+
         public Builder() { }
         public Builder(Vehicle other) {
             this.color = other.color;
@@ -106,7 +106,7 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
             this.name = other.name;
             this.hasAC = other.hasAC;
         }
-    
+
         @ThriftConstructor
         public Vehicle build() {
             Vehicle result = new Vehicle (
@@ -200,9 +200,9 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         Vehicle other = (Vehicle)o;
-    
+
         return
             Objects.equals(color, other.color) &&
             Objects.equals(licensePlate, other.licensePlate) &&
@@ -227,7 +227,7 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
     public static com.facebook.thrift.payload.Reader<Vehicle> asReader() {
       return Vehicle::read0;
     }
-    
+
     public static Vehicle read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(Vehicle.NAMES_TO_IDS, Vehicle.THRIFT_NAMES_TO_IDS, Vehicle.FIELD_METADATA);
@@ -335,7 +335,7 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
     private static class _VehicleLazy {
         private static final Vehicle _DEFAULT = new Vehicle.Builder().build();
     }
-    
+
     public static Vehicle defaultInstance() {
         return  _VehicleLazy._DEFAULT;
     }

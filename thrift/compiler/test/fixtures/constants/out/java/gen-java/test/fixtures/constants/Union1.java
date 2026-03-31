@@ -86,28 +86,28 @@ public final class Union1 implements com.facebook.thrift.payload.ThriftSerializa
     @ThriftConstructor
     public Union1() {
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public Union1(final int i) {
         this.value = i;
         this.id = 1;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public Union1(final double d) {
         this.value = d;
         this.id = 2;
     }
-    
+
     public static Union1 fromI(final int i) {
         Union1 res = new Union1();
         res.value = i;
         res.id = 1;
         return res;
     }
-    
+
     public static Union1 fromD(final double d) {
         Union1 res = new Union1();
         res.value = d;
@@ -235,7 +235,7 @@ public final class Union1 implements com.facebook.thrift.payload.ThriftSerializa
       case _I: {
         oprot.writeFieldBegin(I_FIELD_DESC);
         int _iter0 = (int)this.value;
-    
+
         oprot.writeI32(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -243,7 +243,7 @@ public final class Union1 implements com.facebook.thrift.payload.ThriftSerializa
       case _D: {
         oprot.writeFieldBegin(D_FIELD_DESC);
         double _iter0 = (double)this.value;
-    
+
         oprot.writeDouble(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -259,7 +259,7 @@ public final class Union1 implements com.facebook.thrift.payload.ThriftSerializa
     public static com.facebook.thrift.payload.Reader<Union1> asReader() {
       return Union1::read0;
     }
-    
+
     public static Union1 read0(TProtocol oprot) throws TException {
       Union1 res = new Union1();
       res.value = null;

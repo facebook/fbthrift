@@ -47,9 +47,9 @@ public class ServiceThriftMetadataHandler implements com.facebook.thrift.server.
               .setName("arg3")
               .setIsOptional(false)
               .build());
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("func")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE))

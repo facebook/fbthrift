@@ -37,33 +37,33 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.SimpleService"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__module__thrift_metadata.gen_metadata_service_SimpleService()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.SimpleService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__module__thrift_metadata.gen_metadata_service_SimpleService()
-    
+
         async def get_five(
             self,
             *,
@@ -86,7 +86,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def add_five(
             self,
             num: builtins.int,
@@ -111,7 +111,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def do_nothing(
             self,
             *,
@@ -127,7 +127,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 rpc_options=rpc_options,
                 is_mutable_types=True,
             )
-    
+
         async def concat(
             self,
             first: builtins.str,
@@ -154,7 +154,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def get_value(
             self,
             simple_struct: _fbthrift__module__thrift_mutable_types.SimpleStruct,
@@ -179,7 +179,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def negate(
             self,
             input: builtins.bool,
@@ -204,7 +204,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def tiny(
             self,
             input: builtins.int,
@@ -229,7 +229,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def small(
             self,
             input: builtins.int,
@@ -254,7 +254,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def big(
             self,
             input: builtins.int,
@@ -279,7 +279,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def two(
             self,
             input: builtins.float,
@@ -304,7 +304,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def expected_exception(
             self,
             *,
@@ -323,7 +323,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
             # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `_ex0__se`
             if (_fbthrift_ex := _fbthrift_resp._ex0__se) is not None:
                 raise _fbthrift_ex
-    
+
         async def unexpected_exception(
             self,
             *,
@@ -346,7 +346,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def sum_i16_list(
             self,
             numbers: _fbthrift_python_mutable_containers.MutableList[builtins.int] | _fbthrift_python_mutable_types._ThriftListWrapper,
@@ -371,7 +371,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def sum_i32_list(
             self,
             numbers: _fbthrift_python_mutable_containers.MutableList[builtins.int] | _fbthrift_python_mutable_types._ThriftListWrapper,
@@ -396,7 +396,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def sum_i64_list(
             self,
             numbers: _fbthrift_python_mutable_containers.MutableList[builtins.int] | _fbthrift_python_mutable_types._ThriftListWrapper,
@@ -421,7 +421,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def concat_many(
             self,
             words: _fbthrift_python_mutable_containers.MutableList[builtins.str] | _fbthrift_python_mutable_types._ThriftListWrapper,
@@ -446,7 +446,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def count_structs(
             self,
             items: _fbthrift_python_mutable_containers.MutableList[_fbthrift__module__thrift_mutable_types.SimpleStruct] | _fbthrift_python_mutable_types._ThriftListWrapper,
@@ -471,7 +471,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def sum_set(
             self,
             numbers: _fbthrift_python_mutable_containers.MutableSet[builtins.int] | _fbthrift_python_mutable_types._ThriftSetWrapper,
@@ -496,7 +496,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def contains_word(
             self,
             words: _fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper,
@@ -523,7 +523,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def get_map_value(
             self,
             words: _fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper,
@@ -550,7 +550,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def map_length(
             self,
             items: _fbthrift_python_mutable_containers.MutableMap[builtins.str, _fbthrift__module__thrift_mutable_types.SimpleStruct] | _fbthrift_python_mutable_types._ThriftMapWrapper,
@@ -575,7 +575,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def sum_map_values(
             self,
             items: _fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.int] | _fbthrift_python_mutable_types._ThriftMapWrapper,
@@ -600,7 +600,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def complex_sum_i32(
             self,
             counter: _fbthrift__module__thrift_mutable_types.ComplexStruct,
@@ -625,7 +625,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def repeat_name(
             self,
             counter: _fbthrift__module__thrift_mutable_types.ComplexStruct,
@@ -650,7 +650,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def get_struct(
             self,
             *,
@@ -673,7 +673,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def fib(
             self,
             n: builtins.int,
@@ -698,7 +698,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def unique_words(
             self,
             words: _fbthrift_python_mutable_containers.MutableList[builtins.str] | _fbthrift_python_mutable_types._ThriftListWrapper,
@@ -723,7 +723,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def words_count(
             self,
             words: _fbthrift_python_mutable_containers.MutableList[builtins.str] | _fbthrift_python_mutable_types._ThriftListWrapper,
@@ -748,7 +748,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def set_enum(
             self,
             in_enum: _fbthrift__module__thrift_mutable_types.AnEnum,
@@ -773,7 +773,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def list_of_lists(
             self,
             num_lists: builtins.int,
@@ -800,7 +800,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def word_character_frequency(
             self,
             sentence: builtins.str,
@@ -825,7 +825,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def list_of_sets(
             self,
             some_words: builtins.str,
@@ -850,7 +850,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def nested_map_argument(
             self,
             struct_map: _fbthrift_python_mutable_containers.MutableMap[builtins.str, _fbthrift_python_mutable_containers.MutableList[_fbthrift__module__thrift_mutable_types.SimpleStruct]] | _fbthrift_python_mutable_types._ThriftMapWrapper,
@@ -875,7 +875,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def make_sentence(
             self,
             word_chars: _fbthrift_python_mutable_containers.MutableList[_fbthrift_python_mutable_containers.MutableList[builtins.str]] | _fbthrift_python_mutable_types._ThriftListWrapper,
@@ -900,7 +900,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def get_union(
             self,
             sets: _fbthrift_python_mutable_containers.MutableList[_fbthrift_python_mutable_containers.MutableSet[builtins.int]] | _fbthrift_python_mutable_types._ThriftListWrapper,
@@ -925,7 +925,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def get_keys(
             self,
             string_map: _fbthrift_python_mutable_containers.MutableList[_fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str]] | _fbthrift_python_mutable_types._ThriftListWrapper,
@@ -950,7 +950,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def lookup_double(
             self,
             key: builtins.int,
@@ -975,7 +975,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def retrieve_binary(
             self,
             something: builtins.bytes,
@@ -1000,7 +1000,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def contain_binary(
             self,
             binaries: _fbthrift_python_mutable_containers.MutableList[builtins.bytes] | _fbthrift_python_mutable_types._ThriftListWrapper,
@@ -1025,7 +1025,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def contain_enum(
             self,
             the_enum: _fbthrift_python_mutable_containers.MutableList[_fbthrift__module__thrift_mutable_types.AnEnum] | _fbthrift_python_mutable_types._ThriftListWrapper,
@@ -1050,7 +1050,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def get_binary_union_struct(
             self,
             u: _fbthrift__module__thrift_mutable_types.BinaryUnion,
@@ -1075,7 +1075,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def get_struct_hidden(
             self,
             *,
@@ -1098,8 +1098,8 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     get_five = Async.get_five
     # pyre-ignore[4]: Missing annotation.
@@ -1188,20 +1188,20 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
         raise RuntimeError("Do not use __aenter__ directly on client, use get_client instead.")
     async def __aexit__(self) -> None:
         raise RuntimeError("Do not use __aexit__ directly on client, use get_client instead.")
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.SimpleService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__module__thrift_metadata.gen_metadata_service_SimpleService()
-    
+
         def get_five(
             self,
             *,
@@ -1223,7 +1223,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def add_five(
             self,
             num: builtins.int,
@@ -1247,7 +1247,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def do_nothing(
             self,
             *,
@@ -1262,7 +1262,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 rpc_options=rpc_options,
                 is_mutable_types=True,
             )
-    
+
         def concat(
             self,
             first: builtins.str,
@@ -1288,7 +1288,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def get_value(
             self,
             simple_struct: _fbthrift__module__thrift_mutable_types.SimpleStruct,
@@ -1312,7 +1312,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def negate(
             self,
             input: builtins.bool,
@@ -1336,7 +1336,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def tiny(
             self,
             input: builtins.int,
@@ -1360,7 +1360,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def small(
             self,
             input: builtins.int,
@@ -1384,7 +1384,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def big(
             self,
             input: builtins.int,
@@ -1408,7 +1408,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def two(
             self,
             input: builtins.float,
@@ -1432,7 +1432,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def expected_exception(
             self,
             *,
@@ -1450,7 +1450,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
             # pyre-ignore[16]: `type(_fbthrift_resp)` has no attribute `_ex0__se`
             if (_fbthrift_ex := _fbthrift_resp._ex0__se) is not None:
                 raise _fbthrift_ex
-    
+
         def unexpected_exception(
             self,
             *,
@@ -1472,7 +1472,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def sum_i16_list(
             self,
             numbers: _fbthrift_python_mutable_containers.MutableList[builtins.int] | _fbthrift_python_mutable_types._ThriftListWrapper,
@@ -1496,7 +1496,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def sum_i32_list(
             self,
             numbers: _fbthrift_python_mutable_containers.MutableList[builtins.int] | _fbthrift_python_mutable_types._ThriftListWrapper,
@@ -1520,7 +1520,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def sum_i64_list(
             self,
             numbers: _fbthrift_python_mutable_containers.MutableList[builtins.int] | _fbthrift_python_mutable_types._ThriftListWrapper,
@@ -1544,7 +1544,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def concat_many(
             self,
             words: _fbthrift_python_mutable_containers.MutableList[builtins.str] | _fbthrift_python_mutable_types._ThriftListWrapper,
@@ -1568,7 +1568,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def count_structs(
             self,
             items: _fbthrift_python_mutable_containers.MutableList[_fbthrift__module__thrift_mutable_types.SimpleStruct] | _fbthrift_python_mutable_types._ThriftListWrapper,
@@ -1592,7 +1592,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def sum_set(
             self,
             numbers: _fbthrift_python_mutable_containers.MutableSet[builtins.int] | _fbthrift_python_mutable_types._ThriftSetWrapper,
@@ -1616,7 +1616,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def contains_word(
             self,
             words: _fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper,
@@ -1642,7 +1642,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def get_map_value(
             self,
             words: _fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper,
@@ -1668,7 +1668,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def map_length(
             self,
             items: _fbthrift_python_mutable_containers.MutableMap[builtins.str, _fbthrift__module__thrift_mutable_types.SimpleStruct] | _fbthrift_python_mutable_types._ThriftMapWrapper,
@@ -1692,7 +1692,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def sum_map_values(
             self,
             items: _fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.int] | _fbthrift_python_mutable_types._ThriftMapWrapper,
@@ -1716,7 +1716,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def complex_sum_i32(
             self,
             counter: _fbthrift__module__thrift_mutable_types.ComplexStruct,
@@ -1740,7 +1740,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def repeat_name(
             self,
             counter: _fbthrift__module__thrift_mutable_types.ComplexStruct,
@@ -1764,7 +1764,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def get_struct(
             self,
             *,
@@ -1786,7 +1786,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def fib(
             self,
             n: builtins.int,
@@ -1810,7 +1810,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def unique_words(
             self,
             words: _fbthrift_python_mutable_containers.MutableList[builtins.str] | _fbthrift_python_mutable_types._ThriftListWrapper,
@@ -1834,7 +1834,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def words_count(
             self,
             words: _fbthrift_python_mutable_containers.MutableList[builtins.str] | _fbthrift_python_mutable_types._ThriftListWrapper,
@@ -1858,7 +1858,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def set_enum(
             self,
             in_enum: _fbthrift__module__thrift_mutable_types.AnEnum,
@@ -1882,7 +1882,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def list_of_lists(
             self,
             num_lists: builtins.int,
@@ -1908,7 +1908,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def word_character_frequency(
             self,
             sentence: builtins.str,
@@ -1932,7 +1932,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def list_of_sets(
             self,
             some_words: builtins.str,
@@ -1956,7 +1956,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def nested_map_argument(
             self,
             struct_map: _fbthrift_python_mutable_containers.MutableMap[builtins.str, _fbthrift_python_mutable_containers.MutableList[_fbthrift__module__thrift_mutable_types.SimpleStruct]] | _fbthrift_python_mutable_types._ThriftMapWrapper,
@@ -1980,7 +1980,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def make_sentence(
             self,
             word_chars: _fbthrift_python_mutable_containers.MutableList[_fbthrift_python_mutable_containers.MutableList[builtins.str]] | _fbthrift_python_mutable_types._ThriftListWrapper,
@@ -2004,7 +2004,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def get_union(
             self,
             sets: _fbthrift_python_mutable_containers.MutableList[_fbthrift_python_mutable_containers.MutableSet[builtins.int]] | _fbthrift_python_mutable_types._ThriftListWrapper,
@@ -2028,7 +2028,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def get_keys(
             self,
             string_map: _fbthrift_python_mutable_containers.MutableList[_fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str]] | _fbthrift_python_mutable_types._ThriftListWrapper,
@@ -2052,7 +2052,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def lookup_double(
             self,
             key: builtins.int,
@@ -2076,7 +2076,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def retrieve_binary(
             self,
             something: builtins.bytes,
@@ -2100,7 +2100,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def contain_binary(
             self,
             binaries: _fbthrift_python_mutable_containers.MutableList[builtins.bytes] | _fbthrift_python_mutable_types._ThriftListWrapper,
@@ -2124,7 +2124,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def contain_enum(
             self,
             the_enum: _fbthrift_python_mutable_containers.MutableList[_fbthrift__module__thrift_mutable_types.AnEnum] | _fbthrift_python_mutable_types._ThriftListWrapper,
@@ -2148,7 +2148,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def get_binary_union_struct(
             self,
             u: _fbthrift__module__thrift_mutable_types.BinaryUnion,
@@ -2172,7 +2172,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def get_struct_hidden(
             self,
             *,
@@ -2204,35 +2204,35 @@ class DerivedService(_fbthrift_python_Client["DerivedService.Async", "DerivedSer
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.DerivedService"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
             """bar""": """1""",
             """foo""": """\"\"\"""",
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__module__thrift_metadata.gen_metadata_service_DerivedService()
-    
+
     class Async(SimpleService.Async):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.DerivedService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__module__thrift_metadata.gen_metadata_service_DerivedService()
-    
+
         async def get_six(
             self,
             *,
@@ -2255,28 +2255,28 @@ class DerivedService(_fbthrift_python_Client["DerivedService.Async", "DerivedSer
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     get_six = Async.get_six
     async def __aenter__(self) -> "DerivedService.Async":
         raise RuntimeError("Do not use __aenter__ directly on client, use get_client instead.")
     async def __aexit__(self) -> None:
         raise RuntimeError("Do not use __aexit__ directly on client, use get_client instead.")
-    
+
     class Sync(SimpleService.Sync):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.DerivedService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__module__thrift_metadata.gen_metadata_service_DerivedService()
-    
+
         def get_six(
             self,
             *,
@@ -2306,33 +2306,33 @@ class RederivedService(_fbthrift_python_Client["RederivedService.Async", "Rederi
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.RederivedService"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__module__thrift_metadata.gen_metadata_service_RederivedService()
-    
+
     class Async(DerivedService.Async):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.RederivedService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__module__thrift_metadata.gen_metadata_service_RederivedService()
-    
+
         async def get_seven(
             self,
             *,
@@ -2355,28 +2355,28 @@ class RederivedService(_fbthrift_python_Client["RederivedService.Async", "Rederi
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     get_seven = Async.get_seven
     async def __aenter__(self) -> "RederivedService.Async":
         raise RuntimeError("Do not use __aenter__ directly on client, use get_client instead.")
     async def __aexit__(self) -> None:
         raise RuntimeError("Do not use __aexit__ directly on client, use get_client instead.")
-    
+
     class Sync(DerivedService.Sync):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.RederivedService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__module__thrift_metadata.gen_metadata_service_RederivedService()
-    
+
         def get_seven(
             self,
             *,

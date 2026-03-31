@@ -132,7 +132,7 @@ func ReadDrivers(p thrift.Decoder) (Drivers, error) {
         if err != nil {
             return thrift.PrependError("error reading list begin: ", err)
         }
-        
+
         listResult := make([]string, 0, size)
         for i := 0; i < size; i++ {
             var elem string
@@ -145,7 +145,7 @@ func ReadDrivers(p thrift.Decoder) (Drivers, error) {
             }
             listResult = append(listResult, elem)
         }
-        
+
         if err := p.ReadListEnd(); err != nil {
             return thrift.PrependError("error reading list end: ", err)
         }
@@ -592,7 +592,7 @@ func (x *Automobile) readField6(p thrift.Decoder) error {  // Accessories
     if err != nil {
         return thrift.PrependError("error reading list begin: ", err)
     }
-    
+
     listResult := make([]*Accessory, 0, size)
     for i := 0; i < size; i++ {
         var elem *Accessory
@@ -605,7 +605,7 @@ func (x *Automobile) readField6(p thrift.Decoder) error {  // Accessories
         }
         listResult = append(listResult, elem)
     }
-    
+
     if err := p.ReadListEnd(); err != nil {
         return thrift.PrependError("error reading list end: ", err)
     }
@@ -653,7 +653,7 @@ func (x *Automobile) writeField7(p thrift.Encoder) error {  // PartNames
                 return err
             }
         }
-    
+
         {
             item := v
             err := WriteCarPartName(item, p)
@@ -677,7 +677,7 @@ func (x *Automobile) readField7(p thrift.Decoder) error {  // PartNames
     if err != nil {
         return thrift.PrependError("error reading map begin: ", err)
     }
-    
+
     mapResult := make(map[int32]*CarPartName, size)
     for i := 0; i < size; i++ {
         var key int32
@@ -688,7 +688,7 @@ func (x *Automobile) readField7(p thrift.Decoder) error {  // PartNames
             }
             key = result
         }
-    
+
         var value *CarPartName
         {
             result, err := ReadCarPartName(p)
@@ -697,10 +697,10 @@ func (x *Automobile) readField7(p thrift.Decoder) error {  // PartNames
             }
             value = result
         }
-    
+
         mapResult[key] = value
     }
-    
+
     if err := p.ReadMapEnd(); err != nil {
         return thrift.PrependError("error reading map end: ", err)
     }
@@ -1042,7 +1042,7 @@ func (x *MapContainer) writeField1(p thrift.Encoder) error {  // Mapval
                 return err
             }
         }
-    
+
         {
             item := v
             if err := p.WriteString(item); err != nil {
@@ -1065,7 +1065,7 @@ func (x *MapContainer) readField1(p thrift.Decoder) error {  // Mapval
     if err != nil {
         return thrift.PrependError("error reading map begin: ", err)
     }
-    
+
     mapResult := make(map[MapKey]string, size)
     for i := 0; i < size; i++ {
         var key MapKey
@@ -1077,7 +1077,7 @@ func (x *MapContainer) readField1(p thrift.Decoder) error {  // Mapval
             }
             key = *result
         }
-    
+
         var value string
         {
             result, err := p.ReadString()
@@ -1086,10 +1086,10 @@ func (x *MapContainer) readField1(p thrift.Decoder) error {  // Mapval
             }
             value = result
         }
-    
+
         mapResult[key] = value
     }
-    
+
     if err := p.ReadMapEnd(); err != nil {
         return thrift.PrependError("error reading map end: ", err)
     }
@@ -1435,7 +1435,7 @@ func (x *Collection) readField1(p thrift.Decoder) error {  // Automobiles
     if err != nil {
         return thrift.PrependError("error reading list begin: ", err)
     }
-    
+
     listResult := make([]*Automobile, 0, size)
     for i := 0; i < size; i++ {
         var elem *Automobile
@@ -1449,7 +1449,7 @@ func (x *Collection) readField1(p thrift.Decoder) error {  // Automobiles
         }
         listResult = append(listResult, elem)
     }
-    
+
     if err := p.ReadListEnd(); err != nil {
         return thrift.PrependError("error reading list end: ", err)
     }
@@ -1514,7 +1514,7 @@ func (x *Collection) readField2(p thrift.Decoder) error {  // Cars
     if err != nil {
         return thrift.PrependError("error reading list begin: ", err)
     }
-    
+
     listResult := make([]*Car, 0, size)
     for i := 0; i < size; i++ {
         var elem *Car
@@ -1527,7 +1527,7 @@ func (x *Collection) readField2(p thrift.Decoder) error {  // Cars
         }
         listResult = append(listResult, elem)
     }
-    
+
     if err := p.ReadListEnd(); err != nil {
         return thrift.PrependError("error reading list end: ", err)
     }

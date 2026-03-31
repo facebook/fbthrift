@@ -40,33 +40,33 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "a.MyService"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__a__thrift_metadata.gen_metadata_service_MyService()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "a.MyService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__a__thrift_metadata.gen_metadata_service_MyService()
-    
+
         async def adapted_return(
             self,
             *,
@@ -88,7 +88,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def adapted_param(
             self,
             param: typeshed_two.AdapterTwoType[_fbthrift__c__thrift_types.C2],
@@ -105,26 +105,26 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 uri_or_name="MyService",
                 rpc_options=rpc_options,
             )
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     adapted_return = Async.adapted_return
     # pyre-ignore[4]: Missing annotation.
     adapted_param = Async.adapted_param
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "a.MyService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__a__thrift_metadata.gen_metadata_service_MyService()
-    
+
         def adapted_return(
             self,
             *,
@@ -145,7 +145,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def adapted_param(
             self,
             param: typeshed_two.AdapterTwoType[_fbthrift__c__thrift_types.C2],

@@ -30,7 +30,7 @@ public final class IndependentDirectlyAdapted implements com.facebook.thrift.pay
     ) {
         this.field = field;
     }
-    
+
     @ThriftConstructor
     protected IndependentDirectlyAdapted() {
       this.field = 0;
@@ -46,19 +46,19 @@ public final class IndependentDirectlyAdapted implements com.facebook.thrift.pay
 
     public static class Builder {
         private int field = 0;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="field", requiredness=Requiredness.NONE)    public Builder setField(int field) {
             this.field = field;
             return this;
         }
-    
+
         public int getField() { return field; }
-    
+
         public Builder() { }
         public Builder(IndependentDirectlyAdapted other) {
             this.field = other.field;
         }
-    
+
         @ThriftConstructor
         public IndependentDirectlyAdapted build() {
             IndependentDirectlyAdapted result = new IndependentDirectlyAdapted (
@@ -84,7 +84,7 @@ public final class IndependentDirectlyAdapted implements com.facebook.thrift.pay
         IndependentDirectlyAdapted.class, IndependentDirectlyAdapted::read0));
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="field", requiredness=Requiredness.NONE)
     public int getField() { return field; }
 
@@ -103,9 +103,9 @@ public final class IndependentDirectlyAdapted implements com.facebook.thrift.pay
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         IndependentDirectlyAdapted other = (IndependentDirectlyAdapted)o;
-    
+
         return
             Objects.equals(field, other.field) &&
             true;
@@ -122,7 +122,7 @@ public final class IndependentDirectlyAdapted implements com.facebook.thrift.pay
     public static com.facebook.thrift.payload.Reader<IndependentDirectlyAdapted> asReader() {
       return IndependentDirectlyAdapted::read0;
     }
-    
+
     public static IndependentDirectlyAdapted read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(IndependentDirectlyAdapted.NAMES_TO_IDS, IndependentDirectlyAdapted.THRIFT_NAMES_TO_IDS, IndependentDirectlyAdapted.FIELD_METADATA);
@@ -164,7 +164,7 @@ public final class IndependentDirectlyAdapted implements com.facebook.thrift.pay
     private static class _IndependentDirectlyAdaptedLazy {
         private static final IndependentDirectlyAdapted _DEFAULT = new IndependentDirectlyAdapted.Builder().build();
     }
-    
+
     public static IndependentDirectlyAdapted defaultInstance() {
         return  _IndependentDirectlyAdaptedLazy._DEFAULT;
     }

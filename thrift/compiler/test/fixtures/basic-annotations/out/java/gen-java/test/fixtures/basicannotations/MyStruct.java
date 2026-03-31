@@ -46,7 +46,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         this.cppTypeAnnotation = cppTypeAnnotation;
         this.myUnion = myUnion;
     }
-    
+
     @ThriftConstructor
     protected MyStruct() {
       this.major = 0L;
@@ -78,70 +78,70 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         private test.fixtures.basicannotations.MyEnum myEnum = test.fixtures.basicannotations.MyEnum.fromInteger(0);
         private List<String> cppTypeAnnotation = null;
         private test.fixtures.basicannotations.MyUnion myUnion = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=2, name="major", requiredness=Requiredness.NONE)    public Builder setMajor(long major) {
             this.major = major;
             return this;
         }
-    
+
         public long getMajor() { return major; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=1, name="abstract", requiredness=Requiredness.NONE)    public Builder setAbstract(String _abstract) {
             this._abstract = _abstract;
             return this;
         }
-    
+
         public String getAbstract() { return _abstract; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="annotation_with_quote", requiredness=Requiredness.NONE)    public Builder setAnnotationWithQuote(String annotationWithQuote) {
             this.annotationWithQuote = annotationWithQuote;
             return this;
         }
-    
+
         public String getAnnotationWithQuote() { return annotationWithQuote; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=4, name="class_", requiredness=Requiredness.NONE)    public Builder setClass_(String class_) {
             this.class_ = class_;
             return this;
         }
-    
+
         public String getClass_() { return class_; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=5, name="annotation_with_trailing_comma", requiredness=Requiredness.NONE)    public Builder setAnnotationWithTrailingComma(String annotationWithTrailingComma) {
             this.annotationWithTrailingComma = annotationWithTrailingComma;
             return this;
         }
-    
+
         public String getAnnotationWithTrailingComma() { return annotationWithTrailingComma; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=6, name="empty_annotations", requiredness=Requiredness.NONE)    public Builder setEmptyAnnotations(String emptyAnnotations) {
             this.emptyAnnotations = emptyAnnotations;
             return this;
         }
-    
+
         public String getEmptyAnnotations() { return emptyAnnotations; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=7, name="my_enum", requiredness=Requiredness.NONE)    public Builder setMyEnum(test.fixtures.basicannotations.MyEnum myEnum) {
             this.myEnum = myEnum;
             return this;
         }
-    
+
         public test.fixtures.basicannotations.MyEnum getMyEnum() { return myEnum; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=8, name="cpp_type_annotation", requiredness=Requiredness.NONE)    public Builder setCppTypeAnnotation(List<String> cppTypeAnnotation) {
             this.cppTypeAnnotation = cppTypeAnnotation;
             return this;
         }
-    
+
         public List<String> getCppTypeAnnotation() { return cppTypeAnnotation; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=9, name="my_union", requiredness=Requiredness.NONE)    public Builder setMyUnion(test.fixtures.basicannotations.MyUnion myUnion) {
             this.myUnion = myUnion;
             return this;
         }
-    
+
         public test.fixtures.basicannotations.MyUnion getMyUnion() { return myUnion; }
-    
+
         public Builder() { }
         public Builder(MyStruct other) {
             this.major = other.major;
@@ -154,7 +154,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             this.cppTypeAnnotation = other.cppTypeAnnotation;
             this.myUnion = other.myUnion;
         }
-    
+
         @ThriftConstructor
         public MyStruct build() {
             MyStruct result = new MyStruct (
@@ -236,7 +236,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         MyStruct.class, MyStruct::read0));
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="major", requiredness=Requiredness.NONE)
     public long getMajor() { return major; }
 
@@ -303,9 +303,9 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         MyStruct other = (MyStruct)o;
-    
+
         return
             Objects.equals(major, other.major) &&
             Objects.equals(_abstract, other._abstract) &&
@@ -338,7 +338,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public static com.facebook.thrift.payload.Reader<MyStruct> asReader() {
       return MyStruct::read0;
     }
-    
+
     public static MyStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(MyStruct.NAMES_TO_IDS, MyStruct.THRIFT_NAMES_TO_IDS, MyStruct.FIELD_METADATA);
@@ -520,7 +520,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     private static class _MyStructLazy {
         private static final MyStruct _DEFAULT = new MyStruct.Builder().build();
     }
-    
+
     public static MyStruct defaultInstance() {
         return  _MyStructLazy._DEFAULT;
     }

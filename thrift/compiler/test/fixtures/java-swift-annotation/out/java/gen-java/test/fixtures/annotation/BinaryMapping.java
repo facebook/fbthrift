@@ -32,7 +32,7 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
         this.binaryMap = binaryMap;
         this.regularBinary = regularBinary;
     }
-    
+
     @ThriftConstructor
     protected BinaryMapping() {
       this.binaryMap = null;
@@ -50,27 +50,27 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
     public static class Builder {
         private Map<String, byte[]> binaryMap = null;
         private Map<String, byte[]> regularBinary = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=3, name="binaryMap", requiredness=Requiredness.NONE)    public Builder setBinaryMap(Map<String, byte[]> binaryMap) {
             this.binaryMap = binaryMap;
             return this;
         }
-    
+
         public Map<String, byte[]> getBinaryMap() { return binaryMap; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=4, name="regularBinary", requiredness=Requiredness.NONE)    public Builder setRegularBinary(Map<String, byte[]> regularBinary) {
             this.regularBinary = regularBinary;
             return this;
         }
-    
+
         public Map<String, byte[]> getRegularBinary() { return regularBinary; }
-    
+
         public Builder() { }
         public Builder(BinaryMapping other) {
             this.binaryMap = other.binaryMap;
             this.regularBinary = other.regularBinary;
         }
-    
+
         @ThriftConstructor
         public BinaryMapping build() {
             BinaryMapping result = new BinaryMapping (
@@ -125,9 +125,9 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         BinaryMapping other = (BinaryMapping)o;
-    
+
         return
             Objects.equals(binaryMap, other.binaryMap) &&
             Objects.equals(regularBinary, other.regularBinary) &&
@@ -146,7 +146,7 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
     public static com.facebook.thrift.payload.Reader<BinaryMapping> asReader() {
       return BinaryMapping::read0;
     }
-    
+
     public static BinaryMapping read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(BinaryMapping.NAMES_TO_IDS, BinaryMapping.THRIFT_NAMES_TO_IDS, BinaryMapping.FIELD_METADATA);
@@ -250,7 +250,7 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
     private static class _BinaryMappingLazy {
         private static final BinaryMapping _DEFAULT = new BinaryMapping.Builder().build();
     }
-    
+
     public static BinaryMapping defaultInstance() {
         return  _BinaryMappingLazy._DEFAULT;
     }

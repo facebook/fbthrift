@@ -84,7 +84,7 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
         this.structError = structError;
         this.lsMap = lsMap;
     }
-    
+
     @ThriftConstructor
     protected ComplexException() {
       this.message = null;
@@ -102,49 +102,49 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
         private test.fixtures.complex_struct.MyUnion unionError = null;
         private test.fixtures.complex_struct.MyStruct structError = null;
         private it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.NONE)    public Builder setMessage(String message) {
             this.message = message;
             return this;
         }
-    
+
         public String getMessage() { return message; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="listStrings", requiredness=Requiredness.NONE)    public Builder setListStrings(List<String> listStrings) {
             this.listStrings = listStrings;
             return this;
         }
-    
+
         public List<String> getListStrings() { return listStrings; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="errorEnum", requiredness=Requiredness.NONE)    public Builder setErrorEnum(test.fixtures.complex_struct.MyEnum errorEnum) {
             this.errorEnum = errorEnum;
             return this;
         }
-    
+
         public test.fixtures.complex_struct.MyEnum getErrorEnum() { return errorEnum; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=4, name="unionError", requiredness=Requiredness.OPTIONAL)    public Builder setUnionError(test.fixtures.complex_struct.MyUnion unionError) {
             this.unionError = unionError;
             return this;
         }
-    
+
         public test.fixtures.complex_struct.MyUnion getUnionError() { return unionError; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=5, name="structError", requiredness=Requiredness.NONE)    public Builder setStructError(test.fixtures.complex_struct.MyStruct structError) {
             this.structError = structError;
             return this;
         }
-    
+
         public test.fixtures.complex_struct.MyStruct getStructError() { return structError; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=6, name="lsMap", requiredness=Requiredness.NONE)    public Builder setLsMap(it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap) {
             this.lsMap = lsMap;
             return this;
         }
-    
+
         public it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> getLsMap() { return lsMap; }
-    
+
         public Builder() { }
         public Builder(ComplexException other) {
             this.message = other.message;
@@ -154,7 +154,7 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
             this.structError = other.structError;
             this.lsMap = other.lsMap;
         }
-    
+
         @ThriftConstructor
         public ComplexException build() {
             ComplexException result = new ComplexException (
@@ -198,7 +198,7 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
     public static com.facebook.thrift.payload.Reader<ComplexException> asReader() {
       return ComplexException::read0;
     }
-    
+
     public static ComplexException read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(ComplexException.NAMES_TO_IDS, ComplexException.THRIFT_NAMES_TO_IDS, ComplexException.FIELD_METADATA);
@@ -356,7 +356,7 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
     private static class _ComplexExceptionLazy {
         private static final ComplexException _DEFAULT = new ComplexException.Builder().build();
     }
-    
+
     public static ComplexException defaultInstance() {
         return  _ComplexExceptionLazy._DEFAULT;
     }}

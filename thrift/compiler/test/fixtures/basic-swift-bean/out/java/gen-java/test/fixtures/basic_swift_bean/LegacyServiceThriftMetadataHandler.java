@@ -41,9 +41,9 @@ public class LegacyServiceThriftMetadataHandler implements com.facebook.thrift.s
               .setName("legacyStuff")
               .setIsOptional(false)
               .build());
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("getPoints")
               .setReturnType(ThriftType.fromTMap(new ThriftMapType.Builder().setKeyType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_STRING_TYPE)).setValueType(ThriftType.fromTList(new ThriftListType.Builder().setValueType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE)).build())).build()))

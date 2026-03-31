@@ -1349,7 +1349,7 @@ func (x *StructWithCollectionDefaultValues) readField1(p thrift.Decoder) error {
     if err != nil {
         return thrift.PrependError("error reading list begin: ", err)
     }
-    
+
     listResult := make([]int32, 0, size)
     for i := 0; i < size; i++ {
         var elem int32
@@ -1362,7 +1362,7 @@ func (x *StructWithCollectionDefaultValues) readField1(p thrift.Decoder) error {
         }
         listResult = append(listResult, elem)
     }
-    
+
     if err := p.ReadListEnd(); err != nil {
         return thrift.PrependError("error reading list end: ", err)
     }
@@ -1427,7 +1427,7 @@ func (x *StructWithCollectionDefaultValues) readField2(p thrift.Decoder) error {
     if err != nil {
         return thrift.PrependError("error reading set begin: ", err)
     }
-    
+
     setResult := make([]int32, 0, size)
     for i := 0; i < size; i++ {
         var elem int32
@@ -1440,7 +1440,7 @@ func (x *StructWithCollectionDefaultValues) readField2(p thrift.Decoder) error {
         }
         setResult = append(setResult, elem)
     }
-    
+
     if err := p.ReadSetEnd(); err != nil {
         return thrift.PrependError("error reading set end: ", err)
     }
@@ -1489,7 +1489,7 @@ func (x *StructWithCollectionDefaultValues) writeField3(p thrift.Encoder) error 
                 return err
             }
         }
-    
+
         {
             item := v
             if err := p.WriteI32(item); err != nil {
@@ -1512,7 +1512,7 @@ func (x *StructWithCollectionDefaultValues) readField3(p thrift.Decoder) error {
     if err != nil {
         return thrift.PrependError("error reading map begin: ", err)
     }
-    
+
     mapResult := make(map[int32]int32, size)
     for i := 0; i < size; i++ {
         var key int32
@@ -1523,7 +1523,7 @@ func (x *StructWithCollectionDefaultValues) readField3(p thrift.Decoder) error {
             }
             key = result
         }
-    
+
         var value int32
         {
             result, err := p.ReadI32()
@@ -1532,10 +1532,10 @@ func (x *StructWithCollectionDefaultValues) readField3(p thrift.Decoder) error {
             }
             value = result
         }
-    
+
         mapResult[key] = value
     }
-    
+
     if err := p.ReadMapEnd(); err != nil {
         return thrift.PrependError("error reading map end: ", err)
     }
@@ -1600,7 +1600,7 @@ func (x *StructWithCollectionDefaultValues) readField4(p thrift.Decoder) error {
     if err != nil {
         return thrift.PrependError("error reading list begin: ", err)
     }
-    
+
     listResult := make([]int32, 0, size)
     for i := 0; i < size; i++ {
         var elem int32
@@ -1613,7 +1613,7 @@ func (x *StructWithCollectionDefaultValues) readField4(p thrift.Decoder) error {
         }
         listResult = append(listResult, elem)
     }
-    
+
     if err := p.ReadListEnd(); err != nil {
         return thrift.PrependError("error reading list end: ", err)
     }
@@ -1678,7 +1678,7 @@ func (x *StructWithCollectionDefaultValues) readField5(p thrift.Decoder) error {
     if err != nil {
         return thrift.PrependError("error reading set begin: ", err)
     }
-    
+
     setResult := make([]int32, 0, size)
     for i := 0; i < size; i++ {
         var elem int32
@@ -1691,7 +1691,7 @@ func (x *StructWithCollectionDefaultValues) readField5(p thrift.Decoder) error {
         }
         setResult = append(setResult, elem)
     }
-    
+
     if err := p.ReadSetEnd(); err != nil {
         return thrift.PrependError("error reading set end: ", err)
     }
@@ -1740,7 +1740,7 @@ func (x *StructWithCollectionDefaultValues) writeField6(p thrift.Encoder) error 
                 return err
             }
         }
-    
+
         {
             item := v
             if err := p.WriteI32(item); err != nil {
@@ -1763,7 +1763,7 @@ func (x *StructWithCollectionDefaultValues) readField6(p thrift.Decoder) error {
     if err != nil {
         return thrift.PrependError("error reading map begin: ", err)
     }
-    
+
     mapResult := make(map[int32]int32, size)
     for i := 0; i < size; i++ {
         var key int32
@@ -1774,7 +1774,7 @@ func (x *StructWithCollectionDefaultValues) readField6(p thrift.Decoder) error {
             }
             key = result
         }
-    
+
         var value int32
         {
             result, err := p.ReadI32()
@@ -1783,10 +1783,10 @@ func (x *StructWithCollectionDefaultValues) readField6(p thrift.Decoder) error {
             }
             value = result
         }
-    
+
         mapResult[key] = value
     }
-    
+
     if err := p.ReadMapEnd(); err != nil {
         return thrift.PrependError("error reading map end: ", err)
     }

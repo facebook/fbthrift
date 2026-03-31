@@ -64,7 +64,7 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
         this.mapKeySetValInt = mapKeySetValInt;
         this.mapKeyListValSet = mapKeyListValSet;
     }
-    
+
     @ThriftConstructor
     protected ComplexNestedStruct() {
       this.setOfSetOfInt = null;
@@ -114,133 +114,133 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
         private Map<Integer, Set<Boolean>> mapKeyIntValSet = null;
         private Map<Set<Boolean>, test.fixtures.complex_struct.MyEnum> mapKeySetValInt = null;
         private Map<List<Integer>, Set<Map<Double, String>>> mapKeyListValSet = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="setOfSetOfInt", requiredness=Requiredness.NONE)    public Builder setSetOfSetOfInt(Set<Set<Integer>> setOfSetOfInt) {
             this.setOfSetOfInt = setOfSetOfInt;
             return this;
         }
-    
+
         public Set<Set<Integer>> getSetOfSetOfInt() { return setOfSetOfInt; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="listofListOfListOfListOfEnum", requiredness=Requiredness.NONE)    public Builder setListofListOfListOfListOfEnum(List<List<List<List<test.fixtures.complex_struct.MyEnum>>>> listofListOfListOfListOfEnum) {
             this.listofListOfListOfListOfEnum = listofListOfListOfListOfEnum;
             return this;
         }
-    
+
         public List<List<List<List<test.fixtures.complex_struct.MyEnum>>>> getListofListOfListOfListOfEnum() { return listofListOfListOfListOfEnum; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="listOfListOfMyStruct", requiredness=Requiredness.NONE)    public Builder setListOfListOfMyStruct(List<List<test.fixtures.complex_struct.MyStruct>> listOfListOfMyStruct) {
             this.listOfListOfMyStruct = listOfListOfMyStruct;
             return this;
         }
-    
+
         public List<List<test.fixtures.complex_struct.MyStruct>> getListOfListOfMyStruct() { return listOfListOfMyStruct; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=4, name="setOfListOfListOfLong", requiredness=Requiredness.NONE)    public Builder setSetOfListOfListOfLong(Set<List<List<Long>>> setOfListOfListOfLong) {
             this.setOfListOfListOfLong = setOfListOfListOfLong;
             return this;
         }
-    
+
         public Set<List<List<Long>>> getSetOfListOfListOfLong() { return setOfListOfListOfLong; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=5, name="setOfSetOfsetOfLong", requiredness=Requiredness.NONE)    public Builder setSetOfSetOfsetOfLong(Set<Set<Set<Long>>> setOfSetOfsetOfLong) {
             this.setOfSetOfsetOfLong = setOfSetOfsetOfLong;
             return this;
         }
-    
+
         public Set<Set<Set<Long>>> getSetOfSetOfsetOfLong() { return setOfSetOfsetOfLong; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=6, name="mapStructListOfListOfLong", requiredness=Requiredness.NONE)    public Builder setMapStructListOfListOfLong(Map<Integer, List<List<test.fixtures.complex_struct.MyStruct>>> mapStructListOfListOfLong) {
             this.mapStructListOfListOfLong = mapStructListOfListOfLong;
             return this;
         }
-    
+
         public Map<Integer, List<List<test.fixtures.complex_struct.MyStruct>>> getMapStructListOfListOfLong() { return mapStructListOfListOfLong; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=7, name="mKeyStructValInt", requiredness=Requiredness.NONE)    public Builder setMKeyStructValInt(Map<test.fixtures.complex_struct.MyStruct, Integer> mKeyStructValInt) {
             this.mKeyStructValInt = mKeyStructValInt;
             return this;
         }
-    
+
         public Map<test.fixtures.complex_struct.MyStruct, Integer> getMKeyStructValInt() { return mKeyStructValInt; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=8, name="listOfMapKeyIntValInt", requiredness=Requiredness.NONE)    public Builder setListOfMapKeyIntValInt(List<Map<Integer, Integer>> listOfMapKeyIntValInt) {
             this.listOfMapKeyIntValInt = listOfMapKeyIntValInt;
             return this;
         }
-    
+
         public List<Map<Integer, Integer>> getListOfMapKeyIntValInt() { return listOfMapKeyIntValInt; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=9, name="listOfMapKeyStrValList", requiredness=Requiredness.NONE)    public Builder setListOfMapKeyStrValList(List<Map<String, List<test.fixtures.complex_struct.MyStruct>>> listOfMapKeyStrValList) {
             this.listOfMapKeyStrValList = listOfMapKeyStrValList;
             return this;
         }
-    
+
         public List<Map<String, List<test.fixtures.complex_struct.MyStruct>>> getListOfMapKeyStrValList() { return listOfMapKeyStrValList; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=10, name="mapKeySetValLong", requiredness=Requiredness.NONE)    public Builder setMapKeySetValLong(Map<Set<Integer>, Long> mapKeySetValLong) {
             this.mapKeySetValLong = mapKeySetValLong;
             return this;
         }
-    
+
         public Map<Set<Integer>, Long> getMapKeySetValLong() { return mapKeySetValLong; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=11, name="mapKeyListValLong", requiredness=Requiredness.NONE)    public Builder setMapKeyListValLong(Map<List<String>, Integer> mapKeyListValLong) {
             this.mapKeyListValLong = mapKeyListValLong;
             return this;
         }
-    
+
         public Map<List<String>, Integer> getMapKeyListValLong() { return mapKeyListValLong; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=12, name="mapKeyMapValMap", requiredness=Requiredness.NONE)    public Builder setMapKeyMapValMap(Map<Map<Integer, String>, Map<Integer, String>> mapKeyMapValMap) {
             this.mapKeyMapValMap = mapKeyMapValMap;
             return this;
         }
-    
+
         public Map<Map<Integer, String>, Map<Integer, String>> getMapKeyMapValMap() { return mapKeyMapValMap; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=13, name="mapKeySetValMap", requiredness=Requiredness.NONE)    public Builder setMapKeySetValMap(Map<Set<List<Integer>>, Map<List<Set<String>>, String>> mapKeySetValMap) {
             this.mapKeySetValMap = mapKeySetValMap;
             return this;
         }
-    
+
         public Map<Set<List<Integer>>, Map<List<Set<String>>, String>> getMapKeySetValMap() { return mapKeySetValMap; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=14, name="NestedMaps", requiredness=Requiredness.NONE)    public Builder setNestedMaps(Map<Map<Map<Integer, String>, String>, Map<Integer, String>> nestedMaps) {
             this.nestedMaps = nestedMaps;
             return this;
         }
-    
+
         public Map<Map<Map<Integer, String>, String>, Map<Integer, String>> getNestedMaps() { return nestedMaps; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=15, name="mapKeyIntValList", requiredness=Requiredness.NONE)    public Builder setMapKeyIntValList(Map<Integer, List<test.fixtures.complex_struct.MyStruct>> mapKeyIntValList) {
             this.mapKeyIntValList = mapKeyIntValList;
             return this;
         }
-    
+
         public Map<Integer, List<test.fixtures.complex_struct.MyStruct>> getMapKeyIntValList() { return mapKeyIntValList; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=16, name="mapKeyIntValSet", requiredness=Requiredness.NONE)    public Builder setMapKeyIntValSet(Map<Integer, Set<Boolean>> mapKeyIntValSet) {
             this.mapKeyIntValSet = mapKeyIntValSet;
             return this;
         }
-    
+
         public Map<Integer, Set<Boolean>> getMapKeyIntValSet() { return mapKeyIntValSet; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=17, name="mapKeySetValInt", requiredness=Requiredness.NONE)    public Builder setMapKeySetValInt(Map<Set<Boolean>, test.fixtures.complex_struct.MyEnum> mapKeySetValInt) {
             this.mapKeySetValInt = mapKeySetValInt;
             return this;
         }
-    
+
         public Map<Set<Boolean>, test.fixtures.complex_struct.MyEnum> getMapKeySetValInt() { return mapKeySetValInt; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=18, name="mapKeyListValSet", requiredness=Requiredness.NONE)    public Builder setMapKeyListValSet(Map<List<Integer>, Set<Map<Double, String>>> mapKeyListValSet) {
             this.mapKeyListValSet = mapKeyListValSet;
             return this;
         }
-    
+
         public Map<List<Integer>, Set<Map<Double, String>>> getMapKeyListValSet() { return mapKeyListValSet; }
-    
+
         public Builder() { }
         public Builder(ComplexNestedStruct other) {
             this.setOfSetOfInt = other.setOfSetOfInt;
@@ -262,7 +262,7 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
             this.mapKeySetValInt = other.mapKeySetValInt;
             this.mapKeyListValSet = other.mapKeyListValSet;
         }
-    
+
         @ThriftConstructor
         public ComplexNestedStruct build() {
             ComplexNestedStruct result = new ComplexNestedStruct (
@@ -525,9 +525,9 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         ComplexNestedStruct other = (ComplexNestedStruct)o;
-    
+
         return
             Objects.equals(setOfSetOfInt, other.setOfSetOfInt) &&
             Objects.equals(listofListOfListOfListOfEnum, other.listofListOfListOfListOfEnum) &&
@@ -578,7 +578,7 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
     public static com.facebook.thrift.payload.Reader<ComplexNestedStruct> asReader() {
       return ComplexNestedStruct::read0;
     }
-    
+
     public static ComplexNestedStruct read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(ComplexNestedStruct.NAMES_TO_IDS, ComplexNestedStruct.THRIFT_NAMES_TO_IDS, ComplexNestedStruct.FIELD_METADATA);
@@ -654,14 +654,14 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                 }
                                 oprot.readListEnd();
                                 }
-                    
+
                                     
                                     _value2.add(_value3);
                                     
                                 }
                                 oprot.readListEnd();
                                 }
-                    
+
                                     
                                     _value1.add(_value2);
                                     
@@ -738,7 +738,7 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                 }
                                 oprot.readListEnd();
                                 }
-                    
+
                                     
                                     _value1.add(_value2);
                                     
@@ -783,7 +783,7 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                 }
                                 oprot.readSetEnd();
                                 }
-                    
+
                                     
                                     _value1.add(_value2);
                                     
@@ -829,7 +829,7 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                 }
                                 oprot.readListEnd();
                                 }
-                    
+
                                     
                                     _value1.add(_value2);
                                     
@@ -881,7 +881,7 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                     
                                     int _key2 = oprot.readI32();
                                     
-                    
+
                                     
                                     int _value2 = oprot.readI32();
                                     
@@ -917,7 +917,7 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                     
                                     String _key2 = oprot.readString();
                                     
-                    
+
                                     List<test.fixtures.complex_struct.MyStruct> _value2;
                                 {
                                 TList _list2 = oprot.readListBegin();
@@ -933,7 +933,7 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                 }
                                 oprot.readListEnd();
                                 }
-                    
+
                                     
                                     _value1.put(_key2, _value2);
                                     
@@ -1022,7 +1022,7 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                                     
                                     int _key2 = oprot.readI32();
-                    
+
                                     String _value2 = oprot.readString();
                                     _key1.put(_key2, _value2);
                                 }
@@ -1037,7 +1037,7 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                     
                                     int _key2 = oprot.readI32();
                                     
-                    
+
                                     
                                     String _value2 = oprot.readString();
                                     
@@ -1085,7 +1085,7 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                 }
                                 oprot.readListEnd();
                                 }
-                    
+
                                     _key1.add(_value2);
                                 }
                                 oprot.readSetEnd();
@@ -1117,13 +1117,13 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                 }
                                 oprot.readSetEnd();
                                 }
-                    
+
                                     _key2.add(_value3);
                                 }
                                 oprot.readListEnd();
                                 }
-                    
-                    
+
+
                                     
                                     String _value2 = oprot.readString();
                                     
@@ -1163,14 +1163,14 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                 for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
                                     
                                     int _key3 = oprot.readI32();
-                    
+
                                     String _value3 = oprot.readString();
                                     _key2.put(_key3, _value3);
                                 }
                                 oprot.readMapEnd();
                                 }
-                    
-                    
+
+
                                     String _value2 = oprot.readString();
                                     _key1.put(_key2, _value2);
                                 }
@@ -1185,7 +1185,7 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                     
                                     int _key2 = oprot.readI32();
                                     
-                    
+
                                     
                                     String _value2 = oprot.readString();
                                     
@@ -1333,7 +1333,7 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                     
                                     double _key3 = oprot.readDouble();
                                     
-                    
+
                                     
                                     String _value3 = oprot.readString();
                                     
@@ -1343,7 +1343,7 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                 }
                                 }
                                 oprot.readMapEnd();
-                    
+
                                     
                                     _value1.add(_value2);
                                     
@@ -1862,7 +1862,7 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
     private static class _ComplexNestedStructLazy {
         private static final ComplexNestedStruct _DEFAULT = new ComplexNestedStruct.Builder().build();
     }
-    
+
     public static ComplexNestedStruct defaultInstance() {
         return  _ComplexNestedStructLazy._DEFAULT;
     }

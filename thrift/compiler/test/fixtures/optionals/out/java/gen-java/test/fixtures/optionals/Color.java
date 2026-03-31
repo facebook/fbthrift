@@ -36,7 +36,7 @@ public final class Color implements com.facebook.thrift.payload.ThriftSerializab
         this.blue = blue;
         this.alpha = alpha;
     }
-    
+
     @ThriftConstructor
     protected Color() {
       this.red = 0.;
@@ -58,35 +58,35 @@ public final class Color implements com.facebook.thrift.payload.ThriftSerializab
         private double green = 0.;
         private double blue = 0.;
         private double alpha = 0.;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="red", requiredness=Requiredness.NONE)    public Builder setRed(double red) {
             this.red = red;
             return this;
         }
-    
+
         public double getRed() { return red; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=2, name="green", requiredness=Requiredness.NONE)    public Builder setGreen(double green) {
             this.green = green;
             return this;
         }
-    
+
         public double getGreen() { return green; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=3, name="blue", requiredness=Requiredness.NONE)    public Builder setBlue(double blue) {
             this.blue = blue;
             return this;
         }
-    
+
         public double getBlue() { return blue; }
-    
+
             @com.facebook.swift.codec.ThriftField(value=4, name="alpha", requiredness=Requiredness.NONE)    public Builder setAlpha(double alpha) {
             this.alpha = alpha;
             return this;
         }
-    
+
         public double getAlpha() { return alpha; }
-    
+
         public Builder() { }
         public Builder(Color other) {
             this.red = other.red;
@@ -94,7 +94,7 @@ public final class Color implements com.facebook.thrift.payload.ThriftSerializab
             this.blue = other.blue;
             this.alpha = other.alpha;
         }
-    
+
         @ThriftConstructor
         public Color build() {
             Color result = new Color (
@@ -138,22 +138,22 @@ public final class Color implements com.facebook.thrift.payload.ThriftSerializab
       FIELD_METADATA.put(4, ALPHA_FIELD_DESC);
     }
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=1, name="red", requiredness=Requiredness.NONE)
     public double getRed() { return red; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=2, name="green", requiredness=Requiredness.NONE)
     public double getGreen() { return green; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=3, name="blue", requiredness=Requiredness.NONE)
     public double getBlue() { return blue; }
 
     
-    
+
     @com.facebook.swift.codec.ThriftField(value=4, name="alpha", requiredness=Requiredness.NONE)
     public double getAlpha() { return alpha; }
 
@@ -175,9 +175,9 @@ public final class Color implements com.facebook.thrift.payload.ThriftSerializab
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-    
+
         Color other = (Color)o;
-    
+
         return
             Objects.equals(red, other.red) &&
             Objects.equals(green, other.green) &&
@@ -200,7 +200,7 @@ public final class Color implements com.facebook.thrift.payload.ThriftSerializab
     public static com.facebook.thrift.payload.Reader<Color> asReader() {
       return Color::read0;
     }
-    
+
     public static Color read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(Color.NAMES_TO_IDS, Color.THRIFT_NAMES_TO_IDS, Color.FIELD_METADATA);
@@ -284,7 +284,7 @@ public final class Color implements com.facebook.thrift.payload.ThriftSerializab
     private static class _ColorLazy {
         private static final Color _DEFAULT = new Color.Builder().build();
     }
-    
+
     public static Color defaultInstance() {
         return  _ColorLazy._DEFAULT;
     }

@@ -44,7 +44,7 @@ public final class InitialException extends org.apache.thrift.TBaseException imp
     ) {
         this.reason = reason;
     }
-    
+
     @ThriftConstructor
     protected InitialException() {
       this.reason = null;
@@ -52,19 +52,19 @@ public final class InitialException extends org.apache.thrift.TBaseException imp
 
     public static class Builder {
         private String reason = null;
-    
+
         @com.facebook.swift.codec.ThriftField(value=1, name="reason", requiredness=Requiredness.NONE)    public Builder setReason(String reason) {
             this.reason = reason;
             return this;
         }
-    
+
         public String getReason() { return reason; }
-    
+
         public Builder() { }
         public Builder(InitialException other) {
             this.reason = other.reason;
         }
-    
+
         @ThriftConstructor
         public InitialException build() {
             InitialException result = new InitialException (
@@ -83,7 +83,7 @@ public final class InitialException extends org.apache.thrift.TBaseException imp
     public static com.facebook.thrift.payload.Reader<InitialException> asReader() {
       return InitialException::read0;
     }
-    
+
     public static InitialException read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(InitialException.NAMES_TO_IDS, InitialException.THRIFT_NAMES_TO_IDS, InitialException.FIELD_METADATA);
@@ -127,7 +127,7 @@ public final class InitialException extends org.apache.thrift.TBaseException imp
     private static class _InitialExceptionLazy {
         private static final InitialException _DEFAULT = new InitialException.Builder().build();
     }
-    
+
     public static InitialException defaultInstance() {
         return  _InitialExceptionLazy._DEFAULT;
     }}

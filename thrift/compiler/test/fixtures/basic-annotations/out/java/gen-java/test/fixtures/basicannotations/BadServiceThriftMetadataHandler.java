@@ -29,9 +29,9 @@ public class BadServiceThriftMetadataHandler implements com.facebook.thrift.serv
   private static void addFunctions_0(List<ThriftFunction> functions) {
         {
           List<ThriftField> args = new ArrayList<>();
-    
+
           List<ThriftField> exceptions = new ArrayList<>();
-    
+
           functions.add(new ThriftFunction.Builder()
               .setName("bar")
               .setReturnType(ThriftType.fromTPrimitive(ThriftPrimitiveType.THRIFT_I32_TYPE))

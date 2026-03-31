@@ -106,21 +106,21 @@ public final class Union2 implements com.facebook.thrift.payload.ThriftSerializa
     @ThriftConstructor
     public Union2() {
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public Union2(final int i) {
         this.value = i;
         this.id = 1;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public Union2(final double d) {
         this.value = d;
         this.id = 2;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public Union2(final test.fixtures.constants.Struct1 s) {
@@ -130,7 +130,7 @@ public final class Union2 implements com.facebook.thrift.payload.ThriftSerializa
         this.value = s;
         this.id = 3;
     }
-    
+
     @ThriftConstructor
     @Deprecated
     public Union2(final test.fixtures.constants.Union1 u) {
@@ -140,21 +140,21 @@ public final class Union2 implements com.facebook.thrift.payload.ThriftSerializa
         this.value = u;
         this.id = 4;
     }
-    
+
     public static Union2 fromI(final int i) {
         Union2 res = new Union2();
         res.value = i;
         res.id = 1;
         return res;
     }
-    
+
     public static Union2 fromD(final double d) {
         Union2 res = new Union2();
         res.value = d;
         res.id = 2;
         return res;
     }
-    
+
     public static Union2 fromS(final test.fixtures.constants.Struct1 s) {
         Union2 res = new Union2();
         if (!Union2.allowNullFieldValues && s == null) {
@@ -164,7 +164,7 @@ public final class Union2 implements com.facebook.thrift.payload.ThriftSerializa
         res.id = 3;
         return res;
     }
-    
+
     public static Union2 fromU(final test.fixtures.constants.Union1 u) {
         Union2 res = new Union2();
         if (!Union2.allowNullFieldValues && u == null) {
@@ -331,7 +331,7 @@ public final class Union2 implements com.facebook.thrift.payload.ThriftSerializa
       case _I: {
         oprot.writeFieldBegin(I_FIELD_DESC);
         int _iter0 = (int)this.value;
-    
+
         oprot.writeI32(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -339,7 +339,7 @@ public final class Union2 implements com.facebook.thrift.payload.ThriftSerializa
       case _D: {
         oprot.writeFieldBegin(D_FIELD_DESC);
         double _iter0 = (double)this.value;
-    
+
         oprot.writeDouble(_iter0);
         oprot.writeFieldEnd();
         break;
@@ -347,7 +347,7 @@ public final class Union2 implements com.facebook.thrift.payload.ThriftSerializa
       case _S: {
         oprot.writeFieldBegin(S_FIELD_DESC);
         test.fixtures.constants.Struct1 _iter0 = (test.fixtures.constants.Struct1)this.value;
-    
+
         _iter0.write0(oprot);
         oprot.writeFieldEnd();
         break;
@@ -355,7 +355,7 @@ public final class Union2 implements com.facebook.thrift.payload.ThriftSerializa
       case _U: {
         oprot.writeFieldBegin(U_FIELD_DESC);
         test.fixtures.constants.Union1 _iter0 = (test.fixtures.constants.Union1)this.value;
-    
+
         _iter0.write0(oprot);
         oprot.writeFieldEnd();
         break;
@@ -371,7 +371,7 @@ public final class Union2 implements com.facebook.thrift.payload.ThriftSerializa
     public static com.facebook.thrift.payload.Reader<Union2> asReader() {
       return Union2::read0;
     }
-    
+
     public static Union2 read0(TProtocol oprot) throws TException {
       Union2 res = new Union2();
       res.value = null;

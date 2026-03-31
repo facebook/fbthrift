@@ -35,33 +35,33 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.MyService"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_MyService()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.MyService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_MyService()
-    
+
         async def foo(
             self,
             *,
@@ -76,7 +76,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 uri_or_name="MyService",
                 rpc_options=rpc_options,
             )
-    
+
         async def interact(
             self,
             arg: builtins.int,
@@ -98,7 +98,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 rpc_options=rpc_options,
             )
             return _fbthrift_interaction
-    
+
         async def interactFast(
             self,
             *,
@@ -124,7 +124,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def serialize(
             self,
             *,
@@ -151,7 +151,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def __fbthrift_createMyInteraction(
             self #MyService
         ) -> MyService_MyInteraction.Async:
@@ -188,7 +188,7 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
             self #MyService
         ) -> MyService_SerialInteraction.Async:
             return self.__fbthrift_createSerialInteraction()
-    
+
     # pyre-ignore[4]: Missing annotation.
     foo = Async.foo
     # pyre-ignore[4]: Missing annotation.
@@ -201,20 +201,20 @@ class MyService(_fbthrift_python_Client["MyService.Async", "MyService.Sync"]):
         raise RuntimeError("Do not use __aenter__ directly on client, use get_client instead.")
     async def __aexit__(self) -> None:
         raise RuntimeError("Do not use __aexit__ directly on client, use get_client instead.")
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.MyService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_MyService()
-    
+
         def foo(
             self,
             *,
@@ -233,33 +233,33 @@ class MyService_MyInteraction(_fbthrift_python_Client["MyService_MyInteraction.A
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.MyInteraction"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_MyService_MyInteraction()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.MyInteraction"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_MyService_MyInteraction()
-    
+
         async def frobnicate(
             self,
             *,
@@ -286,7 +286,7 @@ class MyService_MyInteraction(_fbthrift_python_Client["MyService_MyInteraction.A
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def ping(
             self,
             *,
@@ -303,7 +303,7 @@ class MyService_MyInteraction(_fbthrift_python_Client["MyService_MyInteraction.A
                 uri_or_name="MyInteraction",
                 rpc_options=rpc_options,
             )
-    
+
         async def truthify(
             self,
             *,
@@ -322,7 +322,7 @@ class MyService_MyInteraction(_fbthrift_python_Client["MyService_MyInteraction.A
             )
             _fbthrift_resp, _fbthrift_sink_or_stream = _fbthrift_resp
             return _fbthrift_sink_or_stream
-    
+
         async def encode(
             self,
             *,
@@ -348,8 +348,8 @@ class MyService_MyInteraction(_fbthrift_python_Client["MyService_MyInteraction.A
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     frobnicate = Async.frobnicate
     # pyre-ignore[4]: Missing annotation.
@@ -362,16 +362,16 @@ class MyService_MyInteraction(_fbthrift_python_Client["MyService_MyInteraction.A
         raise RuntimeError("Do not use __aenter__ directly on client, use get_client instead.")
     async def __aexit__(self) -> None:
         raise RuntimeError("Do not use __aexit__ directly on client, use get_client instead.")
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.MyInteraction"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_MyService_MyInteraction()
@@ -380,33 +380,33 @@ class MyService_MyInteractionFast(_fbthrift_python_Client["MyService_MyInteracti
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.MyInteractionFast"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_MyService_MyInteractionFast()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.MyInteractionFast"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_MyService_MyInteractionFast()
-    
+
         async def frobnicate(
             self,
             *,
@@ -430,7 +430,7 @@ class MyService_MyInteractionFast(_fbthrift_python_Client["MyService_MyInteracti
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def ping(
             self,
             *,
@@ -447,7 +447,7 @@ class MyService_MyInteractionFast(_fbthrift_python_Client["MyService_MyInteracti
                 uri_or_name="MyInteractionFast",
                 rpc_options=rpc_options,
             )
-    
+
         async def truthify(
             self,
             *,
@@ -466,7 +466,7 @@ class MyService_MyInteractionFast(_fbthrift_python_Client["MyService_MyInteracti
             )
             _fbthrift_resp, _fbthrift_sink_or_stream = _fbthrift_resp
             return _fbthrift_sink_or_stream
-    
+
         async def encode(
             self,
             *,
@@ -492,8 +492,8 @@ class MyService_MyInteractionFast(_fbthrift_python_Client["MyService_MyInteracti
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     frobnicate = Async.frobnicate
     # pyre-ignore[4]: Missing annotation.
@@ -506,16 +506,16 @@ class MyService_MyInteractionFast(_fbthrift_python_Client["MyService_MyInteracti
         raise RuntimeError("Do not use __aenter__ directly on client, use get_client instead.")
     async def __aexit__(self) -> None:
         raise RuntimeError("Do not use __aexit__ directly on client, use get_client instead.")
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.MyInteractionFast"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_MyService_MyInteractionFast()
@@ -524,33 +524,33 @@ class MyService_SerialInteraction(_fbthrift_python_Client["MyService_SerialInter
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.SerialInteraction"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_MyService_SerialInteraction()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.SerialInteraction"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_MyService_SerialInteraction()
-    
+
         async def frobnicate(
             self,
             *,
@@ -567,24 +567,24 @@ class MyService_SerialInteraction(_fbthrift_python_Client["MyService_SerialInter
                 uri_or_name="SerialInteraction",
                 rpc_options=rpc_options,
             )
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     frobnicate = Async.frobnicate
     async def __aenter__(self) -> "MyService_SerialInteraction.Async":
         raise RuntimeError("Do not use __aenter__ directly on client, use get_client instead.")
     async def __aexit__(self) -> None:
         raise RuntimeError("Do not use __aexit__ directly on client, use get_client instead.")
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.SerialInteraction"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_MyService_SerialInteraction()
@@ -596,33 +596,33 @@ class Factories(_fbthrift_python_Client["Factories.Async", "Factories.Sync"]):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.Factories"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_Factories()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.Factories"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_Factories()
-    
+
         async def foo(
             self,
             *,
@@ -637,7 +637,7 @@ class Factories(_fbthrift_python_Client["Factories.Async", "Factories.Sync"]):
                 uri_or_name="Factories",
                 rpc_options=rpc_options,
             )
-    
+
         async def interact(
             self,
             arg: builtins.int,
@@ -659,7 +659,7 @@ class Factories(_fbthrift_python_Client["Factories.Async", "Factories.Sync"]):
                 rpc_options=rpc_options,
             )
             return _fbthrift_interaction
-    
+
         async def interactFast(
             self,
             *,
@@ -685,7 +685,7 @@ class Factories(_fbthrift_python_Client["Factories.Async", "Factories.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def serialize(
             self,
             *,
@@ -712,7 +712,7 @@ class Factories(_fbthrift_python_Client["Factories.Async", "Factories.Sync"]):
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def __fbthrift_createMyInteraction(
             self #Factories
         ) -> Factories_MyInteraction.Async:
@@ -749,7 +749,7 @@ class Factories(_fbthrift_python_Client["Factories.Async", "Factories.Sync"]):
             self #Factories
         ) -> Factories_SerialInteraction.Async:
             return self.__fbthrift_createSerialInteraction()
-    
+
     # pyre-ignore[4]: Missing annotation.
     foo = Async.foo
     # pyre-ignore[4]: Missing annotation.
@@ -762,20 +762,20 @@ class Factories(_fbthrift_python_Client["Factories.Async", "Factories.Sync"]):
         raise RuntimeError("Do not use __aenter__ directly on client, use get_client instead.")
     async def __aexit__(self) -> None:
         raise RuntimeError("Do not use __aexit__ directly on client, use get_client instead.")
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.Factories"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_Factories()
-    
+
         def foo(
             self,
             *,
@@ -794,33 +794,33 @@ class Factories_MyInteraction(_fbthrift_python_Client["Factories_MyInteraction.A
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.MyInteraction"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_Factories_MyInteraction()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.MyInteraction"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_Factories_MyInteraction()
-    
+
         async def frobnicate(
             self,
             *,
@@ -847,7 +847,7 @@ class Factories_MyInteraction(_fbthrift_python_Client["Factories_MyInteraction.A
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def ping(
             self,
             *,
@@ -864,7 +864,7 @@ class Factories_MyInteraction(_fbthrift_python_Client["Factories_MyInteraction.A
                 uri_or_name="MyInteraction",
                 rpc_options=rpc_options,
             )
-    
+
         async def truthify(
             self,
             *,
@@ -883,7 +883,7 @@ class Factories_MyInteraction(_fbthrift_python_Client["Factories_MyInteraction.A
             )
             _fbthrift_resp, _fbthrift_sink_or_stream = _fbthrift_resp
             return _fbthrift_sink_or_stream
-    
+
         async def encode(
             self,
             *,
@@ -909,8 +909,8 @@ class Factories_MyInteraction(_fbthrift_python_Client["Factories_MyInteraction.A
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     frobnicate = Async.frobnicate
     # pyre-ignore[4]: Missing annotation.
@@ -923,16 +923,16 @@ class Factories_MyInteraction(_fbthrift_python_Client["Factories_MyInteraction.A
         raise RuntimeError("Do not use __aenter__ directly on client, use get_client instead.")
     async def __aexit__(self) -> None:
         raise RuntimeError("Do not use __aexit__ directly on client, use get_client instead.")
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.MyInteraction"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_Factories_MyInteraction()
@@ -941,33 +941,33 @@ class Factories_MyInteractionFast(_fbthrift_python_Client["Factories_MyInteracti
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.MyInteractionFast"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_Factories_MyInteractionFast()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.MyInteractionFast"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_Factories_MyInteractionFast()
-    
+
         async def frobnicate(
             self,
             *,
@@ -991,7 +991,7 @@ class Factories_MyInteractionFast(_fbthrift_python_Client["Factories_MyInteracti
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def ping(
             self,
             *,
@@ -1008,7 +1008,7 @@ class Factories_MyInteractionFast(_fbthrift_python_Client["Factories_MyInteracti
                 uri_or_name="MyInteractionFast",
                 rpc_options=rpc_options,
             )
-    
+
         async def truthify(
             self,
             *,
@@ -1027,7 +1027,7 @@ class Factories_MyInteractionFast(_fbthrift_python_Client["Factories_MyInteracti
             )
             _fbthrift_resp, _fbthrift_sink_or_stream = _fbthrift_resp
             return _fbthrift_sink_or_stream
-    
+
         async def encode(
             self,
             *,
@@ -1053,8 +1053,8 @@ class Factories_MyInteractionFast(_fbthrift_python_Client["Factories_MyInteracti
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     frobnicate = Async.frobnicate
     # pyre-ignore[4]: Missing annotation.
@@ -1067,16 +1067,16 @@ class Factories_MyInteractionFast(_fbthrift_python_Client["Factories_MyInteracti
         raise RuntimeError("Do not use __aenter__ directly on client, use get_client instead.")
     async def __aexit__(self) -> None:
         raise RuntimeError("Do not use __aexit__ directly on client, use get_client instead.")
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.MyInteractionFast"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_Factories_MyInteractionFast()
@@ -1085,33 +1085,33 @@ class Factories_SerialInteraction(_fbthrift_python_Client["Factories_SerialInter
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.SerialInteraction"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_Factories_SerialInteraction()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.SerialInteraction"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_Factories_SerialInteraction()
-    
+
         async def frobnicate(
             self,
             *,
@@ -1128,24 +1128,24 @@ class Factories_SerialInteraction(_fbthrift_python_Client["Factories_SerialInter
                 uri_or_name="SerialInteraction",
                 rpc_options=rpc_options,
             )
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     frobnicate = Async.frobnicate
     async def __aenter__(self) -> "Factories_SerialInteraction.Async":
         raise RuntimeError("Do not use __aenter__ directly on client, use get_client instead.")
     async def __aexit__(self) -> None:
         raise RuntimeError("Do not use __aexit__ directly on client, use get_client instead.")
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.SerialInteraction"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_Factories_SerialInteraction()
@@ -1157,33 +1157,33 @@ class Perform(_fbthrift_python_Client["Perform.Async", "Perform.Sync"]):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.Perform"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_Perform()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.Perform"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_Perform()
-    
+
         async def foo(
             self,
             *,
@@ -1198,7 +1198,7 @@ class Perform(_fbthrift_python_Client["Perform.Async", "Perform.Sync"]):
                 uri_or_name="Perform",
                 rpc_options=rpc_options,
             )
-    
+
         def __fbthrift_createMyInteraction(
             self #Perform
         ) -> Perform_MyInteraction.Async:
@@ -1235,27 +1235,27 @@ class Perform(_fbthrift_python_Client["Perform.Async", "Perform.Sync"]):
             self #Perform
         ) -> Perform_SerialInteraction.Async:
             return self.__fbthrift_createSerialInteraction()
-    
+
     # pyre-ignore[4]: Missing annotation.
     foo = Async.foo
     async def __aenter__(self) -> "Perform.Async":
         raise RuntimeError("Do not use __aenter__ directly on client, use get_client instead.")
     async def __aexit__(self) -> None:
         raise RuntimeError("Do not use __aexit__ directly on client, use get_client instead.")
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.Perform"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_Perform()
-    
+
         def foo(
             self,
             *,
@@ -1274,33 +1274,33 @@ class Perform_MyInteraction(_fbthrift_python_Client["Perform_MyInteraction.Async
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.MyInteraction"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_Perform_MyInteraction()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.MyInteraction"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_Perform_MyInteraction()
-    
+
         async def frobnicate(
             self,
             *,
@@ -1327,7 +1327,7 @@ class Perform_MyInteraction(_fbthrift_python_Client["Perform_MyInteraction.Async
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def ping(
             self,
             *,
@@ -1344,7 +1344,7 @@ class Perform_MyInteraction(_fbthrift_python_Client["Perform_MyInteraction.Async
                 uri_or_name="MyInteraction",
                 rpc_options=rpc_options,
             )
-    
+
         async def truthify(
             self,
             *,
@@ -1363,7 +1363,7 @@ class Perform_MyInteraction(_fbthrift_python_Client["Perform_MyInteraction.Async
             )
             _fbthrift_resp, _fbthrift_sink_or_stream = _fbthrift_resp
             return _fbthrift_sink_or_stream
-    
+
         async def encode(
             self,
             *,
@@ -1389,8 +1389,8 @@ class Perform_MyInteraction(_fbthrift_python_Client["Perform_MyInteraction.Async
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     frobnicate = Async.frobnicate
     # pyre-ignore[4]: Missing annotation.
@@ -1403,16 +1403,16 @@ class Perform_MyInteraction(_fbthrift_python_Client["Perform_MyInteraction.Async
         raise RuntimeError("Do not use __aenter__ directly on client, use get_client instead.")
     async def __aexit__(self) -> None:
         raise RuntimeError("Do not use __aexit__ directly on client, use get_client instead.")
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.MyInteraction"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_Perform_MyInteraction()
@@ -1421,33 +1421,33 @@ class Perform_MyInteractionFast(_fbthrift_python_Client["Perform_MyInteractionFa
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.MyInteractionFast"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_Perform_MyInteractionFast()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.MyInteractionFast"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_Perform_MyInteractionFast()
-    
+
         async def frobnicate(
             self,
             *,
@@ -1471,7 +1471,7 @@ class Perform_MyInteractionFast(_fbthrift_python_Client["Perform_MyInteractionFa
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def ping(
             self,
             *,
@@ -1488,7 +1488,7 @@ class Perform_MyInteractionFast(_fbthrift_python_Client["Perform_MyInteractionFa
                 uri_or_name="MyInteractionFast",
                 rpc_options=rpc_options,
             )
-    
+
         async def truthify(
             self,
             *,
@@ -1507,7 +1507,7 @@ class Perform_MyInteractionFast(_fbthrift_python_Client["Perform_MyInteractionFa
             )
             _fbthrift_resp, _fbthrift_sink_or_stream = _fbthrift_resp
             return _fbthrift_sink_or_stream
-    
+
         async def encode(
             self,
             *,
@@ -1533,8 +1533,8 @@ class Perform_MyInteractionFast(_fbthrift_python_Client["Perform_MyInteractionFa
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     frobnicate = Async.frobnicate
     # pyre-ignore[4]: Missing annotation.
@@ -1547,16 +1547,16 @@ class Perform_MyInteractionFast(_fbthrift_python_Client["Perform_MyInteractionFa
         raise RuntimeError("Do not use __aenter__ directly on client, use get_client instead.")
     async def __aexit__(self) -> None:
         raise RuntimeError("Do not use __aexit__ directly on client, use get_client instead.")
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.MyInteractionFast"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_Perform_MyInteractionFast()
@@ -1565,33 +1565,33 @@ class Perform_SerialInteraction(_fbthrift_python_Client["Perform_SerialInteracti
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.SerialInteraction"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_Perform_SerialInteraction()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.SerialInteraction"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_Perform_SerialInteraction()
-    
+
         async def frobnicate(
             self,
             *,
@@ -1608,24 +1608,24 @@ class Perform_SerialInteraction(_fbthrift_python_Client["Perform_SerialInteracti
                 uri_or_name="SerialInteraction",
                 rpc_options=rpc_options,
             )
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     frobnicate = Async.frobnicate
     async def __aenter__(self) -> "Perform_SerialInteraction.Async":
         raise RuntimeError("Do not use __aenter__ directly on client, use get_client instead.")
     async def __aexit__(self) -> None:
         raise RuntimeError("Do not use __aexit__ directly on client, use get_client instead.")
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.SerialInteraction"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_Perform_SerialInteraction()
@@ -1637,33 +1637,33 @@ class InteractWithShared(_fbthrift_python_Client["InteractWithShared.Async", "In
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.InteractWithShared"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_InteractWithShared()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.InteractWithShared"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_InteractWithShared()
-    
+
         async def do_some_similar_things(
             self,
             *,
@@ -1685,7 +1685,7 @@ class InteractWithShared(_fbthrift_python_Client["InteractWithShared.Async", "In
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def __fbthrift_createMyInteraction(
             self #InteractWithShared
         ) -> InteractWithShared_MyInteraction.Async:
@@ -1710,27 +1710,27 @@ class InteractWithShared(_fbthrift_python_Client["InteractWithShared.Async", "In
             self #InteractWithShared
         ) -> InteractWithShared_SharedInteraction.Async:
             return self.__fbthrift_createSharedInteraction()
-    
+
     # pyre-ignore[4]: Missing annotation.
     do_some_similar_things = Async.do_some_similar_things
     async def __aenter__(self) -> "InteractWithShared.Async":
         raise RuntimeError("Do not use __aenter__ directly on client, use get_client instead.")
     async def __aexit__(self) -> None:
         raise RuntimeError("Do not use __aexit__ directly on client, use get_client instead.")
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.InteractWithShared"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_InteractWithShared()
-    
+
         def do_some_similar_things(
             self,
             *,
@@ -1756,33 +1756,33 @@ class InteractWithShared_MyInteraction(_fbthrift_python_Client["InteractWithShar
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.MyInteraction"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_InteractWithShared_MyInteraction()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.MyInteraction"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_InteractWithShared_MyInteraction()
-    
+
         async def frobnicate(
             self,
             *,
@@ -1809,7 +1809,7 @@ class InteractWithShared_MyInteraction(_fbthrift_python_Client["InteractWithShar
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def ping(
             self,
             *,
@@ -1826,7 +1826,7 @@ class InteractWithShared_MyInteraction(_fbthrift_python_Client["InteractWithShar
                 uri_or_name="MyInteraction",
                 rpc_options=rpc_options,
             )
-    
+
         async def truthify(
             self,
             *,
@@ -1845,7 +1845,7 @@ class InteractWithShared_MyInteraction(_fbthrift_python_Client["InteractWithShar
             )
             _fbthrift_resp, _fbthrift_sink_or_stream = _fbthrift_resp
             return _fbthrift_sink_or_stream
-    
+
         async def encode(
             self,
             *,
@@ -1871,8 +1871,8 @@ class InteractWithShared_MyInteraction(_fbthrift_python_Client["InteractWithShar
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     frobnicate = Async.frobnicate
     # pyre-ignore[4]: Missing annotation.
@@ -1885,16 +1885,16 @@ class InteractWithShared_MyInteraction(_fbthrift_python_Client["InteractWithShar
         raise RuntimeError("Do not use __aenter__ directly on client, use get_client instead.")
     async def __aexit__(self) -> None:
         raise RuntimeError("Do not use __aexit__ directly on client, use get_client instead.")
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.MyInteraction"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_InteractWithShared_MyInteraction()
@@ -1903,33 +1903,33 @@ class InteractWithShared_SharedInteraction(_fbthrift_python_Client["InteractWith
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.SharedInteraction"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_InteractWithShared_SharedInteraction()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.SharedInteraction"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_InteractWithShared_SharedInteraction()
-    
+
         async def init(
             self,
             *,
@@ -1953,7 +1953,7 @@ class InteractWithShared_SharedInteraction(_fbthrift_python_Client["InteractWith
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def do_something(
             self,
             *,
@@ -1977,7 +1977,7 @@ class InteractWithShared_SharedInteraction(_fbthrift_python_Client["InteractWith
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         async def tear_down(
             self,
             *,
@@ -1994,8 +1994,8 @@ class InteractWithShared_SharedInteraction(_fbthrift_python_Client["InteractWith
                 uri_or_name="SharedInteraction",
                 rpc_options=rpc_options,
             )
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     init = Async.init
     # pyre-ignore[4]: Missing annotation.
@@ -2006,16 +2006,16 @@ class InteractWithShared_SharedInteraction(_fbthrift_python_Client["InteractWith
         raise RuntimeError("Do not use __aenter__ directly on client, use get_client instead.")
     async def __aexit__(self) -> None:
         raise RuntimeError("Do not use __aexit__ directly on client, use get_client instead.")
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.SharedInteraction"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_InteractWithShared_SharedInteraction()
@@ -2027,33 +2027,33 @@ class BoxService(_fbthrift_python_Client["BoxService.Async", "BoxService.Sync"])
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.BoxService"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_BoxService()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.BoxService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_BoxService()
-    
+
         async def getABoxSession(
             self,
             req: _fbthrift__test__fixtures__interactions__module__thrift_types.ShouldBeBoxed,
@@ -2081,7 +2081,7 @@ class BoxService(_fbthrift_python_Client["BoxService.Async", "BoxService.Sync"])
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
+
         def __fbthrift_createBoxedInteraction(
             self #BoxService
         ) -> BoxService_BoxedInteraction.Async:
@@ -2094,23 +2094,23 @@ class BoxService(_fbthrift_python_Client["BoxService.Async", "BoxService.Sync"])
             self #BoxService
         ) -> BoxService_BoxedInteraction.Async:
             return self.__fbthrift_createBoxedInteraction()
-    
+
     # pyre-ignore[4]: Missing annotation.
     getABoxSession = Async.getABoxSession
     async def __aenter__(self) -> "BoxService.Async":
         raise RuntimeError("Do not use __aenter__ directly on client, use get_client instead.")
     async def __aexit__(self) -> None:
         raise RuntimeError("Do not use __aexit__ directly on client, use get_client instead.")
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.BoxService"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_BoxService()
@@ -2119,33 +2119,33 @@ class BoxService_BoxedInteraction(_fbthrift_python_Client["BoxService_BoxedInter
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.BoxedInteraction"
-    
+
     @staticmethod
     def __get_thrift_uri__() -> _typing.Optional[str]:
         return None
-    
+
     @staticmethod
     def __get_thrift_unstructured_annotations_DEPRECATED__() -> _typing.Mapping[str, str]:
         return {
         }
-    
+
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
         return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_BoxService_BoxedInteraction()
-    
+
     class Async(_fbthrift_python_AsyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.BoxedInteraction"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_BoxService_BoxedInteraction()
-    
+
         async def getABox(
             self,
             *,
@@ -2169,24 +2169,24 @@ class BoxService_BoxedInteraction(_fbthrift_python_Client["BoxService_BoxedInter
                 _fbthrift_python_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-    
-    
+
+
     # pyre-ignore[4]: Missing annotation.
     getABox = Async.getABox
     async def __aenter__(self) -> "BoxService_BoxedInteraction.Async":
         raise RuntimeError("Do not use __aenter__ directly on client, use get_client instead.")
     async def __aexit__(self) -> None:
         raise RuntimeError("Do not use __aexit__ directly on client, use get_client instead.")
-    
+
     class Sync(_fbthrift_python_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
             return "module.BoxedInteraction"
-    
+
         @staticmethod
         def __get_thrift_uri__() -> _typing.Optional[str]:
             return None
-    
+
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return _fbthrift__test__fixtures__interactions__module__thrift_metadata.gen_metadata_service_BoxService_BoxedInteraction()

@@ -200,7 +200,7 @@ cdef cmap[string,string] Map__string_string__make_instance(object items) except 
             c_key = key.encode('UTF-8')
             if not isinstance(item, str):
                 raise TypeError(f"{item!r} is not of type str")
-    
+
             c_inst[c_key] = item.encode('UTF-8')
         return cmove(c_inst)
 
@@ -215,7 +215,7 @@ cdef cmap[string,_module_cbindings.cSimpleStruct] Map__string_SimpleStruct__make
             c_key = key.encode('UTF-8')
             if not isinstance(item, _module_types.SimpleStruct):
                 raise TypeError(f"{item!r} is not of type _module_types.SimpleStruct")
-    
+
             c_inst[c_key] = __deref_const[_module_cbindings.cSimpleStruct](_module_thrift_converter.SimpleStruct_convert_to_cpp(item))
         return cmove(c_inst)
 
@@ -231,7 +231,7 @@ cdef cmap[string,cint16_t] Map__string_i16__make_instance(object items) except *
             if not isinstance(item, int):
                 raise TypeError(f"{item!r} is not of type int")
             item = <cint16_t> item
-    
+
             c_inst[c_key] = item
         return cmove(c_inst)
 
@@ -259,7 +259,7 @@ cdef cmap[string,cint32_t] Map__string_i32__make_instance(object items) except *
             if not isinstance(item, int):
                 raise TypeError(f"{item!r} is not of type int")
             item = <cint32_t> item
-    
+
             c_inst[c_key] = item
         return cmove(c_inst)
 
@@ -276,7 +276,7 @@ cdef cmap[string,cmap[string,cint32_t]] Map__string_Map__string_i32__make_instan
                 raise TypeError("None is not of type _typing.Mapping[str, int]")
             if not isinstance(item, _module_types.Map__string_i32):
                 item = _module_types.Map__string_i32(item)
-    
+
             c_inst[c_key] = Map__string_i32__make_instance(item)
         return cmove(c_inst)
 
@@ -305,7 +305,7 @@ cdef cmap[string,vector[_module_cbindings.cSimpleStruct]] Map__string_List__Simp
                 raise TypeError("None is not of type _typing.Sequence[_module_types.SimpleStruct]")
             if not isinstance(item, _module_types.List__SimpleStruct):
                 item = _module_types.List__SimpleStruct(item)
-    
+
             c_inst[c_key] = List__SimpleStruct__make_instance(item)
         return cmove(c_inst)
 
@@ -393,7 +393,7 @@ cdef _module_cbindings._std_unordered_map[cint32_t,cint32_t] _std_unordered_map_
             if not isinstance(item, int):
                 raise TypeError(f"{item!r} is not of type int")
             item = <cint32_t> item
-    
+
             c_inst[c_key] = item
         return cmove(c_inst)
 
@@ -420,7 +420,7 @@ cdef cmap[string,vector[float]] Map__string_List__float__make_instance(object it
                 raise TypeError("None is not of type _typing.Sequence[float]")
             if not isinstance(item, _module_types.List__float):
                 item = _module_types.List__float(item)
-    
+
             c_inst[c_key] = List__float__make_instance(item)
         return cmove(c_inst)
 
@@ -459,7 +459,7 @@ cdef _module_cbindings._MyType _MyType__Map__i32_i32__make_instance(object items
             if not isinstance(item, int):
                 raise TypeError(f"{item!r} is not of type int")
             item = <cint32_t> item
-    
+
             c_inst[c_key] = item
         return cmove(c_inst)
 
@@ -498,7 +498,7 @@ cdef _module_cbindings._py3_simple_AdaptedMap _py3_simple_AdaptedMap__Map__i32_i
             if not isinstance(item, int):
                 raise TypeError(f"{item!r} is not of type int")
             item = <cint32_t> item
-    
+
             c_inst[c_key] = item
         return cmove(c_inst)
 
@@ -513,7 +513,7 @@ cdef cmap[cint32_t,double] Map__i32_double__make_instance(object items) except *
             c_key = <cint32_t> key
             if not isinstance(item, (float, int)):
                 raise TypeError(f"{item!r} is not of type float")
-    
+
             c_inst[c_key] = item
         return cmove(c_inst)
 
@@ -541,7 +541,7 @@ cdef cmap[_module_cbindings.cAnEnumRenamed,cint32_t] Map__AnEnumRenamed_i32__mak
             if not isinstance(item, int):
                 raise TypeError(f"{item!r} is not of type int")
             item = <cint32_t> item
-    
+
             c_inst[c_key] = item
         return cmove(c_inst)
 

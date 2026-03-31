@@ -159,7 +159,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
     public static com.facebook.thrift.payload.Reader<MyUnion> asReader() {
       return MyUnion::read0;
     }
-    
+
     public static MyUnion read0(TProtocol oprot) throws TException {
       MyUnion res = new MyUnion();
       res.value = null;

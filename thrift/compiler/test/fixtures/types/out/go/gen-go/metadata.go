@@ -315,11 +315,11 @@ var (
                                                 Key: &metadata.ThriftConstValue{
                                                 CvString: new("noop_annotation"),
                                             },
-                                            
+
                                                 Value: &metadata.ThriftConstValue{
                                                 CvString: new("1"),
                                             },
-                                            
+
                                             },
                                         },
                                     },
@@ -354,11 +354,11 @@ var (
                                                 Key: &metadata.ThriftConstValue{
                                                 CvString: new("noop_annotation"),
                                             },
-                                            
+
                                                 Value: &metadata.ThriftConstValue{
                                                 CvString: new("1"),
                                             },
-                                            
+
                                             },
                                         },
                                     },
@@ -549,11 +549,11 @@ var (
                                                 Key: &metadata.ThriftConstValue{
                                                 CvString: new("cpp.use_allocator"),
                                             },
-                                            
+
                                                 Value: &metadata.ThriftConstValue{
                                                 CvString: new("1"),
                                             },
-                                            
+
                                             },
                                         },
                                     },
@@ -588,11 +588,11 @@ var (
                                                 Key: &metadata.ThriftConstValue{
                                                 CvString: new("cpp.use_allocator"),
                                             },
-                                            
+
                                                 Value: &metadata.ThriftConstValue{
                                                 CvString: new("1"),
                                             },
-                                            
+
                                             },
                                         },
                                     },
@@ -635,11 +635,11 @@ var (
                                                 Key: &metadata.ThriftConstValue{
                                                 CvString: new("cpp.use_allocator"),
                                             },
-                                            
+
                                                 Value: &metadata.ThriftConstValue{
                                                 CvString: new("1"),
                                             },
-                                            
+
                                             },
                                         },
                                     },
@@ -674,11 +674,11 @@ var (
                                                 Key: &metadata.ThriftConstValue{
                                                 CvString: new("cpp.use_allocator"),
                                             },
-                                            
+
                                                 Value: &metadata.ThriftConstValue{
                                                 CvString: new("1"),
                                             },
-                                            
+
                                             },
                                         },
                                     },
@@ -713,11 +713,11 @@ var (
                                                 Key: &metadata.ThriftConstValue{
                                                 CvString: new("cpp.use_allocator"),
                                             },
-                                            
+
                                                 Value: &metadata.ThriftConstValue{
                                                 CvString: new("1"),
                                             },
-                                            
+
                                             },
                                         },
                                     },
@@ -963,11 +963,11 @@ var (
                                         Key: &metadata.ThriftConstValue{
                                         CvString: new("cpp.virtual"),
                                     },
-                                    
+
                                         Value: &metadata.ThriftConstValue{
                                         CvString: new("1"),
                                     },
-                                    
+
                                     },
                                 },
                             },
@@ -1219,11 +1219,11 @@ var (
                                         Key: &metadata.ThriftConstValue{
                                         CvString: new("cpp.noncomparable"),
                                     },
-                                    
+
                                         Value: &metadata.ThriftConstValue{
                                         CvString: new("1"),
                                     },
-                                    
+
                                     },
                                 },
                             },
@@ -1250,11 +1250,11 @@ var (
                                         Key: &metadata.ThriftConstValue{
                                         CvString: new("cpp.noncomparable"),
                                     },
-                                    
+
                                         Value: &metadata.ThriftConstValue{
                                         CvString: new("1"),
                                     },
-                                    
+
                                     },
                                 },
                             },
@@ -1593,11 +1593,11 @@ var (
                                         Key: &metadata.ThriftConstValue{
                                         CvString: new("cpp.allocator"),
                                     },
-                                    
+
                                         Value: &metadata.ThriftConstValue{
                                         CvString: new("some_allocator"),
                                     },
-                                    
+
                                     },
                                 },
                             },
@@ -1636,11 +1636,11 @@ var (
                                         Key: &metadata.ThriftConstValue{
                                         CvString: new("cpp.allocator"),
                                     },
-                                    
+
                                         Value: &metadata.ThriftConstValue{
                                         CvString: new("some_allocator"),
                                     },
-                                    
+
                                     },
                                 },
                             },
@@ -1820,11 +1820,11 @@ var enumMetadatas = func() []*metadata.ThriftEnum {
                                         Key: &metadata.ThriftConstValue{
                                         CvString: new("cpp.declare_bitwise_ops"),
                                     },
-                                    
+
                                         Value: &metadata.ThriftConstValue{
                                         CvString: new("1"),
                                     },
-                                    
+
                                     },
                                 },
                             },
@@ -1853,11 +1853,11 @@ var enumMetadatas = func() []*metadata.ThriftEnum {
                                         Key: &metadata.ThriftConstValue{
                                         CvString: new("cpp.deprecated_enum_unscoped"),
                                     },
-                                    
+
                                         Value: &metadata.ThriftConstValue{
                                         CvString: new("1"),
                                     },
-                                    
+
                                     },
                                 },
                             },
