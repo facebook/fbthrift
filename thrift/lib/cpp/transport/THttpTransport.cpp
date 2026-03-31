@@ -16,6 +16,8 @@
 
 #include <thrift/lib/cpp/transport/THttpTransport.h>
 
+#include <cstdint>
+
 namespace apache::thrift::transport {
 
 using namespace std;
@@ -188,6 +190,11 @@ void THttpTransport::shift() {
 void THttpTransport::refill() {
   uint32_t avail = httpBufSize_ - httpBufLen_;
   if (avail <= (httpBufSize_ / 4)) {
+    if (httpBufSize_ > UINT32_MAX / 2) {
+      throw TTransportException(
+          TTransportException::CORRUPTED_DATA,
+          "HTTP message buffer size overflow");
+    }
     httpBufSize_ *= 2;
     httpBuf_ = (char*)std::realloc(httpBuf_, httpBufSize_ + 1);
     if (httpBuf_ == nullptr) {

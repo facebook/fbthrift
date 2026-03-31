@@ -62,6 +62,11 @@ void THttpParser::getReadBuffer(void** bufReturn, size_t* lenReturn) {
   assert(httpBufLen_ <= httpBufSize_);
   uint32_t avail = httpBufSize_ - httpBufLen_;
   if (avail <= (httpBufSize_ / 4)) {
+    if (httpBufSize_ > UINT32_MAX / 2) {
+      throw TTransportException(
+          TTransportException::CORRUPTED_DATA,
+          "HTTP message buffer size overflow");
+    }
     httpBufSize_ *= 2;
     httpBuf_ = (char*)std::realloc(httpBuf_, httpBufSize_ + 1);
     if (httpBuf_ == nullptr) {
