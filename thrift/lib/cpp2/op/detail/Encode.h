@@ -448,14 +448,21 @@ struct Encode<type::i32_t> {
   }
 };
 
+// NOINLINE: CompactProtocol writeI64 expands to zigzag + varint encoding
+// (~80 bytes of BMI2 pdep inline code for the 10-byte worst case). Without
+// NOINLINE, every i64 field in a struct's write() method gets its own inlined
+// copy, bloating the function and causing icache pressure. Benchmarked across
+// all integer sizes in both struct-with-many-fields and list-of-structs
+// contexts; i64 is the only type where NOINLINE helps structs without hurting
+// containers (i16/i32 varint is smaller so inlining is net positive there).
 template <>
 struct Encode<type::i64_t> {
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, int64_t i) const {
+  FOLLY_NOINLINE uint32_t operator()(Protocol& prot, int64_t i) const {
     return prot.writeI64(i);
   }
   template <typename Protocol>
-  uint32_t operator()(Protocol& prot, uint64_t i) const {
+  FOLLY_NOINLINE uint32_t operator()(Protocol& prot, uint64_t i) const {
     return prot.writeI64(folly::to_signed(i));
   }
 };

@@ -659,6 +659,27 @@ inline T createMixedInt() {
 }
 
 template <>
+inline thrift::benchmark::MixedByte create<thrift::benchmark::MixedByte>() {
+  return createMixedInt<thrift::benchmark::MixedByte>();
+}
+
+template <>
+inline thrift::benchmark::OpMixedByte create<thrift::benchmark::OpMixedByte>() {
+  return createMixedInt<thrift::benchmark::OpMixedByte>();
+}
+
+template <>
+inline thrift::benchmark::MixedShort create<thrift::benchmark::MixedShort>() {
+  return createMixedInt<thrift::benchmark::MixedShort>();
+}
+
+template <>
+inline thrift::benchmark::OpMixedShort
+create<thrift::benchmark::OpMixedShort>() {
+  return createMixedInt<thrift::benchmark::OpMixedShort>();
+}
+
+template <>
 inline thrift::benchmark::MixedInt create<thrift::benchmark::MixedInt>() {
   return createMixedInt<thrift::benchmark::MixedInt>();
 }
@@ -666,6 +687,57 @@ inline thrift::benchmark::MixedInt create<thrift::benchmark::MixedInt>() {
 template <>
 inline thrift::benchmark::OpMixedInt create<thrift::benchmark::OpMixedInt>() {
   return createMixedInt<thrift::benchmark::OpMixedInt>();
+}
+
+template <>
+inline thrift::benchmark::MixedBigInt create<thrift::benchmark::MixedBigInt>() {
+  return createMixedInt<thrift::benchmark::MixedBigInt>();
+}
+
+template <>
+inline thrift::benchmark::OpMixedBigInt
+create<thrift::benchmark::OpMixedBigInt>() {
+  return createMixedInt<thrift::benchmark::OpMixedBigInt>();
+}
+
+template <>
+inline thrift::benchmark::BigListMixedByte
+create<thrift::benchmark::BigListMixedByte>() {
+  std::vector<thrift::benchmark::MixedByte> vec(
+      10'000, create<thrift::benchmark::MixedByte>());
+  thrift::benchmark::BigListMixedByte d;
+  d.lst() = std::move(vec);
+  return d;
+}
+
+template <>
+inline thrift::benchmark::OpBigListMixedByte
+create<thrift::benchmark::OpBigListMixedByte>() {
+  std::vector<thrift::benchmark::OpMixedByte> vec(
+      10'000, create<thrift::benchmark::OpMixedByte>());
+  thrift::benchmark::OpBigListMixedByte d;
+  d.lst() = std::move(vec);
+  return d;
+}
+
+template <>
+inline thrift::benchmark::BigListMixedShort
+create<thrift::benchmark::BigListMixedShort>() {
+  std::vector<thrift::benchmark::MixedShort> vec(
+      10'000, create<thrift::benchmark::MixedShort>());
+  thrift::benchmark::BigListMixedShort d;
+  d.lst() = std::move(vec);
+  return d;
+}
+
+template <>
+inline thrift::benchmark::OpBigListMixedShort
+create<thrift::benchmark::OpBigListMixedShort>() {
+  std::vector<thrift::benchmark::OpMixedShort> vec(
+      10'000, create<thrift::benchmark::OpMixedShort>());
+  thrift::benchmark::OpBigListMixedShort d;
+  d.lst() = std::move(vec);
+  return d;
 }
 
 template <>
@@ -684,6 +756,26 @@ create<thrift::benchmark::OpBigListMixedInt>() {
   std::vector<thrift::benchmark::OpMixedInt> vec(
       10'000, create<thrift::benchmark::OpMixedInt>());
   thrift::benchmark::OpBigListMixedInt d;
+  d.lst() = std::move(vec);
+  return d;
+}
+
+template <>
+inline thrift::benchmark::BigListMixedBigInt
+create<thrift::benchmark::BigListMixedBigInt>() {
+  std::vector<thrift::benchmark::MixedBigInt> vec(
+      10'000, create<thrift::benchmark::MixedBigInt>());
+  thrift::benchmark::BigListMixedBigInt d;
+  d.lst() = std::move(vec);
+  return d;
+}
+
+template <>
+inline thrift::benchmark::OpBigListMixedBigInt
+create<thrift::benchmark::OpBigListMixedBigInt>() {
+  std::vector<thrift::benchmark::OpMixedBigInt> vec(
+      10'000, create<thrift::benchmark::OpMixedBigInt>());
+  thrift::benchmark::OpBigListMixedBigInt d;
   d.lst() = std::move(vec);
   return d;
 }

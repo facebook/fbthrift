@@ -408,6 +408,36 @@ struct LargeMixedSparse {
   100: optional string var100;
 }
 
+struct MixedByte {
+  1: byte var1;
+  2: byte var2;
+  3: byte var3;
+  4: byte var4;
+  5: byte var5;
+  6: byte var6;
+  7: byte var7;
+  8: byte var8;
+  9: byte var9;
+  10: byte varx;
+  11: byte vary;
+  12: byte varz;
+}
+
+struct MixedShort {
+  1: i16 var1;
+  2: i16 var2;
+  3: i16 var3;
+  4: i16 var4;
+  5: i16 var5;
+  6: i16 var6;
+  7: i16 var7;
+  8: i16 var8;
+  9: i16 var9;
+  10: i16 varx;
+  11: i16 vary;
+  12: i16 varz;
+}
+
 struct MixedInt {
   1: i32 var1;
   2: i32 var2;
@@ -423,8 +453,35 @@ struct MixedInt {
   12: i32 varz;
 }
 
+struct MixedBigInt {
+  1: i64 var1;
+  2: i64 var2;
+  3: i64 var3;
+  4: i64 var4;
+  5: i64 var5;
+  6: i64 var6;
+  7: i64 var7;
+  8: i64 var8;
+  9: i64 var9;
+  10: i64 varx;
+  11: i64 vary;
+  12: i64 varz;
+}
+
+struct BigListMixedByte {
+  1: list<MixedByte> lst;
+}
+
+struct BigListMixedShort {
+  1: list<MixedShort> lst;
+}
+
 struct BigListMixedInt {
   1: list<MixedInt> lst;
+}
+
+struct BigListMixedBigInt {
+  1: list<MixedBigInt> lst;
 }
 
 struct ComplexStruct {
@@ -870,6 +927,38 @@ struct OpLargeMixedSparse {
 }
 
 @cpp.UseOpEncode
+struct OpMixedByte {
+  1: byte var1;
+  2: byte var2;
+  3: byte var3;
+  4: byte var4;
+  5: byte var5;
+  6: byte var6;
+  7: byte var7;
+  8: byte var8;
+  9: byte var9;
+  10: byte varx;
+  11: byte vary;
+  12: byte varz;
+}
+
+@cpp.UseOpEncode
+struct OpMixedShort {
+  1: i16 var1;
+  2: i16 var2;
+  3: i16 var3;
+  4: i16 var4;
+  5: i16 var5;
+  6: i16 var6;
+  7: i16 var7;
+  8: i16 var8;
+  9: i16 var9;
+  10: i16 varx;
+  11: i16 vary;
+  12: i16 varz;
+}
+
+@cpp.UseOpEncode
 struct OpMixedInt {
   1: i32 var1;
   2: i32 var2;
@@ -886,8 +975,39 @@ struct OpMixedInt {
 }
 
 @cpp.UseOpEncode
+struct OpMixedBigInt {
+  1: i64 var1;
+  2: i64 var2;
+  3: i64 var3;
+  4: i64 var4;
+  5: i64 var5;
+  6: i64 var6;
+  7: i64 var7;
+  8: i64 var8;
+  9: i64 var9;
+  10: i64 varx;
+  11: i64 vary;
+  12: i64 varz;
+}
+
+@cpp.UseOpEncode
+struct OpBigListMixedByte {
+  1: list<OpMixedByte> lst;
+}
+
+@cpp.UseOpEncode
+struct OpBigListMixedShort {
+  1: list<OpMixedShort> lst;
+}
+
+@cpp.UseOpEncode
 struct OpBigListMixedInt {
   1: list<OpMixedInt> lst;
+}
+
+@cpp.UseOpEncode
+struct OpBigListMixedBigInt {
+  1: list<OpMixedBigInt> lst;
 }
 
 @cpp.UseOpEncode

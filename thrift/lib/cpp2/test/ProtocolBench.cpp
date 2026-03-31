@@ -160,7 +160,10 @@ constexpr SerializerMethod getSerializerMethod(std::string_view prefix) {
   M(Prefix, proto, LargeBinary)        \
   M(Prefix, proto, Mixed)              \
   M(Prefix, proto, MixedUnion)         \
+  M(Prefix, proto, MixedByte)           \
+  M(Prefix, proto, MixedShort)         \
   M(Prefix, proto, MixedInt)           \
+  M(Prefix, proto, MixedBigInt)        \
   M(Prefix, proto, LargeMixed)         \
   M(Prefix, proto, LargeMixedSparse)   \
   M(Prefix, proto, SmallListInt)       \
@@ -171,7 +174,10 @@ constexpr SerializerMethod getSerializerMethod(std::string_view prefix) {
   M(Prefix, proto, BigListFloat)       \
   M(Prefix, proto, BigListDouble)      \
   M(Prefix, proto, BigListMixed)       \
+  M(Prefix, proto, BigListMixedByte)   \
+  M(Prefix, proto, BigListMixedShort)  \
   M(Prefix, proto, BigListMixedInt)    \
+  M(Prefix, proto, BigListMixedBigInt) \
   M(Prefix, proto, LargeListMixed)     \
   M(Prefix, proto, LargeSetInt)        \
   M(Prefix, proto, UnorderedSetInt)    \
