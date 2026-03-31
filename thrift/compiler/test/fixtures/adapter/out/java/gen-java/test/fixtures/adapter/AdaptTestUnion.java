@@ -253,7 +253,7 @@ public final class AdaptTestUnion implements com.facebook.thrift.payload.ThriftS
         oprot.writeFieldBegin(CUSTOM_FIELD_DESC);
         byte[] _iter0 = (byte[])this.value;
 
-        oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
+        org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter0);
         oprot.writeFieldEnd();
         break;
       }

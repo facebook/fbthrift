@@ -376,7 +376,7 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
               }
               {
                 byte[] _iter2 = _iter1.getValue();
-                oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter2));
+                org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter2);
               }
             }
             oprot.writeMapEnd();
@@ -395,7 +395,7 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
               }
               {
                 byte[] _iter2 = _iter1.getValue();
-                oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter2));
+                org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter2);
               }
             }
             oprot.writeMapEnd();

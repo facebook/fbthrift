@@ -352,7 +352,7 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
       java.nio.ByteBuffer _iter0 = this.binaryTestBuffer;
       if (_iter0 != null) {
         oprot.writeFieldBegin(BINARY_TEST_BUFFER_FIELD_DESC);
-        oprot.writeBinary(_iter0);
+        org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter0);
         oprot.writeFieldEnd();
       }
       }

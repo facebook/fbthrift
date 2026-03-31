@@ -1134,7 +1134,7 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
       byte[] _iter0 = this.myBinaryDFset;
       if (_iter0 != null) {
         oprot.writeFieldBegin(MY_BINARY_DFSET_FIELD_DESC);
-        oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
+        org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter0);
         oprot.writeFieldEnd();
       }
       }
@@ -1142,7 +1142,7 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
       byte[] _iter0 = this.myBinary;
       if (_iter0 != null) {
         oprot.writeFieldBegin(MY_BINARY_FIELD_DESC);
-        oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
+        org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter0);
         oprot.writeFieldEnd();
       }
       }

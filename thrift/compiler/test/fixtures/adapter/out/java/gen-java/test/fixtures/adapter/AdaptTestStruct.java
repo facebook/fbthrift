@@ -476,7 +476,7 @@ public final class AdaptTestStruct implements com.facebook.thrift.payload.Thrift
       byte[] _iter0 = this.custom;
       if (_iter0 != null) {
         oprot.writeFieldBegin(CUSTOM_FIELD_DESC);
-        oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
+        org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter0);
         oprot.writeFieldEnd();
       }
       }
@@ -532,7 +532,7 @@ public final class AdaptTestStruct implements com.facebook.thrift.payload.Thrift
       byte[] _iter0 = this.binaryData;
       if (_iter0 != null) {
         oprot.writeFieldBegin(BINARY_DATA_FIELD_DESC);
-        oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
+        org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter0);
         oprot.writeFieldEnd();
       }
       }

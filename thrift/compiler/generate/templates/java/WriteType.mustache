@@ -22,13 +22,13 @@
   }}{{/type:isAdapterSet?}}{{!
   }}{{^type:isAdapterSet?}}{{!
     }}{{#type:isBinaryString?}}{{!
-      }}{{^field:hasAdapterOrWrapper?}}oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter{{field:prevNestedDepth}}));{{/field:hasAdapterOrWrapper?}}{{!
+      }}{{^field:hasAdapterOrWrapper?}}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter{{field:prevNestedDepth}});{{/field:hasAdapterOrWrapper?}}{{!
       }}{{#field:hasAdapterOrWrapper?}}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter{{field:prevNestedDepth}});{{/field:hasAdapterOrWrapper?}}{{!
     }}{{/type:isBinaryString?}}{{!
     }}{{^type:isBinaryString?}}{{!
       }}{{#type:javaType}}{{!
         }}{{#type:binary?}}{{!
-          }}{{^field:hasAdapterOrWrapper?}}oprot.writeBinary(_iter{{field:prevNestedDepth}});{{/field:hasAdapterOrWrapper?}}{{!
+          }}{{^field:hasAdapterOrWrapper?}}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter{{field:prevNestedDepth}});{{/field:hasAdapterOrWrapper?}}{{!
           }}{{#field:hasAdapterOrWrapper?}}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter{{field:prevNestedDepth}});{{/field:hasAdapterOrWrapper?}}{{!
         }}{{/type:binary?}}{{!
         }}{{^type:binary?}}{{!
@@ -107,7 +107,7 @@
       }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, {{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=field:isNested? depth=field:prevNestedDepth}});{{!
     }}{{/type:isAdapterSet?}}{{!
     }}{{^type:isAdapterSet?}}{{!
-      }}oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter{{field:prevNestedDepth}}));{{!
+      }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter{{field:prevNestedDepth}});{{!
     }}{{/type:isAdapterSet?}}{{!
   }}{{/field:hasAdapterOrWrapper?}}{{!
   }}{{#field:hasAdapterOrWrapper?}}{{!
@@ -122,7 +122,7 @@
         }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, {{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=field:isNested? depth=field:prevNestedDepth}});{{!
       }}{{/type:isAdapterSet?}}{{!
       }}{{^type:isAdapterSet?}}{{!
-        }}oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter{{field:prevNestedDepth}}));{{!
+        }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter{{field:prevNestedDepth}});{{!
       }}{{/type:isAdapterSet?}}{{!
     }}{{/field:hasAdapterOrWrapper?}}{{!
     }}{{#field:hasAdapterOrWrapper?}}{{!

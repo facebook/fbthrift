@@ -1303,7 +1303,7 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
       
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_iter0)) {
         oprot.writeFieldBegin(TERSE_BINARY_FIELD_FIELD_DESC);
-        oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
+        org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter0);
         oprot.writeFieldEnd();
       }
       }
@@ -1445,7 +1445,7 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
       byte[] _iter0 = this.binaryField;
       if (_iter0 != null) {
         oprot.writeFieldBegin(BINARY_FIELD_FIELD_DESC);
-        oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
+        org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter0);
         oprot.writeFieldEnd();
       }
       }
