@@ -88,18 +88,18 @@ cdef class __{{struct.name}}_FieldsSetter(__StructFieldsSetter):
             return
         {{#if (not field.type.container?)}}
           {{#if field.type.enum?}}
-        if not isinstance(_fbthrift_value, _fbthrift_BadEnum) and not isinstance(_fbthrift_value, {{#partial types.python_type type=field.type}}):
-            raise TypeError(f'field {{field.py_name}} value: {repr(_fbthrift_value)} is not of the enum type { {{#partial types.python_type type=field.type}} }.')
+        if not isinstance(_fbthrift_value, _fbthrift_BadEnum) and not isinstance(_fbthrift_value, {{#partial types.field_python_type field=field}}):
+            raise TypeError(f'field {{field.py_name}} value: {repr(_fbthrift_value)} is not of the enum type { {{#partial types.field_python_type field=field}} }.')
           {{#else}}
-        if not isinstance(_fbthrift_value, {{#partial types.python_is_instance_type type=field.type}}):
+        if not isinstance(_fbthrift_value, {{#partial types.field_python_is_instance_type field=field}}):
             {{#if field.type.structured?}}
-            _fbthrift_value = _from_python_or_raise(_fbthrift_value, "{{field.py_name}}", {{#partial types.python_is_instance_type type=field.type}})
+            _fbthrift_value = _from_python_or_raise(_fbthrift_value, "{{field.py_name}}", {{#partial types.field_python_is_instance_type field=field}})
             {{#else}}
-            raise TypeError(f'{{field.py_name}} is not a { {{#partial types.python_type type=field.type}} !r}.')
+            raise TypeError(f'{{field.py_name}} is not a { {{#partial types.field_python_type field=field}} !r}.')
             {{/if field.type.structured?}}
             {{#if field.type.integer?}}
         {{! inject cython int overflow checks }}
-        _fbthrift_value = <{{#partial types.cython_python_type type=field.type}}> _fbthrift_value
+        _fbthrift_value = <{{#partial types.field_cython_python_type field=field}}> _fbthrift_value
             {{/if field.type.integer?}}
           {{/if field.type.enum?}}
         {{/if (not field.type.container?)}}
@@ -110,7 +110,7 @@ cdef class __{{struct.name}}_FieldsSetter(__StructFieldsSetter):
         deref(self._struct_cpp_obj).{{field.py_name}}_ref().assign({{#partial types.cython_field_value_for_assignment field=field}})
           {{#else}}
         assign_{{#if field.unique_ref?}}unique{{#else if field.shared_ref?}}shared{{#else if field.shared_const_ref?}}shared_const{{/if}}{{!
-            }}_ptr[{{#partial types.cython_cpp_type type=field.type}}](deref(self._struct_cpp_obj).{{field.py_name}}_ref(), {{#partial types.cython_field_value_for_assignment field=field}})
+            }}_ptr[{{#partial types.field_cython_cpp_type field=field}}](deref(self._struct_cpp_obj).{{field.py_name}}_ref(), {{#partial types.cython_field_value_for_assignment field=field}})
           {{/if field.has_ref_accessor?}}
       {{/each}}
 

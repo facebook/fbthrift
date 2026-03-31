@@ -103,7 +103,7 @@ def get_reflection__{{struct.name}}() -> __StructSpec:
             id={{field.id}},
             name="{{field.name}}",
             py_name="{{field.py_name}}",
-            type={{#partial types.python_type type=field.type}},
+            type={{#partial types.field_python_type field=field}},
             kind={{#partial thrift_number_type type=field.type}},
             qualifier=__Qualifier.{{!
                 }}{{#if field.required?}}REQUIRED{{!

@@ -64,7 +64,7 @@ class {{service.name}}ClientWrapper : {{!
 {{#each service.supportedFunctions as |function|}}
     folly::Future<{{#partial clients.cpp_return_type function=function}}> {{function.cpp_name}}(
       apache::thrift::RpcOptions& rpcOptions{{#each function.params.fields as |field|}},
-      {{#partial types.cpp_value_type type=field.type}} arg_{{field.py_name}}{{/each}});
+      {{#partial types.field_cpp_value_type field=field}} arg_{{field.py_name}}{{/each}});
 {{/each}}
 {{#each service.supportedInteractions as |interaction|}}
 
@@ -78,7 +78,7 @@ class {{service.name}}ClientWrapper : {{!
         {{#each interaction.supportedFunctions as |function|}}
         folly::Future<{{#partial clients.cpp_return_type function=function}}> {{function.cpp_name}}(
           apache::thrift::RpcOptions& rpcOptions{{#each function.params.fields as |field|}},
-          {{#partial types.cpp_value_type type=field.type}} arg_{{field.py_name}}{{/each}});
+          {{#partial types.field_cpp_value_type field=field}} arg_{{field.py_name}}{{/each}});
         {{/each}}
     };
 {{/each}}

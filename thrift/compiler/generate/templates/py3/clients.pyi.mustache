@@ -52,7 +52,7 @@ class {{service.name}}({{#let parent = service.extends}}{{#if (object.notnull? p
   {{#each service.supportedFunctions as |function|}}
     async def {{function.name}}(
         self{{#each function.params.fields as |field|}},
-        {{field.py_name}}: {{#partial pep484.type_name type=field.type}}{{/each}},
+        {{field.py_name}}: {{#partial pep484.field_type_name field=field}}{{/each}},
         *,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> {{#if function.stream?}}{{#partial clients.stream_response_class_name function=function}}{{!
@@ -76,7 +76,7 @@ class {{service.name}}_{{interaction.name}}(thrift.py3.client.Client):
     {{#each interaction.supportedFunctions as |function|}}
     async def {{function.name}}(
         self{{#each function.params.fields as |field|}},
-        {{field.py_name}}: {{#partial pep484.type_name type=field.type}}{{/each}},
+        {{field.py_name}}: {{#partial pep484.field_type_name field=field}}{{/each}},
         *,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> {{#if function.stream?}}{{#partial clients.stream_response_class_name function=function}}{{!

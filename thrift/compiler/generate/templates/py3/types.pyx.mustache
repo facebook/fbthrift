@@ -259,7 +259,7 @@ cdef class {{struct.name}}(thrift.py3.types.Union):
         self, *{{#each struct.py3_fields as |field|}},
         {{#if (not field.type.structured?)}}{{!
             }}{{#if field.type.cythonTypeNoneable?}}{{!
-                }}{{#partial types.cython_python_type type=field.type}} {{!
+                }}{{#partial types.field_cython_python_type field=field}} {{!
             }}{{/if field.type.cythonTypeNoneable?}}{{!
         }}{{/if (not field.type.structured?)}}{{!
             }}{{field.py_name}}=None{{!
@@ -269,17 +269,17 @@ cdef class {{struct.name}}(thrift.py3.types.Union):
           {{#if (not field.type.container?)}}
             {{#if (and (not field.type.cythonTypeNoneable?) (not field.type.structured?))}}
         if {{field.py_name}} is not None:
-            if not isinstance({{field.py_name}}, {{#partial types.python_is_instance_type type=field.type}}):
-                raise TypeError(f'{{field.py_name}} is not a { {{#partial types.python_type type=field.type}} !r}.')
+            if not isinstance({{field.py_name}}, {{#partial types.field_python_is_instance_type field=field}}):
+                raise TypeError(f'{{field.py_name}} is not a { {{#partial types.field_python_type field=field}} !r}.')
 
             {{/if (and (not field.type.cythonTypeNoneable?) (not field.type.structured?))}}
             {{#if field.type.integer?}}
             {{! inject cython int overflow checks }}
-            {{field.py_name}} = <{{#partial types.cython_python_type type=field.type}}> {{field.py_name}}
+            {{field.py_name}} = <{{#partial types.field_cython_python_type field=field}}> {{field.py_name}}
 
             {{/if field.type.integer?}}
             {{#if field.type.structured?}}
-        {{field.py_name}} = _ensure_py3_or_raise({{field.py_name}}, "{{field.py_name}}", {{#partial types.python_is_instance_type type=field.type}})
+        {{field.py_name}} = _ensure_py3_or_raise({{field.py_name}}, "{{field.py_name}}", {{#partial types.field_python_is_instance_type field=field}})
 
             {{/if field.type.structured?}}
           {{/if (not field.type.container?)}}
@@ -300,20 +300,20 @@ cdef class {{struct.name}}(thrift.py3.types.Union):
             return {{struct.name}}()
         {{! We do this with strict types first, then we will do int to float conversion}}
         {{#each struct.py3_fields as |field|}}
-        if isinstance(value, {{#partial types.python_type type=field.type}}):
+        if isinstance(value, {{#partial types.field_python_type field=field}}):
           {{#if field.type.number?}}
             if not isinstance(value, pbool):
                 try:
             {{#if field.type.integer?}}
                     {{! Cython does OverflowError checking for us }}
-                    <{{#partial types.cython_python_type type=field.type}}> value
+                    <{{#partial types.field_cython_python_type field=field}}> value
             {{/if field.type.integer?}}
             {{#if field.type.float?}}
                     {{! This will probably fail most of the time
                         if it does then when we try again to use floating point
                         below it will just accept the loss of precision,
                         or just maybe there is a double field comming up }}
-                    if <{{#partial types.cython_python_type type=field.type}}>value != value:
+                    if <{{#partial types.field_cython_python_type field=field}}>value != value:
                         raise OverflowError
             {{/if field.type.float?}}
                     return {{struct.name}}({{field.py_name}}=value)
@@ -325,9 +325,9 @@ cdef class {{struct.name}}(thrift.py3.types.Union):
         {{/each}}
         {{#each struct.py3_fields as |field|}}
           {{#if field.type.floating_point?}}
-        if isinstance(value, {{#partial types.python_is_instance_type type=field.type}}):
+        if isinstance(value, {{#partial types.field_python_is_instance_type field=field}}):
             try:
-                <{{#partial types.cython_python_type type=field.type}}> value
+                <{{#partial types.field_cython_python_type field=field}}> value
                 return {{struct.name}}({{field.py_name}}=value)
             except OverflowError:
                 pass
@@ -338,7 +338,7 @@ cdef class {{struct.name}}(thrift.py3.types.Union):
     @staticmethod
     cdef unique_ptr[{{program.module_path_for_alias}}_cbindings.{{#partial types.c_binding node=struct}}] _make_instance(
         {{program.module_path_for_alias}}_cbindings.{{#partial types.c_binding node=struct}}* base_instance{{#each struct.py3_fields as |field|}},
-        {{#if field.type.cythonTypeNoneable?}}{{#partial types.cython_python_type type=field.type}}{{#else}}object{{/if}} {{field.py_name}}{{!
+        {{#if field.type.cythonTypeNoneable?}}{{#partial types.field_cython_python_type field=field}}{{#else}}object{{/if}} {{field.py_name}}{{!
         }}{{/each}}
     ) except *:
         cdef unique_ptr[{{program.module_path_for_alias}}_cbindings.{{#partial types.c_binding node=struct}}] c_inst = make_unique[{{program.module_path_for_alias}}_cbindings.{{#partial types.c_binding node=struct}}]()

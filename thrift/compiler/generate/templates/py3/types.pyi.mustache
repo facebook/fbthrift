@@ -52,7 +52,7 @@ import {{program.module_path}}.thrift_types
 {{#each program.py3_visible_structured_definitions as |struct|}}
   {{#if struct.union?}}
 _{{struct.name}}ValueType = _typing.Union[None, {{#each (array.enumerate struct.py3_fields with_last=true) as |i field is_last?|}}{{!
-}}{{#partial pep484.type_name type=field.type}}{{#if (not is_last?)}}, {{/if}}{{/each}}]
+}}{{#partial pep484.field_type_name field=field}}{{#if (not is_last?)}}, {{/if}}{{/each}}]
 
   {{/if struct.union?}}
 class {{struct.name}}({{#partial types.python_struct_class struct=struct}}, _typing.Hashable):
@@ -70,14 +70,14 @@ class {{struct.name}}({{#partial types.python_struct_class struct=struct}}, _typ
 
     def __init__(
         self, {{#each (array.enumerate struct.py3_fields with_first=true) as |i field is_first_field?|}}{{#if is_first_field?}}*{{/if}},
-        {{field.py_name}}: _typing.Optional[{{#partial pep484.type_name type=field.type}}]=None{{/each}}
+        {{field.py_name}}: _typing.Optional[{{#partial pep484.field_type_name field=field}}]=None{{/each}}
     ) -> None: ...
 
     {{#if struct.struct?}}
     {{! If this structured is specifically a *struct*}}
     def __call__(
         self, {{#each (array.enumerate struct.py3_fields with_first=true) as |i field is_first_field?|}}{{#if is_first_field?}}*{{/if}},
-        {{field.py_name}}: _typing.Union[{{#partial pep484.type_name type=field.type}}, None]=None{{/each}}
+        {{field.py_name}}: _typing.Union[{{#partial pep484.field_type_name field=field}}, None]=None{{/each}}
     ) -> {{struct.name}}: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['{{struct.name}}'], bytes]]: ...

@@ -68,12 +68,20 @@ _typing.AsyncGenerator[{{#partial type_name type=function.stream.elem_type}}, No
 {{/let partial}}
 
 
+{{! Field-aware type_name: checks iobufWrapper? at field level }}
+{{#let export partial field_type_name |field| captures |type_name|}}
+{{#pragma ignore-newlines}}
+{{#if (and field.has_field_cpp_type? field.type_iobufWrapper?)}}_fbthrift_iobuf.IOBuf
+{{#else}}{{#partial type_name type=field.type}}
+{{/if (and field.has_field_cpp_type? field.type_iobufWrapper?)}}
+{{/let partial}}
+
 {{! The field's thrift-py3 python type, for type annotation purposes only }}
-{{#let export partial field_type |field| captures |type_name|}}
+{{#let export partial field_type |field| captures |field_type_name|}}
 {{#pragma ignore-newlines}}
   {{#if (not field.hasDefaultValue?)}}
-_typing.Optional[{{#partial type_name type=field.type}}]
+_typing.Optional[{{#partial field_type_name field=field}}]
   {{#else}}
-{{#partial type_name type=field.type}}
+{{#partial field_type_name field=field}}
   {{/if (not field.hasDefaultValue?)}}
 {{/let partial}}

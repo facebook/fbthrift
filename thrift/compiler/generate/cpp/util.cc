@@ -305,6 +305,21 @@ bool is_binary_iobuf_unique_ptr(const t_type* type) {
       contains(type_str, "folly::IOBuf");
 }
 
+bool is_binary_iobuf_unique_ptr(const t_field& field) {
+  // Check field-level @cpp.Type annotation first.
+  if (auto* annot = field.find_structured_annotation_or_null(kCppTypeUri)) {
+    if (auto* name =
+            annot->get_value_from_structured_annotation_or_null("name")) {
+      const auto& type_str = name->get_string();
+      return field.type().deref().get_true_type()->is_binary() &&
+          contains(type_str, "std::unique_ptr") &&
+          contains(type_str, "folly::IOBuf");
+    }
+  }
+  // Fall back to type-level check (for typedef-level @cpp.Type).
+  return is_binary_iobuf_unique_ptr(field.type().get_type());
+}
+
 bool field_transitively_refers_to_unique(const t_field* field) {
   switch (gen::cpp::find_ref_type(*field)) {
     case gen::cpp::reference_type::none:

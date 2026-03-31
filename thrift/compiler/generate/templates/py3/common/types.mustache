@@ -179,8 +179,24 @@ object
 {{/let partial}}
 
 
+{{! Field-aware cython_cpp_type: full cython cpp type with custom type override }}
+{{#let export partial field_cython_cpp_type |field| captures |cython_cpp_type_resolved c_binding|}}
+{{#pragma ignore-newlines}}
+{{#if (and field.has_field_cpp_type? field.type_customCppType?)}}
+    {{#if field.type_iobuf?}}
+_fbthrift_iobuf.cIOBuf
+    {{#else if field.type_iobufRef?}}
+unique_ptr[_fbthrift_iobuf.cIOBuf]
+    {{#else}}
+{{#if field.type_need_cbinding_path?}}{{field.type.program.module_path_for_alias}}_cbindings.{{/if}}{{field.type_cythonCustomType}}
+    {{/if field.type_iobuf?}}
+{{#else}}
+{{#partial cython_cpp_type_resolved type=field.type enable_custom_type_overrides=true}}
+{{/if (and field.has_field_cpp_type? field.type_customCppType?)}}
+{{/let partial}}
+
 {{! Called specifically from types.pyx when initializing the individual attributes on a struct. }}
-{{#let export partial cython_field_value_for_assignment |field| captures |cython_cpp_type cython_python_type container_to_cpp cpp_obj|}}
+{{#let export partial cython_field_value_for_assignment |field| captures |cython_cpp_type field_cython_cpp_type cython_python_type container_to_cpp cpp_obj|}}
 {{#pragma ignore-newlines}}
   {{#let type=field.type}}
   {{! Cast a field to its Cython Python Type if not a container, otherwise create a container type with constructor. }}
@@ -193,12 +209,12 @@ object
     {{/if type.container?}}
   {{/let partial}}
 
-  {{#if type.iobuf?}}
+  {{#if field.type_iobuf?}}
 deref((<_fbthrift_iobuf.IOBuf?>_fbthrift_value).c_clone())
-  {{#else if type.iobufRef?}}
+  {{#else if field.type_iobufRef?}}
 (<_fbthrift_iobuf.IOBuf?>_fbthrift_value).c_clone()
-  {{#else if type.flexibleBinary?}}
-{{#partial cython_cpp_type type=type}}(cmove(<string>_fbthrift_value))
+  {{#else if field.type_flexibleBinary?}}
+{{#partial field_cython_cpp_type field=field}}(cmove(<string>_fbthrift_value))
   {{#else if type.customBinaryType?}}
 {{! BY DESIGN: No output for customBinaryType - this avoids an unnecessary nesting level for (not customBinaryType?) }}
   {{#else if (and field.reference? type.container? field.unique_ref?)}}
@@ -225,7 +241,7 @@ deref((<{{#partial cython_python_type type=type}}?> _fbthrift_value).{{#partial 
 {{#partial container_to_cpp type=type}}(_fbthrift_value)
   {{#else}}
 _fbthrift_value
-  {{/if type.iobuf?}}
+  {{/if field.type_iobuf?}}
 {{/let partial}}
 
 
@@ -591,17 +607,17 @@ by Cython. Complex objects need to be wrapped or decoded appropriately. Structs
 are special because we try to memoize their wrappers on the parent handler
 if they have been previously retrieved. }}
 {{#let export partial cython_struct_getter |field| captures |cpp_obj cython_python_type container_from_cpp python_type cython_field_ref cython_cpp_type_resolved|}}
-  {{#if field.type.iobuf?}}
+  {{#if field.type_iobuf?}}
 if self.__fbthrift_cached_{{field.py_name}} is None:
     self.__fbthrift_cached_{{field.py_name}} = _fbthrift_iobuf.IOBuf.create(ptr_address(deref(self.{{#partial cpp_obj}}).{{#partial cython_field_ref field=field kind="ref"}}), self)
 return self.__fbthrift_cached_{{field.py_name}}
-  {{#else if field.type.iobufRef?}}
+  {{#else if field.type_iobufRef?}}
 if self.__fbthrift_cached_{{field.py_name}} is None:
     if not deref(self.{{#partial cpp_obj}}).{{#partial cython_field_ref field=field kind="value"}}:
         return None
     self.__fbthrift_cached_{{field.py_name}} = _fbthrift_iobuf.IOBuf.create(deref(self.{{#partial cpp_obj}}).{{#partial cython_field_ref field=field kind="value"}}.get(), self)
 return self.__fbthrift_cached_{{field.py_name}}
-  {{#else if field.type.flexibleBinary?}}
+  {{#else if field.type_flexibleBinary?}}
 return (<const char*>deref(self.{{#partial cpp_obj}}).{{#partial cython_field_ref field=field kind="value"}}{{!
     }}.data())[:deref(self.{{#partial cpp_obj}}).{{#partial cython_field_ref field=field kind="value"}}{{!
     }}.size()]
@@ -641,7 +657,7 @@ if self.__fbthrift_cached_{{field.py_name}} is None:
       }}self.{{#partial cpp_obj}}{{!
       }})){{/if field.type.enum?}}
 return self.__fbthrift_cached_{{field.py_name}}
-  {{/if field.type.iobuf?}}
+  {{/if field.type_iobuf?}}
 {{/let partial}}
 
 
@@ -658,7 +674,7 @@ deref(c_inst).set_{{field.py_name}}({{#partial cython_cpp_type type=field.type}}
 deref(c_inst).set_{{field.py_name}}(deref((<{{#partial cython_python_type type=field.type}}?>{{field.py_name}}).{{#partial cpp_obj}}))
     {{/if field.type.container?}}
 {{#else if field.type.string?}}deref(c_inst).set_{{field.py_name}}({{field.py_name}}.encode('UTF-8'))
-{{#else if field.type.iobuf?}}deref(c_inst).set_{{field.py_name}}(deref((<_fbthrift_iobuf.IOBuf?>{{field.py_name}})._this))
+{{#else if field.type_iobuf?}}deref(c_inst).set_{{field.py_name}}(deref((<_fbthrift_iobuf.IOBuf?>{{field.py_name}})._this))
 {{#else if field.type.enum?}}deref(c_inst).set_{{field.py_name}}(<{{#partial cython_cpp_type type=field.type}}><int>{{field.py_name}})
 {{#else if field.type.structured?}}deref(c_inst).set_{{field.py_name}}(deref((<{{#partial cython_python_type type=field.type}}?> {{field.py_name}}).{{#partial cpp_obj}}))
 {{#else if field.type.container?}}deref(c_inst).set_{{field.py_name}}({{#partial container_to_cpp type=field.type}}({{field.py_name}}))
@@ -673,7 +689,7 @@ deref(c_inst).set_{{field.py_name}}(deref((<{{#partial cython_python_type type=f
   {{#let type=field.type}}
 {{#if type.bool?}}<bint>(deref(self.{{#partial cpp_obj}}).get_{{field.py_name}}())
 {{#else if type.string?}}bytes(deref(self.{{#partial cpp_obj}}).get_{{field.py_name}}()).decode('UTF-8')
-{{#else if type.iobuf?}}_fbthrift_iobuf.from_unique_ptr(deref(self.{{#partial cpp_obj}}).get_{{field.py_name}}().clone())
+{{#else if field.type_iobuf?}}_fbthrift_iobuf.from_unique_ptr(deref(self.{{#partial cpp_obj}}).get_{{field.py_name}}().clone())
 {{#else if type.enum?}}translate_cpp_enum_to_python({{#partial python_type type=type}}, <int>deref(self.{{#partial cpp_obj}}).get_{{field.py_name}}())
 {{#else if type.structured?}}{{#partial cython_python_type type=type}}._create_FBTHRIFT_ONLY_DO_NOT_USE(make_shared[{{#partial cython_cpp_type type=type}}](deref(self.{{#partial cpp_obj}}).get_{{field.py_name}}()))
 {{#else if type.container?}}{{#partial container_from_cpp type=type}}(deref(self.{{#partial cpp_obj}}).get_{{field.py_name}}())
@@ -700,4 +716,63 @@ else:
   {{#else}}
 self.py_value = {{#partial union_getter_non_reference_value field=field}}
   {{/if field.reference?}}
+{{/let partial}}
+
+
+{{!
+Field-aware wrapper partials.
+These check field-level @cpp.Type annotations before delegating to the
+type-level partial. Needed because field-level annotations on shared types
+(e.g. binary with @cpp.Type{name="folly::IOBuf"}) are not reflected in the
+type's own properties.
+}}
+
+{{! Field-aware python_type: checks iobufWrapper? at field level }}
+{{#let export partial field_python_type |field| captures |python_type|}}
+{{#pragma ignore-newlines}}
+{{#if (and field.has_field_cpp_type? field.type_iobufWrapper?)}}_fbthrift_iobuf.IOBuf
+{{#else}}{{#partial python_type type=field.type}}
+{{/if (and field.has_field_cpp_type? field.type_iobufWrapper?)}}
+{{/let partial}}
+
+{{! Field-aware cython_python_type: checks iobufWrapper? at field level }}
+{{#let export partial field_cython_python_type |field| captures |cython_python_type|}}
+{{#pragma ignore-newlines}}
+{{#if (and field.has_field_cpp_type? field.type_iobufWrapper?)}}_fbthrift_iobuf.IOBuf
+{{#else}}{{#partial cython_python_type type=field.type}}
+{{/if (and field.has_field_cpp_type? field.type_iobufWrapper?)}}
+{{/let partial}}
+
+{{! Field-aware python_is_instance_type: checks iobufWrapper? at field level }}
+{{#let export partial field_python_is_instance_type |field| captures |python_is_instance_type|}}
+{{#pragma ignore-newlines}}
+{{#if (and field.has_field_cpp_type? field.type_iobufWrapper?)}}_fbthrift_iobuf.IOBuf
+{{#else}}{{#partial python_is_instance_type type=field.type}}
+{{/if (and field.has_field_cpp_type? field.type_iobufWrapper?)}}
+{{/let partial}}
+
+{{! Field-aware cpp_value_type: checks customCppType? at field level }}
+{{#let export partial field_cpp_value_type |field| captures |cpp_value_type|}}
+{{#pragma ignore-newlines}}
+{{#if (and field.has_field_cpp_type? field.type_customCppType?)}}{{field.type_customCppType}}
+{{#else}}{{#partial cpp_value_type type=field.type}}
+{{/if (and field.has_field_cpp_type? field.type_customCppType?)}}
+{{/let partial}}
+
+{{! Field-aware cpp_arg_type: wraps complex types in unique_ptr }}
+{{#let export partial field_cpp_arg_type |field| captures |field_cpp_value_type|}}
+{{#pragma ignore-newlines}}
+{{#let unique_ptr=(or field.type.string_or_binary? field.type.structured? field.type.container?)}}
+{{#if unique_ptr}}std::unique_ptr<{{/if}}
+{{#partial field_cpp_value_type field=field}}
+{{#if unique_ptr}}>{{/if}}
+{{/let partial}}
+
+{{! Field-aware cpp_stack_arg_type: wraps complex types as const refs }}
+{{#let export partial field_cpp_stack_arg_type |field| captures |field_cpp_value_type|}}
+{{#pragma ignore-newlines}}
+{{#let const_ref=(or field.type.string_or_binary? field.type.structured? field.type.container?)}}
+{{#if const_ref}}const {{/if}}
+{{#partial field_cpp_value_type field=field}}
+{{#if const_ref}}&{{/if}}
 {{/let partial}}

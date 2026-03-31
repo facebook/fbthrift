@@ -35,6 +35,10 @@ cdef extern from "{{include}}":
 {{/each}}{{!
 }}{{#each program.custom_cpp_types as |type|}}
 {{> types/custom_type}}
+{{/each}}{{!
+}}{{#each program.field_custom_type_ctypedefs as |entry|}}
+cdef extern from *:
+    ctypedef {{#if entry.flexible_binary?}}bstring{{#else}}{{#partial types.cython_cpp_type_resolved type=entry.type enable_custom_type_overrides=false}}{{/if}} {{entry.cython_name}} "{{entry.cpp_type}}"
 {{/each}}
 
 {{> types/enum_extern }}

@@ -91,6 +91,12 @@ std::string_view get_type(const t_type* type);
 bool is_binary_iobuf_unique_ptr(const t_type* type);
 
 /**
+ * Check if the cpp_type is std::unique_ptr<folly::IOBuf> on a binary field,
+ * checking both the field's type node and the field's own @cpp.Type annotation.
+ */
+bool is_binary_iobuf_unique_ptr(const t_field& field);
+
+/**
  * If the field has cpp.ref/cpp2.ref/cpp.ref_type/cpp2.ref_type.
  */
 // TODO(afuller): Remove by actually inlining function.
@@ -99,7 +105,7 @@ inline bool is_explicit_ref(const t_field* f) {
 }
 
 inline bool is_ref(const t_field* f) {
-  return is_explicit_ref(f) || is_binary_iobuf_unique_ptr(f->type().get_type());
+  return is_explicit_ref(f) || is_binary_iobuf_unique_ptr(*f);
 }
 
 inline bool field_has_isset(const t_field* field) {

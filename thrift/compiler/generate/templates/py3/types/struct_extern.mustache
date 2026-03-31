@@ -25,7 +25,7 @@ wrappers.
 }}
 {{#pragma ignore-newlines}}
 {{#if field.unique_ref?}}unique_ptr[{{#else if field.shared_ref?}}shared_ptr[{{#else if field.shared_const_ref?}}shared_ptr[const {{/if}}
-{{#partial types.cython_cpp_type type=field.type}}
+{{#partial types.field_cython_cpp_type field=field}}
 {{#if (or field.unique_ref? field.shared_ref? field.shared_const_ref?)}}]{{/if}}
 {{/let partial}}
 {{!
@@ -95,7 +95,7 @@ cdef extern from "{{program.include_prefix}}{{program.cpp_gen_path}}/{{program.n
         const {{#partial cython_cpp_struct_field_type field=field}}& get_{{field.py_name}} "get_{{field.cpp_name}}" () const
         {{! Note that the set methods don't take in a shared/unique_ptr, they just take in an object ref,
             but they return the appropriate ptr }}
-        {{#partial cython_cpp_struct_field_type field=field}}& set_{{field.py_name}} "set_{{field.cpp_name}}" (const {{#partial types.cython_cpp_type type=field.type}}&)
+        {{#partial cython_cpp_struct_field_type field=field}}& set_{{field.py_name}} "set_{{field.cpp_name}}" (const {{#partial types.field_cython_cpp_type field=field}}&)
       {{/each}}
     {{/if (not struct.union?)}}
 

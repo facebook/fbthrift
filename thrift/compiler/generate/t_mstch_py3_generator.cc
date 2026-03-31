@@ -22,6 +22,7 @@
 #include <fmt/format.h>
 
 #include <thrift/compiler/ast/t_service.h>
+#include <thrift/compiler/ast/t_typedef.h>
 #include <thrift/compiler/ast/uri.h>
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/cpp/name_resolver.h>
@@ -198,12 +199,26 @@ class py3_generator_context {
       const std::map<std::string, std::string, std::less<>>& compiler_options)
       : root_program_(program), compiler_options_(compiler_options) {}
 
-  cached_type_properties& get_cached_type_props(const t_type* type) const;
+  cached_type_properties& get_cached_type_props(
+      const t_type* type, const t_field* field = nullptr) const;
 
   field_cpp_kind get_field_cpp_kind(const t_field& field) const {
     assert(field_cpp_kinds_.contains(&field));
     return field_cpp_kinds_.at(&field);
   }
+
+  bool has_field_cpp_type_annotation(const t_field& field) const {
+    return field_cpp_type_annotations_.contains(&field);
+  }
+  // Data for generating ctypedefs for shared types (primitives, structs, enums)
+  // with field-level @cpp.Type. These can't go in custom_cpp_types_ because the
+  // shared type pointer would poison container child type rendering.
+  struct field_custom_ctypedef {
+    const t_type* type; // underlying shared type (for base cython type)
+    std::string cython_name; // e.g., "std_uint64_t"
+    std::string cpp_type; // e.g., "std::uint64_t"
+    bool flexible_binary; // binary with non-IOBuf/fbstring custom type
+  };
 
   const py3_structured_context& get_structured_context(
       const t_structured& structured) const {
@@ -233,6 +248,12 @@ class py3_generator_context {
       const t_program& program) const {
     check_root_program(program);
     return custom_cpp_types_;
+  }
+
+  const std::vector<field_custom_ctypedef>& field_custom_ctypedefs(
+      const t_program& program) const {
+    check_root_program(program);
+    return field_custom_ctypedefs_;
   }
 
   const std::map<std::tuple<std::string, bool>, const t_function*>&
@@ -300,7 +321,11 @@ class py3_generator_context {
           is_hidden(static_cast<const t_structured&>(*ctx.parent()))) {
         return;
       }
-      visit_type(&field.type().deref(), /*fromTypeDef=*/false);
+      const t_type* visit_node = &field.type().deref();
+      if (auto* annot = field.find_structured_annotation_or_null(kCppTypeUri)) {
+        field_cpp_type_annotations_[&field] = annot;
+      }
+      visit_type(visit_node, /*fromTypeDef=*/false, /*field=*/&field);
       switch (gen::cpp::find_ref_type(field)) {
         case gen::cpp::reference_type::unique: {
           field_cpp_kinds_[&field] = field_cpp_kind::unique_ptr;
@@ -320,8 +345,7 @@ class py3_generator_context {
           return;
         }
         case gen::cpp::reference_type::none: {
-          field_cpp_kinds_[&field] =
-              cpp2::is_binary_iobuf_unique_ptr(&field.type().deref())
+          field_cpp_kinds_[&field] = cpp2::is_binary_iobuf_unique_ptr(field)
               ? field_cpp_kind::iobuf
               : field_cpp_kind::value;
           return;
@@ -385,11 +409,23 @@ class py3_generator_context {
   std::unordered_map<const t_service*, std::vector<const t_interaction*>>
       supported_interactions_by_service_;
 
+  // Maps fields with @cpp.Type to their annotation.
+  std::unordered_map<const t_field*, const t_const*>
+      field_cpp_type_annotations_;
+
   // These properties are mutable as they are (or contain) caches which must be
   // accessed from a const method context
   mutable cpp_name_resolver name_resolver_;
   mutable std::unordered_map<const t_type*, cached_type_properties>
       type_properties_;
+  // For shared types (primitives, structs, enums) with field-level @cpp.Type,
+  // the type pointer is shared across fields and can't serve as a unique cache
+  // key. field_type_properties_ is keyed by field for field rendering context.
+  mutable std::unordered_map<const t_field*, cached_type_properties>
+      field_type_properties_;
+  // ctypedefs for shared types with field-level @cpp.Type. Stored separately
+  // from custom_cpp_types_ to avoid poisoning container child type rendering.
+  std::vector<field_custom_ctypedef> field_custom_ctypedefs_;
 
   void check_root_program(const t_program& program) const {
     if (&program != root_program_) {
@@ -398,7 +434,10 @@ class py3_generator_context {
     }
   }
 
-  std::string visit_type(const t_type* orig_type, bool fromTypeDef);
+  std::string visit_type(
+      const t_type* orig_type,
+      bool fromTypeDef,
+      const t_field* field = nullptr);
 
   void add_typedef_namespace(const t_type* type) {
     const t_program* prog = type->program();
@@ -419,17 +458,19 @@ class py3_generator_context {
 };
 
 std::string py3_generator_context::visit_type(
-    const t_type* orig_type, bool fromTypeDef) {
+    const t_type* orig_type, bool fromTypeDef, const t_field* field) {
   bool hasPy3EnableCppAdapterAnnot =
       orig_type->has_structured_annotation(kPythonPy3EnableCppAdapterUri);
   auto trueType = orig_type->get_true_type();
   py3_generator_context::cached_type_properties& props =
-      get_cached_type_props(orig_type);
+      get_cached_type_props(orig_type, field);
   const std::string& flatName = props.flat_name();
   // Import all types either beneath a typedef, even if the current type is
   // not directly a typedef
   fromTypeDef = fromTypeDef || orig_type->is<t_typedef>();
   if (flatName.empty()) {
+    // Recursive calls pass nullptr for field — child types should not
+    // inherit the field's @cpp.Type annotation.
     std::string extra;
     if (const t_list* list = trueType->try_as<t_list>()) {
       extra = fmt::format(
@@ -450,31 +491,64 @@ std::string py3_generator_context::visit_type(
     props.set_flat_name(root_program_, trueType, extra);
   }
   assert(!flatName.empty());
+  // For typedef-wrapping-containers with field-level annotations, the
+  // properties live in field_type_properties_ (keyed by field). Propagate
+  // to the type-keyed cache (first field wins via emplace) so that
+  // program-level rendering from container_types_ / custom_templates_ /
+  // custom_cpp_types_ can find the properties without a field parameter.
+  if (field && orig_type->is<t_typedef>() && trueType->is<t_container>() &&
+      field_cpp_type_annotations_.count(field)) {
+    type_properties_.emplace(orig_type, props);
+  }
   // If this type or a parent of this type is a typedef,
   // then add the namespace of the *resolved* type:
   // (parent matters if you have eg. typedef list<list<type>>)
   if (fromTypeDef) {
     add_typedef_namespace(trueType);
   }
+  // For shared types (primitives, structs, enums) with field-level @cpp.Type,
+  // store ctypedef info separately. Using custom_cpp_types_ with a shared type
+  // pointer would poison container child type rendering (the same pointer
+  // is used for unrelated container key/val/elem types).
+  const bool is_shared_field_annot = field &&
+      field_cpp_type_annotations_.count(field) &&
+      !orig_type->is<t_container>() &&
+      !(orig_type->is<t_typedef>() && trueType->is<t_container>());
   if (seen_type_names_.insert(flatName).second) {
+    // When the type has a non-default template from a field-level annotation
+    // and orig_type is a typedef, use orig_type in the type lists so that
+    // rendering lookups via get_cached_type_props find the correct entry
+    // (which is keyed by the typedef node, not the container true_type).
+    const bool use_orig_for_field_annot =
+        orig_type != trueType && !props.is_default_template(trueType);
     if (trueType->is<t_container>()) {
       container_types_.push_back(
-          hasPy3EnableCppAdapterAnnot ? orig_type : trueType);
+          (hasPy3EnableCppAdapterAnnot || use_orig_for_field_annot) ? orig_type
+                                                                    : trueType);
     }
     if (!props.is_default_template(trueType)) {
-      custom_templates_.push_back(trueType);
+      custom_templates_.push_back(
+          use_orig_for_field_annot ? orig_type : trueType);
     }
     if (!props.cpp_type().empty()) {
-      // Use the same pointer as the cache key in get_cached_type_props:
-      // - Adapter types: orig_type (cached by type)
-      // - Container true types: trueType (cached by true_type, unique per
-      //   typedef)
-      // - Non-container true types: orig_type (cached by type, avoids
-      //   polluting shared primitive nodes)
-      custom_cpp_types_.push_back(
-          (!hasPy3EnableCppAdapterAnnot && trueType->is<t_container>())
-              ? trueType
-              : orig_type);
+      if (is_shared_field_annot) {
+        // Generate ctypedef via separate template section to avoid
+        // poisoning container child type rendering.
+        if (!is_iobuf(props.cpp_type()) && !is_iobuf_ref(props.cpp_type())) {
+          field_custom_ctypedefs_.push_back(
+              field_custom_ctypedef{
+                  orig_type,
+                  props.to_cython_type(),
+                  props.cpp_type(),
+                  is_flexible_binary(*trueType, props.cpp_type())});
+        }
+      } else {
+        custom_cpp_types_.push_back(
+            (!hasPy3EnableCppAdapterAnnot && trueType->is<t_container>() &&
+             !use_orig_for_field_annot)
+                ? trueType
+                : orig_type);
+      }
     }
   }
   return flatName;
@@ -710,6 +784,69 @@ class t_mstch_py3_generator : public t_whisker_generator {
     auto def =
         whisker::dsl::prototype_builder<h_field>::extends(std::move(base));
 
+    // Field-level type properties that resolve @cpp.Type annotations from
+    // the field, not just the type. These are used by templates to access
+    // field-aware type information without relying on mutable state.
+    auto get_field_type_props = [this](const t_field& self)
+        -> const py3_generator_context::cached_type_properties& {
+      return context_->get_cached_type_props(&self.type().deref(), &self);
+    };
+    def.property("has_field_cpp_type?", [this](const t_field& self) {
+      return context_->has_field_cpp_type_annotation(self);
+    });
+    def.property("type_iobuf?", [get_field_type_props](const t_field& self) {
+      return is_iobuf(get_field_type_props(self).cpp_type());
+    });
+    def.property("type_iobufRef?", [get_field_type_props](const t_field& self) {
+      return is_iobuf_ref(get_field_type_props(self).cpp_type());
+    });
+    def.property(
+        "type_iobufWrapper?", [get_field_type_props](const t_field& self) {
+          const std::string& cpp_type = get_field_type_props(self).cpp_type();
+          return is_iobuf(cpp_type) || is_iobuf_ref(cpp_type);
+        });
+    def.property(
+        "type_flexibleBinary?", [get_field_type_props](const t_field& self) {
+          return is_flexible_binary(
+              *self.type()->get_true_type(),
+              get_field_type_props(self).cpp_type());
+        });
+    def.property(
+        "type_customCppType?", [get_field_type_props](const t_field& self) {
+          return !get_field_type_props(self).cpp_type().empty();
+        });
+    def.property(
+        "type_customCppType", [get_field_type_props](const t_field& self) {
+          return get_field_type_props(self).cpp_type();
+        });
+    def.property(
+        "type_cythonCustomType", [get_field_type_props](const t_field& self) {
+          return get_field_type_props(self).to_cython_type();
+        });
+    def.property(
+        "type_cppTemplate", [get_field_type_props](const t_field& self) {
+          return get_field_type_props(self).cpp_template();
+        });
+    def.property("type_flat_name", [get_field_type_props](const t_field& self) {
+      return get_field_type_props(self).flat_name();
+    });
+    def.property(
+        "type_need_cbinding_path?",
+        [this, get_field_type_props](const t_field& self) {
+          const t_program* type_program;
+          if (!get_field_type_props(self).cpp_type().empty() &&
+              !self.type()->get_true_type()->is<t_container>()) {
+            type_program = self.type().deref().program();
+            if (type_program == nullptr) {
+              type_program = program_;
+            }
+          } else {
+            type_program = get_true_type_program(self.type().deref());
+          }
+          return file_type_ != FileType::CBindingsFile ||
+              type_program != get_program();
+        });
+
     def.property("reference?", [this](const t_field& self) {
       return context_->get_field_cpp_kind(self) != field_cpp_kind::value;
     });
@@ -903,7 +1040,7 @@ class t_mstch_py3_generator : public t_whisker_generator {
       return !has_compiler_option("no_stream") &&
           !context_->stream_types(self).empty();
     });
-    def.property("container_types", [&](const t_program& self) {
+    def.property("container_types", [this, &proto](const t_program& self) {
       return to_type_array(context_->container_types(self), proto);
     });
     def.property("stream_types", [&](const t_program& self) {
@@ -938,12 +1075,27 @@ class t_mstch_py3_generator : public t_whisker_generator {
       }
       return to_array(functions, proto.of<t_function>());
     });
-    def.property("custom_templates", [&](const t_program& self) {
+    def.property("custom_templates", [this, &proto](const t_program& self) {
       return to_type_array(context_->custom_templates(self), proto);
     });
-    def.property("custom_cpp_types", [&](const t_program& self) {
+    def.property("custom_cpp_types", [this, &proto](const t_program& self) {
       return to_type_array(context_->custom_cpp_types(self), proto);
     });
+    def.property(
+        "field_custom_type_ctypedefs", [this, &proto](const t_program& self) {
+          const auto& entries = context_->field_custom_ctypedefs(self);
+          whisker::array::raw arr;
+          arr.reserve(entries.size());
+          for (const auto& entry : entries) {
+            whisker::map::raw m;
+            m["type"] = resolve_derived_t_type(proto, *entry.type);
+            m["cython_name"] = whisker::make::string(entry.cython_name);
+            m["cpp_type"] = whisker::make::string(entry.cpp_type);
+            m["flexible_binary?"] = entry.flexible_binary;
+            arr.emplace_back(whisker::make::map(std::move(m)));
+          }
+          return whisker::make::array(std::move(arr));
+        });
 
     return std::move(def).make();
   }
@@ -1185,7 +1337,8 @@ class t_mstch_py3_generator : public t_whisker_generator {
 };
 
 py3_generator_context::cached_type_properties&
-py3_generator_context::get_cached_type_props(const t_type* type) const {
+py3_generator_context::get_cached_type_props(
+    const t_type* type, const t_field* field) const {
   // @python.Py3EnableCppAdapter treats C++ Adapter on typedef as a custom
   // cpp.type.
   auto true_type = type->get_true_type();
@@ -1199,23 +1352,26 @@ py3_generator_context::get_cached_type_props(const t_type* type) const {
                 {}})
         .first->second;
   }
-  // Walk the typedef chain to find @cpp.Type{name=...} or
-  // @cpp.Type{template=...}, since the annotation may be on an intermediate
-  // typedef (e.g., a re-typedef like `typedef numerics.CompactSE3F
-  // CompactSE3F` where the annotation is on numerics.CompactSE3F, not the
-  // local re-typedef).
-  //
-  // Container types (list, set, map) have unique AST nodes per typedef
-  // definition, so caching by true_type is safe. Primitive types (i32,
-  // i64, etc.) share canonical AST nodes, so caching by true_type would
-  // pollute the cache for bare primitive references. For primitives with
-  // typedef annotations, cache by `type` instead.
-  if (auto* annot = t_typedef::get_first_structured_annotation_or_null(
-          type, kCppTypeUri)) {
-    auto cache_key = true_type->is<t_container>() ? true_type : type;
+  // Look for @cpp.Type annotation from:
+  // 1. The typedef chain (for typedef-level @cpp.Type).
+  // 2. The explicit field parameter (for field-level @cpp.Type).
+  const t_const* annot =
+      t_typedef::get_first_structured_annotation_or_null(type, kCppTypeUri);
+  bool annot_from_field = false;
+  if (!annot && field) {
+    auto it = field_cpp_type_annotations_.find(field);
+    // Only apply the field's annotation to the field's own type, not to
+    // child types (key/val/elem).
+    if (it != field_cpp_type_annotations_.end() &&
+        &field->type().deref() == type) {
+      annot = it->second;
+      annot_from_field = true;
+    }
+  }
+  if (annot) {
     // Extract the template value from the annotation we found (which may be
-    // on an intermediate typedef), since get_cpp_template(*type) only checks
-    // the immediate node and would miss annotations deeper in the chain.
+    // on an intermediate typedef or the owning field), since
+    // get_cpp_template(*type) only checks the immediate node.
     auto get_template_from_annot = [&]() -> std::string {
       if (auto* tmpl =
               annot->get_value_from_structured_annotation_or_null("template")) {
@@ -1223,27 +1379,45 @@ py3_generator_context::get_cached_type_props(const t_type* type) const {
       }
       return get_cpp_template(*type);
     };
-    if (auto* name =
-            annot->get_value_from_structured_annotation_or_null("name")) {
+    auto* name = annot->get_value_from_structured_annotation_or_null("name");
+    bool has_template = annot->get_value_from_structured_annotation_or_null(
+                            "template") != nullptr;
+    if (name || has_template) {
+      auto make_props = [&](std::string cpp_type_name) {
+        return cached_type_properties{
+            get_template_from_annot(), std::move(cpp_type_name), {}};
+      };
+      std::string cpp_type_name =
+          name ? name->get_string() : fmt::to_string(cpp2::get_type(type));
+      // For non-container types with field-level annotations, use a
+      // field-keyed cache since the type pointer may be shared across fields
+      // with different annotations. This includes typedef-wrapping-containers
+      // (the typedef node is shared). Raw containers have unique AST nodes
+      // per declaration and use the type-keyed cache below.
+      if (annot_from_field && field && !type->is<t_container>()) {
+        return field_type_properties_
+            .emplace(field, make_props(std::move(cpp_type_name)))
+            .first->second;
+      }
+      // For containers (unique AST nodes) or typedef-chain annotations,
+      // use the type-keyed cache.
+      auto cache_key = annot_from_field
+          ? type
+          : (true_type->is<t_container>() ? true_type : type);
       return type_properties_
-          .emplace(
-              cache_key,
-              cached_type_properties{
-                  get_template_from_annot(), name->get_string(), {}})
-          .first->second;
-    }
-    if (annot->get_value_from_structured_annotation_or_null("template")) {
-      return type_properties_
-          .emplace(
-              cache_key,
-              cached_type_properties{
-                  get_template_from_annot(),
-                  fmt::to_string(cpp2::get_type(type)),
-                  {}})
+          .emplace(cache_key, make_props(std::move(cpp_type_name)))
           .first->second;
     }
   }
-  auto it = type_properties_.find(true_type);
+  // Check for an existing entry by the original type pointer first (catches
+  // entries propagated from field-level annotations in visit_type, as well
+  // as entries stored by the annotation block above for non-container
+  // typedefs). Then fall back to true_type (the canonical lookup for
+  // non-typedef types and typedef-chain annotations on containers).
+  auto it = type_properties_.find(type);
+  if (it == type_properties_.end()) {
+    it = type_properties_.find(true_type);
+  }
   if (it == type_properties_.end()) {
     it = type_properties_
              .emplace(

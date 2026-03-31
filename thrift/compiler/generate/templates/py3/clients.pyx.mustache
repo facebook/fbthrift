@@ -145,7 +145,7 @@ cdef class {{service.name}}({{#partial clients.client_base_type service=service}
     @cython.always_allow_keywords(True)
     def {{function.name}}(
             {{service.name}} self{{#each function.params.fields as |param|}},
-            {{#if (and param.type.hasCythonType? (not param.type.integer?))}}{{#partial types.cython_python_type type=param.type}} {{/if}}{{!
+            {{#if (and param.type.hasCythonType? (not param.type.integer?))}}{{#partial types.field_cython_python_type field=param}} {{/if}}{{!
             }}{{param.py_name}}{{#if (or param.type.integer? (not param.type.number?))}} not None{{/if}}{{/each}},
             *,
             __RpcOptions rpc_options=None
@@ -154,14 +154,14 @@ cdef class {{service.name}}({{#partial clients.client_base_type service=service}
             rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         {{#each function.params.fields as |param|}}
           {{#if param.type.container?}}
-        if not isinstance({{param.py_name}}, {{#partial types.python_type type=param.type}}):
-            {{param.py_name}} = {{#partial types.python_type type=param.type}}({{param.py_name}})
+        if not isinstance({{param.py_name}}, {{#partial types.field_python_type field=param}}):
+            {{param.py_name}} = {{#partial types.field_python_type field=param}}({{param.py_name}})
           {{#else if param.type.integer?}}
         if not isinstance({{param.py_name}}, int):
             raise TypeError(f'{{param.py_name}} is not a {int !r}.')
         else:
             {{! inject cython int Overflow checks }}
-            {{param.py_name}} = <{{#partial types.cython_python_type type=param.type}}> {{param.py_name}}
+            {{param.py_name}} = <{{#partial types.field_cython_python_type field=param}}> {{param.py_name}}
           {{/if param.type.container?}}
         {{/each}}
         self._check_connect_future()
@@ -217,7 +217,7 @@ cdef class {{service.name}}_{{interaction.name}}(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     def {{function.name}}(
             {{service.name}}_{{interaction.name}} self{{#each function.params.fields as |param|}},
-            {{#if (and param.type.hasCythonType? (not param.type.integer?))}}{{#partial types.cython_python_type type=param.type}} {{/if}}{{!
+            {{#if (and param.type.hasCythonType? (not param.type.integer?))}}{{#partial types.field_cython_python_type field=param}} {{/if}}{{!
             }}{{param.py_name}}{{#if (or param.type.integer? (not param.type.number?))}} not None{{/if}}{{/each}},
             *,
             __RpcOptions rpc_options=None
@@ -226,14 +226,14 @@ cdef class {{service.name}}_{{interaction.name}}(thrift.py3.client.Client):
             rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
         {{#each function.params.fields as |param|}}
           {{#if param.type.container?}}
-        if not isinstance({{param.py_name}}, {{#partial types.python_type type=param.type}}):
-            {{param.py_name}} = {{#partial types.python_type type=param.type}}({{param.py_name}})
+        if not isinstance({{param.py_name}}, {{#partial types.field_python_type field=param}}):
+            {{param.py_name}} = {{#partial types.field_python_type field=param}}({{param.py_name}})
           {{#else if param.type.integer?}}
         if not isinstance({{param.py_name}}, int):
             raise TypeError(f'{{param.py_name}} is not a {int !r}.')
         else:
             {{! inject cython int Overflow checks }}
-            {{param.py_name}} = <{{#partial types.cython_python_type type=param.type}}> {{param.py_name}}
+            {{param.py_name}} = <{{#partial types.field_cython_python_type field=param}}> {{param.py_name}}
           {{/if param.type.container?}}
         {{/each}}
         self._check_connect_future()

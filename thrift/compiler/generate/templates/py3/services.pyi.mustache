@@ -65,7 +65,7 @@ class {{service.name}}Interface(
     @abstractmethod
     {{#if (not function.stream?)}}async {{/if}}{{#if function.stream_has_first_response?}}async {{/if}}def {{function.name}}(
         self{{#each function.params.fields as |field|}},
-        {{field.py_name}}: {{#partial pep484.type_name type=field.type}}{{/each}}
+        {{field.py_name}}: {{#partial pep484.field_type_name field=field}}{{/each}}
     ) -> {{#partial pep484.return_type function=function}}: ...
   {{/each}}
     pass

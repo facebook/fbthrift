@@ -18,6 +18,7 @@
 #include <string_view>
 #include <unordered_set>
 
+#include <thrift/compiler/ast/t_field.h>
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/ast/t_type.h>
 #include <thrift/compiler/ast/uri.h>

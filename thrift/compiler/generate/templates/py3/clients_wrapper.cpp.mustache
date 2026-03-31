@@ -36,7 +36,7 @@ namespace {{program.cpp_namespace}} {
 folly::Future<{{#partial clients.cpp_return_type function=function}}>
 {{service.name}}ClientWrapper::{{function.cpp_name}}(
     apache::thrift::RpcOptions& rpcOptions{{#each function.params.fields as |field|}},
-    {{#partial types.cpp_value_type type=field.type}} arg_{{field.py_name}}{{/each}}) {
+    {{#partial types.field_cpp_value_type field=field}} arg_{{field.py_name}}{{/each}}) {
   auto* client = static_cast<::{{service.program.cpp_namespace}}::{{service.cpp_name}}AsyncClient*>(async_client_.get());
   {{> clients/clients_wrapper.cpp_func_body}}
 
@@ -62,7 +62,7 @@ folly::Future<std::unique_ptr<::thrift::py3::ClientWrapper>>
 folly::Future<{{#partial clients.cpp_return_type function=function}}>
 {{service.name}}ClientWrapper::{{interaction.name}}InteractionWrapper::{{function.cpp_name}}(
     apache::thrift::RpcOptions& rpcOptions{{#each function.params.fields as |field|}},
-    {{#partial types.cpp_value_type type=field.type}} arg_{{field.py_name}}{{/each}}) {
+    {{#partial types.field_cpp_value_type field=field}} arg_{{field.py_name}}{{/each}}) {
   auto* client = static_cast<::{{service.program.cpp_namespace}}::{{service.cpp_name}}AsyncClient::{{interaction.name}}*>(async_client_.get());
   {{> clients/clients_wrapper.cpp_func_body}}
 

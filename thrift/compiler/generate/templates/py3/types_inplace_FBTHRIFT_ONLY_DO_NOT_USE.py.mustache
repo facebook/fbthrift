@@ -248,7 +248,7 @@ class {{struct.name}}({{#partial types.python_struct_class struct=struct}}):
                 return None
             {{/if field.optional?}}
             self._fbthrift_inner__{{field.py_name}} = {{!
-                }}{{#partial types.python_type type=field.type}}.from_python(__python_val)
+                }}{{#partial types.field_python_type field=field}}.from_python(__python_val)
 
         return self._fbthrift_inner__{{field.py_name}}
       {{#else if (not field.optional_default?)}}

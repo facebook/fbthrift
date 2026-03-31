@@ -25,18 +25,18 @@ This template assumes that the Python object is in a variable named <field>.
 
 }}
 {{#pragma ignore-newlines}}
-{{#if param.type.iobuf?}}deref((<_fbthrift_iobuf.IOBuf>{{param.py_name}}).c_clone())
-{{#else if param.type.iobufRef?}}((<_fbthrift_iobuf.IOBuf>{{param.py_name}}).c_clone())
-{{#else if param.type.flexibleBinary?}}{{#partial types.cython_cpp_type type=param.type}}(cmove(<string>{{param.py_name}}))
+{{#if param.type_iobuf?}}deref((<_fbthrift_iobuf.IOBuf>{{param.py_name}}).c_clone())
+{{#else if param.type_iobufRef?}}((<_fbthrift_iobuf.IOBuf>{{param.py_name}}).c_clone())
+{{#else if param.type_flexibleBinary?}}{{#partial types.field_cython_cpp_type field=param}}(cmove(<string>{{param.py_name}}))
 {{#else if param.type.customBinaryType?}}{{! no output for custom binary types that are iobuf/iobufRef/flexibleBinary }}
 {{#else if param.type.string?}}{{param.py_name}}.encode('UTF-8')
 {{#else if param.type.primitive?}}{{param.py_name}}
 {{#else if param.type.container?}}{{#partial types.container_to_cpp type=param.type}}({{param.py_name}})
-{{#else if param.type.enum?}}<{{#partial types.cython_cpp_type type=param.type}}><int>{{param.py_name}}
+{{#else if param.type.enum?}}<{{#partial types.field_cython_cpp_type field=param}}><int>{{param.py_name}}
   {{#else if (and param.type.structured? program.inplace_migrate?)}}
 {{param.type.true_type.program.module_path_for_alias}}_thrift_converter.{{param.type.true_type.name}}_convert_to_cpp({{param.py_name}}._to_python())
 
   {{#else if param.type.structured?}}
-deref((<{{#partial types.cython_python_type type=param.type}}>{{param.py_name}}).{{#partial types.cpp_obj}})
+deref((<{{#partial types.field_cython_python_type field=param}}>{{param.py_name}}).{{#partial types.cpp_obj}})
 
-{{/if param.type.iobuf?}}
+{{/if param.type_iobuf?}}
