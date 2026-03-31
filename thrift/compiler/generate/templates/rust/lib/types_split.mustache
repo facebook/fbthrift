@@ -77,9 +77,10 @@ include!("{{src}}");
 {{!
 ================================================================================
 }}
-{{#program:current_split_enums}}
+  {{#each program:current_split_enums as |enum|}}
 {{> lib/enum}}
-{{/program:current_split_enums}}
+
+  {{/each}}
 {{!
 ================================================================================
 }}

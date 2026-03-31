@@ -16,47 +16,47 @@
 
 }}
 
-{{#if enum:docs?}}
-#[doc = {{enum:docs}}]
-{{/if enum:docs?}}
+  {{#if enum.docs?}}
+#[doc = {{enum.docs}}]
+  {{/if enum.docs?}}
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash{{!
-    }}{{#if enum:serde?}}, ::serde_derive::Serialize, ::serde_derive::Deserialize{{/if}}{{!
-    }}{{#if program:valuable?}}, ::valuable::Valuable{{/if}}{{!
-    }}{{#if (not (string.empty? enum:derive))}}, {{enum:derive}}{{/if}}{{!
+    }}{{#if enum.serde?}}, ::serde_derive::Serialize, ::serde_derive::Deserialize{{/if}}{{!
+    }}{{#if enum.program.valuable?}}, ::valuable::Valuable{{/if}}{{!
+    }}{{#if (not (string.empty? enum.derive))}}, {{enum.derive}}{{/if}}{{!
 }})]
-pub struct {{enum:rust_name}}(pub ::std::primitive::{{enum:rust_underlying_or_i32}});
+pub struct {{enum.rust_name}}(pub ::std::primitive::{{enum.rust_underlying_or_i32}});
 
-impl {{enum:rust_name}} {
-    {{#each enum:values as |enum_value|}}
+impl {{enum.rust_name}} {
+  {{#each enum.values as |enum_value|}}
     {{#if enum_value.docs?}}
     #[doc = {{enum_value.docs}}]
     {{/if enum_value.docs?}}
-    pub const {{enum_value.rust_name}}: Self = {{enum:rust_name}}({{enum_value.value}}{{enum:rust_underlying_or_i32}});
-    {{/each}}
+    pub const {{enum_value.rust_name}}: Self = {{enum.rust_name}}({{enum_value.value}}{{enum.rust_underlying_or_i32}});
+  {{/each}}
 }
 
-impl ::fbthrift::ThriftEnum for {{enum:rust_name}} {
+impl ::fbthrift::ThriftEnum for {{enum.rust_name}} {
     fn enumerate() -> &'static [(Self, &'static ::std::primitive::str)] {
         &[
-            {{#each enum:values as |enum_value|}}
+  {{#each enum.values as |enum_value|}}
             (Self::{{enum_value.rust_name}}, "{{enum_value.name}}"),
-            {{/each}}
+  {{/each}}
         ]
     }
 
     fn variants() -> &'static [&'static ::std::primitive::str] {
         &[
-            {{#each enum:values as |enum_value|}}
+  {{#each enum.values as |enum_value|}}
             "{{enum_value.name}}",
-            {{/each}}
+  {{/each}}
         ]
     }
 
     fn variant_values() -> &'static [Self] {
         &[
-            {{#each enum:values as |enum_value|}}
+  {{#each enum.values as |enum_value|}}
             Self::{{enum_value.rust_name}},
-            {{/each}}
+  {{/each}}
         ]
     }
 
@@ -67,82 +67,82 @@ impl ::fbthrift::ThriftEnum for {{enum:rust_name}} {
 }
 
 #[allow(clippy::derivable_impls)]
-impl ::std::default::Default for {{enum:rust_name}} {
+impl ::std::default::Default for {{enum.rust_name}} {
     fn default() -> Self {
-        {{#if (not (has_compiler_option? "deprecated_default_enum_min_i32"))}}
+  {{#if (has_compiler_option? "deprecated_default_enum_min_i32")}}
+        Self(::std::primitive::{{enum.rust_underlying_or_i32}}::MIN)
+  {{#else}}
         Self(0)
-        {{#else}}
-        Self(::std::primitive::{{enum:rust_underlying_or_i32}}::MIN)
-        {{/if (not (has_compiler_option? "deprecated_default_enum_min_i32"))}}
+  {{/if (has_compiler_option? "deprecated_default_enum_min_i32")}}
     }
 }
 
-impl<'a> ::std::convert::From<&'a {{enum:rust_name}}> for ::std::primitive::{{enum:rust_underlying_or_i32}} {
+impl<'a> ::std::convert::From<&'a {{enum.rust_name}}> for ::std::primitive::{{enum.rust_underlying_or_i32}} {
     #[inline]
-    fn from(x: &'a {{enum:rust_name}}) -> Self {
+    fn from(x: &'a {{enum.rust_name}}) -> Self {
         x.0
     }
 }
 
-impl ::std::convert::From<{{enum:rust_name}}> for ::std::primitive::{{enum:rust_underlying_or_i32}} {
+impl ::std::convert::From<{{enum.rust_name}}> for ::std::primitive::{{enum.rust_underlying_or_i32}} {
     #[inline]
-    fn from(x: {{enum:rust_name}}) -> Self {
+    fn from(x: {{enum.rust_name}}) -> Self {
         x.0
     }
 }
 
-impl ::std::convert::From<::std::primitive::{{enum:rust_underlying_or_i32}}> for {{enum:rust_name}} {
+impl ::std::convert::From<::std::primitive::{{enum.rust_underlying_or_i32}}> for {{enum.rust_name}} {
     #[inline]
-    fn from(x: ::std::primitive::{{enum:rust_underlying_or_i32}}) -> Self {
+    fn from(x: ::std::primitive::{{enum.rust_underlying_or_i32}}) -> Self {
         Self(x)
     }
 }
 
 #[allow(clippy::unnecessary_cast)]
-impl ::std::fmt::Display for {{enum:rust_name}} {
+impl ::std::fmt::Display for {{enum.rust_name}} {
     fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         static VARIANTS_BY_NUMBER: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
-            {{#each enum:variants_by_number as |variant|}}
+  {{#each enum.variants_by_number as |variant|}}
             ("{{variant.name}}", {{variant.value}}),
-            {{/each}}
+  {{/each}}
         ];
         ::fbthrift::help::enum_display(VARIANTS_BY_NUMBER, fmt, self.0 as i32)
     }
 }
 
-impl ::std::fmt::Debug for {{enum:rust_name}} {
+impl ::std::fmt::Debug for {{enum.rust_name}} {
     fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(fmt, "{{enum:name}}::{}", self)
+        write!(fmt, "{{enum.name}}::{}", self)
     }
 }
 
 #[allow(clippy::unnecessary_cast)]
-impl ::std::str::FromStr for {{enum:rust_name}} {
+impl ::std::str::FromStr for {{enum.rust_name}} {
     type Err = ::anyhow::Error;
 
     fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
         static VARIANTS_BY_NAME: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
-            {{#each enum:variants_by_name as |variant|}}
+  {{#each enum.variants_by_name as |variant|}}
             ("{{variant.name}}", {{variant.value}}),
-            {{/each}}
+  {{/each}}
         ];
-        ::fbthrift::help::enum_from_str(VARIANTS_BY_NAME, string, "{{enum:name}}").map(|v| Self(v as {{enum:rust_underlying_or_i32}}))
+        ::fbthrift::help::enum_from_str(VARIANTS_BY_NAME, string, "{{enum.name}}").map(|v| Self(v as {{enum.rust_underlying_or_i32}}))
     }
 }
 
-impl ::fbthrift::GetTType for {{enum:rust_name}} {
+impl ::fbthrift::GetTType for {{enum.rust_name}} {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::I32;
 }
-{{#if (not (string.empty? enum:uri))}}
+  {{#if (not (string.empty? enum.uri))}}
 
-impl ::fbthrift::GetUri for self::{{enum:rust_name}} {
+impl ::fbthrift::GetUri for self::{{enum.rust_name}} {
     fn uri() -> &'static ::std::primitive::str {
-        "{{enum:uri}}"
+        "{{enum.uri}}"
     }
 }
-{{/if (not (string.empty? enum:uri))}}
+  {{/if (not (string.empty? enum.uri))}}
 
-impl<P> ::fbthrift::Serialize<P> for {{enum:rust_name}}
+impl<P> ::fbthrift::Serialize<P> for {{enum.rust_name}}
 where
     P: ::fbthrift::ProtocolWriter,
 {
@@ -153,16 +153,15 @@ where
     }
 }
 
-impl<P> ::fbthrift::Deserialize<P> for {{enum:rust_name}}
+impl<P> ::fbthrift::Deserialize<P> for {{enum.rust_name}}
 where
     P: ::fbthrift::ProtocolReader,
 {
     #[inline]
     fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
         let value: ::std::primitive::i32 = ::anyhow::Context::context(p.read_i32(), "Expected a number indicating enum variant")?;
-        let underlying = ::std::convert::TryInto::<::std::primitive::{{enum:rust_underlying_or_i32}}>::try_into(value)
-            .map_err(|_| ::anyhow::anyhow!("Enum value out of range for {{enum:name}}: {}", value))?;
+        let underlying = ::std::convert::TryInto::<::std::primitive::{{enum.rust_underlying_or_i32}}>::try_into(value)
+            .map_err(|_| ::anyhow::anyhow!("Enum value out of range for {{enum.name}}: {}", value))?;
         ::std::result::Result::Ok(Self::from(underlying))
     }
 }
-{{! line break }}

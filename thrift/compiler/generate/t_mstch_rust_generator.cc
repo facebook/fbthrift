@@ -871,7 +871,7 @@ whisker::object rust_make_unique_exceptions(
 
 /** Types that are assigned to a single split. */
 struct rust_split_info {
-  std::vector<const t_structured*> structs;
+  std::vector<const t_structured*> structured_definitions;
   std::vector<const t_typedef*> typedefs;
   std::vector<const t_enum*> enums;
 };
@@ -1807,42 +1807,41 @@ class t_mstch_rust_generator : public t_mstch_generator {
       }
       return whisker::make::array(std::move(structs));
     });
-    def.property(
-        "types_with_constructors", [this, &proto](const t_program& self) {
-          // Types that this crate defines in both the type namespace and value
-          // namespace: enums (E is a type, E(0) is an expression), newtype
-          // typedefs, and non-newtype typedefs referring to these.
-          struct type_rust_name_less {
-            bool operator()(const t_type* lhs, const t_type* rhs) const {
-              return type_rust_name(lhs) < type_rust_name(rhs);
-            }
-          };
-          std::set<const t_type*, type_rust_name_less> types;
-          if (current_split_ != nullptr) {
-            types.insert(
-                current_split_->enums.cbegin(), current_split_->enums.cend());
-            for (const t_typedef* t : current_split_->typedefs) {
-              if (typedef_has_constructor_expression(t)) {
-                types.insert(t);
-              }
-            }
-          } else {
-            types.insert(self.enums().cbegin(), self.enums().cend());
-            for (const t_typedef* t : self.typedefs()) {
-              if (typedef_has_constructor_expression(t)) {
-                types.insert(t);
-              }
-            }
+    def.property("types_with_constructors", [&](const t_program& self) {
+      // Types that this crate defines in both the type namespace and value
+      // namespace: enums (E is a type, E(0) is an expression), newtype
+      // typedefs, and non-newtype typedefs referring to these.
+      struct type_rust_name_less {
+        bool operator()(const t_type* lhs, const t_type* rhs) const {
+          return type_rust_name(lhs) < type_rust_name(rhs);
+        }
+      };
+      std::set<const t_type*, type_rust_name_less> types;
+      if (current_split_ != nullptr) {
+        types.insert(
+            current_split_->enums.cbegin(), current_split_->enums.cend());
+        for (const t_typedef* t : current_split_->typedefs) {
+          if (typedef_has_constructor_expression(t)) {
+            types.insert(t);
           }
-          return to_type_array(proto, types.begin(), types.end());
-        });
-    def.property("current_split_structs", [this, &proto](const t_program&) {
-      return to_array(current_split().structs, proto.of<t_structured>());
+        }
+      } else {
+        types.insert(self.enums().cbegin(), self.enums().cend());
+        for (const t_typedef* t : self.typedefs()) {
+          if (typedef_has_constructor_expression(t)) {
+            types.insert(t);
+          }
+        }
+      }
+      return to_type_array(proto, types.begin(), types.end());
     });
-    def.property("current_split_typedefs", [this, &proto](const t_program&) {
+    def.property("current_split_structured_definitions", [&](const t_program&) {
+      return to_type_array(current_split().structured_definitions, proto);
+    });
+    def.property("current_split_typedefs", [&](const t_program&) {
       return to_array(current_split().typedefs, proto.of<t_typedef>());
     });
-    def.property("current_split_enums", [this, &proto](const t_program&) {
+    def.property("current_split_enums", [&](const t_program&) {
       return to_array(current_split().enums, proto.of<t_enum>());
     });
     def.property("type_splits", [this](const t_program&) {
@@ -1874,7 +1873,6 @@ class rust_mstch_program : public mstch_program {
       data d,
       const size_t split_id = 0)
       : mstch_program(program, ctx, pos),
-        options_(d.options),
         current_split_(
             split_id < d.split_info.size() ? d.split_info[split_id]
                                            : empty_split()) {
@@ -1883,8 +1881,6 @@ class rust_mstch_program : public mstch_program {
         {
             {"program:current_split_structs",
              &rust_mstch_program::current_split_structs},
-            {"program:current_split_enums",
-             &rust_mstch_program::current_split_enums},
         });
   }
 
@@ -1892,21 +1888,13 @@ class rust_mstch_program : public mstch_program {
     std::string id =
         program_cache_id(program_, get_program_namespace(program_));
     return make_mstch_array_cached(
-        current_split_.structs,
+        current_split_.structured_definitions,
         *context_.struct_factory,
         context_.struct_cache,
         id);
   }
 
-  mstch::node current_split_enums() {
-    std::string id =
-        program_cache_id(program_, get_program_namespace(program_));
-    return make_mstch_array_cached(
-        current_split_.enums, *context_.enum_factory, context_.enum_cache, id);
-  }
-
  private:
-  const rust_codegen_options& options_;
   const rust_split_info& current_split_;
 
   static const rust_split_info& empty_split() {
@@ -2080,7 +2068,7 @@ void t_mstch_rust_generator::generate_split_types() {
     }
     for (const t_structured* strct : program_->structured_definitions()) {
       int split_id = dependent_types.contains(strct) ? 0 : next();
-      split_info_[split_id].structs.emplace_back(strct);
+      split_info_[split_id].structured_definitions.emplace_back(strct);
     }
     for (const t_enum* enm : program_->enums()) {
       int split_id = dependent_types.contains(enm) ? 0 : next();
