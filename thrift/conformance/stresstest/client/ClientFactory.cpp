@@ -155,8 +155,12 @@ folly::AsyncTransport::UniquePtr createSocketWithEPoll(
 
           // Create socket directly - we're already on the correct EventBase
           // thread during client initialization
-          return folly::AsyncSocket::UniquePtr(
+          auto sock = folly::AsyncSocket::UniquePtr(
               new folly::AsyncSocket(evb, fd, zeroCopyBufId));
+          if (cfg.connectCb) {
+            cfg.connectCb->connectSuccess();
+          }
+          return sock;
         } catch (const std::exception& e) {
           LOG(ERROR) << "StopTLSv1 negotiation failed: " << e.what()
                      << ". Server may not support stopTLSv1. "
