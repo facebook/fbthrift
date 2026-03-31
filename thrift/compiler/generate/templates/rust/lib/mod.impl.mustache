@@ -15,7 +15,6 @@
   limitations under the License.
 
 }}
-
     use ::ref_cast::RefCast;
 
     #[derive(RefCast)]
@@ -39,41 +38,41 @@
     {
         let value: LocalImpl<T> = ::fbthrift::Deserialize::rs_thrift_read(p)?;
         ::std::result::Result::Ok(value.0)
-    }{{!
+    }
+  {{#each program:nonstandard_types as |type|}}
+    {{#if type.set?}}
+      {{#let set_elem_type=type.true_type.elem_type}}
 
-}}{{#program:nonstandardTypes}}{{!
-    }}{{#if type:set?}}
-
-    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{#partial types.raw_type_name type=type:self}}>
+    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{#partial types.raw_type_name type=type}}>
     where
         P: ::fbthrift::ProtocolWriter,
     {
         #[inline]
         fn rs_thrift_write(&self, p: &mut P) {
             p.write_set_begin(
-                <{{#partial types.type_name type=type:true_type.elem_type}} as ::fbthrift::GetTType>::TTYPE,
+                <{{#partial types.type_name type=set_elem_type}} as ::fbthrift::GetTType>::TTYPE,
                 self.0.len(),
             );
             for v in &self.0 {
                 p.write_set_value_begin();
-                {{#type:set_elem_type}}{{> lib/write}}{{/type:set_elem_type}}(v, p);
+                {{#set_elem_type}}{{> lib/write}}{{/set_elem_type}}(v, p);
             }
             p.write_set_end();
         }
     }
 
-    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{#partial types.raw_type_name type=type:self}}>
+    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{#partial types.raw_type_name type=type}}>
     where
         P: ::fbthrift::ProtocolReader,
     {
         #[inline]
         fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
-            if <{{#partial types.type_name type=type:true_type.elem_type}} as ::fbthrift::GetTType>::TTYPE == ::fbthrift::TType::Void {
+            if <{{#partial types.type_name type=set_elem_type}} as ::fbthrift::GetTType>::TTYPE == ::fbthrift::TType::Void {
                 ::anyhow::bail!(::fbthrift::ProtocolError::VoidCollectionElement);
             }
 
-            let (_elem_ty, len) = p.read_set_begin(P::min_size::<{{#partial types.type_name type=type:true_type.elem_type}}>())?;
-            let mut set = <{{#partial types.type_name type=type:self}}>::with_capacity(len.unwrap_or(0));
+            let (_elem_ty, len) = p.read_set_begin(P::min_size::<{{#partial types.type_name type=set_elem_type}}>())?;
+            let mut set = <{{#partial types.type_name type=type}}>::with_capacity(len.unwrap_or(0));
 
             if let ::std::option::Option::Some(0) = len {
                 return ::std::result::Result::Ok(LocalImpl(set));
@@ -85,7 +84,7 @@
                 if !more {
                     break;
                 }
-                {{#type:set_elem_type}}let v: {{#partial types.type_name type=type:self}} = {{> lib/read}}(p){{/type:set_elem_type}}?;
+                let v: {{#partial types.type_name type=set_elem_type}} = {{#set_elem_type}}{{> lib/read}}{{/set_elem_type}}(p)?;
                 p.read_set_value_end()?;
                 set.insert(v);
 
@@ -97,46 +96,46 @@
             p.read_set_end()?;
             ::std::result::Result::Ok(LocalImpl(set))
         }
-    }{{!
-    }}{{/if type:set?}}{{!
+    }
+    {{#else if type.map?}}
+      {{#let map_key_type=type.true_type.key_type}}
+      {{#let map_val_type=type.true_type.val_type}}
 
-    }}{{#if type:map?}}
-
-    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{#partial types.raw_type_name type=type:self}}>
+    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{#partial types.raw_type_name type=type}}>
     where
         P: ::fbthrift::ProtocolWriter,
     {
         #[inline]
         fn rs_thrift_write(&self, p: &mut P) {
             p.write_map_begin(
-                <{{#partial types.type_name type=type:true_type.key_type}} as ::fbthrift::GetTType>::TTYPE,
-                <{{#partial types.type_name type=type:true_type.val_type}} as ::fbthrift::GetTType>::TTYPE,
+                <{{#partial types.type_name type=map_key_type}} as ::fbthrift::GetTType>::TTYPE,
+                <{{#partial types.type_name type=map_val_type}} as ::fbthrift::GetTType>::TTYPE,
                 self.0.len(),
             );
             for (k, v) in &self.0 {
                 p.write_map_key_begin();
-                {{#type:key_type}}{{> lib/write}}{{/type:key_type}}(k, p);
+                {{#map_key_type}}{{> lib/write}}{{/map_key_type}}(k, p);
                 p.write_map_value_begin();
-                {{#type:value_type}}{{> lib/write}}{{/type:value_type}}(v, p);
+                {{#map_val_type}}{{> lib/write}}{{/map_val_type}}(v, p);
             }
             p.write_map_end();
         }
     }
 
-    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{#partial types.raw_type_name type=type:self}}>
+    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{#partial types.raw_type_name type=type}}>
     where
         P: ::fbthrift::ProtocolReader,
     {
         #[inline]
         fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
-            if <{{#partial types.type_name type=type:true_type.key_type}} as ::fbthrift::GetTType>::TTYPE == ::fbthrift::TType::Void
-                && <{{#partial types.type_name type=type:true_type.val_type}} as ::fbthrift::GetTType>::TTYPE == ::fbthrift::TType::Void
+            if <{{#partial types.type_name type=map_key_type}} as ::fbthrift::GetTType>::TTYPE == ::fbthrift::TType::Void
+                && <{{#partial types.type_name type=map_val_type}} as ::fbthrift::GetTType>::TTYPE == ::fbthrift::TType::Void
             {
                 ::anyhow::bail!(::fbthrift::ProtocolError::VoidCollectionElement);
             }
 
-            let (_key_ty, _val_ty, len) = p.read_map_begin(P::min_size::<{{#partial types.type_name type=type:true_type.key_type}}>() + P::min_size::<{{#partial types.type_name type=type:true_type.val_type}}>())?;
-            let mut map = <{{#partial types.type_name type=type:self}}>::with_capacity(len.unwrap_or(0));
+            let (_key_ty, _val_ty, len) = p.read_map_begin(P::min_size::<{{#partial types.type_name type=map_key_type}}>() + P::min_size::<{{#partial types.type_name type=map_val_type}}>())?;
+            let mut map = <{{#partial types.type_name type=type}}>::with_capacity(len.unwrap_or(0));
 
             if let ::std::option::Option::Some(0) = len {
                 return ::std::result::Result::Ok(LocalImpl(map));
@@ -148,9 +147,9 @@
                 if !more {
                     break;
                 }
-                {{#type:key_type}}let k: {{#partial types.type_name type=type:self}} = {{> lib/read}}(p){{/type:key_type}}?;
+                let k: {{#partial types.type_name type=map_key_type}} = {{#map_key_type}}{{> lib/read}}(p){{/map_key_type}}?;
                 p.read_map_value_begin()?;
-                {{#type:value_type}}let v: {{#partial types.type_name type=type:self}} = {{> lib/read}}(p){{/type:value_type}}?;
+                let v: {{#partial types.type_name type=map_val_type}} = {{#map_val_type}}{{> lib/read}}(p){{/map_val_type}}?;
                 p.read_map_value_end()?;
                 map.insert(k, v);
 
@@ -162,12 +161,10 @@
             p.read_map_end()?;
             ::std::result::Result::Ok(LocalImpl(map))
         }
-    }{{!
-    }}{{/if type:map?}}{{!
+    }
+    {{#else if type.binary?}}
 
-    }}{{#if type:binary?}}
-
-    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{#partial types.raw_type_name type=type:self}}>
+    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{#partial types.raw_type_name type=type}}>
     where
         P: ::fbthrift::ProtocolWriter,
     {
@@ -177,7 +174,7 @@
         }
     }
 
-    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{#partial types.raw_type_name type=type:self}}>
+    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{#partial types.raw_type_name type=type}}>
     where
         P: ::fbthrift::ProtocolReader,
     {
@@ -187,9 +184,9 @@
         }
     }
 
-    impl ::fbthrift::binary_type::BinaryType for LocalImpl<{{#partial types.raw_type_name type=type:self}}> {
+    impl ::fbthrift::binary_type::BinaryType for LocalImpl<{{#partial types.raw_type_name type=type}}> {
         fn with_safe_capacity(capacity: usize) -> Self {
-            LocalImpl(<{{#partial types.raw_type_name type=type:self}}>::with_capacity(capacity))
+            LocalImpl(<{{#partial types.raw_type_name type=type}}>::with_capacity(capacity))
         }
         fn extend_from_slice(&mut self, other: &[::std::primitive::u8]) {
             self.0.extend_from_slice(other)
@@ -197,15 +194,13 @@
         fn from_vec(vec: ::std::vec::Vec<::std::primitive::u8>) -> Self {
             LocalImpl(::std::convert::Into::into(vec))
         }
-    }{{!
-    }}{{/if type:binary?}}{{!
+    }
+    {{#else if (and type.i64? (not (and type.typedef? type.newtype?)))}}
 
-    }}{{#if (not typedef:newtype?)}}{{#if type:i64?}}
-
-    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{#partial types.type_name type=type:self}}>
+    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{#partial types.type_name type=type}}>
     where
         P: ::fbthrift::ProtocolWriter,
-        {{#partial types.type_name type=type:self}}: ::fbthrift::Serialize<P>,
+        {{#partial types.type_name type=type}}: ::fbthrift::Serialize<P>,
     {
         #[inline]
         fn rs_thrift_write(&self, p: &mut P) {
@@ -213,52 +208,53 @@
         }
     }
 
-    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{#partial types.type_name type=type:self}}>
+    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{#partial types.type_name type=type}}>
     where
         P: ::fbthrift::ProtocolReader,
-        {{#partial types.type_name type=type:self}}: ::fbthrift::Deserialize<P>,
+        {{#partial types.type_name type=type}}: ::fbthrift::Deserialize<P>,
     {
         #[inline]
         fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
-            ::std::result::Result::Ok(LocalImpl({{#partial types.type_name type=type:self}}::rs_thrift_read(p)?))
+            ::std::result::Result::Ok(LocalImpl({{#partial types.type_name type=type}}::rs_thrift_read(p)?))
         }
-    }{{!
-    }}{{/if type:i64?}}{{/if (not typedef:newtype?)}}{{!
-}}{{/program:nonstandardTypes}}{{!
+    }
+    {{/if type.set?}}
+  {{/each}}
+  {{#each program:nonstandard_fields as |field|}}
+    {{#let type = field.type}}
+    {{#if type.set?}}
+      {{#let set_elem_type=type.true_type.elem_type}}
 
-}}{{#program:nonstandardFields}}{{#field:type}}{{!
-    }}{{#if type:set?}}
-
-    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{#partial fields.annotated_type_name field=field:self}}>
+    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{#partial fields.annotated_type_name field=field}}>
     where
         P: ::fbthrift::ProtocolWriter,
     {
         #[inline]
         fn rs_thrift_write(&self, p: &mut P) {
             p.write_set_begin(
-                <{{#partial types.type_name type=type:true_type.elem_type}} as ::fbthrift::GetTType>::TTYPE,
+                <{{#partial types.type_name type=set_elem_type}} as ::fbthrift::GetTType>::TTYPE,
                 self.0.len(),
             );
             for v in &self.0 {
                 p.write_set_value_begin();
-                {{#type:set_elem_type}}{{> lib/write}}{{/type:set_elem_type}}(v, p);
+                {{#set_elem_type}}{{> lib/write}}{{/set_elem_type}}(v, p);
             }
             p.write_set_end();
         }
     }
 
-    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{#partial fields.annotated_type_name field=field:self}}>
+    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{#partial fields.annotated_type_name field=field}}>
     where
         P: ::fbthrift::ProtocolReader,
     {
         #[inline]
         fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
-            if <{{#partial types.type_name type=type:true_type.elem_type}} as ::fbthrift::GetTType>::TTYPE == ::fbthrift::TType::Void {
+            if <{{#partial types.type_name type=set_elem_type}} as ::fbthrift::GetTType>::TTYPE == ::fbthrift::TType::Void {
                 ::anyhow::bail!(::fbthrift::ProtocolError::VoidCollectionElement);
             }
 
-            let (_elem_ty, len) = p.read_set_begin(P::min_size::<{{#partial types.type_name type=type:true_type.elem_type}}>())?;
-            let mut set = <{{#partial fields.annotated_type_name field=field:self}}>::with_capacity(len.unwrap_or(0));
+            let (_elem_ty, len) = p.read_set_begin(P::min_size::<{{#partial types.type_name type=set_elem_type}}>())?;
+            let mut set = <{{#partial fields.annotated_type_name field=field}}>::with_capacity(len.unwrap_or(0));
 
             if let ::std::option::Option::Some(0) = len {
                 return ::std::result::Result::Ok(LocalImpl(set));
@@ -270,7 +266,7 @@
                 if !more {
                     break;
                 }
-                {{#type:set_elem_type}}let v: {{#partial types.type_name type=type:self}} = {{> lib/read}}(p){{/type:set_elem_type}}?;
+                let v: {{#partial types.type_name type=set_elem_type}} = {{#set_elem_type}}{{> lib/read}}{{/set_elem_type}}(p)?;
                 p.read_set_value_end()?;
                 set.insert(v);
 
@@ -282,46 +278,46 @@
             p.read_set_end()?;
             ::std::result::Result::Ok(LocalImpl(set))
         }
-    }{{!
-    }}{{/if type:set?}}{{!
+    }
+    {{#else if type.map?}}
+      {{#let map_key_type=type.true_type.key_type}}
+      {{#let map_val_type=type.true_type.val_type}}
 
-    }}{{#if type:map?}}
-
-    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{#partial fields.annotated_type_name field=field:self}}>
+    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{#partial fields.annotated_type_name field=field}}>
     where
         P: ::fbthrift::ProtocolWriter,
     {
         #[inline]
         fn rs_thrift_write(&self, p: &mut P) {
             p.write_map_begin(
-                <{{#partial types.type_name type=type:true_type.key_type}} as ::fbthrift::GetTType>::TTYPE,
-                <{{#partial types.type_name type=type:true_type.val_type}} as ::fbthrift::GetTType>::TTYPE,
+                <{{#partial types.type_name type=map_key_type}} as ::fbthrift::GetTType>::TTYPE,
+                <{{#partial types.type_name type=map_val_type}} as ::fbthrift::GetTType>::TTYPE,
                 self.0.len(),
             );
             for (k, v) in &self.0 {
                 p.write_map_key_begin();
-                {{#type:key_type}}{{> lib/write}}{{/type:key_type}}(k, p);
+                {{#map_key_type}}{{> lib/write}}{{/map_key_type}}(k, p);
                 p.write_map_value_begin();
-                {{#type:value_type}}{{> lib/write}}{{/type:value_type}}(v, p);
+                {{#map_val_type}}{{> lib/write}}{{/map_val_type}}(v, p);
             }
             p.write_map_end();
         }
     }
 
-    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{#partial fields.annotated_type_name field=field:self}}>
+    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{#partial fields.annotated_type_name field=field}}>
     where
         P: ::fbthrift::ProtocolReader,
     {
         #[inline]
         fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
-            if <{{#partial types.type_name type=type:true_type.key_type}} as ::fbthrift::GetTType>::TTYPE == ::fbthrift::TType::Void
-                && <{{#partial types.type_name type=type:true_type.val_type}} as ::fbthrift::GetTType>::TTYPE == ::fbthrift::TType::Void
+            if <{{#partial types.type_name type=map_key_type}} as ::fbthrift::GetTType>::TTYPE == ::fbthrift::TType::Void
+                && <{{#partial types.type_name type=map_val_type}} as ::fbthrift::GetTType>::TTYPE == ::fbthrift::TType::Void
             {
                 ::anyhow::bail!(::fbthrift::ProtocolError::VoidCollectionElement);
             }
 
-            let (_key_ty, _val_ty, len) = p.read_map_begin(P::min_size::<{{#partial types.type_name type=type:true_type.key_type}}>() + P::min_size::<{{#partial types.type_name type=type:true_type.val_type}}>())?;
-            let mut map = <{{#partial fields.annotated_type_name field=field:self}}>::with_capacity(len.unwrap_or(0));
+            let (_key_ty, _val_ty, len) = p.read_map_begin(P::min_size::<{{#partial types.type_name type=map_key_type}}>() + P::min_size::<{{#partial types.type_name type=map_val_type}}>())?;
+            let mut map = <{{#partial fields.annotated_type_name field=field}}>::with_capacity(len.unwrap_or(0));
 
             if let ::std::option::Option::Some(0) = len {
                 return ::std::result::Result::Ok(LocalImpl(map));
@@ -333,9 +329,9 @@
                 if !more {
                     break;
                 }
-                {{#type:key_type}}let k: {{#partial types.type_name type=type:self}} = {{> lib/read}}(p){{/type:key_type}}?;
+                let k: {{#partial types.type_name type=map_key_type}} = {{#map_key_type}}{{> lib/read}}{{/map_key_type}}(p)?;
                 p.read_map_value_begin()?;
-                {{#type:value_type}}let v: {{#partial types.type_name type=type:self}} = {{> lib/read}}(p){{/type:value_type}}?;
+                let v: {{#partial types.type_name type=map_val_type}} = {{#map_val_type}}{{> lib/read}}{{/map_val_type}}(p)?;
                 p.read_map_value_end()?;
                 map.insert(k, v);
 
@@ -347,12 +343,10 @@
             p.read_map_end()?;
             ::std::result::Result::Ok(LocalImpl(map))
         }
-    }{{!
-    }}{{/if type:map?}}{{!
+    }
+    {{#else if type.binary?}}
 
-    }}{{#if type:binary?}}
-
-    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{#partial fields.annotated_type_name field=field:self}}>
+    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{#partial fields.annotated_type_name field=field}}>
     where
         P: ::fbthrift::ProtocolWriter,
     {
@@ -362,7 +356,7 @@
         }
     }
 
-    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{#partial fields.annotated_type_name field=field:self}}>
+    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{#partial fields.annotated_type_name field=field}}>
     where
         P: ::fbthrift::ProtocolReader,
     {
@@ -372,9 +366,9 @@
         }
     }
 
-    impl ::fbthrift::binary_type::BinaryType for LocalImpl<{{#partial fields.annotated_type_name field=field:self}}> {
+    impl ::fbthrift::binary_type::BinaryType for LocalImpl<{{#partial fields.annotated_type_name field=field}}> {
         fn with_safe_capacity(capacity: usize) -> Self {
-            LocalImpl(<{{#partial fields.annotated_type_name field=field:self}}>::with_capacity(capacity))
+            LocalImpl(<{{#partial fields.annotated_type_name field=field}}>::with_capacity(capacity))
         }
         fn extend_from_slice(&mut self, other: &[::std::primitive::u8]) {
             self.0.extend_from_slice(other)
@@ -382,15 +376,13 @@
         fn from_vec(vec: ::std::vec::Vec<::std::primitive::u8>) -> Self {
             LocalImpl(::std::convert::Into::into(vec))
         }
-    }{{!
-    }}{{/if type:binary?}}{{!
+    }
+    {{#else if (and type.i64? (not (and type.typedef? type.newtype?)))}}
 
-    }}{{#if (not typedef:newtype?)}}{{#if type:i64?}}
-
-    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{#partial fields.annotated_type_name field=field:self}}>
+    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{#partial fields.annotated_type_name field=field}}>
     where
         P: ::fbthrift::ProtocolWriter,
-        {{#partial fields.annotated_type_name field=field:self}}: ::fbthrift::Serialize<P>,
+        {{#partial fields.annotated_type_name field=field}}: ::fbthrift::Serialize<P>,
     {
         #[inline]
         fn rs_thrift_write(&self, p: &mut P) {
@@ -398,18 +390,15 @@
         }
     }
 
-    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{#partial fields.annotated_type_name field=field:self}}>
+    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{#partial fields.annotated_type_name field=field}}>
     where
         P: ::fbthrift::ProtocolReader,
-        {{#partial fields.annotated_type_name field=field:self}}: ::fbthrift::Deserialize<P>,
+        {{#partial fields.annotated_type_name field=field}}: ::fbthrift::Deserialize<P>,
     {
         #[inline]
         fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
-            ::std::result::Result::Ok(LocalImpl({{#partial fields.annotated_type_name field=field:self}}::rs_thrift_read(p)?))
+            ::std::result::Result::Ok(LocalImpl({{#partial fields.annotated_type_name field=field}}::rs_thrift_read(p)?))
         }
-    }{{!
-
-    }}{{/if type:i64?}}{{/if (not typedef:newtype?)}}{{!
-
-}}{{/field:type}}{{/program:nonstandardFields}}
-{{! newline}}
+    }
+    {{/if type.set?}}
+  {{/each}}

@@ -134,6 +134,8 @@ std::string quoted_rust_doc(const t_named* named_node) {
   return quote(doc.substr(first, last - first + 1), true);
 }
 
+// TODO(T261463864): This and a few similar functions should have `string_view`
+// args / returns
 std::string get_type_annotation(const t_named* node) {
   if (const t_const* annot =
           node->find_structured_annotation_or_null(kRustTypeUri)) {
@@ -779,11 +781,10 @@ std::string compute_adapter_struct_qualified(
 std::string get_resolved_name(const t_type* t) {
   t = t->get_true_type();
   if (auto c = dynamic_cast<const t_list*>(t)) {
-    return fmt::format(
-        "list<{}>", get_resolved_name(c->elem_type().get_type()));
+    return fmt::format("list<{}>", get_resolved_name(&c->elem_type().deref()));
   }
   if (auto c = dynamic_cast<const t_set*>(t)) {
-    return fmt::format("set<{}>", get_resolved_name(c->elem_type().get_type()));
+    return fmt::format("set<{}>", get_resolved_name(&c->elem_type().deref()));
   }
   if (auto c = dynamic_cast<const t_map*>(t)) {
     return fmt::format(
@@ -794,8 +795,50 @@ std::string get_resolved_name(const t_type* t) {
   return t->get_full_name();
 }
 
-std::string get_resolved_name(const t_field* field) {
-  return get_resolved_name(&field->type().deref());
+template <typename T = t_type>
+struct rust_type_less {
+  bool operator()(const T* lhs, const T* rhs) const {
+    std::string lhs_annotation = get_type_annotation(lhs);
+    std::string rhs_annotation = get_type_annotation(rhs);
+    if (lhs_annotation != rhs_annotation) {
+      return lhs_annotation < rhs_annotation;
+    }
+    if constexpr (std::is_same_v<T, t_field>) {
+      return get_resolved_name(&lhs->type().deref()) <
+          get_resolved_name(&rhs->type().deref());
+    } else {
+      return get_resolved_name(lhs) < get_resolved_name(rhs);
+    }
+  }
+};
+
+std::set<const t_type*, rust_type_less<>> nonstandard_types(
+    const t_program& program) {
+  std::set<const t_type*, rust_type_less<>> types;
+  auto maybe_add_type = [&types](const t_type& ref) {
+    if (has_nonstandard_type_annotation(&ref)) {
+      types.insert(&ref);
+    }
+  };
+  // We can't just use `ast_visitor` for this, due to exclusions like exception
+  // fields and interaction function params/return types
+  for (const t_structured* strct : program.structs_and_unions()) {
+    for (const t_field& field : strct->fields()) {
+      maybe_add_type(*field.type());
+    }
+  }
+  for (const t_service* service : program.services()) {
+    for (const t_function& function : service->functions()) {
+      for (const t_field& param : function.params().fields()) {
+        maybe_add_type(*param.type());
+      }
+      maybe_add_type(*function.return_type());
+    }
+  }
+  for (const t_typedef* typedf : program.typedefs()) {
+    maybe_add_type(*typedf);
+  }
+  return types;
 }
 
 whisker::object to_whisker_string_array(
@@ -1641,6 +1684,31 @@ class t_mstch_rust_generator : public t_mstch_generator {
       }
       return false;
     });
+    def.property("nonstandard_types", [&proto](const t_program& self) {
+      const auto types = nonstandard_types(self);
+      return to_type_array(proto, types.cbegin(), types.cend());
+    });
+    def.property("nonstandard_fields", [&proto](const t_program& self) {
+      // Collect fields with nonstandard types not contained by
+      // `nonstandard_types()` (avoid generating multiple definitions for the
+      // same type).
+      std::unordered_set<std::string> names;
+      for (const t_type* type : nonstandard_types(self)) {
+        names.insert(get_resolved_name(type));
+      }
+      std::vector<const t_field*> fields;
+      // Not using `ast_visitor` because exception fields are excluded
+      for (const t_structured* strct : self.structs_and_unions()) {
+        for (const t_field& field : strct->fields()) {
+          if (has_nonstandard_type_annotation(&field) &&
+              !names.contains(get_resolved_name(&field.type().deref()))) {
+            fields.emplace_back(&field);
+          }
+        }
+      }
+      std::sort(fields.begin(), fields.end(), rust_type_less<t_field>{});
+      return to_array(fields, proto.of<t_field>());
+    });
     def.property("direct_dependencies?", [this](const t_program&) {
       return !options_.crate_index.direct_dependencies().empty();
     });
@@ -1813,10 +1881,6 @@ class rust_mstch_program : public mstch_program {
     register_methods(
         this,
         {
-            {"program:nonstandardTypes",
-             &rust_mstch_program::rust_nonstandard_types},
-            {"program:nonstandardFields",
-             &rust_mstch_program::rust_nonstandard_fields},
             {"program:current_split_structs",
              &rust_mstch_program::current_split_structs},
             {"program:current_split_typedefs",
@@ -1824,44 +1888,6 @@ class rust_mstch_program : public mstch_program {
             {"program:current_split_enums",
              &rust_mstch_program::current_split_enums},
         });
-  }
-
-  template <typename F>
-  void foreach_field(F&& f) const {
-    for (const t_structured* strct : program_->structs_and_unions()) {
-      for (const auto& field : strct->fields()) {
-        f(&field);
-      }
-    }
-  }
-  template <typename F>
-  void foreach_type(F&& f) const {
-    for (const t_structured* strct : program_->structs_and_unions()) {
-      for (const auto& field : strct->fields()) {
-        f(field.type().get_type());
-      }
-    }
-    for (const auto* service : program_->services()) {
-      for (const auto& function : service->functions()) {
-        for (const auto& param : function.params().fields()) {
-          f(param.type().get_type());
-        }
-        f(function.return_type().get_type());
-      }
-    }
-    for (auto typedf : program_->typedefs()) {
-      f(typedf);
-    }
-  }
-  mstch::node rust_nonstandard_types() {
-    types_set_t types = nonstandard_types();
-    return make_mstch_types(
-        std::vector<const t_type*>(types.begin(), types.end()));
-  }
-  mstch::node rust_nonstandard_fields() {
-    fields_set_t fields = nonstandard_fields();
-    return make_mstch_fields(
-        std::vector<const t_field*>(fields.begin(), fields.end()));
   }
 
   mstch::node current_split_structs() {
@@ -1892,53 +1918,6 @@ class rust_mstch_program : public mstch_program {
   static const rust_split_info& empty_split() {
     static const rust_split_info kEmpty;
     return kEmpty;
-  }
-
-  template <class T>
-  struct rust_type_less {
-    bool operator()(const T* lhs, const T* rhs) const {
-      std::string lhs_annotation = get_type_annotation(lhs);
-      std::string rhs_annotation = get_type_annotation(rhs);
-      if (lhs_annotation != rhs_annotation) {
-        return lhs_annotation < rhs_annotation;
-      }
-      return get_resolved_name(lhs) < get_resolved_name(rhs);
-    }
-  };
-  using strings_set_t = std::set<std::string>;
-  using types_set_t = std::set<const t_type*, rust_type_less<t_type>>;
-  using fields_set_t = std::set<const t_field*, rust_type_less<t_field>>;
-
-  types_set_t nonstandard_types() {
-    types_set_t types;
-    foreach_type([&](const t_type* type) {
-      if (has_nonstandard_type_annotation(type)) {
-        types.insert(type);
-      }
-    });
-    return types;
-  }
-  // Collect fields with nonstandard types not contained by
-  // `nonstandard_types()` (avoid generating multiple definitions for the same
-  // type).
-  fields_set_t nonstandard_fields() {
-    fields_set_t fields;
-    strings_set_t names;
-    types_set_t types = nonstandard_types();
-    std::transform(
-        types.begin(),
-        types.end(),
-        std::inserter(names, names.end()),
-        [](const t_type* t) { return get_resolved_name(t); });
-    foreach_field([&](const t_field* field) {
-      if (has_nonstandard_type_annotation(field)) {
-        if (names.find(get_resolved_name(&field->type().deref())) ==
-            names.end()) {
-          fields.insert(field);
-        }
-      }
-    });
-    return fields;
   }
 };
 
