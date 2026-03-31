@@ -119,7 +119,11 @@ uint32_t MyAnnotation::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t MyAnnotation::write(Protocol_* prot_) const {
-  return ::apache::thrift::op::detail::StructEncode<MyAnnotation>{}(*prot_, *this);
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("MyAnnotation");
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
 }
 
 extern template void MyAnnotation::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -224,7 +228,19 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t MyStruct::write(Protocol_* prot_) const {
-  return ::apache::thrift::op::detail::StructEncode<MyStruct>{}(*prot_, *this);
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("MyStruct");
+  bool previousFieldHasValue = true;
+  {
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 1, kPrevFieldId>(*prot_, "field", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->__fbthrift_field_field);
+    xfer += prot_->writeFieldEnd();
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
 }
 
 extern template void MyStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -329,7 +345,19 @@ uint32_t MyUnion::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t MyUnion::write(Protocol_* prot_) const {
-  return ::apache::thrift::op::detail::StructEncode<MyUnion>{}(*prot_, *this);
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("MyUnion");
+  bool previousFieldHasValue = true;
+  {
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 1, kPrevFieldId>(*prot_, "field", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->__fbthrift_field_field);
+    xfer += prot_->writeFieldEnd();
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
 }
 
 extern template void MyUnion::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -434,7 +462,19 @@ uint32_t MyException::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t MyException::write(Protocol_* prot_) const {
-  return ::apache::thrift::op::detail::StructEncode<MyException>{}(*prot_, *this);
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("MyException");
+  bool previousFieldHasValue = true;
+  {
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 1, kPrevFieldId>(*prot_, "field", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->__fbthrift_field_field);
+    xfer += prot_->writeFieldEnd();
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
 }
 
 extern template void MyException::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

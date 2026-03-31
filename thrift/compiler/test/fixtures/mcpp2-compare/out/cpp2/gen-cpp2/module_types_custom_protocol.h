@@ -197,7 +197,11 @@ uint32_t Empty::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t Empty::write(Protocol_* prot_) const {
-  return ::apache::thrift::op::detail::StructEncode<Empty>{}(*prot_, *this);
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("Empty");
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
 }
 
 extern template void Empty::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -7449,7 +7453,19 @@ uint32_t AllRequiredNoExceptMoveCtrStruct::serializedSizeZC(Protocol_ const* pro
 
 template <class Protocol_>
 uint32_t AllRequiredNoExceptMoveCtrStruct::write(Protocol_* prot_) const {
-  return ::apache::thrift::op::detail::StructEncode<AllRequiredNoExceptMoveCtrStruct>{}(*prot_, *this);
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("AllRequiredNoExceptMoveCtrStruct");
+  bool previousFieldHasValue = true;
+  {
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I64, 1, kPrevFieldId>(*prot_, "intField", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, this->__fbthrift_field_intField);
+    xfer += prot_->writeFieldEnd();
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
 }
 
 extern template void AllRequiredNoExceptMoveCtrStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

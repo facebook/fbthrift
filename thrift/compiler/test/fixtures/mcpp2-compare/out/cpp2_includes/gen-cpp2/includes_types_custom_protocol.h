@@ -135,7 +135,19 @@ uint32_t AStruct::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t AStruct::write(Protocol_* prot_) const {
-  return ::apache::thrift::op::detail::StructEncode<AStruct>{}(*prot_, *this);
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("AStruct");
+  bool previousFieldHasValue = true;
+  {
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 1, kPrevFieldId>(*prot_, "FieldA", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->__fbthrift_field_FieldA);
+    xfer += prot_->writeFieldEnd();
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
 }
 
 extern template void AStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -257,7 +269,25 @@ uint32_t AStructB::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t AStructB::write(Protocol_* prot_) const {
-  return ::apache::thrift::op::detail::StructEncode<AStructB>{}(*prot_, *this);
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("AStructB");
+  bool previousFieldHasValue = true;
+  {
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRUCT, 1, kPrevFieldId>(*prot_, "FieldA", previousFieldHasValue);
+    previousFieldHasValue = true;
+    if (this->__fbthrift_field_FieldA) {
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::a::different::ns::AStruct>::write(*prot_, *this->__fbthrift_field_FieldA);
+    } else {
+      xfer += prot_->writeStructBegin("AStruct");
+      xfer += prot_->writeFieldStop();
+      xfer += prot_->writeStructEnd();
+    }
+    xfer += prot_->writeFieldEnd();
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
 }
 
 extern template void AStructB::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

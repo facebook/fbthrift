@@ -157,7 +157,19 @@ uint32_t Fields::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t Fields::write(Protocol_* prot_) const {
-  return ::apache::thrift::op::detail::StructEncode<Fields>{}(*prot_, *this);
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("Fields");
+  bool previousFieldHasValue = true;
+  {
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 100, kPrevFieldId>(*prot_, "injected_field", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_injected_field);
+    xfer += prot_->writeFieldEnd();
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
 }
 
 extern template void Fields::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -262,7 +274,19 @@ uint32_t FieldsInjectedToEmptyStruct::serializedSizeZC(Protocol_ const* prot_) c
 
 template <class Protocol_>
 uint32_t FieldsInjectedToEmptyStruct::write(Protocol_* prot_) const {
-  return ::apache::thrift::op::detail::StructEncode<FieldsInjectedToEmptyStruct>{}(*prot_, *this);
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("FieldsInjectedToEmptyStruct");
+  bool previousFieldHasValue = true;
+  {
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, -1100, kPrevFieldId>(*prot_, "injected_field", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_injected_field);
+    xfer += prot_->writeFieldEnd();
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
 }
 
 extern template void FieldsInjectedToEmptyStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -396,7 +420,26 @@ uint32_t FieldsInjectedToStruct::serializedSizeZC(Protocol_ const* prot_) const 
 
 template <class Protocol_>
 uint32_t FieldsInjectedToStruct::write(Protocol_* prot_) const {
-  return ::apache::thrift::op::detail::StructEncode<FieldsInjectedToStruct>{}(*prot_, *this);
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("FieldsInjectedToStruct");
+  bool previousFieldHasValue = true;
+  {
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 1, kPrevFieldId>(*prot_, "string_field", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_string_field);
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    constexpr int16_t kPrevFieldId = 1;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, -1100, kPrevFieldId>(*prot_, "injected_field", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_injected_field);
+    xfer += prot_->writeFieldEnd();
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
 }
 
 extern template void FieldsInjectedToStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -590,7 +633,44 @@ uint32_t FieldsInjectedWithIncludedStruct::serializedSizeZC(Protocol_ const* pro
 
 template <class Protocol_>
 uint32_t FieldsInjectedWithIncludedStruct::write(Protocol_* prot_) const {
-  return ::apache::thrift::op::detail::StructEncode<FieldsInjectedWithIncludedStruct>{}(*prot_, *this);
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("FieldsInjectedWithIncludedStruct");
+  bool previousFieldHasValue = true;
+  {
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 1, kPrevFieldId>(*prot_, "string_field", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_string_field);
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    constexpr int16_t kPrevFieldId = 1;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, -1100, kPrevFieldId>(*prot_, "injected_field", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_injected_field);
+    xfer += prot_->writeFieldEnd();
+  }
+  if (this->__fbthrift_field_injected_structured_annotation_field) {
+    constexpr int16_t kPrevFieldId = -1100;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, -1101, kPrevFieldId>(*prot_, "injected_structured_annotation_field", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, *this->__fbthrift_field_injected_structured_annotation_field);
+    xfer += prot_->writeFieldEnd();
+  } else {
+    previousFieldHasValue = false;
+  }
+  if (this->__fbthrift_field_injected_unstructured_annotation_field) {
+    constexpr int16_t kPrevFieldId = -1101;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, -1102, kPrevFieldId>(*prot_, "injected_unstructured_annotation_field", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, *this->__fbthrift_field_injected_unstructured_annotation_field);
+    xfer += prot_->writeFieldEnd();
+  } else {
+    previousFieldHasValue = false;
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
 }
 
 extern template void FieldsInjectedWithIncludedStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -726,7 +806,26 @@ uint32_t FieldsInjectedWithFieldsWithIncludedStruct::serializedSizeZC(Protocol_ 
 
 template <class Protocol_>
 uint32_t FieldsInjectedWithFieldsWithIncludedStruct::write(Protocol_* prot_) const {
-  return ::apache::thrift::op::detail::StructEncode<FieldsInjectedWithFieldsWithIncludedStruct>{}(*prot_, *this);
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("FieldsInjectedWithFieldsWithIncludedStruct");
+  bool previousFieldHasValue = true;
+  {
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 1, kPrevFieldId>(*prot_, "string_field", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_string_field);
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    constexpr int16_t kPrevFieldId = 1;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRUCT, -1001, kPrevFieldId>(*prot_, "injected_field", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::InjectedField>::write(*prot_, this->__fbthrift_field_injected_field);
+    xfer += prot_->writeFieldEnd();
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
 }
 
 extern template void FieldsInjectedWithFieldsWithIncludedStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

@@ -112,7 +112,11 @@ uint32_t FooStreamEx::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t FooStreamEx::write(Protocol_* prot_) const {
-  return ::apache::thrift::op::detail::StructEncode<FooStreamEx>{}(*prot_, *this);
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("FooStreamEx");
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
 }
 
 extern template void FooStreamEx::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -187,7 +191,11 @@ uint32_t FooEx::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t FooEx::write(Protocol_* prot_) const {
-  return ::apache::thrift::op::detail::StructEncode<FooEx>{}(*prot_, *this);
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("FooEx");
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
 }
 
 extern template void FooEx::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -262,7 +270,11 @@ uint32_t FooEx2::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t FooEx2::write(Protocol_* prot_) const {
-  return ::apache::thrift::op::detail::StructEncode<FooEx2>{}(*prot_, *this);
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("FooEx2");
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
 }
 
 extern template void FooEx2::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

@@ -135,7 +135,19 @@ uint32_t EchoRequest::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t EchoRequest::write(Protocol_* prot_) const {
-  return ::apache::thrift::op::detail::StructEncode<EchoRequest>{}(*prot_, *this);
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("EchoRequest");
+  bool previousFieldHasValue = true;
+  {
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 1, kPrevFieldId>(*prot_, "text", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_text);
+    xfer += prot_->writeFieldEnd();
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
 }
 
 extern template void EchoRequest::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -240,7 +252,19 @@ uint32_t EchoResponse::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t EchoResponse::write(Protocol_* prot_) const {
-  return ::apache::thrift::op::detail::StructEncode<EchoResponse>{}(*prot_, *this);
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("EchoResponse");
+  bool previousFieldHasValue = true;
+  {
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 1, kPrevFieldId>(*prot_, "text", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_text);
+    xfer += prot_->writeFieldEnd();
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
 }
 
 extern template void EchoResponse::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

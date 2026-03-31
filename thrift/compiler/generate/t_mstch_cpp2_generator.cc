@@ -1093,20 +1093,6 @@ class t_mstch_cpp2_generator : public t_whisker_generator {
       }
       return false;
     });
-    def.property(
-        "write_with_struct_encode?", [this](const t_structured& strct) {
-          for (const auto& field : strct.fields()) {
-            if (field.has_structured_annotation(kCppDeprecatedTerseWriteUri) ||
-                (has_compiler_option("deprecated_terse_writes") &&
-                 cpp2::deprecated_terse_writes(&field))) {
-              return false;
-            }
-            if (field.has_structured_annotation(kCppLazyUri)) {
-              return false;
-            }
-          }
-          return true;
-        });
     def.property("write_lazy_field_checksum?", [](const t_structured& strct) {
       return !strct.has_structured_annotation(kCppDisableLazyChecksumUri);
     });

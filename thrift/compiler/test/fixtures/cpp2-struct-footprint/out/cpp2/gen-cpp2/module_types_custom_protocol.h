@@ -184,7 +184,19 @@ uint32_t SimpleStruct::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t SimpleStruct::write(Protocol_* prot_) const {
-  return ::apache::thrift::op::detail::StructEncode<SimpleStruct>{}(*prot_, *this);
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("SimpleStruct");
+  bool previousFieldHasValue = true;
+  {
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 1, kPrevFieldId>(*prot_, "field", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->__fbthrift_field_field);
+    xfer += prot_->writeFieldEnd();
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
 }
 
 extern template void SimpleStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -291,7 +303,19 @@ uint32_t ComplexStruct::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t ComplexStruct::write(Protocol_* prot_) const {
-  return ::apache::thrift::op::detail::StructEncode<ComplexStruct>{}(*prot_, *this);
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("ComplexStruct");
+  bool previousFieldHasValue = true;
+  {
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRUCT, 1, kPrevFieldId>(*prot_, "nested", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2_struct_footprint::SimpleStruct>::write(*prot_, this->__fbthrift_field_nested);
+    xfer += prot_->writeFieldEnd();
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
 }
 
 extern template void ComplexStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -366,7 +390,11 @@ uint32_t Struct1::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t Struct1::write(Protocol_* prot_) const {
-  return ::apache::thrift::op::detail::StructEncode<Struct1>{}(*prot_, *this);
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("Struct1");
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
 }
 
 extern template void Struct1::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -441,7 +469,11 @@ uint32_t Struct2::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t Struct2::write(Protocol_* prot_) const {
-  return ::apache::thrift::op::detail::StructEncode<Struct2>{}(*prot_, *this);
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("Struct2");
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
 }
 
 extern template void Struct2::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -516,7 +548,11 @@ uint32_t Struct3::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t Struct3::write(Protocol_* prot_) const {
-  return ::apache::thrift::op::detail::StructEncode<Struct3>{}(*prot_, *this);
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("Struct3");
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
 }
 
 extern template void Struct3::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -591,7 +627,11 @@ uint32_t Struct4::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t Struct4::write(Protocol_* prot_) const {
-  return ::apache::thrift::op::detail::StructEncode<Struct4>{}(*prot_, *this);
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("Struct4");
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
 }
 
 extern template void Struct4::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -666,7 +706,11 @@ uint32_t Struct5::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t Struct5::write(Protocol_* prot_) const {
-  return ::apache::thrift::op::detail::StructEncode<Struct5>{}(*prot_, *this);
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("Struct5");
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
 }
 
 extern template void Struct5::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -771,7 +815,19 @@ uint32_t ExStruct::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t ExStruct::write(Protocol_* prot_) const {
-  return ::apache::thrift::op::detail::StructEncode<ExStruct>{}(*prot_, *this);
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("ExStruct");
+  bool previousFieldHasValue = true;
+  {
+    constexpr int16_t kPrevFieldId = 0;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 1, kPrevFieldId>(*prot_, "message", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_message);
+    xfer += prot_->writeFieldEnd();
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
 }
 
 extern template void ExStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
