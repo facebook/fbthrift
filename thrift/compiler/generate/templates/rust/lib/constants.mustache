@@ -184,22 +184,12 @@ default()
 {{/let partial}}
 
 
-{{!
-    NOTE: This is a partial that takes a *mstch object* as input.
-    This is an intermediate step in the migration, to simplify depth management
-    in the generator code.
-}}
 {{! Exported accessor for `const_value_impl` that bootstraps `local_type` }}
 {{#let export partial const_value |value depth| captures |const_value_impl|}}
 {{#partial const_value_impl value=value depth=depth local_type=value.value:type}}
 {{/let partial}}
 
 
-{{!
-    NOTE: This is a partial that takes a *mstch object* as input.
-    This is an intermediate step in the migration, to simplify depth management
-    in the generator code.
-}}
 {{! Externally visible version of the nested `field_value` partial }}
 {{#let export partial field_value |field value depth| captures |const_value_impl|}}
 {{#pragma ignore-newlines}}

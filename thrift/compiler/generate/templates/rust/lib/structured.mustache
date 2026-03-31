@@ -28,40 +28,37 @@ Clone, PartialEq
 )]
 {{/let partial}}
 
-{{#partial struct_derive_attribute struct=struct:self}}
+{{#partial struct_derive_attribute struct=structured}}
 
-{{#if struct:docs?}}
-#[doc = {{struct:docs}}]
-{{/if struct:docs?}}
-{{#if struct:union?}}
-pub enum {{struct:rust_name}} {
-  {{#each struct:self.fields as |field|}}
+  {{#if structured.docs?}}
+#[doc = {{structured.docs}}]
+  {{/if structured.docs?}}
+  {{#if structured.union?}}
+pub enum {{structured.rust_name}} {
+  {{#each structured.fields as |field|}}
     {{#if field.docs?}}
     #[doc = {{field.docs}}]
     {{/if field.docs?}}
     {{#if field.deprecated?}}
     #[deprecated(note = "{{field.deprecation_message}}")]
     {{/if field.deprecated?}}
-    {{#if struct:exception?}}
-    #[error("{0:?}")]
-    {{/if struct:exception?}}
     {{field.rust_name}}({{#partial fields.type_name field=field}}),
   {{/each}}
     UnknownField(::std::primitive::i32),
 }
-{{#else}}
-pub struct {{struct:rust_name}} {
-  {{#each struct:self.fields as |field|}}
-    {{#if struct:serde?}}
+  {{#else}}
+pub struct {{structured.rust_name}} {
+  {{#each structured.fields as |field|}}
+    {{#if structured.serde?}}
       {{#if field.rename?}}
     #[serde(rename = "{{field.name}}")]
       {{/if field.rename?}}
       {{#if (not field.optional?)}}
     #[serde(default)]
-      {{#else if program:skip_none_serialization?}}
+      {{#else if root_program.skip_none_serialization?}}
     #[serde(skip_serializing_if = "::std::option::Option::is_none")]
       {{/if (not field.optional?)}}
-    {{/if struct:serde?}}
+    {{/if structured.serde?}}
     {{#if field.docs?}}
     #[doc = {{field.docs}}]
     {{/if field.docs?}}
@@ -70,21 +67,21 @@ pub struct {{struct:rust_name}} {
     {{/if field.deprecated?}}
     pub {{field.rust_name}}: {{#partial fields.type_name field=field}},
   {{/each}}
-  {{#if (not struct:exhaustive?)}}
+    {{#if (not structured.exhaustive?)}}
     // This field forces `..Default::default()` when instantiating this
     // struct, to make code future-proof against new fields added later to
     // the definition in Thrift. If you don't want this, add the annotation
     // `@rust.Exhaustive` to the Thrift struct to eliminate this field.
     #[doc(hidden)]
-    {{#if struct:serde?}}
+      {{#if structured.serde?}}
     #[serde(skip, default = "self::dot_dot::default_for_serde_deserialize")]
-    {{/if struct:serde?}}
-    pub _dot_dot_Default_default: {{#if struct:has_adapter?}}super{{#else}}self{{/if}}::dot_dot::OtherFields,
-  {{/if (not struct:exhaustive?)}}
+      {{/if structured.serde?}}
+    pub _dot_dot_Default_default: {{#if structured.has_adapter?}}super{{#else}}self{{/if}}::dot_dot::OtherFields,
+    {{/if (not structured.exhaustive?)}}
 }
-  {{#if struct:exception?}}
+    {{#if structured.exception?}}
 
-impl ::fbthrift::ExceptionInfo for {{struct:rust_name}} {
+impl ::fbthrift::ExceptionInfo for {{structured.rust_name}} {
     fn exn_value(&self) -> String {
         format!("{:?}", self)
     }
@@ -93,17 +90,17 @@ impl ::fbthrift::ExceptionInfo for {{struct:rust_name}} {
     fn exn_is_declared(&self) -> bool { true }
 }
 
-impl ::std::error::Error for {{struct:rust_name}} {}
+impl ::std::error::Error for {{structured.rust_name}} {}
 
-impl ::std::fmt::Display for {{struct:rust_name}} {
+impl ::std::fmt::Display for {{structured.rust_name}} {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        {{#if (and struct:exception? (object.notnull? exception:message_field))}}
-          {{#let format_spec = (if exception:message_field.optional? "{:?}" "{}")}}
-        write!(f, "{{struct:rust_name}}: {{format_spec}}", self.{{exception:message_field.name}})
-        {{#else}}
+      {{#if (object.notnull? structured.message_field)}}
+        {{#let format_spec = (if structured.message_field.optional? "{:?}" "{}")}}
+        write!(f, "{{structured.rust_name}}: {{format_spec}}", self.{{structured.message_field.name}})
+      {{#else}}
         write!(f, "{:?}", self)
-        {{/if (and struct:exception? (object.notnull? exception:message_field))}}
+      {{/if (object.notnull? structured.message_field)}}
     }
 }
-  {{/if struct:exception?}}
-{{/if struct:union?}}
+    {{/if structured.exception?}}
+  {{/if structured.union?}}

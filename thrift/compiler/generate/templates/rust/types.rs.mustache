@@ -103,11 +103,11 @@ pub mod services;
 {{!
 --------------------------------------------------------------------------------
 }}
-{{#program:structs}}
-{{#if (not struct:has_adapter?)}}
-{{> lib/struct}}
-{{/if (not struct:has_adapter?)}}
-{{/program:structs}}
+  {{#each program:structured_definitions as |structured|}}
+    {{#if (not structured.has_adapter?)}}
+{{> lib/structured}}
+    {{/if (not structured.has_adapter?)}}
+  {{/each}}
 {{!
 --------------------------------------------------------------------------------
 }}

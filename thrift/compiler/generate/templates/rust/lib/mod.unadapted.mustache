@@ -20,10 +20,13 @@
 pub mod unadapted {
   {{#program:structs}}
     {{! Iterate structs and unions with adapters }}
-    {{#if (and (not struct:exception?) struct:has_adapter?)}}
-  {{> lib/struct}}
+    {{#let structured = struct:self}}
+    {{#if (and (not structured.exception?) structured.has_adapter?)}}
+      {{! `lib/structured` renders using the `structured` variable }}
+  {{> lib/structured}}
+      {{! NOTE: `lib/structimpl` still renders with mstch implicit `struct:*` context }}
   {{> lib/structimpl}}
-    {{/if (and (not struct:exception?) struct:has_adapter?)}}
+    {{/if (and (not structured.exception?) structured.has_adapter?)}}
   {{/program:structs}}
 
 }
