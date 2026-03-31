@@ -19,8 +19,10 @@ use std::collections::BTreeSet;
 use std::collections::HashMap;
 use std::collections::HashSet;
 use std::fmt::Debug;
+use std::fmt::Display;
 use std::hash::Hash;
 use std::marker::PhantomData;
+use std::str::FromStr;
 
 use crate::metadata::ThriftAnnotations;
 
@@ -623,22 +625,116 @@ pub trait NewTypeAdapter {
     type AdaptedType;
 }
 
+/// Convenience trait for fallible newtype adapters.
+///
+/// Like [`NewTypeAdapter`], but for types where the conversion from the
+/// standard thrift type can fail. The adapted type must implement
+/// [`TryFrom<StandardType>`] for deserialization and
+/// [`Into<StandardType>`] for serialization.
+///
+/// Users of the original [`NewTypeAdapter`] do NOT need to migrate — a
+/// blanket impl bridges `NewTypeAdapter` into `TryNewTypeAdapter`
+/// automatically.
+///
+/// # Examples
+///
+/// ```
+/// use fbthrift::adapter::TryNewTypeAdapter;
+///
+/// #[derive(Clone, Debug, PartialEq)]
+/// struct PositiveInt(i64);
+///
+/// impl TryFrom<i64> for PositiveInt {
+///     type Error = anyhow::Error;
+///     fn try_from(v: i64) -> Result<Self, Self::Error> {
+///         anyhow::ensure!(v > 0, "must be positive");
+///         Ok(Self(v))
+///     }
+/// }
+///
+/// impl From<PositiveInt> for i64 {
+///     fn from(v: PositiveInt) -> Self {
+///         v.0
+///     }
+/// }
+///
+/// struct PositiveIntAdapter;
+///
+/// impl TryNewTypeAdapter for PositiveIntAdapter {
+///     type StandardType = i64;
+///     type AdaptedType = PositiveInt;
+/// }
+/// ```
+pub trait TryNewTypeAdapter {
+    /// The thrift type that the adapter interprets.
+    type StandardType;
+    /// The Rust type to adapt to.
+    type AdaptedType;
+}
+
+// Bridge: all NewTypeAdapter impls automatically satisfy TryNewTypeAdapter.
+impl<T> TryNewTypeAdapter for T
+where
+    T: NewTypeAdapter,
+{
+    type StandardType = <T as NewTypeAdapter>::StandardType;
+    type AdaptedType = <T as NewTypeAdapter>::AdaptedType;
+}
+
 impl<Adapter, StandardType, AdaptedType> ThriftAdapter for Adapter
 where
-    Adapter: NewTypeAdapter<StandardType = StandardType, AdaptedType = AdaptedType>,
-    AdaptedType: From<StandardType> + Into<StandardType> + Clone + Debug + Send + Sync + PartialEq,
+    Adapter: TryNewTypeAdapter<StandardType = StandardType, AdaptedType = AdaptedType>,
+    AdaptedType:
+        TryFrom<StandardType> + Into<StandardType> + Clone + Debug + Send + Sync + PartialEq,
+    <AdaptedType as TryFrom<StandardType>>::Error: Into<anyhow::Error> + Debug,
 {
-    type StandardType = <Self as NewTypeAdapter>::StandardType;
-    type AdaptedType = <Self as NewTypeAdapter>::AdaptedType;
+    type StandardType = StandardType;
+    type AdaptedType = AdaptedType;
 
-    type Error = <Self::AdaptedType as TryFrom<Self::StandardType>>::Error;
+    type Error = <AdaptedType as TryFrom<StandardType>>::Error;
 
     fn to_thrift(value: &Self::AdaptedType) -> Self::StandardType {
         value.clone().into()
     }
 
     fn from_thrift(value: Self::StandardType) -> Result<Self::AdaptedType, Self::Error> {
-        Ok(Self::AdaptedType::from(value))
+        Self::AdaptedType::try_from(value)
+    }
+}
+
+/// Generic adapter that parses thrift strings via [`FromStr`] and
+/// serializes back via [`Display`](std::fmt::Display).
+///
+/// # Examples
+///
+/// Direct usage in thrift (no type alias needed):
+/// ```thrift
+/// include "thrift/annotation/rust.thrift";
+///
+/// @rust.Adapter{name = "::fbthrift::adapter::FromStrAdapter<std::net::Ipv4Addr>"}
+/// typedef string Ipv4Address;
+/// ```
+// NOTE: Standard generic type (defaulted to String) is not really generic,
+// it needs to be `String` to enable `ThriftAdapter` implementation.
+// It is currently present to support `Ipv4AddressAdapter` and `Ipv6AddressAdapter`
+// but once they are generic-free, then we can remove `Standard` generic.
+pub struct FromStrAdapter<Adapted, Standard = String>(PhantomData<(Adapted, Standard)>);
+
+impl<T> ThriftAdapter for FromStrAdapter<T, String>
+where
+    T: FromStr + Display + Clone + Debug + Send + Sync + PartialEq,
+    <T as FromStr>::Err: Into<anyhow::Error> + Debug,
+{
+    type StandardType = String;
+    type AdaptedType = T;
+    type Error = <T as FromStr>::Err;
+
+    fn to_thrift(value: &Self::AdaptedType) -> String {
+        value.to_string()
+    }
+
+    fn from_thrift(value: String) -> Result<Self::AdaptedType, Self::Error> {
+        value.parse()
     }
 }
 
@@ -839,5 +935,92 @@ mod tests {
             TestLayeredAdapter::to_thrift_field::<DummyParentStruct>(&"false".to_string(), 42),
             0_i8
         );
+    }
+
+    // -- TryNewTypeAdapter tests --
+
+    #[derive(Clone, Debug, PartialEq)]
+    struct PositiveInt(i64);
+
+    impl TryFrom<i64> for PositiveInt {
+        type Error = anyhow::Error;
+        fn try_from(v: i64) -> Result<Self, Self::Error> {
+            anyhow::ensure!(v > 0, "must be positive");
+            Ok(Self(v))
+        }
+    }
+
+    impl From<PositiveInt> for i64 {
+        fn from(v: PositiveInt) -> Self {
+            v.0
+        }
+    }
+
+    struct PositiveIntAdapter;
+
+    impl TryNewTypeAdapter for PositiveIntAdapter {
+        type StandardType = i64;
+        type AdaptedType = PositiveInt;
+    }
+
+    #[test]
+    fn try_new_type_adapter_valid_round_trip() {
+        let adapted = PositiveIntAdapter::from_thrift(42_i64).unwrap();
+        assert_eq!(adapted, PositiveInt(42));
+        assert_eq!(PositiveIntAdapter::to_thrift(&adapted), 42_i64);
+    }
+
+    #[test]
+    fn try_new_type_adapter_invalid_input() {
+        assert!(PositiveIntAdapter::from_thrift(0_i64).is_err());
+        assert!(PositiveIntAdapter::from_thrift(-5_i64).is_err());
+    }
+
+    // Regression: existing NewTypeAdapter impls still work through the bridge.
+    #[derive(Clone, Debug, PartialEq)]
+    struct MyInt(i64);
+
+    impl From<i64> for MyInt {
+        fn from(v: i64) -> Self {
+            Self(v)
+        }
+    }
+
+    impl From<MyInt> for i64 {
+        fn from(v: MyInt) -> Self {
+            v.0
+        }
+    }
+
+    struct MyIntAdapter;
+
+    impl NewTypeAdapter for MyIntAdapter {
+        type StandardType = i64;
+        type AdaptedType = MyInt;
+    }
+
+    #[test]
+    fn new_type_adapter_still_works() {
+        let adapted = MyIntAdapter::from_thrift(99_i64).unwrap();
+        assert_eq!(adapted, MyInt(99));
+        assert_eq!(MyIntAdapter::to_thrift(&adapted), 99_i64);
+    }
+
+    // -- FromStrAdapter tests --
+
+    #[test]
+    fn from_str_adapter_round_trip_ipv4() {
+        use std::net::Ipv4Addr;
+
+        let raw = "127.0.0.1".to_owned();
+        let adapted = FromStrAdapter::<Ipv4Addr>::from_thrift(raw.clone()).unwrap();
+        assert_eq!(FromStrAdapter::<Ipv4Addr>::to_thrift(&adapted), raw);
+    }
+
+    #[test]
+    fn from_str_adapter_invalid_ipv4() {
+        use std::net::Ipv4Addr;
+
+        assert!(FromStrAdapter::<Ipv4Addr>::from_thrift("not_an_ip".to_owned()).is_err());
     }
 }
