@@ -16,54 +16,50 @@
 
 }}
 
-{{#if struct:union?}}
-impl ::std::default::Default for {{struct:rust_name}} {
+{{#if structured.union?}}
+impl ::std::default::Default for {{structured.rust_name}} {
     fn default() -> Self {
         Self::UnknownField(-1)
     }
 }
 
-impl ::fbthrift::GetTType for {{struct:rust_name}} {
+impl ::fbthrift::GetTType for {{structured.rust_name}} {
     const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
 }
-{{#if (not (string.empty? struct:uri))}}
+  {{#if (not (string.empty? structured.uri))}}
 
-impl ::fbthrift::GetUri for self::{{struct:rust_name}} {
+impl ::fbthrift::GetUri for self::{{structured.rust_name}} {
     fn uri() -> &'static ::std::primitive::str {
-        "{{struct:uri}}"
+        "{{structured.uri}}"
     }
 }
-{{/if (not (string.empty? struct:uri))}}
+  {{/if (not (string.empty? structured.uri))}}
 
-impl ::fbthrift::GetTypeNameType for self::{{struct:rust_name}} {
+impl ::fbthrift::GetTypeNameType for self::{{structured.rust_name}} {
     fn type_name_type() -> fbthrift::TypeNameType {
         ::fbthrift::TypeNameType::UnionType
     }
 }
 
-impl<P> ::fbthrift::Serialize<P> for {{struct:rust_name}}
+impl<P> ::fbthrift::Serialize<P> for {{structured.rust_name}}
 where
     P: ::fbthrift::ProtocolWriter,
 {
     #[inline]
     fn rs_thrift_write(&self, p: &mut P) {
-        p.write_struct_begin("{{struct:name}}");
+        p.write_struct_begin("{{structured.name}}");
         match self {
-            {{#struct:fields}}
-            Self::{{field:rust_name}}(inner) => {
-                p.write_field_begin({{!
-                    }}"{{field:name}}", {{!
-                    }}{{#partial types.protocol_ttype type=field:self.type}}, {{!
-                    }}{{field:id}}{{!
-                }});
-                {{#partial fields.write field=field:self}}({{!
-                }}{{#if field:has_adapter?}}&{{field:adapter_qualified}}::to_thrift_field::<{{struct:rust_name}}>({{/if field:has_adapter?}}{{!
+  {{#each structured.fields as |field|}}
+            Self::{{field.rust_name}}(inner) => {
+                p.write_field_begin("{{field.name}}", {{#partial types.protocol_ttype type=field.type}}, {{field.id}});
+                {{#partial fields.write field=field}}({{!
+                }}{{#if field.has_adapter?}}&{{field.adapter_qualified}}::to_thrift_field::<{{structured.rust_name}}>({{/if}}{{!
                 }}inner{{!
-                }}{{#if field:has_adapter?}}, {{field:id}}){{/if field:has_adapter?}}{{!
+                }}{{#if field.has_adapter?}}, {{field.id}}){{/if}}{{!
                 }}, p);
                 p.write_field_end();
             }
-            {{/struct:fields}}
+  {{/each}}
             Self::UnknownField(_) => {}
         }
         p.write_field_stop();
@@ -71,37 +67,37 @@ where
     }
 }
 
-impl<P> ::fbthrift::Deserialize<P> for {{struct:rust_name}}
+impl<P> ::fbthrift::Deserialize<P> for {{structured.rust_name}}
 where
     P: ::fbthrift::ProtocolReader,
 {
     #[inline]
     fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
         static FIELDS: &[::fbthrift::Field] = &[
-            {{#each struct:fields_by_name as |field|}}
+  {{#each structured.fields_by_name as |field|}}
             ::fbthrift::Field::new("{{field.name}}", {{#partial types.protocol_ttype type=field.type}}, {{field.id}}),
-            {{/each}}
+  {{/each}}
         ];
-        let _ = ::anyhow::Context::context(p.read_struct_begin(|_| ()), "Expected a {{struct:name}}")?;
-        let {{#if struct:fields?}}mut {{/if struct:fields?}}once = false;
-        let {{#if struct:fields?}}mut {{/if struct:fields?}}alt = ::std::option::Option::None;
+        let _ = ::anyhow::Context::context(p.read_struct_begin(|_| ()), "Expected a {{structured.name}}")?;
+        let {{#if structured.fields?}}mut {{/if}}once = false;
+        let {{#if structured.fields?}}mut {{/if}}alt = ::std::option::Option::None;
         loop {
             let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
             match (fty, fid as ::std::primitive::i32, once) {
-                (::fbthrift::TType::Stop, _, _) => break,{{!
-                }}{{#struct:fields}}
-                ({{#partial types.protocol_ttype type=field:self.type}}, {{field:id}}, false) => {
+                (::fbthrift::TType::Stop, _, _) => break,
+  {{#each structured.fields as |field|}}
+                ({{#partial types.protocol_ttype type=field.type}}, {{field.id}}, false) => {
                     once = true;
-                    alt = ::std::option::Option::Some(Self::{{field:rust_name}}({{!
-                    }}{{#if field:has_adapter?}}{{field:adapter_qualified}}::from_thrift_field::<{{struct:rust_name}}>({{/if field:has_adapter?}}{{!
-                    }}::anyhow::Context::context({{#partial fields.read field=field:self}}(p), ::fbthrift::errors::DeserializingFieldError { field: "{{field:name}}", strct: "{{struct:name}}"})?{{!
-                    }}{{#if field:has_adapter?}}, {{field:id}})?{{/if field:has_adapter?}}{{!
+                    alt = ::std::option::Option::Some(Self::{{field.rust_name}}({{!
+                    }}{{#if field.has_adapter?}}{{field.adapter_qualified}}::from_thrift_field::<{{structured.rust_name}}>({{/if}}{{!
+                    }}::anyhow::Context::context({{#partial fields.read field=field}}(p), ::fbthrift::errors::DeserializingFieldError { field: "{{field.name}}", strct: "{{structured.name}}"})?{{!
+                    }}{{#if field.has_adapter?}}, {{field.id}})?{{/if}}{{!
                     }}));
-                }{{!
-                }}{{/struct:fields}}
+                }
+  {{/each}}
                 (fty, _, false) => p.skip(fty)?,
                 (badty, badid, true) => return ::std::result::Result::Err(::std::convert::From::from(::fbthrift::ProtocolError::UnwantedExtraUnionField(
-                    "{{struct:name}}".to_string(),
+                    "{{structured.name}}".to_string(),
                     badty,
                     badid,
                 ))),
@@ -113,13 +109,13 @@ where
     }
 }
 
-impl {{struct:rust_name}} {
+impl {{structured.rust_name}} {
     /// Return current union variant name as a tuple of (Rust name, original name).
     pub fn variant_name(&self) -> ::std::option::Option<(&'static ::std::primitive::str, &'static ::std::primitive::str)> {
         match self {
-            {{#struct:fields}}
-            Self::{{field:rust_name}}(_) => ::std::option::Option::Some(("{{field:rust_name}}", "{{field:name}}")),
-            {{/struct:fields}}
+  {{#each structured.fields as |field|}}
+            Self::{{field.rust_name}}(_) => ::std::option::Option::Some(("{{field.rust_name}}", "{{field.name}}")),
+  {{/each}}
             Self::UnknownField(_) => ::std::option::Option::None,
         }
     }
@@ -127,13 +123,13 @@ impl {{struct:rust_name}} {
     /// Return all union variant names as a tuple of (Rust name, original name).
     pub fn variant_names() -> &'static [(&'static ::std::primitive::str, &'static ::std::primitive::str)] {
         &[
-            {{#struct:fields}}
-            ("{{field:rust_name}}", "{{field:name}}"),
-            {{/struct:fields}}
+  {{#each structured.fields as |field|}}
+            ("{{field.rust_name}}", "{{field.name}}"),
+  {{/each}}
         ]
     }
 }
-{{#if program:rust_gen_native_metadata?}}
+  {{#if root_program.rust_gen_native_metadata?}}
 {{> lib/metadata/struct}}
-{{/if program:rust_gen_native_metadata?}}
-{{/if struct:union?}}
+  {{/if root_program.rust_gen_native_metadata?}}
+{{/if structured.union?}}

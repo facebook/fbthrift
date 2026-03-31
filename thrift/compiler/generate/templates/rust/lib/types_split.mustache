@@ -90,12 +90,14 @@ include!("{{src}}");
 {{!
 ================================================================================
 }}
-{{#program:current_split_structs}}
-{{#if (not struct:has_adapter?)}}
+  {{#program:current_split_structs}}
+    {{#let structured = struct:self}}
+    {{#if (not structured.has_adapter?)}}
+      {{! NOTE: unionimpl uses Whisker `structured`, structimpl uses mstch `struct:*` }}
 {{> lib/structimpl}}
 {{> lib/unionimpl}}
-{{/if (not struct:has_adapter?)}}
-{{/program:current_split_structs}}
+    {{/if (not structured.has_adapter?)}}
+  {{/program:current_split_structs}}
 {{!
 ================================================================================
 }}

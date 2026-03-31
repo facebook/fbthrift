@@ -124,12 +124,14 @@ pub mod services;
 {{!
 --------------------------------------------------------------------------------
 }}
-{{#program:structs}}
-{{#if (not struct:has_adapter?)}}
+  {{#program:structs}}
+    {{#let structured = struct:self}}
+    {{#if (not structured.has_adapter?)}}
+      {{! NOTE: unionimpl uses Whisker `structured`, structimpl uses mstch `struct:*` }}
 {{> lib/structimpl}}
 {{> lib/unionimpl}}
-{{/if (not struct:has_adapter?)}}
-{{/program:structs}}
+    {{/if (not structured.has_adapter?)}}
+  {{/program:structs}}
 {{!
 --------------------------------------------------------------------------------
 }}
