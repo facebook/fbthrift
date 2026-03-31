@@ -16,7 +16,6 @@
 
 }}
 {{#type:typedef?}}{{!
-  }}{{type:setTypeName}}{{!
   }}{{#type:isBinaryString?}}{{!
     }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter{{field:prevNestedDepth}});{{!
   }}{{/type:isBinaryString?}}{{!
@@ -39,10 +38,8 @@
         for ({{#type:set_elem_type}}{{> AdaptedType}}{{/type:set_elem_type}} _iter{{field:nestedDepth}} : _iter{{field:prevNestedDepth}}) {
           {{field:setIsNested}}{{!
           }}{{#type:set_elem_type}}{{!
-          }}{{#type:hasAdapter?}}{{!
-          }}{{field:nestedDepth++}}{{#partial types.adapted_boxed_type type=type:self}} _iter{{field:nestedDepth}} = __{{type:name}}_Adapter.toThrift(_iter{{field:prevNestedDepth}});
-          {{/type:hasAdapter?}}{{field:nestedDepth++}}{{> WriteType}}{{field:nestedDepth--}}{{!
-          }}{{#type:hasAdapter?}}{{field:nestedDepth--}}{{/type:hasAdapter?}}{{!
+          }}{{#type:hasAdapter?}}{{field:nestedDepth++}}{{#partial types.adapted_boxed_type type=type:self}} _iter{{field:nestedDepth}} = __{{type:name}}_Adapter.toThrift(_iter{{field:prevNestedDepth}});
+          {{/type:hasAdapter?}}{{field:nestedDepth++}}{{> WriteType}}{{field:nestedDepth--}}{{#type:hasAdapter?}}{{field:nestedDepth--}}{{/type:hasAdapter?}}{{!
           }}{{/type:set_elem_type}}
         }
         oprot.writeSetEnd();{{!
@@ -53,10 +50,8 @@
         for ({{#type:list_elem_type}}{{> AdaptedType}}{{/type:list_elem_type}} _iter{{field:nestedDepth}} : _iter{{field:prevNestedDepth}}) {
           {{field:setIsNested}}{{!
           }}{{#type:list_elem_type}}{{!
-          }}{{#type:hasAdapter?}}{{!
-          }}{{field:nestedDepth++}}{{#partial types.adapted_boxed_type type=type:self}} _iter{{field:nestedDepth}} = __{{type:name}}_Adapter.toThrift(_iter{{field:prevNestedDepth}});
-          {{/type:hasAdapter?}}{{field:nestedDepth++}}{{> WriteType}}{{field:nestedDepth--}}{{!
-          }}{{#type:hasAdapter?}}{{field:nestedDepth--}}{{/type:hasAdapter?}}{{!
+          }}{{#type:hasAdapter?}}{{field:nestedDepth++}}{{#partial types.adapted_boxed_type type=type:self}} _iter{{field:nestedDepth}} = __{{type:name}}_Adapter.toThrift(_iter{{field:prevNestedDepth}});
+          {{/type:hasAdapter?}}{{field:nestedDepth++}}{{> WriteType}}{{field:nestedDepth--}}{{#type:hasAdapter?}}{{field:nestedDepth--}}{{/type:hasAdapter?}}{{!
           }}{{/type:list_elem_type}}
         }
         oprot.writeListEnd();{{!
@@ -89,62 +84,52 @@
 }}{{/type:map?}}{{!
 
 }}{{#type:structured?}}{{!
-}}{{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}}.write0(oprot);{{!
+}}_iter{{field:prevNestedDepth}}.write0(oprot);{{!
 }}{{/type:structured?}}{{!
 
 }}{{#type:enum?}}{{!
-}}oprot.writeI32({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}} == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}}));{{!
+}}oprot.writeI32(_iter{{field:prevNestedDepth}} == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter{{field:prevNestedDepth}}));{{!
 }}{{/type:enum?}}{{!
 
 }}{{#type:binary?}}{{!
-  }}{{^field:hasAdapterOrWrapper?}}{{!
-    }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter{{field:prevNestedDepth}});{{!
-  }}{{/field:hasAdapterOrWrapper?}}{{!
-  }}{{#field:hasAdapterOrWrapper?}}{{!
-    }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, {{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}});{{!
-  }}{{/field:hasAdapterOrWrapper?}}{{!
+  }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter{{field:prevNestedDepth}});{{!
 }}{{/type:binary?}}{{!
 
 }}{{#type:string?}}{{!
   }}{{#type:isBinaryString?}}{{!
-    }}{{^field:hasAdapterOrWrapper?}}{{!
-      }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter{{field:prevNestedDepth}});{{!
-    }}{{/field:hasAdapterOrWrapper?}}{{!
-    }}{{#field:hasAdapterOrWrapper?}}{{!
-      }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, {{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}});{{!
-    }}{{/field:hasAdapterOrWrapper?}}{{!
+    }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter{{field:prevNestedDepth}});{{!
   }}{{/type:isBinaryString?}}{{!
   }}{{^type:isBinaryString?}}{{!
-    }}oprot.writeString({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}});{{!
+    }}oprot.writeString(_iter{{field:prevNestedDepth}});{{!
 }}{{/type:isBinaryString?}}{{!
 }}{{/type:string?}}{{!
 
 }}{{#type:bool?}}{{!
-}}oprot.writeBool({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}});{{!
+}}oprot.writeBool(_iter{{field:prevNestedDepth}});{{!
 }}{{/type:bool?}}{{!
 
 }}{{#type:byte?}}{{!
-}}oprot.writeByte({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}});{{!
+}}oprot.writeByte(_iter{{field:prevNestedDepth}});{{!
 }}{{/type:byte?}}{{!
 
 }}{{#type:i16?}}{{!
-}}oprot.writeI16({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}});{{!
+}}oprot.writeI16(_iter{{field:prevNestedDepth}});{{!
 }}{{/type:i16?}}{{!
 
 }}{{#type:i32?}}{{!
-}}oprot.writeI32({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}});{{!
+}}oprot.writeI32(_iter{{field:prevNestedDepth}});{{!
 }}{{/type:i32?}}{{!
 
 }}{{#type:i64?}}{{!
-}}oprot.writeI64({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}});{{!
+}}oprot.writeI64(_iter{{field:prevNestedDepth}});{{!
 }}{{/type:i64?}}{{!
 
 }}{{#type:float?}}{{!
-}}oprot.writeFloat({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}});{{!
+}}oprot.writeFloat(_iter{{field:prevNestedDepth}});{{!
 }}{{/type:float?}}{{!
 
 }}{{#type:double?}}{{!
-}}oprot.writeDouble({{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=(and field:isNested? type:isAdapterSet?) depth=field:prevNestedDepth}});{{!
+}}oprot.writeDouble(_iter{{field:prevNestedDepth}});{{!
 }}{{/type:double?}}{{!
 
 }}{{/type:typedef?}}

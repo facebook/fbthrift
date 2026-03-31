@@ -286,8 +286,6 @@ std::string java_constant_name(std::string name) {
   return constant_str;
 }
 
-std::string prevTypeName;
-
 void collect_adapted_typedefs(
     const t_type* type,
     std::set<std::string>& seen,
@@ -1503,10 +1501,6 @@ class mstch_java_type : public mstch_type {
              {with_no_caching, &mstch_java_type::unset_adapter}},
             {"type:isAdapterSet?",
              {with_no_caching, &mstch_java_type::is_adapter_set}},
-            {"type:setTypeName",
-             {with_no_caching, &mstch_java_type::set_type_name}},
-            {"type:getTypeName",
-             {with_no_caching, &mstch_java_type::get_type_name}},
         });
   }
   bool hasTypeAdapter = false;
@@ -1522,17 +1516,6 @@ class mstch_java_type : public mstch_type {
   }
 
   mstch::node is_adapter_set() { return hasTypeAdapter; }
-
-  mstch::node set_type_name() {
-    if (type_->is<t_typedef>() &&
-        type_->has_structured_annotation(kJavaAdapterUri)) {
-      prevTypeName = type_->name();
-    }
-
-    return mstch::node();
-  }
-
-  mstch::node get_type_name() { return prevTypeName; }
 };
 
 void t_mstch_java_generator::generate_program() {

@@ -81,14 +81,3 @@ oprot.writeMapEnd();
 {{#else if type.double?}}oprot.writeDouble(_iter{{depth}});
 {{/if type.typedef?}}{{!
 }}{{/let partial}}
-
-{{! Renders a nested value expression, optionally wrapped with an adapter's toThrift() call.
-    Takes adapter_name (the typedef name for the adapter, or empty string if no adapter),
-    has_adapter (boolean, whether to apply the adapter wrapping),
-    and depth (the _iter variable suffix for the current value). }}
-{{#let export partial write_nested_type |adapter_name has_adapter depth|}}
-  {{#pragma ignore-newlines}}
-{{#if has_adapter}}__{{adapter_name}}_Adapter.toThrift(_iter{{depth}})
-{{#else}}_iter{{depth}}
-{{/if has_adapter}}
-{{/let partial}}
