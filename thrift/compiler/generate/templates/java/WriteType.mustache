@@ -107,7 +107,7 @@
       }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, {{#partial codec.write_nested_type adapter_name=type:getTypeName has_adapter=field:isNested? depth=field:prevNestedDepth}});{{!
     }}{{/type:isAdapterSet?}}{{!
     }}{{^type:isAdapterSet?}}{{!
-      }}oprot.writeBinary({{^type:javaType}}java.nio.ByteBuffer.wrap{{/type:javaType}}(_iter{{field:prevNestedDepth}}));{{!
+      }}oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter{{field:prevNestedDepth}}));{{!
     }}{{/type:isAdapterSet?}}{{!
   }}{{/field:hasAdapterOrWrapper?}}{{!
   }}{{#field:hasAdapterOrWrapper?}}{{!
