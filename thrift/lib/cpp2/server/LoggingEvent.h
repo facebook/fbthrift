@@ -179,6 +179,9 @@ struct RequestLoggingContext {
 
   uint8_t cpuConcurrencyControllerMode;
 
+  bool overloadProtectionBOHActive{false};
+  bool overloadProtectionCPUCCEnabled{false};
+
   std::string securityProtocol;
 };
 

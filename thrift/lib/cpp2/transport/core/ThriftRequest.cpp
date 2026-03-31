@@ -273,6 +273,11 @@ ThriftRequestCore::LogRequestSampleCallback::buildRequestLoggingContext(
         static_cast<uint8_t>(CPUConcurrencyController::Mode::DISABLED);
   }
 
+  requestLoggingContext.overloadProtectionBOHActive =
+      serverConfigs_.isOverloadProtectionBOHActive();
+  requestLoggingContext.overloadProtectionCPUCCEnabled =
+      serverConfigs_.isOverloadProtectionCPUCCEnabled();
+
   if (const auto* connContext = reqContext->getConnectionContext()) {
     requestLoggingContext.securityProtocol = connContext->getSecurityProtocol();
   }

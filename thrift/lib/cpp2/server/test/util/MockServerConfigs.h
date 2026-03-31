@@ -123,6 +123,8 @@ class MockServerConfigs : public apache::thrift::server::ServerConfigs {
       getDecoratorDataPerRequestBlueprint,
       (),
       (override));
+  MOCK_METHOD(bool, isOverloadProtectionBOHActive, (), (const, override));
+  MOCK_METHOD(bool, isOverloadProtectionCPUCCEnabled, (), (const, override));
 };
 
 } // namespace apache::thrift::server::test

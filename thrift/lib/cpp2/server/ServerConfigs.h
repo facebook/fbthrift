@@ -280,6 +280,11 @@ class ServerConfigs {
   virtual server::DecoratorDataPerRequestBlueprint&
   getDecoratorDataPerRequestBlueprint() = 0;
 
+  // Overload protection observability: whether BOH is actively running
+  // and whether CPUCC is enabled via ThriftOverloadProtectionModule.
+  virtual bool isOverloadProtectionBOHActive() const { return false; }
+  virtual bool isOverloadProtectionCPUCCEnabled() const { return false; }
+
  private:
   folly::relaxed_atomic<int32_t> activeRequests_{0};
 

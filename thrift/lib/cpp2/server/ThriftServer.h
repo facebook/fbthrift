@@ -893,6 +893,20 @@ class ThriftServer : public apache::thrift::concurrency::Runnable,
   void setAsPrimaryServer() { isPrimaryServer_ = true; }
   bool isPrimaryServer() const { return isPrimaryServer_; }
 
+  void setOverloadProtectionBOHActive(bool v) {
+    overloadProtectionBOHActive_.store(v, std::memory_order_relaxed);
+  }
+  bool isOverloadProtectionBOHActive() const override {
+    return overloadProtectionBOHActive_.load(std::memory_order_relaxed);
+  }
+
+  void setOverloadProtectionCPUCCEnabled(bool v) {
+    overloadProtectionCPUCCEnabled_.store(v, std::memory_order_relaxed);
+  }
+  bool isOverloadProtectionCPUCCEnabled() const override {
+    return overloadProtectionCPUCCEnabled_.load(std::memory_order_relaxed);
+  }
+
   /**
    * Set the client identity hook for the server, which will be called in
    * Cpp2ConnContext(). It can be used to cache client identities for each
@@ -990,6 +1004,11 @@ class ThriftServer : public apache::thrift::concurrency::Runnable,
    * will be used to indicate which is the primary server.
    */
   bool isPrimaryServer_{false};
+
+  // Overload protection observability flags, set by
+  // ThriftOverloadProtectionModule from config observer callbacks.
+  std::atomic<bool> overloadProtectionBOHActive_{false};
+  std::atomic<bool> overloadProtectionCPUCCEnabled_{false};
 
   // Notification of various server events. Note that once observer_ has been
   // set, it cannot be set again and will remain alive for (at least) the
