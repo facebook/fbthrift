@@ -379,9 +379,31 @@ folly::AsyncTransport::UniquePtr createIOUringFizz(
     bindOptions = folly::AsyncIoUringSocketFactory::createBoundSocketForZcRx(
         evb, cfg.serverHost.getIPAddress(), cfg.serverHost.getPort());
   }
+  auto fizzContext = getFizzContext(cfg);
+  std::shared_ptr<apache::thrift::ThriftParametersClientExtension>
+      thriftExtension{nullptr};
+  if (cfg.stopTLSv2) {
+    auto thriftParametersContext =
+        std::make_shared<apache::thrift::ThriftParametersContext>();
+    thriftParametersContext->setUseStopTLSV2(true);
+    thriftExtension =
+        std::make_shared<apache::thrift::ThriftParametersClientExtension>(
+            thriftParametersContext);
+    fizzContext->setFactory(
+        std::make_shared<facebook::services::FizzThriftFactory>());
+  }
+  std::vector<std::shared_ptr<fizz::ClientExtensions>> extensions;
+  if (thriftExtension != nullptr) {
+    extensions.push_back(thriftExtension);
+  }
   auto fizzClient = fizz::client::AsyncFizzClient::UniquePtr(
       new fizz::client::AsyncFizzClient(
-          folly::AsyncTransport::UniquePtr(sock), getFizzContext(cfg)));
+          folly::AsyncTransport::UniquePtr(sock),
+          fizzContext,
+          extensions.empty()
+              ? nullptr
+              : std::make_shared<fizz::client::MultiClientExtensions>(
+                    std::move(extensions))));
   fizzClient->connect(
       cfg.serverHost,
       cfg.connectCb,
