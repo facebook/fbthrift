@@ -144,11 +144,16 @@ class Json5ProtocolWriter final {
   std::uint32_t writeSetBegin(protocol::TType, uint32_t);
   std::uint32_t writeSetEnd();
 
-  template <typename KeyTag, typename ValueTag>
-  std::uint32_t writeMapBegin(uint32_t /* size */) {
-    return writeMapBegin(
-        std::is_same_v<KeyTag, type::string_t> ||
-        type::is_a_v<KeyTag, type::enum_c>);
+  // alternativeKeyForm:
+  // * true: key is string or enum, thus we use json object to represent the map
+  // * false: key is not string or enum, thus we use key-value array to
+  //          represent the map.
+  std::uint32_t writeMapBegin(
+      protocol::TType /* key */,
+      protocol::TType /* value */,
+      uint32_t /* size */,
+      bool alternativeKeyForm) {
+    return writeMapBegin(alternativeKeyForm);
   }
 
   std::uint32_t writeMapEnd();

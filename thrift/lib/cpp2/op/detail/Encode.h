@@ -721,10 +721,17 @@ struct MapEncode {
   uint32_t operator()(Protocol& prot, const T& map) const {
     uint32_t xfer = 0;
     if constexpr (requires {
-                    prot.template writeMapBegin<Key, Value>(std::int32_t{});
+                    prot.writeMapBegin(
+                        TType{}, TType{}, std::int32_t{}, bool{});
                   }) {
-      xfer += prot.template writeMapBegin<Key, Value>(
-          checked_container_size(map.size()));
+      // alternativeKeyForm disambiguates string/binary and i32/enum key types.
+      constexpr bool alternativeKeyForm =
+          type::is_a_v<Key, type::enum_c> || type::is_a_v<Key, type::string_t>;
+      xfer += prot.writeMapBegin(
+          typeTagToTType<Key>,
+          typeTagToTType<Value>,
+          checked_container_size(map.size()),
+          alternativeKeyForm);
     } else {
       xfer += prot.writeMapBegin(
           typeTagToTType<Key>,
