@@ -178,10 +178,15 @@ class TransportPeekingManager : public PeekingManagerBase,
 
   void peekSuccess(std::vector<uint8_t> peekBytes) noexcept override {
     folly::DelayedDestruction::DestructorGuard dg(this);
+    auto readData = peeker_->moveReadData();
     dropConnection();
 
     // Make the data available again to the underlying socket.
-    socket_->setPreReceivedData(folly::IOBuf::copyBuffer(peekBytes));
+    if (readData) {
+      socket_->setPreReceivedData(std::move(readData));
+    } else {
+      socket_->setPreReceivedData(folly::IOBuf::copyBuffer(peekBytes));
+    }
 
     // This is possible when acceptor is stopped between taking a new
     // connection and calling back to this function.
