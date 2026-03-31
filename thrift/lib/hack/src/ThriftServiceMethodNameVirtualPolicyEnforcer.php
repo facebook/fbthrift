@@ -135,7 +135,7 @@ final class ThriftServiceMethodNameVirtualPolicyEnforcer
 
     $privacy_lib =
       self::getPrivacyLibObject($asset_xid, $sr_config_service_name);
-    $privacylib_failure = await $privacy_lib->genClientRPCWithTAE(
+    list($privacylib_failure, $_) = await $privacy_lib->genClientRPCWithTAE(
       null,
       $context,
       $caller,
