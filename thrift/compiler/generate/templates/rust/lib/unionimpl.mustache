@@ -48,8 +48,8 @@ where
     #[inline]
     fn rs_thrift_write(&self, p: &mut P) {
         p.write_struct_begin("{{struct:name}}");
-        match self \{{{!
-            }}{{#struct:fields}}
+        match self {
+            {{#struct:fields}}
             Self::{{field:rust_name}}(inner) => {
                 p.write_field_begin({{!
                     }}"{{field:name}}", {{!
@@ -62,8 +62,8 @@ where
                 }}{{#if field:has_adapter?}}, {{field:id}}){{/if field:has_adapter?}}{{!
                 }}, p);
                 p.write_field_end();
-            }{{!
-            }}{{/struct:fields}}
+            }
+            {{/struct:fields}}
             Self::UnknownField(_) => {}
         }
         p.write_field_stop();

@@ -19,10 +19,10 @@
 #[doc = {{service:docs}}]
 {{/if service:docs?}}
 #[::async_trait::async_trait]
-pub trait {{service:rust_name}}: ::std::marker::Send + ::std::marker::Sync + 'static \{{{!
-}}{{#if service:requestContext?}}
-    type RequestContext: ::std::marker::Sync;{{!
-}}{{/if service:requestContext?}}
+pub trait {{service:rust_name}}: ::std::marker::Send + ::std::marker::Sync + 'static {
+  {{#if service:requestContext?}}
+    type RequestContext: ::std::marker::Sync;
+  {{/if service:requestContext?}}
 {{#service:functions}}{{#if (not function:starts_interaction?)}}
     {{#if function:docs?}}
     #[doc = {{function:docs}}]
@@ -62,9 +62,10 @@ pub trait {{service:rust_name}}: ::std::marker::Send + ::std::marker::Sync + 'st
 impl<T> {{service:rust_name}} for ::std::boxed::Box<T>
 where
     T: {{service:rust_name}} + Send + Sync + ?Sized,
-\{{{#if service:requestContext?}}
-    type RequestContext = T::RequestContext;{{!
-}}{{/if service:requestContext?}}
+{
+  {{#if service:requestContext?}}
+    type RequestContext = T::RequestContext;
+  {{/if service:requestContext?}}
 {{#service:functions}}{{#if (not function:starts_interaction?)}}
     async fn {{function:rust_name}}(
         &self,{{!
@@ -102,9 +103,10 @@ where
 impl<T> {{service:rust_name}} for ::std::sync::Arc<T>
 where
     T: {{service:rust_name}} + Send + Sync + ?Sized,
-\{{{#if service:requestContext?}}
-    type RequestContext = T::RequestContext;{{!
-}}{{/if service:requestContext?}}
+{
+  {{#if service:requestContext?}}
+    type RequestContext = T::RequestContext;
+  {{/if service:requestContext?}}
 {{#service:functions}}{{#if (not function:starts_interaction?)}}
     async fn {{function:rust_name}}(
         &self,{{!

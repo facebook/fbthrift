@@ -16,8 +16,8 @@
 
 }}
 
-{{#if service:interactions?}}{{!
-}}pub mod {{service:snake}} {
+{{#if service:interactions?}}
+pub mod {{service:snake}} {
     use super::*;
 
     {{! Capture service name before `service:*` is switched to interaction context }}
@@ -492,10 +492,12 @@ where
 
     #[inline]
     fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
-        match name \{{{!
-            }}{{#each (array.enumerate service:self.functions) as |index function|}}{{#if (not function.starts_interaction?)}}
-            b"{{#if service:interaction?}}{{service:name}}.{{/if service:interaction?}}{{function.name}}" => ::std::result::Result::Ok({{index}}usize),{{!
-            }}{{/if (not function.starts_interaction?)}}{{/each}}
+        match name {
+            {{#each (array.enumerate service:self.functions) as |index function|}}
+              {{#if (not function.starts_interaction?)}}
+            b"{{#if service:interaction?}}{{service:name}}.{{/if}}{{function.name}}" => ::std::result::Result::Ok({{index}}usize),
+              {{/if (not function.starts_interaction?)}}
+            {{/each}}
             _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
         }
     }
@@ -510,12 +512,14 @@ where
         _reply_state: ::std::sync::Arc<RS>,
         _seqid: ::std::primitive::u32,
     ) -> ::anyhow::Result<()> {
-        match idx \{{{!
-            }}{{#each (array.enumerate service:self.functions) as |index function|}}{{#if (not function.starts_interaction?)}}
+        match idx {
+            {{#each (array.enumerate service:self.functions) as |index function|}}
+              {{#if (not function.starts_interaction?)}}
             {{index}}usize => {
                 self.handle_{{function.name}}(_p, _req, _req_ctxt, _reply_state, _seqid).await
-            }{{!
-            }}{{/if (not function.starts_interaction?)}}{{/each}}
+            }
+              {{/if (not function.starts_interaction?)}}
+            {{/each}}
             bad => panic!(
                 "{}: unexpected method idx {}",
                 "{{service:rust_name}}Processor",
@@ -527,10 +531,12 @@ where
     #[allow(clippy::match_single_binding)]
     #[inline]
     fn create_interaction_idx(&self, name: &::std::primitive::str) -> ::anyhow::Result<::std::primitive::usize> {
-        match name \{{{!
-            }}{{#each (array.enumerate service:self.functions) as |index function|}}{{#if function.starts_interaction?}}
-            "{{function.interaction_name}}" => ::std::result::Result::Ok({{index}}usize),{{!
-            }}{{/if function.starts_interaction?}}{{/each}}
+        match name {
+            {{#each (array.enumerate service:self.functions) as |index function|}}
+              {{#if function.starts_interaction?}}
+            "{{function.interaction_name}}" => ::std::result::Result::Ok({{index}}usize),
+              {{/if function.starts_interaction?}}
+            {{/each}}
             _ => ::anyhow::bail!("Unknown interaction"),
         }
     }
@@ -542,14 +548,16 @@ where
     ) -> ::anyhow::Result<
         ::std::sync::Arc<dyn ::fbthrift::ThriftService<P::Frame, Handler = (), RequestContext = Self::RequestContext, ReplyState = Self::ReplyState> + ::std::marker::Send + 'static>
     > {
-        match idx \{{{!
-            }}{{#each (array.enumerate service:self.functions) as |index function|}}{{#if function.starts_interaction?}}
+        match idx {
+            {{#each (array.enumerate service:self.functions) as |index function|}}
+              {{#if function.starts_interaction?}}
             {{index}}usize => {
                 let handler = self.handle_{{function.name}}()?;
                 let server = ::std::sync::Arc::new({{program:crate}}::server::{{service:snake}}::{{function.interaction_name}}Processor::<P, ::std::boxed::Box<dyn {{function.interaction_name}}>, R, RS>::new(handler));
                 ::std::result::Result::Ok(server)
-            }{{!
-            }}{{/if function.starts_interaction?}}{{/each}}
+            }
+              {{/if function.starts_interaction?}}
+            {{/each}}
             bad => panic!(
                 "{}: unexpected method idx {}",
                 "{{service:rust_name}}Processor",

@@ -169,9 +169,28 @@ impl crate::DynClient for dyn {{program:clients}}::{{service:rust_name}} {
     }
 }
 
-impl<'mock> {{program:clients}}::{{service:rust_name}} for {{service:rust_name}}<'mock> \{{{!
-    }}{{#service:functions}}
-    {{#if (not function:starts_interaction?)}}{{#if (not function:creates_interaction?)}}
+impl<'mock> {{program:clients}}::{{service:rust_name}} for {{service:rust_name}}<'mock> {
+    {{#service:functions}}
+      {{#if function:starts_interaction?}}
+
+    fn {{function:rust_name}}(
+        &self,
+    ) -> ::std::result::Result<{{!
+    }}{{service:client_package}}::{{function:interaction_name}}Client, {{!
+    }}::anyhow::Error> {
+        unimplemented!("Mocking interactions is not yet implemented");
+    }
+      {{#else if function:creates_interaction?}}
+
+    fn {{function:rust_name}}(
+        &self,{{!
+        }}{{#function:args}}
+        _arg_{{field:name}}: {{> lib/arg}},{{!
+        }}{{/function:args}}
+    ) -> {{> lib/client_return_type}} {
+        unimplemented!("Mocking interactions is not yet implemented");
+    }
+      {{#else}}
     fn {{function:rust_name}}(
         &self,{{!
         }}{{#function:args}}
@@ -197,31 +216,15 @@ impl<'mock> {{program:clients}}::{{service:rust_name}} for {{service:rust_name}}
             }}{{#if (not last?)}}, {{/if (not last?)}}{{!
             }}{{/function:args}}{{!
         }})))
-    }{{!
-    }}{{#else}}
-    fn {{function:rust_name}}(
-        &self,{{!
-        }}{{#function:args}}
-        _arg_{{field:name}}: {{> lib/arg}},{{!
-        }}{{/function:args}}
-    ) -> {{> lib/client_return_type}} {
-        unimplemented!("Mocking interactions is not yet implemented");
-    }{{!
-    }}{{/if (not function:creates_interaction?)}}{{#else}}
-    fn {{function:rust_name}}(
-        &self,
-    ) -> ::std::result::Result<{{!
-    }}{{service:client_package}}::{{function:interaction_name}}Client, {{!
-    }}::anyhow::Error> {
-        unimplemented!("Mocking interactions is not yet implemented");
-    }{{!
-    }}{{/if (not function:starts_interaction?)}}{{/service:functions}}
+    }
+      {{/if function:starts_interaction?}}
+    {{/service:functions}}
 }
 
 impl<'mock, T> {{program:clients}}::{{service:rust_name}}Ext<T> for {{service:rust_name}}<'mock>
 where
     T: ::fbthrift::Transport,
-\{
+{
     {{#service:functions}}
     {{#if (not function:starts_interaction?)}}
     fn {{function:rust_name}}_with_rpc_opts(
@@ -280,15 +283,14 @@ where
     }
 }
 
-{{/each}}{{!
-}}{{/program:services}}
-pub mod r#impl \{{{!
-}}{{#program:services}}
-    pub mod {{service:snake}} \{{{!
+{{/each}}
+{{/program:services}}
+pub mod r#impl {
+{{#program:services}}
+    pub mod {{service:snake}} {
+      {{#service:functions}}
 
-        }}{{#service:functions}}
         {{#if (not function:starts_interaction?)}}
-
         pub struct {{function:rust_name}}<'mock> {
             pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
                 dyn ::std::ops::FnMut({{!
@@ -399,11 +401,11 @@ pub mod r#impl \{{{!
                     }}{{/function:args}}{{!
                 }}| ::std::result::Result::Err(exception.clone().into()));
             }
-        }{{!
-        }}{{/if (not function:starts_interaction?)}}{{!
-        }}{{/service:functions}}
-    }{{!
-}}{{/program:services}}
+        }
+        {{/if (not function:starts_interaction?)}}
+      {{/service:functions}}
+    }
+{{/program:services}}
 }
 {{/if program:services?}}
 {{#if (not program:services?)}}

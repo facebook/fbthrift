@@ -54,10 +54,10 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_{{
         }
         p.read_struct_end()?;
         {{! Use formatting in errors to try to maximize string sharing }}
-        ::std::result::Result::Ok(Self \{{{!
-            }}{{#function:args}}
-            {{field:rust_name}}: field_{{field:name}}.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "{{service:name}}.{{function:name}}", "{{field:name}}"))?,{{!
-            }}{{/function:args}}
+        ::std::result::Result::Ok(Self {
+          {{#each function:params.fields as |param|}}
+            {{param.rust_name}}: field_{{param.name}}.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "{{service:name}}.{{function:name}}", "{{param.name}}"))?,
+          {{/each}}
         })
     }
 }

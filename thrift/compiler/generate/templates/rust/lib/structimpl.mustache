@@ -20,8 +20,8 @@
 #[allow(clippy::derivable_impls)]
 impl ::std::default::Default for self::{{struct:rust_name}} {
     fn default() -> Self {
-        Self \{{{!
-        }}{{#struct:fields}}
+        Self {
+            {{#struct:fields}}
             {{field:rust_name}}: {{!
                 }}{{#field:default_value}}{{!
                     }}{{#if field:optional?}}{{!
@@ -47,8 +47,8 @@ impl ::std::default::Default for self::{{struct:rust_name}} {
                         }}{{#if field:has_adapter?}}, {{field:id}}){{/if field:has_adapter?}}{{!
                     }}{{/if field:optional?}}{{!
                 }}{{/field:default_value}}{{!
-            }},{{!
-        }}{{/struct:fields}}
+            }},
+            {{/struct:fields}}
             {{> lib/structvalue_epilogue}}
 
         }
@@ -209,10 +209,10 @@ where
 
         {{#if struct:all_optional?}}
         #[allow(unused_mut)]
-        let mut output = Self \{{{!
-            }}{{#struct:fields}}
-            {{field:rust_name}}: ::std::option::Option::None,{{!
-            }}{{/struct:fields}}
+        let mut output = Self {
+            {{#struct:fields}}
+            {{field:rust_name}}: ::std::option::Option::None,
+            {{/struct:fields}}
             {{> lib/structvalue_epilogue}}
 
         };
@@ -246,8 +246,8 @@ where
         ::std::result::Result::Ok(output)
         {{/if struct:all_optional?}}
         {{#if (not struct:all_optional?)}}
-        ::std::result::Result::Ok(Self \{{{!
-            }}{{#struct:fields}}
+        ::std::result::Result::Ok(Self {
+            {{#struct:fields}}
             {{field:rust_name}}: field_{{field:name}}{{!
                 }}{{#if (not field:optional?)}}{{!
                     }}{{#if field:has_adapter?}}{{!
@@ -269,8 +269,8 @@ where
                         }}{{/if field:default_value}}{{!
                     }}{{/if field:has_adapter?}}{{!
                 }}{{/if (not field:optional?)}}{{!
-            }},{{!
-            }}{{/struct:fields}}
+            }},
+            {{/struct:fields}}
             {{> lib/structvalue_epilogue}}
         })
         {{/if (not struct:all_optional?)}}
