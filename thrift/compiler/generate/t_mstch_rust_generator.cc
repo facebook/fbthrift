@@ -1883,8 +1883,6 @@ class rust_mstch_program : public mstch_program {
         {
             {"program:current_split_structs",
              &rust_mstch_program::current_split_structs},
-            {"program:current_split_typedefs",
-             &rust_mstch_program::current_split_typedefs},
             {"program:current_split_enums",
              &rust_mstch_program::current_split_enums},
         });
@@ -1898,10 +1896,6 @@ class rust_mstch_program : public mstch_program {
         *context_.struct_factory,
         context_.struct_cache,
         id);
-  }
-
-  mstch::node current_split_typedefs() {
-    return make_mstch_typedefs(current_split_.typedefs);
   }
 
   mstch::node current_split_enums() {
@@ -2081,25 +2075,16 @@ void t_mstch_rust_generator::generate_split_types() {
       return ((counter++) % options_.types_split_count) + 1;
     };
     for (const t_typedef* typedf : program_->typedefs()) {
-      if (dependent_types.contains(typedf)) {
-        split_info_[0].typedefs.emplace_back(typedf);
-      } else {
-        split_info_[next()].typedefs.emplace_back(typedf);
-      }
+      int split_id = dependent_types.contains(typedf) ? 0 : next();
+      split_info_[split_id].typedefs.emplace_back(typedf);
     }
     for (const t_structured* strct : program_->structured_definitions()) {
-      if (dependent_types.contains(strct)) {
-        split_info_[0].structs.emplace_back(strct);
-      } else {
-        split_info_[next()].structs.emplace_back(strct);
-      }
+      int split_id = dependent_types.contains(strct) ? 0 : next();
+      split_info_[split_id].structs.emplace_back(strct);
     }
     for (const t_enum* enm : program_->enums()) {
-      if (dependent_types.contains(enm)) {
-        split_info_[0].enums.emplace_back(enm);
-      } else {
-        split_info_[next()].enums.emplace_back(enm);
-      }
+      int split_id = dependent_types.contains(enm) ? 0 : next();
+      split_info_[split_id].enums.emplace_back(enm);
     }
   }
 

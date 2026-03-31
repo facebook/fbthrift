@@ -63,9 +63,9 @@ include!("{{src}}");
 {{!
 ================================================================================
 }}
-{{#program:current_split_typedefs}}
+  {{#each program:current_split_typedefs as |typedef|}}
 {{> lib/typedef}}
-{{/program:current_split_typedefs}}
+  {{/each}}
 {{!
 ================================================================================
 }}
@@ -83,9 +83,9 @@ include!("{{src}}");
 {{!
 ================================================================================
 }}
-{{#program:current_split_typedefs}}
+  {{#each program:current_split_typedefs as |typedef|}}
 {{> lib/typedefimpl}}
-{{/program:current_split_typedefs}}
+  {{/each}}
 {{!
 ================================================================================
 }}

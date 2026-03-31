@@ -15,72 +15,56 @@
   limitations under the License.
 
 }}
-{{#if typedef:newtype?}}
-impl ::fbthrift::GetTType for {{typedef:rust_name}} {
+  {{#if typedef.newtype?}}
+impl ::fbthrift::GetTType for {{typedef.rust_name}} {
     const TTYPE: ::fbthrift::TType = {{!
-      }}{{#if typedef:has_adapter?}}{{!
-      }}<{{typedef:adapter_qualified}}::StandardType as ::fbthrift::GetTType>::TTYPE{{!
-      }}{{/if typedef:has_adapter?}}{{!
-      }}{{#if (not typedef:has_adapter?)}}{{!
-      }}<{{#partial types.type_name type=typedef:resolved}} as ::fbthrift::GetTType>::TTYPE{{!
-      }}{{/if (not typedef:has_adapter?)}}{{!
-      }};
+      }}{{#if typedef.has_adapter?}}<{{typedef.adapter_qualified}}::StandardType{{#else}}<{{#partial types.type_name type=typedef.resolved}}{{/if}}{{!
+      }} as ::fbthrift::GetTType>::TTYPE;
 }
-{{#if typedef:nonstandard?}}
 
-impl<P> ::fbthrift::Serialize<P> for {{typedef:rust_name}}
+    {{#if typedef.nonstandard?}}
+impl<P> ::fbthrift::Serialize<P> for {{typedef.rust_name}}
 where
     P: ::fbthrift::ProtocolWriter,
 {
     #[inline]
     fn rs_thrift_write(&self, p: &mut P) {
-        {{program:crate}}::r#impl::rs_thrift_write(&self.0, p)
+        {{typedef.program.crate}}::r#impl::rs_thrift_write(&self.0, p)
     }
 }
 
-impl<P> ::fbthrift::Deserialize<P> for {{typedef:rust_name}}
+impl<P> ::fbthrift::Deserialize<P> for {{typedef.rust_name}}
 where
     P: ::fbthrift::ProtocolReader,
 {
     #[inline]
     fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
-        {{program:crate}}::r#impl::rs_thrift_read(p).map({{typedef:rust_name}})
+        {{typedef.program.crate}}::r#impl::rs_thrift_read(p).map({{typedef.rust_name}})
     }
 }
-
-{{/if typedef:nonstandard?}}
-{{#if (not typedef:nonstandard?)}}
-
-impl<P> ::fbthrift::Serialize<P> for {{typedef:rust_name}}
+    {{#else}}
+impl<P> ::fbthrift::Serialize<P> for {{typedef.rust_name}}
 where
     P: ::fbthrift::ProtocolWriter,
 {
     #[inline]
     fn rs_thrift_write(&self, p: &mut P) {
-        {{#if typedef:has_adapter?}}{{!
-        }}{{typedef:adapter_qualified}}::to_thrift(&self.0).rs_thrift_write(p){{!
-        }}{{/if typedef:has_adapter?}}{{!
-        }}{{#if (not typedef:has_adapter?)}}{{!
-        }}self.0.rs_thrift_write(p){{!
-        }}{{/if (not typedef:has_adapter?)}}
+        {{#if typedef.has_adapter?}}{{typedef.adapter_qualified}}::to_thrift(&self.0){{#else}}self.0{{/if}}.rs_thrift_write(p)
     }
 }
 
-impl<P> ::fbthrift::Deserialize<P> for {{typedef:rust_name}}
+impl<P> ::fbthrift::Deserialize<P> for {{typedef.rust_name}}
 where
     P: ::fbthrift::ProtocolReader,
 {
     #[inline]
     fn rs_thrift_read(p: &mut P) -> ::anyhow::Result<Self> {
-        {{#if typedef:has_adapter?}}{{!
-        }}{{typedef:adapter_qualified}}::from_thrift({{!
-        }}{{/if typedef:has_adapter?}}{{!
-        }}::fbthrift::Deserialize::rs_thrift_read({{!
-        }}p){{!
-        }}{{#if typedef:has_adapter?}}?).map_err(Into::<::anyhow::Error>::into){{/if typedef:has_adapter?}}{{!
-        }}.map({{typedef:rust_name}})
+        {{#if typedef.has_adapter?}}{{typedef.adapter_qualified}}::from_thrift({{/if}}{{!
+        }}::fbthrift::Deserialize::rs_thrift_read(p){{!
+        }}{{#if typedef.has_adapter?}}?).map_err(Into::<::anyhow::Error>::into){{/if}}{{!
+        }}.map({{typedef.rust_name}})
     }
 }
+    {{/if typedef.nonstandard?}}
 
-{{/if (not typedef:nonstandard?)}}
-{{/if typedef:newtype?}}
+  {{/if typedef.newtype?}}
