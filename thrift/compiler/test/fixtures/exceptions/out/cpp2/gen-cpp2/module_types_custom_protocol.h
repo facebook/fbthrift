@@ -169,19 +169,7 @@ uint32_t Fiery::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t Fiery::write(Protocol_* prot_) const {
-  uint32_t xfer = 0;
-  xfer += prot_->writeStructBegin("Fiery");
-  bool previousFieldHasValue = true;
-  {
-    constexpr int16_t kPrevFieldId = 0;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 1, kPrevFieldId>(*prot_, "message", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_message);
-    xfer += prot_->writeFieldEnd();
-  }
-  xfer += prot_->writeFieldStop();
-  xfer += prot_->writeStructEnd();
-  return xfer;
+  return ::apache::thrift::op::detail::StructEncode<Fiery>{}(*prot_, *this);
 }
 
 extern template void Fiery::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -286,21 +274,7 @@ uint32_t Serious::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t Serious::write(Protocol_* prot_) const {
-  uint32_t xfer = 0;
-  xfer += prot_->writeStructBegin("Serious");
-  bool previousFieldHasValue = true;
-  if (this->__isset.get(0)) {
-    constexpr int16_t kPrevFieldId = 0;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 1, kPrevFieldId>(*prot_, "sonnet", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_sonnet);
-    xfer += prot_->writeFieldEnd();
-  } else {
-    previousFieldHasValue = false;
-  }
-  xfer += prot_->writeFieldStop();
-  xfer += prot_->writeStructEnd();
-  return xfer;
+  return ::apache::thrift::op::detail::StructEncode<Serious>{}(*prot_, *this);
 }
 
 extern template void Serious::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -434,26 +408,7 @@ uint32_t ComplexFieldNames::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t ComplexFieldNames::write(Protocol_* prot_) const {
-  uint32_t xfer = 0;
-  xfer += prot_->writeStructBegin("ComplexFieldNames");
-  bool previousFieldHasValue = true;
-  {
-    constexpr int16_t kPrevFieldId = 0;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 1, kPrevFieldId>(*prot_, "error_message", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_error_message);
-    xfer += prot_->writeFieldEnd();
-  }
-  {
-    constexpr int16_t kPrevFieldId = 1;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 2, kPrevFieldId>(*prot_, "internal_error_message", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_internal_error_message);
-    xfer += prot_->writeFieldEnd();
-  }
-  xfer += prot_->writeFieldStop();
-  xfer += prot_->writeStructEnd();
-  return xfer;
+  return ::apache::thrift::op::detail::StructEncode<ComplexFieldNames>{}(*prot_, *this);
 }
 
 extern template void ComplexFieldNames::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -587,26 +542,7 @@ uint32_t CustomFieldNames::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t CustomFieldNames::write(Protocol_* prot_) const {
-  uint32_t xfer = 0;
-  xfer += prot_->writeStructBegin("CustomFieldNames");
-  bool previousFieldHasValue = true;
-  {
-    constexpr int16_t kPrevFieldId = 0;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 1, kPrevFieldId>(*prot_, "error_message", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_error_message);
-    xfer += prot_->writeFieldEnd();
-  }
-  {
-    constexpr int16_t kPrevFieldId = 1;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 2, kPrevFieldId>(*prot_, "internal_error_message", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_internal_error_message);
-    xfer += prot_->writeFieldEnd();
-  }
-  xfer += prot_->writeFieldStop();
-  xfer += prot_->writeStructEnd();
-  return xfer;
+  return ::apache::thrift::op::detail::StructEncode<CustomFieldNames>{}(*prot_, *this);
 }
 
 extern template void CustomFieldNames::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -740,26 +676,7 @@ uint32_t ExceptionWithPrimitiveField::serializedSizeZC(Protocol_ const* prot_) c
 
 template <class Protocol_>
 uint32_t ExceptionWithPrimitiveField::write(Protocol_* prot_) const {
-  uint32_t xfer = 0;
-  xfer += prot_->writeStructBegin("ExceptionWithPrimitiveField");
-  bool previousFieldHasValue = true;
-  {
-    constexpr int16_t kPrevFieldId = 0;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 1, kPrevFieldId>(*prot_, "message", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_message);
-    xfer += prot_->writeFieldEnd();
-  }
-  {
-    constexpr int16_t kPrevFieldId = 1;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 2, kPrevFieldId>(*prot_, "error_code", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->__fbthrift_field_error_code);
-    xfer += prot_->writeFieldEnd();
-  }
-  xfer += prot_->writeFieldStop();
-  xfer += prot_->writeStructEnd();
-  return xfer;
+  return ::apache::thrift::op::detail::StructEncode<ExceptionWithPrimitiveField>{}(*prot_, *this);
 }
 
 extern template void ExceptionWithPrimitiveField::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -893,26 +810,7 @@ uint32_t ExceptionWithStructuredAnnotation::serializedSizeZC(Protocol_ const* pr
 
 template <class Protocol_>
 uint32_t ExceptionWithStructuredAnnotation::write(Protocol_* prot_) const {
-  uint32_t xfer = 0;
-  xfer += prot_->writeStructBegin("ExceptionWithStructuredAnnotation");
-  bool previousFieldHasValue = true;
-  {
-    constexpr int16_t kPrevFieldId = 0;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 1, kPrevFieldId>(*prot_, "message_field", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_message_field);
-    xfer += prot_->writeFieldEnd();
-  }
-  {
-    constexpr int16_t kPrevFieldId = 1;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 2, kPrevFieldId>(*prot_, "error_code", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->__fbthrift_field_error_code);
-    xfer += prot_->writeFieldEnd();
-  }
-  xfer += prot_->writeFieldStop();
-  xfer += prot_->writeStructEnd();
-  return xfer;
+  return ::apache::thrift::op::detail::StructEncode<ExceptionWithStructuredAnnotation>{}(*prot_, *this);
 }
 
 extern template void ExceptionWithStructuredAnnotation::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -987,11 +885,7 @@ uint32_t Banal::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t Banal::write(Protocol_* prot_) const {
-  uint32_t xfer = 0;
-  xfer += prot_->writeStructBegin("Banal");
-  xfer += prot_->writeFieldStop();
-  xfer += prot_->writeStructEnd();
-  return xfer;
+  return ::apache::thrift::op::detail::StructEncode<Banal>{}(*prot_, *this);
 }
 
 extern template void Banal::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

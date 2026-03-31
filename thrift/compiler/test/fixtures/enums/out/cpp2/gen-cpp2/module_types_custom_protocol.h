@@ -226,40 +226,7 @@ uint32_t SomeStruct::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t SomeStruct::write(Protocol_* prot_) const {
-  uint32_t xfer = 0;
-  xfer += prot_->writeStructBegin("SomeStruct");
-  bool previousFieldHasValue = true;
-  {
-    constexpr int16_t kPrevFieldId = 0;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 1, kPrevFieldId>(*prot_, "reasonable", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::test::fixtures::enums::Metasyntactic>::write(*prot_, this->__fbthrift_field_reasonable);
-    xfer += prot_->writeFieldEnd();
-  }
-  {
-    constexpr int16_t kPrevFieldId = 1;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 2, kPrevFieldId>(*prot_, "fine", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::test::fixtures::enums::Metasyntactic>::write(*prot_, this->__fbthrift_field_fine);
-    xfer += prot_->writeFieldEnd();
-  }
-  {
-    constexpr int16_t kPrevFieldId = 2;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 3, kPrevFieldId>(*prot_, "questionable", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::test::fixtures::enums::Metasyntactic>::write(*prot_, this->__fbthrift_field_questionable);
-    xfer += prot_->writeFieldEnd();
-  }
-  {
-    constexpr int16_t kPrevFieldId = 3;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_SET, 4, kPrevFieldId>(*prot_, "tags", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<::std::int32_t>>::write(*prot_, this->__fbthrift_field_tags);
-    xfer += prot_->writeFieldEnd();
-  }
-  xfer += prot_->writeFieldStop();
-  xfer += prot_->writeStructEnd();
-  return xfer;
+  return ::apache::thrift::op::detail::StructEncode<SomeStruct>{}(*prot_, *this);
 }
 
 extern template void SomeStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -451,40 +418,7 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t MyStruct::write(Protocol_* prot_) const {
-  uint32_t xfer = 0;
-  xfer += prot_->writeStructBegin("MyStruct");
-  bool previousFieldHasValue = true;
-  {
-    constexpr int16_t kPrevFieldId = 0;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 1, kPrevFieldId>(*prot_, "me2_3", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::test::fixtures::enums::MyEnum2>::write(*prot_, this->__fbthrift_field_me2_3);
-    xfer += prot_->writeFieldEnd();
-  }
-  {
-    constexpr int16_t kPrevFieldId = 1;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 2, kPrevFieldId>(*prot_, "me3_n3", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::test::fixtures::enums::MyEnum3>::write(*prot_, this->__fbthrift_field_me3_n3);
-    xfer += prot_->writeFieldEnd();
-  }
-  {
-    constexpr int16_t kPrevFieldId = 2;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 4, kPrevFieldId>(*prot_, "me1_t1", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::test::fixtures::enums::MyEnum1>::write(*prot_, this->__fbthrift_field_me1_t1);
-    xfer += prot_->writeFieldEnd();
-  }
-  {
-    constexpr int16_t kPrevFieldId = 4;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 6, kPrevFieldId>(*prot_, "me1_t2", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::test::fixtures::enums::MyEnum1>::write(*prot_, this->__fbthrift_field_me1_t2);
-    xfer += prot_->writeFieldEnd();
-  }
-  xfer += prot_->writeFieldStop();
-  xfer += prot_->writeStructEnd();
-  return xfer;
+  return ::apache::thrift::op::detail::StructEncode<MyStruct>{}(*prot_, *this);
 }
 
 extern template void MyStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

@@ -157,26 +157,7 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t MyStruct::write(Protocol_* prot_) const {
-  uint32_t xfer = 0;
-  xfer += prot_->writeStructBegin("MyStruct");
-  bool previousFieldHasValue = true;
-  {
-    constexpr int16_t kPrevFieldId = 0;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 1, kPrevFieldId>(*prot_, "myEnum", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::test::fixtures::enumstrict::MyEnum>::write(*prot_, this->__fbthrift_field_myEnum);
-    xfer += prot_->writeFieldEnd();
-  }
-  {
-    constexpr int16_t kPrevFieldId = 1;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 2, kPrevFieldId>(*prot_, "myBigEnum", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::test::fixtures::enumstrict::MyBigEnum>::write(*prot_, this->__fbthrift_field_myBigEnum);
-    xfer += prot_->writeFieldEnd();
-  }
-  xfer += prot_->writeFieldStop();
-  xfer += prot_->writeStructEnd();
-  return xfer;
+  return ::apache::thrift::op::detail::StructEncode<MyStruct>{}(*prot_, *this);
 }
 
 extern template void MyStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

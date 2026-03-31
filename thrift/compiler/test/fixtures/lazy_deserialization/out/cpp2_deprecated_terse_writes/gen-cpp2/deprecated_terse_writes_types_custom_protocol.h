@@ -849,48 +849,7 @@ uint32_t TerseOptionalFoo::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t TerseOptionalFoo::write(Protocol_* prot_) const {
-  uint32_t xfer = 0;
-  xfer += prot_->writeStructBegin("TerseOptionalFoo");
-  bool previousFieldHasValue = true;
-  if (this->__isset.get(0)) {
-    constexpr int16_t kPrevFieldId = 0;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_LIST, 1, kPrevFieldId>(*prot_, "field1", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>, ::std::vector<double>>::write(*prot_, this->__fbthrift_field_field1);
-    xfer += prot_->writeFieldEnd();
-  } else {
-    previousFieldHasValue = false;
-  }
-  if (this->__isset.get(1)) {
-    constexpr int16_t kPrevFieldId = 1;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_LIST, 2, kPrevFieldId>(*prot_, "field2", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::write(*prot_, this->__fbthrift_field_field2);
-    xfer += prot_->writeFieldEnd();
-  } else {
-    previousFieldHasValue = false;
-  }
-  if (this->__isset.get(2)) {
-    constexpr int16_t kPrevFieldId = 2;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_LIST, 3, kPrevFieldId>(*prot_, "field3", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>, ::std::vector<double>>::write(*prot_, this->__fbthrift_field_field3);
-    xfer += prot_->writeFieldEnd();
-  } else {
-    previousFieldHasValue = false;
-  }
-  if (this->__isset.get(3)) {
-    constexpr int16_t kPrevFieldId = 3;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_LIST, 4, kPrevFieldId>(*prot_, "field4", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::write(*prot_, this->__fbthrift_field_field4);
-    xfer += prot_->writeFieldEnd();
-  } else {
-    previousFieldHasValue = false;
-  }
-  xfer += prot_->writeFieldStop();
-  xfer += prot_->writeStructEnd();
-  return xfer;
+  return ::apache::thrift::op::detail::StructEncode<TerseOptionalFoo>{}(*prot_, *this);
 }
 
 extern template void TerseOptionalFoo::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

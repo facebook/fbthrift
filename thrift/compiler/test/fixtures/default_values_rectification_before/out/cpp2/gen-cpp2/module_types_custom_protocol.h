@@ -105,11 +105,7 @@ uint32_t EmptyStruct::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t EmptyStruct::write(Protocol_* prot_) const {
-  uint32_t xfer = 0;
-  xfer += prot_->writeStructBegin("EmptyStruct");
-  xfer += prot_->writeFieldStop();
-  xfer += prot_->writeStructEnd();
-  return xfer;
+  return ::apache::thrift::op::detail::StructEncode<EmptyStruct>{}(*prot_, *this);
 }
 
 extern template void EmptyStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -427,76 +423,7 @@ uint32_t TestStruct::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t TestStruct::write(Protocol_* prot_) const {
-  uint32_t xfer = 0;
-  xfer += prot_->writeStructBegin("TestStruct");
-  bool previousFieldHasValue = true;
-  {
-    constexpr int16_t kPrevFieldId = 0;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 1, kPrevFieldId>(*prot_, "unqualified_int_field", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->__fbthrift_field_unqualified_int_field);
-    xfer += prot_->writeFieldEnd();
-  }
-  {
-    constexpr int16_t kPrevFieldId = 1;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_BOOL, 2, kPrevFieldId>(*prot_, "unqualified_bool_field", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, bool>::write(*prot_, this->__fbthrift_field_unqualified_bool_field);
-    xfer += prot_->writeFieldEnd();
-  }
-  {
-    constexpr int16_t kPrevFieldId = 2;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_LIST, 3, kPrevFieldId>(*prot_, "unqualified_list_field", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::write(*prot_, this->__fbthrift_field_unqualified_list_field);
-    xfer += prot_->writeFieldEnd();
-  }
-  {
-    constexpr int16_t kPrevFieldId = 3;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRUCT, 4, kPrevFieldId>(*prot_, "unqualified_struct_field", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::facebook::thrift::compiler::test::fixtures::default_values_rectification_before::EmptyStruct>::write(*prot_, this->__fbthrift_field_unqualified_struct_field);
-    xfer += prot_->writeFieldEnd();
-  }
-  if (this->__isset.get(4)) {
-    constexpr int16_t kPrevFieldId = 4;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 5, kPrevFieldId>(*prot_, "optional_int_field", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->__fbthrift_field_optional_int_field);
-    xfer += prot_->writeFieldEnd();
-  } else {
-    previousFieldHasValue = false;
-  }
-  if (this->__isset.get(5)) {
-    constexpr int16_t kPrevFieldId = 5;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_BOOL, 6, kPrevFieldId>(*prot_, "optional_bool_field", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, bool>::write(*prot_, this->__fbthrift_field_optional_bool_field);
-    xfer += prot_->writeFieldEnd();
-  } else {
-    previousFieldHasValue = false;
-  }
-  if (this->__isset.get(6)) {
-    constexpr int16_t kPrevFieldId = 6;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_LIST, 7, kPrevFieldId>(*prot_, "optional_list_field", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::write(*prot_, this->__fbthrift_field_optional_list_field);
-    xfer += prot_->writeFieldEnd();
-  } else {
-    previousFieldHasValue = false;
-  }
-  if (this->__isset.get(7)) {
-    constexpr int16_t kPrevFieldId = 7;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRUCT, 8, kPrevFieldId>(*prot_, "optional_struct_field", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::facebook::thrift::compiler::test::fixtures::default_values_rectification_before::EmptyStruct>::write(*prot_, this->__fbthrift_field_optional_struct_field);
-    xfer += prot_->writeFieldEnd();
-  } else {
-    previousFieldHasValue = false;
-  }
-  xfer += prot_->writeFieldStop();
-  xfer += prot_->writeStructEnd();
-  return xfer;
+  return ::apache::thrift::op::detail::StructEncode<TestStruct>{}(*prot_, *this);
 }
 
 extern template void TestStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

@@ -105,11 +105,7 @@ uint32_t Empty::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t Empty::write(Protocol_* prot_) const {
-  uint32_t xfer = 0;
-  xfer += prot_->writeStructBegin("Empty");
-  xfer += prot_->writeFieldStop();
-  xfer += prot_->writeStructEnd();
-  return xfer;
+  return ::apache::thrift::op::detail::StructEncode<Empty>{}(*prot_, *this);
 }
 
 extern template void Empty::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

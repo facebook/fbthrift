@@ -142,19 +142,7 @@ uint32_t BiDiSinkException::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t BiDiSinkException::write(Protocol_* prot_) const {
-  uint32_t xfer = 0;
-  xfer += prot_->writeStructBegin("BiDiSinkException");
-  bool previousFieldHasValue = true;
-  {
-    constexpr int16_t kPrevFieldId = 0;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 1, kPrevFieldId>(*prot_, "message", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_message);
-    xfer += prot_->writeFieldEnd();
-  }
-  xfer += prot_->writeFieldStop();
-  xfer += prot_->writeStructEnd();
-  return xfer;
+  return ::apache::thrift::op::detail::StructEncode<BiDiSinkException>{}(*prot_, *this);
 }
 
 extern template void BiDiSinkException::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -259,19 +247,7 @@ uint32_t BiDiStreamException::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t BiDiStreamException::write(Protocol_* prot_) const {
-  uint32_t xfer = 0;
-  xfer += prot_->writeStructBegin("BiDiStreamException");
-  bool previousFieldHasValue = true;
-  {
-    constexpr int16_t kPrevFieldId = 0;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 1, kPrevFieldId>(*prot_, "message", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_message);
-    xfer += prot_->writeFieldEnd();
-  }
-  xfer += prot_->writeFieldStop();
-  xfer += prot_->writeStructEnd();
-  return xfer;
+  return ::apache::thrift::op::detail::StructEncode<BiDiStreamException>{}(*prot_, *this);
 }
 
 extern template void BiDiStreamException::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -376,19 +352,7 @@ uint32_t BiDiMethodException::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t BiDiMethodException::write(Protocol_* prot_) const {
-  uint32_t xfer = 0;
-  xfer += prot_->writeStructBegin("BiDiMethodException");
-  bool previousFieldHasValue = true;
-  {
-    constexpr int16_t kPrevFieldId = 0;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_STRING, 1, kPrevFieldId>(*prot_, "message", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_message);
-    xfer += prot_->writeFieldEnd();
-  }
-  xfer += prot_->writeFieldStop();
-  xfer += prot_->writeStructEnd();
-  return xfer;
+  return ::apache::thrift::op::detail::StructEncode<BiDiMethodException>{}(*prot_, *this);
 }
 
 extern template void BiDiMethodException::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

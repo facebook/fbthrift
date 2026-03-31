@@ -213,44 +213,7 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
 
 template <class Protocol_>
 uint32_t MyStruct::write(Protocol_* prot_) const {
-  uint32_t xfer = 0;
-  xfer += prot_->writeStructBegin("MyStruct");
-  bool previousFieldHasValue = true;
-  {
-    constexpr int16_t kPrevFieldId = 0;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 1, kPrevFieldId>(*prot_, "def_field", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::op::encode<::apache::thrift::type::i32_t>(*prot_, this->__fbthrift_field_def_field);
-    xfer += prot_->writeFieldEnd();
-  }
-  if (this->__isset.get(1)) {
-    constexpr int16_t kPrevFieldId = 1;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 2, kPrevFieldId>(*prot_, "opt_field", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::op::encode<::apache::thrift::type::i32_t>(*prot_, this->__fbthrift_field_opt_field);
-    xfer += prot_->writeFieldEnd();
-  } else {
-    previousFieldHasValue = false;
-  }
-  {
-    constexpr int16_t kPrevFieldId = 2;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 3, kPrevFieldId>(*prot_, "req_field", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::op::encode<::apache::thrift::type::i32_t>(*prot_, this->__fbthrift_field_req_field);
-    xfer += prot_->writeFieldEnd();
-  }
-  if (!(::apache::thrift::op::isEmpty<::apache::thrift::type::i32_t>(this->__fbthrift_field_terse_field))) {
-    constexpr int16_t kPrevFieldId = 3;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::TType::T_I32, 4, kPrevFieldId>(*prot_, "terse_field", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::op::encode<::apache::thrift::type::i32_t>(*prot_, this->__fbthrift_field_terse_field);
-    xfer += prot_->writeFieldEnd();
-  } else {
-    previousFieldHasValue = false;
-  }
-  xfer += prot_->writeFieldStop();
-  xfer += prot_->writeStructEnd();
-  return xfer;
+  return ::apache::thrift::op::detail::StructEncode<MyStruct>{}(*prot_, *this);
 }
 
 extern template void MyStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
