@@ -31,8 +31,11 @@ class TestServer:
         handler: ServiceInterface,
         ip: str | None = None,
         path: Path | None = None,
+        queue_timeout: float | None = None,
     ) -> None:
         self.server = ThriftServer(handler, ip=ip, path=path)
+        if queue_timeout is not None:
+            self.server.set_queue_timeout(queue_timeout)
         self.serve_task = None
 
     async def __aenter__(self) -> SocketAddress:

@@ -48,7 +48,9 @@ class BidiStressHandler(TestBidiServiceInterface):
 
 class BidiStressTest(IsolatedAsyncioTestCase):
     async def test_bidi_service_str_request_concurrently(self) -> None:
-        async with TestServer(handler=BidiStressHandler(), ip="::1") as sa:
+        async with TestServer(
+            handler=BidiStressHandler(), ip="::1", queue_timeout=1.0
+        ) as sa:
             ip, port = sa.ip, sa.port
             assert ip and port
             async with get_client(
