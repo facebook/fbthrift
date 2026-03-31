@@ -28,6 +28,7 @@
 {{#if field.type.container?}}{{#partial types.type_generics type=field.type}}{{/if}}
 {{/let partial}}
 
+
 {{#let export partial type_name |field| captures |types annotated_type_name|}}
 {{#pragma ignore-newlines}}
 {{#if field.optional?}}::std::option::Option<{{/if}}
@@ -43,4 +44,24 @@
 {{#if field.arc?}}>{{/if}}
 {{#if field.box?}}>{{/if}}
 {{#if field.optional?}}>{{/if}}
+{{/let partial}}
+
+
+{{#let export partial write |field| captures |types|}}
+{{#pragma ignore-newlines}}
+  {{#if field.type_annotation?}}
+{{#if field.type_nonstandard?}}{{root_program.crate}}::r#impl{{#else}}::fbthrift::Serialize{{/if}}::rs_thrift_write
+  {{#else}}
+{{#partial types.write type=field.type}}
+  {{/if field.type_annotation?}}
+{{/let partial}}
+
+
+{{#let export partial read |field| captures |types|}}
+{{#pragma ignore-newlines}}
+  {{#if field.type_annotation?}}
+{{#if field.type_nonstandard?}}{{root_program.crate}}::r#impl{{#else}}::fbthrift::Deserialize{{/if}}::rs_thrift_read
+  {{#else}}
+{{#partial types.read type=field.type}}
+  {{/if field.type_annotation?}}
 {{/let partial}}

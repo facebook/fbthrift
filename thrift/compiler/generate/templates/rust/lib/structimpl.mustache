@@ -109,7 +109,7 @@ where
                 }}{{#partial types.protocol_ttype type=field:self.type}}, {{!
                 }}{{field:id}}{{!
             }});
-            {{#field:type}}{{#if field:type_annotation?}}{{> lib/annfieldwrite}}{{#else}}{{> lib/write}}{{/if field:type_annotation?}}{{/field:type}}({{!
+            {{#partial fields.write field=field:self}}({{!
             }}{{#if field:has_adapter?}}&{{field:adapter_struct_qualified}}::to_thrift_field::<{{struct:rust_name}}>({{/if field:has_adapter?}}{{!
             }}some{{!
             }}{{#if field:has_adapter?}}, {{field:id}}){{/if field:has_adapter?}}{{!
@@ -122,7 +122,7 @@ where
             }}{{#partial types.protocol_ttype type=field:self.type}}, {{!
             }}{{field:id}}{{!
         }});
-        {{#field:type}}{{#if field:type_annotation?}}{{> lib/annfieldwrite}}{{#else}}{{> lib/write}}{{/if field:type_annotation?}}{{/field:type}}({{!
+        {{#partial fields.write field=field:self}}({{!
           }}{{#if field:has_adapter?}}&{{field:adapter_struct_qualified}}::to_thrift_field::<{{struct:rust_name}}>({{/if field:has_adapter?}}{{!
           }}&self.{{field:rust_name}}{{!
           }}{{#if field:has_adapter?}}, {{field:id}}){{/if field:has_adapter?}}{{!
@@ -161,7 +161,7 @@ where
                 }}::std::option::Option::Some({{!
                 }}{{/if field:optional?}}{{!
                 }}{{#if field:has_adapter?}}{{field:adapter_struct_qualified}}::from_thrift_field::<{{struct:rust_name}}>({{/if field:has_adapter?}}{{!
-                }}{{#field:type}}::anyhow::Context::context({{#if field:type_annotation?}}{{> lib/annfieldread}}{{#else}}{{> lib/read}}{{/if field:type_annotation?}}{{/field:type}}(p), ::fbthrift::errors::DeserializingFieldError { field: "{{field:name}}", strct: "{{struct:name}}"})?{{!
+                }}::anyhow::Context::context({{#partial fields.read field=field:self}}(p), ::fbthrift::errors::DeserializingFieldError { field: "{{field:name}}", strct: "{{struct:name}}"})?{{!
                 }}{{#if field:has_adapter?}}, {{field:id}})?{{/if field:has_adapter?}}{{!
                 }}{{#if field:optional?}}{{!
                 }}){{!
@@ -188,7 +188,7 @@ where
                         }}::std::option::Option::Some({{!
                         }}{{/if field:optional?}}{{!
                         }}{{#if field:has_adapter?}}{{field:adapter_struct_qualified}}::from_thrift_field::<{{struct:rust_name}}>({{/if field:has_adapter?}}{{!
-                        }}{{#field:type}}::anyhow::Context::context({{#if field:type_annotation?}}{{> lib/annfieldread}}{{#else}}{{> lib/read}}{{/if field:type_annotation?}}{{/field:type}}(p), ::fbthrift::errors::DeserializingFieldError { field: "{{field:name}}", strct: "{{struct:name}}"})?{{!
+                        }}::anyhow::Context::context({{#partial fields.read field=field:self}}(p), ::fbthrift::errors::DeserializingFieldError { field: "{{field:name}}", strct: "{{struct:name}}"})?{{!
                         }}{{#if field:has_adapter?}}, {{field:id}})?{{/if field:has_adapter?}}{{!
                         }}{{#if field:optional?}}{{!
                         }}){{!
@@ -233,7 +233,7 @@ where
                     }}{{#if (not struct:all_optional?)}}field_{{field:name}}{{/if (not struct:all_optional?)}}{{!
                     }} = ::std::option::Option::Some({{!
                     }}{{#if field:has_adapter?}}{{field:adapter_struct_qualified}}::from_thrift_field::<{{struct:rust_name}}>({{/if field:has_adapter?}}{{!
-                    }}{{#field:type}}::anyhow::Context::context({{#if field:type_annotation?}}{{> lib/annfieldread}}{{#else}}{{> lib/read}}{{/if field:type_annotation?}}{{/field:type}}(p), ::fbthrift::errors::DeserializingFieldError { field: "{{field:name}}", strct: "{{struct:name}}"})?{{!
+                    }}::anyhow::Context::context({{#partial fields.read field=field:self}}(p), ::fbthrift::errors::DeserializingFieldError { field: "{{field:name}}", strct: "{{struct:name}}"})?{{!
                     }}{{#if field:has_adapter?}}, {{field:id}})?{{/if field:has_adapter?}}{{!
                     }}),{{!
                 }}{{/struct:fields}}

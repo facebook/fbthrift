@@ -55,7 +55,7 @@
             );
             for v in &self.0 {
                 p.write_set_value_begin();
-                {{#set_elem_type}}{{> lib/write}}{{/set_elem_type}}(v, p);
+                {{#partial types.write type=set_elem_type}}(v, p);
             }
             p.write_set_end();
         }
@@ -84,7 +84,7 @@
                 if !more {
                     break;
                 }
-                let v: {{#partial types.type_name type=set_elem_type}} = {{#set_elem_type}}{{> lib/read}}{{/set_elem_type}}(p)?;
+                let v: {{#partial types.type_name type=set_elem_type}} = {{#partial types.read type=set_elem_type}}(p)?;
                 p.read_set_value_end()?;
                 set.insert(v);
 
@@ -114,9 +114,9 @@
             );
             for (k, v) in &self.0 {
                 p.write_map_key_begin();
-                {{#map_key_type}}{{> lib/write}}{{/map_key_type}}(k, p);
+                {{#partial types.write type=map_key_type}}(k, p);
                 p.write_map_value_begin();
-                {{#map_val_type}}{{> lib/write}}{{/map_val_type}}(v, p);
+                {{#partial types.write type=map_val_type}}(v, p);
             }
             p.write_map_end();
         }
@@ -147,9 +147,9 @@
                 if !more {
                     break;
                 }
-                let k: {{#partial types.type_name type=map_key_type}} = {{#map_key_type}}{{> lib/read}}(p){{/map_key_type}}?;
+                let k: {{#partial types.type_name type=map_key_type}} = {{#partial types.read type=map_key_type}}(p)?;
                 p.read_map_value_begin()?;
-                let v: {{#partial types.type_name type=map_val_type}} = {{#map_val_type}}{{> lib/read}}(p){{/map_val_type}}?;
+                let v: {{#partial types.type_name type=map_val_type}} = {{#partial types.read type=map_val_type}}(p)?;
                 p.read_map_value_end()?;
                 map.insert(k, v);
 
@@ -237,7 +237,7 @@
             );
             for v in &self.0 {
                 p.write_set_value_begin();
-                {{#set_elem_type}}{{> lib/write}}{{/set_elem_type}}(v, p);
+                {{#partial types.write type=set_elem_type}}(v, p);
             }
             p.write_set_end();
         }
@@ -266,7 +266,7 @@
                 if !more {
                     break;
                 }
-                let v: {{#partial types.type_name type=set_elem_type}} = {{#set_elem_type}}{{> lib/read}}{{/set_elem_type}}(p)?;
+                let v: {{#partial types.type_name type=set_elem_type}} = {{#partial types.read type=set_elem_type}}(p)?;
                 p.read_set_value_end()?;
                 set.insert(v);
 
@@ -296,9 +296,9 @@
             );
             for (k, v) in &self.0 {
                 p.write_map_key_begin();
-                {{#map_key_type}}{{> lib/write}}{{/map_key_type}}(k, p);
+                {{#partial types.write type=map_key_type}}(k, p);
                 p.write_map_value_begin();
-                {{#map_val_type}}{{> lib/write}}{{/map_val_type}}(v, p);
+                {{#partial types.write type=map_val_type}}(v, p);
             }
             p.write_map_end();
         }
@@ -329,9 +329,9 @@
                 if !more {
                     break;
                 }
-                let k: {{#partial types.type_name type=map_key_type}} = {{#map_key_type}}{{> lib/read}}{{/map_key_type}}(p)?;
+                let k: {{#partial types.type_name type=map_key_type}} = {{#partial types.read type=map_key_type}}(p)?;
                 p.read_map_value_begin()?;
-                let v: {{#partial types.type_name type=map_val_type}} = {{#map_val_type}}{{> lib/read}}{{/map_val_type}}(p)?;
+                let v: {{#partial types.type_name type=map_val_type}} = {{#partial types.read type=map_val_type}}(p)?;
                 p.read_map_value_end()?;
                 map.insert(k, v);
 

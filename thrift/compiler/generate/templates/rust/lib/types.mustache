@@ -125,3 +125,19 @@
 {{#else if type.map?}}Map
 {{/if type.void?}}
 {{/let partial}}
+
+
+{{#let export partial write |type|}}
+{{#pragma ignore-newlines}}
+  {{! TODO(T261463864): Preserved legacy behavior: explicit prototype qualified
+      `type:nonstandard?` ignores t_typedef's override for property `nonstandard?` }}
+{{#if type.type:nonstandard?}}{{root_program.crate}}::r#impl{{#else}}::fbthrift::Serialize{{/if}}::rs_thrift_write
+{{/let partial}}
+
+
+{{#let export partial read |type|}}
+{{#pragma ignore-newlines}}
+  {{! TODO(T261463864): Preserved legacy behavior: explicit prototype qualified
+      `type:nonstandard?` ignores t_typedef's override for property `nonstandard?` }}
+{{#if type.type:nonstandard?}}{{root_program.crate}}::r#impl{{#else}}::fbthrift::Deserialize{{/if}}::rs_thrift_read
+{{/let partial}}
