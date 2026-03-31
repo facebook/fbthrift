@@ -19,7 +19,6 @@
 from __future__ import annotations
 
 import asyncio
-import time
 import unittest
 from typing import Sequence
 
@@ -233,7 +232,6 @@ class ClientServerTests(unittest.IsolatedAsyncioTestCase):
             async with get_client(TestingService, host=ip, port=port) as client:
                 self.assertEqual(True, await client.renamed_func(True))
 
-    @unittest.skip("Test is flaky and uses time.sleep() which blocks event loop")
     async def test_queue_timeout(self) -> None:
         """
         This tests whether queue timeout functions properly.
@@ -241,7 +239,7 @@ class ClientServerTests(unittest.IsolatedAsyncioTestCase):
 
         class SlowDerivedHandler(Handler, DerivedTestingServiceInterface):
             async def getName(self) -> str:
-                time.sleep(1)
+                await asyncio.sleep(1)
                 return "SlowDerivedTesting"
 
             async def derived_pick_a_color(self, color: Color) -> Color:
@@ -264,12 +262,13 @@ class ClientServerTests(unittest.IsolatedAsyncioTestCase):
 
         async def clients_run(server: TestServer) -> None:
             async with server as sa:
-                results = await asyncio.gather(
-                    client_call(sa),
-                    client_call(sa),
-                    client_call(sa),
-                    client_call(sa),
-                    client_call(sa),
+                # Send more requests than CPU workers to guarantee some
+                # will sit in the queue and trigger queue timeout.
+                num_workers = server.server.get_cpu_worker_threads()
+                results = list(
+                    await asyncio.gather(
+                        *[client_call(sa) for _ in range(num_workers + 5)]
+                    )
                 )
                 self.assertIn("Queue Timeout", results)
 
