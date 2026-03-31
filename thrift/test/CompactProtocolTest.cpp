@@ -16,29 +16,32 @@
 
 #include <gtest/gtest.h>
 
-// #include <thrift/lib/cpp/transport/TVirtualTransport.h>
-#include <thrift/lib/cpp/protocol/TCompactProtocol.h>
-#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <folly/io/IOBufQueue.h>
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 
-using apache::thrift::protocol::TCompactProtocolT;
-using apache::thrift::protocol::TMessageType;
-using apache::thrift::transport::TFramedTransport;
-using apache::thrift::transport::TMemoryBuffer;
+using apache::thrift::CompactProtocolReader;
+using apache::thrift::CompactProtocolWriter;
+using apache::thrift::MessageType;
 
 namespace apache::thrift {
 
 class TCompactProtocolTest : public testing::Test {};
 
 void testTMessageWriteAndRead(
-    const std::string& name, TMessageType msgType, int32_t seqId) {
-  TMemoryBuffer buffer;
-  TCompactProtocolT protocol(&buffer);
-  protocol.writeMessageBegin(name, msgType, seqId);
+    const std::string& name, MessageType msgType, int32_t seqId) {
+  folly::IOBufQueue queue;
+  CompactProtocolWriter writer;
+  writer.setOutput(&queue);
+  writer.writeMessageBegin(name, msgType, seqId);
+
+  auto buf = queue.move();
+  CompactProtocolReader reader;
+  reader.setInput(buf.get());
 
   std::string readName;
-  TMessageType readMsgType;
+  MessageType readMsgType;
   int32_t readSeqId = 0;
-  protocol.readMessageBegin(readName, readMsgType, readSeqId);
+  reader.readMessageBegin(readName, readMsgType, readSeqId);
 
   EXPECT_EQ(readName, name);
   EXPECT_EQ(readMsgType, msgType);
@@ -46,20 +49,20 @@ void testTMessageWriteAndRead(
 }
 
 TEST_F(TCompactProtocolTest, test_readMessageBegin) {
-  testTMessageWriteAndRead("methodName", TMessageType::T_CALL, 1);
-  testTMessageWriteAndRead("", TMessageType::T_CALL, 1);
+  testTMessageWriteAndRead("methodName", MessageType::T_CALL, 1);
+  testTMessageWriteAndRead("", MessageType::T_CALL, 1);
 
-  testTMessageWriteAndRead("methodName", TMessageType::T_CALL, 0);
-  testTMessageWriteAndRead("methodName", TMessageType::T_CALL, -1);
+  testTMessageWriteAndRead("methodName", MessageType::T_CALL, 0);
+  testTMessageWriteAndRead("methodName", MessageType::T_CALL, -1);
   testTMessageWriteAndRead(
-      "methodName", TMessageType::T_CALL, std::numeric_limits<int32_t>::max());
+      "methodName", MessageType::T_CALL, std::numeric_limits<int32_t>::max());
   testTMessageWriteAndRead(
-      "methodName", TMessageType::T_CALL, std::numeric_limits<int32_t>::min());
+      "methodName", MessageType::T_CALL, std::numeric_limits<int32_t>::min());
 
-  testTMessageWriteAndRead("methodName", TMessageType::T_CALL, 1);
-  testTMessageWriteAndRead("methodName", TMessageType::T_REPLY, 1);
-  testTMessageWriteAndRead("methodName", TMessageType::T_EXCEPTION, 1);
-  testTMessageWriteAndRead("methodName", TMessageType::T_ONEWAY, 1);
+  testTMessageWriteAndRead("methodName", MessageType::T_CALL, 1);
+  testTMessageWriteAndRead("methodName", MessageType::T_REPLY, 1);
+  testTMessageWriteAndRead("methodName", MessageType::T_EXCEPTION, 1);
+  testTMessageWriteAndRead("methodName", MessageType::T_ONEWAY, 1);
 }
 
 } // namespace apache::thrift
