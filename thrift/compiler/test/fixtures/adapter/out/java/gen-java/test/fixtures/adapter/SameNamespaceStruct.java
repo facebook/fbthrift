@@ -113,9 +113,9 @@ public final class SameNamespaceStruct implements com.facebook.thrift.payload.Th
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            data
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Long.hashCode(data);
+            return _hashCode;
     }
 
     

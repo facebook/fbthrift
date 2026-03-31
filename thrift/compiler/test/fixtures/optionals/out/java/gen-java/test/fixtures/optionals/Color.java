@@ -188,12 +188,12 @@ public final class Color implements com.facebook.thrift.payload.ThriftSerializab
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            red,
-            green,
-            blue,
-            alpha
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Double.hashCode(red);
+            _hashCode = 31 * _hashCode + Double.hashCode(green);
+            _hashCode = 31 * _hashCode + Double.hashCode(blue);
+            _hashCode = 31 * _hashCode + Double.hashCode(alpha);
+            return _hashCode;
     }
 
     

@@ -136,10 +136,10 @@ public final class BigStruct implements com.facebook.thrift.payload.ThriftSerial
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            s,
-            id
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(s);
+            _hashCode = 31 * _hashCode + Integer.hashCode(id);
+            return _hashCode;
     }
 
     

@@ -113,9 +113,9 @@ public final class DirectlyAdapted implements com.facebook.thrift.payload.Thrift
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            field
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Integer.hashCode(field);
+            return _hashCode;
     }
 
     

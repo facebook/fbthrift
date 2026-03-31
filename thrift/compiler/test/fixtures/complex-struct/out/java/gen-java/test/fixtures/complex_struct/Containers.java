@@ -1046,45 +1046,45 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            structList,
-            unionList,
-            enumList,
-            structSet,
-            unionSet,
-            enumSet,
-            structMap,
-            unionMap,
-            enumMap,
-            structMap2,
-            unionMap2,
-            enumMap2,
-            listMap,
-            listMap2,
-            setMap,
-            setMap2,
-            mapMap,
-            mapMap2,
-            listListI32,
-            listListStruct,
-            listSetI32,
-            listSetStruct,
-            listMapI32I32,
-            listMapI32Struct,
-            listMapStructI32,
-            setListI32,
-            setListStruct,
-            setSetI32,
-            setSetStruct,
-            setMapI32I32,
-            setMapI32Struct,
-            setMapStructI32,
-            mapI32MapI32I32,
-            mapI32MapStructI32,
-            mapI32MapI32Struct,
-            mapI32MapListI32I32,
-            mapI32MapListStructI32
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(structList);
+            _hashCode = 31 * _hashCode + Objects.hashCode(unionList);
+            _hashCode = 31 * _hashCode + Objects.hashCode(enumList);
+            _hashCode = 31 * _hashCode + Objects.hashCode(structSet);
+            _hashCode = 31 * _hashCode + Objects.hashCode(unionSet);
+            _hashCode = 31 * _hashCode + Objects.hashCode(enumSet);
+            _hashCode = 31 * _hashCode + Objects.hashCode(structMap);
+            _hashCode = 31 * _hashCode + Objects.hashCode(unionMap);
+            _hashCode = 31 * _hashCode + Objects.hashCode(enumMap);
+            _hashCode = 31 * _hashCode + Objects.hashCode(structMap2);
+            _hashCode = 31 * _hashCode + Objects.hashCode(unionMap2);
+            _hashCode = 31 * _hashCode + Objects.hashCode(enumMap2);
+            _hashCode = 31 * _hashCode + Objects.hashCode(listMap);
+            _hashCode = 31 * _hashCode + Objects.hashCode(listMap2);
+            _hashCode = 31 * _hashCode + Objects.hashCode(setMap);
+            _hashCode = 31 * _hashCode + Objects.hashCode(setMap2);
+            _hashCode = 31 * _hashCode + Objects.hashCode(mapMap);
+            _hashCode = 31 * _hashCode + Objects.hashCode(mapMap2);
+            _hashCode = 31 * _hashCode + Objects.hashCode(listListI32);
+            _hashCode = 31 * _hashCode + Objects.hashCode(listListStruct);
+            _hashCode = 31 * _hashCode + Objects.hashCode(listSetI32);
+            _hashCode = 31 * _hashCode + Objects.hashCode(listSetStruct);
+            _hashCode = 31 * _hashCode + Objects.hashCode(listMapI32I32);
+            _hashCode = 31 * _hashCode + Objects.hashCode(listMapI32Struct);
+            _hashCode = 31 * _hashCode + Objects.hashCode(listMapStructI32);
+            _hashCode = 31 * _hashCode + Objects.hashCode(setListI32);
+            _hashCode = 31 * _hashCode + Objects.hashCode(setListStruct);
+            _hashCode = 31 * _hashCode + Objects.hashCode(setSetI32);
+            _hashCode = 31 * _hashCode + Objects.hashCode(setSetStruct);
+            _hashCode = 31 * _hashCode + Objects.hashCode(setMapI32I32);
+            _hashCode = 31 * _hashCode + Objects.hashCode(setMapI32Struct);
+            _hashCode = 31 * _hashCode + Objects.hashCode(setMapStructI32);
+            _hashCode = 31 * _hashCode + Objects.hashCode(mapI32MapI32I32);
+            _hashCode = 31 * _hashCode + Objects.hashCode(mapI32MapStructI32);
+            _hashCode = 31 * _hashCode + Objects.hashCode(mapI32MapI32Struct);
+            _hashCode = 31 * _hashCode + Objects.hashCode(mapI32MapListI32I32);
+            _hashCode = 31 * _hashCode + Objects.hashCode(mapI32MapListStructI32);
+            return _hashCode;
     }
 
     

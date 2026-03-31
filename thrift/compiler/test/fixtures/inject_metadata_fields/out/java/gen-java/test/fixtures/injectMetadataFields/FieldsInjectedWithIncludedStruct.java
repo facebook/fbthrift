@@ -188,12 +188,12 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            stringField,
-            injectedField,
-            injectedStructuredAnnotationField,
-            injectedUnstructuredAnnotationField
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(stringField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(injectedField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(injectedStructuredAnnotationField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(injectedUnstructuredAnnotationField);
+            return _hashCode;
     }
 
     

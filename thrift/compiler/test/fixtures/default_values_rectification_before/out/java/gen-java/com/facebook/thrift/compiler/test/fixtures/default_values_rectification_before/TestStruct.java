@@ -297,16 +297,16 @@ public final class TestStruct implements com.facebook.thrift.payload.ThriftSeria
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            unqualifiedIntField,
-            unqualifiedBoolField,
-            unqualifiedListField,
-            unqualifiedStructField,
-            optionalIntField,
-            optionalBoolField,
-            optionalListField,
-            optionalStructField
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Integer.hashCode(unqualifiedIntField);
+            _hashCode = 31 * _hashCode + Boolean.hashCode(unqualifiedBoolField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(unqualifiedListField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(unqualifiedStructField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(optionalIntField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(optionalBoolField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(optionalListField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(optionalStructField);
+            return _hashCode;
     }
 
     

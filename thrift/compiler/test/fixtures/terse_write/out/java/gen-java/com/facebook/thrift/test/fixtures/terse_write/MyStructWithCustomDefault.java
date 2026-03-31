@@ -113,9 +113,9 @@ public final class MyStructWithCustomDefault implements com.facebook.thrift.payl
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            field1
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Long.hashCode(field1);
+            return _hashCode;
     }
 
     

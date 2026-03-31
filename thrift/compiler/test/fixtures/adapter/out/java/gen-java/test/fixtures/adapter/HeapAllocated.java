@@ -85,8 +85,8 @@ static {
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-        });
+        int _hashCode = 1;
+        return _hashCode;
     }
 
     

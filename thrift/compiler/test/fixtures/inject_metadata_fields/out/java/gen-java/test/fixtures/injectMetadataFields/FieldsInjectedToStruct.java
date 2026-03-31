@@ -136,10 +136,10 @@ public final class FieldsInjectedToStruct implements com.facebook.thrift.payload
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            stringField,
-            injectedField
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(stringField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(injectedField);
+            return _hashCode;
     }
 
     

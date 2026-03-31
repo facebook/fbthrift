@@ -193,12 +193,12 @@ public final class SomeStruct implements com.facebook.thrift.payload.ThriftSeria
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            reasonable,
-            fine,
-            questionable,
-            tags
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(reasonable);
+            _hashCode = 31 * _hashCode + Objects.hashCode(fine);
+            _hashCode = 31 * _hashCode + Objects.hashCode(questionable);
+            _hashCode = 31 * _hashCode + Objects.hashCode(tags);
+            return _hashCode;
     }
 
     

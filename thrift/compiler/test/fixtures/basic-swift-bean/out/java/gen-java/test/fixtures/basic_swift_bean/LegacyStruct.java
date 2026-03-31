@@ -137,10 +137,10 @@ public final class LegacyStruct implements com.facebook.thrift.payload.ThriftSer
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            normal,
-            bad
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Integer.hashCode(normal);
+            _hashCode = 31 * _hashCode + Integer.hashCode(bad);
+            return _hashCode;
     }
 
     

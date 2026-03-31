@@ -136,10 +136,10 @@ public final class AdaptedStructWithInternBox implements com.facebook.thrift.pay
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            field1,
-            field2
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(field1);
+            _hashCode = 31 * _hashCode + Objects.hashCode(field2);
+            return _hashCode;
     }
 
     

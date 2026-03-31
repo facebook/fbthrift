@@ -136,10 +136,10 @@ public final class NoEffect implements com.facebook.thrift.payload.ThriftSeriali
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            anSnakeString,
-            aCamelI32
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(anSnakeString);
+            _hashCode = 31 * _hashCode + Integer.hashCode(aCamelI32);
+            return _hashCode;
     }
 
     

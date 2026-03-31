@@ -671,30 +671,30 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            adaptedBool,
-            adaptedByte,
-            adaptedShort,
-            adaptedInteger,
-            adaptedLong,
-            adaptedDouble,
-            adaptedString,
-            adaptedList,
-            adaptedSet,
-            adaptedMap,
-            adaptedBoolDefault,
-            adaptedByteDefault,
-            adaptedShortDefault,
-            adaptedIntegerDefault,
-            adaptedLongDefault,
-            adaptedDoubleDefault,
-            adaptedStringDefault,
-            adaptedEnum,
-            adaptedListDefault,
-            adaptedSetDefault,
-            adaptedMapDefault,
-            doubleTypedefBool
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Boolean.hashCode(adaptedBool);
+            _hashCode = 31 * _hashCode + Byte.hashCode(adaptedByte);
+            _hashCode = 31 * _hashCode + Short.hashCode(adaptedShort);
+            _hashCode = 31 * _hashCode + Integer.hashCode(adaptedInteger);
+            _hashCode = 31 * _hashCode + Long.hashCode(adaptedLong);
+            _hashCode = 31 * _hashCode + Double.hashCode(adaptedDouble);
+            _hashCode = 31 * _hashCode + Objects.hashCode(adaptedString);
+            _hashCode = 31 * _hashCode + Objects.hashCode(adaptedList);
+            _hashCode = 31 * _hashCode + Objects.hashCode(adaptedSet);
+            _hashCode = 31 * _hashCode + Objects.hashCode(adaptedMap);
+            _hashCode = 31 * _hashCode + Boolean.hashCode(adaptedBoolDefault);
+            _hashCode = 31 * _hashCode + Byte.hashCode(adaptedByteDefault);
+            _hashCode = 31 * _hashCode + Short.hashCode(adaptedShortDefault);
+            _hashCode = 31 * _hashCode + Integer.hashCode(adaptedIntegerDefault);
+            _hashCode = 31 * _hashCode + Long.hashCode(adaptedLongDefault);
+            _hashCode = 31 * _hashCode + Double.hashCode(adaptedDoubleDefault);
+            _hashCode = 31 * _hashCode + Objects.hashCode(adaptedStringDefault);
+            _hashCode = 31 * _hashCode + Objects.hashCode(adaptedEnum);
+            _hashCode = 31 * _hashCode + Objects.hashCode(adaptedListDefault);
+            _hashCode = 31 * _hashCode + Objects.hashCode(adaptedSetDefault);
+            _hashCode = 31 * _hashCode + Objects.hashCode(adaptedMapDefault);
+            _hashCode = 31 * _hashCode + Boolean.hashCode(doubleTypedefBool);
+            return _hashCode;
     }
 
     

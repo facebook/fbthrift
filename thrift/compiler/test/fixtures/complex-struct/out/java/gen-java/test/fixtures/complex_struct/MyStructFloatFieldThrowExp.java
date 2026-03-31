@@ -188,12 +188,12 @@ public final class MyStructFloatFieldThrowExp implements com.facebook.thrift.pay
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            myLongField,
-            myByteField,
-            myStringField,
-            myFloatField
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Long.hashCode(myLongField);
+            _hashCode = 31 * _hashCode + Byte.hashCode(myByteField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(myStringField);
+            _hashCode = 31 * _hashCode + Float.hashCode(myFloatField);
+            return _hashCode;
     }
 
     

@@ -864,38 +864,38 @@ public final class MyNomralStruct implements com.facebook.thrift.payload.ThriftS
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            msg1,
-            msg2,
-            msg3,
-            msg4,
-            msg5,
-            msg6,
-            msg7,
-            msg8,
-            msg9,
-            myIntField10,
-            myIntField11,
-            myIntField12,
-            myIntField13,
-            myIntField14,
-            myIntField15,
-            myIntField16,
-            myIntField17,
-            myIntField18,
-            myIntField19,
-            myIntField20,
-            myDoubleField21,
-            myDoubleField22,
-            myDoubleField23,
-            myDoubleField24,
-            myDoubleField25,
-            myDoubleField26,
-            myDoubleField27,
-            myDoubleField28,
-            myDoubleField29,
-            myDoubleField30
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(msg1);
+            _hashCode = 31 * _hashCode + Objects.hashCode(msg2);
+            _hashCode = 31 * _hashCode + Objects.hashCode(msg3);
+            _hashCode = 31 * _hashCode + Objects.hashCode(msg4);
+            _hashCode = 31 * _hashCode + Objects.hashCode(msg5);
+            _hashCode = 31 * _hashCode + Objects.hashCode(msg6);
+            _hashCode = 31 * _hashCode + Objects.hashCode(msg7);
+            _hashCode = 31 * _hashCode + Objects.hashCode(msg8);
+            _hashCode = 31 * _hashCode + Objects.hashCode(msg9);
+            _hashCode = 31 * _hashCode + Integer.hashCode(myIntField10);
+            _hashCode = 31 * _hashCode + Integer.hashCode(myIntField11);
+            _hashCode = 31 * _hashCode + Integer.hashCode(myIntField12);
+            _hashCode = 31 * _hashCode + Integer.hashCode(myIntField13);
+            _hashCode = 31 * _hashCode + Integer.hashCode(myIntField14);
+            _hashCode = 31 * _hashCode + Integer.hashCode(myIntField15);
+            _hashCode = 31 * _hashCode + Integer.hashCode(myIntField16);
+            _hashCode = 31 * _hashCode + Integer.hashCode(myIntField17);
+            _hashCode = 31 * _hashCode + Integer.hashCode(myIntField18);
+            _hashCode = 31 * _hashCode + Integer.hashCode(myIntField19);
+            _hashCode = 31 * _hashCode + Integer.hashCode(myIntField20);
+            _hashCode = 31 * _hashCode + Double.hashCode(myDoubleField21);
+            _hashCode = 31 * _hashCode + Double.hashCode(myDoubleField22);
+            _hashCode = 31 * _hashCode + Double.hashCode(myDoubleField23);
+            _hashCode = 31 * _hashCode + Double.hashCode(myDoubleField24);
+            _hashCode = 31 * _hashCode + Double.hashCode(myDoubleField25);
+            _hashCode = 31 * _hashCode + Double.hashCode(myDoubleField26);
+            _hashCode = 31 * _hashCode + Double.hashCode(myDoubleField27);
+            _hashCode = 31 * _hashCode + Double.hashCode(myDoubleField28);
+            _hashCode = 31 * _hashCode + Double.hashCode(myDoubleField29);
+            _hashCode = 31 * _hashCode + Double.hashCode(myDoubleField30);
+            return _hashCode;
     }
 
     

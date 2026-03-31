@@ -162,11 +162,11 @@ public final class Struct4 implements com.facebook.thrift.payload.ThriftSerializ
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            a,
-            b,
-            c
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Integer.hashCode(a);
+            _hashCode = 31 * _hashCode + Objects.hashCode(b);
+            _hashCode = 31 * _hashCode + Objects.hashCode(c);
+            return _hashCode;
     }
 
     

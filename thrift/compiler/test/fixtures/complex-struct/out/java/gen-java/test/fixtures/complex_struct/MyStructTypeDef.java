@@ -318,17 +318,17 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            myLongField,
-            myLongTypeDef,
-            myStringField,
-            myStringTypedef,
-            myMapField,
-            myMapTypedef,
-            myListField,
-            myListTypedef,
-            myMapListOfTypeDef
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Long.hashCode(myLongField);
+            _hashCode = 31 * _hashCode + Long.hashCode(myLongTypeDef);
+            _hashCode = 31 * _hashCode + Objects.hashCode(myStringField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(myStringTypedef);
+            _hashCode = 31 * _hashCode + Objects.hashCode(myMapField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(myMapTypedef);
+            _hashCode = 31 * _hashCode + Objects.hashCode(myListField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(myListTypedef);
+            _hashCode = 31 * _hashCode + Objects.hashCode(myMapListOfTypeDef);
+            return _hashCode;
     }
 
     

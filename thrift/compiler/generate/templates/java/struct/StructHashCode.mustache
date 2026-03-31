@@ -17,10 +17,30 @@
 }}
 @java.lang.Override
 public int hashCode() {
-    return Arrays.deepHashCode(new java.lang.Object[] {
-        {{#struct:fields}}
-        {{field:javaName}}{{^last?}},{{/last?}}
-        {{/struct:fields}}
-    });
+    int _hashCode = 1;
+    {{#struct:fields}}
+    {{#field:type}}{{#type:bool?}}{{^field:optional?}}_hashCode = 31 * _hashCode + Boolean.hashCode({{field:javaName}});
+    {{/field:optional?}}{{#field:optional?}}_hashCode = 31 * _hashCode + Objects.hashCode({{field:javaName}});
+    {{/field:optional?}}{{/type:bool?}}{{#type:byte?}}{{^field:optional?}}_hashCode = 31 * _hashCode + Byte.hashCode({{field:javaName}});
+    {{/field:optional?}}{{#field:optional?}}_hashCode = 31 * _hashCode + Objects.hashCode({{field:javaName}});
+    {{/field:optional?}}{{/type:byte?}}{{#type:i16?}}{{^field:optional?}}_hashCode = 31 * _hashCode + Short.hashCode({{field:javaName}});
+    {{/field:optional?}}{{#field:optional?}}_hashCode = 31 * _hashCode + Objects.hashCode({{field:javaName}});
+    {{/field:optional?}}{{/type:i16?}}{{#type:i32?}}{{^field:optional?}}_hashCode = 31 * _hashCode + Integer.hashCode({{field:javaName}});
+    {{/field:optional?}}{{#field:optional?}}_hashCode = 31 * _hashCode + Objects.hashCode({{field:javaName}});
+    {{/field:optional?}}{{/type:i32?}}{{#type:i64?}}{{^field:optional?}}_hashCode = 31 * _hashCode + Long.hashCode({{field:javaName}});
+    {{/field:optional?}}{{#field:optional?}}_hashCode = 31 * _hashCode + Objects.hashCode({{field:javaName}});
+    {{/field:optional?}}{{/type:i64?}}{{#type:double?}}{{^field:optional?}}_hashCode = 31 * _hashCode + Double.hashCode({{field:javaName}});
+    {{/field:optional?}}{{#field:optional?}}_hashCode = 31 * _hashCode + Objects.hashCode({{field:javaName}});
+    {{/field:optional?}}{{/type:double?}}{{#type:float?}}{{^field:optional?}}_hashCode = 31 * _hashCode + Float.hashCode({{field:javaName}});
+    {{/field:optional?}}{{#field:optional?}}_hashCode = 31 * _hashCode + Objects.hashCode({{field:javaName}});
+    {{/field:optional?}}{{/type:float?}}{{^type:bool?}}{{^type:byte?}}{{^type:i16?}}{{^type:i32?}}{{^type:i64?}}{{^type:double?}}{{^type:float?}}{{!
+    }}{{#type:binary?}}{{^field:hasAdapterOrWrapper?}}_hashCode = 31 * _hashCode + Arrays.hashCode({{field:javaName}});
+    {{/field:hasAdapterOrWrapper?}}{{#field:hasAdapterOrWrapper?}}_hashCode = 31 * _hashCode + Objects.hashCode({{field:javaName}});
+    {{/field:hasAdapterOrWrapper?}}{{/type:binary?}}{{!
+    }}{{^type:binary?}}_hashCode = 31 * _hashCode + Objects.hashCode({{field:javaName}});
+    {{/type:binary?}}{{/type:float?}}{{/type:double?}}{{/type:i64?}}{{/type:i32?}}{{/type:i16?}}{{/type:byte?}}{{/type:bool?}}{{/field:type}}{{^field:type}}_hashCode = 31 * _hashCode + Objects.hashCode({{field:javaName}});
+    {{/field:type}}
+    {{/struct:fields}}
+    return _hashCode;
 }
 {{! terminate with newline }}

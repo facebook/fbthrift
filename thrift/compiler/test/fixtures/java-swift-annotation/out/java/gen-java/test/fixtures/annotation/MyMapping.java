@@ -188,12 +188,12 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            lsMap,
-            ioMap,
-            binaryMap,
-            regularBinary
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(lsMap);
+            _hashCode = 31 * _hashCode + Objects.hashCode(ioMap);
+            _hashCode = 31 * _hashCode + Objects.hashCode(binaryMap);
+            _hashCode = 31 * _hashCode + Objects.hashCode(regularBinary);
+            return _hashCode;
     }
 
     

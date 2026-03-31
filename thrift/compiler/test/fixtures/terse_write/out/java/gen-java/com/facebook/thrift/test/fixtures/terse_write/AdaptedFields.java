@@ -165,11 +165,11 @@ public final class AdaptedFields implements com.facebook.thrift.payload.ThriftSe
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            field1,
-            field2,
-            field3
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Integer.hashCode(field1);
+            _hashCode = 31 * _hashCode + Integer.hashCode(field2);
+            _hashCode = 31 * _hashCode + Integer.hashCode(field3);
+            return _hashCode;
     }
 
     

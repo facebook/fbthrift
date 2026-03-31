@@ -162,11 +162,11 @@ public final class Val implements com.facebook.thrift.payload.ThriftSerializable
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            strVal,
-            intVal,
-            typedefValue
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(strVal);
+            _hashCode = 31 * _hashCode + Integer.hashCode(intVal);
+            _hashCode = 31 * _hashCode + Objects.hashCode(typedefValue);
+            return _hashCode;
     }
 
     

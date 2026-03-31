@@ -136,10 +136,10 @@ public final class Range implements com.facebook.thrift.payload.ThriftSerializab
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            min,
-            max
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Integer.hashCode(min);
+            _hashCode = 31 * _hashCode + Integer.hashCode(max);
+            return _hashCode;
     }
 
     

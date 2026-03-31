@@ -110,9 +110,9 @@ public final class MyStructNestedAnnotation implements com.facebook.thrift.paylo
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            name
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(name);
+            return _hashCode;
     }
 
     

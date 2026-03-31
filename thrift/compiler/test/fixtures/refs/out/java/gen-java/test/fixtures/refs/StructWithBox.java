@@ -162,11 +162,11 @@ public final class StructWithBox implements com.facebook.thrift.payload.ThriftSe
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            a,
-            b,
-            c
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(a);
+            _hashCode = 31 * _hashCode + Objects.hashCode(b);
+            _hashCode = 31 * _hashCode + Objects.hashCode(c);
+            return _hashCode;
     }
 
     

@@ -188,12 +188,12 @@ public final class MyStruct1 implements com.facebook.thrift.payload.ThriftSerial
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            myIntField,
-            myStringField,
-            myDataField,
-            major
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Long.hashCode(myIntField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(myStringField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(myDataField);
+            _hashCode = 31 * _hashCode + Long.hashCode(major);
+            return _hashCode;
     }
 
     

@@ -136,10 +136,10 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            myLongField,
-            mapListOfFloats
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Long.hashCode(myLongField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(mapListOfFloats);
+            return _hashCode;
     }
 
     

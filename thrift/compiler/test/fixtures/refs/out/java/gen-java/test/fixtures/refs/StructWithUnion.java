@@ -162,11 +162,11 @@ public final class StructWithUnion implements com.facebook.thrift.payload.Thrift
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            u,
-            aDouble,
-            f
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(u);
+            _hashCode = 31 * _hashCode + Double.hashCode(aDouble);
+            _hashCode = 31 * _hashCode + Objects.hashCode(f);
+            return _hashCode;
     }
 
     

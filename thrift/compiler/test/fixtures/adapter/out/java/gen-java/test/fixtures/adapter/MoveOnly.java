@@ -113,9 +113,9 @@ public final class MoveOnly implements com.facebook.thrift.payload.ThriftSeriali
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            ptr
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(ptr);
+            return _hashCode;
     }
 
     

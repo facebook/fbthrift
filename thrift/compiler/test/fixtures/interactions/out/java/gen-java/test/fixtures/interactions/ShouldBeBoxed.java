@@ -110,9 +110,9 @@ public final class ShouldBeBoxed implements com.facebook.thrift.payload.ThriftSe
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            sessionId
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(sessionId);
+            return _hashCode;
     }
 
     

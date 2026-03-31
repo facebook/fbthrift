@@ -812,36 +812,36 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            myIntField,
-            myStringField,
-            myDataField,
-            myEnum,
-            myBoolField,
-            myByteField,
-            myShortField,
-            myLongField,
-            myDoubleField,
-            lDouble,
-            lShort,
-            lInteger,
-            lLong,
-            lString,
-            lBool,
-            lByte,
-            mShortString,
-            mIntegerString,
-            mStringMyStruct,
-            mStringBool,
-            mIntegerInteger,
-            mIntegerBool,
-            sShort,
-            sMyStruct,
-            sLong,
-            sString,
-            sByte,
-            mListList
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Long.hashCode(myIntField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(myStringField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(myDataField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(myEnum);
+            _hashCode = 31 * _hashCode + Boolean.hashCode(myBoolField);
+            _hashCode = 31 * _hashCode + Byte.hashCode(myByteField);
+            _hashCode = 31 * _hashCode + Short.hashCode(myShortField);
+            _hashCode = 31 * _hashCode + Long.hashCode(myLongField);
+            _hashCode = 31 * _hashCode + Double.hashCode(myDoubleField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(lDouble);
+            _hashCode = 31 * _hashCode + Objects.hashCode(lShort);
+            _hashCode = 31 * _hashCode + Objects.hashCode(lInteger);
+            _hashCode = 31 * _hashCode + Objects.hashCode(lLong);
+            _hashCode = 31 * _hashCode + Objects.hashCode(lString);
+            _hashCode = 31 * _hashCode + Objects.hashCode(lBool);
+            _hashCode = 31 * _hashCode + Objects.hashCode(lByte);
+            _hashCode = 31 * _hashCode + Objects.hashCode(mShortString);
+            _hashCode = 31 * _hashCode + Objects.hashCode(mIntegerString);
+            _hashCode = 31 * _hashCode + Objects.hashCode(mStringMyStruct);
+            _hashCode = 31 * _hashCode + Objects.hashCode(mStringBool);
+            _hashCode = 31 * _hashCode + Objects.hashCode(mIntegerInteger);
+            _hashCode = 31 * _hashCode + Objects.hashCode(mIntegerBool);
+            _hashCode = 31 * _hashCode + Objects.hashCode(sShort);
+            _hashCode = 31 * _hashCode + Objects.hashCode(sMyStruct);
+            _hashCode = 31 * _hashCode + Objects.hashCode(sLong);
+            _hashCode = 31 * _hashCode + Objects.hashCode(sString);
+            _hashCode = 31 * _hashCode + Objects.hashCode(sByte);
+            _hashCode = 31 * _hashCode + Objects.hashCode(mListList);
+            return _hashCode;
     }
 
     

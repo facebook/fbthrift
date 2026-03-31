@@ -136,10 +136,10 @@ public final class SimpleStruct implements com.facebook.thrift.payload.ThriftSer
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            age,
-            name
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Long.hashCode(age);
+            _hashCode = 31 * _hashCode + Objects.hashCode(name);
+            return _hashCode;
     }
 
     

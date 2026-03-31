@@ -136,10 +136,10 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            binaryMap,
-            regularBinary
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(binaryMap);
+            _hashCode = 31 * _hashCode + Objects.hashCode(regularBinary);
+            return _hashCode;
     }
 
     

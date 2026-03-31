@@ -1062,44 +1062,44 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            justAnA,
-            setOfI32,
-            listOfI32,
-            listOfString,
-            mapOfStringToI32,
-            mapOfStringToA,
-            mapOfStringToListOfI32,
-            mapOfStringToListOfA,
-            mapOfStringToSetOfI32,
-            mapOfStringToMapOfStringToI32,
-            mapOfStringToMapOfStringToA,
-            listOfSetOfI32,
-            listOfMapOfStringToListOfA,
-            listOfMapOfStringToA,
-            justAnEnum,
-            justAUnion,
-            optionalJustAnA,
-            optionalSetOfI32,
-            optionalListOfI32,
-            optionalListOfString,
-            optionalMapOfStringToI32,
-            optionalMapOfStringToA,
-            optionalMapOfStringToListOfI32,
-            optionalMapOfStringToListOfA,
-            optionalMapOfStringToSetOfI32,
-            optionalEnum,
-            requiredEnumWithDefault,
-            stringWithDefaultValue,
-            i32WithDefaultValue,
-            doubleWithDefaultValue,
-            enumWithDefaultValue,
-            aWithDefaultValue,
-            setOfI32WithDefaultValue,
-            mapOfI32ToStringWithDefaultValue,
-            listOfStringWithDefaultValue,
-            mapOfStringToListOfI32WithDefaultValue
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(justAnA);
+            _hashCode = 31 * _hashCode + Objects.hashCode(setOfI32);
+            _hashCode = 31 * _hashCode + Objects.hashCode(listOfI32);
+            _hashCode = 31 * _hashCode + Objects.hashCode(listOfString);
+            _hashCode = 31 * _hashCode + Objects.hashCode(mapOfStringToI32);
+            _hashCode = 31 * _hashCode + Objects.hashCode(mapOfStringToA);
+            _hashCode = 31 * _hashCode + Objects.hashCode(mapOfStringToListOfI32);
+            _hashCode = 31 * _hashCode + Objects.hashCode(mapOfStringToListOfA);
+            _hashCode = 31 * _hashCode + Objects.hashCode(mapOfStringToSetOfI32);
+            _hashCode = 31 * _hashCode + Objects.hashCode(mapOfStringToMapOfStringToI32);
+            _hashCode = 31 * _hashCode + Objects.hashCode(mapOfStringToMapOfStringToA);
+            _hashCode = 31 * _hashCode + Objects.hashCode(listOfSetOfI32);
+            _hashCode = 31 * _hashCode + Objects.hashCode(listOfMapOfStringToListOfA);
+            _hashCode = 31 * _hashCode + Objects.hashCode(listOfMapOfStringToA);
+            _hashCode = 31 * _hashCode + Objects.hashCode(justAnEnum);
+            _hashCode = 31 * _hashCode + Objects.hashCode(justAUnion);
+            _hashCode = 31 * _hashCode + Objects.hashCode(optionalJustAnA);
+            _hashCode = 31 * _hashCode + Objects.hashCode(optionalSetOfI32);
+            _hashCode = 31 * _hashCode + Objects.hashCode(optionalListOfI32);
+            _hashCode = 31 * _hashCode + Objects.hashCode(optionalListOfString);
+            _hashCode = 31 * _hashCode + Objects.hashCode(optionalMapOfStringToI32);
+            _hashCode = 31 * _hashCode + Objects.hashCode(optionalMapOfStringToA);
+            _hashCode = 31 * _hashCode + Objects.hashCode(optionalMapOfStringToListOfI32);
+            _hashCode = 31 * _hashCode + Objects.hashCode(optionalMapOfStringToListOfA);
+            _hashCode = 31 * _hashCode + Objects.hashCode(optionalMapOfStringToSetOfI32);
+            _hashCode = 31 * _hashCode + Objects.hashCode(optionalEnum);
+            _hashCode = 31 * _hashCode + Objects.hashCode(requiredEnumWithDefault);
+            _hashCode = 31 * _hashCode + Objects.hashCode(stringWithDefaultValue);
+            _hashCode = 31 * _hashCode + Integer.hashCode(i32WithDefaultValue);
+            _hashCode = 31 * _hashCode + Double.hashCode(doubleWithDefaultValue);
+            _hashCode = 31 * _hashCode + Objects.hashCode(enumWithDefaultValue);
+            _hashCode = 31 * _hashCode + Objects.hashCode(aWithDefaultValue);
+            _hashCode = 31 * _hashCode + Objects.hashCode(setOfI32WithDefaultValue);
+            _hashCode = 31 * _hashCode + Objects.hashCode(mapOfI32ToStringWithDefaultValue);
+            _hashCode = 31 * _hashCode + Objects.hashCode(listOfStringWithDefaultValue);
+            _hashCode = 31 * _hashCode + Objects.hashCode(mapOfStringToListOfI32WithDefaultValue);
+            return _hashCode;
     }
 
     

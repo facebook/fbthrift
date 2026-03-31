@@ -139,10 +139,10 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            myEnum,
-            myBigEnum
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(myEnum);
+            _hashCode = 31 * _hashCode + Objects.hashCode(myBigEnum);
+            return _hashCode;
     }
 
     

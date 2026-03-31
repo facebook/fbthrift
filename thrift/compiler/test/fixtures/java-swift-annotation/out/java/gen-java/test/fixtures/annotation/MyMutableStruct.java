@@ -137,10 +137,10 @@ public final class MyMutableStruct implements com.facebook.thrift.payload.Thrift
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            intField,
-            stringField
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Long.hashCode(intField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(stringField);
+            return _hashCode;
     }
 
     

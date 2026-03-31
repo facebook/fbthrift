@@ -110,9 +110,9 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor implements com.faceb
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            defField
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(defField);
+            return _hashCode;
     }
 
     

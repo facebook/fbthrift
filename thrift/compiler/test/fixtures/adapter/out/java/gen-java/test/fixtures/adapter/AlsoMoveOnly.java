@@ -113,9 +113,9 @@ public final class AlsoMoveOnly implements com.facebook.thrift.payload.ThriftSer
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            ptr
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Long.hashCode(ptr);
+            return _hashCode;
     }
 
     

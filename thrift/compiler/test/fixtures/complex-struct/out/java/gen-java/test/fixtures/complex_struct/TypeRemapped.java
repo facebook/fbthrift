@@ -188,12 +188,12 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            lsMap,
-            ioMap,
-            bigInteger,
-            binaryTestBuffer
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(lsMap);
+            _hashCode = 31 * _hashCode + Objects.hashCode(ioMap);
+            _hashCode = 31 * _hashCode + Integer.hashCode(bigInteger);
+            _hashCode = 31 * _hashCode + Arrays.hashCode(binaryTestBuffer);
+            return _hashCode;
     }
 
     

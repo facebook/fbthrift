@@ -165,11 +165,11 @@ public final class CountingStruct implements com.facebook.thrift.payload.ThriftS
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            regularInt,
-            countingInt,
-            regularString
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(regularInt);
+            _hashCode = 31 * _hashCode + Objects.hashCode(countingInt);
+            _hashCode = 31 * _hashCode + Objects.hashCode(regularString);
+            return _hashCode;
     }
 
     

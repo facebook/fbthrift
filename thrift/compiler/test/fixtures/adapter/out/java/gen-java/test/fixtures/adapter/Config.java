@@ -113,9 +113,9 @@ public final class Config implements com.facebook.thrift.payload.ThriftSerializa
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            path
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(path);
+            return _hashCode;
     }
 
     

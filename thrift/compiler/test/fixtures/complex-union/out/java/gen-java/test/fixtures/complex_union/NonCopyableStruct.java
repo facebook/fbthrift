@@ -110,9 +110,9 @@ public final class NonCopyableStruct implements com.facebook.thrift.payload.Thri
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            num
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Long.hashCode(num);
+            return _hashCode;
     }
 
     

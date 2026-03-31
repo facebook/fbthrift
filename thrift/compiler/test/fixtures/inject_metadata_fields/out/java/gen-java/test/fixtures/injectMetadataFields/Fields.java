@@ -110,9 +110,9 @@ public final class Fields implements com.facebook.thrift.payload.ThriftSerializa
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            injectedField
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(injectedField);
+            return _hashCode;
     }
 
     

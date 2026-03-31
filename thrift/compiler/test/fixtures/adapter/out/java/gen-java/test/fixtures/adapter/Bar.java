@@ -297,16 +297,16 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            structField,
-            optionalStructField,
-            structListField,
-            optionalStructListField,
-            unionField,
-            optionalUnionField,
-            adaptedStructField,
-            structListFieldWithTypedef
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(structField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(optionalStructField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(structListField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(optionalStructListField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(unionField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(optionalUnionField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(adaptedStructField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(structListFieldWithTypedef);
+            return _hashCode;
     }
 
     

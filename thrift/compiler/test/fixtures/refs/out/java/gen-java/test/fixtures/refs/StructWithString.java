@@ -214,13 +214,13 @@ public final class StructWithString implements com.facebook.thrift.payload.Thrif
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            defUniqueStringRef,
-            defSharedStringRef,
-            defSharedStringConstRef,
-            uniqueStringRef,
-            sharedStringRef
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(defUniqueStringRef);
+            _hashCode = 31 * _hashCode + Objects.hashCode(defSharedStringRef);
+            _hashCode = 31 * _hashCode + Objects.hashCode(defSharedStringConstRef);
+            _hashCode = 31 * _hashCode + Objects.hashCode(uniqueStringRef);
+            _hashCode = 31 * _hashCode + Objects.hashCode(sharedStringRef);
+            return _hashCode;
     }
 
     

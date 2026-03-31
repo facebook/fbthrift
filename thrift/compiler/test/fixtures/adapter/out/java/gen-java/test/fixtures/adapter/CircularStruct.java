@@ -113,9 +113,9 @@ public final class CircularStruct implements com.facebook.thrift.payload.ThriftS
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            field
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(field);
+            return _hashCode;
     }
 
     

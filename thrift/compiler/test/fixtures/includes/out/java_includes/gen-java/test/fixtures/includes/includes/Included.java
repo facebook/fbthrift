@@ -136,10 +136,10 @@ public final class Included implements com.facebook.thrift.payload.ThriftSeriali
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            myIntField,
-            myTransitiveField
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Long.hashCode(myIntField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(myTransitiveField);
+            return _hashCode;
     }
 
     

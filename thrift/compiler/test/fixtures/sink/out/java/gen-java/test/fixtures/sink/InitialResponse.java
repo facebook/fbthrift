@@ -110,9 +110,9 @@ public final class InitialResponse implements com.facebook.thrift.payload.Thrift
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            content
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(content);
+            return _hashCode;
     }
 
     

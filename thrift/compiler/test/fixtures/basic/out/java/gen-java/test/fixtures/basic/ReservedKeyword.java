@@ -113,9 +113,9 @@ public final class ReservedKeyword implements com.facebook.thrift.payload.Thrift
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            reservedField
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Integer.hashCode(reservedField);
+            return _hashCode;
     }
 
     

@@ -214,13 +214,13 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            weeks,
-            title,
-            employer,
-            compensation,
-            school
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Integer.hashCode(weeks);
+            _hashCode = 31 * _hashCode + Objects.hashCode(title);
+            _hashCode = 31 * _hashCode + Objects.hashCode(employer);
+            _hashCode = 31 * _hashCode + Objects.hashCode(compensation);
+            _hashCode = 31 * _hashCode + Objects.hashCode(school);
+            return _hashCode;
     }
 
     

@@ -113,9 +113,9 @@ public final class AdaptTemplatedNestedTestStruct implements com.facebook.thrift
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            adaptedStruct
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(adaptedStruct);
+            return _hashCode;
     }
 
     

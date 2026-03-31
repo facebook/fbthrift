@@ -165,11 +165,11 @@ public final class TerseAdaptedFields implements com.facebook.thrift.payload.Thr
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            intField,
-            stringField,
-            setField
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Integer.hashCode(intField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(stringField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(setField);
+            return _hashCode;
     }
 
     

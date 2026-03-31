@@ -136,10 +136,10 @@ public final class Struct implements com.facebook.thrift.payload.ThriftSerializa
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            first,
-            second
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Integer.hashCode(first);
+            _hashCode = 31 * _hashCode + Objects.hashCode(second);
+            return _hashCode;
     }
 
     

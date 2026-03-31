@@ -347,18 +347,18 @@ public final class AdaptTestStruct implements com.facebook.thrift.payload.Thrift
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            delay,
-            custom,
-            timeout,
-            data,
-            meta,
-            indirectionString,
-            stringData,
-            doubleWrappedBool,
-            doubleWrappedInteger,
-            binaryData
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Long.hashCode(delay);
+            _hashCode = 31 * _hashCode + Arrays.hashCode(custom);
+            _hashCode = 31 * _hashCode + Long.hashCode(timeout);
+            _hashCode = 31 * _hashCode + Long.hashCode(data);
+            _hashCode = 31 * _hashCode + Objects.hashCode(meta);
+            _hashCode = 31 * _hashCode + Objects.hashCode(indirectionString);
+            _hashCode = 31 * _hashCode + Objects.hashCode(stringData);
+            _hashCode = 31 * _hashCode + Boolean.hashCode(doubleWrappedBool);
+            _hashCode = 31 * _hashCode + Integer.hashCode(doubleWrappedInteger);
+            _hashCode = 31 * _hashCode + Arrays.hashCode(binaryData);
+            return _hashCode;
     }
 
     

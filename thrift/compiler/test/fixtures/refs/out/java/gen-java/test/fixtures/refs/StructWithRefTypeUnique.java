@@ -162,11 +162,11 @@ public final class StructWithRefTypeUnique implements com.facebook.thrift.payloa
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            defField,
-            optField,
-            reqField
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(defField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(optField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(reqField);
+            return _hashCode;
     }
 
     

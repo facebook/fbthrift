@@ -214,13 +214,13 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            color,
-            licensePlate,
-            description,
-            name,
-            hasAC
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(color);
+            _hashCode = 31 * _hashCode + Objects.hashCode(licensePlate);
+            _hashCode = 31 * _hashCode + Objects.hashCode(description);
+            _hashCode = 31 * _hashCode + Objects.hashCode(name);
+            _hashCode = 31 * _hashCode + Objects.hashCode(hasAC);
+            return _hashCode;
     }
 
     

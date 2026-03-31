@@ -113,9 +113,9 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            myInt
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Long.hashCode(myInt);
+            return _hashCode;
     }
 
     

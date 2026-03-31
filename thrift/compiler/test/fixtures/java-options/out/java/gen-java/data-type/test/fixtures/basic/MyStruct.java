@@ -321,17 +321,17 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            myIntField,
-            myStringField,
-            myDataField,
-            myEnum,
-            oneway,
-            readonly,
-            idempotent,
-            floatSet,
-            noHackCodegenField
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Long.hashCode(myIntField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(myStringField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(myDataField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(myEnum);
+            _hashCode = 31 * _hashCode + Boolean.hashCode(oneway);
+            _hashCode = 31 * _hashCode + Boolean.hashCode(readonly);
+            _hashCode = 31 * _hashCode + Boolean.hashCode(idempotent);
+            _hashCode = 31 * _hashCode + Objects.hashCode(floatSet);
+            _hashCode = 31 * _hashCode + Objects.hashCode(noHackCodegenField);
+            return _hashCode;
     }
 
     

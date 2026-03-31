@@ -113,9 +113,9 @@ public final class ReorderedStruct implements com.facebook.thrift.payload.Thrift
 
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new java.lang.Object[] {
-            reorderedDependentAdapted
-        });
+        int _hashCode = 1;
+        _hashCode = 31 * _hashCode + Objects.hashCode(reorderedDependentAdapted);
+            return _hashCode;
     }
 
     
