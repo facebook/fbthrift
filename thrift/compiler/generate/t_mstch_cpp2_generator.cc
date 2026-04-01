@@ -40,11 +40,11 @@
 #include <thrift/compiler/sema/sema_context.h>
 #include <thrift/compiler/sema/standard_validator.h>
 
-using compiler_options_map = std::map<std::string, std::string, std::less<>>;
-using apache::thrift::compiler::detail::schematizer;
-
 namespace apache::thrift::compiler {
 namespace {
+
+using compiler_options_map = std::map<std::string, std::string, std::less<>>;
+using apache::thrift::compiler::detail::schematizer;
 
 // A compiler counterpart of cpp.EnumUnderlyingType that avoids dependency on
 // the generated code and follows the compiler naming conventions.
@@ -365,8 +365,8 @@ class cpp2_generator_context {
       : root_program_{root} {
     root_program_has_schema_const_ =
         root_program_->find(
-            {schematizer::name_schema(sm, *root_program_), source_range{}}) !=
-        nullptr;
+            {schematizer::schema_const_name(sm, *root_program_),
+             source_range{}}) != nullptr;
     if (program_split_count > 0) {
       program_structured_definition_splits_ = cpp2::lpt_split(
           root->structured_definitions(), program_split_count, [](auto t) {
@@ -850,9 +850,6 @@ class t_mstch_cpp2_generator : public t_whisker_generator {
     def.property("include_prefix", [this](const t_program& self) {
       return include_prefix(&self, compiler_options());
     });
-    def.property("has_schema?", [this](const t_program& self) {
-      return cpp_context_->has_schema_const(self);
-    });
     def.property("any_sink_functions?", [this](const t_program& self) {
       return cpp_context_->has_sink_functions(self);
     });
@@ -868,9 +865,6 @@ class t_mstch_cpp2_generator : public t_whisker_generator {
     def.property("schema_includes_const?", [this](const t_program& self) {
       return cpp_context_->has_schema_const(self) &&
           !self.has_structured_annotation(kDisableSchemaConstUri);
-    });
-    def.property("schema_name", [this](const t_program& self) {
-      return schematizer::name_schema(source_mgr_, self);
     });
     def.property(
         "type_definitions_topological_order", [&](const t_program& self) {

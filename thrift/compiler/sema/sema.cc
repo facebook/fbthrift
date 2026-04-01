@@ -777,7 +777,7 @@ void inject_schema_const(sema_context& ctx, mutator_context&, t_program& prog) {
   auto cnst = std::make_unique<t_const>(
       &prog,
       t_primitive_type::t_binary(),
-      detail::schematizer::name_schema(ctx.source_mgr(), prog),
+      detail::schematizer::schema_const_name(ctx.source_mgr(), prog),
       std::make_unique<t_const_value>(std::move(serialized)));
   // Since schema injection happens after 'match_const_type_with_value' mutator
   // we need to set the explicitly type to binary here.
