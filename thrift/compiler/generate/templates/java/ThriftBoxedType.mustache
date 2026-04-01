@@ -21,20 +21,21 @@
 
   }}{{#type:typedef?}}{{!
     }}{{#type:hasAdapter?}}{{!
-      }}{{#type:typedef_type}}{{type:setAdapter}}{{> ThriftBoxedType}}{{type:unsetAdapter}}{{/type:typedef_type}}{{!
+      }}{{#type:self.true_type.binary?}}io.netty.buffer.ByteBuf{{/type:self.true_type.binary?}}{{!
+      }}{{#type:self.true_type.string?}}{{!
+        }}{{#type:self.true_type.isBinaryString?}}io.netty.buffer.ByteBuf{{/type:self.true_type.isBinaryString?}}{{!
+        }}{{^type:self.true_type.isBinaryString?}}String{{/type:self.true_type.isBinaryString?}}{{!
+      }}{{/type:self.true_type.string?}}{{!
+      }}{{^type:self.true_type.binary?}}{{^type:self.true_type.string?}}{{!
+        }}{{#type:typedef_type}}{{> ThriftBoxedType}}{{/type:typedef_type}}{{!
+      }}{{/type:self.true_type.string?}}{{/type:self.true_type.binary?}}{{!
     }}{{/type:hasAdapter?}}{{!
     }}{{^type:hasAdapter?}}{{!
       }}{{#type:isBinaryString?}}{{!
-        }}{{#type:isAdapterSet?}}io.netty.buffer.ByteBuf{{/type:isAdapterSet?}}{{!
-        }}{{^type:isAdapterSet?}}{{#field:hasAdapter?}}io.netty.buffer.ByteBuf{{/field:hasAdapter?}}{{^field:hasAdapter?}}byte[]{{/field:hasAdapter?}}{{/type:isAdapterSet?}}{{!
+        }}{{#field:hasAdapter?}}io.netty.buffer.ByteBuf{{/field:hasAdapter?}}{{^field:hasAdapter?}}byte[]{{/field:hasAdapter?}}{{!
       }}{{/type:isBinaryString?}}{{!
       }}{{^type:isBinaryString?}}{{!
-        }}{{#type:isAdapterSet?}}{{!
-          }}{{#type:typedef_type}}{{type:setAdapter}}{{> ThriftBoxedType}}{{/type:typedef_type}}{{!
-        }}{{/type:isAdapterSet?}}{{!
-        }}{{^type:isAdapterSet?}}{{!
-          }}{{#type:typedef_type}}{{> ThriftBoxedType}}{{/type:typedef_type}}{{!
-        }}{{/type:isAdapterSet?}}{{!
+        }}{{#type:typedef_type}}{{> ThriftBoxedType}}{{/type:typedef_type}}{{!
       }}{{/type:isBinaryString?}}{{!
     }}{{/type:hasAdapter?}}{{!
   }}{{/type:typedef?}}{{!
@@ -49,10 +50,13 @@
     }}{{#type:double?}}Double{{/type:double?}}{{!
     }}{{#type:float?}}Float{{/type:float?}}{{!
     }}{{#type:string?}}{{!
-        }}{{#type:isBinaryString?}}{{#type:isAdapterSet?}}io.netty.buffer.ByteBuf{{/type:isAdapterSet?}}{{^type:isAdapterSet?}}{{#field:hasAdapter?}}io.netty.buffer.ByteBuf{{/field:hasAdapter?}}{{^field:hasAdapter?}}byte[]{{/field:hasAdapter?}}{{/type:isAdapterSet?}}{{/type:isBinaryString?}}{{!
+        }}{{#type:isBinaryString?}}{{#field:hasAdapter?}}io.netty.buffer.ByteBuf{{/field:hasAdapter?}}{{^field:hasAdapter?}}byte[]{{/field:hasAdapter?}}{{/type:isBinaryString?}}{{!
         }}{{^type:isBinaryString?}}String{{/type:isBinaryString?}}{{!
     }}{{/type:string?}}{{!
-    }}{{#type:binary?}}{{#type:isAdapterSet?}}io.netty.buffer.ByteBuf{{/type:isAdapterSet?}}{{^type:isAdapterSet?}}{{#field:hasAdapter?}}io.netty.buffer.ByteBuf{{/field:hasAdapter?}}{{^field:hasAdapter?}}byte[]{{/field:hasAdapter?}}{{/type:isAdapterSet?}}{{/type:binary?}}{{!
+    }}{{#type:binary?}}{{!
+        }}{{#field:hasAdapter?}}io.netty.buffer.ByteBuf{{/field:hasAdapter?}}{{!
+        }}{{^field:hasAdapter?}}byte[]{{/field:hasAdapter?}}{{!
+    }}{{/type:binary?}}{{!
 
     }}{{#type:map?}}{{!
         }}Map<{{#type:key_type}}{{> ThriftBoxedType}}{{/type:key_type}}, {{#type:value_type}}{{> ThriftBoxedType}}{{/type:value_type}}>{{!
