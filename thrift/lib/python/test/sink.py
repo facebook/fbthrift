@@ -219,7 +219,6 @@ class SinkTests(IsolatedAsyncioTestCase):
 
                 await asyncio.sleep(2)
 
-    @unittest.expectedFailure
     async def test_sink_cancel_propagates_during_blocked_anext(self) -> None:
         """
         When the server handler returns early while the client is still feeding

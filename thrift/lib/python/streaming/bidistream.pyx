@@ -78,12 +78,8 @@ async def invokeBidiTransformCallback(
     """
     Invoke input generator stream and complete promise with output generator.
     """
-    async def invoke_cpp_iobuf_gen():
-        async for elem in input_gen:
-            yield elem
-
     try:
-        output_gen = await bidi_callback(invoke_cpp_iobuf_gen)
+        output_gen = await bidi_callback(input_gen)
         promise.complete(output_gen)
     except ApplicationError as ex:
         promise.error_ta(

@@ -67,7 +67,7 @@ cdef class CloseableGenerator:
         self._anext_task = asyncio.ensure_future(self._stream_generator.__anext__())
         try:
             item = await self._anext_task
-        except (StopAsyncIteration, asyncio.CancelledError):
+        except StopAsyncIteration:
             self._closed = True
             raise
         except self._user_exceptions as ex:

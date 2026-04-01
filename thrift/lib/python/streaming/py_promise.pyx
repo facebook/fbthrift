@@ -26,6 +26,7 @@ from thrift.python.exceptions cimport (
     ApplicationError,
     cTApplicationExceptionType__UNKNOWN,
 )
+from thrift.python.streaming.closeable cimport CloseableGenerator
 from thrift.python.streaming.python_user_exception cimport PythonUserException
 
 
@@ -131,7 +132,7 @@ cdef str SINK_ERR_MSG = "client sink generator"
 
 # run a user-supplied async generator to get next item
 async def runGenerator(
-    object generator,
+    CloseableGenerator generator not None,
     Promise_Optional_IOBuf promise not None,
     pbool is_client_sink not None
 ):
@@ -147,17 +148,20 @@ async def runGenerator(
             ex.type.value, ex.message.encode('UTF-8')
         ))
     except asyncio.CancelledError as ex:
-        if is_client_sink:
-            print(f"Coroutine was cancelled in {SINK_ERR_MSG}:", file=sys.stderr)
-            traceback.print_exc()
-        blame = "client" if is_client_sink else "server"
-        msg = f"Application was cancelled on the {blame} with message: {str(ex)}"
-        promise.error_ta(
-            cTApplicationException(
-                cTApplicationExceptionType__UNKNOWN,
-                msg.encode('UTF-8'),
+        if generator._closed:
+            # Generator was closed (e.g., via aclose() from cancelPythonGenerator).
+            # Treat as end of stream.
+            promise.cPromise.setValue(optional[unique_ptr[cIOBuf]]())
+        else:
+            # User code raised CancelledError — report as error.
+            blame = "client" if is_client_sink else "server"
+            msg = f"Application was cancelled on the {blame} with message: {str(ex)}"
+            promise.error_ta(
+                cTApplicationException(
+                    cTApplicationExceptionType__UNKNOWN,
+                    msg.encode('UTF-8'),
+                )
             )
-        )
     except Exception as ex:
         err_msg = SINK_ERR_MSG if is_client_sink else SERVER_ERR_MSG
         print(
