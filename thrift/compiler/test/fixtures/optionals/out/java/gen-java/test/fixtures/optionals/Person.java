@@ -420,8 +420,8 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
-                    long _value2 = oprot.readI64();
-                    friends.add(_value2);
+                    long _fbthriftVar2 = oprot.readI64();
+                    friends.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
@@ -452,12 +452,12 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
                     String _fbthriftValue2;
 
                     {
-                        test.fixtures.optionals.Animal _value2 = test.fixtures.optionals.Animal.fromInteger(oprot.readI32());
-                        _fbthriftKey2 = _value2;
+                        test.fixtures.optionals.Animal _fbthriftVar2 = test.fixtures.optionals.Animal.fromInteger(oprot.readI32());
+                        _fbthriftKey2 = _fbthriftVar2;
                     }
                     {
-                        String _value2 = oprot.readString();
-                        _fbthriftValue2 = _value2;
+                        String _fbthriftVar2 = oprot.readString();
+                        _fbthriftValue2 = _fbthriftVar2;
                     }
                     petNames.put(_fbthriftKey2, _fbthriftValue2);
                     
@@ -486,8 +486,8 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    test.fixtures.optionals.Vehicle _value2 = test.fixtures.optionals.Vehicle.read0(oprot);
-                    vehicles.add(_value2);
+                    test.fixtures.optionals.Vehicle _fbthriftVar2 = test.fixtures.optionals.Vehicle.read0(oprot);
+                    vehicles.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();

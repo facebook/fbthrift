@@ -224,8 +224,8 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    String _value2 = oprot.readString();
-                    listStrings.add(_value2);
+                    String _fbthriftVar2 = oprot.readString();
+                    listStrings.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
@@ -272,12 +272,12 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
                     String _fbthriftValue2;
 
                     {
-                        long _value2 = oprot.readI64();
-                        _fbthriftKey2 = _value2;
+                        long _fbthriftVar2 = oprot.readI64();
+                        _fbthriftKey2 = _fbthriftVar2;
                     }
                     {
-                        String _value2 = oprot.readString();
-                        _fbthriftValue2 = _value2;
+                        String _fbthriftVar2 = oprot.readString();
+                        _fbthriftValue2 = _fbthriftVar2;
                     }
                     lsMap.put(_fbthriftKey2, _fbthriftValue2);
                     

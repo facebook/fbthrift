@@ -1001,8 +1001,8 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    short _value2 = oprot.readI16();
-                    listField.add(_value2);
+                    short _fbthriftVar2 = oprot.readI16();
+                    listField.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
@@ -1019,8 +1019,8 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
-                    short _value2 = oprot.readI16();
-                    setField.add(_value2);
+                    short _fbthriftVar2 = oprot.readI16();
+                    setField.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
@@ -1041,12 +1041,12 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
                     short _fbthriftValue2;
 
                     {
-                        short _value2 = oprot.readI16();
-                        _fbthriftKey2 = _value2;
+                        short _fbthriftVar2 = oprot.readI16();
+                        _fbthriftKey2 = _fbthriftVar2;
                     }
                     {
-                        short _value2 = oprot.readI16();
-                        _fbthriftValue2 = _value2;
+                        short _fbthriftVar2 = oprot.readI16();
+                        _fbthriftValue2 = _fbthriftVar2;
                     }
                     mapField.put(_fbthriftKey2, _fbthriftValue2);
                     

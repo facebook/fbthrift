@@ -347,8 +347,8 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    test.fixtures.adapter.Foo _value2 = test.fixtures.adapter.Foo.read0(oprot);
-                    structListField.add(__FooWithAdapter_9317_Adapter.fromThrift(_value2));
+                    test.fixtures.adapter.Foo _fbthriftVar2 = test.fixtures.adapter.Foo.read0(oprot);
+                    structListField.add(__FooWithAdapter_9317_Adapter.fromThrift(_fbthriftVar2));
                     
                 }
                 oprot.readListEnd();
@@ -367,8 +367,8 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    test.fixtures.adapter.Foo _value2 = test.fixtures.adapter.Foo.read0(oprot);
-                    optionalStructListField.add(__FooWithAdapter_9317_Adapter.fromThrift(_value2));
+                    test.fixtures.adapter.Foo _fbthriftVar2 = test.fixtures.adapter.Foo.read0(oprot);
+                    optionalStructListField.add(__FooWithAdapter_9317_Adapter.fromThrift(_fbthriftVar2));
                     
                 }
                 oprot.readListEnd();
@@ -411,8 +411,8 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    test.fixtures.adapter.Foo _value2 = test.fixtures.adapter.Foo.read0(oprot);
-                    structListFieldWithTypedef.add(_value2);
+                    test.fixtures.adapter.Foo _fbthriftVar2 = test.fixtures.adapter.Foo.read0(oprot);
+                    structListFieldWithTypedef.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();

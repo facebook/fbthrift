@@ -176,40 +176,40 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
                     List<List<Float>> _fbthriftValue2;
 
                     {
-                        int _value2 = oprot.readI32();
-                        _fbthriftKey2 = _value2;
+                        int _fbthriftVar2 = oprot.readI32();
+                        _fbthriftKey2 = _fbthriftVar2;
                     }
                     {
-                        List<List<Float>> _value2;
+                        List<List<Float>> _fbthriftVar2;
                         {
                                     TList _list2 = oprot.readListBegin();
-                                    _value2 = new ArrayList<List<Float>>(Math.max(0, _list2.size));
+                                    _fbthriftVar2 = new ArrayList<List<Float>>(Math.max(0, _list2.size));
                                     for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                         
                                         
-                                        List<Float> _value3;
+                                        List<Float> _fbthriftVar3;
                                         {
                                                     TList _list3 = oprot.readListBegin();
-                                                    _value3 = new ArrayList<Float>(Math.max(0, _list3.size));
+                                                    _fbthriftVar3 = new ArrayList<Float>(Math.max(0, _list3.size));
                                                     for (int _i3 = 0; (_list3.size < 0) ? oprot.peekList() : (_i3 < _list3.size); _i3++) {
                                                         
                                                         
-                                                        float _value4 = oprot.readFloat();
+                                                        float _fbthriftVar4 = oprot.readFloat();
                                                         
                                                         
-                                                        _value3.add(_value4);
+                                                        _fbthriftVar3.add(_fbthriftVar4);
                                                         
                                                     }
                                                     oprot.readListEnd();
                                                     }
                                         
                                         
-                                        _value2.add(_value3);
+                                        _fbthriftVar2.add(_fbthriftVar3);
                                         
                                     }
                                     oprot.readListEnd();
                                     }
-                        _fbthriftValue2 = _value2;
+                        _fbthriftValue2 = _fbthriftVar2;
                     }
                     mapListOfFloats.put(_fbthriftKey2, _fbthriftValue2);
                     

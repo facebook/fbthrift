@@ -234,8 +234,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    boolean _value2 = oprot.readBool();
-                    myBools.add(_value2);
+                    boolean _fbthriftVar2 = oprot.readBool();
+                    myBools.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
@@ -254,8 +254,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    int _value2 = oprot.readI32();
-                    myNumbers.add(_value2);
+                    int _fbthriftVar2 = oprot.readI32();
+                    myNumbers.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();

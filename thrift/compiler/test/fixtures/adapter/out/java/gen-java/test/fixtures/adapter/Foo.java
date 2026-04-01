@@ -555,8 +555,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
-                    String _value2 = oprot.readString();
-                    setField.add(_value2);
+                    String _fbthriftVar2 = oprot.readString();
+                    setField.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
@@ -575,8 +575,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
-                    String _value2 = oprot.readString();
-                    optionalSetField.add(_value2);
+                    String _fbthriftVar2 = oprot.readString();
+                    optionalSetField.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
@@ -599,26 +599,26 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                     List<com.facebook.thrift.my.AdaptedString_1> _fbthriftValue2;
 
                     {
-                        String _value2 = oprot.readString();
-                        _fbthriftKey2 = _value2;
+                        String _fbthriftVar2 = oprot.readString();
+                        _fbthriftKey2 = _fbthriftVar2;
                     }
                     {
-                        List<com.facebook.thrift.my.AdaptedString_1> _value2;
+                        List<com.facebook.thrift.my.AdaptedString_1> _fbthriftVar2;
                         {
                                     TList _list2 = oprot.readListBegin();
-                                    _value2 = new ArrayList<com.facebook.thrift.my.AdaptedString_1>(Math.max(0, _list2.size));
+                                    _fbthriftVar2 = new ArrayList<com.facebook.thrift.my.AdaptedString_1>(Math.max(0, _list2.size));
                                     for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                         
                                         
-                                        String _value3 = oprot.readString();
+                                        String _fbthriftVar3 = oprot.readString();
                                         
                                         
-                                        _value2.add(__StringWithAdapter_Adapter.fromThrift(_value3));
+                                        _fbthriftVar2.add(__StringWithAdapter_Adapter.fromThrift(_fbthriftVar3));
                                         
                                     }
                                     oprot.readListEnd();
                                     }
-                        _fbthriftValue2 = _value2;
+                        _fbthriftValue2 = _fbthriftVar2;
                     }
                     mapField.put(_fbthriftKey2, __ListWithElemAdapter_withAdapter_2312_Adapter.fromThrift(_fbthriftValue2));
                     
@@ -643,26 +643,26 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                     List<com.facebook.thrift.my.AdaptedString_1> _fbthriftValue2;
 
                     {
-                        String _value2 = oprot.readString();
-                        _fbthriftKey2 = _value2;
+                        String _fbthriftVar2 = oprot.readString();
+                        _fbthriftKey2 = _fbthriftVar2;
                     }
                     {
-                        List<com.facebook.thrift.my.AdaptedString_1> _value2;
+                        List<com.facebook.thrift.my.AdaptedString_1> _fbthriftVar2;
                         {
                                     TList _list2 = oprot.readListBegin();
-                                    _value2 = new ArrayList<com.facebook.thrift.my.AdaptedString_1>(Math.max(0, _list2.size));
+                                    _fbthriftVar2 = new ArrayList<com.facebook.thrift.my.AdaptedString_1>(Math.max(0, _list2.size));
                                     for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                         
                                         
-                                        String _value3 = oprot.readString();
+                                        String _fbthriftVar3 = oprot.readString();
                                         
                                         
-                                        _value2.add(__StringWithAdapter_Adapter.fromThrift(_value3));
+                                        _fbthriftVar2.add(__StringWithAdapter_Adapter.fromThrift(_fbthriftVar3));
                                         
                                     }
                                     oprot.readListEnd();
                                     }
-                        _fbthriftValue2 = _value2;
+                        _fbthriftValue2 = _fbthriftVar2;
                     }
                     optionalMapField.put(_fbthriftKey2, __ListWithElemAdapter_withAdapter_2312_Adapter.fromThrift(_fbthriftValue2));
                     
@@ -715,8 +715,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    int _value2 = oprot.readI32();
-                    adaptedList.add(_value2);
+                    int _fbthriftVar2 = oprot.readI32();
+                    adaptedList.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
@@ -735,8 +735,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
-                    int _value2 = oprot.readI32();
-                    adaptedSet.add(_value2);
+                    int _fbthriftVar2 = oprot.readI32();
+                    adaptedSet.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
@@ -759,12 +759,12 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                     int _fbthriftValue2;
 
                     {
-                        String _value2 = oprot.readString();
-                        _fbthriftKey2 = _value2;
+                        String _fbthriftVar2 = oprot.readString();
+                        _fbthriftKey2 = _fbthriftVar2;
                     }
                     {
-                        int _value2 = oprot.readI32();
-                        _fbthriftValue2 = _value2;
+                        int _fbthriftVar2 = oprot.readI32();
+                        _fbthriftValue2 = _fbthriftVar2;
                     }
                     adaptedMap.put(_fbthriftKey2, _fbthriftValue2);
                     
@@ -785,17 +785,17 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    List<Map<Integer, Integer>> _value2;
+                    List<Map<Integer, Integer>> _fbthriftVar2;
                     {
                                 TList _list2 = oprot.readListBegin();
-                                _value2 = new ArrayList<Map<Integer, Integer>>(Math.max(0, _list2.size));
+                                _fbthriftVar2 = new ArrayList<Map<Integer, Integer>>(Math.max(0, _list2.size));
                                 for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                     
                                     
-                                    Map<Integer, Integer> _value3;
+                                    Map<Integer, Integer> _fbthriftVar3;
                                     {
                                                 TMap _map3 = oprot.readMapBegin();
-                                                _value3 = new HashMap<Integer, Integer>(Math.max(0, _map3.size));
+                                                _fbthriftVar3 = new HashMap<Integer, Integer>(Math.max(0, _map3.size));
                                                 for (int _i3 = 0; (_map3.size < 0) ? oprot.peekMap() : (_i3 < _map3.size); _i3++) {
                                                     
                                                     
@@ -807,34 +807,34 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
 
                                                     {
                                                         
-                                                        int _value4 = oprot.readI32();
+                                                        int _fbthriftVar4 = oprot.readI32();
                                                         
                                                         
-                                                        _fbthriftKey4 = _value4;
+                                                        _fbthriftKey4 = _fbthriftVar4;
                                                         
                                                     }
                                                     {
                                                         
-                                                        int _value4 = oprot.readI32();
+                                                        int _fbthriftVar4 = oprot.readI32();
                                                         
                                                         
-                                                        _fbthriftValue4 = _value4;
+                                                        _fbthriftValue4 = _fbthriftVar4;
                                                         
                                                     }
                                                     
-                                                    _value3.put(_fbthriftKey4, _fbthriftValue4);
+                                                    _fbthriftVar3.put(_fbthriftKey4, _fbthriftValue4);
                                                     
                                                 }
                                                 }
                                                 oprot.readMapEnd();
                                     
                                     
-                                    _value2.add(_value3);
+                                    _fbthriftVar2.add(_fbthriftVar3);
                                     
                                 }
                                 oprot.readListEnd();
                                 }
-    adaptedListNested.add(_value2);
+    adaptedListNested.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();

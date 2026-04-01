@@ -493,8 +493,8 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
-                    String _value2 = oprot.readString();
-                    setField.add(_value2);
+                    String _fbthriftVar2 = oprot.readString();
+                    setField.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
@@ -515,26 +515,26 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
                     List<com.facebook.thrift.my.AdaptedString_1> _fbthriftValue2;
 
                     {
-                        String _value2 = oprot.readString();
-                        _fbthriftKey2 = _value2;
+                        String _fbthriftVar2 = oprot.readString();
+                        _fbthriftKey2 = _fbthriftVar2;
                     }
                     {
-                        List<com.facebook.thrift.my.AdaptedString_1> _value2;
+                        List<com.facebook.thrift.my.AdaptedString_1> _fbthriftVar2;
                         {
                                     TList _list2 = oprot.readListBegin();
-                                    _value2 = new ArrayList<com.facebook.thrift.my.AdaptedString_1>(Math.max(0, _list2.size));
+                                    _fbthriftVar2 = new ArrayList<com.facebook.thrift.my.AdaptedString_1>(Math.max(0, _list2.size));
                                     for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                         
                                         
-                                        String _value3 = oprot.readString();
+                                        String _fbthriftVar3 = oprot.readString();
                                         
                                         
-                                        _value2.add(__StringWithAdapter_Adapter.fromThrift(_value3));
+                                        _fbthriftVar2.add(__StringWithAdapter_Adapter.fromThrift(_fbthriftVar3));
                                         
                                     }
                                     oprot.readListEnd();
                                     }
-                        _fbthriftValue2 = _value2;
+                        _fbthriftValue2 = _fbthriftVar2;
                     }
                     mapField.put(_fbthriftKey2, __ListWithElemAdapter_withAdapter_2312_Adapter.fromThrift(_fbthriftValue2));
                     

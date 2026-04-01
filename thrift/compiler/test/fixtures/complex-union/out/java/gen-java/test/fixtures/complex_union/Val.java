@@ -211,12 +211,12 @@ public final class Val implements com.facebook.thrift.payload.ThriftSerializable
                     String _fbthriftValue2;
 
                     {
-                        short _value2 = oprot.readI16();
-                        _fbthriftKey2 = _value2;
+                        short _fbthriftVar2 = oprot.readI16();
+                        _fbthriftKey2 = _fbthriftVar2;
                     }
                     {
-                        String _value2 = oprot.readString();
-                        _fbthriftValue2 = _value2;
+                        String _fbthriftVar2 = oprot.readString();
+                        _fbthriftValue2 = _fbthriftVar2;
                     }
                     typedefValue.put(_fbthriftKey2, _fbthriftValue2);
                     

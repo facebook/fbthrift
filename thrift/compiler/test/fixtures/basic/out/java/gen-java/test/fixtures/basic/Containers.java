@@ -194,8 +194,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    int _value2 = oprot.readI32();
-                    i32List.add(_value2);
+                    int _fbthriftVar2 = oprot.readI32();
+                    i32List.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
@@ -214,8 +214,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
-                    String _value2 = oprot.readString();
-                    stringSet.add(_value2);
+                    String _fbthriftVar2 = oprot.readString();
+                    stringSet.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
@@ -238,12 +238,12 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                     long _fbthriftValue2;
 
                     {
-                        String _value2 = oprot.readString();
-                        _fbthriftKey2 = _value2;
+                        String _fbthriftVar2 = oprot.readString();
+                        _fbthriftKey2 = _fbthriftVar2;
                     }
                     {
-                        long _value2 = oprot.readI64();
-                        _fbthriftValue2 = _value2;
+                        long _fbthriftVar2 = oprot.readI64();
+                        _fbthriftValue2 = _fbthriftVar2;
                     }
                     stringToI64Map.put(_fbthriftKey2, _fbthriftValue2);
                     

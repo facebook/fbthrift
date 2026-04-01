@@ -272,8 +272,8 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    int _value2 = oprot.readI32();
-                    listRef.add(_value2);
+                    int _fbthriftVar2 = oprot.readI32();
+                    listRef.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
@@ -292,8 +292,8 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
-                    int _value2 = oprot.readI32();
-                    setRef.add(_value2);
+                    int _fbthriftVar2 = oprot.readI32();
+                    setRef.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
@@ -316,12 +316,12 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
                     int _fbthriftValue2;
 
                     {
-                        int _value2 = oprot.readI32();
-                        _fbthriftKey2 = _value2;
+                        int _fbthriftVar2 = oprot.readI32();
+                        _fbthriftKey2 = _fbthriftVar2;
                     }
                     {
-                        int _value2 = oprot.readI32();
-                        _fbthriftValue2 = _value2;
+                        int _fbthriftVar2 = oprot.readI32();
+                        _fbthriftValue2 = _fbthriftVar2;
                     }
                     mapRef.put(_fbthriftKey2, _fbthriftValue2);
                     
@@ -342,8 +342,8 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    int _value2 = oprot.readI32();
-                    listRefUnique.add(_value2);
+                    int _fbthriftVar2 = oprot.readI32();
+                    listRefUnique.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
@@ -362,8 +362,8 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
-                    int _value2 = oprot.readI32();
-                    setRefShared.add(_value2);
+                    int _fbthriftVar2 = oprot.readI32();
+                    setRefShared.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
@@ -382,8 +382,8 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    int _value2 = oprot.readI32();
-                    listRefSharedConst.add(_value2);
+                    int _fbthriftVar2 = oprot.readI32();
+                    listRefSharedConst.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();

@@ -938,8 +938,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    double _value2 = oprot.readDouble();
-                    lDouble.add(_value2);
+                    double _fbthriftVar2 = oprot.readDouble();
+                    lDouble.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
@@ -958,8 +958,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    short _value2 = oprot.readI16();
-                    lShort.add(_value2);
+                    short _fbthriftVar2 = oprot.readI16();
+                    lShort.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
@@ -978,8 +978,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    int _value2 = oprot.readI32();
-                    lInteger.add(_value2);
+                    int _fbthriftVar2 = oprot.readI32();
+                    lInteger.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
@@ -998,8 +998,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    long _value2 = oprot.readI64();
-                    lLong.add(_value2);
+                    long _fbthriftVar2 = oprot.readI64();
+                    lLong.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
@@ -1018,8 +1018,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    String _value2 = oprot.readString();
-                    lString.add(_value2);
+                    String _fbthriftVar2 = oprot.readString();
+                    lString.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
@@ -1038,8 +1038,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    boolean _value2 = oprot.readBool();
-                    lBool.add(_value2);
+                    boolean _fbthriftVar2 = oprot.readBool();
+                    lBool.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
@@ -1058,8 +1058,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    byte _value2 = oprot.readByte();
-                    lByte.add(_value2);
+                    byte _fbthriftVar2 = oprot.readByte();
+                    lByte.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
@@ -1082,12 +1082,12 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                     String _fbthriftValue2;
 
                     {
-                        short _value2 = oprot.readI16();
-                        _fbthriftKey2 = _value2;
+                        short _fbthriftVar2 = oprot.readI16();
+                        _fbthriftKey2 = _fbthriftVar2;
                     }
                     {
-                        String _value2 = oprot.readString();
-                        _fbthriftValue2 = _value2;
+                        String _fbthriftVar2 = oprot.readString();
+                        _fbthriftValue2 = _fbthriftVar2;
                     }
                     mShortString.put(_fbthriftKey2, _fbthriftValue2);
                     
@@ -1112,12 +1112,12 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                     String _fbthriftValue2;
 
                     {
-                        int _value2 = oprot.readI32();
-                        _fbthriftKey2 = _value2;
+                        int _fbthriftVar2 = oprot.readI32();
+                        _fbthriftKey2 = _fbthriftVar2;
                     }
                     {
-                        String _value2 = oprot.readString();
-                        _fbthriftValue2 = _value2;
+                        String _fbthriftVar2 = oprot.readString();
+                        _fbthriftValue2 = _fbthriftVar2;
                     }
                     mIntegerString.put(_fbthriftKey2, _fbthriftValue2);
                     
@@ -1142,12 +1142,12 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                     test.fixtures.complex_struct.MyStruct _fbthriftValue2;
 
                     {
-                        String _value2 = oprot.readString();
-                        _fbthriftKey2 = _value2;
+                        String _fbthriftVar2 = oprot.readString();
+                        _fbthriftKey2 = _fbthriftVar2;
                     }
                     {
-                        test.fixtures.complex_struct.MyStruct _value2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-                        _fbthriftValue2 = _value2;
+                        test.fixtures.complex_struct.MyStruct _fbthriftVar2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                        _fbthriftValue2 = _fbthriftVar2;
                     }
                     mStringMyStruct.put(_fbthriftKey2, _fbthriftValue2);
                     
@@ -1172,12 +1172,12 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                     boolean _fbthriftValue2;
 
                     {
-                        String _value2 = oprot.readString();
-                        _fbthriftKey2 = _value2;
+                        String _fbthriftVar2 = oprot.readString();
+                        _fbthriftKey2 = _fbthriftVar2;
                     }
                     {
-                        boolean _value2 = oprot.readBool();
-                        _fbthriftValue2 = _value2;
+                        boolean _fbthriftVar2 = oprot.readBool();
+                        _fbthriftValue2 = _fbthriftVar2;
                     }
                     mStringBool.put(_fbthriftKey2, _fbthriftValue2);
                     
@@ -1202,12 +1202,12 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                     int _fbthriftValue2;
 
                     {
-                        int _value2 = oprot.readI32();
-                        _fbthriftKey2 = _value2;
+                        int _fbthriftVar2 = oprot.readI32();
+                        _fbthriftKey2 = _fbthriftVar2;
                     }
                     {
-                        int _value2 = oprot.readI32();
-                        _fbthriftValue2 = _value2;
+                        int _fbthriftVar2 = oprot.readI32();
+                        _fbthriftValue2 = _fbthriftVar2;
                     }
                     mIntegerInteger.put(_fbthriftKey2, _fbthriftValue2);
                     
@@ -1232,12 +1232,12 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                     boolean _fbthriftValue2;
 
                     {
-                        int _value2 = oprot.readI32();
-                        _fbthriftKey2 = _value2;
+                        int _fbthriftVar2 = oprot.readI32();
+                        _fbthriftKey2 = _fbthriftVar2;
                     }
                     {
-                        boolean _value2 = oprot.readBool();
-                        _fbthriftValue2 = _value2;
+                        boolean _fbthriftVar2 = oprot.readBool();
+                        _fbthriftValue2 = _fbthriftVar2;
                     }
                     mIntegerBool.put(_fbthriftKey2, _fbthriftValue2);
                     
@@ -1258,8 +1258,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
-                    short _value2 = oprot.readI16();
-                    sShort.add(_value2);
+                    short _fbthriftVar2 = oprot.readI16();
+                    sShort.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
@@ -1278,8 +1278,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
-                    test.fixtures.complex_struct.MyStruct _value2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-                    sMyStruct.add(_value2);
+                    test.fixtures.complex_struct.MyStruct _fbthriftVar2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                    sMyStruct.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
@@ -1298,8 +1298,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
-                    long _value2 = oprot.readI64();
-                    sLong.add(_value2);
+                    long _fbthriftVar2 = oprot.readI64();
+                    sLong.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
@@ -1318,8 +1318,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
-                    String _value2 = oprot.readString();
-                    sString.add(_value2);
+                    String _fbthriftVar2 = oprot.readString();
+                    sString.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
@@ -1338,8 +1338,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
-                    byte _value2 = oprot.readByte();
-                    sByte.add(_value2);
+                    byte _fbthriftVar2 = oprot.readByte();
+                    sByte.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
@@ -1362,40 +1362,40 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                     List<Integer> _fbthriftValue2;
 
                     {
-                        List<Integer> _value2;
+                        List<Integer> _fbthriftVar2;
                         {
                                     TList _list2 = oprot.readListBegin();
-                                    _value2 = new ArrayList<Integer>(Math.max(0, _list2.size));
+                                    _fbthriftVar2 = new ArrayList<Integer>(Math.max(0, _list2.size));
                                     for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                         
                                         
-                                        int _value3 = oprot.readI32();
+                                        int _fbthriftVar3 = oprot.readI32();
                                         
                                         
-                                        _value2.add(_value3);
+                                        _fbthriftVar2.add(_fbthriftVar3);
                                         
                                     }
                                     oprot.readListEnd();
                                     }
-                        _fbthriftKey2 = _value2;
+                        _fbthriftKey2 = _fbthriftVar2;
                     }
                     {
-                        List<Integer> _value2;
+                        List<Integer> _fbthriftVar2;
                         {
                                     TList _list2 = oprot.readListBegin();
-                                    _value2 = new ArrayList<Integer>(Math.max(0, _list2.size));
+                                    _fbthriftVar2 = new ArrayList<Integer>(Math.max(0, _list2.size));
                                     for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                         
                                         
-                                        int _value3 = oprot.readI32();
+                                        int _fbthriftVar3 = oprot.readI32();
                                         
                                         
-                                        _value2.add(_value3);
+                                        _fbthriftVar2.add(_fbthriftVar3);
                                         
                                     }
                                     oprot.readListEnd();
                                     }
-                        _fbthriftValue2 = _value2;
+                        _fbthriftValue2 = _fbthriftVar2;
                     }
                     mListList.put(_fbthriftKey2, _fbthriftValue2);
                     

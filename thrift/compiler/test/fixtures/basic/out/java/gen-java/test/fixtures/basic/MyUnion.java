@@ -426,8 +426,8 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
-                    float _value2 = oprot.readFloat();
-                    floatSet.add(_value2);
+                    float _fbthriftVar2 = oprot.readFloat();
+                    floatSet.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
