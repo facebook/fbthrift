@@ -60,6 +60,7 @@ from thrift.python.protocol cimport Protocol
 from thrift.python.std_libcpp cimport bytes_to_string_view
 from thrift.python.streaming.py_promise cimport (
     Promise_IOBuf,
+    Promise_Optional_IOBuf,
     Promise_Py,
     genNextStreamValue,
 )

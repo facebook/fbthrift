@@ -13,7 +13,6 @@ from abc import ABCMeta as _fbthrift_ABCMeta
 import module.thrift_abstract_types as _fbthrift_abstract_types
 from thrift.python.protocol import RpcKind as _fbthrift__RpcKind
 from thrift.python.protocol import Protocol as _fbthrift__Protocol
-from thrift.python.streaming.closeable import CloseableGenerator as _fbthrift__CloseableGenerator, UserExceptionMeta as _fbthrift__UserExceptionMeta
 from thrift.python.streaming.python_user_exception import PythonUserException as _fbthrift__PythonUserException
 from typing import AsyncGenerator as _typing_AsyncGenerator
 from thrift.python.serializer import serialize_iobuf, deserialize
@@ -515,17 +514,13 @@ class _fbthrift_SinkService_method_result_sink_elem(metaclass=_fbthrift_python_t
     )
 
     @classmethod
-    def _fbthrift__sink_elem_handler(
+    async def _fbthrift__sink_elem_handler(
         cls,
         sink_agen: _typing_AsyncGenerator[_fbthrift_SinkPayload, None],
         protocol: _fbthrift__Protocol,
-    ) -> _fbthrift__CloseableGenerator:
-        return _fbthrift__CloseableGenerator(
-            sink_agen,
-            protocol,
-            cls,
-            (),
-        )
+    ) -> _typing_AsyncGenerator[_fbthrift_iobuf, None]:
+        async for item in sink_agen:
+            yield serialize_iobuf(cls(success=item), protocol)
 
 
 class _fbthrift_SinkService_method_result_sink_final(metaclass=_fbthrift_python_types.StructMeta):
@@ -583,17 +578,13 @@ class _fbthrift_SinkService_methodAndReponse_result_sink_elem(metaclass=_fbthrif
     )
 
     @classmethod
-    def _fbthrift__sink_elem_handler(
+    async def _fbthrift__sink_elem_handler(
         cls,
         sink_agen: _typing_AsyncGenerator[_fbthrift_SinkPayload, None],
         protocol: _fbthrift__Protocol,
-    ) -> _fbthrift__CloseableGenerator:
-        return _fbthrift__CloseableGenerator(
-            sink_agen,
-            protocol,
-            cls,
-            (),
-        )
+    ) -> _typing_AsyncGenerator[_fbthrift_iobuf, None]:
+        async for item in sink_agen:
+            yield serialize_iobuf(cls(success=item), protocol)
 
 
 class _fbthrift_SinkService_methodAndReponse_result_sink_final(metaclass=_fbthrift_python_types.StructMeta):
@@ -652,17 +643,13 @@ class _fbthrift_SinkService_methodThrow_result_sink_elem(metaclass=_fbthrift_pyt
     )
 
     @classmethod
-    def _fbthrift__sink_elem_handler(
+    async def _fbthrift__sink_elem_handler(
         cls,
         sink_agen: _typing_AsyncGenerator[_fbthrift_SinkPayload, None],
         protocol: _fbthrift__Protocol,
-    ) -> _fbthrift__CloseableGenerator:
-        return _fbthrift__CloseableGenerator(
-            sink_agen,
-            protocol,
-            cls,
-            (),
-        )
+    ) -> _typing_AsyncGenerator[_fbthrift_iobuf, None]:
+        async for item in sink_agen:
+            yield serialize_iobuf(cls(success=item), protocol)
 
 
 class _fbthrift_SinkService_methodThrow_result_sink_final(metaclass=_fbthrift_python_types.StructMeta):
@@ -721,19 +708,19 @@ class _fbthrift_SinkService_methodSinkThrow_result_sink_elem(metaclass=_fbthrift
     )
 
     @classmethod
-    def _fbthrift__sink_elem_handler(
+    async def _fbthrift__sink_elem_handler(
         cls,
         sink_agen: _typing_AsyncGenerator[_fbthrift_SinkPayload, None],
         protocol: _fbthrift__Protocol,
-    ) -> _fbthrift__CloseableGenerator:
-        return _fbthrift__CloseableGenerator(
-            sink_agen,
-            protocol,
-            cls,
-            (
-                _fbthrift__UserExceptionMeta(SinkException1, "_ex0__ex", 'module.thrift_types.SinkException1'),
-            ),
-        )
+    ) -> _typing_AsyncGenerator[_fbthrift_iobuf, None]:
+        try:
+            async for item in sink_agen:
+                yield serialize_iobuf(cls(success=item), protocol)
+        except SinkException1 as e:
+            return_struct = cls(_ex0__ex=e)
+            buf = serialize_iobuf(return_struct, protocol)
+            exp = _fbthrift__PythonUserException("module.thrift_types.SinkException1", str(e), buf)
+            raise exp
 
 
 class _fbthrift_SinkService_methodSinkThrow_result_sink_final(metaclass=_fbthrift_python_types.StructMeta):
@@ -781,17 +768,13 @@ class _fbthrift_SinkService_methodFinalThrow_result_sink_elem(metaclass=_fbthrif
     )
 
     @classmethod
-    def _fbthrift__sink_elem_handler(
+    async def _fbthrift__sink_elem_handler(
         cls,
         sink_agen: _typing_AsyncGenerator[_fbthrift_SinkPayload, None],
         protocol: _fbthrift__Protocol,
-    ) -> _fbthrift__CloseableGenerator:
-        return _fbthrift__CloseableGenerator(
-            sink_agen,
-            protocol,
-            cls,
-            (),
-        )
+    ) -> _typing_AsyncGenerator[_fbthrift_iobuf, None]:
+        async for item in sink_agen:
+            yield serialize_iobuf(cls(success=item), protocol)
 
 
 class _fbthrift_SinkService_methodFinalThrow_result_sink_final(metaclass=_fbthrift_python_types.StructMeta):
@@ -861,19 +844,19 @@ class _fbthrift_SinkService_methodBothThrow_result_sink_elem(metaclass=_fbthrift
     )
 
     @classmethod
-    def _fbthrift__sink_elem_handler(
+    async def _fbthrift__sink_elem_handler(
         cls,
         sink_agen: _typing_AsyncGenerator[_fbthrift_SinkPayload, None],
         protocol: _fbthrift__Protocol,
-    ) -> _fbthrift__CloseableGenerator:
-        return _fbthrift__CloseableGenerator(
-            sink_agen,
-            protocol,
-            cls,
-            (
-                _fbthrift__UserExceptionMeta(SinkException1, "_ex0__ex", 'module.thrift_types.SinkException1'),
-            ),
-        )
+    ) -> _typing_AsyncGenerator[_fbthrift_iobuf, None]:
+        try:
+            async for item in sink_agen:
+                yield serialize_iobuf(cls(success=item), protocol)
+        except SinkException1 as e:
+            return_struct = cls(_ex0__ex=e)
+            buf = serialize_iobuf(return_struct, protocol)
+            exp = _fbthrift__PythonUserException("module.thrift_types.SinkException1", str(e), buf)
+            raise exp
 
 
 class _fbthrift_SinkService_methodBothThrow_result_sink_final(metaclass=_fbthrift_python_types.StructMeta):
@@ -932,17 +915,13 @@ class _fbthrift_SinkService_methodFast_result_sink_elem(metaclass=_fbthrift_pyth
     )
 
     @classmethod
-    def _fbthrift__sink_elem_handler(
+    async def _fbthrift__sink_elem_handler(
         cls,
         sink_agen: _typing_AsyncGenerator[_fbthrift_SinkPayload, None],
         protocol: _fbthrift__Protocol,
-    ) -> _fbthrift__CloseableGenerator:
-        return _fbthrift__CloseableGenerator(
-            sink_agen,
-            protocol,
-            cls,
-            (),
-        )
+    ) -> _typing_AsyncGenerator[_fbthrift_iobuf, None]:
+        async for item in sink_agen:
+            yield serialize_iobuf(cls(success=item), protocol)
 
 
 class _fbthrift_SinkService_methodFast_result_sink_final(metaclass=_fbthrift_python_types.StructMeta):
