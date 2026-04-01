@@ -377,6 +377,8 @@ add_library(
   gen/module_constants_cpp.cpp
   gen/module_types_cpp.cpp
   detail/Enum.cpp
+  fast_thrift/channel_pipeline/PipelineImpl.cpp
+  fast_thrift/channel_pipeline/detail/ContextImpl.cpp
   logging/ThriftConnectionLog.cpp
   logging/ThriftSinkLog.cpp
   logging/ThriftStreamLog.cpp
@@ -545,6 +547,7 @@ target_link_libraries(
 # Install includes
 set(THRIFT2_HEADER_DIRS
   async
+  fast_thrift
   frozen
   protocol
   server
