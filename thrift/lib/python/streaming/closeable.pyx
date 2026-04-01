@@ -102,7 +102,8 @@ cdef class CloseableGenerator:
                     f"CloseableGenerator.aclose: unexpected exception on task.cancel():\n{e}",
                     file=sys.stderr,
                 )
-        await self._stream_generator.aclose()
+        if hasattr(self._stream_generator, "aclose"):
+            await self._stream_generator.aclose()
 
 
 cdef class UserExceptionMeta:

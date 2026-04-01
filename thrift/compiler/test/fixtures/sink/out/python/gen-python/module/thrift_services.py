@@ -211,7 +211,6 @@ class SinkServiceInterface(
                         continue
                     for _ex_fld_name, ex in sink_elem:
                         if ex is not None:
-                            await _iobuf_agen.aclose()
                             # pyre-ignore[48]: Invalid Exception
                             raise ex
 
@@ -302,7 +301,6 @@ class SinkServiceInterface(
                         continue
                     for _ex_fld_name, ex in sink_elem:
                         if ex is not None:
-                            await _iobuf_agen.aclose()
                             # pyre-ignore[48]: Invalid Exception
                             raise ex
 
