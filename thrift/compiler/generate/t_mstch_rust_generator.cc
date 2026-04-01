@@ -1376,6 +1376,18 @@ class t_mstch_rust_generator : public t_mstch_generator {
     auto def =
         whisker::dsl::prototype_builder<h_interface>::extends(std::move(base));
 
+    def.property("snake", [](const t_interface& self) {
+      if (const t_const* annot_mod =
+              self.find_structured_annotation_or_null(kRustModUri)) {
+        return get_annotation_property_string(annot_mod, "name");
+      } else if (
+          const t_const* annot_name =
+              self.find_structured_annotation_or_null(kRustNameUri)) {
+        return snakecase(get_annotation_property_string(annot_name, "name"));
+      } else {
+        return mangle_type(snakecase(self.name()));
+      }
+    });
     def.property("all_exception_sources", [&proto](const t_interface& self) {
       struct name_less {
         bool operator()(const t_type* lhs, const t_type* rhs) const {
@@ -1450,18 +1462,6 @@ class t_mstch_rust_generator : public t_mstch_generator {
     });
     def.property("mock_crate", [this](const t_service& self) {
       return get_mock_crate(self.program(), options_);
-    });
-    def.property("snake", [](const t_service& self) {
-      if (const t_const* annot_mod =
-              self.find_structured_annotation_or_null(kRustModUri)) {
-        return get_annotation_property_string(annot_mod, "name");
-      } else if (
-          const t_const* annot_name =
-              self.find_structured_annotation_or_null(kRustNameUri)) {
-        return snakecase(get_annotation_property_string(annot_name, "name"));
-      } else {
-        return mangle_type(snakecase(self.name()));
-      }
     });
     def.property("requestContext?", [](const t_service& self) {
       return self.has_structured_annotation(kRustRequestContextUri);
@@ -1969,7 +1969,7 @@ void t_mstch_rust_generator::generate_program() {
 
   render_to_file(prog, "types.rs", "types.rs");
   render_to_file(prog, "services.rs", "services.rs");
-  render_to_file(prog, "errors.rs", "errors.rs");
+  t_whisker_generator::render_to_file("errors.rs", "errors.rs", context);
   t_whisker_generator::render_to_file("consts.rs", "consts.rs", context);
   render_to_file(prog, "client.rs", "client.rs");
   render_to_file(prog, "server.rs", "server.rs");
