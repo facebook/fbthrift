@@ -128,7 +128,4 @@ pub trait ThriftEnum: Sized {
 
     /// The numerical representation of this variant.
     fn inner_value(&self) -> i32;
-
-    /// Convert the numerical representation of a variant to the enum variant.
-    fn from_inner_value(value: i32) -> Result<Self>;
 }
