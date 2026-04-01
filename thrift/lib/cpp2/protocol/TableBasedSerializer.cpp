@@ -20,6 +20,10 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/JSONProtocol.h>
 #include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
+#if !FOLLY_MOBILE
+#include <thrift/lib/cpp2/protocol/detail/Json5ProtocolReader.h>
+#include <thrift/lib/cpp2/protocol/detail/Json5ProtocolWriter.h>
+#endif
 
 namespace apache::thrift::detail {
 
@@ -101,5 +105,15 @@ template size_t write<JSONProtocolWriter>(
     JSONProtocolWriter* iprot,
     const StructInfo& structInfo,
     const void* object);
+#if !FOLLY_MOBILE
+template void read<json5::detail::Json5ProtocolReader>(
+    json5::detail::Json5ProtocolReader* iprot,
+    const StructInfo& structInfo,
+    void* object);
+template size_t write<json5::detail::Json5ProtocolWriter>(
+    json5::detail::Json5ProtocolWriter* iprot,
+    const StructInfo& structInfo,
+    const void* object);
+#endif
 
 } // namespace apache::thrift::detail
