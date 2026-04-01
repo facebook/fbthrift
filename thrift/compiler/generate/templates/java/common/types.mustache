@@ -61,6 +61,42 @@ Map<
   {{/if (not (string.empty? type.javaType))}}
 {{/let partial}}
 
+{{! Resolves the boxed type for Thrift serialization, handling binary/string
+    types with adapter context for ByteBuf vs byte[] resolution.
+    Recurses through typedefs one layer at a time. }}
+{{#let export partial thrift_boxed_type |type field_hasAdapter| captures |boxed_type|}}
+  {{#pragma ignore-newlines}}
+{{#if (not (string.empty? type.javaType))}}{{type.javaType}}
+{{#else if type.typedef?}}
+  {{#if type.hasAdapter?}}
+    {{#if type.true_type.binary?}}io.netty.buffer.ByteBuf
+    {{#else if type.true_type.isBinaryString?}}io.netty.buffer.ByteBuf
+    {{#else if type.true_type.string?}}String
+    {{#else}}{{#partial thrift_boxed_type type=type.resolved field_hasAdapter=field_hasAdapter}}
+    {{/if type.true_type.binary?}}
+  {{#else}}
+    {{#if type.isBinaryString?}}
+      {{#if field_hasAdapter}}io.netty.buffer.ByteBuf{{#else}}byte[]{{/if field_hasAdapter}}
+    {{#else}}{{#partial thrift_boxed_type type=type.resolved field_hasAdapter=field_hasAdapter}}
+    {{/if type.isBinaryString?}}
+  {{/if type.hasAdapter?}}
+{{#else if type.binary?}}
+  {{#if field_hasAdapter}}io.netty.buffer.ByteBuf{{#else}}byte[]{{/if field_hasAdapter}}
+{{#else if type.string?}}
+  {{#if type.isBinaryString?}}
+    {{#if field_hasAdapter}}io.netty.buffer.ByteBuf{{#else}}byte[]{{/if field_hasAdapter}}
+  {{#else}}String
+  {{/if type.isBinaryString?}}
+{{#else if type.map?}}
+  Map<{{#partial thrift_boxed_type type=type.key_type field_hasAdapter=field_hasAdapter}}, {{#partial thrift_boxed_type type=type.val_type field_hasAdapter=field_hasAdapter}}>
+{{#else if type.list?}}
+  List<{{#partial thrift_boxed_type type=type.elem_type field_hasAdapter=field_hasAdapter}}>
+{{#else if type.set?}}
+  Set<{{#partial thrift_boxed_type type=type.elem_type field_hasAdapter=field_hasAdapter}}>
+{{#else}}{{#partial boxed_type type=type type_isAdapterSet=false field_hasAdapter=false}}
+{{/if (not (string.empty? type.javaType))}}
+{{/let partial}}
+
 {{! Defines an unboxed Java type for a given Thrift type.
     Uses primitive types (boolean, int, long, etc.) for primitives,
     and falls back to boxed_type for complex types.

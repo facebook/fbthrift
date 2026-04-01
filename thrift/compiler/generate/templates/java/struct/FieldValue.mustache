@@ -17,7 +17,7 @@
 }}{{#if (object.eq? field:default_value null)}}{{!
   }}{{#field:terse?}}{{!
     }}{{#field:hasAdapter?}}{{!
-    }}{{> FromThriftStart}}{{#if field:self.type.structured?}}{{#field:type}}{{> ThriftBoxedType}}{{/field:type}}.defaultInstance(){{#else}}{{#field:type}}{{> struct/IntrinsicDefault}}{{/field:type}}{{/if field:self.type.structured?}}{{> FromThriftEnd}}{{!
+    }}{{> FromThriftStart}}{{#if field:self.type.structured?}}{{#field:type}}{{#partial types.thrift_boxed_type type=type:self field_hasAdapter=field:hasAdapter?}}{{/field:type}}.defaultInstance(){{#else}}{{#field:type}}{{> struct/IntrinsicDefault}}{{/field:type}}{{/if field:self.type.structured?}}{{> FromThriftEnd}}{{!
     }}{{/field:hasAdapter?}}{{!
     }}{{^field:hasAdapter?}}{{!
       }}{{#if field:self.type.structured?}}{{!
