@@ -933,5 +933,11 @@ set_map_initializer = _fbthrift_python_types.Set(_fbthrift_python_types.typeinfo
 
 MyStringIdentifier = str
 MyIntIdentifier = int
-MyMapIdentifier = _fbthrift_python_types.MapTypeFactory(_fbthrift_python_types.typeinfo_string, _fbthrift_python_types.typeinfo_string)
-CompanyLocationsMap = _fbthrift_python_types.MapTypeFactory(_fbthrift_python_types.EnumTypeInfo(Company), _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.EnumTypeInfo(City)))
+class MyMapIdentifier(_fbthrift_python_types._MapTypedefBase):
+    __slots__ = ()
+    _fbthrift_map_key_type_info = _fbthrift_python_types.typeinfo_string
+    _fbthrift_map_val_type_info = _fbthrift_python_types.typeinfo_string
+class CompanyLocationsMap(_fbthrift_python_types._MapTypedefBase):
+    __slots__ = ()
+    _fbthrift_map_key_type_info = _fbthrift_python_types.EnumTypeInfo(Company)
+    _fbthrift_map_val_type_info = _fbthrift_python_types.ListTypeInfo(_fbthrift_python_types.EnumTypeInfo(City))

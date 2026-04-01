@@ -2757,6 +2757,85 @@ tag_object_as_mapping(<PyTypeObject*>Map)
 Mapping.register(Map)
 
 
+class _ListTypedefMeta(type):
+    def __instancecheck__(cls, instance):
+        if type.__instancecheck__(cls, instance):
+            return True
+        if type.__instancecheck__(List, instance):
+            return instance._fbthrift_same_type(cls._fbthrift_list_type_info)
+        return False
+
+    def __subclasscheck__(cls, subclass):
+        if type.__subclasscheck__(cls, subclass):
+            return True
+        if type.__subclasscheck__(_ListTypedefBase, subclass):
+            return subclass._fbthrift_list_type_info.same_as(cls._fbthrift_list_type_info)
+        return False
+
+
+class _ListTypedefBase(List, metaclass=_ListTypedefMeta):
+    _fbthrift_list_type_info = None
+    __slots__ = ()
+    def __init__(self, values=None):
+        if values is None:
+            values = ()
+        super().__init__(self._fbthrift_list_type_info, values)
+
+
+class _SetTypedefMeta(type):
+    def __instancecheck__(cls, instance):
+        if type.__instancecheck__(cls, instance):
+            return True
+        if type.__instancecheck__(Set, instance):
+            return instance._fbthrift_same_type(cls._fbthrift_set_type_info)
+        return False
+
+    def __subclasscheck__(cls, subclass):
+        if type.__subclasscheck__(cls, subclass):
+            return True
+        if type.__subclasscheck__(_SetTypedefBase, subclass):
+            return subclass._fbthrift_set_type_info.same_as(cls._fbthrift_set_type_info)
+        return False
+
+
+class _SetTypedefBase(Set, metaclass=_SetTypedefMeta):
+    _fbthrift_set_type_info = None
+    __slots__ = ()
+    def __init__(self, values=None):
+        if values is None:
+            values = ()
+        super().__init__(self._fbthrift_set_type_info, values)
+
+
+class _MapTypedefMeta(type):
+    def __instancecheck__(cls, instance):
+        if type.__instancecheck__(cls, instance):
+            return True
+        if type.__instancecheck__(Map, instance):
+            return instance._fbthrift_same_type(cls._fbthrift_map_key_type_info, cls._fbthrift_map_val_type_info)
+        return False
+
+    def __subclasscheck__(cls, subclass):
+        if type.__subclasscheck__(cls, subclass):
+            return True
+        if type.__subclasscheck__(_MapTypedefBase, subclass):
+            return (
+                subclass._fbthrift_map_key_type_info.same_as(cls._fbthrift_map_key_type_info) and
+                subclass._fbthrift_map_val_type_info.same_as(cls._fbthrift_map_val_type_info)
+            )
+        return False
+
+
+class _MapTypedefBase(Map, metaclass=_MapTypedefMeta):
+    _fbthrift_map_key_type_info = None
+    _fbthrift_map_val_type_info = None
+    __slots__ = ()
+    def __init__(self, values=None):
+        if values is None:
+            values = {}
+        super().__init__(self._fbthrift_map_key_type_info, self._fbthrift_map_val_type_info, values)
+
+
 # We will create all the classes first then call fill_specs after that so
 # dependancies can be properly solved.
 def fill_specs(*structured_thrift_classes):
