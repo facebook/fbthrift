@@ -202,22 +202,24 @@ public final class Val implements com.facebook.thrift.payload.ThriftSerializable
           if (__field.type == TType.MAP) {
             Map<Short, String> typedefValue;
                 {
-                TMap _map = oprot.readMapBegin();
-                typedefValue = new HashMap<Short, String>(Math.max(0, _map.size));
-                for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                TMap _map1 = oprot.readMapBegin();
+                typedefValue = new HashMap<Short, String>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
-                    short _fbthriftKey1;
-                    String _fbthriftValue1;
+                    
+                    short _fbthriftKey2;
+                    String _fbthriftValue2;
 
                     {
-                        short _value1 = oprot.readI16();
-                        _fbthriftKey1 = _value1;
+                        short _value2 = oprot.readI16();
+                        _fbthriftKey2 = _value2;
                     }
                     {
-                        String _value1 = oprot.readString();
-                        _fbthriftValue1 = _value1;
+                        String _value2 = oprot.readString();
+                        _fbthriftValue2 = _value2;
                     }
-                    typedefValue.put(_fbthriftKey1, _fbthriftValue1);
+                    typedefValue.put(_fbthriftKey2, _fbthriftValue2);
+                    
                 }
                 }
                 oprot.readMapEnd();

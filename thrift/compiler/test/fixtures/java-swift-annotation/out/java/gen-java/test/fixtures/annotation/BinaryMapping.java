@@ -159,22 +159,24 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
           if (__field.type == TType.MAP) {
             Map<String, byte[]> binaryMap;
                 {
-                TMap _map = oprot.readMapBegin();
-                binaryMap = new HashMap<String, byte[]>(Math.max(0, _map.size));
-                for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                TMap _map1 = oprot.readMapBegin();
+                binaryMap = new HashMap<String, byte[]>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
-                    String _fbthriftKey1;
-                    byte[] _fbthriftValue1;
+                    
+                    String _fbthriftKey2;
+                    byte[] _fbthriftValue2;
 
                     {
-                        String _value1 = oprot.readString();
-                        _fbthriftKey1 = _value1;
+                        String _value2 = oprot.readString();
+                        _fbthriftKey2 = _value2;
                     }
                     {
-                        byte[] _value1 = oprot.readBinary().array();
-                        _fbthriftValue1 = _value1;
+                        byte[] _value2 = oprot.readBinary().array();
+                        _fbthriftValue2 = _value2;
                     }
-                    binaryMap.put(_fbthriftKey1, _fbthriftValue1);
+                    binaryMap.put(_fbthriftKey2, _fbthriftValue2);
+                    
                 }
                 }
                 oprot.readMapEnd();
@@ -187,22 +189,24 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
           if (__field.type == TType.MAP) {
             Map<String, byte[]> regularBinary;
                 {
-                TMap _map = oprot.readMapBegin();
-                regularBinary = new HashMap<String, byte[]>(Math.max(0, _map.size));
-                for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                TMap _map1 = oprot.readMapBegin();
+                regularBinary = new HashMap<String, byte[]>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
-                    String _fbthriftKey1;
-                    byte[] _fbthriftValue1;
+                    
+                    String _fbthriftKey2;
+                    byte[] _fbthriftValue2;
 
                     {
-                        String _value1 = oprot.readString();
-                        _fbthriftKey1 = _value1;
+                        String _value2 = oprot.readString();
+                        _fbthriftKey2 = _value2;
                     }
                     {
-                        byte[] _value1 = oprot.readBinary().array();
-                        _fbthriftValue1 = _value1;
+                        byte[] _value2 = oprot.readBinary().array();
+                        _fbthriftValue2 = _value2;
                     }
-                    regularBinary.put(_fbthriftKey1, _fbthriftValue1);
+                    regularBinary.put(_fbthriftKey2, _fbthriftValue2);
+                    
                 }
                 }
                 oprot.readMapEnd();

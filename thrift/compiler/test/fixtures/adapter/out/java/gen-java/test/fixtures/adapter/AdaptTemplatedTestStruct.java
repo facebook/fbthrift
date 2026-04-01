@@ -770,12 +770,14 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
           if (__field.type == TType.LIST) {
             List<Long> adaptedList;
                 {
-                TList _list = oprot.readListBegin();
-                adaptedList = new ArrayList<Long>(Math.max(0, _list.size));
-                for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                TList _list1 = oprot.readListBegin();
+                adaptedList = new ArrayList<Long>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
-                    long _value1 = oprot.readI64();
-                    adaptedList.add(_value1);
+                    
+                    long _value2 = oprot.readI64();
+                    adaptedList.add(_value2);
+                    
                 }
                 oprot.readListEnd();
                 }
@@ -788,12 +790,14 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
           if (__field.type == TType.SET) {
             Set<Long> adaptedSet;
                 {
-                TSet _set = oprot.readSetBegin();
-                adaptedSet = new HashSet<Long>(Math.max(0, _set.size));
-                for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
+                TSet _set1 = oprot.readSetBegin();
+                adaptedSet = new HashSet<Long>(Math.max(0, _set1.size));
+                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
-                    long _value1 = oprot.readI64();
-                    adaptedSet.add(_value1);
+                    
+                    long _value2 = oprot.readI64();
+                    adaptedSet.add(_value2);
+                    
                 }
                 oprot.readSetEnd();
                 }
@@ -806,22 +810,24 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
           if (__field.type == TType.MAP) {
             Map<Long, Long> adaptedMap;
                 {
-                TMap _map = oprot.readMapBegin();
-                adaptedMap = new HashMap<Long, Long>(Math.max(0, _map.size));
-                for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                TMap _map1 = oprot.readMapBegin();
+                adaptedMap = new HashMap<Long, Long>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
-                    long _fbthriftKey1;
-                    long _fbthriftValue1;
+                    
+                    long _fbthriftKey2;
+                    long _fbthriftValue2;
 
                     {
-                        long _value1 = oprot.readI64();
-                        _fbthriftKey1 = _value1;
+                        long _value2 = oprot.readI64();
+                        _fbthriftKey2 = _value2;
                     }
                     {
-                        long _value1 = oprot.readI64();
-                        _fbthriftValue1 = _value1;
+                        long _value2 = oprot.readI64();
+                        _fbthriftValue2 = _value2;
                     }
-                    adaptedMap.put(_fbthriftKey1, _fbthriftValue1);
+                    adaptedMap.put(_fbthriftKey2, _fbthriftValue2);
+                    
                 }
                 }
                 oprot.readMapEnd();
@@ -898,12 +904,14 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
           if (__field.type == TType.LIST) {
             List<Long> adaptedListDefault;
                 {
-                TList _list = oprot.readListBegin();
-                adaptedListDefault = new ArrayList<Long>(Math.max(0, _list.size));
-                for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                TList _list1 = oprot.readListBegin();
+                adaptedListDefault = new ArrayList<Long>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
-                    long _value1 = oprot.readI64();
-                    adaptedListDefault.add(_value1);
+                    
+                    long _value2 = oprot.readI64();
+                    adaptedListDefault.add(_value2);
+                    
                 }
                 oprot.readListEnd();
                 }
@@ -916,12 +924,14 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
           if (__field.type == TType.SET) {
             Set<Long> adaptedSetDefault;
                 {
-                TSet _set = oprot.readSetBegin();
-                adaptedSetDefault = new HashSet<Long>(Math.max(0, _set.size));
-                for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
+                TSet _set1 = oprot.readSetBegin();
+                adaptedSetDefault = new HashSet<Long>(Math.max(0, _set1.size));
+                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
-                    long _value1 = oprot.readI64();
-                    adaptedSetDefault.add(_value1);
+                    
+                    long _value2 = oprot.readI64();
+                    adaptedSetDefault.add(_value2);
+                    
                 }
                 oprot.readSetEnd();
                 }
@@ -934,22 +944,24 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
           if (__field.type == TType.MAP) {
             Map<Long, Long> adaptedMapDefault;
                 {
-                TMap _map = oprot.readMapBegin();
-                adaptedMapDefault = new HashMap<Long, Long>(Math.max(0, _map.size));
-                for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                TMap _map1 = oprot.readMapBegin();
+                adaptedMapDefault = new HashMap<Long, Long>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
-                    long _fbthriftKey1;
-                    long _fbthriftValue1;
+                    
+                    long _fbthriftKey2;
+                    long _fbthriftValue2;
 
                     {
-                        long _value1 = oprot.readI64();
-                        _fbthriftKey1 = _value1;
+                        long _value2 = oprot.readI64();
+                        _fbthriftKey2 = _value2;
                     }
                     {
-                        long _value1 = oprot.readI64();
-                        _fbthriftValue1 = _value1;
+                        long _value2 = oprot.readI64();
+                        _fbthriftValue2 = _value2;
                     }
-                    adaptedMapDefault.put(_fbthriftKey1, _fbthriftValue1);
+                    adaptedMapDefault.put(_fbthriftKey2, _fbthriftValue2);
+                    
                 }
                 }
                 oprot.readMapEnd();

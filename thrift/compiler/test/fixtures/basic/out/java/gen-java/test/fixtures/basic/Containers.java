@@ -189,12 +189,14 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
           if (__field.type == TType.LIST) {
             List<Integer> i32List;
                 {
-                TList _list = oprot.readListBegin();
-                i32List = new ArrayList<Integer>(Math.max(0, _list.size));
-                for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                TList _list1 = oprot.readListBegin();
+                i32List = new ArrayList<Integer>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
-                    int _value1 = oprot.readI32();
-                    i32List.add(_value1);
+                    
+                    int _value2 = oprot.readI32();
+                    i32List.add(_value2);
+                    
                 }
                 oprot.readListEnd();
                 }
@@ -207,12 +209,14 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
           if (__field.type == TType.SET) {
             Set<String> stringSet;
                 {
-                TSet _set = oprot.readSetBegin();
-                stringSet = new HashSet<String>(Math.max(0, _set.size));
-                for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
+                TSet _set1 = oprot.readSetBegin();
+                stringSet = new HashSet<String>(Math.max(0, _set1.size));
+                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
-                    String _value1 = oprot.readString();
-                    stringSet.add(_value1);
+                    
+                    String _value2 = oprot.readString();
+                    stringSet.add(_value2);
+                    
                 }
                 oprot.readSetEnd();
                 }
@@ -225,22 +229,24 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
           if (__field.type == TType.MAP) {
             Map<String, Long> stringToI64Map;
                 {
-                TMap _map = oprot.readMapBegin();
-                stringToI64Map = new HashMap<String, Long>(Math.max(0, _map.size));
-                for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                TMap _map1 = oprot.readMapBegin();
+                stringToI64Map = new HashMap<String, Long>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
-                    String _fbthriftKey1;
-                    long _fbthriftValue1;
+                    
+                    String _fbthriftKey2;
+                    long _fbthriftValue2;
 
                     {
-                        String _value1 = oprot.readString();
-                        _fbthriftKey1 = _value1;
+                        String _value2 = oprot.readString();
+                        _fbthriftKey2 = _value2;
                     }
                     {
-                        long _value1 = oprot.readI64();
-                        _fbthriftValue1 = _value1;
+                        long _value2 = oprot.readI64();
+                        _fbthriftValue2 = _value2;
                     }
-                    stringToI64Map.put(_fbthriftKey1, _fbthriftValue1);
+                    stringToI64Map.put(_fbthriftKey2, _fbthriftValue2);
+                    
                 }
                 }
                 oprot.readMapEnd();

@@ -883,22 +883,24 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
           if (__field.type == TType.MAP) {
             Map<Integer, String> field3;
                 {
-                TMap _map = oprot.readMapBegin();
-                field3 = new HashMap<Integer, String>(Math.max(0, _map.size));
-                for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                TMap _map1 = oprot.readMapBegin();
+                field3 = new HashMap<Integer, String>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
-                    int _fbthriftKey1;
-                    String _fbthriftValue1;
+                    
+                    int _fbthriftKey2;
+                    String _fbthriftValue2;
 
                     {
-                        int _value1 = oprot.readI32();
-                        _fbthriftKey1 = _value1;
+                        int _value2 = oprot.readI32();
+                        _fbthriftKey2 = _value2;
                     }
                     {
-                        String _value1 = oprot.readString();
-                        _fbthriftValue1 = _value1;
+                        String _value2 = oprot.readString();
+                        _fbthriftValue2 = _value2;
                     }
-                    field3.put(_fbthriftKey1, _fbthriftValue1);
+                    field3.put(_fbthriftKey2, _fbthriftValue2);
+                    
                 }
                 }
                 oprot.readMapEnd();
@@ -911,12 +913,14 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
           if (__field.type == TType.LIST) {
             List<test.fixtures.complex_struct.MyEnum> myList;
                 {
-                TList _list = oprot.readListBegin();
-                myList = new ArrayList<test.fixtures.complex_struct.MyEnum>(Math.max(0, _list.size));
-                for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                TList _list1 = oprot.readListBegin();
+                myList = new ArrayList<test.fixtures.complex_struct.MyEnum>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
-                    test.fixtures.complex_struct.MyEnum _value1 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
-                    myList.add(_value1);
+                    
+                    test.fixtures.complex_struct.MyEnum _value2 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+                    myList.add(_value2);
+                    
                 }
                 oprot.readListEnd();
                 }
@@ -929,12 +933,14 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
           if (__field.type == TType.SET) {
             Set<String> mySet;
                 {
-                TSet _set = oprot.readSetBegin();
-                mySet = new HashSet<String>(Math.max(0, _set.size));
-                for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
+                TSet _set1 = oprot.readSetBegin();
+                mySet = new HashSet<String>(Math.max(0, _set1.size));
+                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
-                    String _value1 = oprot.readString();
-                    mySet.add(_value1);
+                    
+                    String _value2 = oprot.readString();
+                    mySet.add(_value2);
+                    
                 }
                 oprot.readSetEnd();
                 }
@@ -955,12 +961,14 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
           if (__field.type == TType.LIST) {
             List<test.fixtures.complex_struct.SimpleStruct> listStructDFset;
                 {
-                TList _list = oprot.readListBegin();
-                listStructDFset = new ArrayList<test.fixtures.complex_struct.SimpleStruct>(Math.max(0, _list.size));
-                for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                TList _list1 = oprot.readListBegin();
+                listStructDFset = new ArrayList<test.fixtures.complex_struct.SimpleStruct>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
-                    test.fixtures.complex_struct.SimpleStruct _value1 = test.fixtures.complex_struct.SimpleStruct.read0(oprot);
-                    listStructDFset.add(_value1);
+                    
+                    test.fixtures.complex_struct.SimpleStruct _value2 = test.fixtures.complex_struct.SimpleStruct.read0(oprot);
+                    listStructDFset.add(_value2);
+                    
                 }
                 oprot.readListEnd();
                 }
@@ -981,12 +989,14 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
           if (__field.type == TType.LIST) {
             List<test.fixtures.complex_struct.MyUnion> listUnionDFset;
                 {
-                TList _list = oprot.readListBegin();
-                listUnionDFset = new ArrayList<test.fixtures.complex_struct.MyUnion>(Math.max(0, _list.size));
-                for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                TList _list1 = oprot.readListBegin();
+                listUnionDFset = new ArrayList<test.fixtures.complex_struct.MyUnion>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
-                    test.fixtures.complex_struct.MyUnion _value1 = test.fixtures.complex_struct.MyUnion.read0(oprot);
-                    listUnionDFset.add(_value1);
+                    
+                    test.fixtures.complex_struct.MyUnion _value2 = test.fixtures.complex_struct.MyUnion.read0(oprot);
+                    listUnionDFset.add(_value2);
+                    
                 }
                 oprot.readListEnd();
                 }
@@ -999,36 +1009,38 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
           if (__field.type == TType.MAP) {
             Map<Integer, List<test.fixtures.complex_struct.SimpleStruct>> mapNestlistStructDfSet;
                 {
-                TMap _map = oprot.readMapBegin();
-                mapNestlistStructDfSet = new HashMap<Integer, List<test.fixtures.complex_struct.SimpleStruct>>(Math.max(0, _map.size));
-                for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                TMap _map1 = oprot.readMapBegin();
+                mapNestlistStructDfSet = new HashMap<Integer, List<test.fixtures.complex_struct.SimpleStruct>>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
-                    int _fbthriftKey1;
-                    List<test.fixtures.complex_struct.SimpleStruct> _fbthriftValue1;
+                    
+                    int _fbthriftKey2;
+                    List<test.fixtures.complex_struct.SimpleStruct> _fbthriftValue2;
 
                     {
-                        int _value1 = oprot.readI32();
-                        _fbthriftKey1 = _value1;
+                        int _value2 = oprot.readI32();
+                        _fbthriftKey2 = _value2;
                     }
                     {
-                        List<test.fixtures.complex_struct.SimpleStruct> _value1;
+                        List<test.fixtures.complex_struct.SimpleStruct> _value2;
                         {
-                                    TList _list1 = oprot.readListBegin();
-                                    _value1 = new ArrayList<test.fixtures.complex_struct.SimpleStruct>(Math.max(0, _list1.size));
-                                    for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                                    TList _list2 = oprot.readListBegin();
+                                    _value2 = new ArrayList<test.fixtures.complex_struct.SimpleStruct>(Math.max(0, _list2.size));
+                                    for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                         
                                         
-                                        test.fixtures.complex_struct.SimpleStruct _value2 = test.fixtures.complex_struct.SimpleStruct.read0(oprot);
+                                        test.fixtures.complex_struct.SimpleStruct _value3 = test.fixtures.complex_struct.SimpleStruct.read0(oprot);
                                         
                                         
-                                        _value1.add(_value2);
+                                        _value2.add(_value3);
                                         
                                     }
                                     oprot.readListEnd();
                                     }
-                        _fbthriftValue1 = _value1;
+                        _fbthriftValue2 = _value2;
                     }
-                    mapNestlistStructDfSet.put(_fbthriftKey1, _fbthriftValue1);
+                    mapNestlistStructDfSet.put(_fbthriftKey2, _fbthriftValue2);
+                    
                 }
                 }
                 oprot.readMapEnd();
@@ -1041,22 +1053,24 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
           if (__field.type == TType.MAP) {
             it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> mapJavaTypeDFset;
                 {
-                TMap _map = oprot.readMapBegin();
+                TMap _map1 = oprot.readMapBegin();
                 mapJavaTypeDFset = new it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String>();
-                for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
-                    long _fbthriftKey1;
-                    String _fbthriftValue1;
+                    
+                    long _fbthriftKey2;
+                    String _fbthriftValue2;
 
                     {
-                        long _value1 = oprot.readI64();
-                        _fbthriftKey1 = _value1;
+                        long _value2 = oprot.readI64();
+                        _fbthriftKey2 = _value2;
                     }
                     {
-                        String _value1 = oprot.readString();
-                        _fbthriftValue1 = _value1;
+                        String _value2 = oprot.readString();
+                        _fbthriftValue2 = _value2;
                     }
-                    mapJavaTypeDFset.put(_fbthriftKey1, _fbthriftValue1);
+                    mapJavaTypeDFset.put(_fbthriftKey2, _fbthriftValue2);
+                    
                 }
                 }
                 oprot.readMapEnd();
@@ -1069,22 +1083,24 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
           if (__field.type == TType.MAP) {
             Map<Long, Integer> emptyMap;
                 {
-                TMap _map = oprot.readMapBegin();
-                emptyMap = new HashMap<Long, Integer>(Math.max(0, _map.size));
-                for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                TMap _map1 = oprot.readMapBegin();
+                emptyMap = new HashMap<Long, Integer>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
-                    long _fbthriftKey1;
-                    int _fbthriftValue1;
+                    
+                    long _fbthriftKey2;
+                    int _fbthriftValue2;
 
                     {
-                        long _value1 = oprot.readI64();
-                        _fbthriftKey1 = _value1;
+                        long _value2 = oprot.readI64();
+                        _fbthriftKey2 = _value2;
                     }
                     {
-                        int _value1 = oprot.readI32();
-                        _fbthriftValue1 = _value1;
+                        int _value2 = oprot.readI32();
+                        _fbthriftValue2 = _value2;
                     }
-                    emptyMap.put(_fbthriftKey1, _fbthriftValue1);
+                    emptyMap.put(_fbthriftKey2, _fbthriftValue2);
+                    
                 }
                 }
                 oprot.readMapEnd();
@@ -1097,56 +1113,58 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
           if (__field.type == TType.MAP) {
             Map<String, Map<Integer, test.fixtures.complex_struct.MyEnum>> enumMapDFset;
                 {
-                TMap _map = oprot.readMapBegin();
-                enumMapDFset = new HashMap<String, Map<Integer, test.fixtures.complex_struct.MyEnum>>(Math.max(0, _map.size));
-                for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                TMap _map1 = oprot.readMapBegin();
+                enumMapDFset = new HashMap<String, Map<Integer, test.fixtures.complex_struct.MyEnum>>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
-                    String _fbthriftKey1;
-                    Map<Integer, test.fixtures.complex_struct.MyEnum> _fbthriftValue1;
+                    
+                    String _fbthriftKey2;
+                    Map<Integer, test.fixtures.complex_struct.MyEnum> _fbthriftValue2;
 
                     {
-                        String _value1 = oprot.readString();
-                        _fbthriftKey1 = _value1;
+                        String _value2 = oprot.readString();
+                        _fbthriftKey2 = _value2;
                     }
                     {
-                        Map<Integer, test.fixtures.complex_struct.MyEnum> _value1;
+                        Map<Integer, test.fixtures.complex_struct.MyEnum> _value2;
                         {
-                                    TMap _map1 = oprot.readMapBegin();
-                                    _value1 = new HashMap<Integer, test.fixtures.complex_struct.MyEnum>(Math.max(0, _map1.size));
-                                    for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                                    TMap _map2 = oprot.readMapBegin();
+                                    _value2 = new HashMap<Integer, test.fixtures.complex_struct.MyEnum>(Math.max(0, _map2.size));
+                                    for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
                                         
                                         
-                                        int _fbthriftKey2;
+                                        int _fbthriftKey3;
                                         
                                         
-                                        test.fixtures.complex_struct.MyEnum _fbthriftValue2;
+                                        test.fixtures.complex_struct.MyEnum _fbthriftValue3;
                                         
 
                                         {
                                             
-                                            int _value2 = oprot.readI32();
+                                            int _value3 = oprot.readI32();
                                             
                                             
-                                            _fbthriftKey2 = _value2;
+                                            _fbthriftKey3 = _value3;
                                             
                                         }
                                         {
                                             
-                                            test.fixtures.complex_struct.MyEnum _value2 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+                                            test.fixtures.complex_struct.MyEnum _value3 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
                                             
                                             
-                                            _fbthriftValue2 = _value2;
+                                            _fbthriftValue3 = _value3;
                                             
                                         }
                                         
-                                        _value1.put(_fbthriftKey2, _fbthriftValue2);
+                                        _value2.put(_fbthriftKey3, _fbthriftValue3);
                                         
                                     }
                                     }
                                     oprot.readMapEnd();
-                        _fbthriftValue1 = _value1;
+                        _fbthriftValue2 = _value2;
                     }
-                    enumMapDFset.put(_fbthriftKey1, _fbthriftValue1);
+                    enumMapDFset.put(_fbthriftKey2, _fbthriftValue2);
+                    
                 }
                 }
                 oprot.readMapEnd();

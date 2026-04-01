@@ -219,12 +219,14 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
           if (__field.type == TType.LIST) {
             List<String> listStrings;
                 {
-                TList _list = oprot.readListBegin();
-                listStrings = new ArrayList<String>(Math.max(0, _list.size));
-                for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                TList _list1 = oprot.readListBegin();
+                listStrings = new ArrayList<String>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
-                    String _value1 = oprot.readString();
-                    listStrings.add(_value1);
+                    
+                    String _value2 = oprot.readString();
+                    listStrings.add(_value2);
+                    
                 }
                 oprot.readListEnd();
                 }
@@ -261,22 +263,24 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
           if (__field.type == TType.MAP) {
             it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap;
                 {
-                TMap _map = oprot.readMapBegin();
+                TMap _map1 = oprot.readMapBegin();
                 lsMap = new it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String>();
-                for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
-                    long _fbthriftKey1;
-                    String _fbthriftValue1;
+                    
+                    long _fbthriftKey2;
+                    String _fbthriftValue2;
 
                     {
-                        long _value1 = oprot.readI64();
-                        _fbthriftKey1 = _value1;
+                        long _value2 = oprot.readI64();
+                        _fbthriftKey2 = _value2;
                     }
                     {
-                        String _value1 = oprot.readString();
-                        _fbthriftValue1 = _value1;
+                        String _value2 = oprot.readString();
+                        _fbthriftValue2 = _value2;
                     }
-                    lsMap.put(_fbthriftKey1, _fbthriftValue1);
+                    lsMap.put(_fbthriftKey2, _fbthriftValue2);
+                    
                 }
                 }
                 oprot.readMapEnd();

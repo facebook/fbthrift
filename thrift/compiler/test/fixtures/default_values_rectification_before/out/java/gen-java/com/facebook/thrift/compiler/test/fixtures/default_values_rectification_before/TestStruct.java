@@ -342,12 +342,14 @@ public final class TestStruct implements com.facebook.thrift.payload.ThriftSeria
           if (__field.type == TType.LIST) {
             List<Integer> unqualifiedListField;
                 {
-                TList _list = oprot.readListBegin();
-                unqualifiedListField = new ArrayList<Integer>(Math.max(0, _list.size));
-                for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                TList _list1 = oprot.readListBegin();
+                unqualifiedListField = new ArrayList<Integer>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
-                    int _value1 = oprot.readI32();
-                    unqualifiedListField.add(_value1);
+                    
+                    int _value2 = oprot.readI32();
+                    unqualifiedListField.add(_value2);
+                    
                 }
                 oprot.readListEnd();
                 }
@@ -384,12 +386,14 @@ public final class TestStruct implements com.facebook.thrift.payload.ThriftSeria
           if (__field.type == TType.LIST) {
             List<Integer> optionalListField;
                 {
-                TList _list = oprot.readListBegin();
-                optionalListField = new ArrayList<Integer>(Math.max(0, _list.size));
-                for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                TList _list1 = oprot.readListBegin();
+                optionalListField = new ArrayList<Integer>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
-                    int _value1 = oprot.readI32();
-                    optionalListField.add(_value1);
+                    
+                    int _value2 = oprot.readI32();
+                    optionalListField.add(_value2);
+                    
                 }
                 oprot.readListEnd();
                 }

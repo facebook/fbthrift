@@ -293,22 +293,24 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
           if (__field.type == TType.MAP) {
             com.foo.FastIntLongMap detailMap;
                 {
-                TMap _map = oprot.readMapBegin();
+                TMap _map1 = oprot.readMapBegin();
                 detailMap = new com.foo.FastIntLongMap();
-                for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
-                    int _fbthriftKey1;
-                    long _fbthriftValue1;
+                    
+                    int _fbthriftKey2;
+                    long _fbthriftValue2;
 
                     {
-                        int _value1 = oprot.readI32();
-                        _fbthriftKey1 = _value1;
+                        int _value2 = oprot.readI32();
+                        _fbthriftKey2 = _value2;
                     }
                     {
-                        long _value1 = oprot.readI64();
-                        _fbthriftValue1 = _value1;
+                        long _value2 = oprot.readI64();
+                        _fbthriftValue2 = _value2;
                     }
-                    detailMap.put(_fbthriftKey1, _fbthriftValue1);
+                    detailMap.put(_fbthriftKey2, _fbthriftValue2);
+                    
                 }
                 }
                 oprot.readMapEnd();

@@ -421,12 +421,14 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
             if (__field.type == FLOAT_SET_FIELD_DESC.type) {
               Set<Float> floatSet;
                 {
-                TSet _set = oprot.readSetBegin();
-                floatSet = new HashSet<Float>(Math.max(0, _set.size));
-                for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
+                TSet _set1 = oprot.readSetBegin();
+                floatSet = new HashSet<Float>(Math.max(0, _set1.size));
+                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
-                    float _value1 = oprot.readFloat();
-                    floatSet.add(_value1);
+                    
+                    float _value2 = oprot.readFloat();
+                    floatSet.add(_value2);
+                    
                 }
                 oprot.readSetEnd();
                 }

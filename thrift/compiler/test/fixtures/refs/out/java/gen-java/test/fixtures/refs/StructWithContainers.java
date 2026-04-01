@@ -267,12 +267,14 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
           if (__field.type == TType.LIST) {
             List<Integer> listRef;
                 {
-                TList _list = oprot.readListBegin();
-                listRef = new ArrayList<Integer>(Math.max(0, _list.size));
-                for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                TList _list1 = oprot.readListBegin();
+                listRef = new ArrayList<Integer>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
-                    int _value1 = oprot.readI32();
-                    listRef.add(_value1);
+                    
+                    int _value2 = oprot.readI32();
+                    listRef.add(_value2);
+                    
                 }
                 oprot.readListEnd();
                 }
@@ -285,12 +287,14 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
           if (__field.type == TType.SET) {
             Set<Integer> setRef;
                 {
-                TSet _set = oprot.readSetBegin();
-                setRef = new HashSet<Integer>(Math.max(0, _set.size));
-                for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
+                TSet _set1 = oprot.readSetBegin();
+                setRef = new HashSet<Integer>(Math.max(0, _set1.size));
+                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
-                    int _value1 = oprot.readI32();
-                    setRef.add(_value1);
+                    
+                    int _value2 = oprot.readI32();
+                    setRef.add(_value2);
+                    
                 }
                 oprot.readSetEnd();
                 }
@@ -303,22 +307,24 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
           if (__field.type == TType.MAP) {
             Map<Integer, Integer> mapRef;
                 {
-                TMap _map = oprot.readMapBegin();
-                mapRef = new HashMap<Integer, Integer>(Math.max(0, _map.size));
-                for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                TMap _map1 = oprot.readMapBegin();
+                mapRef = new HashMap<Integer, Integer>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
-                    int _fbthriftKey1;
-                    int _fbthriftValue1;
+                    
+                    int _fbthriftKey2;
+                    int _fbthriftValue2;
 
                     {
-                        int _value1 = oprot.readI32();
-                        _fbthriftKey1 = _value1;
+                        int _value2 = oprot.readI32();
+                        _fbthriftKey2 = _value2;
                     }
                     {
-                        int _value1 = oprot.readI32();
-                        _fbthriftValue1 = _value1;
+                        int _value2 = oprot.readI32();
+                        _fbthriftValue2 = _value2;
                     }
-                    mapRef.put(_fbthriftKey1, _fbthriftValue1);
+                    mapRef.put(_fbthriftKey2, _fbthriftValue2);
+                    
                 }
                 }
                 oprot.readMapEnd();
@@ -331,12 +337,14 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
           if (__field.type == TType.LIST) {
             List<Integer> listRefUnique;
                 {
-                TList _list = oprot.readListBegin();
-                listRefUnique = new ArrayList<Integer>(Math.max(0, _list.size));
-                for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                TList _list1 = oprot.readListBegin();
+                listRefUnique = new ArrayList<Integer>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
-                    int _value1 = oprot.readI32();
-                    listRefUnique.add(_value1);
+                    
+                    int _value2 = oprot.readI32();
+                    listRefUnique.add(_value2);
+                    
                 }
                 oprot.readListEnd();
                 }
@@ -349,12 +357,14 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
           if (__field.type == TType.SET) {
             Set<Integer> setRefShared;
                 {
-                TSet _set = oprot.readSetBegin();
-                setRefShared = new HashSet<Integer>(Math.max(0, _set.size));
-                for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
+                TSet _set1 = oprot.readSetBegin();
+                setRefShared = new HashSet<Integer>(Math.max(0, _set1.size));
+                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
-                    int _value1 = oprot.readI32();
-                    setRefShared.add(_value1);
+                    
+                    int _value2 = oprot.readI32();
+                    setRefShared.add(_value2);
+                    
                 }
                 oprot.readSetEnd();
                 }
@@ -367,12 +377,14 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
           if (__field.type == TType.LIST) {
             List<Integer> listRefSharedConst;
                 {
-                TList _list = oprot.readListBegin();
-                listRefSharedConst = new ArrayList<Integer>(Math.max(0, _list.size));
-                for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                TList _list1 = oprot.readListBegin();
+                listRefSharedConst = new ArrayList<Integer>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
-                    int _value1 = oprot.readI32();
-                    listRefSharedConst.add(_value1);
+                    
+                    int _value2 = oprot.readI32();
+                    listRefSharedConst.add(_value2);
+                    
                 }
                 oprot.readListEnd();
                 }

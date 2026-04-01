@@ -205,12 +205,14 @@ public final class TerseAdaptedFields implements com.facebook.thrift.payload.Thr
           if (__field.type == TType.SET) {
             Set<Integer> setField;
                 {
-                TSet _set = oprot.readSetBegin();
-                setField = new HashSet<Integer>(Math.max(0, _set.size));
-                for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
+                TSet _set1 = oprot.readSetBegin();
+                setField = new HashSet<Integer>(Math.max(0, _set1.size));
+                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
-                    int _value1 = oprot.readI32();
-                    setField.add(_value1);
+                    
+                    int _value2 = oprot.readI32();
+                    setField.add(_value2);
+                    
                 }
                 oprot.readSetEnd();
                 }

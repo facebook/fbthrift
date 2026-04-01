@@ -591,26 +591,28 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
           if (__field.type == TType.SET) {
             Set<Set<Integer>> setOfSetOfInt;
                 {
-                TSet _set = oprot.readSetBegin();
-                setOfSetOfInt = new HashSet<Set<Integer>>(Math.max(0, _set.size));
-                for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
+                TSet _set1 = oprot.readSetBegin();
+                setOfSetOfInt = new HashSet<Set<Integer>>(Math.max(0, _set1.size));
+                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
-                    Set<Integer> _value1;
+                    
+                    Set<Integer> _value2;
                     {
-                                TSet _set1 = oprot.readSetBegin();
-                                _value1 = new HashSet<Integer>(Math.max(0, _set1.size));
-                                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                                TSet _set2 = oprot.readSetBegin();
+                                _value2 = new HashSet<Integer>(Math.max(0, _set2.size));
+                                for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
                                     
                                     
-                                    int _value2 = oprot.readI32();
+                                    int _value3 = oprot.readI32();
                                     
                                     
-                                    _value1.add(_value2);
+                                    _value2.add(_value3);
                                     
                                 }
                                 oprot.readSetEnd();
                                 }
-    setOfSetOfInt.add(_value1);
+    setOfSetOfInt.add(_value2);
+                    
                 }
                 oprot.readSetEnd();
                 }
@@ -623,54 +625,56 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
           if (__field.type == TType.LIST) {
             List<List<List<List<test.fixtures.complex_struct.MyEnum>>>> listofListOfListOfListOfEnum;
                 {
-                TList _list = oprot.readListBegin();
-                listofListOfListOfListOfEnum = new ArrayList<List<List<List<test.fixtures.complex_struct.MyEnum>>>>(Math.max(0, _list.size));
-                for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                TList _list1 = oprot.readListBegin();
+                listofListOfListOfListOfEnum = new ArrayList<List<List<List<test.fixtures.complex_struct.MyEnum>>>>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
-                    List<List<List<test.fixtures.complex_struct.MyEnum>>> _value1;
+                    
+                    List<List<List<test.fixtures.complex_struct.MyEnum>>> _value2;
                     {
-                                TList _list1 = oprot.readListBegin();
-                                _value1 = new ArrayList<List<List<test.fixtures.complex_struct.MyEnum>>>(Math.max(0, _list1.size));
-                                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                                TList _list2 = oprot.readListBegin();
+                                _value2 = new ArrayList<List<List<test.fixtures.complex_struct.MyEnum>>>(Math.max(0, _list2.size));
+                                for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                     
                                     
-                                    List<List<test.fixtures.complex_struct.MyEnum>> _value2;
+                                    List<List<test.fixtures.complex_struct.MyEnum>> _value3;
                                     {
-                                                TList _list2 = oprot.readListBegin();
-                                                _value2 = new ArrayList<List<test.fixtures.complex_struct.MyEnum>>(Math.max(0, _list2.size));
-                                                for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
+                                                TList _list3 = oprot.readListBegin();
+                                                _value3 = new ArrayList<List<test.fixtures.complex_struct.MyEnum>>(Math.max(0, _list3.size));
+                                                for (int _i3 = 0; (_list3.size < 0) ? oprot.peekList() : (_i3 < _list3.size); _i3++) {
                                                     
                                                     
-                                                    List<test.fixtures.complex_struct.MyEnum> _value3;
+                                                    List<test.fixtures.complex_struct.MyEnum> _value4;
                                                     {
-                                                                TList _list3 = oprot.readListBegin();
-                                                                _value3 = new ArrayList<test.fixtures.complex_struct.MyEnum>(Math.max(0, _list3.size));
-                                                                for (int _i3 = 0; (_list3.size < 0) ? oprot.peekList() : (_i3 < _list3.size); _i3++) {
+                                                                TList _list4 = oprot.readListBegin();
+                                                                _value4 = new ArrayList<test.fixtures.complex_struct.MyEnum>(Math.max(0, _list4.size));
+                                                                for (int _i4 = 0; (_list4.size < 0) ? oprot.peekList() : (_i4 < _list4.size); _i4++) {
                                                                     
                                                                     
-                                                                    test.fixtures.complex_struct.MyEnum _value4 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+                                                                    test.fixtures.complex_struct.MyEnum _value5 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
                                                                     
                                                                     
-                                                                    _value3.add(_value4);
+                                                                    _value4.add(_value5);
                                                                     
                                                                 }
                                                                 oprot.readListEnd();
                                                                 }
                                                     
                                                     
-                                                    _value2.add(_value3);
+                                                    _value3.add(_value4);
                                                     
                                                 }
                                                 oprot.readListEnd();
                                                 }
                                     
                                     
-                                    _value1.add(_value2);
+                                    _value2.add(_value3);
                                     
                                 }
                                 oprot.readListEnd();
                                 }
-    listofListOfListOfListOfEnum.add(_value1);
+    listofListOfListOfListOfEnum.add(_value2);
+                    
                 }
                 oprot.readListEnd();
                 }
@@ -683,26 +687,28 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
           if (__field.type == TType.LIST) {
             List<List<test.fixtures.complex_struct.MyStruct>> listOfListOfMyStruct;
                 {
-                TList _list = oprot.readListBegin();
-                listOfListOfMyStruct = new ArrayList<List<test.fixtures.complex_struct.MyStruct>>(Math.max(0, _list.size));
-                for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                TList _list1 = oprot.readListBegin();
+                listOfListOfMyStruct = new ArrayList<List<test.fixtures.complex_struct.MyStruct>>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
-                    List<test.fixtures.complex_struct.MyStruct> _value1;
+                    
+                    List<test.fixtures.complex_struct.MyStruct> _value2;
                     {
-                                TList _list1 = oprot.readListBegin();
-                                _value1 = new ArrayList<test.fixtures.complex_struct.MyStruct>(Math.max(0, _list1.size));
-                                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                                TList _list2 = oprot.readListBegin();
+                                _value2 = new ArrayList<test.fixtures.complex_struct.MyStruct>(Math.max(0, _list2.size));
+                                for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                     
                                     
-                                    test.fixtures.complex_struct.MyStruct _value2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                    test.fixtures.complex_struct.MyStruct _value3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                                     
                                     
-                                    _value1.add(_value2);
+                                    _value2.add(_value3);
                                     
                                 }
                                 oprot.readListEnd();
                                 }
-    listOfListOfMyStruct.add(_value1);
+    listOfListOfMyStruct.add(_value2);
+                    
                 }
                 oprot.readListEnd();
                 }
@@ -715,40 +721,42 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
           if (__field.type == TType.SET) {
             Set<List<List<Long>>> setOfListOfListOfLong;
                 {
-                TSet _set = oprot.readSetBegin();
-                setOfListOfListOfLong = new HashSet<List<List<Long>>>(Math.max(0, _set.size));
-                for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
+                TSet _set1 = oprot.readSetBegin();
+                setOfListOfListOfLong = new HashSet<List<List<Long>>>(Math.max(0, _set1.size));
+                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
-                    List<List<Long>> _value1;
+                    
+                    List<List<Long>> _value2;
                     {
-                                TList _list1 = oprot.readListBegin();
-                                _value1 = new ArrayList<List<Long>>(Math.max(0, _list1.size));
-                                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                                TList _list2 = oprot.readListBegin();
+                                _value2 = new ArrayList<List<Long>>(Math.max(0, _list2.size));
+                                for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                     
                                     
-                                    List<Long> _value2;
+                                    List<Long> _value3;
                                     {
-                                                TList _list2 = oprot.readListBegin();
-                                                _value2 = new ArrayList<Long>(Math.max(0, _list2.size));
-                                                for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
+                                                TList _list3 = oprot.readListBegin();
+                                                _value3 = new ArrayList<Long>(Math.max(0, _list3.size));
+                                                for (int _i3 = 0; (_list3.size < 0) ? oprot.peekList() : (_i3 < _list3.size); _i3++) {
                                                     
                                                     
-                                                    long _value3 = oprot.readI64();
+                                                    long _value4 = oprot.readI64();
                                                     
                                                     
-                                                    _value2.add(_value3);
+                                                    _value3.add(_value4);
                                                     
                                                 }
                                                 oprot.readListEnd();
                                                 }
                                     
                                     
-                                    _value1.add(_value2);
+                                    _value2.add(_value3);
                                     
                                 }
                                 oprot.readListEnd();
                                 }
-    setOfListOfListOfLong.add(_value1);
+    setOfListOfListOfLong.add(_value2);
+                    
                 }
                 oprot.readSetEnd();
                 }
@@ -761,40 +769,42 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
           if (__field.type == TType.SET) {
             Set<Set<Set<Long>>> setOfSetOfsetOfLong;
                 {
-                TSet _set = oprot.readSetBegin();
-                setOfSetOfsetOfLong = new HashSet<Set<Set<Long>>>(Math.max(0, _set.size));
-                for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
+                TSet _set1 = oprot.readSetBegin();
+                setOfSetOfsetOfLong = new HashSet<Set<Set<Long>>>(Math.max(0, _set1.size));
+                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
-                    Set<Set<Long>> _value1;
+                    
+                    Set<Set<Long>> _value2;
                     {
-                                TSet _set1 = oprot.readSetBegin();
-                                _value1 = new HashSet<Set<Long>>(Math.max(0, _set1.size));
-                                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                                TSet _set2 = oprot.readSetBegin();
+                                _value2 = new HashSet<Set<Long>>(Math.max(0, _set2.size));
+                                for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
                                     
                                     
-                                    Set<Long> _value2;
+                                    Set<Long> _value3;
                                     {
-                                                TSet _set2 = oprot.readSetBegin();
-                                                _value2 = new HashSet<Long>(Math.max(0, _set2.size));
-                                                for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
+                                                TSet _set3 = oprot.readSetBegin();
+                                                _value3 = new HashSet<Long>(Math.max(0, _set3.size));
+                                                for (int _i3 = 0; (_set3.size < 0) ? oprot.peekSet() : (_i3 < _set3.size); _i3++) {
                                                     
                                                     
-                                                    long _value3 = oprot.readI64();
+                                                    long _value4 = oprot.readI64();
                                                     
                                                     
-                                                    _value2.add(_value3);
+                                                    _value3.add(_value4);
                                                     
                                                 }
                                                 oprot.readSetEnd();
                                                 }
                                     
                                     
-                                    _value1.add(_value2);
+                                    _value2.add(_value3);
                                     
                                 }
                                 oprot.readSetEnd();
                                 }
-    setOfSetOfsetOfLong.add(_value1);
+    setOfSetOfsetOfLong.add(_value2);
+                    
                 }
                 oprot.readSetEnd();
                 }
@@ -807,50 +817,52 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
           if (__field.type == TType.MAP) {
             Map<Integer, List<List<test.fixtures.complex_struct.MyStruct>>> mapStructListOfListOfLong;
                 {
-                TMap _map = oprot.readMapBegin();
-                mapStructListOfListOfLong = new HashMap<Integer, List<List<test.fixtures.complex_struct.MyStruct>>>(Math.max(0, _map.size));
-                for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                TMap _map1 = oprot.readMapBegin();
+                mapStructListOfListOfLong = new HashMap<Integer, List<List<test.fixtures.complex_struct.MyStruct>>>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
-                    int _fbthriftKey1;
-                    List<List<test.fixtures.complex_struct.MyStruct>> _fbthriftValue1;
+                    
+                    int _fbthriftKey2;
+                    List<List<test.fixtures.complex_struct.MyStruct>> _fbthriftValue2;
 
                     {
-                        int _value1 = oprot.readI32();
-                        _fbthriftKey1 = _value1;
+                        int _value2 = oprot.readI32();
+                        _fbthriftKey2 = _value2;
                     }
                     {
-                        List<List<test.fixtures.complex_struct.MyStruct>> _value1;
+                        List<List<test.fixtures.complex_struct.MyStruct>> _value2;
                         {
-                                    TList _list1 = oprot.readListBegin();
-                                    _value1 = new ArrayList<List<test.fixtures.complex_struct.MyStruct>>(Math.max(0, _list1.size));
-                                    for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                                    TList _list2 = oprot.readListBegin();
+                                    _value2 = new ArrayList<List<test.fixtures.complex_struct.MyStruct>>(Math.max(0, _list2.size));
+                                    for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                         
                                         
-                                        List<test.fixtures.complex_struct.MyStruct> _value2;
+                                        List<test.fixtures.complex_struct.MyStruct> _value3;
                                         {
-                                                    TList _list2 = oprot.readListBegin();
-                                                    _value2 = new ArrayList<test.fixtures.complex_struct.MyStruct>(Math.max(0, _list2.size));
-                                                    for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
+                                                    TList _list3 = oprot.readListBegin();
+                                                    _value3 = new ArrayList<test.fixtures.complex_struct.MyStruct>(Math.max(0, _list3.size));
+                                                    for (int _i3 = 0; (_list3.size < 0) ? oprot.peekList() : (_i3 < _list3.size); _i3++) {
                                                         
                                                         
-                                                        test.fixtures.complex_struct.MyStruct _value3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                                        test.fixtures.complex_struct.MyStruct _value4 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                                                         
                                                         
-                                                        _value2.add(_value3);
+                                                        _value3.add(_value4);
                                                         
                                                     }
                                                     oprot.readListEnd();
                                                     }
                                         
                                         
-                                        _value1.add(_value2);
+                                        _value2.add(_value3);
                                         
                                     }
                                     oprot.readListEnd();
                                     }
-                        _fbthriftValue1 = _value1;
+                        _fbthriftValue2 = _value2;
                     }
-                    mapStructListOfListOfLong.put(_fbthriftKey1, _fbthriftValue1);
+                    mapStructListOfListOfLong.put(_fbthriftKey2, _fbthriftValue2);
+                    
                 }
                 }
                 oprot.readMapEnd();
@@ -863,22 +875,24 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
           if (__field.type == TType.MAP) {
             Map<test.fixtures.complex_struct.MyStruct, Integer> mKeyStructValInt;
                 {
-                TMap _map = oprot.readMapBegin();
-                mKeyStructValInt = new HashMap<test.fixtures.complex_struct.MyStruct, Integer>(Math.max(0, _map.size));
-                for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                TMap _map1 = oprot.readMapBegin();
+                mKeyStructValInt = new HashMap<test.fixtures.complex_struct.MyStruct, Integer>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
-                    test.fixtures.complex_struct.MyStruct _fbthriftKey1;
-                    int _fbthriftValue1;
+                    
+                    test.fixtures.complex_struct.MyStruct _fbthriftKey2;
+                    int _fbthriftValue2;
 
                     {
-                        test.fixtures.complex_struct.MyStruct _value1 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-                        _fbthriftKey1 = _value1;
+                        test.fixtures.complex_struct.MyStruct _value2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                        _fbthriftKey2 = _value2;
                     }
                     {
-                        int _value1 = oprot.readI32();
-                        _fbthriftValue1 = _value1;
+                        int _value2 = oprot.readI32();
+                        _fbthriftValue2 = _value2;
                     }
-                    mKeyStructValInt.put(_fbthriftKey1, _fbthriftValue1);
+                    mKeyStructValInt.put(_fbthriftKey2, _fbthriftValue2);
+                    
                 }
                 }
                 oprot.readMapEnd();
@@ -891,46 +905,48 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
           if (__field.type == TType.LIST) {
             List<Map<Integer, Integer>> listOfMapKeyIntValInt;
                 {
-                TList _list = oprot.readListBegin();
-                listOfMapKeyIntValInt = new ArrayList<Map<Integer, Integer>>(Math.max(0, _list.size));
-                for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                TList _list1 = oprot.readListBegin();
+                listOfMapKeyIntValInt = new ArrayList<Map<Integer, Integer>>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
-                    Map<Integer, Integer> _value1;
+                    
+                    Map<Integer, Integer> _value2;
                     {
-                                TMap _map1 = oprot.readMapBegin();
-                                _value1 = new HashMap<Integer, Integer>(Math.max(0, _map1.size));
-                                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                                TMap _map2 = oprot.readMapBegin();
+                                _value2 = new HashMap<Integer, Integer>(Math.max(0, _map2.size));
+                                for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
                                     
                                     
-                                    int _fbthriftKey2;
+                                    int _fbthriftKey3;
                                     
                                     
-                                    int _fbthriftValue2;
+                                    int _fbthriftValue3;
                                     
 
                                     {
                                         
-                                        int _value2 = oprot.readI32();
+                                        int _value3 = oprot.readI32();
                                         
                                         
-                                        _fbthriftKey2 = _value2;
+                                        _fbthriftKey3 = _value3;
                                         
                                     }
                                     {
                                         
-                                        int _value2 = oprot.readI32();
+                                        int _value3 = oprot.readI32();
                                         
                                         
-                                        _fbthriftValue2 = _value2;
+                                        _fbthriftValue3 = _value3;
                                         
                                     }
                                     
-                                    _value1.put(_fbthriftKey2, _fbthriftValue2);
+                                    _value2.put(_fbthriftKey3, _fbthriftValue3);
                                     
                                 }
                                 }
                                 oprot.readMapEnd();
-    listOfMapKeyIntValInt.add(_value1);
+    listOfMapKeyIntValInt.add(_value2);
+                    
                 }
                 oprot.readListEnd();
                 }
@@ -943,60 +959,62 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
           if (__field.type == TType.LIST) {
             List<Map<String, List<test.fixtures.complex_struct.MyStruct>>> listOfMapKeyStrValList;
                 {
-                TList _list = oprot.readListBegin();
-                listOfMapKeyStrValList = new ArrayList<Map<String, List<test.fixtures.complex_struct.MyStruct>>>(Math.max(0, _list.size));
-                for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                TList _list1 = oprot.readListBegin();
+                listOfMapKeyStrValList = new ArrayList<Map<String, List<test.fixtures.complex_struct.MyStruct>>>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
-                    Map<String, List<test.fixtures.complex_struct.MyStruct>> _value1;
+                    
+                    Map<String, List<test.fixtures.complex_struct.MyStruct>> _value2;
                     {
-                                TMap _map1 = oprot.readMapBegin();
-                                _value1 = new HashMap<String, List<test.fixtures.complex_struct.MyStruct>>(Math.max(0, _map1.size));
-                                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                                TMap _map2 = oprot.readMapBegin();
+                                _value2 = new HashMap<String, List<test.fixtures.complex_struct.MyStruct>>(Math.max(0, _map2.size));
+                                for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
                                     
                                     
-                                    String _fbthriftKey2;
+                                    String _fbthriftKey3;
                                     
                                     
-                                    List<test.fixtures.complex_struct.MyStruct> _fbthriftValue2;
+                                    List<test.fixtures.complex_struct.MyStruct> _fbthriftValue3;
                                     
 
                                     {
                                         
-                                        String _value2 = oprot.readString();
+                                        String _value3 = oprot.readString();
                                         
                                         
-                                        _fbthriftKey2 = _value2;
+                                        _fbthriftKey3 = _value3;
                                         
                                     }
                                     {
                                         
-                                        List<test.fixtures.complex_struct.MyStruct> _value2;
+                                        List<test.fixtures.complex_struct.MyStruct> _value3;
                                         {
-                                                    TList _list2 = oprot.readListBegin();
-                                                    _value2 = new ArrayList<test.fixtures.complex_struct.MyStruct>(Math.max(0, _list2.size));
-                                                    for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
+                                                    TList _list3 = oprot.readListBegin();
+                                                    _value3 = new ArrayList<test.fixtures.complex_struct.MyStruct>(Math.max(0, _list3.size));
+                                                    for (int _i3 = 0; (_list3.size < 0) ? oprot.peekList() : (_i3 < _list3.size); _i3++) {
                                                         
                                                         
-                                                        test.fixtures.complex_struct.MyStruct _value3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                                        test.fixtures.complex_struct.MyStruct _value4 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                                                         
                                                         
-                                                        _value2.add(_value3);
+                                                        _value3.add(_value4);
                                                         
                                                     }
                                                     oprot.readListEnd();
                                                     }
                                         
                                         
-                                        _fbthriftValue2 = _value2;
+                                        _fbthriftValue3 = _value3;
                                         
                                     }
                                     
-                                    _value1.put(_fbthriftKey2, _fbthriftValue2);
+                                    _value2.put(_fbthriftKey3, _fbthriftValue3);
                                     
                                 }
                                 }
                                 oprot.readMapEnd();
-    listOfMapKeyStrValList.add(_value1);
+    listOfMapKeyStrValList.add(_value2);
+                    
                 }
                 oprot.readListEnd();
                 }
@@ -1009,36 +1027,38 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
           if (__field.type == TType.MAP) {
             Map<Set<Integer>, Long> mapKeySetValLong;
                 {
-                TMap _map = oprot.readMapBegin();
-                mapKeySetValLong = new HashMap<Set<Integer>, Long>(Math.max(0, _map.size));
-                for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                TMap _map1 = oprot.readMapBegin();
+                mapKeySetValLong = new HashMap<Set<Integer>, Long>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
-                    Set<Integer> _fbthriftKey1;
-                    long _fbthriftValue1;
+                    
+                    Set<Integer> _fbthriftKey2;
+                    long _fbthriftValue2;
 
                     {
-                        Set<Integer> _value1;
+                        Set<Integer> _value2;
                         {
-                                    TSet _set1 = oprot.readSetBegin();
-                                    _value1 = new HashSet<Integer>(Math.max(0, _set1.size));
-                                    for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                                    TSet _set2 = oprot.readSetBegin();
+                                    _value2 = new HashSet<Integer>(Math.max(0, _set2.size));
+                                    for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
                                         
                                         
-                                        int _value2 = oprot.readI32();
+                                        int _value3 = oprot.readI32();
                                         
                                         
-                                        _value1.add(_value2);
+                                        _value2.add(_value3);
                                         
                                     }
                                     oprot.readSetEnd();
                                     }
-                        _fbthriftKey1 = _value1;
+                        _fbthriftKey2 = _value2;
                     }
                     {
-                        long _value1 = oprot.readI64();
-                        _fbthriftValue1 = _value1;
+                        long _value2 = oprot.readI64();
+                        _fbthriftValue2 = _value2;
                     }
-                    mapKeySetValLong.put(_fbthriftKey1, _fbthriftValue1);
+                    mapKeySetValLong.put(_fbthriftKey2, _fbthriftValue2);
+                    
                 }
                 }
                 oprot.readMapEnd();
@@ -1051,36 +1071,38 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
           if (__field.type == TType.MAP) {
             Map<List<String>, Integer> mapKeyListValLong;
                 {
-                TMap _map = oprot.readMapBegin();
-                mapKeyListValLong = new HashMap<List<String>, Integer>(Math.max(0, _map.size));
-                for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                TMap _map1 = oprot.readMapBegin();
+                mapKeyListValLong = new HashMap<List<String>, Integer>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
-                    List<String> _fbthriftKey1;
-                    int _fbthriftValue1;
+                    
+                    List<String> _fbthriftKey2;
+                    int _fbthriftValue2;
 
                     {
-                        List<String> _value1;
+                        List<String> _value2;
                         {
-                                    TList _list1 = oprot.readListBegin();
-                                    _value1 = new ArrayList<String>(Math.max(0, _list1.size));
-                                    for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                                    TList _list2 = oprot.readListBegin();
+                                    _value2 = new ArrayList<String>(Math.max(0, _list2.size));
+                                    for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                         
                                         
-                                        String _value2 = oprot.readString();
+                                        String _value3 = oprot.readString();
                                         
                                         
-                                        _value1.add(_value2);
+                                        _value2.add(_value3);
                                         
                                     }
                                     oprot.readListEnd();
                                     }
-                        _fbthriftKey1 = _value1;
+                        _fbthriftKey2 = _value2;
                     }
                     {
-                        int _value1 = oprot.readI32();
-                        _fbthriftValue1 = _value1;
+                        int _value2 = oprot.readI32();
+                        _fbthriftValue2 = _value2;
                     }
-                    mapKeyListValLong.put(_fbthriftKey1, _fbthriftValue1);
+                    mapKeyListValLong.put(_fbthriftKey2, _fbthriftValue2);
+                    
                 }
                 }
                 oprot.readMapEnd();
@@ -1093,90 +1115,92 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
           if (__field.type == TType.MAP) {
             Map<Map<Integer, String>, Map<Integer, String>> mapKeyMapValMap;
                 {
-                TMap _map = oprot.readMapBegin();
-                mapKeyMapValMap = new HashMap<Map<Integer, String>, Map<Integer, String>>(Math.max(0, _map.size));
-                for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                TMap _map1 = oprot.readMapBegin();
+                mapKeyMapValMap = new HashMap<Map<Integer, String>, Map<Integer, String>>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
-                    Map<Integer, String> _fbthriftKey1;
-                    Map<Integer, String> _fbthriftValue1;
+                    
+                    Map<Integer, String> _fbthriftKey2;
+                    Map<Integer, String> _fbthriftValue2;
 
                     {
-                        Map<Integer, String> _value1;
+                        Map<Integer, String> _value2;
                         {
-                                    TMap _map1 = oprot.readMapBegin();
-                                    _value1 = new HashMap<Integer, String>(Math.max(0, _map1.size));
-                                    for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                                    TMap _map2 = oprot.readMapBegin();
+                                    _value2 = new HashMap<Integer, String>(Math.max(0, _map2.size));
+                                    for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
                                         
                                         
-                                        int _fbthriftKey2;
+                                        int _fbthriftKey3;
                                         
                                         
-                                        String _fbthriftValue2;
+                                        String _fbthriftValue3;
                                         
 
                                         {
                                             
-                                            int _value2 = oprot.readI32();
+                                            int _value3 = oprot.readI32();
                                             
                                             
-                                            _fbthriftKey2 = _value2;
+                                            _fbthriftKey3 = _value3;
                                             
                                         }
                                         {
                                             
-                                            String _value2 = oprot.readString();
+                                            String _value3 = oprot.readString();
                                             
                                             
-                                            _fbthriftValue2 = _value2;
+                                            _fbthriftValue3 = _value3;
                                             
                                         }
                                         
-                                        _value1.put(_fbthriftKey2, _fbthriftValue2);
+                                        _value2.put(_fbthriftKey3, _fbthriftValue3);
                                         
                                     }
                                     }
                                     oprot.readMapEnd();
-                        _fbthriftKey1 = _value1;
+                        _fbthriftKey2 = _value2;
                     }
                     {
-                        Map<Integer, String> _value1;
+                        Map<Integer, String> _value2;
                         {
-                                    TMap _map1 = oprot.readMapBegin();
-                                    _value1 = new HashMap<Integer, String>(Math.max(0, _map1.size));
-                                    for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                                    TMap _map2 = oprot.readMapBegin();
+                                    _value2 = new HashMap<Integer, String>(Math.max(0, _map2.size));
+                                    for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
                                         
                                         
-                                        int _fbthriftKey2;
+                                        int _fbthriftKey3;
                                         
                                         
-                                        String _fbthriftValue2;
+                                        String _fbthriftValue3;
                                         
 
                                         {
                                             
-                                            int _value2 = oprot.readI32();
+                                            int _value3 = oprot.readI32();
                                             
                                             
-                                            _fbthriftKey2 = _value2;
+                                            _fbthriftKey3 = _value3;
                                             
                                         }
                                         {
                                             
-                                            String _value2 = oprot.readString();
+                                            String _value3 = oprot.readString();
                                             
                                             
-                                            _fbthriftValue2 = _value2;
+                                            _fbthriftValue3 = _value3;
                                             
                                         }
                                         
-                                        _value1.put(_fbthriftKey2, _fbthriftValue2);
+                                        _value2.put(_fbthriftKey3, _fbthriftValue3);
                                         
                                     }
                                     }
                                     oprot.readMapEnd();
-                        _fbthriftValue1 = _value1;
+                        _fbthriftValue2 = _value2;
                     }
-                    mapKeyMapValMap.put(_fbthriftKey1, _fbthriftValue1);
+                    mapKeyMapValMap.put(_fbthriftKey2, _fbthriftValue2);
+                    
                 }
                 }
                 oprot.readMapEnd();
@@ -1189,112 +1213,114 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
           if (__field.type == TType.MAP) {
             Map<Set<List<Integer>>, Map<List<Set<String>>, String>> mapKeySetValMap;
                 {
-                TMap _map = oprot.readMapBegin();
-                mapKeySetValMap = new HashMap<Set<List<Integer>>, Map<List<Set<String>>, String>>(Math.max(0, _map.size));
-                for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                TMap _map1 = oprot.readMapBegin();
+                mapKeySetValMap = new HashMap<Set<List<Integer>>, Map<List<Set<String>>, String>>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
-                    Set<List<Integer>> _fbthriftKey1;
-                    Map<List<Set<String>>, String> _fbthriftValue1;
+                    
+                    Set<List<Integer>> _fbthriftKey2;
+                    Map<List<Set<String>>, String> _fbthriftValue2;
 
                     {
-                        Set<List<Integer>> _value1;
+                        Set<List<Integer>> _value2;
                         {
-                                    TSet _set1 = oprot.readSetBegin();
-                                    _value1 = new HashSet<List<Integer>>(Math.max(0, _set1.size));
-                                    for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                                    TSet _set2 = oprot.readSetBegin();
+                                    _value2 = new HashSet<List<Integer>>(Math.max(0, _set2.size));
+                                    for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
                                         
                                         
-                                        List<Integer> _value2;
+                                        List<Integer> _value3;
                                         {
-                                                    TList _list2 = oprot.readListBegin();
-                                                    _value2 = new ArrayList<Integer>(Math.max(0, _list2.size));
-                                                    for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
+                                                    TList _list3 = oprot.readListBegin();
+                                                    _value3 = new ArrayList<Integer>(Math.max(0, _list3.size));
+                                                    for (int _i3 = 0; (_list3.size < 0) ? oprot.peekList() : (_i3 < _list3.size); _i3++) {
                                                         
                                                         
-                                                        int _value3 = oprot.readI32();
+                                                        int _value4 = oprot.readI32();
                                                         
                                                         
-                                                        _value2.add(_value3);
+                                                        _value3.add(_value4);
                                                         
                                                     }
                                                     oprot.readListEnd();
                                                     }
                                         
                                         
-                                        _value1.add(_value2);
+                                        _value2.add(_value3);
                                         
                                     }
                                     oprot.readSetEnd();
                                     }
-                        _fbthriftKey1 = _value1;
+                        _fbthriftKey2 = _value2;
                     }
                     {
-                        Map<List<Set<String>>, String> _value1;
+                        Map<List<Set<String>>, String> _value2;
                         {
-                                    TMap _map1 = oprot.readMapBegin();
-                                    _value1 = new HashMap<List<Set<String>>, String>(Math.max(0, _map1.size));
-                                    for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                                    TMap _map2 = oprot.readMapBegin();
+                                    _value2 = new HashMap<List<Set<String>>, String>(Math.max(0, _map2.size));
+                                    for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
                                         
                                         
-                                        List<Set<String>> _fbthriftKey2;
+                                        List<Set<String>> _fbthriftKey3;
                                         
                                         
-                                        String _fbthriftValue2;
+                                        String _fbthriftValue3;
                                         
 
                                         {
                                             
-                                            List<Set<String>> _value2;
+                                            List<Set<String>> _value3;
                                             {
-                                                        TList _list2 = oprot.readListBegin();
-                                                        _value2 = new ArrayList<Set<String>>(Math.max(0, _list2.size));
-                                                        for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
+                                                        TList _list3 = oprot.readListBegin();
+                                                        _value3 = new ArrayList<Set<String>>(Math.max(0, _list3.size));
+                                                        for (int _i3 = 0; (_list3.size < 0) ? oprot.peekList() : (_i3 < _list3.size); _i3++) {
                                                             
                                                             
-                                                            Set<String> _value3;
+                                                            Set<String> _value4;
                                                             {
-                                                                        TSet _set3 = oprot.readSetBegin();
-                                                                        _value3 = new HashSet<String>(Math.max(0, _set3.size));
-                                                                        for (int _i3 = 0; (_set3.size < 0) ? oprot.peekSet() : (_i3 < _set3.size); _i3++) {
+                                                                        TSet _set4 = oprot.readSetBegin();
+                                                                        _value4 = new HashSet<String>(Math.max(0, _set4.size));
+                                                                        for (int _i4 = 0; (_set4.size < 0) ? oprot.peekSet() : (_i4 < _set4.size); _i4++) {
                                                                             
                                                                             
-                                                                            String _value4 = oprot.readString();
+                                                                            String _value5 = oprot.readString();
                                                                             
                                                                             
-                                                                            _value3.add(_value4);
+                                                                            _value4.add(_value5);
                                                                             
                                                                         }
                                                                         oprot.readSetEnd();
                                                                         }
                                                             
                                                             
-                                                            _value2.add(_value3);
+                                                            _value3.add(_value4);
                                                             
                                                         }
                                                         oprot.readListEnd();
                                                         }
                                             
                                             
-                                            _fbthriftKey2 = _value2;
+                                            _fbthriftKey3 = _value3;
                                             
                                         }
                                         {
                                             
-                                            String _value2 = oprot.readString();
+                                            String _value3 = oprot.readString();
                                             
                                             
-                                            _fbthriftValue2 = _value2;
+                                            _fbthriftValue3 = _value3;
                                             
                                         }
                                         
-                                        _value1.put(_fbthriftKey2, _fbthriftValue2);
+                                        _value2.put(_fbthriftKey3, _fbthriftValue3);
                                         
                                     }
                                     }
                                     oprot.readMapEnd();
-                        _fbthriftValue1 = _value1;
+                        _fbthriftValue2 = _value2;
                     }
-                    mapKeySetValMap.put(_fbthriftKey1, _fbthriftValue1);
+                    mapKeySetValMap.put(_fbthriftKey2, _fbthriftValue2);
+                    
                 }
                 }
                 oprot.readMapEnd();
@@ -1307,124 +1333,126 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
           if (__field.type == TType.MAP) {
             Map<Map<Map<Integer, String>, String>, Map<Integer, String>> nestedMaps;
                 {
-                TMap _map = oprot.readMapBegin();
-                nestedMaps = new HashMap<Map<Map<Integer, String>, String>, Map<Integer, String>>(Math.max(0, _map.size));
-                for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                TMap _map1 = oprot.readMapBegin();
+                nestedMaps = new HashMap<Map<Map<Integer, String>, String>, Map<Integer, String>>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
-                    Map<Map<Integer, String>, String> _fbthriftKey1;
-                    Map<Integer, String> _fbthriftValue1;
+                    
+                    Map<Map<Integer, String>, String> _fbthriftKey2;
+                    Map<Integer, String> _fbthriftValue2;
 
                     {
-                        Map<Map<Integer, String>, String> _value1;
+                        Map<Map<Integer, String>, String> _value2;
                         {
-                                    TMap _map1 = oprot.readMapBegin();
-                                    _value1 = new HashMap<Map<Integer, String>, String>(Math.max(0, _map1.size));
-                                    for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                                    TMap _map2 = oprot.readMapBegin();
+                                    _value2 = new HashMap<Map<Integer, String>, String>(Math.max(0, _map2.size));
+                                    for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
                                         
                                         
-                                        Map<Integer, String> _fbthriftKey2;
+                                        Map<Integer, String> _fbthriftKey3;
                                         
                                         
-                                        String _fbthriftValue2;
+                                        String _fbthriftValue3;
                                         
 
                                         {
                                             
-                                            Map<Integer, String> _value2;
+                                            Map<Integer, String> _value3;
                                             {
-                                                        TMap _map2 = oprot.readMapBegin();
-                                                        _value2 = new HashMap<Integer, String>(Math.max(0, _map2.size));
-                                                        for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
+                                                        TMap _map3 = oprot.readMapBegin();
+                                                        _value3 = new HashMap<Integer, String>(Math.max(0, _map3.size));
+                                                        for (int _i3 = 0; (_map3.size < 0) ? oprot.peekMap() : (_i3 < _map3.size); _i3++) {
                                                             
                                                             
-                                                            int _fbthriftKey3;
+                                                            int _fbthriftKey4;
                                                             
                                                             
-                                                            String _fbthriftValue3;
+                                                            String _fbthriftValue4;
                                                             
 
                                                             {
                                                                 
-                                                                int _value3 = oprot.readI32();
+                                                                int _value4 = oprot.readI32();
                                                                 
                                                                 
-                                                                _fbthriftKey3 = _value3;
+                                                                _fbthriftKey4 = _value4;
                                                                 
                                                             }
                                                             {
                                                                 
-                                                                String _value3 = oprot.readString();
+                                                                String _value4 = oprot.readString();
                                                                 
                                                                 
-                                                                _fbthriftValue3 = _value3;
+                                                                _fbthriftValue4 = _value4;
                                                                 
                                                             }
                                                             
-                                                            _value2.put(_fbthriftKey3, _fbthriftValue3);
+                                                            _value3.put(_fbthriftKey4, _fbthriftValue4);
                                                             
                                                         }
                                                         }
                                                         oprot.readMapEnd();
                                             
                                             
-                                            _fbthriftKey2 = _value2;
+                                            _fbthriftKey3 = _value3;
                                             
                                         }
                                         {
                                             
-                                            String _value2 = oprot.readString();
+                                            String _value3 = oprot.readString();
                                             
                                             
-                                            _fbthriftValue2 = _value2;
+                                            _fbthriftValue3 = _value3;
                                             
                                         }
                                         
-                                        _value1.put(_fbthriftKey2, _fbthriftValue2);
+                                        _value2.put(_fbthriftKey3, _fbthriftValue3);
                                         
                                     }
                                     }
                                     oprot.readMapEnd();
-                        _fbthriftKey1 = _value1;
+                        _fbthriftKey2 = _value2;
                     }
                     {
-                        Map<Integer, String> _value1;
+                        Map<Integer, String> _value2;
                         {
-                                    TMap _map1 = oprot.readMapBegin();
-                                    _value1 = new HashMap<Integer, String>(Math.max(0, _map1.size));
-                                    for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                                    TMap _map2 = oprot.readMapBegin();
+                                    _value2 = new HashMap<Integer, String>(Math.max(0, _map2.size));
+                                    for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
                                         
                                         
-                                        int _fbthriftKey2;
+                                        int _fbthriftKey3;
                                         
                                         
-                                        String _fbthriftValue2;
+                                        String _fbthriftValue3;
                                         
 
                                         {
                                             
-                                            int _value2 = oprot.readI32();
+                                            int _value3 = oprot.readI32();
                                             
                                             
-                                            _fbthriftKey2 = _value2;
+                                            _fbthriftKey3 = _value3;
                                             
                                         }
                                         {
                                             
-                                            String _value2 = oprot.readString();
+                                            String _value3 = oprot.readString();
                                             
                                             
-                                            _fbthriftValue2 = _value2;
+                                            _fbthriftValue3 = _value3;
                                             
                                         }
                                         
-                                        _value1.put(_fbthriftKey2, _fbthriftValue2);
+                                        _value2.put(_fbthriftKey3, _fbthriftValue3);
                                         
                                     }
                                     }
                                     oprot.readMapEnd();
-                        _fbthriftValue1 = _value1;
+                        _fbthriftValue2 = _value2;
                     }
-                    nestedMaps.put(_fbthriftKey1, _fbthriftValue1);
+                    nestedMaps.put(_fbthriftKey2, _fbthriftValue2);
+                    
                 }
                 }
                 oprot.readMapEnd();
@@ -1437,36 +1465,38 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
           if (__field.type == TType.MAP) {
             Map<Integer, List<test.fixtures.complex_struct.MyStruct>> mapKeyIntValList;
                 {
-                TMap _map = oprot.readMapBegin();
-                mapKeyIntValList = new HashMap<Integer, List<test.fixtures.complex_struct.MyStruct>>(Math.max(0, _map.size));
-                for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                TMap _map1 = oprot.readMapBegin();
+                mapKeyIntValList = new HashMap<Integer, List<test.fixtures.complex_struct.MyStruct>>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
-                    int _fbthriftKey1;
-                    List<test.fixtures.complex_struct.MyStruct> _fbthriftValue1;
+                    
+                    int _fbthriftKey2;
+                    List<test.fixtures.complex_struct.MyStruct> _fbthriftValue2;
 
                     {
-                        int _value1 = oprot.readI32();
-                        _fbthriftKey1 = _value1;
+                        int _value2 = oprot.readI32();
+                        _fbthriftKey2 = _value2;
                     }
                     {
-                        List<test.fixtures.complex_struct.MyStruct> _value1;
+                        List<test.fixtures.complex_struct.MyStruct> _value2;
                         {
-                                    TList _list1 = oprot.readListBegin();
-                                    _value1 = new ArrayList<test.fixtures.complex_struct.MyStruct>(Math.max(0, _list1.size));
-                                    for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                                    TList _list2 = oprot.readListBegin();
+                                    _value2 = new ArrayList<test.fixtures.complex_struct.MyStruct>(Math.max(0, _list2.size));
+                                    for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                         
                                         
-                                        test.fixtures.complex_struct.MyStruct _value2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                        test.fixtures.complex_struct.MyStruct _value3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                                         
                                         
-                                        _value1.add(_value2);
+                                        _value2.add(_value3);
                                         
                                     }
                                     oprot.readListEnd();
                                     }
-                        _fbthriftValue1 = _value1;
+                        _fbthriftValue2 = _value2;
                     }
-                    mapKeyIntValList.put(_fbthriftKey1, _fbthriftValue1);
+                    mapKeyIntValList.put(_fbthriftKey2, _fbthriftValue2);
+                    
                 }
                 }
                 oprot.readMapEnd();
@@ -1479,36 +1509,38 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
           if (__field.type == TType.MAP) {
             Map<Integer, Set<Boolean>> mapKeyIntValSet;
                 {
-                TMap _map = oprot.readMapBegin();
-                mapKeyIntValSet = new HashMap<Integer, Set<Boolean>>(Math.max(0, _map.size));
-                for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                TMap _map1 = oprot.readMapBegin();
+                mapKeyIntValSet = new HashMap<Integer, Set<Boolean>>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
-                    int _fbthriftKey1;
-                    Set<Boolean> _fbthriftValue1;
+                    
+                    int _fbthriftKey2;
+                    Set<Boolean> _fbthriftValue2;
 
                     {
-                        int _value1 = oprot.readI32();
-                        _fbthriftKey1 = _value1;
+                        int _value2 = oprot.readI32();
+                        _fbthriftKey2 = _value2;
                     }
                     {
-                        Set<Boolean> _value1;
+                        Set<Boolean> _value2;
                         {
-                                    TSet _set1 = oprot.readSetBegin();
-                                    _value1 = new HashSet<Boolean>(Math.max(0, _set1.size));
-                                    for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                                    TSet _set2 = oprot.readSetBegin();
+                                    _value2 = new HashSet<Boolean>(Math.max(0, _set2.size));
+                                    for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
                                         
                                         
-                                        boolean _value2 = oprot.readBool();
+                                        boolean _value3 = oprot.readBool();
                                         
                                         
-                                        _value1.add(_value2);
+                                        _value2.add(_value3);
                                         
                                     }
                                     oprot.readSetEnd();
                                     }
-                        _fbthriftValue1 = _value1;
+                        _fbthriftValue2 = _value2;
                     }
-                    mapKeyIntValSet.put(_fbthriftKey1, _fbthriftValue1);
+                    mapKeyIntValSet.put(_fbthriftKey2, _fbthriftValue2);
+                    
                 }
                 }
                 oprot.readMapEnd();
@@ -1521,36 +1553,38 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
           if (__field.type == TType.MAP) {
             Map<Set<Boolean>, test.fixtures.complex_struct.MyEnum> mapKeySetValInt;
                 {
-                TMap _map = oprot.readMapBegin();
-                mapKeySetValInt = new HashMap<Set<Boolean>, test.fixtures.complex_struct.MyEnum>(Math.max(0, _map.size));
-                for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                TMap _map1 = oprot.readMapBegin();
+                mapKeySetValInt = new HashMap<Set<Boolean>, test.fixtures.complex_struct.MyEnum>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
-                    Set<Boolean> _fbthriftKey1;
-                    test.fixtures.complex_struct.MyEnum _fbthriftValue1;
+                    
+                    Set<Boolean> _fbthriftKey2;
+                    test.fixtures.complex_struct.MyEnum _fbthriftValue2;
 
                     {
-                        Set<Boolean> _value1;
+                        Set<Boolean> _value2;
                         {
-                                    TSet _set1 = oprot.readSetBegin();
-                                    _value1 = new HashSet<Boolean>(Math.max(0, _set1.size));
-                                    for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                                    TSet _set2 = oprot.readSetBegin();
+                                    _value2 = new HashSet<Boolean>(Math.max(0, _set2.size));
+                                    for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
                                         
                                         
-                                        boolean _value2 = oprot.readBool();
+                                        boolean _value3 = oprot.readBool();
                                         
                                         
-                                        _value1.add(_value2);
+                                        _value2.add(_value3);
                                         
                                     }
                                     oprot.readSetEnd();
                                     }
-                        _fbthriftKey1 = _value1;
+                        _fbthriftKey2 = _value2;
                     }
                     {
-                        test.fixtures.complex_struct.MyEnum _value1 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
-                        _fbthriftValue1 = _value1;
+                        test.fixtures.complex_struct.MyEnum _value2 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+                        _fbthriftValue2 = _value2;
                     }
-                    mapKeySetValInt.put(_fbthriftKey1, _fbthriftValue1);
+                    mapKeySetValInt.put(_fbthriftKey2, _fbthriftValue2);
+                    
                 }
                 }
                 oprot.readMapEnd();
@@ -1563,84 +1597,86 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
           if (__field.type == TType.MAP) {
             Map<List<Integer>, Set<Map<Double, String>>> mapKeyListValSet;
                 {
-                TMap _map = oprot.readMapBegin();
-                mapKeyListValSet = new HashMap<List<Integer>, Set<Map<Double, String>>>(Math.max(0, _map.size));
-                for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                TMap _map1 = oprot.readMapBegin();
+                mapKeyListValSet = new HashMap<List<Integer>, Set<Map<Double, String>>>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
-                    List<Integer> _fbthriftKey1;
-                    Set<Map<Double, String>> _fbthriftValue1;
+                    
+                    List<Integer> _fbthriftKey2;
+                    Set<Map<Double, String>> _fbthriftValue2;
 
                     {
-                        List<Integer> _value1;
+                        List<Integer> _value2;
                         {
-                                    TList _list1 = oprot.readListBegin();
-                                    _value1 = new ArrayList<Integer>(Math.max(0, _list1.size));
-                                    for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                                    TList _list2 = oprot.readListBegin();
+                                    _value2 = new ArrayList<Integer>(Math.max(0, _list2.size));
+                                    for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                         
                                         
-                                        int _value2 = oprot.readI32();
+                                        int _value3 = oprot.readI32();
                                         
                                         
-                                        _value1.add(_value2);
+                                        _value2.add(_value3);
                                         
                                     }
                                     oprot.readListEnd();
                                     }
-                        _fbthriftKey1 = _value1;
+                        _fbthriftKey2 = _value2;
                     }
                     {
-                        Set<Map<Double, String>> _value1;
+                        Set<Map<Double, String>> _value2;
                         {
-                                    TSet _set1 = oprot.readSetBegin();
-                                    _value1 = new HashSet<Map<Double, String>>(Math.max(0, _set1.size));
-                                    for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                                    TSet _set2 = oprot.readSetBegin();
+                                    _value2 = new HashSet<Map<Double, String>>(Math.max(0, _set2.size));
+                                    for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
                                         
                                         
-                                        Map<Double, String> _value2;
+                                        Map<Double, String> _value3;
                                         {
-                                                    TMap _map2 = oprot.readMapBegin();
-                                                    _value2 = new HashMap<Double, String>(Math.max(0, _map2.size));
-                                                    for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
+                                                    TMap _map3 = oprot.readMapBegin();
+                                                    _value3 = new HashMap<Double, String>(Math.max(0, _map3.size));
+                                                    for (int _i3 = 0; (_map3.size < 0) ? oprot.peekMap() : (_i3 < _map3.size); _i3++) {
                                                         
                                                         
-                                                        double _fbthriftKey3;
+                                                        double _fbthriftKey4;
                                                         
                                                         
-                                                        String _fbthriftValue3;
+                                                        String _fbthriftValue4;
                                                         
 
                                                         {
                                                             
-                                                            double _value3 = oprot.readDouble();
+                                                            double _value4 = oprot.readDouble();
                                                             
                                                             
-                                                            _fbthriftKey3 = _value3;
+                                                            _fbthriftKey4 = _value4;
                                                             
                                                         }
                                                         {
                                                             
-                                                            String _value3 = oprot.readString();
+                                                            String _value4 = oprot.readString();
                                                             
                                                             
-                                                            _fbthriftValue3 = _value3;
+                                                            _fbthriftValue4 = _value4;
                                                             
                                                         }
                                                         
-                                                        _value2.put(_fbthriftKey3, _fbthriftValue3);
+                                                        _value3.put(_fbthriftKey4, _fbthriftValue4);
                                                         
                                                     }
                                                     }
                                                     oprot.readMapEnd();
                                         
                                         
-                                        _value1.add(_value2);
+                                        _value2.add(_value3);
                                         
                                     }
                                     oprot.readSetEnd();
                                     }
-                        _fbthriftValue1 = _value1;
+                        _fbthriftValue2 = _value2;
                     }
-                    mapKeyListValSet.put(_fbthriftKey1, _fbthriftValue1);
+                    mapKeyListValSet.put(_fbthriftKey2, _fbthriftValue2);
+                    
                 }
                 }
                 oprot.readMapEnd();

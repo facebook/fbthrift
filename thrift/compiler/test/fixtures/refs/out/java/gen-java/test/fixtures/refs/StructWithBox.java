@@ -194,12 +194,14 @@ public final class StructWithBox implements com.facebook.thrift.payload.ThriftSe
           if (__field.type == TType.LIST) {
             List<Long> b;
                 {
-                TList _list = oprot.readListBegin();
-                b = new ArrayList<Long>(Math.max(0, _list.size));
-                for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                TList _list1 = oprot.readListBegin();
+                b = new ArrayList<Long>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
-                    long _value1 = oprot.readI64();
-                    b.add(_value1);
+                    
+                    long _value2 = oprot.readI64();
+                    b.add(_value2);
+                    
                 }
                 oprot.readListEnd();
                 }

@@ -998,12 +998,14 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
           if (__field.type == TType.LIST) {
             List<Short> terseListField;
                 {
-                TList _list = oprot.readListBegin();
-                terseListField = new ArrayList<Short>(Math.max(0, _list.size));
-                for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                TList _list1 = oprot.readListBegin();
+                terseListField = new ArrayList<Short>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
-                    short _value1 = oprot.readI16();
-                    terseListField.add(_value1);
+                    
+                    short _value2 = oprot.readI16();
+                    terseListField.add(_value2);
+                    
                 }
                 oprot.readListEnd();
                 }
@@ -1016,12 +1018,14 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
           if (__field.type == TType.SET) {
             Set<Short> terseSetField;
                 {
-                TSet _set = oprot.readSetBegin();
-                terseSetField = new HashSet<Short>(Math.max(0, _set.size));
-                for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
+                TSet _set1 = oprot.readSetBegin();
+                terseSetField = new HashSet<Short>(Math.max(0, _set1.size));
+                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
-                    short _value1 = oprot.readI16();
-                    terseSetField.add(_value1);
+                    
+                    short _value2 = oprot.readI16();
+                    terseSetField.add(_value2);
+                    
                 }
                 oprot.readSetEnd();
                 }
@@ -1034,22 +1038,24 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
           if (__field.type == TType.MAP) {
             Map<Short, Short> terseMapField;
                 {
-                TMap _map = oprot.readMapBegin();
-                terseMapField = new HashMap<Short, Short>(Math.max(0, _map.size));
-                for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                TMap _map1 = oprot.readMapBegin();
+                terseMapField = new HashMap<Short, Short>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
-                    short _fbthriftKey1;
-                    short _fbthriftValue1;
+                    
+                    short _fbthriftKey2;
+                    short _fbthriftValue2;
 
                     {
-                        short _value1 = oprot.readI16();
-                        _fbthriftKey1 = _value1;
+                        short _value2 = oprot.readI16();
+                        _fbthriftKey2 = _value2;
                     }
                     {
-                        short _value1 = oprot.readI16();
-                        _fbthriftValue1 = _value1;
+                        short _value2 = oprot.readI16();
+                        _fbthriftValue2 = _value2;
                     }
-                    terseMapField.put(_fbthriftKey1, _fbthriftValue1);
+                    terseMapField.put(_fbthriftKey2, _fbthriftValue2);
+                    
                 }
                 }
                 oprot.readMapEnd();
@@ -1158,12 +1164,14 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
           if (__field.type == TType.LIST) {
             List<Short> listField;
                 {
-                TList _list = oprot.readListBegin();
-                listField = new ArrayList<Short>(Math.max(0, _list.size));
-                for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                TList _list1 = oprot.readListBegin();
+                listField = new ArrayList<Short>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
-                    short _value1 = oprot.readI16();
-                    listField.add(_value1);
+                    
+                    short _value2 = oprot.readI16();
+                    listField.add(_value2);
+                    
                 }
                 oprot.readListEnd();
                 }
@@ -1176,12 +1184,14 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
           if (__field.type == TType.SET) {
             Set<Short> setField;
                 {
-                TSet _set = oprot.readSetBegin();
-                setField = new HashSet<Short>(Math.max(0, _set.size));
-                for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
+                TSet _set1 = oprot.readSetBegin();
+                setField = new HashSet<Short>(Math.max(0, _set1.size));
+                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
-                    short _value1 = oprot.readI16();
-                    setField.add(_value1);
+                    
+                    short _value2 = oprot.readI16();
+                    setField.add(_value2);
+                    
                 }
                 oprot.readSetEnd();
                 }
@@ -1194,22 +1204,24 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
           if (__field.type == TType.MAP) {
             Map<Short, Short> mapField;
                 {
-                TMap _map = oprot.readMapBegin();
-                mapField = new HashMap<Short, Short>(Math.max(0, _map.size));
-                for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                TMap _map1 = oprot.readMapBegin();
+                mapField = new HashMap<Short, Short>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
-                    short _fbthriftKey1;
-                    short _fbthriftValue1;
+                    
+                    short _fbthriftKey2;
+                    short _fbthriftValue2;
 
                     {
-                        short _value1 = oprot.readI16();
-                        _fbthriftKey1 = _value1;
+                        short _value2 = oprot.readI16();
+                        _fbthriftKey2 = _value2;
                     }
                     {
-                        short _value1 = oprot.readI16();
-                        _fbthriftValue1 = _value1;
+                        short _value2 = oprot.readI16();
+                        _fbthriftValue2 = _value2;
                     }
-                    mapField.put(_fbthriftKey1, _fbthriftValue1);
+                    mapField.put(_fbthriftKey2, _fbthriftValue2);
+                    
                 }
                 }
                 oprot.readMapEnd();

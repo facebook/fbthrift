@@ -410,26 +410,28 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
             if (__field.type == SET_FLOAT_FIELD_DESC.type) {
               List<List<Float>> setFloat;
                 {
-                TList _list = oprot.readListBegin();
-                setFloat = new ArrayList<List<Float>>(Math.max(0, _list.size));
-                for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                TList _list1 = oprot.readListBegin();
+                setFloat = new ArrayList<List<Float>>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
-                    List<Float> _value1;
+                    
+                    List<Float> _value2;
                     {
-                                TList _list1 = oprot.readListBegin();
-                                _value1 = new ArrayList<Float>(Math.max(0, _list1.size));
-                                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                                TList _list2 = oprot.readListBegin();
+                                _value2 = new ArrayList<Float>(Math.max(0, _list2.size));
+                                for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                     
                                     
-                                    float _value2 = oprot.readFloat();
+                                    float _value3 = oprot.readFloat();
                                     
                                     
-                                    _value1.add(_value2);
+                                    _value2.add(_value3);
                                     
                                 }
                                 oprot.readListEnd();
                                 }
-    setFloat.add(_value1);
+    setFloat.add(_value2);
+                    
                 }
                 oprot.readListEnd();
                 }

@@ -342,12 +342,14 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
           if (__field.type == TType.LIST) {
             List<com.facebook.thrift.my.AdaptedFoo_1> structListField;
                 {
-                TList _list = oprot.readListBegin();
-                structListField = new ArrayList<com.facebook.thrift.my.AdaptedFoo_1>(Math.max(0, _list.size));
-                for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                TList _list1 = oprot.readListBegin();
+                structListField = new ArrayList<com.facebook.thrift.my.AdaptedFoo_1>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
-                    test.fixtures.adapter.Foo _value1 = test.fixtures.adapter.Foo.read0(oprot);
-                    structListField.add(__FooWithAdapter_9317_Adapter.fromThrift(_value1));
+                    
+                    test.fixtures.adapter.Foo _value2 = test.fixtures.adapter.Foo.read0(oprot);
+                    structListField.add(__FooWithAdapter_9317_Adapter.fromThrift(_value2));
+                    
                 }
                 oprot.readListEnd();
                 }
@@ -360,12 +362,14 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
           if (__field.type == TType.LIST) {
             List<com.facebook.thrift.my.AdaptedFoo_1> optionalStructListField;
                 {
-                TList _list = oprot.readListBegin();
-                optionalStructListField = new ArrayList<com.facebook.thrift.my.AdaptedFoo_1>(Math.max(0, _list.size));
-                for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                TList _list1 = oprot.readListBegin();
+                optionalStructListField = new ArrayList<com.facebook.thrift.my.AdaptedFoo_1>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
-                    test.fixtures.adapter.Foo _value1 = test.fixtures.adapter.Foo.read0(oprot);
-                    optionalStructListField.add(__FooWithAdapter_9317_Adapter.fromThrift(_value1));
+                    
+                    test.fixtures.adapter.Foo _value2 = test.fixtures.adapter.Foo.read0(oprot);
+                    optionalStructListField.add(__FooWithAdapter_9317_Adapter.fromThrift(_value2));
+                    
                 }
                 oprot.readListEnd();
                 }
@@ -402,12 +406,14 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
           if (__field.type == TType.LIST) {
             List<test.fixtures.adapter.Foo> structListFieldWithTypedef;
                 {
-                TList _list = oprot.readListBegin();
-                structListFieldWithTypedef = new ArrayList<test.fixtures.adapter.Foo>(Math.max(0, _list.size));
-                for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                TList _list1 = oprot.readListBegin();
+                structListFieldWithTypedef = new ArrayList<test.fixtures.adapter.Foo>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
-                    test.fixtures.adapter.Foo _value1 = test.fixtures.adapter.Foo.read0(oprot);
-                    structListFieldWithTypedef.add(_value1);
+                    
+                    test.fixtures.adapter.Foo _value2 = test.fixtures.adapter.Foo.read0(oprot);
+                    structListFieldWithTypedef.add(_value2);
+                    
                 }
                 oprot.readListEnd();
                 }

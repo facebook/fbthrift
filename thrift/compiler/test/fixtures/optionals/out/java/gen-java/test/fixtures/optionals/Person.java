@@ -415,12 +415,14 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
           if (__field.type == TType.SET) {
             Set<Long> friends;
                 {
-                TSet _set = oprot.readSetBegin();
-                friends = new HashSet<Long>(Math.max(0, _set.size));
-                for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
+                TSet _set1 = oprot.readSetBegin();
+                friends = new HashSet<Long>(Math.max(0, _set1.size));
+                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
-                    long _value1 = oprot.readI64();
-                    friends.add(_value1);
+                    
+                    long _value2 = oprot.readI64();
+                    friends.add(_value2);
+                    
                 }
                 oprot.readSetEnd();
                 }
@@ -441,22 +443,24 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
           if (__field.type == TType.MAP) {
             Map<test.fixtures.optionals.Animal, String> petNames;
                 {
-                TMap _map = oprot.readMapBegin();
-                petNames = new HashMap<test.fixtures.optionals.Animal, String>(Math.max(0, _map.size));
-                for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                TMap _map1 = oprot.readMapBegin();
+                petNames = new HashMap<test.fixtures.optionals.Animal, String>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
-                    test.fixtures.optionals.Animal _fbthriftKey1;
-                    String _fbthriftValue1;
+                    
+                    test.fixtures.optionals.Animal _fbthriftKey2;
+                    String _fbthriftValue2;
 
                     {
-                        test.fixtures.optionals.Animal _value1 = test.fixtures.optionals.Animal.fromInteger(oprot.readI32());
-                        _fbthriftKey1 = _value1;
+                        test.fixtures.optionals.Animal _value2 = test.fixtures.optionals.Animal.fromInteger(oprot.readI32());
+                        _fbthriftKey2 = _value2;
                     }
                     {
-                        String _value1 = oprot.readString();
-                        _fbthriftValue1 = _value1;
+                        String _value2 = oprot.readString();
+                        _fbthriftValue2 = _value2;
                     }
-                    petNames.put(_fbthriftKey1, _fbthriftValue1);
+                    petNames.put(_fbthriftKey2, _fbthriftValue2);
+                    
                 }
                 }
                 oprot.readMapEnd();
@@ -477,12 +481,14 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
           if (__field.type == TType.LIST) {
             List<test.fixtures.optionals.Vehicle> vehicles;
                 {
-                TList _list = oprot.readListBegin();
-                vehicles = new ArrayList<test.fixtures.optionals.Vehicle>(Math.max(0, _list.size));
-                for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                TList _list1 = oprot.readListBegin();
+                vehicles = new ArrayList<test.fixtures.optionals.Vehicle>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
-                    test.fixtures.optionals.Vehicle _value1 = test.fixtures.optionals.Vehicle.read0(oprot);
-                    vehicles.add(_value1);
+                    
+                    test.fixtures.optionals.Vehicle _value2 = test.fixtures.optionals.Vehicle.read0(oprot);
+                    vehicles.add(_value2);
+                    
                 }
                 oprot.readListEnd();
                 }

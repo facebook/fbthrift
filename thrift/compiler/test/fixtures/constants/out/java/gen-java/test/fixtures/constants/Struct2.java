@@ -237,12 +237,14 @@ public final class Struct2 implements com.facebook.thrift.payload.ThriftSerializ
           if (__field.type == TType.LIST) {
             List<Integer> d;
                 {
-                TList _list = oprot.readListBegin();
-                d = new ArrayList<Integer>(Math.max(0, _list.size));
-                for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                TList _list1 = oprot.readListBegin();
+                d = new ArrayList<Integer>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
-                    int _value1 = oprot.readI32();
-                    d.add(_value1);
+                    
+                    int _value2 = oprot.readI32();
+                    d.add(_value2);
+                    
                 }
                 oprot.readListEnd();
                 }

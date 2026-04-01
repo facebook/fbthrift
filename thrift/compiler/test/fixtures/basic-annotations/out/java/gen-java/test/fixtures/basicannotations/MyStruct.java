@@ -407,12 +407,14 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
           if (__field.type == TType.LIST) {
             List<String> cppTypeAnnotation;
                 {
-                TList _list = oprot.readListBegin();
-                cppTypeAnnotation = new ArrayList<String>(Math.max(0, _list.size));
-                for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                TList _list1 = oprot.readListBegin();
+                cppTypeAnnotation = new ArrayList<String>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
-                    String _value1 = oprot.readString();
-                    cppTypeAnnotation.add(_value1);
+                    
+                    String _value2 = oprot.readString();
+                    cppTypeAnnotation.add(_value2);
+                    
                 }
                 oprot.readListEnd();
                 }

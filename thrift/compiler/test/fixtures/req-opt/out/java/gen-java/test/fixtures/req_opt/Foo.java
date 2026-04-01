@@ -229,12 +229,14 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
           if (__field.type == TType.LIST) {
             List<Boolean> myBools;
                 {
-                TList _list = oprot.readListBegin();
-                myBools = new ArrayList<Boolean>(Math.max(0, _list.size));
-                for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                TList _list1 = oprot.readListBegin();
+                myBools = new ArrayList<Boolean>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
-                    boolean _value1 = oprot.readBool();
-                    myBools.add(_value1);
+                    
+                    boolean _value2 = oprot.readBool();
+                    myBools.add(_value2);
+                    
                 }
                 oprot.readListEnd();
                 }
@@ -247,12 +249,14 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
           if (__field.type == TType.LIST) {
             List<Integer> myNumbers;
                 {
-                TList _list = oprot.readListBegin();
-                myNumbers = new ArrayList<Integer>(Math.max(0, _list.size));
-                for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                TList _list1 = oprot.readListBegin();
+                myNumbers = new ArrayList<Integer>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
-                    int _value1 = oprot.readI32();
-                    myNumbers.add(_value1);
+                    
+                    int _value2 = oprot.readI32();
+                    myNumbers.add(_value2);
+                    
                 }
                 oprot.readListEnd();
                 }
