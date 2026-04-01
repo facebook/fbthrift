@@ -1973,7 +1973,7 @@ void t_mstch_rust_generator::generate_program() {
   t_whisker_generator::render_to_file("consts.rs", "consts.rs", context);
   render_to_file(prog, "client.rs", "client.rs");
   render_to_file(prog, "server.rs", "server.rs");
-  render_to_file(prog, "mock.rs", "mock.rs");
+  t_whisker_generator::render_to_file("mock.rs", "mock.rs", context);
   write_output("namespace-rust", fmt::format("{}\n", namespace_rust));
   write_output(
       "namespace-cpp2",
