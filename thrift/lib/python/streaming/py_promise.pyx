@@ -24,6 +24,7 @@ import sys
 from folly.iobuf cimport IOBuf
 from thrift.python.exceptions cimport (
     ApplicationError,
+    GeneratedError,
     cTApplicationExceptionType__UNKNOWN,
 )
 from thrift.python.streaming.closeable cimport CloseableGenerator
@@ -162,6 +163,15 @@ async def runGenerator(
                     msg.encode('UTF-8'),
                 )
             )
+    except GeneratedError as ex_from_sink_client:
+        # when the sink throws an IDL-dedclared exception at client side, we don't
+        # need to print it. We send back ApplicationException but it doesn't
+        # matter because client won't read final response because exception
+        # has already propagated on client side.
+        promise.error_ta(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN,
+            repr(ex_from_sink_client).encode('UTF-8')
+        ))
     except Exception as ex:
         err_msg = SINK_ERR_MSG if is_client_sink else SERVER_ERR_MSG
         print(

@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from libcpp cimport bool as cbool
 from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.optional cimport optional
 
@@ -92,8 +93,11 @@ cdef api int invoke_server_sink_callback(
 ) except -1
 
 cdef class ServerSinkGenerator:
-    cdef cIOBufSinkGenerator _cpp_gen
+    cdef unique_ptr[cIOBufSinkGenerator] _cpp_gen
     cdef cFollyExecutor* _executor
+    cdef cbool _closed
+
+    cdef close(self)
 
     @staticmethod
     cdef _fbthrift_create(
