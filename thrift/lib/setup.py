@@ -31,9 +31,9 @@ Options.fast_fail = True
 # CMake sets CYTHON_INCLUDE_PATH with paths to folly, boost, and build directories
 # This is needed for both --api-only and build_ext phases
 cython_include_path = os.environ.get("CYTHON_INCLUDE_PATH", "")
-include_dirs = []
+include_dirs = ["."]
 if cython_include_path:
-    include_dirs = [p for p in cython_include_path.split(":") if p]
+    include_dirs.extend([p for p in cython_include_path.split(":") if p])
 
 if "--api-only" in sys.argv:
     if include_dirs:
@@ -128,6 +128,7 @@ if "--api-only" in sys.argv:
         cplus=True,
         language_level=3,
     )
+
 else:
     python_lib_idx = sys.argv.index("--libpython")
     python_lib = sys.argv[python_lib_idx + 1][len("lib") : -len(".so")]

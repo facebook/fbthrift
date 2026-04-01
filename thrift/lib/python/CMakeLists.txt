@@ -27,11 +27,18 @@ message(STATUS "FOLLY_INCLUDE_DIR: ${FOLLY_INCLUDE_DIR}")
 #   - lib/pythonX.Y/site-packages/ (setup.py install)
 #   - local/lib/pythonX.Y/dist-packages/ (pip --prefix on Debian/Ubuntu)
 set(_folly_py_version "python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}")
+unset(_folly_pxd_file CACHE)
 find_file(_folly_pxd_file
   NAMES folly/__init__.pxd
   HINTS
     "${FOLLY_PREFIX_DIR}/lib/${_folly_py_version}/site-packages"
+    "${FOLLY_PREFIX_DIR}/lib64/${_folly_py_version}/site-packages"
     "${FOLLY_PREFIX_DIR}/local/lib/${_folly_py_version}/dist-packages"
+    "${FOLLY_PREFIX_DIR}/local/lib64/${_folly_py_version}/dist-packages"
+    "${FOLLY_PREFIX_DIR}/lib/x86_64-linux-gnu/${_folly_py_version}/site-packages"
+    "${FOLLY_PREFIX_DIR}/lib64/x86_64-linux-gnu/${_folly_py_version}/site-packages"
+    "${FOLLY_PREFIX_DIR}/local/lib/x86_64-linux-gnu/${_folly_py_version}/dist-packages"
+    "${FOLLY_PREFIX_DIR}/local/lib64/x86_64-linux-gnu/${_folly_py_version}/dist-packages"
   NO_DEFAULT_PATH
   REQUIRED
 )
@@ -418,7 +425,7 @@ add_custom_command(
     "CXXFLAGS=${CMAKE_CXX_FLAGS}"
     "CXX=${CMAKE_CXX_COMPILER}"
     "CYTHON_INCLUDE_PATH=${cython_include_path}"
-    python3 ${_lib_dir}/setup.py -v --api-only
+    ${Python3_EXECUTABLE} ${_lib_dir}/setup.py -v --api-only
   DEPENDS
     create_binding_symlink_python_types
     create_binding_symlink_python
@@ -529,6 +536,9 @@ set_property(TARGET thrift_python_cpp PROPERTY VERSION ${PACKAGE_VERSION})
 target_compile_definitions(thrift_python_cpp PRIVATE BOOST_NO_AUTO_PTR)
 target_compile_definitions(
   thrift_python_cpp PRIVATE THRIFT_NO_HTTP_CLIENT_CHANNEL)
+# Workaround for https://github.com/cython/cython/issues/5973
+target_compile_definitions(
+  thrift_python_cpp PRIVATE __PYX_ENUM_CLASS_DECL=)
 target_include_directories(
   thrift_python_cpp PRIVATE "${_cybld}" ${Python3_INCLUDE_DIRS})
 # Link strategy:
@@ -674,7 +684,7 @@ add_custom_command(TARGET thrift_python_and_py3_bindings
     "CYTHON_INCLUDE_PATH=${cython_include_path}"
     "LIBRARY_DIRS=${library_dirs_str}"
     "THRIFT_BUILD_TESTS=${THRIFT_BUILD_TESTS}"
-    python3 ${_lib_dir}/setup.py -v
+    ${Python3_EXECUTABLE} ${_lib_dir}/setup.py -v
     bdist_wheel --libpython ${python_libname}
   WORKING_DIRECTORY ${_cybld}
 )
@@ -686,7 +696,7 @@ add_custom_command(TARGET thrift_python_and_py3_bindings
   COMMAND ${CMAKE_COMMAND} -E make_directory "${_cybld}/dist_self_contained"
   COMMAND ${CMAKE_COMMAND} -E env
     "LD_LIBRARY_PATH=${library_dirs_str}"
-    python3 -m auditwheel repair
+    ${Python3_EXECUTABLE} -m auditwheel repair
     --wheel-dir "${_cybld}/dist_self_contained"
     "${_cybld}/dist/*.whl"
   WORKING_DIRECTORY ${_cybld}
