@@ -21,8 +21,6 @@
 #include <folly/json/JsonTestUtil.h>
 #include <thrift/lib/cpp2/protocol/DebugProtocol.h>
 #include <thrift/lib/cpp2/protocol/TableBasedSerializerImpl.h>
-#include <thrift/lib/cpp2/protocol/detail/Json5ProtocolReader.h>
-#include <thrift/lib/cpp2/protocol/detail/Json5ProtocolWriter.h>
 #include <thrift/test/tablebased/gen-cpp2/frozen_tablebased_types.h>
 #include <thrift/test/tablebased/gen-cpp2/frozen_types.h>
 #include <thrift/test/tablebased/gen-cpp2/thrift_tablebased_types.h>
@@ -31,11 +29,7 @@
 
 using apache::thrift::BinarySerializer;
 using apache::thrift::CompactSerializer;
-using apache::thrift::Serializer;
 using apache::thrift::SimpleJSONSerializer;
-using Json5Serializer = Serializer<
-    apache::thrift::json5::detail::Json5ProtocolReader,
-    apache::thrift::json5::detail::Json5ProtocolWriter>;
 using namespace facebook::thrift::test;
 namespace tablebased = facebook::thrift::test::tablebased;
 
@@ -67,15 +61,8 @@ template <typename Serializer, typename T, typename TB>
     const T& object,
     const TB& tableBasedObject,
     bool shouldSkipEqualityForUnionWithRef) {
-  std::string originalBytes;
-  if constexpr (std::is_same_v<Serializer, Json5Serializer>) {
-    // For non-tablebased thrift struct, Json5Serializer support is not
-    // implemented yet.
-    originalBytes = apache::thrift::json5::detail::toJsonImpl<
-        apache::thrift::type::infer_tag<T>>(object, {});
-  } else {
-    originalBytes = Serializer::template serialize<std::string>(object);
-  }
+  std::string originalBytes =
+      Serializer::template serialize<std::string>(object);
   auto tableBasedObjectFromOriginalBytes =
       Serializer::template deserialize<TB>(originalBytes);
   std::string tableBasedBytes =
@@ -175,56 +162,33 @@ Type makeStructWithRefLike() {
 }
 } // namespace
 
-using Protocols = ::testing::Types<
-    CompactSerializer,
-    SimpleJSONSerializer,
-    BinarySerializer,
-    Json5Serializer>;
-
-// Frozen tablebased types lack Json5 custom protocol instantiations.
-using ProtocolsWithoutJson5 =
+using Protocols =
     ::testing::Types<CompactSerializer, SimpleJSONSerializer, BinarySerializer>;
 
 template <typename Serializer>
-class MultiProtocolTest : public ::testing::Test {
-  void SetUp() override {
-    if constexpr (std::is_same_v<Serializer, Json5Serializer>) {
-      std::string name =
-          ::testing::UnitTest::GetInstance()->current_test_info()->name();
-      if (name == "EmptyStructA" || name == "StructA" || name == "Union" ||
-          name == "UnionWithRef" || name == "DirtyReadIntoContainer" ||
-          name == "ReadingUnqualifiedFieldShouldSetIsset") {
-        GTEST_SKIP() << "Json5Serializer: " << name << " not yet supported";
-      }
-    }
-  }
-};
+class MultiProtocolTest : public ::testing::Test {};
 TYPED_TEST_CASE(MultiProtocolTest, Protocols);
 
-template <typename Serializer>
-class FrozenMultiProtocolTest : public ::testing::Test {};
-TYPED_TEST_CASE(FrozenMultiProtocolTest, ProtocolsWithoutJson5);
-
-TYPED_TEST(FrozenMultiProtocolTest, EmptyFrozenStructA) {
+TYPED_TEST(MultiProtocolTest, EmptyFrozenStructA) {
   EXPECT_TRUE(
       isCompatibleProtocol<TypeParam>(
           FrozenStructA(), tablebased::FrozenStructA()));
 }
 
-TYPED_TEST(FrozenMultiProtocolTest, FrozenStructA) {
+TYPED_TEST(MultiProtocolTest, FrozenStructA) {
   FrozenStructA oldObject = makeFrozenStructALike<FrozenStructA>();
   tablebased::FrozenStructA newObject =
       makeFrozenStructALike<tablebased::FrozenStructA>();
   EXPECT_TRUE(isCompatibleProtocol<TypeParam>(oldObject, newObject));
 }
 
-TYPED_TEST(FrozenMultiProtocolTest, EmptyFrozenStructB) {
+TYPED_TEST(MultiProtocolTest, EmptyFrozenStructB) {
   EXPECT_TRUE(
       isCompatibleProtocol<TypeParam>(
           FrozenStructB(), tablebased::FrozenStructA()));
 }
 
-TYPED_TEST(FrozenMultiProtocolTest, FrozenStructB) {
+TYPED_TEST(MultiProtocolTest, FrozenStructB) {
   FrozenStructB oldObject = makeFrozenStructBLike<FrozenStructB>();
   tablebased::FrozenStructB newObject =
       makeFrozenStructBLike<tablebased::FrozenStructB>();
