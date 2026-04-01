@@ -81,6 +81,12 @@ impl ::fbthrift::ThriftEnum for Metasyntactic {
     fn inner_value(&self) -> i32 {
         self.0 as i32
     }
+
+    fn from_inner_value(inner_value: i32) -> ::anyhow::Result<Self> {
+        inner_value.try_into().map(Self).map_err(|e| {
+            ::anyhow::anyhow!("Value {inner_value} is out of range for Metasyntactic: {e}")
+        })
+    }
 }
 
 #[allow(clippy::derivable_impls)]
@@ -229,6 +235,12 @@ impl ::fbthrift::ThriftEnum for MyEnum1 {
     fn inner_value(&self) -> i32 {
         self.0 as i32
     }
+
+    fn from_inner_value(inner_value: i32) -> ::anyhow::Result<Self> {
+        inner_value.try_into().map(Self).map_err(|e| {
+            ::anyhow::anyhow!("Value {inner_value} is out of range for MyEnum1: {e}")
+        })
+    }
 }
 
 #[allow(clippy::derivable_impls)]
@@ -368,6 +380,12 @@ impl ::fbthrift::ThriftEnum for MyEnum2 {
     #[allow(clippy::unnecessary_cast)]
     fn inner_value(&self) -> i32 {
         self.0 as i32
+    }
+
+    fn from_inner_value(inner_value: i32) -> ::anyhow::Result<Self> {
+        inner_value.try_into().map(Self).map_err(|e| {
+            ::anyhow::anyhow!("Value {inner_value} is out of range for MyEnum2: {e}")
+        })
     }
 }
 
@@ -515,6 +533,12 @@ impl ::fbthrift::ThriftEnum for MyEnum3 {
     fn inner_value(&self) -> i32 {
         self.0 as i32
     }
+
+    fn from_inner_value(inner_value: i32) -> ::anyhow::Result<Self> {
+        inner_value.try_into().map(Self).map_err(|e| {
+            ::anyhow::anyhow!("Value {inner_value} is out of range for MyEnum3: {e}")
+        })
+    }
 }
 
 #[allow(clippy::derivable_impls)]
@@ -659,6 +683,12 @@ impl ::fbthrift::ThriftEnum for MyEnum4 {
     fn inner_value(&self) -> i32 {
         self.0 as i32
     }
+
+    fn from_inner_value(inner_value: i32) -> ::anyhow::Result<Self> {
+        inner_value.try_into().map(Self).map_err(|e| {
+            ::anyhow::anyhow!("Value {inner_value} is out of range for MyEnum4: {e}")
+        })
+    }
 }
 
 #[allow(clippy::derivable_impls)]
@@ -795,6 +825,12 @@ impl ::fbthrift::ThriftEnum for MyBitmaskEnum1 {
     fn inner_value(&self) -> i32 {
         self.0 as i32
     }
+
+    fn from_inner_value(inner_value: i32) -> ::anyhow::Result<Self> {
+        inner_value.try_into().map(Self).map_err(|e| {
+            ::anyhow::anyhow!("Value {inner_value} is out of range for MyBitmaskEnum1: {e}")
+        })
+    }
 }
 
 #[allow(clippy::derivable_impls)]
@@ -928,6 +964,12 @@ impl ::fbthrift::ThriftEnum for MyBitmaskEnum2 {
     #[allow(clippy::unnecessary_cast)]
     fn inner_value(&self) -> i32 {
         self.0 as i32
+    }
+
+    fn from_inner_value(inner_value: i32) -> ::anyhow::Result<Self> {
+        inner_value.try_into().map(Self).map_err(|e| {
+            ::anyhow::anyhow!("Value {inner_value} is out of range for MyBitmaskEnum2: {e}")
+        })
     }
 }
 
