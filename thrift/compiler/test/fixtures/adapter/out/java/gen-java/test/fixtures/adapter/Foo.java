@@ -491,17 +491,17 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     @java.lang.Override
     public int hashCode() {
         int _hashCode = 1;
-        _hashCode = 31 * _hashCode + Integer.hashCode(intField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(intField);
             _hashCode = 31 * _hashCode + Objects.hashCode(optionalIntField);
-            _hashCode = 31 * _hashCode + Integer.hashCode(intFieldWithDefault);
+            _hashCode = 31 * _hashCode + Objects.hashCode(intFieldWithDefault);
             _hashCode = 31 * _hashCode + Objects.hashCode(setField);
             _hashCode = 31 * _hashCode + Objects.hashCode(optionalSetField);
             _hashCode = 31 * _hashCode + Objects.hashCode(mapField);
             _hashCode = 31 * _hashCode + Objects.hashCode(optionalMapField);
             _hashCode = 31 * _hashCode + Objects.hashCode(binaryField);
-            _hashCode = 31 * _hashCode + Long.hashCode(longField);
-            _hashCode = 31 * _hashCode + Long.hashCode(adaptedLongField);
-            _hashCode = 31 * _hashCode + Long.hashCode(doubleAdaptedField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(longField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(adaptedLongField);
+            _hashCode = 31 * _hashCode + Objects.hashCode(doubleAdaptedField);
             _hashCode = 31 * _hashCode + Objects.hashCode(adaptedList);
             _hashCode = 31 * _hashCode + Objects.hashCode(adaptedSet);
             _hashCode = 31 * _hashCode + Objects.hashCode(adaptedMap);
