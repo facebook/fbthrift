@@ -592,7 +592,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                     
                     String _key1 = oprot.readString();
                     List<com.facebook.thrift.my.AdaptedString_1> _value1;
-                                {
+                    {
                                 TList _list1 = oprot.readListBegin();
                                 _value1 = new ArrayList<com.facebook.thrift.my.AdaptedString_1>(Math.max(0, _list1.size));
                                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
@@ -625,7 +625,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                     
                     String _key1 = oprot.readString();
                     List<com.facebook.thrift.my.AdaptedString_1> _value1;
-                                {
+                    {
                                 TList _list1 = oprot.readListBegin();
                                 _value1 = new ArrayList<com.facebook.thrift.my.AdaptedString_1>(Math.max(0, _list1.size));
                                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
@@ -744,31 +744,32 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                 for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                     
                     List<Map<Integer, Integer>> _value1;
-                                {
+                    {
                                 TList _list1 = oprot.readListBegin();
                                 _value1 = new ArrayList<Map<Integer, Integer>>(Math.max(0, _list1.size));
                                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                                     
+                                    
                                     Map<Integer, Integer> _value2;
-                                {
-                                TMap _map2 = oprot.readMapBegin();
-                                _value2 = new HashMap<Integer, Integer>(Math.max(0, _map2.size));
-                                for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
-                                    
-                                    
-                                    int _key3 = oprot.readI32();
-                                    
+                                    {
+                                                TMap _map2 = oprot.readMapBegin();
+                                                _value2 = new HashMap<Integer, Integer>(Math.max(0, _map2.size));
+                                                for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
+                                                    
+                                                    
+                                                    int _key3 = oprot.readI32();
+                                                    
 
+                                                    
+                                                    int _value3 = oprot.readI32();
+                                                    
+                                                    
+                                                    _value2.put(_key3, _value3);
+                                                    
+                                                }
+                                                }
+                                                oprot.readMapEnd();
                                     
-                                    int _value3 = oprot.readI32();
-                                    
-                                    
-                                    _value2.put(_key3, _value3);
-                                    
-                                }
-                                }
-                                oprot.readMapEnd();
-
                                     
                                     _value1.add(_value2);
                                     

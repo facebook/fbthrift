@@ -238,7 +238,7 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
                     
                     int _key1 = oprot.readI32();
                     com.foo.FastIntLongMap _value1;
-                                {
+                    {
                                 TMap _map1 = oprot.readMapBegin();
                                 _value1 = new com.foo.FastIntLongMap();
                                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {

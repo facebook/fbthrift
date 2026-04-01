@@ -604,7 +604,7 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
                     
                     int _key1 = oprot.readI32();
                     List<test.fixtures.basic_swift_bean.MyDataItem> _value1;
-                                {
+                    {
                                 TList _list1 = oprot.readListBegin();
                                 _value1 = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(Math.max(0, _list1.size));
                                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
@@ -655,7 +655,7 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
                     
                     int _key1 = oprot.readI32();
                     List<test.fixtures.basic_swift_bean.MyDataItem> _value1;
-                                {
+                    {
                                 TList _list1 = oprot.readListBegin();
                                 _value1 = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(Math.max(0, _list1.size));
                                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {

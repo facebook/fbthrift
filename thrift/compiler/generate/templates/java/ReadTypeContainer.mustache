@@ -14,22 +14,18 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{#type:typedefWithoutJavaType?}}{{!
-    }}{{#type:typedef_type}}{{> ReadTypeContainer}}{{/type:typedef_type}}{{!
-}}{{/type:typedefWithoutJavaType?}}{{!
-}}{{^type:typedefWithoutJavaType?}}{{!
-
 }}{{#type:set?}}{{!
-            }}{{> BoxedType}} {{field:javaName}};
+            }}{{> ResolvedBoxedType}} {{field:javaName}};
             {
             TSet _set = oprot.readSetBegin();
-            {{^type:javaType}}{{field:javaName}} = new Hash{{> BoxedType}}(Math.max(0, _set.size));{{/type:javaType}}{{!
+            {{^type:javaType}}{{field:javaName}} = new Hash{{> ResolvedBoxedType}}(Math.max(0, _set.size));{{/type:javaType}}{{!
             }}{{#type:javaType}}{{field:javaName}} = new {{type:javaType}}();{{/type:javaType}}{{!
             }}
             for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
                 {{field:setIsNested}}
                 {{#type:set_elem_type}}
                 {{#type:container?}}
+                {{> ResolvedBoxedType}} _value{{field:nestedDepth}};
                 {{> ReadTypeContainerNestedValue }}
                 {{/type:container?}}
                 {{^type:container?}}
@@ -43,16 +39,17 @@
 }}{{/type:set?}}{{!
 
 }}{{#type:list?}}{{!
-            }}{{> BoxedType}} {{field:javaName}};
+            }}{{> ResolvedBoxedType}} {{field:javaName}};
             {
             TList _list = oprot.readListBegin();
-            {{^type:javaType}}{{field:javaName}} = new Array{{> BoxedType}}(Math.max(0, _list.size));{{/type:javaType}}{{!
+            {{^type:javaType}}{{field:javaName}} = new Array{{> ResolvedBoxedType}}(Math.max(0, _list.size));{{/type:javaType}}{{!
             }}{{#type:javaType}}{{field:javaName}} = new {{type:javaType}}();{{/type:javaType}}{{!
             }}
             for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                 {{field:setIsNested}}
                 {{#type:list_elem_type}}
                 {{#type:container?}}
+                {{> ResolvedBoxedType}} _value{{field:nestedDepth}};
                 {{> ReadTypeContainerNestedValue }}
                 {{/type:container?}}
                 {{^type:container?}}
@@ -66,16 +63,17 @@
 }}{{/type:list?}}{{!
 
 }}{{#type:map?}}{{!
-            }}{{> BoxedType}} {{field:javaName}};
+            }}{{> ResolvedBoxedType}} {{field:javaName}};
             {
             TMap _map = oprot.readMapBegin();
-            {{^type:javaType}}{{field:javaName}} = new Hash{{> BoxedType}}(Math.max(0, _map.size));{{/type:javaType}}{{!
+            {{^type:javaType}}{{field:javaName}} = new Hash{{> ResolvedBoxedType}}(Math.max(0, _map.size));{{/type:javaType}}{{!
             }}{{#type:javaType}}{{field:javaName}} = new {{type:javaType}}();{{/type:javaType}}{{!
             }}
             for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                 {{field:setIsNested}}
                 {{#type:key_type}}
                 {{#type:container?}}
+                {{> ResolvedBoxedType}} _key{{field:nestedDepth}};
                 {{> ReadTypeContainerNestedKey }}
                 {{/type:container?}}
                 {{^type:container?}}
@@ -84,6 +82,7 @@
                 {{/type:key_type}}
                 {{#type:value_type}}
                 {{#type:container?}}
+                {{> ResolvedBoxedType}} _value{{field:nestedDepth}};
                 {{> ReadTypeContainerNestedValue }}
                 {{/type:container?}}
                 {{^type:container?}}
@@ -96,7 +95,4 @@
             }
             }
             oprot.readMapEnd();{{!
-}}{{/type:map?}}{{!
-
-}}{{/type:typedefWithoutJavaType?}}{{!
-}}
+}}{{/type:map?}}

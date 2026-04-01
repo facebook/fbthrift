@@ -14,23 +14,20 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{#type:typedefWithoutJavaType?}}{{!
-    }}{{#type:typedef_type}}{{> ReadTypeContainerNestedValue}}{{/type:typedef_type}}{{!
-}}{{/type:typedefWithoutJavaType?}}{{!
-}}{{^type:typedefWithoutJavaType?}}{{!
-
 }}{{#type:set?}}{{!
-            }}{{> BoxedType}} _value{{field:nestedDepth}};
-            {
+            }}{
             TSet _set{{field:nestedDepth}} = oprot.readSetBegin();
-            {{^type:javaType}}_value{{field:nestedDepth}} = new Hash{{> BoxedType}}(Math.max(0, _set{{field:nestedDepth}}.size));{{/type:javaType}}{{!
+            {{^type:javaType}}_value{{field:nestedDepth}} = new Hash{{> ResolvedBoxedType}}(Math.max(0, _set{{field:nestedDepth}}.size));{{/type:javaType}}{{!
             }}{{#type:javaType}}_value{{field:nestedDepth}} = new {{type:javaType}}();{{/type:javaType}}{{!
             }}
             for (int _i{{field:nestedDepth}} = 0; (_set{{field:nestedDepth}}.size < 0) ? oprot.peekSet() : (_i{{field:nestedDepth}} < _set{{field:nestedDepth}}.size); _i{{field:nestedDepth}}++) {
                 {{field:setIsNested}}
                 {{#type:set_elem_type}}
                 {{#type:container?}}
-                {{field:nestedDepth++}}{{> ReadTypeContainerNestedValue }}{{field:nestedDepth--}}
+                {{field:nestedDepth++}}
+                {{> ResolvedBoxedType}} _value{{field:nestedDepth}};
+                {{> ReadTypeContainerNestedValue }}
+                {{field:nestedDepth--}}
                 {{/type:container?}}
                 {{^type:container?}}
                 {{field:nestedDepth++}}
@@ -47,17 +44,19 @@
 {{/type:set?}}{{!
 
 }}{{#type:list?}}{{!
-            }}{{> BoxedType}} _value{{field:nestedDepth}};
-            {
+            }}{
             TList _list{{field:nestedDepth}} = oprot.readListBegin();
-            {{^type:javaType}}_value{{field:nestedDepth}} = new Array{{> BoxedType}}(Math.max(0, _list{{field:nestedDepth}}.size));{{/type:javaType}}{{!
+            {{^type:javaType}}_value{{field:nestedDepth}} = new Array{{> ResolvedBoxedType}}(Math.max(0, _list{{field:nestedDepth}}.size));{{/type:javaType}}{{!
             }}{{#type:javaType}}_value{{field:nestedDepth}} = new {{type:javaType}}();{{/type:javaType}}{{!
             }}
             for (int _i{{field:nestedDepth}} = 0; (_list{{field:nestedDepth}}.size < 0) ? oprot.peekList() : (_i{{field:nestedDepth}} < _list{{field:nestedDepth}}.size); _i{{field:nestedDepth}}++) {
                 {{field:setIsNested}}
                 {{#type:list_elem_type}}
                 {{#type:container?}}
-                {{field:nestedDepth++}}{{> ReadTypeContainerNestedValue }}{{field:nestedDepth--}}
+                {{field:nestedDepth++}}
+                {{> ResolvedBoxedType}} _value{{field:nestedDepth}};
+                {{> ReadTypeContainerNestedValue }}
+                {{field:nestedDepth--}}
                 {{/type:container?}}
                 {{^type:container?}}
                 {{field:nestedDepth++}}
@@ -74,17 +73,19 @@
 {{/type:list?}}{{!
 
 }}{{#type:map?}}{{!
-            }}{{> BoxedType}} _value{{field:nestedDepth}};
-            {
+            }}{
             TMap _map{{field:nestedDepth}} = oprot.readMapBegin();
-            {{^type:javaType}}_value{{field:nestedDepth}} = new Hash{{> BoxedType}}(Math.max(0, _map{{field:nestedDepth}}.size));{{/type:javaType}}{{!
+            {{^type:javaType}}_value{{field:nestedDepth}} = new Hash{{> ResolvedBoxedType}}(Math.max(0, _map{{field:nestedDepth}}.size));{{/type:javaType}}{{!
             }}{{#type:javaType}}_value{{field:nestedDepth}} = new {{type:javaType}}();{{/type:javaType}}{{!
             }}
             for (int _i{{field:nestedDepth}} = 0; (_map{{field:nestedDepth}}.size < 0) ? oprot.peekMap() : (_i{{field:nestedDepth}} < _map{{field:nestedDepth}}.size); _i{{field:nestedDepth}}++) {
                 {{field:setIsNested}}
                 {{#type:key_type}}
                 {{#type:container?}}
-                {{field:nestedDepth++}}{{> ReadTypeContainerNestedKey }}{{field:nestedDepth--}}
+                {{field:nestedDepth++}}
+                {{> ResolvedBoxedType}} _key{{field:nestedDepth}};
+                {{> ReadTypeContainerNestedKey }}
+                {{field:nestedDepth--}}
                 {{/type:container?}}
                 {{^type:container?}}
                 {{field:nestedDepth++}}
@@ -95,7 +96,10 @@
 
                 {{#type:value_type}}
                 {{#type:container?}}
-                {{field:nestedDepth++}}{{> ReadTypeContainerNestedValue }}{{field:nestedDepth--}}
+                {{field:nestedDepth++}}
+                {{> ResolvedBoxedType}} _value{{field:nestedDepth}};
+                {{> ReadTypeContainerNestedValue }}
+                {{field:nestedDepth--}}
                 {{/type:container?}}
                 {{^type:container?}}
                 {{field:nestedDepth++}}
@@ -111,7 +115,4 @@
             }
             }
             oprot.readMapEnd();
-{{/type:map?}}{{!
-
-}}{{/type:typedefWithoutJavaType?}}{{!
-}}
+{{/type:map?}}

@@ -415,7 +415,7 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
                 for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                     
                     List<Float> _value1;
-                                {
+                    {
                                 TList _list1 = oprot.readListBegin();
                                 _value1 = new ArrayList<Float>(Math.max(0, _list1.size));
                                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {

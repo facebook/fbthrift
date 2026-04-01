@@ -238,7 +238,7 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
                     
                     int _key1 = oprot.readI32();
                     it.unimi.dsi.fastutil.ints.Int2LongArrayMap _value1;
-                                {
+                    {
                                 TMap _map1 = oprot.readMapBegin();
                                 _value1 = new it.unimi.dsi.fastutil.ints.Int2LongArrayMap();
                                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {

@@ -510,7 +510,7 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
                     
                     String _key1 = oprot.readString();
                     List<com.facebook.thrift.my.AdaptedString_1> _value1;
-                                {
+                    {
                                 TList _list1 = oprot.readListBegin();
                                 _value1 = new ArrayList<com.facebook.thrift.my.AdaptedString_1>(Math.max(0, _list1.size));
                                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {

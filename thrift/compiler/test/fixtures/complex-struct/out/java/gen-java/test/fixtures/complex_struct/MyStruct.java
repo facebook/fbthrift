@@ -1268,7 +1268,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
                     List<Integer> _key1;
-                                {
+                    {
                                 TList _list1 = oprot.readListBegin();
                                 _key1 = new ArrayList<Integer>(Math.max(0, _list1.size));
                                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
@@ -1279,7 +1279,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                                 oprot.readListEnd();
                                 }
                     List<Integer> _value1;
-                                {
+                    {
                                 TList _list1 = oprot.readListBegin();
                                 _value1 = new ArrayList<Integer>(Math.max(0, _list1.size));
                                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {

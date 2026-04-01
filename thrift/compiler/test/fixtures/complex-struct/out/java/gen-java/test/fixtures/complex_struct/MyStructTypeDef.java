@@ -460,27 +460,28 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
                     
                     short _key1 = oprot.readI16();
                     List<List<Double>> _value1;
-                                {
+                    {
                                 TList _list1 = oprot.readListBegin();
                                 _value1 = new ArrayList<List<Double>>(Math.max(0, _list1.size));
                                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                                     
+                                    
                                     List<Double> _value2;
-                                {
-                                TList _list2 = oprot.readListBegin();
-                                _value2 = new ArrayList<Double>(Math.max(0, _list2.size));
-                                for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
+                                    {
+                                                TList _list2 = oprot.readListBegin();
+                                                _value2 = new ArrayList<Double>(Math.max(0, _list2.size));
+                                                for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
+                                                    
+                                                    
+                                                    double _value3 = oprot.readDouble();
+                                                    
+                                                    
+                                                    _value2.add(_value3);
+                                                    
+                                                }
+                                                oprot.readListEnd();
+                                                }
                                     
-                                    
-                                    double _value3 = oprot.readDouble();
-                                    
-                                    
-                                    _value2.add(_value3);
-                                    
-                                }
-                                oprot.readListEnd();
-                                }
-
                                     
                                     _value1.add(_value2);
                                     

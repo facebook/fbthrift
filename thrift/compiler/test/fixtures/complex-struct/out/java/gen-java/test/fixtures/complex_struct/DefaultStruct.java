@@ -996,7 +996,7 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
                     
                     int _key1 = oprot.readI32();
                     List<test.fixtures.complex_struct.SimpleStruct> _value1;
-                                {
+                    {
                                 TList _list1 = oprot.readListBegin();
                                 _value1 = new ArrayList<test.fixtures.complex_struct.SimpleStruct>(Math.max(0, _list1.size));
                                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
@@ -1067,7 +1067,7 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
                     
                     String _key1 = oprot.readString();
                     Map<Integer, test.fixtures.complex_struct.MyEnum> _value1;
-                                {
+                    {
                                 TMap _map1 = oprot.readMapBegin();
                                 _value1 = new HashMap<Integer, test.fixtures.complex_struct.MyEnum>(Math.max(0, _map1.size));
                                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {

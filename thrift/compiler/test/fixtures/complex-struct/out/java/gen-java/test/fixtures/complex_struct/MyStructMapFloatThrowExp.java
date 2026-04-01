@@ -173,27 +173,28 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
                     
                     int _key1 = oprot.readI32();
                     List<List<Float>> _value1;
-                                {
+                    {
                                 TList _list1 = oprot.readListBegin();
                                 _value1 = new ArrayList<List<Float>>(Math.max(0, _list1.size));
                                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                                     
+                                    
                                     List<Float> _value2;
-                                {
-                                TList _list2 = oprot.readListBegin();
-                                _value2 = new ArrayList<Float>(Math.max(0, _list2.size));
-                                for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
+                                    {
+                                                TList _list2 = oprot.readListBegin();
+                                                _value2 = new ArrayList<Float>(Math.max(0, _list2.size));
+                                                for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
+                                                    
+                                                    
+                                                    float _value3 = oprot.readFloat();
+                                                    
+                                                    
+                                                    _value2.add(_value3);
+                                                    
+                                                }
+                                                oprot.readListEnd();
+                                                }
                                     
-                                    
-                                    float _value3 = oprot.readFloat();
-                                    
-                                    
-                                    _value2.add(_value3);
-                                    
-                                }
-                                oprot.readListEnd();
-                                }
-
                                     
                                     _value1.add(_value2);
                                     

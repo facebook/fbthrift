@@ -1225,7 +1225,7 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                     
                     String _key1 = oprot.readString();
                     List<Integer> _value1;
-                                {
+                    {
                                 TList _list1 = oprot.readListBegin();
                                 _value1 = new ArrayList<Integer>(Math.max(0, _list1.size));
                                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
@@ -1258,7 +1258,7 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                     
                     String _key1 = oprot.readString();
                     List<test.fixtures.shapes.A> _value1;
-                                {
+                    {
                                 TList _list1 = oprot.readListBegin();
                                 _value1 = new ArrayList<test.fixtures.shapes.A>(Math.max(0, _list1.size));
                                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
@@ -1291,7 +1291,7 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                     
                     String _key1 = oprot.readString();
                     Set<Integer> _value1;
-                                {
+                    {
                                 TSet _set1 = oprot.readSetBegin();
                                 _value1 = new HashSet<Integer>(Math.max(0, _set1.size));
                                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
@@ -1324,7 +1324,7 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                     
                     String _key1 = oprot.readString();
                     Map<String, Integer> _value1;
-                                {
+                    {
                                 TMap _map1 = oprot.readMapBegin();
                                 _value1 = new HashMap<String, Integer>(Math.max(0, _map1.size));
                                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
@@ -1361,7 +1361,7 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                     
                     String _key1 = oprot.readString();
                     Map<String, test.fixtures.shapes.A> _value1;
-                                {
+                    {
                                 TMap _map1 = oprot.readMapBegin();
                                 _value1 = new HashMap<String, test.fixtures.shapes.A>(Math.max(0, _map1.size));
                                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
@@ -1397,7 +1397,7 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                 for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                     
                     Set<Integer> _value1;
-                                {
+                    {
                                 TSet _set1 = oprot.readSetBegin();
                                 _value1 = new HashSet<Integer>(Math.max(0, _set1.size));
                                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
@@ -1429,7 +1429,7 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                 for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                     
                     Map<String, List<test.fixtures.shapes.A>> _value1;
-                                {
+                    {
                                 TMap _map1 = oprot.readMapBegin();
                                 _value1 = new HashMap<String, List<test.fixtures.shapes.A>>(Math.max(0, _map1.size));
                                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
@@ -1438,22 +1438,23 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                                     String _key2 = oprot.readString();
                                     
 
+                                    
                                     List<test.fixtures.shapes.A> _value2;
-                                {
-                                TList _list2 = oprot.readListBegin();
-                                _value2 = new ArrayList<test.fixtures.shapes.A>(Math.max(0, _list2.size));
-                                for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
+                                    {
+                                                TList _list2 = oprot.readListBegin();
+                                                _value2 = new ArrayList<test.fixtures.shapes.A>(Math.max(0, _list2.size));
+                                                for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
+                                                    
+                                                    
+                                                    test.fixtures.shapes.A _value3 = test.fixtures.shapes.A.read0(oprot);
+                                                    
+                                                    
+                                                    _value2.add(_value3);
+                                                    
+                                                }
+                                                oprot.readListEnd();
+                                                }
                                     
-                                    
-                                    test.fixtures.shapes.A _value3 = test.fixtures.shapes.A.read0(oprot);
-                                    
-                                    
-                                    _value2.add(_value3);
-                                    
-                                }
-                                oprot.readListEnd();
-                                }
-
                                     
                                     _value1.put(_key2, _value2);
                                     
@@ -1478,7 +1479,7 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                 for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
                     
                     Map<String, test.fixtures.shapes.A> _value1;
-                                {
+                    {
                                 TMap _map1 = oprot.readMapBegin();
                                 _value1 = new HashMap<String, test.fixtures.shapes.A>(Math.max(0, _map1.size));
                                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
@@ -1631,7 +1632,7 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                     
                     String _key1 = oprot.readString();
                     List<Integer> _value1;
-                                {
+                    {
                                 TList _list1 = oprot.readListBegin();
                                 _value1 = new ArrayList<Integer>(Math.max(0, _list1.size));
                                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
@@ -1664,7 +1665,7 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                     
                     String _key1 = oprot.readString();
                     List<test.fixtures.shapes.A> _value1;
-                                {
+                    {
                                 TList _list1 = oprot.readListBegin();
                                 _value1 = new ArrayList<test.fixtures.shapes.A>(Math.max(0, _list1.size));
                                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
@@ -1697,7 +1698,7 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                     
                     String _key1 = oprot.readString();
                     Set<Integer> _value1;
-                                {
+                    {
                                 TSet _set1 = oprot.readSetBegin();
                                 _value1 = new HashSet<Integer>(Math.max(0, _set1.size));
                                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
@@ -1841,7 +1842,7 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                     
                     String _key1 = oprot.readString();
                     List<Integer> _value1;
-                                {
+                    {
                                 TList _list1 = oprot.readListBegin();
                                 _value1 = new ArrayList<Integer>(Math.max(0, _list1.size));
                                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
