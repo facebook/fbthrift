@@ -124,14 +124,12 @@ pub mod services;
 {{!
 --------------------------------------------------------------------------------
 }}
-  {{#program:structs}}
-    {{#let structured = struct:self}}
+  {{#each program:structured_definitions as |structured|}}
     {{#if (not structured.has_adapter?)}}
-      {{! NOTE: unionimpl uses Whisker `structured`, structimpl uses mstch `struct:*` }}
 {{> lib/structimpl}}
 {{> lib/unionimpl}}
     {{/if (not structured.has_adapter?)}}
-  {{/program:structs}}
+  {{/each}}
 {{!
 --------------------------------------------------------------------------------
 }}

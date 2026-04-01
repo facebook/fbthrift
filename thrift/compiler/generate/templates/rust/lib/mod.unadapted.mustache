@@ -18,15 +18,12 @@
 
 /// Contains the unadapted version of any adapted Thrift structs.
 pub mod unadapted {
-  {{#program:structs}}
+  {{#each program:structured_definitions as |structured|}}
     {{! Iterate structs and unions with adapters }}
-    {{#let structured = struct:self}}
     {{#if (and (not structured.exception?) structured.has_adapter?)}}
-      {{! `lib/structured` renders using the `structured` variable }}
   {{> lib/structured}}
-      {{! NOTE: `lib/structimpl` still renders with mstch implicit `struct:*` context }}
   {{> lib/structimpl}}
     {{/if (and (not structured.exception?) structured.has_adapter?)}}
-  {{/program:structs}}
+  {{/each}}
 
 }

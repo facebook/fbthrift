@@ -897,7 +897,6 @@ class t_mstch_rust_generator : public t_mstch_generator {
   void process_options(const std::map<std::string, std::string>& options) final;
 
  private:
-  void set_mstch_factories();
   rust_codegen_options options_;
   // NOTE: these two fields are not initialized/used unless splitting is used
   std::vector<rust_split_info> split_info_;
@@ -1856,53 +1855,6 @@ class t_mstch_rust_generator : public t_mstch_generator {
   }
 };
 
-class rust_mstch_program : public mstch_program {
- public:
-  // Temporary wrapper, since `mstch_context.add<>` only allows specifying a
-  // single constructor argument. This will soon be removed alongside the rest
-  // of `rust_mstch_program`.
-  struct data {
-    const rust_codegen_options& options;
-    const std::vector<rust_split_info>& split_info;
-  };
-
-  rust_mstch_program(
-      const t_program* program,
-      mstch_context& ctx,
-      mstch_element_position pos,
-      data d,
-      const size_t split_id = 0)
-      : mstch_program(program, ctx, pos),
-        current_split_(
-            split_id < d.split_info.size() ? d.split_info[split_id]
-                                           : empty_split()) {
-    register_methods(
-        this,
-        {
-            {"program:current_split_structs",
-             &rust_mstch_program::current_split_structs},
-        });
-  }
-
-  mstch::node current_split_structs() {
-    std::string id =
-        program_cache_id(program_, get_program_namespace(program_));
-    return make_mstch_array_cached(
-        current_split_.structured_definitions,
-        *context_.struct_factory,
-        context_.struct_cache,
-        id);
-  }
-
- private:
-  const rust_split_info& current_split_;
-
-  static const rust_split_info& empty_split() {
-    static const rust_split_info kEmpty;
-    return kEmpty;
-  }
-};
-
 void t_mstch_rust_generator::process_options(
     const std::map<std::string, std::string>& options) {
   t_mstch_generator::process_options(options);
@@ -2006,8 +1958,6 @@ void t_mstch_rust_generator::generate_program() {
     namespace_rust = program_->name();
   }
 
-  set_mstch_factories();
-
   if (options_.types_split_count > 0) {
     generate_split_types();
   }
@@ -2083,22 +2033,12 @@ void t_mstch_rust_generator::generate_split_types() {
     // Set current split on the generator, so Whisker properties can access it
     assert(split_info_.size() > split_id); // For the linter
     current_split_ = &split_info_[split_id];
-    auto split_program = std::make_shared<rust_mstch_program>(
-        program_,
-        mstch_context_,
-        mstch_element_position(),
-        rust_mstch_program::data{options_, split_info_},
-        split_id);
-
     render_to_file(
-        split_program, "lib/types_split", fmt::format("types_{}.rs", split_id));
+        cached_program(program_),
+        "lib/types_split",
+        fmt::format("types_{}.rs", split_id));
   }
   current_split_ = nullptr;
-}
-
-void t_mstch_rust_generator::set_mstch_factories() {
-  mstch_context_.add<rust_mstch_program>(
-      rust_mstch_program::data{options_, split_info_});
 }
 
 void validate_struct_annotations(
