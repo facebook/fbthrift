@@ -135,12 +135,20 @@ final class ThriftServiceMethodNameVirtualPolicyEnforcer
 
     $privacy_lib =
       self::getPrivacyLibObject($asset_xid, $sr_config_service_name);
-    list($privacylib_failure, $_) = await $privacy_lib->genClientRPCWithTAE(
-      null,
-      $context,
-      $caller,
-      $policy_enforcer_api,
-    );
+    list($privacylib_failure, $prop_data) = await $privacy_lib
+      ->genClientRPCWithTAE(null, $context, $caller, $policy_enforcer_api);
+
+    if (
+      $prop_data is nonnull &&
+      !PrivacyLibKS::isKilled(PLKS::THRIFT_CONTEXT_PROP_FROM_PRIVACYLIB) &&
+      IsItFaster::shouldExperiment(
+        'thrift_context_prop_from_privacylib',
+        OncallShortName\www_privacy_frameworks,
+      )
+    ) {
+      // TODO: Use context prop data to write to the thrift header (D91372473)
+      $_ = $prop_data->getThriftContextPropData();
+    }
 
     return tuple(
       shape(
