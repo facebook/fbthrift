@@ -2523,12 +2523,10 @@ class ThriftServer : public apache::thrift::concurrency::Runnable,
       folly::observer::Observer<wangle::SSLContextConfig> contextObserver) {
     sslContextObserver_ = folly::observer::makeObserver(
         [observer = std::move(contextObserver),
-         hybridKexObserver = enableHybridKex(),
          aegisObserver = enableAegis(),
          pskModeObserver = preferPskKe(),
          dcReceiveObserver = enableReceivingDelegatedCreds(),
          dcObserver = enablePresentingDelegatedCredentials()]() {
-          (void)**hybridKexObserver;
           (void)**aegisObserver;
           (void)**pskModeObserver;
           (void)**dcReceiveObserver;
@@ -3159,8 +3157,6 @@ class ThriftServer : public apache::thrift::concurrency::Runnable,
   void setQuickExitOnShutdownTimeout(bool quickExitOnShutdownTimeout) {
     quickExitOnShutdownTimeout_ = quickExitOnShutdownTimeout;
   }
-
-  static folly::observer::Observer<bool> enableHybridKex();
 
   static folly::observer::Observer<bool> enableAegis();
 
