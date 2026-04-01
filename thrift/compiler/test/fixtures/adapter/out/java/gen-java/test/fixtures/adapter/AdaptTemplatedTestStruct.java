@@ -810,9 +810,18 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
                 adaptedMap = new HashMap<Long, Long>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    long _key1 = oprot.readI64();
-                    long _value1 = oprot.readI64();
-                    adaptedMap.put(_key1, _value1);
+                    long _fbthriftKey1;
+                    long _fbthriftValue1;
+
+                    {
+                        long _value1 = oprot.readI64();
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        long _value1 = oprot.readI64();
+                        _fbthriftValue1 = _value1;
+                    }
+                    adaptedMap.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();
@@ -929,9 +938,18 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
                 adaptedMapDefault = new HashMap<Long, Long>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    long _key1 = oprot.readI64();
-                    long _value1 = oprot.readI64();
-                    adaptedMapDefault.put(_key1, _value1);
+                    long _fbthriftKey1;
+                    long _fbthriftValue1;
+
+                    {
+                        long _value1 = oprot.readI64();
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        long _value1 = oprot.readI64();
+                        _fbthriftValue1 = _value1;
+                    }
+                    adaptedMapDefault.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();

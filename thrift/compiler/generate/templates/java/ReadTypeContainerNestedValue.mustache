@@ -83,34 +83,68 @@
                 {{#type:key_type}}
                 {{#type:container?}}
                 {{field:nestedDepth++}}
-                {{> ResolvedBoxedType}} _key{{field:nestedDepth}};
-                {{> ReadTypeContainerNestedKey }}
+                {{> ResolvedBoxedType}} _fbthriftKey{{field:nestedDepth}};
                 {{field:nestedDepth--}}
                 {{/type:container?}}
                 {{^type:container?}}
                 {{field:nestedDepth++}}
-                {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _key{{field:nestedDepth}} = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
+                {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _fbthriftKey{{field:nestedDepth}};
                 {{field:nestedDepth--}}
                 {{/type:container?}}
                 {{/type:key_type}}
-
                 {{#type:value_type}}
                 {{#type:container?}}
                 {{field:nestedDepth++}}
-                {{> ResolvedBoxedType}} _value{{field:nestedDepth}};
-                {{> ReadTypeContainerNestedValue }}
+                {{> ResolvedBoxedType}} _fbthriftValue{{field:nestedDepth}};
                 {{field:nestedDepth--}}
                 {{/type:container?}}
                 {{^type:container?}}
                 {{field:nestedDepth++}}
-                {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _value{{field:nestedDepth}} = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
+                {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _fbthriftValue{{field:nestedDepth}};
                 {{field:nestedDepth--}}
                 {{/type:container?}}
                 {{/type:value_type}}
+
+                {
+                    {{#type:key_type}}
+                    {{#type:container?}}
+                    {{field:nestedDepth++}}
+                    {{> ResolvedBoxedType}} _value{{field:nestedDepth}};
+                    {{> ReadTypeContainerNestedValue }}
+                    {{field:nestedDepth--}}
+                    {{/type:container?}}
+                    {{^type:container?}}
+                    {{field:nestedDepth++}}
+                    {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _value{{field:nestedDepth}} = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
+                    {{field:nestedDepth--}}
+                    {{/type:container?}}
+                    {{/type:key_type}}
+                    {{field:nestedDepth++}}
+                    _fbthriftKey{{field:nestedDepth}} = _value{{field:nestedDepth}};
+                    {{field:nestedDepth--}}
+                }
+                {
+                    {{#type:value_type}}
+                    {{#type:container?}}
+                    {{field:nestedDepth++}}
+                    {{> ResolvedBoxedType}} _value{{field:nestedDepth}};
+                    {{> ReadTypeContainerNestedValue }}
+                    {{field:nestedDepth--}}
+                    {{/type:container?}}
+                    {{^type:container?}}
+                    {{field:nestedDepth++}}
+                    {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _value{{field:nestedDepth}} = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
+                    {{field:nestedDepth--}}
+                    {{/type:container?}}
+                    {{/type:value_type}}
+                    {{field:nestedDepth++}}
+                    _fbthriftValue{{field:nestedDepth}} = _value{{field:nestedDepth}};
+                    {{field:nestedDepth--}}
+                }
                 {{field:nestedDepth++}}
                 _value{{field:prevNestedDepth}}.put({{!
-                }}{{#type:key_type}}{{#type:hasAdapter?}}__{{type:name}}_Adapter.fromThrift({{/type:hasAdapter?}}_key{{field:nestedDepth}}{{#type:hasAdapter?}}){{/type:hasAdapter?}}, {{/type:key_type}}{{!
-                }}{{#type:value_type}}{{#type:hasAdapter?}}__{{type:name}}_Adapter.fromThrift({{/type:hasAdapter?}}_value{{field:nestedDepth}}{{#type:hasAdapter?}}){{/type:hasAdapter?}});{{/type:value_type}}
+                }}{{#type:key_type}}{{#type:hasAdapter?}}__{{type:name}}_Adapter.fromThrift({{/type:hasAdapter?}}_fbthriftKey{{field:nestedDepth}}{{#type:hasAdapter?}}){{/type:hasAdapter?}}, {{/type:key_type}}{{!
+                }}{{#type:value_type}}{{#type:hasAdapter?}}__{{type:name}}_Adapter.fromThrift({{/type:hasAdapter?}}_fbthriftValue{{field:nestedDepth}}{{#type:hasAdapter?}}){{/type:hasAdapter?}});{{/type:value_type}}
                 {{field:nestedDepth--}}
             }
             }

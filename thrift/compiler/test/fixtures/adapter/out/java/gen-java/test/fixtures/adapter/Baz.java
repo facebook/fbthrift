@@ -508,23 +508,32 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
                 mapField = new HashMap<String, com.facebook.thrift.my.AdaptedList_2>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    String _key1 = oprot.readString();
-                    List<com.facebook.thrift.my.AdaptedString_1> _value1;
+                    String _fbthriftKey1;
+                    List<com.facebook.thrift.my.AdaptedString_1> _fbthriftValue1;
+
                     {
-                                TList _list1 = oprot.readListBegin();
-                                _value1 = new ArrayList<com.facebook.thrift.my.AdaptedString_1>(Math.max(0, _list1.size));
-                                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                                    
-                                    
-                                    String _value2 = oprot.readString();
-                                    
-                                    
-                                    _value1.add(__StringWithAdapter_Adapter.fromThrift(_value2));
-                                    
-                                }
-                                oprot.readListEnd();
-                                }
-                    mapField.put(_key1, __ListWithElemAdapter_withAdapter_2312_Adapter.fromThrift(_value1));
+                        String _value1 = oprot.readString();
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        List<com.facebook.thrift.my.AdaptedString_1> _value1;
+                        {
+                                    TList _list1 = oprot.readListBegin();
+                                    _value1 = new ArrayList<com.facebook.thrift.my.AdaptedString_1>(Math.max(0, _list1.size));
+                                    for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                                        
+                                        
+                                        String _value2 = oprot.readString();
+                                        
+                                        
+                                        _value1.add(__StringWithAdapter_Adapter.fromThrift(_value2));
+                                        
+                                    }
+                                    oprot.readListEnd();
+                                    }
+                        _fbthriftValue1 = _value1;
+                    }
+                    mapField.put(_fbthriftKey1, __ListWithElemAdapter_withAdapter_2312_Adapter.fromThrift(_fbthriftValue1));
                 }
                 }
                 oprot.readMapEnd();

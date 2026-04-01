@@ -1038,9 +1038,18 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
                 terseMapField = new HashMap<Short, Short>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    short _key1 = oprot.readI16();
-                    short _value1 = oprot.readI16();
-                    terseMapField.put(_key1, _value1);
+                    short _fbthriftKey1;
+                    short _fbthriftValue1;
+
+                    {
+                        short _value1 = oprot.readI16();
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        short _value1 = oprot.readI16();
+                        _fbthriftValue1 = _value1;
+                    }
+                    terseMapField.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();
@@ -1189,9 +1198,18 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
                 mapField = new HashMap<Short, Short>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    short _key1 = oprot.readI16();
-                    short _value1 = oprot.readI16();
-                    mapField.put(_key1, _value1);
+                    short _fbthriftKey1;
+                    short _fbthriftValue1;
+
+                    {
+                        short _value1 = oprot.readI16();
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        short _value1 = oprot.readI16();
+                        _fbthriftValue1 = _value1;
+                    }
+                    mapField.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();

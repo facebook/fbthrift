@@ -163,9 +163,18 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
                 binaryMap = new HashMap<String, byte[]>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    String _key1 = oprot.readString();
-                    byte[] _value1 = oprot.readBinary().array();
-                    binaryMap.put(_key1, _value1);
+                    String _fbthriftKey1;
+                    byte[] _fbthriftValue1;
+
+                    {
+                        String _value1 = oprot.readString();
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        byte[] _value1 = oprot.readBinary().array();
+                        _fbthriftValue1 = _value1;
+                    }
+                    binaryMap.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();
@@ -182,9 +191,18 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
                 regularBinary = new HashMap<String, byte[]>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    String _key1 = oprot.readString();
-                    byte[] _value1 = oprot.readBinary().array();
-                    regularBinary.put(_key1, _value1);
+                    String _fbthriftKey1;
+                    byte[] _fbthriftValue1;
+
+                    {
+                        String _value1 = oprot.readString();
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        byte[] _value1 = oprot.readBinary().array();
+                        _fbthriftValue1 = _value1;
+                    }
+                    regularBinary.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();

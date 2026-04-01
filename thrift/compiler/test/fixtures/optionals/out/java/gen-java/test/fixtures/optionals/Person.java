@@ -445,9 +445,18 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
                 petNames = new HashMap<test.fixtures.optionals.Animal, String>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    test.fixtures.optionals.Animal _key1 = test.fixtures.optionals.Animal.fromInteger(oprot.readI32());
-                    String _value1 = oprot.readString();
-                    petNames.put(_key1, _value1);
+                    test.fixtures.optionals.Animal _fbthriftKey1;
+                    String _fbthriftValue1;
+
+                    {
+                        test.fixtures.optionals.Animal _value1 = test.fixtures.optionals.Animal.fromInteger(oprot.readI32());
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        String _value1 = oprot.readString();
+                        _fbthriftValue1 = _value1;
+                    }
+                    petNames.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();

@@ -265,9 +265,18 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
                 lsMap = new it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String>();
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    long _key1 = oprot.readI64();
-                    String _value1 = oprot.readString();
-                    lsMap.put(_key1, _value1);
+                    long _fbthriftKey1;
+                    String _fbthriftValue1;
+
+                    {
+                        long _value1 = oprot.readI64();
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        String _value1 = oprot.readString();
+                        _fbthriftValue1 = _value1;
+                    }
+                    lsMap.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();

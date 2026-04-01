@@ -1216,9 +1216,18 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                 structMap = new HashMap<test.fixtures.complex_struct.MyStruct, Long>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    test.fixtures.complex_struct.MyStruct _key1 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-                    long _value1 = oprot.readI64();
-                    structMap.put(_key1, _value1);
+                    test.fixtures.complex_struct.MyStruct _fbthriftKey1;
+                    long _fbthriftValue1;
+
+                    {
+                        test.fixtures.complex_struct.MyStruct _value1 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        long _value1 = oprot.readI64();
+                        _fbthriftValue1 = _value1;
+                    }
+                    structMap.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();
@@ -1235,9 +1244,18 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                 unionMap = new HashMap<test.fixtures.complex_struct.MyUnion, Long>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    test.fixtures.complex_struct.MyUnion _key1 = test.fixtures.complex_struct.MyUnion.read0(oprot);
-                    long _value1 = oprot.readI64();
-                    unionMap.put(_key1, _value1);
+                    test.fixtures.complex_struct.MyUnion _fbthriftKey1;
+                    long _fbthriftValue1;
+
+                    {
+                        test.fixtures.complex_struct.MyUnion _value1 = test.fixtures.complex_struct.MyUnion.read0(oprot);
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        long _value1 = oprot.readI64();
+                        _fbthriftValue1 = _value1;
+                    }
+                    unionMap.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();
@@ -1254,9 +1272,18 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                 enumMap = new HashMap<test.fixtures.complex_struct.MyEnum, Long>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    test.fixtures.complex_struct.MyEnum _key1 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
-                    long _value1 = oprot.readI64();
-                    enumMap.put(_key1, _value1);
+                    test.fixtures.complex_struct.MyEnum _fbthriftKey1;
+                    long _fbthriftValue1;
+
+                    {
+                        test.fixtures.complex_struct.MyEnum _value1 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        long _value1 = oprot.readI64();
+                        _fbthriftValue1 = _value1;
+                    }
+                    enumMap.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();
@@ -1273,9 +1300,18 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                 structMap2 = new HashMap<Integer, test.fixtures.complex_struct.MyStruct>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    int _key1 = oprot.readI32();
-                    test.fixtures.complex_struct.MyStruct _value1 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-                    structMap2.put(_key1, _value1);
+                    int _fbthriftKey1;
+                    test.fixtures.complex_struct.MyStruct _fbthriftValue1;
+
+                    {
+                        int _value1 = oprot.readI32();
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        test.fixtures.complex_struct.MyStruct _value1 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                        _fbthriftValue1 = _value1;
+                    }
+                    structMap2.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();
@@ -1292,9 +1328,18 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                 unionMap2 = new HashMap<Integer, test.fixtures.complex_struct.MyUnion>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    int _key1 = oprot.readI32();
-                    test.fixtures.complex_struct.MyUnion _value1 = test.fixtures.complex_struct.MyUnion.read0(oprot);
-                    unionMap2.put(_key1, _value1);
+                    int _fbthriftKey1;
+                    test.fixtures.complex_struct.MyUnion _fbthriftValue1;
+
+                    {
+                        int _value1 = oprot.readI32();
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        test.fixtures.complex_struct.MyUnion _value1 = test.fixtures.complex_struct.MyUnion.read0(oprot);
+                        _fbthriftValue1 = _value1;
+                    }
+                    unionMap2.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();
@@ -1311,9 +1356,18 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                 enumMap2 = new HashMap<Integer, test.fixtures.complex_struct.MyEnum>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    int _key1 = oprot.readI32();
-                    test.fixtures.complex_struct.MyEnum _value1 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
-                    enumMap2.put(_key1, _value1);
+                    int _fbthriftKey1;
+                    test.fixtures.complex_struct.MyEnum _fbthriftValue1;
+
+                    {
+                        int _value1 = oprot.readI32();
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        test.fixtures.complex_struct.MyEnum _value1 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+                        _fbthriftValue1 = _value1;
+                    }
+                    enumMap2.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();
@@ -1330,19 +1384,32 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                 listMap = new HashMap<List<Integer>, Integer>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    List<Integer> _key1;
+                    List<Integer> _fbthriftKey1;
+                    int _fbthriftValue1;
+
                     {
-                                TList _list1 = oprot.readListBegin();
-                                _key1 = new ArrayList<Integer>(Math.max(0, _list1.size));
-                                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                                    
-                                    int _value2 = oprot.readI32();
-                                    _key1.add(_value2);
-                                }
-                                oprot.readListEnd();
-                                }
-                    int _value1 = oprot.readI32();
-                    listMap.put(_key1, _value1);
+                        List<Integer> _value1;
+                        {
+                                    TList _list1 = oprot.readListBegin();
+                                    _value1 = new ArrayList<Integer>(Math.max(0, _list1.size));
+                                    for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                                        
+                                        
+                                        int _value2 = oprot.readI32();
+                                        
+                                        
+                                        _value1.add(_value2);
+                                        
+                                    }
+                                    oprot.readListEnd();
+                                    }
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        int _value1 = oprot.readI32();
+                        _fbthriftValue1 = _value1;
+                    }
+                    listMap.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();
@@ -1359,23 +1426,32 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                 listMap2 = new HashMap<Integer, List<Integer>>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    int _key1 = oprot.readI32();
-                    List<Integer> _value1;
+                    int _fbthriftKey1;
+                    List<Integer> _fbthriftValue1;
+
                     {
-                                TList _list1 = oprot.readListBegin();
-                                _value1 = new ArrayList<Integer>(Math.max(0, _list1.size));
-                                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                                    
-                                    
-                                    int _value2 = oprot.readI32();
-                                    
-                                    
-                                    _value1.add(_value2);
-                                    
-                                }
-                                oprot.readListEnd();
-                                }
-                    listMap2.put(_key1, _value1);
+                        int _value1 = oprot.readI32();
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        List<Integer> _value1;
+                        {
+                                    TList _list1 = oprot.readListBegin();
+                                    _value1 = new ArrayList<Integer>(Math.max(0, _list1.size));
+                                    for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                                        
+                                        
+                                        int _value2 = oprot.readI32();
+                                        
+                                        
+                                        _value1.add(_value2);
+                                        
+                                    }
+                                    oprot.readListEnd();
+                                    }
+                        _fbthriftValue1 = _value1;
+                    }
+                    listMap2.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();
@@ -1392,19 +1468,32 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                 setMap = new HashMap<Set<Integer>, Integer>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    Set<Integer> _key1;
+                    Set<Integer> _fbthriftKey1;
+                    int _fbthriftValue1;
+
                     {
-                                TSet _set1 = oprot.readSetBegin();
-                                _key1 = new HashSet<Integer>(Math.max(0, _set1.size));
-                                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                                    
-                                    int _value2 = oprot.readI32();
-                                    _key1.add(_value2);
-                                }
-                                oprot.readSetEnd();
-                                }
-                    int _value1 = oprot.readI32();
-                    setMap.put(_key1, _value1);
+                        Set<Integer> _value1;
+                        {
+                                    TSet _set1 = oprot.readSetBegin();
+                                    _value1 = new HashSet<Integer>(Math.max(0, _set1.size));
+                                    for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                                        
+                                        
+                                        int _value2 = oprot.readI32();
+                                        
+                                        
+                                        _value1.add(_value2);
+                                        
+                                    }
+                                    oprot.readSetEnd();
+                                    }
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        int _value1 = oprot.readI32();
+                        _fbthriftValue1 = _value1;
+                    }
+                    setMap.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();
@@ -1421,23 +1510,32 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                 setMap2 = new HashMap<Integer, Set<Integer>>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    int _key1 = oprot.readI32();
-                    Set<Integer> _value1;
+                    int _fbthriftKey1;
+                    Set<Integer> _fbthriftValue1;
+
                     {
-                                TSet _set1 = oprot.readSetBegin();
-                                _value1 = new HashSet<Integer>(Math.max(0, _set1.size));
-                                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                                    
-                                    
-                                    int _value2 = oprot.readI32();
-                                    
-                                    
-                                    _value1.add(_value2);
-                                    
-                                }
-                                oprot.readSetEnd();
-                                }
-                    setMap2.put(_key1, _value1);
+                        int _value1 = oprot.readI32();
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        Set<Integer> _value1;
+                        {
+                                    TSet _set1 = oprot.readSetBegin();
+                                    _value1 = new HashSet<Integer>(Math.max(0, _set1.size));
+                                    for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                                        
+                                        
+                                        int _value2 = oprot.readI32();
+                                        
+                                        
+                                        _value1.add(_value2);
+                                        
+                                    }
+                                    oprot.readSetEnd();
+                                    }
+                        _fbthriftValue1 = _value1;
+                    }
+                    setMap2.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();
@@ -1454,21 +1552,52 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                 mapMap = new HashMap<Map<Integer, Integer>, Integer>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    Map<Integer, Integer> _key1;
-                    {
-                                TMap _map1 = oprot.readMapBegin();
-                                _key1 = new HashMap<Integer, Integer>(Math.max(0, _map1.size));
-                                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                                    
-                                    int _key2 = oprot.readI32();
+                    Map<Integer, Integer> _fbthriftKey1;
+                    int _fbthriftValue1;
 
-                                    int _value2 = oprot.readI32();
-                                    _key1.put(_key2, _value2);
-                                }
-                                oprot.readMapEnd();
-                                }
-                    int _value1 = oprot.readI32();
-                    mapMap.put(_key1, _value1);
+                    {
+                        Map<Integer, Integer> _value1;
+                        {
+                                    TMap _map1 = oprot.readMapBegin();
+                                    _value1 = new HashMap<Integer, Integer>(Math.max(0, _map1.size));
+                                    for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                                        
+                                        
+                                        int _fbthriftKey2;
+                                        
+                                        
+                                        int _fbthriftValue2;
+                                        
+
+                                        {
+                                            
+                                            int _value2 = oprot.readI32();
+                                            
+                                            
+                                            _fbthriftKey2 = _value2;
+                                            
+                                        }
+                                        {
+                                            
+                                            int _value2 = oprot.readI32();
+                                            
+                                            
+                                            _fbthriftValue2 = _value2;
+                                            
+                                        }
+                                        
+                                        _value1.put(_fbthriftKey2, _fbthriftValue2);
+                                        
+                                    }
+                                    }
+                                    oprot.readMapEnd();
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        int _value1 = oprot.readI32();
+                        _fbthriftValue1 = _value1;
+                    }
+                    mapMap.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();
@@ -1485,27 +1614,52 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                 mapMap2 = new HashMap<Integer, Map<Integer, Integer>>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    int _key1 = oprot.readI32();
-                    Map<Integer, Integer> _value1;
-                    {
-                                TMap _map1 = oprot.readMapBegin();
-                                _value1 = new HashMap<Integer, Integer>(Math.max(0, _map1.size));
-                                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                                    
-                                    
-                                    int _key2 = oprot.readI32();
-                                    
+                    int _fbthriftKey1;
+                    Map<Integer, Integer> _fbthriftValue1;
 
-                                    
-                                    int _value2 = oprot.readI32();
-                                    
-                                    
-                                    _value1.put(_key2, _value2);
-                                    
-                                }
-                                }
-                                oprot.readMapEnd();
-                    mapMap2.put(_key1, _value1);
+                    {
+                        int _value1 = oprot.readI32();
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        Map<Integer, Integer> _value1;
+                        {
+                                    TMap _map1 = oprot.readMapBegin();
+                                    _value1 = new HashMap<Integer, Integer>(Math.max(0, _map1.size));
+                                    for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                                        
+                                        
+                                        int _fbthriftKey2;
+                                        
+                                        
+                                        int _fbthriftValue2;
+                                        
+
+                                        {
+                                            
+                                            int _value2 = oprot.readI32();
+                                            
+                                            
+                                            _fbthriftKey2 = _value2;
+                                            
+                                        }
+                                        {
+                                            
+                                            int _value2 = oprot.readI32();
+                                            
+                                            
+                                            _fbthriftValue2 = _value2;
+                                            
+                                        }
+                                        
+                                        _value1.put(_fbthriftKey2, _fbthriftValue2);
+                                        
+                                    }
+                                    }
+                                    oprot.readMapEnd();
+                        _fbthriftValue1 = _value1;
+                    }
+                    mapMap2.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();
@@ -1657,14 +1811,30 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                                     
                                     
-                                    int _key2 = oprot.readI32();
+                                    int _fbthriftKey2;
+                                    
+                                    
+                                    int _fbthriftValue2;
                                     
 
+                                    {
+                                        
+                                        int _value2 = oprot.readI32();
+                                        
+                                        
+                                        _fbthriftKey2 = _value2;
+                                        
+                                    }
+                                    {
+                                        
+                                        int _value2 = oprot.readI32();
+                                        
+                                        
+                                        _fbthriftValue2 = _value2;
+                                        
+                                    }
                                     
-                                    int _value2 = oprot.readI32();
-                                    
-                                    
-                                    _value1.put(_key2, _value2);
+                                    _value1.put(_fbthriftKey2, _fbthriftValue2);
                                     
                                 }
                                 }
@@ -1693,14 +1863,30 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                                     
                                     
-                                    int _key2 = oprot.readI32();
+                                    int _fbthriftKey2;
+                                    
+                                    
+                                    test.fixtures.complex_struct.MyStruct _fbthriftValue2;
                                     
 
+                                    {
+                                        
+                                        int _value2 = oprot.readI32();
+                                        
+                                        
+                                        _fbthriftKey2 = _value2;
+                                        
+                                    }
+                                    {
+                                        
+                                        test.fixtures.complex_struct.MyStruct _value2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                        
+                                        
+                                        _fbthriftValue2 = _value2;
+                                        
+                                    }
                                     
-                                    test.fixtures.complex_struct.MyStruct _value2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-                                    
-                                    
-                                    _value1.put(_key2, _value2);
+                                    _value1.put(_fbthriftKey2, _fbthriftValue2);
                                     
                                 }
                                 }
@@ -1729,14 +1915,30 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                                     
                                     
-                                    test.fixtures.complex_struct.MyStruct _key2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                    test.fixtures.complex_struct.MyStruct _fbthriftKey2;
+                                    
+                                    
+                                    int _fbthriftValue2;
                                     
 
+                                    {
+                                        
+                                        test.fixtures.complex_struct.MyStruct _value2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                        
+                                        
+                                        _fbthriftKey2 = _value2;
+                                        
+                                    }
+                                    {
+                                        
+                                        int _value2 = oprot.readI32();
+                                        
+                                        
+                                        _fbthriftValue2 = _value2;
+                                        
+                                    }
                                     
-                                    int _value2 = oprot.readI32();
-                                    
-                                    
-                                    _value1.put(_key2, _value2);
+                                    _value1.put(_fbthriftKey2, _fbthriftValue2);
                                     
                                 }
                                 }
@@ -1893,14 +2095,30 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                                     
                                     
-                                    int _key2 = oprot.readI32();
+                                    int _fbthriftKey2;
+                                    
+                                    
+                                    int _fbthriftValue2;
                                     
 
+                                    {
+                                        
+                                        int _value2 = oprot.readI32();
+                                        
+                                        
+                                        _fbthriftKey2 = _value2;
+                                        
+                                    }
+                                    {
+                                        
+                                        int _value2 = oprot.readI32();
+                                        
+                                        
+                                        _fbthriftValue2 = _value2;
+                                        
+                                    }
                                     
-                                    int _value2 = oprot.readI32();
-                                    
-                                    
-                                    _value1.put(_key2, _value2);
+                                    _value1.put(_fbthriftKey2, _fbthriftValue2);
                                     
                                 }
                                 }
@@ -1929,14 +2147,30 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                                     
                                     
-                                    int _key2 = oprot.readI32();
+                                    int _fbthriftKey2;
+                                    
+                                    
+                                    test.fixtures.complex_struct.MyStruct _fbthriftValue2;
                                     
 
+                                    {
+                                        
+                                        int _value2 = oprot.readI32();
+                                        
+                                        
+                                        _fbthriftKey2 = _value2;
+                                        
+                                    }
+                                    {
+                                        
+                                        test.fixtures.complex_struct.MyStruct _value2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                        
+                                        
+                                        _fbthriftValue2 = _value2;
+                                        
+                                    }
                                     
-                                    test.fixtures.complex_struct.MyStruct _value2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-                                    
-                                    
-                                    _value1.put(_key2, _value2);
+                                    _value1.put(_fbthriftKey2, _fbthriftValue2);
                                     
                                 }
                                 }
@@ -1965,14 +2199,30 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                                     
                                     
-                                    test.fixtures.complex_struct.MyStruct _key2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                    test.fixtures.complex_struct.MyStruct _fbthriftKey2;
+                                    
+                                    
+                                    int _fbthriftValue2;
                                     
 
+                                    {
+                                        
+                                        test.fixtures.complex_struct.MyStruct _value2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                        
+                                        
+                                        _fbthriftKey2 = _value2;
+                                        
+                                    }
+                                    {
+                                        
+                                        int _value2 = oprot.readI32();
+                                        
+                                        
+                                        _fbthriftValue2 = _value2;
+                                        
+                                    }
                                     
-                                    int _value2 = oprot.readI32();
-                                    
-                                    
-                                    _value1.put(_key2, _value2);
+                                    _value1.put(_fbthriftKey2, _fbthriftValue2);
                                     
                                 }
                                 }
@@ -1994,27 +2244,52 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                 mapI32MapI32I32 = new HashMap<Integer, Map<Integer, Integer>>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    int _key1 = oprot.readI32();
-                    Map<Integer, Integer> _value1;
-                    {
-                                TMap _map1 = oprot.readMapBegin();
-                                _value1 = new HashMap<Integer, Integer>(Math.max(0, _map1.size));
-                                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                                    
-                                    
-                                    int _key2 = oprot.readI32();
-                                    
+                    int _fbthriftKey1;
+                    Map<Integer, Integer> _fbthriftValue1;
 
-                                    
-                                    int _value2 = oprot.readI32();
-                                    
-                                    
-                                    _value1.put(_key2, _value2);
-                                    
-                                }
-                                }
-                                oprot.readMapEnd();
-                    mapI32MapI32I32.put(_key1, _value1);
+                    {
+                        int _value1 = oprot.readI32();
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        Map<Integer, Integer> _value1;
+                        {
+                                    TMap _map1 = oprot.readMapBegin();
+                                    _value1 = new HashMap<Integer, Integer>(Math.max(0, _map1.size));
+                                    for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                                        
+                                        
+                                        int _fbthriftKey2;
+                                        
+                                        
+                                        int _fbthriftValue2;
+                                        
+
+                                        {
+                                            
+                                            int _value2 = oprot.readI32();
+                                            
+                                            
+                                            _fbthriftKey2 = _value2;
+                                            
+                                        }
+                                        {
+                                            
+                                            int _value2 = oprot.readI32();
+                                            
+                                            
+                                            _fbthriftValue2 = _value2;
+                                            
+                                        }
+                                        
+                                        _value1.put(_fbthriftKey2, _fbthriftValue2);
+                                        
+                                    }
+                                    }
+                                    oprot.readMapEnd();
+                        _fbthriftValue1 = _value1;
+                    }
+                    mapI32MapI32I32.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();
@@ -2031,27 +2306,52 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                 mapI32MapStructI32 = new HashMap<Integer, Map<test.fixtures.complex_struct.MyStruct, Integer>>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    int _key1 = oprot.readI32();
-                    Map<test.fixtures.complex_struct.MyStruct, Integer> _value1;
-                    {
-                                TMap _map1 = oprot.readMapBegin();
-                                _value1 = new HashMap<test.fixtures.complex_struct.MyStruct, Integer>(Math.max(0, _map1.size));
-                                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                                    
-                                    
-                                    test.fixtures.complex_struct.MyStruct _key2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-                                    
+                    int _fbthriftKey1;
+                    Map<test.fixtures.complex_struct.MyStruct, Integer> _fbthriftValue1;
 
-                                    
-                                    int _value2 = oprot.readI32();
-                                    
-                                    
-                                    _value1.put(_key2, _value2);
-                                    
-                                }
-                                }
-                                oprot.readMapEnd();
-                    mapI32MapStructI32.put(_key1, _value1);
+                    {
+                        int _value1 = oprot.readI32();
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        Map<test.fixtures.complex_struct.MyStruct, Integer> _value1;
+                        {
+                                    TMap _map1 = oprot.readMapBegin();
+                                    _value1 = new HashMap<test.fixtures.complex_struct.MyStruct, Integer>(Math.max(0, _map1.size));
+                                    for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                                        
+                                        
+                                        test.fixtures.complex_struct.MyStruct _fbthriftKey2;
+                                        
+                                        
+                                        int _fbthriftValue2;
+                                        
+
+                                        {
+                                            
+                                            test.fixtures.complex_struct.MyStruct _value2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                            
+                                            
+                                            _fbthriftKey2 = _value2;
+                                            
+                                        }
+                                        {
+                                            
+                                            int _value2 = oprot.readI32();
+                                            
+                                            
+                                            _fbthriftValue2 = _value2;
+                                            
+                                        }
+                                        
+                                        _value1.put(_fbthriftKey2, _fbthriftValue2);
+                                        
+                                    }
+                                    }
+                                    oprot.readMapEnd();
+                        _fbthriftValue1 = _value1;
+                    }
+                    mapI32MapStructI32.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();
@@ -2068,27 +2368,52 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                 mapI32MapI32Struct = new HashMap<Integer, Map<Integer, test.fixtures.complex_struct.MyStruct>>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    int _key1 = oprot.readI32();
-                    Map<Integer, test.fixtures.complex_struct.MyStruct> _value1;
-                    {
-                                TMap _map1 = oprot.readMapBegin();
-                                _value1 = new HashMap<Integer, test.fixtures.complex_struct.MyStruct>(Math.max(0, _map1.size));
-                                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                                    
-                                    
-                                    int _key2 = oprot.readI32();
-                                    
+                    int _fbthriftKey1;
+                    Map<Integer, test.fixtures.complex_struct.MyStruct> _fbthriftValue1;
 
-                                    
-                                    test.fixtures.complex_struct.MyStruct _value2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-                                    
-                                    
-                                    _value1.put(_key2, _value2);
-                                    
-                                }
-                                }
-                                oprot.readMapEnd();
-                    mapI32MapI32Struct.put(_key1, _value1);
+                    {
+                        int _value1 = oprot.readI32();
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        Map<Integer, test.fixtures.complex_struct.MyStruct> _value1;
+                        {
+                                    TMap _map1 = oprot.readMapBegin();
+                                    _value1 = new HashMap<Integer, test.fixtures.complex_struct.MyStruct>(Math.max(0, _map1.size));
+                                    for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                                        
+                                        
+                                        int _fbthriftKey2;
+                                        
+                                        
+                                        test.fixtures.complex_struct.MyStruct _fbthriftValue2;
+                                        
+
+                                        {
+                                            
+                                            int _value2 = oprot.readI32();
+                                            
+                                            
+                                            _fbthriftKey2 = _value2;
+                                            
+                                        }
+                                        {
+                                            
+                                            test.fixtures.complex_struct.MyStruct _value2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                            
+                                            
+                                            _fbthriftValue2 = _value2;
+                                            
+                                        }
+                                        
+                                        _value1.put(_fbthriftKey2, _fbthriftValue2);
+                                        
+                                    }
+                                    }
+                                    oprot.readMapEnd();
+                        _fbthriftValue1 = _value1;
+                    }
+                    mapI32MapI32Struct.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();
@@ -2105,41 +2430,66 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                 mapI32MapListI32I32 = new HashMap<Integer, List<Map<Integer, Integer>>>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    int _key1 = oprot.readI32();
-                    List<Map<Integer, Integer>> _value1;
-                    {
-                                TList _list1 = oprot.readListBegin();
-                                _value1 = new ArrayList<Map<Integer, Integer>>(Math.max(0, _list1.size));
-                                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                                    
-                                    
-                                    Map<Integer, Integer> _value2;
-                                    {
-                                                TMap _map2 = oprot.readMapBegin();
-                                                _value2 = new HashMap<Integer, Integer>(Math.max(0, _map2.size));
-                                                for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
-                                                    
-                                                    
-                                                    int _key3 = oprot.readI32();
-                                                    
+                    int _fbthriftKey1;
+                    List<Map<Integer, Integer>> _fbthriftValue1;
 
-                                                    
-                                                    int _value3 = oprot.readI32();
-                                                    
-                                                    
-                                                    _value2.put(_key3, _value3);
-                                                    
-                                                }
-                                                }
-                                                oprot.readMapEnd();
-                                    
-                                    
-                                    _value1.add(_value2);
-                                    
-                                }
-                                oprot.readListEnd();
-                                }
-                    mapI32MapListI32I32.put(_key1, _value1);
+                    {
+                        int _value1 = oprot.readI32();
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        List<Map<Integer, Integer>> _value1;
+                        {
+                                    TList _list1 = oprot.readListBegin();
+                                    _value1 = new ArrayList<Map<Integer, Integer>>(Math.max(0, _list1.size));
+                                    for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                                        
+                                        
+                                        Map<Integer, Integer> _value2;
+                                        {
+                                                    TMap _map2 = oprot.readMapBegin();
+                                                    _value2 = new HashMap<Integer, Integer>(Math.max(0, _map2.size));
+                                                    for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
+                                                        
+                                                        
+                                                        int _fbthriftKey3;
+                                                        
+                                                        
+                                                        int _fbthriftValue3;
+                                                        
+
+                                                        {
+                                                            
+                                                            int _value3 = oprot.readI32();
+                                                            
+                                                            
+                                                            _fbthriftKey3 = _value3;
+                                                            
+                                                        }
+                                                        {
+                                                            
+                                                            int _value3 = oprot.readI32();
+                                                            
+                                                            
+                                                            _fbthriftValue3 = _value3;
+                                                            
+                                                        }
+                                                        
+                                                        _value2.put(_fbthriftKey3, _fbthriftValue3);
+                                                        
+                                                    }
+                                                    }
+                                                    oprot.readMapEnd();
+                                        
+                                        
+                                        _value1.add(_value2);
+                                        
+                                    }
+                                    oprot.readListEnd();
+                                    }
+                        _fbthriftValue1 = _value1;
+                    }
+                    mapI32MapListI32I32.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();
@@ -2156,41 +2506,66 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                 mapI32MapListStructI32 = new HashMap<Integer, List<Map<test.fixtures.complex_struct.MyStruct, Integer>>>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    int _key1 = oprot.readI32();
-                    List<Map<test.fixtures.complex_struct.MyStruct, Integer>> _value1;
-                    {
-                                TList _list1 = oprot.readListBegin();
-                                _value1 = new ArrayList<Map<test.fixtures.complex_struct.MyStruct, Integer>>(Math.max(0, _list1.size));
-                                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                                    
-                                    
-                                    Map<test.fixtures.complex_struct.MyStruct, Integer> _value2;
-                                    {
-                                                TMap _map2 = oprot.readMapBegin();
-                                                _value2 = new HashMap<test.fixtures.complex_struct.MyStruct, Integer>(Math.max(0, _map2.size));
-                                                for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
-                                                    
-                                                    
-                                                    test.fixtures.complex_struct.MyStruct _key3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-                                                    
+                    int _fbthriftKey1;
+                    List<Map<test.fixtures.complex_struct.MyStruct, Integer>> _fbthriftValue1;
 
-                                                    
-                                                    int _value3 = oprot.readI32();
-                                                    
-                                                    
-                                                    _value2.put(_key3, _value3);
-                                                    
-                                                }
-                                                }
-                                                oprot.readMapEnd();
-                                    
-                                    
-                                    _value1.add(_value2);
-                                    
-                                }
-                                oprot.readListEnd();
-                                }
-                    mapI32MapListStructI32.put(_key1, _value1);
+                    {
+                        int _value1 = oprot.readI32();
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        List<Map<test.fixtures.complex_struct.MyStruct, Integer>> _value1;
+                        {
+                                    TList _list1 = oprot.readListBegin();
+                                    _value1 = new ArrayList<Map<test.fixtures.complex_struct.MyStruct, Integer>>(Math.max(0, _list1.size));
+                                    for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                                        
+                                        
+                                        Map<test.fixtures.complex_struct.MyStruct, Integer> _value2;
+                                        {
+                                                    TMap _map2 = oprot.readMapBegin();
+                                                    _value2 = new HashMap<test.fixtures.complex_struct.MyStruct, Integer>(Math.max(0, _map2.size));
+                                                    for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
+                                                        
+                                                        
+                                                        test.fixtures.complex_struct.MyStruct _fbthriftKey3;
+                                                        
+                                                        
+                                                        int _fbthriftValue3;
+                                                        
+
+                                                        {
+                                                            
+                                                            test.fixtures.complex_struct.MyStruct _value3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                                            
+                                                            
+                                                            _fbthriftKey3 = _value3;
+                                                            
+                                                        }
+                                                        {
+                                                            
+                                                            int _value3 = oprot.readI32();
+                                                            
+                                                            
+                                                            _fbthriftValue3 = _value3;
+                                                            
+                                                        }
+                                                        
+                                                        _value2.put(_fbthriftKey3, _fbthriftValue3);
+                                                        
+                                                    }
+                                                    }
+                                                    oprot.readMapEnd();
+                                        
+                                        
+                                        _value1.add(_value2);
+                                        
+                                    }
+                                    oprot.readListEnd();
+                                    }
+                        _fbthriftValue1 = _value1;
+                    }
+                    mapI32MapListStructI32.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();

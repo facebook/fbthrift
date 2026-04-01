@@ -384,9 +384,18 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
                 myMapField = new HashMap<Short, String>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    short _key1 = oprot.readI16();
-                    String _value1 = oprot.readString();
-                    myMapField.put(_key1, _value1);
+                    short _fbthriftKey1;
+                    String _fbthriftValue1;
+
+                    {
+                        short _value1 = oprot.readI16();
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        String _value1 = oprot.readString();
+                        _fbthriftValue1 = _value1;
+                    }
+                    myMapField.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();
@@ -403,9 +412,18 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
                 myMapTypedef = new HashMap<Short, String>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    short _key1 = oprot.readI16();
-                    String _value1 = oprot.readString();
-                    myMapTypedef.put(_key1, _value1);
+                    short _fbthriftKey1;
+                    String _fbthriftValue1;
+
+                    {
+                        short _value1 = oprot.readI16();
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        String _value1 = oprot.readString();
+                        _fbthriftValue1 = _value1;
+                    }
+                    myMapTypedef.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();
@@ -458,37 +476,46 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
                 myMapListOfTypeDef = new HashMap<Short, List<List<Double>>>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    short _key1 = oprot.readI16();
-                    List<List<Double>> _value1;
+                    short _fbthriftKey1;
+                    List<List<Double>> _fbthriftValue1;
+
                     {
-                                TList _list1 = oprot.readListBegin();
-                                _value1 = new ArrayList<List<Double>>(Math.max(0, _list1.size));
-                                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                                    
-                                    
-                                    List<Double> _value2;
-                                    {
-                                                TList _list2 = oprot.readListBegin();
-                                                _value2 = new ArrayList<Double>(Math.max(0, _list2.size));
-                                                for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
-                                                    
-                                                    
-                                                    double _value3 = oprot.readDouble();
-                                                    
-                                                    
-                                                    _value2.add(_value3);
-                                                    
-                                                }
-                                                oprot.readListEnd();
-                                                }
-                                    
-                                    
-                                    _value1.add(_value2);
-                                    
-                                }
-                                oprot.readListEnd();
-                                }
-                    myMapListOfTypeDef.put(_key1, _value1);
+                        short _value1 = oprot.readI16();
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        List<List<Double>> _value1;
+                        {
+                                    TList _list1 = oprot.readListBegin();
+                                    _value1 = new ArrayList<List<Double>>(Math.max(0, _list1.size));
+                                    for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                                        
+                                        
+                                        List<Double> _value2;
+                                        {
+                                                    TList _list2 = oprot.readListBegin();
+                                                    _value2 = new ArrayList<Double>(Math.max(0, _list2.size));
+                                                    for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
+                                                        
+                                                        
+                                                        double _value3 = oprot.readDouble();
+                                                        
+                                                        
+                                                        _value2.add(_value3);
+                                                        
+                                                    }
+                                                    oprot.readListEnd();
+                                                    }
+                                        
+                                        
+                                        _value1.add(_value2);
+                                        
+                                    }
+                                    oprot.readListEnd();
+                                    }
+                        _fbthriftValue1 = _value1;
+                    }
+                    myMapListOfTypeDef.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();

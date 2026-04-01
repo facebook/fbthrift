@@ -229,9 +229,18 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                 stringToI64Map = new HashMap<String, Long>(Math.max(0, _map.size));
                 for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
                     
-                    String _key1 = oprot.readString();
-                    long _value1 = oprot.readI64();
-                    stringToI64Map.put(_key1, _value1);
+                    String _fbthriftKey1;
+                    long _fbthriftValue1;
+
+                    {
+                        String _value1 = oprot.readString();
+                        _fbthriftKey1 = _value1;
+                    }
+                    {
+                        long _value1 = oprot.readI64();
+                        _fbthriftValue1 = _value1;
+                    }
+                    stringToI64Map.put(_fbthriftKey1, _fbthriftValue1);
                 }
                 }
                 oprot.readMapEnd();
