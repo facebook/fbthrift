@@ -33,7 +33,7 @@
                 {{field:nestedDepth++}}{{> ReadTypeContainerNestedValue }}{{field:nestedDepth--}}
                 {{/type:container?}}
                 {{^type:container?}}
-                {{field:nestedDepth++}}{{#type:hasAdapter?}}{{> ThriftType}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _value{{field:nestedDepth}} = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};{{field:nestedDepth--}}
+                {{field:nestedDepth++}}{{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _value{{field:nestedDepth}} = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};{{field:nestedDepth--}}
                 {{/type:container?}}
                 {{field:nestedDepth++}}_key{{field:prevNestedDepth}}.add(_value{{field:nestedDepth}});{{field:nestedDepth--}}
                 {{/type:set_elem_type}}
@@ -56,7 +56,7 @@
                 {{field:nestedDepth++}}{{> ReadTypeContainerNestedValue }}{{field:nestedDepth--}}
                 {{/type:container?}}
                 {{^type:container?}}
-                {{field:nestedDepth++}}{{#type:hasAdapter?}}{{> ThriftType}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _value{{field:nestedDepth}} = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};{{field:nestedDepth--}}
+                {{field:nestedDepth++}}{{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _value{{field:nestedDepth}} = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};{{field:nestedDepth--}}
                 {{/type:container?}}
                 {{field:nestedDepth++}}_key{{field:prevNestedDepth}}.add(_value{{field:nestedDepth}});{{field:nestedDepth--}}
                 {{/type:list_elem_type}}
@@ -79,7 +79,7 @@
                 {{field:nestedDepth++}}{{> ReadTypeContainerNestedKey }}{{field:nestedDepth--}}
                 {{/type:container?}}
                 {{^type:container?}}
-                {{field:nestedDepth++}}{{#type:hasAdapter?}}{{> ThriftType}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _key{{field:nestedDepth}} = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};{{field:nestedDepth--}}
+                {{field:nestedDepth++}}{{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _key{{field:nestedDepth}} = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};{{field:nestedDepth--}}
                 {{/type:container?}}
                 {{/type:key_type}}
 
@@ -88,7 +88,7 @@
                 {{field:nestedDepth++}}{{> ReadTypeContainerNestedValue }}{{field:nestedDepth--}}
                 {{/type:container?}}
                 {{^type:container?}}
-                {{field:nestedDepth++}}{{#type:hasAdapter?}}{{> ThriftType}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _value{{field:nestedDepth}} = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};{{field:nestedDepth--}}
+                {{field:nestedDepth++}}{{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _value{{field:nestedDepth}} = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};{{field:nestedDepth--}}
                 {{/type:container?}}
                 {{field:nestedDepth++}}_key{{field:prevNestedDepth}}.put(_key{{field:nestedDepth}}, _value{{field:nestedDepth}});{{field:nestedDepth--}}
                 {{/type:value_type}}

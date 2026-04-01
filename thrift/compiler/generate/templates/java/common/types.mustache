@@ -172,3 +172,16 @@ Map<{{#partial adapted_inner_boxed_type type=type.key_type}}, {{#partial adapted
 {{#else}}null
 {{/if type.typedef?}}
 {{/let partial}}
+
+{{! Resolves the Thrift type name, recursing through typedefs one layer at a time
+    to check javaType at each layer. Falls back to java_type at the leaf.
+    Only called from adapter contexts (type:hasAdapter? guards), so binary
+    always resolves to ByteBuf. }}
+{{#let export partial thrift_type |type| captures |java_type|}}
+  {{#pragma ignore-newlines}}
+{{#if (not (string.empty? type.javaType))}}{{type.javaType}}
+{{#else if type.typedef?}}{{#partial thrift_type type=type.resolved}}
+{{#else if (or type.binary? type.isBinaryString?)}}io.netty.buffer.ByteBuf
+{{#else}}{{#partial java_type type=type}}
+{{/if (not (string.empty? type.javaType))}}
+{{/let partial}}
