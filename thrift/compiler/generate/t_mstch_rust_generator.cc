@@ -1648,11 +1648,11 @@ class t_mstch_rust_generator : public t_mstch_generator {
       }
       return false;
     });
-    def.property("consts_for_test", [](const t_program& self) {
+    def.property("consts_for_test", [&proto](const t_program& self) {
       whisker::array::raw consts;
       for (const t_const* c : self.consts()) {
         if (type_has_transitive_adapter(c->type(), true)) {
-          consts.emplace_back(whisker::make::string(c->name()));
+          consts.emplace_back(proto.create<t_const>(*c));
         }
       }
       return whisker::make::array(std::move(consts));
@@ -1970,7 +1970,7 @@ void t_mstch_rust_generator::generate_program() {
   render_to_file(prog, "types.rs", "types.rs");
   render_to_file(prog, "services.rs", "services.rs");
   render_to_file(prog, "errors.rs", "errors.rs");
-  render_to_file(prog, "consts.rs", "consts.rs");
+  t_whisker_generator::render_to_file("consts.rs", "consts.rs", context);
   render_to_file(prog, "client.rs", "client.rs");
   render_to_file(prog, "server.rs", "server.rs");
   render_to_file(prog, "mock.rs", "mock.rs");
