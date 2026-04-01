@@ -235,19 +235,22 @@ public final class Struct2 implements com.facebook.thrift.payload.ThriftSerializ
           break;
         case _D:
           if (__field.type == TType.LIST) {
-            List<Integer> d;
-                {
+            List<Integer> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                d = new ArrayList<Integer>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<Integer>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     int _fbthriftVar2 = oprot.readI32();
-                    d.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<Integer> d = _fbthriftVar1;
             builder.setD(d);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

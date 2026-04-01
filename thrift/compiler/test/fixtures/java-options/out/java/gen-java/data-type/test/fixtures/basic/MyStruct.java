@@ -405,19 +405,22 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
           break;
         case _FLOATSET:
           if (__field.type == TType.SET) {
-            Set<Float> floatSet;
-                {
+            Set<Float> _fbthriftVar1;
+    {
                 TSet _set1 = oprot.readSetBegin();
-                floatSet = new HashSet<Float>(Math.max(0, _set1.size));
+                _fbthriftVar1 = new HashSet<Float>(Math.max(0, _set1.size));
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
                     float _fbthriftVar2 = oprot.readFloat();
-                    floatSet.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
                 }
+    Set<Float> floatSet = _fbthriftVar1;
             builder.setFloatSet(floatSet);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

@@ -931,19 +931,22 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
           break;
         case _LDOUBLE:
           if (__field.type == TType.LIST) {
-            List<Double> lDouble;
-                {
+            List<Double> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                lDouble = new ArrayList<Double>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<Double>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     double _fbthriftVar2 = oprot.readDouble();
-                    lDouble.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<Double> lDouble = _fbthriftVar1;
             builder.setLDouble(lDouble);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -951,19 +954,22 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
           break;
         case _LSHORT:
           if (__field.type == TType.LIST) {
-            List<Short> lShort;
-                {
+            List<Short> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                lShort = new ArrayList<Short>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<Short>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     short _fbthriftVar2 = oprot.readI16();
-                    lShort.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<Short> lShort = _fbthriftVar1;
             builder.setLShort(lShort);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -971,19 +977,22 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
           break;
         case _LINTEGER:
           if (__field.type == TType.LIST) {
-            List<Integer> lInteger;
-                {
+            List<Integer> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                lInteger = new ArrayList<Integer>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<Integer>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     int _fbthriftVar2 = oprot.readI32();
-                    lInteger.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<Integer> lInteger = _fbthriftVar1;
             builder.setLInteger(lInteger);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -991,19 +1000,22 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
           break;
         case _LLONG:
           if (__field.type == TType.LIST) {
-            List<Long> lLong;
-                {
+            List<Long> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                lLong = new ArrayList<Long>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<Long>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     long _fbthriftVar2 = oprot.readI64();
-                    lLong.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<Long> lLong = _fbthriftVar1;
             builder.setLLong(lLong);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1011,19 +1023,22 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
           break;
         case _LSTRING:
           if (__field.type == TType.LIST) {
-            List<String> lString;
-                {
+            List<String> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                lString = new ArrayList<String>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<String>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     String _fbthriftVar2 = oprot.readString();
-                    lString.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<String> lString = _fbthriftVar1;
             builder.setLString(lString);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1031,19 +1046,22 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
           break;
         case _LBOOL:
           if (__field.type == TType.LIST) {
-            List<Boolean> lBool;
-                {
+            List<Boolean> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                lBool = new ArrayList<Boolean>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<Boolean>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     boolean _fbthriftVar2 = oprot.readBool();
-                    lBool.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<Boolean> lBool = _fbthriftVar1;
             builder.setLBool(lBool);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1051,19 +1069,22 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
           break;
         case _LBYTE:
           if (__field.type == TType.LIST) {
-            List<Byte> lByte;
-                {
+            List<Byte> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                lByte = new ArrayList<Byte>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<Byte>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     byte _fbthriftVar2 = oprot.readByte();
-                    lByte.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<Byte> lByte = _fbthriftVar1;
             builder.setLByte(lByte);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1071,29 +1092,42 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
           break;
         case _MSHORTSTRING:
           if (__field.type == TType.MAP) {
-            Map<Short, String> mShortString;
-                {
+            Map<Short, String> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                mShortString = new HashMap<Short, String>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<Short, String>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     short _fbthriftKey2;
+                    
+                    
                     String _fbthriftValue2;
+                    
 
                     {
+                        
                         short _fbthriftVar2 = oprot.readI16();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         String _fbthriftVar2 = oprot.readString();
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    mShortString.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<Short, String> mShortString = _fbthriftVar1;
             builder.setMShortString(mShortString);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1101,29 +1135,42 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
           break;
         case _MINTEGERSTRING:
           if (__field.type == TType.MAP) {
-            Map<Integer, String> mIntegerString;
-                {
+            Map<Integer, String> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                mIntegerString = new HashMap<Integer, String>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<Integer, String>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     int _fbthriftKey2;
+                    
+                    
                     String _fbthriftValue2;
+                    
 
                     {
+                        
                         int _fbthriftVar2 = oprot.readI32();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         String _fbthriftVar2 = oprot.readString();
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    mIntegerString.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<Integer, String> mIntegerString = _fbthriftVar1;
             builder.setMIntegerString(mIntegerString);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1131,29 +1178,42 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
           break;
         case _MSTRINGMYSTRUCT:
           if (__field.type == TType.MAP) {
-            Map<String, test.fixtures.complex_struct.MyStruct> mStringMyStruct;
-                {
+            Map<String, test.fixtures.complex_struct.MyStruct> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                mStringMyStruct = new HashMap<String, test.fixtures.complex_struct.MyStruct>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<String, test.fixtures.complex_struct.MyStruct>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     String _fbthriftKey2;
+                    
+                    
                     test.fixtures.complex_struct.MyStruct _fbthriftValue2;
+                    
 
                     {
+                        
                         String _fbthriftVar2 = oprot.readString();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         test.fixtures.complex_struct.MyStruct _fbthriftVar2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    mStringMyStruct.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<String, test.fixtures.complex_struct.MyStruct> mStringMyStruct = _fbthriftVar1;
             builder.setMStringMyStruct(mStringMyStruct);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1161,29 +1221,42 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
           break;
         case _MSTRINGBOOL:
           if (__field.type == TType.MAP) {
-            Map<String, Boolean> mStringBool;
-                {
+            Map<String, Boolean> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                mStringBool = new HashMap<String, Boolean>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<String, Boolean>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     String _fbthriftKey2;
+                    
+                    
                     boolean _fbthriftValue2;
+                    
 
                     {
+                        
                         String _fbthriftVar2 = oprot.readString();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         boolean _fbthriftVar2 = oprot.readBool();
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    mStringBool.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<String, Boolean> mStringBool = _fbthriftVar1;
             builder.setMStringBool(mStringBool);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1191,29 +1264,42 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
           break;
         case _MINTEGERINTEGER:
           if (__field.type == TType.MAP) {
-            Map<Integer, Integer> mIntegerInteger;
-                {
+            Map<Integer, Integer> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                mIntegerInteger = new HashMap<Integer, Integer>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<Integer, Integer>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     int _fbthriftKey2;
+                    
+                    
                     int _fbthriftValue2;
+                    
 
                     {
+                        
                         int _fbthriftVar2 = oprot.readI32();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         int _fbthriftVar2 = oprot.readI32();
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    mIntegerInteger.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<Integer, Integer> mIntegerInteger = _fbthriftVar1;
             builder.setMIntegerInteger(mIntegerInteger);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1221,29 +1307,42 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
           break;
         case _MINTEGERBOOL:
           if (__field.type == TType.MAP) {
-            Map<Integer, Boolean> mIntegerBool;
-                {
+            Map<Integer, Boolean> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                mIntegerBool = new HashMap<Integer, Boolean>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<Integer, Boolean>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     int _fbthriftKey2;
+                    
+                    
                     boolean _fbthriftValue2;
+                    
 
                     {
+                        
                         int _fbthriftVar2 = oprot.readI32();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         boolean _fbthriftVar2 = oprot.readBool();
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    mIntegerBool.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<Integer, Boolean> mIntegerBool = _fbthriftVar1;
             builder.setMIntegerBool(mIntegerBool);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1251,19 +1350,22 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
           break;
         case _SSHORT:
           if (__field.type == TType.SET) {
-            Set<Short> sShort;
-                {
+            Set<Short> _fbthriftVar1;
+    {
                 TSet _set1 = oprot.readSetBegin();
-                sShort = new HashSet<Short>(Math.max(0, _set1.size));
+                _fbthriftVar1 = new HashSet<Short>(Math.max(0, _set1.size));
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
                     short _fbthriftVar2 = oprot.readI16();
-                    sShort.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
                 }
+    Set<Short> sShort = _fbthriftVar1;
             builder.setSShort(sShort);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1271,19 +1373,22 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
           break;
         case _SMYSTRUCT:
           if (__field.type == TType.SET) {
-            Set<test.fixtures.complex_struct.MyStruct> sMyStruct;
-                {
+            Set<test.fixtures.complex_struct.MyStruct> _fbthriftVar1;
+    {
                 TSet _set1 = oprot.readSetBegin();
-                sMyStruct = new HashSet<test.fixtures.complex_struct.MyStruct>(Math.max(0, _set1.size));
+                _fbthriftVar1 = new HashSet<test.fixtures.complex_struct.MyStruct>(Math.max(0, _set1.size));
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
                     test.fixtures.complex_struct.MyStruct _fbthriftVar2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-                    sMyStruct.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
                 }
+    Set<test.fixtures.complex_struct.MyStruct> sMyStruct = _fbthriftVar1;
             builder.setSMyStruct(sMyStruct);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1291,19 +1396,22 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
           break;
         case _SLONG:
           if (__field.type == TType.SET) {
-            Set<Long> sLong;
-                {
+            Set<Long> _fbthriftVar1;
+    {
                 TSet _set1 = oprot.readSetBegin();
-                sLong = new HashSet<Long>(Math.max(0, _set1.size));
+                _fbthriftVar1 = new HashSet<Long>(Math.max(0, _set1.size));
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
                     long _fbthriftVar2 = oprot.readI64();
-                    sLong.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
                 }
+    Set<Long> sLong = _fbthriftVar1;
             builder.setSLong(sLong);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1311,19 +1419,22 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
           break;
         case _SSTRING:
           if (__field.type == TType.SET) {
-            Set<String> sString;
-                {
+            Set<String> _fbthriftVar1;
+    {
                 TSet _set1 = oprot.readSetBegin();
-                sString = new HashSet<String>(Math.max(0, _set1.size));
+                _fbthriftVar1 = new HashSet<String>(Math.max(0, _set1.size));
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
                     String _fbthriftVar2 = oprot.readString();
-                    sString.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
                 }
+    Set<String> sString = _fbthriftVar1;
             builder.setSString(sString);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1331,19 +1442,22 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
           break;
         case _SBYTE:
           if (__field.type == TType.SET) {
-            Set<Byte> sByte;
-                {
+            Set<Byte> _fbthriftVar1;
+    {
                 TSet _set1 = oprot.readSetBegin();
-                sByte = new HashSet<Byte>(Math.max(0, _set1.size));
+                _fbthriftVar1 = new HashSet<Byte>(Math.max(0, _set1.size));
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
                     byte _fbthriftVar2 = oprot.readByte();
-                    sByte.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
                 }
+    Set<Byte> sByte = _fbthriftVar1;
             builder.setSByte(sByte);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1351,17 +1465,21 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
           break;
         case _MLISTLIST:
           if (__field.type == TType.MAP) {
-            Map<List<Integer>, List<Integer>> mListList;
-                {
+            Map<List<Integer>, List<Integer>> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                mListList = new HashMap<List<Integer>, List<Integer>>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<List<Integer>, List<Integer>>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     List<Integer> _fbthriftKey2;
+                    
+                    
                     List<Integer> _fbthriftValue2;
+                    
 
                     {
+                        
                         List<Integer> _fbthriftVar2;
                         {
                                     TList _list2 = oprot.readListBegin();
@@ -1377,9 +1495,13 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                                     }
                                     oprot.readListEnd();
                                     }
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         List<Integer> _fbthriftVar2;
                         {
                                     TList _list2 = oprot.readListBegin();
@@ -1395,13 +1517,18 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                                     }
                                     oprot.readListEnd();
                                     }
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    mListList.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<List<Integer>, List<Integer>> mListList = _fbthriftVar1;
             builder.setMListList(mListList);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

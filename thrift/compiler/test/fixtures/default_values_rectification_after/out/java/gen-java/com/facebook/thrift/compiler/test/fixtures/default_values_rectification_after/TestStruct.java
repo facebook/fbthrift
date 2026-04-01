@@ -338,19 +338,22 @@ public final class TestStruct implements com.facebook.thrift.payload.ThriftSeria
           break;
         case _UNQUALIFIED_LIST_FIELD:
           if (__field.type == TType.LIST) {
-            List<Integer> unqualifiedListField;
-                {
+            List<Integer> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                unqualifiedListField = new ArrayList<Integer>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<Integer>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     int _fbthriftVar2 = oprot.readI32();
-                    unqualifiedListField.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<Integer> unqualifiedListField = _fbthriftVar1;
             builder.setUnqualifiedListField(unqualifiedListField);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -382,19 +385,22 @@ public final class TestStruct implements com.facebook.thrift.payload.ThriftSeria
           break;
         case _OPTIONAL_LIST_FIELD:
           if (__field.type == TType.LIST) {
-            List<Integer> optionalListField;
-                {
+            List<Integer> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                optionalListField = new ArrayList<Integer>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<Integer>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     int _fbthriftVar2 = oprot.readI32();
-                    optionalListField.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<Integer> optionalListField = _fbthriftVar1;
             builder.setOptionalListField(optionalListField);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

@@ -227,19 +227,22 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
           break;
         case _MYBOOLS:
           if (__field.type == TType.LIST) {
-            List<Boolean> myBools;
-                {
+            List<Boolean> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                myBools = new ArrayList<Boolean>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<Boolean>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     boolean _fbthriftVar2 = oprot.readBool();
-                    myBools.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<Boolean> myBools = _fbthriftVar1;
             builder.setMyBools(myBools);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -247,19 +250,22 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
           break;
         case _MYNUMBERS:
           if (__field.type == TType.LIST) {
-            List<Integer> myNumbers;
-                {
+            List<Integer> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                myNumbers = new ArrayList<Integer>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<Integer>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     int _fbthriftVar2 = oprot.readI32();
-                    myNumbers.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<Integer> myNumbers = _fbthriftVar1;
             builder.setMyNumbers(myNumbers);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

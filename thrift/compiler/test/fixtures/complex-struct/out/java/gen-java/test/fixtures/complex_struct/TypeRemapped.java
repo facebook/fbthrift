@@ -211,29 +211,42 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
         switch (__field.id) {
         case _LSMAP:
           if (__field.type == TType.MAP) {
-            it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap;
-                {
-                TMap _map1 = oprot.readMapBegin();
-                lsMap = new it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String>();
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    
-                    
-                    long _fbthriftKey2;
-                    String _fbthriftValue2;
+            it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> _fbthriftVar1;
+            {
+                        TMap _map1 = oprot.readMapBegin();
+                        _fbthriftVar1 = new it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String>();
+                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                            
+                            
+                            long _fbthriftKey2;
+                            
+                            
+                            String _fbthriftValue2;
+                            
 
-                    {
-                        long _fbthriftVar2 = oprot.readI64();
-                        _fbthriftKey2 = _fbthriftVar2;
-                    }
-                    {
-                        String _fbthriftVar2 = oprot.readString();
-                        _fbthriftValue2 = _fbthriftVar2;
-                    }
-                    lsMap.put(_fbthriftKey2, _fbthriftValue2);
-                    
-                }
-                }
-                oprot.readMapEnd();
+                            {
+                                
+                                long _fbthriftVar2 = oprot.readI64();
+                                
+                                
+                                _fbthriftKey2 = _fbthriftVar2;
+                                
+                            }
+                            {
+                                
+                                String _fbthriftVar2 = oprot.readString();
+                                
+                                
+                                _fbthriftValue2 = _fbthriftVar2;
+                                
+                            }
+                            
+                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                            
+                        }
+                        }
+                        oprot.readMapEnd();
+            it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap = _fbthriftVar1;
             builder.setLsMap(lsMap);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -241,63 +254,76 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
           break;
         case _IOMAP:
           if (__field.type == TType.MAP) {
-            it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> ioMap;
-                {
-                TMap _map1 = oprot.readMapBegin();
-                ioMap = new it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap>();
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    
-                    
-                    int _fbthriftKey2;
-                    it.unimi.dsi.fastutil.ints.Int2LongArrayMap _fbthriftValue2;
+            it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> _fbthriftVar1;
+            {
+                        TMap _map1 = oprot.readMapBegin();
+                        _fbthriftVar1 = new it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap>();
+                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                            
+                            
+                            int _fbthriftKey2;
+                            
+                            
+                            it.unimi.dsi.fastutil.ints.Int2LongArrayMap _fbthriftValue2;
+                            
 
-                    {
-                        int _fbthriftVar2 = oprot.readI32();
-                        _fbthriftKey2 = _fbthriftVar2;
-                    }
-                    {
-                        it.unimi.dsi.fastutil.ints.Int2LongArrayMap _fbthriftVar2;
-                        {
-                                    TMap _map2 = oprot.readMapBegin();
-                                    _fbthriftVar2 = new it.unimi.dsi.fastutil.ints.Int2LongArrayMap();
-                                    for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
-                                        
-                                        
-                                        int _fbthriftKey3;
-                                        
-                                        
-                                        long _fbthriftValue3;
-                                        
+                            {
+                                
+                                int _fbthriftVar2 = oprot.readI32();
+                                
+                                
+                                _fbthriftKey2 = _fbthriftVar2;
+                                
+                            }
+                            {
+                                
+                                it.unimi.dsi.fastutil.ints.Int2LongArrayMap _fbthriftVar2;
+                                {
+                                            TMap _map2 = oprot.readMapBegin();
+                                            _fbthriftVar2 = new it.unimi.dsi.fastutil.ints.Int2LongArrayMap();
+                                            for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
+                                                
+                                                
+                                                int _fbthriftKey3;
+                                                
+                                                
+                                                long _fbthriftValue3;
+                                                
 
-                                        {
-                                            
-                                            int _fbthriftVar3 = oprot.readI32();
-                                            
-                                            
-                                            _fbthriftKey3 = _fbthriftVar3;
-                                            
-                                        }
-                                        {
-                                            
-                                            long _fbthriftVar3 = oprot.readI64();
-                                            
-                                            
-                                            _fbthriftValue3 = _fbthriftVar3;
-                                            
-                                        }
-                                        
-                                        _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
-                                        
-                                    }
-                                    }
-                                    oprot.readMapEnd();
-                        _fbthriftValue2 = _fbthriftVar2;
-                    }
-                    ioMap.put(_fbthriftKey2, _fbthriftValue2);
-                    
-                }
-                }
-                oprot.readMapEnd();
+                                                {
+                                                    
+                                                    int _fbthriftVar3 = oprot.readI32();
+                                                    
+                                                    
+                                                    _fbthriftKey3 = _fbthriftVar3;
+                                                    
+                                                }
+                                                {
+                                                    
+                                                    long _fbthriftVar3 = oprot.readI64();
+                                                    
+                                                    
+                                                    _fbthriftValue3 = _fbthriftVar3;
+                                                    
+                                                }
+                                                
+                                                _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
+                                                
+                                            }
+                                            }
+                                            oprot.readMapEnd();
+                                
+                                
+                                _fbthriftValue2 = _fbthriftVar2;
+                                
+                            }
+                            
+                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                            
+                        }
+                        }
+                        oprot.readMapEnd();
+            it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> ioMap = _fbthriftVar1;
             builder.setIoMap(ioMap);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

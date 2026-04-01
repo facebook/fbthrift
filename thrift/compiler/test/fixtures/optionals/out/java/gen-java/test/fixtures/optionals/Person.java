@@ -413,19 +413,22 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
           break;
         case _FRIENDS:
           if (__field.type == TType.SET) {
-            Set<Long> friends;
-                {
+            Set<Long> _fbthriftVar1;
+    {
                 TSet _set1 = oprot.readSetBegin();
-                friends = new HashSet<Long>(Math.max(0, _set1.size));
+                _fbthriftVar1 = new HashSet<Long>(Math.max(0, _set1.size));
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
                     long _fbthriftVar2 = oprot.readI64();
-                    friends.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
                 }
+    Set<Long> friends = _fbthriftVar1;
             builder.setFriends(friends);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -441,29 +444,42 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
           break;
         case _PETNAMES:
           if (__field.type == TType.MAP) {
-            Map<test.fixtures.optionals.Animal, String> petNames;
-                {
+            Map<test.fixtures.optionals.Animal, String> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                petNames = new HashMap<test.fixtures.optionals.Animal, String>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<test.fixtures.optionals.Animal, String>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     test.fixtures.optionals.Animal _fbthriftKey2;
+                    
+                    
                     String _fbthriftValue2;
+                    
 
                     {
+                        
                         test.fixtures.optionals.Animal _fbthriftVar2 = test.fixtures.optionals.Animal.fromInteger(oprot.readI32());
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         String _fbthriftVar2 = oprot.readString();
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    petNames.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<test.fixtures.optionals.Animal, String> petNames = _fbthriftVar1;
             builder.setPetNames(petNames);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -479,19 +495,22 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
           break;
         case _VEHICLES:
           if (__field.type == TType.LIST) {
-            List<test.fixtures.optionals.Vehicle> vehicles;
-                {
+            List<test.fixtures.optionals.Vehicle> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                vehicles = new ArrayList<test.fixtures.optionals.Vehicle>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<test.fixtures.optionals.Vehicle>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     test.fixtures.optionals.Vehicle _fbthriftVar2 = test.fixtures.optionals.Vehicle.read0(oprot);
-                    vehicles.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<test.fixtures.optionals.Vehicle> vehicles = _fbthriftVar1;
             builder.setVehicles(vehicles);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

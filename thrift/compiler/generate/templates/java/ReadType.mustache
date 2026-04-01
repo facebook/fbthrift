@@ -31,9 +31,21 @@
     }}{{^type:isBinaryString?}}{{!
     }}{{#type:javaType}}{{!
       }}{{#type:container?}}{{!
-        }}{{#type:set?}}{{> ReadTypeContainer}}{{/type:set?}}{{!
-        }}{{#type:list?}}{{> ReadTypeContainer}}{{/type:list?}}{{!
-        }}{{#type:map?}}{{> ReadTypeContainer}}{{/type:map?}}{{!
+        }}{{#type:set?}}{{!
+        }}{{> ResolvedBoxedType}} _fbthriftVar{{field:nestedDepth}};
+        {{> ReadTypeContainerNestedValue}}
+        {{> ResolvedBoxedType}} {{field:javaName}} = _fbthriftVar{{field:nestedDepth}};{{!
+        }}{{/type:set?}}{{!
+        }}{{#type:list?}}{{!
+        }}{{> ResolvedBoxedType}} _fbthriftVar{{field:nestedDepth}};
+        {{> ReadTypeContainerNestedValue}}
+        {{> ResolvedBoxedType}} {{field:javaName}} = _fbthriftVar{{field:nestedDepth}};{{!
+        }}{{/type:list?}}{{!
+        }}{{#type:map?}}{{!
+        }}{{> ResolvedBoxedType}} _fbthriftVar{{field:nestedDepth}};
+        {{> ReadTypeContainerNestedValue}}
+        {{> ResolvedBoxedType}} {{field:javaName}} = _fbthriftVar{{field:nestedDepth}};{{!
+        }}{{/type:map?}}{{!
       }}{{/type:container?}}{{!
       }}{{^type:container?}}{{!
         }}{{#type:binary?}}{{!
@@ -57,11 +69,23 @@
   }}{{/type:isAdapterSet?}}{{!
 }}{{/type:typedef?}}{{!
 }}{{^type:typedef?}}{{!
-}}{{#type:set?}}{{> ReadTypeContainer}}{{/type:set?}}{{!
+}}{{#type:set?}}{{!
+}}{{> ResolvedBoxedType}} _fbthriftVar{{field:nestedDepth}};
+{{> ReadTypeContainerNestedValue}}
+{{> ResolvedBoxedType}} {{field:javaName}} = _fbthriftVar{{field:nestedDepth}};{{!
+}}{{/type:set?}}{{!
 
-}}{{#type:list?}}{{> ReadTypeContainer}}{{/type:list?}}{{!
+}}{{#type:list?}}{{!
+}}{{> ResolvedBoxedType}} _fbthriftVar{{field:nestedDepth}};
+{{> ReadTypeContainerNestedValue}}
+{{> ResolvedBoxedType}} {{field:javaName}} = _fbthriftVar{{field:nestedDepth}};{{!
+}}{{/type:list?}}{{!
 
-}}{{#type:map?}}{{> ReadTypeContainer}}{{/type:map?}}{{!
+}}{{#type:map?}}{{!
+}}{{> ResolvedBoxedType}} _fbthriftVar{{field:nestedDepth}};
+{{> ReadTypeContainerNestedValue}}
+{{> ResolvedBoxedType}} {{field:javaName}} = _fbthriftVar{{field:nestedDepth}};{{!
+}}{{/type:map?}}{{!
 
 }}{{#type:structured?}}{{!
 }}{{#field:isNested?}}{{> BoxedType}}.read0(oprot){{/field:isNested?}}{{!

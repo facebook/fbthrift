@@ -510,65 +510,84 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
             break;
           case _INTLISTVALUE:
             if (__field.type == INT_LIST_VALUE_FIELD_DESC.type) {
-              List<Long> intListValue;
-                {
+              List<Long> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                intListValue = new ArrayList<Long>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<Long>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     long _fbthriftVar2 = oprot.readI64();
-                    intListValue.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<Long> intListValue = _fbthriftVar1;
               res.value = intListValue;
             }
             break;
           case _STRINGLISTVALUE:
             if (__field.type == STRING_LIST_VALUE_FIELD_DESC.type) {
-              List<String> stringListValue;
-                {
+              List<String> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                stringListValue = new ArrayList<String>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<String>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     String _fbthriftVar2 = oprot.readString();
-                    stringListValue.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<String> stringListValue = _fbthriftVar1;
               res.value = stringListValue;
             }
             break;
           case _TYPEDEFVALUE:
             if (__field.type == TYPEDEF_VALUE_FIELD_DESC.type) {
-              Map<Short, String> typedefValue;
-                {
+              Map<Short, String> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                typedefValue = new HashMap<Short, String>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<Short, String>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     short _fbthriftKey2;
+                    
+                    
                     String _fbthriftValue2;
+                    
 
                     {
+                        
                         short _fbthriftVar2 = oprot.readI16();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         String _fbthriftVar2 = oprot.readString();
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    typedefValue.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<Short, String> typedefValue = _fbthriftVar1;
               res.value = typedefValue;
             }
             break;

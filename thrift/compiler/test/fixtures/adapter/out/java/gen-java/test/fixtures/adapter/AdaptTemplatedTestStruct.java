@@ -768,19 +768,22 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
           break;
         case _ADAPTEDLIST:
           if (__field.type == TType.LIST) {
-            List<Long> adaptedList;
-                {
+            List<Long> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                adaptedList = new ArrayList<Long>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<Long>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     long _fbthriftVar2 = oprot.readI64();
-                    adaptedList.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<Long> adaptedList = _fbthriftVar1;
             builder.setAdaptedList(adaptedList);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -788,19 +791,22 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
           break;
         case _ADAPTEDSET:
           if (__field.type == TType.SET) {
-            Set<Long> adaptedSet;
-                {
+            Set<Long> _fbthriftVar1;
+    {
                 TSet _set1 = oprot.readSetBegin();
-                adaptedSet = new HashSet<Long>(Math.max(0, _set1.size));
+                _fbthriftVar1 = new HashSet<Long>(Math.max(0, _set1.size));
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
                     long _fbthriftVar2 = oprot.readI64();
-                    adaptedSet.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
                 }
+    Set<Long> adaptedSet = _fbthriftVar1;
             builder.setAdaptedSet(adaptedSet);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -808,29 +814,42 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
           break;
         case _ADAPTEDMAP:
           if (__field.type == TType.MAP) {
-            Map<Long, Long> adaptedMap;
-                {
+            Map<Long, Long> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                adaptedMap = new HashMap<Long, Long>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<Long, Long>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     long _fbthriftKey2;
+                    
+                    
                     long _fbthriftValue2;
+                    
 
                     {
+                        
                         long _fbthriftVar2 = oprot.readI64();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         long _fbthriftVar2 = oprot.readI64();
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    adaptedMap.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<Long, Long> adaptedMap = _fbthriftVar1;
             builder.setAdaptedMap(adaptedMap);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -902,19 +921,22 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
           break;
         case _ADAPTEDLISTDEFAULT:
           if (__field.type == TType.LIST) {
-            List<Long> adaptedListDefault;
-                {
+            List<Long> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                adaptedListDefault = new ArrayList<Long>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<Long>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     long _fbthriftVar2 = oprot.readI64();
-                    adaptedListDefault.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<Long> adaptedListDefault = _fbthriftVar1;
             builder.setAdaptedListDefault(adaptedListDefault);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -922,19 +944,22 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
           break;
         case _ADAPTEDSETDEFAULT:
           if (__field.type == TType.SET) {
-            Set<Long> adaptedSetDefault;
-                {
+            Set<Long> _fbthriftVar1;
+    {
                 TSet _set1 = oprot.readSetBegin();
-                adaptedSetDefault = new HashSet<Long>(Math.max(0, _set1.size));
+                _fbthriftVar1 = new HashSet<Long>(Math.max(0, _set1.size));
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
                     long _fbthriftVar2 = oprot.readI64();
-                    adaptedSetDefault.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
                 }
+    Set<Long> adaptedSetDefault = _fbthriftVar1;
             builder.setAdaptedSetDefault(adaptedSetDefault);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -942,29 +967,42 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
           break;
         case _ADAPTEDMAPDEFAULT:
           if (__field.type == TType.MAP) {
-            Map<Long, Long> adaptedMapDefault;
-                {
+            Map<Long, Long> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                adaptedMapDefault = new HashMap<Long, Long>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<Long, Long>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     long _fbthriftKey2;
+                    
+                    
                     long _fbthriftValue2;
+                    
 
                     {
+                        
                         long _fbthriftVar2 = oprot.readI64();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         long _fbthriftVar2 = oprot.readI64();
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    adaptedMapDefault.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<Long, Long> adaptedMapDefault = _fbthriftVar1;
             builder.setAdaptedMapDefault(adaptedMapDefault);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

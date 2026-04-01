@@ -265,19 +265,22 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
         switch (__field.id) {
         case _LIST_REF:
           if (__field.type == TType.LIST) {
-            List<Integer> listRef;
-                {
+            List<Integer> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                listRef = new ArrayList<Integer>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<Integer>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     int _fbthriftVar2 = oprot.readI32();
-                    listRef.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<Integer> listRef = _fbthriftVar1;
             builder.setListRef(listRef);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -285,19 +288,22 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
           break;
         case _SET_REF:
           if (__field.type == TType.SET) {
-            Set<Integer> setRef;
-                {
+            Set<Integer> _fbthriftVar1;
+    {
                 TSet _set1 = oprot.readSetBegin();
-                setRef = new HashSet<Integer>(Math.max(0, _set1.size));
+                _fbthriftVar1 = new HashSet<Integer>(Math.max(0, _set1.size));
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
                     int _fbthriftVar2 = oprot.readI32();
-                    setRef.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
                 }
+    Set<Integer> setRef = _fbthriftVar1;
             builder.setSetRef(setRef);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -305,29 +311,42 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
           break;
         case _MAP_REF:
           if (__field.type == TType.MAP) {
-            Map<Integer, Integer> mapRef;
-                {
+            Map<Integer, Integer> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                mapRef = new HashMap<Integer, Integer>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<Integer, Integer>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     int _fbthriftKey2;
+                    
+                    
                     int _fbthriftValue2;
+                    
 
                     {
+                        
                         int _fbthriftVar2 = oprot.readI32();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         int _fbthriftVar2 = oprot.readI32();
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    mapRef.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<Integer, Integer> mapRef = _fbthriftVar1;
             builder.setMapRef(mapRef);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -335,19 +354,22 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
           break;
         case _LIST_REF_UNIQUE:
           if (__field.type == TType.LIST) {
-            List<Integer> listRefUnique;
-                {
+            List<Integer> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                listRefUnique = new ArrayList<Integer>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<Integer>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     int _fbthriftVar2 = oprot.readI32();
-                    listRefUnique.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<Integer> listRefUnique = _fbthriftVar1;
             builder.setListRefUnique(listRefUnique);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -355,19 +377,22 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
           break;
         case _SET_REF_SHARED:
           if (__field.type == TType.SET) {
-            Set<Integer> setRefShared;
-                {
+            Set<Integer> _fbthriftVar1;
+    {
                 TSet _set1 = oprot.readSetBegin();
-                setRefShared = new HashSet<Integer>(Math.max(0, _set1.size));
+                _fbthriftVar1 = new HashSet<Integer>(Math.max(0, _set1.size));
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
                     int _fbthriftVar2 = oprot.readI32();
-                    setRefShared.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
                 }
+    Set<Integer> setRefShared = _fbthriftVar1;
             builder.setSetRefShared(setRefShared);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -375,19 +400,22 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
           break;
         case _LIST_REF_SHARED_CONST:
           if (__field.type == TType.LIST) {
-            List<Integer> listRefSharedConst;
-                {
+            List<Integer> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                listRefSharedConst = new ArrayList<Integer>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<Integer>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     int _fbthriftVar2 = oprot.readI32();
-                    listRefSharedConst.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<Integer> listRefSharedConst = _fbthriftVar1;
             builder.setListRefSharedConst(listRefSharedConst);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

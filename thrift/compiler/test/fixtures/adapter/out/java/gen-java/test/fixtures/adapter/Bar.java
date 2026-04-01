@@ -340,19 +340,22 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
           break;
         case _STRUCTLISTFIELD:
           if (__field.type == TType.LIST) {
-            List<com.facebook.thrift.my.AdaptedFoo_1> structListField;
-                {
+            List<com.facebook.thrift.my.AdaptedFoo_1> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                structListField = new ArrayList<com.facebook.thrift.my.AdaptedFoo_1>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<com.facebook.thrift.my.AdaptedFoo_1>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     test.fixtures.adapter.Foo _fbthriftVar2 = test.fixtures.adapter.Foo.read0(oprot);
-                    structListField.add(__FooWithAdapter_9317_Adapter.fromThrift(_fbthriftVar2));
+                    
+                    
+                    _fbthriftVar1.add(__FooWithAdapter_9317_Adapter.fromThrift(_fbthriftVar2));
                     
                 }
                 oprot.readListEnd();
                 }
+    List<com.facebook.thrift.my.AdaptedFoo_1> structListField = _fbthriftVar1;
             builder.setStructListField(structListField);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -360,19 +363,22 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
           break;
         case _OPTIONALSTRUCTLISTFIELD:
           if (__field.type == TType.LIST) {
-            List<com.facebook.thrift.my.AdaptedFoo_1> optionalStructListField;
-                {
+            List<com.facebook.thrift.my.AdaptedFoo_1> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                optionalStructListField = new ArrayList<com.facebook.thrift.my.AdaptedFoo_1>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<com.facebook.thrift.my.AdaptedFoo_1>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     test.fixtures.adapter.Foo _fbthriftVar2 = test.fixtures.adapter.Foo.read0(oprot);
-                    optionalStructListField.add(__FooWithAdapter_9317_Adapter.fromThrift(_fbthriftVar2));
+                    
+                    
+                    _fbthriftVar1.add(__FooWithAdapter_9317_Adapter.fromThrift(_fbthriftVar2));
                     
                 }
                 oprot.readListEnd();
                 }
+    List<com.facebook.thrift.my.AdaptedFoo_1> optionalStructListField = _fbthriftVar1;
             builder.setOptionalStructListField(optionalStructListField);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -404,19 +410,22 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
           break;
         case _STRUCTLISTFIELDWITHTYPEDEF:
           if (__field.type == TType.LIST) {
-            List<test.fixtures.adapter.Foo> structListFieldWithTypedef;
-                {
+            List<test.fixtures.adapter.Foo> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                structListFieldWithTypedef = new ArrayList<test.fixtures.adapter.Foo>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<test.fixtures.adapter.Foo>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     test.fixtures.adapter.Foo _fbthriftVar2 = test.fixtures.adapter.Foo.read0(oprot);
-                    structListFieldWithTypedef.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<test.fixtures.adapter.Foo> structListFieldWithTypedef = _fbthriftVar1;
             builder.setStructListFieldWithTypedef(structListFieldWithTypedef);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

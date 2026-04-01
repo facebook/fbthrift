@@ -378,29 +378,42 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
           break;
         case _MYMAPFIELD:
           if (__field.type == TType.MAP) {
-            Map<Short, String> myMapField;
-                {
+            Map<Short, String> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                myMapField = new HashMap<Short, String>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<Short, String>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     short _fbthriftKey2;
+                    
+                    
                     String _fbthriftValue2;
+                    
 
                     {
+                        
                         short _fbthriftVar2 = oprot.readI16();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         String _fbthriftVar2 = oprot.readString();
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    myMapField.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<Short, String> myMapField = _fbthriftVar1;
             builder.setMyMapField(myMapField);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -408,29 +421,42 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
           break;
         case _MYMAPTYPEDEF:
           if (__field.type == TType.MAP) {
-            Map<Short, String> myMapTypedef;
-                {
+            Map<Short, String> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                myMapTypedef = new HashMap<Short, String>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<Short, String>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     short _fbthriftKey2;
+                    
+                    
                     String _fbthriftValue2;
+                    
 
                     {
+                        
                         short _fbthriftVar2 = oprot.readI16();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         String _fbthriftVar2 = oprot.readString();
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    myMapTypedef.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<Short, String> myMapTypedef = _fbthriftVar1;
             builder.setMyMapTypedef(myMapTypedef);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -438,19 +464,22 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
           break;
         case _MYLISTFIELD:
           if (__field.type == TType.LIST) {
-            List<Double> myListField;
-                {
+            List<Double> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                myListField = new ArrayList<Double>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<Double>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     double _fbthriftVar2 = oprot.readDouble();
-                    myListField.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<Double> myListField = _fbthriftVar1;
             builder.setMyListField(myListField);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -458,19 +487,22 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
           break;
         case _MYLISTTYPEDEF:
           if (__field.type == TType.LIST) {
-            List<Double> myListTypedef;
-                {
+            List<Double> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                myListTypedef = new ArrayList<Double>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<Double>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     double _fbthriftVar2 = oprot.readDouble();
-                    myListTypedef.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<Double> myListTypedef = _fbthriftVar1;
             builder.setMyListTypedef(myListTypedef);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -478,21 +510,29 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
           break;
         case _MYMAPLISTOFTYPEDEF:
           if (__field.type == TType.MAP) {
-            Map<Short, List<List<Double>>> myMapListOfTypeDef;
-                {
+            Map<Short, List<List<Double>>> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                myMapListOfTypeDef = new HashMap<Short, List<List<Double>>>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<Short, List<List<Double>>>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     short _fbthriftKey2;
+                    
+                    
                     List<List<Double>> _fbthriftValue2;
+                    
 
                     {
+                        
                         short _fbthriftVar2 = oprot.readI16();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         List<List<Double>> _fbthriftVar2;
                         {
                                     TList _list2 = oprot.readListBegin();
@@ -522,13 +562,18 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
                                     }
                                     oprot.readListEnd();
                                     }
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    myMapListOfTypeDef.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<Short, List<List<Double>>> myMapListOfTypeDef = _fbthriftVar1;
             builder.setMyMapListOfTypeDef(myMapListOfTypeDef);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

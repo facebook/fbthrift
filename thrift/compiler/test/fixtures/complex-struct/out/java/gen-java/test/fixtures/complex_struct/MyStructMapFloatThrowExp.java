@@ -165,21 +165,29 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
           break;
         case _MAPLISTOFFLOATS:
           if (__field.type == TType.MAP) {
-            Map<Integer, List<List<Float>>> mapListOfFloats;
-                {
+            Map<Integer, List<List<Float>>> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                mapListOfFloats = new HashMap<Integer, List<List<Float>>>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<Integer, List<List<Float>>>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     int _fbthriftKey2;
+                    
+                    
                     List<List<Float>> _fbthriftValue2;
+                    
 
                     {
+                        
                         int _fbthriftVar2 = oprot.readI32();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         List<List<Float>> _fbthriftVar2;
                         {
                                     TList _list2 = oprot.readListBegin();
@@ -209,13 +217,18 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
                                     }
                                     oprot.readListEnd();
                                     }
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    mapListOfFloats.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<Integer, List<List<Float>>> mapListOfFloats = _fbthriftVar1;
             builder.setMapListOfFloats(mapListOfFloats);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

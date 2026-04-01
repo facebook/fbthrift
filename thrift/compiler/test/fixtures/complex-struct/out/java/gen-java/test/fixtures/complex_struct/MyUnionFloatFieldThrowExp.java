@@ -408,10 +408,10 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
             break;
           case _SETFLOAT:
             if (__field.type == SET_FLOAT_FIELD_DESC.type) {
-              List<List<Float>> setFloat;
-                {
+              List<List<Float>> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                setFloat = new ArrayList<List<Float>>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<List<Float>>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
@@ -430,11 +430,14 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
                                 }
                                 oprot.readListEnd();
                                 }
-    setFloat.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<List<Float>> setFloat = _fbthriftVar1;
               res.value = setFloat;
             }
             break;

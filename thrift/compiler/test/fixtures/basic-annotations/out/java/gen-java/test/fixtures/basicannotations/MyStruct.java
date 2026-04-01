@@ -405,19 +405,22 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
           break;
         case _CPP_TYPE_ANNOTATION:
           if (__field.type == TType.LIST) {
-            List<String> cppTypeAnnotation;
-                {
+            List<String> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                cppTypeAnnotation = new ArrayList<String>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<String>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     String _fbthriftVar2 = oprot.readString();
-                    cppTypeAnnotation.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<String> cppTypeAnnotation = _fbthriftVar1;
             builder.setCppTypeAnnotation(cppTypeAnnotation);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

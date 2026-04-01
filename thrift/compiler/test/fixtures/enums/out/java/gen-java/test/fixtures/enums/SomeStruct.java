@@ -240,19 +240,22 @@ public final class SomeStruct implements com.facebook.thrift.payload.ThriftSeria
           break;
         case _TAGS:
           if (__field.type == TType.SET) {
-            Set<Integer> tags;
-                {
+            Set<Integer> _fbthriftVar1;
+    {
                 TSet _set1 = oprot.readSetBegin();
-                tags = new HashSet<Integer>(Math.max(0, _set1.size));
+                _fbthriftVar1 = new HashSet<Integer>(Math.max(0, _set1.size));
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
                     int _fbthriftVar2 = oprot.readI32();
-                    tags.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
                 }
+    Set<Integer> tags = _fbthriftVar1;
             builder.setTags(tags);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

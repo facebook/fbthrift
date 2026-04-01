@@ -192,19 +192,22 @@ public final class StructWithBox implements com.facebook.thrift.payload.ThriftSe
           break;
         case _B:
           if (__field.type == TType.LIST) {
-            List<Long> b;
-                {
+            List<Long> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                b = new ArrayList<Long>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<Long>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     long _fbthriftVar2 = oprot.readI64();
-                    b.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<Long> b = _fbthriftVar1;
             builder.setB(b);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

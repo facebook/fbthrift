@@ -1125,19 +1125,22 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
           break;
         case _SET_OF_I32:
           if (__field.type == TType.SET) {
-            Set<Integer> setOfI32;
-                {
+            Set<Integer> _fbthriftVar1;
+    {
                 TSet _set1 = oprot.readSetBegin();
-                setOfI32 = new HashSet<Integer>(Math.max(0, _set1.size));
+                _fbthriftVar1 = new HashSet<Integer>(Math.max(0, _set1.size));
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
                     int _fbthriftVar2 = oprot.readI32();
-                    setOfI32.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
                 }
+    Set<Integer> setOfI32 = _fbthriftVar1;
             builder.setSetOfI32(setOfI32);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1145,19 +1148,22 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
           break;
         case _LIST_OF_I32:
           if (__field.type == TType.LIST) {
-            List<Integer> listOfI32;
-                {
+            List<Integer> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                listOfI32 = new ArrayList<Integer>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<Integer>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     int _fbthriftVar2 = oprot.readI32();
-                    listOfI32.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<Integer> listOfI32 = _fbthriftVar1;
             builder.setListOfI32(listOfI32);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1165,19 +1171,22 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
           break;
         case _LIST_OF_STRING:
           if (__field.type == TType.LIST) {
-            List<String> listOfString;
-                {
+            List<String> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                listOfString = new ArrayList<String>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<String>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     String _fbthriftVar2 = oprot.readString();
-                    listOfString.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<String> listOfString = _fbthriftVar1;
             builder.setListOfString(listOfString);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1185,29 +1194,42 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
           break;
         case _MAP_OF_STRING_TO_I32:
           if (__field.type == TType.MAP) {
-            Map<String, Integer> mapOfStringToI32;
-                {
+            Map<String, Integer> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                mapOfStringToI32 = new HashMap<String, Integer>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<String, Integer>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     String _fbthriftKey2;
+                    
+                    
                     int _fbthriftValue2;
+                    
 
                     {
+                        
                         String _fbthriftVar2 = oprot.readString();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         int _fbthriftVar2 = oprot.readI32();
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    mapOfStringToI32.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<String, Integer> mapOfStringToI32 = _fbthriftVar1;
             builder.setMapOfStringToI32(mapOfStringToI32);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1215,29 +1237,42 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
           break;
         case _MAP_OF_STRING_TO_A:
           if (__field.type == TType.MAP) {
-            Map<String, test.fixtures.shapes.A> mapOfStringToA;
-                {
+            Map<String, test.fixtures.shapes.A> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                mapOfStringToA = new HashMap<String, test.fixtures.shapes.A>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<String, test.fixtures.shapes.A>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     String _fbthriftKey2;
+                    
+                    
                     test.fixtures.shapes.A _fbthriftValue2;
+                    
 
                     {
+                        
                         String _fbthriftVar2 = oprot.readString();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         test.fixtures.shapes.A _fbthriftVar2 = test.fixtures.shapes.A.read0(oprot);
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    mapOfStringToA.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<String, test.fixtures.shapes.A> mapOfStringToA = _fbthriftVar1;
             builder.setMapOfStringToA(mapOfStringToA);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1245,21 +1280,29 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
           break;
         case _MAP_OF_STRING_TO_LIST_OF_I32:
           if (__field.type == TType.MAP) {
-            Map<String, List<Integer>> mapOfStringToListOfI32;
-                {
+            Map<String, List<Integer>> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                mapOfStringToListOfI32 = new HashMap<String, List<Integer>>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<String, List<Integer>>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     String _fbthriftKey2;
+                    
+                    
                     List<Integer> _fbthriftValue2;
+                    
 
                     {
+                        
                         String _fbthriftVar2 = oprot.readString();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         List<Integer> _fbthriftVar2;
                         {
                                     TList _list2 = oprot.readListBegin();
@@ -1275,13 +1318,18 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                                     }
                                     oprot.readListEnd();
                                     }
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    mapOfStringToListOfI32.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<String, List<Integer>> mapOfStringToListOfI32 = _fbthriftVar1;
             builder.setMapOfStringToListOfI32(mapOfStringToListOfI32);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1289,21 +1337,29 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
           break;
         case _MAP_OF_STRING_TO_LIST_OF_A:
           if (__field.type == TType.MAP) {
-            Map<String, List<test.fixtures.shapes.A>> mapOfStringToListOfA;
-                {
+            Map<String, List<test.fixtures.shapes.A>> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                mapOfStringToListOfA = new HashMap<String, List<test.fixtures.shapes.A>>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<String, List<test.fixtures.shapes.A>>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     String _fbthriftKey2;
+                    
+                    
                     List<test.fixtures.shapes.A> _fbthriftValue2;
+                    
 
                     {
+                        
                         String _fbthriftVar2 = oprot.readString();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         List<test.fixtures.shapes.A> _fbthriftVar2;
                         {
                                     TList _list2 = oprot.readListBegin();
@@ -1319,13 +1375,18 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                                     }
                                     oprot.readListEnd();
                                     }
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    mapOfStringToListOfA.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<String, List<test.fixtures.shapes.A>> mapOfStringToListOfA = _fbthriftVar1;
             builder.setMapOfStringToListOfA(mapOfStringToListOfA);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1333,21 +1394,29 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
           break;
         case _MAP_OF_STRING_TO_SET_OF_I32:
           if (__field.type == TType.MAP) {
-            Map<String, Set<Integer>> mapOfStringToSetOfI32;
-                {
+            Map<String, Set<Integer>> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                mapOfStringToSetOfI32 = new HashMap<String, Set<Integer>>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<String, Set<Integer>>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     String _fbthriftKey2;
+                    
+                    
                     Set<Integer> _fbthriftValue2;
+                    
 
                     {
+                        
                         String _fbthriftVar2 = oprot.readString();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         Set<Integer> _fbthriftVar2;
                         {
                                     TSet _set2 = oprot.readSetBegin();
@@ -1363,13 +1432,18 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                                     }
                                     oprot.readSetEnd();
                                     }
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    mapOfStringToSetOfI32.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<String, Set<Integer>> mapOfStringToSetOfI32 = _fbthriftVar1;
             builder.setMapOfStringToSetOfI32(mapOfStringToSetOfI32);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1377,21 +1451,29 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
           break;
         case _MAP_OF_STRING_TO_MAP_OF_STRING_TO_I32:
           if (__field.type == TType.MAP) {
-            Map<String, Map<String, Integer>> mapOfStringToMapOfStringToI32;
-                {
+            Map<String, Map<String, Integer>> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                mapOfStringToMapOfStringToI32 = new HashMap<String, Map<String, Integer>>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<String, Map<String, Integer>>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     String _fbthriftKey2;
+                    
+                    
                     Map<String, Integer> _fbthriftValue2;
+                    
 
                     {
+                        
                         String _fbthriftVar2 = oprot.readString();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         Map<String, Integer> _fbthriftVar2;
                         {
                                     TMap _map2 = oprot.readMapBegin();
@@ -1427,13 +1509,18 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                                     }
                                     }
                                     oprot.readMapEnd();
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    mapOfStringToMapOfStringToI32.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<String, Map<String, Integer>> mapOfStringToMapOfStringToI32 = _fbthriftVar1;
             builder.setMapOfStringToMapOfStringToI32(mapOfStringToMapOfStringToI32);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1441,21 +1528,29 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
           break;
         case _MAP_OF_STRING_TO_MAP_OF_STRING_TO_A:
           if (__field.type == TType.MAP) {
-            Map<String, Map<String, test.fixtures.shapes.A>> mapOfStringToMapOfStringToA;
-                {
+            Map<String, Map<String, test.fixtures.shapes.A>> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                mapOfStringToMapOfStringToA = new HashMap<String, Map<String, test.fixtures.shapes.A>>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<String, Map<String, test.fixtures.shapes.A>>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     String _fbthriftKey2;
+                    
+                    
                     Map<String, test.fixtures.shapes.A> _fbthriftValue2;
+                    
 
                     {
+                        
                         String _fbthriftVar2 = oprot.readString();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         Map<String, test.fixtures.shapes.A> _fbthriftVar2;
                         {
                                     TMap _map2 = oprot.readMapBegin();
@@ -1491,13 +1586,18 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                                     }
                                     }
                                     oprot.readMapEnd();
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    mapOfStringToMapOfStringToA.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<String, Map<String, test.fixtures.shapes.A>> mapOfStringToMapOfStringToA = _fbthriftVar1;
             builder.setMapOfStringToMapOfStringToA(mapOfStringToMapOfStringToA);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1505,10 +1605,10 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
           break;
         case _LIST_OF_SET_OF_I32:
           if (__field.type == TType.LIST) {
-            List<Set<Integer>> listOfSetOfI32;
-                {
+            List<Set<Integer>> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                listOfSetOfI32 = new ArrayList<Set<Integer>>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<Set<Integer>>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
@@ -1527,11 +1627,14 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                                 }
                                 oprot.readSetEnd();
                                 }
-    listOfSetOfI32.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<Set<Integer>> listOfSetOfI32 = _fbthriftVar1;
             builder.setListOfSetOfI32(listOfSetOfI32);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1539,10 +1642,10 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
           break;
         case _LIST_OF_MAP_OF_STRING_TO_LIST_OF_A:
           if (__field.type == TType.LIST) {
-            List<Map<String, List<test.fixtures.shapes.A>>> listOfMapOfStringToListOfA;
-                {
+            List<Map<String, List<test.fixtures.shapes.A>>> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                listOfMapOfStringToListOfA = new ArrayList<Map<String, List<test.fixtures.shapes.A>>>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<Map<String, List<test.fixtures.shapes.A>>>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
@@ -1595,11 +1698,14 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                                 }
                                 }
                                 oprot.readMapEnd();
-    listOfMapOfStringToListOfA.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<Map<String, List<test.fixtures.shapes.A>>> listOfMapOfStringToListOfA = _fbthriftVar1;
             builder.setListOfMapOfStringToListOfA(listOfMapOfStringToListOfA);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1607,10 +1713,10 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
           break;
         case _LIST_OF_MAP_OF_STRING_TO_A:
           if (__field.type == TType.LIST) {
-            List<Map<String, test.fixtures.shapes.A>> listOfMapOfStringToA;
-                {
+            List<Map<String, test.fixtures.shapes.A>> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                listOfMapOfStringToA = new ArrayList<Map<String, test.fixtures.shapes.A>>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<Map<String, test.fixtures.shapes.A>>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
@@ -1649,11 +1755,14 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                                 }
                                 }
                                 oprot.readMapEnd();
-    listOfMapOfStringToA.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<Map<String, test.fixtures.shapes.A>> listOfMapOfStringToA = _fbthriftVar1;
             builder.setListOfMapOfStringToA(listOfMapOfStringToA);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1685,19 +1794,22 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
           break;
         case _OPTIONAL_SET_OF_I32:
           if (__field.type == TType.SET) {
-            Set<Integer> optionalSetOfI32;
-                {
+            Set<Integer> _fbthriftVar1;
+    {
                 TSet _set1 = oprot.readSetBegin();
-                optionalSetOfI32 = new HashSet<Integer>(Math.max(0, _set1.size));
+                _fbthriftVar1 = new HashSet<Integer>(Math.max(0, _set1.size));
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
                     int _fbthriftVar2 = oprot.readI32();
-                    optionalSetOfI32.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
                 }
+    Set<Integer> optionalSetOfI32 = _fbthriftVar1;
             builder.setOptionalSetOfI32(optionalSetOfI32);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1705,19 +1817,22 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
           break;
         case _OPTIONAL_LIST_OF_I32:
           if (__field.type == TType.LIST) {
-            List<Integer> optionalListOfI32;
-                {
+            List<Integer> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                optionalListOfI32 = new ArrayList<Integer>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<Integer>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     int _fbthriftVar2 = oprot.readI32();
-                    optionalListOfI32.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<Integer> optionalListOfI32 = _fbthriftVar1;
             builder.setOptionalListOfI32(optionalListOfI32);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1725,19 +1840,22 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
           break;
         case _OPTIONAL_LIST_OF_STRING:
           if (__field.type == TType.LIST) {
-            List<String> optionalListOfString;
-                {
+            List<String> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                optionalListOfString = new ArrayList<String>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<String>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     String _fbthriftVar2 = oprot.readString();
-                    optionalListOfString.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<String> optionalListOfString = _fbthriftVar1;
             builder.setOptionalListOfString(optionalListOfString);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1745,29 +1863,42 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
           break;
         case _OPTIONAL_MAP_OF_STRING_TO_I32:
           if (__field.type == TType.MAP) {
-            Map<String, Integer> optionalMapOfStringToI32;
-                {
+            Map<String, Integer> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                optionalMapOfStringToI32 = new HashMap<String, Integer>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<String, Integer>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     String _fbthriftKey2;
+                    
+                    
                     int _fbthriftValue2;
+                    
 
                     {
+                        
                         String _fbthriftVar2 = oprot.readString();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         int _fbthriftVar2 = oprot.readI32();
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    optionalMapOfStringToI32.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<String, Integer> optionalMapOfStringToI32 = _fbthriftVar1;
             builder.setOptionalMapOfStringToI32(optionalMapOfStringToI32);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1775,29 +1906,42 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
           break;
         case _OPTIONAL_MAP_OF_STRING_TO_A:
           if (__field.type == TType.MAP) {
-            Map<String, test.fixtures.shapes.A> optionalMapOfStringToA;
-                {
+            Map<String, test.fixtures.shapes.A> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                optionalMapOfStringToA = new HashMap<String, test.fixtures.shapes.A>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<String, test.fixtures.shapes.A>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     String _fbthriftKey2;
+                    
+                    
                     test.fixtures.shapes.A _fbthriftValue2;
+                    
 
                     {
+                        
                         String _fbthriftVar2 = oprot.readString();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         test.fixtures.shapes.A _fbthriftVar2 = test.fixtures.shapes.A.read0(oprot);
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    optionalMapOfStringToA.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<String, test.fixtures.shapes.A> optionalMapOfStringToA = _fbthriftVar1;
             builder.setOptionalMapOfStringToA(optionalMapOfStringToA);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1805,21 +1949,29 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
           break;
         case _OPTIONAL_MAP_OF_STRING_TO_LIST_OF_I32:
           if (__field.type == TType.MAP) {
-            Map<String, List<Integer>> optionalMapOfStringToListOfI32;
-                {
+            Map<String, List<Integer>> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                optionalMapOfStringToListOfI32 = new HashMap<String, List<Integer>>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<String, List<Integer>>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     String _fbthriftKey2;
+                    
+                    
                     List<Integer> _fbthriftValue2;
+                    
 
                     {
+                        
                         String _fbthriftVar2 = oprot.readString();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         List<Integer> _fbthriftVar2;
                         {
                                     TList _list2 = oprot.readListBegin();
@@ -1835,13 +1987,18 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                                     }
                                     oprot.readListEnd();
                                     }
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    optionalMapOfStringToListOfI32.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<String, List<Integer>> optionalMapOfStringToListOfI32 = _fbthriftVar1;
             builder.setOptionalMapOfStringToListOfI32(optionalMapOfStringToListOfI32);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1849,21 +2006,29 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
           break;
         case _OPTIONAL_MAP_OF_STRING_TO_LIST_OF_A:
           if (__field.type == TType.MAP) {
-            Map<String, List<test.fixtures.shapes.A>> optionalMapOfStringToListOfA;
-                {
+            Map<String, List<test.fixtures.shapes.A>> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                optionalMapOfStringToListOfA = new HashMap<String, List<test.fixtures.shapes.A>>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<String, List<test.fixtures.shapes.A>>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     String _fbthriftKey2;
+                    
+                    
                     List<test.fixtures.shapes.A> _fbthriftValue2;
+                    
 
                     {
+                        
                         String _fbthriftVar2 = oprot.readString();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         List<test.fixtures.shapes.A> _fbthriftVar2;
                         {
                                     TList _list2 = oprot.readListBegin();
@@ -1879,13 +2044,18 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                                     }
                                     oprot.readListEnd();
                                     }
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    optionalMapOfStringToListOfA.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<String, List<test.fixtures.shapes.A>> optionalMapOfStringToListOfA = _fbthriftVar1;
             builder.setOptionalMapOfStringToListOfA(optionalMapOfStringToListOfA);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1893,21 +2063,29 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
           break;
         case _OPTIONAL_MAP_OF_STRING_TO_SET_OF_I32:
           if (__field.type == TType.MAP) {
-            Map<String, Set<Integer>> optionalMapOfStringToSetOfI32;
-                {
+            Map<String, Set<Integer>> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                optionalMapOfStringToSetOfI32 = new HashMap<String, Set<Integer>>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<String, Set<Integer>>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     String _fbthriftKey2;
+                    
+                    
                     Set<Integer> _fbthriftValue2;
+                    
 
                     {
+                        
                         String _fbthriftVar2 = oprot.readString();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         Set<Integer> _fbthriftVar2;
                         {
                                     TSet _set2 = oprot.readSetBegin();
@@ -1923,13 +2101,18 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                                     }
                                     oprot.readSetEnd();
                                     }
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    optionalMapOfStringToSetOfI32.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<String, Set<Integer>> optionalMapOfStringToSetOfI32 = _fbthriftVar1;
             builder.setOptionalMapOfStringToSetOfI32(optionalMapOfStringToSetOfI32);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -1993,19 +2176,22 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
           break;
         case _SET_OF_I32_WITH_DEFAULT_VALUE:
           if (__field.type == TType.SET) {
-            Set<Integer> setOfI32WithDefaultValue;
-                {
+            Set<Integer> _fbthriftVar1;
+    {
                 TSet _set1 = oprot.readSetBegin();
-                setOfI32WithDefaultValue = new HashSet<Integer>(Math.max(0, _set1.size));
+                _fbthriftVar1 = new HashSet<Integer>(Math.max(0, _set1.size));
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
                     int _fbthriftVar2 = oprot.readI32();
-                    setOfI32WithDefaultValue.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
                 }
+    Set<Integer> setOfI32WithDefaultValue = _fbthriftVar1;
             builder.setSetOfI32WithDefaultValue(setOfI32WithDefaultValue);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -2013,29 +2199,42 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
           break;
         case _MAP_OF_I32_TO_STRING_WITH_DEFAULT_VALUE:
           if (__field.type == TType.MAP) {
-            Map<Integer, String> mapOfI32ToStringWithDefaultValue;
-                {
+            Map<Integer, String> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                mapOfI32ToStringWithDefaultValue = new HashMap<Integer, String>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<Integer, String>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     int _fbthriftKey2;
+                    
+                    
                     String _fbthriftValue2;
+                    
 
                     {
+                        
                         int _fbthriftVar2 = oprot.readI32();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         String _fbthriftVar2 = oprot.readString();
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    mapOfI32ToStringWithDefaultValue.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<Integer, String> mapOfI32ToStringWithDefaultValue = _fbthriftVar1;
             builder.setMapOfI32ToStringWithDefaultValue(mapOfI32ToStringWithDefaultValue);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -2043,19 +2242,22 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
           break;
         case _LIST_OF_STRING_WITH_DEFAULT_VALUE:
           if (__field.type == TType.LIST) {
-            List<String> listOfStringWithDefaultValue;
-                {
+            List<String> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                listOfStringWithDefaultValue = new ArrayList<String>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<String>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     String _fbthriftVar2 = oprot.readString();
-                    listOfStringWithDefaultValue.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<String> listOfStringWithDefaultValue = _fbthriftVar1;
             builder.setListOfStringWithDefaultValue(listOfStringWithDefaultValue);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -2063,21 +2265,29 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
           break;
         case _MAP_OF_STRING_TO_LIST_OF_I32_WITH_DEFAULT_VALUE:
           if (__field.type == TType.MAP) {
-            Map<String, List<Integer>> mapOfStringToListOfI32WithDefaultValue;
-                {
+            Map<String, List<Integer>> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                mapOfStringToListOfI32WithDefaultValue = new HashMap<String, List<Integer>>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<String, List<Integer>>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     String _fbthriftKey2;
+                    
+                    
                     List<Integer> _fbthriftValue2;
+                    
 
                     {
+                        
                         String _fbthriftVar2 = oprot.readString();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         List<Integer> _fbthriftVar2;
                         {
                                     TList _list2 = oprot.readListBegin();
@@ -2093,13 +2303,18 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                                     }
                                     oprot.readListEnd();
                                     }
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    mapOfStringToListOfI32WithDefaultValue.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<String, List<Integer>> mapOfStringToListOfI32WithDefaultValue = _fbthriftVar1;
             builder.setMapOfStringToListOfI32WithDefaultValue(mapOfStringToListOfI32WithDefaultValue);
           } else {
             TProtocolUtil.skip(oprot, __field.type);

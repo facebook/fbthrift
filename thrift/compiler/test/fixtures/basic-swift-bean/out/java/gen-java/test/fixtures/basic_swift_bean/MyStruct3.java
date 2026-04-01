@@ -552,19 +552,22 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
           break;
         case _MYSET:
           if (__field.type == TType.SET) {
-            Set<String> mySet;
-                {
+            Set<String> _fbthriftVar1;
+    {
                 TSet _set1 = oprot.readSetBegin();
-                mySet = new HashSet<String>(Math.max(0, _set1.size));
+                _fbthriftVar1 = new HashSet<String>(Math.max(0, _set1.size));
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
                     String _fbthriftVar2 = oprot.readString();
-                    mySet.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readSetEnd();
                 }
+    Set<String> mySet = _fbthriftVar1;
             builder.setMySet(mySet);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -580,19 +583,22 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
           break;
         case _MYLIST:
           if (__field.type == TType.LIST) {
-            List<test.fixtures.basic_swift_bean.MyDataItem> myList;
-                {
+            List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                myList = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar2 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
-                    myList.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<test.fixtures.basic_swift_bean.MyDataItem> myList = _fbthriftVar1;
             builder.setMyList(myList);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -600,21 +606,29 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
           break;
         case _MYMAPLIST:
           if (__field.type == TType.MAP) {
-            Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myMapList;
-                {
+            Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                myMapList = new HashMap<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     int _fbthriftKey2;
+                    
+                    
                     List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftValue2;
+                    
 
                     {
+                        
                         int _fbthriftVar2 = oprot.readI32();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftVar2;
                         {
                                     TList _list2 = oprot.readListBegin();
@@ -630,13 +644,18 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
                                     }
                                     oprot.readListEnd();
                                     }
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    myMapList.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myMapList = _fbthriftVar1;
             builder.setMyMapList(myMapList);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -644,19 +663,22 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
           break;
         case _MYEMPTYLIST:
           if (__field.type == TType.LIST) {
-            List<test.fixtures.basic_swift_bean.MyDataItem> myEmptyList;
-                {
+            List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftVar1;
+    {
                 TList _list1 = oprot.readListBegin();
-                myEmptyList = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(Math.max(0, _list1.size));
+                _fbthriftVar1 = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(Math.max(0, _list1.size));
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
                     test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar2 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
-                    myEmptyList.add(_fbthriftVar2);
+                    
+                    
+                    _fbthriftVar1.add(_fbthriftVar2);
                     
                 }
                 oprot.readListEnd();
                 }
+    List<test.fixtures.basic_swift_bean.MyDataItem> myEmptyList = _fbthriftVar1;
             builder.setMyEmptyList(myEmptyList);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
@@ -664,21 +686,29 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
           break;
         case _MYEMPTYMAPLIST:
           if (__field.type == TType.MAP) {
-            Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myEmptyMapList;
-                {
+            Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _fbthriftVar1;
+    {
                 TMap _map1 = oprot.readMapBegin();
-                myEmptyMapList = new HashMap<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>(Math.max(0, _map1.size));
+                _fbthriftVar1 = new HashMap<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>(Math.max(0, _map1.size));
                 for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                     
                     
                     int _fbthriftKey2;
+                    
+                    
                     List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftValue2;
+                    
 
                     {
+                        
                         int _fbthriftVar2 = oprot.readI32();
+                        
+                        
                         _fbthriftKey2 = _fbthriftVar2;
+                        
                     }
                     {
+                        
                         List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftVar2;
                         {
                                     TList _list2 = oprot.readListBegin();
@@ -694,13 +724,18 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
                                     }
                                     oprot.readListEnd();
                                     }
+                        
+                        
                         _fbthriftValue2 = _fbthriftVar2;
+                        
                     }
-                    myEmptyMapList.put(_fbthriftKey2, _fbthriftValue2);
+                    
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                     
                 }
                 }
                 oprot.readMapEnd();
+    Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myEmptyMapList = _fbthriftVar1;
             builder.setMyEmptyMapList(myEmptyMapList);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
