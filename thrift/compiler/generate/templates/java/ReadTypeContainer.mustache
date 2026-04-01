@@ -29,9 +29,9 @@
                 {{> ReadTypeContainerNestedValue }}
                 {{/type:container?}}
                 {{^type:container?}}
-                {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _value1 = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
+                {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _value{{field:nestedDepth}} = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
                 {{/type:container?}}{{!
-                }}{{field:javaName}}.add({{#type:hasAdapter?}}__{{type:name}}_Adapter.fromThrift({{/type:hasAdapter?}}_value1){{#type:hasAdapter?}}){{/type:hasAdapter?}};
+                }}{{field:javaName}}.add({{#type:hasAdapter?}}__{{type:name}}_Adapter.fromThrift({{/type:hasAdapter?}}_value{{field:nestedDepth}}){{#type:hasAdapter?}}){{/type:hasAdapter?}};
                 {{/type:set_elem_type}}
             }
             oprot.readSetEnd();
@@ -53,9 +53,9 @@
                 {{> ReadTypeContainerNestedValue }}
                 {{/type:container?}}
                 {{^type:container?}}
-                {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _value1 = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
+                {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _value{{field:nestedDepth}} = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
                 {{/type:container?}}{{!
-                }}{{field:javaName}}.add({{#type:hasAdapter?}}__{{type:name}}_Adapter.fromThrift({{/type:hasAdapter?}}_value1){{#type:hasAdapter?}}){{/type:hasAdapter?}};
+                }}{{field:javaName}}.add({{#type:hasAdapter?}}__{{type:name}}_Adapter.fromThrift({{/type:hasAdapter?}}_value{{field:nestedDepth}}){{#type:hasAdapter?}}){{/type:hasAdapter?}};
                 {{/type:list_elem_type}}
             }
             oprot.readListEnd();
@@ -77,7 +77,7 @@
                 {{> ReadTypeContainerNestedKey }}
                 {{/type:container?}}
                 {{^type:container?}}
-                {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _key1 = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
+                {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _key{{field:nestedDepth}} = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
                 {{/type:container?}}
                 {{/type:key_type}}
                 {{#type:value_type}}
@@ -86,12 +86,12 @@
                 {{> ReadTypeContainerNestedValue }}
                 {{/type:container?}}
                 {{^type:container?}}
-                {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _value1 = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
+                {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _value{{field:nestedDepth}} = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
                 {{/type:container?}}
                 {{/type:value_type}}
                 {{field:javaName}}.put({{!
-                }}{{#type:key_type}}{{#type:hasAdapter?}}__{{type:name}}_Adapter.fromThrift({{/type:hasAdapter?}}_key1{{#type:hasAdapter?}}){{/type:hasAdapter?}}, {{/type:key_type}}{{!
-                }}{{#type:value_type}}{{#type:hasAdapter?}}__{{type:name}}_Adapter.fromThrift({{/type:hasAdapter?}}_value1{{#type:hasAdapter?}}){{/type:hasAdapter?}});{{/type:value_type}}
+                }}{{#type:key_type}}{{#type:hasAdapter?}}__{{type:name}}_Adapter.fromThrift({{/type:hasAdapter?}}_key{{field:nestedDepth}}{{#type:hasAdapter?}}){{/type:hasAdapter?}}, {{/type:key_type}}{{!
+                }}{{#type:value_type}}{{#type:hasAdapter?}}__{{type:name}}_Adapter.fromThrift({{/type:hasAdapter?}}_value{{field:nestedDepth}}{{#type:hasAdapter?}}){{/type:hasAdapter?}});{{/type:value_type}}
             }
             }
             oprot.readMapEnd();{{!
