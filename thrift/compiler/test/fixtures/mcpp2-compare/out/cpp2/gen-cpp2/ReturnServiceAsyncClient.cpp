@@ -338,7 +338,10 @@ std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::t
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
   if (rpcOptions) {
-    header->setHeaders(rpcOptions->releaseWriteHeaders());
+    // Use getWriteHeaders() (non-destructive copy) instead of
+    // releaseWriteHeaders() so that RpcOptions retains headers across retries.
+    auto writeHeaders = rpcOptions->getWriteHeaders();
+    header->setHeaders(std::move(writeHeaders));
   }
 
   auto ctx = apache::thrift::ContextStack::createWithClientContext(
@@ -540,7 +543,10 @@ std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::t
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
   if (rpcOptions) {
-    header->setHeaders(rpcOptions->releaseWriteHeaders());
+    // Use getWriteHeaders() (non-destructive copy) instead of
+    // releaseWriteHeaders() so that RpcOptions retains headers across retries.
+    auto writeHeaders = rpcOptions->getWriteHeaders();
+    header->setHeaders(std::move(writeHeaders));
   }
 
   auto ctx = apache::thrift::ContextStack::createWithClientContext(
@@ -746,7 +752,10 @@ std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::t
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
   if (rpcOptions) {
-    header->setHeaders(rpcOptions->releaseWriteHeaders());
+    // Use getWriteHeaders() (non-destructive copy) instead of
+    // releaseWriteHeaders() so that RpcOptions retains headers across retries.
+    auto writeHeaders = rpcOptions->getWriteHeaders();
+    header->setHeaders(std::move(writeHeaders));
   }
 
   auto ctx = apache::thrift::ContextStack::createWithClientContext(
@@ -952,7 +961,10 @@ std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::t
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
   if (rpcOptions) {
-    header->setHeaders(rpcOptions->releaseWriteHeaders());
+    // Use getWriteHeaders() (non-destructive copy) instead of
+    // releaseWriteHeaders() so that RpcOptions retains headers across retries.
+    auto writeHeaders = rpcOptions->getWriteHeaders();
+    header->setHeaders(std::move(writeHeaders));
   }
 
   auto ctx = apache::thrift::ContextStack::createWithClientContext(
@@ -1158,7 +1170,10 @@ std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::t
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
   if (rpcOptions) {
-    header->setHeaders(rpcOptions->releaseWriteHeaders());
+    // Use getWriteHeaders() (non-destructive copy) instead of
+    // releaseWriteHeaders() so that RpcOptions retains headers across retries.
+    auto writeHeaders = rpcOptions->getWriteHeaders();
+    header->setHeaders(std::move(writeHeaders));
   }
 
   auto ctx = apache::thrift::ContextStack::createWithClientContext(
@@ -1364,7 +1379,10 @@ std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::t
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
   if (rpcOptions) {
-    header->setHeaders(rpcOptions->releaseWriteHeaders());
+    // Use getWriteHeaders() (non-destructive copy) instead of
+    // releaseWriteHeaders() so that RpcOptions retains headers across retries.
+    auto writeHeaders = rpcOptions->getWriteHeaders();
+    header->setHeaders(std::move(writeHeaders));
   }
 
   auto ctx = apache::thrift::ContextStack::createWithClientContext(
@@ -1570,7 +1588,10 @@ std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::t
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
   if (rpcOptions) {
-    header->setHeaders(rpcOptions->releaseWriteHeaders());
+    // Use getWriteHeaders() (non-destructive copy) instead of
+    // releaseWriteHeaders() so that RpcOptions retains headers across retries.
+    auto writeHeaders = rpcOptions->getWriteHeaders();
+    header->setHeaders(std::move(writeHeaders));
   }
 
   auto ctx = apache::thrift::ContextStack::createWithClientContext(
@@ -1776,7 +1797,10 @@ std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::t
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
   if (rpcOptions) {
-    header->setHeaders(rpcOptions->releaseWriteHeaders());
+    // Use getWriteHeaders() (non-destructive copy) instead of
+    // releaseWriteHeaders() so that RpcOptions retains headers across retries.
+    auto writeHeaders = rpcOptions->getWriteHeaders();
+    header->setHeaders(std::move(writeHeaders));
   }
 
   auto ctx = apache::thrift::ContextStack::createWithClientContext(
@@ -1978,7 +2002,10 @@ std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::t
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
   if (rpcOptions) {
-    header->setHeaders(rpcOptions->releaseWriteHeaders());
+    // Use getWriteHeaders() (non-destructive copy) instead of
+    // releaseWriteHeaders() so that RpcOptions retains headers across retries.
+    auto writeHeaders = rpcOptions->getWriteHeaders();
+    header->setHeaders(std::move(writeHeaders));
   }
 
   auto ctx = apache::thrift::ContextStack::createWithClientContext(
@@ -2180,7 +2207,10 @@ std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::t
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
   if (rpcOptions) {
-    header->setHeaders(rpcOptions->releaseWriteHeaders());
+    // Use getWriteHeaders() (non-destructive copy) instead of
+    // releaseWriteHeaders() so that RpcOptions retains headers across retries.
+    auto writeHeaders = rpcOptions->getWriteHeaders();
+    header->setHeaders(std::move(writeHeaders));
   }
 
   auto ctx = apache::thrift::ContextStack::createWithClientContext(
@@ -2382,7 +2412,10 @@ std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::t
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
   if (rpcOptions) {
-    header->setHeaders(rpcOptions->releaseWriteHeaders());
+    // Use getWriteHeaders() (non-destructive copy) instead of
+    // releaseWriteHeaders() so that RpcOptions retains headers across retries.
+    auto writeHeaders = rpcOptions->getWriteHeaders();
+    header->setHeaders(std::move(writeHeaders));
   }
 
   auto ctx = apache::thrift::ContextStack::createWithClientContext(
@@ -2588,7 +2621,10 @@ std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::t
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
   if (rpcOptions) {
-    header->setHeaders(rpcOptions->releaseWriteHeaders());
+    // Use getWriteHeaders() (non-destructive copy) instead of
+    // releaseWriteHeaders() so that RpcOptions retains headers across retries.
+    auto writeHeaders = rpcOptions->getWriteHeaders();
+    header->setHeaders(std::move(writeHeaders));
   }
 
   auto ctx = apache::thrift::ContextStack::createWithClientContext(
@@ -2790,7 +2826,10 @@ std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::t
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
   if (rpcOptions) {
-    header->setHeaders(rpcOptions->releaseWriteHeaders());
+    // Use getWriteHeaders() (non-destructive copy) instead of
+    // releaseWriteHeaders() so that RpcOptions retains headers across retries.
+    auto writeHeaders = rpcOptions->getWriteHeaders();
+    header->setHeaders(std::move(writeHeaders));
   }
 
   auto ctx = apache::thrift::ContextStack::createWithClientContext(
@@ -2992,7 +3031,10 @@ std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::t
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
   if (rpcOptions) {
-    header->setHeaders(rpcOptions->releaseWriteHeaders());
+    // Use getWriteHeaders() (non-destructive copy) instead of
+    // releaseWriteHeaders() so that RpcOptions retains headers across retries.
+    auto writeHeaders = rpcOptions->getWriteHeaders();
+    header->setHeaders(std::move(writeHeaders));
   }
 
   auto ctx = apache::thrift::ContextStack::createWithClientContext(
@@ -3198,7 +3240,10 @@ std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::t
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
   if (rpcOptions) {
-    header->setHeaders(rpcOptions->releaseWriteHeaders());
+    // Use getWriteHeaders() (non-destructive copy) instead of
+    // releaseWriteHeaders() so that RpcOptions retains headers across retries.
+    auto writeHeaders = rpcOptions->getWriteHeaders();
+    header->setHeaders(std::move(writeHeaders));
   }
 
   auto ctx = apache::thrift::ContextStack::createWithClientContext(
@@ -3400,7 +3445,10 @@ std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::t
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
   if (rpcOptions) {
-    header->setHeaders(rpcOptions->releaseWriteHeaders());
+    // Use getWriteHeaders() (non-destructive copy) instead of
+    // releaseWriteHeaders() so that RpcOptions retains headers across retries.
+    auto writeHeaders = rpcOptions->getWriteHeaders();
+    header->setHeaders(std::move(writeHeaders));
   }
 
   auto ctx = apache::thrift::ContextStack::createWithClientContext(
@@ -3602,7 +3650,10 @@ std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::t
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
   if (rpcOptions) {
-    header->setHeaders(rpcOptions->releaseWriteHeaders());
+    // Use getWriteHeaders() (non-destructive copy) instead of
+    // releaseWriteHeaders() so that RpcOptions retains headers across retries.
+    auto writeHeaders = rpcOptions->getWriteHeaders();
+    header->setHeaders(std::move(writeHeaders));
   }
 
   auto ctx = apache::thrift::ContextStack::createWithClientContext(
@@ -3804,7 +3855,10 @@ std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::t
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
   if (rpcOptions) {
-    header->setHeaders(rpcOptions->releaseWriteHeaders());
+    // Use getWriteHeaders() (non-destructive copy) instead of
+    // releaseWriteHeaders() so that RpcOptions retains headers across retries.
+    auto writeHeaders = rpcOptions->getWriteHeaders();
+    header->setHeaders(std::move(writeHeaders));
   }
 
   auto ctx = apache::thrift::ContextStack::createWithClientContext(
@@ -4006,7 +4060,10 @@ std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::t
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
   if (rpcOptions) {
-    header->setHeaders(rpcOptions->releaseWriteHeaders());
+    // Use getWriteHeaders() (non-destructive copy) instead of
+    // releaseWriteHeaders() so that RpcOptions retains headers across retries.
+    auto writeHeaders = rpcOptions->getWriteHeaders();
+    header->setHeaders(std::move(writeHeaders));
   }
 
   auto ctx = apache::thrift::ContextStack::createWithClientContext(
@@ -4209,7 +4266,10 @@ std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::t
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
   if (rpcOptions) {
-    header->setHeaders(rpcOptions->releaseWriteHeaders());
+    // Use getWriteHeaders() (non-destructive copy) instead of
+    // releaseWriteHeaders() so that RpcOptions retains headers across retries.
+    auto writeHeaders = rpcOptions->getWriteHeaders();
+    header->setHeaders(std::move(writeHeaders));
   }
 
   auto ctx = apache::thrift::ContextStack::createWithClientContext(
@@ -4412,7 +4472,10 @@ std::pair<::apache::thrift::ContextStack::UniquePtr, std::shared_ptr<::apache::t
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
   if (rpcOptions) {
-    header->setHeaders(rpcOptions->releaseWriteHeaders());
+    // Use getWriteHeaders() (non-destructive copy) instead of
+    // releaseWriteHeaders() so that RpcOptions retains headers across retries.
+    auto writeHeaders = rpcOptions->getWriteHeaders();
+    header->setHeaders(std::move(writeHeaders));
   }
 
   auto ctx = apache::thrift::ContextStack::createWithClientContext(
