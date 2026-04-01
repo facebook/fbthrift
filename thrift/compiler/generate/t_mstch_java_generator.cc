@@ -341,8 +341,6 @@ class t_mstch_java_generator : public t_mstch_generator {
   whisker_options render_options() const override {
     whisker_options opts;
     opts.allowed_undefined_variables = {
-        "type:typedef_type", // in UnionWrite.mustache
-        "struct:union?", // in WriteResponseType.mustache
         "field:hasAdapter?", // in BoxedType.mustache
     };
     return opts;
@@ -1497,8 +1495,6 @@ class mstch_java_type : public mstch_type {
         {
             {"type:setAdapter",
              {with_no_caching, &mstch_java_type::set_adapter}},
-            {"type:unsetAdapter",
-             {with_no_caching, &mstch_java_type::unset_adapter}},
             {"type:isAdapterSet?",
              {with_no_caching, &mstch_java_type::is_adapter_set}},
         });
@@ -1507,11 +1503,6 @@ class mstch_java_type : public mstch_type {
 
   mstch::node set_adapter() {
     hasTypeAdapter = true;
-    return mstch::node();
-  }
-
-  mstch::node unset_adapter() {
-    hasTypeAdapter = false;
     return mstch::node();
   }
 
