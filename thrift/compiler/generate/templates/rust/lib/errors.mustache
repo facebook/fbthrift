@@ -184,7 +184,7 @@ pub mod {{service:snake}} {
 }}{{#if function:bidirectional_stream?}}(){{!
 }}{{#else if function:stream?}}{{#if function:stream_has_first_response?}}{{#partial types.type_name type=function:self.return_type}}{{#else}}(){{/if}}{{!
 }}{{#else if function:sink?}}{{#if function:sink_has_first_response?}}{{#partial types.type_name type=function:self.return_type}}{{#else}}(){{/if}}{{!
-}}{{#else}}{{> lib/server_ok_type}}{{!
+}}{{#else}}{{#partial rpc.server_ok_type function=function:self service=service:self}}{{!
 }}{{/if function:bidirectional_stream?}}{{!
         }};
         type Error = {{function:upcamel}}Error;

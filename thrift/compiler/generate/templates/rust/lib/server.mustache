@@ -70,7 +70,7 @@ where
     ::fbthrift::ProtocolEncodedFinal<P>: ::std::clone::Clone + ::fbthrift::BufExt,{{!
     }}{{#if service:extends?}}
     SS: ::fbthrift::ThriftService<P::Frame>,
-    SS::Handler: {{> lib/super}}{{!
+    SS::Handler: {{#partial rpc.super service=service:self}}{{!
     }}{{/if service:extends?}}
 {
     pub fn new({{!
@@ -477,7 +477,7 @@ where
     }}{{#if service:requestContext?}}<RequestContext = R>{{/if service:requestContext?}},{{!
     }}{{#if service:extends?}}
     SS: ::fbthrift::ThriftService<P::Frame>,
-    SS::Handler: {{> lib/super}},{{!
+    SS::Handler: {{#partial rpc.super service=service:self}},{{!
     }}{{/if service:extends?}}
     P::Frame: ::std::marker::Send + 'static,
     R: ::fbthrift::RequestContext<Name = ::std::ffi::CStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
@@ -587,7 +587,7 @@ where
     }}{{#if service:requestContext?}}<RequestContext = R>{{/if service:requestContext?}},{{!
     }}{{#if service:extends?}}
     SS: ::fbthrift::ThriftService<P::Frame, RequestContext = R, ReplyState = RS>,
-    SS::Handler: {{> lib/super}},
+    SS::Handler: {{#partial rpc.super service=service:self}},
     P::Frame: ::std::marker::Send + 'static,{{!
     }}{{/if service:extends?}}
     R: ::fbthrift::RequestContext<Name = ::std::ffi::CStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
@@ -686,7 +686,7 @@ where
     }}{{#if service:extends?}}
     SMAKE: ::std::ops::FnOnce(::fbthrift::ProtocolID) -> ::std::result::Result<SS, ::fbthrift::ApplicationException>,
     SS: ::fbthrift::ThriftService<F, RequestContext = R, ReplyState = RS>,
-    SS::Handler: {{> lib/super}},{{!
+    SS::Handler: {{#partial rpc.super service=service:self}},{{!
     }}{{/if service:extends?}}
     R: ::fbthrift::RequestContext<Name = ::std::ffi::CStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
     <R as ::fbthrift::RequestContext>::ContextStack: ::fbthrift::ContextStack<Name = R::Name, Frame = F> + ::std::marker::Send + ::std::marker::Sync + 'static,

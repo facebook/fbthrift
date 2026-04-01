@@ -30,9 +30,9 @@ pub trait {{service:rust_name}}: {{!
     fn {{function:rust_name}}(
         &self,
         {{#function:args}}
-        arg_{{field:name}}: {{> lib/arg}},
+        arg_{{field:name}}: {{#partial rpc.arg field=field:self}},
         {{/function:args}}
-    ) -> {{> lib/client_return_type}};
+    ) -> {{#partial rpc.client_return_type function=function:self service=service:self}};
     {{/if (not function:starts_interaction?)}}{{#if function:starts_interaction?}}
     fn {{function:rust_name}}(
         &self,
@@ -55,10 +55,10 @@ where
     fn {{function:rust_name}}_with_rpc_opts(
         &self,
         {{#function:args}}
-        arg_{{field:name}}: {{> lib/arg}},
+        arg_{{field:name}}: {{#partial rpc.arg field=field:self}},
         {{/function:args}}
         rpc_options: T::RpcOptions,
-    ) -> {{> lib/client_return_type}};
+    ) -> {{#partial rpc.client_return_type function=function:self service=service:self}};
     {{/if (not function:starts_interaction?)}}
     {{/service:functions}}
     {{#if (array.empty? service:all_parent_services)}}
@@ -81,9 +81,9 @@ where
     fn {{function:rust_name}}(
         &self,{{!
         }}{{#function:args}}
-        arg_{{field:name}}: {{> lib/arg}},{{!
+        arg_{{field:name}}: {{#partial rpc.arg field=field:self}},{{!
         }}{{/function:args}}
-    ) -> {{> lib/client_return_type}} {
+    ) -> {{#partial rpc.client_return_type function=function:self service=service:self}} {
         self.as_ref().{{function:rust_name}}(
             {{#function:args}}
             arg_{{field:name}},
@@ -116,10 +116,10 @@ where
     fn {{function:rust_name}}_with_rpc_opts(
         &self,{{!
         }}{{#function:args}}
-        arg_{{field:name}}: {{> lib/arg}},{{!
+        arg_{{field:name}}: {{#partial rpc.arg field=field:self}},{{!
         }}{{/function:args}}
         rpc_options: T::RpcOptions,
-    ) -> {{> lib/client_return_type}} {
+    ) -> {{#partial rpc.client_return_type function=function:self service=service:self}} {
         <Self as ::std::convert::AsRef<dyn {{service:rust_name}}Ext<T>>>::as_ref(self).{{function:rust_name}}_with_rpc_opts(
             {{#function:args}}
             arg_{{field:name}},

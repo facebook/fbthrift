@@ -35,7 +35,7 @@ pub trait {{service:rust_name}}: ::std::marker::Send + ::std::marker::Sync + 'st
         }}{{#function:args}}
         _{{field:name}}: {{#partial types.type_name type=field:self.type}},{{!
         }}{{/function:args}}
-    ) -> {{> lib/server_return_type}} {
+    ) -> {{#partial rpc.server_return_type function=function:self service=service:self}} {
         ::std::result::Result::Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(
             ::fbthrift::ApplicationException::unimplemented_method(
                 "{{service:name}}",
@@ -75,7 +75,7 @@ where
         }}{{#function:args}}
         {{field:rust_name}}: {{#partial types.type_name type=field:self.type}},{{!
         }}{{/function:args}}
-    ) -> {{> lib/server_return_type}} {
+    ) -> {{#partial rpc.server_return_type function=function:self service=service:self}} {
         (**self).{{function:rust_name}}({{!
             }}{{#if service:requestContext?}}
             request_context,{{!
@@ -116,7 +116,7 @@ where
         }}{{#function:args}}
         {{field:rust_name}}: {{#partial types.type_name type=field:self.type}},{{!
         }}{{/function:args}}
-    ) -> {{> lib/server_return_type}} {
+    ) -> {{#partial rpc.server_return_type function=function:self service=service:self}} {
         (**self).{{function:rust_name}}({{!
             }}{{#if service:requestContext?}}
             request_context,{{!
