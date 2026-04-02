@@ -28,13 +28,13 @@ pub trait {{service:rust_name}}: ::std::marker::Send + ::std::marker::Sync + 'st
     #[doc = {{function:docs}}]
     {{/if function:docs?}}
     async fn {{function:rust_name}}(
-        &self,{{!
-        }}{{#if service:requestContext?}}
-        _request_context: &Self::RequestContext,{{!
-        }}{{/if service:requestContext?}}{{!
-        }}{{#function:args}}
-        _{{field:name}}: {{#partial types.type_name type=field:self.type}},{{!
-        }}{{/function:args}}
+        &self,
+        {{#if service:requestContext?}}
+        _request_context: &Self::RequestContext,
+        {{/if service:requestContext?}}
+        {{#function:args}}
+        _{{field:name}}: {{#partial types.type_name type=field:self.type}},
+        {{/function:args}}
     ) -> {{#partial rpc.server_return_type function=function:self service=service:self}} {
         ::std::result::Result::Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(
             ::fbthrift::ApplicationException::unimplemented_method(
@@ -68,21 +68,21 @@ where
   {{/if service:requestContext?}}
 {{#service:functions}}{{#if (not function:starts_interaction?)}}
     async fn {{function:rust_name}}(
-        &self,{{!
-        }}{{#if service:requestContext?}}
-        request_context: &Self::RequestContext,{{!
-        }}{{/if service:requestContext?}}{{!
-        }}{{#function:args}}
-        {{field:rust_name}}: {{#partial types.type_name type=field:self.type}},{{!
-        }}{{/function:args}}
+        &self,
+        {{#if service:requestContext?}}
+        request_context: &Self::RequestContext,
+        {{/if service:requestContext?}}
+        {{#function:args}}
+        {{field:rust_name}}: {{#partial types.type_name type=field:self.type}},
+        {{/function:args}}
     ) -> {{#partial rpc.server_return_type function=function:self service=service:self}} {
-        (**self).{{function:rust_name}}({{!
-            }}{{#if service:requestContext?}}
-            request_context,{{!
-            }}{{/if service:requestContext?}}{{!
-            }}{{#function:args}}
-            {{field:rust_name}},{{!
-            }}{{/function:args}}
+        (**self).{{function:rust_name}}(
+            {{#if service:requestContext?}}
+            request_context,
+            {{/if service:requestContext?}}
+            {{#function:args}}
+            {{field:rust_name}},
+            {{/function:args}}
         ).await
     }
 {{/if (not function:starts_interaction?)}}{{#if function:starts_interaction?}}
@@ -109,21 +109,21 @@ where
   {{/if service:requestContext?}}
 {{#service:functions}}{{#if (not function:starts_interaction?)}}
     async fn {{function:rust_name}}(
-        &self,{{!
-        }}{{#if service:requestContext?}}
-        request_context: &Self::RequestContext,{{!
-        }}{{/if service:requestContext?}}{{!
-        }}{{#function:args}}
-        {{field:rust_name}}: {{#partial types.type_name type=field:self.type}},{{!
-        }}{{/function:args}}
+        &self,
+        {{#if service:requestContext?}}
+        request_context: &Self::RequestContext,
+        {{/if service:requestContext?}}
+        {{#function:args}}
+        {{field:rust_name}}: {{#partial types.type_name type=field:self.type}},
+        {{/function:args}}
     ) -> {{#partial rpc.server_return_type function=function:self service=service:self}} {
-        (**self).{{function:rust_name}}({{!
-            }}{{#if service:requestContext?}}
-            request_context,{{!
-            }}{{/if service:requestContext?}}{{!
-            }}{{#function:args}}
-            {{field:rust_name}},{{!
-            }}{{/function:args}}
+        (**self).{{function:rust_name}}(
+            {{#if service:requestContext?}}
+            request_context,
+            {{/if service:requestContext?}}
+            {{#function:args}}
+            {{field:rust_name}},
+            {{/function:args}}
         ).await
     }
 {{/if (not function:starts_interaction?)}}{{#if function:starts_interaction?}}

@@ -49,20 +49,19 @@ pub const {{constant.rust_name}}: {{#partial types.type_name type=constant.type}
 
   {{/each}}
   {{#if program.has_const_tests?}}
-    {{! TODO(T261463864): Preserved legacy indentation level }}
-    /// These are here to ensure adapted consts do not panic with `from_thrift`.
-    #[cfg(test)]
-    mod tests {
-        {{#each program.consts_for_test as |constant|}}
-        #[test]
-        fn test_const_{{constant.name}}_force_does_not_panic() {
-            let _ = ::std::sync::LazyLock::force(&super::{{constant.name}});
-        }
-        {{/each}}
+/// These are here to ensure adapted consts do not panic with `from_thrift`.
+#[cfg(test)]
+mod tests {
+    {{#each program.consts_for_test as |constant|}}
+    #[test]
+    fn test_const_{{constant.name}}_force_does_not_panic() {
+        let _ = ::std::sync::LazyLock::force(&super::{{constant.name}});
     }
+    {{/each}}
+}
 
-    // This is here to ensure you enable unittests on your Thrift library.
-    #[cfg(feature = "thrift_library_unittests_disabled")]
-    compile_error!("You are using Rust adapters in a Thrift library that does not have unittests enabled. For safety reasons, this is forbidden. Please enable Rust unittests for this Thrift library.");
+// This is here to ensure you enable unittests on your Thrift library.
+#[cfg(feature = "thrift_library_unittests_disabled")]
+compile_error!("You are using Rust adapters in a Thrift library that does not have unittests enabled. For safety reasons, this is forbidden. Please enable Rust unittests for this Thrift library.");
 
   {{/if program.has_const_tests?}}

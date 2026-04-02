@@ -20,8 +20,11 @@
   {{/if interface.docs?}}
 pub trait {{interface.rust_name}}: {{!
     }}{{#if (object.notnull? service_extends)}}{{service_extends.client_package}}::{{service_extends.rust_name}} + {{/if}}{{!
-    }}::std::marker::Send \{{{!
-}}{{#each interface.functions as |function|}}
+    }}::std::marker::Send {
+  {{#each (array.enumerate interface.functions with_first=true) as |i function first?|}}
+    {{#if (not first?)}}
+
+    {{/if (not first?)}}
     {{#if function.docs?}}
     #[doc = {{function.docs}}]
     {{/if function.docs?}}

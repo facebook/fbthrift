@@ -15,19 +15,18 @@
   limitations under the License.
 
 }}
-
 /// Service definitions for `{{service:rust_name}}`.
-pub mod {{service:snake}} \{{{!
-    }}{{#if service:docs?}}
+pub mod {{service:snake}} {
+    {{#if service:docs?}}
     #![doc = {{service:docs}}]
-    {{/if service:docs?}}{{!
-    }}{{#service:functions}}{{#if (not function:starts_interaction?)}}{{#if function:stream?}}
+    {{/if service:docs?}}
+    {{#service:functions}}{{#if (not function:starts_interaction?)}}{{#if function:stream?}}
 
     #[derive(Clone, Debug)]
     pub enum {{function:upcamel}}StreamExn {
         {{#function:stream_exceptions}}
-        {{field:rust_name}}({{#partial types.type_name type=field:self.type}}),{{!
-        }}{{/function:stream_exceptions}}
+        {{field:rust_name}}({{#partial types.type_name type=field:self.type}}),
+        {{/function:stream_exceptions}}
         ApplicationException(::fbthrift::ApplicationException),
     }
 
@@ -69,15 +68,15 @@ pub mod {{service:snake}} \{{{!
                 {{/function:stream_exceptions}}
             }
         }
-    }{{!
-    }}{{#function:stream.unique_exceptions}}
+    }
+    {{#function:stream.unique_exceptions}}
 
     impl ::std::convert::From<{{#partial types.type_name type=field:type}}> for {{function:upcamel}}StreamExn {
         fn from(exn: {{#partial types.type_name type=field:type}}) -> Self {
             Self::{{field:rust_name}}(exn)
         }
-    }{{!
-    }}{{/function:stream.unique_exceptions}}
+    }
+    {{/function:stream.unique_exceptions}}
 
     impl ::std::convert::From<::fbthrift::ApplicationException> for {{function:upcamel}}StreamExn {
         fn from(exn: ::fbthrift::ApplicationException) -> Self {
@@ -133,8 +132,8 @@ pub mod {{service:snake}} \{{{!
                     );
                     ::fbthrift::Serialize::rs_thrift_write(inner, p);
                     p.write_field_end();
-                }{{!
-                }}{{/function:stream_exceptions}}
+                }
+                {{/function:stream_exceptions}}
                 ::std::result::Result::Err(Self::ApplicationException(_)) => unreachable!(),
             }
             p.write_field_stop();
@@ -192,8 +191,8 @@ pub mod {{service:snake}} \{{{!
     #[derive(Clone, Debug)]
     pub enum {{function:upcamel}}SinkExn {
         {{#function:sink_exceptions}}
-        {{field:rust_name}}({{#partial types.type_name type=field:self.type}}),{{!
-        }}{{/function:sink_exceptions}}
+        {{field:rust_name}}({{#partial types.type_name type=field:self.type}}),
+        {{/function:sink_exceptions}}
         ApplicationException(::fbthrift::ApplicationException),
     }
 
@@ -235,15 +234,15 @@ pub mod {{service:snake}} \{{{!
                 {{/function:sink_exceptions}}
             }
         }
-    }{{!
-    }}{{#function:sink.unique_exceptions}}
+    }
+    {{#function:sink.unique_exceptions}}
 
     impl ::std::convert::From<{{#partial types.type_name type=field:type}}> for {{function:upcamel}}SinkExn {
         fn from(exn: {{#partial types.type_name type=field:type}}) -> Self {
             Self::{{field:rust_name}}(exn)
         }
-    }{{!
-    }}{{/function:sink.unique_exceptions}}
+    }
+    {{/function:sink.unique_exceptions}}
 
     impl ::std::convert::From<::fbthrift::ApplicationException> for {{function:upcamel}}SinkExn {
         fn from(exn: ::fbthrift::ApplicationException) -> Self {
@@ -299,8 +298,8 @@ pub mod {{service:snake}} \{{{!
                     );
                     ::fbthrift::Serialize::rs_thrift_write(inner, p);
                     p.write_field_end();
-                }{{!
-                }}{{/function:sink_exceptions}}
+                }
+                {{/function:sink_exceptions}}
                 ::std::result::Result::Err(Self::ApplicationException(_)) => unreachable!(),
             }
             p.write_field_stop();
@@ -336,13 +335,13 @@ pub mod {{service:snake}} \{{{!
                     (({{#partial types.protocol_ttype type=function:sink.elem_type}}, 0i32), false) => {
                         once = true;
                         alt = ::std::option::Option::Some(::std::result::Result::Ok(::fbthrift::Deserialize::rs_thrift_read(p)?));
-                    }{{!
-                    }}{{#function:sink_exceptions}}
+                    }
+                    {{#function:sink_exceptions}}
                     (({{#partial types.protocol_ttype type=field:self.type}}, {{field:id}}), false) => {
                         once = true;
                         alt = ::std::option::Option::Some(::std::result::Result::Err(Self::Error::{{field:rust_name}}(::fbthrift::Deserialize::rs_thrift_read(p)?)));
-                    }{{!
-                    }}{{/function:sink_exceptions}}
+                    }
+                    {{/function:sink_exceptions}}
                     ((ty, _id), false) => p.skip(ty)?,
                     ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
                         ::fbthrift::ApplicationException::new(
@@ -373,8 +372,8 @@ pub mod {{service:snake}} \{{{!
     #[derive(Clone, Debug)]
     pub enum {{function:upcamel}}SinkFinalExn {
         {{#function:sink_final_response_exceptions}}
-        {{field:rust_name}}({{#partial types.type_name type=field:self.type}}),{{!
-        }}{{/function:sink_final_response_exceptions}}
+        {{field:rust_name}}({{#partial types.type_name type=field:self.type}}),
+        {{/function:sink_final_response_exceptions}}
         ApplicationException(::fbthrift::ApplicationException),
     }
 
@@ -416,15 +415,15 @@ pub mod {{service:snake}} \{{{!
                 {{/function:sink_final_response_exceptions}}
             }
         }
-    }{{!
-    }}{{#function:sink.unique_final_exceptions}}
+    }
+    {{#function:sink.unique_final_exceptions}}
 
     impl ::std::convert::From<{{#partial types.type_name type=field:type}}> for {{function:upcamel}}SinkFinalExn {
         fn from(exn: {{#partial types.type_name type=field:type}}) -> Self {
             Self::{{field:rust_name}}(exn)
         }
-    }{{!
-    }}{{/function:sink.unique_final_exceptions}}
+    }
+    {{/function:sink.unique_final_exceptions}}
 
     impl ::std::convert::From<::fbthrift::ApplicationException> for {{function:upcamel}}SinkFinalExn {
         fn from(exn: ::fbthrift::ApplicationException) -> Self {
@@ -480,8 +479,8 @@ pub mod {{service:snake}} \{{{!
                     );
                     ::fbthrift::Serialize::rs_thrift_write(inner, p);
                     p.write_field_end();
-                }{{!
-                }}{{/function:sink_final_response_exceptions}}
+                }
+                {{/function:sink_final_response_exceptions}}
                 ::std::result::Result::Err(Self::ApplicationException(_)) => unreachable!(),
             }
             p.write_field_stop();
@@ -494,18 +493,18 @@ pub mod {{service:snake}} \{{{!
     #[derive(Clone, Debug)]
     pub enum {{function:upcamel}}Exn {
         {{#function:exceptions}}
-        {{field:rust_name}}({{#partial types.type_name type=field:self.type}}),{{!
-        }}{{/function:exceptions}}
+        {{field:rust_name}}({{#partial types.type_name type=field:self.type}}),
+        {{/function:exceptions}}
         ApplicationException(::fbthrift::ApplicationException),
-    }{{!
-    }}{{#function:unique_exceptions}}
+    }
+    {{#function:unique_exceptions}}
 
     impl ::std::convert::From<{{#partial types.type_name type=field:type}}> for {{function:upcamel}}Exn {
         fn from(exn: {{#partial types.type_name type=field:type}}) -> Self {
             Self::{{field:rust_name}}(exn)
         }
-    }{{!
-    }}{{/function:unique_exceptions}}
+    }
+    {{/function:unique_exceptions}}
     {{#if function:enable_anyhow_to_application_exn}}
 
     impl ::std::convert::From<::anyhow::Error> for {{function:upcamel}}Exn {
@@ -648,8 +647,8 @@ pub mod {{service:snake}} \{{{!
                     );
                     ::fbthrift::Serialize::rs_thrift_write(inner, p);
                     p.write_field_end();
-                }{{!
-                }}{{/function:exceptions}}
+                }
+                {{/function:exceptions}}
                 ::std::result::Result::Err(Self::ApplicationException(_aexn)) => unreachable!(),
             }
             p.write_field_stop();

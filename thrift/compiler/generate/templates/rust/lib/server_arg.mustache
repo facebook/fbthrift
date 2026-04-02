@@ -39,15 +39,15 @@ impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_{{
         loop {
             let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
             match (fty, fid as ::std::primitive::i32) {
-                (::fbthrift::TType::Stop, _) => break,{{!
-                }}{{#function:args}}
+                (::fbthrift::TType::Stop, _) => break,
+                {{#function:args}}
                 ({{#partial types.protocol_ttype type=field:self.type}}, {{field:id}}) => {{!
                     }}field_{{field:name}} = ::std::option::Option::Some({{!
                     }}{{#if field:has_adapter?}}{{field:adapter_qualified}}::from_thrift_field::<fbthrift::metadata::NoThriftAnnotations>({{/if field:has_adapter?}}{{!
                     }}::anyhow::Context::context({{#partial fields.read field=field:self}}(p), ::fbthrift::errors::DeserializingArgError { arg: "{{field:name}}", function: "{{function:name}}"})?{{!
                     }}{{#if field:has_adapter?}}, {{field:id}})?{{/if field:has_adapter?}}{{!
-                    }}),{{!
-                }}{{/function:args}}
+                    }}),
+                {{/function:args}}
                 (fty, _) => p.skip(fty)?,
             }
             p.read_field_end()?;

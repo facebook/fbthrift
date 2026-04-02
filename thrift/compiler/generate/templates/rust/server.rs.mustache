@@ -23,8 +23,8 @@
 {{#if (not (string.empty? program:include_docs))}}
 #![doc = include_str!("{{program:include_docs}}")]
 {{/if (not (string.empty? program:include_docs))}}
-{{#if program:services?}}
 
+{{#if program:services?}}
 //! Server definitions for `{{program:name}}`.
 
 {{#if (not program:multifile?)}}
@@ -34,21 +34,30 @@
 }}{{#if (not program:multifile?)}}, unused_crate_dependencies{{/if (not program:multifile?)}}{{!
 }}, unused_imports, clippy::all)]
 
-{{#each program:services_include_srcs as |src|}}
+  {{#each program:services_include_srcs as |src|}}
 include!("{{src}}");
-{{/each}}
+  {{/each}}
 
 #[doc(inline)]
 pub use {{program:types}} as types;
 
-pub mod errors \{{{#program:services}}
-    {{> lib/server_errors}}
+pub mod errors {
+  {{#each program:self.services as |service|}}
+    #[doc(inline)]
+    pub use {{program:types}}::services::{{service.snake}};
+    #[doc(inline)]
+    #[allow(ambiguous_glob_reexports)]
+    pub use {{program:types}}::services::{{service.snake}}::*;
 
-    {{/program:services}}
-    {{#program:interactions}}
-    {{> lib/server_errors}}
+  {{/each}}
+  {{#each program:self.interactions as |interaction|}}
+    #[doc(inline)]
+    pub use {{program:types}}::services::{{interaction.snake}};
+    #[doc(inline)]
+    #[allow(ambiguous_glob_reexports)]
+    pub use {{program:types}}::services::{{interaction.snake}}::*;
 
-    {{/program:interactions}}
+  {{/each}}
 }
 
 pub(crate) use {{program:crate}} as server;
@@ -59,9 +68,11 @@ pub(crate) use {{program:types}}::services;
 
 {{> lib/server_arg}}
 {{/program:interactions}}
-{{#program:services}}{{> lib/server}}{{!
-}}{{/program:services}}{{!
-}}{{/if program:services?}}
+{{#program:services}}
+
+{{> lib/server}}
+{{/program:services}}
+{{/if program:services?}}
 {{#if (not program:services?)}}
 #![doc(hidden)]
 {{#if (not program:multifile?)}}
