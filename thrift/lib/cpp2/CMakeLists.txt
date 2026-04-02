@@ -380,6 +380,9 @@ add_library(
   fast_thrift/channel_pipeline/PipelineImpl.cpp
   fast_thrift/channel_pipeline/detail/ContextImpl.cpp
   fast_thrift/frame/write/FrameWriter.cpp
+  fast_thrift/thrift/FastThriftAdapterBase.cpp
+  fast_thrift/thrift/client/ThriftClientChannel.cpp
+  fast_thrift/thrift/server/ThriftServerChannel.cpp
   logging/ThriftConnectionLog.cpp
   logging/ThriftSinkLog.cpp
   logging/ThriftStreamLog.cpp
