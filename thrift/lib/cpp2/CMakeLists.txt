@@ -379,6 +379,7 @@ add_library(
   detail/Enum.cpp
   fast_thrift/channel_pipeline/PipelineImpl.cpp
   fast_thrift/channel_pipeline/detail/ContextImpl.cpp
+  fast_thrift/frame/write/FrameWriter.cpp
   logging/ThriftConnectionLog.cpp
   logging/ThriftSinkLog.cpp
   logging/ThriftStreamLog.cpp
