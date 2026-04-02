@@ -227,7 +227,6 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
                         _fbthriftVar1 = new ArrayList<String>(Math.max(0, _list1.size));
                         for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                             
-                            
                             String _fbthriftVar2;
                             _fbthriftVar2 = oprot.readString();
                             
@@ -286,7 +285,6 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
                         TMap _map1 = oprot.readMapBegin();
                         _fbthriftVar1 = new it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String>();
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                            
                             
                             long _fbthriftKey2;
                             

@@ -64,13 +64,11 @@
 {{/type:map?}}{{!
 
 }}{{#type:structured?}}{{!
-  }}{{#field:isNested?}}_fbthriftVar{{field:nestedDepth}} = {{> BoxedType}}.read0(oprot);{{/field:isNested?}}{{!
-  }}{{^field:isNested?}}_fbthriftVar{{field:nestedDepth}} = {{#partial types.thrift_boxed_type type=type:self field_hasAdapter=field:hasAdapter?}}.read0(oprot);{{/field:isNested?}}{{!
+  }}_fbthriftVar{{field:nestedDepth}} = {{> BoxedType}}.read0(oprot);{{!
 }}{{/type:structured?}}{{!
 
 }}{{#type:enum?}}{{!
-  }}{{#field:isNested?}}_fbthriftVar{{field:nestedDepth}} = {{> BoxedType}}.fromInteger(oprot.readI32());{{/field:isNested?}}{{!
-  }}{{^field:isNested?}}_fbthriftVar{{field:nestedDepth}} = {{> ThriftFieldType}}.fromInteger(oprot.readI32());{{/field:isNested?}}{{!
+  }}_fbthriftVar{{field:nestedDepth}} = {{> BoxedType}}.fromInteger(oprot.readI32());{{!
 }}{{/type:enum?}}{{!
 
 }}{{#type:binary?}}{{!

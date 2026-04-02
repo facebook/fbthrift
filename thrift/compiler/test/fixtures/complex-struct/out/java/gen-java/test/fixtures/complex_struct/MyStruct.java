@@ -965,7 +965,6 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                         _fbthriftVar1 = new ArrayList<Double>(Math.max(0, _list1.size));
                         for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                             
-                            
                             double _fbthriftVar2;
                             _fbthriftVar2 = oprot.readDouble();
                             
@@ -991,7 +990,6 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                         TList _list1 = oprot.readListBegin();
                         _fbthriftVar1 = new ArrayList<Short>(Math.max(0, _list1.size));
                         for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                            
                             
                             short _fbthriftVar2;
                             _fbthriftVar2 = oprot.readI16();
@@ -1019,7 +1017,6 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                         _fbthriftVar1 = new ArrayList<Integer>(Math.max(0, _list1.size));
                         for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                             
-                            
                             int _fbthriftVar2;
                             _fbthriftVar2 = oprot.readI32();
                             
@@ -1045,7 +1042,6 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                         TList _list1 = oprot.readListBegin();
                         _fbthriftVar1 = new ArrayList<Long>(Math.max(0, _list1.size));
                         for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                            
                             
                             long _fbthriftVar2;
                             _fbthriftVar2 = oprot.readI64();
@@ -1073,7 +1069,6 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                         _fbthriftVar1 = new ArrayList<String>(Math.max(0, _list1.size));
                         for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                             
-                            
                             String _fbthriftVar2;
                             _fbthriftVar2 = oprot.readString();
                             
@@ -1099,7 +1094,6 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                         TList _list1 = oprot.readListBegin();
                         _fbthriftVar1 = new ArrayList<Boolean>(Math.max(0, _list1.size));
                         for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                            
                             
                             boolean _fbthriftVar2;
                             _fbthriftVar2 = oprot.readBool();
@@ -1127,7 +1121,6 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                         _fbthriftVar1 = new ArrayList<Byte>(Math.max(0, _list1.size));
                         for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                             
-                            
                             byte _fbthriftVar2;
                             _fbthriftVar2 = oprot.readByte();
                             
@@ -1153,7 +1146,6 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                         TMap _map1 = oprot.readMapBegin();
                         _fbthriftVar1 = new HashMap<Short, String>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                            
                             
                             short _fbthriftKey2;
                             
@@ -1202,7 +1194,6 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                         _fbthriftVar1 = new HashMap<Integer, String>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                             
-                            
                             int _fbthriftKey2;
                             
                             
@@ -1249,7 +1240,6 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                         TMap _map1 = oprot.readMapBegin();
                         _fbthriftVar1 = new HashMap<String, test.fixtures.complex_struct.MyStruct>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                            
                             
                             String _fbthriftKey2;
                             
@@ -1298,7 +1288,6 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                         _fbthriftVar1 = new HashMap<String, Boolean>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                             
-                            
                             String _fbthriftKey2;
                             
                             
@@ -1345,7 +1334,6 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                         TMap _map1 = oprot.readMapBegin();
                         _fbthriftVar1 = new HashMap<Integer, Integer>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                            
                             
                             int _fbthriftKey2;
                             
@@ -1394,7 +1382,6 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                         _fbthriftVar1 = new HashMap<Integer, Boolean>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                             
-                            
                             int _fbthriftKey2;
                             
                             
@@ -1442,7 +1429,6 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                         _fbthriftVar1 = new HashSet<Short>(Math.max(0, _set1.size));
                         for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                             
-                            
                             short _fbthriftVar2;
                             _fbthriftVar2 = oprot.readI16();
                             
@@ -1468,7 +1454,6 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                         TSet _set1 = oprot.readSetBegin();
                         _fbthriftVar1 = new HashSet<test.fixtures.complex_struct.MyStruct>(Math.max(0, _set1.size));
                         for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                            
                             
                             test.fixtures.complex_struct.MyStruct _fbthriftVar2;
                             _fbthriftVar2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
@@ -1496,7 +1481,6 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                         _fbthriftVar1 = new HashSet<Long>(Math.max(0, _set1.size));
                         for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                             
-                            
                             long _fbthriftVar2;
                             _fbthriftVar2 = oprot.readI64();
                             
@@ -1522,7 +1506,6 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                         TSet _set1 = oprot.readSetBegin();
                         _fbthriftVar1 = new HashSet<String>(Math.max(0, _set1.size));
                         for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                            
                             
                             String _fbthriftVar2;
                             _fbthriftVar2 = oprot.readString();
@@ -1550,7 +1533,6 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                         _fbthriftVar1 = new HashSet<Byte>(Math.max(0, _set1.size));
                         for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                             
-                            
                             byte _fbthriftVar2;
                             _fbthriftVar2 = oprot.readByte();
                             
@@ -1577,7 +1559,6 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                         _fbthriftVar1 = new HashMap<List<Integer>, List<Integer>>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                             
-                            
                             List<Integer> _fbthriftKey2;
                             
                             
@@ -1591,7 +1572,6 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                                             TList _list2 = oprot.readListBegin();
                                             _fbthriftVar2 = new ArrayList<Integer>(Math.max(0, _list2.size));
                                             for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
-                                                
                                                 
                                                 int _fbthriftVar3;
                                                 _fbthriftVar3 = oprot.readI32();
@@ -1614,7 +1594,6 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                                             TList _list2 = oprot.readListBegin();
                                             _fbthriftVar2 = new ArrayList<Integer>(Math.max(0, _list2.size));
                                             for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
-                                                
                                                 
                                                 int _fbthriftVar3;
                                                 _fbthriftVar3 = oprot.readI32();

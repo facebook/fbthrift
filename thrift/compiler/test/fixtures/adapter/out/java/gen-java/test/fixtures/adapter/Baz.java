@@ -496,7 +496,6 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
                           _fbthriftVar1 = new HashSet<String>(Math.max(0, _set1.size));
                           for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                               
-                              
                               String _fbthriftVar2;
                               _fbthriftVar2 = oprot.readString();
                               
@@ -521,7 +520,6 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
                           _fbthriftVar1 = new HashMap<String, com.facebook.thrift.my.AdaptedList_2>(Math.max(0, _map1.size));
                           for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                               
-                              
                               String _fbthriftKey2;
                               
                               
@@ -544,7 +542,6 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
                                               TList _list2 = oprot.readListBegin();
                                               _fbthriftVar2 = new ArrayList<com.facebook.thrift.my.AdaptedString_1>(Math.max(0, _list2.size));
                                               for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
-                                                  
                                                   
                                                   String _fbthriftVar3;
                                                   _fbthriftVar3 = oprot.readString();

@@ -307,7 +307,6 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                         _fbthriftVar1 = new com.foo.FastIntLongMap();
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                             
-                            
                             int _fbthriftKey2;
                             
                             

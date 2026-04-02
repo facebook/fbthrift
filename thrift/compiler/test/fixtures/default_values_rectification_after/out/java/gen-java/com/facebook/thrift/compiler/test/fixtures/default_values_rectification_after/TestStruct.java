@@ -351,7 +351,6 @@ public final class TestStruct implements com.facebook.thrift.payload.ThriftSeria
                         _fbthriftVar1 = new ArrayList<Integer>(Math.max(0, _list1.size));
                         for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                             
-                            
                             int _fbthriftVar2;
                             _fbthriftVar2 = oprot.readI32();
                             
@@ -410,7 +409,6 @@ public final class TestStruct implements com.facebook.thrift.payload.ThriftSeria
                         TList _list1 = oprot.readListBegin();
                         _fbthriftVar1 = new ArrayList<Integer>(Math.max(0, _list1.size));
                         for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                            
                             
                             int _fbthriftVar2;
                             _fbthriftVar2 = oprot.readI32();

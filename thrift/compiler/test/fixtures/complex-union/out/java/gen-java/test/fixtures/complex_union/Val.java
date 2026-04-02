@@ -213,7 +213,6 @@ public final class Val implements com.facebook.thrift.payload.ThriftSerializable
                         _fbthriftVar1 = new HashMap<Short, String>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                             
-                            
                             short _fbthriftKey2;
                             
                             

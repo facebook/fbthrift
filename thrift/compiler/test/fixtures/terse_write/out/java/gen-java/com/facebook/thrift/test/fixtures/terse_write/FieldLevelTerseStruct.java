@@ -1033,7 +1033,6 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
                         _fbthriftVar1 = new ArrayList<Short>(Math.max(0, _list1.size));
                         for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                             
-                            
                             short _fbthriftVar2;
                             _fbthriftVar2 = oprot.readI16();
                             
@@ -1060,7 +1059,6 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
                         _fbthriftVar1 = new HashSet<Short>(Math.max(0, _set1.size));
                         for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                             
-                            
                             short _fbthriftVar2;
                             _fbthriftVar2 = oprot.readI16();
                             
@@ -1086,7 +1084,6 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
                         TMap _map1 = oprot.readMapBegin();
                         _fbthriftVar1 = new HashMap<Short, Short>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                            
                             
                             short _fbthriftKey2;
                             
@@ -1267,7 +1264,6 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
                         _fbthriftVar1 = new ArrayList<Short>(Math.max(0, _list1.size));
                         for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                             
-                            
                             short _fbthriftVar2;
                             _fbthriftVar2 = oprot.readI16();
                             
@@ -1294,7 +1290,6 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
                         _fbthriftVar1 = new HashSet<Short>(Math.max(0, _set1.size));
                         for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                             
-                            
                             short _fbthriftVar2;
                             _fbthriftVar2 = oprot.readI16();
                             
@@ -1320,7 +1315,6 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
                         TMap _map1 = oprot.readMapBegin();
                         _fbthriftVar1 = new HashMap<Short, Short>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                            
                             
                             short _fbthriftKey2;
                             

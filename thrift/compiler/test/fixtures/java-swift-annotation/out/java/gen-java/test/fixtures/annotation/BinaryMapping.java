@@ -164,7 +164,6 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
                         _fbthriftVar1 = new HashMap<String, byte[]>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                             
-                            
                             String _fbthriftKey2;
                             
                             
@@ -211,7 +210,6 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
                         TMap _map1 = oprot.readMapBegin();
                         _fbthriftVar1 = new HashMap<String, byte[]>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                            
                             
                             String _fbthriftKey2;
                             

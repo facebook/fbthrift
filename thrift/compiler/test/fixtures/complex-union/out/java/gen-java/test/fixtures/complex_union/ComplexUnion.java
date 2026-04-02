@@ -523,7 +523,6 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
                           _fbthriftVar1 = new ArrayList<Long>(Math.max(0, _list1.size));
                           for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                               
-                              
                               long _fbthriftVar2;
                               _fbthriftVar2 = oprot.readI64();
                               
@@ -548,7 +547,6 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
                           _fbthriftVar1 = new ArrayList<String>(Math.max(0, _list1.size));
                           for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                               
-                              
                               String _fbthriftVar2;
                               _fbthriftVar2 = oprot.readString();
                               
@@ -572,7 +570,6 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
                           TMap _map1 = oprot.readMapBegin();
                           _fbthriftVar1 = new HashMap<Short, String>(Math.max(0, _map1.size));
                           for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                              
                               
                               short _fbthriftKey2;
                               

@@ -21,7 +21,6 @@
             }}{{#type:javaType}}_fbthriftVar{{field:nestedDepth}} = new {{type:javaType}}();{{/type:javaType}}{{!
             }}
             for (int _i{{field:nestedDepth}} = 0; (_set{{field:nestedDepth}}.size < 0) ? oprot.peekSet() : (_i{{field:nestedDepth}} < _set{{field:nestedDepth}}.size); _i{{field:nestedDepth}}++) {
-                {{field:setIsNested}}
                 {{#type:set_elem_type}}
                 {{#type:container?}}
                 {{field:nestedDepth++}}
@@ -51,7 +50,6 @@
             }}{{#type:javaType}}_fbthriftVar{{field:nestedDepth}} = new {{type:javaType}}();{{/type:javaType}}{{!
             }}
             for (int _i{{field:nestedDepth}} = 0; (_list{{field:nestedDepth}}.size < 0) ? oprot.peekList() : (_i{{field:nestedDepth}} < _list{{field:nestedDepth}}.size); _i{{field:nestedDepth}}++) {
-                {{field:setIsNested}}
                 {{#type:list_elem_type}}
                 {{#type:container?}}
                 {{field:nestedDepth++}}
@@ -81,7 +79,6 @@
             }}{{#type:javaType}}_fbthriftVar{{field:nestedDepth}} = new {{type:javaType}}();{{/type:javaType}}{{!
             }}
             for (int _i{{field:nestedDepth}} = 0; (_map{{field:nestedDepth}}.size < 0) ? oprot.peekMap() : (_i{{field:nestedDepth}} < _map{{field:nestedDepth}}.size); _i{{field:nestedDepth}}++) {
-                {{field:setIsNested}}
                 {{#type:key_type}}
                 {{#type:container?}}
                 {{field:nestedDepth++}}

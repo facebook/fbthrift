@@ -175,7 +175,6 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
                         _fbthriftVar1 = new HashMap<Integer, List<List<Float>>>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                             
-                            
                             int _fbthriftKey2;
                             
                             
@@ -199,13 +198,11 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
                                             _fbthriftVar2 = new ArrayList<List<Float>>(Math.max(0, _list2.size));
                                             for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                                 
-                                                
                                                 List<Float> _fbthriftVar3;
                                                 {
                                                             TList _list3 = oprot.readListBegin();
                                                             _fbthriftVar3 = new ArrayList<Float>(Math.max(0, _list3.size));
                                                             for (int _i3 = 0; (_list3.size < 0) ? oprot.peekList() : (_i3 < _list3.size); _i3++) {
-                                                                
                                                                 
                                                                 float _fbthriftVar4;
                                                                 _fbthriftVar4 = oprot.readFloat();

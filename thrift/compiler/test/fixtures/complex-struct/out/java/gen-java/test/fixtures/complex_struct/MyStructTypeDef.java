@@ -397,7 +397,6 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
                         _fbthriftVar1 = new HashMap<Short, String>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                             
-                            
                             short _fbthriftKey2;
                             
                             
@@ -444,7 +443,6 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
                         TMap _map1 = oprot.readMapBegin();
                         _fbthriftVar1 = new HashMap<Short, String>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                            
                             
                             short _fbthriftKey2;
                             
@@ -493,7 +491,6 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
                         _fbthriftVar1 = new ArrayList<Double>(Math.max(0, _list1.size));
                         for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                             
-                            
                             double _fbthriftVar2;
                             _fbthriftVar2 = oprot.readDouble();
                             
@@ -519,7 +516,6 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
                         TList _list1 = oprot.readListBegin();
                         _fbthriftVar1 = new ArrayList<Double>(Math.max(0, _list1.size));
                         for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                            
                             
                             double _fbthriftVar2;
                             _fbthriftVar2 = oprot.readDouble();
@@ -547,7 +543,6 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
                         _fbthriftVar1 = new HashMap<Short, List<List<Double>>>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                             
-                            
                             short _fbthriftKey2;
                             
                             
@@ -571,13 +566,11 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
                                             _fbthriftVar2 = new ArrayList<List<Double>>(Math.max(0, _list2.size));
                                             for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                                 
-                                                
                                                 List<Double> _fbthriftVar3;
                                                 {
                                                             TList _list3 = oprot.readListBegin();
                                                             _fbthriftVar3 = new ArrayList<Double>(Math.max(0, _list3.size));
                                                             for (int _i3 = 0; (_list3.size < 0) ? oprot.peekList() : (_i3 < _list3.size); _i3++) {
-                                                                
                                                                 
                                                                 double _fbthriftVar4;
                                                                 _fbthriftVar4 = oprot.readDouble();

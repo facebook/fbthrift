@@ -435,7 +435,6 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
                         _fbthriftVar1 = new HashSet<Long>(Math.max(0, _set1.size));
                         for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                             
-                            
                             long _fbthriftVar2;
                             _fbthriftVar2 = oprot.readI64();
                             
@@ -472,7 +471,6 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
                         TMap _map1 = oprot.readMapBegin();
                         _fbthriftVar1 = new HashMap<test.fixtures.optionals.Animal, String>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                            
                             
                             test.fixtures.optionals.Animal _fbthriftKey2;
                             
@@ -531,7 +529,6 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
                         TList _list1 = oprot.readListBegin();
                         _fbthriftVar1 = new ArrayList<test.fixtures.optionals.Vehicle>(Math.max(0, _list1.size));
                         for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                            
                             
                             test.fixtures.optionals.Vehicle _fbthriftVar2;
                             _fbthriftVar2 = test.fixtures.optionals.Vehicle.read0(oprot);

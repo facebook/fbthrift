@@ -251,7 +251,6 @@ public final class Struct2 implements com.facebook.thrift.payload.ThriftSerializ
                         _fbthriftVar1 = new ArrayList<Integer>(Math.max(0, _list1.size));
                         for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                             
-                            
                             int _fbthriftVar2;
                             _fbthriftVar2 = oprot.readI32();
                             

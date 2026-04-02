@@ -137,7 +137,6 @@ public final class RecursiveStruct implements com.facebook.thrift.payload.Thrift
                         _fbthriftVar1 = new ArrayList<test.fixtures.refs.RecursiveStruct>(Math.max(0, _list1.size));
                         for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                             
-                            
                             test.fixtures.refs.RecursiveStruct _fbthriftVar2;
                             _fbthriftVar2 = test.fixtures.refs.RecursiveStruct.read0(oprot);
                             

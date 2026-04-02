@@ -1458,23 +1458,13 @@ class mstch_java_field : public mstch_field {
              {with_no_caching, &mstch_java_field::decrement_nested_depth}},
             {"field:prevNestedDepth",
              {with_no_caching, &mstch_java_field::preceding_nested_depth}},
-            {"field:isNested?",
-             {with_no_caching, &mstch_java_field::get_nested_container_flag}},
-            {"field:setIsNested",
-             {with_no_caching, &mstch_java_field::set_nested_container_flag}},
         });
   }
 
   int32_t nestedDepth = 0;
-  bool isNestedContainerFlag = false;
 
   mstch::node get_nested_depth() { return nestedDepth; }
   mstch::node preceding_nested_depth() { return (nestedDepth - 1); }
-  mstch::node get_nested_container_flag() { return isNestedContainerFlag; }
-  mstch::node set_nested_container_flag() {
-    isNestedContainerFlag = true;
-    return mstch::node();
-  }
   mstch::node increment_nested_depth() {
     nestedDepth++;
     return mstch::node();

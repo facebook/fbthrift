@@ -218,7 +218,6 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
                         _fbthriftVar1 = new it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String>();
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                             
-                            
                             long _fbthriftKey2;
                             
                             
@@ -266,7 +265,6 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
                         _fbthriftVar1 = new it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap>();
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                             
-                            
                             int _fbthriftKey2;
                             
                             
@@ -289,7 +287,6 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
                                             TMap _map2 = oprot.readMapBegin();
                                             _fbthriftVar2 = new it.unimi.dsi.fastutil.ints.Int2LongArrayMap();
                                             for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
-                                                
                                                 
                                                 int _fbthriftKey3;
                                                 

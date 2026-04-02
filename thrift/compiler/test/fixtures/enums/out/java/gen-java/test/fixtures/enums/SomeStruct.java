@@ -256,7 +256,6 @@ public final class SomeStruct implements com.facebook.thrift.payload.ThriftSeria
                         _fbthriftVar1 = new HashSet<Integer>(Math.max(0, _set1.size));
                         for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                             
-                            
                             int _fbthriftVar2;
                             _fbthriftVar2 = oprot.readI32();
                             

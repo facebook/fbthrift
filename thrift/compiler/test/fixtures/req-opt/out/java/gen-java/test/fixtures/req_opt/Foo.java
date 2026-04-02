@@ -240,7 +240,6 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                         _fbthriftVar1 = new ArrayList<Boolean>(Math.max(0, _list1.size));
                         for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                             
-                            
                             boolean _fbthriftVar2;
                             _fbthriftVar2 = oprot.readBool();
                             
@@ -266,7 +265,6 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                         TList _list1 = oprot.readListBegin();
                         _fbthriftVar1 = new ArrayList<Integer>(Math.max(0, _list1.size));
                         for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                            
                             
                             int _fbthriftVar2;
                             _fbthriftVar2 = oprot.readI32();

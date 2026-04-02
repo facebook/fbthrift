@@ -218,7 +218,6 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
                         _fbthriftVar1 = new com.foo.FastLongStringMap();
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                             
-                            
                             long _fbthriftKey2;
                             
                             
@@ -266,7 +265,6 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
                         _fbthriftVar1 = new com.foo.FastIntObjectMap<com.foo.FastIntLongMap>();
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                             
-                            
                             int _fbthriftKey2;
                             
                             
@@ -289,7 +287,6 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
                                             TMap _map2 = oprot.readMapBegin();
                                             _fbthriftVar2 = new com.foo.FastIntLongMap();
                                             for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
-                                                
                                                 
                                                 int _fbthriftKey3;
                                                 
@@ -349,7 +346,6 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
                         _fbthriftVar1 = new HashMap<String, byte[]>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                             
-                            
                             String _fbthriftKey2;
                             
                             
@@ -396,7 +392,6 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
                         TMap _map1 = oprot.readMapBegin();
                         _fbthriftVar1 = new HashMap<String, byte[]>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                            
                             
                             String _fbthriftKey2;
                             

@@ -596,13 +596,11 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                         _fbthriftVar1 = new HashSet<Set<Integer>>(Math.max(0, _set1.size));
                         for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                             
-                            
                             Set<Integer> _fbthriftVar2;
                             {
                                         TSet _set2 = oprot.readSetBegin();
                                         _fbthriftVar2 = new HashSet<Integer>(Math.max(0, _set2.size));
                                         for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
-                                            
                                             
                                             int _fbthriftVar3;
                                             _fbthriftVar3 = oprot.readI32();
@@ -637,13 +635,11 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                         _fbthriftVar1 = new ArrayList<List<List<List<test.fixtures.complex_struct.MyEnum>>>>(Math.max(0, _list1.size));
                         for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                             
-                            
                             List<List<List<test.fixtures.complex_struct.MyEnum>>> _fbthriftVar2;
                             {
                                         TList _list2 = oprot.readListBegin();
                                         _fbthriftVar2 = new ArrayList<List<List<test.fixtures.complex_struct.MyEnum>>>(Math.max(0, _list2.size));
                                         for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
-                                            
                                             
                                             List<List<test.fixtures.complex_struct.MyEnum>> _fbthriftVar3;
                                             {
@@ -651,13 +647,11 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                                         _fbthriftVar3 = new ArrayList<List<test.fixtures.complex_struct.MyEnum>>(Math.max(0, _list3.size));
                                                         for (int _i3 = 0; (_list3.size < 0) ? oprot.peekList() : (_i3 < _list3.size); _i3++) {
                                                             
-                                                            
                                                             List<test.fixtures.complex_struct.MyEnum> _fbthriftVar4;
                                                             {
                                                                         TList _list4 = oprot.readListBegin();
                                                                         _fbthriftVar4 = new ArrayList<test.fixtures.complex_struct.MyEnum>(Math.max(0, _list4.size));
                                                                         for (int _i4 = 0; (_list4.size < 0) ? oprot.peekList() : (_i4 < _list4.size); _i4++) {
-                                                                            
                                                                             
                                                                             test.fixtures.complex_struct.MyEnum _fbthriftVar5;
                                                                             _fbthriftVar5 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
@@ -706,13 +700,11 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                         _fbthriftVar1 = new ArrayList<List<test.fixtures.complex_struct.MyStruct>>(Math.max(0, _list1.size));
                         for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                             
-                            
                             List<test.fixtures.complex_struct.MyStruct> _fbthriftVar2;
                             {
                                         TList _list2 = oprot.readListBegin();
                                         _fbthriftVar2 = new ArrayList<test.fixtures.complex_struct.MyStruct>(Math.max(0, _list2.size));
                                         for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
-                                            
                                             
                                             test.fixtures.complex_struct.MyStruct _fbthriftVar3;
                                             _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
@@ -747,20 +739,17 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                         _fbthriftVar1 = new HashSet<List<List<Long>>>(Math.max(0, _set1.size));
                         for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                             
-                            
                             List<List<Long>> _fbthriftVar2;
                             {
                                         TList _list2 = oprot.readListBegin();
                                         _fbthriftVar2 = new ArrayList<List<Long>>(Math.max(0, _list2.size));
                                         for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                             
-                                            
                                             List<Long> _fbthriftVar3;
                                             {
                                                         TList _list3 = oprot.readListBegin();
                                                         _fbthriftVar3 = new ArrayList<Long>(Math.max(0, _list3.size));
                                                         for (int _i3 = 0; (_list3.size < 0) ? oprot.peekList() : (_i3 < _list3.size); _i3++) {
-                                                            
                                                             
                                                             long _fbthriftVar4;
                                                             _fbthriftVar4 = oprot.readI64();
@@ -802,20 +791,17 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                         _fbthriftVar1 = new HashSet<Set<Set<Long>>>(Math.max(0, _set1.size));
                         for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                             
-                            
                             Set<Set<Long>> _fbthriftVar2;
                             {
                                         TSet _set2 = oprot.readSetBegin();
                                         _fbthriftVar2 = new HashSet<Set<Long>>(Math.max(0, _set2.size));
                                         for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
                                             
-                                            
                                             Set<Long> _fbthriftVar3;
                                             {
                                                         TSet _set3 = oprot.readSetBegin();
                                                         _fbthriftVar3 = new HashSet<Long>(Math.max(0, _set3.size));
                                                         for (int _i3 = 0; (_set3.size < 0) ? oprot.peekSet() : (_i3 < _set3.size); _i3++) {
-                                                            
                                                             
                                                             long _fbthriftVar4;
                                                             _fbthriftVar4 = oprot.readI64();
@@ -857,7 +843,6 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                         _fbthriftVar1 = new HashMap<Integer, List<List<test.fixtures.complex_struct.MyStruct>>>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                             
-                            
                             int _fbthriftKey2;
                             
                             
@@ -881,13 +866,11 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                             _fbthriftVar2 = new ArrayList<List<test.fixtures.complex_struct.MyStruct>>(Math.max(0, _list2.size));
                                             for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                                 
-                                                
                                                 List<test.fixtures.complex_struct.MyStruct> _fbthriftVar3;
                                                 {
                                                             TList _list3 = oprot.readListBegin();
                                                             _fbthriftVar3 = new ArrayList<test.fixtures.complex_struct.MyStruct>(Math.max(0, _list3.size));
                                                             for (int _i3 = 0; (_list3.size < 0) ? oprot.peekList() : (_i3 < _list3.size); _i3++) {
-                                                                
                                                                 
                                                                 test.fixtures.complex_struct.MyStruct _fbthriftVar4;
                                                                 _fbthriftVar4 = test.fixtures.complex_struct.MyStruct.read0(oprot);
@@ -932,7 +915,6 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                         TMap _map1 = oprot.readMapBegin();
                         _fbthriftVar1 = new HashMap<test.fixtures.complex_struct.MyStruct, Integer>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                            
                             
                             test.fixtures.complex_struct.MyStruct _fbthriftKey2;
                             
@@ -981,13 +963,11 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                         _fbthriftVar1 = new ArrayList<Map<Integer, Integer>>(Math.max(0, _list1.size));
                         for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                             
-                            
                             Map<Integer, Integer> _fbthriftVar2;
                             {
                                         TMap _map2 = oprot.readMapBegin();
                                         _fbthriftVar2 = new HashMap<Integer, Integer>(Math.max(0, _map2.size));
                                         for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
-                                            
                                             
                                             int _fbthriftKey3;
                                             
@@ -1043,13 +1023,11 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                         _fbthriftVar1 = new ArrayList<Map<String, List<test.fixtures.complex_struct.MyStruct>>>(Math.max(0, _list1.size));
                         for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                             
-                            
                             Map<String, List<test.fixtures.complex_struct.MyStruct>> _fbthriftVar2;
                             {
                                         TMap _map2 = oprot.readMapBegin();
                                         _fbthriftVar2 = new HashMap<String, List<test.fixtures.complex_struct.MyStruct>>(Math.max(0, _map2.size));
                                         for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
-                                            
                                             
                                             String _fbthriftKey3;
                                             
@@ -1073,7 +1051,6 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                                             TList _list3 = oprot.readListBegin();
                                                             _fbthriftVar3 = new ArrayList<test.fixtures.complex_struct.MyStruct>(Math.max(0, _list3.size));
                                                             for (int _i3 = 0; (_list3.size < 0) ? oprot.peekList() : (_i3 < _list3.size); _i3++) {
-                                                                
                                                                 
                                                                 test.fixtures.complex_struct.MyStruct _fbthriftVar4;
                                                                 _fbthriftVar4 = test.fixtures.complex_struct.MyStruct.read0(oprot);
@@ -1119,7 +1096,6 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                         _fbthriftVar1 = new HashMap<Set<Integer>, Long>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                             
-                            
                             Set<Integer> _fbthriftKey2;
                             
                             
@@ -1133,7 +1109,6 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                             TSet _set2 = oprot.readSetBegin();
                                             _fbthriftVar2 = new HashSet<Integer>(Math.max(0, _set2.size));
                                             for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
-                                                
                                                 
                                                 int _fbthriftVar3;
                                                 _fbthriftVar3 = oprot.readI32();
@@ -1181,7 +1156,6 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                         _fbthriftVar1 = new HashMap<List<String>, Integer>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                             
-                            
                             List<String> _fbthriftKey2;
                             
                             
@@ -1195,7 +1169,6 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                             TList _list2 = oprot.readListBegin();
                                             _fbthriftVar2 = new ArrayList<String>(Math.max(0, _list2.size));
                                             for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
-                                                
                                                 
                                                 String _fbthriftVar3;
                                                 _fbthriftVar3 = oprot.readString();
@@ -1243,7 +1216,6 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                         _fbthriftVar1 = new HashMap<Map<Integer, String>, Map<Integer, String>>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                             
-                            
                             Map<Integer, String> _fbthriftKey2;
                             
                             
@@ -1257,7 +1229,6 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                             TMap _map2 = oprot.readMapBegin();
                                             _fbthriftVar2 = new HashMap<Integer, String>(Math.max(0, _map2.size));
                                             for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
-                                                
                                                 
                                                 int _fbthriftKey3;
                                                 
@@ -1301,7 +1272,6 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                             TMap _map2 = oprot.readMapBegin();
                                             _fbthriftVar2 = new HashMap<Integer, String>(Math.max(0, _map2.size));
                                             for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
-                                                
                                                 
                                                 int _fbthriftKey3;
                                                 
@@ -1361,7 +1331,6 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                         _fbthriftVar1 = new HashMap<Set<List<Integer>>, Map<List<Set<String>>, String>>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                             
-                            
                             Set<List<Integer>> _fbthriftKey2;
                             
                             
@@ -1376,13 +1345,11 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                             _fbthriftVar2 = new HashSet<List<Integer>>(Math.max(0, _set2.size));
                                             for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
                                                 
-                                                
                                                 List<Integer> _fbthriftVar3;
                                                 {
                                                             TList _list3 = oprot.readListBegin();
                                                             _fbthriftVar3 = new ArrayList<Integer>(Math.max(0, _list3.size));
                                                             for (int _i3 = 0; (_list3.size < 0) ? oprot.peekList() : (_i3 < _list3.size); _i3++) {
-                                                                
                                                                 
                                                                 int _fbthriftVar4;
                                                                 _fbthriftVar4 = oprot.readI32();
@@ -1413,7 +1380,6 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                             _fbthriftVar2 = new HashMap<List<Set<String>>, String>(Math.max(0, _map2.size));
                                             for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
                                                 
-                                                
                                                 List<Set<String>> _fbthriftKey3;
                                                 
                                                 
@@ -1428,13 +1394,11 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                                                 _fbthriftVar3 = new ArrayList<Set<String>>(Math.max(0, _list3.size));
                                                                 for (int _i3 = 0; (_list3.size < 0) ? oprot.peekList() : (_i3 < _list3.size); _i3++) {
                                                                     
-                                                                    
                                                                     Set<String> _fbthriftVar4;
                                                                     {
                                                                                 TSet _set4 = oprot.readSetBegin();
                                                                                 _fbthriftVar4 = new HashSet<String>(Math.max(0, _set4.size));
                                                                                 for (int _i4 = 0; (_set4.size < 0) ? oprot.peekSet() : (_i4 < _set4.size); _i4++) {
-                                                                                    
                                                                                     
                                                                                     String _fbthriftVar5;
                                                                                     _fbthriftVar5 = oprot.readString();
@@ -1500,7 +1464,6 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                         _fbthriftVar1 = new HashMap<Map<Map<Integer, String>, String>, Map<Integer, String>>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                             
-                            
                             Map<Map<Integer, String>, String> _fbthriftKey2;
                             
                             
@@ -1515,7 +1478,6 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                             _fbthriftVar2 = new HashMap<Map<Integer, String>, String>(Math.max(0, _map2.size));
                                             for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
                                                 
-                                                
                                                 Map<Integer, String> _fbthriftKey3;
                                                 
                                                 
@@ -1529,7 +1491,6 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                                                 TMap _map3 = oprot.readMapBegin();
                                                                 _fbthriftVar3 = new HashMap<Integer, String>(Math.max(0, _map3.size));
                                                                 for (int _i3 = 0; (_map3.size < 0) ? oprot.peekMap() : (_i3 < _map3.size); _i3++) {
-                                                                    
                                                                     
                                                                     int _fbthriftKey4;
                                                                     
@@ -1594,7 +1555,6 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                             _fbthriftVar2 = new HashMap<Integer, String>(Math.max(0, _map2.size));
                                             for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
                                                 
-                                                
                                                 int _fbthriftKey3;
                                                 
                                                 
@@ -1653,7 +1613,6 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                         _fbthriftVar1 = new HashMap<Integer, List<test.fixtures.complex_struct.MyStruct>>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                             
-                            
                             int _fbthriftKey2;
                             
                             
@@ -1676,7 +1635,6 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                             TList _list2 = oprot.readListBegin();
                                             _fbthriftVar2 = new ArrayList<test.fixtures.complex_struct.MyStruct>(Math.max(0, _list2.size));
                                             for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
-                                                
                                                 
                                                 test.fixtures.complex_struct.MyStruct _fbthriftVar3;
                                                 _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
@@ -1715,7 +1673,6 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                         _fbthriftVar1 = new HashMap<Integer, Set<Boolean>>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                             
-                            
                             int _fbthriftKey2;
                             
                             
@@ -1738,7 +1695,6 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                             TSet _set2 = oprot.readSetBegin();
                                             _fbthriftVar2 = new HashSet<Boolean>(Math.max(0, _set2.size));
                                             for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
-                                                
                                                 
                                                 boolean _fbthriftVar3;
                                                 _fbthriftVar3 = oprot.readBool();
@@ -1777,7 +1733,6 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                         _fbthriftVar1 = new HashMap<Set<Boolean>, test.fixtures.complex_struct.MyEnum>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                             
-                            
                             Set<Boolean> _fbthriftKey2;
                             
                             
@@ -1791,7 +1746,6 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                             TSet _set2 = oprot.readSetBegin();
                                             _fbthriftVar2 = new HashSet<Boolean>(Math.max(0, _set2.size));
                                             for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
-                                                
                                                 
                                                 boolean _fbthriftVar3;
                                                 _fbthriftVar3 = oprot.readBool();
@@ -1839,7 +1793,6 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                         _fbthriftVar1 = new HashMap<List<Integer>, Set<Map<Double, String>>>(Math.max(0, _map1.size));
                         for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
                             
-                            
                             List<Integer> _fbthriftKey2;
                             
                             
@@ -1853,7 +1806,6 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                             TList _list2 = oprot.readListBegin();
                                             _fbthriftVar2 = new ArrayList<Integer>(Math.max(0, _list2.size));
                                             for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
-                                                
                                                 
                                                 int _fbthriftVar3;
                                                 _fbthriftVar3 = oprot.readI32();
@@ -1877,13 +1829,11 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                             _fbthriftVar2 = new HashSet<Map<Double, String>>(Math.max(0, _set2.size));
                                             for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
                                                 
-                                                
                                                 Map<Double, String> _fbthriftVar3;
                                                 {
                                                             TMap _map3 = oprot.readMapBegin();
                                                             _fbthriftVar3 = new HashMap<Double, String>(Math.max(0, _map3.size));
                                                             for (int _i3 = 0; (_map3.size < 0) ? oprot.peekMap() : (_i3 < _map3.size); _i3++) {
-                                                                
                                                                 
                                                                 double _fbthriftKey4;
                                                                 
