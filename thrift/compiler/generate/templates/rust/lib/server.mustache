@@ -28,7 +28,7 @@ pub mod {{service:snake}} {
 }
 {{/if service:interactions?}}
 
-{{> lib/server_trait}}
+{{#partial server_trait.server_trait interface=service:self}}
 
 {{/if (not service:interaction?)}}
 /// Processor for {{service:rust_name}}'s methods.
@@ -40,7 +40,7 @@ pub struct {{service:rust_name}}Processor<P, H, R, RS{{#if service:extends?}}, S
 }
 
 {{#if (not service:interaction?)}}
-{{> lib/server_arg}}
+{{#partial server_arg.server_arg interface=service:self}}
 {{/if (not service:interaction?)}}
 impl<P, H, R, RS{{#if service:extends?}}, SS{{/if}}> {{service:rust_name}}Processor<P, H, R, RS{{#if service:extends?}}, SS{{/if}}>
 where
@@ -625,7 +625,7 @@ where
 
     fn get_method_metadata(&self) -> &'static [::fbthrift::processor::MethodMetadata] {
         &[
-            {{> lib/method_metadata}}
+            {{#partial method_metadata.method_metadata interface=service:self}}
         ]
     }
 
