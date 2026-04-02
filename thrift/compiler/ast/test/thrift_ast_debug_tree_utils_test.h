@@ -125,7 +125,7 @@ constexpr auto kParseAndDebugPrintExpected = R"([t_program_bundle]
    │  │  │        │  ├─ type: [t_type*] 0xNORMALIZED_5
    │  │  │        │  │  ╰─ full_name: thrift.RpcPriority
    │  │  │        │  ╰─ unresolved_type: [t_placeholder_typedef*] 0x0
-   │  │  │        ╰─ typedef_kind: 2
+   │  │  │        ╰─ typedef_kind: 1
    │  │  ├─ resolution_mismatches (size: 0)
    │  │  ╰─ program_scopes (size: 2)
    │  │     ├─ program_scope["scope"] (size: 1)
@@ -602,7 +602,7 @@ constexpr auto kParseAndDebugPrintExpected = R"([t_program_bundle]
    │  │  │        │  ├─ type: [t_type*] 0xNORMALIZED_5
    │  │  │        │  │  ╰─ full_name: thrift.RpcPriority
    │  │  │        │  ╰─ unresolved_type: [t_placeholder_typedef*] 0x0
-   │  │  │        ╰─ typedef_kind: 2
+   │  │  │        ╰─ typedef_kind: 1
    │  │  ├─ resolution_mismatches (size: 0)
    │  │  ╰─ program_scopes (size: 2)
    │  │     ├─ program_scope["scope"] (size: 1)
@@ -3298,7 +3298,7 @@ constexpr auto kParseAndDebugPrintExpected = R"([t_program_bundle]
       │  │        │  ├─ type: [t_type*] 0xNORMALIZED_5
       │  │        │  │  ╰─ full_name: thrift.RpcPriority
       │  │        │  ╰─ unresolved_type: [t_placeholder_typedef*] 0x0
-      │  │        ╰─ typedef_kind: 2
+      │  │        ╰─ typedef_kind: 1
       │  ├─ resolution_mismatches (size: 0)
       │  ╰─ program_scopes (size: 2)
       │     ├─ program_scope["scope"] (size: 1)

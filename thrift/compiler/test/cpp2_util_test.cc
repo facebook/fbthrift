@@ -167,6 +167,8 @@ TEST(UtilTest, for_each_transitive_field) {
 }
 
 TEST(UtilTest, field_transitively_refers_to_unique) {
+  t_program program("path/to/program.thrift", "path/to/program.thrift");
+
   auto i = t_primitive_type::t_i32();
   auto li = t_list(i);
   auto lli = t_list(t_list(i));
@@ -183,7 +185,8 @@ TEST(UtilTest, field_transitively_refers_to_unique) {
 
   // typedef binary (cpp.type = "std::unique_ptr<folly::IOBuf>") IOBufPtr;
   auto p = t_primitive_type::t_binary();
-  p.set_unstructured_annotation("cpp.type", "std::unique_ptr<folly::IOBuf>");
+  p.add_structured_annotation(
+      gen::type_builder(program, "cpp").make("std::unique_ptr<folly::IOBuf>"));
 
   auto lp = t_list(p);
   auto llp = t_list(t_list(p));
@@ -227,23 +230,15 @@ TEST(UtilTest, get_gen_type_class) {
 TEST(UtilTest, is_custom_type) {
   t_program p("path/to/program.thrift", "path/to/program.thrift");
 
+  auto builder = gen::type_builder(p, "cpp");
+
   {
     auto cppType = t_primitive_type::t_string();
     auto typeDef = t_typedef(&p, "Type", cppType);
     EXPECT_FALSE(cpp2::is_custom_type(cppType));
     EXPECT_FALSE(cpp2::is_custom_type(typeDef));
-    cppType.set_unstructured_annotation("cpp.type", "folly::fbstring");
+    cppType.add_structured_annotation(builder.make("folly::fbstring"));
     EXPECT_TRUE(cpp2::is_custom_type(cppType));
-    EXPECT_TRUE(cpp2::is_custom_type(typeDef));
-  }
-
-  {
-    auto cpp2Type = t_primitive_type::t_string();
-    auto typeDef = t_typedef(&p, "Type", cpp2Type);
-    EXPECT_FALSE(cpp2::is_custom_type(cpp2Type));
-    EXPECT_FALSE(cpp2::is_custom_type(typeDef));
-    cpp2Type.set_unstructured_annotation("cpp2.type", "folly::fbstring");
-    EXPECT_TRUE(cpp2::is_custom_type(cpp2Type));
     EXPECT_TRUE(cpp2::is_custom_type(typeDef));
   }
 
@@ -253,18 +248,8 @@ TEST(UtilTest, is_custom_type) {
     auto typeDef = t_typedef(&p, "Type", cppTemplate);
     EXPECT_FALSE(cpp2::is_custom_type(cppTemplate));
     EXPECT_FALSE(cpp2::is_custom_type(typeDef));
-    cppTemplate.set_unstructured_annotation("cpp.template", "std::deque");
+    cppTemplate.add_structured_annotation(builder.make_template("std::deque"));
     EXPECT_TRUE(cpp2::is_custom_type(cppTemplate));
-    EXPECT_TRUE(cpp2::is_custom_type(typeDef));
-  }
-
-  {
-    auto cpp2Template = t_list(i32);
-    auto typeDef = t_typedef(&p, "Type", cpp2Template);
-    EXPECT_FALSE(cpp2::is_custom_type(cpp2Template));
-    EXPECT_FALSE(cpp2::is_custom_type(typeDef));
-    cpp2Template.set_unstructured_annotation("cpp2.template", "std::deque");
-    EXPECT_TRUE(cpp2::is_custom_type(cpp2Template));
     EXPECT_TRUE(cpp2::is_custom_type(typeDef));
   }
 
@@ -274,7 +259,6 @@ TEST(UtilTest, is_custom_type) {
     auto typeDef2 = t_typedef(&p, "TypeDef", typeDef);
     EXPECT_FALSE(cpp2::is_custom_type(cppAdapter));
     EXPECT_FALSE(cpp2::is_custom_type(typeDef));
-    typeDef.set_unstructured_annotation("cpp.adapter", "Adapter");
     auto adapter = gen::adapter_builder(p, "cpp");
     typeDef.add_structured_annotation(adapter.make("MyAdapter"));
     EXPECT_TRUE(cpp2::is_custom_type(typeDef));
@@ -286,7 +270,6 @@ TEST(UtilTest, is_custom_type) {
     auto typeDef2 = t_typedef(&p, "TypeDef", typeDef);
     EXPECT_FALSE(cpp2::is_custom_type(typeDef));
     EXPECT_FALSE(cpp2::is_custom_type(typeDef2));
-    auto builder = gen::type_builder(p, "cpp");
     typeDef.add_structured_annotation(builder.make("MyType"));
     EXPECT_TRUE(cpp2::is_custom_type(typeDef));
     EXPECT_TRUE(cpp2::is_custom_type(typeDef2));
@@ -299,7 +282,6 @@ TEST(UtilTest, is_custom_type) {
     EXPECT_FALSE(cpp2::is_custom_type(list_i32));
     EXPECT_FALSE(cpp2::is_custom_type(typeDef));
     EXPECT_FALSE(cpp2::is_custom_type(typeDef2));
-    auto builder = gen::type_builder(p, "cpp");
     typeDef.add_structured_annotation(builder.make_template("MyContainer"));
     EXPECT_TRUE(cpp2::is_custom_type(typeDef));
     EXPECT_TRUE(cpp2::is_custom_type(typeDef2));
@@ -518,7 +500,10 @@ TEST(UtilTest, structs_and_typedefs_dependency_graph) {
   auto program = dedent_and_parse_to_program(
       source_mgr,
       R"(
+    include "thrift/annotation/cpp.thrift"
+
     struct ContainsList {
+      @cpp.Type{template = "dependent"}
       1: list<S> l;
     }
     struct TransitiveContainsDependentList {
@@ -531,8 +516,10 @@ TEST(UtilTest, structs_and_typedefs_dependency_graph) {
       1: AlsoS s;
     }
     struct TransitiveContainsStructRef {
+      @cpp.Ref{type = cpp.RefType.Unique}
       1: AlsoS s;
     }
+    @cpp.Type{template = "dependent"}
     typedef list<S> Dependent
     typedef list<S> Independent
     typedef S AlsoS
@@ -541,25 +528,6 @@ TEST(UtilTest, structs_and_typedefs_dependency_graph) {
   )",
       {},
       {});
-
-  // Set annotations programmatically since the parser rejects unstructured
-  // annotations.
-  for (auto* strct : program->structured_definitions()) {
-    if (strct->name() == "ContainsList") {
-      auto& field = strct->fields()[0];
-      const_cast<t_type*>(field.type().get_type())
-          ->set_unstructured_annotation("cpp.template", "dependent");
-    } else if (strct->name() == "TransitiveContainsStructRef") {
-      auto& field = strct->fields()[0];
-      const_cast<t_field&>(field).set_unstructured_annotation("cpp.ref", "1");
-    }
-  }
-  for (auto* typedf : program->typedefs()) {
-    if (typedf->name() == "Dependent") {
-      const_cast<t_type*>(typedf->type().get_type())
-          ->set_unstructured_annotation("cpp.template", "dependent");
-    }
-  }
 
   std::vector<const t_type*> objects(
       program->structured_definitions().begin(),

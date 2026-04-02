@@ -544,21 +544,27 @@ class cpp2_generator_context {
         });
 
     visitor.add_field_visitor([this](const context& ctx, const t_field& node) {
+      if (node.default_value() == nullptr || &ctx.program() != root_program_) {
+        return;
+      }
       // If this field is in our root program and its default value is a
       // constant from an included program, track it so we can include the
       // corresponding `module_constants.h` in `module_types.h`
-      if (node.default_value() == nullptr || &ctx.program() != root_program_) {
-        // Field doesn't have a default or originates in an included program
-        return;
-      }
-      // The program the default_value's owning const originates from
       const t_program* const_program =
           node.default_value()->get_owner() == nullptr
           ? nullptr
           : node.default_value()->get_owner()->program();
       if (const_program != nullptr && const_program != root_program_) {
-        // Default value is from an included program - track it
         field_default_const_ref_programs_.emplace(const_program);
+      }
+      fix_const_value_type_for_field(node, *node.default_value());
+    });
+
+    // Also fix const_value types inside struct/list/map/set constants.
+    visitor.add_const_visitor([this](const context&, const t_const& cnst) {
+      if (cnst.type() != nullptr) {
+        fix_const_value_types_recursive(
+            cnst.type(), const_cast<t_const_value&>(*cnst.value()));
       }
     });
 
@@ -585,6 +591,75 @@ class cpp2_generator_context {
         });
   }
 
+  // When a field has @cpp.Type on a non-container type, create a primitive
+  // copy with the annotation and set it on the const_value so templates
+  // render the correct C++ type (e.g., StringTraits<folly::IOBuf>).
+  void fix_const_value_type_for_field(
+      const t_field& field, const t_const_value& value) {
+    const auto* annot = field.find_structured_annotation_or_null(kCppTypeUri);
+    if (!annot) {
+      return;
+    }
+    if (!annot->get_value_from_structured_annotation_or_null("name") &&
+        !annot->get_value_from_structured_annotation_or_null("template")) {
+      return;
+    }
+    if (const auto* prim =
+            field.type()->get_true_type()->try_as<t_primitive_type>()) {
+      auto copy = std::make_unique<t_primitive_type>(*prim);
+      copy->add_structured_annotation(annot->clone());
+      const_cast<t_const_value&>(value).set_type(
+          t_type_ref::from_ptr(copy.get()));
+      owned_types_.push_back(std::move(copy));
+    }
+  }
+
+  // Recursively fix const_value types inside struct/container constants.
+  void fix_const_value_types_recursive(
+      const t_type* type, t_const_value& value) {
+    using cv = t_const_value::t_const_value_kind;
+    if (!type) {
+      return;
+    }
+    type = type->get_true_type();
+    if (const auto* strct = type->try_as<t_structured>();
+        strct && value.kind() == cv::CV_MAP) {
+      for (const auto& [field_val, val_val] : value.get_map()) {
+        // Struct const values use field names (strings) or IDs (integers)
+        // as keys depending on how they were parsed.
+        for (const auto& field : strct->fields()) {
+          bool match = false;
+          if (field_val->kind() == cv::CV_INTEGER) {
+            match = field.id() == field_val->get_integer();
+          } else if (field_val->kind() == cv::CV_STRING) {
+            match = field.name() == field_val->get_string();
+          }
+          if (match) {
+            fix_const_value_type_for_field(field, *val_val);
+            fix_const_value_types_recursive(field.type().get_type(), *val_val);
+            break;
+          }
+        }
+      }
+    } else if (const auto* list = type->try_as<t_list>();
+               list && value.kind() == cv::CV_LIST) {
+      for (const auto& elem : value.get_list()) {
+        fix_const_value_types_recursive(list->elem_type().get_type(), *elem);
+      }
+    } else if (const auto* set = type->try_as<t_set>();
+               set && value.kind() == cv::CV_LIST) {
+      for (const auto& elem : value.get_list()) {
+        fix_const_value_types_recursive(set->elem_type().get_type(), *elem);
+      }
+    } else if (const auto* map = type->try_as<t_map>();
+               map && value.kind() == cv::CV_MAP) {
+      for (const auto& [k, v] : value.get_map()) {
+        fix_const_value_types_recursive(map->key_type().get_type(), *k);
+        fix_const_value_types_recursive(map->val_type().get_type(), *v);
+      }
+    }
+  }
+
  private:
   const t_program* root_program_;
   std::unordered_map<const t_type*, bool> is_orderable_memo_;
@@ -605,6 +680,8 @@ class cpp2_generator_context {
   std::unordered_map<const t_field*, cpp2_field_generator_context>
       field_context_map_;
   std::unordered_set<const t_program*> field_default_const_ref_programs_;
+  // Primitive type copies with @cpp.Type, kept alive for const_value type refs.
+  std::vector<std::unique_ptr<t_primitive_type>> owned_types_;
   std::unordered_map<const t_structured*, std::vector<const t_field*>>
       fields_in_layout_order_;
   std::vector<const t_type*> type_definitions_topological_order_;

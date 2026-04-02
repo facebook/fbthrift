@@ -62,7 +62,7 @@ pub struct ContainerStruct {
     pub fieldD: ::std::vec::Vec<::std::primitive::i32>,
     pub fieldE: ::std::vec::Vec<::std::primitive::i32>,
     pub fieldF: ::sorted_vector_map::SortedVectorSet<::std::primitive::i32>,
-    pub fieldG: crate::types::map_i32_string_1261,
+    pub fieldG: ::sorted_vector_map::SortedVectorMap<::std::primitive::i32, ::std::string::String>,
     pub fieldH: included__types::SomeMap,
     // This field forces `..Default::default()` when instantiating this
     // struct, to make code future-proof against new fields added later to
@@ -1207,7 +1207,7 @@ where
         crate::r#impl::rs_thrift_write(&self.fieldF, p);
         p.write_field_end();
         p.write_field_begin("fieldG", ::fbthrift::TType::Map, 7);
-        ::fbthrift::Serialize::rs_thrift_write(&self.fieldG, p);
+        crate::r#impl::rs_thrift_write(&self.fieldG, p);
         p.write_field_end();
         p.write_field_begin("fieldH", ::fbthrift::TType::Map, 8);
         ::fbthrift::Serialize::rs_thrift_write(&self.fieldH, p);
@@ -1283,7 +1283,7 @@ where
             }
             (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
             if (fty, fid) == (::fbthrift::TType::Map, 7) {
-                output.fieldG = ::anyhow::Context::context(::fbthrift::Deserialize::rs_thrift_read(p), ::fbthrift::errors::DeserializingFieldError { field: "fieldG", strct: "ContainerStruct"})?;
+                output.fieldG = ::anyhow::Context::context(crate::r#impl::rs_thrift_read(p), ::fbthrift::errors::DeserializingFieldError { field: "fieldG", strct: "ContainerStruct"})?;
                 p.read_field_end()?;
             } else {
                 break 'fastpath true;
@@ -1310,7 +1310,7 @@ where
                     (::fbthrift::TType::List, 4) => output.fieldD = ::anyhow::Context::context(::fbthrift::Deserialize::rs_thrift_read(p), ::fbthrift::errors::DeserializingFieldError { field: "fieldD", strct: "ContainerStruct"})?,
                     (::fbthrift::TType::List, 5) => output.fieldE = ::anyhow::Context::context(::fbthrift::Deserialize::rs_thrift_read(p), ::fbthrift::errors::DeserializingFieldError { field: "fieldE", strct: "ContainerStruct"})?,
                     (::fbthrift::TType::Set, 6) => output.fieldF = ::anyhow::Context::context(crate::r#impl::rs_thrift_read(p), ::fbthrift::errors::DeserializingFieldError { field: "fieldF", strct: "ContainerStruct"})?,
-                    (::fbthrift::TType::Map, 7) => output.fieldG = ::anyhow::Context::context(::fbthrift::Deserialize::rs_thrift_read(p), ::fbthrift::errors::DeserializingFieldError { field: "fieldG", strct: "ContainerStruct"})?,
+                    (::fbthrift::TType::Map, 7) => output.fieldG = ::anyhow::Context::context(crate::r#impl::rs_thrift_read(p), ::fbthrift::errors::DeserializingFieldError { field: "fieldG", strct: "ContainerStruct"})?,
                     (::fbthrift::TType::Map, 8) => output.fieldH = ::anyhow::Context::context(::fbthrift::Deserialize::rs_thrift_read(p), ::fbthrift::errors::DeserializingFieldError { field: "fieldH", strct: "ContainerStruct"})?,
                     (fty, _) => p.skip(fty)?,
                 }
