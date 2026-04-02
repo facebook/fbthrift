@@ -3536,9 +3536,15 @@ static std::shared_ptr<quic::QuicClientTransport> makeQuicClient(
   auto sock = std::make_unique<quic::FollyQuicAsyncUDPSocket>(qEvb);
   auto ctx = std::make_shared<fizz::client::FizzClientContext>();
   ctx->setSupportedAlpns({"rs"});
-  auto verifier = fizz::DefaultCertificateVerifier::createFromCAFiles(
-      fizz::VerificationContext::Client,
-      {find_resource(folly::test::kTestCA).string()});
+  std::unique_ptr<fizz::DefaultCertificateVerifier> verifier;
+  fizz::Error err;
+  FIZZ_THROW_ON_ERROR(
+      fizz::DefaultCertificateVerifier::createFromCAFiles(
+          verifier,
+          err,
+          fizz::VerificationContext::Client,
+          {find_resource(folly::test::kTestCA).string()}),
+      err);
 
   {
     // set up fizz client cert
