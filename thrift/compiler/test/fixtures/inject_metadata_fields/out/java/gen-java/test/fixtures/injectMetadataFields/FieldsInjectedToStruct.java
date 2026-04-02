@@ -157,16 +157,22 @@ public final class FieldsInjectedToStruct implements com.facebook.thrift.payload
         switch (__field.id) {
         case _STRING_FIELD:
           if (__field.type == TType.STRING) {
-            String stringField = oprot.readString();
-            builder.setStringField(stringField);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setStringField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _INJECTED_FIELD:
           if (__field.type == TType.STRING) {
-            String injectedField = oprot.readString();
-            builder.setInjectedField(injectedField);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setInjectedField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

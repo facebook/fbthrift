@@ -187,24 +187,33 @@ public final class AdaptedFields implements com.facebook.thrift.payload.ThriftSe
         switch (__field.id) {
         case _FIELD1:
           if (__field.type == TType.I32) {
-            int field1 = oprot.readI32();
-            builder.setField1(field1);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setField1(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _FIELD2:
           if (__field.type == TType.I32) {
-            int field2 = oprot.readI32();
-            builder.setField2(field2);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setField2(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _FIELD3:
           if (__field.type == TType.I32) {
-            int field3 = oprot.readI32();
-            builder.setField3(field3);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setField3(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

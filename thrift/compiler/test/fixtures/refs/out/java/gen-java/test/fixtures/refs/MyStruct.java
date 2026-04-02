@@ -184,24 +184,33 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         switch (__field.id) {
         case _OPT_REF:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.refs.MyField optRef = test.fixtures.refs.MyField.read0(oprot);
-            builder.setOptRef(optRef);
+            
+            test.fixtures.refs.MyField _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.refs.MyField.read0(oprot);
+            builder.setOptRef(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _REF:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.refs.MyField ref = test.fixtures.refs.MyField.read0(oprot);
-            builder.setRef(ref);
+            
+            test.fixtures.refs.MyField _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.refs.MyField.read0(oprot);
+            builder.setRef(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _REQ_REF:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.refs.MyField reqRef = test.fixtures.refs.MyField.read0(oprot);
-            builder.setReqRef(reqRef);
+            
+            test.fixtures.refs.MyField _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.refs.MyField.read0(oprot);
+            builder.setReqRef(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

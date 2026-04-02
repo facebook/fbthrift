@@ -214,32 +214,44 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         switch (__field.id) {
         case _ME2_3:
           if (__field.type == TType.I32) {
-            test.fixtures.enums.MyEnum2 me23 = test.fixtures.enums.MyEnum2.fromInteger(oprot.readI32());
-            builder.setMe23(me23);
+            
+            test.fixtures.enums.MyEnum2 _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.enums.MyEnum2.fromInteger(oprot.readI32());
+            builder.setMe23(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _ME3_N3:
           if (__field.type == TType.I32) {
-            test.fixtures.enums.MyEnum3 me3N3 = test.fixtures.enums.MyEnum3.fromInteger(oprot.readI32());
-            builder.setMe3N3(me3N3);
+            
+            test.fixtures.enums.MyEnum3 _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.enums.MyEnum3.fromInteger(oprot.readI32());
+            builder.setMe3N3(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _ME1_T1:
           if (__field.type == TType.I32) {
-            test.fixtures.enums.MyEnum1 me1T1 = test.fixtures.enums.MyEnum1.fromInteger(oprot.readI32());
-            builder.setMe1T1(me1T1);
+            
+            test.fixtures.enums.MyEnum1 _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.enums.MyEnum1.fromInteger(oprot.readI32());
+            builder.setMe1T1(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _ME1_T2:
           if (__field.type == TType.I32) {
-            test.fixtures.enums.MyEnum1 me1T2 = test.fixtures.enums.MyEnum1.fromInteger(oprot.readI32());
-            builder.setMe1T2(me1T2);
+            
+            test.fixtures.enums.MyEnum1 _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.enums.MyEnum1.fromInteger(oprot.readI32());
+            builder.setMe1T2(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

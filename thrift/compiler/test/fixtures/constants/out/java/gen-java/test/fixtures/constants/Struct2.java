@@ -211,48 +211,60 @@ public final class Struct2 implements com.facebook.thrift.payload.ThriftSerializ
         switch (__field.id) {
         case _A:
           if (__field.type == TType.I32) {
-            int a = oprot.readI32();
-            builder.setA(a);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setA(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _B:
           if (__field.type == TType.STRING) {
-            String b = oprot.readString();
-            builder.setB(b);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setB(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _C:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.constants.Struct1 c = test.fixtures.constants.Struct1.read0(oprot);
-            builder.setC(c);
+            
+            test.fixtures.constants.Struct1 _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.constants.Struct1.read0(oprot);
+            builder.setC(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _D:
           if (__field.type == TType.LIST) {
+            
             List<Integer> _fbthriftVar1;
-    {
-                TList _list1 = oprot.readListBegin();
-                _fbthriftVar1 = new ArrayList<Integer>(Math.max(0, _list1.size));
-                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                    
-                    
-                    int _fbthriftVar2;
-                    _fbthriftVar2 = oprot.readI32();
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readListEnd();
-                }
-    List<Integer> d = _fbthriftVar1;
-            builder.setD(d);
+            {
+                        TList _list1 = oprot.readListBegin();
+                        _fbthriftVar1 = new ArrayList<Integer>(Math.max(0, _list1.size));
+                        for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                            
+                            
+                            int _fbthriftVar2;
+                            _fbthriftVar2 = oprot.readI32();
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readListEnd();
+                        }
+
+
+            builder.setD(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

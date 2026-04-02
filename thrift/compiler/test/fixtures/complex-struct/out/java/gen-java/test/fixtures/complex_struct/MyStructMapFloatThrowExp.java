@@ -157,81 +157,87 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
         switch (__field.id) {
         case _MYLONGFIELD:
           if (__field.type == TType.I64) {
-            long myLongField = oprot.readI64();
-            builder.setMyLongField(myLongField);
+            
+            long _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI64();
+            builder.setMyLongField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MAPLISTOFFLOATS:
           if (__field.type == TType.MAP) {
+            
             Map<Integer, List<List<Float>>> _fbthriftVar1;
-    {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new HashMap<Integer, List<List<Float>>>(Math.max(0, _map1.size));
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    
-                    
-                    int _fbthriftKey2;
-                    
-                    
-                    List<List<Float>> _fbthriftValue2;
-                    
+            {
+                        TMap _map1 = oprot.readMapBegin();
+                        _fbthriftVar1 = new HashMap<Integer, List<List<Float>>>(Math.max(0, _map1.size));
+                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                            
+                            
+                            int _fbthriftKey2;
+                            
+                            
+                            List<List<Float>> _fbthriftValue2;
+                            
 
-                    {
-                        
-                        int _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI32();
-                        
-                        
-                        _fbthriftKey2 = _fbthriftVar2;
-                        
-                    }
-                    {
-                        
-                        List<List<Float>> _fbthriftVar2;
-                        {
-                                    TList _list2 = oprot.readListBegin();
-                                    _fbthriftVar2 = new ArrayList<List<Float>>(Math.max(0, _list2.size));
-                                    for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
-                                        
-                                        
-                                        List<Float> _fbthriftVar3;
-                                        {
-                                                    TList _list3 = oprot.readListBegin();
-                                                    _fbthriftVar3 = new ArrayList<Float>(Math.max(0, _list3.size));
-                                                    for (int _i3 = 0; (_list3.size < 0) ? oprot.peekList() : (_i3 < _list3.size); _i3++) {
-                                                        
-                                                        
-                                                        float _fbthriftVar4;
-                                                        _fbthriftVar4 = oprot.readFloat();
-                                                        
-                                                        
-                                                        _fbthriftVar3.add(_fbthriftVar4);
-                                                        
-                                                    }
-                                                    oprot.readListEnd();
-                                                    }
-                                        
-                                        
-                                        _fbthriftVar2.add(_fbthriftVar3);
-                                        
-                                    }
-                                    oprot.readListEnd();
-                                    }
-                        
-                        
-                        _fbthriftValue2 = _fbthriftVar2;
-                        
-                    }
-                    
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                    
-                }
-                }
-                oprot.readMapEnd();
-    Map<Integer, List<List<Float>>> mapListOfFloats = _fbthriftVar1;
-            builder.setMapListOfFloats(mapListOfFloats);
+                            {
+                                
+                                int _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readI32();
+                                
+                                
+                                _fbthriftKey2 = _fbthriftVar2;
+                                
+                            }
+                            {
+                                
+                                List<List<Float>> _fbthriftVar2;
+                                {
+                                            TList _list2 = oprot.readListBegin();
+                                            _fbthriftVar2 = new ArrayList<List<Float>>(Math.max(0, _list2.size));
+                                            for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
+                                                
+                                                
+                                                List<Float> _fbthriftVar3;
+                                                {
+                                                            TList _list3 = oprot.readListBegin();
+                                                            _fbthriftVar3 = new ArrayList<Float>(Math.max(0, _list3.size));
+                                                            for (int _i3 = 0; (_list3.size < 0) ? oprot.peekList() : (_i3 < _list3.size); _i3++) {
+                                                                
+                                                                
+                                                                float _fbthriftVar4;
+                                                                _fbthriftVar4 = oprot.readFloat();
+                                                                
+                                                                
+                                                                _fbthriftVar3.add(_fbthriftVar4);
+                                                                
+                                                            }
+                                                            oprot.readListEnd();
+                                                            }
+                                                
+                                                
+                                                _fbthriftVar2.add(_fbthriftVar3);
+                                                
+                                            }
+                                            oprot.readListEnd();
+                                            }
+                                
+                                
+                                _fbthriftValue2 = _fbthriftVar2;
+                                
+                            }
+                            
+                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                            
+                        }
+                        }
+                        oprot.readMapEnd();
+
+
+            builder.setMapListOfFloats(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

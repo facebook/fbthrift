@@ -214,32 +214,44 @@ public final class StructFieldAdaptedStruct implements com.facebook.thrift.paylo
         switch (__field.id) {
         case _ADAPTEDSTRUCT:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.adapter.AdaptedStruct adaptedStruct = test.fixtures.adapter.AdaptedStruct.read0(oprot);
-            builder.setAdaptedStruct(adaptedStruct);
+            
+            test.fixtures.adapter.AdaptedStruct _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.adapter.AdaptedStruct.read0(oprot);
+            builder.setAdaptedStruct(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _ADAPTEDTYPEDEF:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.adapter.AdaptedStruct adaptedTypedef = test.fixtures.adapter.AdaptedStruct.read0(oprot);
-            builder.setAdaptedTypedef(adaptedTypedef);
+            
+            test.fixtures.adapter.AdaptedStruct _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.adapter.AdaptedStruct.read0(oprot);
+            builder.setAdaptedTypedef(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _DIRECTLYADAPTED:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.adapter.DirectlyAdaptedStruct directlyAdapted = test.fixtures.adapter.DirectlyAdaptedStruct.read0(oprot);
-            builder.setDirectlyAdapted(directlyAdapted);
+            
+            test.fixtures.adapter.DirectlyAdaptedStruct _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.adapter.DirectlyAdaptedStruct.read0(oprot);
+            builder.setDirectlyAdapted(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _TYPEDEFOFADAPTED:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.adapter.DirectlyAdaptedStruct typedefOfAdapted = test.fixtures.adapter.DirectlyAdaptedStruct.read0(oprot);
-            builder.setTypedefOfAdapted(typedefOfAdapted);
+            
+            test.fixtures.adapter.DirectlyAdaptedStruct _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.adapter.DirectlyAdaptedStruct.read0(oprot);
+            builder.setTypedefOfAdapted(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

@@ -157,16 +157,22 @@ public final class FieldsInjectedWithFieldsWithIncludedStruct implements com.fac
         switch (__field.id) {
         case _STRING_FIELD:
           if (__field.type == TType.STRING) {
-            String stringField = oprot.readString();
-            builder.setStringField(stringField);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setStringField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _INJECTED_FIELD:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.injectMetadataFields.InjectedField injectedField = test.fixtures.injectMetadataFields.InjectedField.read0(oprot);
-            builder.setInjectedField(injectedField);
+            
+            test.fixtures.injectMetadataFields.InjectedField _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.injectMetadataFields.InjectedField.read0(oprot);
+            builder.setInjectedField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

@@ -130,8 +130,11 @@ public final class ShouldBeBoxed implements com.facebook.thrift.payload.ThriftSe
         switch (__field.id) {
         case _SESSIONID:
           if (__field.type == TType.STRING) {
-            String sessionId = oprot.readString();
-            builder.setSessionId(sessionId);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setSessionId(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

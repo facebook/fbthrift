@@ -94,8 +94,11 @@ public final class InitialException extends org.apache.thrift.TBaseException imp
         switch (__field.id) {
         case _REASON:
           if (__field.type == TType.STRING) {
-            String reason = oprot.readString();
-            builder.setReason(reason);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setReason(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

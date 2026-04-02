@@ -94,8 +94,11 @@ public final class SinkException2 extends org.apache.thrift.TBaseException imple
         switch (__field.id) {
         case _REASON:
           if (__field.type == TType.I64) {
-            long reason = oprot.readI64();
-            builder.setReason(reason);
+            
+            long _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI64();
+            builder.setReason(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

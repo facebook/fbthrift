@@ -130,8 +130,11 @@ public final class Fields implements com.facebook.thrift.payload.ThriftSerializa
         switch (__field.id) {
         case _INJECTED_FIELD:
           if (__field.type == TType.STRING) {
-            String injectedField = oprot.readString();
-            builder.setInjectedField(injectedField);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setInjectedField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

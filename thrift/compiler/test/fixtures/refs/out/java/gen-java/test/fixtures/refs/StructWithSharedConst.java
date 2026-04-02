@@ -184,24 +184,33 @@ public final class StructWithSharedConst implements com.facebook.thrift.payload.
         switch (__field.id) {
         case _OPT_SHARED_CONST:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.refs.MyField optSharedConst = test.fixtures.refs.MyField.read0(oprot);
-            builder.setOptSharedConst(optSharedConst);
+            
+            test.fixtures.refs.MyField _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.refs.MyField.read0(oprot);
+            builder.setOptSharedConst(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _SHARED_CONST:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.refs.MyField sharedConst = test.fixtures.refs.MyField.read0(oprot);
-            builder.setSharedConst(sharedConst);
+            
+            test.fixtures.refs.MyField _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.refs.MyField.read0(oprot);
+            builder.setSharedConst(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _REQ_SHARED_CONST:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.refs.MyField reqSharedConst = test.fixtures.refs.MyField.read0(oprot);
-            builder.setReqSharedConst(reqSharedConst);
+            
+            test.fixtures.refs.MyField _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.refs.MyField.read0(oprot);
+            builder.setReqSharedConst(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

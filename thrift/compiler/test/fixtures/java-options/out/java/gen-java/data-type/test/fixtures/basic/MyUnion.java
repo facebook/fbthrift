@@ -401,42 +401,54 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
           switch (__field.id) {
           case _MYENUM:
             if (__field.type == MY_ENUM_FIELD_DESC.type) {
-              test.fixtures.basic.MyEnum myEnum = test.fixtures.basic.MyEnum.fromInteger(oprot.readI32());
-              res.value = myEnum;
+              
+              test.fixtures.basic.MyEnum _fbthriftVar1;
+              _fbthriftVar1 = test.fixtures.basic.MyEnum.fromInteger(oprot.readI32());
+              res.value = _fbthriftVar1;
+              
             }
             break;
           case _MYSTRUCT:
             if (__field.type == MY_STRUCT_FIELD_DESC.type) {
-              test.fixtures.basic.MyStruct myStruct = test.fixtures.basic.MyStruct.read0(oprot);
-              res.value = myStruct;
+              
+              test.fixtures.basic.MyStruct _fbthriftVar1;
+              _fbthriftVar1 = test.fixtures.basic.MyStruct.read0(oprot);
+              res.value = _fbthriftVar1;
+              
             }
             break;
           case _MYDATAITEM:
             if (__field.type == MY_DATA_ITEM_FIELD_DESC.type) {
-              test.fixtures.basic.MyDataItem myDataItem = test.fixtures.basic.MyDataItem.read0(oprot);
-              res.value = myDataItem;
+              
+              test.fixtures.basic.MyDataItem _fbthriftVar1;
+              _fbthriftVar1 = test.fixtures.basic.MyDataItem.read0(oprot);
+              res.value = _fbthriftVar1;
+              
             }
             break;
           case _FLOATSET:
             if (__field.type == FLOAT_SET_FIELD_DESC.type) {
+              
               Set<Float> _fbthriftVar1;
-    {
-                TSet _set1 = oprot.readSetBegin();
-                _fbthriftVar1 = new HashSet<Float>(Math.max(0, _set1.size));
-                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                    
-                    
-                    float _fbthriftVar2;
-                    _fbthriftVar2 = oprot.readFloat();
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readSetEnd();
-                }
-    Set<Float> floatSet = _fbthriftVar1;
-              res.value = floatSet;
+              {
+                          TSet _set1 = oprot.readSetBegin();
+                          _fbthriftVar1 = new HashSet<Float>(Math.max(0, _set1.size));
+                          for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                              
+                              
+                              float _fbthriftVar2;
+                              _fbthriftVar2 = oprot.readFloat();
+                              
+                              
+                              _fbthriftVar1.add(_fbthriftVar2);
+                              
+                          }
+                          oprot.readSetEnd();
+                          }
+
+
+              res.value = _fbthriftVar1;
+              
             }
             break;
           default:

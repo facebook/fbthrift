@@ -133,8 +133,11 @@ public final class DirectlyAdaptedStruct implements com.facebook.thrift.payload.
         switch (__field.id) {
         case _DATA:
           if (__field.type == TType.I64) {
-            long data = oprot.readI64();
-            builder.setData(data);
+            
+            long _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI64();
+            builder.setData(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

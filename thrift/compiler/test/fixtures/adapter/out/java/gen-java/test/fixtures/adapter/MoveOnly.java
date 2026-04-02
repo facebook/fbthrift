@@ -133,8 +133,11 @@ public final class MoveOnly implements com.facebook.thrift.payload.ThriftSeriali
         switch (__field.id) {
         case _PTR:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.adapter.HeapAllocated ptr = test.fixtures.adapter.HeapAllocated.read0(oprot);
-            builder.setPtr(ptr);
+            
+            test.fixtures.adapter.HeapAllocated _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.adapter.HeapAllocated.read0(oprot);
+            builder.setPtr(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

@@ -158,16 +158,22 @@ public final class MyMutableStruct implements com.facebook.thrift.payload.Thrift
         switch (__field.id) {
         case _INTFIELD:
           if (__field.type == TType.I64) {
-            long intField = oprot.readI64();
-            builder.setIntField(intField);
+            
+            long _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI64();
+            builder.setIntField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _STRINGFIELD:
           if (__field.type == TType.STRING) {
-            String stringField = oprot.readString();
-            builder.setStringField(stringField);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setStringField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

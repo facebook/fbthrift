@@ -157,16 +157,22 @@ public final class BigStruct implements com.facebook.thrift.payload.ThriftSerial
         switch (__field.id) {
         case _S:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.module2.Struct s = test.fixtures.module2.Struct.read0(oprot);
-            builder.setS(s);
+            
+            test.fixtures.module2.Struct _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.module2.Struct.read0(oprot);
+            builder.setS(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _ID:
           if (__field.type == TType.I32) {
-            int id = oprot.readI32();
-            builder.setId(id);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setId(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

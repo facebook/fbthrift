@@ -373,149 +373,179 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
         switch (__field.id) {
         case _ID:
           if (__field.type == TType.I64) {
-            long id = oprot.readI64();
-            builder.setId(id);
+            
+            long _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI64();
+            builder.setId(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _NAME:
           if (__field.type == TType.STRING) {
-            String name = oprot.readString();
-            builder.setName(name);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setName(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _AGE:
           if (__field.type == TType.I16) {
-            Short age = oprot.readI16();
-            builder.setAge(age);
+            
+            Short _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI16();
+            builder.setAge(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _ADDRESS:
           if (__field.type == TType.STRING) {
-            String address = oprot.readString();
-            builder.setAddress(address);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setAddress(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _FAVORITECOLOR:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.optionals.Color favoriteColor = test.fixtures.optionals.Color.read0(oprot);
-            builder.setFavoriteColor(favoriteColor);
+            
+            test.fixtures.optionals.Color _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.optionals.Color.read0(oprot);
+            builder.setFavoriteColor(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _FRIENDS:
           if (__field.type == TType.SET) {
+            
             Set<Long> _fbthriftVar1;
-    {
-                TSet _set1 = oprot.readSetBegin();
-                _fbthriftVar1 = new HashSet<Long>(Math.max(0, _set1.size));
-                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                    
-                    
-                    long _fbthriftVar2;
-                    _fbthriftVar2 = oprot.readI64();
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readSetEnd();
-                }
-    Set<Long> friends = _fbthriftVar1;
-            builder.setFriends(friends);
+            {
+                        TSet _set1 = oprot.readSetBegin();
+                        _fbthriftVar1 = new HashSet<Long>(Math.max(0, _set1.size));
+                        for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                            
+                            
+                            long _fbthriftVar2;
+                            _fbthriftVar2 = oprot.readI64();
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readSetEnd();
+                        }
+
+
+            builder.setFriends(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _BESTFRIEND:
           if (__field.type == TType.I64) {
-            Long bestFriend = oprot.readI64();
-            builder.setBestFriend(bestFriend);
+            
+            Long _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI64();
+            builder.setBestFriend(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _PETNAMES:
           if (__field.type == TType.MAP) {
+            
             Map<test.fixtures.optionals.Animal, String> _fbthriftVar1;
-    {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new HashMap<test.fixtures.optionals.Animal, String>(Math.max(0, _map1.size));
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    
-                    
-                    test.fixtures.optionals.Animal _fbthriftKey2;
-                    
-                    
-                    String _fbthriftValue2;
-                    
+            {
+                        TMap _map1 = oprot.readMapBegin();
+                        _fbthriftVar1 = new HashMap<test.fixtures.optionals.Animal, String>(Math.max(0, _map1.size));
+                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                            
+                            
+                            test.fixtures.optionals.Animal _fbthriftKey2;
+                            
+                            
+                            String _fbthriftValue2;
+                            
 
-                    {
-                        
-                        test.fixtures.optionals.Animal _fbthriftVar2;
-                        _fbthriftVar2 = test.fixtures.optionals.Animal.fromInteger(oprot.readI32());
-                        
-                        
-                        _fbthriftKey2 = _fbthriftVar2;
-                        
-                    }
-                    {
-                        
-                        String _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readString();
-                        
-                        
-                        _fbthriftValue2 = _fbthriftVar2;
-                        
-                    }
-                    
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                    
-                }
-                }
-                oprot.readMapEnd();
-    Map<test.fixtures.optionals.Animal, String> petNames = _fbthriftVar1;
-            builder.setPetNames(petNames);
+                            {
+                                
+                                test.fixtures.optionals.Animal _fbthriftVar2;
+                                _fbthriftVar2 = test.fixtures.optionals.Animal.fromInteger(oprot.readI32());
+                                
+                                
+                                _fbthriftKey2 = _fbthriftVar2;
+                                
+                            }
+                            {
+                                
+                                String _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readString();
+                                
+                                
+                                _fbthriftValue2 = _fbthriftVar2;
+                                
+                            }
+                            
+                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                            
+                        }
+                        }
+                        oprot.readMapEnd();
+
+
+            builder.setPetNames(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _AFRAIDOFANIMAL:
           if (__field.type == TType.I32) {
-            test.fixtures.optionals.Animal afraidOfAnimal = test.fixtures.optionals.Animal.fromInteger(oprot.readI32());
-            builder.setAfraidOfAnimal(afraidOfAnimal);
+            
+            test.fixtures.optionals.Animal _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.optionals.Animal.fromInteger(oprot.readI32());
+            builder.setAfraidOfAnimal(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _VEHICLES:
           if (__field.type == TType.LIST) {
+            
             List<test.fixtures.optionals.Vehicle> _fbthriftVar1;
-    {
-                TList _list1 = oprot.readListBegin();
-                _fbthriftVar1 = new ArrayList<test.fixtures.optionals.Vehicle>(Math.max(0, _list1.size));
-                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                    
-                    
-                    test.fixtures.optionals.Vehicle _fbthriftVar2;
-                    _fbthriftVar2 = test.fixtures.optionals.Vehicle.read0(oprot);
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readListEnd();
-                }
-    List<test.fixtures.optionals.Vehicle> vehicles = _fbthriftVar1;
-            builder.setVehicles(vehicles);
+            {
+                        TList _list1 = oprot.readListBegin();
+                        _fbthriftVar1 = new ArrayList<test.fixtures.optionals.Vehicle>(Math.max(0, _list1.size));
+                        for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                            
+                            
+                            test.fixtures.optionals.Vehicle _fbthriftVar2;
+                            _fbthriftVar2 = test.fixtures.optionals.Vehicle.read0(oprot);
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readListEnd();
+                        }
+
+
+            builder.setVehicles(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

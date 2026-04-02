@@ -130,8 +130,11 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         switch (__field.id) {
         case _A:
           if (__field.type == TType.I64) {
-            long a = oprot.readI64();
-            builder.setA(a);
+            
+            long _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI64();
+            builder.setA(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

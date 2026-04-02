@@ -187,40 +187,49 @@ public final class TerseAdaptedFields implements com.facebook.thrift.payload.Thr
         switch (__field.id) {
         case _INT_FIELD:
           if (__field.type == TType.I32) {
-            int intField = oprot.readI32();
-            builder.setIntField(intField);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setIntField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _STRING_FIELD:
           if (__field.type == TType.STRING) {
-            String stringField = oprot.readString();
-            builder.setStringField(stringField);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setStringField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _SET_FIELD:
           if (__field.type == TType.SET) {
+            
             Set<Integer> _fbthriftVar1;
-    {
-                TSet _set1 = oprot.readSetBegin();
-                _fbthriftVar1 = new HashSet<Integer>(Math.max(0, _set1.size));
-                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                    
-                    
-                    int _fbthriftVar2;
-                    _fbthriftVar2 = oprot.readI32();
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readSetEnd();
-                }
-    Set<Integer> setField = _fbthriftVar1;
-            builder.setSetField(setField);
+            {
+                        TSet _set1 = oprot.readSetBegin();
+                        _fbthriftVar1 = new HashSet<Integer>(Math.max(0, _set1.size));
+                        for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                            
+                            
+                            int _fbthriftVar2;
+                            _fbthriftVar2 = oprot.readI32();
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readSetEnd();
+                        }
+
+
+            builder.setSetField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

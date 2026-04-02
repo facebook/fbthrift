@@ -1102,1896 +1102,2007 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
         switch (__field.id) {
         case _STRUCT_LIST:
           if (__field.type == TType.LIST) {
+            
             List<test.fixtures.complex_struct.MyStruct> _fbthriftVar1;
-    {
-                TList _list1 = oprot.readListBegin();
-                _fbthriftVar1 = new ArrayList<test.fixtures.complex_struct.MyStruct>(Math.max(0, _list1.size));
-                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                    
-                    
-                    test.fixtures.complex_struct.MyStruct _fbthriftVar2;
-                    _fbthriftVar2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readListEnd();
-                }
-    List<test.fixtures.complex_struct.MyStruct> structList = _fbthriftVar1;
-            builder.setStructList(structList);
+            {
+                        TList _list1 = oprot.readListBegin();
+                        _fbthriftVar1 = new ArrayList<test.fixtures.complex_struct.MyStruct>(Math.max(0, _list1.size));
+                        for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                            
+                            
+                            test.fixtures.complex_struct.MyStruct _fbthriftVar2;
+                            _fbthriftVar2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readListEnd();
+                        }
+
+
+            builder.setStructList(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _UNION_LIST:
           if (__field.type == TType.LIST) {
+            
             List<test.fixtures.complex_struct.MyUnion> _fbthriftVar1;
-    {
-                TList _list1 = oprot.readListBegin();
-                _fbthriftVar1 = new ArrayList<test.fixtures.complex_struct.MyUnion>(Math.max(0, _list1.size));
-                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                    
-                    
-                    test.fixtures.complex_struct.MyUnion _fbthriftVar2;
-                    _fbthriftVar2 = test.fixtures.complex_struct.MyUnion.read0(oprot);
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readListEnd();
-                }
-    List<test.fixtures.complex_struct.MyUnion> unionList = _fbthriftVar1;
-            builder.setUnionList(unionList);
+            {
+                        TList _list1 = oprot.readListBegin();
+                        _fbthriftVar1 = new ArrayList<test.fixtures.complex_struct.MyUnion>(Math.max(0, _list1.size));
+                        for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                            
+                            
+                            test.fixtures.complex_struct.MyUnion _fbthriftVar2;
+                            _fbthriftVar2 = test.fixtures.complex_struct.MyUnion.read0(oprot);
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readListEnd();
+                        }
+
+
+            builder.setUnionList(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _ENUM_LIST:
           if (__field.type == TType.LIST) {
+            
             List<test.fixtures.complex_struct.MyEnum> _fbthriftVar1;
-    {
-                TList _list1 = oprot.readListBegin();
-                _fbthriftVar1 = new ArrayList<test.fixtures.complex_struct.MyEnum>(Math.max(0, _list1.size));
-                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                    
-                    
-                    test.fixtures.complex_struct.MyEnum _fbthriftVar2;
-                    _fbthriftVar2 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readListEnd();
-                }
-    List<test.fixtures.complex_struct.MyEnum> enumList = _fbthriftVar1;
-            builder.setEnumList(enumList);
+            {
+                        TList _list1 = oprot.readListBegin();
+                        _fbthriftVar1 = new ArrayList<test.fixtures.complex_struct.MyEnum>(Math.max(0, _list1.size));
+                        for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                            
+                            
+                            test.fixtures.complex_struct.MyEnum _fbthriftVar2;
+                            _fbthriftVar2 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readListEnd();
+                        }
+
+
+            builder.setEnumList(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _STRUCT_SET:
           if (__field.type == TType.SET) {
+            
             Set<test.fixtures.complex_struct.MyStruct> _fbthriftVar1;
-    {
-                TSet _set1 = oprot.readSetBegin();
-                _fbthriftVar1 = new HashSet<test.fixtures.complex_struct.MyStruct>(Math.max(0, _set1.size));
-                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                    
-                    
-                    test.fixtures.complex_struct.MyStruct _fbthriftVar2;
-                    _fbthriftVar2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readSetEnd();
-                }
-    Set<test.fixtures.complex_struct.MyStruct> structSet = _fbthriftVar1;
-            builder.setStructSet(structSet);
+            {
+                        TSet _set1 = oprot.readSetBegin();
+                        _fbthriftVar1 = new HashSet<test.fixtures.complex_struct.MyStruct>(Math.max(0, _set1.size));
+                        for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                            
+                            
+                            test.fixtures.complex_struct.MyStruct _fbthriftVar2;
+                            _fbthriftVar2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readSetEnd();
+                        }
+
+
+            builder.setStructSet(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _UNION_SET:
           if (__field.type == TType.SET) {
+            
             Set<test.fixtures.complex_struct.MyUnion> _fbthriftVar1;
-    {
-                TSet _set1 = oprot.readSetBegin();
-                _fbthriftVar1 = new HashSet<test.fixtures.complex_struct.MyUnion>(Math.max(0, _set1.size));
-                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                    
-                    
-                    test.fixtures.complex_struct.MyUnion _fbthriftVar2;
-                    _fbthriftVar2 = test.fixtures.complex_struct.MyUnion.read0(oprot);
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readSetEnd();
-                }
-    Set<test.fixtures.complex_struct.MyUnion> unionSet = _fbthriftVar1;
-            builder.setUnionSet(unionSet);
+            {
+                        TSet _set1 = oprot.readSetBegin();
+                        _fbthriftVar1 = new HashSet<test.fixtures.complex_struct.MyUnion>(Math.max(0, _set1.size));
+                        for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                            
+                            
+                            test.fixtures.complex_struct.MyUnion _fbthriftVar2;
+                            _fbthriftVar2 = test.fixtures.complex_struct.MyUnion.read0(oprot);
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readSetEnd();
+                        }
+
+
+            builder.setUnionSet(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _ENUM_SET:
           if (__field.type == TType.SET) {
+            
             Set<test.fixtures.complex_struct.MyEnum> _fbthriftVar1;
-    {
-                TSet _set1 = oprot.readSetBegin();
-                _fbthriftVar1 = new HashSet<test.fixtures.complex_struct.MyEnum>(Math.max(0, _set1.size));
-                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                    
-                    
-                    test.fixtures.complex_struct.MyEnum _fbthriftVar2;
-                    _fbthriftVar2 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readSetEnd();
-                }
-    Set<test.fixtures.complex_struct.MyEnum> enumSet = _fbthriftVar1;
-            builder.setEnumSet(enumSet);
+            {
+                        TSet _set1 = oprot.readSetBegin();
+                        _fbthriftVar1 = new HashSet<test.fixtures.complex_struct.MyEnum>(Math.max(0, _set1.size));
+                        for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                            
+                            
+                            test.fixtures.complex_struct.MyEnum _fbthriftVar2;
+                            _fbthriftVar2 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readSetEnd();
+                        }
+
+
+            builder.setEnumSet(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _STRUCT_MAP:
           if (__field.type == TType.MAP) {
+            
             Map<test.fixtures.complex_struct.MyStruct, Long> _fbthriftVar1;
-    {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new HashMap<test.fixtures.complex_struct.MyStruct, Long>(Math.max(0, _map1.size));
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    
-                    
-                    test.fixtures.complex_struct.MyStruct _fbthriftKey2;
-                    
-                    
-                    long _fbthriftValue2;
-                    
+            {
+                        TMap _map1 = oprot.readMapBegin();
+                        _fbthriftVar1 = new HashMap<test.fixtures.complex_struct.MyStruct, Long>(Math.max(0, _map1.size));
+                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                            
+                            
+                            test.fixtures.complex_struct.MyStruct _fbthriftKey2;
+                            
+                            
+                            long _fbthriftValue2;
+                            
 
-                    {
-                        
-                        test.fixtures.complex_struct.MyStruct _fbthriftVar2;
-                        _fbthriftVar2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-                        
-                        
-                        _fbthriftKey2 = _fbthriftVar2;
-                        
-                    }
-                    {
-                        
-                        long _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI64();
-                        
-                        
-                        _fbthriftValue2 = _fbthriftVar2;
-                        
-                    }
-                    
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                    
-                }
-                }
-                oprot.readMapEnd();
-    Map<test.fixtures.complex_struct.MyStruct, Long> structMap = _fbthriftVar1;
-            builder.setStructMap(structMap);
+                            {
+                                
+                                test.fixtures.complex_struct.MyStruct _fbthriftVar2;
+                                _fbthriftVar2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                
+                                
+                                _fbthriftKey2 = _fbthriftVar2;
+                                
+                            }
+                            {
+                                
+                                long _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readI64();
+                                
+                                
+                                _fbthriftValue2 = _fbthriftVar2;
+                                
+                            }
+                            
+                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                            
+                        }
+                        }
+                        oprot.readMapEnd();
+
+
+            builder.setStructMap(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _UNION_MAP:
           if (__field.type == TType.MAP) {
+            
             Map<test.fixtures.complex_struct.MyUnion, Long> _fbthriftVar1;
-    {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new HashMap<test.fixtures.complex_struct.MyUnion, Long>(Math.max(0, _map1.size));
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    
-                    
-                    test.fixtures.complex_struct.MyUnion _fbthriftKey2;
-                    
-                    
-                    long _fbthriftValue2;
-                    
+            {
+                        TMap _map1 = oprot.readMapBegin();
+                        _fbthriftVar1 = new HashMap<test.fixtures.complex_struct.MyUnion, Long>(Math.max(0, _map1.size));
+                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                            
+                            
+                            test.fixtures.complex_struct.MyUnion _fbthriftKey2;
+                            
+                            
+                            long _fbthriftValue2;
+                            
 
-                    {
-                        
-                        test.fixtures.complex_struct.MyUnion _fbthriftVar2;
-                        _fbthriftVar2 = test.fixtures.complex_struct.MyUnion.read0(oprot);
-                        
-                        
-                        _fbthriftKey2 = _fbthriftVar2;
-                        
-                    }
-                    {
-                        
-                        long _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI64();
-                        
-                        
-                        _fbthriftValue2 = _fbthriftVar2;
-                        
-                    }
-                    
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                    
-                }
-                }
-                oprot.readMapEnd();
-    Map<test.fixtures.complex_struct.MyUnion, Long> unionMap = _fbthriftVar1;
-            builder.setUnionMap(unionMap);
+                            {
+                                
+                                test.fixtures.complex_struct.MyUnion _fbthriftVar2;
+                                _fbthriftVar2 = test.fixtures.complex_struct.MyUnion.read0(oprot);
+                                
+                                
+                                _fbthriftKey2 = _fbthriftVar2;
+                                
+                            }
+                            {
+                                
+                                long _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readI64();
+                                
+                                
+                                _fbthriftValue2 = _fbthriftVar2;
+                                
+                            }
+                            
+                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                            
+                        }
+                        }
+                        oprot.readMapEnd();
+
+
+            builder.setUnionMap(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _ENUM_MAP:
           if (__field.type == TType.MAP) {
+            
             Map<test.fixtures.complex_struct.MyEnum, Long> _fbthriftVar1;
-    {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new HashMap<test.fixtures.complex_struct.MyEnum, Long>(Math.max(0, _map1.size));
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    
-                    
-                    test.fixtures.complex_struct.MyEnum _fbthriftKey2;
-                    
-                    
-                    long _fbthriftValue2;
-                    
+            {
+                        TMap _map1 = oprot.readMapBegin();
+                        _fbthriftVar1 = new HashMap<test.fixtures.complex_struct.MyEnum, Long>(Math.max(0, _map1.size));
+                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                            
+                            
+                            test.fixtures.complex_struct.MyEnum _fbthriftKey2;
+                            
+                            
+                            long _fbthriftValue2;
+                            
 
-                    {
-                        
-                        test.fixtures.complex_struct.MyEnum _fbthriftVar2;
-                        _fbthriftVar2 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
-                        
-                        
-                        _fbthriftKey2 = _fbthriftVar2;
-                        
-                    }
-                    {
-                        
-                        long _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI64();
-                        
-                        
-                        _fbthriftValue2 = _fbthriftVar2;
-                        
-                    }
-                    
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                    
-                }
-                }
-                oprot.readMapEnd();
-    Map<test.fixtures.complex_struct.MyEnum, Long> enumMap = _fbthriftVar1;
-            builder.setEnumMap(enumMap);
+                            {
+                                
+                                test.fixtures.complex_struct.MyEnum _fbthriftVar2;
+                                _fbthriftVar2 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+                                
+                                
+                                _fbthriftKey2 = _fbthriftVar2;
+                                
+                            }
+                            {
+                                
+                                long _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readI64();
+                                
+                                
+                                _fbthriftValue2 = _fbthriftVar2;
+                                
+                            }
+                            
+                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                            
+                        }
+                        }
+                        oprot.readMapEnd();
+
+
+            builder.setEnumMap(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _STRUCT_MAP_2:
           if (__field.type == TType.MAP) {
+            
             Map<Integer, test.fixtures.complex_struct.MyStruct> _fbthriftVar1;
-    {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new HashMap<Integer, test.fixtures.complex_struct.MyStruct>(Math.max(0, _map1.size));
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    
-                    
-                    int _fbthriftKey2;
-                    
-                    
-                    test.fixtures.complex_struct.MyStruct _fbthriftValue2;
-                    
+            {
+                        TMap _map1 = oprot.readMapBegin();
+                        _fbthriftVar1 = new HashMap<Integer, test.fixtures.complex_struct.MyStruct>(Math.max(0, _map1.size));
+                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                            
+                            
+                            int _fbthriftKey2;
+                            
+                            
+                            test.fixtures.complex_struct.MyStruct _fbthriftValue2;
+                            
 
-                    {
-                        
-                        int _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI32();
-                        
-                        
-                        _fbthriftKey2 = _fbthriftVar2;
-                        
-                    }
-                    {
-                        
-                        test.fixtures.complex_struct.MyStruct _fbthriftVar2;
-                        _fbthriftVar2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-                        
-                        
-                        _fbthriftValue2 = _fbthriftVar2;
-                        
-                    }
-                    
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                    
-                }
-                }
-                oprot.readMapEnd();
-    Map<Integer, test.fixtures.complex_struct.MyStruct> structMap2 = _fbthriftVar1;
-            builder.setStructMap2(structMap2);
+                            {
+                                
+                                int _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readI32();
+                                
+                                
+                                _fbthriftKey2 = _fbthriftVar2;
+                                
+                            }
+                            {
+                                
+                                test.fixtures.complex_struct.MyStruct _fbthriftVar2;
+                                _fbthriftVar2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                
+                                
+                                _fbthriftValue2 = _fbthriftVar2;
+                                
+                            }
+                            
+                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                            
+                        }
+                        }
+                        oprot.readMapEnd();
+
+
+            builder.setStructMap2(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _UNION_MAP_2:
           if (__field.type == TType.MAP) {
+            
             Map<Integer, test.fixtures.complex_struct.MyUnion> _fbthriftVar1;
-    {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new HashMap<Integer, test.fixtures.complex_struct.MyUnion>(Math.max(0, _map1.size));
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    
-                    
-                    int _fbthriftKey2;
-                    
-                    
-                    test.fixtures.complex_struct.MyUnion _fbthriftValue2;
-                    
+            {
+                        TMap _map1 = oprot.readMapBegin();
+                        _fbthriftVar1 = new HashMap<Integer, test.fixtures.complex_struct.MyUnion>(Math.max(0, _map1.size));
+                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                            
+                            
+                            int _fbthriftKey2;
+                            
+                            
+                            test.fixtures.complex_struct.MyUnion _fbthriftValue2;
+                            
 
-                    {
-                        
-                        int _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI32();
-                        
-                        
-                        _fbthriftKey2 = _fbthriftVar2;
-                        
-                    }
-                    {
-                        
-                        test.fixtures.complex_struct.MyUnion _fbthriftVar2;
-                        _fbthriftVar2 = test.fixtures.complex_struct.MyUnion.read0(oprot);
-                        
-                        
-                        _fbthriftValue2 = _fbthriftVar2;
-                        
-                    }
-                    
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                    
-                }
-                }
-                oprot.readMapEnd();
-    Map<Integer, test.fixtures.complex_struct.MyUnion> unionMap2 = _fbthriftVar1;
-            builder.setUnionMap2(unionMap2);
+                            {
+                                
+                                int _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readI32();
+                                
+                                
+                                _fbthriftKey2 = _fbthriftVar2;
+                                
+                            }
+                            {
+                                
+                                test.fixtures.complex_struct.MyUnion _fbthriftVar2;
+                                _fbthriftVar2 = test.fixtures.complex_struct.MyUnion.read0(oprot);
+                                
+                                
+                                _fbthriftValue2 = _fbthriftVar2;
+                                
+                            }
+                            
+                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                            
+                        }
+                        }
+                        oprot.readMapEnd();
+
+
+            builder.setUnionMap2(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _ENUM_MAP_2:
           if (__field.type == TType.MAP) {
+            
             Map<Integer, test.fixtures.complex_struct.MyEnum> _fbthriftVar1;
-    {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new HashMap<Integer, test.fixtures.complex_struct.MyEnum>(Math.max(0, _map1.size));
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    
-                    
-                    int _fbthriftKey2;
-                    
-                    
-                    test.fixtures.complex_struct.MyEnum _fbthriftValue2;
-                    
+            {
+                        TMap _map1 = oprot.readMapBegin();
+                        _fbthriftVar1 = new HashMap<Integer, test.fixtures.complex_struct.MyEnum>(Math.max(0, _map1.size));
+                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                            
+                            
+                            int _fbthriftKey2;
+                            
+                            
+                            test.fixtures.complex_struct.MyEnum _fbthriftValue2;
+                            
 
-                    {
-                        
-                        int _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI32();
-                        
-                        
-                        _fbthriftKey2 = _fbthriftVar2;
-                        
-                    }
-                    {
-                        
-                        test.fixtures.complex_struct.MyEnum _fbthriftVar2;
-                        _fbthriftVar2 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
-                        
-                        
-                        _fbthriftValue2 = _fbthriftVar2;
-                        
-                    }
-                    
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                    
-                }
-                }
-                oprot.readMapEnd();
-    Map<Integer, test.fixtures.complex_struct.MyEnum> enumMap2 = _fbthriftVar1;
-            builder.setEnumMap2(enumMap2);
+                            {
+                                
+                                int _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readI32();
+                                
+                                
+                                _fbthriftKey2 = _fbthriftVar2;
+                                
+                            }
+                            {
+                                
+                                test.fixtures.complex_struct.MyEnum _fbthriftVar2;
+                                _fbthriftVar2 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+                                
+                                
+                                _fbthriftValue2 = _fbthriftVar2;
+                                
+                            }
+                            
+                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                            
+                        }
+                        }
+                        oprot.readMapEnd();
+
+
+            builder.setEnumMap2(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _LIST_MAP:
           if (__field.type == TType.MAP) {
+            
             Map<List<Integer>, Integer> _fbthriftVar1;
-    {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new HashMap<List<Integer>, Integer>(Math.max(0, _map1.size));
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    
-                    
-                    List<Integer> _fbthriftKey2;
-                    
-                    
-                    int _fbthriftValue2;
-                    
+            {
+                        TMap _map1 = oprot.readMapBegin();
+                        _fbthriftVar1 = new HashMap<List<Integer>, Integer>(Math.max(0, _map1.size));
+                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                            
+                            
+                            List<Integer> _fbthriftKey2;
+                            
+                            
+                            int _fbthriftValue2;
+                            
 
-                    {
-                        
-                        List<Integer> _fbthriftVar2;
-                        {
-                                    TList _list2 = oprot.readListBegin();
-                                    _fbthriftVar2 = new ArrayList<Integer>(Math.max(0, _list2.size));
-                                    for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
-                                        
-                                        
-                                        int _fbthriftVar3;
-                                        _fbthriftVar3 = oprot.readI32();
-                                        
-                                        
-                                        _fbthriftVar2.add(_fbthriftVar3);
-                                        
-                                    }
-                                    oprot.readListEnd();
-                                    }
-                        
-                        
-                        _fbthriftKey2 = _fbthriftVar2;
-                        
-                    }
-                    {
-                        
-                        int _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI32();
-                        
-                        
-                        _fbthriftValue2 = _fbthriftVar2;
-                        
-                    }
-                    
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                    
-                }
-                }
-                oprot.readMapEnd();
-    Map<List<Integer>, Integer> listMap = _fbthriftVar1;
-            builder.setListMap(listMap);
+                            {
+                                
+                                List<Integer> _fbthriftVar2;
+                                {
+                                            TList _list2 = oprot.readListBegin();
+                                            _fbthriftVar2 = new ArrayList<Integer>(Math.max(0, _list2.size));
+                                            for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
+                                                
+                                                
+                                                int _fbthriftVar3;
+                                                _fbthriftVar3 = oprot.readI32();
+                                                
+                                                
+                                                _fbthriftVar2.add(_fbthriftVar3);
+                                                
+                                            }
+                                            oprot.readListEnd();
+                                            }
+                                
+                                
+                                _fbthriftKey2 = _fbthriftVar2;
+                                
+                            }
+                            {
+                                
+                                int _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readI32();
+                                
+                                
+                                _fbthriftValue2 = _fbthriftVar2;
+                                
+                            }
+                            
+                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                            
+                        }
+                        }
+                        oprot.readMapEnd();
+
+
+            builder.setListMap(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _LIST_MAP_2:
           if (__field.type == TType.MAP) {
+            
             Map<Integer, List<Integer>> _fbthriftVar1;
-    {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new HashMap<Integer, List<Integer>>(Math.max(0, _map1.size));
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    
-                    
-                    int _fbthriftKey2;
-                    
-                    
-                    List<Integer> _fbthriftValue2;
-                    
+            {
+                        TMap _map1 = oprot.readMapBegin();
+                        _fbthriftVar1 = new HashMap<Integer, List<Integer>>(Math.max(0, _map1.size));
+                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                            
+                            
+                            int _fbthriftKey2;
+                            
+                            
+                            List<Integer> _fbthriftValue2;
+                            
 
-                    {
-                        
-                        int _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI32();
-                        
-                        
-                        _fbthriftKey2 = _fbthriftVar2;
-                        
-                    }
-                    {
-                        
-                        List<Integer> _fbthriftVar2;
-                        {
-                                    TList _list2 = oprot.readListBegin();
-                                    _fbthriftVar2 = new ArrayList<Integer>(Math.max(0, _list2.size));
-                                    for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
-                                        
-                                        
-                                        int _fbthriftVar3;
-                                        _fbthriftVar3 = oprot.readI32();
-                                        
-                                        
-                                        _fbthriftVar2.add(_fbthriftVar3);
-                                        
-                                    }
-                                    oprot.readListEnd();
-                                    }
-                        
-                        
-                        _fbthriftValue2 = _fbthriftVar2;
-                        
-                    }
-                    
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                    
-                }
-                }
-                oprot.readMapEnd();
-    Map<Integer, List<Integer>> listMap2 = _fbthriftVar1;
-            builder.setListMap2(listMap2);
+                            {
+                                
+                                int _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readI32();
+                                
+                                
+                                _fbthriftKey2 = _fbthriftVar2;
+                                
+                            }
+                            {
+                                
+                                List<Integer> _fbthriftVar2;
+                                {
+                                            TList _list2 = oprot.readListBegin();
+                                            _fbthriftVar2 = new ArrayList<Integer>(Math.max(0, _list2.size));
+                                            for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
+                                                
+                                                
+                                                int _fbthriftVar3;
+                                                _fbthriftVar3 = oprot.readI32();
+                                                
+                                                
+                                                _fbthriftVar2.add(_fbthriftVar3);
+                                                
+                                            }
+                                            oprot.readListEnd();
+                                            }
+                                
+                                
+                                _fbthriftValue2 = _fbthriftVar2;
+                                
+                            }
+                            
+                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                            
+                        }
+                        }
+                        oprot.readMapEnd();
+
+
+            builder.setListMap2(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _SET_MAP:
           if (__field.type == TType.MAP) {
+            
             Map<Set<Integer>, Integer> _fbthriftVar1;
-    {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new HashMap<Set<Integer>, Integer>(Math.max(0, _map1.size));
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    
-                    
-                    Set<Integer> _fbthriftKey2;
-                    
-                    
-                    int _fbthriftValue2;
-                    
+            {
+                        TMap _map1 = oprot.readMapBegin();
+                        _fbthriftVar1 = new HashMap<Set<Integer>, Integer>(Math.max(0, _map1.size));
+                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                            
+                            
+                            Set<Integer> _fbthriftKey2;
+                            
+                            
+                            int _fbthriftValue2;
+                            
 
-                    {
-                        
-                        Set<Integer> _fbthriftVar2;
-                        {
-                                    TSet _set2 = oprot.readSetBegin();
-                                    _fbthriftVar2 = new HashSet<Integer>(Math.max(0, _set2.size));
-                                    for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
-                                        
-                                        
-                                        int _fbthriftVar3;
-                                        _fbthriftVar3 = oprot.readI32();
-                                        
-                                        
-                                        _fbthriftVar2.add(_fbthriftVar3);
-                                        
-                                    }
-                                    oprot.readSetEnd();
-                                    }
-                        
-                        
-                        _fbthriftKey2 = _fbthriftVar2;
-                        
-                    }
-                    {
-                        
-                        int _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI32();
-                        
-                        
-                        _fbthriftValue2 = _fbthriftVar2;
-                        
-                    }
-                    
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                    
-                }
-                }
-                oprot.readMapEnd();
-    Map<Set<Integer>, Integer> setMap = _fbthriftVar1;
-            builder.setSetMap(setMap);
+                            {
+                                
+                                Set<Integer> _fbthriftVar2;
+                                {
+                                            TSet _set2 = oprot.readSetBegin();
+                                            _fbthriftVar2 = new HashSet<Integer>(Math.max(0, _set2.size));
+                                            for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
+                                                
+                                                
+                                                int _fbthriftVar3;
+                                                _fbthriftVar3 = oprot.readI32();
+                                                
+                                                
+                                                _fbthriftVar2.add(_fbthriftVar3);
+                                                
+                                            }
+                                            oprot.readSetEnd();
+                                            }
+                                
+                                
+                                _fbthriftKey2 = _fbthriftVar2;
+                                
+                            }
+                            {
+                                
+                                int _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readI32();
+                                
+                                
+                                _fbthriftValue2 = _fbthriftVar2;
+                                
+                            }
+                            
+                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                            
+                        }
+                        }
+                        oprot.readMapEnd();
+
+
+            builder.setSetMap(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _SET_MAP_2:
           if (__field.type == TType.MAP) {
+            
             Map<Integer, Set<Integer>> _fbthriftVar1;
-    {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new HashMap<Integer, Set<Integer>>(Math.max(0, _map1.size));
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    
-                    
-                    int _fbthriftKey2;
-                    
-                    
-                    Set<Integer> _fbthriftValue2;
-                    
+            {
+                        TMap _map1 = oprot.readMapBegin();
+                        _fbthriftVar1 = new HashMap<Integer, Set<Integer>>(Math.max(0, _map1.size));
+                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                            
+                            
+                            int _fbthriftKey2;
+                            
+                            
+                            Set<Integer> _fbthriftValue2;
+                            
 
-                    {
-                        
-                        int _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI32();
-                        
-                        
-                        _fbthriftKey2 = _fbthriftVar2;
-                        
-                    }
-                    {
-                        
-                        Set<Integer> _fbthriftVar2;
-                        {
-                                    TSet _set2 = oprot.readSetBegin();
-                                    _fbthriftVar2 = new HashSet<Integer>(Math.max(0, _set2.size));
-                                    for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
-                                        
-                                        
-                                        int _fbthriftVar3;
-                                        _fbthriftVar3 = oprot.readI32();
-                                        
-                                        
-                                        _fbthriftVar2.add(_fbthriftVar3);
-                                        
-                                    }
-                                    oprot.readSetEnd();
-                                    }
-                        
-                        
-                        _fbthriftValue2 = _fbthriftVar2;
-                        
-                    }
-                    
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                    
-                }
-                }
-                oprot.readMapEnd();
-    Map<Integer, Set<Integer>> setMap2 = _fbthriftVar1;
-            builder.setSetMap2(setMap2);
+                            {
+                                
+                                int _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readI32();
+                                
+                                
+                                _fbthriftKey2 = _fbthriftVar2;
+                                
+                            }
+                            {
+                                
+                                Set<Integer> _fbthriftVar2;
+                                {
+                                            TSet _set2 = oprot.readSetBegin();
+                                            _fbthriftVar2 = new HashSet<Integer>(Math.max(0, _set2.size));
+                                            for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
+                                                
+                                                
+                                                int _fbthriftVar3;
+                                                _fbthriftVar3 = oprot.readI32();
+                                                
+                                                
+                                                _fbthriftVar2.add(_fbthriftVar3);
+                                                
+                                            }
+                                            oprot.readSetEnd();
+                                            }
+                                
+                                
+                                _fbthriftValue2 = _fbthriftVar2;
+                                
+                            }
+                            
+                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                            
+                        }
+                        }
+                        oprot.readMapEnd();
+
+
+            builder.setSetMap2(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MAP_MAP:
           if (__field.type == TType.MAP) {
+            
             Map<Map<Integer, Integer>, Integer> _fbthriftVar1;
-    {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new HashMap<Map<Integer, Integer>, Integer>(Math.max(0, _map1.size));
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    
-                    
-                    Map<Integer, Integer> _fbthriftKey2;
-                    
-                    
-                    int _fbthriftValue2;
-                    
+            {
+                        TMap _map1 = oprot.readMapBegin();
+                        _fbthriftVar1 = new HashMap<Map<Integer, Integer>, Integer>(Math.max(0, _map1.size));
+                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                            
+                            
+                            Map<Integer, Integer> _fbthriftKey2;
+                            
+                            
+                            int _fbthriftValue2;
+                            
 
-                    {
-                        
-                        Map<Integer, Integer> _fbthriftVar2;
-                        {
-                                    TMap _map2 = oprot.readMapBegin();
-                                    _fbthriftVar2 = new HashMap<Integer, Integer>(Math.max(0, _map2.size));
-                                    for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
-                                        
-                                        
-                                        int _fbthriftKey3;
-                                        
-                                        
-                                        int _fbthriftValue3;
-                                        
+                            {
+                                
+                                Map<Integer, Integer> _fbthriftVar2;
+                                {
+                                            TMap _map2 = oprot.readMapBegin();
+                                            _fbthriftVar2 = new HashMap<Integer, Integer>(Math.max(0, _map2.size));
+                                            for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
+                                                
+                                                
+                                                int _fbthriftKey3;
+                                                
+                                                
+                                                int _fbthriftValue3;
+                                                
 
-                                        {
-                                            
-                                            int _fbthriftVar3;
-                                            _fbthriftVar3 = oprot.readI32();
-                                            
-                                            
-                                            _fbthriftKey3 = _fbthriftVar3;
-                                            
-                                        }
-                                        {
-                                            
-                                            int _fbthriftVar3;
-                                            _fbthriftVar3 = oprot.readI32();
-                                            
-                                            
-                                            _fbthriftValue3 = _fbthriftVar3;
-                                            
-                                        }
-                                        
-                                        _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
-                                        
-                                    }
-                                    }
-                                    oprot.readMapEnd();
-                        
-                        
-                        _fbthriftKey2 = _fbthriftVar2;
-                        
-                    }
-                    {
-                        
-                        int _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI32();
-                        
-                        
-                        _fbthriftValue2 = _fbthriftVar2;
-                        
-                    }
-                    
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                    
-                }
-                }
-                oprot.readMapEnd();
-    Map<Map<Integer, Integer>, Integer> mapMap = _fbthriftVar1;
-            builder.setMapMap(mapMap);
+                                                {
+                                                    
+                                                    int _fbthriftVar3;
+                                                    _fbthriftVar3 = oprot.readI32();
+                                                    
+                                                    
+                                                    _fbthriftKey3 = _fbthriftVar3;
+                                                    
+                                                }
+                                                {
+                                                    
+                                                    int _fbthriftVar3;
+                                                    _fbthriftVar3 = oprot.readI32();
+                                                    
+                                                    
+                                                    _fbthriftValue3 = _fbthriftVar3;
+                                                    
+                                                }
+                                                
+                                                _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
+                                                
+                                            }
+                                            }
+                                            oprot.readMapEnd();
+                                
+                                
+                                _fbthriftKey2 = _fbthriftVar2;
+                                
+                            }
+                            {
+                                
+                                int _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readI32();
+                                
+                                
+                                _fbthriftValue2 = _fbthriftVar2;
+                                
+                            }
+                            
+                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                            
+                        }
+                        }
+                        oprot.readMapEnd();
+
+
+            builder.setMapMap(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MAP_MAP_2:
           if (__field.type == TType.MAP) {
+            
             Map<Integer, Map<Integer, Integer>> _fbthriftVar1;
-    {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new HashMap<Integer, Map<Integer, Integer>>(Math.max(0, _map1.size));
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    
-                    
-                    int _fbthriftKey2;
-                    
-                    
-                    Map<Integer, Integer> _fbthriftValue2;
-                    
+            {
+                        TMap _map1 = oprot.readMapBegin();
+                        _fbthriftVar1 = new HashMap<Integer, Map<Integer, Integer>>(Math.max(0, _map1.size));
+                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                            
+                            
+                            int _fbthriftKey2;
+                            
+                            
+                            Map<Integer, Integer> _fbthriftValue2;
+                            
 
-                    {
-                        
-                        int _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI32();
-                        
-                        
-                        _fbthriftKey2 = _fbthriftVar2;
-                        
-                    }
-                    {
-                        
-                        Map<Integer, Integer> _fbthriftVar2;
-                        {
-                                    TMap _map2 = oprot.readMapBegin();
-                                    _fbthriftVar2 = new HashMap<Integer, Integer>(Math.max(0, _map2.size));
-                                    for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
-                                        
-                                        
-                                        int _fbthriftKey3;
-                                        
-                                        
-                                        int _fbthriftValue3;
-                                        
+                            {
+                                
+                                int _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readI32();
+                                
+                                
+                                _fbthriftKey2 = _fbthriftVar2;
+                                
+                            }
+                            {
+                                
+                                Map<Integer, Integer> _fbthriftVar2;
+                                {
+                                            TMap _map2 = oprot.readMapBegin();
+                                            _fbthriftVar2 = new HashMap<Integer, Integer>(Math.max(0, _map2.size));
+                                            for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
+                                                
+                                                
+                                                int _fbthriftKey3;
+                                                
+                                                
+                                                int _fbthriftValue3;
+                                                
 
-                                        {
-                                            
-                                            int _fbthriftVar3;
-                                            _fbthriftVar3 = oprot.readI32();
-                                            
-                                            
-                                            _fbthriftKey3 = _fbthriftVar3;
-                                            
-                                        }
-                                        {
-                                            
-                                            int _fbthriftVar3;
-                                            _fbthriftVar3 = oprot.readI32();
-                                            
-                                            
-                                            _fbthriftValue3 = _fbthriftVar3;
-                                            
-                                        }
-                                        
-                                        _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
-                                        
-                                    }
-                                    }
-                                    oprot.readMapEnd();
-                        
-                        
-                        _fbthriftValue2 = _fbthriftVar2;
-                        
-                    }
-                    
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                    
-                }
-                }
-                oprot.readMapEnd();
-    Map<Integer, Map<Integer, Integer>> mapMap2 = _fbthriftVar1;
-            builder.setMapMap2(mapMap2);
+                                                {
+                                                    
+                                                    int _fbthriftVar3;
+                                                    _fbthriftVar3 = oprot.readI32();
+                                                    
+                                                    
+                                                    _fbthriftKey3 = _fbthriftVar3;
+                                                    
+                                                }
+                                                {
+                                                    
+                                                    int _fbthriftVar3;
+                                                    _fbthriftVar3 = oprot.readI32();
+                                                    
+                                                    
+                                                    _fbthriftValue3 = _fbthriftVar3;
+                                                    
+                                                }
+                                                
+                                                _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
+                                                
+                                            }
+                                            }
+                                            oprot.readMapEnd();
+                                
+                                
+                                _fbthriftValue2 = _fbthriftVar2;
+                                
+                            }
+                            
+                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                            
+                        }
+                        }
+                        oprot.readMapEnd();
+
+
+            builder.setMapMap2(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _LIST_LIST_I32:
           if (__field.type == TType.LIST) {
+            
             List<List<Integer>> _fbthriftVar1;
-    {
-                TList _list1 = oprot.readListBegin();
-                _fbthriftVar1 = new ArrayList<List<Integer>>(Math.max(0, _list1.size));
-                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                    
-                    
-                    List<Integer> _fbthriftVar2;
-                    {
-                                TList _list2 = oprot.readListBegin();
-                                _fbthriftVar2 = new ArrayList<Integer>(Math.max(0, _list2.size));
-                                for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
-                                    
-                                    
-                                    int _fbthriftVar3;
-                                    _fbthriftVar3 = oprot.readI32();
-                                    
-                                    
-                                    _fbthriftVar2.add(_fbthriftVar3);
-                                    
-                                }
-                                oprot.readListEnd();
-                                }
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readListEnd();
-                }
-    List<List<Integer>> listListI32 = _fbthriftVar1;
-            builder.setListListI32(listListI32);
+            {
+                        TList _list1 = oprot.readListBegin();
+                        _fbthriftVar1 = new ArrayList<List<Integer>>(Math.max(0, _list1.size));
+                        for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                            
+                            
+                            List<Integer> _fbthriftVar2;
+                            {
+                                        TList _list2 = oprot.readListBegin();
+                                        _fbthriftVar2 = new ArrayList<Integer>(Math.max(0, _list2.size));
+                                        for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
+                                            
+                                            
+                                            int _fbthriftVar3;
+                                            _fbthriftVar3 = oprot.readI32();
+                                            
+                                            
+                                            _fbthriftVar2.add(_fbthriftVar3);
+                                            
+                                        }
+                                        oprot.readListEnd();
+                                        }
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readListEnd();
+                        }
+
+
+            builder.setListListI32(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _LIST_LIST_STRUCT:
           if (__field.type == TType.LIST) {
+            
             List<List<test.fixtures.complex_struct.MyStruct>> _fbthriftVar1;
-    {
-                TList _list1 = oprot.readListBegin();
-                _fbthriftVar1 = new ArrayList<List<test.fixtures.complex_struct.MyStruct>>(Math.max(0, _list1.size));
-                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                    
-                    
-                    List<test.fixtures.complex_struct.MyStruct> _fbthriftVar2;
-                    {
-                                TList _list2 = oprot.readListBegin();
-                                _fbthriftVar2 = new ArrayList<test.fixtures.complex_struct.MyStruct>(Math.max(0, _list2.size));
-                                for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
-                                    
-                                    
-                                    test.fixtures.complex_struct.MyStruct _fbthriftVar3;
-                                    _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-                                    
-                                    
-                                    _fbthriftVar2.add(_fbthriftVar3);
-                                    
-                                }
-                                oprot.readListEnd();
-                                }
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readListEnd();
-                }
-    List<List<test.fixtures.complex_struct.MyStruct>> listListStruct = _fbthriftVar1;
-            builder.setListListStruct(listListStruct);
+            {
+                        TList _list1 = oprot.readListBegin();
+                        _fbthriftVar1 = new ArrayList<List<test.fixtures.complex_struct.MyStruct>>(Math.max(0, _list1.size));
+                        for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                            
+                            
+                            List<test.fixtures.complex_struct.MyStruct> _fbthriftVar2;
+                            {
+                                        TList _list2 = oprot.readListBegin();
+                                        _fbthriftVar2 = new ArrayList<test.fixtures.complex_struct.MyStruct>(Math.max(0, _list2.size));
+                                        for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
+                                            
+                                            
+                                            test.fixtures.complex_struct.MyStruct _fbthriftVar3;
+                                            _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                            
+                                            
+                                            _fbthriftVar2.add(_fbthriftVar3);
+                                            
+                                        }
+                                        oprot.readListEnd();
+                                        }
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readListEnd();
+                        }
+
+
+            builder.setListListStruct(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _LIST_SET_I32:
           if (__field.type == TType.LIST) {
+            
             List<Set<Integer>> _fbthriftVar1;
-    {
-                TList _list1 = oprot.readListBegin();
-                _fbthriftVar1 = new ArrayList<Set<Integer>>(Math.max(0, _list1.size));
-                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                    
-                    
-                    Set<Integer> _fbthriftVar2;
-                    {
-                                TSet _set2 = oprot.readSetBegin();
-                                _fbthriftVar2 = new HashSet<Integer>(Math.max(0, _set2.size));
-                                for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
-                                    
-                                    
-                                    int _fbthriftVar3;
-                                    _fbthriftVar3 = oprot.readI32();
-                                    
-                                    
-                                    _fbthriftVar2.add(_fbthriftVar3);
-                                    
-                                }
-                                oprot.readSetEnd();
-                                }
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readListEnd();
-                }
-    List<Set<Integer>> listSetI32 = _fbthriftVar1;
-            builder.setListSetI32(listSetI32);
+            {
+                        TList _list1 = oprot.readListBegin();
+                        _fbthriftVar1 = new ArrayList<Set<Integer>>(Math.max(0, _list1.size));
+                        for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                            
+                            
+                            Set<Integer> _fbthriftVar2;
+                            {
+                                        TSet _set2 = oprot.readSetBegin();
+                                        _fbthriftVar2 = new HashSet<Integer>(Math.max(0, _set2.size));
+                                        for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
+                                            
+                                            
+                                            int _fbthriftVar3;
+                                            _fbthriftVar3 = oprot.readI32();
+                                            
+                                            
+                                            _fbthriftVar2.add(_fbthriftVar3);
+                                            
+                                        }
+                                        oprot.readSetEnd();
+                                        }
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readListEnd();
+                        }
+
+
+            builder.setListSetI32(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _LIST_SET_STRUCT:
           if (__field.type == TType.LIST) {
+            
             List<Set<test.fixtures.complex_struct.MyStruct>> _fbthriftVar1;
-    {
-                TList _list1 = oprot.readListBegin();
-                _fbthriftVar1 = new ArrayList<Set<test.fixtures.complex_struct.MyStruct>>(Math.max(0, _list1.size));
-                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                    
-                    
-                    Set<test.fixtures.complex_struct.MyStruct> _fbthriftVar2;
-                    {
-                                TSet _set2 = oprot.readSetBegin();
-                                _fbthriftVar2 = new HashSet<test.fixtures.complex_struct.MyStruct>(Math.max(0, _set2.size));
-                                for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
-                                    
-                                    
-                                    test.fixtures.complex_struct.MyStruct _fbthriftVar3;
-                                    _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-                                    
-                                    
-                                    _fbthriftVar2.add(_fbthriftVar3);
-                                    
-                                }
-                                oprot.readSetEnd();
-                                }
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readListEnd();
-                }
-    List<Set<test.fixtures.complex_struct.MyStruct>> listSetStruct = _fbthriftVar1;
-            builder.setListSetStruct(listSetStruct);
+            {
+                        TList _list1 = oprot.readListBegin();
+                        _fbthriftVar1 = new ArrayList<Set<test.fixtures.complex_struct.MyStruct>>(Math.max(0, _list1.size));
+                        for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                            
+                            
+                            Set<test.fixtures.complex_struct.MyStruct> _fbthriftVar2;
+                            {
+                                        TSet _set2 = oprot.readSetBegin();
+                                        _fbthriftVar2 = new HashSet<test.fixtures.complex_struct.MyStruct>(Math.max(0, _set2.size));
+                                        for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
+                                            
+                                            
+                                            test.fixtures.complex_struct.MyStruct _fbthriftVar3;
+                                            _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                            
+                                            
+                                            _fbthriftVar2.add(_fbthriftVar3);
+                                            
+                                        }
+                                        oprot.readSetEnd();
+                                        }
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readListEnd();
+                        }
+
+
+            builder.setListSetStruct(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _LIST_MAP_I32_I32:
           if (__field.type == TType.LIST) {
+            
             List<Map<Integer, Integer>> _fbthriftVar1;
-    {
-                TList _list1 = oprot.readListBegin();
-                _fbthriftVar1 = new ArrayList<Map<Integer, Integer>>(Math.max(0, _list1.size));
-                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                    
-                    
-                    Map<Integer, Integer> _fbthriftVar2;
-                    {
-                                TMap _map2 = oprot.readMapBegin();
-                                _fbthriftVar2 = new HashMap<Integer, Integer>(Math.max(0, _map2.size));
-                                for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
-                                    
-                                    
-                                    int _fbthriftKey3;
-                                    
-                                    
-                                    int _fbthriftValue3;
-                                    
+            {
+                        TList _list1 = oprot.readListBegin();
+                        _fbthriftVar1 = new ArrayList<Map<Integer, Integer>>(Math.max(0, _list1.size));
+                        for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                            
+                            
+                            Map<Integer, Integer> _fbthriftVar2;
+                            {
+                                        TMap _map2 = oprot.readMapBegin();
+                                        _fbthriftVar2 = new HashMap<Integer, Integer>(Math.max(0, _map2.size));
+                                        for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
+                                            
+                                            
+                                            int _fbthriftKey3;
+                                            
+                                            
+                                            int _fbthriftValue3;
+                                            
 
-                                    {
-                                        
-                                        int _fbthriftVar3;
-                                        _fbthriftVar3 = oprot.readI32();
-                                        
-                                        
-                                        _fbthriftKey3 = _fbthriftVar3;
-                                        
-                                    }
-                                    {
-                                        
-                                        int _fbthriftVar3;
-                                        _fbthriftVar3 = oprot.readI32();
-                                        
-                                        
-                                        _fbthriftValue3 = _fbthriftVar3;
-                                        
-                                    }
-                                    
-                                    _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
-                                    
-                                }
-                                }
-                                oprot.readMapEnd();
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readListEnd();
-                }
-    List<Map<Integer, Integer>> listMapI32I32 = _fbthriftVar1;
-            builder.setListMapI32I32(listMapI32I32);
+                                            {
+                                                
+                                                int _fbthriftVar3;
+                                                _fbthriftVar3 = oprot.readI32();
+                                                
+                                                
+                                                _fbthriftKey3 = _fbthriftVar3;
+                                                
+                                            }
+                                            {
+                                                
+                                                int _fbthriftVar3;
+                                                _fbthriftVar3 = oprot.readI32();
+                                                
+                                                
+                                                _fbthriftValue3 = _fbthriftVar3;
+                                                
+                                            }
+                                            
+                                            _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
+                                            
+                                        }
+                                        }
+                                        oprot.readMapEnd();
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readListEnd();
+                        }
+
+
+            builder.setListMapI32I32(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _LIST_MAP_I32_STRUCT:
           if (__field.type == TType.LIST) {
+            
             List<Map<Integer, test.fixtures.complex_struct.MyStruct>> _fbthriftVar1;
-    {
-                TList _list1 = oprot.readListBegin();
-                _fbthriftVar1 = new ArrayList<Map<Integer, test.fixtures.complex_struct.MyStruct>>(Math.max(0, _list1.size));
-                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                    
-                    
-                    Map<Integer, test.fixtures.complex_struct.MyStruct> _fbthriftVar2;
-                    {
-                                TMap _map2 = oprot.readMapBegin();
-                                _fbthriftVar2 = new HashMap<Integer, test.fixtures.complex_struct.MyStruct>(Math.max(0, _map2.size));
-                                for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
-                                    
-                                    
-                                    int _fbthriftKey3;
-                                    
-                                    
-                                    test.fixtures.complex_struct.MyStruct _fbthriftValue3;
-                                    
+            {
+                        TList _list1 = oprot.readListBegin();
+                        _fbthriftVar1 = new ArrayList<Map<Integer, test.fixtures.complex_struct.MyStruct>>(Math.max(0, _list1.size));
+                        for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                            
+                            
+                            Map<Integer, test.fixtures.complex_struct.MyStruct> _fbthriftVar2;
+                            {
+                                        TMap _map2 = oprot.readMapBegin();
+                                        _fbthriftVar2 = new HashMap<Integer, test.fixtures.complex_struct.MyStruct>(Math.max(0, _map2.size));
+                                        for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
+                                            
+                                            
+                                            int _fbthriftKey3;
+                                            
+                                            
+                                            test.fixtures.complex_struct.MyStruct _fbthriftValue3;
+                                            
 
-                                    {
-                                        
-                                        int _fbthriftVar3;
-                                        _fbthriftVar3 = oprot.readI32();
-                                        
-                                        
-                                        _fbthriftKey3 = _fbthriftVar3;
-                                        
-                                    }
-                                    {
-                                        
-                                        test.fixtures.complex_struct.MyStruct _fbthriftVar3;
-                                        _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-                                        
-                                        
-                                        _fbthriftValue3 = _fbthriftVar3;
-                                        
-                                    }
-                                    
-                                    _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
-                                    
-                                }
-                                }
-                                oprot.readMapEnd();
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readListEnd();
-                }
-    List<Map<Integer, test.fixtures.complex_struct.MyStruct>> listMapI32Struct = _fbthriftVar1;
-            builder.setListMapI32Struct(listMapI32Struct);
+                                            {
+                                                
+                                                int _fbthriftVar3;
+                                                _fbthriftVar3 = oprot.readI32();
+                                                
+                                                
+                                                _fbthriftKey3 = _fbthriftVar3;
+                                                
+                                            }
+                                            {
+                                                
+                                                test.fixtures.complex_struct.MyStruct _fbthriftVar3;
+                                                _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                                
+                                                
+                                                _fbthriftValue3 = _fbthriftVar3;
+                                                
+                                            }
+                                            
+                                            _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
+                                            
+                                        }
+                                        }
+                                        oprot.readMapEnd();
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readListEnd();
+                        }
+
+
+            builder.setListMapI32Struct(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _LIST_MAP_STRUCT_I32:
           if (__field.type == TType.LIST) {
+            
             List<Map<test.fixtures.complex_struct.MyStruct, Integer>> _fbthriftVar1;
-    {
-                TList _list1 = oprot.readListBegin();
-                _fbthriftVar1 = new ArrayList<Map<test.fixtures.complex_struct.MyStruct, Integer>>(Math.max(0, _list1.size));
-                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                    
-                    
-                    Map<test.fixtures.complex_struct.MyStruct, Integer> _fbthriftVar2;
-                    {
-                                TMap _map2 = oprot.readMapBegin();
-                                _fbthriftVar2 = new HashMap<test.fixtures.complex_struct.MyStruct, Integer>(Math.max(0, _map2.size));
-                                for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
-                                    
-                                    
-                                    test.fixtures.complex_struct.MyStruct _fbthriftKey3;
-                                    
-                                    
-                                    int _fbthriftValue3;
-                                    
+            {
+                        TList _list1 = oprot.readListBegin();
+                        _fbthriftVar1 = new ArrayList<Map<test.fixtures.complex_struct.MyStruct, Integer>>(Math.max(0, _list1.size));
+                        for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                            
+                            
+                            Map<test.fixtures.complex_struct.MyStruct, Integer> _fbthriftVar2;
+                            {
+                                        TMap _map2 = oprot.readMapBegin();
+                                        _fbthriftVar2 = new HashMap<test.fixtures.complex_struct.MyStruct, Integer>(Math.max(0, _map2.size));
+                                        for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
+                                            
+                                            
+                                            test.fixtures.complex_struct.MyStruct _fbthriftKey3;
+                                            
+                                            
+                                            int _fbthriftValue3;
+                                            
 
-                                    {
-                                        
-                                        test.fixtures.complex_struct.MyStruct _fbthriftVar3;
-                                        _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-                                        
-                                        
-                                        _fbthriftKey3 = _fbthriftVar3;
-                                        
-                                    }
-                                    {
-                                        
-                                        int _fbthriftVar3;
-                                        _fbthriftVar3 = oprot.readI32();
-                                        
-                                        
-                                        _fbthriftValue3 = _fbthriftVar3;
-                                        
-                                    }
-                                    
-                                    _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
-                                    
-                                }
-                                }
-                                oprot.readMapEnd();
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readListEnd();
-                }
-    List<Map<test.fixtures.complex_struct.MyStruct, Integer>> listMapStructI32 = _fbthriftVar1;
-            builder.setListMapStructI32(listMapStructI32);
+                                            {
+                                                
+                                                test.fixtures.complex_struct.MyStruct _fbthriftVar3;
+                                                _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                                
+                                                
+                                                _fbthriftKey3 = _fbthriftVar3;
+                                                
+                                            }
+                                            {
+                                                
+                                                int _fbthriftVar3;
+                                                _fbthriftVar3 = oprot.readI32();
+                                                
+                                                
+                                                _fbthriftValue3 = _fbthriftVar3;
+                                                
+                                            }
+                                            
+                                            _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
+                                            
+                                        }
+                                        }
+                                        oprot.readMapEnd();
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readListEnd();
+                        }
+
+
+            builder.setListMapStructI32(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _SET_LIST_I32:
           if (__field.type == TType.SET) {
+            
             Set<List<Integer>> _fbthriftVar1;
-    {
-                TSet _set1 = oprot.readSetBegin();
-                _fbthriftVar1 = new HashSet<List<Integer>>(Math.max(0, _set1.size));
-                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                    
-                    
-                    List<Integer> _fbthriftVar2;
-                    {
-                                TList _list2 = oprot.readListBegin();
-                                _fbthriftVar2 = new ArrayList<Integer>(Math.max(0, _list2.size));
-                                for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
-                                    
-                                    
-                                    int _fbthriftVar3;
-                                    _fbthriftVar3 = oprot.readI32();
-                                    
-                                    
-                                    _fbthriftVar2.add(_fbthriftVar3);
-                                    
-                                }
-                                oprot.readListEnd();
-                                }
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readSetEnd();
-                }
-    Set<List<Integer>> setListI32 = _fbthriftVar1;
-            builder.setSetListI32(setListI32);
+            {
+                        TSet _set1 = oprot.readSetBegin();
+                        _fbthriftVar1 = new HashSet<List<Integer>>(Math.max(0, _set1.size));
+                        for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                            
+                            
+                            List<Integer> _fbthriftVar2;
+                            {
+                                        TList _list2 = oprot.readListBegin();
+                                        _fbthriftVar2 = new ArrayList<Integer>(Math.max(0, _list2.size));
+                                        for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
+                                            
+                                            
+                                            int _fbthriftVar3;
+                                            _fbthriftVar3 = oprot.readI32();
+                                            
+                                            
+                                            _fbthriftVar2.add(_fbthriftVar3);
+                                            
+                                        }
+                                        oprot.readListEnd();
+                                        }
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readSetEnd();
+                        }
+
+
+            builder.setSetListI32(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _SET_LIST_STRUCT:
           if (__field.type == TType.SET) {
+            
             Set<List<test.fixtures.complex_struct.MyStruct>> _fbthriftVar1;
-    {
-                TSet _set1 = oprot.readSetBegin();
-                _fbthriftVar1 = new HashSet<List<test.fixtures.complex_struct.MyStruct>>(Math.max(0, _set1.size));
-                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                    
-                    
-                    List<test.fixtures.complex_struct.MyStruct> _fbthriftVar2;
-                    {
-                                TList _list2 = oprot.readListBegin();
-                                _fbthriftVar2 = new ArrayList<test.fixtures.complex_struct.MyStruct>(Math.max(0, _list2.size));
-                                for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
-                                    
-                                    
-                                    test.fixtures.complex_struct.MyStruct _fbthriftVar3;
-                                    _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-                                    
-                                    
-                                    _fbthriftVar2.add(_fbthriftVar3);
-                                    
-                                }
-                                oprot.readListEnd();
-                                }
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readSetEnd();
-                }
-    Set<List<test.fixtures.complex_struct.MyStruct>> setListStruct = _fbthriftVar1;
-            builder.setSetListStruct(setListStruct);
+            {
+                        TSet _set1 = oprot.readSetBegin();
+                        _fbthriftVar1 = new HashSet<List<test.fixtures.complex_struct.MyStruct>>(Math.max(0, _set1.size));
+                        for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                            
+                            
+                            List<test.fixtures.complex_struct.MyStruct> _fbthriftVar2;
+                            {
+                                        TList _list2 = oprot.readListBegin();
+                                        _fbthriftVar2 = new ArrayList<test.fixtures.complex_struct.MyStruct>(Math.max(0, _list2.size));
+                                        for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
+                                            
+                                            
+                                            test.fixtures.complex_struct.MyStruct _fbthriftVar3;
+                                            _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                            
+                                            
+                                            _fbthriftVar2.add(_fbthriftVar3);
+                                            
+                                        }
+                                        oprot.readListEnd();
+                                        }
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readSetEnd();
+                        }
+
+
+            builder.setSetListStruct(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _SET_SET_I32:
           if (__field.type == TType.SET) {
+            
             Set<Set<Integer>> _fbthriftVar1;
-    {
-                TSet _set1 = oprot.readSetBegin();
-                _fbthriftVar1 = new HashSet<Set<Integer>>(Math.max(0, _set1.size));
-                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                    
-                    
-                    Set<Integer> _fbthriftVar2;
-                    {
-                                TSet _set2 = oprot.readSetBegin();
-                                _fbthriftVar2 = new HashSet<Integer>(Math.max(0, _set2.size));
-                                for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
-                                    
-                                    
-                                    int _fbthriftVar3;
-                                    _fbthriftVar3 = oprot.readI32();
-                                    
-                                    
-                                    _fbthriftVar2.add(_fbthriftVar3);
-                                    
-                                }
-                                oprot.readSetEnd();
-                                }
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readSetEnd();
-                }
-    Set<Set<Integer>> setSetI32 = _fbthriftVar1;
-            builder.setSetSetI32(setSetI32);
+            {
+                        TSet _set1 = oprot.readSetBegin();
+                        _fbthriftVar1 = new HashSet<Set<Integer>>(Math.max(0, _set1.size));
+                        for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                            
+                            
+                            Set<Integer> _fbthriftVar2;
+                            {
+                                        TSet _set2 = oprot.readSetBegin();
+                                        _fbthriftVar2 = new HashSet<Integer>(Math.max(0, _set2.size));
+                                        for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
+                                            
+                                            
+                                            int _fbthriftVar3;
+                                            _fbthriftVar3 = oprot.readI32();
+                                            
+                                            
+                                            _fbthriftVar2.add(_fbthriftVar3);
+                                            
+                                        }
+                                        oprot.readSetEnd();
+                                        }
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readSetEnd();
+                        }
+
+
+            builder.setSetSetI32(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _SET_SET_STRUCT:
           if (__field.type == TType.SET) {
+            
             Set<Set<test.fixtures.complex_struct.MyStruct>> _fbthriftVar1;
-    {
-                TSet _set1 = oprot.readSetBegin();
-                _fbthriftVar1 = new HashSet<Set<test.fixtures.complex_struct.MyStruct>>(Math.max(0, _set1.size));
-                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                    
-                    
-                    Set<test.fixtures.complex_struct.MyStruct> _fbthriftVar2;
-                    {
-                                TSet _set2 = oprot.readSetBegin();
-                                _fbthriftVar2 = new HashSet<test.fixtures.complex_struct.MyStruct>(Math.max(0, _set2.size));
-                                for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
-                                    
-                                    
-                                    test.fixtures.complex_struct.MyStruct _fbthriftVar3;
-                                    _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-                                    
-                                    
-                                    _fbthriftVar2.add(_fbthriftVar3);
-                                    
-                                }
-                                oprot.readSetEnd();
-                                }
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readSetEnd();
-                }
-    Set<Set<test.fixtures.complex_struct.MyStruct>> setSetStruct = _fbthriftVar1;
-            builder.setSetSetStruct(setSetStruct);
+            {
+                        TSet _set1 = oprot.readSetBegin();
+                        _fbthriftVar1 = new HashSet<Set<test.fixtures.complex_struct.MyStruct>>(Math.max(0, _set1.size));
+                        for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                            
+                            
+                            Set<test.fixtures.complex_struct.MyStruct> _fbthriftVar2;
+                            {
+                                        TSet _set2 = oprot.readSetBegin();
+                                        _fbthriftVar2 = new HashSet<test.fixtures.complex_struct.MyStruct>(Math.max(0, _set2.size));
+                                        for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
+                                            
+                                            
+                                            test.fixtures.complex_struct.MyStruct _fbthriftVar3;
+                                            _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                            
+                                            
+                                            _fbthriftVar2.add(_fbthriftVar3);
+                                            
+                                        }
+                                        oprot.readSetEnd();
+                                        }
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readSetEnd();
+                        }
+
+
+            builder.setSetSetStruct(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _SET_MAP_I32_I32:
           if (__field.type == TType.SET) {
+            
             Set<Map<Integer, Integer>> _fbthriftVar1;
-    {
-                TSet _set1 = oprot.readSetBegin();
-                _fbthriftVar1 = new HashSet<Map<Integer, Integer>>(Math.max(0, _set1.size));
-                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                    
-                    
-                    Map<Integer, Integer> _fbthriftVar2;
-                    {
-                                TMap _map2 = oprot.readMapBegin();
-                                _fbthriftVar2 = new HashMap<Integer, Integer>(Math.max(0, _map2.size));
-                                for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
-                                    
-                                    
-                                    int _fbthriftKey3;
-                                    
-                                    
-                                    int _fbthriftValue3;
-                                    
+            {
+                        TSet _set1 = oprot.readSetBegin();
+                        _fbthriftVar1 = new HashSet<Map<Integer, Integer>>(Math.max(0, _set1.size));
+                        for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                            
+                            
+                            Map<Integer, Integer> _fbthriftVar2;
+                            {
+                                        TMap _map2 = oprot.readMapBegin();
+                                        _fbthriftVar2 = new HashMap<Integer, Integer>(Math.max(0, _map2.size));
+                                        for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
+                                            
+                                            
+                                            int _fbthriftKey3;
+                                            
+                                            
+                                            int _fbthriftValue3;
+                                            
 
-                                    {
-                                        
-                                        int _fbthriftVar3;
-                                        _fbthriftVar3 = oprot.readI32();
-                                        
-                                        
-                                        _fbthriftKey3 = _fbthriftVar3;
-                                        
-                                    }
-                                    {
-                                        
-                                        int _fbthriftVar3;
-                                        _fbthriftVar3 = oprot.readI32();
-                                        
-                                        
-                                        _fbthriftValue3 = _fbthriftVar3;
-                                        
-                                    }
-                                    
-                                    _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
-                                    
-                                }
-                                }
-                                oprot.readMapEnd();
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readSetEnd();
-                }
-    Set<Map<Integer, Integer>> setMapI32I32 = _fbthriftVar1;
-            builder.setSetMapI32I32(setMapI32I32);
+                                            {
+                                                
+                                                int _fbthriftVar3;
+                                                _fbthriftVar3 = oprot.readI32();
+                                                
+                                                
+                                                _fbthriftKey3 = _fbthriftVar3;
+                                                
+                                            }
+                                            {
+                                                
+                                                int _fbthriftVar3;
+                                                _fbthriftVar3 = oprot.readI32();
+                                                
+                                                
+                                                _fbthriftValue3 = _fbthriftVar3;
+                                                
+                                            }
+                                            
+                                            _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
+                                            
+                                        }
+                                        }
+                                        oprot.readMapEnd();
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readSetEnd();
+                        }
+
+
+            builder.setSetMapI32I32(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _SET_MAP_I32_STRUCT:
           if (__field.type == TType.SET) {
+            
             Set<Map<Integer, test.fixtures.complex_struct.MyStruct>> _fbthriftVar1;
-    {
-                TSet _set1 = oprot.readSetBegin();
-                _fbthriftVar1 = new HashSet<Map<Integer, test.fixtures.complex_struct.MyStruct>>(Math.max(0, _set1.size));
-                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                    
-                    
-                    Map<Integer, test.fixtures.complex_struct.MyStruct> _fbthriftVar2;
-                    {
-                                TMap _map2 = oprot.readMapBegin();
-                                _fbthriftVar2 = new HashMap<Integer, test.fixtures.complex_struct.MyStruct>(Math.max(0, _map2.size));
-                                for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
-                                    
-                                    
-                                    int _fbthriftKey3;
-                                    
-                                    
-                                    test.fixtures.complex_struct.MyStruct _fbthriftValue3;
-                                    
+            {
+                        TSet _set1 = oprot.readSetBegin();
+                        _fbthriftVar1 = new HashSet<Map<Integer, test.fixtures.complex_struct.MyStruct>>(Math.max(0, _set1.size));
+                        for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                            
+                            
+                            Map<Integer, test.fixtures.complex_struct.MyStruct> _fbthriftVar2;
+                            {
+                                        TMap _map2 = oprot.readMapBegin();
+                                        _fbthriftVar2 = new HashMap<Integer, test.fixtures.complex_struct.MyStruct>(Math.max(0, _map2.size));
+                                        for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
+                                            
+                                            
+                                            int _fbthriftKey3;
+                                            
+                                            
+                                            test.fixtures.complex_struct.MyStruct _fbthriftValue3;
+                                            
 
-                                    {
-                                        
-                                        int _fbthriftVar3;
-                                        _fbthriftVar3 = oprot.readI32();
-                                        
-                                        
-                                        _fbthriftKey3 = _fbthriftVar3;
-                                        
-                                    }
-                                    {
-                                        
-                                        test.fixtures.complex_struct.MyStruct _fbthriftVar3;
-                                        _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-                                        
-                                        
-                                        _fbthriftValue3 = _fbthriftVar3;
-                                        
-                                    }
-                                    
-                                    _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
-                                    
-                                }
-                                }
-                                oprot.readMapEnd();
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readSetEnd();
-                }
-    Set<Map<Integer, test.fixtures.complex_struct.MyStruct>> setMapI32Struct = _fbthriftVar1;
-            builder.setSetMapI32Struct(setMapI32Struct);
+                                            {
+                                                
+                                                int _fbthriftVar3;
+                                                _fbthriftVar3 = oprot.readI32();
+                                                
+                                                
+                                                _fbthriftKey3 = _fbthriftVar3;
+                                                
+                                            }
+                                            {
+                                                
+                                                test.fixtures.complex_struct.MyStruct _fbthriftVar3;
+                                                _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                                
+                                                
+                                                _fbthriftValue3 = _fbthriftVar3;
+                                                
+                                            }
+                                            
+                                            _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
+                                            
+                                        }
+                                        }
+                                        oprot.readMapEnd();
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readSetEnd();
+                        }
+
+
+            builder.setSetMapI32Struct(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _SET_MAP_STRUCT_I32:
           if (__field.type == TType.SET) {
+            
             Set<Map<test.fixtures.complex_struct.MyStruct, Integer>> _fbthriftVar1;
-    {
-                TSet _set1 = oprot.readSetBegin();
-                _fbthriftVar1 = new HashSet<Map<test.fixtures.complex_struct.MyStruct, Integer>>(Math.max(0, _set1.size));
-                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                    
-                    
-                    Map<test.fixtures.complex_struct.MyStruct, Integer> _fbthriftVar2;
-                    {
-                                TMap _map2 = oprot.readMapBegin();
-                                _fbthriftVar2 = new HashMap<test.fixtures.complex_struct.MyStruct, Integer>(Math.max(0, _map2.size));
-                                for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
-                                    
-                                    
-                                    test.fixtures.complex_struct.MyStruct _fbthriftKey3;
-                                    
-                                    
-                                    int _fbthriftValue3;
-                                    
+            {
+                        TSet _set1 = oprot.readSetBegin();
+                        _fbthriftVar1 = new HashSet<Map<test.fixtures.complex_struct.MyStruct, Integer>>(Math.max(0, _set1.size));
+                        for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                            
+                            
+                            Map<test.fixtures.complex_struct.MyStruct, Integer> _fbthriftVar2;
+                            {
+                                        TMap _map2 = oprot.readMapBegin();
+                                        _fbthriftVar2 = new HashMap<test.fixtures.complex_struct.MyStruct, Integer>(Math.max(0, _map2.size));
+                                        for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
+                                            
+                                            
+                                            test.fixtures.complex_struct.MyStruct _fbthriftKey3;
+                                            
+                                            
+                                            int _fbthriftValue3;
+                                            
 
-                                    {
-                                        
-                                        test.fixtures.complex_struct.MyStruct _fbthriftVar3;
-                                        _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-                                        
-                                        
-                                        _fbthriftKey3 = _fbthriftVar3;
-                                        
-                                    }
-                                    {
-                                        
-                                        int _fbthriftVar3;
-                                        _fbthriftVar3 = oprot.readI32();
-                                        
-                                        
-                                        _fbthriftValue3 = _fbthriftVar3;
-                                        
-                                    }
-                                    
-                                    _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
-                                    
-                                }
-                                }
-                                oprot.readMapEnd();
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readSetEnd();
-                }
-    Set<Map<test.fixtures.complex_struct.MyStruct, Integer>> setMapStructI32 = _fbthriftVar1;
-            builder.setSetMapStructI32(setMapStructI32);
+                                            {
+                                                
+                                                test.fixtures.complex_struct.MyStruct _fbthriftVar3;
+                                                _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                                
+                                                
+                                                _fbthriftKey3 = _fbthriftVar3;
+                                                
+                                            }
+                                            {
+                                                
+                                                int _fbthriftVar3;
+                                                _fbthriftVar3 = oprot.readI32();
+                                                
+                                                
+                                                _fbthriftValue3 = _fbthriftVar3;
+                                                
+                                            }
+                                            
+                                            _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
+                                            
+                                        }
+                                        }
+                                        oprot.readMapEnd();
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readSetEnd();
+                        }
+
+
+            builder.setSetMapStructI32(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MAP_I32_MAP_I32_I32:
           if (__field.type == TType.MAP) {
+            
             Map<Integer, Map<Integer, Integer>> _fbthriftVar1;
-    {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new HashMap<Integer, Map<Integer, Integer>>(Math.max(0, _map1.size));
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    
-                    
-                    int _fbthriftKey2;
-                    
-                    
-                    Map<Integer, Integer> _fbthriftValue2;
-                    
+            {
+                        TMap _map1 = oprot.readMapBegin();
+                        _fbthriftVar1 = new HashMap<Integer, Map<Integer, Integer>>(Math.max(0, _map1.size));
+                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                            
+                            
+                            int _fbthriftKey2;
+                            
+                            
+                            Map<Integer, Integer> _fbthriftValue2;
+                            
 
-                    {
-                        
-                        int _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI32();
-                        
-                        
-                        _fbthriftKey2 = _fbthriftVar2;
-                        
-                    }
-                    {
-                        
-                        Map<Integer, Integer> _fbthriftVar2;
-                        {
-                                    TMap _map2 = oprot.readMapBegin();
-                                    _fbthriftVar2 = new HashMap<Integer, Integer>(Math.max(0, _map2.size));
-                                    for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
-                                        
-                                        
-                                        int _fbthriftKey3;
-                                        
-                                        
-                                        int _fbthriftValue3;
-                                        
+                            {
+                                
+                                int _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readI32();
+                                
+                                
+                                _fbthriftKey2 = _fbthriftVar2;
+                                
+                            }
+                            {
+                                
+                                Map<Integer, Integer> _fbthriftVar2;
+                                {
+                                            TMap _map2 = oprot.readMapBegin();
+                                            _fbthriftVar2 = new HashMap<Integer, Integer>(Math.max(0, _map2.size));
+                                            for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
+                                                
+                                                
+                                                int _fbthriftKey3;
+                                                
+                                                
+                                                int _fbthriftValue3;
+                                                
 
-                                        {
-                                            
-                                            int _fbthriftVar3;
-                                            _fbthriftVar3 = oprot.readI32();
-                                            
-                                            
-                                            _fbthriftKey3 = _fbthriftVar3;
-                                            
-                                        }
-                                        {
-                                            
-                                            int _fbthriftVar3;
-                                            _fbthriftVar3 = oprot.readI32();
-                                            
-                                            
-                                            _fbthriftValue3 = _fbthriftVar3;
-                                            
-                                        }
-                                        
-                                        _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
-                                        
-                                    }
-                                    }
-                                    oprot.readMapEnd();
-                        
-                        
-                        _fbthriftValue2 = _fbthriftVar2;
-                        
-                    }
-                    
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                    
-                }
-                }
-                oprot.readMapEnd();
-    Map<Integer, Map<Integer, Integer>> mapI32MapI32I32 = _fbthriftVar1;
-            builder.setMapI32MapI32I32(mapI32MapI32I32);
+                                                {
+                                                    
+                                                    int _fbthriftVar3;
+                                                    _fbthriftVar3 = oprot.readI32();
+                                                    
+                                                    
+                                                    _fbthriftKey3 = _fbthriftVar3;
+                                                    
+                                                }
+                                                {
+                                                    
+                                                    int _fbthriftVar3;
+                                                    _fbthriftVar3 = oprot.readI32();
+                                                    
+                                                    
+                                                    _fbthriftValue3 = _fbthriftVar3;
+                                                    
+                                                }
+                                                
+                                                _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
+                                                
+                                            }
+                                            }
+                                            oprot.readMapEnd();
+                                
+                                
+                                _fbthriftValue2 = _fbthriftVar2;
+                                
+                            }
+                            
+                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                            
+                        }
+                        }
+                        oprot.readMapEnd();
+
+
+            builder.setMapI32MapI32I32(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MAP_I32_MAP_STRUCT_I32:
           if (__field.type == TType.MAP) {
+            
             Map<Integer, Map<test.fixtures.complex_struct.MyStruct, Integer>> _fbthriftVar1;
-    {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new HashMap<Integer, Map<test.fixtures.complex_struct.MyStruct, Integer>>(Math.max(0, _map1.size));
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    
-                    
-                    int _fbthriftKey2;
-                    
-                    
-                    Map<test.fixtures.complex_struct.MyStruct, Integer> _fbthriftValue2;
-                    
+            {
+                        TMap _map1 = oprot.readMapBegin();
+                        _fbthriftVar1 = new HashMap<Integer, Map<test.fixtures.complex_struct.MyStruct, Integer>>(Math.max(0, _map1.size));
+                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                            
+                            
+                            int _fbthriftKey2;
+                            
+                            
+                            Map<test.fixtures.complex_struct.MyStruct, Integer> _fbthriftValue2;
+                            
 
-                    {
-                        
-                        int _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI32();
-                        
-                        
-                        _fbthriftKey2 = _fbthriftVar2;
-                        
-                    }
-                    {
-                        
-                        Map<test.fixtures.complex_struct.MyStruct, Integer> _fbthriftVar2;
-                        {
-                                    TMap _map2 = oprot.readMapBegin();
-                                    _fbthriftVar2 = new HashMap<test.fixtures.complex_struct.MyStruct, Integer>(Math.max(0, _map2.size));
-                                    for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
-                                        
-                                        
-                                        test.fixtures.complex_struct.MyStruct _fbthriftKey3;
-                                        
-                                        
-                                        int _fbthriftValue3;
-                                        
+                            {
+                                
+                                int _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readI32();
+                                
+                                
+                                _fbthriftKey2 = _fbthriftVar2;
+                                
+                            }
+                            {
+                                
+                                Map<test.fixtures.complex_struct.MyStruct, Integer> _fbthriftVar2;
+                                {
+                                            TMap _map2 = oprot.readMapBegin();
+                                            _fbthriftVar2 = new HashMap<test.fixtures.complex_struct.MyStruct, Integer>(Math.max(0, _map2.size));
+                                            for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
+                                                
+                                                
+                                                test.fixtures.complex_struct.MyStruct _fbthriftKey3;
+                                                
+                                                
+                                                int _fbthriftValue3;
+                                                
 
-                                        {
-                                            
-                                            test.fixtures.complex_struct.MyStruct _fbthriftVar3;
-                                            _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-                                            
-                                            
-                                            _fbthriftKey3 = _fbthriftVar3;
-                                            
-                                        }
-                                        {
-                                            
-                                            int _fbthriftVar3;
-                                            _fbthriftVar3 = oprot.readI32();
-                                            
-                                            
-                                            _fbthriftValue3 = _fbthriftVar3;
-                                            
-                                        }
-                                        
-                                        _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
-                                        
-                                    }
-                                    }
-                                    oprot.readMapEnd();
-                        
-                        
-                        _fbthriftValue2 = _fbthriftVar2;
-                        
-                    }
-                    
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                    
-                }
-                }
-                oprot.readMapEnd();
-    Map<Integer, Map<test.fixtures.complex_struct.MyStruct, Integer>> mapI32MapStructI32 = _fbthriftVar1;
-            builder.setMapI32MapStructI32(mapI32MapStructI32);
+                                                {
+                                                    
+                                                    test.fixtures.complex_struct.MyStruct _fbthriftVar3;
+                                                    _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                                    
+                                                    
+                                                    _fbthriftKey3 = _fbthriftVar3;
+                                                    
+                                                }
+                                                {
+                                                    
+                                                    int _fbthriftVar3;
+                                                    _fbthriftVar3 = oprot.readI32();
+                                                    
+                                                    
+                                                    _fbthriftValue3 = _fbthriftVar3;
+                                                    
+                                                }
+                                                
+                                                _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
+                                                
+                                            }
+                                            }
+                                            oprot.readMapEnd();
+                                
+                                
+                                _fbthriftValue2 = _fbthriftVar2;
+                                
+                            }
+                            
+                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                            
+                        }
+                        }
+                        oprot.readMapEnd();
+
+
+            builder.setMapI32MapStructI32(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MAP_I32_MAP_I32_STRUCT:
           if (__field.type == TType.MAP) {
+            
             Map<Integer, Map<Integer, test.fixtures.complex_struct.MyStruct>> _fbthriftVar1;
-    {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new HashMap<Integer, Map<Integer, test.fixtures.complex_struct.MyStruct>>(Math.max(0, _map1.size));
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    
-                    
-                    int _fbthriftKey2;
-                    
-                    
-                    Map<Integer, test.fixtures.complex_struct.MyStruct> _fbthriftValue2;
-                    
+            {
+                        TMap _map1 = oprot.readMapBegin();
+                        _fbthriftVar1 = new HashMap<Integer, Map<Integer, test.fixtures.complex_struct.MyStruct>>(Math.max(0, _map1.size));
+                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                            
+                            
+                            int _fbthriftKey2;
+                            
+                            
+                            Map<Integer, test.fixtures.complex_struct.MyStruct> _fbthriftValue2;
+                            
 
-                    {
-                        
-                        int _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI32();
-                        
-                        
-                        _fbthriftKey2 = _fbthriftVar2;
-                        
-                    }
-                    {
-                        
-                        Map<Integer, test.fixtures.complex_struct.MyStruct> _fbthriftVar2;
-                        {
-                                    TMap _map2 = oprot.readMapBegin();
-                                    _fbthriftVar2 = new HashMap<Integer, test.fixtures.complex_struct.MyStruct>(Math.max(0, _map2.size));
-                                    for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
-                                        
-                                        
-                                        int _fbthriftKey3;
-                                        
-                                        
-                                        test.fixtures.complex_struct.MyStruct _fbthriftValue3;
-                                        
+                            {
+                                
+                                int _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readI32();
+                                
+                                
+                                _fbthriftKey2 = _fbthriftVar2;
+                                
+                            }
+                            {
+                                
+                                Map<Integer, test.fixtures.complex_struct.MyStruct> _fbthriftVar2;
+                                {
+                                            TMap _map2 = oprot.readMapBegin();
+                                            _fbthriftVar2 = new HashMap<Integer, test.fixtures.complex_struct.MyStruct>(Math.max(0, _map2.size));
+                                            for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
+                                                
+                                                
+                                                int _fbthriftKey3;
+                                                
+                                                
+                                                test.fixtures.complex_struct.MyStruct _fbthriftValue3;
+                                                
 
-                                        {
-                                            
-                                            int _fbthriftVar3;
-                                            _fbthriftVar3 = oprot.readI32();
-                                            
-                                            
-                                            _fbthriftKey3 = _fbthriftVar3;
-                                            
-                                        }
-                                        {
-                                            
-                                            test.fixtures.complex_struct.MyStruct _fbthriftVar3;
-                                            _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-                                            
-                                            
-                                            _fbthriftValue3 = _fbthriftVar3;
-                                            
-                                        }
-                                        
-                                        _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
-                                        
-                                    }
-                                    }
-                                    oprot.readMapEnd();
-                        
-                        
-                        _fbthriftValue2 = _fbthriftVar2;
-                        
-                    }
-                    
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                    
-                }
-                }
-                oprot.readMapEnd();
-    Map<Integer, Map<Integer, test.fixtures.complex_struct.MyStruct>> mapI32MapI32Struct = _fbthriftVar1;
-            builder.setMapI32MapI32Struct(mapI32MapI32Struct);
+                                                {
+                                                    
+                                                    int _fbthriftVar3;
+                                                    _fbthriftVar3 = oprot.readI32();
+                                                    
+                                                    
+                                                    _fbthriftKey3 = _fbthriftVar3;
+                                                    
+                                                }
+                                                {
+                                                    
+                                                    test.fixtures.complex_struct.MyStruct _fbthriftVar3;
+                                                    _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                                    
+                                                    
+                                                    _fbthriftValue3 = _fbthriftVar3;
+                                                    
+                                                }
+                                                
+                                                _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
+                                                
+                                            }
+                                            }
+                                            oprot.readMapEnd();
+                                
+                                
+                                _fbthriftValue2 = _fbthriftVar2;
+                                
+                            }
+                            
+                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                            
+                        }
+                        }
+                        oprot.readMapEnd();
+
+
+            builder.setMapI32MapI32Struct(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MAP_I32_MAP_LIST_I32_I32:
           if (__field.type == TType.MAP) {
+            
             Map<Integer, List<Map<Integer, Integer>>> _fbthriftVar1;
-    {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new HashMap<Integer, List<Map<Integer, Integer>>>(Math.max(0, _map1.size));
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    
-                    
-                    int _fbthriftKey2;
-                    
-                    
-                    List<Map<Integer, Integer>> _fbthriftValue2;
-                    
+            {
+                        TMap _map1 = oprot.readMapBegin();
+                        _fbthriftVar1 = new HashMap<Integer, List<Map<Integer, Integer>>>(Math.max(0, _map1.size));
+                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                            
+                            
+                            int _fbthriftKey2;
+                            
+                            
+                            List<Map<Integer, Integer>> _fbthriftValue2;
+                            
 
-                    {
-                        
-                        int _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI32();
-                        
-                        
-                        _fbthriftKey2 = _fbthriftVar2;
-                        
-                    }
-                    {
-                        
-                        List<Map<Integer, Integer>> _fbthriftVar2;
-                        {
-                                    TList _list2 = oprot.readListBegin();
-                                    _fbthriftVar2 = new ArrayList<Map<Integer, Integer>>(Math.max(0, _list2.size));
-                                    for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
-                                        
-                                        
-                                        Map<Integer, Integer> _fbthriftVar3;
-                                        {
-                                                    TMap _map3 = oprot.readMapBegin();
-                                                    _fbthriftVar3 = new HashMap<Integer, Integer>(Math.max(0, _map3.size));
-                                                    for (int _i3 = 0; (_map3.size < 0) ? oprot.peekMap() : (_i3 < _map3.size); _i3++) {
-                                                        
-                                                        
-                                                        int _fbthriftKey4;
-                                                        
-                                                        
-                                                        int _fbthriftValue4;
-                                                        
+                            {
+                                
+                                int _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readI32();
+                                
+                                
+                                _fbthriftKey2 = _fbthriftVar2;
+                                
+                            }
+                            {
+                                
+                                List<Map<Integer, Integer>> _fbthriftVar2;
+                                {
+                                            TList _list2 = oprot.readListBegin();
+                                            _fbthriftVar2 = new ArrayList<Map<Integer, Integer>>(Math.max(0, _list2.size));
+                                            for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
+                                                
+                                                
+                                                Map<Integer, Integer> _fbthriftVar3;
+                                                {
+                                                            TMap _map3 = oprot.readMapBegin();
+                                                            _fbthriftVar3 = new HashMap<Integer, Integer>(Math.max(0, _map3.size));
+                                                            for (int _i3 = 0; (_map3.size < 0) ? oprot.peekMap() : (_i3 < _map3.size); _i3++) {
+                                                                
+                                                                
+                                                                int _fbthriftKey4;
+                                                                
+                                                                
+                                                                int _fbthriftValue4;
+                                                                
 
-                                                        {
-                                                            
-                                                            int _fbthriftVar4;
-                                                            _fbthriftVar4 = oprot.readI32();
-                                                            
-                                                            
-                                                            _fbthriftKey4 = _fbthriftVar4;
-                                                            
-                                                        }
-                                                        {
-                                                            
-                                                            int _fbthriftVar4;
-                                                            _fbthriftVar4 = oprot.readI32();
-                                                            
-                                                            
-                                                            _fbthriftValue4 = _fbthriftVar4;
-                                                            
-                                                        }
-                                                        
-                                                        _fbthriftVar3.put(_fbthriftKey4, _fbthriftValue4);
-                                                        
-                                                    }
-                                                    }
-                                                    oprot.readMapEnd();
-                                        
-                                        
-                                        _fbthriftVar2.add(_fbthriftVar3);
-                                        
-                                    }
-                                    oprot.readListEnd();
-                                    }
-                        
-                        
-                        _fbthriftValue2 = _fbthriftVar2;
-                        
-                    }
-                    
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                    
-                }
-                }
-                oprot.readMapEnd();
-    Map<Integer, List<Map<Integer, Integer>>> mapI32MapListI32I32 = _fbthriftVar1;
-            builder.setMapI32MapListI32I32(mapI32MapListI32I32);
+                                                                {
+                                                                    
+                                                                    int _fbthriftVar4;
+                                                                    _fbthriftVar4 = oprot.readI32();
+                                                                    
+                                                                    
+                                                                    _fbthriftKey4 = _fbthriftVar4;
+                                                                    
+                                                                }
+                                                                {
+                                                                    
+                                                                    int _fbthriftVar4;
+                                                                    _fbthriftVar4 = oprot.readI32();
+                                                                    
+                                                                    
+                                                                    _fbthriftValue4 = _fbthriftVar4;
+                                                                    
+                                                                }
+                                                                
+                                                                _fbthriftVar3.put(_fbthriftKey4, _fbthriftValue4);
+                                                                
+                                                            }
+                                                            }
+                                                            oprot.readMapEnd();
+                                                
+                                                
+                                                _fbthriftVar2.add(_fbthriftVar3);
+                                                
+                                            }
+                                            oprot.readListEnd();
+                                            }
+                                
+                                
+                                _fbthriftValue2 = _fbthriftVar2;
+                                
+                            }
+                            
+                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                            
+                        }
+                        }
+                        oprot.readMapEnd();
+
+
+            builder.setMapI32MapListI32I32(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MAP_I32_MAP_LIST_STRUCT_I32:
           if (__field.type == TType.MAP) {
+            
             Map<Integer, List<Map<test.fixtures.complex_struct.MyStruct, Integer>>> _fbthriftVar1;
-    {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new HashMap<Integer, List<Map<test.fixtures.complex_struct.MyStruct, Integer>>>(Math.max(0, _map1.size));
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    
-                    
-                    int _fbthriftKey2;
-                    
-                    
-                    List<Map<test.fixtures.complex_struct.MyStruct, Integer>> _fbthriftValue2;
-                    
+            {
+                        TMap _map1 = oprot.readMapBegin();
+                        _fbthriftVar1 = new HashMap<Integer, List<Map<test.fixtures.complex_struct.MyStruct, Integer>>>(Math.max(0, _map1.size));
+                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                            
+                            
+                            int _fbthriftKey2;
+                            
+                            
+                            List<Map<test.fixtures.complex_struct.MyStruct, Integer>> _fbthriftValue2;
+                            
 
-                    {
-                        
-                        int _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI32();
-                        
-                        
-                        _fbthriftKey2 = _fbthriftVar2;
-                        
-                    }
-                    {
-                        
-                        List<Map<test.fixtures.complex_struct.MyStruct, Integer>> _fbthriftVar2;
-                        {
-                                    TList _list2 = oprot.readListBegin();
-                                    _fbthriftVar2 = new ArrayList<Map<test.fixtures.complex_struct.MyStruct, Integer>>(Math.max(0, _list2.size));
-                                    for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
-                                        
-                                        
-                                        Map<test.fixtures.complex_struct.MyStruct, Integer> _fbthriftVar3;
-                                        {
-                                                    TMap _map3 = oprot.readMapBegin();
-                                                    _fbthriftVar3 = new HashMap<test.fixtures.complex_struct.MyStruct, Integer>(Math.max(0, _map3.size));
-                                                    for (int _i3 = 0; (_map3.size < 0) ? oprot.peekMap() : (_i3 < _map3.size); _i3++) {
-                                                        
-                                                        
-                                                        test.fixtures.complex_struct.MyStruct _fbthriftKey4;
-                                                        
-                                                        
-                                                        int _fbthriftValue4;
-                                                        
+                            {
+                                
+                                int _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readI32();
+                                
+                                
+                                _fbthriftKey2 = _fbthriftVar2;
+                                
+                            }
+                            {
+                                
+                                List<Map<test.fixtures.complex_struct.MyStruct, Integer>> _fbthriftVar2;
+                                {
+                                            TList _list2 = oprot.readListBegin();
+                                            _fbthriftVar2 = new ArrayList<Map<test.fixtures.complex_struct.MyStruct, Integer>>(Math.max(0, _list2.size));
+                                            for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
+                                                
+                                                
+                                                Map<test.fixtures.complex_struct.MyStruct, Integer> _fbthriftVar3;
+                                                {
+                                                            TMap _map3 = oprot.readMapBegin();
+                                                            _fbthriftVar3 = new HashMap<test.fixtures.complex_struct.MyStruct, Integer>(Math.max(0, _map3.size));
+                                                            for (int _i3 = 0; (_map3.size < 0) ? oprot.peekMap() : (_i3 < _map3.size); _i3++) {
+                                                                
+                                                                
+                                                                test.fixtures.complex_struct.MyStruct _fbthriftKey4;
+                                                                
+                                                                
+                                                                int _fbthriftValue4;
+                                                                
 
-                                                        {
-                                                            
-                                                            test.fixtures.complex_struct.MyStruct _fbthriftVar4;
-                                                            _fbthriftVar4 = test.fixtures.complex_struct.MyStruct.read0(oprot);
-                                                            
-                                                            
-                                                            _fbthriftKey4 = _fbthriftVar4;
-                                                            
-                                                        }
-                                                        {
-                                                            
-                                                            int _fbthriftVar4;
-                                                            _fbthriftVar4 = oprot.readI32();
-                                                            
-                                                            
-                                                            _fbthriftValue4 = _fbthriftVar4;
-                                                            
-                                                        }
-                                                        
-                                                        _fbthriftVar3.put(_fbthriftKey4, _fbthriftValue4);
-                                                        
-                                                    }
-                                                    }
-                                                    oprot.readMapEnd();
-                                        
-                                        
-                                        _fbthriftVar2.add(_fbthriftVar3);
-                                        
-                                    }
-                                    oprot.readListEnd();
-                                    }
-                        
-                        
-                        _fbthriftValue2 = _fbthriftVar2;
-                        
-                    }
-                    
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                    
-                }
-                }
-                oprot.readMapEnd();
-    Map<Integer, List<Map<test.fixtures.complex_struct.MyStruct, Integer>>> mapI32MapListStructI32 = _fbthriftVar1;
-            builder.setMapI32MapListStructI32(mapI32MapListStructI32);
+                                                                {
+                                                                    
+                                                                    test.fixtures.complex_struct.MyStruct _fbthriftVar4;
+                                                                    _fbthriftVar4 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                                                    
+                                                                    
+                                                                    _fbthriftKey4 = _fbthriftVar4;
+                                                                    
+                                                                }
+                                                                {
+                                                                    
+                                                                    int _fbthriftVar4;
+                                                                    _fbthriftVar4 = oprot.readI32();
+                                                                    
+                                                                    
+                                                                    _fbthriftValue4 = _fbthriftVar4;
+                                                                    
+                                                                }
+                                                                
+                                                                _fbthriftVar3.put(_fbthriftKey4, _fbthriftValue4);
+                                                                
+                                                            }
+                                                            }
+                                                            oprot.readMapEnd();
+                                                
+                                                
+                                                _fbthriftVar2.add(_fbthriftVar3);
+                                                
+                                            }
+                                            oprot.readListEnd();
+                                            }
+                                
+                                
+                                _fbthriftValue2 = _fbthriftVar2;
+                                
+                            }
+                            
+                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                            
+                        }
+                        }
+                        oprot.readMapEnd();
+
+
+            builder.setMapI32MapListStructI32(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

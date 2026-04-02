@@ -130,8 +130,11 @@ public final class CompatibleWithKeywordSink implements com.facebook.thrift.payl
         switch (__field.id) {
         case _SINK:
           if (__field.type == TType.STRING) {
-            String sink = oprot.readString();
-            builder.setSink(sink);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setSink(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

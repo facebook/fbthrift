@@ -157,16 +157,22 @@ public final class Struct implements com.facebook.thrift.payload.ThriftSerializa
         switch (__field.id) {
         case _FIRST:
           if (__field.type == TType.I32) {
-            int first = oprot.readI32();
-            builder.setFirst(first);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setFirst(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _SECOND:
           if (__field.type == TType.STRING) {
-            String second = oprot.readString();
-            builder.setSecond(second);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setSecond(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

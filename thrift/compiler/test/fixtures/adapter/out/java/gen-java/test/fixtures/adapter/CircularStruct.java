@@ -133,8 +133,11 @@ public final class CircularStruct implements com.facebook.thrift.payload.ThriftS
         switch (__field.id) {
         case _FIELD:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.adapter.CircularAdaptee field = test.fixtures.adapter.CircularAdaptee.read0(oprot);
-            builder.setField(field);
+            
+            test.fixtures.adapter.CircularAdaptee _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.adapter.CircularAdaptee.read0(oprot);
+            builder.setField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

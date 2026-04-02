@@ -133,8 +133,11 @@ public final class Person2 implements com.facebook.thrift.payload.ThriftSerializ
         switch (__field.id) {
         case _NAME:
           if (__field.type == TType.STRING) {
-            String name = oprot.readString();
-            builder.setName(name);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setName(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

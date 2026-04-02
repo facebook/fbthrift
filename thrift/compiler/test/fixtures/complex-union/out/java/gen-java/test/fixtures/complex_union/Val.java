@@ -184,61 +184,70 @@ public final class Val implements com.facebook.thrift.payload.ThriftSerializable
         switch (__field.id) {
         case _STRVAL:
           if (__field.type == TType.STRING) {
-            String strVal = oprot.readString();
-            builder.setStrVal(strVal);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setStrVal(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _INTVAL:
           if (__field.type == TType.I32) {
-            int intVal = oprot.readI32();
-            builder.setIntVal(intVal);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setIntVal(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _TYPEDEFVALUE:
           if (__field.type == TType.MAP) {
+            
             Map<Short, String> _fbthriftVar1;
-    {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new HashMap<Short, String>(Math.max(0, _map1.size));
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    
-                    
-                    short _fbthriftKey2;
-                    
-                    
-                    String _fbthriftValue2;
-                    
+            {
+                        TMap _map1 = oprot.readMapBegin();
+                        _fbthriftVar1 = new HashMap<Short, String>(Math.max(0, _map1.size));
+                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                            
+                            
+                            short _fbthriftKey2;
+                            
+                            
+                            String _fbthriftValue2;
+                            
 
-                    {
-                        
-                        short _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI16();
-                        
-                        
-                        _fbthriftKey2 = _fbthriftVar2;
-                        
-                    }
-                    {
-                        
-                        String _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readString();
-                        
-                        
-                        _fbthriftValue2 = _fbthriftVar2;
-                        
-                    }
-                    
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                    
-                }
-                }
-                oprot.readMapEnd();
-    Map<Short, String> typedefValue = _fbthriftVar1;
-            builder.setTypedefValue(typedefValue);
+                            {
+                                
+                                short _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readI16();
+                                
+                                
+                                _fbthriftKey2 = _fbthriftVar2;
+                                
+                            }
+                            {
+                                
+                                String _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readString();
+                                
+                                
+                                _fbthriftValue2 = _fbthriftVar2;
+                                
+                            }
+                            
+                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                            
+                        }
+                        }
+                        oprot.readMapEnd();
+
+
+            builder.setTypedefValue(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

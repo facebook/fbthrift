@@ -133,8 +133,11 @@ public final class Config implements com.facebook.thrift.payload.ThriftSerializa
         switch (__field.id) {
         case _PATH:
           if (__field.type == TType.STRING) {
-            String path = oprot.readString();
-            builder.setPath(path);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setPath(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

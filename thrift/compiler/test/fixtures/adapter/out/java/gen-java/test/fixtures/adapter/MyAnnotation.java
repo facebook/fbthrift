@@ -160,16 +160,22 @@ public final class MyAnnotation implements com.facebook.thrift.payload.ThriftSer
         switch (__field.id) {
         case _SIGNATURE:
           if (__field.type == TType.STRING) {
-            String signature = oprot.readString();
-            builder.setSignature(signature);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setSignature(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _COLOR:
           if (__field.type == TType.I32) {
-            test.fixtures.adapter.Color color = test.fixtures.adapter.Color.fromInteger(oprot.readI32());
-            builder.setColor(color);
+            
+            test.fixtures.adapter.Color _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.adapter.Color.fromInteger(oprot.readI32());
+            builder.setColor(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

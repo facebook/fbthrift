@@ -120,16 +120,22 @@ public final class CustomException extends org.apache.thrift.TBaseException impl
         switch (__field.id) {
         case _NAME:
           if (__field.type == TType.STRING) {
-            String name = oprot.readString();
-            builder.setName(name);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setName(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _RESULT:
           if (__field.type == TType.I32) {
-            test.fixtures.service_schema.Result result = test.fixtures.service_schema.Result.fromInteger(oprot.readI32());
-            builder.setResult(result);
+            
+            test.fixtures.service_schema.Result _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.service_schema.Result.fromInteger(oprot.readI32());
+            builder.setResult(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

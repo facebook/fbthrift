@@ -211,32 +211,44 @@ public final class MyStruct1 implements com.facebook.thrift.payload.ThriftSerial
         switch (__field.id) {
         case _MYINTFIELD:
           if (__field.type == TType.I64) {
-            long myIntField = oprot.readI64();
-            builder.setMyIntField(myIntField);
+            
+            long _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI64();
+            builder.setMyIntField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYSTRINGFIELD:
           if (__field.type == TType.STRING) {
-            String myStringField = oprot.readString();
-            builder.setMyStringField(myStringField);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setMyStringField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYDATAFIELD:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.basic_swift_bean.MyDataItem myDataField = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
-            builder.setMyDataField(myDataField);
+            
+            test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
+            builder.setMyDataField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MAJOR:
           if (__field.type == TType.I64) {
-            long major = oprot.readI64();
-            builder.setMajor(major);
+            
+            long _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI64();
+            builder.setMajor(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

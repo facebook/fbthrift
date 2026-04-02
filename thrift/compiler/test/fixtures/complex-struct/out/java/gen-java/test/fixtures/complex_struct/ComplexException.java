@@ -209,62 +209,78 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
         switch (__field.id) {
         case _MESSAGE:
           if (__field.type == TType.STRING) {
-            String message = oprot.readString();
-            builder.setMessage(message);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setMessage(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _LISTSTRINGS:
           if (__field.type == TType.LIST) {
+            
             List<String> _fbthriftVar1;
-    {
-                TList _list1 = oprot.readListBegin();
-                _fbthriftVar1 = new ArrayList<String>(Math.max(0, _list1.size));
-                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                    
-                    
-                    String _fbthriftVar2;
-                    _fbthriftVar2 = oprot.readString();
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readListEnd();
-                }
-    List<String> listStrings = _fbthriftVar1;
-            builder.setListStrings(listStrings);
+            {
+                        TList _list1 = oprot.readListBegin();
+                        _fbthriftVar1 = new ArrayList<String>(Math.max(0, _list1.size));
+                        for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                            
+                            
+                            String _fbthriftVar2;
+                            _fbthriftVar2 = oprot.readString();
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readListEnd();
+                        }
+
+
+            builder.setListStrings(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _ERRORENUM:
           if (__field.type == TType.I32) {
-            test.fixtures.complex_struct.MyEnum errorEnum = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
-            builder.setErrorEnum(errorEnum);
+            
+            test.fixtures.complex_struct.MyEnum _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+            builder.setErrorEnum(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _UNIONERROR:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.complex_struct.MyUnion unionError = test.fixtures.complex_struct.MyUnion.read0(oprot);
-            builder.setUnionError(unionError);
+            
+            test.fixtures.complex_struct.MyUnion _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.complex_struct.MyUnion.read0(oprot);
+            builder.setUnionError(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _STRUCTERROR:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.complex_struct.MyStruct structError = test.fixtures.complex_struct.MyStruct.read0(oprot);
-            builder.setStructError(structError);
+            
+            test.fixtures.complex_struct.MyStruct _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+            builder.setStructError(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _LSMAP:
           if (__field.type == TType.MAP) {
+            
             it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> _fbthriftVar1;
             {
                         TMap _map1 = oprot.readMapBegin();
@@ -302,8 +318,10 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
                         }
                         }
                         oprot.readMapEnd();
-            it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap = _fbthriftVar1;
-            builder.setLsMap(lsMap);
+
+                    
+            builder.setLsMap(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

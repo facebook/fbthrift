@@ -480,99 +480,114 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
           switch (__field.id) {
           case _INTFIELD:
             if (__field.type == INT_FIELD_FIELD_DESC.type) {
-              int intField = oprot.readI32();
-              res.value = _intField_Adapter.fromThrift(intField);
+              
+              int _fbthriftVar1;
+              _fbthriftVar1 = oprot.readI32();
+              res.value = _intField_Adapter.fromThrift(_fbthriftVar1);
+
             }
             break;
           case _SETFIELD:
             if (__field.type == SET_FIELD_FIELD_DESC.type) {
+              
               Set<String> _fbthriftVar1;
-    {
-                TSet _set1 = oprot.readSetBegin();
-                _fbthriftVar1 = new HashSet<String>(Math.max(0, _set1.size));
-                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                    
-                    
-                    String _fbthriftVar2;
-                    _fbthriftVar2 = oprot.readString();
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readSetEnd();
-                }
-    Set<String> setField = _fbthriftVar1;
-              res.value = __SetWithAdapter_Adapter.fromThrift(setField);
+              {
+                          TSet _set1 = oprot.readSetBegin();
+                          _fbthriftVar1 = new HashSet<String>(Math.max(0, _set1.size));
+                          for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                              
+                              
+                              String _fbthriftVar2;
+                              _fbthriftVar2 = oprot.readString();
+                              
+                              
+                              _fbthriftVar1.add(_fbthriftVar2);
+                              
+                          }
+                          oprot.readSetEnd();
+                          }
+
+
+              res.value = __SetWithAdapter_Adapter.fromThrift(_fbthriftVar1);
+
             }
             break;
           case _MAPFIELD:
             if (__field.type == MAP_FIELD_FIELD_DESC.type) {
+              
               Map<String, com.facebook.thrift.my.AdaptedList_2> _fbthriftVar1;
-    {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new HashMap<String, com.facebook.thrift.my.AdaptedList_2>(Math.max(0, _map1.size));
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    
-                    
-                    String _fbthriftKey2;
-                    
-                    
-                    List<com.facebook.thrift.my.AdaptedString_1> _fbthriftValue2;
-                    
+              {
+                          TMap _map1 = oprot.readMapBegin();
+                          _fbthriftVar1 = new HashMap<String, com.facebook.thrift.my.AdaptedList_2>(Math.max(0, _map1.size));
+                          for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                              
+                              
+                              String _fbthriftKey2;
+                              
+                              
+                              List<com.facebook.thrift.my.AdaptedString_1> _fbthriftValue2;
+                              
 
-                    {
-                        
-                        String _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readString();
-                        
-                        
-                        _fbthriftKey2 = _fbthriftVar2;
-                        
-                    }
-                    {
-                        
-                        List<com.facebook.thrift.my.AdaptedString_1> _fbthriftVar2;
-                        {
-                                    TList _list2 = oprot.readListBegin();
-                                    _fbthriftVar2 = new ArrayList<com.facebook.thrift.my.AdaptedString_1>(Math.max(0, _list2.size));
-                                    for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
-                                        
-                                        
-                                        String _fbthriftVar3;
-                                        _fbthriftVar3 = oprot.readString();
-                                        
-                                        
-                                        _fbthriftVar2.add(__StringWithAdapter_Adapter.fromThrift(_fbthriftVar3));
-                                        
-                                    }
-                                    oprot.readListEnd();
-                                    }
-                        
-                        
-                        _fbthriftValue2 = _fbthriftVar2;
-                        
-                    }
-                    
-                    _fbthriftVar1.put(_fbthriftKey2, __ListWithElemAdapter_withAdapter_2312_Adapter.fromThrift(_fbthriftValue2));
-                    
-                }
-                }
-                oprot.readMapEnd();
-    Map<String, com.facebook.thrift.my.AdaptedList_2> mapField = _fbthriftVar1;
-              res.value = _mapField_Adapter.fromThrift(mapField);
+                              {
+                                  
+                                  String _fbthriftVar2;
+                                  _fbthriftVar2 = oprot.readString();
+                                  
+                                  
+                                  _fbthriftKey2 = _fbthriftVar2;
+                                  
+                              }
+                              {
+                                  
+                                  List<com.facebook.thrift.my.AdaptedString_1> _fbthriftVar2;
+                                  {
+                                              TList _list2 = oprot.readListBegin();
+                                              _fbthriftVar2 = new ArrayList<com.facebook.thrift.my.AdaptedString_1>(Math.max(0, _list2.size));
+                                              for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
+                                                  
+                                                  
+                                                  String _fbthriftVar3;
+                                                  _fbthriftVar3 = oprot.readString();
+                                                  
+                                                  
+                                                  _fbthriftVar2.add(__StringWithAdapter_Adapter.fromThrift(_fbthriftVar3));
+                                                  
+                                              }
+                                              oprot.readListEnd();
+                                              }
+                                  
+                                  
+                                  _fbthriftValue2 = _fbthriftVar2;
+                                  
+                              }
+                              
+                              _fbthriftVar1.put(_fbthriftKey2, __ListWithElemAdapter_withAdapter_2312_Adapter.fromThrift(_fbthriftValue2));
+                              
+                          }
+                          }
+                          oprot.readMapEnd();
+
+
+              res.value = _mapField_Adapter.fromThrift(_fbthriftVar1);
+
             }
             break;
           case _BINARYFIELD:
             if (__field.type == BINARY_FIELD_FIELD_DESC.type) {
-              io.netty.buffer.ByteBuf binaryField = org.apache.thrift.protocol.TProtocolUtil.readBinaryAsByteBuf(oprot);
-              res.value = _binaryField_Adapter.fromThrift(binaryField);
+              
+              io.netty.buffer.ByteBuf _fbthriftVar1;
+              _fbthriftVar1 = org.apache.thrift.protocol.TProtocolUtil.readBinaryAsByteBuf(oprot);
+              res.value = _binaryField_Adapter.fromThrift(_fbthriftVar1);
+
             }
             break;
           case _LONGFIELD:
             if (__field.type == LONG_FIELD_FIELD_DESC.type) {
-              long longField = oprot.readI64();
-              res.value = __MyI64_Adapter.fromThrift(longField);
+              
+              long _fbthriftVar1;
+              _fbthriftVar1 = oprot.readI64();
+              res.value = __MyI64_Adapter.fromThrift(_fbthriftVar1);
+
             }
             break;
           default:

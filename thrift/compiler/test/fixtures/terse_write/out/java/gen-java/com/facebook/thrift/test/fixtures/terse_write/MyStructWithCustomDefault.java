@@ -133,8 +133,11 @@ public final class MyStructWithCustomDefault implements com.facebook.thrift.payl
         switch (__field.id) {
         case _FIELD1:
           if (__field.type == TType.I64) {
-            long field1 = oprot.readI64();
-            builder.setField1(field1);
+            
+            long _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI64();
+            builder.setField1(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

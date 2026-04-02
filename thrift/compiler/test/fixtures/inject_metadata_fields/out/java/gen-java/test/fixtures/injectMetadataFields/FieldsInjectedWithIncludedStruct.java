@@ -211,32 +211,44 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
         switch (__field.id) {
         case _STRING_FIELD:
           if (__field.type == TType.STRING) {
-            String stringField = oprot.readString();
-            builder.setStringField(stringField);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setStringField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _INJECTED_FIELD:
           if (__field.type == TType.STRING) {
-            String injectedField = oprot.readString();
-            builder.setInjectedField(injectedField);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setInjectedField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _INJECTED_STRUCTURED_ANNOTATION_FIELD:
           if (__field.type == TType.STRING) {
-            String injectedStructuredAnnotationField = oprot.readString();
-            builder.setInjectedStructuredAnnotationField(injectedStructuredAnnotationField);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setInjectedStructuredAnnotationField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _INJECTED_UNSTRUCTURED_ANNOTATION_FIELD:
           if (__field.type == TType.STRING) {
-            String injectedUnstructuredAnnotationField = oprot.readString();
-            builder.setInjectedUnstructuredAnnotationField(injectedUnstructuredAnnotationField);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setInjectedUnstructuredAnnotationField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

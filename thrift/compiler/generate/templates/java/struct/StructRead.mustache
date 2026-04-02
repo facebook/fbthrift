@@ -43,15 +43,24 @@ public static {{struct:javaCapitalName}} read0(TProtocol oprot) throws TExceptio
     {{#struct:fields}}
     case _{{field:javaAllCapsName}}:
       if (__field.type == TType.{{#field:type}}{{#partial types.ttype type=type:self}}{{/field:type}}) {
-        {{#field:type}}
-        {{field:nestedDepth++}}{{> ReadType}}{{field:nestedDepth--}}
+        {{#field:type}}{{!
+        }}{{field:nestedDepth++}}
+        {{#type:container?}}{{!
+        }}{{> ResolvedBoxedType}} _fbthriftVar{{field:nestedDepth}};{{!
+        }}{{/type:container?}}{{!
+        }}{{^type:container?}}{{!
+        }}{{> ThriftFieldType}} _fbthriftVar{{field:nestedDepth}};{{!
+        }}{{/type:container?}}
+        {{> ReadType}}
         {{/field:type}}
+
         {{#field:hasAdapter?}}
-        builder.{{#field:hasWrapper?}}_{{/field:hasWrapper?}}set{{field:javaCapitalName}}({{> FromThriftStart}}{{field:javaName}}{{> FromThriftEnd}});
+        builder.{{#field:hasWrapper?}}_{{/field:hasWrapper?}}set{{field:javaCapitalName}}({{> FromThriftStart}}_fbthriftVar{{field:nestedDepth}}{{> FromThriftEnd}});
         {{/field:hasAdapter?}}
         {{^field:hasAdapter?}}
-        builder.{{#field:hasWrapper?}}_{{/field:hasWrapper?}}set{{field:javaCapitalName}}({{field:javaName}});
-        {{/field:hasAdapter?}}
+        builder.{{#field:hasWrapper?}}_{{/field:hasWrapper?}}set{{field:javaCapitalName}}(_fbthriftVar{{field:nestedDepth}});
+        {{/field:hasAdapter?}}{{!
+        }}{{field:nestedDepth--}}
       } else {
         TProtocolUtil.skip(oprot, __field.type);
       }

@@ -322,96 +322,120 @@ public final class TestStruct implements com.facebook.thrift.payload.ThriftSeria
         switch (__field.id) {
         case _UNQUALIFIED_INT_FIELD:
           if (__field.type == TType.I32) {
-            int unqualifiedIntField = oprot.readI32();
-            builder.setUnqualifiedIntField(unqualifiedIntField);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setUnqualifiedIntField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _UNQUALIFIED_BOOL_FIELD:
           if (__field.type == TType.BOOL) {
-            boolean unqualifiedBoolField = oprot.readBool();
-            builder.setUnqualifiedBoolField(unqualifiedBoolField);
+            
+            boolean _fbthriftVar1;
+            _fbthriftVar1 = oprot.readBool();
+            builder.setUnqualifiedBoolField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _UNQUALIFIED_LIST_FIELD:
           if (__field.type == TType.LIST) {
+            
             List<Integer> _fbthriftVar1;
-    {
-                TList _list1 = oprot.readListBegin();
-                _fbthriftVar1 = new ArrayList<Integer>(Math.max(0, _list1.size));
-                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                    
-                    
-                    int _fbthriftVar2;
-                    _fbthriftVar2 = oprot.readI32();
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readListEnd();
-                }
-    List<Integer> unqualifiedListField = _fbthriftVar1;
-            builder.setUnqualifiedListField(unqualifiedListField);
+            {
+                        TList _list1 = oprot.readListBegin();
+                        _fbthriftVar1 = new ArrayList<Integer>(Math.max(0, _list1.size));
+                        for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                            
+                            
+                            int _fbthriftVar2;
+                            _fbthriftVar2 = oprot.readI32();
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readListEnd();
+                        }
+
+
+            builder.setUnqualifiedListField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _UNQUALIFIED_STRUCT_FIELD:
           if (__field.type == TType.STRUCT) {
-            com.facebook.thrift.compiler.test.fixtures.default_values_rectification_after.EmptyStruct unqualifiedStructField = com.facebook.thrift.compiler.test.fixtures.default_values_rectification_after.EmptyStruct.read0(oprot);
-            builder.setUnqualifiedStructField(unqualifiedStructField);
+            
+            com.facebook.thrift.compiler.test.fixtures.default_values_rectification_after.EmptyStruct _fbthriftVar1;
+            _fbthriftVar1 = com.facebook.thrift.compiler.test.fixtures.default_values_rectification_after.EmptyStruct.read0(oprot);
+            builder.setUnqualifiedStructField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _OPTIONAL_INT_FIELD:
           if (__field.type == TType.I32) {
-            Integer optionalIntField = oprot.readI32();
-            builder.setOptionalIntField(optionalIntField);
+            
+            Integer _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setOptionalIntField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _OPTIONAL_BOOL_FIELD:
           if (__field.type == TType.BOOL) {
-            Boolean optionalBoolField = oprot.readBool();
-            builder.setOptionalBoolField(optionalBoolField);
+            
+            Boolean _fbthriftVar1;
+            _fbthriftVar1 = oprot.readBool();
+            builder.setOptionalBoolField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _OPTIONAL_LIST_FIELD:
           if (__field.type == TType.LIST) {
+            
             List<Integer> _fbthriftVar1;
-    {
-                TList _list1 = oprot.readListBegin();
-                _fbthriftVar1 = new ArrayList<Integer>(Math.max(0, _list1.size));
-                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                    
-                    
-                    int _fbthriftVar2;
-                    _fbthriftVar2 = oprot.readI32();
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readListEnd();
-                }
-    List<Integer> optionalListField = _fbthriftVar1;
-            builder.setOptionalListField(optionalListField);
+            {
+                        TList _list1 = oprot.readListBegin();
+                        _fbthriftVar1 = new ArrayList<Integer>(Math.max(0, _list1.size));
+                        for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                            
+                            
+                            int _fbthriftVar2;
+                            _fbthriftVar2 = oprot.readI32();
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readListEnd();
+                        }
+
+
+            builder.setOptionalListField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _OPTIONAL_STRUCT_FIELD:
           if (__field.type == TType.STRUCT) {
-            com.facebook.thrift.compiler.test.fixtures.default_values_rectification_after.EmptyStruct optionalStructField = com.facebook.thrift.compiler.test.fixtures.default_values_rectification_after.EmptyStruct.read0(oprot);
-            builder.setOptionalStructField(optionalStructField);
+            
+            com.facebook.thrift.compiler.test.fixtures.default_values_rectification_after.EmptyStruct _fbthriftVar1;
+            _fbthriftVar1 = com.facebook.thrift.compiler.test.fixtures.default_values_rectification_after.EmptyStruct.read0(oprot);
+            builder.setOptionalStructField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

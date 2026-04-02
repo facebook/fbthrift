@@ -94,8 +94,11 @@ public final class CustomException extends org.apache.thrift.TBaseException impl
         switch (__field.id) {
         case _MESSAGE:
           if (__field.type == TType.STRING) {
-            String message = oprot.readString();
-            builder.setMessage(message);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setMessage(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

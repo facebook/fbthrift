@@ -376,80 +376,110 @@ public final class AdaptTestStruct implements com.facebook.thrift.payload.Thrift
         switch (__field.id) {
         case _DELAY:
           if (__field.type == TType.I64) {
-            long delay = oprot.readI64();
-            builder.setDelay(delay);
+            
+            long _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI64();
+            builder.setDelay(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _CUSTOM:
           if (__field.type == TType.STRING) {
-            byte[] custom = oprot.readBinary().array();
-            builder.setCustom(custom);
+            
+            byte[] _fbthriftVar1;
+            _fbthriftVar1 = oprot.readBinary().array();
+            builder.setCustom(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _TIMEOUT:
           if (__field.type == TType.I64) {
-            long timeout = oprot.readI64();
-            builder.setTimeout(timeout);
+            
+            long _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI64();
+            builder.setTimeout(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _DATA:
           if (__field.type == TType.I64) {
-            long data = oprot.readI64();
-            builder.setData(data);
+            
+            long _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI64();
+            builder.setData(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _META:
           if (__field.type == TType.STRING) {
-            String meta = oprot.readString();
-            builder.setMeta(meta);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setMeta(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _INDIRECTIONSTRING:
           if (__field.type == TType.STRING) {
-            String indirectionString = oprot.readString();
-            builder.setIndirectionString(indirectionString);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setIndirectionString(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _STRING_DATA:
           if (__field.type == TType.STRING) {
-            String stringData = oprot.readString();
-            builder.setStringData(stringData);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setStringData(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _DOUBLE_WRAPPED_BOOL:
           if (__field.type == TType.BOOL) {
-            boolean doubleWrappedBool = oprot.readBool();
-            builder.setDoubleWrappedBool(doubleWrappedBool);
+            
+            boolean _fbthriftVar1;
+            _fbthriftVar1 = oprot.readBool();
+            builder.setDoubleWrappedBool(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _DOUBLE_WRAPPED_INTEGER:
           if (__field.type == TType.I32) {
-            int doubleWrappedInteger = oprot.readI32();
-            builder.setDoubleWrappedInteger(doubleWrappedInteger);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setDoubleWrappedInteger(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _BINARY_DATA:
           if (__field.type == TType.STRING) {
-            byte[] binaryData = oprot.readBinary().array();
-            builder.setBinaryData(binaryData);
+            
+            byte[] _fbthriftVar1;
+            _fbthriftVar1 = oprot.readBinary().array();
+            builder.setBinaryData(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

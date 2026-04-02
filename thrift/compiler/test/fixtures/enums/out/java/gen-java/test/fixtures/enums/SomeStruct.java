@@ -216,48 +216,60 @@ public final class SomeStruct implements com.facebook.thrift.payload.ThriftSeria
         switch (__field.id) {
         case _REASONABLE:
           if (__field.type == TType.I32) {
-            test.fixtures.enums.Metasyntactic reasonable = test.fixtures.enums.Metasyntactic.fromInteger(oprot.readI32());
-            builder.setReasonable(reasonable);
+            
+            test.fixtures.enums.Metasyntactic _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.enums.Metasyntactic.fromInteger(oprot.readI32());
+            builder.setReasonable(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _FINE:
           if (__field.type == TType.I32) {
-            test.fixtures.enums.Metasyntactic fine = test.fixtures.enums.Metasyntactic.fromInteger(oprot.readI32());
-            builder.setFine(fine);
+            
+            test.fixtures.enums.Metasyntactic _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.enums.Metasyntactic.fromInteger(oprot.readI32());
+            builder.setFine(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _QUESTIONABLE:
           if (__field.type == TType.I32) {
-            test.fixtures.enums.Metasyntactic questionable = test.fixtures.enums.Metasyntactic.fromInteger(oprot.readI32());
-            builder.setQuestionable(questionable);
+            
+            test.fixtures.enums.Metasyntactic _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.enums.Metasyntactic.fromInteger(oprot.readI32());
+            builder.setQuestionable(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _TAGS:
           if (__field.type == TType.SET) {
+            
             Set<Integer> _fbthriftVar1;
-    {
-                TSet _set1 = oprot.readSetBegin();
-                _fbthriftVar1 = new HashSet<Integer>(Math.max(0, _set1.size));
-                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                    
-                    
-                    int _fbthriftVar2;
-                    _fbthriftVar2 = oprot.readI32();
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readSetEnd();
-                }
-    Set<Integer> tags = _fbthriftVar1;
-            builder.setTags(tags);
+            {
+                        TSet _set1 = oprot.readSetBegin();
+                        _fbthriftVar1 = new HashSet<Integer>(Math.max(0, _set1.size));
+                        for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                            
+                            
+                            int _fbthriftVar2;
+                            _fbthriftVar2 = oprot.readI32();
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readSetEnd();
+                        }
+
+
+            builder.setTags(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

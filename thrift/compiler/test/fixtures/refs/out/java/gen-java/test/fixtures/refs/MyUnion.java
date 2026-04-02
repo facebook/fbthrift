@@ -276,14 +276,20 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
           switch (__field.id) {
           case _ANINTEGER:
             if (__field.type == AN_INTEGER_FIELD_DESC.type) {
-              int anInteger = oprot.readI32();
-              res.value = anInteger;
+              
+              int _fbthriftVar1;
+              _fbthriftVar1 = oprot.readI32();
+              res.value = _fbthriftVar1;
+              
             }
             break;
           case _ASTRING:
             if (__field.type == A_STRING_FIELD_DESC.type) {
-              String aString = oprot.readString();
-              res.value = aString;
+              
+              String _fbthriftVar1;
+              _fbthriftVar1 = oprot.readString();
+              res.value = _fbthriftVar1;
+              
             }
             break;
           default:

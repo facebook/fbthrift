@@ -133,8 +133,11 @@ public final class IndependentDirectlyAdapted implements com.facebook.thrift.pay
         switch (__field.id) {
         case _FIELD:
           if (__field.type == TType.I32) {
-            int field = oprot.readI32();
-            builder.setField(field);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

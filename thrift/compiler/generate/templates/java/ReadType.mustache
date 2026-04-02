@@ -20,42 +20,24 @@
   }}{{/type:isAdapterSet?}}{{!
   }}{{^type:isAdapterSet?}}{{!
     }}{{#type:isBinaryString?}}{{!
-      }}{{#field:isNested?}}{{!
-        }}_fbthriftVar{{field:nestedDepth}} = {{> ReadTypeBinary}}{{!
-      }}{{/field:isNested?}}{{!
-      }}{{^field:isNested?}}{{!
-        }}{{#field:type}}{{#type:hasAdapter?}}{{#partial types.thrift_boxed_type type=type:self field_hasAdapter=field:hasAdapter?}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> BoxedType}}{{/type:hasAdapter?}}{{/field:type}} {{field:javaName}} = {{!
-        }}{{> ReadTypeBinary}};{{!
-      }}{{/field:isNested?}}{{!
+      }}_fbthriftVar{{field:nestedDepth}} = {{> ReadTypeBinary}};{{!
     }}{{/type:isBinaryString?}}{{!
     }}{{^type:isBinaryString?}}{{!
     }}{{#type:javaType}}{{!
       }}{{#type:container?}}{{!
         }}{{#type:set?}}{{!
-        }}{{> ResolvedBoxedType}} _fbthriftVar{{field:nestedDepth}};
-        {{> ReadTypeContainerNestedValue}}
-        {{> ResolvedBoxedType}} {{field:javaName}} = _fbthriftVar{{field:nestedDepth}};{{!
-        }}{{/type:set?}}{{!
+        }}{{> ReadTypeContainerNestedValue}}
+        {{/type:set?}}{{!
         }}{{#type:list?}}{{!
-        }}{{> ResolvedBoxedType}} _fbthriftVar{{field:nestedDepth}};
-        {{> ReadTypeContainerNestedValue}}
-        {{> ResolvedBoxedType}} {{field:javaName}} = _fbthriftVar{{field:nestedDepth}};{{!
-        }}{{/type:list?}}{{!
+        }}{{> ReadTypeContainerNestedValue}}
+        {{/type:list?}}{{!
         }}{{#type:map?}}{{!
-        }}{{> ResolvedBoxedType}} _fbthriftVar{{field:nestedDepth}};
-        {{> ReadTypeContainerNestedValue}}
-        {{> ResolvedBoxedType}} {{field:javaName}} = _fbthriftVar{{field:nestedDepth}};{{!
-        }}{{/type:map?}}{{!
+        }}{{> ReadTypeContainerNestedValue}}
+        {{/type:map?}}{{!
       }}{{/type:container?}}{{!
       }}{{^type:container?}}{{!
         }}{{#type:binary?}}{{!
-          }}{{#field:isNested?}}{{!
-            }}_fbthriftVar{{field:nestedDepth}} = {{> ReadTypeBinary}}{{!
-          }}{{/field:isNested?}}{{!
-          }}{{^field:isNested?}}{{!
-            }}{{#field:type}}{{#type:hasAdapter?}}{{#partial types.thrift_boxed_type type=type:self field_hasAdapter=field:hasAdapter?}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> BoxedType}}{{/type:hasAdapter?}}{{/field:type}} {{field:javaName}} = {{!
-            }}{{> ReadTypeBinary}};{{!
-          }}{{/field:isNested?}}{{!
+          }}_fbthriftVar{{field:nestedDepth}} = {{> ReadTypeBinary}};{{!
         }}{{/type:binary?}}{{!
         }}{{^type:binary?}}{{!
         }}{{#type:typedef_type}}{{> ReadType}}{{/type:typedef_type}}{{!
@@ -70,96 +52,66 @@
 }}{{/type:typedef?}}{{!
 }}{{^type:typedef?}}{{!
 }}{{#type:set?}}{{!
-}}{{> ResolvedBoxedType}} _fbthriftVar{{field:nestedDepth}};
-{{> ReadTypeContainerNestedValue}}
-{{> ResolvedBoxedType}} {{field:javaName}} = _fbthriftVar{{field:nestedDepth}};{{!
-}}{{/type:set?}}{{!
+  }}{{> ReadTypeContainerNestedValue}}
+{{/type:set?}}{{!
 
 }}{{#type:list?}}{{!
-}}{{> ResolvedBoxedType}} _fbthriftVar{{field:nestedDepth}};
-{{> ReadTypeContainerNestedValue}}
-{{> ResolvedBoxedType}} {{field:javaName}} = _fbthriftVar{{field:nestedDepth}};{{!
-}}{{/type:list?}}{{!
+  }}{{> ReadTypeContainerNestedValue}}
+{{/type:list?}}{{!
 
 }}{{#type:map?}}{{!
-}}{{> ResolvedBoxedType}} _fbthriftVar{{field:nestedDepth}};
-{{> ReadTypeContainerNestedValue}}
-{{> ResolvedBoxedType}} {{field:javaName}} = _fbthriftVar{{field:nestedDepth}};{{!
-}}{{/type:map?}}{{!
+  }}{{> ReadTypeContainerNestedValue}}
+{{/type:map?}}{{!
 
 }}{{#type:structured?}}{{!
-}}{{#field:isNested?}}_fbthriftVar{{field:nestedDepth}} = {{> BoxedType}}.read0(oprot){{/field:isNested?}}{{!
-}}{{^field:isNested?}}{{#field:hasAdapter?}}{{#partial types.thrift_boxed_type type=type:self field_hasAdapter=field:hasAdapter?}} {{field:javaName}} = {{#partial types.thrift_boxed_type type=type:self field_hasAdapter=field:hasAdapter?}}.read0(oprot);{{/field:hasAdapter?}}{{^field:hasAdapter?}}{{> FieldType}} {{field:javaName}} = {{#partial types.thrift_boxed_type type=type:self field_hasAdapter=field:hasAdapter?}}.read0(oprot);{{/field:hasAdapter?}}{{/field:isNested?}}{{!
+  }}{{#field:isNested?}}_fbthriftVar{{field:nestedDepth}} = {{> BoxedType}}.read0(oprot);{{/field:isNested?}}{{!
+  }}{{^field:isNested?}}_fbthriftVar{{field:nestedDepth}} = {{#partial types.thrift_boxed_type type=type:self field_hasAdapter=field:hasAdapter?}}.read0(oprot);{{/field:isNested?}}{{!
 }}{{/type:structured?}}{{!
 
 }}{{#type:enum?}}{{!
-}}{{#field:isNested?}}_fbthriftVar{{field:nestedDepth}} = {{> BoxedType}}.fromInteger(oprot.readI32()){{/field:isNested?}}{{!
-}}{{^field:isNested?}}{{> ThriftFieldType}} {{field:javaName}} = {{> ThriftFieldType}}.fromInteger(oprot.readI32());{{/field:isNested?}}{{!
+  }}{{#field:isNested?}}_fbthriftVar{{field:nestedDepth}} = {{> BoxedType}}.fromInteger(oprot.readI32());{{/field:isNested?}}{{!
+  }}{{^field:isNested?}}_fbthriftVar{{field:nestedDepth}} = {{> ThriftFieldType}}.fromInteger(oprot.readI32());{{/field:isNested?}}{{!
 }}{{/type:enum?}}{{!
 
 }}{{#type:binary?}}{{!
-}}{{#field:isNested?}}{{!
-  }}_fbthriftVar{{field:nestedDepth}} = {{> ReadTypeBinary}}{{!
-}}{{/field:isNested?}}{{!
-}}{{^field:isNested?}}{{!
-  }}{{#field:type}}{{#type:hasAdapter?}}{{#partial types.thrift_boxed_type type=type:self field_hasAdapter=field:hasAdapter?}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> BoxedType}}{{/type:hasAdapter?}}{{/field:type}} {{field:javaName}} = {{!
-  }}{{> ReadTypeBinary}};{{!
-}}{{/field:isNested?}}{{!
+  }}_fbthriftVar{{field:nestedDepth}} = {{> ReadTypeBinary}};{{!
 }}{{/type:binary?}}{{!
 
 }}{{#type:string?}}{{!
-}}{{#field:isNested?}}{{!
   }}{{#type:isBinaryString?}}{{!
-    }}_fbthriftVar{{field:nestedDepth}} = {{> ReadTypeBinary}}{{!
+    }}_fbthriftVar{{field:nestedDepth}} = {{> ReadTypeBinary}};{{!
   }}{{/type:isBinaryString?}}{{!
   }}{{^type:isBinaryString?}}{{!
-    }}_fbthriftVar{{field:nestedDepth}} = oprot.readString({{> Utf8Validation}}){{!
+    }}_fbthriftVar{{field:nestedDepth}} = oprot.readString({{> Utf8Validation}});{{!
   }}{{/type:isBinaryString?}}{{!
-}}{{/field:isNested?}}{{!
-}}{{^field:isNested?}}{{!
-  }}{{#type:isBinaryString?}}{{!
-    }}{{#field:type}}{{#type:hasAdapter?}}{{#partial types.thrift_boxed_type type=type:self field_hasAdapter=field:hasAdapter?}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> BoxedType}}{{/type:hasAdapter?}}{{/field:type}} {{field:javaName}} = {{!
-    }}{{> ReadTypeBinary}};{{!
-  }}{{/type:isBinaryString?}}{{!
-  }}{{^type:isBinaryString?}}{{> ThriftFieldType}} {{field:javaName}} = {{!
-    }}oprot.readString({{> Utf8Validation}});{{!
-  }}{{/type:isBinaryString?}}{{!
-}}{{/field:isNested?}}{{!
 }}{{/type:string?}}{{!
 
 }}{{#type:bool?}}{{!
-}}{{#field:isNested?}}_fbthriftVar{{field:nestedDepth}} = oprot.readBool(){{/field:isNested?}}{{!
-}}{{^field:isNested?}}{{> ThriftFieldType}} {{field:javaName}} = oprot.readBool();{{/field:isNested?}}{{!
+  }}_fbthriftVar{{field:nestedDepth}} = oprot.readBool();{{!
 }}{{/type:bool?}}{{!
 
 }}{{#type:byte?}}{{!
-}}{{#field:isNested?}}_fbthriftVar{{field:nestedDepth}} = oprot.readByte(){{/field:isNested?}}{{!
-}}{{^field:isNested?}}{{> ThriftFieldType}} {{field:javaName}} = oprot.readByte();{{/field:isNested?}}{{!
+  }}_fbthriftVar{{field:nestedDepth}} = oprot.readByte();{{!
 }}{{/type:byte?}}{{!
 
 }}{{#type:i16?}}{{!
-}}{{#field:isNested?}}_fbthriftVar{{field:nestedDepth}} = oprot.readI16(){{/field:isNested?}}{{!
-}}{{^field:isNested?}}{{> ThriftFieldType}} {{field:javaName}} = oprot.readI16();{{/field:isNested?}}{{!
+  }}_fbthriftVar{{field:nestedDepth}} = oprot.readI16();{{!
 }}{{/type:i16?}}{{!
 
 }}{{#type:i32?}}{{!
-}}{{#field:isNested?}}_fbthriftVar{{field:nestedDepth}} = oprot.readI32(){{/field:isNested?}}{{!
-}}{{^field:isNested?}}{{> ThriftFieldType}} {{field:javaName}} = oprot.readI32();{{/field:isNested?}}{{!
+  }}_fbthriftVar{{field:nestedDepth}} = oprot.readI32();{{!
 }}{{/type:i32?}}{{!
 
 }}{{#type:i64?}}{{!
-}}{{#field:isNested?}}_fbthriftVar{{field:nestedDepth}} = oprot.readI64(){{/field:isNested?}}{{!
-}}{{^field:isNested?}}{{> ThriftFieldType}} {{field:javaName}} = oprot.readI64();{{/field:isNested?}}{{!
+  }}_fbthriftVar{{field:nestedDepth}} = oprot.readI64();{{!
 }}{{/type:i64?}}{{!
 
 }}{{#type:float?}}{{!
-}}{{#field:isNested?}}_fbthriftVar{{field:nestedDepth}} = oprot.readFloat(){{/field:isNested?}}{{!
-}}{{^field:isNested?}}{{> ThriftFieldType}} {{field:javaName}} = oprot.readFloat();{{/field:isNested?}}{{!
+  }}_fbthriftVar{{field:nestedDepth}} = oprot.readFloat();{{!
 }}{{/type:float?}}{{!
 
 }}{{#type:double?}}{{!
-}}{{#field:isNested?}}_fbthriftVar{{field:nestedDepth}} = oprot.readDouble(){{/field:isNested?}}{{!
-}}{{^field:isNested?}}{{> ThriftFieldType}} {{field:javaName}} = oprot.readDouble();{{/field:isNested?}}{{!
+  }}_fbthriftVar{{field:nestedDepth}} = oprot.readDouble();{{!
 }}{{/type:double?}}{{!
 
 }}{{/type:typedef?}}{{!

@@ -913,240 +913,330 @@ public final class MyNomralStruct implements com.facebook.thrift.payload.ThriftS
         switch (__field.id) {
         case _MSG1:
           if (__field.type == TType.STRING) {
-            String msg1 = oprot.readString();
-            builder.setMsg1(msg1);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setMsg1(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MSG2:
           if (__field.type == TType.STRING) {
-            String msg2 = oprot.readString();
-            builder.setMsg2(msg2);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setMsg2(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MSG3:
           if (__field.type == TType.STRING) {
-            String msg3 = oprot.readString();
-            builder.setMsg3(msg3);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setMsg3(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MSG4:
           if (__field.type == TType.STRING) {
-            String msg4 = oprot.readString();
-            builder.setMsg4(msg4);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setMsg4(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MSG5:
           if (__field.type == TType.STRING) {
-            String msg5 = oprot.readString();
-            builder.setMsg5(msg5);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setMsg5(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MSG6:
           if (__field.type == TType.STRING) {
-            String msg6 = oprot.readString();
-            builder.setMsg6(msg6);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setMsg6(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MSG7:
           if (__field.type == TType.STRING) {
-            String msg7 = oprot.readString();
-            builder.setMsg7(msg7);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setMsg7(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MSG8:
           if (__field.type == TType.STRING) {
-            String msg8 = oprot.readString();
-            builder.setMsg8(msg8);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setMsg8(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MSG9:
           if (__field.type == TType.STRING) {
-            String msg9 = oprot.readString();
-            builder.setMsg9(msg9);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setMsg9(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYINTFIELD10:
           if (__field.type == TType.I32) {
-            int myIntField10 = oprot.readI32();
-            builder.setMyIntField10(myIntField10);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setMyIntField10(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYINTFIELD11:
           if (__field.type == TType.I32) {
-            int myIntField11 = oprot.readI32();
-            builder.setMyIntField11(myIntField11);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setMyIntField11(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYINTFIELD12:
           if (__field.type == TType.I32) {
-            int myIntField12 = oprot.readI32();
-            builder.setMyIntField12(myIntField12);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setMyIntField12(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYINTFIELD13:
           if (__field.type == TType.I32) {
-            int myIntField13 = oprot.readI32();
-            builder.setMyIntField13(myIntField13);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setMyIntField13(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYINTFIELD14:
           if (__field.type == TType.I32) {
-            int myIntField14 = oprot.readI32();
-            builder.setMyIntField14(myIntField14);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setMyIntField14(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYINTFIELD15:
           if (__field.type == TType.I32) {
-            int myIntField15 = oprot.readI32();
-            builder.setMyIntField15(myIntField15);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setMyIntField15(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYINTFIELD16:
           if (__field.type == TType.I32) {
-            int myIntField16 = oprot.readI32();
-            builder.setMyIntField16(myIntField16);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setMyIntField16(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYINTFIELD17:
           if (__field.type == TType.I32) {
-            int myIntField17 = oprot.readI32();
-            builder.setMyIntField17(myIntField17);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setMyIntField17(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYINTFIELD18:
           if (__field.type == TType.I32) {
-            int myIntField18 = oprot.readI32();
-            builder.setMyIntField18(myIntField18);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setMyIntField18(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYINTFIELD19:
           if (__field.type == TType.I32) {
-            int myIntField19 = oprot.readI32();
-            builder.setMyIntField19(myIntField19);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setMyIntField19(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYINTFIELD20:
           if (__field.type == TType.I32) {
-            int myIntField20 = oprot.readI32();
-            builder.setMyIntField20(myIntField20);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setMyIntField20(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYDOUBLEFIELD21:
           if (__field.type == TType.DOUBLE) {
-            double myDoubleField21 = oprot.readDouble();
-            builder.setMyDoubleField21(myDoubleField21);
+            
+            double _fbthriftVar1;
+            _fbthriftVar1 = oprot.readDouble();
+            builder.setMyDoubleField21(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYDOUBLEFIELD22:
           if (__field.type == TType.DOUBLE) {
-            double myDoubleField22 = oprot.readDouble();
-            builder.setMyDoubleField22(myDoubleField22);
+            
+            double _fbthriftVar1;
+            _fbthriftVar1 = oprot.readDouble();
+            builder.setMyDoubleField22(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYDOUBLEFIELD23:
           if (__field.type == TType.DOUBLE) {
-            double myDoubleField23 = oprot.readDouble();
-            builder.setMyDoubleField23(myDoubleField23);
+            
+            double _fbthriftVar1;
+            _fbthriftVar1 = oprot.readDouble();
+            builder.setMyDoubleField23(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYDOUBLEFIELD24:
           if (__field.type == TType.DOUBLE) {
-            double myDoubleField24 = oprot.readDouble();
-            builder.setMyDoubleField24(myDoubleField24);
+            
+            double _fbthriftVar1;
+            _fbthriftVar1 = oprot.readDouble();
+            builder.setMyDoubleField24(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYDOUBLEFIELD25:
           if (__field.type == TType.DOUBLE) {
-            double myDoubleField25 = oprot.readDouble();
-            builder.setMyDoubleField25(myDoubleField25);
+            
+            double _fbthriftVar1;
+            _fbthriftVar1 = oprot.readDouble();
+            builder.setMyDoubleField25(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYDOUBLEFIELD26:
           if (__field.type == TType.DOUBLE) {
-            double myDoubleField26 = oprot.readDouble();
-            builder.setMyDoubleField26(myDoubleField26);
+            
+            double _fbthriftVar1;
+            _fbthriftVar1 = oprot.readDouble();
+            builder.setMyDoubleField26(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYDOUBLEFIELD27:
           if (__field.type == TType.DOUBLE) {
-            double myDoubleField27 = oprot.readDouble();
-            builder.setMyDoubleField27(myDoubleField27);
+            
+            double _fbthriftVar1;
+            _fbthriftVar1 = oprot.readDouble();
+            builder.setMyDoubleField27(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYDOUBLEFIELD28:
           if (__field.type == TType.DOUBLE) {
-            double myDoubleField28 = oprot.readDouble();
-            builder.setMyDoubleField28(myDoubleField28);
+            
+            double _fbthriftVar1;
+            _fbthriftVar1 = oprot.readDouble();
+            builder.setMyDoubleField28(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYDOUBLEFIELD29:
           if (__field.type == TType.DOUBLE) {
-            double myDoubleField29 = oprot.readDouble();
-            builder.setMyDoubleField29(myDoubleField29);
+            
+            double _fbthriftVar1;
+            _fbthriftVar1 = oprot.readDouble();
+            builder.setMyDoubleField29(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYDOUBLEFIELD30:
           if (__field.type == TType.DOUBLE) {
-            double myDoubleField30 = oprot.readDouble();
-            builder.setMyDoubleField30(myDoubleField30);
+            
+            double _fbthriftVar1;
+            _fbthriftVar1 = oprot.readDouble();
+            builder.setMyDoubleField30(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

@@ -274,14 +274,20 @@ public final class VirtualComplexUnion implements com.facebook.thrift.payload.Th
           switch (__field.id) {
           case _THINGONE:
             if (__field.type == THING_ONE_FIELD_DESC.type) {
-              String thingOne = oprot.readString();
-              res.value = thingOne;
+              
+              String _fbthriftVar1;
+              _fbthriftVar1 = oprot.readString();
+              res.value = _fbthriftVar1;
+              
             }
             break;
           case _THINGTWO:
             if (__field.type == THING_TWO_FIELD_DESC.type) {
-              String thingTwo = oprot.readString();
-              res.value = thingTwo;
+              
+              String _fbthriftVar1;
+              _fbthriftVar1 = oprot.readString();
+              res.value = _fbthriftVar1;
+              
             }
             break;
           default:

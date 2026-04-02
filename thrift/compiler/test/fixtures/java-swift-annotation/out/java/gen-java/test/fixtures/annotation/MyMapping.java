@@ -211,6 +211,7 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
         switch (__field.id) {
         case _LSMAP:
           if (__field.type == TType.MAP) {
+            
             com.foo.FastLongStringMap _fbthriftVar1;
             {
                         TMap _map1 = oprot.readMapBegin();
@@ -248,14 +249,17 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
                         }
                         }
                         oprot.readMapEnd();
-            com.foo.FastLongStringMap lsMap = _fbthriftVar1;
-            builder.setLsMap(lsMap);
+
+                    
+            builder.setLsMap(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _IOMAP:
           if (__field.type == TType.MAP) {
+            
             com.foo.FastIntObjectMap<com.foo.FastIntLongMap> _fbthriftVar1;
             {
                         TMap _map1 = oprot.readMapBegin();
@@ -328,98 +332,106 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
                         }
                         }
                         oprot.readMapEnd();
-            com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap = _fbthriftVar1;
-            builder.setIoMap(ioMap);
+
+                    
+            builder.setIoMap(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _BINARYMAP:
           if (__field.type == TType.MAP) {
+            
             Map<String, byte[]> _fbthriftVar1;
-    {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new HashMap<String, byte[]>(Math.max(0, _map1.size));
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    
-                    
-                    String _fbthriftKey2;
-                    
-                    
-                    byte[] _fbthriftValue2;
-                    
+            {
+                        TMap _map1 = oprot.readMapBegin();
+                        _fbthriftVar1 = new HashMap<String, byte[]>(Math.max(0, _map1.size));
+                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                            
+                            
+                            String _fbthriftKey2;
+                            
+                            
+                            byte[] _fbthriftValue2;
+                            
 
-                    {
-                        
-                        String _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readString();
-                        
-                        
-                        _fbthriftKey2 = _fbthriftVar2;
-                        
-                    }
-                    {
-                        
-                        byte[] _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readBinary().array();
-                        
-                        
-                        _fbthriftValue2 = _fbthriftVar2;
-                        
-                    }
-                    
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                    
-                }
-                }
-                oprot.readMapEnd();
-    Map<String, byte[]> binaryMap = _fbthriftVar1;
-            builder.setBinaryMap(binaryMap);
+                            {
+                                
+                                String _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readString();
+                                
+                                
+                                _fbthriftKey2 = _fbthriftVar2;
+                                
+                            }
+                            {
+                                
+                                byte[] _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readBinary().array();
+                                
+                                
+                                _fbthriftValue2 = _fbthriftVar2;
+                                
+                            }
+                            
+                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                            
+                        }
+                        }
+                        oprot.readMapEnd();
+
+
+            builder.setBinaryMap(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _REGULARBINARY:
           if (__field.type == TType.MAP) {
+            
             Map<String, byte[]> _fbthriftVar1;
-    {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new HashMap<String, byte[]>(Math.max(0, _map1.size));
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    
-                    
-                    String _fbthriftKey2;
-                    
-                    
-                    byte[] _fbthriftValue2;
-                    
+            {
+                        TMap _map1 = oprot.readMapBegin();
+                        _fbthriftVar1 = new HashMap<String, byte[]>(Math.max(0, _map1.size));
+                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                            
+                            
+                            String _fbthriftKey2;
+                            
+                            
+                            byte[] _fbthriftValue2;
+                            
 
-                    {
-                        
-                        String _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readString();
-                        
-                        
-                        _fbthriftKey2 = _fbthriftVar2;
-                        
-                    }
-                    {
-                        
-                        byte[] _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readBinary().array();
-                        
-                        
-                        _fbthriftValue2 = _fbthriftVar2;
-                        
-                    }
-                    
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                    
-                }
-                }
-                oprot.readMapEnd();
-    Map<String, byte[]> regularBinary = _fbthriftVar1;
-            builder.setRegularBinary(regularBinary);
+                            {
+                                
+                                String _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readString();
+                                
+                                
+                                _fbthriftKey2 = _fbthriftVar2;
+                                
+                            }
+                            {
+                                
+                                byte[] _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readBinary().array();
+                                
+                                
+                                _fbthriftValue2 = _fbthriftVar2;
+                                
+                            }
+                            
+                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                            
+                        }
+                        }
+                        oprot.readMapEnd();
+
+
+            builder.setRegularBinary(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

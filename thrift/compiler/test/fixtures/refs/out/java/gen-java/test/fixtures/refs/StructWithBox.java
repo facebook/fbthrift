@@ -184,40 +184,49 @@ public final class StructWithBox implements com.facebook.thrift.payload.ThriftSe
         switch (__field.id) {
         case _A:
           if (__field.type == TType.STRING) {
-            String a = oprot.readString();
-            builder.setA(a);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setA(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _B:
           if (__field.type == TType.LIST) {
+            
             List<Long> _fbthriftVar1;
-    {
-                TList _list1 = oprot.readListBegin();
-                _fbthriftVar1 = new ArrayList<Long>(Math.max(0, _list1.size));
-                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                    
-                    
-                    long _fbthriftVar2;
-                    _fbthriftVar2 = oprot.readI64();
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readListEnd();
-                }
-    List<Long> b = _fbthriftVar1;
-            builder.setB(b);
+            {
+                        TList _list1 = oprot.readListBegin();
+                        _fbthriftVar1 = new ArrayList<Long>(Math.max(0, _list1.size));
+                        for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                            
+                            
+                            long _fbthriftVar2;
+                            _fbthriftVar2 = oprot.readI64();
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readListEnd();
+                        }
+
+
+            builder.setB(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _C:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.refs.StructWithRef c = test.fixtures.refs.StructWithRef.read0(oprot);
-            builder.setC(c);
+            
+            test.fixtures.refs.StructWithRef _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.refs.StructWithRef.read0(oprot);
+            builder.setC(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

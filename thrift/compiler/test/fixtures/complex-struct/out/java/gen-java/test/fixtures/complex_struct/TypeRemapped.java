@@ -211,6 +211,7 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
         switch (__field.id) {
         case _LSMAP:
           if (__field.type == TType.MAP) {
+            
             it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> _fbthriftVar1;
             {
                         TMap _map1 = oprot.readMapBegin();
@@ -248,14 +249,17 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
                         }
                         }
                         oprot.readMapEnd();
-            it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap = _fbthriftVar1;
-            builder.setLsMap(lsMap);
+
+                    
+            builder.setLsMap(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _IOMAP:
           if (__field.type == TType.MAP) {
+            
             it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> _fbthriftVar1;
             {
                         TMap _map1 = oprot.readMapBegin();
@@ -328,24 +332,32 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
                         }
                         }
                         oprot.readMapEnd();
-            it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> ioMap = _fbthriftVar1;
-            builder.setIoMap(ioMap);
+
+                    
+            builder.setIoMap(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _BIGINTEGER:
           if (__field.type == TType.I32) {
-            java.math.BigInteger bigInteger = oprot.readI32();
-            builder.setBigInteger(bigInteger);
+            
+            java.math.BigInteger _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setBigInteger(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _BINARYTESTBUFFER:
           if (__field.type == TType.STRING) {
-            java.nio.ByteBuffer binaryTestBuffer = oprot.readBinary();
-            builder.setBinaryTestBuffer(binaryTestBuffer);
+            
+            java.nio.ByteBuffer _fbthriftVar1;
+            _fbthriftVar1 = oprot.readBinary();
+            builder.setBinaryTestBuffer(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

@@ -220,8 +220,11 @@ public final class NonTriviallyDestructibleUnion implements com.facebook.thrift.
           switch (__field.id) {
           case _INT_FIELD:
             if (__field.type == INT_FIELD_FIELD_DESC.type) {
-              int intField = oprot.readI32();
-              res.value = intField;
+              
+              int _fbthriftVar1;
+              _fbthriftVar1 = oprot.readI32();
+              res.value = _fbthriftVar1;
+              
             }
             break;
           default:

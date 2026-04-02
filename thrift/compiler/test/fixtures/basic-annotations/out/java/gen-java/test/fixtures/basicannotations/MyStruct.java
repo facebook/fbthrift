@@ -349,88 +349,115 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         switch (__field.id) {
         case _MAJOR:
           if (__field.type == TType.I64) {
-            long major = oprot.readI64();
-            builder.setMajor(major);
+            
+            long _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI64();
+            builder.setMajor(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _ABSTRACT:
           if (__field.type == TType.STRING) {
-            String _abstract = oprot.readString();
-            builder.setAbstract(_abstract);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setAbstract(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _ANNOTATION_WITH_QUOTE:
           if (__field.type == TType.STRING) {
-            String annotationWithQuote = oprot.readString();
-            builder.setAnnotationWithQuote(annotationWithQuote);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setAnnotationWithQuote(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _CLASS_:
           if (__field.type == TType.STRING) {
-            String class_ = oprot.readString();
-            builder.setClass_(class_);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setClass_(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _ANNOTATION_WITH_TRAILING_COMMA:
           if (__field.type == TType.STRING) {
-            String annotationWithTrailingComma = oprot.readString();
-            builder.setAnnotationWithTrailingComma(annotationWithTrailingComma);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setAnnotationWithTrailingComma(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _EMPTY_ANNOTATIONS:
           if (__field.type == TType.STRING) {
-            String emptyAnnotations = oprot.readString();
-            builder.setEmptyAnnotations(emptyAnnotations);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setEmptyAnnotations(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MY_ENUM:
           if (__field.type == TType.I32) {
-            test.fixtures.basicannotations.MyEnum myEnum = test.fixtures.basicannotations.MyEnum.fromInteger(oprot.readI32());
-            builder.setMyEnum(myEnum);
+            
+            test.fixtures.basicannotations.MyEnum _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.basicannotations.MyEnum.fromInteger(oprot.readI32());
+            builder.setMyEnum(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _CPP_TYPE_ANNOTATION:
           if (__field.type == TType.LIST) {
+            
             List<String> _fbthriftVar1;
-    {
-                TList _list1 = oprot.readListBegin();
-                _fbthriftVar1 = new ArrayList<String>(Math.max(0, _list1.size));
-                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                    
-                    
-                    String _fbthriftVar2;
-                    _fbthriftVar2 = oprot.readString();
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readListEnd();
-                }
-    List<String> cppTypeAnnotation = _fbthriftVar1;
-            builder.setCppTypeAnnotation(cppTypeAnnotation);
+            {
+                        TList _list1 = oprot.readListBegin();
+                        _fbthriftVar1 = new ArrayList<String>(Math.max(0, _list1.size));
+                        for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                            
+                            
+                            String _fbthriftVar2;
+                            _fbthriftVar2 = oprot.readString();
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readListEnd();
+                        }
+
+
+            builder.setCppTypeAnnotation(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MY_UNION:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.basicannotations.MyUnion myUnion = test.fixtures.basicannotations.MyUnion.read0(oprot);
-            builder.setMyUnion(myUnion);
+            
+            test.fixtures.basicannotations.MyUnion _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.basicannotations.MyUnion.read0(oprot);
+            builder.setMyUnion(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

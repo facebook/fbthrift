@@ -184,24 +184,33 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
         switch (__field.id) {
         case _WEEKS:
           if (__field.type == TType.I32) {
-            int weeks = oprot.readI32();
-            builder.setWeeks(weeks);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setWeeks(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _TITLE:
           if (__field.type == TType.STRING) {
-            String title = oprot.readString();
-            builder.setTitle(title);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setTitle(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _EMPLOYER:
           if (__field.type == TType.I32) {
-            test.fixtures.lazy_constants.Company employer = test.fixtures.lazy_constants.Company.fromInteger(oprot.readI32());
-            builder.setEmployer(employer);
+            
+            test.fixtures.lazy_constants.Company _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.lazy_constants.Company.fromInteger(oprot.readI32());
+            builder.setEmployer(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

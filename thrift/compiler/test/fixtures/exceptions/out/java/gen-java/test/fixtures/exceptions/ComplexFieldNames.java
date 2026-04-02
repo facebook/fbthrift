@@ -121,16 +121,22 @@ public final class ComplexFieldNames extends org.apache.thrift.TBaseException im
         switch (__field.id) {
         case _ERROR_MESSAGE:
           if (__field.type == TType.STRING) {
-            String errorMessage = oprot.readString();
-            builder.setErrorMessage(errorMessage);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setErrorMessage(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _INTERNAL_ERROR_MESSAGE:
           if (__field.type == TType.STRING) {
-            String internalErrorMessage = oprot.readString();
-            builder.setInternalErrorMessage(internalErrorMessage);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setInternalErrorMessage(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

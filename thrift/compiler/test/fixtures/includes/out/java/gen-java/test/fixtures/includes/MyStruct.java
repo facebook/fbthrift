@@ -184,24 +184,33 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         switch (__field.id) {
         case _MYINCLUDEDFIELD:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.includes.includes.Included myIncludedField = test.fixtures.includes.includes.Included.read0(oprot);
-            builder.setMyIncludedField(myIncludedField);
+            
+            test.fixtures.includes.includes.Included _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.includes.includes.Included.read0(oprot);
+            builder.setMyIncludedField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYOTHERINCLUDEDFIELD:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.includes.includes.Included myOtherIncludedField = test.fixtures.includes.includes.Included.read0(oprot);
-            builder.setMyOtherIncludedField(myOtherIncludedField);
+            
+            test.fixtures.includes.includes.Included _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.includes.includes.Included.read0(oprot);
+            builder.setMyOtherIncludedField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYINCLUDEDINT:
           if (__field.type == TType.I64) {
-            long myIncludedInt = oprot.readI64();
-            builder.setMyIncludedInt(myIncludedInt);
+            
+            long _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI64();
+            builder.setMyIncludedInt(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

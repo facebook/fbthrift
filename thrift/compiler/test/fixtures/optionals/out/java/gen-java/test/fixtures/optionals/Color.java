@@ -211,32 +211,44 @@ public final class Color implements com.facebook.thrift.payload.ThriftSerializab
         switch (__field.id) {
         case _RED:
           if (__field.type == TType.DOUBLE) {
-            double red = oprot.readDouble();
-            builder.setRed(red);
+            
+            double _fbthriftVar1;
+            _fbthriftVar1 = oprot.readDouble();
+            builder.setRed(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _GREEN:
           if (__field.type == TType.DOUBLE) {
-            double green = oprot.readDouble();
-            builder.setGreen(green);
+            
+            double _fbthriftVar1;
+            _fbthriftVar1 = oprot.readDouble();
+            builder.setGreen(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _BLUE:
           if (__field.type == TType.DOUBLE) {
-            double blue = oprot.readDouble();
-            builder.setBlue(blue);
+            
+            double _fbthriftVar1;
+            _fbthriftVar1 = oprot.readDouble();
+            builder.setBlue(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _ALPHA:
           if (__field.type == TType.DOUBLE) {
-            double alpha = oprot.readDouble();
-            builder.setAlpha(alpha);
+            
+            double _fbthriftVar1;
+            _fbthriftVar1 = oprot.readDouble();
+            builder.setAlpha(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

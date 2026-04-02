@@ -276,14 +276,20 @@ public final class UnfortunateUnion implements com.facebook.thrift.payload.Thrif
           switch (__field.id) {
           case _AN_SNAKE_STRING:
             if (__field.type == AN_SNAKE_STRING_FIELD_DESC.type) {
-              String anSnakeString = oprot.readString();
-              res.value = anSnakeString;
+              
+              String _fbthriftVar1;
+              _fbthriftVar1 = oprot.readString();
+              res.value = _fbthriftVar1;
+              
             }
             break;
           case _ACAMELI32:
             if (__field.type == A_CAMEL_I32_FIELD_DESC.type) {
-              int aCamelI32 = oprot.readI32();
-              res.value = aCamelI32;
+              
+              int _fbthriftVar1;
+              _fbthriftVar1 = oprot.readI32();
+              res.value = _fbthriftVar1;
+              
             }
             break;
           default:

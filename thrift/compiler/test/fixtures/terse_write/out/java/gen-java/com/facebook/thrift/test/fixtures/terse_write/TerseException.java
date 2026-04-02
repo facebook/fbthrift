@@ -101,8 +101,11 @@ public final class TerseException extends org.apache.thrift.TBaseException imple
         switch (__field.id) {
         case _MSG:
           if (__field.type == TType.STRING) {
-            String msg = oprot.readString();
-            builder.setMsg(msg);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setMsg(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

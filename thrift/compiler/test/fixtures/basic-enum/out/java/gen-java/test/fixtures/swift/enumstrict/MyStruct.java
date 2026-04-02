@@ -160,16 +160,22 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         switch (__field.id) {
         case _MYENUM:
           if (__field.type == TType.I32) {
-            test.fixtures.swift.enumstrict.MyEnum myEnum = test.fixtures.swift.enumstrict.MyEnum.fromInteger(oprot.readI32());
-            builder.setMyEnum(myEnum);
+            
+            test.fixtures.swift.enumstrict.MyEnum _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.swift.enumstrict.MyEnum.fromInteger(oprot.readI32());
+            builder.setMyEnum(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MYBIGENUM:
           if (__field.type == TType.I32) {
-            test.fixtures.swift.enumstrict.MyBigEnum myBigEnum = test.fixtures.swift.enumstrict.MyBigEnum.fromInteger(oprot.readI32());
-            builder.setMyBigEnum(myBigEnum);
+            
+            test.fixtures.swift.enumstrict.MyBigEnum _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.swift.enumstrict.MyBigEnum.fromInteger(oprot.readI32());
+            builder.setMyBigEnum(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

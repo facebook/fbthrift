@@ -184,24 +184,33 @@ public final class StructWithUnion implements com.facebook.thrift.payload.Thrift
         switch (__field.id) {
         case _U:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.refs.MyUnion u = test.fixtures.refs.MyUnion.read0(oprot);
-            builder.setU(u);
+            
+            test.fixtures.refs.MyUnion _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.refs.MyUnion.read0(oprot);
+            builder.setU(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _ADOUBLE:
           if (__field.type == TType.DOUBLE) {
-            double aDouble = oprot.readDouble();
-            builder.setADouble(aDouble);
+            
+            double _fbthriftVar1;
+            _fbthriftVar1 = oprot.readDouble();
+            builder.setADouble(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _F:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.refs.MyField f = test.fixtures.refs.MyField.read0(oprot);
-            builder.setF(f);
+            
+            test.fixtures.refs.MyField _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.refs.MyField.read0(oprot);
+            builder.setF(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

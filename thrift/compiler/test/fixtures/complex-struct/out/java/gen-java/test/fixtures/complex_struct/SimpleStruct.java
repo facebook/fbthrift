@@ -157,16 +157,22 @@ public final class SimpleStruct implements com.facebook.thrift.payload.ThriftSer
         switch (__field.id) {
         case _AGE:
           if (__field.type == TType.I64) {
-            long age = oprot.readI64();
-            builder.setAge(age);
+            
+            long _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI64();
+            builder.setAge(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _NAME:
           if (__field.type == TType.STRING) {
-            String name = oprot.readString();
-            builder.setName(name);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setName(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

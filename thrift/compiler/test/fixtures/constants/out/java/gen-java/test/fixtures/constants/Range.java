@@ -157,16 +157,22 @@ public final class Range implements com.facebook.thrift.payload.ThriftSerializab
         switch (__field.id) {
         case _MIN:
           if (__field.type == TType.I32) {
-            int min = oprot.readI32();
-            builder.setMin(min);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setMin(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MAX:
           if (__field.type == TType.I32) {
-            int max = oprot.readI32();
-            builder.setMax(max);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setMax(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

@@ -184,24 +184,33 @@ public final class StructWithRefTypeUnique implements com.facebook.thrift.payloa
         switch (__field.id) {
         case _DEF_FIELD:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.refs.Empty defField = test.fixtures.refs.Empty.read0(oprot);
-            builder.setDefField(defField);
+            
+            test.fixtures.refs.Empty _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.refs.Empty.read0(oprot);
+            builder.setDefField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _OPT_FIELD:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.refs.Empty optField = test.fixtures.refs.Empty.read0(oprot);
-            builder.setOptField(optField);
+            
+            test.fixtures.refs.Empty _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.refs.Empty.read0(oprot);
+            builder.setOptField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _REQ_FIELD:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.refs.Empty reqField = test.fixtures.refs.Empty.read0(oprot);
-            builder.setReqField(reqField);
+            
+            test.fixtures.refs.Empty _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.refs.Empty.read0(oprot);
+            builder.setReqField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

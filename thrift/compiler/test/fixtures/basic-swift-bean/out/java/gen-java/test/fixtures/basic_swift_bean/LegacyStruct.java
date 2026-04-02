@@ -158,16 +158,22 @@ public final class LegacyStruct implements com.facebook.thrift.payload.ThriftSer
         switch (__field.id) {
         case _NORMAL:
           if (__field.type == TType.I32) {
-            int normal = oprot.readI32();
-            builder.setNormal(normal);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setNormal(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _BAD:
           if (__field.type == TType.I32) {
-            int bad = oprot.readI32();
-            builder.setBad(bad);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setBad(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

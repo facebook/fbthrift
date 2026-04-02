@@ -117,16 +117,22 @@ public final class ExceptionWithPrimitiveField extends org.apache.thrift.TBaseEx
         switch (__field.id) {
         case _MESSAGE:
           if (__field.type == TType.STRING) {
-            String message = oprot.readString();
-            builder.setMessage(message);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setMessage(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _ERROR_CODE:
           if (__field.type == TType.I32) {
-            int errorCode = oprot.readI32();
-            builder.setErrorCode(errorCode);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setErrorCode(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

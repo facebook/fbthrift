@@ -157,16 +157,22 @@ public final class AdaptedStructWithTerseInternBox implements com.facebook.thrif
         switch (__field.id) {
         case _FIELD1:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.refs.Empty field1 = test.fixtures.refs.Empty.read0(oprot);
-            builder.setField1(field1);
+            
+            test.fixtures.refs.Empty _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.refs.Empty.read0(oprot);
+            builder.setField1(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _FIELD2:
           if (__field.type == TType.STRUCT) {
-            test.fixtures.refs.MyField field2 = test.fixtures.refs.MyField.read0(oprot);
-            builder.setField2(field2);
+            
+            test.fixtures.refs.MyField _fbthriftVar1;
+            _fbthriftVar1 = test.fixtures.refs.MyField.read0(oprot);
+            builder.setField2(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

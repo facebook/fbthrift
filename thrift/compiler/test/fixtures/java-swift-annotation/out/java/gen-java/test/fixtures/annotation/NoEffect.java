@@ -157,16 +157,22 @@ public final class NoEffect implements com.facebook.thrift.payload.ThriftSeriali
         switch (__field.id) {
         case _AN_SNAKE_STRING:
           if (__field.type == TType.STRING) {
-            String anSnakeString = oprot.readString();
-            builder.setAnSnakeString(anSnakeString);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setAnSnakeString(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _ACAMELI32:
           if (__field.type == TType.I32) {
-            int aCamelI32 = oprot.readI32();
-            builder.setACamelI32(aCamelI32);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setACamelI32(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

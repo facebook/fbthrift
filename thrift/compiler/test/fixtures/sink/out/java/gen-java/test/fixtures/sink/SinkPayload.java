@@ -130,8 +130,11 @@ public final class SinkPayload implements com.facebook.thrift.payload.ThriftSeri
         switch (__field.id) {
         case _CONTENT:
           if (__field.type == TType.STRING) {
-            String content = oprot.readString();
-            builder.setContent(content);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setContent(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

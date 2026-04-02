@@ -511,189 +511,234 @@ public final class StructLevelTerseStruct implements com.facebook.thrift.payload
         switch (__field.id) {
         case _BOOL_FIELD:
           if (__field.type == TType.BOOL) {
-            boolean boolField = oprot.readBool();
-            builder.setBoolField(boolField);
+            
+            boolean _fbthriftVar1;
+            _fbthriftVar1 = oprot.readBool();
+            builder.setBoolField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _BYTE_FIELD:
           if (__field.type == TType.BYTE) {
-            byte byteField = oprot.readByte();
-            builder.setByteField(byteField);
+            
+            byte _fbthriftVar1;
+            _fbthriftVar1 = oprot.readByte();
+            builder.setByteField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _SHORT_FIELD:
           if (__field.type == TType.I16) {
-            short shortField = oprot.readI16();
-            builder.setShortField(shortField);
+            
+            short _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI16();
+            builder.setShortField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _INT_FIELD:
           if (__field.type == TType.I32) {
-            int intField = oprot.readI32();
-            builder.setIntField(intField);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setIntField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _LONG_FIELD:
           if (__field.type == TType.I64) {
-            long longField = oprot.readI64();
-            builder.setLongField(longField);
+            
+            long _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI64();
+            builder.setLongField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _FLOAT_FIELD:
           if (__field.type == TType.FLOAT) {
-            float floatField = oprot.readFloat();
-            builder.setFloatField(floatField);
+            
+            float _fbthriftVar1;
+            _fbthriftVar1 = oprot.readFloat();
+            builder.setFloatField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _DOUBLE_FIELD:
           if (__field.type == TType.DOUBLE) {
-            double doubleField = oprot.readDouble();
-            builder.setDoubleField(doubleField);
+            
+            double _fbthriftVar1;
+            _fbthriftVar1 = oprot.readDouble();
+            builder.setDoubleField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _STRING_FIELD:
           if (__field.type == TType.STRING) {
-            String stringField = oprot.readString();
-            builder.setStringField(stringField);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setStringField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _BINARY_FIELD:
           if (__field.type == TType.STRING) {
-            byte[] binaryField = oprot.readBinary().array();
-            builder.setBinaryField(binaryField);
+            
+            byte[] _fbthriftVar1;
+            _fbthriftVar1 = oprot.readBinary().array();
+            builder.setBinaryField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _ENUM_FIELD:
           if (__field.type == TType.I32) {
-            com.facebook.thrift.test.fixtures.terse_write.MyEnum enumField = com.facebook.thrift.test.fixtures.terse_write.MyEnum.fromInteger(oprot.readI32());
-            builder.setEnumField(enumField);
+            
+            com.facebook.thrift.test.fixtures.terse_write.MyEnum _fbthriftVar1;
+            _fbthriftVar1 = com.facebook.thrift.test.fixtures.terse_write.MyEnum.fromInteger(oprot.readI32());
+            builder.setEnumField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _LIST_FIELD:
           if (__field.type == TType.LIST) {
+            
             List<Short> _fbthriftVar1;
-    {
-                TList _list1 = oprot.readListBegin();
-                _fbthriftVar1 = new ArrayList<Short>(Math.max(0, _list1.size));
-                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                    
-                    
-                    short _fbthriftVar2;
-                    _fbthriftVar2 = oprot.readI16();
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readListEnd();
-                }
-    List<Short> listField = _fbthriftVar1;
-            builder.setListField(listField);
+            {
+                        TList _list1 = oprot.readListBegin();
+                        _fbthriftVar1 = new ArrayList<Short>(Math.max(0, _list1.size));
+                        for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                            
+                            
+                            short _fbthriftVar2;
+                            _fbthriftVar2 = oprot.readI16();
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readListEnd();
+                        }
+
+
+            builder.setListField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _SET_FIELD:
           if (__field.type == TType.SET) {
+            
             Set<Short> _fbthriftVar1;
-    {
-                TSet _set1 = oprot.readSetBegin();
-                _fbthriftVar1 = new HashSet<Short>(Math.max(0, _set1.size));
-                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                    
-                    
-                    short _fbthriftVar2;
-                    _fbthriftVar2 = oprot.readI16();
-                    
-                    
-                    _fbthriftVar1.add(_fbthriftVar2);
-                    
-                }
-                oprot.readSetEnd();
-                }
-    Set<Short> setField = _fbthriftVar1;
-            builder.setSetField(setField);
+            {
+                        TSet _set1 = oprot.readSetBegin();
+                        _fbthriftVar1 = new HashSet<Short>(Math.max(0, _set1.size));
+                        for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                            
+                            
+                            short _fbthriftVar2;
+                            _fbthriftVar2 = oprot.readI16();
+                            
+                            
+                            _fbthriftVar1.add(_fbthriftVar2);
+                            
+                        }
+                        oprot.readSetEnd();
+                        }
+
+
+            builder.setSetField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _MAP_FIELD:
           if (__field.type == TType.MAP) {
+            
             Map<Short, Short> _fbthriftVar1;
-    {
-                TMap _map1 = oprot.readMapBegin();
-                _fbthriftVar1 = new HashMap<Short, Short>(Math.max(0, _map1.size));
-                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                    
-                    
-                    short _fbthriftKey2;
-                    
-                    
-                    short _fbthriftValue2;
-                    
+            {
+                        TMap _map1 = oprot.readMapBegin();
+                        _fbthriftVar1 = new HashMap<Short, Short>(Math.max(0, _map1.size));
+                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                            
+                            
+                            short _fbthriftKey2;
+                            
+                            
+                            short _fbthriftValue2;
+                            
 
-                    {
-                        
-                        short _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI16();
-                        
-                        
-                        _fbthriftKey2 = _fbthriftVar2;
-                        
-                    }
-                    {
-                        
-                        short _fbthriftVar2;
-                        _fbthriftVar2 = oprot.readI16();
-                        
-                        
-                        _fbthriftValue2 = _fbthriftVar2;
-                        
-                    }
-                    
-                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                    
-                }
-                }
-                oprot.readMapEnd();
-    Map<Short, Short> mapField = _fbthriftVar1;
-            builder.setMapField(mapField);
+                            {
+                                
+                                short _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readI16();
+                                
+                                
+                                _fbthriftKey2 = _fbthriftVar2;
+                                
+                            }
+                            {
+                                
+                                short _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readI16();
+                                
+                                
+                                _fbthriftValue2 = _fbthriftVar2;
+                                
+                            }
+                            
+                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                            
+                        }
+                        }
+                        oprot.readMapEnd();
+
+
+            builder.setMapField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _STRUCT_FIELD:
           if (__field.type == TType.STRUCT) {
-            com.facebook.thrift.test.fixtures.terse_write.MyStruct structField = com.facebook.thrift.test.fixtures.terse_write.MyStruct.read0(oprot);
-            builder.setStructField(structField);
+            
+            com.facebook.thrift.test.fixtures.terse_write.MyStruct _fbthriftVar1;
+            _fbthriftVar1 = com.facebook.thrift.test.fixtures.terse_write.MyStruct.read0(oprot);
+            builder.setStructField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _UNION_FIELD:
           if (__field.type == TType.STRUCT) {
-            com.facebook.thrift.test.fixtures.terse_write.MyUnion unionField = com.facebook.thrift.test.fixtures.terse_write.MyUnion.read0(oprot);
-            builder.setUnionField(unionField);
+            
+            com.facebook.thrift.test.fixtures.terse_write.MyUnion _fbthriftVar1;
+            _fbthriftVar1 = com.facebook.thrift.test.fixtures.terse_write.MyUnion.read0(oprot);
+            builder.setUnionField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

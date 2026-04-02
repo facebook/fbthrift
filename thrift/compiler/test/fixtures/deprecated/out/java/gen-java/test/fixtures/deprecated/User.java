@@ -243,40 +243,55 @@ public final class User implements com.facebook.thrift.payload.ThriftSerializabl
         switch (__field.id) {
         case _ID:
           if (__field.type == TType.I64) {
-            long id = oprot.readI64();
-            builder.setId(id);
+            
+            long _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI64();
+            builder.setId(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _NAME:
           if (__field.type == TType.STRING) {
-            String name = oprot.readString();
-            builder.setName(name);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setName(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _FULL_NAME:
           if (__field.type == TType.STRING) {
-            String fullName = oprot.readString();
-            builder.setFullName(fullName);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setFullName(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _EMAIL:
           if (__field.type == TType.STRING) {
-            String email = oprot.readString();
-            builder.setEmail(email);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setEmail(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
         case _EMAIL_ADDRESS:
           if (__field.type == TType.STRING) {
-            String emailAddress = oprot.readString();
-            builder.setEmailAddress(emailAddress);
+            
+            String _fbthriftVar1;
+            _fbthriftVar1 = oprot.readString();
+            builder.setEmailAddress(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }

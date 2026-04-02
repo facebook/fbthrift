@@ -133,8 +133,11 @@ public final class ReservedKeyword implements com.facebook.thrift.payload.Thrift
         switch (__field.id) {
         case _RESERVED_FIELD:
           if (__field.type == TType.I32) {
-            int reservedField = oprot.readI32();
-            builder.setReservedField(reservedField);
+            
+            int _fbthriftVar1;
+            _fbthriftVar1 = oprot.readI32();
+            builder.setReservedField(_fbthriftVar1);
+            
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
