@@ -1376,6 +1376,9 @@ class t_mstch_rust_generator : public t_mstch_generator {
     auto def =
         whisker::dsl::prototype_builder<h_interface>::extends(std::move(base));
 
+    def.property("client_package", [this](const t_interface& self) {
+      return get_client_import_name(self.program(), options_);
+    });
     def.property("snake", [](const t_interface& self) {
       if (const t_const* annot_mod =
               self.find_structured_annotation_or_null(kRustModUri)) {
@@ -1451,9 +1454,6 @@ class t_mstch_rust_generator : public t_mstch_generator {
       const prototype_database& proto) const override {
     auto base = t_whisker_generator::make_prototype_for_service(proto);
     auto def = whisker::dsl::prototype_builder<h_service>::extends(base);
-    def.property("client_package", [this](const t_service& self) {
-      return get_client_import_name(self.program(), options_);
-    });
     def.property("server_package", [this](const t_service& self) {
       return get_server_import_name(self.program(), options_);
     });
@@ -1971,7 +1971,7 @@ void t_mstch_rust_generator::generate_program() {
   render_to_file(prog, "services.rs", "services.rs");
   t_whisker_generator::render_to_file("errors.rs", "errors.rs", context);
   t_whisker_generator::render_to_file("consts.rs", "consts.rs", context);
-  render_to_file(prog, "client.rs", "client.rs");
+  t_whisker_generator::render_to_file("client.rs", "client.rs", context);
   render_to_file(prog, "server.rs", "server.rs");
   t_whisker_generator::render_to_file("mock.rs", "mock.rs", context);
   write_output("namespace-rust", fmt::format("{}\n", namespace_rust));
