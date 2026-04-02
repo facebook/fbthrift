@@ -20,7 +20,7 @@
   }}{{/type:isAdapterSet?}}{{!
   }}{{^type:isAdapterSet?}}{{!
     }}{{#type:isBinaryString?}}{{!
-      }}_fbthriftVar{{field:nestedDepth}} = {{> ReadTypeBinary}};{{!
+      }}_fbthriftVar{{field:nestedDepth}} = {{#partial types.read_binary type=type:self isAdapted=false field_hasAdapter=field:hasAdapter?}};{{!
     }}{{/type:isBinaryString?}}{{!
     }}{{^type:isBinaryString?}}{{!
     }}{{#type:javaType}}{{!
@@ -37,7 +37,7 @@
       }}{{/type:container?}}{{!
       }}{{^type:container?}}{{!
         }}{{#type:binary?}}{{!
-          }}_fbthriftVar{{field:nestedDepth}} = {{> ReadTypeBinary}};{{!
+          }}_fbthriftVar{{field:nestedDepth}} = {{#partial types.read_binary type=type:self isAdapted=false field_hasAdapter=field:hasAdapter?}};{{!
         }}{{/type:binary?}}{{!
         }}{{^type:binary?}}{{!
         }}{{#type:typedef_type}}{{> ReadType}}{{/type:typedef_type}}{{!
@@ -72,12 +72,12 @@
 }}{{/type:enum?}}{{!
 
 }}{{#type:binary?}}{{!
-  }}_fbthriftVar{{field:nestedDepth}} = {{> ReadTypeBinary}};{{!
+  }}_fbthriftVar{{field:nestedDepth}} = {{#partial types.read_binary type=type:self isAdapted=type:isAdapterSet? field_hasAdapter=field:hasAdapter?}};{{!
 }}{{/type:binary?}}{{!
 
 }}{{#type:string?}}{{!
   }}{{#type:isBinaryString?}}{{!
-    }}_fbthriftVar{{field:nestedDepth}} = {{> ReadTypeBinary}};{{!
+    }}_fbthriftVar{{field:nestedDepth}} = {{#partial types.read_binary type=type:self isAdapted=type:isAdapterSet? field_hasAdapter=field:hasAdapter?}};{{!
   }}{{/type:isBinaryString?}}{{!
   }}{{^type:isBinaryString?}}{{!
     }}_fbthriftVar{{field:nestedDepth}} = oprot.readString({{> Utf8Validation}});{{!

@@ -209,6 +209,16 @@ Map<{{#partial adapted_inner_boxed_type type=type.key_type}}, {{#partial adapted
 {{/if type.typedef?}}
 {{/let partial}}
 
+{{! Reads a binary value, using ByteBuf when in an adapter context
+    (isAdapted from type-level propagation, or field_hasAdapter from
+    field-level adapter), and byte[] otherwise. }}
+{{#let export partial read_binary |type isAdapted field_hasAdapter|}}
+  {{#pragma ignore-newlines}}
+{{#if (or isAdapted field_hasAdapter)}}org.apache.thrift.protocol.TProtocolUtil.readBinaryAsByteBuf(oprot)
+{{#else}}oprot.readBinary(){{#if (string.empty? type.javaType)}}.array(){{/if (string.empty? type.javaType)}}
+{{/if (or isAdapted field_hasAdapter)}}
+{{/let partial}}
+
 {{! Resolves the Thrift type name, recursing through typedefs one layer at a time
     to check javaType at each layer. Falls back to java_type at the leaf.
     Only called from adapter contexts (type:hasAdapter? guards), so binary
