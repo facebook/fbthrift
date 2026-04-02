@@ -21,22 +21,17 @@
 
   }}{{#type:typedef?}}{{!
     }}{{#type:isBinaryString?}}{{!
-      }}{{#type:isAdapterSet?}}{{!
+      }}{{#field:hasAdapter?}}{{!
         }}io.netty.buffer.ByteBuf{{!
-      }}{{/type:isAdapterSet?}}{{!
-      }}{{^type:isAdapterSet?}}{{!
-        }}{{#field:hasAdapter?}}{{!
-          }}io.netty.buffer.ByteBuf{{!
-        }}{{/field:hasAdapter?}}{{!
-        }}{{^field:hasAdapter?}}{{!
-          }}byte[]{{!
-        }}{{/field:hasAdapter?}}{{!
-      }}{{/type:isAdapterSet?}}{{!
+      }}{{/field:hasAdapter?}}{{!
+      }}{{^field:hasAdapter?}}{{!
+        }}byte[]{{!
+      }}{{/field:hasAdapter?}}{{!
     }}{{/type:isBinaryString?}}{{!
     }}{{^type:isBinaryString?}}{{!
       }}{{#type:typedef_type}}{{!
         }}{{#type:self.lastAdapter?}}{{!
-          }}{{type:setAdapter}}{{> AdaptedBoxedType}}{{!
+          }}{{> AdaptedBoxedType}}{{!
         }}{{/type:self.lastAdapter?}}{{!
         }}{{^type:self.lastAdapter?}}{{!
           }}{{type:typeClassName}}{{!
