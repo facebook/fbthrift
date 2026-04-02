@@ -31,7 +31,8 @@
                 {{/type:container?}}
                 {{^type:container?}}
                 {{field:nestedDepth++}}
-                {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _fbthriftVar{{field:nestedDepth}} = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
+                {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _fbthriftVar{{field:nestedDepth}};
+                {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
                 {{field:nestedDepth--}}
                 {{/type:container?}}
                 {{field:nestedDepth++}}
@@ -60,7 +61,8 @@
                 {{/type:container?}}
                 {{^type:container?}}
                 {{field:nestedDepth++}}
-                {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _fbthriftVar{{field:nestedDepth}} = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
+                {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _fbthriftVar{{field:nestedDepth}};
+                {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
                 {{field:nestedDepth--}}
                 {{/type:container?}}
                 {{field:nestedDepth++}}
@@ -115,7 +117,8 @@
                     {{/type:container?}}
                     {{^type:container?}}
                     {{field:nestedDepth++}}
-                    {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _fbthriftVar{{field:nestedDepth}} = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
+                    {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _fbthriftVar{{field:nestedDepth}};
+                    {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
                     {{field:nestedDepth--}}
                     {{/type:container?}}
                     {{/type:key_type}}
@@ -133,7 +136,8 @@
                     {{/type:container?}}
                     {{^type:container?}}
                     {{field:nestedDepth++}}
-                    {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _fbthriftVar{{field:nestedDepth}} = {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
+                    {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _fbthriftVar{{field:nestedDepth}};
+                    {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}};
                     {{field:nestedDepth--}}
                     {{/type:container?}}
                     {{/type:value_type}}

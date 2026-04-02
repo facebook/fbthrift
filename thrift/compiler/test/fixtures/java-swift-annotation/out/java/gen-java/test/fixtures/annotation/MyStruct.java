@@ -306,7 +306,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
 
                             {
                                 
-                                int _fbthriftVar2 = oprot.readI32();
+                                int _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readI32();
                                 
                                 
                                 _fbthriftKey2 = _fbthriftVar2;
@@ -314,7 +315,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                             }
                             {
                                 
-                                long _fbthriftVar2 = oprot.readI64();
+                                long _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readI64();
                                 
                                 
                                 _fbthriftValue2 = _fbthriftVar2;

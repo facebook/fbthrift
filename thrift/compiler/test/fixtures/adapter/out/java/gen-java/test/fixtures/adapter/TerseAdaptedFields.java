@@ -210,7 +210,8 @@ public final class TerseAdaptedFields implements com.facebook.thrift.payload.Thr
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
-                    int _fbthriftVar2 = oprot.readI32();
+                    int _fbthriftVar2;
+                    _fbthriftVar2 = oprot.readI32();
                     
                     
                     _fbthriftVar1.add(_fbthriftVar2);

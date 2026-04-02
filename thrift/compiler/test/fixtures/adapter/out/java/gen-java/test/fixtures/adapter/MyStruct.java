@@ -176,7 +176,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
-                    String _fbthriftVar2 = oprot.readString();
+                    String _fbthriftVar2;
+                    _fbthriftVar2 = oprot.readString();
                     
                     
                     _fbthriftVar1.add(_fbthriftVar2);

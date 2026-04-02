@@ -393,7 +393,8 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
 
                     {
                         
-                        short _fbthriftVar2 = oprot.readI16();
+                        short _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI16();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -401,7 +402,8 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
                     }
                     {
                         
-                        String _fbthriftVar2 = oprot.readString();
+                        String _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readString();
                         
                         
                         _fbthriftValue2 = _fbthriftVar2;
@@ -436,7 +438,8 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
 
                     {
                         
-                        short _fbthriftVar2 = oprot.readI16();
+                        short _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI16();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -444,7 +447,8 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
                     }
                     {
                         
-                        String _fbthriftVar2 = oprot.readString();
+                        String _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readString();
                         
                         
                         _fbthriftValue2 = _fbthriftVar2;
@@ -471,7 +475,8 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    double _fbthriftVar2 = oprot.readDouble();
+                    double _fbthriftVar2;
+                    _fbthriftVar2 = oprot.readDouble();
                     
                     
                     _fbthriftVar1.add(_fbthriftVar2);
@@ -494,7 +499,8 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    double _fbthriftVar2 = oprot.readDouble();
+                    double _fbthriftVar2;
+                    _fbthriftVar2 = oprot.readDouble();
                     
                     
                     _fbthriftVar1.add(_fbthriftVar2);
@@ -525,7 +531,8 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
 
                     {
                         
-                        short _fbthriftVar2 = oprot.readI16();
+                        short _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI16();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -547,7 +554,8 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
                                                     for (int _i3 = 0; (_list3.size < 0) ? oprot.peekList() : (_i3 < _list3.size); _i3++) {
                                                         
                                                         
-                                                        double _fbthriftVar4 = oprot.readDouble();
+                                                        double _fbthriftVar4;
+                                                        _fbthriftVar4 = oprot.readDouble();
                                                         
                                                         
                                                         _fbthriftVar3.add(_fbthriftVar4);

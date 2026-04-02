@@ -420,7 +420,8 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
-                    long _fbthriftVar2 = oprot.readI64();
+                    long _fbthriftVar2;
+                    _fbthriftVar2 = oprot.readI64();
                     
                     
                     _fbthriftVar1.add(_fbthriftVar2);
@@ -459,7 +460,8 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
 
                     {
                         
-                        test.fixtures.optionals.Animal _fbthriftVar2 = test.fixtures.optionals.Animal.fromInteger(oprot.readI32());
+                        test.fixtures.optionals.Animal _fbthriftVar2;
+                        _fbthriftVar2 = test.fixtures.optionals.Animal.fromInteger(oprot.readI32());
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -467,7 +469,8 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
                     }
                     {
                         
-                        String _fbthriftVar2 = oprot.readString();
+                        String _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readString();
                         
                         
                         _fbthriftValue2 = _fbthriftVar2;
@@ -502,7 +505,8 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    test.fixtures.optionals.Vehicle _fbthriftVar2 = test.fixtures.optionals.Vehicle.read0(oprot);
+                    test.fixtures.optionals.Vehicle _fbthriftVar2;
+                    _fbthriftVar2 = test.fixtures.optionals.Vehicle.read0(oprot);
                     
                     
                     _fbthriftVar1.add(_fbthriftVar2);

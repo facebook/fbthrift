@@ -775,7 +775,8 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    long _fbthriftVar2 = oprot.readI64();
+                    long _fbthriftVar2;
+                    _fbthriftVar2 = oprot.readI64();
                     
                     
                     _fbthriftVar1.add(_fbthriftVar2);
@@ -798,7 +799,8 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
-                    long _fbthriftVar2 = oprot.readI64();
+                    long _fbthriftVar2;
+                    _fbthriftVar2 = oprot.readI64();
                     
                     
                     _fbthriftVar1.add(_fbthriftVar2);
@@ -829,7 +831,8 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
 
                     {
                         
-                        long _fbthriftVar2 = oprot.readI64();
+                        long _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI64();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -837,7 +840,8 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
                     }
                     {
                         
-                        long _fbthriftVar2 = oprot.readI64();
+                        long _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI64();
                         
                         
                         _fbthriftValue2 = _fbthriftVar2;
@@ -928,7 +932,8 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    long _fbthriftVar2 = oprot.readI64();
+                    long _fbthriftVar2;
+                    _fbthriftVar2 = oprot.readI64();
                     
                     
                     _fbthriftVar1.add(_fbthriftVar2);
@@ -951,7 +956,8 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
-                    long _fbthriftVar2 = oprot.readI64();
+                    long _fbthriftVar2;
+                    _fbthriftVar2 = oprot.readI64();
                     
                     
                     _fbthriftVar1.add(_fbthriftVar2);
@@ -982,7 +988,8 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
 
                     {
                         
-                        long _fbthriftVar2 = oprot.readI64();
+                        long _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI64();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -990,7 +997,8 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
                     }
                     {
                         
-                        long _fbthriftVar2 = oprot.readI64();
+                        long _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI64();
                         
                         
                         _fbthriftValue2 = _fbthriftVar2;

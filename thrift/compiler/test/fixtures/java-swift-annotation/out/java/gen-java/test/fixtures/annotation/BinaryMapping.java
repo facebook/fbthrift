@@ -172,7 +172,8 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
 
                     {
                         
-                        String _fbthriftVar2 = oprot.readString();
+                        String _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readString();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -180,7 +181,8 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
                     }
                     {
                         
-                        byte[] _fbthriftVar2 = oprot.readBinary().array();
+                        byte[] _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readBinary().array();
                         
                         
                         _fbthriftValue2 = _fbthriftVar2;
@@ -215,7 +217,8 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
 
                     {
                         
-                        String _fbthriftVar2 = oprot.readString();
+                        String _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readString();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -223,7 +226,8 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
                     }
                     {
                         
-                        byte[] _fbthriftVar2 = oprot.readBinary().array();
+                        byte[] _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readBinary().array();
                         
                         
                         _fbthriftValue2 = _fbthriftVar2;

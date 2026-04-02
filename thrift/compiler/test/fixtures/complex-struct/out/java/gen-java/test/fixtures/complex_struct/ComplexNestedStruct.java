@@ -603,7 +603,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                 for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
                                     
                                     
-                                    int _fbthriftVar3 = oprot.readI32();
+                                    int _fbthriftVar3;
+                                    _fbthriftVar3 = oprot.readI32();
                                     
                                     
                                     _fbthriftVar2.add(_fbthriftVar3);
@@ -654,7 +655,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                                                 for (int _i4 = 0; (_list4.size < 0) ? oprot.peekList() : (_i4 < _list4.size); _i4++) {
                                                                     
                                                                     
-                                                                    test.fixtures.complex_struct.MyEnum _fbthriftVar5 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+                                                                    test.fixtures.complex_struct.MyEnum _fbthriftVar5;
+                                                                    _fbthriftVar5 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
                                                                     
                                                                     
                                                                     _fbthriftVar4.add(_fbthriftVar5);
@@ -705,7 +707,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                 for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                     
                                     
-                                    test.fixtures.complex_struct.MyStruct _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                    test.fixtures.complex_struct.MyStruct _fbthriftVar3;
+                                    _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                                     
                                     
                                     _fbthriftVar2.add(_fbthriftVar3);
@@ -749,7 +752,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                                 for (int _i3 = 0; (_list3.size < 0) ? oprot.peekList() : (_i3 < _list3.size); _i3++) {
                                                     
                                                     
-                                                    long _fbthriftVar4 = oprot.readI64();
+                                                    long _fbthriftVar4;
+                                                    _fbthriftVar4 = oprot.readI64();
                                                     
                                                     
                                                     _fbthriftVar3.add(_fbthriftVar4);
@@ -800,7 +804,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                                 for (int _i3 = 0; (_set3.size < 0) ? oprot.peekSet() : (_i3 < _set3.size); _i3++) {
                                                     
                                                     
-                                                    long _fbthriftVar4 = oprot.readI64();
+                                                    long _fbthriftVar4;
+                                                    _fbthriftVar4 = oprot.readI64();
                                                     
                                                     
                                                     _fbthriftVar3.add(_fbthriftVar4);
@@ -845,7 +850,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
 
                     {
                         
-                        int _fbthriftVar2 = oprot.readI32();
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -867,7 +873,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                                     for (int _i3 = 0; (_list3.size < 0) ? oprot.peekList() : (_i3 < _list3.size); _i3++) {
                                                         
                                                         
-                                                        test.fixtures.complex_struct.MyStruct _fbthriftVar4 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                                        test.fixtures.complex_struct.MyStruct _fbthriftVar4;
+                                                        _fbthriftVar4 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                                                         
                                                         
                                                         _fbthriftVar3.add(_fbthriftVar4);
@@ -916,7 +923,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
 
                     {
                         
-                        test.fixtures.complex_struct.MyStruct _fbthriftVar2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                        test.fixtures.complex_struct.MyStruct _fbthriftVar2;
+                        _fbthriftVar2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -924,7 +932,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                     }
                     {
                         
-                        int _fbthriftVar2 = oprot.readI32();
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
                         
                         
                         _fbthriftValue2 = _fbthriftVar2;
@@ -966,7 +975,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
 
                                     {
                                         
-                                        int _fbthriftVar3 = oprot.readI32();
+                                        int _fbthriftVar3;
+                                        _fbthriftVar3 = oprot.readI32();
                                         
                                         
                                         _fbthriftKey3 = _fbthriftVar3;
@@ -974,7 +984,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                     }
                                     {
                                         
-                                        int _fbthriftVar3 = oprot.readI32();
+                                        int _fbthriftVar3;
+                                        _fbthriftVar3 = oprot.readI32();
                                         
                                         
                                         _fbthriftValue3 = _fbthriftVar3;
@@ -1023,7 +1034,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
 
                                     {
                                         
-                                        String _fbthriftVar3 = oprot.readString();
+                                        String _fbthriftVar3;
+                                        _fbthriftVar3 = oprot.readString();
                                         
                                         
                                         _fbthriftKey3 = _fbthriftVar3;
@@ -1038,7 +1050,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                                     for (int _i3 = 0; (_list3.size < 0) ? oprot.peekList() : (_i3 < _list3.size); _i3++) {
                                                         
                                                         
-                                                        test.fixtures.complex_struct.MyStruct _fbthriftVar4 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                                        test.fixtures.complex_struct.MyStruct _fbthriftVar4;
+                                                        _fbthriftVar4 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                                                         
                                                         
                                                         _fbthriftVar3.add(_fbthriftVar4);
@@ -1094,7 +1107,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                     for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
                                         
                                         
-                                        int _fbthriftVar3 = oprot.readI32();
+                                        int _fbthriftVar3;
+                                        _fbthriftVar3 = oprot.readI32();
                                         
                                         
                                         _fbthriftVar2.add(_fbthriftVar3);
@@ -1109,7 +1123,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                     }
                     {
                         
-                        long _fbthriftVar2 = oprot.readI64();
+                        long _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI64();
                         
                         
                         _fbthriftValue2 = _fbthriftVar2;
@@ -1151,7 +1166,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                     for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                         
                                         
-                                        String _fbthriftVar3 = oprot.readString();
+                                        String _fbthriftVar3;
+                                        _fbthriftVar3 = oprot.readString();
                                         
                                         
                                         _fbthriftVar2.add(_fbthriftVar3);
@@ -1166,7 +1182,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                     }
                     {
                         
-                        int _fbthriftVar2 = oprot.readI32();
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
                         
                         
                         _fbthriftValue2 = _fbthriftVar2;
@@ -1216,7 +1233,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
 
                                         {
                                             
-                                            int _fbthriftVar3 = oprot.readI32();
+                                            int _fbthriftVar3;
+                                            _fbthriftVar3 = oprot.readI32();
                                             
                                             
                                             _fbthriftKey3 = _fbthriftVar3;
@@ -1224,7 +1242,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                         }
                                         {
                                             
-                                            String _fbthriftVar3 = oprot.readString();
+                                            String _fbthriftVar3;
+                                            _fbthriftVar3 = oprot.readString();
                                             
                                             
                                             _fbthriftValue3 = _fbthriftVar3;
@@ -1258,7 +1277,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
 
                                         {
                                             
-                                            int _fbthriftVar3 = oprot.readI32();
+                                            int _fbthriftVar3;
+                                            _fbthriftVar3 = oprot.readI32();
                                             
                                             
                                             _fbthriftKey3 = _fbthriftVar3;
@@ -1266,7 +1286,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                         }
                                         {
                                             
-                                            String _fbthriftVar3 = oprot.readString();
+                                            String _fbthriftVar3;
+                                            _fbthriftVar3 = oprot.readString();
                                             
                                             
                                             _fbthriftValue3 = _fbthriftVar3;
@@ -1326,7 +1347,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                                     for (int _i3 = 0; (_list3.size < 0) ? oprot.peekList() : (_i3 < _list3.size); _i3++) {
                                                         
                                                         
-                                                        int _fbthriftVar4 = oprot.readI32();
+                                                        int _fbthriftVar4;
+                                                        _fbthriftVar4 = oprot.readI32();
                                                         
                                                         
                                                         _fbthriftVar3.add(_fbthriftVar4);
@@ -1377,7 +1399,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                                                         for (int _i4 = 0; (_set4.size < 0) ? oprot.peekSet() : (_i4 < _set4.size); _i4++) {
                                                                             
                                                                             
-                                                                            String _fbthriftVar5 = oprot.readString();
+                                                                            String _fbthriftVar5;
+                                                                            _fbthriftVar5 = oprot.readString();
                                                                             
                                                                             
                                                                             _fbthriftVar4.add(_fbthriftVar5);
@@ -1399,7 +1422,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                         }
                                         {
                                             
-                                            String _fbthriftVar3 = oprot.readString();
+                                            String _fbthriftVar3;
+                                            _fbthriftVar3 = oprot.readString();
                                             
                                             
                                             _fbthriftValue3 = _fbthriftVar3;
@@ -1475,7 +1499,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
 
                                                             {
                                                                 
-                                                                int _fbthriftVar4 = oprot.readI32();
+                                                                int _fbthriftVar4;
+                                                                _fbthriftVar4 = oprot.readI32();
                                                                 
                                                                 
                                                                 _fbthriftKey4 = _fbthriftVar4;
@@ -1483,7 +1508,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                                             }
                                                             {
                                                                 
-                                                                String _fbthriftVar4 = oprot.readString();
+                                                                String _fbthriftVar4;
+                                                                _fbthriftVar4 = oprot.readString();
                                                                 
                                                                 
                                                                 _fbthriftValue4 = _fbthriftVar4;
@@ -1502,7 +1528,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                         }
                                         {
                                             
-                                            String _fbthriftVar3 = oprot.readString();
+                                            String _fbthriftVar3;
+                                            _fbthriftVar3 = oprot.readString();
                                             
                                             
                                             _fbthriftValue3 = _fbthriftVar3;
@@ -1536,7 +1563,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
 
                                         {
                                             
-                                            int _fbthriftVar3 = oprot.readI32();
+                                            int _fbthriftVar3;
+                                            _fbthriftVar3 = oprot.readI32();
                                             
                                             
                                             _fbthriftKey3 = _fbthriftVar3;
@@ -1544,7 +1572,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                         }
                                         {
                                             
-                                            String _fbthriftVar3 = oprot.readString();
+                                            String _fbthriftVar3;
+                                            _fbthriftVar3 = oprot.readString();
                                             
                                             
                                             _fbthriftValue3 = _fbthriftVar3;
@@ -1590,7 +1619,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
 
                     {
                         
-                        int _fbthriftVar2 = oprot.readI32();
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -1605,7 +1635,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                     for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                         
                                         
-                                        test.fixtures.complex_struct.MyStruct _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                        test.fixtures.complex_struct.MyStruct _fbthriftVar3;
+                                        _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                                         
                                         
                                         _fbthriftVar2.add(_fbthriftVar3);
@@ -1647,7 +1678,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
 
                     {
                         
-                        int _fbthriftVar2 = oprot.readI32();
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -1662,7 +1694,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                     for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
                                         
                                         
-                                        boolean _fbthriftVar3 = oprot.readBool();
+                                        boolean _fbthriftVar3;
+                                        _fbthriftVar3 = oprot.readBool();
                                         
                                         
                                         _fbthriftVar2.add(_fbthriftVar3);
@@ -1711,7 +1744,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                     for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
                                         
                                         
-                                        boolean _fbthriftVar3 = oprot.readBool();
+                                        boolean _fbthriftVar3;
+                                        _fbthriftVar3 = oprot.readBool();
                                         
                                         
                                         _fbthriftVar2.add(_fbthriftVar3);
@@ -1726,7 +1760,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                     }
                     {
                         
-                        test.fixtures.complex_struct.MyEnum _fbthriftVar2 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+                        test.fixtures.complex_struct.MyEnum _fbthriftVar2;
+                        _fbthriftVar2 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
                         
                         
                         _fbthriftValue2 = _fbthriftVar2;
@@ -1768,7 +1803,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                     for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                         
                                         
-                                        int _fbthriftVar3 = oprot.readI32();
+                                        int _fbthriftVar3;
+                                        _fbthriftVar3 = oprot.readI32();
                                         
                                         
                                         _fbthriftVar2.add(_fbthriftVar3);
@@ -1805,7 +1841,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
 
                                                         {
                                                             
-                                                            double _fbthriftVar4 = oprot.readDouble();
+                                                            double _fbthriftVar4;
+                                                            _fbthriftVar4 = oprot.readDouble();
                                                             
                                                             
                                                             _fbthriftKey4 = _fbthriftVar4;
@@ -1813,7 +1850,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                                         }
                                                         {
                                                             
-                                                            String _fbthriftVar4 = oprot.readString();
+                                                            String _fbthriftVar4;
+                                                            _fbthriftVar4 = oprot.readString();
                                                             
                                                             
                                                             _fbthriftValue4 = _fbthriftVar4;

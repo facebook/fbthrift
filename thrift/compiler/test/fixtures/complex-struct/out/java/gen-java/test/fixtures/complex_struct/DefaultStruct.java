@@ -896,7 +896,8 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
 
                     {
                         
-                        int _fbthriftVar2 = oprot.readI32();
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -904,7 +905,8 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
                     }
                     {
                         
-                        String _fbthriftVar2 = oprot.readString();
+                        String _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readString();
                         
                         
                         _fbthriftValue2 = _fbthriftVar2;
@@ -931,7 +933,8 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    test.fixtures.complex_struct.MyEnum _fbthriftVar2 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+                    test.fixtures.complex_struct.MyEnum _fbthriftVar2;
+                    _fbthriftVar2 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
                     
                     
                     _fbthriftVar1.add(_fbthriftVar2);
@@ -954,7 +957,8 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
-                    String _fbthriftVar2 = oprot.readString();
+                    String _fbthriftVar2;
+                    _fbthriftVar2 = oprot.readString();
                     
                     
                     _fbthriftVar1.add(_fbthriftVar2);
@@ -985,7 +989,8 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    test.fixtures.complex_struct.SimpleStruct _fbthriftVar2 = test.fixtures.complex_struct.SimpleStruct.read0(oprot);
+                    test.fixtures.complex_struct.SimpleStruct _fbthriftVar2;
+                    _fbthriftVar2 = test.fixtures.complex_struct.SimpleStruct.read0(oprot);
                     
                     
                     _fbthriftVar1.add(_fbthriftVar2);
@@ -1016,7 +1021,8 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    test.fixtures.complex_struct.MyUnion _fbthriftVar2 = test.fixtures.complex_struct.MyUnion.read0(oprot);
+                    test.fixtures.complex_struct.MyUnion _fbthriftVar2;
+                    _fbthriftVar2 = test.fixtures.complex_struct.MyUnion.read0(oprot);
                     
                     
                     _fbthriftVar1.add(_fbthriftVar2);
@@ -1047,7 +1053,8 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
 
                     {
                         
-                        int _fbthriftVar2 = oprot.readI32();
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -1062,7 +1069,8 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
                                     for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                         
                                         
-                                        test.fixtures.complex_struct.SimpleStruct _fbthriftVar3 = test.fixtures.complex_struct.SimpleStruct.read0(oprot);
+                                        test.fixtures.complex_struct.SimpleStruct _fbthriftVar3;
+                                        _fbthriftVar3 = test.fixtures.complex_struct.SimpleStruct.read0(oprot);
                                         
                                         
                                         _fbthriftVar2.add(_fbthriftVar3);
@@ -1104,7 +1112,8 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
 
                             {
                                 
-                                long _fbthriftVar2 = oprot.readI64();
+                                long _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readI64();
                                 
                                 
                                 _fbthriftKey2 = _fbthriftVar2;
@@ -1112,7 +1121,8 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
                             }
                             {
                                 
-                                String _fbthriftVar2 = oprot.readString();
+                                String _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readString();
                                 
                                 
                                 _fbthriftValue2 = _fbthriftVar2;
@@ -1147,7 +1157,8 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
 
                     {
                         
-                        long _fbthriftVar2 = oprot.readI64();
+                        long _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI64();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -1155,7 +1166,8 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
                     }
                     {
                         
-                        int _fbthriftVar2 = oprot.readI32();
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
                         
                         
                         _fbthriftValue2 = _fbthriftVar2;
@@ -1190,7 +1202,8 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
 
                     {
                         
-                        String _fbthriftVar2 = oprot.readString();
+                        String _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readString();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -1213,7 +1226,8 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
 
                                         {
                                             
-                                            int _fbthriftVar3 = oprot.readI32();
+                                            int _fbthriftVar3;
+                                            _fbthriftVar3 = oprot.readI32();
                                             
                                             
                                             _fbthriftKey3 = _fbthriftVar3;
@@ -1221,7 +1235,8 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
                                         }
                                         {
                                             
-                                            test.fixtures.complex_struct.MyEnum _fbthriftVar3 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+                                            test.fixtures.complex_struct.MyEnum _fbthriftVar3;
+                                            _fbthriftVar3 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
                                             
                                             
                                             _fbthriftValue3 = _fbthriftVar3;

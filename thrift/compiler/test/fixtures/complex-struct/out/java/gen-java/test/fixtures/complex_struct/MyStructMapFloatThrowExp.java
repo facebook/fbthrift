@@ -180,7 +180,8 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
 
                     {
                         
-                        int _fbthriftVar2 = oprot.readI32();
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -202,7 +203,8 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
                                                     for (int _i3 = 0; (_list3.size < 0) ? oprot.peekList() : (_i3 < _list3.size); _i3++) {
                                                         
                                                         
-                                                        float _fbthriftVar4 = oprot.readFloat();
+                                                        float _fbthriftVar4;
+                                                        _fbthriftVar4 = oprot.readFloat();
                                                         
                                                         
                                                         _fbthriftVar3.add(_fbthriftVar4);

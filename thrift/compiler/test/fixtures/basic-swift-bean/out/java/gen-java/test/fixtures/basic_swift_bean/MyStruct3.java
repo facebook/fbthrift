@@ -559,7 +559,8 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
-                    String _fbthriftVar2 = oprot.readString();
+                    String _fbthriftVar2;
+                    _fbthriftVar2 = oprot.readString();
                     
                     
                     _fbthriftVar1.add(_fbthriftVar2);
@@ -590,7 +591,8 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar2 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
+                    test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar2;
+                    _fbthriftVar2 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
                     
                     
                     _fbthriftVar1.add(_fbthriftVar2);
@@ -621,7 +623,8 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
 
                     {
                         
-                        int _fbthriftVar2 = oprot.readI32();
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -636,7 +639,8 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
                                     for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                         
                                         
-                                        test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar3 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
+                                        test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar3;
+                                        _fbthriftVar3 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
                                         
                                         
                                         _fbthriftVar2.add(_fbthriftVar3);
@@ -670,7 +674,8 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar2 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
+                    test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar2;
+                    _fbthriftVar2 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
                     
                     
                     _fbthriftVar1.add(_fbthriftVar2);
@@ -701,7 +706,8 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
 
                     {
                         
-                        int _fbthriftVar2 = oprot.readI32();
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -716,7 +722,8 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
                                     for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                         
                                         
-                                        test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar3 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
+                                        test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar3;
+                                        _fbthriftVar3 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
                                         
                                         
                                         _fbthriftVar2.add(_fbthriftVar3);

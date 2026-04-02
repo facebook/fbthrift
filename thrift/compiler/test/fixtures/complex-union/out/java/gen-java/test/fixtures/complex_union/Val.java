@@ -215,7 +215,8 @@ public final class Val implements com.facebook.thrift.payload.ThriftSerializable
 
                     {
                         
-                        short _fbthriftVar2 = oprot.readI16();
+                        short _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI16();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -223,7 +224,8 @@ public final class Val implements com.facebook.thrift.payload.ThriftSerializable
                     }
                     {
                         
-                        String _fbthriftVar2 = oprot.readString();
+                        String _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readString();
                         
                         
                         _fbthriftValue2 = _fbthriftVar2;

@@ -1109,7 +1109,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    test.fixtures.complex_struct.MyStruct _fbthriftVar2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                    test.fixtures.complex_struct.MyStruct _fbthriftVar2;
+                    _fbthriftVar2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                     
                     
                     _fbthriftVar1.add(_fbthriftVar2);
@@ -1132,7 +1133,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    test.fixtures.complex_struct.MyUnion _fbthriftVar2 = test.fixtures.complex_struct.MyUnion.read0(oprot);
+                    test.fixtures.complex_struct.MyUnion _fbthriftVar2;
+                    _fbthriftVar2 = test.fixtures.complex_struct.MyUnion.read0(oprot);
                     
                     
                     _fbthriftVar1.add(_fbthriftVar2);
@@ -1155,7 +1157,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    test.fixtures.complex_struct.MyEnum _fbthriftVar2 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+                    test.fixtures.complex_struct.MyEnum _fbthriftVar2;
+                    _fbthriftVar2 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
                     
                     
                     _fbthriftVar1.add(_fbthriftVar2);
@@ -1178,7 +1181,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
-                    test.fixtures.complex_struct.MyStruct _fbthriftVar2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                    test.fixtures.complex_struct.MyStruct _fbthriftVar2;
+                    _fbthriftVar2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                     
                     
                     _fbthriftVar1.add(_fbthriftVar2);
@@ -1201,7 +1205,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
-                    test.fixtures.complex_struct.MyUnion _fbthriftVar2 = test.fixtures.complex_struct.MyUnion.read0(oprot);
+                    test.fixtures.complex_struct.MyUnion _fbthriftVar2;
+                    _fbthriftVar2 = test.fixtures.complex_struct.MyUnion.read0(oprot);
                     
                     
                     _fbthriftVar1.add(_fbthriftVar2);
@@ -1224,7 +1229,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
-                    test.fixtures.complex_struct.MyEnum _fbthriftVar2 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+                    test.fixtures.complex_struct.MyEnum _fbthriftVar2;
+                    _fbthriftVar2 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
                     
                     
                     _fbthriftVar1.add(_fbthriftVar2);
@@ -1255,7 +1261,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
                     {
                         
-                        test.fixtures.complex_struct.MyStruct _fbthriftVar2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                        test.fixtures.complex_struct.MyStruct _fbthriftVar2;
+                        _fbthriftVar2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -1263,7 +1270,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                     }
                     {
                         
-                        long _fbthriftVar2 = oprot.readI64();
+                        long _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI64();
                         
                         
                         _fbthriftValue2 = _fbthriftVar2;
@@ -1298,7 +1306,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
                     {
                         
-                        test.fixtures.complex_struct.MyUnion _fbthriftVar2 = test.fixtures.complex_struct.MyUnion.read0(oprot);
+                        test.fixtures.complex_struct.MyUnion _fbthriftVar2;
+                        _fbthriftVar2 = test.fixtures.complex_struct.MyUnion.read0(oprot);
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -1306,7 +1315,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                     }
                     {
                         
-                        long _fbthriftVar2 = oprot.readI64();
+                        long _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI64();
                         
                         
                         _fbthriftValue2 = _fbthriftVar2;
@@ -1341,7 +1351,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
                     {
                         
-                        test.fixtures.complex_struct.MyEnum _fbthriftVar2 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+                        test.fixtures.complex_struct.MyEnum _fbthriftVar2;
+                        _fbthriftVar2 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -1349,7 +1360,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                     }
                     {
                         
-                        long _fbthriftVar2 = oprot.readI64();
+                        long _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI64();
                         
                         
                         _fbthriftValue2 = _fbthriftVar2;
@@ -1384,7 +1396,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
                     {
                         
-                        int _fbthriftVar2 = oprot.readI32();
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -1392,7 +1405,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                     }
                     {
                         
-                        test.fixtures.complex_struct.MyStruct _fbthriftVar2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                        test.fixtures.complex_struct.MyStruct _fbthriftVar2;
+                        _fbthriftVar2 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                         
                         
                         _fbthriftValue2 = _fbthriftVar2;
@@ -1427,7 +1441,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
                     {
                         
-                        int _fbthriftVar2 = oprot.readI32();
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -1435,7 +1450,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                     }
                     {
                         
-                        test.fixtures.complex_struct.MyUnion _fbthriftVar2 = test.fixtures.complex_struct.MyUnion.read0(oprot);
+                        test.fixtures.complex_struct.MyUnion _fbthriftVar2;
+                        _fbthriftVar2 = test.fixtures.complex_struct.MyUnion.read0(oprot);
                         
                         
                         _fbthriftValue2 = _fbthriftVar2;
@@ -1470,7 +1486,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
                     {
                         
-                        int _fbthriftVar2 = oprot.readI32();
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -1478,7 +1495,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                     }
                     {
                         
-                        test.fixtures.complex_struct.MyEnum _fbthriftVar2 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+                        test.fixtures.complex_struct.MyEnum _fbthriftVar2;
+                        _fbthriftVar2 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
                         
                         
                         _fbthriftValue2 = _fbthriftVar2;
@@ -1520,7 +1538,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                     for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                         
                                         
-                                        int _fbthriftVar3 = oprot.readI32();
+                                        int _fbthriftVar3;
+                                        _fbthriftVar3 = oprot.readI32();
                                         
                                         
                                         _fbthriftVar2.add(_fbthriftVar3);
@@ -1535,7 +1554,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                     }
                     {
                         
-                        int _fbthriftVar2 = oprot.readI32();
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
                         
                         
                         _fbthriftValue2 = _fbthriftVar2;
@@ -1570,7 +1590,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
                     {
                         
-                        int _fbthriftVar2 = oprot.readI32();
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -1585,7 +1606,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                     for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                         
                                         
-                                        int _fbthriftVar3 = oprot.readI32();
+                                        int _fbthriftVar3;
+                                        _fbthriftVar3 = oprot.readI32();
                                         
                                         
                                         _fbthriftVar2.add(_fbthriftVar3);
@@ -1634,7 +1656,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                     for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
                                         
                                         
-                                        int _fbthriftVar3 = oprot.readI32();
+                                        int _fbthriftVar3;
+                                        _fbthriftVar3 = oprot.readI32();
                                         
                                         
                                         _fbthriftVar2.add(_fbthriftVar3);
@@ -1649,7 +1672,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                     }
                     {
                         
-                        int _fbthriftVar2 = oprot.readI32();
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
                         
                         
                         _fbthriftValue2 = _fbthriftVar2;
@@ -1684,7 +1708,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
                     {
                         
-                        int _fbthriftVar2 = oprot.readI32();
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -1699,7 +1724,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                     for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
                                         
                                         
-                                        int _fbthriftVar3 = oprot.readI32();
+                                        int _fbthriftVar3;
+                                        _fbthriftVar3 = oprot.readI32();
                                         
                                         
                                         _fbthriftVar2.add(_fbthriftVar3);
@@ -1756,7 +1782,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
                                         {
                                             
-                                            int _fbthriftVar3 = oprot.readI32();
+                                            int _fbthriftVar3;
+                                            _fbthriftVar3 = oprot.readI32();
                                             
                                             
                                             _fbthriftKey3 = _fbthriftVar3;
@@ -1764,7 +1791,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                         }
                                         {
                                             
-                                            int _fbthriftVar3 = oprot.readI32();
+                                            int _fbthriftVar3;
+                                            _fbthriftVar3 = oprot.readI32();
                                             
                                             
                                             _fbthriftValue3 = _fbthriftVar3;
@@ -1783,7 +1811,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                     }
                     {
                         
-                        int _fbthriftVar2 = oprot.readI32();
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
                         
                         
                         _fbthriftValue2 = _fbthriftVar2;
@@ -1818,7 +1847,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
                     {
                         
-                        int _fbthriftVar2 = oprot.readI32();
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -1841,7 +1871,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
                                         {
                                             
-                                            int _fbthriftVar3 = oprot.readI32();
+                                            int _fbthriftVar3;
+                                            _fbthriftVar3 = oprot.readI32();
                                             
                                             
                                             _fbthriftKey3 = _fbthriftVar3;
@@ -1849,7 +1880,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                         }
                                         {
                                             
-                                            int _fbthriftVar3 = oprot.readI32();
+                                            int _fbthriftVar3;
+                                            _fbthriftVar3 = oprot.readI32();
                                             
                                             
                                             _fbthriftValue3 = _fbthriftVar3;
@@ -1894,7 +1926,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                 for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                     
                                     
-                                    int _fbthriftVar3 = oprot.readI32();
+                                    int _fbthriftVar3;
+                                    _fbthriftVar3 = oprot.readI32();
                                     
                                     
                                     _fbthriftVar2.add(_fbthriftVar3);
@@ -1931,7 +1964,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                 for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                     
                                     
-                                    test.fixtures.complex_struct.MyStruct _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                    test.fixtures.complex_struct.MyStruct _fbthriftVar3;
+                                    _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                                     
                                     
                                     _fbthriftVar2.add(_fbthriftVar3);
@@ -1968,7 +2002,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                 for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
                                     
                                     
-                                    int _fbthriftVar3 = oprot.readI32();
+                                    int _fbthriftVar3;
+                                    _fbthriftVar3 = oprot.readI32();
                                     
                                     
                                     _fbthriftVar2.add(_fbthriftVar3);
@@ -2005,7 +2040,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                 for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
                                     
                                     
-                                    test.fixtures.complex_struct.MyStruct _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                    test.fixtures.complex_struct.MyStruct _fbthriftVar3;
+                                    _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                                     
                                     
                                     _fbthriftVar2.add(_fbthriftVar3);
@@ -2050,7 +2086,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
                                     {
                                         
-                                        int _fbthriftVar3 = oprot.readI32();
+                                        int _fbthriftVar3;
+                                        _fbthriftVar3 = oprot.readI32();
                                         
                                         
                                         _fbthriftKey3 = _fbthriftVar3;
@@ -2058,7 +2095,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                     }
                                     {
                                         
-                                        int _fbthriftVar3 = oprot.readI32();
+                                        int _fbthriftVar3;
+                                        _fbthriftVar3 = oprot.readI32();
                                         
                                         
                                         _fbthriftValue3 = _fbthriftVar3;
@@ -2107,7 +2145,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
                                     {
                                         
-                                        int _fbthriftVar3 = oprot.readI32();
+                                        int _fbthriftVar3;
+                                        _fbthriftVar3 = oprot.readI32();
                                         
                                         
                                         _fbthriftKey3 = _fbthriftVar3;
@@ -2115,7 +2154,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                     }
                                     {
                                         
-                                        test.fixtures.complex_struct.MyStruct _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                        test.fixtures.complex_struct.MyStruct _fbthriftVar3;
+                                        _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                                         
                                         
                                         _fbthriftValue3 = _fbthriftVar3;
@@ -2164,7 +2204,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
                                     {
                                         
-                                        test.fixtures.complex_struct.MyStruct _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                        test.fixtures.complex_struct.MyStruct _fbthriftVar3;
+                                        _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                                         
                                         
                                         _fbthriftKey3 = _fbthriftVar3;
@@ -2172,7 +2213,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                     }
                                     {
                                         
-                                        int _fbthriftVar3 = oprot.readI32();
+                                        int _fbthriftVar3;
+                                        _fbthriftVar3 = oprot.readI32();
                                         
                                         
                                         _fbthriftValue3 = _fbthriftVar3;
@@ -2213,7 +2255,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                 for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                     
                                     
-                                    int _fbthriftVar3 = oprot.readI32();
+                                    int _fbthriftVar3;
+                                    _fbthriftVar3 = oprot.readI32();
                                     
                                     
                                     _fbthriftVar2.add(_fbthriftVar3);
@@ -2250,7 +2293,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                 for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                     
                                     
-                                    test.fixtures.complex_struct.MyStruct _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                    test.fixtures.complex_struct.MyStruct _fbthriftVar3;
+                                    _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                                     
                                     
                                     _fbthriftVar2.add(_fbthriftVar3);
@@ -2287,7 +2331,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                 for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
                                     
                                     
-                                    int _fbthriftVar3 = oprot.readI32();
+                                    int _fbthriftVar3;
+                                    _fbthriftVar3 = oprot.readI32();
                                     
                                     
                                     _fbthriftVar2.add(_fbthriftVar3);
@@ -2324,7 +2369,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                 for (int _i2 = 0; (_set2.size < 0) ? oprot.peekSet() : (_i2 < _set2.size); _i2++) {
                                     
                                     
-                                    test.fixtures.complex_struct.MyStruct _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                    test.fixtures.complex_struct.MyStruct _fbthriftVar3;
+                                    _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                                     
                                     
                                     _fbthriftVar2.add(_fbthriftVar3);
@@ -2369,7 +2415,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
                                     {
                                         
-                                        int _fbthriftVar3 = oprot.readI32();
+                                        int _fbthriftVar3;
+                                        _fbthriftVar3 = oprot.readI32();
                                         
                                         
                                         _fbthriftKey3 = _fbthriftVar3;
@@ -2377,7 +2424,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                     }
                                     {
                                         
-                                        int _fbthriftVar3 = oprot.readI32();
+                                        int _fbthriftVar3;
+                                        _fbthriftVar3 = oprot.readI32();
                                         
                                         
                                         _fbthriftValue3 = _fbthriftVar3;
@@ -2426,7 +2474,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
                                     {
                                         
-                                        int _fbthriftVar3 = oprot.readI32();
+                                        int _fbthriftVar3;
+                                        _fbthriftVar3 = oprot.readI32();
                                         
                                         
                                         _fbthriftKey3 = _fbthriftVar3;
@@ -2434,7 +2483,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                     }
                                     {
                                         
-                                        test.fixtures.complex_struct.MyStruct _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                        test.fixtures.complex_struct.MyStruct _fbthriftVar3;
+                                        _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                                         
                                         
                                         _fbthriftValue3 = _fbthriftVar3;
@@ -2483,7 +2533,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
                                     {
                                         
-                                        test.fixtures.complex_struct.MyStruct _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                        test.fixtures.complex_struct.MyStruct _fbthriftVar3;
+                                        _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                                         
                                         
                                         _fbthriftKey3 = _fbthriftVar3;
@@ -2491,7 +2542,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                     }
                                     {
                                         
-                                        int _fbthriftVar3 = oprot.readI32();
+                                        int _fbthriftVar3;
+                                        _fbthriftVar3 = oprot.readI32();
                                         
                                         
                                         _fbthriftValue3 = _fbthriftVar3;
@@ -2533,7 +2585,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
                     {
                         
-                        int _fbthriftVar2 = oprot.readI32();
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -2556,7 +2609,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
                                         {
                                             
-                                            int _fbthriftVar3 = oprot.readI32();
+                                            int _fbthriftVar3;
+                                            _fbthriftVar3 = oprot.readI32();
                                             
                                             
                                             _fbthriftKey3 = _fbthriftVar3;
@@ -2564,7 +2618,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                         }
                                         {
                                             
-                                            int _fbthriftVar3 = oprot.readI32();
+                                            int _fbthriftVar3;
+                                            _fbthriftVar3 = oprot.readI32();
                                             
                                             
                                             _fbthriftValue3 = _fbthriftVar3;
@@ -2610,7 +2665,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
                     {
                         
-                        int _fbthriftVar2 = oprot.readI32();
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -2633,7 +2689,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
                                         {
                                             
-                                            test.fixtures.complex_struct.MyStruct _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                            test.fixtures.complex_struct.MyStruct _fbthriftVar3;
+                                            _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                                             
                                             
                                             _fbthriftKey3 = _fbthriftVar3;
@@ -2641,7 +2698,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                         }
                                         {
                                             
-                                            int _fbthriftVar3 = oprot.readI32();
+                                            int _fbthriftVar3;
+                                            _fbthriftVar3 = oprot.readI32();
                                             
                                             
                                             _fbthriftValue3 = _fbthriftVar3;
@@ -2687,7 +2745,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
                     {
                         
-                        int _fbthriftVar2 = oprot.readI32();
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -2710,7 +2769,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
                                         {
                                             
-                                            int _fbthriftVar3 = oprot.readI32();
+                                            int _fbthriftVar3;
+                                            _fbthriftVar3 = oprot.readI32();
                                             
                                             
                                             _fbthriftKey3 = _fbthriftVar3;
@@ -2718,7 +2778,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                         }
                                         {
                                             
-                                            test.fixtures.complex_struct.MyStruct _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                            test.fixtures.complex_struct.MyStruct _fbthriftVar3;
+                                            _fbthriftVar3 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                                             
                                             
                                             _fbthriftValue3 = _fbthriftVar3;
@@ -2764,7 +2825,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
                     {
                         
-                        int _fbthriftVar2 = oprot.readI32();
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -2794,7 +2856,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
                                                         {
                                                             
-                                                            int _fbthriftVar4 = oprot.readI32();
+                                                            int _fbthriftVar4;
+                                                            _fbthriftVar4 = oprot.readI32();
                                                             
                                                             
                                                             _fbthriftKey4 = _fbthriftVar4;
@@ -2802,7 +2865,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                                         }
                                                         {
                                                             
-                                                            int _fbthriftVar4 = oprot.readI32();
+                                                            int _fbthriftVar4;
+                                                            _fbthriftVar4 = oprot.readI32();
                                                             
                                                             
                                                             _fbthriftValue4 = _fbthriftVar4;
@@ -2855,7 +2919,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
                     {
                         
-                        int _fbthriftVar2 = oprot.readI32();
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -2885,7 +2950,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
                                                         {
                                                             
-                                                            test.fixtures.complex_struct.MyStruct _fbthriftVar4 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                                                            test.fixtures.complex_struct.MyStruct _fbthriftVar4;
+                                                            _fbthriftVar4 = test.fixtures.complex_struct.MyStruct.read0(oprot);
                                                             
                                                             
                                                             _fbthriftKey4 = _fbthriftVar4;
@@ -2893,7 +2959,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                                         }
                                                         {
                                                             
-                                                            int _fbthriftVar4 = oprot.readI32();
+                                                            int _fbthriftVar4;
+                                                            _fbthriftVar4 = oprot.readI32();
                                                             
                                                             
                                                             _fbthriftValue4 = _fbthriftVar4;

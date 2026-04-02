@@ -226,7 +226,8 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
 
                             {
                                 
-                                long _fbthriftVar2 = oprot.readI64();
+                                long _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readI64();
                                 
                                 
                                 _fbthriftKey2 = _fbthriftVar2;
@@ -234,7 +235,8 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
                             }
                             {
                                 
-                                String _fbthriftVar2 = oprot.readString();
+                                String _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readString();
                                 
                                 
                                 _fbthriftValue2 = _fbthriftVar2;
@@ -269,7 +271,8 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
 
                             {
                                 
-                                int _fbthriftVar2 = oprot.readI32();
+                                int _fbthriftVar2;
+                                _fbthriftVar2 = oprot.readI32();
                                 
                                 
                                 _fbthriftKey2 = _fbthriftVar2;
@@ -292,7 +295,8 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
 
                                                 {
                                                     
-                                                    int _fbthriftVar3 = oprot.readI32();
+                                                    int _fbthriftVar3;
+                                                    _fbthriftVar3 = oprot.readI32();
                                                     
                                                     
                                                     _fbthriftKey3 = _fbthriftVar3;
@@ -300,7 +304,8 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
                                                 }
                                                 {
                                                     
-                                                    long _fbthriftVar3 = oprot.readI64();
+                                                    long _fbthriftVar3;
+                                                    _fbthriftVar3 = oprot.readI64();
                                                     
                                                     
                                                     _fbthriftValue3 = _fbthriftVar3;
@@ -346,7 +351,8 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
 
                     {
                         
-                        String _fbthriftVar2 = oprot.readString();
+                        String _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readString();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -354,7 +360,8 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
                     }
                     {
                         
-                        byte[] _fbthriftVar2 = oprot.readBinary().array();
+                        byte[] _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readBinary().array();
                         
                         
                         _fbthriftValue2 = _fbthriftVar2;
@@ -389,7 +396,8 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
 
                     {
                         
-                        String _fbthriftVar2 = oprot.readString();
+                        String _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readString();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -397,7 +405,8 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
                     }
                     {
                         
-                        byte[] _fbthriftVar2 = oprot.readBinary().array();
+                        byte[] _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readBinary().array();
                         
                         
                         _fbthriftValue2 = _fbthriftVar2;

@@ -21,18 +21,27 @@
 
   }}{{#type:typedef?}}{{!
     }}{{#type:isBinaryString?}}{{!
-      }}{{#type:isAdapterSet?}}io.netty.buffer.ByteBuf{{/type:isAdapterSet?}}{{!
-      }}{{^type:isAdapterSet?}}{{#field:hasAdapter?}}io.netty.buffer.ByteBuf{{/field:hasAdapter?}}{{^field:hasAdapter?}}byte[]{{/field:hasAdapter?}}{{/type:isAdapterSet?}}{{!
+      }}{{#type:isAdapterSet?}}{{!
+        }}io.netty.buffer.ByteBuf{{!
+      }}{{/type:isAdapterSet?}}{{!
+      }}{{^type:isAdapterSet?}}{{!
+        }}{{#field:hasAdapter?}}{{!
+          }}io.netty.buffer.ByteBuf{{!
+        }}{{/field:hasAdapter?}}{{!
+        }}{{^field:hasAdapter?}}{{!
+          }}byte[]{{!
+        }}{{/field:hasAdapter?}}{{!
+      }}{{/type:isAdapterSet?}}{{!
     }}{{/type:isBinaryString?}}{{!
     }}{{^type:isBinaryString?}}{{!
-    }}{{#type:typedef_type}}{{!
-      }}{{#type:self.lastAdapter?}}{{!
-        }}{{type:setAdapter}}{{> AdaptedBoxedType}}{{!
-      }}{{/type:self.lastAdapter?}}{{!
-      }}{{^type:self.lastAdapter?}}{{!
-        }}{{type:typeClassName}}{{!
-      }}{{/type:self.lastAdapter?}}{{!
-    }}{{/type:typedef_type}}{{!
+      }}{{#type:typedef_type}}{{!
+        }}{{#type:self.lastAdapter?}}{{!
+          }}{{type:setAdapter}}{{> AdaptedBoxedType}}{{!
+        }}{{/type:self.lastAdapter?}}{{!
+        }}{{^type:self.lastAdapter?}}{{!
+          }}{{type:typeClassName}}{{!
+        }}{{/type:self.lastAdapter?}}{{!
+      }}{{/type:typedef_type}}{{!
     }}{{/type:isBinaryString?}}{{!
   }}{{/type:typedef?}}{{!
   }}{{^type:typedef?}}{{!

@@ -422,7 +422,8 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
                                 for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                     
                                     
-                                    float _fbthriftVar3 = oprot.readFloat();
+                                    float _fbthriftVar3;
+                                    _fbthriftVar3 = oprot.readFloat();
                                     
                                     
                                     _fbthriftVar2.add(_fbthriftVar3);

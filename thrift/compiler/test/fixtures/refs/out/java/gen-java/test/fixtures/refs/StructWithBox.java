@@ -199,7 +199,8 @@ public final class StructWithBox implements com.facebook.thrift.payload.ThriftSe
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    long _fbthriftVar2 = oprot.readI64();
+                    long _fbthriftVar2;
+                    _fbthriftVar2 = oprot.readI64();
                     
                     
                     _fbthriftVar1.add(_fbthriftVar2);

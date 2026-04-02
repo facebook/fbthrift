@@ -555,7 +555,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
-                    String _fbthriftVar2 = oprot.readString();
+                    String _fbthriftVar2;
+                    _fbthriftVar2 = oprot.readString();
                     
                     
                     _fbthriftVar1.add(_fbthriftVar2);
@@ -578,7 +579,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
-                    String _fbthriftVar2 = oprot.readString();
+                    String _fbthriftVar2;
+                    _fbthriftVar2 = oprot.readString();
                     
                     
                     _fbthriftVar1.add(_fbthriftVar2);
@@ -609,7 +611,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
 
                     {
                         
-                        String _fbthriftVar2 = oprot.readString();
+                        String _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readString();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -624,7 +627,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                                     for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                         
                                         
-                                        String _fbthriftVar3 = oprot.readString();
+                                        String _fbthriftVar3;
+                                        _fbthriftVar3 = oprot.readString();
                                         
                                         
                                         _fbthriftVar2.add(__StringWithAdapter_Adapter.fromThrift(_fbthriftVar3));
@@ -666,7 +670,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
 
                     {
                         
-                        String _fbthriftVar2 = oprot.readString();
+                        String _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readString();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -681,7 +686,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                                     for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
                                         
                                         
-                                        String _fbthriftVar3 = oprot.readString();
+                                        String _fbthriftVar3;
+                                        _fbthriftVar3 = oprot.readString();
                                         
                                         
                                         _fbthriftVar2.add(__StringWithAdapter_Adapter.fromThrift(_fbthriftVar3));
@@ -747,7 +753,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                 for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
                     
                     
-                    int _fbthriftVar2 = oprot.readI32();
+                    int _fbthriftVar2;
+                    _fbthriftVar2 = oprot.readI32();
                     
                     
                     _fbthriftVar1.add(_fbthriftVar2);
@@ -770,7 +777,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                 for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
                     
                     
-                    int _fbthriftVar2 = oprot.readI32();
+                    int _fbthriftVar2;
+                    _fbthriftVar2 = oprot.readI32();
                     
                     
                     _fbthriftVar1.add(_fbthriftVar2);
@@ -801,7 +809,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
 
                     {
                         
-                        String _fbthriftVar2 = oprot.readString();
+                        String _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readString();
                         
                         
                         _fbthriftKey2 = _fbthriftVar2;
@@ -809,7 +818,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                     }
                     {
                         
-                        int _fbthriftVar2 = oprot.readI32();
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
                         
                         
                         _fbthriftValue2 = _fbthriftVar2;
@@ -858,7 +868,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
 
                                                     {
                                                         
-                                                        int _fbthriftVar4 = oprot.readI32();
+                                                        int _fbthriftVar4;
+                                                        _fbthriftVar4 = oprot.readI32();
                                                         
                                                         
                                                         _fbthriftKey4 = _fbthriftVar4;
@@ -866,7 +877,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                                                     }
                                                     {
                                                         
-                                                        int _fbthriftVar4 = oprot.readI32();
+                                                        int _fbthriftVar4;
+                                                        _fbthriftVar4 = oprot.readI32();
                                                         
                                                         
                                                         _fbthriftValue4 = _fbthriftVar4;
