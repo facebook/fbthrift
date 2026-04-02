@@ -880,15 +880,6 @@ class t_mstch_rust_generator : public t_mstch_generator {
  public:
   using t_mstch_generator::t_mstch_generator;
 
-  whisker_options render_options() const override {
-    whisker_options opts;
-    opts.allowed_undefined_variables = {
-        "typedef:newtype?",
-        "function:name",
-    };
-    return opts;
-  }
-
   std::string template_prefix() const override { return "rust"; }
 
   void generate_program() override;
@@ -1972,7 +1963,7 @@ void t_mstch_rust_generator::generate_program() {
   t_whisker_generator::render_to_file("errors.rs", "errors.rs", context);
   t_whisker_generator::render_to_file("consts.rs", "consts.rs", context);
   t_whisker_generator::render_to_file("client.rs", "client.rs", context);
-  render_to_file(prog, "server.rs", "server.rs");
+  t_whisker_generator::render_to_file("server.rs", "server.rs", context);
   t_whisker_generator::render_to_file("mock.rs", "mock.rs", context);
   write_output("namespace-rust", fmt::format("{}\n", namespace_rust));
   write_output(
