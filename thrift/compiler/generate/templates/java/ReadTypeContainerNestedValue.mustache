@@ -31,17 +31,7 @@
                 {{^type:container?}}
                 {{field:nestedDepth++}}
                 {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _fbthriftVar{{field:nestedDepth}};
-                {{#if type:hasAdapter?}}{{!
-                    }}{{#if type:structured?}}{{!
-                        }}_fbthriftVar{{field:nestedDepth}} = {{#partial types.boxed_type type=type:true_type field_hasAdapter=field:hasAdapter?}}.read0(oprot);{{!
-                    }}{{#else}}{{!
-                        }}{{#type:true_type}}{{!
-                            }}{{> ReadType}}{{!
-                        }}{{/type:true_type}}{{!
-                    }}{{/if type:structured?}}{{!
-                }}{{#else}}{{!
-                }}{{> ReadType}}{{!
-                }}{{/if type:hasAdapter?}}
+                {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}}
                 {{field:nestedDepth--}}
                 {{/type:container?}}
                 {{field:nestedDepth++}}
@@ -70,17 +60,7 @@
                 {{^type:container?}}
                 {{field:nestedDepth++}}
                 {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _fbthriftVar{{field:nestedDepth}};
-                {{#if type:hasAdapter?}}{{!
-                    }}{{#if type:structured?}}{{!
-                        }}_fbthriftVar{{field:nestedDepth}} = {{#partial types.boxed_type type=type:true_type field_hasAdapter=field:hasAdapter?}}.read0(oprot);{{!
-                    }}{{#else}}{{!
-                        }}{{#type:true_type}}{{!
-                            }}{{> ReadType}}{{!
-                        }}{{/type:true_type}}{{!
-                    }}{{/if type:structured?}}{{!
-                }}{{#else}}{{!
-                }}{{> ReadType}}{{!
-                }}{{/if type:hasAdapter?}}
+                {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}}
                 {{field:nestedDepth--}}
                 {{/type:container?}}
                 {{field:nestedDepth++}}
@@ -135,17 +115,7 @@
                     {{^type:container?}}
                     {{field:nestedDepth++}}
                     {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _fbthriftVar{{field:nestedDepth}};
-                    {{#if type:hasAdapter?}}{{!
-                        }}{{#if type:structured?}}{{!
-                            }}_fbthriftVar{{field:nestedDepth}} = {{#partial types.boxed_type type=type:true_type field_hasAdapter=field:hasAdapter?}}.read0(oprot);{{!
-                        }}{{#else}}{{!
-                            }}{{#type:true_type}}{{!
-                                }}{{> ReadType}}{{!
-                            }}{{/type:true_type}}{{!
-                        }}{{/if type:structured?}}{{!
-                    }}{{#else}}{{!
-                    }}{{> ReadType}}{{!
-                    }}{{/if type:hasAdapter?}}
+                    {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}}
                     {{field:nestedDepth--}}
                     {{/type:container?}}
                     {{/type:key_type}}
@@ -164,17 +134,7 @@
                     {{^type:container?}}
                     {{field:nestedDepth++}}
                     {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _fbthriftVar{{field:nestedDepth}};
-                    {{#if type:hasAdapter?}}{{!
-                        }}{{#if type:structured?}}{{!
-                            }}_fbthriftVar{{field:nestedDepth}} = {{#partial types.boxed_type type=type:true_type field_hasAdapter=field:hasAdapter?}}.read0(oprot);{{!
-                        }}{{#else}}{{!
-                            }}{{#type:true_type}}{{!
-                                }}{{> ReadType}}{{!
-                            }}{{/type:true_type}}{{!
-                        }}{{/if type:structured?}}{{!
-                    }}{{#else}}{{!
-                    }}{{> ReadType}}{{!
-                    }}{{/if type:hasAdapter?}}
+                    {{#type:hasAdapter?}}{{type:setAdapter}}{{/type:hasAdapter?}}{{> ReadType}}
                     {{field:nestedDepth--}}
                     {{/type:container?}}
                     {{/type:value_type}}

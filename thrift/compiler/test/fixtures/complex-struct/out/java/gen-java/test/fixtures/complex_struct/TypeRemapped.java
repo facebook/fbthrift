@@ -249,7 +249,7 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
                         }
                         oprot.readMapEnd();
 
-                  
+                    
             builder.setLsMap(_fbthriftVar1);
             
           } else {
@@ -330,7 +330,7 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
                         }
                         oprot.readMapEnd();
 
-                  
+                    
             builder.setIoMap(_fbthriftVar1);
             
           } else {

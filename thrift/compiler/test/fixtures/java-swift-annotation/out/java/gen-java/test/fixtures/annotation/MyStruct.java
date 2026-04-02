@@ -338,7 +338,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                         }
                         oprot.readMapEnd();
 
-                  
+                    
             builder.setDetailMap(_fbthriftVar1);
             
           } else {
