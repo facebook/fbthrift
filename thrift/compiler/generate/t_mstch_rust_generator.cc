@@ -1968,7 +1968,7 @@ void t_mstch_rust_generator::generate_program() {
             render_state().prototypes->create<t_program>(*program_))}});
 
   render_to_file(prog, "types.rs", "types.rs");
-  render_to_file(prog, "services.rs", "services.rs");
+  t_whisker_generator::render_to_file("services.rs", "services.rs", context);
   t_whisker_generator::render_to_file("errors.rs", "errors.rs", context);
   t_whisker_generator::render_to_file("consts.rs", "consts.rs", context);
   t_whisker_generator::render_to_file("client.rs", "client.rs", context);
