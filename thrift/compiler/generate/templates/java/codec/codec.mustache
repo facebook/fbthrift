@@ -54,13 +54,13 @@ for ({{#partial types.java_type type=type.elem_type}} _iter{{(int.add depth 1)}}
 }
 oprot.writeListEnd();
 {{#else if type.map?}}oprot.writeMapBegin(new TMap(TType.{{#partial types.ttype type=type.key_type}}, TType.{{#partial types.ttype type=type.val_type}}, _iter{{depth}}.size()));
-for (Map.Entry<{{#partial types.boxed_type type=type.key_type type_isAdapterSet=false field_hasAdapter=false}}, {{#partial types.boxed_type type=type.val_type type_isAdapterSet=false field_hasAdapter=false}}> _iter{{(int.add depth 1)}} : _iter{{depth}}.entrySet()) {
+for (Map.Entry<{{#partial types.boxed_type type=type.key_type field_hasAdapter=false}}, {{#partial types.boxed_type type=type.val_type field_hasAdapter=false}}> _iter{{(int.add depth 1)}} : _iter{{depth}}.entrySet()) {
   {
-    {{#partial types.boxed_type type=type.key_type type_isAdapterSet=false field_hasAdapter=false}} _iter{{(int.add depth 2)}} = _iter{{(int.add depth 1)}}.getKey();
+    {{#partial types.boxed_type type=type.key_type field_hasAdapter=false}} _iter{{(int.add depth 2)}} = _iter{{(int.add depth 1)}}.getKey();
     {{#partial write_response_type type=type.key_type depth=(int.add depth 2)}}
   }
   {
-    {{#partial types.boxed_type type=type.val_type type_isAdapterSet=false field_hasAdapter=false}} _iter{{(int.add depth 2)}} = _iter{{(int.add depth 1)}}.getValue();
+    {{#partial types.boxed_type type=type.val_type field_hasAdapter=false}} _iter{{(int.add depth 2)}} = _iter{{(int.add depth 1)}}.getValue();
     {{#partial write_response_type type=type.val_type depth=(int.add depth 2)}}
   }
 }
