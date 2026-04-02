@@ -199,12 +199,8 @@ async def invokeCallbackWithGenerator(
     ServerSinkGenerator sink_elem_gen,
     Promise_IOBuf promise,
 ):
-    async def invoke_cpp_iobuf_gen():
-        async for elem in sink_elem_gen:
-            yield elem
-
     try:
-        final_resp_iobuf = await sink_callback(invoke_cpp_iobuf_gen)
+        final_resp_iobuf = await sink_callback(sink_elem_gen)
         assert isinstance(final_resp_iobuf, IOBuf), f"Expected IOBuf, got {type(final_resp_iobuf)}"
         promise.complete(final_resp_iobuf)
     except PythonUserException as pyex:
@@ -253,8 +249,8 @@ cdef class ServerSinkGenerator:
         cancellation_source = cFollyCancellationSource()
         loop = asyncio.get_event_loop()
         future = loop.create_future()
-        # in case of SIGINT, retrieve the exception
-        future.add_done_callback(lambda x: x.exception())
+        # in case of SIGINT, retrieve the exception if not cancelled
+        future.add_done_callback(lambda x: x.cancelled() or x.exception())
         userdata = (self, future)
         bridgeCoroTaskWithCancellation[unique_ptr[cIOBuf]](
             self._executor,
@@ -263,11 +259,8 @@ cdef class ServerSinkGenerator:
             <PyObject*> userdata,
             cancellation_source.getToken(),
         )
-        try:
-            return future
-        except asyncio.CancelledError:
-            cancellation_source.requestCancellation()
-            return future
+        # we don't shield here because it prevents cancellation from propagating to C++ callbacks
+        return future
 
 
 cdef void server_sink_elem_callback(

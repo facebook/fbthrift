@@ -19,7 +19,6 @@ from __future__ import annotations
 
 import asyncio
 import sys
-import unittest
 from typing import AsyncGenerator, Callable, Generator, Tuple, TypeVar
 from unittest import IsolatedAsyncioTestCase
 
@@ -526,7 +525,49 @@ class BidiTests(IsolatedAsyncioTestCase):
             # Verify generator cleanup before server shutdown.
             await asyncio.wait_for(generator_cleanup_event.wait(), timeout=5.0)
 
-    @unittest.expectedFailure
+    async def test_bidi_server_handler_raises_cancelled_error(self) -> None:
+        """
+        When the server handler's output generator raises CancelledError,
+        the client should see an ApplicationError.
+        """
+
+        class CancellingBidiHandler(BidiHandler):
+            async def echo(
+                self,
+                serverDelay: float,
+            ) -> Callable[
+                [AsyncGenerator[str, None]],
+                AsyncGenerator[str, None],
+            ]:
+                async def callback(
+                    agen: AsyncGenerator[str, None],
+                ) -> AsyncGenerator[str, None]:
+                    async for item in agen:
+                        yield item
+                        raise asyncio.CancelledError("server cancelled")
+
+                return callback
+
+        async with TestServer(handler=CancellingBidiHandler(), ip="::1") as sa:
+            ip, port = sa.ip, sa.port
+            assert ip and port
+            async with get_client(
+                TestBidiService,
+                host=ip,
+                port=port,
+                client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
+            ) as client:
+                bidi = await client.echo(0.0)
+                await bidi.sink.sink(yield_strs(1, 3))
+
+                first = await bidi.stream.__anext__()
+                self.assertEqual(first, "1")
+
+                with self.assertRaises(ApplicationError) as ctx:
+                    async for _ in bidi.stream:
+                        pass
+                self.assertEqual(ctx.exception.type, ApplicationErrorType.UNKNOWN)
+
     async def test_bidi_sink_cancel_propagates_during_blocked_anext(self) -> None:
         """
         When the server handler returns while the client is still feeding data
