@@ -249,7 +249,7 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
                         }
                         oprot.readMapEnd();
 
-                    
+                  
             builder.setLsMap(_fbthriftVar1);
             
           } else {
@@ -330,7 +330,7 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
                         }
                         oprot.readMapEnd();
 
-                    
+                  
             builder.setIoMap(_fbthriftVar1);
             
           } else {
