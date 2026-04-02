@@ -37,7 +37,7 @@ template <typename H>
 concept InboundTransportHandler =
     requires(H h, BytesPtr bytes, folly::exception_wrapper e) {
       { h.onRead(std::move(bytes)) } noexcept -> std::same_as<void>;
-      { h.onClose() } noexcept -> std::same_as<void>;
+      { h.onClose(std::move(e)) } noexcept -> std::same_as<void>;
     };
 
 /**
