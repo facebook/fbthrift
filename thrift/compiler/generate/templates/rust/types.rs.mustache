@@ -144,15 +144,14 @@ mod dot_dot {
     pub(super) fn default_for_serde_deserialize() -> OtherFields {
         OtherFields(())
     }
-}{{!
-  TODO(T261463864): simplify preserved newline behavior
-  }}{{/if program.nonexhaustiveStructs?}}
+}
+    {{/if program.nonexhaustiveStructs?}}
 {{!
 --------------------------------------------------------------------------------
 }}
 
 pub(crate) mod r#impl {
-{{> lib/mod.impl}}
+    {{> lib/mod.impl}}
 }
 {{!
 --------------------------------------------------------------------------------
@@ -211,7 +210,7 @@ pub mod unadapted {
     {{/each}}
 
 }
-{{! TODO(T261463864): missing newline to be added post-migration !}}
+
 #[allow(dead_code)]
 mod adapted_types {
     {{#each program.structured_definitions as |structured|}}

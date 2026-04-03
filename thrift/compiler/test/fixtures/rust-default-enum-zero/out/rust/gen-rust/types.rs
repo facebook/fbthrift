@@ -141,7 +141,6 @@ where
     }
 }
 
-
 pub(crate) mod r#impl {
     use ::ref_cast::RefCast;
 
