@@ -262,4 +262,5 @@ public final class StructWithSharedConst implements com.facebook.thrift.payload.
     public static StructWithSharedConst defaultInstance() {
         return  _StructWithSharedConstLazy._DEFAULT;
     }
+
 }

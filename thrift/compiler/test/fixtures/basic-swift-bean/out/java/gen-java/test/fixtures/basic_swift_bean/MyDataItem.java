@@ -67,7 +67,8 @@ public final class MyDataItem implements com.facebook.thrift.payload.ThriftSeria
             MyDataItem result = new MyDataItem();
                 result.field1 = this.field1;
                 result.field2 = this.field2;
-            return result;    }
+            return result;
+        }
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();

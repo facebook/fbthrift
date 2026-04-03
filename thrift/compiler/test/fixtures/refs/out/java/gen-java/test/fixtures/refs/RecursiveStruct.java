@@ -189,4 +189,5 @@ public final class RecursiveStruct implements com.facebook.thrift.payload.Thrift
     public static RecursiveStruct defaultInstance() {
         return  _RecursiveStructLazy._DEFAULT;
     }
+
 }

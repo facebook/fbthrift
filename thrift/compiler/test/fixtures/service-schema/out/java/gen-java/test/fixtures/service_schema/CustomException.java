@@ -176,4 +176,5 @@ public final class CustomException extends org.apache.thrift.TBaseException impl
 
     public static CustomException defaultInstance() {
         return  _CustomExceptionLazy._DEFAULT;
-    }}
+    }
+}

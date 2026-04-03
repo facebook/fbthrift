@@ -173,4 +173,5 @@ public final class MoveOnly implements com.facebook.thrift.payload.ThriftSeriali
     public static MoveOnly defaultInstance() {
         return  _MoveOnlyLazy._DEFAULT;
     }
+
 }

@@ -357,4 +357,5 @@ public final class User implements com.facebook.thrift.payload.ThriftSerializabl
     public static User defaultInstance() {
         return  _UserLazy._DEFAULT;
     }
+
 }

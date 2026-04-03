@@ -531,4 +531,5 @@ public final class TestStruct implements com.facebook.thrift.payload.ThriftSeria
     public static TestStruct defaultInstance() {
         return  _TestStructLazy._DEFAULT;
     }
+
 }

@@ -217,4 +217,5 @@ public final class MyAnnotation implements com.facebook.thrift.payload.ThriftSer
     public static MyAnnotation defaultInstance() {
         return  _MyAnnotationLazy._DEFAULT;
     }
+
 }

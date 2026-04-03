@@ -137,4 +137,5 @@ public final class Serious extends org.apache.thrift.TBaseException implements c
 
     public static Serious defaultInstance() {
         return  _SeriousLazy._DEFAULT;
-    }}
+    }
+}

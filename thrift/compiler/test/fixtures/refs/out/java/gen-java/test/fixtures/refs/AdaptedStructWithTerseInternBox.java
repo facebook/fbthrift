@@ -229,4 +229,5 @@ public final class AdaptedStructWithTerseInternBox implements com.facebook.thrif
     public static AdaptedStructWithTerseInternBox defaultInstance() {
         return  _AdaptedStructWithTerseInternBoxLazy._DEFAULT;
     }
+
 }

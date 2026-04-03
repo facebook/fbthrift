@@ -541,4 +541,5 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
     public static MyMapping defaultInstance() {
         return  _MyMappingLazy._DEFAULT;
     }
+
 }

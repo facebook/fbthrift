@@ -125,4 +125,5 @@ static {
     public static DeclaredAfterStruct defaultInstance() {
         return  _DeclaredAfterStructLazy._DEFAULT;
     }
+
 }

@@ -125,4 +125,5 @@ static {
     public static TransitiveAdapted defaultInstance() {
         return  _TransitiveAdaptedLazy._DEFAULT;
     }
+
 }

@@ -177,4 +177,5 @@ public final class ExceptionWithStructuredAnnotation extends org.apache.thrift.T
 
     public static ExceptionWithStructuredAnnotation defaultInstance() {
         return  _ExceptionWithStructuredAnnotationLazy._DEFAULT;
-    }}
+    }
+}

@@ -67,7 +67,8 @@ public final class MyMutableStruct implements com.facebook.thrift.payload.Thrift
             MyMutableStruct result = new MyMutableStruct();
                 result.intField = this.intField;
                 result.stringField = this.stringField;
-            return result;    }
+            return result;
+        }
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();

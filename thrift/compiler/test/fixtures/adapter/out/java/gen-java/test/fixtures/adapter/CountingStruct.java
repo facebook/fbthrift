@@ -265,4 +265,5 @@ public final class CountingStruct implements com.facebook.thrift.payload.ThriftS
     public static CountingStruct defaultInstance() {
         return  _CountingStructLazy._DEFAULT;
     }
+
 }

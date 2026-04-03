@@ -262,4 +262,5 @@ public final class StructWithRefTypeSharedConst implements com.facebook.thrift.p
     public static StructWithRefTypeSharedConst defaultInstance() {
         return  _StructWithRefTypeSharedConstLazy._DEFAULT;
     }
+
 }

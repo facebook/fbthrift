@@ -214,4 +214,5 @@ public final class NoEffect implements com.facebook.thrift.payload.ThriftSeriali
     public static NoEffect defaultInstance() {
         return  _NoEffectLazy._DEFAULT;
     }
+
 }

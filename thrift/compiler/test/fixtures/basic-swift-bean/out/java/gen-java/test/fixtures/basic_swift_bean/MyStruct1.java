@@ -304,4 +304,5 @@ public final class MyStruct1 implements com.facebook.thrift.payload.ThriftSerial
     public static MyStruct1 defaultInstance() {
         return  _MyStruct1Lazy._DEFAULT;
     }
+
 }

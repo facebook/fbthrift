@@ -262,4 +262,5 @@ public final class StructWithRef implements com.facebook.thrift.payload.ThriftSe
     public static StructWithRef defaultInstance() {
         return  _StructWithRefLazy._DEFAULT;
     }
+
 }

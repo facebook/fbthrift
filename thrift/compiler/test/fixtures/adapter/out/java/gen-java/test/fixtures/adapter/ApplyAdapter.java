@@ -125,4 +125,5 @@ static {
     public static ApplyAdapter defaultInstance() {
         return  _ApplyAdapterLazy._DEFAULT;
     }
+
 }

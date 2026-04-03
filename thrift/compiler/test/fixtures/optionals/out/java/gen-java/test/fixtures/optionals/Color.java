@@ -300,4 +300,5 @@ public final class Color implements com.facebook.thrift.payload.ThriftSerializab
     public static Color defaultInstance() {
         return  _ColorLazy._DEFAULT;
     }
+
 }

@@ -89,4 +89,5 @@ public final class MyException extends org.apache.thrift.TBaseException implemen
 
     public static MyException defaultInstance() {
         return  _MyExceptionLazy._DEFAULT;
-    }}
+    }
+}

@@ -216,4 +216,5 @@ public final class AdaptedStructWithInternBox implements com.facebook.thrift.pay
     public static AdaptedStructWithInternBox defaultInstance() {
         return  _AdaptedStructWithInternBoxLazy._DEFAULT;
     }
+
 }

@@ -445,4 +445,5 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
     public static TypeRemapped defaultInstance() {
         return  _TypeRemappedLazy._DEFAULT;
     }
+
 }

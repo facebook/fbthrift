@@ -89,4 +89,5 @@ public final class EmptyXcep extends org.apache.thrift.TBaseException implements
 
     public static EmptyXcep defaultInstance() {
         return  _EmptyXcepLazy._DEFAULT;
-    }}
+    }
+}

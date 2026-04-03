@@ -171,4 +171,5 @@ public final class AdaptedStruct implements com.facebook.thrift.payload.ThriftSe
     public static AdaptedStruct defaultInstance() {
         return  _AdaptedStructLazy._DEFAULT;
     }
+
 }

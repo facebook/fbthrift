@@ -125,4 +125,5 @@ static {
     public static HeapAllocated defaultInstance() {
         return  _HeapAllocatedLazy._DEFAULT;
     }
+
 }

@@ -133,4 +133,5 @@ public final class BiDiSinkException extends org.apache.thrift.TBaseException im
 
     public static BiDiSinkException defaultInstance() {
         return  _BiDiSinkExceptionLazy._DEFAULT;
-    }}
+    }
+}

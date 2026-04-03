@@ -171,4 +171,5 @@ public final class RenamedStruct implements com.facebook.thrift.payload.ThriftSe
     public static RenamedStruct defaultInstance() {
         return  _RenamedStructLazy._DEFAULT;
     }
+
 }

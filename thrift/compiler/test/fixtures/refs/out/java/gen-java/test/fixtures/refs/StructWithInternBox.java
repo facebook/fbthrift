@@ -216,4 +216,5 @@ public final class StructWithInternBox implements com.facebook.thrift.payload.Th
     public static StructWithInternBox defaultInstance() {
         return  _StructWithInternBoxLazy._DEFAULT;
     }
+
 }

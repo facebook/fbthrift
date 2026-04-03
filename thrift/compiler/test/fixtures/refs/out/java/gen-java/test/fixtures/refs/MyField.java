@@ -530,4 +530,5 @@ public final class MyField implements com.facebook.thrift.payload.ThriftSerializ
     public static MyField defaultInstance() {
         return  _MyFieldLazy._DEFAULT;
     }
+
 }

@@ -175,4 +175,5 @@ public final class OptXcep extends org.apache.thrift.TBaseException implements c
 
     public static OptXcep defaultInstance() {
         return  _OptXcepLazy._DEFAULT;
-    }}
+    }
+}

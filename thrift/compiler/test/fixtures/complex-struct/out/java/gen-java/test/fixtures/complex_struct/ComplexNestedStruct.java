@@ -2398,4 +2398,5 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
     public static ComplexNestedStruct defaultInstance() {
         return  _ComplexNestedStructLazy._DEFAULT;
     }
+
 }

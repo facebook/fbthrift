@@ -310,4 +310,5 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
     public static BinaryMapping defaultInstance() {
         return  _BinaryMappingLazy._DEFAULT;
     }
+
 }

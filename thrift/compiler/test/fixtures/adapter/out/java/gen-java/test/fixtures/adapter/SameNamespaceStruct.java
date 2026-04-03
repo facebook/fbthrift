@@ -171,4 +171,5 @@ public final class SameNamespaceStruct implements com.facebook.thrift.payload.Th
     public static SameNamespaceStruct defaultInstance() {
         return  _SameNamespaceStructLazy._DEFAULT;
     }
+
 }

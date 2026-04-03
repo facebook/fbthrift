@@ -311,4 +311,5 @@ public final class StructFieldAdaptedStruct implements com.facebook.thrift.paylo
     public static StructFieldAdaptedStruct defaultInstance() {
         return  _StructFieldAdaptedStructLazy._DEFAULT;
     }
+
 }

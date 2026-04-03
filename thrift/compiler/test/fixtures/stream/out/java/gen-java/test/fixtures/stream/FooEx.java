@@ -89,4 +89,5 @@ public final class FooEx extends org.apache.thrift.TBaseException implements com
 
     public static FooEx defaultInstance() {
         return  _FooExLazy._DEFAULT;
-    }}
+    }
+}

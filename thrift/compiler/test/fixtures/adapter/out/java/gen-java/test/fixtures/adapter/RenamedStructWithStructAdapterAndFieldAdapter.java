@@ -171,4 +171,5 @@ public final class RenamedStructWithStructAdapterAndFieldAdapter implements com.
     public static RenamedStructWithStructAdapterAndFieldAdapter defaultInstance() {
         return  _RenamedStructWithStructAdapterAndFieldAdapterLazy._DEFAULT;
     }
+
 }

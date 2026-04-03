@@ -352,4 +352,5 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
     public static Internship defaultInstance() {
         return  _InternshipLazy._DEFAULT;
     }
+
 }

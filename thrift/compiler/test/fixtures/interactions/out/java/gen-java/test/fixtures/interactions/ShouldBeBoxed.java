@@ -170,4 +170,5 @@ public final class ShouldBeBoxed implements com.facebook.thrift.payload.ThriftSe
     public static ShouldBeBoxed defaultInstance() {
         return  _ShouldBeBoxedLazy._DEFAULT;
     }
+
 }

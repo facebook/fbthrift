@@ -170,4 +170,5 @@ public final class InitialResponse implements com.facebook.thrift.payload.Thrift
     public static InitialResponse defaultInstance() {
         return  _InitialResponseLazy._DEFAULT;
     }
+
 }

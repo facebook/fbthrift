@@ -171,4 +171,5 @@ public final class DirectlyAdaptedStruct implements com.facebook.thrift.payload.
     public static DirectlyAdaptedStruct defaultInstance() {
         return  _DirectlyAdaptedStructLazy._DEFAULT;
     }
+
 }

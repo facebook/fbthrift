@@ -354,4 +354,5 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
     public static Vehicle defaultInstance() {
         return  _VehicleLazy._DEFAULT;
     }
+
 }

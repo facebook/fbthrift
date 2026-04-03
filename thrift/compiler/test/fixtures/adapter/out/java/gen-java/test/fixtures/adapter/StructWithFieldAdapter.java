@@ -311,4 +311,5 @@ public final class StructWithFieldAdapter implements com.facebook.thrift.payload
     public static StructWithFieldAdapter defaultInstance() {
         return  _StructWithFieldAdapterLazy._DEFAULT;
     }
+
 }

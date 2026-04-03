@@ -214,4 +214,5 @@ public final class SimpleStruct implements com.facebook.thrift.payload.ThriftSer
     public static SimpleStruct defaultInstance() {
         return  _SimpleStructLazy._DEFAULT;
     }
+
 }

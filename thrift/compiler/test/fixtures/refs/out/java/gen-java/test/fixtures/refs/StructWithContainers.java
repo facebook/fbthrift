@@ -542,4 +542,5 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
     public static StructWithContainers defaultInstance() {
         return  _StructWithContainersLazy._DEFAULT;
     }
+
 }

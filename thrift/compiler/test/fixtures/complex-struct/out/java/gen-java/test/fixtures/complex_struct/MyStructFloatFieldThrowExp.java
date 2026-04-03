@@ -302,4 +302,5 @@ public final class MyStructFloatFieldThrowExp implements com.facebook.thrift.pay
     public static MyStructFloatFieldThrowExp defaultInstance() {
         return  _MyStructFloatFieldThrowExpLazy._DEFAULT;
     }
+
 }

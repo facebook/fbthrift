@@ -170,4 +170,5 @@ public final class MyStructNestedAnnotation implements com.facebook.thrift.paylo
     public static MyStructNestedAnnotation defaultInstance() {
         return  _MyStructNestedAnnotationLazy._DEFAULT;
     }
+
 }

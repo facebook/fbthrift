@@ -291,4 +291,5 @@ public final class TerseAdaptedFields implements com.facebook.thrift.payload.Thr
     public static TerseAdaptedFields defaultInstance() {
         return  _TerseAdaptedFieldsLazy._DEFAULT;
     }
+
 }

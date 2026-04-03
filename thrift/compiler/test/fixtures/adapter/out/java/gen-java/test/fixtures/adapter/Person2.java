@@ -173,4 +173,5 @@ public final class Person2 implements com.facebook.thrift.payload.ThriftSerializ
     public static Person2 defaultInstance() {
         return  _Person2Lazy._DEFAULT;
     }
+
 }

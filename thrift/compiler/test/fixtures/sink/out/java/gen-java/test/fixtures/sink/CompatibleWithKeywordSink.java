@@ -170,4 +170,5 @@ public final class CompatibleWithKeywordSink implements com.facebook.thrift.payl
     public static CompatibleWithKeywordSink defaultInstance() {
         return  _CompatibleWithKeywordSinkLazy._DEFAULT;
     }
+
 }

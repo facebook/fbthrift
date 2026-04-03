@@ -170,4 +170,5 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor implements com.faceb
     public static StructWithRefAndAnnotCppNoexceptMoveCtor defaultInstance() {
         return  _StructWithRefAndAnnotCppNoexceptMoveCtorLazy._DEFAULT;
     }
+
 }

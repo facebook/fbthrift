@@ -168,4 +168,5 @@ public final class NonCopyableStruct implements com.facebook.thrift.payload.Thri
     public static NonCopyableStruct defaultInstance() {
         return  _NonCopyableStructLazy._DEFAULT;
     }
+
 }

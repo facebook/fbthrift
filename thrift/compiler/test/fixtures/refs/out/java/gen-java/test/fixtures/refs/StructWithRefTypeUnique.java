@@ -262,4 +262,5 @@ public final class StructWithRefTypeUnique implements com.facebook.thrift.payloa
     public static StructWithRefTypeUnique defaultInstance() {
         return  _StructWithRefTypeUniqueLazy._DEFAULT;
     }
+
 }

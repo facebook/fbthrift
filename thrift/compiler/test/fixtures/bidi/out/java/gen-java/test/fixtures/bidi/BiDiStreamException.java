@@ -133,4 +133,5 @@ public final class BiDiStreamException extends org.apache.thrift.TBaseException 
 
     public static BiDiStreamException defaultInstance() {
         return  _BiDiStreamExceptionLazy._DEFAULT;
-    }}
+    }
+}

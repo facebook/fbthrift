@@ -213,7 +213,8 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
                 result.myMapList = this.myMapList;
                 result.myEmptyList = this.myEmptyList;
                 result.myEmptyMapList = this.myEmptyMapList;
-            return result;    }
+            return result;
+        }
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();

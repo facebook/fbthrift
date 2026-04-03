@@ -173,4 +173,5 @@ public final class UnfortunateException extends org.apache.thrift.TBaseException
 
     public static UnfortunateException defaultInstance() {
         return  _UnfortunateExceptionLazy._DEFAULT;
-    }}
+    }
+}

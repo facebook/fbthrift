@@ -171,4 +171,5 @@ public final class MyStructWithCustomDefault implements com.facebook.thrift.payl
     public static MyStructWithCustomDefault defaultInstance() {
         return  _MyStructWithCustomDefaultLazy._DEFAULT;
     }
+
 }

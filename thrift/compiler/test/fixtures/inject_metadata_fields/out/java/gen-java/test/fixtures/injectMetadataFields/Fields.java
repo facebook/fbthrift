@@ -170,4 +170,5 @@ public final class Fields implements com.facebook.thrift.payload.ThriftSerializa
     public static Fields defaultInstance() {
         return  _FieldsLazy._DEFAULT;
     }
+
 }

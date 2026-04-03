@@ -3012,4 +3012,5 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
     public static B defaultInstance() {
         return  _BLazy._DEFAULT;
     }
+
 }

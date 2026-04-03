@@ -2872,7 +2872,8 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
                 result.msg255 = this.msg255;
                 result.msg256 = this.msg256;
                 result.msg257 = this.msg257;
-            return result;    }
+            return result;
+        }
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
@@ -11383,4 +11384,5 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
     public static MyBigStruct defaultInstance() {
         return  _MyBigStructLazy._DEFAULT;
     }
+
 }

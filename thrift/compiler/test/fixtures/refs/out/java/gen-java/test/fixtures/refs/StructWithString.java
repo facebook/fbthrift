@@ -354,4 +354,5 @@ public final class StructWithString implements com.facebook.thrift.payload.Thrif
     public static StructWithString defaultInstance() {
         return  _StructWithStringLazy._DEFAULT;
     }
+
 }

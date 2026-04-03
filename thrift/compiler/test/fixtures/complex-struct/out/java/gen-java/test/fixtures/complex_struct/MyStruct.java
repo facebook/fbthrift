@@ -1989,4 +1989,5 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public static MyStruct defaultInstance() {
         return  _MyStructLazy._DEFAULT;
     }
+
 }

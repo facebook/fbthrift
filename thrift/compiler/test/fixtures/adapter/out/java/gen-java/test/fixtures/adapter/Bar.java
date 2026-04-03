@@ -556,4 +556,5 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
     public static Bar defaultInstance() {
         return  _BarLazy._DEFAULT;
     }
+
 }

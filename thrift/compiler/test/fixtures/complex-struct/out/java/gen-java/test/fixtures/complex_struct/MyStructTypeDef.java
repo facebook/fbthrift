@@ -747,4 +747,5 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
     public static MyStructTypeDef defaultInstance() {
         return  _MyStructTypeDefLazy._DEFAULT;
     }
+
 }

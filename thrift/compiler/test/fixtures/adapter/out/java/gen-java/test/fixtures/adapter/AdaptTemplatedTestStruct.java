@@ -1293,4 +1293,5 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
     public static AdaptTemplatedTestStruct defaultInstance() {
         return  _AdaptTemplatedTestStructLazy._DEFAULT;
     }
+
 }

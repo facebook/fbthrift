@@ -125,4 +125,5 @@ static {
     public static EmptyStruct defaultInstance() {
         return  _EmptyStructLazy._DEFAULT;
     }
+
 }

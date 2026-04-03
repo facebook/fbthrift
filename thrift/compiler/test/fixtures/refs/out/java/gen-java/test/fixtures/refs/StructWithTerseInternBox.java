@@ -229,4 +229,5 @@ public final class StructWithTerseInternBox implements com.facebook.thrift.paylo
     public static StructWithTerseInternBox defaultInstance() {
         return  _StructWithTerseInternBoxLazy._DEFAULT;
     }
+
 }

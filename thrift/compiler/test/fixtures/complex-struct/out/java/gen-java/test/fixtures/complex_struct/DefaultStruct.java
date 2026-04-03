@@ -1587,4 +1587,5 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
     public static DefaultStruct defaultInstance() {
         return  _DefaultStructLazy._DEFAULT;
     }
+
 }

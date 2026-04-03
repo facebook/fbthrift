@@ -216,4 +216,5 @@ public final class FieldsInjectedWithFieldsWithIncludedStruct implements com.fac
     public static FieldsInjectedWithFieldsWithIncludedStruct defaultInstance() {
         return  _FieldsInjectedWithFieldsWithIncludedStructLazy._DEFAULT;
     }
+
 }

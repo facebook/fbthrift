@@ -173,4 +173,5 @@ public final class ExceptionWithPrimitiveField extends org.apache.thrift.TBaseEx
 
     public static ExceptionWithPrimitiveField defaultInstance() {
         return  _ExceptionWithPrimitiveFieldLazy._DEFAULT;
-    }}
+    }
+}

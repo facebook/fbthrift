@@ -216,4 +216,5 @@ public final class SecretStruct implements com.facebook.thrift.payload.ThriftSer
     public static SecretStruct defaultInstance() {
         return  _SecretStructLazy._DEFAULT;
     }
+
 }

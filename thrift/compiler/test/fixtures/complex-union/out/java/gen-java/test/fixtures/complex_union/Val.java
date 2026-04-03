@@ -307,4 +307,5 @@ public final class Val implements com.facebook.thrift.payload.ThriftSerializable
     public static Val defaultInstance() {
         return  _ValLazy._DEFAULT;
     }
+
 }

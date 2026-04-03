@@ -131,4 +131,5 @@ public final class SinkException2 extends org.apache.thrift.TBaseException imple
 
     public static SinkException2 defaultInstance() {
         return  _SinkException2Lazy._DEFAULT;
-    }}
+    }
+}

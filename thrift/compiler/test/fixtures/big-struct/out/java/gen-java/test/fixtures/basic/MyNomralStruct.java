@@ -1462,4 +1462,5 @@ public final class MyNomralStruct implements com.facebook.thrift.payload.ThriftS
     public static MyNomralStruct defaultInstance() {
         return  _MyNomralStructLazy._DEFAULT;
     }
+
 }

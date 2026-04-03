@@ -173,4 +173,5 @@ public final class CircularAdaptee implements com.facebook.thrift.payload.Thrift
     public static CircularAdaptee defaultInstance() {
         return  _CircularAdapteeLazy._DEFAULT;
     }
+
 }

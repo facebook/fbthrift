@@ -133,4 +133,5 @@ public final class BiDiMethodException extends org.apache.thrift.TBaseException 
 
     public static BiDiMethodException defaultInstance() {
         return  _BiDiMethodExceptionLazy._DEFAULT;
-    }}
+    }
+}

@@ -170,4 +170,5 @@ public final class FinalResponse implements com.facebook.thrift.payload.ThriftSe
     public static FinalResponse defaultInstance() {
         return  _FinalResponseLazy._DEFAULT;
     }
+
 }

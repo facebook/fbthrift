@@ -260,4 +260,5 @@ public final class StructWithUnion implements com.facebook.thrift.payload.Thrift
     public static StructWithUnion defaultInstance() {
         return  _StructWithUnionLazy._DEFAULT;
     }
+
 }

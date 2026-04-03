@@ -173,4 +173,5 @@ public final class ReqXcep extends org.apache.thrift.TBaseException implements c
 
     public static ReqXcep defaultInstance() {
         return  _ReqXcepLazy._DEFAULT;
-    }}
+    }
+}

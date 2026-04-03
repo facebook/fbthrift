@@ -212,4 +212,5 @@ public final class Range implements com.facebook.thrift.payload.ThriftSerializab
     public static Range defaultInstance() {
         return  _RangeLazy._DEFAULT;
     }
+
 }

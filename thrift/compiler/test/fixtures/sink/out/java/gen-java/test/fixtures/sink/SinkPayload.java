@@ -170,4 +170,5 @@ public final class SinkPayload implements com.facebook.thrift.payload.ThriftSeri
     public static SinkPayload defaultInstance() {
         return  _SinkPayloadLazy._DEFAULT;
     }
+
 }

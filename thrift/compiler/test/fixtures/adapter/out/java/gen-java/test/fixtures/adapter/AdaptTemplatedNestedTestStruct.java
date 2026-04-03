@@ -173,4 +173,5 @@ public final class AdaptTemplatedNestedTestStruct implements com.facebook.thrift
     public static AdaptTemplatedNestedTestStruct defaultInstance() {
         return  _AdaptTemplatedNestedTestStructLazy._DEFAULT;
     }
+
 }

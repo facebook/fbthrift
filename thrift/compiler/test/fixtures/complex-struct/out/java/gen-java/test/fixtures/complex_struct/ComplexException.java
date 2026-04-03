@@ -407,4 +407,5 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
 
     public static ComplexException defaultInstance() {
         return  _ComplexExceptionLazy._DEFAULT;
-    }}
+    }
+}

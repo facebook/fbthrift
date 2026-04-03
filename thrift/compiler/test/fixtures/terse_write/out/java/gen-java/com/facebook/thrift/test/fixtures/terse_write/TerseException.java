@@ -145,4 +145,5 @@ public final class TerseException extends org.apache.thrift.TBaseException imple
 
     public static TerseException defaultInstance() {
         return  _TerseExceptionLazy._DEFAULT;
-    }}
+    }
+}

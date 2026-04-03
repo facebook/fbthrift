@@ -308,4 +308,5 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
     public static FieldsInjectedWithIncludedStruct defaultInstance() {
         return  _FieldsInjectedWithIncludedStructLazy._DEFAULT;
     }
+
 }

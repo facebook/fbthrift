@@ -173,4 +173,5 @@ public final class CircularStruct implements com.facebook.thrift.payload.ThriftS
     public static CircularStruct defaultInstance() {
         return  _CircularStructLazy._DEFAULT;
     }
+
 }

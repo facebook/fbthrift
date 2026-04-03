@@ -295,4 +295,5 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
     public static MyStructMapFloatThrowExp defaultInstance() {
         return  _MyStructMapFloatThrowExpLazy._DEFAULT;
     }
+
 }

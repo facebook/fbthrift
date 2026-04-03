@@ -89,4 +89,5 @@ public final class FooStreamEx extends org.apache.thrift.TBaseException implemen
 
     public static FooStreamEx defaultInstance() {
         return  _FooStreamExLazy._DEFAULT;
-    }}
+    }
+}

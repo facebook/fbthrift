@@ -268,4 +268,5 @@ public final class AdaptedFields implements com.facebook.thrift.payload.ThriftSe
     public static AdaptedFields defaultInstance() {
         return  _AdaptedFieldsLazy._DEFAULT;
     }
+
 }

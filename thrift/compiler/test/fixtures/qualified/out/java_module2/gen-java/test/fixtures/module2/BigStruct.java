@@ -214,4 +214,5 @@ public final class BigStruct implements com.facebook.thrift.payload.ThriftSerial
     public static BigStruct defaultInstance() {
         return  _BigStructLazy._DEFAULT;
     }
+
 }

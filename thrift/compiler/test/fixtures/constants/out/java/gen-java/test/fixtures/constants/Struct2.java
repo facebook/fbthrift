@@ -325,4 +325,5 @@ public final class Struct2 implements com.facebook.thrift.payload.ThriftSerializ
     public static Struct2 defaultInstance() {
         return  _Struct2Lazy._DEFAULT;
     }
+
 }

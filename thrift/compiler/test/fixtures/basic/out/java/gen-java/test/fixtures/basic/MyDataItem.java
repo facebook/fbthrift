@@ -125,4 +125,5 @@ static {
     public static MyDataItem defaultInstance() {
         return  _MyDataItemLazy._DEFAULT;
     }
+
 }

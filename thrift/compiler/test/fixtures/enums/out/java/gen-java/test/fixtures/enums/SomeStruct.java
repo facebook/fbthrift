@@ -326,4 +326,5 @@ public final class SomeStruct implements com.facebook.thrift.payload.ThriftSeria
     public static SomeStruct defaultInstance() {
         return  _SomeStructLazy._DEFAULT;
     }
+
 }

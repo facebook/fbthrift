@@ -133,4 +133,5 @@ public final class Fiery extends org.apache.thrift.TBaseException implements com
 
     public static Fiery defaultInstance() {
         return  _FieryLazy._DEFAULT;
-    }}
+    }
+}

@@ -577,4 +577,5 @@ public final class AdaptTestStruct implements com.facebook.thrift.payload.Thrift
     public static AdaptTestStruct defaultInstance() {
         return  _AdaptTestStructLazy._DEFAULT;
     }
+
 }

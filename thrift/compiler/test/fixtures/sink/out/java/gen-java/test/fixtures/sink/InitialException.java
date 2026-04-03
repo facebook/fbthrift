@@ -133,4 +133,5 @@ public final class InitialException extends org.apache.thrift.TBaseException imp
 
     public static InitialException defaultInstance() {
         return  _InitialExceptionLazy._DEFAULT;
-    }}
+    }
+}

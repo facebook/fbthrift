@@ -171,4 +171,5 @@ public final class AlsoMoveOnly implements com.facebook.thrift.payload.ThriftSer
     public static AlsoMoveOnly defaultInstance() {
         return  _AlsoMoveOnlyLazy._DEFAULT;
     }
+
 }

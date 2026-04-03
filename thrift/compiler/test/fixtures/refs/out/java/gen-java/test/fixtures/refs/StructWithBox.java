@@ -281,4 +281,5 @@ public final class StructWithBox implements com.facebook.thrift.payload.ThriftSe
     public static StructWithBox defaultInstance() {
         return  _StructWithBoxLazy._DEFAULT;
     }
+
 }

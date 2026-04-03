@@ -256,4 +256,5 @@ public final class Foo2 implements com.facebook.thrift.payload.ThriftSerializabl
     public static Foo2 defaultInstance() {
         return  _Foo2Lazy._DEFAULT;
     }
+
 }

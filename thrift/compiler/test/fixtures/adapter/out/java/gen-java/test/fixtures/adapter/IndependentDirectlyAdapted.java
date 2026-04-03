@@ -171,4 +171,5 @@ public final class IndependentDirectlyAdapted implements com.facebook.thrift.pay
     public static IndependentDirectlyAdapted defaultInstance() {
         return  _IndependentDirectlyAdaptedLazy._DEFAULT;
     }
+
 }

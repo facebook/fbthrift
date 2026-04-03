@@ -262,4 +262,5 @@ public final class StructWithRefTypeShared implements com.facebook.thrift.payloa
     public static StructWithRefTypeShared defaultInstance() {
         return  _StructWithRefTypeSharedLazy._DEFAULT;
     }
+
 }

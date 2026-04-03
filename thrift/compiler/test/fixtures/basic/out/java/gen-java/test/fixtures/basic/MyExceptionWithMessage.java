@@ -264,4 +264,5 @@ public final class MyExceptionWithMessage extends org.apache.thrift.TBaseExcepti
 
     public static MyExceptionWithMessage defaultInstance() {
         return  _MyExceptionWithMessageLazy._DEFAULT;
-    }}
+    }
+}

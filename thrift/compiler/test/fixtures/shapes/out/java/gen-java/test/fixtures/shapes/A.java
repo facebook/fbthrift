@@ -170,4 +170,5 @@ public final class A implements com.facebook.thrift.payload.ThriftSerializable {
     public static A defaultInstance() {
         return  _ALazy._DEFAULT;
     }
+
 }

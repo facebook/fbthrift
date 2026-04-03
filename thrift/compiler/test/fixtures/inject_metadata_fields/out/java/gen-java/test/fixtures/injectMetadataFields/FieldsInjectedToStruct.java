@@ -216,4 +216,5 @@ public final class FieldsInjectedToStruct implements com.facebook.thrift.payload
     public static FieldsInjectedToStruct defaultInstance() {
         return  _FieldsInjectedToStructLazy._DEFAULT;
     }
+
 }

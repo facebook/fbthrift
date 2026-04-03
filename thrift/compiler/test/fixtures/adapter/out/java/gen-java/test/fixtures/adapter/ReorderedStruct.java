@@ -173,4 +173,5 @@ public final class ReorderedStruct implements com.facebook.thrift.payload.Thrift
     public static ReorderedStruct defaultInstance() {
         return  _ReorderedStructLazy._DEFAULT;
     }
+
 }

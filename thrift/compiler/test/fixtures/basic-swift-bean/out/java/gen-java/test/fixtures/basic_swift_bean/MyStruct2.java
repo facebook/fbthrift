@@ -67,7 +67,8 @@ public final class MyStruct2 implements com.facebook.thrift.payload.ThriftSerial
             MyStruct2 result = new MyStruct2();
                 result.myStruct1 = this.myStruct1;
                 result.myString = this.myString;
-            return result;    }
+            return result;
+        }
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();

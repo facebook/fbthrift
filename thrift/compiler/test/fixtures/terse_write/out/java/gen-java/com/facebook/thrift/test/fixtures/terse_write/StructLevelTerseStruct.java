@@ -926,4 +926,5 @@ public final class StructLevelTerseStruct implements com.facebook.thrift.payload
     public static StructLevelTerseStruct defaultInstance() {
         return  _StructLevelTerseStructLazy._DEFAULT;
     }
+
 }

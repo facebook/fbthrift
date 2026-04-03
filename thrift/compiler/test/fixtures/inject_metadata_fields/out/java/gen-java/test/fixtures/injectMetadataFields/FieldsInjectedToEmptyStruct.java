@@ -170,4 +170,5 @@ public final class FieldsInjectedToEmptyStruct implements com.facebook.thrift.pa
     public static FieldsInjectedToEmptyStruct defaultInstance() {
         return  _FieldsInjectedToEmptyStructLazy._DEFAULT;
     }
+
 }
