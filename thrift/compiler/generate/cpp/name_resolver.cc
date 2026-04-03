@@ -224,14 +224,30 @@ const std::string& cpp_name_resolver::get_underlying_type_name(
 
 const std::string& cpp_name_resolver::get_underlying_type_name(
     const t_typedef& node) {
-  // When `t_placeholder_typedef` is used, `t_type_ref::deref` will
-  // automatically dereference `t_placeholder_typedef` as well. Since
-  // unstructured annotations are stored in `t_placeholder_typedef`, we can't
-  // use `t_type_ref::deref`.
+  // `t_type_ref::deref` skips over placeholder typedefs. We need the immediate
+  // aliased node here so typedef-local annotations still control the generated
+  // using declaration.
   const t_type* type = node.type().get_type();
   if (type == nullptr) {
     throw std::runtime_error("t_type_ref has no type.");
   }
+  const auto* type_name = find_type(node);
+  const auto* tmpl = find_template(node);
+  const bool has_typedef_cpp_type = type_name != nullptr || tmpl != nullptr;
+  auto gen_typedef_cpp_type = [&]() -> std::string {
+    if (type_name != nullptr) {
+      return *type_name;
+    }
+    if (tmpl != nullptr) {
+      if (const auto* container =
+              type->get_true_type()->try_as<t_container>()) {
+        return gen_container_type(
+            *container, &cpp_name_resolver::get_native_type, tmpl);
+      }
+      return *tmpl;
+    }
+    return get_native_type(*type);
+  };
 
   if (auto* annotation = find_nontransitive_adapter(node)) {
     if (auto* adapted_type =
@@ -242,42 +258,12 @@ const std::string& cpp_name_resolver::get_underlying_type_name(
     const auto& adapter =
         annotation->get_value_from_structured_annotation("name").get_string();
     return detail::get_or_gen(underlying_type_cache_, &node, [&]() {
-      // If the typedef also has @cpp.Type{name}, use that as the adapted
-      // base type. Without annotation lowering, the annotation stays on the
-      // typedef and isn't propagated to the underlying type.
-      if (const auto* type_name = find_type(node)) {
-        return gen_adapted_type(&adapter, std::string(*type_name));
-      }
-      if (const auto* tmpl = find_template(node)) {
-        if (const auto* container =
-                type->get_true_type()->try_as<t_container>()) {
-          return gen_adapted_type(
-              &adapter,
-              gen_container_type(
-                  *container, &cpp_name_resolver::get_native_type, tmpl));
-        }
-      }
-      return gen_adapted_type(&adapter, get_native_type(*type));
+      return gen_adapted_type(&adapter, gen_typedef_cpp_type());
     });
   }
-  // If the typedef has a cpp.type/template annotation (structured or
-  // unstructured), resolve it directly for the using declaration.
-  // We can't use gen_type() here because gen_type() now skips find_type()
-  // for typedefs (to ensure references use the namespaced typedef name).
-  if (const auto* type_name = find_type(node)) {
+  if (has_typedef_cpp_type) {
     return detail::get_or_gen(underlying_type_cache_, &node, [&]() {
-      return std::string(*type_name);
-    });
-  }
-  if (find_template(node)) {
-    return detail::get_or_gen(underlying_type_cache_, &node, [&]() {
-      const auto* tmpl = find_template(node);
-      if (const auto* container =
-              type->get_true_type()->try_as<t_container>()) {
-        return gen_container_type(
-            *container, &cpp_name_resolver::get_native_type, tmpl);
-      }
-      return std::string(*tmpl);
+      return gen_typedef_cpp_type();
     });
   }
   return get_native_type(*type);
