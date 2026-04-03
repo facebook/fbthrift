@@ -913,6 +913,15 @@ void ThriftServerRequestBiDi::sendBiDiThriftResponse(
 
   context_.unsetMarkRequestComplete();
   clientCallback_->setChunkTimeout(bidiStreamFactory.getChunkTimeout());
+
+  // Create unified bidi log if connection log is available.
+  if (auto* connLog = getRequestContext()
+                          ->getConnectionContext()
+                          ->getThriftConnectionLog()) {
+    bidiStreamFactory.setBiDiLog(
+        connLog->createBiDiLog(bidiStreamFactory.getMethodName()));
+  }
+
   auto payload = apache::thrift::FirstResponsePayload{
       std::move(data), std::move(metadata)};
   payload.fds =

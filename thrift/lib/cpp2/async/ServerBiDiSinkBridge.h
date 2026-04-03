@@ -28,6 +28,7 @@
 #include <thrift/lib/cpp2/async/StreamMessage.h>
 #include <thrift/lib/cpp2/async/TwoWayBridge.h>
 #include <thrift/lib/cpp2/async/TwoWayBridgeUtil.h>
+#include <thrift/lib/cpp2/logging/ThriftBiDiLog.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 
 namespace apache::thrift::detail {
@@ -54,6 +55,10 @@ class ServerBiDiSinkBridge : public TwoWayBridge<
       : clientCb_(clientCb),
         evb_(evb),
         contextStack_(std::move(contextStack)) {}
+
+  void setBiDiLog(std::shared_ptr<ThriftBiDiLog> biDiLog) {
+    biDiLog_ = std::move(biDiLog);
+  }
 
   //
   // SinkServerCallback
@@ -192,6 +197,11 @@ class ServerBiDiSinkBridge : public TwoWayBridge<
 
               if (++creditsUsed > bridge->bufferSize_ / 2) {
                 notifyBiDiSinkCredit(bridge->contextStack_.get(), creditsUsed);
+                if (bridge->biDiLog_) {
+                  bridge->biDiLog_->log(
+                      detail::BiDiSinkCreditEvent{
+                          static_cast<uint32_t>(creditsUsed)});
+                }
                 bridge->serverPush(
                     StreamMessage::RequestN{static_cast<int32_t>(creditsUsed)});
                 creditsUsed = 0;
@@ -250,7 +260,12 @@ class ServerBiDiSinkBridge : public TwoWayBridge<
   }
 
   // Instance wrapper methods
-  void notifyBiDiSinkNext() { notifyBiDiSinkNext(contextStack_.get()); }
+  void notifyBiDiSinkNext() {
+    notifyBiDiSinkNext(contextStack_.get());
+    if (biDiLog_) {
+      biDiLog_->log(detail::BiDiSinkNextEvent{});
+    }
+  }
 
   void handleBiDiSinkError(const folly::exception_wrapper& ew) {
     handleBiDiSinkError(contextStack_.get(), ew);
@@ -262,6 +277,7 @@ class ServerBiDiSinkBridge : public TwoWayBridge<
   SinkClientCallback* clientCb_{nullptr};
   folly::EventBase* evb_{nullptr};
   std::shared_ptr<ContextStack> contextStack_;
+  std::shared_ptr<ThriftBiDiLog> biDiLog_;
 
   uint64_t bufferSize_{0};
 };

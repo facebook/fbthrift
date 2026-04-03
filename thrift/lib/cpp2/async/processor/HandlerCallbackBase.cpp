@@ -277,6 +277,7 @@ void HandlerCallbackBase::sendReply(
   auto& bidiStreamFactory = responseAndServerBiDiStreamFactory.bidiStream;
   bidiStreamFactory.setContextStack(std::move(this->ctx_));
   bidiStreamFactory.setInteraction(std::move(interaction_));
+  bidiStreamFactory.setMethodName(methodNameInfo_.qualifiedMethodName);
   if (getEventBase()->isInEventBaseThread()) {
     BiDiStreamReplyInfo(
         std::move(req_),

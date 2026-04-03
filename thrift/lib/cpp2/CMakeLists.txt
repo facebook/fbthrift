@@ -383,6 +383,7 @@ add_library(
   fast_thrift/thrift/FastThriftAdapterBase.cpp
   fast_thrift/thrift/client/ThriftClientChannel.cpp
   fast_thrift/thrift/server/ThriftServerChannel.cpp
+  logging/ThriftBiDiLog.cpp
   logging/ThriftConnectionLog.cpp
   logging/ThriftSinkLog.cpp
   logging/ThriftStreamLog.cpp
