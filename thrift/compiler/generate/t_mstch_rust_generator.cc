@@ -959,12 +959,6 @@ class t_mstch_rust_generator : public t_whisker_generator {
               ctx.argument<whisker::string>(0),
               escape_backslashes.value_or(false)));
         });
-    globals["indent_4"] = whisker::dsl::make_function(
-        "indent_4", [](whisker::dsl::function::context ctx) {
-          ctx.declare_arity(1);
-          int64_t depth = ctx.argument<whisker::i64>(0);
-          return whisker::string(4 * depth, ' ');
-        });
     return globals;
   }
 

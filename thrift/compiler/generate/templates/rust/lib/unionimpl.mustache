@@ -130,6 +130,7 @@ impl {{structured.rust_name}} {
     }
 }
   {{#if root_program.rust_gen_native_metadata?}}
+
 {{> lib/metadata/struct}}
   {{/if root_program.rust_gen_native_metadata?}}
 {{/if structured.union?}}

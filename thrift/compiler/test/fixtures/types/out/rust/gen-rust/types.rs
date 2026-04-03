@@ -2004,10 +2004,10 @@ impl ::std::default::Default for self::TrivialNestedWithDefault {
         Self {
             z: 4,
             n: crate::types::TrivialNumeric {
-                    a: 3,
-                    b: true,
-                    ..::std::default::Default::default()
-                },
+                a: 3,
+                b: true,
+                ..::std::default::Default::default()
+            },
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
         }
     }
@@ -2290,20 +2290,20 @@ impl ::std::default::Default for self::ComplexNestedWithDefault {
         Self {
             z: "4".to_owned(),
             n: crate::types::ComplexString {
-                    a: "3".to_owned(),
-                    b: {
-                        let mut map = ::std::collections::BTreeMap::new();
-                        {
-                            #[inline(never)]
-                            fn __do_insert(map: &mut ::std::collections::BTreeMap<::std::string::String, ::std::primitive::i32>) {
-                                map.insert("a".to_owned(), 3);
-                            }
-                            __do_insert(&mut map);
+                a: "3".to_owned(),
+                b: {
+                    let mut map = ::std::collections::BTreeMap::new();
+                    {
+                        #[inline(never)]
+                        fn __do_insert(map: &mut ::std::collections::BTreeMap<::std::string::String, ::std::primitive::i32>) {
+                            map.insert("a".to_owned(), 3);
                         }
-                        map
-                    },
-                    ..::std::default::Default::default()
+                        __do_insert(&mut map);
+                    }
+                    map
                 },
+                ..::std::default::Default::default()
+            },
             _dot_dot_Default_default: self::dot_dot::OtherFields(()),
         }
     }

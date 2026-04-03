@@ -25,7 +25,7 @@ pub static {{constant.rust_name}}: ::std::sync::LazyLock<
 {{#if constant.type.type:has_adapter?}}{{constant.type.type:adapter_qualified}}::AdaptedType{{#else}}{{#partial types.type_name type=constant.type}}{{/if}}
 > = ::std::sync::LazyLock::new(|| {{!}}
 {{#if constant.type.type:has_adapter?}}{{constant.type.type:adapter_qualified}}::from_thrift({{/if}}
-{{#partial constants.const_value value=constant.value depth=0}}
+{{#partial constants.const_value value=constant.value}}
 {{#if constant.type.type:has_adapter?}}).expect("constant Thrift value should adapt without error"){{/if}}
 );
   {{/let partial}}
@@ -44,7 +44,7 @@ pub static {{constant.rust_name}}: ::std::sync::LazyLock<
     {{#else if constant.type.string?}}
 pub const {{constant.rust_name}}: &::std::primitive::str = {{(rust_quote constant.value.string_value)}};
     {{#else}}
-pub const {{constant.rust_name}}: {{#partial types.type_name type=constant.type}} = {{#partial constants.const_value value=constant.value depth=0}};
+pub const {{constant.rust_name}}: {{#partial types.type_name type=constant.type}} = {{#partial constants.const_value value=constant.value}};
     {{/if constant.lazy?}}
 
   {{/each}}
