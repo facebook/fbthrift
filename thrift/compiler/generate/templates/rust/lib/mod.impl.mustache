@@ -39,7 +39,7 @@
         let value: LocalImpl<T> = ::fbthrift::Deserialize::rs_thrift_read(p)?;
         ::std::result::Result::Ok(value.0)
     }
-  {{#each program:nonstandard_types as |type|}}
+  {{#each program.nonstandard_types as |type|}}
     {{#if type.set?}}
       {{#let set_elem_type=type.true_type.elem_type}}
 
@@ -220,7 +220,7 @@
     }
     {{/if type.set?}}
   {{/each}}
-  {{#each program:nonstandard_fields as |field|}}
+  {{#each program.nonstandard_fields as |field|}}
     {{#let type = field.type}}
     {{#if type.set?}}
       {{#let set_elem_type=type.true_type.elem_type}}

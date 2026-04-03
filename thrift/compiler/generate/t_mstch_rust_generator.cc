@@ -883,7 +883,6 @@ class t_mstch_rust_generator : public t_mstch_generator {
   std::string template_prefix() const override { return "rust"; }
 
   void generate_program() override;
-  void generate_split_types();
   void fill_validator_visitors(ast_validator&) const override;
   void process_options(const std::map<std::string, std::string>& options) final;
 
@@ -893,6 +892,7 @@ class t_mstch_rust_generator : public t_mstch_generator {
   std::vector<rust_split_info> split_info_;
   const rust_split_info* current_split_ = nullptr;
 
+  void initialize_type_splits();
   const rust_split_info& current_split() const {
     if (current_split_ == nullptr) {
       throw whisker::eval_error(
@@ -1949,16 +1949,25 @@ void t_mstch_rust_generator::generate_program() {
     namespace_rust = program_->name();
   }
 
-  if (options_.types_split_count > 0) {
-    generate_split_types();
-  }
-  const auto& prog = cached_program(program_);
   whisker::object context = whisker::make::map(
       {{"program",
         whisker::object(
             render_state().prototypes->create<t_program>(*program_))}});
 
-  render_to_file(prog, "types.rs", "types.rs");
+  if (options_.types_split_count > 0) {
+    initialize_type_splits();
+    assert(
+        split_info_.size() ==
+        static_cast<size_t>(options_.types_split_count + 1));
+    for (size_t split_id = 0; split_id < split_info_.size(); split_id++) {
+      current_split_ = &split_info_[split_id];
+      t_whisker_generator::render_to_file(
+          fmt::format("types_{}.rs", split_id), "lib/types_split", context);
+    }
+    current_split_ = nullptr;
+  }
+
+  t_whisker_generator::render_to_file("types.rs", "types.rs", context);
   t_whisker_generator::render_to_file("services.rs", "services.rs", context);
   t_whisker_generator::render_to_file("errors.rs", "errors.rs", context);
   t_whisker_generator::render_to_file("consts.rs", "consts.rs", context);
@@ -1973,63 +1982,47 @@ void t_mstch_rust_generator::generate_program() {
       "service-names", "service-names", context);
 }
 
-void t_mstch_rust_generator::generate_split_types() {
-  {
-    // Identify types that depend on other types within the same program.
-    // These must be co-located in split 0 so they can reference each other.
-    basic_ast_visitor</*is_const=*/true, const_visitor_context&> visitor;
-    std::set<const t_named*> dependent_types;
-    visitor.add_typedef_visitor(
-        [&](const const_visitor_context&, const t_typedef& td) {
-          if (accumulate_current_program_dependent_types(
-                  *td.type(), dependent_types) ||
-              typedef_has_constructor_expression(&td)) {
-            dependent_types.insert(&td);
-          }
-        });
-    visitor.add_field_visitor([&](const const_visitor_context& ctx,
-                                  const t_field& field) {
-      if (accumulate_current_program_dependent_types(
-              *field.type(), dependent_types)) {
-        dependent_types.insert(static_cast<const t_structured*>(ctx.parent()));
-      }
-    });
-    const_visitor_context ctx;
-    visitor(ctx, *program_);
+void t_mstch_rust_generator::initialize_type_splits() {
+  assert(split_info_.empty() && current_split_ == nullptr);
+  // Identify types that depend on other types within the same program.
+  // These must be co-located in split 0 so they can reference each other.
+  basic_ast_visitor</*is_const=*/true, const_visitor_context&> visitor;
+  std::set<const t_named*> dependent_types;
+  visitor.add_typedef_visitor(
+      [&](const const_visitor_context&, const t_typedef& td) {
+        if (accumulate_current_program_dependent_types(
+                *td.type(), dependent_types) ||
+            typedef_has_constructor_expression(&td)) {
+          dependent_types.insert(&td);
+        }
+      });
+  visitor.add_field_visitor([&](const const_visitor_context& ctx,
+                                const t_field& field) {
+    if (accumulate_current_program_dependent_types(
+            *field.type(), dependent_types)) {
+      dependent_types.insert(static_cast<const t_structured*>(ctx.parent()));
+    }
+  });
+  const_visitor_context ctx;
+  visitor(ctx, *program_);
 
-    // Assign types to splits
-    assert(split_info_.empty());
-    split_info_.resize(options_.types_split_count + 1);
-    auto next = [counter = 0, this]() mutable {
-      return ((counter++) % options_.types_split_count) + 1;
-    };
-    for (const t_typedef* typedf : program_->typedefs()) {
-      int split_id = dependent_types.contains(typedf) ? 0 : next();
-      split_info_[split_id].typedefs.emplace_back(typedf);
-    }
-    for (const t_structured* strct : program_->structured_definitions()) {
-      int split_id = dependent_types.contains(strct) ? 0 : next();
-      split_info_[split_id].structured_definitions.emplace_back(strct);
-    }
-    for (const t_enum* enm : program_->enums()) {
-      int split_id = dependent_types.contains(enm) ? 0 : next();
-      split_info_[split_id].enums.emplace_back(enm);
-    }
+  // Assign types to splits
+  split_info_.resize(options_.types_split_count + 1);
+  auto next = [counter = 0, this]() mutable {
+    return ((counter++) % options_.types_split_count) + 1;
+  };
+  for (const t_typedef* typedf : program_->typedefs()) {
+    int split_id = dependent_types.contains(typedf) ? 0 : next();
+    split_info_[split_id].typedefs.emplace_back(typedf);
   }
-
-  // Generate individual split files
-  for (size_t split_id = 0;
-       static_cast<int>(split_id) <= options_.types_split_count;
-       ++split_id) {
-    // Set current split on the generator, so Whisker properties can access it
-    assert(split_info_.size() > split_id); // For the linter
-    current_split_ = &split_info_[split_id];
-    render_to_file(
-        cached_program(program_),
-        "lib/types_split",
-        fmt::format("types_{}.rs", split_id));
+  for (const t_structured* strct : program_->structured_definitions()) {
+    int split_id = dependent_types.contains(strct) ? 0 : next();
+    split_info_[split_id].structured_definitions.emplace_back(strct);
   }
-  current_split_ = nullptr;
+  for (const t_enum* enm : program_->enums()) {
+    int split_id = dependent_types.contains(enm) ? 0 : next();
+    split_info_[split_id].enums.emplace_back(enm);
+  }
 }
 
 void validate_struct_annotations(
