@@ -133,8 +133,7 @@
 }}{{/let partial}}
 
 {{! Main `const_value_impl` content }}
-  {{#value}}
-    {{#if (and underlying_type.typedef? underlying_type.newtype?)}}
+  {{#if (and underlying_type.typedef? underlying_type.newtype?)}}
 {{underlying_type.package}}::{{underlying_type.rust_name}}(
 {{#if underlying_type.has_adapter?}}{{underlying_type.adapter_qualified}}::from_thrift({{/if}}
 {{#partial const_value_impl value=value local_type=underlying_type.resolved depth=depth}}
@@ -144,43 +143,42 @@
 {{#else if (or underlying_type.any_int? underlying_type.byte?)}}{{value.integer_value}}
 {{#else if underlying_type.floating_point?}}{{value.double_value}}
 {{#else if underlying_type.string?}}{{#if (string.empty? value.string_value)}}::std::string::String::new(){{#else}}{{(rust_quote value.string_value)}}.to_owned(){{/if}}
-    {{#else if underlying_type.binary?}}
-      {{#if (string.empty? value.string_value)}}
+  {{#else if underlying_type.binary?}}
+    {{#if (string.empty? value.string_value)}}
 {{#if (string.empty? underlying_type.rust_type)}}::std::vec::Vec{{#else}}<::{{underlying_type.rust_type}}>{{/if}}::new()
-      {{#else}}
+    {{#else}}
 {{(rust_quote value.string_value)}}.as_bytes().into()
-      {{/if (string.empty? value.string_value)}}
+    {{/if (string.empty? value.string_value)}}
 {{#else if underlying_type.list?}}{{#if value.empty_container?}}::std::vec::Vec::new(){{#else}}{{#partial list_value}}{{/if}}
-    {{#else if underlying_type.set?}}
-      {{#if value.empty_container?}}
+  {{#else if underlying_type.set?}}
+    {{#if value.empty_container?}}
 {{#if (string.empty? underlying_type.rust_type)}}::std::collections::BTreeSet{{#else}}::{{underlying_type.rust_type}}{{/if}}::new()
-      {{#else}}
+    {{#else}}
 {{#partial set_value}}
-      {{/if value.empty_container?}}
-    {{#else if value.map?}}
-      {{#if value.empty_container?}}
+    {{/if value.empty_container?}}
+  {{#else if value.map?}}
+    {{#if value.empty_container?}}
 {{#if (string.empty? underlying_type.rust_type)}}::std::collections::BTreeMap{{#else}}::{{underlying_type.rust_type}}{{/if}}::new()
-      {{#else}}
+    {{#else}}
 {{#partial map_value}}
-      {{/if value.empty_container?}}
-    {{#else if value.structured?}}
-      {{#if underlying_type.union?}}
+    {{/if value.empty_container?}}
+  {{#else if value.structured?}}
+    {{#if underlying_type.union?}}
 {{#partial types.type_name type=underlying_type}}::
-        {{#let variant = value.union_variant}}
-        {{#if (object.notnull? variant)}}
+      {{#let variant = value.union_variant}}
+      {{#if (object.notnull? variant)}}
 {{variant.field.rust_name}}(
 {{#partial const_value_impl value=variant.value depth=(int.add depth 1) local_type=variant.value.type}})
-        {{#else}}
-default()
-        {{/if (object.notnull? variant)}}
       {{#else}}
+default()
+      {{/if (object.notnull? variant)}}
+    {{#else}}
 {{#partial struct_value}}
-      {{/if underlying_type.union?}}
-    {{#else if value.enum?}}
+    {{/if underlying_type.union?}}
+  {{#else if value.enum?}}
 {{local_type.package}}::{{local_type.rust_name}}
 {{#if value.enum_value?}}::{{value.enum_value.rust_name}}{{#else}}({{value.integer_value}}){{/if}}
-    {{/if (and underlying_type.typedef? underlying_type.newtype?)}}
-  {{/value}}
+  {{/if (and underlying_type.typedef? underlying_type.newtype?)}}
 {{/let partial}}
 
 

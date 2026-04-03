@@ -29,10 +29,10 @@
 #include <thrift/compiler/ast/uri.h>
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/cpp/name_resolver.h>
-#include <thrift/compiler/generate/mstch_objects.h>
 #include <thrift/compiler/generate/rust/uri.h>
 #include <thrift/compiler/generate/rust/util.h>
-#include <thrift/compiler/generate/t_mstch_generator.h>
+#include <thrift/compiler/generate/t_whisker_generator.h>
+#include <thrift/compiler/generate/templates.h>
 #include <thrift/compiler/sema/ast_validator.h>
 #include <thrift/compiler/sema/sema_context.h>
 
@@ -346,7 +346,7 @@ int checked_stoi(const std::string& s, const std::string& msg) {
 
 void parse_include_srcs(
     std::vector<std::string>& elements,
-    std::optional<std::string> const& include_srcs) {
+    std::optional<std::string_view> const& include_srcs) {
   if (!include_srcs) {
     return;
   }
@@ -876,11 +876,9 @@ struct rust_split_info {
   std::vector<const t_enum*> enums;
 };
 
-class t_mstch_rust_generator : public t_mstch_generator {
+class t_mstch_rust_generator : public t_whisker_generator {
  public:
-  using t_mstch_generator::t_mstch_generator;
-
-  std::string template_prefix() const override { return "rust"; }
+  using t_whisker_generator::t_whisker_generator;
 
   void generate_program() override;
   void fill_validator_visitors(ast_validator&) const override;
@@ -891,6 +889,14 @@ class t_mstch_rust_generator : public t_mstch_generator {
   // NOTE: these two fields are not initialized/used unless splitting is used
   std::vector<rust_split_info> split_info_;
   const rust_split_info* current_split_ = nullptr;
+
+  std::string template_prefix() const final { return "rust"; }
+
+  whisker::source_manager template_source_manager() const final {
+    return whisker::source_manager{
+        std::make_unique<in_memory_source_manager_backend>(
+            create_templates_by_path())};
+  }
 
   void initialize_type_splits();
   const rust_split_info& current_split() const {
@@ -930,7 +936,7 @@ class t_mstch_rust_generator : public t_mstch_generator {
   }
 
   whisker::map::raw globals(prototype_database& proto) const override {
-    whisker::map::raw globals = t_mstch_generator::globals(proto);
+    whisker::map::raw globals = t_whisker_generator::globals(proto);
     globals["rust_annotation_name"] = whisker::dsl::make_function(
         "rust_annotation_name",
         [](whisker::dsl::function::context ctx) -> whisker::object {
@@ -1118,9 +1124,9 @@ class t_mstch_rust_generator : public t_mstch_generator {
       return get_types_import_name(self.program(), options_);
     });
     def.property("rust_type", [](const t_type& self) {
-      auto rust_type = get_type_annotation(&self);
+      std::string rust_type = get_type_annotation(&self);
       if (!rust_type.empty() && rust_type.find("::") == std::string::npos) {
-        return fmt::format("fbthrift::builtin_types::{}", rust_type);
+        rust_type = fmt::format("fbthrift::builtin_types::{}", rust_type);
       }
       return rust_type;
     });
@@ -1191,7 +1197,7 @@ class t_mstch_rust_generator : public t_mstch_generator {
         rust_type = get_annotation_property_string(annot, "name");
       }
       if (!rust_type.empty() && rust_type.find("::") == std::string::npos) {
-        return std::string("fbthrift::builtin_types::") + rust_type;
+        rust_type = fmt::format("fbthrift::builtin_types::{}", rust_type);
       }
       return rust_type;
     });
@@ -1271,7 +1277,7 @@ class t_mstch_rust_generator : public t_mstch_generator {
     def.property("rust_type", [](const t_field& self) {
       auto rust_type = get_type_annotation(&self);
       if (!rust_type.empty() && rust_type.find("::") == std::string::npos) {
-        return std::string("fbthrift::builtin_types::") + rust_type;
+        rust_type = fmt::format("fbthrift::builtin_types::{}", rust_type);
       }
       return rust_type;
     });
@@ -1848,53 +1854,57 @@ class t_mstch_rust_generator : public t_mstch_generator {
 
 void t_mstch_rust_generator::process_options(
     const std::map<std::string, std::string>& options) {
-  t_mstch_generator::process_options(options);
-  if (auto types_crate_flag = get_option("types_crate")) {
-    options_.types_crate =
-        boost::algorithm::replace_all_copy(*types_crate_flag, "-", "_");
+  t_whisker_generator::process_options(options);
+  if (auto types_crate_flag = get_compiler_option("types_crate")) {
+    options_.types_crate = boost::algorithm::replace_all_copy(
+        std::string(*types_crate_flag), "-", "_");
   }
 
-  if (auto clients_crate_flag = get_option("clients_crate")) {
-    options_.clients_crate =
-        boost::algorithm::replace_all_copy(*clients_crate_flag, "-", "_");
+  if (auto clients_crate_flag = get_compiler_option("clients_crate")) {
+    options_.clients_crate = boost::algorithm::replace_all_copy(
+        std::string(*clients_crate_flag), "-", "_");
   }
 
-  if (auto cratemap_flag = get_option("cratemap")) {
-    auto cratemap = load_crate_map(*cratemap_flag);
+  if (auto cratemap_flag = get_compiler_option("cratemap")) {
+    auto cratemap = load_crate_map(std::string(*cratemap_flag));
     options_.multifile_mode = cratemap.multifile_mode;
     options_.label = std::move(cratemap.label);
     options_.crate_index =
         rust_crate_index{program_, std::move(cratemap.cratemap)};
   }
 
-  options_.serde = has_option("serde");
+  options_.serde = has_compiler_option("serde");
   options_.deprecated_loose_adapter_serde =
       has_compiler_option("deprecated_loose_adapter_serde");
-  options_.skip_none_serialization = has_option("skip_none_serialization");
+  options_.skip_none_serialization =
+      has_compiler_option("skip_none_serialization");
   if (options_.skip_none_serialization) {
     assert(options_.serde);
   }
 
-  options_.valuable = has_option("valuable");
+  options_.valuable = has_compiler_option("valuable");
 
-  options_.any_registry_initialization_enabled = has_option("any");
+  options_.any_registry_initialization_enabled = has_compiler_option("any");
 
-  std::optional<std::string> maybe_number = get_option("types_split_count");
+  std::optional<std::string_view> maybe_number =
+      get_compiler_option("types_split_count");
   if (maybe_number) {
+    std::string number_str(*maybe_number);
     options_.types_split_count = checked_stoi(
-        maybe_number.value(),
-        "Invalid types_split_count '" + maybe_number.value() + "'");
+        number_str, "Invalid types_split_count '" + number_str + "'");
   }
 
   parse_include_srcs(
-      options_.types_include_srcs, get_option("types_include_srcs"));
+      options_.types_include_srcs, get_compiler_option("types_include_srcs"));
   parse_include_srcs(
-      options_.clients_include_srcs, get_option("clients_include_srcs"));
+      options_.clients_include_srcs,
+      get_compiler_option("clients_include_srcs"));
   parse_include_srcs(
-      options_.services_include_srcs, get_option("services_include_srcs"));
+      options_.services_include_srcs,
+      get_compiler_option("services_include_srcs"));
 
-  if (auto include_docs = get_option("include_docs")) {
-    options_.include_docs = include_docs.value();
+  if (auto include_docs = get_compiler_option("include_docs")) {
+    options_.include_docs = std::string(*include_docs);
   }
 
   if (options_.multifile_mode) {
@@ -1906,13 +1916,14 @@ void t_mstch_rust_generator::process_options(
   options_.current_program = program_;
   out_dir_base_ = "gen-rust";
 
-  if (auto gen_metadata = get_option("gen_metadata")) {
-    options_.gen_metadata = gen_metadata.value() == "true";
+  if (auto gen_metadata = get_compiler_option("gen_metadata")) {
+    options_.gen_metadata = *gen_metadata == "true";
   }
 }
 
 void t_mstch_rust_generator::generate_program() {
-  std::optional<std::string> crate_name_option = get_option("crate_name");
+  std::optional<std::string_view> crate_name_option =
+      get_compiler_option("crate_name");
   std::string namespace_rust = program_->get_namespace("rust");
   if (!namespace_rust.empty()) {
     std::vector<std::string> pieces;
@@ -1940,11 +1951,11 @@ void t_mstch_rust_generator::generate_program() {
               *crate_name_option));
     }
   } else if (crate_name_option) {
-    namespace_rust = *crate_name_option;
+    namespace_rust = std::string(*crate_name_option);
   } else if (
-      std::optional<std::string> default_crate_name_option =
-          get_option("default_crate_name")) {
-    namespace_rust = *default_crate_name_option;
+      std::optional<std::string_view> default_crate_name_option =
+          get_compiler_option("default_crate_name")) {
+    namespace_rust = std::string(*default_crate_name_option);
   } else {
     namespace_rust = program_->name();
   }
@@ -1974,8 +1985,8 @@ void t_mstch_rust_generator::generate_program() {
   t_whisker_generator::render_to_file("client.rs", "client.rs", context);
   t_whisker_generator::render_to_file("server.rs", "server.rs", context);
   t_whisker_generator::render_to_file("mock.rs", "mock.rs", context);
-  write_output("namespace-rust", fmt::format("{}\n", namespace_rust));
-  write_output(
+  write_to_file("namespace-rust", fmt::format("{}\n", namespace_rust));
+  write_to_file(
       "namespace-cpp2",
       fmt::format("{}\n", cpp_name_resolver::gen_namespace(*program_)));
   t_whisker_generator::render_to_file(
