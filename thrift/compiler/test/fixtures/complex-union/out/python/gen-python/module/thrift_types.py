@@ -678,7 +678,4 @@ _fbthrift_all_structs = [
 ]
 _fbthrift_python_types.fill_specs(*_fbthrift_all_structs)
 
-class containerTypedef(_fbthrift_python_types._MapTypedefBase):
-    __slots__ = ()
-    _fbthrift_map_key_type_info = _fbthrift_python_types.typeinfo_i16
-    _fbthrift_map_val_type_info = _fbthrift_python_types.typeinfo_string
+containerTypedef = _fbthrift_python_types.MapTypeFactory(_fbthrift_python_types.typeinfo_i16, _fbthrift_python_types.typeinfo_string)

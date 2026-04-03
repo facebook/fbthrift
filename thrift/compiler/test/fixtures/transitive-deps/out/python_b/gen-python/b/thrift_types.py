@@ -29,7 +29,5 @@ _fbthrift_all_enums = [
 _fbthrift_all_structs = [
 ]
 
-class B(_fbthrift_python_types._ListTypedefBase):
-    __slots__ = ()
-    _fbthrift_list_type_info = _fbthrift_python_types.StructTypeInfo(_fbthrift__c__thrift_types.C)
+B = _fbthrift_python_types.ListTypeFactory(_fbthrift_python_types.StructTypeInfo(_fbthrift__c__thrift_types.C))
 E = _fbthrift__c__thrift_types.E
