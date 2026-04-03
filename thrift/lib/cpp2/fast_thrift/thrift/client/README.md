@@ -17,7 +17,7 @@ fast_thrift channel pipeline.
 │                       ThriftClientChannel                                    │
 │  - Implements apache::thrift::RequestChannel                                 │
 │  - Manages pending callbacks keyed by requestId                              │
-│  - Receives responses via onMessage() (InboundAppHandler)                    │
+│  - Receives responses via onMessage() (ClientInboundAppAdapter)                    │
 └─────────────────────────────────────────────────────────────────────────────┘
                                     │
                     ┌───────────────┴───────────────┐
@@ -76,7 +76,7 @@ The main entry point implementing `apache::thrift::RequestChannel`.
 - Owns `TransportHandler` (created from socket in constructor)
 - Request-response RPC via `sendRequestResponse()`
 - Callback correlation using `pendingCallbacks_` map keyed by `requestId`
-- Receives pipeline responses via `onMessage()` (InboundAppHandler concept)
+- Receives pipeline responses via `onMessage()` (ClientInboundAppAdapter concept)
 - Handles unsupported frame types by logging error and closing pipeline
 
 **Usage:**

@@ -151,6 +151,26 @@ class ThriftClientAppAdapterTest : public ::testing::Test {
 };
 
 // =============================================================================
+// ProtocolId Tests
+// =============================================================================
+
+TEST_F(ThriftClientAppAdapterTest, DefaultProtocolIdIsZero) {
+  TestAppAdapterClient client;
+  EXPECT_EQ(client.adapter().getProtocolId(), 0);
+}
+
+TEST_F(ThriftClientAppAdapterTest, ConstructorSetsProtocolId) {
+  ThriftClientAppAdapter::Ptr adapter{new ThriftClientAppAdapter(42)};
+  EXPECT_EQ(adapter->getProtocolId(), 42);
+}
+
+TEST_F(ThriftClientAppAdapterTest, SetProtocolId) {
+  TestAppAdapterClient client;
+  client.adapter().setProtocolId(7);
+  EXPECT_EQ(client.adapter().getProtocolId(), 7);
+}
+
+// =============================================================================
 // onMessage Tests
 // =============================================================================
 

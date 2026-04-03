@@ -23,11 +23,11 @@
 #include <folly/logging/xlog.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/PipelineImpl.h>
-#include <thrift/lib/cpp2/fast_thrift/common/AppAdapter.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/FrameType.h>
 #include <thrift/lib/cpp2/fast_thrift/frame/read/DirectStreamMap.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/FastThriftAdapterBase.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/client/Messages.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/client/common/ClientAppAdapter.h>
 
 namespace apache::thrift::fast_thrift::thrift {
 
@@ -43,7 +43,7 @@ namespace apache::thrift::fast_thrift::thrift {
  * Non-owning: holds a raw PipelineImpl*, does NOT own the transport or
  * pipeline (the pipeline owner keeps those alive).
  *
- * Implements the InboundAppHandler concept (onMessage / onException).
+ * Implements the ClientInboundAppAdapter concept (onMessage / onException).
  */
 class ThriftClientAppAdapter : public folly::DelayedDestruction,
                                public FastThriftAdapterBase {
@@ -57,6 +57,9 @@ class ThriftClientAppAdapter : public folly::DelayedDestruction,
 
   ThriftClientAppAdapter() = default;
 
+  explicit ThriftClientAppAdapter(uint16_t protocolId)
+      : protocolId_{protocolId} {}
+
   ThriftClientAppAdapter(const ThriftClientAppAdapter&) = delete;
   ThriftClientAppAdapter& operator=(const ThriftClientAppAdapter&) = delete;
   ThriftClientAppAdapter(ThriftClientAppAdapter&&) = delete;
@@ -66,6 +69,10 @@ class ThriftClientAppAdapter : public folly::DelayedDestruction,
       apache::thrift::fast_thrift::channel_pipeline::PipelineImpl* pipeline) {
     pipeline_ = pipeline;
   }
+
+  uint16_t getProtocolId() const noexcept { return protocolId_; }
+
+  void setProtocolId(uint16_t protocolId) noexcept { protocolId_ = protocolId; }
 
   /**
    * Send a request message into the pipeline.
@@ -109,7 +116,7 @@ class ThriftClientAppAdapter : public folly::DelayedDestruction,
         });
   }
 
-  // === InboundAppHandler interface ===
+  // === ClientInboundAppAdapter interface ===
 
   apache::thrift::fast_thrift::channel_pipeline::Result onMessage(
       apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox&&
@@ -149,6 +156,7 @@ class ThriftClientAppAdapter : public folly::DelayedDestruction,
  private:
   apache::thrift::fast_thrift::channel_pipeline::PipelineImpl* pipeline_{
       nullptr};
+  uint16_t protocolId_{0};
   apache::thrift::fast_thrift::frame::read::DirectStreamMap<
       ResponseHandler,
       uint32_t,
@@ -158,13 +166,11 @@ class ThriftClientAppAdapter : public folly::DelayedDestruction,
 };
 
 static_assert(
-    apache::thrift::fast_thrift::channel_pipeline::OutboundAppHandler<
-        ThriftClientAppAdapter>,
-    "ThriftClientAppAdapter must satisfy OutboundAppHandler concept");
+    ClientOutboundAppAdapter<ThriftClientAppAdapter>,
+    "ThriftClientAppAdapter must satisfy ClientOutboundAppAdapter concept");
 
 static_assert(
-    apache::thrift::fast_thrift::channel_pipeline::InboundAppHandler<
-        ThriftClientAppAdapter>,
-    "ThriftClientAppAdapter must satisfy InboundAppHandler concept");
+    ClientInboundAppAdapter<ThriftClientAppAdapter>,
+    "ThriftClientAppAdapter must satisfy ClientInboundAppAdapter concept");
 
 } // namespace apache::thrift::fast_thrift::thrift

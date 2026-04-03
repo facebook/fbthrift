@@ -29,7 +29,8 @@
 namespace apache::thrift::fast_thrift::test {
 
 /**
- * TestClientAppAdapter implements InboundAppHandler for client-side testing.
+ * TestClientAppAdapter implements ClientInboundAppAdapter for client-side
+ * testing.
  *
  * This adapter is designed for client-side testing:
  * - Sends messages to the server via the pipeline
@@ -46,7 +47,7 @@ class TestClientAppAdapter {
 
   TestClientAppAdapter() = default;
 
-  // --- InboundAppHandler Interface ---
+  // --- ClientInboundAppAdapter Interface ---
 
   /**
    * Called by the pipeline when a response message is received from the server.

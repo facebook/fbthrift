@@ -38,8 +38,8 @@ namespace apache::thrift::fast_thrift::thrift {
  * This adapter translates the fast_thrift channel pipeline to Thrift's
  * AsyncProcessor API. Supports request-response and oneway RPCs.
  *
- * This class implements the InboundAppHandler concept to receive requests
- * from the pipeline via onMessage().
+ * This class implements the ServerInboundAppAdapter concept to receive
+ * requests from the pipeline via onMessage().
  *
  * Usage:
  *   auto channel = std::make_unique<ThriftServerChannel>(processorFactory);
@@ -77,7 +77,7 @@ class ThriftServerChannel {
   // Must be called before processing requests to provide IOWorkerContext.
   void setWorker(std::shared_ptr<apache::thrift::Cpp2Worker> worker);
 
-  // === InboundAppHandler interface ===
+  // === ServerInboundAppAdapter interface ===
   // Called by the pipeline when a request message arrives
   apache::thrift::fast_thrift::channel_pipeline::Result onMessage(
       apache::thrift::fast_thrift::channel_pipeline::TypeErasedBox&&

@@ -20,7 +20,7 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/EndpointAdapter.h>
 
-namespace apache::thrift::fast_thrift::channel_pipeline {
+namespace apache::thrift::fast_thrift::transport {
 
 /**
  * InboundTransportHandler concept - receives data from the transport layer.
@@ -34,11 +34,11 @@ namespace apache::thrift::fast_thrift::channel_pipeline {
  * It does NOT require DelayedDestructionBase.
  */
 template <typename H>
-concept InboundTransportHandler =
-    requires(H h, BytesPtr bytes, folly::exception_wrapper e) {
-      { h.onRead(std::move(bytes)) } noexcept -> std::same_as<void>;
-      { h.onClose(std::move(e)) } noexcept -> std::same_as<void>;
-    };
+concept InboundTransportHandler = requires(
+    H h, channel_pipeline::BytesPtr bytes, folly::exception_wrapper e) {
+  { h.onRead(std::move(bytes)) } noexcept -> std::same_as<void>;
+  { h.onClose(std::move(e)) } noexcept -> std::same_as<void>;
+};
 
 /**
  * OutboundTransportHandler concept — refines EndpointHandler with
@@ -51,9 +51,10 @@ concept InboundTransportHandler =
  * It does NOT require DelayedDestructionBase.
  */
 template <typename T>
-concept OutboundTransportHandler = EndpointHandler<T> && requires(T t) {
-  { t.pauseRead() } noexcept -> std::same_as<void>;
-  { t.resumeRead() } noexcept -> std::same_as<void>;
-};
+concept OutboundTransportHandler =
+    channel_pipeline::EndpointHandler<T> && requires(T t) {
+      { t.pauseRead() } noexcept -> std::same_as<void>;
+      { t.resumeRead() } noexcept -> std::same_as<void>;
+    };
 
-} // namespace apache::thrift::fast_thrift::channel_pipeline
+} // namespace apache::thrift::fast_thrift::transport

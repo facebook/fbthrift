@@ -20,33 +20,37 @@
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/EndpointAdapter.h>
 
-namespace apache::thrift::fast_thrift::channel_pipeline {
+namespace apache::thrift::fast_thrift::thrift {
 
 /**
- * InboundAppHandler — alias for the generic EndpointHandler concept.
+ * ClientInboundAppAdapter — client-side inbound endpoint concept.
  *
- * In a transport pipeline the application layer is the head endpoint:
- * it consumes decoded messages and receives exceptions.
+ * Alias for EndpointHandler. The client receives decoded response messages
+ * and exceptions from the pipeline.
  */
 template <typename A>
-concept InboundAppHandler = EndpointHandler<A>;
+concept ClientInboundAppAdapter = channel_pipeline::EndpointHandler<A>;
 
 /**
- * OutboundAppHandler concept - sends messages from application to pipeline.
+ * ClientOutboundAppAdapter concept — sends messages from client application
+ * to pipeline.
  *
- * The application calls this to send a message through the pipeline
- * toward the transport.
+ * The client calls write() to send a request through the pipeline toward the
+ * transport.
  *
  * Note: This is an interface contract, not an owned object.
  * It does NOT require DelayedDestructionBase.
  */
 template <typename O>
-concept OutboundAppHandler = requires(O o, TypeErasedBox&& msg) {
-  typename O::ResponseHandler;
+concept ClientOutboundAppAdapter =
+    requires(O o, channel_pipeline::TypeErasedBox&& msg) {
+      typename O::ResponseHandler;
 
-  {
-    o.write(std::declval<typename O::ResponseHandler>(), std::move(msg))
-  } noexcept -> std::same_as<void>;
-};
+      {
+        o.write(std::declval<typename O::ResponseHandler>(), std::move(msg))
+      } noexcept -> std::same_as<void>;
 
-} // namespace apache::thrift::fast_thrift::channel_pipeline
+      { o.getProtocolId() } noexcept -> std::same_as<uint16_t>;
+    };
+
+} // namespace apache::thrift::fast_thrift::thrift

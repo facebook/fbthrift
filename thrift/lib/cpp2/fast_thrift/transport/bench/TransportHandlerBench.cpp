@@ -113,11 +113,11 @@ class BenchSocket : public folly::AsyncTransport {
   void setEorTracking(bool) override {}
 };
 
-class BenchAppHandler {
+class BenchEndpointHandler {
  public:
-  BenchAppHandler() = default;
+  BenchEndpointHandler() = default;
 
-  // InboundAppHandler interface
+  // EndpointHandler interface
   Result onMessage(TypeErasedBox&&) noexcept { return Result::Success; }
 
   void onException(folly::exception_wrapper&&) noexcept {}
@@ -136,14 +136,14 @@ class BenchAllocator {
 // =============================================================================
 auto createHandlerAndPipeline(
     folly::EventBase& evb,
-    BenchAppHandler& appHandler,
+    BenchEndpointHandler& appHandler,
     BenchAllocator& allocator) {
   auto socket = folly::AsyncTransport::UniquePtr(new BenchSocket());
   auto handler =
       fast_transport::TransportHandler::create(std::move(socket), 256, 4096);
 
   auto pipeline = PipelineBuilder<
-                      BenchAppHandler,
+                      BenchEndpointHandler,
                       fast_transport::TransportHandler,
                       BenchAllocator>()
                       .setEventBase(&evb)
@@ -164,7 +164,7 @@ BENCHMARK(Write_TransportHandler_Small, iters) {
   folly::BenchmarkSuspender susp;
 
   EventBase evb;
-  BenchAppHandler appHandler;
+  BenchEndpointHandler appHandler;
   BenchAllocator allocator;
   auto [handler, pipeline] =
       createHandlerAndPipeline(evb, appHandler, allocator);
@@ -185,7 +185,7 @@ BENCHMARK(Write_TransportHandler_Medium, iters) {
   folly::BenchmarkSuspender susp;
 
   EventBase evb;
-  BenchAppHandler appHandler;
+  BenchEndpointHandler appHandler;
   BenchAllocator allocator;
   auto [handler, pipeline] =
       createHandlerAndPipeline(evb, appHandler, allocator);
@@ -206,7 +206,7 @@ BENCHMARK(Write_TransportHandler_Large, iters) {
   folly::BenchmarkSuspender susp;
 
   EventBase evb;
-  BenchAppHandler appHandler;
+  BenchEndpointHandler appHandler;
   BenchAllocator allocator;
   auto [handler, pipeline] =
       createHandlerAndPipeline(evb, appHandler, allocator);
@@ -230,7 +230,7 @@ BENCHMARK(Read_TransportHandler_Small, iters) {
   folly::BenchmarkSuspender susp;
 
   EventBase evb;
-  BenchAppHandler appHandler;
+  BenchEndpointHandler appHandler;
   BenchAllocator allocator;
   auto [handler, pipeline] =
       createHandlerAndPipeline(evb, appHandler, allocator);
@@ -248,7 +248,7 @@ BENCHMARK(Read_TransportHandler_Medium, iters) {
   folly::BenchmarkSuspender susp;
 
   EventBase evb;
-  BenchAppHandler appHandler;
+  BenchEndpointHandler appHandler;
   BenchAllocator allocator;
   auto [handler, pipeline] =
       createHandlerAndPipeline(evb, appHandler, allocator);
@@ -266,7 +266,7 @@ BENCHMARK(Read_TransportHandler_Large, iters) {
   folly::BenchmarkSuspender susp;
 
   EventBase evb;
-  BenchAppHandler appHandler;
+  BenchEndpointHandler appHandler;
   BenchAllocator allocator;
   auto [handler, pipeline] =
       createHandlerAndPipeline(evb, appHandler, allocator);

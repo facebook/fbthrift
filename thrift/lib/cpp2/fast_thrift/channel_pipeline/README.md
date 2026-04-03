@@ -452,8 +452,8 @@ Concepts for data flow between pipeline and application:
 
 | Concept | Direction | Purpose |
 |---------|-----------|---------|
-| `InboundAppHandler` | Pipeline → App | Receives decoded messages (`onMessage`) |
-| `OutboundAppHandler` | App → Pipeline | Sends messages to pipeline (`write`) |
+| `ClientInboundAppAdapter` | Pipeline → App | Receives decoded messages (`onMessage`) |
+| `ClientOutboundAppAdapter` | App → Pipeline | Sends messages to pipeline (`write`) |
 
 ---
 
@@ -533,10 +533,10 @@ Pipeline (owns) ──► Context (owns) ──► Handler
 │             │◄───│                                     │◄───│             │
 └─────────────┘    └─────────────────────────────────────┘    └─────────────┘
        │                         │                                   │
-       │   InboundTransportHandler                    InboundAppHandler
+       │   InboundTransportHandler                    ClientInboundAppAdapter
        │   (on_read, on_error)                        (on_message)
        │                         │                                   │
-       │   OutboundTransportHandler                   OutboundAppHandler
+       │   OutboundTransportHandler                   ClientOutboundAppAdapter
        │   (write, pause_read)                        (write)
 ```
 
@@ -544,10 +544,10 @@ Pipeline (owns) ──► Context (owns) ──► Handler
 1. Transport receives bytes from socket
 2. Calls `InboundTransportHandler.on_read(bytes)`
 3. Pipeline head decodes, transforms, passes down
-4. Pipeline tail calls `InboundAppHandler.on_message(msg)`
+4. Pipeline tail calls `ClientInboundAppAdapter.on_message(msg)`
 
 **Outbound flow** (Application → Network):
-1. Application calls `OutboundAppHandler.write(msg)`
+1. Application calls `ClientOutboundAppAdapter.write(msg)`
 2. Pipeline tail encodes, transforms, passes up
 3. Pipeline head calls `OutboundTransportHandler.write(bytes)`
 4. Transport sends bytes to socket
@@ -582,8 +582,8 @@ Handler methods return `Result` to signal the outcome of an operation:
 |---------|--------|--------|
 | `InboundHandler` | `onRead(ctx, msg)` | `Result` |
 | `OutboundHandler` | `onWrite(ctx, msg)` | `Result` |
-| `InboundAppHandler` | `onMessage(msg)` | `Result` |
-| `OutboundAppHandler` | `write(msg)` | `Result` |
+| `ClientInboundAppAdapter` | `onMessage(msg)` | `Result` |
+| `ClientOutboundAppAdapter` | `write(msg)` | `Result` |
 
 ### Methods That Return void
 

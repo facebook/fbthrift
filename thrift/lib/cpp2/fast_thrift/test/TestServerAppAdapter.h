@@ -28,7 +28,8 @@
 namespace apache::thrift::fast_thrift::test {
 
 /**
- * TestServerAppAdapter implements InboundAppHandler for server-side testing.
+ * TestServerAppAdapter implements ServerInboundAppAdapter for server-side
+ * testing.
  *
  * This adapter receives messages from the pipeline and provides:
  * - Message tracking for test verification
@@ -45,7 +46,7 @@ class TestServerAppAdapter {
 
   TestServerAppAdapter() = default;
 
-  // --- InboundAppHandler Interface ---
+  // --- ServerInboundAppAdapter Interface ---
 
   /**
    * Called by the pipeline when a message reaches the application layer.
@@ -142,7 +143,7 @@ class TestServerAppAdapter {
   }
 
  private:
-  // InboundAppHandler state
+  // ServerInboundAppAdapter state
   mutable std::mutex messagesMutex_;
   int messageCount_{0};
   std::vector<TypeErasedBox> messages_;

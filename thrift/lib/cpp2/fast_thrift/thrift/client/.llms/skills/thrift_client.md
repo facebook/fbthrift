@@ -72,7 +72,7 @@ The main entry point implementing `apache::thrift::RequestChannel`.
 - Owns `TransportHandler` (created from socket in constructor)
 - Request-response RPC via `sendRequestResponse()`
 - Callback correlation using `pendingCallbacks_` map keyed by `requestId`
-- Receives pipeline responses via `onMessage()` (InboundAppHandler concept)
+- Receives pipeline responses via `onMessage()` (ClientInboundAppAdapter concept)
 - Serializes `RequestRpcMetadata` into IOBuf via `serializeRequestMetadata()` (RequestMetadata.h)
 - Deserializes `ResponseRpcMetadata` from `ParsedFrame` via `deserializeResponseMetadata()` (ResponseMetadata.h)
 
