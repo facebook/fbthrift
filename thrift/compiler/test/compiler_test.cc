@@ -856,18 +856,27 @@ TEST(CompilerTest, deprecated_annotations) {
   check_compile(R"(
     package "facebook.com/thrift/test"
     include "thrift/annotation/cpp.thrift"
-    include "thrift/annotation/hack.thrift"
     include "thrift/annotation/thrift.thrift"
 
-    @hack.Attributes{attributes=[]}
     struct A {
-        1: optional i64 field (cpp.box) # expected-error: Unstructured annotation `cpp.box` is not allowed. Use a structured annotation instead.
-        2: i64 with (py3.name = "w", go.name = "w")
-        # expected-error@-1: Unstructured annotation `py3.name` is not allowed. Use a structured annotation instead.
-        # expected-error@-2: Unstructured annotation `go.name` is not allowed. Use a structured annotation instead.
-    } (hack.attributes = "") # expected-error: Unstructured annotation `hack.attributes` is not allowed. Use a structured annotation instead.
+      @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.box": "1"}}
+      1: optional i64 field;
+      # expected-warning@-2: The annotation cpp.box is deprecated. Please use @thrift.Box instead.
 
-    typedef i64 (cpp.type = "std::uint64_t") T # expected-error: Unstructured annotation `cpp.type` is not allowed. Use a structured annotation instead.
+      @thrift.DeprecatedUnvalidatedAnnotations{items = {"py3.name": "w", "go.name": "w"}}
+      2: i64 with;
+      # expected-warning@-2: The annotation py3.name is deprecated. Please use @python.Name instead.
+      # expected-warning@-3: The annotation go.name is deprecated. Please use @go.Name instead.
+    }
+
+    @thrift.DeprecatedUnvalidatedAnnotations{items = {"hack.attributes": ""}}
+    struct B {}
+    # expected-warning@17: The annotation hack.attributes is deprecated. Please use @hack.Attributes instead.
+
+    @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp.type": "std::uint64_t"}}
+    typedef i64 T
+    # expected-warning@21: The annotation cpp.type is deprecated. Please use @cpp.Type instead.
+    # expected-warning@21: Unstructured annotation cpp.type/cpp.template on typedef `T` is ignored. Use @cpp.Type instead.
 
     # This should not produce a warning even though the annotation is currently lowered.
     @cpp.Type{name = "std::uint64_t"}
@@ -880,13 +889,57 @@ TEST(CompilerTest, removed_annotations) {
     package "test.dev/thrift/removed_annotations"
     include "thrift/annotation/thrift.thrift"
 
+    @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp2.declare_bitwise_ops": "1"}}
+    enum E1 {}
+    # expected-error@5: The annotation cpp2.declare_bitwise_ops has been removed. Please use @thrift.BitmaskEnum instead.
+
+    @thrift.DeprecatedUnvalidatedAnnotations{items = {"cpp2.deprecated_enum_unscoped": "1"}}
+    enum E3 {}
+    # expected-error@9: invalid annotation cpp2.deprecated_enum_unscoped
+
+    @thrift.DeprecatedUnvalidatedAnnotations{items = {"rust.foo": "1"}}
+    struct A {
+      1: i64 removed_unstructured;
+    }
+    # expected-error@13: The annotation rust.foo has been removed. Please use a structured annotation from thrift/annotation/rust.thrift instead.
+
+    @thrift.DeprecatedUnvalidatedAnnotations{items = {"rust.type": "HashMap"}}
+    typedef map<string, string> HashMap
+    # expected-error@19: The annotation rust.type has been removed. Please use a structured annotation from thrift/annotation/rust.thrift instead.
+
+    service J {
+      @thrift.DeprecatedUnvalidatedAnnotations{items = {"rust.name": "bar"}}
+      i64 foo(1: i64 arg);
+      # expected-error@24: The annotation rust.name has been removed. Please use a structured annotation from thrift/annotation/rust.thrift instead.
+    }
+  )");
+}
+
+TEST(CompilerTest, legacy_annotation_syntax_rejected) {
+  check_compile(R"(
+    package "facebook.com/thrift/test"
+
+    struct A {
+      1: optional i64 field (cpp.box)
+      # expected-error@-1: Unstructured annotation `cpp.box` is not allowed. Use a structured annotation instead.
+      2: i64 with (py3.name = "w", go.name = "w")
+      # expected-error@-1: Unstructured annotation `py3.name` is not allowed. Use a structured annotation instead.
+      # expected-error@-2: Unstructured annotation `go.name` is not allowed. Use a structured annotation instead.
+    }
+
+    struct B {} (hack.attributes = "")
+    # expected-error@-1: Unstructured annotation `hack.attributes` is not allowed. Use a structured annotation instead.
+
+    typedef i64 (cpp.type = "std::uint64_t") T
+    # expected-error@-1: Unstructured annotation `cpp.type` is not allowed. Use a structured annotation instead.
+
     enum E1 {} (cpp2.declare_bitwise_ops)
     # expected-error@-1: Unstructured annotation `cpp2.declare_bitwise_ops` is not allowed. Use a structured annotation instead.
 
     enum E3 {} (cpp2.deprecated_enum_unscoped)
     # expected-error@-1: Unstructured annotation `cpp2.deprecated_enum_unscoped` is not allowed. Use a structured annotation instead.
 
-    struct A {
+    struct C {
       1: i64 removed_unstructured (rust.foo)
       # expected-error@-1: Unstructured annotation `rust.foo` is not allowed. Use a structured annotation instead.
     }
@@ -894,11 +947,9 @@ TEST(CompilerTest, removed_annotations) {
     typedef map<string, string> (rust.type = "HashMap") HashMap
     # expected-error@-1: Unstructured annotation `rust.type` is not allowed. Use a structured annotation instead.
 
-    struct S {} (cpp.type = "foo") # expected-error: Unstructured annotation `cpp.type` is not allowed. Use a structured annotation instead.
-    typedef S T
-
     service J {
-      i64 foo(1: i64 arg (rust.name = "bar")) # expected-error: Unstructured annotation `rust.name` is not allowed. Use a structured annotation instead.
+      i64 foo(1: i64 arg (rust.name = "bar"))
+      # expected-error@-1: Unstructured annotation `rust.name` is not allowed. Use a structured annotation instead.
     }
   )");
 }
