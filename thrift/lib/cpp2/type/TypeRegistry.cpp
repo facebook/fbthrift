@@ -97,8 +97,12 @@ auto TypeRegistry::getEntry(const Type& type) const -> const TypeEntry& {
     return itr->second;
   }
 
-  // TODO(afuller): Improve error message.
-  folly::throw_exception<std::out_of_range>("Type not registered.");
+  folly::throw_exception<std::out_of_range>(fmt::format(
+      "Type '{}' is not registered in the TypeRegistry. This usually means the "
+      "Thrift definition for this type was not compiled with the 'any' option "
+      "enabled, or that the generated registration code is not linked into the "
+      "current binary.",
+      type.debugString()));
 }
 
 const op::Serializer& TypeRegistry::TypeEntry::getSerializer(
