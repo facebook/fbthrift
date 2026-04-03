@@ -237,8 +237,9 @@ cdef class ServerSinkGenerator:
         cFollyExecutor* executor,
     ):
         cdef ServerSinkGenerator inst = ServerSinkGenerator.__new__(ServerSinkGenerator)
-        inst._cpp_gen = cmove(cpp_gen)
+        inst._cpp_gen = make_unique[cIOBufSinkGenerator](cmove(cpp_gen))
         inst._executor = executor
+        inst._closed = False
         return inst
 
 
@@ -246,6 +247,8 @@ cdef class ServerSinkGenerator:
         return self
 
     def __anext__(self):
+        if self._closed:
+            raise StopAsyncIteration
         cancellation_source = cFollyCancellationSource()
         loop = asyncio.get_event_loop()
         future = loop.create_future()
@@ -254,13 +257,20 @@ cdef class ServerSinkGenerator:
         userdata = (self, future)
         bridgeCoroTaskWithCancellation[unique_ptr[cIOBuf]](
             self._executor,
-            self._cpp_gen.getNext(),
+            dereference(self._cpp_gen).getNext(),
             server_sink_elem_callback,
             <PyObject*> userdata,
             cancellation_source.getToken(),
         )
         # we don't shield here because it prevents cancellation from propagating to C++ callbacks
         return future
+
+    cdef close(self):
+        self._closed = True
+        self._cpp_gen.reset()
+
+    async def aclose(self):
+        self.close()
 
 
 cdef void server_sink_elem_callback(
