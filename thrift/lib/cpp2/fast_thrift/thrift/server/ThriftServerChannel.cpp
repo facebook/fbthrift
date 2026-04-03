@@ -208,6 +208,14 @@ ThriftServerChannel::ThriftServerChannel(
 
 ThriftServerChannel::~ThriftServerChannel() {
   pipelineAlive_->store(false);
+  auto cb = closeCallback_.withWLock([](auto& fn) { return std::move(fn); });
+  if (cb) {
+    cb();
+  }
+}
+
+void ThriftServerChannel::setCloseCallback(std::function<void()> cb) {
+  closeCallback_.withWLock([&](auto& fn) { fn = std::move(cb); });
 }
 
 void ThriftServerChannel::setPipeline(
@@ -367,6 +375,14 @@ void ThriftServerChannel::sendErrorResponse(
 
 void ThriftServerChannel::onException(folly::exception_wrapper&& e) noexcept {
   XLOG(ERR) << "Pipeline exception: " << e.what();
+  pipelineAlive_->store(false);
+  auto cb = closeCallback_.withWLock([](auto& fn) { return std::move(fn); });
+  if (cb && pipeline_) {
+    // Defer the close callback so that onException fully completes before
+    // the callback potentially removes the last shared_ptr to this channel
+    // (from FastThriftServer::serverChannels_), destroying `this`.
+    pipeline_->eventBase()->runInEventBaseThread(std::move(cb));
+  }
 }
 
 } // namespace apache::thrift::fast_thrift::thrift

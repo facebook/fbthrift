@@ -17,8 +17,10 @@
 #pragma once
 
 #include <atomic>
+#include <functional>
 #include <memory>
 #include <folly/ExceptionWrapper.h>
+#include <folly/Synchronized.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/fast_thrift/channel_pipeline/Common.h>
@@ -55,7 +57,10 @@ class ThriftServerChannel {
   ThriftServerChannel(ThriftServerChannel&&) = delete;
   ThriftServerChannel& operator=(ThriftServerChannel&&) = delete;
 
-  // Set the pipeline
+  // Set a callback invoked when the channel closes (connection error via
+  // onException) or is destroyed. Used by FastThriftServer to remove the
+  // channel from its tracking set.
+  void setCloseCallback(std::function<void()> cb);
 
   // Set the pipeline (takes ownership) - must be called before processing
   // requests
@@ -101,6 +106,7 @@ class ThriftServerChannel {
   // detect when the pipeline has been destroyed.
   std::shared_ptr<std::atomic<bool>> pipelineAlive_ =
       std::make_shared<std::atomic<bool>>(false);
+  folly::Synchronized<std::function<void()>> closeCallback_;
 };
 
 } // namespace apache::thrift::fast_thrift::thrift

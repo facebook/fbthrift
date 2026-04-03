@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <atomic>
+
 #include <folly/Executor.h>
 #include <folly/Synchronized.h>
 #include <folly/container/F14Map.h>
@@ -82,15 +84,16 @@ class ConnectionManager : public folly::DelayedDestruction {
   }
 
   void start() {
-    DCHECK(state_ != State::STARTED);
+    DCHECK(state_.load() != State::STARTED);
     executor_->addObserver(observer_);
-    state_ = State::STARTED;
+    state_.store(State::STARTED);
   }
 
   void stop() {
-    DCHECK(state_ == State::STARTED);
+    if (state_.exchange(State::STOPPED) != State::STARTED) {
+      return;
+    }
     executor_->removeObserver(observer_);
-    state_ = State::STOPPED;
   }
 
   /**
@@ -123,9 +126,7 @@ class ConnectionManager : public folly::DelayedDestruction {
     if (delayed && !getDestroyPending()) {
       return;
     }
-    if (state_ == State::STARTED) {
-      stop();
-    }
+    stop();
     delete this;
   }
 
@@ -162,7 +163,7 @@ class ConnectionManager : public folly::DelayedDestruction {
     });
   }
 
-  State state_{State::NONE};
+  std::atomic<State> state_{State::NONE};
   folly::SocketAddress address_;
   folly::Executor::KeepAlive<folly::IOThreadPoolExecutor> executor_;
   PipelineFactory<TransportHandlerType> pipelineFactory_;
