@@ -2552,6 +2552,10 @@ cdef class Set(Container):
 
 pySet.register(Set)
 
+# typing alias. In the .pyi, ImmutableSet[ElemT] provides accurate typing
+# while Set is effectively ImmutableSet[typing.Any]
+ImmutableSet = Set
+
 @_cython__final
 cdef class MapTypeFactory:
     cdef object key_info
@@ -2759,6 +2763,10 @@ cdef class Map(Container):
 
 tag_object_as_mapping(<PyTypeObject*>Map)
 Mapping.register(Map)
+
+# typing alias. In the .pyi, ImmutableMap[KeyT, ValT] provides accurate typing
+# while Map is effectively ImmutableMap[typing.Any, typing.Any]
+ImmutableMap = Map
 
 
 # We will create all the classes first then call fill_specs after that so
