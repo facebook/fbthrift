@@ -651,7 +651,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
             n: builtins.int,
             *,
             rpc_options: _typing.Optional[RpcOptions] = None,
-        ) -> _typing.Sequence[builtins.int]:
+        ) -> _fbthrift_python_types.ImmutableList[builtins.int]:
             _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "fib",
@@ -748,7 +748,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
             num_items: builtins.int,
             *,
             rpc_options: _typing.Optional[RpcOptions] = None,
-        ) -> _typing.Sequence[_typing.Sequence[builtins.int]]:
+        ) -> _fbthrift_python_types.ImmutableList[_fbthrift_python_types.ImmutableList[builtins.int]]:
             _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "list_of_lists",
@@ -797,7 +797,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
             some_words: builtins.str,
             *,
             rpc_options: _typing.Optional[RpcOptions] = None,
-        ) -> _typing.Sequence[_typing.AbstractSet[builtins.str]]:
+        ) -> _fbthrift_python_types.ImmutableList[_typing.AbstractSet[builtins.str]]:
             _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "list_of_sets",
@@ -989,7 +989,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
             the_enum: _typing.Sequence[_fbthrift__module__thrift_types.AnEnum],
             *,
             rpc_options: _typing.Optional[RpcOptions] = None,
-        ) -> _typing.Sequence[_fbthrift__module__thrift_types.AnEnum]:
+        ) -> _fbthrift_python_types.ImmutableList[_fbthrift__module__thrift_types.AnEnum]:
             _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "contain_enum",
@@ -1722,7 +1722,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
             n: builtins.int,
             *,
             rpc_options: _typing.Optional[RpcOptions] = None,
-        ) -> _typing.Sequence[builtins.int]:
+        ) -> _fbthrift_python_types.ImmutableList[builtins.int]:
             _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "fib",
@@ -1815,7 +1815,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
             num_items: builtins.int,
             *,
             rpc_options: _typing.Optional[RpcOptions] = None,
-        ) -> _typing.Sequence[_typing.Sequence[builtins.int]]:
+        ) -> _fbthrift_python_types.ImmutableList[_fbthrift_python_types.ImmutableList[builtins.int]]:
             _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "list_of_lists",
@@ -1862,7 +1862,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
             some_words: builtins.str,
             *,
             rpc_options: _typing.Optional[RpcOptions] = None,
-        ) -> _typing.Sequence[_typing.AbstractSet[builtins.str]]:
+        ) -> _fbthrift_python_types.ImmutableList[_typing.AbstractSet[builtins.str]]:
             _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "list_of_sets",
@@ -2046,7 +2046,7 @@ class SimpleService(_fbthrift_python_Client["SimpleService.Async", "SimpleServic
             the_enum: _typing.Sequence[_fbthrift__module__thrift_types.AnEnum],
             *,
             rpc_options: _typing.Optional[RpcOptions] = None,
-        ) -> _typing.Sequence[_fbthrift__module__thrift_types.AnEnum]:
+        ) -> _fbthrift_python_types.ImmutableList[_fbthrift__module__thrift_types.AnEnum]:
             _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "contain_enum",

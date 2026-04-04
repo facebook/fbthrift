@@ -66,13 +66,14 @@ None
   {{/if (object.notnull? adapter)}}
 {{/let partial}}
 
-{{! Adapted type hint if field has adapter, otherwise the original type }}
+{{! Adapted type hint if field has adapter, otherwise the original type.
+    Uses pep484_field_return_type so struct fields use ImmutableList instead of Sequence. }}
 {{#let export partial adapted_type_pyi |type adapter| captures |typehints|}}
   {{#pragma ignore-newlines}}
   {{#if (object.notnull? adapter)}}
-{{adapter.type_hint}}{{#if adapter.is_generic?}}[{{#partial typehints.pep484_type type=type}}]{{/if}}
+{{adapter.type_hint}}{{#if adapter.is_generic?}}[{{#partial typehints.pep484_field_return_type type=type}}]{{/if}}
   {{#else}}
-{{#partial typehints.pep484_type type=type}}
+{{#partial typehints.pep484_field_return_type type=type}}
   {{/if (object.notnull? adapter)}}
 {{/let partial}}
 
