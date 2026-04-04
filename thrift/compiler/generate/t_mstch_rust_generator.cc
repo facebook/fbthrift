@@ -1132,8 +1132,7 @@ class t_mstch_rust_generator : public t_whisker_generator {
       return has_type_annotation(&self) && !has_newtype_annotation(&self);
     });
     def.property("nonstandard?", [](const t_type& self) {
-      return has_nonstandard_type_annotation(&self) &&
-          !has_newtype_annotation(&self);
+      return has_nonstandard_type_annotation(&self);
     });
     def.property("serde?", [this](const t_type& self) {
       return rust_serde_enabled(options_, self);
@@ -1194,20 +1193,6 @@ class t_mstch_rust_generator : public t_whisker_generator {
         rust_type = fmt::format("fbthrift::builtin_types::{}", rust_type);
       }
       return rust_type;
-    });
-    def.property("nonstandard?", [](const t_typedef& self) {
-      // See 'typedef.mustache'. The context is writing serialization functions
-      // for a newtype `pub struct T(pub X)`.
-      // If `X` has a type annotation `A` that is non-standard we should emit
-      // the phrase `crate::r#impl::write(&self.0, p)`. If `X` does not have an
-      // annotation or does but it is not non-standard we should write
-      // `self.0.write(p)`.
-      std::string rust_type;
-      if (const t_const* annot =
-              self.find_structured_annotation_or_null(kRustTypeUri)) {
-        rust_type = get_annotation_property_string(annot, "name");
-      }
-      return rust_type.find("::") != std::string::npos;
     });
     def.property("constructor?", [](const t_typedef& self) {
       return typedef_has_constructor_expression(&self);
