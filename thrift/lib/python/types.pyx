@@ -2375,6 +2375,10 @@ cdef class List(Container):
 tag_object_as_sequence(<PyTypeObject*>List)
 Sequence.register(List)
 
+# typing alias. In the .pyi, ImmutableList[ElemT] provides accurate typing
+# while List is effectively ImmutableList[typing.Any]
+ImmutableList = List
+
 
 @_cython__final
 cdef class SetTypeFactory:
