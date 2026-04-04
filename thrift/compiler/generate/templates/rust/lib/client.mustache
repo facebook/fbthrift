@@ -15,6 +15,17 @@
   limitations under the License.
 
 }}
+{{! Serialize a function parameter, applying type-level adapter conversion
+    if needed. See type_adapter_read in lib/errors.mustache for why the `type:`
+    prototype qualifier is used here. }}
+  {{#let partial type_adapter_write_param |param| captures |types|}}
+{{#pragma ignore-newlines}}
+  {{#if param.type.type:has_adapter?}}
+::fbthrift::Serialize::rs_thrift_write(&{{param.type.type:adapter_qualified}}::to_thrift_field::<fbthrift::metadata::NoThriftAnnotations>(&self.{{param.rust_name}}, {{param.id}}), p)
+  {{#else}}
+{{#partial types.write type=param.type}}(&self.{{param.rust_name}}, p)
+  {{/if param.type.type:has_adapter?}}
+  {{/let partial}}
   {{#let service_extends = (if interface.interaction? null interface.extends)}}
 {{> lib/client_trait}}
 
@@ -469,12 +480,7 @@ impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_
         p.write_struct_begin("args");
       {{#each function.params.fields as |param|}}
         p.write_field_begin("{{param.name}}", {{#partial types.protocol_ttype type=param.type}}, {{param.id}}i16);
-        {{! TODO(T261463864): Preserved legacy behavior: explicit `type:` prototype qualifier ignores t_typedef's overrides for adapters }}
-        {{#if param.type.type:has_adapter?}}{{!
-            }}::fbthrift::Serialize::rs_thrift_write(&{{param.type.type:adapter_qualified}}::to_thrift_field::<fbthrift::metadata::NoThriftAnnotations>(&self.{{param.rust_name}}, {{param.id}}), p){{!
-        }}{{#else}}{{!
-            }}{{#partial types.write type=param.type}}(&self.{{param.rust_name}}, p){{!
-        }}{{/if param.type.type:has_adapter?}};
+        {{#partial type_adapter_write_param param=param}};
         p.write_field_end();
       {{/each}}
         p.write_field_stop();

@@ -134,8 +134,6 @@ std::string quoted_rust_doc(const t_named* named_node) {
   return quote(doc.substr(first, last - first + 1), true);
 }
 
-// TODO(T261463864): This and a few similar functions should have `string_view`
-// args / returns
 std::string get_type_annotation(const t_named* node) {
   if (const t_const* annot =
           node->find_structured_annotation_or_null(kRustTypeUri)) {

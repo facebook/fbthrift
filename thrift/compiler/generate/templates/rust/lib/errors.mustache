@@ -15,35 +15,47 @@
   limitations under the License.
 
 }}
-{{#let partial deserialize_initial_response_alt |function|}}
+{{! Deserialize from `p`, applying type-level adapter conversion if
+    needed. Uses `type:` prototype qualifier to access t_type's adapter
+    properties, bypassing t_typedef/t_structured overrides. Those overrides
+    "look inside" the node to extract the direct adapter annotation, which is
+    needed when *defining* the type. But when *using* a type externally (e.g.
+    deserializing a return value), we want the opaque view — in particular,
+    newtype typedefs handle adapter conversion in their own Deserialize impl,
+    so applying the typedef-level adapter would double-convert. }}
+{{#let partial type_adapter_read |type|}}
+{{#pragma ignore-newlines}}
+  {{#if type.type:has_adapter?}}
+{{type.type:adapter_qualified}}::from_thrift_field::<fbthrift::metadata::NoThriftAnnotations>(fbthrift::Deserialize::rs_thrift_read(p)?, 0)?
+  {{#else}}
+::fbthrift::Deserialize::rs_thrift_read(p)?
+  {{/if type.type:has_adapter?}}
+{{/let partial}}
+{{#let partial deserialize_initial_response_alt |function| captures |type_adapter_read|}}
 {{#pragma ignore-newlines}}
 {{#if (not function.void_or_void_stream?)}}::std::option::Option::Some({{/if}}
 ::std::result::Result::Ok(
   {{#if function.bidirectional_stream?}}
     {{! Bidirectional methods deserialize nothing for initial response !}}
 ()
-  {{#else if (or function.sink_or_stream? (not function.return_type.type:has_adapter?))}}
-    {{! TODO(T261463864): Preserved legacy behavior: explicit `type:` prototype qualifier ignores t_typedef's overrides for adapters }}
+  {{#else if function.sink_or_stream?}}
 ::fbthrift::Deserialize::rs_thrift_read(p)?
   {{#else}}
-{{function.return_type.type:adapter_qualified}}::from_thrift_field::<fbthrift::metadata::NoThriftAnnotations>(
-fbthrift::Deserialize::rs_thrift_read(p)?, 0)?
+{{#partial type_adapter_read type=function.return_type}}
   {{/if function.bidirectional_stream?}}
 )
 {{#if (not function.void_or_void_stream?)}}){{/if}}
 {{/let partial}}{{!
 
-}}{{#let partial deserialize_initial_exception_alt |function field|}}
+}}{{#let partial deserialize_initial_exception_alt |function field| captures |type_adapter_read|}}
 {{#pragma ignore-newlines}}
-{{! TODO(T261463864): Preserved legacy behavior: explicit `type:` prototype qualifier ignores t_typedef's overrides for adapters }}
 {{#if (not function.void_or_void_stream?)}}::std::option::Option::Some({{/if}}
 ::std::result::Result::Err(Self::Error::{{field.rust_name}}(
-  {{#if (or function.stream? (not function.return_type.type:has_adapter?))}}
+  {{#if function.stream?}}
 ::fbthrift::Deserialize::rs_thrift_read(p)?
   {{#else}}
-{{function.return_type.type:adapter_qualified}}::from_thrift_field::<fbthrift::metadata::NoThriftAnnotations>(
-fbthrift::Deserialize::rs_thrift_read(p)?, 0)?
-  {{/if (or function.stream? (not function.return_type.type:has_adapter?))}}
+{{#partial type_adapter_read type=function.return_type}}
+  {{/if function.stream?}}
 ))
 {{#if (not function.void_or_void_stream?)}}){{/if}}
 {{/let partial}}{{!
