@@ -36,7 +36,6 @@ get_property(any_rep-cpp2-SOURCES GLOBAL PROPERTY any_rep-cpp2-SOURCES)
 get_property(RpcMetadata-cpp2-SOURCES GLOBAL PROPERTY RpcMetadata-cpp2-SOURCES)
 get_property(metadata-cpp2-SOURCES GLOBAL PROPERTY metadata-cpp2-SOURCES)
 get_property(frozen-cpp2-SOURCES GLOBAL PROPERTY frozen-cpp2-SOURCES)
-get_property(reflection-cpp2-SOURCES GLOBAL PROPERTY reflection-cpp2-SOURCES)
 get_property(RocketUpgrade-cpp2-SOURCES GLOBAL PROPERTY
   RocketUpgrade-cpp2-SOURCES)
 get_property(id-cpp2-SOURCES GLOBAL PROPERTY id-cpp2-SOURCES)
@@ -277,7 +276,6 @@ target_link_libraries(
     Folly::folly
 )
 
-bypass_source_check("${reflection-cpp2-SOURCES}")
 add_library(
   thriftprotocol
 
@@ -297,9 +295,7 @@ add_library(
   ../cpp/protocol/TProtocolException.cpp
   ../cpp/protocol/TType.cpp
   ../cpp/util/VarintUtils.cpp
-  ${reflection-cpp2-SOURCES}
 )
-add_dependencies(thriftprotocol reflection-cpp2-target)
 target_link_libraries(
   thriftprotocol
   PUBLIC
