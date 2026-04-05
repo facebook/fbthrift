@@ -80,20 +80,12 @@ class Json5CustomProtocolEncodeTest
     : public ::testing::TestWithParam<TestCase> {};
 
 TEST_P(Json5CustomProtocolEncodeTest, EncodeJson) {
-  if (*GetParam().name() == "OutOfOrderFields" ||
-      *GetParam().name() == "OutOfOrderFieldsInMap") {
-    GTEST_SKIP() << "Map key ordering is non-deterministic";
-  }
   auto out =
       writeExample(*GetParam().example(), {.writer = {.indentWidth = 2}});
   EXPECT_EQ(out, *GetParam().json());
 }
 
 TEST_P(Json5CustomProtocolEncodeTest, EncodeJson5) {
-  if (*GetParam().name() == "OutOfOrderFields" ||
-      *GetParam().name() == "OutOfOrderFieldsInMap") {
-    GTEST_SKIP() << "Map key ordering is non-deterministic";
-  }
   auto opts = kJson5Options;
   opts.indentWidth = 2;
   auto out = writeExample(*GetParam().example(), {.writer = opts});
