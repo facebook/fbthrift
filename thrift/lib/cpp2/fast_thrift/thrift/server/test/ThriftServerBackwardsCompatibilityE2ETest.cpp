@@ -35,18 +35,21 @@
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/handler/RocketServerRequestResponseFrameHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/handler/RocketServerSetupFrameHandler.h>
 #include <thrift/lib/cpp2/fast_thrift/rocket/server/handler/RocketServerStreamStateHandler.h>
-#include <thrift/lib/cpp2/fast_thrift/thrift/client/test/if/gen-cpp2/BackwardsCompatibilityTestService.h>
-#include <thrift/lib/cpp2/fast_thrift/thrift/client/test/if/gen-cpp2/BackwardsCompatibilityTestServiceAsyncClient.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/ThriftServerChannel.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/BackwardsCompatibilityTestService.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/BackwardsCompatibilityTestServiceAsyncClient.h>
 #include <thrift/lib/cpp2/fast_thrift/transport/TransportHandler.h>
 
 THRIFT_FLAG_DECLARE_bool(rocket_client_binary_rpc_metadata_encoding);
 
-namespace apache::thrift::fast_thrift::test {
+namespace apache::thrift::fast_thrift::thrift::server::test {
 
 using apache::thrift::fast_thrift::channel_pipeline::PipelineBuilder;
 using apache::thrift::fast_thrift::channel_pipeline::PipelineImpl;
 using apache::thrift::fast_thrift::channel_pipeline::SimpleBufferAllocator;
+
+using apache::thrift::fast_thrift::thrift::test::
+    BackwardsCompatibilityTestService;
 
 // Handler tags for pipeline construction
 HANDLER_TAG(frame_length_parser_handler);
@@ -360,4 +363,4 @@ TEST_F(ThriftServerBackwardsCompatibilityE2ETest, LargeResponse) {
   destroyClientOnEvb(client);
 }
 
-} // namespace apache::thrift::fast_thrift::test
+} // namespace apache::thrift::fast_thrift::thrift::server::test

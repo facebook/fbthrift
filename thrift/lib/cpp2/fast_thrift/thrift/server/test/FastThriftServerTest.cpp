@@ -23,13 +23,16 @@
 #include <folly/synchronization/Baton.h>
 #include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
-#include <thrift/lib/cpp2/fast_thrift/thrift/client/test/if/gen-cpp2/BackwardsCompatibilityTestService.h>
-#include <thrift/lib/cpp2/fast_thrift/thrift/client/test/if/gen-cpp2/BackwardsCompatibilityTestServiceAsyncClient.h>
 #include <thrift/lib/cpp2/fast_thrift/thrift/server/FastThriftServer.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/BackwardsCompatibilityTestService.h>
+#include <thrift/lib/cpp2/fast_thrift/thrift/test/if/gen-cpp2/BackwardsCompatibilityTestServiceAsyncClient.h>
 
 THRIFT_FLAG_DECLARE_bool(rocket_client_binary_rpc_metadata_encoding);
 
-namespace apache::thrift::fast_thrift::test {
+namespace apache::thrift::fast_thrift::thrift::server::test {
+
+using apache::thrift::fast_thrift::thrift::test::
+    BackwardsCompatibilityTestService;
 
 class TestHandler
     : public apache::thrift::ServiceHandler<BackwardsCompatibilityTestService> {
@@ -278,4 +281,4 @@ TEST(FastThriftServerServeTest, ServeBlocksUntilStop) {
   EXPECT_TRUE(serveDone.load());
 }
 
-} // namespace apache::thrift::fast_thrift::test
+} // namespace apache::thrift::fast_thrift::thrift::server::test

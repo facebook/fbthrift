@@ -14,20 +14,16 @@
  * limitations under the License.
  */
 
-package "facebook.com/thrift/fast_thrift/client/backwards_compatibility_test"
+include "thrift/annotation/cpp.thrift"
 
-namespace cpp2 apache.thrift.fast_thrift.test
+package "facebook.com/thrift/fast_thrift/thrift/test"
 
-service BackwardsCompatibilityTestService {
-  // Simple echo - return the input string
+namespace cpp2 apache.thrift.fast_thrift.thrift.test
+
+@cpp.FastClient
+service TestFastService {
   string echo(1: string message);
-
-  // Add two numbers
   i64 add(1: i64 a, 2: i64 b);
-
-  // Return a response with the given size
   string sendResponse(1: i64 size);
-
-  // Void response for simple connectivity test
   void ping();
 }
