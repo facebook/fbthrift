@@ -1283,20 +1283,6 @@ void validate_ref_unique_and_box_annotation(
   }
 }
 
-void validate_function_priority_annotation(
-    sema_context& ctx, const t_node& node) {
-  if (auto* priority = node.find_unstructured_annotation_or_null("priority")) {
-    const std::string choices[] = {
-        "HIGH_IMPORTANT", "HIGH", "IMPORTANT", "NORMAL", "BEST_EFFORT"};
-    auto* end = choices + sizeof(choices) / sizeof(choices[0]);
-    ctx.check(
-        std::find(choices, end, *priority) != end,
-        "Bad priority '{}'. Choose one of {}.",
-        *priority,
-        choices);
-  }
-}
-
 void validate_function_exception_field_name_uniqueness(
     sema_context& ctx, const t_function& node) {
   if (node.exceptions() != nullptr) {
@@ -2152,6 +2138,7 @@ void deprecate_annotations(sema_context& ctx, const t_named& node) {
       "cpp2.deprecated_enum_unscoped",
       "cpp2.methods",
       "message",
+      "priority",
       "process_in_event_base",
   };
   std::map<std::string, std::string> removed_prefixes = {{"rust.", "rust"}};
@@ -2356,7 +2343,6 @@ ast_validator standard_validator() {
   validator.add_root_definition_visitor(&validate_explicit_uri_value);
 
   validator.add_interface_visitor(&validate_interface_function_name_uniqueness);
-  validator.add_interface_visitor(&validate_function_priority_annotation);
   validator.add_service_visitor(
       &validate_extends_service_function_name_uniqueness);
   validator.add_interaction_visitor(&validate_interaction_nesting);
@@ -2367,7 +2353,6 @@ ast_validator standard_validator() {
       &detail::validate_annotation_scopes<
           detail::scope_check_type::thrown_exception>);
 
-  validator.add_function_visitor(&validate_function_priority_annotation);
   validator.add_function_visitor(ValidateAnnotationPositions{});
   validator.add_function_visitor(&detail::validate_annotation_scopes<>);
   validator.add_function_visitor(

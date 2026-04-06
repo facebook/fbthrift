@@ -766,7 +766,7 @@ prototype<t_function>::ptr t_whisker_generator::make_prototype_for_function(
           .get_enum_value()
           ->name();
     }
-    return self.get_unstructured_annotation("priority", "NORMAL");
+    return "NORMAL";
   });
   def.property("qualifier", [](const t_function& self) -> whisker::string {
     switch (self.qualifier()) {
