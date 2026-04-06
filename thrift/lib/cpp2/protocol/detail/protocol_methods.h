@@ -799,22 +799,23 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
 
     constexpr bool kContainerIsOrdered =
         folly::is_detected_v<detect_key_compare, Type>;
-    const bool shouldSort = protocol.keyOrder() == KeyOrder::StableAscending ||
-        (protocol.keyOrder() == KeyOrder::NativeAscending &&
-         !kContainerIsOrdered);
+    constexpr KeyOrder kKeyOrder = Protocol::keyOrder();
+    constexpr bool kShouldSort = kKeyOrder == KeyOrder::StableAscending ||
+        (kKeyOrder == KeyOrder::NativeAscending && !kContainerIsOrdered);
 
-    if (shouldSort) {
+    if constexpr (kShouldSort) {
       using Tag = type_class::to_type_tag_t<ElemClass, elem_type>;
       std::vector<typename Type::const_iterator> iters;
       iters.reserve(out.size());
       for (auto it = out.begin(); it != out.end(); ++it) {
         iters.push_back(it);
       }
-      auto compare = [order = protocol.keyOrder()](auto a, auto b) {
-        if (order == KeyOrder::StableAscending) {
+      auto compare = [](auto a, auto b) {
+        if constexpr (kKeyOrder == KeyOrder::StableAscending) {
           return ::apache::thrift::op::detail::StableLessThan<Tag>{}(*a, *b);
+        } else {
+          return *a < *b;
         }
-        return *a < *b;
       };
       std::sort(iters.begin(), iters.end(), compare);
       for (auto it : iters) {
@@ -930,23 +931,24 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
 
     constexpr bool kContainerIsOrdered =
         folly::is_detected_v<detect_key_compare, Type>;
-    const bool shouldSort = protocol.keyOrder() == KeyOrder::StableAscending ||
-        (protocol.keyOrder() == KeyOrder::NativeAscending &&
-         !kContainerIsOrdered);
+    constexpr KeyOrder kKeyOrder = Protocol::keyOrder();
+    constexpr bool kShouldSort = kKeyOrder == KeyOrder::StableAscending ||
+        (kKeyOrder == KeyOrder::NativeAscending && !kContainerIsOrdered);
 
-    if (shouldSort) {
+    if constexpr (kShouldSort) {
       using Tag = type_class::to_type_tag_t<KeyClass, key_type>;
       std::vector<typename U::const_iterator> iters;
       iters.reserve(out.size());
       for (auto it = out.begin(); it != out.end(); ++it) {
         iters.push_back(it);
       }
-      auto compare = [order = protocol.keyOrder()](auto a, auto b) {
-        if (order == KeyOrder::StableAscending) {
+      auto compare = [](auto a, auto b) {
+        if constexpr (kKeyOrder == KeyOrder::StableAscending) {
           return ::apache::thrift::op::detail::StableLessThan<Tag>{}(
               (*a).first, (*b).first);
+        } else {
+          return (*a).first < (*b).first;
         }
-        return (*a).first < (*b).first;
       };
       std::sort(iters.begin(), iters.end(), compare);
       for (auto it : iters) {
