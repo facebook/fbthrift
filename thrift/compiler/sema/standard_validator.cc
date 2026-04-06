@@ -1307,26 +1307,13 @@ void validate_function_exception_field_name_uniqueness(
 
 void validate_exception_message_annotation(
     sema_context& ctx, const t_exception& node) {
-  // Check that value of "message" annotation is
-  // - a valid member of struct
-  // - of type STRING
+  // Check that the field annotated with @thrift.ExceptionMessage is a string.
   const t_field* field = nullptr;
   for (const auto& f : node.fields()) {
     if (f.has_structured_annotation(kExceptionMessageUri)) {
       ctx.check(!field, f, "Duplicate message annotation.");
       field = &f;
     }
-  }
-  if (node.has_unstructured_annotation("message")) {
-    ctx.check(!field, "Duplicate message annotation.");
-    const std::string& v = node.get_unstructured_annotation("message");
-    field = node.get_field_by_name(v);
-    ctx.check(
-        field,
-        "member specified as exception 'message' should be a valid "
-        "struct member, '{}' in '{}' is not",
-        v,
-        node.name());
   }
   if (field) {
     ctx.check(
@@ -2164,6 +2151,7 @@ void deprecate_annotations(sema_context& ctx, const t_named& node) {
       "cpp2.enum_type",
       "cpp2.deprecated_enum_unscoped",
       "cpp2.methods",
+      "message",
       "process_in_event_base",
   };
   std::map<std::string, std::string> removed_prefixes = {{"rust.", "rust"}};

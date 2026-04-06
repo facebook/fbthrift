@@ -103,8 +103,7 @@ TEST(StandardValidatorTest, ValidateExceptionMessage) {
 
     @thrift.DeprecatedUnvalidatedAnnotations{items = {"message": "invalid_message"}}
     exception MyExceptionWithDuplicatedDeprecatedExceptionMessage {
-      # expected-error@-2: Duplicate message annotation.
-      # expected-warning@-3: The annotation message is deprecated. Please use @thrift.ExceptionMessage instead.
+      # expected-error@-2: The annotation message has been removed. Please use @thrift.ExceptionMessage instead.
       @thrift.ExceptionMessage
       1: string valid_message;
       2: string invalid_message;
