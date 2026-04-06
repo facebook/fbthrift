@@ -30,19 +30,44 @@ FOLLY_EXPORT TypeRegistry& getGeneratedTypeRegistry() {
 
 } // namespace detail
 
-AnyData TypeRegistry::store(ConstRef value, const Protocol& protocol) const {
-  return storeImpl(value, protocol);
+AnyData TypeRegistry::store(AnyConstRef value, const Protocol& protocol) const {
+  if (value.type() == Type::get<type::void_t>()) {
+    return {};
+  }
+
+  // Encode the value.
+  const auto& serializer = getEntry(value.type()).getSerializer(protocol);
+  folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
+
+  // Allocate 16KB at a time; leave some room for the IOBuf overhead
+  // TODO(afuller): This is the size we use by default, for structs. Consider
+  // adjusting it, based on what is being encoded.
+  constexpr size_t kDesiredGrowth = (1 << 14) - 64;
+  serializer.encode(value, folly::io::QueueAppender(&queue, kDesiredGrowth));
+
+  // Return the resulting Any.
+  SemiAny builder;
+  builder.data() = queue.moveAsValue();
+  builder.protocol() = protocol;
+  builder.type() = value.type();
+  return AnyData{std::move(builder)};
 }
 
-void TypeRegistry::load(const AnyData& data, Ref out) const {
-  if (data.type() == Type::get<type::void_t>()) {
-    if (out.type() != Type::get<type::void_t>()) {
-      folly::throw_exception<std::bad_any_cast>();
-    }
-    return;
+AnyData TypeRegistry::store(ConstRef value, const Protocol& protocol) const {
+  if (value.type() == Type::get<type::void_t>()) {
+    return {};
   }
-  folly::io::Cursor cursor{&data.data()};
-  getEntry(data.type()).getSerializer(data.protocol()).decode(cursor, out);
+
+  const auto& serializer = getEntry(value.type()).getSerializer(protocol);
+  folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
+  constexpr size_t kDesiredGrowth = (1 << 14) - 64;
+  serializer.encode(value, folly::io::QueueAppender(&queue, kDesiredGrowth));
+
+  SemiAny builder;
+  builder.data() = queue.moveAsValue();
+  builder.protocol() = protocol;
+  builder.type() = value.type();
+  return AnyData{std::move(builder)};
 }
 
 void TypeRegistry::load(const AnyData& data, AnyRef out) const {
