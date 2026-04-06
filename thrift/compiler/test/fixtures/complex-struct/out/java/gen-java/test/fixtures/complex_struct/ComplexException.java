@@ -317,7 +317,7 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
                         }
                         oprot.readMapEnd();
 
-                    
+                  
             builder.setLsMap(_fbthriftVar1);
             
           } else {

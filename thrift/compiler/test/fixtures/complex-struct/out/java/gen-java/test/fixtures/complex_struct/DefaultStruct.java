@@ -1185,7 +1185,7 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
                         }
                         oprot.readMapEnd();
 
-                    
+                  
             builder.setMapJavaTypeDFset(_fbthriftVar1);
             
           } else {

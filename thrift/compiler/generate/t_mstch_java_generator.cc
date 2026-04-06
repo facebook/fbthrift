@@ -1475,30 +1475,6 @@ class mstch_java_field : public mstch_field {
   }
 };
 
-class mstch_java_type : public mstch_type {
- public:
-  mstch_java_type(
-      const t_type* t, mstch_context& ctx, mstch_element_position pos)
-      : mstch_type(t, ctx, pos) {
-    register_methods(
-        this,
-        {
-            {"type:setAdapter",
-             {with_no_caching, &mstch_java_type::set_adapter}},
-            {"type:isAdapterSet?",
-             {with_no_caching, &mstch_java_type::is_adapter_set}},
-        });
-  }
-  bool hasTypeAdapter = false;
-
-  mstch::node set_adapter() {
-    hasTypeAdapter = true;
-    return mstch::node();
-  }
-
-  mstch::node is_adapter_set() { return hasTypeAdapter; }
-};
-
 void t_mstch_java_generator::generate_program() {
   out_dir_base_ = "gen-java";
   set_mstch_factories();
@@ -1533,7 +1509,6 @@ void t_mstch_java_generator::generate_program() {
 void t_mstch_java_generator::set_mstch_factories() {
   mstch_context_.add<mstch_java_service>();
   mstch_context_.add<mstch_java_interaction>();
-  mstch_context_.add<mstch_java_type>();
   mstch_context_.add<mstch_java_field>();
 }
 
