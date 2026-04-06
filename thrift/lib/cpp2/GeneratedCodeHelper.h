@@ -413,6 +413,17 @@ folly::exception_wrapper decode_stream_exception(folly::exception_wrapper ew);
 
 namespace detail::ac {
 
+inline folly::exception_wrapper check_recv_state(ClientReceiveState& state) {
+  if (state.isException()) {
+    return std::move(state.exception());
+  }
+  if (!state.hasResponseBuffer()) {
+    return folly::make_exception_wrapper<TApplicationException>(
+        "recv_ called without result");
+  }
+  return {};
+}
+
 template <bool HasReturnType, typename PResult>
 folly::exception_wrapper extract_exn(PResult& result) {
   constexpr std::size_t base = HasReturnType;
@@ -679,6 +690,25 @@ decltype(auto) withProtocolWriter(
     case apache::thrift::protocol::T_COMPACT_PROTOCOL: {
       apache::thrift::CompactProtocolWriter writer;
       return std::forward<Func>(func)(writer);
+    }
+    default:
+      throw_app_exn("Could not find Protocol");
+  }
+}
+
+template <typename Func>
+decltype(auto) withProtocolReader(
+    std::underlying_type_t<apache::thrift::protocol::PROTOCOL_TYPES>
+        protocolType,
+    Func&& func) {
+  switch (protocolType) {
+    case apache::thrift::protocol::T_BINARY_PROTOCOL: {
+      apache::thrift::BinaryProtocolReader reader;
+      return std::forward<Func>(func)(reader);
+    }
+    case apache::thrift::protocol::T_COMPACT_PROTOCOL: {
+      apache::thrift::CompactProtocolReader reader;
+      return std::forward<Func>(func)(reader);
     }
     default:
       throw_app_exn("Could not find Protocol");
