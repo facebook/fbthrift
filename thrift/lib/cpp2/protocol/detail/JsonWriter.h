@@ -61,7 +61,6 @@
 
 #pragma once
 
-#include <concepts>
 #include <cstdint>
 #include <string_view>
 #include <folly/io/Cursor.h>
@@ -124,8 +123,7 @@ class JsonWriter {
   std::uint32_t openContainer(ContainerType type);
   std::uint32_t closeContainer(ContainerType type);
 
-  template <std::floating_point T>
-  std::uint32_t writeFloatingPoint(T t);
+  std::uint32_t writeFloatingPoint(std::floating_point auto t);
   std::uint32_t writeIntegral(std::integral auto t);
 
   bool inContainer(ContainerType type) const;
