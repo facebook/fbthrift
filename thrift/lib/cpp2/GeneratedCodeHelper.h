@@ -500,6 +500,16 @@ folly::exception_wrapper recv_wrapped_helper(
   }
 }
 
+template <typename Protocol, typename PResult>
+folly::exception_wrapper recv_wrapped_helper(Protocol* prot, PResult& result) {
+  try {
+    apache::thrift::detail::deserializeRequestBodySimple(prot, &result);
+    return folly::exception_wrapper();
+  } catch (...) {
+    return folly::exception_wrapper(folly::current_exception());
+  }
+}
+
 template <
     typename ProtocolReader,
     typename ProtocolWriter,
@@ -587,6 +597,36 @@ folly::exception_wrapper recv_wrapped_impl(
   }
 
   return ew; // empty
+}
+
+template <typename PResult, typename ProtocolReader, typename Response = void>
+folly::exception_wrapper recv_wrapped_impl(
+    ProtocolReader* prot,
+    const folly::IOBuf* buffer,
+    Response* resp = nullptr) {
+  prot->setInput(buffer);
+  PResult result;
+  constexpr bool kHasReturnType = !std::is_void_v<Response>;
+  if constexpr (kHasReturnType) {
+    result.template get<0>().value = resp;
+  }
+  auto ew = recv_wrapped_helper(prot, result);
+  if (!ew) {
+    ew = apache::thrift::detail::ac::extract_exn<kHasReturnType>(result);
+  }
+  return ew;
+}
+
+template <typename PResult, typename Protocol>
+folly::exception_wrapper recv_wrapped(
+    Protocol* prot, const folly::IOBuf* buffer) {
+  return recv_wrapped_impl<PResult>(prot, buffer);
+}
+
+template <typename PResult, typename Protocol, typename Response>
+folly::exception_wrapper recv_wrapped(
+    Protocol* prot, const folly::IOBuf* buffer, Response& result) {
+  return recv_wrapped_impl<PResult>(prot, buffer, &result);
 }
 
 template <typename PResult, typename Protocol>
