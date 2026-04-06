@@ -187,7 +187,7 @@ mstch::node mstch_function::sink_exceptions() {
   return sink ? make_exceptions(sink->sink_exceptions()) : mstch::node();
 }
 
-mstch::node mstch_function::sink_final_reponse_type() {
+mstch::node mstch_function::sink_final_response_type() {
   const t_sink* sink = function_->sink();
   return sink && sink->final_response_type().get_type()
       ? context_.type_factory->make_mstch_object(

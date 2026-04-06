@@ -508,7 +508,7 @@ class mstch_function : public mstch_base {
             {"function:sink_elem_type", &mstch_function::sink_elem_type},
             {"function:sink_exceptions", &mstch_function::sink_exceptions},
             {"function:sink_final_response_type",
-             &mstch_function::sink_final_reponse_type},
+             &mstch_function::sink_final_response_type},
             {"function:sink_final_response_exceptions",
              &mstch_function::sink_final_response_exceptions},
 
@@ -530,7 +530,7 @@ class mstch_function : public mstch_base {
   mstch::node sink_first_response_type();
   mstch::node sink_elem_type();
   mstch::node sink_exceptions();
-  mstch::node sink_final_reponse_type();
+  mstch::node sink_final_response_type();
   mstch::node sink_final_response_exceptions();
 
   mstch::node stream_elem_type();
