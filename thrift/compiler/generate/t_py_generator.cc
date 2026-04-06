@@ -1063,8 +1063,8 @@ void t_py_generator::generate_typedef(const t_typedef* ttypedef) {
   // type-reference syntax are transferred to the typedef definition).
   if (const auto* adapter = get_py_adapter(ttypedef)) {
     f_types_ << varname << " = " << *adapter << ".Type" << endl;
-  } else if (const auto* adapter = get_py_adapter(type)) {
-    f_types_ << varname << " = " << *adapter << ".Type" << endl;
+  } else if (const auto* typeAdapter = get_py_adapter(type)) {
+    f_types_ << varname << " = " << *typeAdapter << ".Type" << endl;
   } else if (
       type->is<t_typedef>() || type->is<t_enum>() || type->is<t_structured>()) {
     f_types_ << varname << " = " << type_name(type) << endl;
