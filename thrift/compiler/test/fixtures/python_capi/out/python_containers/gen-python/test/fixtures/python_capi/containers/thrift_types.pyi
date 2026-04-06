@@ -202,9 +202,9 @@ class IndirectionC(_fbthrift_python_types.Struct, _fbthrift_python_abstract_type
 _fbthrift_IndirectionC = IndirectionC
 
 IOBuf = _fbthrift_iobuf.IOBuf
-small_vector_iobuf = _typing.List[_fbthrift_iobuf.IOBuf]
-fbvector_string = _typing.List[builtins.str]
-fbvector_fbvector_string = _typing.List[_typing.Sequence[builtins.str]]
-ListOfWrapped = _typing.List[_fbthrift_TWrapped]
-VecOfWrapped = _typing.List[_fbthrift_TWrapped]
-ListOfWrappedAlias = _typing.List[_fbthrift_TWrapped]
+small_vector_iobuf = _fbthrift_python_types.ImmutableList[_fbthrift_iobuf.IOBuf]
+fbvector_string = _fbthrift_python_types.ImmutableList[builtins.str]
+fbvector_fbvector_string = _fbthrift_python_types.ImmutableList[_typing.Sequence[builtins.str]]
+ListOfWrapped = _fbthrift_python_types.ImmutableList[_fbthrift_TWrapped]
+VecOfWrapped = _fbthrift_python_types.ImmutableList[_fbthrift_TWrapped]
+ListOfWrappedAlias = _fbthrift_python_types.ImmutableList[_fbthrift_TWrapped]

@@ -22,7 +22,7 @@
 {{#let export partial typedef_container |type| captures |m_types|}}
   {{#pragma ignore-newlines}}
   {{#if python.generate_immutable_types?}}
-{{#if type.list?}}_typing.List
+{{#if type.list?}}_fbthrift_python_types.ImmutableList
 {{#else if type.set?}}_typing.Set
 {{#else if type.map?}}_typing.Dict{{/if type.list?}}
   {{#else}}
