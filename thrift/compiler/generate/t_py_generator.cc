@@ -2345,7 +2345,6 @@ void t_py_generator::generate_service_interface(
         f_service_, tservice->unstructured_annotations());
     f_service_ << indent() << "}" << endl << endl;
   }
-  std::string service_priority = get_priority(tservice);
   const std::vector<const t_function*>& functions = get_functions(tservice);
   if (functions.empty()) {
     f_service_ << indent() << "pass" << endl;
@@ -2986,9 +2985,8 @@ void t_py_generator::generate_service_server(
                  << "Processor.__init__(self, handler)" << endl;
     }
   }
-  auto service_priority = get_priority(tservice);
   for (auto f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    auto function_prio = get_priority(*f_iter, service_priority);
+    auto function_prio = get_priority(*f_iter);
     f_service_ << indent() << "self._processMap["
                << render_string((*f_iter)->name()) << "] = " << class_prefix
                << "Processor." << (gen_future_ ? "future_process_" : "process_")
