@@ -155,10 +155,10 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      test.fixtures.adapter.A _iter0 = this.a;
-      if (_iter0 != null) {
+      test.fixtures.adapter.A _fbthriftVar0 = this.a;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(A_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }

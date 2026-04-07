@@ -10902,2016 +10902,2016 @@ public final class MyMutableBigStruct implements com.facebook.thrift.payload.Thr
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      String _iter0 = this.msg1;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg1;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG1_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg2;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg2;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG2_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg3;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg3;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG3_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg4;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg4;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG4_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg5;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg5;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG5_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg6;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg6;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG6_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg7;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg7;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG7_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg8;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg8;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG8_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg9;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg9;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG9_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      int _iter0 = this.myIntField10;
+      int _fbthriftVar0 = this.myIntField10;
       oprot.writeFieldBegin(MY_INT_FIELD10_FIELD_DESC);
-      oprot.writeI32(_iter0);
+      oprot.writeI32(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      int _iter0 = this.myIntField11;
+      int _fbthriftVar0 = this.myIntField11;
       oprot.writeFieldBegin(MY_INT_FIELD11_FIELD_DESC);
-      oprot.writeI32(_iter0);
+      oprot.writeI32(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      int _iter0 = this.myIntField12;
+      int _fbthriftVar0 = this.myIntField12;
       oprot.writeFieldBegin(MY_INT_FIELD12_FIELD_DESC);
-      oprot.writeI32(_iter0);
+      oprot.writeI32(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      int _iter0 = this.myIntField13;
+      int _fbthriftVar0 = this.myIntField13;
       oprot.writeFieldBegin(MY_INT_FIELD13_FIELD_DESC);
-      oprot.writeI32(_iter0);
+      oprot.writeI32(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      int _iter0 = this.myIntField14;
+      int _fbthriftVar0 = this.myIntField14;
       oprot.writeFieldBegin(MY_INT_FIELD14_FIELD_DESC);
-      oprot.writeI32(_iter0);
+      oprot.writeI32(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      int _iter0 = this.myIntField15;
+      int _fbthriftVar0 = this.myIntField15;
       oprot.writeFieldBegin(MY_INT_FIELD15_FIELD_DESC);
-      oprot.writeI32(_iter0);
+      oprot.writeI32(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      int _iter0 = this.myIntField16;
+      int _fbthriftVar0 = this.myIntField16;
       oprot.writeFieldBegin(MY_INT_FIELD16_FIELD_DESC);
-      oprot.writeI32(_iter0);
+      oprot.writeI32(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      int _iter0 = this.myIntField17;
+      int _fbthriftVar0 = this.myIntField17;
       oprot.writeFieldBegin(MY_INT_FIELD17_FIELD_DESC);
-      oprot.writeI32(_iter0);
+      oprot.writeI32(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      int _iter0 = this.myIntField18;
+      int _fbthriftVar0 = this.myIntField18;
       oprot.writeFieldBegin(MY_INT_FIELD18_FIELD_DESC);
-      oprot.writeI32(_iter0);
+      oprot.writeI32(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      int _iter0 = this.myIntField19;
+      int _fbthriftVar0 = this.myIntField19;
       oprot.writeFieldBegin(MY_INT_FIELD19_FIELD_DESC);
-      oprot.writeI32(_iter0);
+      oprot.writeI32(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      int _iter0 = this.myIntField20;
+      int _fbthriftVar0 = this.myIntField20;
       oprot.writeFieldBegin(MY_INT_FIELD20_FIELD_DESC);
-      oprot.writeI32(_iter0);
+      oprot.writeI32(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      double _iter0 = this.myDoubleField21;
+      double _fbthriftVar0 = this.myDoubleField21;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD21_FIELD_DESC);
-      oprot.writeDouble(_iter0);
+      oprot.writeDouble(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      double _iter0 = this.myDoubleField22;
+      double _fbthriftVar0 = this.myDoubleField22;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD22_FIELD_DESC);
-      oprot.writeDouble(_iter0);
+      oprot.writeDouble(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      double _iter0 = this.myDoubleField23;
+      double _fbthriftVar0 = this.myDoubleField23;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD23_FIELD_DESC);
-      oprot.writeDouble(_iter0);
+      oprot.writeDouble(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      double _iter0 = this.myDoubleField24;
+      double _fbthriftVar0 = this.myDoubleField24;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD24_FIELD_DESC);
-      oprot.writeDouble(_iter0);
+      oprot.writeDouble(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      double _iter0 = this.myDoubleField25;
+      double _fbthriftVar0 = this.myDoubleField25;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD25_FIELD_DESC);
-      oprot.writeDouble(_iter0);
+      oprot.writeDouble(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      double _iter0 = this.myDoubleField26;
+      double _fbthriftVar0 = this.myDoubleField26;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD26_FIELD_DESC);
-      oprot.writeDouble(_iter0);
+      oprot.writeDouble(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      double _iter0 = this.myDoubleField27;
+      double _fbthriftVar0 = this.myDoubleField27;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD27_FIELD_DESC);
-      oprot.writeDouble(_iter0);
+      oprot.writeDouble(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      double _iter0 = this.myDoubleField28;
+      double _fbthriftVar0 = this.myDoubleField28;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD28_FIELD_DESC);
-      oprot.writeDouble(_iter0);
+      oprot.writeDouble(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      double _iter0 = this.myDoubleField29;
+      double _fbthriftVar0 = this.myDoubleField29;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD29_FIELD_DESC);
-      oprot.writeDouble(_iter0);
+      oprot.writeDouble(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      double _iter0 = this.myDoubleField30;
+      double _fbthriftVar0 = this.myDoubleField30;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD30_FIELD_DESC);
-      oprot.writeDouble(_iter0);
+      oprot.writeDouble(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      String _iter0 = this.msg31;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg31;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG31_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg32;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg32;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG32_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg33;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg33;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG33_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg34;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg34;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG34_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg35;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg35;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG35_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg36;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg36;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG36_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg37;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg37;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG37_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg38;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg38;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG38_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg39;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg39;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG39_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg40;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg40;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG40_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg41;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg41;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG41_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg42;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg42;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG42_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg43;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg43;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG43_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg44;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg44;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG44_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg45;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg45;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG45_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg46;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg46;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG46_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg47;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg47;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG47_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg48;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg48;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG48_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg49;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg49;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG49_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg50;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg50;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG50_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg51;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg51;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG51_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg52;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg52;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG52_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg53;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg53;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG53_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg54;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg54;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG54_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg55;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg55;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG55_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg56;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg56;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG56_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg57;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg57;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG57_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg58;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg58;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG58_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg59;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg59;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG59_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg60;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg60;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG60_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg61;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg61;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG61_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg62;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg62;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG62_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg63;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg63;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG63_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg64;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg64;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG64_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg65;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg65;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG65_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg66;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg66;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG66_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg67;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg67;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG67_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg68;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg68;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG68_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg69;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg69;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG69_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg70;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg70;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG70_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg71;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg71;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG71_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg72;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg72;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG72_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg73;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg73;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG73_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg74;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg74;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG74_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg75;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg75;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG75_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg76;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg76;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG76_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg77;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg77;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG77_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg78;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg78;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG78_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg79;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg79;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG79_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg80;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg80;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG80_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg81;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg81;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG81_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg82;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg82;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG82_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg83;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg83;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG83_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg84;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg84;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG84_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg85;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg85;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG85_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg86;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg86;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG86_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg87;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg87;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG87_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg88;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg88;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG88_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg89;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg89;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG89_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg90;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg90;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG90_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg91;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg91;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG91_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg92;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg92;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG92_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg93;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg93;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG93_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg94;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg94;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG94_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg95;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg95;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG95_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg96;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg96;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG96_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg97;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg97;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG97_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg98;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg98;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG98_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg99;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg99;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG99_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg100;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg100;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG100_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg101;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg101;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG101_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg102;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg102;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG102_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg103;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg103;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG103_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg104;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg104;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG104_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg105;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg105;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG105_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg106;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg106;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG106_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg107;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg107;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG107_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg108;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg108;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG108_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg109;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg109;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG109_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg110;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg110;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG110_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg111;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg111;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG111_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg112;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg112;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG112_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg113;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg113;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG113_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg114;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg114;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG114_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg115;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg115;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG115_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg116;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg116;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG116_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg117;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg117;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG117_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg118;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg118;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG118_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg119;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg119;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG119_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg120;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg120;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG120_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg121;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg121;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG121_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg122;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg122;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG122_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg123;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg123;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG123_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg124;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg124;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG124_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg125;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg125;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG125_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg126;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg126;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG126_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg127;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg127;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG127_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg128;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg128;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG128_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg129;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg129;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG129_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg130;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg130;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG130_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg131;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg131;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG131_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg132;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg132;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG132_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg133;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg133;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG133_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg134;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg134;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG134_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg135;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg135;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG135_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg136;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg136;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG136_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg137;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg137;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG137_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg138;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg138;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG138_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg139;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg139;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG139_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg140;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg140;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG140_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg141;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg141;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG141_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg142;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg142;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG142_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg143;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg143;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG143_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg144;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg144;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG144_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg145;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg145;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG145_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg146;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg146;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG146_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg147;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg147;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG147_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg148;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg148;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG148_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg149;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg149;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG149_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg150;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg150;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG150_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg151;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg151;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG151_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg152;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg152;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG152_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg153;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg153;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG153_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg154;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg154;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG154_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg155;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg155;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG155_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg156;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg156;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG156_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg157;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg157;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG157_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg158;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg158;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG158_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg159;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg159;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG159_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg160;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg160;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG160_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg161;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg161;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG161_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg162;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg162;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG162_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg163;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg163;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG163_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg164;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg164;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG164_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg165;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg165;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG165_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg166;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg166;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG166_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg167;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg167;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG167_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg168;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg168;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG168_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg169;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg169;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG169_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg170;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg170;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG170_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg171;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg171;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG171_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg172;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg172;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG172_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg173;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg173;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG173_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg174;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg174;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG174_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg175;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg175;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG175_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg176;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg176;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG176_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg177;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg177;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG177_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg178;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg178;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG178_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg179;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg179;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG179_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg180;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg180;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG180_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg181;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg181;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG181_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg182;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg182;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG182_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg183;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg183;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG183_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg184;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg184;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG184_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg185;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg185;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG185_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg186;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg186;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG186_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg187;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg187;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG187_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg188;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg188;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG188_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg189;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg189;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG189_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg190;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg190;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG190_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg191;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg191;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG191_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg192;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg192;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG192_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg193;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg193;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG193_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg194;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg194;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG194_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg195;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg195;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG195_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg196;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg196;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG196_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg197;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg197;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG197_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg198;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg198;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG198_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg199;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg199;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG199_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg200;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg200;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG200_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg201;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg201;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG201_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg202;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg202;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG202_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg203;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg203;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG203_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg204;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg204;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG204_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg205;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg205;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG205_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg206;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg206;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG206_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg207;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg207;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG207_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg208;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg208;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG208_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg209;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg209;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG209_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg210;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg210;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG210_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg211;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg211;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG211_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg212;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg212;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG212_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg213;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg213;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG213_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg214;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg214;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG214_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg215;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg215;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG215_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg216;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg216;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG216_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg217;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg217;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG217_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg218;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg218;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG218_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg219;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg219;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG219_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg220;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg220;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG220_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg221;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg221;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG221_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg222;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg222;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG222_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg223;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg223;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG223_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg224;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg224;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG224_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg225;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg225;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG225_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg226;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg226;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG226_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg227;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg227;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG227_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg228;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg228;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG228_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg229;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg229;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG229_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg230;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg230;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG230_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg231;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg231;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG231_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg232;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg232;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG232_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg233;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg233;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG233_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg234;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg234;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG234_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg235;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg235;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG235_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg236;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg236;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG236_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg237;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg237;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG237_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg238;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg238;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG238_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg239;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg239;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG239_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg240;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg240;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG240_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg241;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg241;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG241_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg242;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg242;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG242_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg243;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg243;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG243_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg244;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg244;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG244_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg245;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg245;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG245_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg246;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg246;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG246_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg247;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg247;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG247_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg248;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg248;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG248_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg249;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg249;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG249_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg250;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg250;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG250_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg251;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg251;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG251_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg252;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg252;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG252_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg253;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg253;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG253_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg254;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg254;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG254_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg255;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg255;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG255_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg256;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg256;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG256_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.msg257;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.msg257;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG257_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }

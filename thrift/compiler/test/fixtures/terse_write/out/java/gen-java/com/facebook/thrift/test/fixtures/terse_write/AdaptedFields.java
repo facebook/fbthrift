@@ -234,26 +234,26 @@ public final class AdaptedFields implements com.facebook.thrift.payload.ThriftSe
       int pos = 0;
       com.facebook.thrift.protocol.ByteBufTProtocol p = (com.facebook.thrift.protocol.ByteBufTProtocol) oprot;
       {
-      int _iter0 = this.field1;
-      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_iter0)) {
+      int _fbthriftVar0 = this.field1;
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
         oprot.writeFieldBegin(FIELD1_FIELD_DESC);
-        oprot.writeI32(_iter0);
+        oprot.writeI32(_fbthriftVar0);
         oprot.writeFieldEnd();
       };
       }
       {
-      int _iter0 = this.field2;
-      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_iter0)) {
+      int _fbthriftVar0 = this.field2;
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
         oprot.writeFieldBegin(FIELD2_FIELD_DESC);
-        oprot.writeI32(_iter0);
+        oprot.writeI32(_fbthriftVar0);
         oprot.writeFieldEnd();
       };
       }
       {
-      int _iter0 = this.field3;
-      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_iter0)) {
+      int _fbthriftVar0 = this.field3;
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
         oprot.writeFieldBegin(FIELD3_FIELD_DESC);
-        oprot.writeI32(_iter0);
+        oprot.writeI32(_fbthriftVar0);
         oprot.writeFieldEnd();
       };
       }

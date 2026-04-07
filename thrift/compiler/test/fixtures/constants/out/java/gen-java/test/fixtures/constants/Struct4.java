@@ -228,24 +228,24 @@ public final class Struct4 implements com.facebook.thrift.payload.ThriftSerializ
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      int _iter0 = this.a;
+      int _fbthriftVar0 = this.a;
       oprot.writeFieldBegin(A_FIELD_DESC);
-      oprot.writeI32(_iter0);
+      oprot.writeI32(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      Double _iter0 = this.b;
-      if (_iter0 != null) {
+      Double _fbthriftVar0 = this.b;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(B_FIELD_DESC);
-        oprot.writeDouble(_iter0);
+        oprot.writeDouble(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      Byte _iter0 = this.c;
-      if (_iter0 != null) {
+      Byte _fbthriftVar0 = this.c;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(C_FIELD_DESC);
-        oprot.writeByte(_iter0);
+        oprot.writeByte(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }

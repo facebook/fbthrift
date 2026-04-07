@@ -155,10 +155,10 @@ public final class ReorderedStruct implements com.facebook.thrift.payload.Thrift
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      test.fixtures.adapter.DeclaredAfterStruct _iter0 = this.reorderedDependentAdapted;
-      if (_iter0 != null) {
+      test.fixtures.adapter.DeclaredAfterStruct _fbthriftVar0 = this.reorderedDependentAdapted;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(REORDERED_DEPENDENT_ADAPTED_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }

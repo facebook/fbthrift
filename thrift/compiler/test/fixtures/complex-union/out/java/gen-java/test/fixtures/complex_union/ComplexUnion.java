@@ -411,27 +411,27 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
       switch (this.id) {
       case _INTVALUE: {
         oprot.writeFieldBegin(INT_VALUE_FIELD_DESC);
-        long _iter0 = (long)this.value;
+        long _fbthriftVar0 = (long)this.value;
 
-        oprot.writeI64(_iter0);
+        oprot.writeI64(_fbthriftVar0);
         oprot.writeFieldEnd();
         break;
       }
       case _STRINGVALUE: {
         oprot.writeFieldBegin(STRING_VALUE_FIELD_DESC);
-        String _iter0 = (String)this.value;
+        String _fbthriftVar0 = (String)this.value;
 
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
         break;
       }
       case _INTLISTVALUE: {
         oprot.writeFieldBegin(INT_LIST_VALUE_FIELD_DESC);
-        List<Long> _iter0 = (List<Long>)this.value;
+        List<Long> _fbthriftVar0 = (List<Long>)this.value;
 
-        oprot.writeListBegin(new TList(TType.I64, _iter0.size()));
-            for (long _iter1 : _iter0) {
-              oprot.writeI64(_iter1);
+        oprot.writeListBegin(new TList(TType.I64, _fbthriftVar0.size()));
+            for (long _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeI64(_fbthriftVar1);
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();
@@ -439,11 +439,11 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
       }
       case _STRINGLISTVALUE: {
         oprot.writeFieldBegin(STRING_LIST_VALUE_FIELD_DESC);
-        List<String> _iter0 = (List<String>)this.value;
+        List<String> _fbthriftVar0 = (List<String>)this.value;
 
-        oprot.writeListBegin(new TList(TType.STRING, _iter0.size()));
-            for (String _iter1 : _iter0) {
-              oprot.writeString(_iter1);
+        oprot.writeListBegin(new TList(TType.STRING, _fbthriftVar0.size()));
+            for (String _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeString(_fbthriftVar1);
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();
@@ -451,17 +451,17 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
       }
       case _TYPEDEFVALUE: {
         oprot.writeFieldBegin(TYPEDEF_VALUE_FIELD_DESC);
-        Map<Short, String> _iter0 = (Map<Short, String>)this.value;
+        Map<Short, String> _fbthriftVar0 = (Map<Short, String>)this.value;
 
-        oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, _iter0.size()));
-            for (Map.Entry<Short, String> _iter1 : _iter0.entrySet()) {
+        oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, _fbthriftVar0.size()));
+            for (Map.Entry<Short, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
               {
-                Short _iter2 = _iter1.getKey();
-                oprot.writeI16(_iter2);
+                Short _fbthriftVar2 = _fbthriftVar1.getKey();
+                oprot.writeI16(_fbthriftVar2);
               }
               {
-                String _iter2 = _iter1.getValue();
-                oprot.writeString(_iter2);
+                String _fbthriftVar2 = _fbthriftVar1.getValue();
+                oprot.writeString(_fbthriftVar2);
               }
             }
             oprot.writeMapEnd();
@@ -470,9 +470,9 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
       }
       case _STRINGREF: {
         oprot.writeFieldBegin(STRING_REF_FIELD_DESC);
-        String _iter0 = (String)this.value;
+        String _fbthriftVar0 = (String)this.value;
 
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
         break;
       }

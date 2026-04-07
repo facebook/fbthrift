@@ -106,11 +106,11 @@ public class SinkServiceReactiveClient
     };
   }
 
-  private com.facebook.thrift.payload.Writer _createmethodSinkWriter(test.fixtures.sink.SinkPayload _iter0) {
+  private com.facebook.thrift.payload.Writer _createmethodSinkWriter(test.fixtures.sink.SinkPayload _fbthriftVar0) {
     return oprot -> {
       try {
         oprot.writeFieldBegin(_method_SINK_TFIELD);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
 
         oprot.writeFieldEnd();
 
@@ -185,11 +185,11 @@ public class SinkServiceReactiveClient
     };
   }
 
-  private com.facebook.thrift.payload.Writer _createmethodAndReponseSinkWriter(test.fixtures.sink.SinkPayload _iter0) {
+  private com.facebook.thrift.payload.Writer _createmethodAndReponseSinkWriter(test.fixtures.sink.SinkPayload _fbthriftVar0) {
     return oprot -> {
       try {
         oprot.writeFieldBegin(_methodAndReponse_SINK_TFIELD);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
 
         oprot.writeFieldEnd();
 
@@ -266,11 +266,11 @@ public class SinkServiceReactiveClient
     };
   }
 
-  private com.facebook.thrift.payload.Writer _createmethodThrowSinkWriter(test.fixtures.sink.SinkPayload _iter0) {
+  private com.facebook.thrift.payload.Writer _createmethodThrowSinkWriter(test.fixtures.sink.SinkPayload _fbthriftVar0) {
     return oprot -> {
       try {
         oprot.writeFieldBegin(_methodThrow_SINK_TFIELD);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
 
         oprot.writeFieldEnd();
 
@@ -345,11 +345,11 @@ public class SinkServiceReactiveClient
     };
   }
 
-  private com.facebook.thrift.payload.Writer _createmethodSinkThrowSinkWriter(test.fixtures.sink.SinkPayload _iter0) {
+  private com.facebook.thrift.payload.Writer _createmethodSinkThrowSinkWriter(test.fixtures.sink.SinkPayload _fbthriftVar0) {
     return oprot -> {
       try {
         oprot.writeFieldBegin(_methodSinkThrow_SINK_TFIELD);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
 
         oprot.writeFieldEnd();
 
@@ -424,11 +424,11 @@ public class SinkServiceReactiveClient
     };
   }
 
-  private com.facebook.thrift.payload.Writer _createmethodFinalThrowSinkWriter(test.fixtures.sink.SinkPayload _iter0) {
+  private com.facebook.thrift.payload.Writer _createmethodFinalThrowSinkWriter(test.fixtures.sink.SinkPayload _fbthriftVar0) {
     return oprot -> {
       try {
         oprot.writeFieldBegin(_methodFinalThrow_SINK_TFIELD);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
 
         oprot.writeFieldEnd();
 
@@ -503,11 +503,11 @@ public class SinkServiceReactiveClient
     };
   }
 
-  private com.facebook.thrift.payload.Writer _createmethodBothThrowSinkWriter(test.fixtures.sink.SinkPayload _iter0) {
+  private com.facebook.thrift.payload.Writer _createmethodBothThrowSinkWriter(test.fixtures.sink.SinkPayload _fbthriftVar0) {
     return oprot -> {
       try {
         oprot.writeFieldBegin(_methodBothThrow_SINK_TFIELD);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
 
         oprot.writeFieldEnd();
 
@@ -582,11 +582,11 @@ public class SinkServiceReactiveClient
     };
   }
 
-  private com.facebook.thrift.payload.Writer _createmethodFastSinkWriter(test.fixtures.sink.SinkPayload _iter0) {
+  private com.facebook.thrift.payload.Writer _createmethodFastSinkWriter(test.fixtures.sink.SinkPayload _fbthriftVar0) {
     return oprot -> {
       try {
         oprot.writeFieldBegin(_methodFast_SINK_TFIELD);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
 
         oprot.writeFieldEnd();
 

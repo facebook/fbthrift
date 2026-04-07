@@ -154,17 +154,17 @@ public final class ExceptionWithStructuredAnnotation extends org.apache.thrift.T
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      String _iter0 = this.messageField;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.messageField;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MESSAGE_FIELD_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      int _iter0 = this.errorCode;
+      int _fbthriftVar0 = this.errorCode;
       oprot.writeFieldBegin(ERROR_CODE_FIELD_DESC);
-      oprot.writeI32(_iter0);
+      oprot.writeI32(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

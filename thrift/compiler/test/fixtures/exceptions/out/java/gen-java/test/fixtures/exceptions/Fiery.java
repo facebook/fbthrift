@@ -116,10 +116,10 @@ public final class Fiery extends org.apache.thrift.TBaseException implements com
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      String _iter0 = this.message;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.message;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }

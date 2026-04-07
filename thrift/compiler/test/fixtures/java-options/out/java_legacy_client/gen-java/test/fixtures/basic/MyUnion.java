@@ -345,35 +345,35 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       switch (this.id) {
       case _MYENUM: {
         oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
-        test.fixtures.basic.MyEnum _iter0 = (test.fixtures.basic.MyEnum)this.value;
+        test.fixtures.basic.MyEnum _fbthriftVar0 = (test.fixtures.basic.MyEnum)this.value;
 
-        oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
+        oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
         oprot.writeFieldEnd();
         break;
       }
       case _MYSTRUCT: {
         oprot.writeFieldBegin(MY_STRUCT_FIELD_DESC);
-        test.fixtures.basic.MyStruct _iter0 = (test.fixtures.basic.MyStruct)this.value;
+        test.fixtures.basic.MyStruct _fbthriftVar0 = (test.fixtures.basic.MyStruct)this.value;
 
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
         break;
       }
       case _MYDATAITEM: {
         oprot.writeFieldBegin(MY_DATA_ITEM_FIELD_DESC);
-        test.fixtures.basic.MyDataItem _iter0 = (test.fixtures.basic.MyDataItem)this.value;
+        test.fixtures.basic.MyDataItem _fbthriftVar0 = (test.fixtures.basic.MyDataItem)this.value;
 
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
         break;
       }
       case _FLOATSET: {
         oprot.writeFieldBegin(FLOAT_SET_FIELD_DESC);
-        Set<Float> _iter0 = (Set<Float>)this.value;
+        Set<Float> _fbthriftVar0 = (Set<Float>)this.value;
 
-        oprot.writeSetBegin(new TSet(TType.FLOAT, _iter0.size()));
-            for (float _iter1 : _iter0) {
-              oprot.writeFloat(_iter1);
+        oprot.writeSetBegin(new TSet(TType.FLOAT, _fbthriftVar0.size()));
+            for (float _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeFloat(_fbthriftVar1);
             }
             oprot.writeSetEnd();
         oprot.writeFieldEnd();

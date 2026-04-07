@@ -456,66 +456,66 @@ public final class MyField implements com.facebook.thrift.payload.ThriftSerializ
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      Long _iter0 = this.optValue;
-      if (_iter0 != null) {
+      Long _fbthriftVar0 = this.optValue;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPT_VALUE_FIELD_DESC);
-        oprot.writeI64(_iter0);
+        oprot.writeI64(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      long _iter0 = this.value;
+      long _fbthriftVar0 = this.value;
       oprot.writeFieldBegin(VALUE_FIELD_DESC);
-      oprot.writeI64(_iter0);
+      oprot.writeI64(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      long _iter0 = this.reqValue;
+      long _fbthriftVar0 = this.reqValue;
       oprot.writeFieldBegin(REQ_VALUE_FIELD_DESC);
-      oprot.writeI64(_iter0);
+      oprot.writeI64(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      test.fixtures.refs.MyEnum _iter0 = this.optEnumValue;
-      if (_iter0 != null) {
+      test.fixtures.refs.MyEnum _fbthriftVar0 = this.optEnumValue;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPT_ENUM_VALUE_FIELD_DESC);
-        oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
+        oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
         oprot.writeFieldEnd();
       }
       }
       {
-      test.fixtures.refs.MyEnum _iter0 = this.enumValue;
+      test.fixtures.refs.MyEnum _fbthriftVar0 = this.enumValue;
       oprot.writeFieldBegin(ENUM_VALUE_FIELD_DESC);
-      oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
+      oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
       oprot.writeFieldEnd();
       }
       {
-      test.fixtures.refs.MyEnum _iter0 = this.reqEnumValue;
+      test.fixtures.refs.MyEnum _fbthriftVar0 = this.reqEnumValue;
       oprot.writeFieldBegin(REQ_ENUM_VALUE_FIELD_DESC);
-      oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
+      oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
       oprot.writeFieldEnd();
       }
       {
-      String _iter0 = this.optStrValue;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.optStrValue;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPT_STR_VALUE_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.strValue;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.strValue;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(STR_VALUE_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.reqStrValue;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.reqStrValue;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(REQ_STR_VALUE_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }

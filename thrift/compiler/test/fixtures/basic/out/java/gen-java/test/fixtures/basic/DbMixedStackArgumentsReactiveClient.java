@@ -77,9 +77,9 @@ public class DbMixedStackArgumentsReactiveClient
         {
           oprot.writeFieldBegin(_getDataByKey0_KEY_FIELD_DESC);
 
-          String _iter0 = key;
+          String _fbthriftVar0 = key;
 
-          oprot.writeString(_iter0);
+          oprot.writeString(_fbthriftVar0);
           oprot.writeFieldEnd();
         }
 
@@ -134,9 +134,9 @@ public class DbMixedStackArgumentsReactiveClient
         {
           oprot.writeFieldBegin(_getDataByKey1_KEY_FIELD_DESC);
 
-          String _iter0 = key;
+          String _fbthriftVar0 = key;
 
-          oprot.writeString(_iter0);
+          oprot.writeString(_fbthriftVar0);
           oprot.writeFieldEnd();
         }
 

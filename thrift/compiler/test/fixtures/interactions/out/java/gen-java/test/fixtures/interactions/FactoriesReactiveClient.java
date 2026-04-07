@@ -137,9 +137,9 @@ public class FactoriesReactiveClient
         {
           oprot.writeFieldBegin(_interact_ARG_FIELD_DESC);
 
-          int _iter0 = arg;
+          int _fbthriftVar0 = arg;
 
-          oprot.writeI32(_iter0);
+          oprot.writeI32(_fbthriftVar0);
           oprot.writeFieldEnd();
         }
 

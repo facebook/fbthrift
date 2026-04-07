@@ -238,11 +238,11 @@ public final class ListUnion implements com.facebook.thrift.payload.ThriftSerial
       switch (this.id) {
       case _INTLISTVALUE: {
         oprot.writeFieldBegin(INT_LIST_VALUE_FIELD_DESC);
-        List<Long> _iter0 = (List<Long>)this.value;
+        List<Long> _fbthriftVar0 = (List<Long>)this.value;
 
-        oprot.writeListBegin(new TList(TType.I64, _iter0.size()));
-            for (long _iter1 : _iter0) {
-              oprot.writeI64(_iter1);
+        oprot.writeListBegin(new TList(TType.I64, _fbthriftVar0.size()));
+            for (long _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeI64(_fbthriftVar1);
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();
@@ -250,11 +250,11 @@ public final class ListUnion implements com.facebook.thrift.payload.ThriftSerial
       }
       case _STRINGLISTVALUE: {
         oprot.writeFieldBegin(STRING_LIST_VALUE_FIELD_DESC);
-        List<String> _iter0 = (List<String>)this.value;
+        List<String> _fbthriftVar0 = (List<String>)this.value;
 
-        oprot.writeListBegin(new TList(TType.STRING, _iter0.size()));
-            for (String _iter1 : _iter0) {
-              oprot.writeString(_iter1);
+        oprot.writeListBegin(new TList(TType.STRING, _fbthriftVar0.size()));
+            for (String _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeString(_fbthriftVar1);
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();

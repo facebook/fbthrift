@@ -252,28 +252,28 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      long _iter0 = this.myLongField;
+      long _fbthriftVar0 = this.myLongField;
       oprot.writeFieldBegin(MY_LONG_FIELD_FIELD_DESC);
-      oprot.writeI64(_iter0);
+      oprot.writeI64(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      Map<Integer, List<List<Float>>> _iter0 = this.mapListOfFloats;
-      if (_iter0 != null) {
+      Map<Integer, List<List<Float>>> _fbthriftVar0 = this.mapListOfFloats;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MAP_LIST_OF_FLOATS_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _iter0.size()));
-            for (Map.Entry<Integer, List<List<Float>>> _iter1 : _iter0.entrySet()) {
+        oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _fbthriftVar0.size()));
+            for (Map.Entry<Integer, List<List<Float>>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
               {
-                Integer _iter2 = _iter1.getKey();
-                oprot.writeI32(_iter2);
+                Integer _fbthriftVar2 = _fbthriftVar1.getKey();
+                oprot.writeI32(_fbthriftVar2);
               }
               {
-                List<List<Float>> _iter2 = _iter1.getValue();
-                oprot.writeListBegin(new TList(TType.LIST, _iter2.size()));
-            for (List<Float> _iter3 : _iter2) {
-              oprot.writeListBegin(new TList(TType.FLOAT, _iter3.size()));
-            for (float _iter4 : _iter3) {
-              oprot.writeFloat(_iter4);
+                List<List<Float>> _fbthriftVar2 = _fbthriftVar1.getValue();
+                oprot.writeListBegin(new TList(TType.LIST, _fbthriftVar2.size()));
+            for (List<Float> _fbthriftVar3 : _fbthriftVar2) {
+              oprot.writeListBegin(new TList(TType.FLOAT, _fbthriftVar3.size()));
+            for (float _fbthriftVar4 : _fbthriftVar3) {
+              oprot.writeFloat(_fbthriftVar4);
             }
             oprot.writeListEnd();
             }

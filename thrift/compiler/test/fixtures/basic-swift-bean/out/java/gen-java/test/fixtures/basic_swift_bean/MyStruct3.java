@@ -791,90 +791,90 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      short _iter0 = this.myInt16;
+      short _fbthriftVar0 = this.myInt16;
       oprot.writeFieldBegin(MY_INT16_FIELD_DESC);
-      oprot.writeI16(_iter0);
+      oprot.writeI16(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      int _iter0 = this.myInt32;
+      int _fbthriftVar0 = this.myInt32;
       oprot.writeFieldBegin(MY_INT32_FIELD_DESC);
-      oprot.writeI32(_iter0);
+      oprot.writeI32(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      long _iter0 = this.myInt64;
+      long _fbthriftVar0 = this.myInt64;
       oprot.writeFieldBegin(MY_INT64_FIELD_DESC);
-      oprot.writeI64(_iter0);
+      oprot.writeI64(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      String _iter0 = this.myString;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.myString;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_STRING_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      boolean _iter0 = this.myBool;
+      boolean _fbthriftVar0 = this.myBool;
       oprot.writeFieldBegin(MY_BOOL_FIELD_DESC);
-      oprot.writeBool(_iter0);
+      oprot.writeBool(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      double _iter0 = this.myDouble;
+      double _fbthriftVar0 = this.myDouble;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD_DESC);
-      oprot.writeDouble(_iter0);
+      oprot.writeDouble(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      Set<String> _iter0 = this.mySet;
-      if (_iter0 != null) {
+      Set<String> _fbthriftVar0 = this.mySet;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_SET_FIELD_DESC);
-        oprot.writeSetBegin(new TSet(TType.STRING, _iter0.size()));
-            for (String _iter1 : _iter0) {
-              oprot.writeString(_iter1);
+        oprot.writeSetBegin(new TSet(TType.STRING, _fbthriftVar0.size()));
+            for (String _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeString(_fbthriftVar1);
             }
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
       }
       {
-      test.fixtures.basic_swift_bean.MyDataItem _iter0 = this.myDataItem;
-      if (_iter0 != null) {
+      test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar0 = this.myDataItem;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_DATA_ITEM_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      List<test.fixtures.basic_swift_bean.MyDataItem> _iter0 = this.myList;
-      if (_iter0 != null) {
+      List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftVar0 = this.myList;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_LIST_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.STRUCT, _iter0.size()));
-            for (test.fixtures.basic_swift_bean.MyDataItem _iter1 : _iter0) {
-              _iter1.write0(oprot);
+        oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar0.size()));
+            for (test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar1 : _fbthriftVar0) {
+              _fbthriftVar1.write0(oprot);
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
       }
       {
-      Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _iter0 = this.myMapList;
-      if (_iter0 != null) {
+      Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _fbthriftVar0 = this.myMapList;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_MAP_LIST_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _iter0.size()));
-            for (Map.Entry<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _iter1 : _iter0.entrySet()) {
+        oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _fbthriftVar0.size()));
+            for (Map.Entry<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
               {
-                Integer _iter2 = _iter1.getKey();
-                oprot.writeI32(_iter2);
+                Integer _fbthriftVar2 = _fbthriftVar1.getKey();
+                oprot.writeI32(_fbthriftVar2);
               }
               {
-                List<test.fixtures.basic_swift_bean.MyDataItem> _iter2 = _iter1.getValue();
-                oprot.writeListBegin(new TList(TType.STRUCT, _iter2.size()));
-            for (test.fixtures.basic_swift_bean.MyDataItem _iter3 : _iter2) {
-              _iter3.write0(oprot);
+                List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftVar2 = _fbthriftVar1.getValue();
+                oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar2.size()));
+            for (test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar3 : _fbthriftVar2) {
+              _fbthriftVar3.write0(oprot);
             }
             oprot.writeListEnd();
               }
@@ -884,32 +884,32 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
       }
       }
       {
-      List<test.fixtures.basic_swift_bean.MyDataItem> _iter0 = this.myEmptyList;
-      if (_iter0 != null) {
+      List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftVar0 = this.myEmptyList;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_EMPTY_LIST_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.STRUCT, _iter0.size()));
-            for (test.fixtures.basic_swift_bean.MyDataItem _iter1 : _iter0) {
-              _iter1.write0(oprot);
+        oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar0.size()));
+            for (test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar1 : _fbthriftVar0) {
+              _fbthriftVar1.write0(oprot);
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
       }
       {
-      Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _iter0 = this.myEmptyMapList;
-      if (_iter0 != null) {
+      Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _fbthriftVar0 = this.myEmptyMapList;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_EMPTY_MAP_LIST_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _iter0.size()));
-            for (Map.Entry<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _iter1 : _iter0.entrySet()) {
+        oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _fbthriftVar0.size()));
+            for (Map.Entry<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
               {
-                Integer _iter2 = _iter1.getKey();
-                oprot.writeI32(_iter2);
+                Integer _fbthriftVar2 = _fbthriftVar1.getKey();
+                oprot.writeI32(_fbthriftVar2);
               }
               {
-                List<test.fixtures.basic_swift_bean.MyDataItem> _iter2 = _iter1.getValue();
-                oprot.writeListBegin(new TList(TType.STRUCT, _iter2.size()));
-            for (test.fixtures.basic_swift_bean.MyDataItem _iter3 : _iter2) {
-              _iter3.write0(oprot);
+                List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftVar2 = _fbthriftVar1.getValue();
+                oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar2.size()));
+            for (test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar3 : _fbthriftVar2) {
+              _fbthriftVar3.write0(oprot);
             }
             oprot.writeListEnd();
               }

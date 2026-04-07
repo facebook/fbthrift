@@ -2446,62 +2446,62 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      test.fixtures.shapes.A _iter0 = this.justAnA;
-      if (_iter0 != null) {
+      test.fixtures.shapes.A _fbthriftVar0 = this.justAnA;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(JUST_AN_A_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      Set<Integer> _iter0 = this.setOfI32;
-      if (_iter0 != null) {
+      Set<Integer> _fbthriftVar0 = this.setOfI32;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SET_OF_I32_FIELD_DESC);
-        oprot.writeSetBegin(new TSet(TType.I32, _iter0.size()));
-            for (int _iter1 : _iter0) {
-              oprot.writeI32(_iter1);
+        oprot.writeSetBegin(new TSet(TType.I32, _fbthriftVar0.size()));
+            for (int _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeI32(_fbthriftVar1);
             }
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
       }
       {
-      List<Integer> _iter0 = this.listOfI32;
-      if (_iter0 != null) {
+      List<Integer> _fbthriftVar0 = this.listOfI32;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LIST_OF_I32_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.I32, _iter0.size()));
-            for (int _iter1 : _iter0) {
-              oprot.writeI32(_iter1);
+        oprot.writeListBegin(new TList(TType.I32, _fbthriftVar0.size()));
+            for (int _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeI32(_fbthriftVar1);
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
       }
       {
-      List<String> _iter0 = this.listOfString;
-      if (_iter0 != null) {
+      List<String> _fbthriftVar0 = this.listOfString;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LIST_OF_STRING_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.STRING, _iter0.size()));
-            for (String _iter1 : _iter0) {
-              oprot.writeString(_iter1);
+        oprot.writeListBegin(new TList(TType.STRING, _fbthriftVar0.size()));
+            for (String _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeString(_fbthriftVar1);
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
       }
       {
-      Map<String, Integer> _iter0 = this.mapOfStringToI32;
-      if (_iter0 != null) {
+      Map<String, Integer> _fbthriftVar0 = this.mapOfStringToI32;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MAP_OF_STRING_TO_I32_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.I32, _iter0.size()));
-            for (Map.Entry<String, Integer> _iter1 : _iter0.entrySet()) {
+        oprot.writeMapBegin(new TMap(TType.STRING, TType.I32, _fbthriftVar0.size()));
+            for (Map.Entry<String, Integer> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
               {
-                String _iter2 = _iter1.getKey();
-                oprot.writeString(_iter2);
+                String _fbthriftVar2 = _fbthriftVar1.getKey();
+                oprot.writeString(_fbthriftVar2);
               }
               {
-                Integer _iter2 = _iter1.getValue();
-                oprot.writeI32(_iter2);
+                Integer _fbthriftVar2 = _fbthriftVar1.getValue();
+                oprot.writeI32(_fbthriftVar2);
               }
             }
             oprot.writeMapEnd();
@@ -2509,18 +2509,18 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
       }
       }
       {
-      Map<String, test.fixtures.shapes.A> _iter0 = this.mapOfStringToA;
-      if (_iter0 != null) {
+      Map<String, test.fixtures.shapes.A> _fbthriftVar0 = this.mapOfStringToA;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MAP_OF_STRING_TO_A_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.STRUCT, _iter0.size()));
-            for (Map.Entry<String, test.fixtures.shapes.A> _iter1 : _iter0.entrySet()) {
+        oprot.writeMapBegin(new TMap(TType.STRING, TType.STRUCT, _fbthriftVar0.size()));
+            for (Map.Entry<String, test.fixtures.shapes.A> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
               {
-                String _iter2 = _iter1.getKey();
-                oprot.writeString(_iter2);
+                String _fbthriftVar2 = _fbthriftVar1.getKey();
+                oprot.writeString(_fbthriftVar2);
               }
               {
-                test.fixtures.shapes.A _iter2 = _iter1.getValue();
-                _iter2.write0(oprot);
+                test.fixtures.shapes.A _fbthriftVar2 = _fbthriftVar1.getValue();
+                _fbthriftVar2.write0(oprot);
               }
             }
             oprot.writeMapEnd();
@@ -2528,20 +2528,20 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
       }
       }
       {
-      Map<String, List<Integer>> _iter0 = this.mapOfStringToListOfI32;
-      if (_iter0 != null) {
+      Map<String, List<Integer>> _fbthriftVar0 = this.mapOfStringToListOfI32;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MAP_OF_STRING_TO_LIST_OF_I32_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter0.size()));
-            for (Map.Entry<String, List<Integer>> _iter1 : _iter0.entrySet()) {
+        oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _fbthriftVar0.size()));
+            for (Map.Entry<String, List<Integer>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
               {
-                String _iter2 = _iter1.getKey();
-                oprot.writeString(_iter2);
+                String _fbthriftVar2 = _fbthriftVar1.getKey();
+                oprot.writeString(_fbthriftVar2);
               }
               {
-                List<Integer> _iter2 = _iter1.getValue();
-                oprot.writeListBegin(new TList(TType.I32, _iter2.size()));
-            for (int _iter3 : _iter2) {
-              oprot.writeI32(_iter3);
+                List<Integer> _fbthriftVar2 = _fbthriftVar1.getValue();
+                oprot.writeListBegin(new TList(TType.I32, _fbthriftVar2.size()));
+            for (int _fbthriftVar3 : _fbthriftVar2) {
+              oprot.writeI32(_fbthriftVar3);
             }
             oprot.writeListEnd();
               }
@@ -2551,20 +2551,20 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
       }
       }
       {
-      Map<String, List<test.fixtures.shapes.A>> _iter0 = this.mapOfStringToListOfA;
-      if (_iter0 != null) {
+      Map<String, List<test.fixtures.shapes.A>> _fbthriftVar0 = this.mapOfStringToListOfA;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MAP_OF_STRING_TO_LIST_OF_A_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter0.size()));
-            for (Map.Entry<String, List<test.fixtures.shapes.A>> _iter1 : _iter0.entrySet()) {
+        oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _fbthriftVar0.size()));
+            for (Map.Entry<String, List<test.fixtures.shapes.A>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
               {
-                String _iter2 = _iter1.getKey();
-                oprot.writeString(_iter2);
+                String _fbthriftVar2 = _fbthriftVar1.getKey();
+                oprot.writeString(_fbthriftVar2);
               }
               {
-                List<test.fixtures.shapes.A> _iter2 = _iter1.getValue();
-                oprot.writeListBegin(new TList(TType.STRUCT, _iter2.size()));
-            for (test.fixtures.shapes.A _iter3 : _iter2) {
-              _iter3.write0(oprot);
+                List<test.fixtures.shapes.A> _fbthriftVar2 = _fbthriftVar1.getValue();
+                oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar2.size()));
+            for (test.fixtures.shapes.A _fbthriftVar3 : _fbthriftVar2) {
+              _fbthriftVar3.write0(oprot);
             }
             oprot.writeListEnd();
               }
@@ -2574,20 +2574,20 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
       }
       }
       {
-      Map<String, Set<Integer>> _iter0 = this.mapOfStringToSetOfI32;
-      if (_iter0 != null) {
+      Map<String, Set<Integer>> _fbthriftVar0 = this.mapOfStringToSetOfI32;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MAP_OF_STRING_TO_SET_OF_I32_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.SET, _iter0.size()));
-            for (Map.Entry<String, Set<Integer>> _iter1 : _iter0.entrySet()) {
+        oprot.writeMapBegin(new TMap(TType.STRING, TType.SET, _fbthriftVar0.size()));
+            for (Map.Entry<String, Set<Integer>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
               {
-                String _iter2 = _iter1.getKey();
-                oprot.writeString(_iter2);
+                String _fbthriftVar2 = _fbthriftVar1.getKey();
+                oprot.writeString(_fbthriftVar2);
               }
               {
-                Set<Integer> _iter2 = _iter1.getValue();
-                oprot.writeSetBegin(new TSet(TType.I32, _iter2.size()));
-            for (int _iter3 : _iter2) {
-              oprot.writeI32(_iter3);
+                Set<Integer> _fbthriftVar2 = _fbthriftVar1.getValue();
+                oprot.writeSetBegin(new TSet(TType.I32, _fbthriftVar2.size()));
+            for (int _fbthriftVar3 : _fbthriftVar2) {
+              oprot.writeI32(_fbthriftVar3);
             }
             oprot.writeSetEnd();
               }
@@ -2597,26 +2597,26 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
       }
       }
       {
-      Map<String, Map<String, Integer>> _iter0 = this.mapOfStringToMapOfStringToI32;
-      if (_iter0 != null) {
+      Map<String, Map<String, Integer>> _fbthriftVar0 = this.mapOfStringToMapOfStringToI32;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MAP_OF_STRING_TO_MAP_OF_STRING_TO_I32_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.MAP, _iter0.size()));
-            for (Map.Entry<String, Map<String, Integer>> _iter1 : _iter0.entrySet()) {
+        oprot.writeMapBegin(new TMap(TType.STRING, TType.MAP, _fbthriftVar0.size()));
+            for (Map.Entry<String, Map<String, Integer>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
               {
-                String _iter2 = _iter1.getKey();
-                oprot.writeString(_iter2);
+                String _fbthriftVar2 = _fbthriftVar1.getKey();
+                oprot.writeString(_fbthriftVar2);
               }
               {
-                Map<String, Integer> _iter2 = _iter1.getValue();
-                oprot.writeMapBegin(new TMap(TType.STRING, TType.I32, _iter2.size()));
-            for (Map.Entry<String, Integer> _iter3 : _iter2.entrySet()) {
+                Map<String, Integer> _fbthriftVar2 = _fbthriftVar1.getValue();
+                oprot.writeMapBegin(new TMap(TType.STRING, TType.I32, _fbthriftVar2.size()));
+            for (Map.Entry<String, Integer> _fbthriftVar3 : _fbthriftVar2.entrySet()) {
               {
-                String _iter4 = _iter3.getKey();
-                oprot.writeString(_iter4);
+                String _fbthriftVar4 = _fbthriftVar3.getKey();
+                oprot.writeString(_fbthriftVar4);
               }
               {
-                Integer _iter4 = _iter3.getValue();
-                oprot.writeI32(_iter4);
+                Integer _fbthriftVar4 = _fbthriftVar3.getValue();
+                oprot.writeI32(_fbthriftVar4);
               }
             }
             oprot.writeMapEnd();
@@ -2627,26 +2627,26 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
       }
       }
       {
-      Map<String, Map<String, test.fixtures.shapes.A>> _iter0 = this.mapOfStringToMapOfStringToA;
-      if (_iter0 != null) {
+      Map<String, Map<String, test.fixtures.shapes.A>> _fbthriftVar0 = this.mapOfStringToMapOfStringToA;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MAP_OF_STRING_TO_MAP_OF_STRING_TO_A_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.MAP, _iter0.size()));
-            for (Map.Entry<String, Map<String, test.fixtures.shapes.A>> _iter1 : _iter0.entrySet()) {
+        oprot.writeMapBegin(new TMap(TType.STRING, TType.MAP, _fbthriftVar0.size()));
+            for (Map.Entry<String, Map<String, test.fixtures.shapes.A>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
               {
-                String _iter2 = _iter1.getKey();
-                oprot.writeString(_iter2);
+                String _fbthriftVar2 = _fbthriftVar1.getKey();
+                oprot.writeString(_fbthriftVar2);
               }
               {
-                Map<String, test.fixtures.shapes.A> _iter2 = _iter1.getValue();
-                oprot.writeMapBegin(new TMap(TType.STRING, TType.STRUCT, _iter2.size()));
-            for (Map.Entry<String, test.fixtures.shapes.A> _iter3 : _iter2.entrySet()) {
+                Map<String, test.fixtures.shapes.A> _fbthriftVar2 = _fbthriftVar1.getValue();
+                oprot.writeMapBegin(new TMap(TType.STRING, TType.STRUCT, _fbthriftVar2.size()));
+            for (Map.Entry<String, test.fixtures.shapes.A> _fbthriftVar3 : _fbthriftVar2.entrySet()) {
               {
-                String _iter4 = _iter3.getKey();
-                oprot.writeString(_iter4);
+                String _fbthriftVar4 = _fbthriftVar3.getKey();
+                oprot.writeString(_fbthriftVar4);
               }
               {
-                test.fixtures.shapes.A _iter4 = _iter3.getValue();
-                _iter4.write0(oprot);
+                test.fixtures.shapes.A _fbthriftVar4 = _fbthriftVar3.getValue();
+                _fbthriftVar4.write0(oprot);
               }
             }
             oprot.writeMapEnd();
@@ -2657,14 +2657,14 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
       }
       }
       {
-      List<Set<Integer>> _iter0 = this.listOfSetOfI32;
-      if (_iter0 != null) {
+      List<Set<Integer>> _fbthriftVar0 = this.listOfSetOfI32;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LIST_OF_SET_OF_I32_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.SET, _iter0.size()));
-            for (Set<Integer> _iter1 : _iter0) {
-              oprot.writeSetBegin(new TSet(TType.I32, _iter1.size()));
-            for (int _iter2 : _iter1) {
-              oprot.writeI32(_iter2);
+        oprot.writeListBegin(new TList(TType.SET, _fbthriftVar0.size()));
+            for (Set<Integer> _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeSetBegin(new TSet(TType.I32, _fbthriftVar1.size()));
+            for (int _fbthriftVar2 : _fbthriftVar1) {
+              oprot.writeI32(_fbthriftVar2);
             }
             oprot.writeSetEnd();
             }
@@ -2673,22 +2673,22 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
       }
       }
       {
-      List<Map<String, List<test.fixtures.shapes.A>>> _iter0 = this.listOfMapOfStringToListOfA;
-      if (_iter0 != null) {
+      List<Map<String, List<test.fixtures.shapes.A>>> _fbthriftVar0 = this.listOfMapOfStringToListOfA;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LIST_OF_MAP_OF_STRING_TO_LIST_OF_A_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.MAP, _iter0.size()));
-            for (Map<String, List<test.fixtures.shapes.A>> _iter1 : _iter0) {
-              oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter1.size()));
-            for (Map.Entry<String, List<test.fixtures.shapes.A>> _iter2 : _iter1.entrySet()) {
+        oprot.writeListBegin(new TList(TType.MAP, _fbthriftVar0.size()));
+            for (Map<String, List<test.fixtures.shapes.A>> _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _fbthriftVar1.size()));
+            for (Map.Entry<String, List<test.fixtures.shapes.A>> _fbthriftVar2 : _fbthriftVar1.entrySet()) {
               {
-                String _iter3 = _iter2.getKey();
-                oprot.writeString(_iter3);
+                String _fbthriftVar3 = _fbthriftVar2.getKey();
+                oprot.writeString(_fbthriftVar3);
               }
               {
-                List<test.fixtures.shapes.A> _iter3 = _iter2.getValue();
-                oprot.writeListBegin(new TList(TType.STRUCT, _iter3.size()));
-            for (test.fixtures.shapes.A _iter4 : _iter3) {
-              _iter4.write0(oprot);
+                List<test.fixtures.shapes.A> _fbthriftVar3 = _fbthriftVar2.getValue();
+                oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar3.size()));
+            for (test.fixtures.shapes.A _fbthriftVar4 : _fbthriftVar3) {
+              _fbthriftVar4.write0(oprot);
             }
             oprot.writeListEnd();
               }
@@ -2700,20 +2700,20 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
       }
       }
       {
-      List<Map<String, test.fixtures.shapes.A>> _iter0 = this.listOfMapOfStringToA;
-      if (_iter0 != null) {
+      List<Map<String, test.fixtures.shapes.A>> _fbthriftVar0 = this.listOfMapOfStringToA;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LIST_OF_MAP_OF_STRING_TO_A_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.MAP, _iter0.size()));
-            for (Map<String, test.fixtures.shapes.A> _iter1 : _iter0) {
-              oprot.writeMapBegin(new TMap(TType.STRING, TType.STRUCT, _iter1.size()));
-            for (Map.Entry<String, test.fixtures.shapes.A> _iter2 : _iter1.entrySet()) {
+        oprot.writeListBegin(new TList(TType.MAP, _fbthriftVar0.size()));
+            for (Map<String, test.fixtures.shapes.A> _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeMapBegin(new TMap(TType.STRING, TType.STRUCT, _fbthriftVar1.size()));
+            for (Map.Entry<String, test.fixtures.shapes.A> _fbthriftVar2 : _fbthriftVar1.entrySet()) {
               {
-                String _iter3 = _iter2.getKey();
-                oprot.writeString(_iter3);
+                String _fbthriftVar3 = _fbthriftVar2.getKey();
+                oprot.writeString(_fbthriftVar3);
               }
               {
-                test.fixtures.shapes.A _iter3 = _iter2.getValue();
-                _iter3.write0(oprot);
+                test.fixtures.shapes.A _fbthriftVar3 = _fbthriftVar2.getValue();
+                _fbthriftVar3.write0(oprot);
               }
             }
             oprot.writeMapEnd();
@@ -2723,76 +2723,76 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
       }
       }
       {
-      test.fixtures.shapes.Enum _iter0 = this.justAnEnum;
+      test.fixtures.shapes.Enum _fbthriftVar0 = this.justAnEnum;
       oprot.writeFieldBegin(JUST_AN_ENUM_FIELD_DESC);
-      oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
+      oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
       oprot.writeFieldEnd();
       }
       {
-      test.fixtures.shapes.Union _iter0 = this.justAUnion;
-      if (_iter0 != null) {
+      test.fixtures.shapes.Union _fbthriftVar0 = this.justAUnion;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(JUST_AUNION_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      test.fixtures.shapes.A _iter0 = this.optionalJustAnA;
-      if (_iter0 != null) {
+      test.fixtures.shapes.A _fbthriftVar0 = this.optionalJustAnA;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPTIONAL_JUST_AN_A_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      Set<Integer> _iter0 = this.optionalSetOfI32;
-      if (_iter0 != null) {
+      Set<Integer> _fbthriftVar0 = this.optionalSetOfI32;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPTIONAL_SET_OF_I32_FIELD_DESC);
-        oprot.writeSetBegin(new TSet(TType.I32, _iter0.size()));
-            for (int _iter1 : _iter0) {
-              oprot.writeI32(_iter1);
+        oprot.writeSetBegin(new TSet(TType.I32, _fbthriftVar0.size()));
+            for (int _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeI32(_fbthriftVar1);
             }
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
       }
       {
-      List<Integer> _iter0 = this.optionalListOfI32;
-      if (_iter0 != null) {
+      List<Integer> _fbthriftVar0 = this.optionalListOfI32;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPTIONAL_LIST_OF_I32_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.I32, _iter0.size()));
-            for (int _iter1 : _iter0) {
-              oprot.writeI32(_iter1);
+        oprot.writeListBegin(new TList(TType.I32, _fbthriftVar0.size()));
+            for (int _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeI32(_fbthriftVar1);
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
       }
       {
-      List<String> _iter0 = this.optionalListOfString;
-      if (_iter0 != null) {
+      List<String> _fbthriftVar0 = this.optionalListOfString;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPTIONAL_LIST_OF_STRING_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.STRING, _iter0.size()));
-            for (String _iter1 : _iter0) {
-              oprot.writeString(_iter1);
+        oprot.writeListBegin(new TList(TType.STRING, _fbthriftVar0.size()));
+            for (String _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeString(_fbthriftVar1);
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
       }
       {
-      Map<String, Integer> _iter0 = this.optionalMapOfStringToI32;
-      if (_iter0 != null) {
+      Map<String, Integer> _fbthriftVar0 = this.optionalMapOfStringToI32;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPTIONAL_MAP_OF_STRING_TO_I32_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.I32, _iter0.size()));
-            for (Map.Entry<String, Integer> _iter1 : _iter0.entrySet()) {
+        oprot.writeMapBegin(new TMap(TType.STRING, TType.I32, _fbthriftVar0.size()));
+            for (Map.Entry<String, Integer> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
               {
-                String _iter2 = _iter1.getKey();
-                oprot.writeString(_iter2);
+                String _fbthriftVar2 = _fbthriftVar1.getKey();
+                oprot.writeString(_fbthriftVar2);
               }
               {
-                Integer _iter2 = _iter1.getValue();
-                oprot.writeI32(_iter2);
+                Integer _fbthriftVar2 = _fbthriftVar1.getValue();
+                oprot.writeI32(_fbthriftVar2);
               }
             }
             oprot.writeMapEnd();
@@ -2800,18 +2800,18 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
       }
       }
       {
-      Map<String, test.fixtures.shapes.A> _iter0 = this.optionalMapOfStringToA;
-      if (_iter0 != null) {
+      Map<String, test.fixtures.shapes.A> _fbthriftVar0 = this.optionalMapOfStringToA;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPTIONAL_MAP_OF_STRING_TO_A_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.STRUCT, _iter0.size()));
-            for (Map.Entry<String, test.fixtures.shapes.A> _iter1 : _iter0.entrySet()) {
+        oprot.writeMapBegin(new TMap(TType.STRING, TType.STRUCT, _fbthriftVar0.size()));
+            for (Map.Entry<String, test.fixtures.shapes.A> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
               {
-                String _iter2 = _iter1.getKey();
-                oprot.writeString(_iter2);
+                String _fbthriftVar2 = _fbthriftVar1.getKey();
+                oprot.writeString(_fbthriftVar2);
               }
               {
-                test.fixtures.shapes.A _iter2 = _iter1.getValue();
-                _iter2.write0(oprot);
+                test.fixtures.shapes.A _fbthriftVar2 = _fbthriftVar1.getValue();
+                _fbthriftVar2.write0(oprot);
               }
             }
             oprot.writeMapEnd();
@@ -2819,20 +2819,20 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
       }
       }
       {
-      Map<String, List<Integer>> _iter0 = this.optionalMapOfStringToListOfI32;
-      if (_iter0 != null) {
+      Map<String, List<Integer>> _fbthriftVar0 = this.optionalMapOfStringToListOfI32;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPTIONAL_MAP_OF_STRING_TO_LIST_OF_I32_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter0.size()));
-            for (Map.Entry<String, List<Integer>> _iter1 : _iter0.entrySet()) {
+        oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _fbthriftVar0.size()));
+            for (Map.Entry<String, List<Integer>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
               {
-                String _iter2 = _iter1.getKey();
-                oprot.writeString(_iter2);
+                String _fbthriftVar2 = _fbthriftVar1.getKey();
+                oprot.writeString(_fbthriftVar2);
               }
               {
-                List<Integer> _iter2 = _iter1.getValue();
-                oprot.writeListBegin(new TList(TType.I32, _iter2.size()));
-            for (int _iter3 : _iter2) {
-              oprot.writeI32(_iter3);
+                List<Integer> _fbthriftVar2 = _fbthriftVar1.getValue();
+                oprot.writeListBegin(new TList(TType.I32, _fbthriftVar2.size()));
+            for (int _fbthriftVar3 : _fbthriftVar2) {
+              oprot.writeI32(_fbthriftVar3);
             }
             oprot.writeListEnd();
               }
@@ -2842,20 +2842,20 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
       }
       }
       {
-      Map<String, List<test.fixtures.shapes.A>> _iter0 = this.optionalMapOfStringToListOfA;
-      if (_iter0 != null) {
+      Map<String, List<test.fixtures.shapes.A>> _fbthriftVar0 = this.optionalMapOfStringToListOfA;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPTIONAL_MAP_OF_STRING_TO_LIST_OF_A_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter0.size()));
-            for (Map.Entry<String, List<test.fixtures.shapes.A>> _iter1 : _iter0.entrySet()) {
+        oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _fbthriftVar0.size()));
+            for (Map.Entry<String, List<test.fixtures.shapes.A>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
               {
-                String _iter2 = _iter1.getKey();
-                oprot.writeString(_iter2);
+                String _fbthriftVar2 = _fbthriftVar1.getKey();
+                oprot.writeString(_fbthriftVar2);
               }
               {
-                List<test.fixtures.shapes.A> _iter2 = _iter1.getValue();
-                oprot.writeListBegin(new TList(TType.STRUCT, _iter2.size()));
-            for (test.fixtures.shapes.A _iter3 : _iter2) {
-              _iter3.write0(oprot);
+                List<test.fixtures.shapes.A> _fbthriftVar2 = _fbthriftVar1.getValue();
+                oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar2.size()));
+            for (test.fixtures.shapes.A _fbthriftVar3 : _fbthriftVar2) {
+              _fbthriftVar3.write0(oprot);
             }
             oprot.writeListEnd();
               }
@@ -2865,20 +2865,20 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
       }
       }
       {
-      Map<String, Set<Integer>> _iter0 = this.optionalMapOfStringToSetOfI32;
-      if (_iter0 != null) {
+      Map<String, Set<Integer>> _fbthriftVar0 = this.optionalMapOfStringToSetOfI32;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPTIONAL_MAP_OF_STRING_TO_SET_OF_I32_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.SET, _iter0.size()));
-            for (Map.Entry<String, Set<Integer>> _iter1 : _iter0.entrySet()) {
+        oprot.writeMapBegin(new TMap(TType.STRING, TType.SET, _fbthriftVar0.size()));
+            for (Map.Entry<String, Set<Integer>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
               {
-                String _iter2 = _iter1.getKey();
-                oprot.writeString(_iter2);
+                String _fbthriftVar2 = _fbthriftVar1.getKey();
+                oprot.writeString(_fbthriftVar2);
               }
               {
-                Set<Integer> _iter2 = _iter1.getValue();
-                oprot.writeSetBegin(new TSet(TType.I32, _iter2.size()));
-            for (int _iter3 : _iter2) {
-              oprot.writeI32(_iter3);
+                Set<Integer> _fbthriftVar2 = _fbthriftVar1.getValue();
+                oprot.writeSetBegin(new TSet(TType.I32, _fbthriftVar2.size()));
+            for (int _fbthriftVar3 : _fbthriftVar2) {
+              oprot.writeI32(_fbthriftVar3);
             }
             oprot.writeSetEnd();
               }
@@ -2888,78 +2888,78 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
       }
       }
       {
-      test.fixtures.shapes.Enum _iter0 = this.optionalEnum;
-      if (_iter0 != null) {
+      test.fixtures.shapes.Enum _fbthriftVar0 = this.optionalEnum;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPTIONAL_ENUM_FIELD_DESC);
-        oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
+        oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
         oprot.writeFieldEnd();
       }
       }
       {
-      test.fixtures.shapes.Enum _iter0 = this.requiredEnumWithDefault;
+      test.fixtures.shapes.Enum _fbthriftVar0 = this.requiredEnumWithDefault;
       oprot.writeFieldBegin(REQUIRED_ENUM_WITH_DEFAULT_FIELD_DESC);
-      oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
+      oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
       oprot.writeFieldEnd();
       }
       {
-      String _iter0 = this.stringWithDefaultValue;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.stringWithDefaultValue;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(STRING_WITH_DEFAULT_VALUE_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      int _iter0 = this.i32WithDefaultValue;
+      int _fbthriftVar0 = this.i32WithDefaultValue;
       oprot.writeFieldBegin(I32_WITH_DEFAULT_VALUE_FIELD_DESC);
-      oprot.writeI32(_iter0);
+      oprot.writeI32(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      double _iter0 = this.doubleWithDefaultValue;
+      double _fbthriftVar0 = this.doubleWithDefaultValue;
       oprot.writeFieldBegin(DOUBLE_WITH_DEFAULT_VALUE_FIELD_DESC);
-      oprot.writeDouble(_iter0);
+      oprot.writeDouble(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      test.fixtures.shapes.Enum _iter0 = this.enumWithDefaultValue;
+      test.fixtures.shapes.Enum _fbthriftVar0 = this.enumWithDefaultValue;
       oprot.writeFieldBegin(ENUM_WITH_DEFAULT_VALUE_FIELD_DESC);
-      oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
+      oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
       oprot.writeFieldEnd();
       }
       {
-      test.fixtures.shapes.A _iter0 = this.aWithDefaultValue;
-      if (_iter0 != null) {
+      test.fixtures.shapes.A _fbthriftVar0 = this.aWithDefaultValue;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(A_WITH_DEFAULT_VALUE_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      Set<Integer> _iter0 = this.setOfI32WithDefaultValue;
-      if (_iter0 != null) {
+      Set<Integer> _fbthriftVar0 = this.setOfI32WithDefaultValue;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SET_OF_I32_WITH_DEFAULT_VALUE_FIELD_DESC);
-        oprot.writeSetBegin(new TSet(TType.I32, _iter0.size()));
-            for (int _iter1 : _iter0) {
-              oprot.writeI32(_iter1);
+        oprot.writeSetBegin(new TSet(TType.I32, _fbthriftVar0.size()));
+            for (int _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeI32(_fbthriftVar1);
             }
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
       }
       {
-      Map<Integer, String> _iter0 = this.mapOfI32ToStringWithDefaultValue;
-      if (_iter0 != null) {
+      Map<Integer, String> _fbthriftVar0 = this.mapOfI32ToStringWithDefaultValue;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MAP_OF_I32_TO_STRING_WITH_DEFAULT_VALUE_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, _iter0.size()));
-            for (Map.Entry<Integer, String> _iter1 : _iter0.entrySet()) {
+        oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, _fbthriftVar0.size()));
+            for (Map.Entry<Integer, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
               {
-                Integer _iter2 = _iter1.getKey();
-                oprot.writeI32(_iter2);
+                Integer _fbthriftVar2 = _fbthriftVar1.getKey();
+                oprot.writeI32(_fbthriftVar2);
               }
               {
-                String _iter2 = _iter1.getValue();
-                oprot.writeString(_iter2);
+                String _fbthriftVar2 = _fbthriftVar1.getValue();
+                oprot.writeString(_fbthriftVar2);
               }
             }
             oprot.writeMapEnd();
@@ -2967,32 +2967,32 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
       }
       }
       {
-      List<String> _iter0 = this.listOfStringWithDefaultValue;
-      if (_iter0 != null) {
+      List<String> _fbthriftVar0 = this.listOfStringWithDefaultValue;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LIST_OF_STRING_WITH_DEFAULT_VALUE_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.STRING, _iter0.size()));
-            for (String _iter1 : _iter0) {
-              oprot.writeString(_iter1);
+        oprot.writeListBegin(new TList(TType.STRING, _fbthriftVar0.size()));
+            for (String _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeString(_fbthriftVar1);
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
       }
       {
-      Map<String, List<Integer>> _iter0 = this.mapOfStringToListOfI32WithDefaultValue;
-      if (_iter0 != null) {
+      Map<String, List<Integer>> _fbthriftVar0 = this.mapOfStringToListOfI32WithDefaultValue;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MAP_OF_STRING_TO_LIST_OF_I32_WITH_DEFAULT_VALUE_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter0.size()));
-            for (Map.Entry<String, List<Integer>> _iter1 : _iter0.entrySet()) {
+        oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _fbthriftVar0.size()));
+            for (Map.Entry<String, List<Integer>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
               {
-                String _iter2 = _iter1.getKey();
-                oprot.writeString(_iter2);
+                String _fbthriftVar2 = _fbthriftVar1.getKey();
+                oprot.writeString(_fbthriftVar2);
               }
               {
-                List<Integer> _iter2 = _iter1.getValue();
-                oprot.writeListBegin(new TList(TType.I32, _iter2.size()));
-            for (int _iter3 : _iter2) {
-              oprot.writeI32(_iter3);
+                List<Integer> _fbthriftVar2 = _fbthriftVar1.getValue();
+                oprot.writeListBegin(new TList(TType.I32, _fbthriftVar2.size()));
+            for (int _fbthriftVar3 : _fbthriftVar2) {
+              oprot.writeI32(_fbthriftVar3);
             }
             oprot.writeListEnd();
               }

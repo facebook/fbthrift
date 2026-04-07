@@ -124,9 +124,9 @@ public class AdapterServiceReactiveClient
         {
           oprot.writeFieldBegin(_adaptedTypes_ARG_FIELD_DESC);
 
-          test.fixtures.adapter.HeapAllocated _iter0 = arg;
+          test.fixtures.adapter.HeapAllocated _fbthriftVar0 = arg;
 
-          _iter0.write0(oprot);
+          _fbthriftVar0.write0(oprot);
           oprot.writeFieldEnd();
         }
 

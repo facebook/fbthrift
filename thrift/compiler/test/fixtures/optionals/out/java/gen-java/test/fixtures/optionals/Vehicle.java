@@ -304,42 +304,42 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      test.fixtures.optionals.Color _iter0 = this.color;
-      if (_iter0 != null) {
+      test.fixtures.optionals.Color _fbthriftVar0 = this.color;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(COLOR_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.licensePlate;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.licensePlate;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LICENSE_PLATE_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.description;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.description;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(DESCRIPTION_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.name;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.name;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(NAME_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      Boolean _iter0 = this.hasAC;
-      if (_iter0 != null) {
+      Boolean _fbthriftVar0 = this.hasAC;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(HAS_AC_FIELD_DESC);
-        oprot.writeBool(_iter0);
+        oprot.writeBool(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }

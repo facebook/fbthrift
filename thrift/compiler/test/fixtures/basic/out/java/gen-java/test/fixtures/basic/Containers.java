@@ -297,42 +297,42 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      List<Integer> _iter0 = this.i32List;
-      if (_iter0 != null) {
+      List<Integer> _fbthriftVar0 = this.i32List;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(I32_LIST_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.I32, _iter0.size()));
-            for (int _iter1 : _iter0) {
-              oprot.writeI32(_iter1);
+        oprot.writeListBegin(new TList(TType.I32, _fbthriftVar0.size()));
+            for (int _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeI32(_fbthriftVar1);
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
       }
       {
-      Set<String> _iter0 = this.stringSet;
-      if (_iter0 != null) {
+      Set<String> _fbthriftVar0 = this.stringSet;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(STRING_SET_FIELD_DESC);
-        oprot.writeSetBegin(new TSet(TType.STRING, _iter0.size()));
-            for (String _iter1 : _iter0) {
-              oprot.writeString(_iter1);
+        oprot.writeSetBegin(new TSet(TType.STRING, _fbthriftVar0.size()));
+            for (String _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeString(_fbthriftVar1);
             }
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
       }
       {
-      Map<String, Long> _iter0 = this.stringToI64Map;
-      if (_iter0 != null) {
+      Map<String, Long> _fbthriftVar0 = this.stringToI64Map;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(STRING_TO_I64_MAP_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.I64, _iter0.size()));
-            for (Map.Entry<String, Long> _iter1 : _iter0.entrySet()) {
+        oprot.writeMapBegin(new TMap(TType.STRING, TType.I64, _fbthriftVar0.size()));
+            for (Map.Entry<String, Long> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
               {
-                String _iter2 = _iter1.getKey();
-                oprot.writeString(_iter2);
+                String _fbthriftVar2 = _fbthriftVar1.getKey();
+                oprot.writeString(_fbthriftVar2);
               }
               {
-                Long _iter2 = _iter1.getValue();
-                oprot.writeI64(_iter2);
+                Long _fbthriftVar2 = _fbthriftVar1.getValue();
+                oprot.writeI64(_fbthriftVar2);
               }
             }
             oprot.writeMapEnd();

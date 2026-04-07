@@ -190,17 +190,17 @@ public final class BigStruct implements com.facebook.thrift.payload.ThriftSerial
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      test.fixtures.module2.Struct _iter0 = this.s;
-      if (_iter0 != null) {
+      test.fixtures.module2.Struct _fbthriftVar0 = this.s;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(S_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      int _iter0 = this.id;
+      int _fbthriftVar0 = this.id;
       oprot.writeFieldBegin(ID_FIELD_DESC);
-      oprot.writeI32(_iter0);
+      oprot.writeI32(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

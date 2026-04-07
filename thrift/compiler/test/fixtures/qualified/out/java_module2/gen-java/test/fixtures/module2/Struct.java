@@ -190,18 +190,18 @@ public final class Struct implements com.facebook.thrift.payload.ThriftSerializa
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      test.fixtures.module0.Struct _iter0 = this.first;
-      if (_iter0 != null) {
+      test.fixtures.module0.Struct _fbthriftVar0 = this.first;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(FIRST_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      test.fixtures.module1.Struct _iter0 = this.second;
-      if (_iter0 != null) {
+      test.fixtures.module1.Struct _fbthriftVar0 = this.second;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SECOND_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }

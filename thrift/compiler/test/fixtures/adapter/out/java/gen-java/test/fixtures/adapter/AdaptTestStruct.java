@@ -497,72 +497,72 @@ public final class AdaptTestStruct implements com.facebook.thrift.payload.Thrift
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      long _iter0 = this.delay;
+      long _fbthriftVar0 = this.delay;
       oprot.writeFieldBegin(DELAY_FIELD_DESC);
-      oprot.writeI64(_iter0);
+      oprot.writeI64(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      byte[] _iter0 = this.custom;
-      if (_iter0 != null) {
+      byte[] _fbthriftVar0 = this.custom;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(CUSTOM_FIELD_DESC);
-        org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter0);
+        org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      long _iter0 = this.timeout;
+      long _fbthriftVar0 = this.timeout;
       oprot.writeFieldBegin(TIMEOUT_FIELD_DESC);
-      oprot.writeI64(_iter0);
+      oprot.writeI64(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      long _iter0 = this.data;
+      long _fbthriftVar0 = this.data;
       oprot.writeFieldBegin(DATA_FIELD_DESC);
-      oprot.writeI64(_iter0);
+      oprot.writeI64(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      String _iter0 = this.meta;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.meta;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(META_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.indirectionString;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.indirectionString;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(INDIRECTION_STRING_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.stringData;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.stringData;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(STRING_DATA_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      boolean _iter0 = this.doubleWrappedBool;
+      boolean _fbthriftVar0 = this.doubleWrappedBool;
       oprot.writeFieldBegin(DOUBLE_WRAPPED_BOOL_FIELD_DESC);
-      oprot.writeBool(_iter0);
+      oprot.writeBool(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      int _iter0 = this.doubleWrappedInteger;
+      int _fbthriftVar0 = this.doubleWrappedInteger;
       oprot.writeFieldBegin(DOUBLE_WRAPPED_INTEGER_FIELD_DESC);
-      oprot.writeI32(_iter0);
+      oprot.writeI32(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      byte[] _iter0 = this.binaryData;
-      if (_iter0 != null) {
+      byte[] _fbthriftVar0 = this.binaryData;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(BINARY_DATA_FIELD_DESC);
-        org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter0);
+        org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }

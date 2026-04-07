@@ -190,18 +190,18 @@ public final class AdaptedStructWithInternBox implements com.facebook.thrift.pay
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      test.fixtures.refs.Empty _iter0 = this.field1;
-      if (_iter0 != null) {
+      test.fixtures.refs.Empty _fbthriftVar0 = this.field1;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(FIELD1_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      test.fixtures.refs.MyField _iter0 = this.field2;
-      if (_iter0 != null) {
+      test.fixtures.refs.MyField _fbthriftVar0 = this.field2;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(FIELD2_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }

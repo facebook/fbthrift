@@ -249,32 +249,32 @@ public final class TerseAdaptedFields implements com.facebook.thrift.payload.Thr
       int pos = 0;
       com.facebook.thrift.protocol.ByteBufTProtocol p = (com.facebook.thrift.protocol.ByteBufTProtocol) oprot;
       {
-      int _iter0 = this.intField;
-      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_iter0)) {
+      int _fbthriftVar0 = this.intField;
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
         oprot.writeFieldBegin(INT_FIELD_FIELD_DESC);
-        oprot.writeI32(_iter0);
+        oprot.writeI32(_fbthriftVar0);
         oprot.writeFieldEnd();
       };
       }
       {
-      String _iter0 = this.stringField;
-      java.util.Objects.requireNonNull(_iter0, "stringField must not be null");
+      String _fbthriftVar0 = this.stringField;
+      java.util.Objects.requireNonNull(_fbthriftVar0, "stringField must not be null");
       
-      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_iter0)) {
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
         oprot.writeFieldBegin(STRING_FIELD_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      Set<Integer> _iter0 = this.setField;
-      java.util.Objects.requireNonNull(_iter0, "setField must not be null");
+      Set<Integer> _fbthriftVar0 = this.setField;
+      java.util.Objects.requireNonNull(_fbthriftVar0, "setField must not be null");
       
-      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_iter0)) {
+      if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
         oprot.writeFieldBegin(SET_FIELD_FIELD_DESC);
-        oprot.writeSetBegin(new TSet(TType.I32, _iter0.size()));
-            for (int _iter1 : _iter0) {
-              oprot.writeI32(_iter1);
+        oprot.writeSetBegin(new TSet(TType.I32, _fbthriftVar0.size()));
+            for (int _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeI32(_fbthriftVar1);
             }
             oprot.writeSetEnd();
         oprot.writeFieldEnd();

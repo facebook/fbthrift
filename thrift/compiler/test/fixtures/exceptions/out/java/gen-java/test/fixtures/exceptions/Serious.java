@@ -120,10 +120,10 @@ public final class Serious extends org.apache.thrift.TBaseException implements c
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      String _iter0 = this.sonnet;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.sonnet;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SONNET_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }

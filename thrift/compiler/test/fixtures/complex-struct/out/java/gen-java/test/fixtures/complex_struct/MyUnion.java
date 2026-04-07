@@ -426,49 +426,49 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       switch (this.id) {
       case _MYENUM: {
         oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
-        test.fixtures.complex_struct.MyEnum _iter0 = (test.fixtures.complex_struct.MyEnum)this.value;
+        test.fixtures.complex_struct.MyEnum _fbthriftVar0 = (test.fixtures.complex_struct.MyEnum)this.value;
 
-        oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
+        oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
         oprot.writeFieldEnd();
         break;
       }
       case _MYSTRUCT: {
         oprot.writeFieldBegin(MY_STRUCT_FIELD_DESC);
-        test.fixtures.complex_struct.MyStruct _iter0 = (test.fixtures.complex_struct.MyStruct)this.value;
+        test.fixtures.complex_struct.MyStruct _fbthriftVar0 = (test.fixtures.complex_struct.MyStruct)this.value;
 
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
         break;
       }
       case _MYDATAITEM: {
         oprot.writeFieldBegin(MY_DATA_ITEM_FIELD_DESC);
-        test.fixtures.complex_struct.MyDataItem _iter0 = (test.fixtures.complex_struct.MyDataItem)this.value;
+        test.fixtures.complex_struct.MyDataItem _fbthriftVar0 = (test.fixtures.complex_struct.MyDataItem)this.value;
 
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
         break;
       }
       case _COMPLEXNESTEDSTRUCT: {
         oprot.writeFieldBegin(COMPLEX_NESTED_STRUCT_FIELD_DESC);
-        test.fixtures.complex_struct.ComplexNestedStruct _iter0 = (test.fixtures.complex_struct.ComplexNestedStruct)this.value;
+        test.fixtures.complex_struct.ComplexNestedStruct _fbthriftVar0 = (test.fixtures.complex_struct.ComplexNestedStruct)this.value;
 
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
         break;
       }
       case _LONGVALUE: {
         oprot.writeFieldBegin(LONG_VALUE_FIELD_DESC);
-        long _iter0 = (long)this.value;
+        long _fbthriftVar0 = (long)this.value;
 
-        oprot.writeI64(_iter0);
+        oprot.writeI64(_fbthriftVar0);
         oprot.writeFieldEnd();
         break;
       }
       case _INTVALUE: {
         oprot.writeFieldBegin(INT_VALUE_FIELD_DESC);
-        int _iter0 = (int)this.value;
+        int _fbthriftVar0 = (int)this.value;
 
-        oprot.writeI32(_iter0);
+        oprot.writeI32(_fbthriftVar0);
         oprot.writeFieldEnd();
         break;
       }

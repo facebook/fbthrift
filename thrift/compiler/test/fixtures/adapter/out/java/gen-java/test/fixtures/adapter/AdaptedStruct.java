@@ -155,9 +155,9 @@ public final class AdaptedStruct implements com.facebook.thrift.payload.ThriftSe
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      long _iter0 = this.data;
+      long _fbthriftVar0 = this.data;
       oprot.writeFieldBegin(DATA_FIELD_DESC);
-      oprot.writeI64(_iter0);
+      oprot.writeI64(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

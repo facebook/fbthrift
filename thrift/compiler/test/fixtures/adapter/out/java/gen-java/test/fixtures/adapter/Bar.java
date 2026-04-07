@@ -468,78 +468,78 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      test.fixtures.adapter.Foo _iter0 = this.structField;
-      if (_iter0 != null) {
+      test.fixtures.adapter.Foo _fbthriftVar0 = this.structField;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(STRUCT_FIELD_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      test.fixtures.adapter.Foo _iter0 = this.optionalStructField;
-      if (_iter0 != null) {
+      test.fixtures.adapter.Foo _fbthriftVar0 = this.optionalStructField;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPTIONAL_STRUCT_FIELD_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      List<com.facebook.thrift.my.AdaptedFoo_1> _iter0 = this.structListField;
-      if (_iter0 != null) {
+      List<com.facebook.thrift.my.AdaptedFoo_1> _fbthriftVar0 = this.structListField;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(STRUCT_LIST_FIELD_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.STRUCT, _iter0.size()));
-            for (com.facebook.thrift.my.AdaptedFoo_1 _iter1 : _iter0) {
-              test.fixtures.adapter.Foo _iter2 = __FooWithAdapter_9317_Adapter.toThrift(_iter1);
-              _iter2.write0(oprot);
+        oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar0.size()));
+            for (com.facebook.thrift.my.AdaptedFoo_1 _fbthriftVar1 : _fbthriftVar0) {
+              test.fixtures.adapter.Foo _fbthriftVar2 = __FooWithAdapter_9317_Adapter.toThrift(_fbthriftVar1);
+              _fbthriftVar2.write0(oprot);
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
       }
       {
-      List<com.facebook.thrift.my.AdaptedFoo_1> _iter0 = this.optionalStructListField;
-      if (_iter0 != null) {
+      List<com.facebook.thrift.my.AdaptedFoo_1> _fbthriftVar0 = this.optionalStructListField;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPTIONAL_STRUCT_LIST_FIELD_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.STRUCT, _iter0.size()));
-            for (com.facebook.thrift.my.AdaptedFoo_1 _iter1 : _iter0) {
-              test.fixtures.adapter.Foo _iter2 = __FooWithAdapter_9317_Adapter.toThrift(_iter1);
-              _iter2.write0(oprot);
+        oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar0.size()));
+            for (com.facebook.thrift.my.AdaptedFoo_1 _fbthriftVar1 : _fbthriftVar0) {
+              test.fixtures.adapter.Foo _fbthriftVar2 = __FooWithAdapter_9317_Adapter.toThrift(_fbthriftVar1);
+              _fbthriftVar2.write0(oprot);
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
       }
       {
-      test.fixtures.adapter.Baz _iter0 = this.unionField;
-      if (_iter0 != null) {
+      test.fixtures.adapter.Baz _fbthriftVar0 = this.unionField;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(UNION_FIELD_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      test.fixtures.adapter.Baz _iter0 = this.optionalUnionField;
-      if (_iter0 != null) {
+      test.fixtures.adapter.Baz _fbthriftVar0 = this.optionalUnionField;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPTIONAL_UNION_FIELD_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      test.fixtures.adapter.DirectlyAdapted _iter0 = this.adaptedStructField;
-      if (_iter0 != null) {
+      test.fixtures.adapter.DirectlyAdapted _fbthriftVar0 = this.adaptedStructField;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ADAPTED_STRUCT_FIELD_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      List<test.fixtures.adapter.Foo> _iter0 = this.structListFieldWithTypedef;
-      if (_iter0 != null) {
+      List<test.fixtures.adapter.Foo> _fbthriftVar0 = this.structListFieldWithTypedef;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(STRUCT_LIST_FIELD_WITH_TYPEDEF_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.STRUCT, _iter0.size()));
-            for (test.fixtures.adapter.Foo _iter1 : _iter0) {
-              _iter1.write0(oprot);
+        oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar0.size()));
+            for (test.fixtures.adapter.Foo _fbthriftVar1 : _fbthriftVar0) {
+              _fbthriftVar1.write0(oprot);
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();

@@ -262,18 +262,18 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      Map<String, byte[]> _iter0 = this.binaryMap;
-      if (_iter0 != null) {
+      Map<String, byte[]> _fbthriftVar0 = this.binaryMap;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(BINARY_MAP_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.STRING, _iter0.size()));
-            for (Map.Entry<String, byte[]> _iter1 : _iter0.entrySet()) {
+        oprot.writeMapBegin(new TMap(TType.STRING, TType.STRING, _fbthriftVar0.size()));
+            for (Map.Entry<String, byte[]> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
               {
-                String _iter2 = _iter1.getKey();
-                oprot.writeString(_iter2);
+                String _fbthriftVar2 = _fbthriftVar1.getKey();
+                oprot.writeString(_fbthriftVar2);
               }
               {
-                byte[] _iter2 = _iter1.getValue();
-                org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter2);
+                byte[] _fbthriftVar2 = _fbthriftVar1.getValue();
+                org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar2);
               }
             }
             oprot.writeMapEnd();
@@ -281,18 +281,18 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
       }
       }
       {
-      Map<String, byte[]> _iter0 = this.regularBinary;
-      if (_iter0 != null) {
+      Map<String, byte[]> _fbthriftVar0 = this.regularBinary;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(REGULAR_BINARY_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.STRING, _iter0.size()));
-            for (Map.Entry<String, byte[]> _iter1 : _iter0.entrySet()) {
+        oprot.writeMapBegin(new TMap(TType.STRING, TType.STRING, _fbthriftVar0.size()));
+            for (Map.Entry<String, byte[]> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
               {
-                String _iter2 = _iter1.getKey();
-                oprot.writeString(_iter2);
+                String _fbthriftVar2 = _fbthriftVar1.getKey();
+                oprot.writeString(_fbthriftVar2);
               }
               {
-                byte[] _iter2 = _iter1.getValue();
-                org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter2);
+                byte[] _fbthriftVar2 = _fbthriftVar1.getValue();
+                org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar2);
               }
             }
             oprot.writeMapEnd();

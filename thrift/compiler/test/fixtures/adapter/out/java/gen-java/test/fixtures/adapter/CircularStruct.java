@@ -155,10 +155,10 @@ public final class CircularStruct implements com.facebook.thrift.payload.ThriftS
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      test.fixtures.adapter.CircularAdaptee _iter0 = this.field;
-      if (_iter0 != null) {
+      test.fixtures.adapter.CircularAdaptee _fbthriftVar0 = this.field;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(FIELD_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }

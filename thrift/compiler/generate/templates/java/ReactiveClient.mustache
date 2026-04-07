@@ -171,7 +171,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
         {
           oprot.writeFieldBegin(_{{function:java_name}}_{{field:javaTFieldName}});
 
-          {{> FieldType}} _iter0 = {{field:javaName}};
+          {{> FieldType}} _fbthriftVar0 = {{field:javaName}};
 
           {{#partial codec.write_response_type type=field:self.type depth=0}}
           oprot.writeFieldEnd();
@@ -239,7 +239,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
         {
           oprot.writeFieldBegin(_{{function:java_name}}_{{field:javaTFieldName}});
 
-          {{> FieldType}} _iter0 = {{field:javaName}};
+          {{> FieldType}} _fbthriftVar0 = {{field:javaName}};
 
           {{#partial codec.write_response_type type=field:self.type depth=0}}
           oprot.writeFieldEnd();
@@ -316,7 +316,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
         {
           oprot.writeFieldBegin(_{{function:java_name}}_{{field:javaTFieldName}});
 
-          {{> FieldType}} _iter0 = {{field:javaName}};
+          {{> FieldType}} _fbthriftVar0 = {{field:javaName}};
 
           {{#partial codec.write_response_type type=field:self.type depth=0}}
           oprot.writeFieldEnd();
@@ -332,7 +332,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
     };
   }
 
-  private com.facebook.thrift.payload.Writer _create{{function:java_name}}SinkWriter({{#function:return_type}}{{#function:sink_elem_type}}{{> BoxedType}} _iter0{{/function:sink_elem_type}}{{/function:return_type}}) {
+  private com.facebook.thrift.payload.Writer _create{{function:java_name}}SinkWriter({{#function:return_type}}{{#function:sink_elem_type}}{{> BoxedType}} _fbthriftVar0{{/function:sink_elem_type}}{{/function:return_type}}) {
     return oprot -> {
       try {
         oprot.writeFieldBegin(_{{function:java_name}}_SINK_TFIELD);
@@ -438,7 +438,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
           {
             oprot.writeFieldBegin(_{{function:java_name}}_{{field:javaTFieldName}}_INT);
 
-            {{> FieldType}} _iter0 = {{field:javaName}};
+            {{> FieldType}} _fbthriftVar0 = {{field:javaName}};
 
             {{#partial codec.write_response_type type=field:self.type depth=0}}
             oprot.writeFieldEnd();
@@ -523,7 +523,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
           {
             oprot.writeFieldBegin(_{{function:java_name}}_{{field:javaTFieldName}}_INT);
 
-            {{> FieldType}} _iter0 = {{field:javaName}};
+            {{> FieldType}} _fbthriftVar0 = {{field:javaName}};
 
             {{#partial codec.write_response_type type=field:self.type depth=0}}
             oprot.writeFieldEnd();

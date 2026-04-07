@@ -190,18 +190,18 @@ public final class FieldsInjectedWithFieldsWithIncludedStruct implements com.fac
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      String _iter0 = this.stringField;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.stringField;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(STRING_FIELD_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      test.fixtures.injectMetadataFields.InjectedField _iter0 = this.injectedField;
-      if (_iter0 != null) {
+      test.fixtures.injectMetadataFields.InjectedField _fbthriftVar0 = this.injectedField;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(INJECTED_FIELD_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }

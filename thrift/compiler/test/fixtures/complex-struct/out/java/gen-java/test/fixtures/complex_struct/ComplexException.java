@@ -337,60 +337,60 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      String _iter0 = this.message;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.message;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      List<String> _iter0 = this.listStrings;
-      if (_iter0 != null) {
+      List<String> _fbthriftVar0 = this.listStrings;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LIST_STRINGS_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.STRING, _iter0.size()));
-            for (String _iter1 : _iter0) {
-              oprot.writeString(_iter1);
+        oprot.writeListBegin(new TList(TType.STRING, _fbthriftVar0.size()));
+            for (String _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeString(_fbthriftVar1);
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
       }
       {
-      test.fixtures.complex_struct.MyEnum _iter0 = this.errorEnum;
+      test.fixtures.complex_struct.MyEnum _fbthriftVar0 = this.errorEnum;
       oprot.writeFieldBegin(ERROR_ENUM_FIELD_DESC);
-      oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
+      oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
       oprot.writeFieldEnd();
       }
       {
-      test.fixtures.complex_struct.MyUnion _iter0 = this.unionError;
-      if (_iter0 != null) {
+      test.fixtures.complex_struct.MyUnion _fbthriftVar0 = this.unionError;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(UNION_ERROR_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      test.fixtures.complex_struct.MyStruct _iter0 = this.structError;
-      if (_iter0 != null) {
+      test.fixtures.complex_struct.MyStruct _fbthriftVar0 = this.structError;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(STRUCT_ERROR_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> _iter0 = this.lsMap;
-      if (_iter0 != null) {
+      it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> _fbthriftVar0 = this.lsMap;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LS_MAP_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.I64, TType.STRING, _iter0.size()));
-            for (Map.Entry<Long, String> _iter1 : _iter0.entrySet()) {
+        oprot.writeMapBegin(new TMap(TType.I64, TType.STRING, _fbthriftVar0.size()));
+            for (Map.Entry<Long, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
               {
-                Long _iter2 = _iter1.getKey();
-                oprot.writeI64(_iter2);
+                Long _fbthriftVar2 = _fbthriftVar1.getKey();
+                oprot.writeI64(_fbthriftVar2);
               }
               {
-                String _iter2 = _iter1.getValue();
-                oprot.writeString(_iter2);
+                String _fbthriftVar2 = _fbthriftVar1.getValue();
+                oprot.writeString(_fbthriftVar2);
               }
             }
             oprot.writeMapEnd();

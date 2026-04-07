@@ -243,30 +243,30 @@ public final class StructWithBox implements com.facebook.thrift.payload.ThriftSe
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      String _iter0 = this.a;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.a;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(A_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      List<Long> _iter0 = this.b;
-      if (_iter0 != null) {
+      List<Long> _fbthriftVar0 = this.b;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(B_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.I64, _iter0.size()));
-            for (long _iter1 : _iter0) {
-              oprot.writeI64(_iter1);
+        oprot.writeListBegin(new TList(TType.I64, _fbthriftVar0.size()));
+            for (long _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeI64(_fbthriftVar1);
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
       }
       {
-      test.fixtures.refs.StructWithRef _iter0 = this.c;
-      if (_iter0 != null) {
+      test.fixtures.refs.StructWithRef _fbthriftVar0 = this.c;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(C_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }

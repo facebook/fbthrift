@@ -269,34 +269,34 @@ public final class StructFieldAdaptedStruct implements com.facebook.thrift.paylo
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      test.fixtures.adapter.AdaptedStruct _iter0 = this.adaptedStruct;
-      if (_iter0 != null) {
+      test.fixtures.adapter.AdaptedStruct _fbthriftVar0 = this.adaptedStruct;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ADAPTED_STRUCT_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      test.fixtures.adapter.AdaptedStruct _iter0 = this.adaptedTypedef;
-      if (_iter0 != null) {
+      test.fixtures.adapter.AdaptedStruct _fbthriftVar0 = this.adaptedTypedef;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ADAPTED_TYPEDEF_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      test.fixtures.adapter.DirectlyAdaptedStruct _iter0 = this.directlyAdapted;
-      if (_iter0 != null) {
+      test.fixtures.adapter.DirectlyAdaptedStruct _fbthriftVar0 = this.directlyAdapted;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(DIRECTLY_ADAPTED_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      test.fixtures.adapter.DirectlyAdaptedStruct _iter0 = this.typedefOfAdapted;
-      if (_iter0 != null) {
+      test.fixtures.adapter.DirectlyAdaptedStruct _fbthriftVar0 = this.typedefOfAdapted;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(TYPEDEF_OF_ADAPTED_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }

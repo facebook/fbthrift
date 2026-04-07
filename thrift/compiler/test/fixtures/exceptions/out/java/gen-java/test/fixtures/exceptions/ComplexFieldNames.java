@@ -154,18 +154,18 @@ public final class ComplexFieldNames extends org.apache.thrift.TBaseException im
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      String _iter0 = this.errorMessage;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.errorMessage;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ERROR_MESSAGE_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.internalErrorMessage;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.internalErrorMessage;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(INTERNAL_ERROR_MESSAGE_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }

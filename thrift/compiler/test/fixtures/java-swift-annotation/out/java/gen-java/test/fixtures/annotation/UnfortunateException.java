@@ -150,17 +150,17 @@ public final class UnfortunateException extends org.apache.thrift.TBaseException
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      String _iter0 = this.anSnakeString;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.anSnakeString;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(AN_SNAKE_STRING_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      int _iter0 = this.aCamelI32;
+      int _fbthriftVar0 = this.aCamelI32;
       oprot.writeFieldBegin(A_CAMEL_I32_FIELD_DESC);
-      oprot.writeI32(_iter0);
+      oprot.writeI32(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

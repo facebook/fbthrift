@@ -264,32 +264,32 @@ public final class Val implements com.facebook.thrift.payload.ThriftSerializable
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      String _iter0 = this.strVal;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.strVal;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(STR_VAL_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      int _iter0 = this.intVal;
+      int _fbthriftVar0 = this.intVal;
       oprot.writeFieldBegin(INT_VAL_FIELD_DESC);
-      oprot.writeI32(_iter0);
+      oprot.writeI32(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      Map<Short, String> _iter0 = this.typedefValue;
-      if (_iter0 != null) {
+      Map<Short, String> _fbthriftVar0 = this.typedefValue;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(TYPEDEF_VALUE_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, _iter0.size()));
-            for (Map.Entry<Short, String> _iter1 : _iter0.entrySet()) {
+        oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, _fbthriftVar0.size()));
+            for (Map.Entry<Short, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
               {
-                Short _iter2 = _iter1.getKey();
-                oprot.writeI16(_iter2);
+                Short _fbthriftVar2 = _fbthriftVar1.getKey();
+                oprot.writeI16(_fbthriftVar2);
               }
               {
-                String _iter2 = _iter1.getValue();
-                oprot.writeString(_iter2);
+                String _fbthriftVar2 = _fbthriftVar1.getValue();
+                oprot.writeString(_fbthriftVar2);
               }
             }
             oprot.writeMapEnd();

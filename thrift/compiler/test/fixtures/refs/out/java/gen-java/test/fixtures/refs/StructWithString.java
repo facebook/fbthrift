@@ -304,42 +304,42 @@ public final class StructWithString implements com.facebook.thrift.payload.Thrif
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      String _iter0 = this.defUniqueStringRef;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.defUniqueStringRef;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(DEF_UNIQUE_STRING_REF_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.defSharedStringRef;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.defSharedStringRef;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(DEF_SHARED_STRING_REF_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.defSharedStringConstRef;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.defSharedStringConstRef;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(DEF_SHARED_STRING_CONST_REF_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.uniqueStringRef;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.uniqueStringRef;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(UNIQUE_STRING_REF_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.sharedStringRef;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.sharedStringRef;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SHARED_STRING_REF_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }

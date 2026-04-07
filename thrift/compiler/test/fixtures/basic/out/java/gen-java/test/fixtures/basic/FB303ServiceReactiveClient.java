@@ -75,9 +75,9 @@ public class FB303ServiceReactiveClient
         {
           oprot.writeFieldBegin(_simpleRpc_INT_PARAMETER_FIELD_DESC);
 
-          int _iter0 = intParameter;
+          int _fbthriftVar0 = intParameter;
 
-          oprot.writeI32(_iter0);
+          oprot.writeI32(_fbthriftVar0);
           oprot.writeFieldEnd();
         }
 

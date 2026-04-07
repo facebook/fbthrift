@@ -77,27 +77,27 @@ public class ServiceReactiveClient
         {
           oprot.writeFieldBegin(_func_ARG1_FIELD_DESC);
 
-          com.facebook.thrift.my.AdaptedString_1 _iter0 = arg1;
+          com.facebook.thrift.my.AdaptedString_1 _fbthriftVar0 = arg1;
 
-          oprot.writeString(_iter0);
+          oprot.writeString(_fbthriftVar0);
           oprot.writeFieldEnd();
         }
 
         {
           oprot.writeFieldBegin(_func_ARG2_FIELD_DESC);
 
-          String _iter0 = arg2;
+          String _fbthriftVar0 = arg2;
 
-          oprot.writeString(_iter0);
+          oprot.writeString(_fbthriftVar0);
           oprot.writeFieldEnd();
         }
 
         {
           oprot.writeFieldBegin(_func_ARG3_FIELD_DESC);
 
-          test.fixtures.adapter.Foo _iter0 = arg3;
+          test.fixtures.adapter.Foo _fbthriftVar0 = arg3;
 
-          _iter0.write0(oprot);
+          _fbthriftVar0.write0(oprot);
           oprot.writeFieldEnd();
         }
 

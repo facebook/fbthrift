@@ -380,40 +380,40 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      long _iter0 = this.intField;
+      long _fbthriftVar0 = this.intField;
       oprot.writeFieldBegin(INT_FIELD_FIELD_DESC);
-      oprot.writeI64(_iter0);
+      oprot.writeI64(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      String _iter0 = this.stringField;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.stringField;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(STRING_FIELD_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.detailField;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.detailField;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(DETAIL_FIELD_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      com.foo.FastIntLongMap _iter0 = this.detailMap;
-      if (_iter0 != null) {
+      com.foo.FastIntLongMap _fbthriftVar0 = this.detailMap;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(DETAIL_MAP_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.I32, TType.I64, _iter0.size()));
-            for (Map.Entry<Integer, Long> _iter1 : _iter0.entrySet()) {
+        oprot.writeMapBegin(new TMap(TType.I32, TType.I64, _fbthriftVar0.size()));
+            for (Map.Entry<Integer, Long> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
               {
-                Integer _iter2 = _iter1.getKey();
-                oprot.writeI32(_iter2);
+                Integer _fbthriftVar2 = _fbthriftVar1.getKey();
+                oprot.writeI32(_fbthriftVar2);
               }
               {
-                Long _iter2 = _iter1.getValue();
-                oprot.writeI64(_iter2);
+                Long _fbthriftVar2 = _fbthriftVar1.getValue();
+                oprot.writeI64(_fbthriftVar2);
               }
             }
             oprot.writeMapEnd();
@@ -421,18 +421,18 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       }
       }
       {
-      String _iter0 = this.toto;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.toto;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(TOTO_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.password;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.password;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(PASSWORD_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }

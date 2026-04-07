@@ -271,32 +271,32 @@ public final class StructWithFieldAdapter implements com.facebook.thrift.payload
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      Integer _iter0 = _field_Adapter.toThrift(this.field);
-      if (_iter0 != null) {
+      Integer _fbthriftVar0 = _field_Adapter.toThrift(this.field);
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(FIELD_FIELD_DESC);
-        oprot.writeI32(_iter0);
+        oprot.writeI32(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      int _iter0 = this.sharedField;
+      int _fbthriftVar0 = this.sharedField;
       oprot.writeFieldBegin(SHARED_FIELD_FIELD_DESC);
-      oprot.writeI32(_iter0);
+      oprot.writeI32(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      Integer _iter0 = _optSharedField_Adapter.toThrift(this.optSharedField);
-      if (_iter0 != null) {
+      Integer _fbthriftVar0 = _optSharedField_Adapter.toThrift(this.optSharedField);
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPT_SHARED_FIELD_FIELD_DESC);
-        oprot.writeI32(_iter0);
+        oprot.writeI32(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      Integer _iter0 = this.optBoxedField;
-      if (_iter0 != null) {
+      Integer _fbthriftVar0 = this.optBoxedField;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPT_BOXED_FIELD_FIELD_DESC);
-        oprot.writeI32(_iter0);
+        oprot.writeI32(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }

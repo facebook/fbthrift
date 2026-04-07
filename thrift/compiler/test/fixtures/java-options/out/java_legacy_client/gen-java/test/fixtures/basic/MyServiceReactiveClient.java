@@ -173,9 +173,9 @@ public class MyServiceReactiveClient
         {
           oprot.writeFieldBegin(_sink_SINK_FIELD_DESC);
 
-          long _iter0 = sink;
+          long _fbthriftVar0 = sink;
 
-          oprot.writeI64(_iter0);
+          oprot.writeI64(_fbthriftVar0);
           oprot.writeFieldEnd();
         }
 

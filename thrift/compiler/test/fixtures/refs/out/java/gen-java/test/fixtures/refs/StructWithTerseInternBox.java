@@ -193,12 +193,12 @@ public final class StructWithTerseInternBox implements com.facebook.thrift.paylo
       int pos = 0;
       com.facebook.thrift.protocol.ByteBufTProtocol p = (com.facebook.thrift.protocol.ByteBufTProtocol) oprot;
       {
-      test.fixtures.refs.Empty _iter0 = this.field1;
-      java.util.Objects.requireNonNull(_iter0, "field1 must not be null");
+      test.fixtures.refs.Empty _fbthriftVar0 = this.field1;
+      java.util.Objects.requireNonNull(_fbthriftVar0, "field1 must not be null");
       structStart = p.mark();
         oprot.writeFieldBegin(FIELD1_FIELD_DESC);
         pos = p.mark();
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         if (p.mark() - pos > p.getEmptyStructSize()) {
           p.writeFieldEnd();
         } else {
@@ -206,12 +206,12 @@ public final class StructWithTerseInternBox implements com.facebook.thrift.paylo
         }
       }
       {
-      test.fixtures.refs.MyField _iter0 = this.field2;
-      java.util.Objects.requireNonNull(_iter0, "field2 must not be null");
+      test.fixtures.refs.MyField _fbthriftVar0 = this.field2;
+      java.util.Objects.requireNonNull(_fbthriftVar0, "field2 must not be null");
       structStart = p.mark();
         oprot.writeFieldBegin(FIELD2_FIELD_DESC);
         pos = p.mark();
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         if (p.mark() - pos > p.getEmptyStructSize()) {
           p.writeFieldEnd();
         } else {

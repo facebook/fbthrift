@@ -153,17 +153,17 @@ public final class CustomException extends org.apache.thrift.TBaseException impl
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      String _iter0 = this.name;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.name;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(NAME_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      test.fixtures.service_schema.Result _iter0 = this.result;
+      test.fixtures.service_schema.Result _fbthriftVar0 = this.result;
       oprot.writeFieldBegin(RESULT_FIELD_DESC);
-      oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
+      oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

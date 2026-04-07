@@ -418,51 +418,51 @@ public final class Limits implements com.facebook.thrift.payload.ThriftSerializa
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      long _iter0 = this.maxI64Field;
+      long _fbthriftVar0 = this.maxI64Field;
       oprot.writeFieldBegin(MAX_I64_FIELD_FIELD_DESC);
-      oprot.writeI64(_iter0);
+      oprot.writeI64(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      long _iter0 = this.minI64Field;
+      long _fbthriftVar0 = this.minI64Field;
       oprot.writeFieldBegin(MIN_I64_FIELD_FIELD_DESC);
-      oprot.writeI64(_iter0);
+      oprot.writeI64(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      int _iter0 = this.maxI32Field;
+      int _fbthriftVar0 = this.maxI32Field;
       oprot.writeFieldBegin(MAX_I32_FIELD_FIELD_DESC);
-      oprot.writeI32(_iter0);
+      oprot.writeI32(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      int _iter0 = this.minI32Field;
+      int _fbthriftVar0 = this.minI32Field;
       oprot.writeFieldBegin(MIN_I32_FIELD_FIELD_DESC);
-      oprot.writeI32(_iter0);
+      oprot.writeI32(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      short _iter0 = this.maxI16Field;
+      short _fbthriftVar0 = this.maxI16Field;
       oprot.writeFieldBegin(MAX_I16_FIELD_FIELD_DESC);
-      oprot.writeI16(_iter0);
+      oprot.writeI16(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      short _iter0 = this.minI16Field;
+      short _fbthriftVar0 = this.minI16Field;
       oprot.writeFieldBegin(MIN_I16_FIELD_FIELD_DESC);
-      oprot.writeI16(_iter0);
+      oprot.writeI16(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      byte _iter0 = this.maxByteField;
+      byte _fbthriftVar0 = this.maxByteField;
       oprot.writeFieldBegin(MAX_BYTE_FIELD_FIELD_DESC);
-      oprot.writeByte(_iter0);
+      oprot.writeByte(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      byte _iter0 = this.minByteField;
+      byte _fbthriftVar0 = this.minByteField;
       oprot.writeFieldBegin(MIN_BYTE_FIELD_FIELD_DESC);
-      oprot.writeByte(_iter0);
+      oprot.writeByte(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

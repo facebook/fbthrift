@@ -76,9 +76,9 @@ public class BoxServiceReactiveClient
         {
           oprot.writeFieldBegin(_getABoxSession_REQ_FIELD_DESC);
 
-          test.fixtures.interactions.ShouldBeBoxed _iter0 = req;
+          test.fixtures.interactions.ShouldBeBoxed _fbthriftVar0 = req;
 
-          _iter0.write0(oprot);
+          _fbthriftVar0.write0(oprot);
           oprot.writeFieldEnd();
         }
 

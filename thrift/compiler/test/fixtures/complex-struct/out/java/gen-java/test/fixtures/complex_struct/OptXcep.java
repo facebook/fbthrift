@@ -150,18 +150,18 @@ public final class OptXcep extends org.apache.thrift.TBaseException implements c
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      String _iter0 = this.message;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.message;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      Integer _iter0 = this.errorCode;
-      if (_iter0 != null) {
+      Integer _fbthriftVar0 = this.errorCode;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ERROR_CODE_FIELD_DESC);
-        oprot.writeI32(_iter0);
+        oprot.writeI32(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }

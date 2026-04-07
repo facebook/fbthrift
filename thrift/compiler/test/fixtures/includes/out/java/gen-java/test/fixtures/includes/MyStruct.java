@@ -228,25 +228,25 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      test.fixtures.includes.includes.Included _iter0 = this.myIncludedField;
-      if (_iter0 != null) {
+      test.fixtures.includes.includes.Included _fbthriftVar0 = this.myIncludedField;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_INCLUDED_FIELD_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      test.fixtures.includes.includes.Included _iter0 = this.myOtherIncludedField;
-      if (_iter0 != null) {
+      test.fixtures.includes.includes.Included _fbthriftVar0 = this.myOtherIncludedField;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_OTHER_INCLUDED_FIELD_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      long _iter0 = this.myIncludedInt;
+      long _fbthriftVar0 = this.myIncludedInt;
       oprot.writeFieldBegin(MY_INCLUDED_INT_FIELD_DESC);
-      oprot.writeI64(_iter0);
+      oprot.writeI64(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

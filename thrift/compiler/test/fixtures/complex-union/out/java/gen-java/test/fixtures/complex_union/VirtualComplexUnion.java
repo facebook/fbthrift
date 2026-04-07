@@ -238,17 +238,17 @@ public final class VirtualComplexUnion implements com.facebook.thrift.payload.Th
       switch (this.id) {
       case _THINGONE: {
         oprot.writeFieldBegin(THING_ONE_FIELD_DESC);
-        String _iter0 = (String)this.value;
+        String _fbthriftVar0 = (String)this.value;
 
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
         break;
       }
       case _THINGTWO: {
         oprot.writeFieldBegin(THING_TWO_FIELD_DESC);
-        String _iter0 = (String)this.value;
+        String _fbthriftVar0 = (String)this.value;
 
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
         break;
       }

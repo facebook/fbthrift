@@ -152,10 +152,10 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor implements com.faceb
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      test.fixtures.refs.Empty _iter0 = this.defField;
-      if (_iter0 != null) {
+      test.fixtures.refs.Empty _fbthriftVar0 = this.defField;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(DEF_FIELD_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }

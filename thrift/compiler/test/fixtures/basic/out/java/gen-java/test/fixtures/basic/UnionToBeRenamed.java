@@ -195,9 +195,9 @@ public final class UnionToBeRenamed implements com.facebook.thrift.payload.Thrif
       switch (this.id) {
       case _RESERVED_FIELD: {
         oprot.writeFieldBegin(RESERVED_FIELD_FIELD_DESC);
-        int _iter0 = (int)this.value;
+        int _fbthriftVar0 = (int)this.value;
 
-        oprot.writeI32(_iter0);
+        oprot.writeI32(_fbthriftVar0);
         oprot.writeFieldEnd();
         break;
       }

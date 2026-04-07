@@ -17,12 +17,12 @@
 }}
 {{#type:typedef?}}{{!
   }}{{#type:isBinaryString?}}{{!
-    }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter{{field:prevNestedDepth}});{{!
+    }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar{{field:prevNestedDepth}});{{!
   }}{{/type:isBinaryString?}}{{!
   }}{{^type:isBinaryString?}}{{!
     }}{{#type:javaType}}{{!
       }}{{#type:binary?}}{{!
-        }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter{{field:prevNestedDepth}});{{!
+        }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar{{field:prevNestedDepth}});{{!
       }}{{/type:binary?}}{{!
       }}{{^type:binary?}}{{!
         }}{{#type:typedef_type}}{{> WriteType}}{{/type:typedef_type}}{{!
@@ -34,10 +34,10 @@
   }}{{/type:isBinaryString?}}{{!
 }}{{/type:typedef?}}{{!
 }}{{^type:typedef?}}{{!
-}}{{#type:set?}}oprot.writeSetBegin(new TSet(TType.{{#type:set_elem_type}}{{#partial types.ttype type=type:self}}{{/type:set_elem_type}}, _iter{{field:prevNestedDepth}}.size()));
-        for ({{#type:set_elem_type}}{{> AdaptedType}}{{/type:set_elem_type}} _iter{{field:nestedDepth}} : _iter{{field:prevNestedDepth}}) {
+}}{{#type:set?}}oprot.writeSetBegin(new TSet(TType.{{#type:set_elem_type}}{{#partial types.ttype type=type:self}}{{/type:set_elem_type}}, _fbthriftVar{{field:prevNestedDepth}}.size()));
+        for ({{#type:set_elem_type}}{{> AdaptedType}}{{/type:set_elem_type}} _fbthriftVar{{field:nestedDepth}} : _fbthriftVar{{field:prevNestedDepth}}) {
           {{#type:set_elem_type}}{{!
-          }}{{#type:hasAdapter?}}{{field:nestedDepth++}}{{#partial types.adapted_boxed_type type=type:self}} _iter{{field:nestedDepth}} = __{{type:name}}_Adapter.toThrift(_iter{{field:prevNestedDepth}});
+          }}{{#type:hasAdapter?}}{{field:nestedDepth++}}{{#partial types.adapted_boxed_type type=type:self}} _fbthriftVar{{field:nestedDepth}} = __{{type:name}}_Adapter.toThrift(_fbthriftVar{{field:prevNestedDepth}});
           {{/type:hasAdapter?}}{{field:nestedDepth++}}{{> WriteType}}{{field:nestedDepth--}}{{#type:hasAdapter?}}{{field:nestedDepth--}}{{/type:hasAdapter?}}{{!
           }}{{/type:set_elem_type}}
         }
@@ -45,10 +45,10 @@
 }}{{/type:set?}}{{!
 
 }}{{#type:list?}}{{!
-}}oprot.writeListBegin(new TList(TType.{{#type:list_elem_type}}{{#partial types.ttype type=type:self}}{{/type:list_elem_type}}, _iter{{field:prevNestedDepth}}.size()));
-        for ({{#type:list_elem_type}}{{> AdaptedType}}{{/type:list_elem_type}} _iter{{field:nestedDepth}} : _iter{{field:prevNestedDepth}}) {
+}}oprot.writeListBegin(new TList(TType.{{#type:list_elem_type}}{{#partial types.ttype type=type:self}}{{/type:list_elem_type}}, _fbthriftVar{{field:prevNestedDepth}}.size()));
+        for ({{#type:list_elem_type}}{{> AdaptedType}}{{/type:list_elem_type}} _fbthriftVar{{field:nestedDepth}} : _fbthriftVar{{field:prevNestedDepth}}) {
           {{#type:list_elem_type}}{{!
-          }}{{#type:hasAdapter?}}{{field:nestedDepth++}}{{#partial types.adapted_boxed_type type=type:self}} _iter{{field:nestedDepth}} = __{{type:name}}_Adapter.toThrift(_iter{{field:prevNestedDepth}});
+          }}{{#type:hasAdapter?}}{{field:nestedDepth++}}{{#partial types.adapted_boxed_type type=type:self}} _fbthriftVar{{field:nestedDepth}} = __{{type:name}}_Adapter.toThrift(_fbthriftVar{{field:prevNestedDepth}});
           {{/type:hasAdapter?}}{{field:nestedDepth++}}{{> WriteType}}{{field:nestedDepth--}}{{#type:hasAdapter?}}{{field:nestedDepth--}}{{/type:hasAdapter?}}{{!
           }}{{/type:list_elem_type}}
         }
@@ -56,13 +56,13 @@
 }}{{/type:list?}}{{!
 
 }}{{#type:map?}}{{!
-}}oprot.writeMapBegin(new TMap(TType.{{#type:key_type}}{{#partial types.ttype type=type:self}}{{/type:key_type}}, TType.{{#type:value_type}}{{#partial types.ttype type=type:self}}{{/type:value_type}}, _iter{{field:prevNestedDepth}}.size()));
-        for (Map.Entry<{{#type:key_type}}{{> BoxedType}}{{/type:key_type}}, {{#type:value_type}}{{> BoxedType}}{{/type:value_type}}> _iter{{field:nestedDepth}} : _iter{{field:prevNestedDepth}}.entrySet()) {
+}}oprot.writeMapBegin(new TMap(TType.{{#type:key_type}}{{#partial types.ttype type=type:self}}{{/type:key_type}}, TType.{{#type:value_type}}{{#partial types.ttype type=type:self}}{{/type:value_type}}, _fbthriftVar{{field:prevNestedDepth}}.size()));
+        for (Map.Entry<{{#type:key_type}}{{> BoxedType}}{{/type:key_type}}, {{#type:value_type}}{{> BoxedType}}{{/type:value_type}}> _fbthriftVar{{field:nestedDepth}} : _fbthriftVar{{field:prevNestedDepth}}.entrySet()) {
           {
             {{#type:key_type}}{{!
             }}{{field:nestedDepth++}}{{!
-            }}{{> BoxedType}} _iter{{field:nestedDepth}} = _iter{{field:prevNestedDepth}}.getKey();
-            {{#type:hasAdapter?}}{{field:nestedDepth++}}{{#partial types.adapted_boxed_type type=type:self}} _iter{{field:nestedDepth}} = __{{type:name}}_Adapter.toThrift(_iter{{field:prevNestedDepth}});
+            }}{{> BoxedType}} _fbthriftVar{{field:nestedDepth}} = _fbthriftVar{{field:prevNestedDepth}}.getKey();
+            {{#type:hasAdapter?}}{{field:nestedDepth++}}{{#partial types.adapted_boxed_type type=type:self}} _fbthriftVar{{field:nestedDepth}} = __{{type:name}}_Adapter.toThrift(_fbthriftVar{{field:prevNestedDepth}});
             {{/type:hasAdapter?}}{{field:nestedDepth++}}{{> WriteType}}{{field:nestedDepth--}}{{#type:hasAdapter?}}{{field:nestedDepth--}}{{/type:hasAdapter?}}{{!
             }}{{field:nestedDepth--}}{{!
             }}{{/type:key_type}}
@@ -70,8 +70,8 @@
           {
             {{#type:value_type}}{{!
             }}{{field:nestedDepth++}}{{!
-            }}{{> BoxedType}} _iter{{field:nestedDepth}} = _iter{{field:prevNestedDepth}}.getValue();
-            {{#type:hasAdapter?}}{{field:nestedDepth++}}{{#partial types.adapted_boxed_type type=type:self}} _iter{{field:nestedDepth}} = __{{type:name}}_Adapter.toThrift(_iter{{field:prevNestedDepth}});
+            }}{{> BoxedType}} _fbthriftVar{{field:nestedDepth}} = _fbthriftVar{{field:prevNestedDepth}}.getValue();
+            {{#type:hasAdapter?}}{{field:nestedDepth++}}{{#partial types.adapted_boxed_type type=type:self}} _fbthriftVar{{field:nestedDepth}} = __{{type:name}}_Adapter.toThrift(_fbthriftVar{{field:prevNestedDepth}});
             {{/type:hasAdapter?}}{{field:nestedDepth++}}{{> WriteType}}{{field:nestedDepth--}}{{#type:hasAdapter?}}{{field:nestedDepth--}}{{/type:hasAdapter?}}{{!
             }}{{field:nestedDepth--}}{{!
             }}{{/type:value_type}}
@@ -81,52 +81,52 @@
 }}{{/type:map?}}{{!
 
 }}{{#type:structured?}}{{!
-}}_iter{{field:prevNestedDepth}}.write0(oprot);{{!
+}}_fbthriftVar{{field:prevNestedDepth}}.write0(oprot);{{!
 }}{{/type:structured?}}{{!
 
 }}{{#type:enum?}}{{!
-}}oprot.writeI32(_iter{{field:prevNestedDepth}} == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter{{field:prevNestedDepth}}));{{!
+}}oprot.writeI32(_fbthriftVar{{field:prevNestedDepth}} == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar{{field:prevNestedDepth}}));{{!
 }}{{/type:enum?}}{{!
 
 }}{{#type:binary?}}{{!
-  }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter{{field:prevNestedDepth}});{{!
+  }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar{{field:prevNestedDepth}});{{!
 }}{{/type:binary?}}{{!
 
 }}{{#type:string?}}{{!
   }}{{#type:isBinaryString?}}{{!
-    }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _iter{{field:prevNestedDepth}});{{!
+    }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar{{field:prevNestedDepth}});{{!
   }}{{/type:isBinaryString?}}{{!
   }}{{^type:isBinaryString?}}{{!
-    }}oprot.writeString(_iter{{field:prevNestedDepth}});{{!
+    }}oprot.writeString(_fbthriftVar{{field:prevNestedDepth}});{{!
 }}{{/type:isBinaryString?}}{{!
 }}{{/type:string?}}{{!
 
 }}{{#type:bool?}}{{!
-}}oprot.writeBool(_iter{{field:prevNestedDepth}});{{!
+}}oprot.writeBool(_fbthriftVar{{field:prevNestedDepth}});{{!
 }}{{/type:bool?}}{{!
 
 }}{{#type:byte?}}{{!
-}}oprot.writeByte(_iter{{field:prevNestedDepth}});{{!
+}}oprot.writeByte(_fbthriftVar{{field:prevNestedDepth}});{{!
 }}{{/type:byte?}}{{!
 
 }}{{#type:i16?}}{{!
-}}oprot.writeI16(_iter{{field:prevNestedDepth}});{{!
+}}oprot.writeI16(_fbthriftVar{{field:prevNestedDepth}});{{!
 }}{{/type:i16?}}{{!
 
 }}{{#type:i32?}}{{!
-}}oprot.writeI32(_iter{{field:prevNestedDepth}});{{!
+}}oprot.writeI32(_fbthriftVar{{field:prevNestedDepth}});{{!
 }}{{/type:i32?}}{{!
 
 }}{{#type:i64?}}{{!
-}}oprot.writeI64(_iter{{field:prevNestedDepth}});{{!
+}}oprot.writeI64(_fbthriftVar{{field:prevNestedDepth}});{{!
 }}{{/type:i64?}}{{!
 
 }}{{#type:float?}}{{!
-}}oprot.writeFloat(_iter{{field:prevNestedDepth}});{{!
+}}oprot.writeFloat(_fbthriftVar{{field:prevNestedDepth}});{{!
 }}{{/type:float?}}{{!
 
 }}{{#type:double?}}{{!
-}}oprot.writeDouble(_iter{{field:prevNestedDepth}});{{!
+}}oprot.writeDouble(_fbthriftVar{{field:prevNestedDepth}});{{!
 }}{{/type:double?}}{{!
 
 }}{{/type:typedef?}}

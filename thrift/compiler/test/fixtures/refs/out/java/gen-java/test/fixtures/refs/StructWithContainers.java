@@ -453,42 +453,42 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      List<Integer> _iter0 = this.listRef;
-      if (_iter0 != null) {
+      List<Integer> _fbthriftVar0 = this.listRef;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LIST_REF_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.I32, _iter0.size()));
-            for (int _iter1 : _iter0) {
-              oprot.writeI32(_iter1);
+        oprot.writeListBegin(new TList(TType.I32, _fbthriftVar0.size()));
+            for (int _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeI32(_fbthriftVar1);
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
       }
       {
-      Set<Integer> _iter0 = this.setRef;
-      if (_iter0 != null) {
+      Set<Integer> _fbthriftVar0 = this.setRef;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SET_REF_FIELD_DESC);
-        oprot.writeSetBegin(new TSet(TType.I32, _iter0.size()));
-            for (int _iter1 : _iter0) {
-              oprot.writeI32(_iter1);
+        oprot.writeSetBegin(new TSet(TType.I32, _fbthriftVar0.size()));
+            for (int _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeI32(_fbthriftVar1);
             }
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
       }
       {
-      Map<Integer, Integer> _iter0 = this.mapRef;
-      if (_iter0 != null) {
+      Map<Integer, Integer> _fbthriftVar0 = this.mapRef;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MAP_REF_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _iter0.size()));
-            for (Map.Entry<Integer, Integer> _iter1 : _iter0.entrySet()) {
+        oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _fbthriftVar0.size()));
+            for (Map.Entry<Integer, Integer> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
               {
-                Integer _iter2 = _iter1.getKey();
-                oprot.writeI32(_iter2);
+                Integer _fbthriftVar2 = _fbthriftVar1.getKey();
+                oprot.writeI32(_fbthriftVar2);
               }
               {
-                Integer _iter2 = _iter1.getValue();
-                oprot.writeI32(_iter2);
+                Integer _fbthriftVar2 = _fbthriftVar1.getValue();
+                oprot.writeI32(_fbthriftVar2);
               }
             }
             oprot.writeMapEnd();
@@ -496,36 +496,36 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
       }
       }
       {
-      List<Integer> _iter0 = this.listRefUnique;
-      if (_iter0 != null) {
+      List<Integer> _fbthriftVar0 = this.listRefUnique;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LIST_REF_UNIQUE_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.I32, _iter0.size()));
-            for (int _iter1 : _iter0) {
-              oprot.writeI32(_iter1);
+        oprot.writeListBegin(new TList(TType.I32, _fbthriftVar0.size()));
+            for (int _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeI32(_fbthriftVar1);
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
       }
       {
-      Set<Integer> _iter0 = this.setRefShared;
-      if (_iter0 != null) {
+      Set<Integer> _fbthriftVar0 = this.setRefShared;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SET_REF_SHARED_FIELD_DESC);
-        oprot.writeSetBegin(new TSet(TType.I32, _iter0.size()));
-            for (int _iter1 : _iter0) {
-              oprot.writeI32(_iter1);
+        oprot.writeSetBegin(new TSet(TType.I32, _fbthriftVar0.size()));
+            for (int _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeI32(_fbthriftVar1);
             }
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
       }
       {
-      List<Integer> _iter0 = this.listRefSharedConst;
-      if (_iter0 != null) {
+      List<Integer> _fbthriftVar0 = this.listRefSharedConst;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LIST_REF_SHARED_CONST_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.I32, _iter0.size()));
-            for (int _iter1 : _iter0) {
-              oprot.writeI32(_iter1);
+        oprot.writeListBegin(new TList(TType.I32, _fbthriftVar0.size()));
+            for (int _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeI32(_fbthriftVar1);
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();

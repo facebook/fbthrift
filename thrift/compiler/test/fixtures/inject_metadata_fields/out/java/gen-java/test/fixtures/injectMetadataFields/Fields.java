@@ -152,10 +152,10 @@ public final class Fields implements com.facebook.thrift.payload.ThriftSerializa
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      String _iter0 = this.injectedField;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.injectedField;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(INJECTED_FIELD_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }

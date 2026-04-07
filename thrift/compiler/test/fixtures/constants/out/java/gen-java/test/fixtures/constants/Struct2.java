@@ -281,34 +281,34 @@ public final class Struct2 implements com.facebook.thrift.payload.ThriftSerializ
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      int _iter0 = this.a;
+      int _fbthriftVar0 = this.a;
       oprot.writeFieldBegin(A_FIELD_DESC);
-      oprot.writeI32(_iter0);
+      oprot.writeI32(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      String _iter0 = this.b;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.b;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(B_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      test.fixtures.constants.Struct1 _iter0 = this.c;
-      if (_iter0 != null) {
+      test.fixtures.constants.Struct1 _fbthriftVar0 = this.c;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(C_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      List<Integer> _iter0 = this.d;
-      if (_iter0 != null) {
+      List<Integer> _fbthriftVar0 = this.d;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(D_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.I32, _iter0.size()));
-            for (int _iter1 : _iter0) {
-              oprot.writeI32(_iter1);
+        oprot.writeListBegin(new TList(TType.I32, _fbthriftVar0.size()));
+            for (int _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeI32(_fbthriftVar1);
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();

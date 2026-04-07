@@ -228,26 +228,26 @@ public final class StructWithSharedConst implements com.facebook.thrift.payload.
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      test.fixtures.refs.MyField _iter0 = this.optSharedConst;
-      if (_iter0 != null) {
+      test.fixtures.refs.MyField _fbthriftVar0 = this.optSharedConst;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPT_SHARED_CONST_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      test.fixtures.refs.MyField _iter0 = this.sharedConst;
-      if (_iter0 != null) {
+      test.fixtures.refs.MyField _fbthriftVar0 = this.sharedConst;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SHARED_CONST_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      test.fixtures.refs.MyField _iter0 = this.reqSharedConst;
-      if (_iter0 != null) {
+      test.fixtures.refs.MyField _fbthriftVar0 = this.reqSharedConst;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(REQ_SHARED_CONST_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }

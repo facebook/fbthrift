@@ -269,27 +269,27 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      test.fixtures.enums.MyEnum2 _iter0 = this.me23;
+      test.fixtures.enums.MyEnum2 _fbthriftVar0 = this.me23;
       oprot.writeFieldBegin(ME23_FIELD_DESC);
-      oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
+      oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
       oprot.writeFieldEnd();
       }
       {
-      test.fixtures.enums.MyEnum3 _iter0 = this.me3N3;
+      test.fixtures.enums.MyEnum3 _fbthriftVar0 = this.me3N3;
       oprot.writeFieldBegin(ME3_N3_FIELD_DESC);
-      oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
+      oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
       oprot.writeFieldEnd();
       }
       {
-      test.fixtures.enums.MyEnum1 _iter0 = this.me1T1;
+      test.fixtures.enums.MyEnum1 _fbthriftVar0 = this.me1T1;
       oprot.writeFieldBegin(ME1_T1_FIELD_DESC);
-      oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
+      oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
       oprot.writeFieldEnd();
       }
       {
-      test.fixtures.enums.MyEnum1 _iter0 = this.me1T2;
+      test.fixtures.enums.MyEnum1 _fbthriftVar0 = this.me1T2;
       oprot.writeFieldBegin(ME1_T2_FIELD_DESC);
-      oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
+      oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

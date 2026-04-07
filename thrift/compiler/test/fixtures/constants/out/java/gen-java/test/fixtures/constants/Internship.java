@@ -304,40 +304,40 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      int _iter0 = this.weeks;
+      int _fbthriftVar0 = this.weeks;
       oprot.writeFieldBegin(WEEKS_FIELD_DESC);
-      oprot.writeI32(_iter0);
+      oprot.writeI32(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      String _iter0 = this.title;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.title;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(TITLE_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      test.fixtures.constants.Company _iter0 = this.employer;
-      if (_iter0 != null) {
+      test.fixtures.constants.Company _fbthriftVar0 = this.employer;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(EMPLOYER_FIELD_DESC);
-        oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
+        oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
         oprot.writeFieldEnd();
       }
       }
       {
-      Double _iter0 = this.compensation;
-      if (_iter0 != null) {
+      Double _fbthriftVar0 = this.compensation;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(COMPENSATION_FIELD_DESC);
-        oprot.writeDouble(_iter0);
+        oprot.writeDouble(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.school;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.school;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SCHOOL_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }

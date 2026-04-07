@@ -560,76 +560,76 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      long _iter0 = this.id;
+      long _fbthriftVar0 = this.id;
       oprot.writeFieldBegin(ID_FIELD_DESC);
-      oprot.writeI64(_iter0);
+      oprot.writeI64(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      String _iter0 = this.name;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.name;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(NAME_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      Short _iter0 = this.age;
-      if (_iter0 != null) {
+      Short _fbthriftVar0 = this.age;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(AGE_FIELD_DESC);
-        oprot.writeI16(_iter0);
+        oprot.writeI16(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.address;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.address;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ADDRESS_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      test.fixtures.optionals.Color _iter0 = this.favoriteColor;
-      if (_iter0 != null) {
+      test.fixtures.optionals.Color _fbthriftVar0 = this.favoriteColor;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(FAVORITE_COLOR_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      Set<Long> _iter0 = this.friends;
-      if (_iter0 != null) {
+      Set<Long> _fbthriftVar0 = this.friends;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(FRIENDS_FIELD_DESC);
-        oprot.writeSetBegin(new TSet(TType.I64, _iter0.size()));
-            for (long _iter1 : _iter0) {
-              oprot.writeI64(_iter1);
+        oprot.writeSetBegin(new TSet(TType.I64, _fbthriftVar0.size()));
+            for (long _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeI64(_fbthriftVar1);
             }
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
       }
       {
-      Long _iter0 = this.bestFriend;
-      if (_iter0 != null) {
+      Long _fbthriftVar0 = this.bestFriend;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(BEST_FRIEND_FIELD_DESC);
-        oprot.writeI64(_iter0);
+        oprot.writeI64(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      Map<test.fixtures.optionals.Animal, String> _iter0 = this.petNames;
-      if (_iter0 != null) {
+      Map<test.fixtures.optionals.Animal, String> _fbthriftVar0 = this.petNames;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(PET_NAMES_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, _iter0.size()));
-            for (Map.Entry<test.fixtures.optionals.Animal, String> _iter1 : _iter0.entrySet()) {
+        oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, _fbthriftVar0.size()));
+            for (Map.Entry<test.fixtures.optionals.Animal, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
               {
-                test.fixtures.optionals.Animal _iter2 = _iter1.getKey();
-                oprot.writeI32(_iter2 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter2));
+                test.fixtures.optionals.Animal _fbthriftVar2 = _fbthriftVar1.getKey();
+                oprot.writeI32(_fbthriftVar2 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar2));
               }
               {
-                String _iter2 = _iter1.getValue();
-                oprot.writeString(_iter2);
+                String _fbthriftVar2 = _fbthriftVar1.getValue();
+                oprot.writeString(_fbthriftVar2);
               }
             }
             oprot.writeMapEnd();
@@ -637,20 +637,20 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
       }
       }
       {
-      test.fixtures.optionals.Animal _iter0 = this.afraidOfAnimal;
-      if (_iter0 != null) {
+      test.fixtures.optionals.Animal _fbthriftVar0 = this.afraidOfAnimal;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(AFRAID_OF_ANIMAL_FIELD_DESC);
-        oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
+        oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
         oprot.writeFieldEnd();
       }
       }
       {
-      List<test.fixtures.optionals.Vehicle> _iter0 = this.vehicles;
-      if (_iter0 != null) {
+      List<test.fixtures.optionals.Vehicle> _fbthriftVar0 = this.vehicles;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(VEHICLES_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.STRUCT, _iter0.size()));
-            for (test.fixtures.optionals.Vehicle _iter1 : _iter0) {
-              _iter1.write0(oprot);
+        oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar0.size()));
+            for (test.fixtures.optionals.Vehicle _fbthriftVar1 : _fbthriftVar0) {
+              _fbthriftVar1.write0(oprot);
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();

@@ -75,9 +75,9 @@ public class TestServiceReactiveClient
         {
           oprot.writeFieldBegin(_init_INT1_FIELD_DESC);
 
-          long _iter0 = int1;
+          long _fbthriftVar0 = int1;
 
-          oprot.writeI64(_iter0);
+          oprot.writeI64(_fbthriftVar0);
           oprot.writeFieldEnd();
         }
 

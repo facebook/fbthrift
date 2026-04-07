@@ -184,9 +184,9 @@ public class MyServiceReactiveClient
         {
           oprot.writeFieldBegin(_hasDataById_ID_FIELD_DESC);
 
-          long _iter0 = id;
+          long _fbthriftVar0 = id;
 
-          oprot.writeI64(_iter0);
+          oprot.writeI64(_fbthriftVar0);
           oprot.writeFieldEnd();
         }
 
@@ -241,9 +241,9 @@ public class MyServiceReactiveClient
         {
           oprot.writeFieldBegin(_getDataById_ID_FIELD_DESC);
 
-          long _iter0 = id;
+          long _fbthriftVar0 = id;
 
-          oprot.writeI64(_iter0);
+          oprot.writeI64(_fbthriftVar0);
           oprot.writeFieldEnd();
         }
 
@@ -298,18 +298,18 @@ public class MyServiceReactiveClient
         {
           oprot.writeFieldBegin(_putDataById_ID_FIELD_DESC);
 
-          long _iter0 = id;
+          long _fbthriftVar0 = id;
 
-          oprot.writeI64(_iter0);
+          oprot.writeI64(_fbthriftVar0);
           oprot.writeFieldEnd();
         }
 
         {
           oprot.writeFieldBegin(_putDataById_DATA_FIELD_DESC);
 
-          String _iter0 = data;
+          String _fbthriftVar0 = data;
 
-          oprot.writeString(_iter0);
+          oprot.writeString(_fbthriftVar0);
           oprot.writeFieldEnd();
         }
 
@@ -364,18 +364,18 @@ public class MyServiceReactiveClient
         {
           oprot.writeFieldBegin(_lobDataById_ID_FIELD_DESC);
 
-          long _iter0 = id;
+          long _fbthriftVar0 = id;
 
-          oprot.writeI64(_iter0);
+          oprot.writeI64(_fbthriftVar0);
           oprot.writeFieldEnd();
         }
 
         {
           oprot.writeFieldBegin(_lobDataById_DATA_FIELD_DESC);
 
-          String _iter0 = data;
+          String _fbthriftVar0 = data;
 
-          oprot.writeString(_iter0);
+          oprot.writeString(_fbthriftVar0);
           oprot.writeFieldEnd();
         }
 

@@ -266,29 +266,29 @@ public final class MyStructFloatFieldThrowExp implements com.facebook.thrift.pay
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      long _iter0 = this.myLongField;
+      long _fbthriftVar0 = this.myLongField;
       oprot.writeFieldBegin(MY_LONG_FIELD_FIELD_DESC);
-      oprot.writeI64(_iter0);
+      oprot.writeI64(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      byte _iter0 = this.myByteField;
+      byte _fbthriftVar0 = this.myByteField;
       oprot.writeFieldBegin(MY_BYTE_FIELD_FIELD_DESC);
-      oprot.writeByte(_iter0);
+      oprot.writeByte(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      String _iter0 = this.myStringField;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.myStringField;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_STRING_FIELD_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      float _iter0 = this.myFloatField;
+      float _fbthriftVar0 = this.myFloatField;
       oprot.writeFieldBegin(MY_FLOAT_FIELD_FIELD_DESC);
-      oprot.writeFloat(_iter0);
+      oprot.writeFloat(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

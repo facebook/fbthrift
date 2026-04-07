@@ -474,68 +474,68 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      long _iter0 = this.myIntField;
+      long _fbthriftVar0 = this.myIntField;
       oprot.writeFieldBegin(MY_INT_FIELD_FIELD_DESC);
-      oprot.writeI64(_iter0);
+      oprot.writeI64(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      String _iter0 = this.myStringField;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.myStringField;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_STRING_FIELD_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      test.fixtures.basic.MyDataItem _iter0 = this.myDataField;
-      if (_iter0 != null) {
+      test.fixtures.basic.MyDataItem _fbthriftVar0 = this.myDataField;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_DATA_FIELD_FIELD_DESC);
-        _iter0.write0(oprot);
+        _fbthriftVar0.write0(oprot);
         oprot.writeFieldEnd();
       }
       }
       {
-      test.fixtures.basic.MyEnum _iter0 = this.myEnum;
+      test.fixtures.basic.MyEnum _fbthriftVar0 = this.myEnum;
       oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
-      oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
+      oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
       oprot.writeFieldEnd();
       }
       {
-      boolean _iter0 = this.oneway;
+      boolean _fbthriftVar0 = this.oneway;
       oprot.writeFieldBegin(ONEWAY_FIELD_DESC);
-      oprot.writeBool(_iter0);
+      oprot.writeBool(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      boolean _iter0 = this.readonly;
+      boolean _fbthriftVar0 = this.readonly;
       oprot.writeFieldBegin(READONLY_FIELD_DESC);
-      oprot.writeBool(_iter0);
+      oprot.writeBool(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      boolean _iter0 = this.idempotent;
+      boolean _fbthriftVar0 = this.idempotent;
       oprot.writeFieldBegin(IDEMPOTENT_FIELD_DESC);
-      oprot.writeBool(_iter0);
+      oprot.writeBool(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      Set<Float> _iter0 = this.floatSet;
-      if (_iter0 != null) {
+      Set<Float> _fbthriftVar0 = this.floatSet;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(FLOAT_SET_FIELD_DESC);
-        oprot.writeSetBegin(new TSet(TType.FLOAT, _iter0.size()));
-            for (float _iter1 : _iter0) {
-              oprot.writeFloat(_iter1);
+        oprot.writeSetBegin(new TSet(TType.FLOAT, _fbthriftVar0.size()));
+            for (float _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeFloat(_fbthriftVar1);
             }
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.noHackCodegenField;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.noHackCodegenField;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(NO_HACK_CODEGEN_FIELD_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }

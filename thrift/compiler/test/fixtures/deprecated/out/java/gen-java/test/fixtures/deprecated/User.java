@@ -309,40 +309,40 @@ public final class User implements com.facebook.thrift.payload.ThriftSerializabl
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      long _iter0 = this.id;
+      long _fbthriftVar0 = this.id;
       oprot.writeFieldBegin(ID_FIELD_DESC);
-      oprot.writeI64(_iter0);
+      oprot.writeI64(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      String _iter0 = this.name;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.name;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(NAME_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.fullName;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.fullName;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(FULL_NAME_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.email;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.email;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(EMAIL_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      String _iter0 = this.emailAddress;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.emailAddress;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(EMAIL_ADDRESS_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }

@@ -1097,86 +1097,86 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      boolean _iter0 = this.adaptedBool;
+      boolean _fbthriftVar0 = this.adaptedBool;
       oprot.writeFieldBegin(ADAPTED_BOOL_FIELD_DESC);
-      oprot.writeBool(_iter0);
+      oprot.writeBool(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      byte _iter0 = this.adaptedByte;
+      byte _fbthriftVar0 = this.adaptedByte;
       oprot.writeFieldBegin(ADAPTED_BYTE_FIELD_DESC);
-      oprot.writeByte(_iter0);
+      oprot.writeByte(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      short _iter0 = this.adaptedShort;
+      short _fbthriftVar0 = this.adaptedShort;
       oprot.writeFieldBegin(ADAPTED_SHORT_FIELD_DESC);
-      oprot.writeI16(_iter0);
+      oprot.writeI16(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      int _iter0 = this.adaptedInteger;
+      int _fbthriftVar0 = this.adaptedInteger;
       oprot.writeFieldBegin(ADAPTED_INTEGER_FIELD_DESC);
-      oprot.writeI32(_iter0);
+      oprot.writeI32(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      long _iter0 = this.adaptedLong;
+      long _fbthriftVar0 = this.adaptedLong;
       oprot.writeFieldBegin(ADAPTED_LONG_FIELD_DESC);
-      oprot.writeI64(_iter0);
+      oprot.writeI64(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      double _iter0 = this.adaptedDouble;
+      double _fbthriftVar0 = this.adaptedDouble;
       oprot.writeFieldBegin(ADAPTED_DOUBLE_FIELD_DESC);
-      oprot.writeDouble(_iter0);
+      oprot.writeDouble(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      String _iter0 = this.adaptedString;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.adaptedString;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ADAPTED_STRING_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      List<Long> _iter0 = this.adaptedList;
-      if (_iter0 != null) {
+      List<Long> _fbthriftVar0 = this.adaptedList;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ADAPTED_LIST_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.I64, _iter0.size()));
-            for (long _iter1 : _iter0) {
-              oprot.writeI64(_iter1);
+        oprot.writeListBegin(new TList(TType.I64, _fbthriftVar0.size()));
+            for (long _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeI64(_fbthriftVar1);
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
       }
       {
-      Set<Long> _iter0 = this.adaptedSet;
-      if (_iter0 != null) {
+      Set<Long> _fbthriftVar0 = this.adaptedSet;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ADAPTED_SET_FIELD_DESC);
-        oprot.writeSetBegin(new TSet(TType.I64, _iter0.size()));
-            for (long _iter1 : _iter0) {
-              oprot.writeI64(_iter1);
+        oprot.writeSetBegin(new TSet(TType.I64, _fbthriftVar0.size()));
+            for (long _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeI64(_fbthriftVar1);
             }
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
       }
       {
-      Map<Long, Long> _iter0 = this.adaptedMap;
-      if (_iter0 != null) {
+      Map<Long, Long> _fbthriftVar0 = this.adaptedMap;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ADAPTED_MAP_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.I64, TType.I64, _iter0.size()));
-            for (Map.Entry<Long, Long> _iter1 : _iter0.entrySet()) {
+        oprot.writeMapBegin(new TMap(TType.I64, TType.I64, _fbthriftVar0.size()));
+            for (Map.Entry<Long, Long> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
               {
-                Long _iter2 = _iter1.getKey();
-                oprot.writeI64(_iter2);
+                Long _fbthriftVar2 = _fbthriftVar1.getKey();
+                oprot.writeI64(_fbthriftVar2);
               }
               {
-                Long _iter2 = _iter1.getValue();
-                oprot.writeI64(_iter2);
+                Long _fbthriftVar2 = _fbthriftVar1.getValue();
+                oprot.writeI64(_fbthriftVar2);
               }
             }
             oprot.writeMapEnd();
@@ -1184,92 +1184,92 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
       }
       }
       {
-      boolean _iter0 = this.adaptedBoolDefault;
+      boolean _fbthriftVar0 = this.adaptedBoolDefault;
       oprot.writeFieldBegin(ADAPTED_BOOL_DEFAULT_FIELD_DESC);
-      oprot.writeBool(_iter0);
+      oprot.writeBool(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      byte _iter0 = this.adaptedByteDefault;
+      byte _fbthriftVar0 = this.adaptedByteDefault;
       oprot.writeFieldBegin(ADAPTED_BYTE_DEFAULT_FIELD_DESC);
-      oprot.writeByte(_iter0);
+      oprot.writeByte(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      short _iter0 = this.adaptedShortDefault;
+      short _fbthriftVar0 = this.adaptedShortDefault;
       oprot.writeFieldBegin(ADAPTED_SHORT_DEFAULT_FIELD_DESC);
-      oprot.writeI16(_iter0);
+      oprot.writeI16(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      int _iter0 = this.adaptedIntegerDefault;
+      int _fbthriftVar0 = this.adaptedIntegerDefault;
       oprot.writeFieldBegin(ADAPTED_INTEGER_DEFAULT_FIELD_DESC);
-      oprot.writeI32(_iter0);
+      oprot.writeI32(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      long _iter0 = this.adaptedLongDefault;
+      long _fbthriftVar0 = this.adaptedLongDefault;
       oprot.writeFieldBegin(ADAPTED_LONG_DEFAULT_FIELD_DESC);
-      oprot.writeI64(_iter0);
+      oprot.writeI64(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      double _iter0 = this.adaptedDoubleDefault;
+      double _fbthriftVar0 = this.adaptedDoubleDefault;
       oprot.writeFieldBegin(ADAPTED_DOUBLE_DEFAULT_FIELD_DESC);
-      oprot.writeDouble(_iter0);
+      oprot.writeDouble(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       {
-      String _iter0 = this.adaptedStringDefault;
-      if (_iter0 != null) {
+      String _fbthriftVar0 = this.adaptedStringDefault;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ADAPTED_STRING_DEFAULT_FIELD_DESC);
-        oprot.writeString(_iter0);
+        oprot.writeString(_fbthriftVar0);
         oprot.writeFieldEnd();
       }
       }
       {
-      test.fixtures.adapter.ThriftAdaptedEnum _iter0 = this.adaptedEnum;
+      test.fixtures.adapter.ThriftAdaptedEnum _fbthriftVar0 = this.adaptedEnum;
       oprot.writeFieldBegin(ADAPTED_ENUM_FIELD_DESC);
-      oprot.writeI32(_iter0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_iter0));
+      oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
       oprot.writeFieldEnd();
       }
       {
-      List<Long> _iter0 = this.adaptedListDefault;
-      if (_iter0 != null) {
+      List<Long> _fbthriftVar0 = this.adaptedListDefault;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ADAPTED_LIST_DEFAULT_FIELD_DESC);
-        oprot.writeListBegin(new TList(TType.I64, _iter0.size()));
-            for (long _iter1 : _iter0) {
-              oprot.writeI64(_iter1);
+        oprot.writeListBegin(new TList(TType.I64, _fbthriftVar0.size()));
+            for (long _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeI64(_fbthriftVar1);
             }
             oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
       }
       {
-      Set<Long> _iter0 = this.adaptedSetDefault;
-      if (_iter0 != null) {
+      Set<Long> _fbthriftVar0 = this.adaptedSetDefault;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ADAPTED_SET_DEFAULT_FIELD_DESC);
-        oprot.writeSetBegin(new TSet(TType.I64, _iter0.size()));
-            for (long _iter1 : _iter0) {
-              oprot.writeI64(_iter1);
+        oprot.writeSetBegin(new TSet(TType.I64, _fbthriftVar0.size()));
+            for (long _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeI64(_fbthriftVar1);
             }
             oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
       }
       {
-      Map<Long, Long> _iter0 = this.adaptedMapDefault;
-      if (_iter0 != null) {
+      Map<Long, Long> _fbthriftVar0 = this.adaptedMapDefault;
+      if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ADAPTED_MAP_DEFAULT_FIELD_DESC);
-        oprot.writeMapBegin(new TMap(TType.I64, TType.I64, _iter0.size()));
-            for (Map.Entry<Long, Long> _iter1 : _iter0.entrySet()) {
+        oprot.writeMapBegin(new TMap(TType.I64, TType.I64, _fbthriftVar0.size()));
+            for (Map.Entry<Long, Long> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
               {
-                Long _iter2 = _iter1.getKey();
-                oprot.writeI64(_iter2);
+                Long _fbthriftVar2 = _fbthriftVar1.getKey();
+                oprot.writeI64(_fbthriftVar2);
               }
               {
-                Long _iter2 = _iter1.getValue();
-                oprot.writeI64(_iter2);
+                Long _fbthriftVar2 = _fbthriftVar1.getValue();
+                oprot.writeI64(_fbthriftVar2);
               }
             }
             oprot.writeMapEnd();
@@ -1277,9 +1277,9 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
       }
       }
       {
-      boolean _iter0 = this.doubleTypedefBool;
+      boolean _fbthriftVar0 = this.doubleTypedefBool;
       oprot.writeFieldBegin(DOUBLE_TYPEDEF_BOOL_FIELD_DESC);
-      oprot.writeBool(_iter0);
+      oprot.writeBool(_fbthriftVar0);
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

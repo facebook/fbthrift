@@ -132,7 +132,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
         {{^function:voidType}}
         {{#function:return_type}}
         {{#function:stream_elem_type}}
-        {{> Type}} _iter0 = ({{> Type}})_o;
+        {{> Type}} _fbthriftVar0 = ({{> Type}})_o;
         oprot.writeFieldBegin({{#partial codec.rpc_field_type type=type:self}});
         {{#partial codec.write_response_type type=type:self depth=0}}
         {{/function:stream_elem_type}}
@@ -160,7 +160,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
         {{^function:voidType}}
         {{#function:return_type}}
         {{#function:stream_first_response_type}}
-        {{> Type}} _iter0 = ({{> Type}})_o;
+        {{> Type}} _fbthriftVar0 = ({{> Type}})_o;
         oprot.writeFieldBegin({{#partial codec.rpc_field_type type=type:self}});
         {{#partial codec.write_response_type type=type:self depth=0}}
         {{/function:stream_first_response_type}}
@@ -204,7 +204,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
 
         {{^function:voidType}}
         {{#function:return_type}}
-        {{> Type}} _iter0 = ({{> Type}})_r;
+        {{> Type}} _fbthriftVar0 = ({{> Type}})_r;
         oprot.writeFieldBegin({{#partial codec.rpc_field_type type=type:self}});
         {{#partial codec.write_response_type type=type:self depth=0}}
         oprot.writeFieldEnd();
@@ -235,8 +235,8 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
 
         oprot.writeFieldBegin(
             new TField("responseField", TType.STRUCT, _fieldId));
-        com.facebook.thrift.payload.ThriftSerializable _iter0 = (com.facebook.thrift.payload.ThriftSerializable)_t;
-        _iter0.write0(oprot);
+        com.facebook.thrift.payload.ThriftSerializable _fbthriftVar0 = (com.facebook.thrift.payload.ThriftSerializable)_t;
+        _fbthriftVar0.write0(oprot);
 
         oprot.writeFieldEnd();
         oprot.writeFieldStop();
