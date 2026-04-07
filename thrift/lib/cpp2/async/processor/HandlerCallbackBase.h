@@ -378,6 +378,15 @@ class HandlerCallbackBase {
 
   void sendReply(SerializedResponse response);
   void sendReply(ResponseAndServerStreamFactory&& responseAndStream);
+
+ private:
+  // Dispatches compression + reply to the CPU executor when sendReply is
+  // called on the IO thread. Moves all needed state into the lambda so
+  // HandlerCallbackBase can be destroyed after this returns.
+  void dispatchReplyToCpuThread(
+      SerializedResponse response, size_t payloadSize);
+
+ protected:
 #if !FOLLY_HAS_COROUTINES
   [[noreturn]]
 #endif

@@ -137,7 +137,7 @@ folly::Optional<uint32_t> HandlerCallbackBase::checksumIfNeeded(
 ResponsePayload HandlerCallbackBase::transform(ResponsePayload&& payload) {
   // Do any compression or other transforms in this thread, the same thread
   // that serialization happens on.
-  payload.transform(reqCtx_->getHeader()->getWriteTransforms());
+  payload.transform(reqCtx_->getHeader()->getWriteTTransforms());
   return std::move(payload);
 }
 
@@ -151,14 +151,37 @@ void HandlerCallbackBase::doExceptionWrapped(folly::exception_wrapper ew) {
 
 void HandlerCallbackBase::sendReply(SerializedResponse response) {
   this->ctx_.reset();
-  folly::Optional<uint32_t> crc32c = checksumIfNeeded(response);
+
+  bool preCompressed = false;
+  if (req_->isCpuCompressionEnabled()) {
+    // When on the IO thread and compression is configured, dispatch to the
+    // CPU executor to avoid blocking the event loop with compression work.
+    // Otherwise, attempt compression inline — this is the common case when
+    // sendReply is already called from a CPU thread (no thread switch needed).
+    auto payloadSize =
+        response.buffer ? response.buffer->computeChainDataLength() : 0;
+    if (req_->shouldDispatchCompressionToCpu(payloadSize) && getEventBase() &&
+        getEventBase()->inRunningEventBaseThread() && executor_) {
+      dispatchReplyToCpuThread(std::move(response), payloadSize);
+      return;
+    }
+    preCompressed = req_->compressResponse(response, reqCtx_, payloadSize);
+  }
+
+  folly::Optional<uint32_t> crc32c;
+  if (!preCompressed) {
+    crc32c = checksumIfNeeded(response);
+  }
+
   auto payload = std::move(response).extractPayload(
-      req_->includeEnvelope(),
+      preCompressed ? false : req_->includeEnvelope(),
       reqCtx_->getHeader()->getProtocolId(),
       protoSeqId_,
       MessageType::T_REPLY,
       reqCtx_->getMethodName());
-  payload = transform(std::move(payload));
+  if (!preCompressed) {
+    payload = transform(std::move(payload));
+  }
   if (getEventBase() && getEventBase()->inRunningEventBaseThread()) {
     QueueReplyInfo(std::move(req_), std::move(payload), crc32c)();
   } else {
@@ -168,6 +191,55 @@ void HandlerCallbackBase::sendReply(SerializedResponse response) {
         std::move(payload),
         crc32c);
   }
+}
+
+void HandlerCallbackBase::dispatchReplyToCpuThread(
+    SerializedResponse response, size_t payloadSize) {
+  // Capture all state needed on the CPU thread. After this method returns,
+  // HandlerCallbackBase may be destroyed (req_ is moved out, so the
+  // destructor's cleanup path will skip the active-request error).
+  auto req = std::move(req_);
+  auto reqCtx = reqCtx_;
+  auto protoSeqId = protoSeqId_;
+  auto writeTransforms = reqCtx->getHeader()->getWriteTTransforms();
+  auto* replyQueue = &getReplyQueue();
+
+  executor_->add([req = std::move(req),
+                  reqCtx,
+                  protoSeqId,
+                  writeTransforms = std::move(writeTransforms),
+                  replyQueue,
+                  payloadSize,
+                  response = std::move(response)]() mutable {
+    // On CPU thread: attempt compression.
+    bool preCompressed = req->compressResponse(response, reqCtx, payloadSize);
+
+    folly::Optional<uint32_t> crc32c;
+    if (!preCompressed && req->isReplyChecksumNeeded() && response.buffer &&
+        !response.buffer->empty()) {
+      static folly::once_flag once;
+      folly::call_once(once, [] {
+        LOG(WARNING) << "WARNING: Response checksum not implemented";
+      });
+    }
+
+    auto payload = std::move(response).extractPayload(
+        preCompressed ? false : req->includeEnvelope(),
+        reqCtx->getHeader()->getProtocolId(),
+        protoSeqId,
+        MessageType::T_REPLY,
+        reqCtx->getMethodName());
+    if (!preCompressed) {
+      payload.transform(writeTransforms);
+    }
+
+    // Queue reply to IO thread via the worker's reply queue.
+    replyQueue->putMessage(
+        std::in_place_type_t<QueueReplyInfo>(),
+        std::move(req),
+        std::move(payload),
+        crc32c);
+  });
 }
 
 void HandlerCallbackBase::sendReply(
