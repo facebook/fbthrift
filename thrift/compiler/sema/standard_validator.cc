@@ -2140,6 +2140,7 @@ void deprecate_annotations(sema_context& ctx, const t_named& node) {
       "message",
       "priority",
       "process_in_event_base",
+      "thrift.uri",
   };
   std::map<std::string, std::string> removed_prefixes = {{"rust.", "rust"}};
 

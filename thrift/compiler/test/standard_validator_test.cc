@@ -43,6 +43,17 @@ TEST(StandardValidatorTest, RemovedPriority) {
   )");
 }
 
+TEST(StandardValidatorTest, RemovedThriftUri) {
+  check_compile(R"(
+    package "facebook.com/thrift/test"
+    include "thrift/annotation/thrift.thrift"
+
+    @thrift.DeprecatedUnvalidatedAnnotations{items = {"thrift.uri": "facebook.com/thrift/test/S"}}
+    struct S {}
+    # expected-error@5: The annotation thrift.uri has been removed. Please use @thrift.Uri instead.
+  )");
+}
+
 TEST(StandardValidatorTest, RepeatedNameInExtendedService) {
   check_compile(R"(
     package "facebook.com/thrift/test"

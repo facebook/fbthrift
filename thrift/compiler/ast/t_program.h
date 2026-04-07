@@ -117,8 +117,7 @@ class t_program : public t_named {
    * 2. else, if it does not already have an explicit URI, attempts to determine
    *    the URI using the first of the following:
    *    a. `@thrift.Uri` (structured annotation)
-   *    b. `thrift.uri` (deprecated, unstructured annotation)
-   *    c. Implicitly, using the `package` name (if any).
+   *    b. Implicitly, using the `package` name (if any).
    *
    * Finally, the given definition is indexed in the appropriate collection
    * depending on its actual type:
