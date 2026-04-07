@@ -560,7 +560,7 @@ struct StructEncode {
   template <typename Protocol>
   uint32_t operator()(Protocol& prot, const T& t) const {
     uint32_t s = 0;
-    s += prot.writeStructBegin(op::get_class_name_v<T>.data());
+    s += prot.writeStructBegin(op::get_class_name<T>().data());
     WriteField<Protocol> writeField{prot, t, s};
     if (getFieldOrder(prot) == FieldOrder::Serialization &&
         !apache::thrift::detail::st::private_access::
@@ -595,7 +595,7 @@ struct StructEncode {
         return;
       }
       s += prot.writeFieldBegin(
-          &*op::get_name_v<T, Id>.begin(),
+          op::get_field_name<T, Id>().data(),
           typeTagToTType<TypeTag>,
           folly::to_underlying(Id::value));
       s += Encode<TypeTag>{}(prot, *field);
