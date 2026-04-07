@@ -178,6 +178,9 @@ class ServerCallbackStapler : public BiDiServerCallback,
   bool onStreamNext(StreamPayload&& payload) override {
     DeletionGuard guard(this);
     std::ignore = clientCb_->onStreamNext(std::move(payload));
+    if (contextStack_) {
+      contextStack_->onBiDiStreamNextSent();
+    }
     return stream_;
   }
 
