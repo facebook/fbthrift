@@ -92,17 +92,17 @@ TEST(UtilTest, is_eligible_for_constexpr) {
     s.create_field(set, "field2", 2);
     EXPECT_FALSE(is_eligible_for_constexpr(&s));
   }
-  for (auto a : {"cpp.ref", "cpp2.ref"}) {
+  {
     auto s = t_struct(&program, "struct_name");
     t_field& field = s.create_field(i32, "field1", 1);
-    field.set_unstructured_annotation(a, "true");
-    EXPECT_FALSE(is_eligible_for_constexpr(&s)) << a;
+    field.add_structured_annotation(gen::cpp_ref_builder(program).unique());
+    EXPECT_FALSE(is_eligible_for_constexpr(&s));
   }
-  for (auto a : {"cpp.ref_type", "cpp2.ref_type"}) {
+  {
     auto s = t_struct(&program, "struct_name");
     t_field& field = s.create_field(i32, "field1", 1);
-    field.set_unstructured_annotation(a, "unique");
-    EXPECT_FALSE(is_eligible_for_constexpr(&s)) << a;
+    field.add_structured_annotation(gen::cpp_ref_builder(program).shared());
+    EXPECT_FALSE(is_eligible_for_constexpr(&s));
   }
 
   auto u = t_union(&program, "union_name");
@@ -203,19 +203,16 @@ TEST(UtilTest, field_transitively_refers_to_unique) {
   const auto types =
       std::to_array<const t_type*>({&i, &li, &si, &mii, &p, &lp, &sp, &mip});
   for (const auto* type : types) {
-    // type r (cpp.ref = "true");
     auto r = t_field(*type, "r", 1);
-    r.set_unstructured_annotation("cpp.ref", "true");
+    r.add_structured_annotation(gen::cpp_ref_builder(program).unique());
     EXPECT_TRUE(cpp2::field_transitively_refers_to_unique(&r));
 
-    // type u (cpp.ref_type = "unique");
     auto u = t_field(*type, "u", 1);
-    u.set_unstructured_annotation("cpp.ref_type", "unique");
+    u.add_structured_annotation(gen::cpp_ref_builder(program).unique());
     EXPECT_TRUE(cpp2::field_transitively_refers_to_unique(&u));
 
-    // type s (cpp.ref_type = "shared");
     auto s = t_field(*type, "s", 1);
-    s.set_unstructured_annotation("cpp.ref_type", "shared");
+    s.add_structured_annotation(gen::cpp_ref_builder(program).shared());
     EXPECT_FALSE(cpp2::field_transitively_refers_to_unique(&s));
   }
 }

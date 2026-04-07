@@ -502,7 +502,8 @@ TEST_F(CppNameResolverTest, storage_type) {
 
   // Unrecognized throws an exception.
   t_field unrecognized_strct_field(strct, "hash", 1);
-  unrecognized_strct_field.set_unstructured_annotation("cpp.ref_type", "blah");
+  unrecognized_strct_field.add_structured_annotation(
+      ref_builder(program_, "cpp").make(99));
   EXPECT_THROW(get_storage_type(unrecognized_strct_field), std::runtime_error);
 }
 
@@ -619,7 +620,8 @@ TEST_F(CppNameResolverTest, adapted_field_storage_type) {
   // Unrecognized throws an exception.
   auto unrecognized_field = t_field(i64, "n", 42);
   unrecognized_field.add_structured_annotation(adapter.make("MyAdapter"));
-  unrecognized_field.set_unstructured_annotation("cpp.ref_type", "blah");
+  unrecognized_field.add_structured_annotation(
+      ref_builder(program_, "cpp").make(99));
   EXPECT_THROW(get_storage_type(unrecognized_field), std::runtime_error);
 }
 

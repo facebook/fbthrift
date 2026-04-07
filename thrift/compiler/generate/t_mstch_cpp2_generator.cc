@@ -2601,8 +2601,8 @@ THRIFT_REGISTER_GENERATOR(
       references (i.e., field() or field_ref() methods). Other conditions that
       would prevent getters/setters from being generated (even if this option is
       not enabled) include if the corresponding field: is a reference field
-      (@cpp.Ref, cpp[2].ref_[type]), is adapted (@cpp.Adapter), is lazy
-      (@cpp.Lazy), has a @cpp.FieldIntercaptor or is terse.
+      (@cpp.Ref), is adapted (@cpp.Adapter), is lazy (@cpp.Lazy), has a
+      @cpp.FieldIntercaptor or is terse.
     no_metadata
       Generate empty metadata, do not generate _metadata.cpp.
     py3cpp

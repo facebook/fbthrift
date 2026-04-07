@@ -154,8 +154,7 @@ class cpp_name_resolver {
 
   // Returns the C++ type that should be used to store the field's value.
   //
-  // This differs from the type name, when a 'cpp.ref' or 'cpp.ref_type'
-  // annotation is applied to the field.
+  // This differs from the type name when @cpp.Ref is applied to the field.
   const std::string& get_storage_type(
       const t_field& field, const t_structured& parent);
 
