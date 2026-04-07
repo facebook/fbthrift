@@ -416,6 +416,17 @@ class ThriftRequestCore : public ResponseChannelRequest {
     return cpuProcessedResponseInfo_;
   }
 
+  // Apply pre-compressed metadata to response metadata. Call this instead of
+  // processFirstResponse() when isResponsePreCompressed() is true.
+  void applyPreCompressedMetadata(ResponseRpcMetadata& metadata) const {
+    const auto& cpuInfo = cpuProcessedResponseInfo_;
+    metadata.payloadMetadata() = cpuInfo.payloadMetadata;
+    metadata.compression() = cpuInfo.compressionAlgorithm;
+    if (cpuInfo.checksum) {
+      metadata.checksum() = *cpuInfo.checksum;
+    }
+  }
+
   virtual void closeConnection(folly::exception_wrapper) noexcept {
     LOG(FATAL) << "closeConnection not implemented";
   }

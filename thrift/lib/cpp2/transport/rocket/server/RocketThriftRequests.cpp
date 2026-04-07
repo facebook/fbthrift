@@ -40,6 +40,7 @@
 #include <thrift/lib/cpp2/transport/rocket/framing/Flags.h>
 #include <thrift/lib/cpp2/transport/rocket/payload/PayloadSerializer.h>
 #include <thrift/lib/cpp2/transport/rocket/server/IRocketServerConnection.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketServerUtil.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketSinkClientCallback.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketStreamClientCallback.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
@@ -490,12 +491,7 @@ void ThriftServerRequestResponse::sendThriftResponse(
   std::optional<ResponseRpcError> responseRpcError;
 
   if (preCompressed) {
-    const auto& cpuInfo = getCpuProcessedResponseInfo();
-    metadata.payloadMetadata() = cpuInfo.payloadMetadata;
-    metadata.compression() = cpuInfo.compressionAlgorithm;
-    if (cpuInfo.checksum) {
-      metadata.checksum() = *cpuInfo.checksum;
-    }
+    applyPreCompressedMetadata(metadata);
     // Log write headers (normally done inside processFirstResponse).
     THRIFT_APPLICATION_EVENT(server_write_headers).log([&] {
       auto size =
@@ -530,30 +526,11 @@ void ThriftServerRequestResponse::sendThriftResponse(
   rocket::Payload payload;
   try {
     if (preCompressed) {
-      // Handle file descriptors, matching packWithFds behavior.
-      auto fds = std::move(getRequestContext()->getHeader()->fds);
-      if (!fds.empty()) {
-        metadata.fdMetadata() =
-            makeFdMetadata(fds, context_.connection().getRawSocket());
-      }
-
-      // Serialize metadata and combine with already-compressed data directly,
-      // bypassing packWithFds to avoid re-compression.
-      std::unique_ptr<folly::IOBuf> serializedMetadata;
-      if (context_.connection().isDecodingMetadataUsingBinaryProtocol()) {
-        BinaryProtocolWriter writer;
-        folly::IOBufQueue queue;
-        writer.setOutput(&queue);
-        metadata.write(&writer);
-        serializedMetadata = queue.move();
-      } else {
-        serializedMetadata = payloadSerializerPtr->packCompact(metadata);
-      }
-      payload = rocket::Payload::makeFromMetadataAndData(
-          std::move(serializedMetadata), std::move(data));
-      if (fds.size()) {
-        payload.fds = std::move(fds.dcheckToSendOrEmpty());
-      }
+      payload = rocket::makePreCompressedPayload(
+          context_.connection(),
+          metadata,
+          std::move(data),
+          std::move(getRequestContext()->getHeader()->fds));
     } else {
       // Prevents potential complexity (e.g. using custom compression to
       // encode custom compression failures, or to that matter, any failure at
@@ -738,6 +715,28 @@ bool ThriftServerRequestStream::sendStreamThriftResponse(
     sendSerializedError(std::move(metadata), std::move(data));
     return false;
   }
+
+  if (isResponsePreCompressed()) {
+    // Pre-compressed path: skip processFirstResponse() since compression
+    // was already done on the CPU thread. The envelope was never added
+    // (extractPayload was called with includeEnvelope=false).
+    applyPreCompressedMetadata(metadata);
+
+    auto& fds = getRequestContext()->getHeader()->fds;
+    if (!fds.empty()) {
+      metadata.fdMetadata() =
+          makeFdMetadata(fds, context_.connection().getRawSocket());
+    }
+
+    context_.unsetMarkRequestComplete();
+    stream->resetClientCallback(*clientCallback_);
+    clientCallback_->setProtoId(getProtoId());
+    auto payload = FirstResponsePayload{std::move(data), std::move(metadata)};
+    payload.fds = std::move(fds.dcheckToSendOrEmpty());
+    return clientCallback_->onFirstResponse(
+        std::move(payload), nullptr /* evb */, stream.release());
+  }
+
   if (auto responseRpcError = processFirstResponse(
           metadata, data, getProtoId(), version_, getCompressionConfig())) {
     auto ex = makeRocketException(
@@ -763,6 +762,36 @@ void ThriftServerRequestStream::sendStreamThriftResponse(
     sendSerializedError(std::move(metadata), std::move(data));
     return;
   }
+
+  if (isResponsePreCompressed()) {
+    // Pre-compressed path: skip processFirstResponse() since compression
+    // was already done on the CPU thread. The envelope was never added
+    // (extractPayload was called with includeEnvelope=false).
+    applyPreCompressedMetadata(metadata);
+
+    auto& fds = getRequestContext()->getHeader()->fds;
+    if (!fds.empty()) {
+      metadata.fdMetadata() =
+          makeFdMetadata(fds, context_.connection().getRawSocket());
+    }
+
+    context_.unsetMarkRequestComplete();
+    clientCallback_->setProtoId(getProtoId());
+    clientCallback_->setContextStack(stream.getContextStack());
+
+    if (auto* connLog = getRequestContext()
+                            ->getConnectionContext()
+                            ->getThriftConnectionLog()) {
+      stream.setStreamLog(connLog->createStreamLog(stream.getMethodName()));
+    }
+
+    auto payload = apache::thrift::FirstResponsePayload{
+        std::move(data), std::move(metadata)};
+    payload.fds = std::move(fds.dcheckToSendOrEmpty());
+    stream(std::move(payload), clientCallback_, &evb_);
+    return;
+  }
+
   if (auto responseRpcError = processFirstResponse(
           metadata, data, getProtoId(), version_, getCompressionConfig())) {
     auto ex = makeRocketException(

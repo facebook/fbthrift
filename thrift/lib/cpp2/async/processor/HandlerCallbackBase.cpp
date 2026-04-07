@@ -244,17 +244,55 @@ void HandlerCallbackBase::dispatchReplyToCpuThread(
 
 void HandlerCallbackBase::sendReply(
     ResponseAndServerStreamFactory&& responseAndStream) {
-  folly::Optional<uint32_t> crc32c =
-      checksumIfNeeded(responseAndStream.response);
+  bool preCompressed = false;
+  if (req_->isCpuCompressionEnabled()) {
+    // When on the IO thread and compression is configured, dispatch to the
+    // CPU executor to avoid blocking the event loop with compression work.
+    auto payloadSize = responseAndStream.response.buffer
+        ? responseAndStream.response.buffer->computeChainDataLength()
+        : 0;
+    if (req_->shouldDispatchCompressionToCpu(payloadSize) && getEventBase() &&
+        getEventBase()->inRunningEventBaseThread() && executor_) {
+      dispatchStreamReplyToCpuThread(std::move(responseAndStream), payloadSize);
+      return;
+    }
+    preCompressed = req_->compressResponse(
+        responseAndStream.response, reqCtx_, payloadSize);
+  }
+
+  folly::Optional<uint32_t> crc32c;
+  if (!preCompressed) {
+    crc32c = checksumIfNeeded(responseAndStream.response);
+  }
+
   auto payload = std::move(responseAndStream.response)
                      .extractPayload(
-                         req_->includeEnvelope(),
+                         !preCompressed && req_->includeEnvelope(),
                          reqCtx_->getHeader()->getProtocolId(),
                          protoSeqId_,
                          MessageType::T_REPLY,
                          reqCtx_->getMethodName());
-  payload = transform(std::move(payload));
+  if (!preCompressed) {
+    payload = transform(std::move(payload));
+  }
   auto& stream = responseAndStream.stream;
+  setupStreamFactory(stream);
+
+  if (getEventBase()->isInEventBaseThread()) {
+    StreamReplyInfo(
+        std::move(req_), std::move(stream), std::move(payload), crc32c)();
+  } else {
+    putMessageInReplyQueue(
+        std::in_place_type_t<StreamReplyInfo>(),
+        std::move(req_),
+        std::move(stream),
+        std::move(payload),
+        crc32c);
+  }
+}
+
+void HandlerCallbackBase::setupStreamFactory(
+    detail::ServerStreamFactory& stream) {
   stream.setInteraction(std::move(interaction_));
   stream.setContextStack(std::move(this->ctx_));
   stream.setMethodName(methodNameInfo_.qualifiedMethodName);
@@ -284,18 +322,62 @@ void HandlerCallbackBase::sendReply(
       }
     }
   }
+}
 
-  if (getEventBase()->isInEventBaseThread()) {
-    StreamReplyInfo(
-        std::move(req_), std::move(stream), std::move(payload), crc32c)();
-  } else {
-    putMessageInReplyQueue(
+void HandlerCallbackBase::dispatchStreamReplyToCpuThread(
+    ResponseAndServerStreamFactory&& responseAndStream, size_t payloadSize) {
+  // Capture all state needed on the CPU thread. After this method returns,
+  // HandlerCallbackBase may be destroyed (req_ is moved out).
+  auto req = std::move(req_);
+  auto reqCtx = reqCtx_;
+  auto protoSeqId = protoSeqId_;
+  auto writeTransforms = reqCtx->getHeader()->getWriteTTransforms();
+  auto* replyQueue = &getReplyQueue();
+
+  // Stream setup must happen now while HandlerCallbackBase members are alive.
+  auto& stream = responseAndStream.stream;
+  setupStreamFactory(stream);
+
+  executor_->add([req = std::move(req),
+                  reqCtx,
+                  protoSeqId,
+                  writeTransforms = std::move(writeTransforms),
+                  replyQueue,
+                  payloadSize,
+                  responseAndStream = std::move(responseAndStream)]() mutable {
+    // On CPU thread: attempt compression.
+    bool preCompressed =
+        req->compressResponse(responseAndStream.response, reqCtx, payloadSize);
+
+    folly::Optional<uint32_t> crc32c;
+    if (!preCompressed && req->isReplyChecksumNeeded() &&
+        responseAndStream.response.buffer &&
+        !responseAndStream.response.buffer->empty()) {
+      static folly::once_flag once;
+      folly::call_once(once, [] {
+        LOG(WARNING) << "WARNING: Response checksum not implemented";
+      });
+    }
+
+    auto payload = std::move(responseAndStream.response)
+                       .extractPayload(
+                           !preCompressed && req->includeEnvelope(),
+                           reqCtx->getHeader()->getProtocolId(),
+                           protoSeqId,
+                           MessageType::T_REPLY,
+                           reqCtx->getMethodName());
+    if (!preCompressed) {
+      payload.transform(writeTransforms);
+    }
+
+    // Queue stream reply to IO thread via the worker's reply queue.
+    replyQueue->putMessage(
         std::in_place_type_t<StreamReplyInfo>(),
-        std::move(req_),
-        std::move(stream),
+        std::move(req),
+        std::move(responseAndStream.stream),
         std::move(payload),
         crc32c);
-  }
+  });
 }
 
 void HandlerCallbackBase::sendReply(
