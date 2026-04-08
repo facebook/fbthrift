@@ -24,6 +24,32 @@
 }}{{#if field.recursive?}}, isRecursive=Recursiveness.TRUE{{/if}})
 {{/let partial}}
 
+{{#let export partial from_thrift_start |field|}}
+{{#pragma ignore-newlines}}
+{{#if field.hasFieldAdapter?}}_{{field.javaName}}_Adapter.fromThrift({{/if}}
+{{#if field.type.hasAdapter?}}__{{field.type.name}}_Adapter.fromThrift({{/if}}
+{{/let partial}}
+
+{{#let export partial from_thrift_end |field|}}
+{{#pragma ignore-newlines}}
+{{#if field.hasFieldAdapter?}}){{/if}}
+{{#if field.type.hasAdapter?}}){{/if}}
+{{/let partial}}
+
+{{#let export partial to_thrift_start |field|}}
+{{#pragma ignore-newlines}}
+{{#if field.type.hasAdapter?}}__{{field.type.name}}_Adapter.toThrift({{/if}}
+{{#if field.hasFieldAdapter?}}_{{field.javaName}}_Adapter.toThrift({{/if}}
+{{#if field.hasWrapper?}}_{{field.javaName}}_Wrapper.toThrift({{/if}}
+{{/let partial}}
+
+{{#let export partial to_thrift_end |field|}}
+{{#pragma ignore-newlines}}
+{{#if field.type.hasAdapter?}}){{/if}}
+{{#if field.hasFieldAdapter?}}){{/if}}
+{{#if field.hasWrapper?}}){{/if}}
+{{/let partial}}
+
 {{#let export partial intrinsic_default |field| captures |types|}}
 {{#pragma ignore-newlines}}
 {{#if field.type.byte?}}(byte)0

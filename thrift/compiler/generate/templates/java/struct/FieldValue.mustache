@@ -17,7 +17,7 @@
 }}{{#if (object.eq? field:default_value null)}}{{!
   }}{{#field:terse?}}{{!
     }}{{#field:hasAdapter?}}{{!
-    }}{{> FromThriftStart}}{{#if field:self.type.structured?}}{{#field:type}}{{#partial types.thrift_boxed_type type=type:self field_hasAdapter=field:hasAdapter?}}{{/field:type}}.defaultInstance(){{#else}}{{#partial field.intrinsic_default field=field:self}}{{/if field:self.type.structured?}}{{> FromThriftEnd}}{{!
+    }}{{#partial field.from_thrift_start field=field:self}}{{#if field:self.type.structured?}}{{#field:type}}{{#partial types.thrift_boxed_type type=type:self field_hasAdapter=field:hasAdapter?}}{{/field:type}}.defaultInstance(){{#else}}{{#partial field.intrinsic_default field=field:self}}{{/if field:self.type.structured?}}{{#partial field.from_thrift_end field=field:self}}{{!
     }}{{/field:hasAdapter?}}{{!
     }}{{^field:hasAdapter?}}{{!
       }}{{#if field:self.type.structured?}}{{!
@@ -40,9 +40,9 @@
 }}{{#else}}{{!
 
 }}{{#if field:hasAdapter?}}{{!
-  }}{{> FromThriftStart}}{{#if field:hasInitialValue?}}{{!
+  }}{{#partial field.from_thrift_start field=field:self}}{{#if field:hasInitialValue?}}{{!
     }}{{#partial const_value.const_value value=field:default_value root_const=null as_bean=struct:asBean? field_hasAdapter=field:hasAdapter? }}{{!
-  }}{{#else}}{{#if field:optional?}}null{{#else}}{{#partial types.java_default_value type=field:self.type}}{{/if field:optional?}}{{/if field:hasInitialValue?}}{{> FromThriftEnd}}{{!
+  }}{{#else}}{{#if field:optional?}}null{{#else}}{{#partial types.java_default_value type=field:self.type}}{{/if field:optional?}}{{/if field:hasInitialValue?}}{{#partial field.from_thrift_end field=field:self}}{{!
 }}{{#else}}{{!
   }}{{#if field:hasInitialValue?}}{{!
     }}{{#partial const_value.const_value value=field:default_value root_const=null as_bean=struct:asBean? field_hasAdapter=field:hasAdapter? }}{{!

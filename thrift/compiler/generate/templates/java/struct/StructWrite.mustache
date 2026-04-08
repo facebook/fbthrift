@@ -25,7 +25,7 @@ public void write0(TProtocol oprot) throws TException {
   {{#struct:fields_in_serialization_order}}
   {
   {{#field:hasAdapterOrWrapper?}}
-  {{#field:type}}{{#partial types.adapted_field_boxed_type type=type:self field_hasAdapter=field:hasAdapter?}}{{/field:type}} _fbthriftVar0 = {{> ToThriftStart}}this.{{field:javaName}}{{> ToThriftEnd}};
+  {{#field:type}}{{#partial types.adapted_field_boxed_type type=type:self field_hasAdapter=field:hasAdapter?}}{{/field:type}} _fbthriftVar0 = {{#partial field.to_thrift_start field=field:self}}this.{{field:javaName}}{{#partial field.to_thrift_end field=field:self}};
   {{/field:hasAdapterOrWrapper?}}
   {{^field:hasAdapterOrWrapper?}}
   {{#partial types.thrift_field_type field=field:self}} _fbthriftVar0 = this.{{field:javaName}};

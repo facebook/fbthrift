@@ -43,7 +43,7 @@ public static {{struct:javaCapitalName}} read0(TProtocol oprot) throws TExceptio
           {{/field:type}}
 
           {{#field:hasAdapter?}}
-          res.value = {{> FromThriftStart}}_fbthriftVar{{field:nestedDepth}}{{> FromThriftEnd}};
+          res.value = {{#partial field.from_thrift_start field=field:self}}_fbthriftVar{{field:nestedDepth}}{{#partial field.from_thrift_end field=field:self}};
           {{/field:hasAdapter?}}
           {{^field:hasAdapter?}}
           res.value = _fbthriftVar{{field:nestedDepth}};

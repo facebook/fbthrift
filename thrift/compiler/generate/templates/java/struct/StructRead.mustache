@@ -28,7 +28,7 @@ public static {{struct:javaCapitalName}} read0(TProtocol oprot) throws TExceptio
   {{#field:terse?}}
   {{#field:default_value}}
   {{#field:hasAdapter?}}
-  builder.set{{field:javaCapitalName}}({{> FromThriftStart}}{{#partial field.intrinsic_default field=field:self}}{{> FromThriftEnd}});
+  builder.set{{field:javaCapitalName}}({{#partial field.from_thrift_start field=field:self}}{{#partial field.intrinsic_default field=field:self}}{{#partial field.from_thrift_end field=field:self}});
   {{/field:hasAdapter?}}
   {{^field:hasAdapter?}}
   {{#if (not field:self.type.structured?)}}builder.set{{field:javaCapitalName}}({{#partial field.intrinsic_default field=field:self}});{{/if (not field:self.type.structured?)}}
@@ -55,7 +55,7 @@ public static {{struct:javaCapitalName}} read0(TProtocol oprot) throws TExceptio
         {{/field:type}}
 
         {{#field:hasAdapter?}}
-        builder.{{#field:hasWrapper?}}_{{/field:hasWrapper?}}set{{field:javaCapitalName}}({{> FromThriftStart}}_fbthriftVar{{field:nestedDepth}}{{> FromThriftEnd}});
+        builder.{{#field:hasWrapper?}}_{{/field:hasWrapper?}}set{{field:javaCapitalName}}({{#partial field.from_thrift_start field=field:self}}_fbthriftVar{{field:nestedDepth}}{{#partial field.from_thrift_end field=field:self}});
         {{/field:hasAdapter?}}
         {{^field:hasAdapter?}}
         builder.{{#field:hasWrapper?}}_{{/field:hasWrapper?}}set{{field:javaCapitalName}}(_fbthriftVar{{field:nestedDepth}});
