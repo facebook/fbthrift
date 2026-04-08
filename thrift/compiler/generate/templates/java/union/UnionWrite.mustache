@@ -29,7 +29,7 @@ public void write0(TProtocol oprot) throws TException {
   {{#struct:fields}}
   case _{{field:javaAllCapsName}}: {
     {{#field:hasAdapter?}}
-    {{#field:type}}{{> AdaptedBoxedType}}{{/field:type}} _fbthriftVar{{field:nestedDepth}} = {{> ToThriftStart}}({{#partial types.field_type field=field:self}})this.value{{> ToThriftEnd}};
+    {{#field:type}}{{#partial types.adapted_field_boxed_type type=type:self field_hasAdapter=field:hasAdapter?}}{{/field:type}} _fbthriftVar{{field:nestedDepth}} = {{> ToThriftStart}}({{#partial types.field_type field=field:self}})this.value{{> ToThriftEnd}};
     if (_fbthriftVar{{field:nestedDepth}} != null) {
       oprot.writeFieldBegin({{field:javaTFieldName}});
 

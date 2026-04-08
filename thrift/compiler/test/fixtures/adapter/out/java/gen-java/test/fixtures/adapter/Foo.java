@@ -956,7 +956,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       {
-      Integer _fbthriftVar0 = _intField_Adapter.toThrift(this.intField);
+      Integer   _fbthriftVar0 = _intField_Adapter.toThrift(this.intField);
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(INT_FIELD_FIELD_DESC);
         oprot.writeI32(_fbthriftVar0);
@@ -964,7 +964,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       }
       }
       {
-      Integer _fbthriftVar0 = _optionalIntField_Adapter.toThrift(this.optionalIntField);
+      Integer   _fbthriftVar0 = _optionalIntField_Adapter.toThrift(this.optionalIntField);
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPTIONAL_INT_FIELD_FIELD_DESC);
         oprot.writeI32(_fbthriftVar0);
@@ -972,7 +972,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       }
       }
       {
-      Integer _fbthriftVar0 = _intFieldWithDefault_Adapter.toThrift(this.intFieldWithDefault);
+      Integer   _fbthriftVar0 = _intFieldWithDefault_Adapter.toThrift(this.intFieldWithDefault);
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(INT_FIELD_WITH_DEFAULT_FIELD_DESC);
         oprot.writeI32(_fbthriftVar0);
@@ -980,7 +980,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       }
       }
       {
-      Set<String> _fbthriftVar0 = __SetWithAdapter_Adapter.toThrift(this.setField);
+      Set<String>   _fbthriftVar0 = __SetWithAdapter_Adapter.toThrift(this.setField);
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SET_FIELD_FIELD_DESC);
         oprot.writeSetBegin(new TSet(TType.STRING, _fbthriftVar0.size()));
@@ -992,7 +992,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       }
       }
       {
-      Set<String> _fbthriftVar0 = __SetWithAdapter_Adapter.toThrift(this.optionalSetField);
+      Set<String>   _fbthriftVar0 = __SetWithAdapter_Adapter.toThrift(this.optionalSetField);
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPTIONAL_SET_FIELD_FIELD_DESC);
         oprot.writeSetBegin(new TSet(TType.STRING, _fbthriftVar0.size()));
@@ -1004,7 +1004,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       }
       }
       {
-      Map<String, com.facebook.thrift.my.AdaptedList_2> _fbthriftVar0 = _mapField_Adapter.toThrift(this.mapField);
+      Map<String, com.facebook.thrift.my.AdaptedList_2>   _fbthriftVar0 = _mapField_Adapter.toThrift(this.mapField);
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MAP_FIELD_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _fbthriftVar0.size()));
@@ -1029,7 +1029,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       }
       }
       {
-      Map<String, com.facebook.thrift.my.AdaptedList_2> _fbthriftVar0 = _optionalMapField_Adapter.toThrift(this.optionalMapField);
+      Map<String, com.facebook.thrift.my.AdaptedList_2>   _fbthriftVar0 = _optionalMapField_Adapter.toThrift(this.optionalMapField);
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPTIONAL_MAP_FIELD_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _fbthriftVar0.size()));
@@ -1054,7 +1054,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       }
       }
       {
-      io.netty.buffer.ByteBuf _fbthriftVar0 = _binaryField_Adapter.toThrift(this.binaryField);
+      io.netty.buffer.ByteBuf   _fbthriftVar0 = _binaryField_Adapter.toThrift(this.binaryField);
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(BINARY_FIELD_FIELD_DESC);
         org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar0);
@@ -1062,7 +1062,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       }
       }
       {
-      Long _fbthriftVar0 = __MyI64_Adapter.toThrift(this.longField);
+      Long   _fbthriftVar0 = __MyI64_Adapter.toThrift(this.longField);
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LONG_FIELD_FIELD_DESC);
         oprot.writeI64(_fbthriftVar0);
@@ -1070,7 +1070,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       }
       }
       {
-      Long _fbthriftVar0 = __MyI64_Adapter.toThrift(_adaptedLongField_Adapter.toThrift(this.adaptedLongField));
+      Long   _fbthriftVar0 = __MyI64_Adapter.toThrift(_adaptedLongField_Adapter.toThrift(this.adaptedLongField));
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ADAPTED_LONG_FIELD_FIELD_DESC);
         oprot.writeI64(_fbthriftVar0);
@@ -1078,7 +1078,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       }
       }
       {
-      Long _fbthriftVar0 = __DoubleTypedefI64_Adapter.toThrift(this.doubleAdaptedField);
+      Long     _fbthriftVar0 = __DoubleTypedefI64_Adapter.toThrift(this.doubleAdaptedField);
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(DOUBLE_ADAPTED_FIELD_FIELD_DESC);
         oprot.writeI64(_fbthriftVar0);

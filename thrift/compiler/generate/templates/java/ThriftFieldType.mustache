@@ -18,7 +18,7 @@
 }}{{#field:optional?}}{{!
   }}{{#field:type}}{{!
     }}{{#type:hasAdapter?}}{{!
-      }}{{> AdaptedBoxedType}}{{!
+      }}{{#partial types.adapted_field_boxed_type type=type:self field_hasAdapter=field:hasAdapter?}}{{!
     }}{{/type:hasAdapter?}}{{!
     }}{{^type:hasAdapter?}}{{!
       }}{{#partial types.boxed_type type=type:self field_hasAdapter=field:hasAdapter?}}{{!

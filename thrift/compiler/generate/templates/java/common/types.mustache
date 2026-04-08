@@ -157,6 +157,23 @@ Map<{{#partial adapted_inner_boxed_type type=type.key_type}}, {{#partial adapted
   {{/if type.java_type?}}
 {{/let partial}}
 
+{{! Resolves the boxed type for a field with an adapter, recursing through
+    typedef layers. Unlike adapted_boxed_type (used for TypeAdapter<> type
+    parameters), this resolves to the underlying thrift type for variable
+    declarations in serialization code. }}
+{{#let export partial adapted_field_boxed_type |type field_hasAdapter| captures |boxed_type|}}
+  {{#pragma ignore-newlines}}
+{{#if type.java_type?}}{{type.java_type}}
+{{#else if type.typedef?}}
+  {{#if type.isBinaryString?}}
+    {{#if field_hasAdapter}}io.netty.buffer.ByteBuf{{#else}}byte[]{{/if field_hasAdapter}}
+  {{#else if type.resolved.lastAdapter?}}{{#partial adapted_field_boxed_type type=type.resolved field_hasAdapter=field_hasAdapter}}
+  {{#else}}{{type.resolved.adapterTypeClassName}}
+  {{/if type.isBinaryString?}}
+{{#else}}{{#partial boxed_type type=type field_hasAdapter=field_hasAdapter}}
+{{/if type.java_type?}}
+{{/let partial}}
+
 {{#let export partial adapted_type |type has_adapter_override| captures |java_type|}}
   {{#pragma ignore-newlines}}
 {{#if type.java_type?}}{{type.java_type}}

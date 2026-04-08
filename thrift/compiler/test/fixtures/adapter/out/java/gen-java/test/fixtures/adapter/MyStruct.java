@@ -215,7 +215,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       oprot.writeFieldEnd();
       }
       {
-      Set<String> _fbthriftVar0 = __SetWithAdapter_Adapter.toThrift(this.setString);
+      Set<String>   _fbthriftVar0 = __SetWithAdapter_Adapter.toThrift(this.setString);
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SET_STRING_FIELD_DESC);
         oprot.writeSetBegin(new TSet(TType.STRING, _fbthriftVar0.size()));
