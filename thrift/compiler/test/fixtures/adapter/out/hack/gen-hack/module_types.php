@@ -7301,7 +7301,7 @@ class CircularAdaptee implements \IThriftSyncStruct, \IThriftStructMetadata, \IT
   );
 
   const type TShape = shape(
-    ?'field' => ?\facebook\thrift\test\fixtures\adapter\CircularStruct::TShape,
+    ?'field' => ?mixed,
   );
   const int STRUCTURAL_ID = 1646887748378279811;
   /**
@@ -7364,7 +7364,7 @@ class CircularAdaptee implements \IThriftSyncStruct, \IThriftStructMetadata, \IT
 
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
-      Shapes::idx($shape, 'field') |> $$ === null ? null : (\facebook\thrift\test\fixtures\adapter\CircularStruct::__fromShape($$)),
+      Shapes::idx($shape, 'field') |> $$ === null ? null : (\facebook\thrift\test\fixtures\adapter\CircularStruct::__fromShape(HH\FIXME\UNSAFE_CAST<mixed, \facebook\thrift\test\fixtures\adapter\CircularStruct::TShape>($$, 'recursive thrift shape'))),
     );
   }
 
@@ -7418,7 +7418,7 @@ class CircularStruct implements \IThriftSyncStruct, \IThriftStructMetadata, \ITh
   );
 
   const type TShape = shape(
-    ?'field' => ?\facebook\thrift\test\fixtures\adapter\CircularAdaptee::TShape,
+    ?'field' => ?mixed,
   );
   const int STRUCTURAL_ID = 7102646879863324559;
   /**
@@ -7509,7 +7509,7 @@ class CircularStruct implements \IThriftSyncStruct, \IThriftStructMetadata, \ITh
 
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
-      Shapes::idx($shape, 'field') |> $$ === null ? null : (\facebook\thrift\test\fixtures\adapter\CircularAdaptee::__fromShape($$)),
+      Shapes::idx($shape, 'field') |> $$ === null ? null : (\facebook\thrift\test\fixtures\adapter\CircularAdaptee::__fromShape(HH\FIXME\UNSAFE_CAST<mixed, \facebook\thrift\test\fixtures\adapter\CircularAdaptee::TShape>($$, 'recursive thrift shape'))),
     );
   }
 
