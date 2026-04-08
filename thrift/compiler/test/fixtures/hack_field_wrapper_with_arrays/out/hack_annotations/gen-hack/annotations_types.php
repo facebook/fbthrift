@@ -182,7 +182,7 @@ class structured_annotation_with_default implements \IThriftSyncStruct, \IThrift
   }
 
   public function readFromJson(string $jsonText): void {
-    $parsed = json_decode($jsonText, true);
+    $parsed = PHP\json_decode($jsonText, true);
 
     if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
@@ -553,7 +553,7 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSt
   }
 
   public function readFromJson(string $jsonText): void {
-    $parsed = json_decode($jsonText, true);
+    $parsed = PHP\json_decode($jsonText, true);
 
     if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");
@@ -563,13 +563,13 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSt
       $this->name = HH\FIXME\UNSAFE_CAST<mixed, string>($parsed['name']);
     }
     if (idx($parsed, 'recurse') !== null) {
-      $_tmp0 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, structured_annotation_recursive>($parsed['recurse']));
+      $_tmp0 = \fb_json_encode_force_php_arrays(HH\FIXME\UNSAFE_CAST<mixed, structured_annotation_recursive>($parsed['recurse']));
       $_tmp1 = structured_annotation_recursive::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->recurse = $_tmp1;
     }
     if (idx($parsed, 'default') !== null) {
-      $_tmp2 = \json_encode(HH\FIXME\UNSAFE_CAST<mixed, structured_annotation_with_default>($parsed['default']));
+      $_tmp2 = \fb_json_encode_force_php_arrays(HH\FIXME\UNSAFE_CAST<mixed, structured_annotation_with_default>($parsed['default']));
       $_tmp3 = structured_annotation_with_default::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->default = $_tmp3;
@@ -579,7 +579,7 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSt
       $_container8 = dict[];
       foreach($_json7 as $_key5 => $_value6) {
         $_value9 = structured_annotation_recursive::withDefaultValues();
-        $_tmp10 = \json_encode($_value6);
+        $_tmp10 = \fb_json_encode_force_php_arrays($_value6);
         $_tmp11 = structured_annotation_recursive::withDefaultValues();
         $_tmp11->readFromJson($_tmp10);
         $_value9 = $_tmp11;
@@ -817,7 +817,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftSh
   }
 
   public function readFromJson(string $jsonText): void {
-    $parsed = json_decode($jsonText, true);
+    $parsed = PHP\json_decode($jsonText, true);
 
     if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
       throw new \TProtocolException("Cannot parse the given json string.");

@@ -1315,7 +1315,8 @@ void t_hack_generator::generate_json_struct(
     const std::string& prefix_thrift,
     const std::string& prefix_json) {
   std::string enc = namer("$_tmp");
-  indent(out) << enc << " = " << "\\json_encode(" << prefix_json << ");\n";
+  indent(out) << enc << " = "
+              << "\\fb_json_encode_force_php_arrays(" << prefix_json << ");\n";
   std::string tmp = namer("$_tmp");
   t_field felem(*tstruct, tmp);
   indent(out) << declare_field(&felem, true, true, true).substr(1) << "\n";
@@ -1529,7 +1530,7 @@ void t_hack_generator::generate_json_reader(
                 << union_field_to_enum(tstruct, nullptr, tstruct->name())
                 << ";\n";
   }
-  indent(out) << "$parsed = json_decode($jsonText, true);\n\n";
+  indent(out) << "$parsed = PHP\\json_decode($jsonText, true);\n\n";
 
   indent(out)
       << "if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {\n";
