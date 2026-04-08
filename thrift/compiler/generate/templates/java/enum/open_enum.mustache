@@ -16,9 +16,11 @@
 
 }}
 {{#import "common/common" as common}}
+
+{{#let export partial open_enum |enum| captures |common|}}
 {{#partial common.auto_generated}}
 
-package {{enum:program.javaPackage}};
+package {{enum.program.javaPackage}};
 
 import com.facebook.swift.codec.*;
 import org.apache.thrift.TException;
@@ -29,37 +31,37 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SwiftGenerated
-public class {{enum:javaCapitalName}} extends ThriftEnum<{{enum:javaCapitalName}}> {
-{{#enum:values}}
-  public static final {{enum:javaCapitalName}} {{enum_value:javaConstantName}} = new {{enum:javaCapitalName}}({{enum_value:value}});
-{{/enum:values}}
+public class {{enum.javaCapitalName}} extends ThriftEnum<{{enum.javaCapitalName}}> {
+{{#each enum.values as |enum_value|}}
+  public static final {{enum.javaCapitalName}} {{enum_value.javaConstantName}} = new {{enum.javaCapitalName}}({{enum_value.value}});
+{{/each}}
 
-{{#enum:values}}
-  public static final int {{enum_value:javaConstantName}}_VALUE = {{enum_value:value}};
-{{/enum:values}}
-  public static final int UNRECOGNIZED_VALUE = {{enum:unused}};
+{{#each enum.values as |enum_value|}}
+  public static final int {{enum_value.javaConstantName}}_VALUE = {{enum_value.value}};
+{{/each}}
+  public static final int UNRECOGNIZED_VALUE = {{enum.unused}};
 
   private static final Map<Integer, Value> hm = new HashMap<>();
 
   private static void init() {
-{{#each (array.enumerate enum:values) as |index enum_value|}}
+{{#each (array.enumerate enum.values) as |index enum_value|}}
     hm.put({{enum_value.value}}, new Value({{index}}, "{{enum_value.javaConstantName}}", {{enum_value.javaConstantName}}));
 {{/each}}
-    hm.put(UNRECOGNIZED_VALUE, new Value({{(array.len enum:values)}}, "UNRECOGNIZED", null));
+    hm.put(UNRECOGNIZED_VALUE, new Value({{(array.len enum.values)}}, "UNRECOGNIZED", null));
   }
 
   static {
     init();
-    {{#enum:uri}}
-    com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(new com.facebook.thrift.type.UniversalName("{{enum:uri}}"), {{enum:javaCapitalName}}.class, {{enum:javaCapitalName}}::read0));
-    {{/enum:uri}}
+    {{#if enum.uri}}
+    com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(new com.facebook.thrift.type.UniversalName("{{enum.uri}}"), {{enum.javaCapitalName}}.class, {{enum.javaCapitalName}}::read0));
+    {{/if enum.uri}}
   }
 
-  private {{enum:javaCapitalName}}(int value) {
+  private {{enum.javaCapitalName}}(int value) {
     this.value = value;
   }
 
-  private {{enum:javaCapitalName}}(int value, int unrecognizedValue) {
+  private {{enum.javaCapitalName}}(int value, int unrecognizedValue) {
     this.value = value;
     this.unrecognizedValue = unrecognizedValue;
   }
@@ -82,19 +84,19 @@ public class {{enum:javaCapitalName}} extends ThriftEnum<{{enum:javaCapitalName}
   private static final class Value {
     private int ordinal;
     private String name;
-    private {{enum:javaCapitalName}} instance;
+    private {{enum.javaCapitalName}} instance;
 
-    public Value(int ordinal, String name, {{enum:javaCapitalName}} instance) {
+    public Value(int ordinal, String name, {{enum.javaCapitalName}} instance) {
       this.ordinal = ordinal;
       this.name = name;
       this.instance = instance;
     }
   }
 
-  public static {{enum:javaCapitalName}} fromInteger(int n) {
+  public static {{enum.javaCapitalName}} fromInteger(int n) {
     Value value = hm.get(n);
     if (value == null) {
-      return new {{enum:javaCapitalName}}(UNRECOGNIZED_VALUE, n);
+      return new {{enum.javaCapitalName}}(UNRECOGNIZED_VALUE, n);
     }
 
     return value.instance;
@@ -108,11 +110,12 @@ public class {{enum:javaCapitalName}} extends ThriftEnum<{{enum:javaCapitalName}
     return helper.toString();
   }
 
-  public static com.facebook.thrift.payload.Reader<{{enum:javaCapitalName}}> asReader() {
-    return {{enum:javaCapitalName}}::read0;
+  public static com.facebook.thrift.payload.Reader<{{enum.javaCapitalName}}> asReader() {
+    return {{enum.javaCapitalName}}::read0;
   }
 
-  public static {{enum:javaCapitalName}} read0(TProtocol iprot) throws TException {
-    return {{enum:javaCapitalName}}.fromInteger(iprot.readI32());
+  public static {{enum.javaCapitalName}} read0(TProtocol iprot) throws TException {
+    return {{enum.javaCapitalName}}.fromInteger(iprot.readI32());
   }
 }
+{{/let partial}}
