@@ -22,6 +22,6 @@
     }}{{type:adapterTypeClassName}}{{!
   }}{{/type:hasAdapter?}}{{!
   }}{{^type:hasAdapter?}}{{!
-    }}{{> Type}}{{!
+    }}{{#partial types.java_type type=type:self has_adapter_override=field:self.hasAdapter?}}{{!
   }}{{/type:hasAdapter?}}{{!
 }}{{/type:java_type}}

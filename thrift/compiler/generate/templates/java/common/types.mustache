@@ -36,9 +36,9 @@
   {{#pragma ignore-newlines}}
 {{#if type.java_type?}}{{type.java_type}}
 {{#else if type.hasAdapter?}}{{type.adapterTypeClassName}}
-  {{! Recurse through every layer of typedef, as each layer could have an adapter }}
-  {{#else if (or type.binary? type.isBinaryString?)}}
+{{#else if (or type.binary? type.isBinaryString?)}}
 {{#if field_hasAdapter}}io.netty.buffer.ByteBuf{{#else}}byte[]{{/if}}
+{{! Recurse through every layer of typedef, as each layer could have an adapter }}
 {{#else if type.typedef?}}{{#partial boxed_type type=type.resolved field_hasAdapter=field_hasAdapter}}
 {{#else if type.void?}}Void
 {{#else if type.bool?}}Boolean
@@ -97,16 +97,11 @@ Map<
 {{/if type.java_type?}}
 {{/let partial}}
 
-{{! Defines an unboxed Java type for a given Thrift type.
-    Uses primitive types (boolean, int, long, etc.) for primitives,
-    and falls back to boxed_type for complex types.
-    Recurses through typedefs one layer at a time since each layer
-    could override javaType. }}
-{{#let export partial java_type |type| captures |boxed_type|}}
+{{#let export partial java_type |type has_adapter_override| captures |boxed_type|}}
   {{#pragma ignore-newlines}}
 {{#if type.java_type?}}{{type.java_type}}
-{{#else if type.isBinaryString?}}byte[]
-{{#else if type.typedef?}}{{#partial java_type type=type.resolved}}
+{{#else if type.isBinaryString?}}{{#if has_adapter_override}}io.netty.buffer.ByteBuf{{#else}}byte[]{{/if}}
+{{#else if type.typedef?}}{{#partial java_type type=type.resolved has_adapter_override=has_adapter_override}}
 {{#else if type.void?}}void
 {{#else if type.bool?}}boolean
 {{#else if type.byte?}}byte
@@ -115,7 +110,7 @@ Map<
 {{#else if type.i64?}}long
 {{#else if type.double?}}double
 {{#else if type.float?}}float
-{{#else}}{{#partial boxed_type type=type field_hasAdapter=false}}
+{{#else}}{{#partial boxed_type type=type field_hasAdapter=has_adapter_override}}
 {{/if type.java_type?}}
 {{/let partial}}
 
@@ -228,6 +223,6 @@ Map<{{#partial adapted_inner_boxed_type type=type.key_type}}, {{#partial adapted
 {{#if type.java_type?}}{{type.java_type}}
 {{#else if type.typedef?}}{{#partial thrift_type type=type.resolved}}
 {{#else if (or type.binary? type.isBinaryString?)}}io.netty.buffer.ByteBuf
-{{#else}}{{#partial java_type type=type}}
+{{#else}}{{#partial java_type type=type has_adapter_override=false}}
 {{/if type.java_type?}}
 {{/let partial}}

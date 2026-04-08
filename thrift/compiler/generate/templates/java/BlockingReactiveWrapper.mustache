@@ -40,7 +40,7 @@ public class {{service:javaCapitalName}}BlockingReactiveWrapper {{#if (object.no
 
     {{#service:singleRequestFunctions}}
     @java.lang.Override
-    public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+    public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
         {{#function:voidType}}
         reactor.core.publisher.Mono<Void> _m = reactor.core.publisher.Mono.<Void>create(_sink -> {
             try {
@@ -85,14 +85,14 @@ public class {{service:javaCapitalName}}BlockingReactiveWrapper {{#if (object.no
     {{/service:singleRequestFunctions}}
     {{#service:streamingFunctions}}
     @java.lang.Override
-    public reactor.core.publisher.Flux<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+    public reactor.core.publisher.Flux<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
         throw new UnsupportedOperationException();
     }
 
     {{/service:streamingFunctions}}
     {{#service:sinkFunctions}}
     @java.lang.Override
-    public {{#function:return_type}}{{> SinkReturnType}}{{/function:return_type}} {{function:java_name}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#function:return_type}}{{#function:sink_elem_type}}{{> BoxedType}}{{/function:sink_elem_type}}{{/function:return_type}}> payloads) {
+    public {{#function:return_type}}{{> SinkReturnType}}{{/function:return_type}} {{function:java_name}}({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}, {{/function:args}} org.reactivestreams.Publisher<{{#function:return_type}}{{#function:sink_elem_type}}{{> BoxedType}}{{/function:sink_elem_type}}{{/function:return_type}}> payloads) {
         throw new UnsupportedOperationException();
     }
 
@@ -107,7 +107,7 @@ public class {{service:javaCapitalName}}BlockingReactiveWrapper {{#if (object.no
 
         {{#service:singleRequestFunctions}}
         @java.lang.Override
-        public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+        public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
             {{#function:voidType}}
 
                 reactor.core.publisher.Mono<Void> _m = reactor.core.publisher.Mono.<Void>create(_sink -> {
@@ -152,20 +152,20 @@ public class {{service:javaCapitalName}}BlockingReactiveWrapper {{#if (object.no
 
         @java.lang.Override
         public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}
-        final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
+        final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
         @java.lang.Override
         public reactor.core.publisher.Mono<ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:java_name}}Wrapper({{#function:args}}
-        final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
+        final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
         {{/service:singleRequestFunctions}}
         {{#service:streamingFunctions}}
         @java.lang.Override
-        public reactor.core.publisher.Flux<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+        public reactor.core.publisher.Flux<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> {{function:java_name}}({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
             throw new UnsupportedOperationException();
         }
 

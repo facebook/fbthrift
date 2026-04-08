@@ -30,7 +30,7 @@
                 {{/type:container?}}
                 {{^type:container?}}
                 {{field:nestedDepth++}}
-                {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _fbthriftVar{{field:nestedDepth}};
+                {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{#partial types.java_type type=type:self has_adapter_override=field:self.hasAdapter?}}{{/type:hasAdapter?}} _fbthriftVar{{field:nestedDepth}};
                 {{#if type:hasAdapter?}}{{!
                     }}{{#if type:structured?}}{{!
                         }}_fbthriftVar{{field:nestedDepth}} = {{#partial types.boxed_type type=type:true_type field_hasAdapter=field:hasAdapter?}}.read0(oprot);{{!
@@ -71,7 +71,7 @@
                 {{/type:container?}}
                 {{^type:container?}}
                 {{field:nestedDepth++}}
-                {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _fbthriftVar{{field:nestedDepth}};
+                {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{#partial types.java_type type=type:self has_adapter_override=field:self.hasAdapter?}}{{/type:hasAdapter?}} _fbthriftVar{{field:nestedDepth}};
                 {{#if type:hasAdapter?}}{{!
                     }}{{#if type:structured?}}{{!
                         }}_fbthriftVar{{field:nestedDepth}} = {{#partial types.boxed_type type=type:true_type field_hasAdapter=field:hasAdapter?}}.read0(oprot);{{!
@@ -111,7 +111,7 @@
                 {{/type:container?}}
                 {{^type:container?}}
                 {{field:nestedDepth++}}
-                {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _fbthriftKey{{field:nestedDepth}};
+                {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{#partial types.java_type type=type:self has_adapter_override=field:self.hasAdapter?}}{{/type:hasAdapter?}} _fbthriftKey{{field:nestedDepth}};
                 {{field:nestedDepth--}}
                 {{/type:container?}}
                 {{/type:key_type}}
@@ -123,7 +123,7 @@
                 {{/type:container?}}
                 {{^type:container?}}
                 {{field:nestedDepth++}}
-                {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _fbthriftValue{{field:nestedDepth}};
+                {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{#partial types.java_type type=type:self has_adapter_override=field:self.hasAdapter?}}{{/type:hasAdapter?}} _fbthriftValue{{field:nestedDepth}};
                 {{field:nestedDepth--}}
                 {{/type:container?}}
                 {{/type:value_type}}
@@ -138,7 +138,7 @@
                     {{/type:container?}}
                     {{^type:container?}}
                     {{field:nestedDepth++}}
-                    {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _fbthriftVar{{field:nestedDepth}};
+                    {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{#partial types.java_type type=type:self has_adapter_override=field:self.hasAdapter?}}{{/type:hasAdapter?}} _fbthriftVar{{field:nestedDepth}};
                     {{#if type:hasAdapter?}}{{!
                         }}{{#if type:structured?}}{{!
                             }}_fbthriftVar{{field:nestedDepth}} = {{#partial types.boxed_type type=type:true_type field_hasAdapter=field:hasAdapter?}}.read0(oprot);{{!
@@ -169,7 +169,7 @@
                     {{/type:container?}}
                     {{^type:container?}}
                     {{field:nestedDepth++}}
-                    {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{> Type}}{{/type:hasAdapter?}} _fbthriftVar{{field:nestedDepth}};
+                    {{#type:hasAdapter?}}{{#partial types.thrift_type type=type:self}}{{/type:hasAdapter?}}{{^type:hasAdapter?}}{{#partial types.java_type type=type:self has_adapter_override=field:self.hasAdapter?}}{{/type:hasAdapter?}} _fbthriftVar{{field:nestedDepth}};
                     {{#if type:hasAdapter?}}{{!
                         }}{{#if type:structured?}}{{!
                             }}_fbthriftVar{{field:nestedDepth}} = {{#partial types.boxed_type type=type:true_type field_hasAdapter=field:hasAdapter?}}.read0(oprot);{{!

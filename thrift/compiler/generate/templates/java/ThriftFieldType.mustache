@@ -27,6 +27,6 @@
 }}{{/field:optional?}}{{!
 }}{{^field:optional?}}{{!
   }}{{#field:type}}{{!
-    }}{{> Type}}{{!
+    }}{{#partial types.java_type type=type:self has_adapter_override=field:self.hasAdapter?}}{{!
   }}{{/field:type}}{{!
 }}{{/field:optional?}}
