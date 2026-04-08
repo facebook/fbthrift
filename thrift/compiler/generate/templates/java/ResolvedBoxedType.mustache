@@ -14,9 +14,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{#type:typedefWithoutJavaType?}}{{!
+}}{{#if (and type:typedef? (not type:java_type?))}}{{!
     }}{{#type:typedef_type}}{{> ResolvedBoxedType}}{{/type:typedef_type}}{{!
-}}{{/type:typedefWithoutJavaType?}}{{!
-}}{{^type:typedefWithoutJavaType?}}{{!
+}}{{#else}}{{!
     }}{{> BoxedType}}{{!
-}}{{/type:typedefWithoutJavaType?}}
+}}{{/if (and type:typedef? (not type:java_type?))}}
