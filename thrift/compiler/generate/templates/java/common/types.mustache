@@ -147,6 +147,14 @@ Map<{{#partial adapted_inner_boxed_type type=type.key_type}}, {{#partial adapted
   {{/if type.java_type?}}
 {{/let partial}}
 
+{{#let export partial adapted_type |type has_adapter_override| captures |java_type|}}
+  {{#pragma ignore-newlines}}
+{{#if type.java_type?}}{{type.java_type}}
+{{#else if type.hasAdapter?}}{{type.adapterTypeClassName}}
+{{#else}}{{#partial java_type type=type has_adapter_override=has_adapter_override}}
+{{/if type.java_type?}}
+{{/let partial}}
+
 {{! Defines the mapping of a Thrift type to the Java TType constant name. }}
 {{#let export partial ttype |type|}}
   {{#pragma ignore-newlines}}
