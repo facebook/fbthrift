@@ -24,6 +24,25 @@
 }}{{#if field.recursive?}}, isRecursive=Recursiveness.TRUE{{/if}})
 {{/let partial}}
 
+{{#let export partial intrinsic_default |field| captures |types|}}
+{{#pragma ignore-newlines}}
+{{#if field.type.byte?}}(byte)0
+{{#else if field.type.i16?}}(short)0
+{{#else if field.type.i32?}}0
+{{#else if field.type.i64?}}0L
+{{#else if field.type.bool?}}false
+{{#else if field.type.double?}}0.
+{{#else if field.type.float?}}0.f
+{{#else if (or field.type.binary? field.type.isBinaryString?)}}
+com.facebook.thrift.util.IntrinsicDefaults.{{#if field.hasAdapter?}}defaultByteBuf(){{#else}}defaultByteArray(){{/if field.hasAdapter?}}
+{{#else if field.type.string?}}com.facebook.thrift.util.IntrinsicDefaults.defaultString()
+{{#else if field.type.map?}}com.facebook.thrift.util.IntrinsicDefaults.defaultMap()
+{{#else if field.type.list?}}com.facebook.thrift.util.IntrinsicDefaults.defaultList()
+{{#else if field.type.set?}}com.facebook.thrift.util.IntrinsicDefaults.defaultSet()
+{{#else if field.type.enum?}}{{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}.fromInteger(0)
+{{/if field.type.byte?}}
+{{/let partial}}
+
 {{#let export partial field_nullability |field|}}
   {{#pragma ignore-newlines}}
 {{#if field.optional?}}@Nullable{{!

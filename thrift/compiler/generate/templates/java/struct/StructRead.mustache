@@ -28,10 +28,10 @@ public static {{struct:javaCapitalName}} read0(TProtocol oprot) throws TExceptio
   {{#field:terse?}}
   {{#field:default_value}}
   {{#field:hasAdapter?}}
-  builder.set{{field:javaCapitalName}}({{> FromThriftStart}}{{#field:type}}{{> struct/IntrinsicDefault}}{{/field:type}}{{> FromThriftEnd}});
+  builder.set{{field:javaCapitalName}}({{> FromThriftStart}}{{#partial field.intrinsic_default field=field:self}}{{> FromThriftEnd}});
   {{/field:hasAdapter?}}
   {{^field:hasAdapter?}}
-  {{#if (not field:self.type.structured?)}}builder.set{{field:javaCapitalName}}({{#field:type}}{{> struct/IntrinsicDefault}}{{/field:type}});{{/if (not field:self.type.structured?)}}
+  {{#if (not field:self.type.structured?)}}builder.set{{field:javaCapitalName}}({{#partial field.intrinsic_default field=field:self}});{{/if (not field:self.type.structured?)}}
   {{/field:hasAdapter?}}
   {{/field:default_value}}
   {{/field:terse?}}

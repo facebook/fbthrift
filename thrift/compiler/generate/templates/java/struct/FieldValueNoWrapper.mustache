@@ -17,13 +17,13 @@
 }}{{#if (object.eq? field:default_value null)}}{{!
   }}{{#field:terse?}}{{!
     }}{{#field:hasAdapter?}}{{!
-    }}{{> FromThriftStart}}{{#if field:self.type.structured?}}{{#partial types.boxed_type type=field:self.type field_hasAdapter=field:self.hasAdapter?}}.defaultInstance(){{#else}}{{#field:type}}{{> struct/IntrinsicDefault}}{{/field:type}}{{/if field:self.type.structured?}}{{> FromThriftEnd}}{{!
+    }}{{> FromThriftStart}}{{#if field:self.type.structured?}}{{#partial types.boxed_type type=field:self.type field_hasAdapter=field:self.hasAdapter?}}.defaultInstance(){{#else}}{{#partial field.intrinsic_default field=field:self}}{{/if field:self.type.structured?}}{{> FromThriftEnd}}{{!
     }}{{/field:hasAdapter?}}{{!
     }}{{^field:hasAdapter?}}{{!
       }}{{#if field:self.type.structured?}}{{!
         }}{{#partial types.field_type field=field:self}}.defaultInstance(){{!
       }}{{#else}}{{!
-        }}{{#field:type}}{{> struct/IntrinsicDefault}}{{/field:type}}{{!
+        }}{{#partial field.intrinsic_default field=field:self}}{{!
       }}{{/if field:self.type.structured?}}{{!
     }}{{/field:hasAdapter?}}{{!
   }}{{/field:terse?}}{{!
