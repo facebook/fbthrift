@@ -32,4 +32,16 @@ FOLLY_NOINLINE void translate_field_name(
   }
 }
 
+void translate_field_name(
+    std::string_view fname,
+    int16_t& fid,
+    protocol::TType& ftype,
+    const translate_field_name_hash_table& table) noexcept {
+  auto it = table.map.find(fname);
+  if (it != table.map.end()) {
+    fid = it->second.first;
+    ftype = it->second.second;
+  }
+}
+
 } // namespace apache::thrift::detail::st
