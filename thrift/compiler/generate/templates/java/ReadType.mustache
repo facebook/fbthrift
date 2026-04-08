@@ -62,7 +62,7 @@
 }}{{/type:structured?}}{{!
 
 }}{{#type:enum?}}{{!
-  }}_fbthriftVar{{field:nestedDepth}} = {{> BoxedType}}.fromInteger(oprot.readI32());{{!
+  }}_fbthriftVar{{field:nestedDepth}} = {{#partial types.boxed_type type=type:self field_hasAdapter=field:hasAdapter?}}.fromInteger(oprot.readI32());{{!
 }}{{/type:enum?}}{{!
 
 }}{{#type:binary?}}{{!

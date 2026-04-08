@@ -338,14 +338,6 @@ class t_mstch_java_generator : public t_mstch_generator {
  public:
   using t_mstch_generator::t_mstch_generator;
 
-  whisker_options render_options() const override {
-    whisker_options opts;
-    opts.allowed_undefined_variables = {
-        "field:hasAdapter?", // in BoxedType.mustache
-    };
-    return opts;
-  }
-
   std::string template_prefix() const override { return "java"; }
 
   void generate_program() override;
