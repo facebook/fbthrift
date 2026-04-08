@@ -23,7 +23,7 @@ public {{struct:javaCapitalName}}() {
 
 @ThriftConstructor
 @Deprecated
-public {{struct:javaCapitalName}}(final {{> FieldType}} {{field:javaName}}) {
+public {{struct:javaCapitalName}}(final {{#partial types.field_type field=field:self}} {{field:javaName}}) {
     {{^field:optional?}}{{^field:required?}}{{^field:isNumericOrVoid?}}
     if (!{{struct:javaCapitalName}}.allowNullFieldValues && {{field:javaName}} == null) {
         throw new TProtocolException("Cannot initialize Union field '{{struct:javaCapitalName}}.{{field:javaName}}' with null value!");
@@ -36,7 +36,7 @@ public {{struct:javaCapitalName}}(final {{> FieldType}} {{field:javaName}}) {
 {{/struct:unionFieldTypeUnique?}}
 {{#struct:fields}}
 
-public static {{struct:javaCapitalName}} from{{field:javaCapitalName}}(final {{> FieldType}} {{field:javaName}}) {
+public static {{struct:javaCapitalName}} from{{field:javaCapitalName}}(final {{#partial types.field_type field=field:self}} {{field:javaName}}) {
     {{struct:javaCapitalName}} res = new {{struct:javaCapitalName}}();
     {{^field:optional?}}{{^field:required?}}{{^field:isNumericOrVoid?}}
     if (!{{struct:javaCapitalName}}.allowNullFieldValues && {{field:javaName}} == null) {

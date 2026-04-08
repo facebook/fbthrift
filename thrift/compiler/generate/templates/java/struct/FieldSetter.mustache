@@ -16,7 +16,7 @@
 
 }}
 @com.facebook.swift.codec.ThriftField
-public {{struct:javaCapitalName}} set{{field:javaCapitalName}}({{> FieldType}} {{field:javaName}}) {
+public {{struct:javaCapitalName}} set{{field:javaCapitalName}}({{#partial types.field_type field=field:self}} {{field:javaName}}) {
     this.{{field:javaName}} = {{field:javaName}};
     return this;
 }

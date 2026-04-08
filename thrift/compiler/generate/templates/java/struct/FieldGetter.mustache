@@ -22,5 +22,5 @@
 
 {{#partial field.thrift_field_annotation field=field:self}}
 
-public {{> FieldType}} {{#if field:hasWrapper?}}get{{field:javaCapitalName}}{{#else}}{{#partial types.getter_name field=field:self}}{{/if}}() { return {{field:javaName}}; }
+public {{#partial types.field_type field=field:self}} {{#if field:hasWrapper?}}get{{field:javaCapitalName}}{{#else}}{{#partial types.getter_name field=field:self}}{{/if}}() { return {{field:javaName}}; }
 {{! terminate with newline }}

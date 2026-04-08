@@ -21,7 +21,7 @@
     }}{{/field:hasAdapter?}}{{!
     }}{{^field:hasAdapter?}}{{!
       }}{{#if field:self.type.structured?}}{{!
-        }}{{> FieldType}}.defaultInstance(){{!
+        }}{{#partial types.field_type field=field:self}}.defaultInstance(){{!
       }}{{#else}}{{!
         }}{{#field:type}}{{> struct/IntrinsicDefault}}{{/field:type}}{{!
       }}{{/if field:self.type.structured?}}{{!

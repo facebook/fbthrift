@@ -88,7 +88,7 @@ public final class {{struct:javaCapitalName}} implements com.facebook.thrift.pay
                 {{#struct:fields}}
                 case {{field:id}}:
                     _u.id = _id;
-                    _u.value = ({{> FieldType}}) _field;
+                    _u.value = ({{#partial types.field_type field=field:self}}) _field;
                     return _u;
                 {{/struct:fields}}
                 default:
@@ -113,11 +113,11 @@ public final class {{struct:javaCapitalName}} implements com.facebook.thrift.pay
     @Deprecated{{/field:deprecated?}}
     {{#partial field.thrift_field_annotation field=field:self}}
 
-    public {{> FieldType}} {{#partial types.getter_name field=field:self}}() {
+    public {{#partial types.field_type field=field:self}} {{#partial types.getter_name field=field:self}}() {
         if (this.id != {{field:id}}) {
             throw new IllegalStateException("Not a {{field:name}} element!");
         }
-        return ({{> FieldType}}) value;
+        return ({{#partial types.field_type field=field:self}}) value;
     }
 
     public boolean isSet{{field:javaCapitalName}}() {
@@ -201,7 +201,7 @@ public final class {{struct:javaCapitalName}} implements com.facebook.thrift.pay
         }
 
     {{#struct:fields}}
-        T visit{{field:javaCapitalName}}({{> FieldType}} {{field:javaName}});
+        T visit{{field:javaCapitalName}}({{#partial types.field_type field=field:self}} {{field:javaName}});
     {{/struct:fields}}
     }
 

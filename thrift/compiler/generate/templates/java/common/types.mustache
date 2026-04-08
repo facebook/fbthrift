@@ -165,6 +165,28 @@ Map<{{#partial adapted_inner_boxed_type type=type.key_type}}, {{#partial adapted
 {{/if type.java_type?}}
 {{/let partial}}
 
+{{! Resolves the full Java type for a field, considering wrappers, adapters,
+    and optionality (boxed for optional, unboxed for required). }}
+{{#let export partial field_type |field| captures |boxed_type java_type|}}
+  {{#pragma ignore-newlines}}
+{{#if field.hasWrapper?}}{{field.wrapperType}}
+{{#else if field.hasFieldAdapter?}}{{field.fieldAdapterTypeClassName}}
+{{#else if field.type.hasAdapter?}}{{field.type.adapterTypeClassName}}
+{{#else if field.optional?}}{{#partial boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}
+{{#else}}{{#partial java_type type=field.type has_adapter_override=field.hasAdapter?}}
+{{/if field.hasWrapper?}}
+{{/let partial}}
+
+{{! Same as field_type but without considering wrappers. }}
+{{#let export partial field_type_no_wrapper |field| captures |boxed_type java_type|}}
+  {{#pragma ignore-newlines}}
+{{#if field.hasFieldAdapter?}}{{field.fieldAdapterTypeClassName}}
+{{#else if field.type.hasAdapter?}}{{field.type.adapterTypeClassName}}
+{{#else if field.optional?}}{{#partial boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}
+{{#else}}{{#partial java_type type=field.type has_adapter_override=field.hasAdapter?}}
+{{/if field.hasFieldAdapter?}}
+{{/let partial}}
+
 {{! Defines the mapping of a Thrift type to the Java TType constant name. }}
 {{#let export partial ttype |type|}}
   {{#pragma ignore-newlines}}

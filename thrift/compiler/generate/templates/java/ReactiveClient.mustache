@@ -172,7 +172,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
         {
           oprot.writeFieldBegin(_{{function:java_name}}_{{field:javaTFieldName}});
 
-          {{> FieldType}} _fbthriftVar0 = {{field:javaName}};
+          {{#partial types.field_type field=field:self}} _fbthriftVar0 = {{field:javaName}};
 
           {{#partial codec.write_response_type type=field:self.type depth=0}}
           oprot.writeFieldEnd();
@@ -240,7 +240,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
         {
           oprot.writeFieldBegin(_{{function:java_name}}_{{field:javaTFieldName}});
 
-          {{> FieldType}} _fbthriftVar0 = {{field:javaName}};
+          {{#partial types.field_type field=field:self}} _fbthriftVar0 = {{field:javaName}};
 
           {{#partial codec.write_response_type type=field:self.type depth=0}}
           oprot.writeFieldEnd();
@@ -317,7 +317,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
         {
           oprot.writeFieldBegin(_{{function:java_name}}_{{field:javaTFieldName}});
 
-          {{> FieldType}} _fbthriftVar0 = {{field:javaName}};
+          {{#partial types.field_type field=field:self}} _fbthriftVar0 = {{field:javaName}};
 
           {{#partial codec.write_response_type type=field:self.type depth=0}}
           oprot.writeFieldEnd();
@@ -439,7 +439,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
           {
             oprot.writeFieldBegin(_{{function:java_name}}_{{field:javaTFieldName}}_INT);
 
-            {{> FieldType}} _fbthriftVar0 = {{field:javaName}};
+            {{#partial types.field_type field=field:self}} _fbthriftVar0 = {{field:javaName}};
 
             {{#partial codec.write_response_type type=field:self.type depth=0}}
             oprot.writeFieldEnd();
@@ -524,7 +524,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
           {
             oprot.writeFieldBegin(_{{function:java_name}}_{{field:javaTFieldName}}_INT);
 
-            {{> FieldType}} _fbthriftVar0 = {{field:javaName}};
+            {{#partial types.field_type field=field:self}} _fbthriftVar0 = {{field:javaName}};
 
             {{#partial codec.write_response_type type=field:self.type depth=0}}
             oprot.writeFieldEnd();
