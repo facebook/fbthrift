@@ -15,9 +15,9 @@
   limitations under the License.
 
 }}{{!
-}}{{#field:hasTypeAdapter?}}{{!
+}}{{#field:self.type.hasAdapter?}}{{!
   }}__{{#field:type}}{{type:name}}{{/field:type}}_Adapter.toThrift({{!
-}}{{/field:hasTypeAdapter?}}{{!
+}}{{/field:self.type.hasAdapter?}}{{!
 
 }}{{#field:hasFieldAdapter?}}{{!
   }}_{{field:javaName}}_Adapter.toThrift({{!

@@ -23,7 +23,7 @@
         private static final com.facebook.thrift.adapter.Wrapper<{{!
        }}{{#field:hasAdapter?}}{{!
          }}{{#field:hasFieldAdapter?}}{{field:fieldAdapterTypeClassName}}{{/field:hasFieldAdapter?}}{{!
-         }}{{^field:hasFieldAdapter?}}{{field:typeAdapterTypeClassName}}{{/field:hasFieldAdapter?}}{{!
+         }}{{^field:hasFieldAdapter?}}{{field:self.type.adapterTypeClassName}}{{/field:hasFieldAdapter?}}{{!
        }}{{/field:hasAdapter?}}{{!
        }}{{^field:hasAdapter?}}{{!
          }}{{#field:type}}{{> BoxedType}}{{/field:type}}{{!
@@ -33,6 +33,6 @@
 
 }}
 {{#each (array.at struct:unique_adapted_typedefs field:index) as |typedef|}}
-private static final com.facebook.thrift.adapter.TypeAdapter<{{#partial types.adapted_boxed_type type=typedef}}, {{typedef.typeClassName}}> __{{typedef.name}}_Adapter = new {{typedef.adapterClassName}}();
+private static final com.facebook.thrift.adapter.TypeAdapter<{{#partial types.adapted_boxed_type type=typedef}}, {{typedef.adapterTypeClassName}}> __{{typedef.name}}_Adapter = new {{typedef.adapterClassName}}();
 {{/each}}
 {{/struct:fields}}

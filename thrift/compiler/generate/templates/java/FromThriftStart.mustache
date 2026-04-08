@@ -19,6 +19,6 @@
   }}_{{field:javaName}}_Adapter.fromThrift({{!
 }}{{/field:hasFieldAdapter?}}{{!
 
-}}{{#field:hasTypeAdapter?}}{{!
+}}{{#field:self.type.hasAdapter?}}{{!
   }}__{{#field:type}}{{type:name}}{{/field:type}}_Adapter.fromThrift({{!
-}}{{/field:hasTypeAdapter?}}
+}}{{/field:self.type.hasAdapter?}}

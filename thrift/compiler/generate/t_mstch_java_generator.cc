@@ -622,44 +622,6 @@ class t_mstch_java_generator : public t_mstch_generator {
           }
           return whisker::make::null;
         });
-    def.property("hasTypeAdapter?", [](const t_field& self) {
-      auto type = self.type().get_type();
-      return type->is<t_typedef>() &&
-          t_typedef::get_first_structured_annotation_or_null(
-              type, kJavaAdapterUri) != nullptr;
-    });
-    def.property(
-        "typeAdapterTypeClassName", [](const t_field& self) -> whisker::object {
-          auto type = self.type().get_type();
-          if (type->is<t_typedef>()) {
-            if (auto annotation =
-                    t_typedef::get_first_structured_annotation_or_null(
-                        type, kJavaAdapterUri)) {
-              for (const auto& item : annotation->value()->get_map()) {
-                if (item.first->get_string() == "typeClassName") {
-                  return whisker::make::string(item.second->get_string());
-                }
-              }
-            }
-          }
-          return whisker::make::null;
-        });
-    def.property(
-        "typeAdapterClassName", [](const t_field& self) -> whisker::object {
-          auto type = self.type().get_type();
-          if (type->is<t_typedef>()) {
-            if (auto annotation =
-                    t_typedef::get_first_structured_annotation_or_null(
-                        type, kJavaAdapterUri)) {
-              for (const auto& item : annotation->value()->get_map()) {
-                if (item.first->get_string() == "adapterClassName") {
-                  return whisker::make::string(item.second->get_string());
-                }
-              }
-            }
-          }
-          return whisker::make::null;
-        });
     def.property("hasAdapter?", [](const t_field& self) {
       if (self.has_structured_annotation(kJavaAdapterUri)) {
         return true;
@@ -1019,7 +981,7 @@ class t_mstch_java_generator : public t_mstch_generator {
       }
       return whisker::make::null;
     });
-    def.property("typeClassName", [](const t_type& self) {
+    def.property("adapterTypeClassName", [](const t_type& self) {
       if (const t_const* annotation =
               t_typedef::get_first_structured_annotation_or_null(
                   &self, kJavaAdapterUri);

@@ -19,7 +19,7 @@
 }}{{^field:hasWrapper?}}{{!
   }}{{#field:hasAdapter?}}{{!
     }}{{#field:hasFieldAdapter?}}{{field:fieldAdapterTypeClassName}}{{/field:hasFieldAdapter?}}{{!
-    }}{{^field:hasFieldAdapter?}}{{field:typeAdapterTypeClassName}}{{/field:hasFieldAdapter?}}{{!
+    }}{{^field:hasFieldAdapter?}}{{field:self.type.adapterTypeClassName}}{{/field:hasFieldAdapter?}}{{!
   }}{{/field:hasAdapter?}}{{!
   }}{{^field:hasAdapter?}}{{!
     }}{{#field:optional?}}{{#field:type}}{{> BoxedType}}{{/field:type}}{{/field:optional?}}{{!

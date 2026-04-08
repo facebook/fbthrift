@@ -35,7 +35,7 @@
 {{#let export partial boxed_type |type field_hasAdapter|}}
   {{#pragma ignore-newlines}}
 {{#if (not (string.empty? type.javaType))}}{{type.javaType}}
-{{#else if type.hasAdapter?}}{{type.typeClassName}}
+{{#else if type.hasAdapter?}}{{type.adapterTypeClassName}}
   {{! Recurse through every layer of typedef, as each layer could have an adapter }}
   {{#else if (or type.binary? type.isBinaryString?)}}
 {{#if field_hasAdapter}}io.netty.buffer.ByteBuf{{#else}}byte[]{{/if}}
@@ -127,7 +127,7 @@ Map<
 {{#let partial adapted_inner_boxed_type |type| captures |boxed_type|}}
   {{#pragma ignore-newlines}}
 {{#if (not (string.empty? type.javaType))}}{{type.javaType}}
-{{#else if type.hasAdapter?}}{{type.typeClassName}}
+{{#else if type.hasAdapter?}}{{type.adapterTypeClassName}}
 {{#else if (or type.binary? type.isBinaryString?)}}io.netty.buffer.ByteBuf
 {{#else if type.typedef?}}{{#partial adapted_inner_boxed_type type=type.resolved}}
 {{#else if type.list?}}List<{{#partial adapted_inner_boxed_type type=type.elem_type}}>
@@ -146,7 +146,7 @@ Map<{{#partial adapted_inner_boxed_type type=type.key_type}}, {{#partial adapted
   {{#pragma ignore-newlines}}
 {{#if (not (string.empty? type.javaType))}}{{type.javaType}}
   {{#else if type.typedef?}}
-{{#if type.lastAdapter?}}{{#if type.isBinaryString?}}io.netty.buffer.ByteBuf{{#else}}{{#partial adapted_boxed_type type=type.resolved}}{{/if}}{{#else}}{{type.typeClassName}}{{/if}}
+{{#if type.lastAdapter?}}{{#if type.isBinaryString?}}io.netty.buffer.ByteBuf{{#else}}{{#partial adapted_boxed_type type=type.resolved}}{{/if}}{{#else}}{{type.adapterTypeClassName}}{{/if}}
   {{#else}}
 {{#partial adapted_inner_boxed_type type=type}}
   {{/if (not (string.empty? type.javaType))}}

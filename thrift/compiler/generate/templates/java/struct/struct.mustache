@@ -55,7 +55,7 @@ public boolean equals(java.lang.Object o) {
         _{{field.javaName}}_Wrapper.equals({{field.javaName}}, other.{{field.javaName}}) &&
         {{#else if field.hasFieldAdapter?}}
         _{{field.javaName}}_Adapter.equals({{field.javaName}}, other.{{field.javaName}}) &&
-        {{#else if field.hasTypeAdapter?}}
+        {{#else if field.type.hasAdapter?}}
         __{{field.type.name}}_Adapter.equals({{field.javaName}}, other.{{field.javaName}}) &&
         {{#else}}
         {{#if (and (string.empty? field.type.javaType) field.type.binary?)}}Arrays{{#else}}Objects{{/if (and (string.empty? field.type.javaType) field.type.binary?)}}.equals({{field.javaName}}, other.{{field.javaName}}) &&
