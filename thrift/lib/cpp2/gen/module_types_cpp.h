@@ -128,12 +128,7 @@ struct translate_field_name_hash_table {
       size_t size,
       const std::string_view* names,
       const int16_t* ids,
-      const protocol::TType* types) {
-    map.reserve(size);
-    for (size_t i = 0; i < size; ++i) {
-      map.emplace(names[i], std::pair(ids[i], types[i]));
-    }
-  }
+      const protocol::TType* types);
 
   folly::F14FastMap<std::string_view, std::pair<int16_t, protocol::TType>> map;
 };
