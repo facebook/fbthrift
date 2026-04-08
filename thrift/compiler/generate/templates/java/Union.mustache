@@ -30,7 +30,7 @@ import org.apache.thrift.protocol.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftUnion("{{struct:name}}"){{> common/ObjectCustomAnnotation}}
+@ThriftUnion("{{struct:name}}"){{#struct:javaAnnotations?}} {{struct:javaAnnotations}} {{/struct:javaAnnotations?}}
 public final class {{struct:javaCapitalName}} implements com.facebook.thrift.payload.ThriftSerializable {
     {{> struct/AdapterDefinition}}
 

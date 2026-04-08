@@ -35,10 +35,10 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 {{#struct:asBean?}}
-@com.facebook.swift.codec.ThriftStruct("{{struct:name}}"){{> common/ObjectCustomAnnotation}}
+@com.facebook.swift.codec.ThriftStruct("{{struct:name}}"){{#struct:javaAnnotations?}} {{struct:javaAnnotations}} {{/struct:javaAnnotations?}}
 {{/struct:asBean?}}
 {{^struct:asBean?}}
-@com.facebook.swift.codec.ThriftStruct(value="{{struct:name}}", builder={{struct:javaCapitalName}}.Builder.class){{> common/ObjectCustomAnnotation}}
+@com.facebook.swift.codec.ThriftStruct(value="{{struct:name}}", builder={{struct:javaCapitalName}}.Builder.class){{#struct:javaAnnotations?}} {{struct:javaAnnotations}} {{/struct:javaAnnotations?}}
 {{/struct:asBean?}}
 public final class {{struct:javaCapitalName}} implements com.facebook.thrift.payload.ThriftSerializable {
     {{> struct/ThriftConstructor}}
