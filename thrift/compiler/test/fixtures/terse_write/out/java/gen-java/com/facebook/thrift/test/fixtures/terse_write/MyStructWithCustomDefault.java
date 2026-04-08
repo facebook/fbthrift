@@ -115,7 +115,7 @@ public final class MyStructWithCustomDefault implements com.facebook.thrift.payl
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Long.hashCode(field1);
-            return _hashCode;
+        return _hashCode;
     }
 
     

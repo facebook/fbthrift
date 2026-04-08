@@ -164,9 +164,9 @@ public final class StructWithUnion implements com.facebook.thrift.payload.Thrift
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(u);
-            _hashCode = 31 * _hashCode + Double.hashCode(aDouble);
-            _hashCode = 31 * _hashCode + Objects.hashCode(f);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Double.hashCode(aDouble);
+        _hashCode = 31 * _hashCode + Objects.hashCode(f);
+        return _hashCode;
     }
 
     

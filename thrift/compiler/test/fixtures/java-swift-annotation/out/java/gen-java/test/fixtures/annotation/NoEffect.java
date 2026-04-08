@@ -138,8 +138,8 @@ public final class NoEffect implements com.facebook.thrift.payload.ThriftSeriali
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(anSnakeString);
-            _hashCode = 31 * _hashCode + Integer.hashCode(aCamelI32);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Integer.hashCode(aCamelI32);
+        return _hashCode;
     }
 
     

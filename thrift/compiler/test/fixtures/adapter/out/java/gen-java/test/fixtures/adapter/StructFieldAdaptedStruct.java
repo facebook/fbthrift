@@ -193,10 +193,10 @@ public final class StructFieldAdaptedStruct implements com.facebook.thrift.paylo
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(adaptedStruct);
-            _hashCode = 31 * _hashCode + Objects.hashCode(adaptedTypedef);
-            _hashCode = 31 * _hashCode + Objects.hashCode(directlyAdapted);
-            _hashCode = 31 * _hashCode + Objects.hashCode(typedefOfAdapted);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(adaptedTypedef);
+        _hashCode = 31 * _hashCode + Objects.hashCode(directlyAdapted);
+        _hashCode = 31 * _hashCode + Objects.hashCode(typedefOfAdapted);
+        return _hashCode;
     }
 
     

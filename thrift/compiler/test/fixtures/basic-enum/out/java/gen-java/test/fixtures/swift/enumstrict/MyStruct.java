@@ -141,8 +141,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(myEnum);
-            _hashCode = 31 * _hashCode + Objects.hashCode(myBigEnum);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(myBigEnum);
+        return _hashCode;
     }
 
     

@@ -167,9 +167,9 @@ public final class CountingStruct implements com.facebook.thrift.payload.ThriftS
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(regularInt);
-            _hashCode = 31 * _hashCode + Objects.hashCode(countingInt);
-            _hashCode = 31 * _hashCode + Objects.hashCode(regularString);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(countingInt);
+        _hashCode = 31 * _hashCode + Objects.hashCode(regularString);
+        return _hashCode;
     }
 
     

@@ -323,15 +323,15 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Long.hashCode(major);
-            _hashCode = 31 * _hashCode + Objects.hashCode(_abstract);
-            _hashCode = 31 * _hashCode + Objects.hashCode(annotationWithQuote);
-            _hashCode = 31 * _hashCode + Objects.hashCode(class_);
-            _hashCode = 31 * _hashCode + Objects.hashCode(annotationWithTrailingComma);
-            _hashCode = 31 * _hashCode + Objects.hashCode(emptyAnnotations);
-            _hashCode = 31 * _hashCode + Objects.hashCode(myEnum);
-            _hashCode = 31 * _hashCode + Objects.hashCode(cppTypeAnnotation);
-            _hashCode = 31 * _hashCode + Objects.hashCode(myUnion);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(_abstract);
+        _hashCode = 31 * _hashCode + Objects.hashCode(annotationWithQuote);
+        _hashCode = 31 * _hashCode + Objects.hashCode(class_);
+        _hashCode = 31 * _hashCode + Objects.hashCode(annotationWithTrailingComma);
+        _hashCode = 31 * _hashCode + Objects.hashCode(emptyAnnotations);
+        _hashCode = 31 * _hashCode + Objects.hashCode(myEnum);
+        _hashCode = 31 * _hashCode + Objects.hashCode(cppTypeAnnotation);
+        _hashCode = 31 * _hashCode + Objects.hashCode(myUnion);
+        return _hashCode;
     }
 
     

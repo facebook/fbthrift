@@ -138,8 +138,8 @@ public final class Struct implements com.facebook.thrift.payload.ThriftSerializa
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(first);
-            _hashCode = 31 * _hashCode + Objects.hashCode(second);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(second);
+        return _hashCode;
     }
 
     

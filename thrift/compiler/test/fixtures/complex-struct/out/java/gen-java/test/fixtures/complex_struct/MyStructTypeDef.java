@@ -320,15 +320,15 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Long.hashCode(myLongField);
-            _hashCode = 31 * _hashCode + Long.hashCode(myLongTypeDef);
-            _hashCode = 31 * _hashCode + Objects.hashCode(myStringField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(myStringTypedef);
-            _hashCode = 31 * _hashCode + Objects.hashCode(myMapField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(myMapTypedef);
-            _hashCode = 31 * _hashCode + Objects.hashCode(myListField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(myListTypedef);
-            _hashCode = 31 * _hashCode + Objects.hashCode(myMapListOfTypeDef);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Long.hashCode(myLongTypeDef);
+        _hashCode = 31 * _hashCode + Objects.hashCode(myStringField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(myStringTypedef);
+        _hashCode = 31 * _hashCode + Objects.hashCode(myMapField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(myMapTypedef);
+        _hashCode = 31 * _hashCode + Objects.hashCode(myListField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(myListTypedef);
+        _hashCode = 31 * _hashCode + Objects.hashCode(myMapListOfTypeDef);
+        return _hashCode;
     }
 
     

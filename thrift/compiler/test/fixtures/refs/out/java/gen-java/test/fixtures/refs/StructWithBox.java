@@ -164,9 +164,9 @@ public final class StructWithBox implements com.facebook.thrift.payload.ThriftSe
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(a);
-            _hashCode = 31 * _hashCode + Objects.hashCode(b);
-            _hashCode = 31 * _hashCode + Objects.hashCode(c);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(b);
+        _hashCode = 31 * _hashCode + Objects.hashCode(c);
+        return _hashCode;
     }
 
     

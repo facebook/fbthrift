@@ -134,7 +134,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
 
         return
             Objects.equals(field, other.field) &&
-            __SetWithAdapter_Adapter.equals(setString, other.setString) && 
+            __SetWithAdapter_Adapter.equals(setString, other.setString) &&
             true;
     }
 
@@ -142,8 +142,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Integer.hashCode(field);
-            _hashCode = 31 * _hashCode + Objects.hashCode(setString);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(setString);
+        return _hashCode;
     }
 
     

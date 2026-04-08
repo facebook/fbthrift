@@ -138,8 +138,8 @@ public final class Range implements com.facebook.thrift.payload.ThriftSerializab
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Integer.hashCode(min);
-            _hashCode = 31 * _hashCode + Integer.hashCode(max);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Integer.hashCode(max);
+        return _hashCode;
     }
 
     

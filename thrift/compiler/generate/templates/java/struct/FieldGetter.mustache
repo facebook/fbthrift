@@ -18,9 +18,9 @@
 {{#field:deprecated?}}
 
 @Deprecated{{/field:deprecated?}}
-{{> struct/FieldNullability}}
+{{#partial field.field_nullability field=field:self}}
 
-{{> ThriftFieldAnnotation}}
+{{#partial field.thrift_field_annotation field=field:self}}
 
 public {{> FieldType}} {{#if field:hasWrapper?}}get{{field:javaCapitalName}}{{#else}}{{#partial types.getter_name field=field:self}}{{/if}}() { return {{field:javaName}}; }
 {{! terminate with newline }}

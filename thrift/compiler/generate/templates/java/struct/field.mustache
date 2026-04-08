@@ -14,14 +14,19 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{#pragma ignore-newlines}}
-{{#import "common/common" as common}}
-{{#import "common/const_value" as const_value}}
+}}
 {{#import "common/types" as types}}
-{{#import "codec/codec" as codec}}
-{{#import "struct/field" as field}}
-{{#import "struct/struct" as struct}}
-{{#if struct:union?}}{{> Union}}
-{{#else if struct:exception?}}{{> Exception}}
-{{#else}}{{> Struct}}
-{{/if struct:union?}}
+
+{{#let export partial thrift_field_annotation |field| captures |types|}}
+  {{#pragma ignore-newlines}}
+@com.facebook.swift.codec.ThriftField(value={{field.id}}, name="{{field.name}}", {{!
+}}{{#if field.negativeId?}}isLegacyId=true, {{/if}}requiredness={{#partial types.requiredness field=field}}{{!
+}}{{#if field.recursive?}}, isRecursive=Recursiveness.TRUE{{/if}})
+{{/let partial}}
+
+{{#let export partial field_nullability |field|}}
+  {{#pragma ignore-newlines}}
+{{#if field.optional?}}@Nullable{{!
+}}{{#else if (and (not field.required?) (not field.isNumericOrVoid?))}}@Nullable{{!
+}}{{/if field.optional?}}
+{{/let partial}}

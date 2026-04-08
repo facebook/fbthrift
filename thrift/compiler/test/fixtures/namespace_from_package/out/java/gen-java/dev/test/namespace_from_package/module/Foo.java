@@ -115,7 +115,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Long.hashCode(myInt);
-            return _hashCode;
+        return _hashCode;
     }
 
     

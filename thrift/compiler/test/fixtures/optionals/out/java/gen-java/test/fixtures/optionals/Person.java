@@ -346,16 +346,16 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Long.hashCode(id);
-            _hashCode = 31 * _hashCode + Objects.hashCode(name);
-            _hashCode = 31 * _hashCode + Objects.hashCode(age);
-            _hashCode = 31 * _hashCode + Objects.hashCode(address);
-            _hashCode = 31 * _hashCode + Objects.hashCode(favoriteColor);
-            _hashCode = 31 * _hashCode + Objects.hashCode(friends);
-            _hashCode = 31 * _hashCode + Objects.hashCode(bestFriend);
-            _hashCode = 31 * _hashCode + Objects.hashCode(petNames);
-            _hashCode = 31 * _hashCode + Objects.hashCode(afraidOfAnimal);
-            _hashCode = 31 * _hashCode + Objects.hashCode(vehicles);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(name);
+        _hashCode = 31 * _hashCode + Objects.hashCode(age);
+        _hashCode = 31 * _hashCode + Objects.hashCode(address);
+        _hashCode = 31 * _hashCode + Objects.hashCode(favoriteColor);
+        _hashCode = 31 * _hashCode + Objects.hashCode(friends);
+        _hashCode = 31 * _hashCode + Objects.hashCode(bestFriend);
+        _hashCode = 31 * _hashCode + Objects.hashCode(petNames);
+        _hashCode = 31 * _hashCode + Objects.hashCode(afraidOfAnimal);
+        _hashCode = 31 * _hashCode + Objects.hashCode(vehicles);
+        return _hashCode;
     }
 
     

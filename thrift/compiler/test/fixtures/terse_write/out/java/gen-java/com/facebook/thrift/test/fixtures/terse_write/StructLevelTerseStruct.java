@@ -479,21 +479,21 @@ public final class StructLevelTerseStruct implements com.facebook.thrift.payload
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Boolean.hashCode(boolField);
-            _hashCode = 31 * _hashCode + Byte.hashCode(byteField);
-            _hashCode = 31 * _hashCode + Short.hashCode(shortField);
-            _hashCode = 31 * _hashCode + Integer.hashCode(intField);
-            _hashCode = 31 * _hashCode + Long.hashCode(longField);
-            _hashCode = 31 * _hashCode + Float.hashCode(floatField);
-            _hashCode = 31 * _hashCode + Double.hashCode(doubleField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(stringField);
-            _hashCode = 31 * _hashCode + Arrays.hashCode(binaryField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(enumField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(listField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(setField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(mapField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(structField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(unionField);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Byte.hashCode(byteField);
+        _hashCode = 31 * _hashCode + Short.hashCode(shortField);
+        _hashCode = 31 * _hashCode + Integer.hashCode(intField);
+        _hashCode = 31 * _hashCode + Long.hashCode(longField);
+        _hashCode = 31 * _hashCode + Float.hashCode(floatField);
+        _hashCode = 31 * _hashCode + Double.hashCode(doubleField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(stringField);
+        _hashCode = 31 * _hashCode + Arrays.hashCode(binaryField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(enumField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(listField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(setField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(mapField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(structField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(unionField);
+        return _hashCode;
     }
 
     

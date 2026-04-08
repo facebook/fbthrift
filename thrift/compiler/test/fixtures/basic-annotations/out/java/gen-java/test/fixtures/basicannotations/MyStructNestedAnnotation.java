@@ -112,7 +112,7 @@ public final class MyStructNestedAnnotation implements com.facebook.thrift.paylo
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(name);
-            return _hashCode;
+        return _hashCode;
     }
 
     

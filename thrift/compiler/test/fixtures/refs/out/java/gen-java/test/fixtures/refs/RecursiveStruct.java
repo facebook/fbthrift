@@ -112,7 +112,7 @@ public final class RecursiveStruct implements com.facebook.thrift.payload.Thrift
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(mes);
-            return _hashCode;
+        return _hashCode;
     }
 
     

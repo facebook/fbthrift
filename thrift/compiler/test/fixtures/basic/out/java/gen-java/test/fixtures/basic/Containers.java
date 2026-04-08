@@ -167,9 +167,9 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(i32List);
-            _hashCode = 31 * _hashCode + Objects.hashCode(stringSet);
-            _hashCode = 31 * _hashCode + Objects.hashCode(stringToI64Map);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(stringSet);
+        _hashCode = 31 * _hashCode + Objects.hashCode(stringToI64Map);
+        return _hashCode;
     }
 
     

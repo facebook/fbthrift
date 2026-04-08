@@ -115,7 +115,7 @@ public final class CircularStruct implements com.facebook.thrift.payload.ThriftS
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(field);
-            return _hashCode;
+        return _hashCode;
     }
 
     

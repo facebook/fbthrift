@@ -190,10 +190,10 @@ public final class MyStructFloatFieldThrowExp implements com.facebook.thrift.pay
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Long.hashCode(myLongField);
-            _hashCode = 31 * _hashCode + Byte.hashCode(myByteField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(myStringField);
-            _hashCode = 31 * _hashCode + Float.hashCode(myFloatField);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Byte.hashCode(myByteField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(myStringField);
+        _hashCode = 31 * _hashCode + Float.hashCode(myFloatField);
+        return _hashCode;
     }
 
     

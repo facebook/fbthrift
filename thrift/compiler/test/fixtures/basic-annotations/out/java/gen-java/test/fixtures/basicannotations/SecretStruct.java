@@ -140,8 +140,8 @@ public final class SecretStruct implements com.facebook.thrift.payload.ThriftSer
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Long.hashCode(id);
-            _hashCode = 31 * _hashCode + Objects.hashCode(password);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(password);
+        return _hashCode;
     }
 
     

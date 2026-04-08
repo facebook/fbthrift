@@ -138,8 +138,8 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Long.hashCode(myLongField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(mapListOfFloats);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(mapListOfFloats);
+        return _hashCode;
     }
 
     

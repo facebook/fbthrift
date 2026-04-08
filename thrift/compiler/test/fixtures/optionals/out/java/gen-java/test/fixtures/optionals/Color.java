@@ -190,10 +190,10 @@ public final class Color implements com.facebook.thrift.payload.ThriftSerializab
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Double.hashCode(red);
-            _hashCode = 31 * _hashCode + Double.hashCode(green);
-            _hashCode = 31 * _hashCode + Double.hashCode(blue);
-            _hashCode = 31 * _hashCode + Double.hashCode(alpha);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Double.hashCode(green);
+        _hashCode = 31 * _hashCode + Double.hashCode(blue);
+        _hashCode = 31 * _hashCode + Double.hashCode(alpha);
+        return _hashCode;
     }
 
     

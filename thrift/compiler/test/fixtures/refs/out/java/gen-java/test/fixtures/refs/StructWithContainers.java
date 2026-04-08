@@ -242,12 +242,12 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(listRef);
-            _hashCode = 31 * _hashCode + Objects.hashCode(setRef);
-            _hashCode = 31 * _hashCode + Objects.hashCode(mapRef);
-            _hashCode = 31 * _hashCode + Objects.hashCode(listRefUnique);
-            _hashCode = 31 * _hashCode + Objects.hashCode(setRefShared);
-            _hashCode = 31 * _hashCode + Objects.hashCode(listRefSharedConst);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(setRef);
+        _hashCode = 31 * _hashCode + Objects.hashCode(mapRef);
+        _hashCode = 31 * _hashCode + Objects.hashCode(listRefUnique);
+        _hashCode = 31 * _hashCode + Objects.hashCode(setRefShared);
+        _hashCode = 31 * _hashCode + Objects.hashCode(listRefSharedConst);
+        return _hashCode;
     }
 
     

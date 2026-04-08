@@ -473,14 +473,14 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
             _intField_Adapter.equals(intField, other.intField) &&
             _optionalIntField_Adapter.equals(optionalIntField, other.optionalIntField) &&
             _intFieldWithDefault_Adapter.equals(intFieldWithDefault, other.intFieldWithDefault) &&
-            __SetWithAdapter_Adapter.equals(setField, other.setField) && 
-            __SetWithAdapter_Adapter.equals(optionalSetField, other.optionalSetField) && 
+            __SetWithAdapter_Adapter.equals(setField, other.setField) &&
+            __SetWithAdapter_Adapter.equals(optionalSetField, other.optionalSetField) &&
             _mapField_Adapter.equals(mapField, other.mapField) &&
             _optionalMapField_Adapter.equals(optionalMapField, other.optionalMapField) &&
             _binaryField_Adapter.equals(binaryField, other.binaryField) &&
-            __MyI64_Adapter.equals(longField, other.longField) && 
+            __MyI64_Adapter.equals(longField, other.longField) &&
             _adaptedLongField_Adapter.equals(adaptedLongField, other.adaptedLongField) &&
-            __DoubleTypedefI64_Adapter.equals(doubleAdaptedField, other.doubleAdaptedField) && 
+            __DoubleTypedefI64_Adapter.equals(doubleAdaptedField, other.doubleAdaptedField) &&
             Objects.equals(adaptedList, other.adaptedList) &&
             Objects.equals(adaptedSet, other.adaptedSet) &&
             Objects.equals(adaptedMap, other.adaptedMap) &&
@@ -492,21 +492,21 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(intField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(optionalIntField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(intFieldWithDefault);
-            _hashCode = 31 * _hashCode + Objects.hashCode(setField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(optionalSetField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(mapField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(optionalMapField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(binaryField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(longField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(adaptedLongField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(doubleAdaptedField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(adaptedList);
-            _hashCode = 31 * _hashCode + Objects.hashCode(adaptedSet);
-            _hashCode = 31 * _hashCode + Objects.hashCode(adaptedMap);
-            _hashCode = 31 * _hashCode + Objects.hashCode(adaptedListNested);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(optionalIntField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(intFieldWithDefault);
+        _hashCode = 31 * _hashCode + Objects.hashCode(setField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(optionalSetField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(mapField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(optionalMapField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(binaryField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(longField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(adaptedLongField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(doubleAdaptedField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(adaptedList);
+        _hashCode = 31 * _hashCode + Objects.hashCode(adaptedSet);
+        _hashCode = 31 * _hashCode + Objects.hashCode(adaptedMap);
+        _hashCode = 31 * _hashCode + Objects.hashCode(adaptedListNested);
+        return _hashCode;
     }
 
     

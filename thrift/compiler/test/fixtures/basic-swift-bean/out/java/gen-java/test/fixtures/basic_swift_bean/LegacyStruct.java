@@ -140,8 +140,8 @@ public final class LegacyStruct implements com.facebook.thrift.payload.ThriftSer
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Integer.hashCode(normal);
-            _hashCode = 31 * _hashCode + Integer.hashCode(bad);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Integer.hashCode(bad);
+        return _hashCode;
     }
 
     

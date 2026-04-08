@@ -221,11 +221,11 @@ public final class User implements com.facebook.thrift.payload.ThriftSerializabl
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Long.hashCode(id);
-            _hashCode = 31 * _hashCode + Objects.hashCode(name);
-            _hashCode = 31 * _hashCode + Objects.hashCode(fullName);
-            _hashCode = 31 * _hashCode + Objects.hashCode(email);
-            _hashCode = 31 * _hashCode + Objects.hashCode(emailAddress);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(name);
+        _hashCode = 31 * _hashCode + Objects.hashCode(fullName);
+        _hashCode = 31 * _hashCode + Objects.hashCode(email);
+        _hashCode = 31 * _hashCode + Objects.hashCode(emailAddress);
+        return _hashCode;
     }
 
     

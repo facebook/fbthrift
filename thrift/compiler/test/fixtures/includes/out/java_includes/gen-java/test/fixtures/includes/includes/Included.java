@@ -138,8 +138,8 @@ public final class Included implements com.facebook.thrift.payload.ThriftSeriali
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Long.hashCode(myIntField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(myTransitiveField);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(myTransitiveField);
+        return _hashCode;
     }
 
     

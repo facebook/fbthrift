@@ -112,7 +112,7 @@ public final class NonCopyableStruct implements com.facebook.thrift.payload.Thri
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Long.hashCode(num);
-            return _hashCode;
+        return _hashCode;
     }
 
     

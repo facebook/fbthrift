@@ -138,8 +138,8 @@ public final class StructWithInternBox implements com.facebook.thrift.payload.Th
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(field1);
-            _hashCode = 31 * _hashCode + Objects.hashCode(field2);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(field2);
+        return _hashCode;
     }
 
     

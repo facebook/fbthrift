@@ -115,7 +115,7 @@ public final class Config implements com.facebook.thrift.payload.ThriftSerializa
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(path);
-            return _hashCode;
+        return _hashCode;
     }
 
     

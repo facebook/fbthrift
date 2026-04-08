@@ -190,10 +190,10 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(lsMap);
-            _hashCode = 31 * _hashCode + Objects.hashCode(ioMap);
-            _hashCode = 31 * _hashCode + Objects.hashCode(bigInteger);
-            _hashCode = 31 * _hashCode + Objects.hashCode(binaryTestBuffer);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(ioMap);
+        _hashCode = 31 * _hashCode + Objects.hashCode(bigInteger);
+        _hashCode = 31 * _hashCode + Objects.hashCode(binaryTestBuffer);
+        return _hashCode;
     }
 
     

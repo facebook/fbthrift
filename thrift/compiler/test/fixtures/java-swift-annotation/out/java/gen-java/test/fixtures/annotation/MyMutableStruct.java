@@ -140,8 +140,8 @@ public final class MyMutableStruct implements com.facebook.thrift.payload.Thrift
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Long.hashCode(intField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(stringField);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(stringField);
+        return _hashCode;
     }
 
     

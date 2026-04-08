@@ -164,9 +164,9 @@ public final class StructWithSharedConst implements com.facebook.thrift.payload.
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(optSharedConst);
-            _hashCode = 31 * _hashCode + Objects.hashCode(sharedConst);
-            _hashCode = 31 * _hashCode + Objects.hashCode(reqSharedConst);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(sharedConst);
+        _hashCode = 31 * _hashCode + Objects.hashCode(reqSharedConst);
+        return _hashCode;
     }
 
     

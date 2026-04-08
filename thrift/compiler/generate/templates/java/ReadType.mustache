@@ -74,7 +74,7 @@
     }}_fbthriftVar{{field:nestedDepth}} = {{#partial types.read_binary type=type:self isAdapted=false field_hasAdapter=field:hasAdapter?}};{{!
   }}{{/type:isBinaryString?}}{{!
   }}{{^type:isBinaryString?}}{{!
-    }}_fbthriftVar{{field:nestedDepth}} = oprot.readString({{> Utf8Validation}});{{!
+    }}_fbthriftVar{{field:nestedDepth}} = oprot.readString({{#partial common.utf8_validation field=field:self}});{{!
   }}{{/type:isBinaryString?}}{{!
 }}{{/type:string?}}{{!
 

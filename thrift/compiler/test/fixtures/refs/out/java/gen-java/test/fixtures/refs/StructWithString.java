@@ -216,11 +216,11 @@ public final class StructWithString implements com.facebook.thrift.payload.Thrif
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(defUniqueStringRef);
-            _hashCode = 31 * _hashCode + Objects.hashCode(defSharedStringRef);
-            _hashCode = 31 * _hashCode + Objects.hashCode(defSharedStringConstRef);
-            _hashCode = 31 * _hashCode + Objects.hashCode(uniqueStringRef);
-            _hashCode = 31 * _hashCode + Objects.hashCode(sharedStringRef);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(defSharedStringRef);
+        _hashCode = 31 * _hashCode + Objects.hashCode(defSharedStringConstRef);
+        _hashCode = 31 * _hashCode + Objects.hashCode(uniqueStringRef);
+        _hashCode = 31 * _hashCode + Objects.hashCode(sharedStringRef);
+        return _hashCode;
     }
 
     

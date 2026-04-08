@@ -164,9 +164,9 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Integer.hashCode(weeks);
-            _hashCode = 31 * _hashCode + Objects.hashCode(title);
-            _hashCode = 31 * _hashCode + Objects.hashCode(employer);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(title);
+        _hashCode = 31 * _hashCode + Objects.hashCode(employer);
+        return _hashCode;
     }
 
     

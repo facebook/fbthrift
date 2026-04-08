@@ -167,9 +167,9 @@ public final class TerseAdaptedFields implements com.facebook.thrift.payload.Thr
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Integer.hashCode(intField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(stringField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(setField);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(stringField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(setField);
+        return _hashCode;
     }
 
     

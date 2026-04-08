@@ -115,7 +115,7 @@ public final class AdaptTemplatedNestedTestStruct implements com.facebook.thrift
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(adaptedStruct);
-            return _hashCode;
+        return _hashCode;
     }
 
     

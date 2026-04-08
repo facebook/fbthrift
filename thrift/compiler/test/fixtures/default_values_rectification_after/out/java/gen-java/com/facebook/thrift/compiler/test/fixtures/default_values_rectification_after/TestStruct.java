@@ -297,14 +297,14 @@ public final class TestStruct implements com.facebook.thrift.payload.ThriftSeria
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Integer.hashCode(unqualifiedIntField);
-            _hashCode = 31 * _hashCode + Boolean.hashCode(unqualifiedBoolField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(unqualifiedListField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(unqualifiedStructField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(optionalIntField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(optionalBoolField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(optionalListField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(optionalStructField);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Boolean.hashCode(unqualifiedBoolField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(unqualifiedListField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(unqualifiedStructField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(optionalIntField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(optionalBoolField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(optionalListField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(optionalStructField);
+        return _hashCode;
     }
 
     

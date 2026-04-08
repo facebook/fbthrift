@@ -112,7 +112,7 @@ public final class FieldsInjectedToEmptyStruct implements com.facebook.thrift.pa
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(injectedField);
-            return _hashCode;
+        return _hashCode;
     }
 
     

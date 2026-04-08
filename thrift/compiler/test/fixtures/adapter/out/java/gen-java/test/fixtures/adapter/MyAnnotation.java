@@ -141,8 +141,8 @@ public final class MyAnnotation implements com.facebook.thrift.payload.ThriftSer
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(signature);
-            _hashCode = 31 * _hashCode + Objects.hashCode(color);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(color);
+        return _hashCode;
     }
 
     

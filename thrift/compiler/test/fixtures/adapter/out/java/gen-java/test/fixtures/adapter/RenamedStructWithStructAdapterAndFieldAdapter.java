@@ -115,7 +115,7 @@ public final class RenamedStructWithStructAdapterAndFieldAdapter implements com.
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Integer.hashCode(field);
-            return _hashCode;
+        return _hashCode;
     }
 
     

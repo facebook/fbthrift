@@ -140,8 +140,8 @@ public final class MyDataItem implements com.facebook.thrift.payload.ThriftSeria
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Integer.hashCode(field1);
-            _hashCode = 31 * _hashCode + Integer.hashCode(field2);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Integer.hashCode(field2);
+        return _hashCode;
     }
 
     

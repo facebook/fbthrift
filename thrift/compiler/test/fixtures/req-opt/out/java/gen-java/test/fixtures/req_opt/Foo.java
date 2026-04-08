@@ -190,10 +190,10 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Integer.hashCode(myInteger);
-            _hashCode = 31 * _hashCode + Objects.hashCode(myString);
-            _hashCode = 31 * _hashCode + Objects.hashCode(myBools);
-            _hashCode = 31 * _hashCode + Objects.hashCode(myNumbers);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(myString);
+        _hashCode = 31 * _hashCode + Objects.hashCode(myBools);
+        _hashCode = 31 * _hashCode + Objects.hashCode(myNumbers);
+        return _hashCode;
     }
 
     

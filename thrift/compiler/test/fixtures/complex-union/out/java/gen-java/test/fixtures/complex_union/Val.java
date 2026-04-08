@@ -164,9 +164,9 @@ public final class Val implements com.facebook.thrift.payload.ThriftSerializable
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(strVal);
-            _hashCode = 31 * _hashCode + Integer.hashCode(intVal);
-            _hashCode = 31 * _hashCode + Objects.hashCode(typedefValue);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Integer.hashCode(intVal);
+        _hashCode = 31 * _hashCode + Objects.hashCode(typedefValue);
+        return _hashCode;
     }
 
     

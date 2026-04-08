@@ -115,7 +115,7 @@ public final class ReorderedStruct implements com.facebook.thrift.payload.Thrift
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(reorderedDependentAdapted);
-            return _hashCode;
+        return _hashCode;
     }
 
     

@@ -28,7 +28,7 @@ public {{struct:javaCapitalName}}() {
 @ThriftConstructor
 public {{struct:javaCapitalName}}(
     {{#struct:fields}}
-    {{> ThriftFieldAnnotation}} final {{> FieldType}} {{field:javaName}}{{^last?}},{{/last?}}
+    {{#partial field.thrift_field_annotation field=field:self}} final {{> FieldType}} {{field:javaName}}{{^last?}},{{/last?}}
     {{/struct:fields}}
 ) {
     {{#struct:fields}}

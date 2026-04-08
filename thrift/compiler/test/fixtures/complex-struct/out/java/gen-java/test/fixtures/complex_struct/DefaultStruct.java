@@ -754,28 +754,28 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Long.hashCode(myLongDFset);
-            _hashCode = 31 * _hashCode + Long.hashCode(myLongDF);
-            _hashCode = 31 * _hashCode + Integer.hashCode(portDFset);
-            _hashCode = 31 * _hashCode + Integer.hashCode(portNum);
-            _hashCode = 31 * _hashCode + Arrays.hashCode(myBinaryDFset);
-            _hashCode = 31 * _hashCode + Arrays.hashCode(myBinary);
-            _hashCode = 31 * _hashCode + Byte.hashCode(myByteDFSet);
-            _hashCode = 31 * _hashCode + Byte.hashCode(myByte);
-            _hashCode = 31 * _hashCode + Double.hashCode(myDoubleDFset);
-            _hashCode = 31 * _hashCode + Double.hashCode(myDoubleDFZero);
-            _hashCode = 31 * _hashCode + Double.hashCode(myDouble);
-            _hashCode = 31 * _hashCode + Objects.hashCode(field3);
-            _hashCode = 31 * _hashCode + Objects.hashCode(myList);
-            _hashCode = 31 * _hashCode + Objects.hashCode(mySet);
-            _hashCode = 31 * _hashCode + Objects.hashCode(simpleStruct);
-            _hashCode = 31 * _hashCode + Objects.hashCode(listStructDFset);
-            _hashCode = 31 * _hashCode + Objects.hashCode(myUnion);
-            _hashCode = 31 * _hashCode + Objects.hashCode(listUnionDFset);
-            _hashCode = 31 * _hashCode + Objects.hashCode(mapNestlistStructDfSet);
-            _hashCode = 31 * _hashCode + Objects.hashCode(mapJavaTypeDFset);
-            _hashCode = 31 * _hashCode + Objects.hashCode(emptyMap);
-            _hashCode = 31 * _hashCode + Objects.hashCode(enumMapDFset);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Long.hashCode(myLongDF);
+        _hashCode = 31 * _hashCode + Integer.hashCode(portDFset);
+        _hashCode = 31 * _hashCode + Integer.hashCode(portNum);
+        _hashCode = 31 * _hashCode + Arrays.hashCode(myBinaryDFset);
+        _hashCode = 31 * _hashCode + Arrays.hashCode(myBinary);
+        _hashCode = 31 * _hashCode + Byte.hashCode(myByteDFSet);
+        _hashCode = 31 * _hashCode + Byte.hashCode(myByte);
+        _hashCode = 31 * _hashCode + Double.hashCode(myDoubleDFset);
+        _hashCode = 31 * _hashCode + Double.hashCode(myDoubleDFZero);
+        _hashCode = 31 * _hashCode + Double.hashCode(myDouble);
+        _hashCode = 31 * _hashCode + Objects.hashCode(field3);
+        _hashCode = 31 * _hashCode + Objects.hashCode(myList);
+        _hashCode = 31 * _hashCode + Objects.hashCode(mySet);
+        _hashCode = 31 * _hashCode + Objects.hashCode(simpleStruct);
+        _hashCode = 31 * _hashCode + Objects.hashCode(listStructDFset);
+        _hashCode = 31 * _hashCode + Objects.hashCode(myUnion);
+        _hashCode = 31 * _hashCode + Objects.hashCode(listUnionDFset);
+        _hashCode = 31 * _hashCode + Objects.hashCode(mapNestlistStructDfSet);
+        _hashCode = 31 * _hashCode + Objects.hashCode(mapJavaTypeDFset);
+        _hashCode = 31 * _hashCode + Objects.hashCode(emptyMap);
+        _hashCode = 31 * _hashCode + Objects.hashCode(enumMapDFset);
+        return _hashCode;
     }
 
     

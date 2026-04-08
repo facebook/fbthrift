@@ -164,9 +164,9 @@ public final class StructWithRefTypeShared implements com.facebook.thrift.payloa
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(defField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(optField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(reqField);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(optField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(reqField);
+        return _hashCode;
     }
 
     

@@ -138,8 +138,8 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(binaryMap);
-            _hashCode = 31 * _hashCode + Objects.hashCode(regularBinary);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(regularBinary);
+        return _hashCode;
     }
 
     

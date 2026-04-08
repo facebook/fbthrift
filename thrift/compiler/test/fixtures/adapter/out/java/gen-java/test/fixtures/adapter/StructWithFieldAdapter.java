@@ -195,10 +195,10 @@ public final class StructWithFieldAdapter implements com.facebook.thrift.payload
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(field);
-            _hashCode = 31 * _hashCode + Integer.hashCode(sharedField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(optSharedField);
-            _hashCode = 31 * _hashCode + Objects.hashCode(optBoxedField);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Integer.hashCode(sharedField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(optSharedField);
+        _hashCode = 31 * _hashCode + Objects.hashCode(optBoxedField);
+        return _hashCode;
     }
 
     

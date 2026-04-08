@@ -112,7 +112,7 @@ public final class ShouldBeBoxed implements com.facebook.thrift.payload.ThriftSe
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(sessionId);
-            return _hashCode;
+        return _hashCode;
     }
 
     

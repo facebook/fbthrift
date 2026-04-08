@@ -140,8 +140,8 @@ public final class MyStruct2 implements com.facebook.thrift.payload.ThriftSerial
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(myStruct1);
-            _hashCode = 31 * _hashCode + Objects.hashCode(myString);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(myString);
+        return _hashCode;
     }
 
     

@@ -112,7 +112,7 @@ public final class SinkPayload implements com.facebook.thrift.payload.ThriftSeri
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(content);
-            return _hashCode;
+        return _hashCode;
     }
 
     

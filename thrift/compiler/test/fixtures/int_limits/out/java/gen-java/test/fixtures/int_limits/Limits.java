@@ -294,14 +294,14 @@ public final class Limits implements com.facebook.thrift.payload.ThriftSerializa
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Long.hashCode(maxI64Field);
-            _hashCode = 31 * _hashCode + Long.hashCode(minI64Field);
-            _hashCode = 31 * _hashCode + Integer.hashCode(maxI32Field);
-            _hashCode = 31 * _hashCode + Integer.hashCode(minI32Field);
-            _hashCode = 31 * _hashCode + Short.hashCode(maxI16Field);
-            _hashCode = 31 * _hashCode + Short.hashCode(minI16Field);
-            _hashCode = 31 * _hashCode + Byte.hashCode(maxByteField);
-            _hashCode = 31 * _hashCode + Byte.hashCode(minByteField);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Long.hashCode(minI64Field);
+        _hashCode = 31 * _hashCode + Integer.hashCode(maxI32Field);
+        _hashCode = 31 * _hashCode + Integer.hashCode(minI32Field);
+        _hashCode = 31 * _hashCode + Short.hashCode(maxI16Field);
+        _hashCode = 31 * _hashCode + Short.hashCode(minI16Field);
+        _hashCode = 31 * _hashCode + Byte.hashCode(maxByteField);
+        _hashCode = 31 * _hashCode + Byte.hashCode(minByteField);
+        return _hashCode;
     }
 
     

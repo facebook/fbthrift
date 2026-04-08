@@ -112,7 +112,7 @@ public final class A implements com.facebook.thrift.payload.ThriftSerializable {
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(a);
-            return _hashCode;
+        return _hashCode;
     }
 
     

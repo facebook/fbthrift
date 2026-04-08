@@ -554,24 +554,24 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(setOfSetOfInt);
-            _hashCode = 31 * _hashCode + Objects.hashCode(listofListOfListOfListOfEnum);
-            _hashCode = 31 * _hashCode + Objects.hashCode(listOfListOfMyStruct);
-            _hashCode = 31 * _hashCode + Objects.hashCode(setOfListOfListOfLong);
-            _hashCode = 31 * _hashCode + Objects.hashCode(setOfSetOfsetOfLong);
-            _hashCode = 31 * _hashCode + Objects.hashCode(mapStructListOfListOfLong);
-            _hashCode = 31 * _hashCode + Objects.hashCode(mKeyStructValInt);
-            _hashCode = 31 * _hashCode + Objects.hashCode(listOfMapKeyIntValInt);
-            _hashCode = 31 * _hashCode + Objects.hashCode(listOfMapKeyStrValList);
-            _hashCode = 31 * _hashCode + Objects.hashCode(mapKeySetValLong);
-            _hashCode = 31 * _hashCode + Objects.hashCode(mapKeyListValLong);
-            _hashCode = 31 * _hashCode + Objects.hashCode(mapKeyMapValMap);
-            _hashCode = 31 * _hashCode + Objects.hashCode(mapKeySetValMap);
-            _hashCode = 31 * _hashCode + Objects.hashCode(nestedMaps);
-            _hashCode = 31 * _hashCode + Objects.hashCode(mapKeyIntValList);
-            _hashCode = 31 * _hashCode + Objects.hashCode(mapKeyIntValSet);
-            _hashCode = 31 * _hashCode + Objects.hashCode(mapKeySetValInt);
-            _hashCode = 31 * _hashCode + Objects.hashCode(mapKeyListValSet);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(listofListOfListOfListOfEnum);
+        _hashCode = 31 * _hashCode + Objects.hashCode(listOfListOfMyStruct);
+        _hashCode = 31 * _hashCode + Objects.hashCode(setOfListOfListOfLong);
+        _hashCode = 31 * _hashCode + Objects.hashCode(setOfSetOfsetOfLong);
+        _hashCode = 31 * _hashCode + Objects.hashCode(mapStructListOfListOfLong);
+        _hashCode = 31 * _hashCode + Objects.hashCode(mKeyStructValInt);
+        _hashCode = 31 * _hashCode + Objects.hashCode(listOfMapKeyIntValInt);
+        _hashCode = 31 * _hashCode + Objects.hashCode(listOfMapKeyStrValList);
+        _hashCode = 31 * _hashCode + Objects.hashCode(mapKeySetValLong);
+        _hashCode = 31 * _hashCode + Objects.hashCode(mapKeyListValLong);
+        _hashCode = 31 * _hashCode + Objects.hashCode(mapKeyMapValMap);
+        _hashCode = 31 * _hashCode + Objects.hashCode(mapKeySetValMap);
+        _hashCode = 31 * _hashCode + Objects.hashCode(nestedMaps);
+        _hashCode = 31 * _hashCode + Objects.hashCode(mapKeyIntValList);
+        _hashCode = 31 * _hashCode + Objects.hashCode(mapKeyIntValSet);
+        _hashCode = 31 * _hashCode + Objects.hashCode(mapKeySetValInt);
+        _hashCode = 31 * _hashCode + Objects.hashCode(mapKeyListValSet);
+        return _hashCode;
     }
 
     

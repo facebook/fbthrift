@@ -138,8 +138,8 @@ public final class SimpleStruct implements com.facebook.thrift.payload.ThriftSer
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Long.hashCode(age);
-            _hashCode = 31 * _hashCode + Objects.hashCode(name);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(name);
+        return _hashCode;
     }
 
     

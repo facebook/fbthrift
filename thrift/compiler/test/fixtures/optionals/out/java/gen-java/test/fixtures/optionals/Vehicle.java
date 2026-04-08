@@ -216,11 +216,11 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(color);
-            _hashCode = 31 * _hashCode + Objects.hashCode(licensePlate);
-            _hashCode = 31 * _hashCode + Objects.hashCode(description);
-            _hashCode = 31 * _hashCode + Objects.hashCode(name);
-            _hashCode = 31 * _hashCode + Objects.hashCode(hasAC);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(licensePlate);
+        _hashCode = 31 * _hashCode + Objects.hashCode(description);
+        _hashCode = 31 * _hashCode + Objects.hashCode(name);
+        _hashCode = 31 * _hashCode + Objects.hashCode(hasAC);
+        return _hashCode;
     }
 
     

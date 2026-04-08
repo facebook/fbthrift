@@ -320,15 +320,15 @@ public final class MyField implements com.facebook.thrift.payload.ThriftSerializ
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(optValue);
-            _hashCode = 31 * _hashCode + Long.hashCode(value);
-            _hashCode = 31 * _hashCode + Long.hashCode(reqValue);
-            _hashCode = 31 * _hashCode + Objects.hashCode(optEnumValue);
-            _hashCode = 31 * _hashCode + Objects.hashCode(enumValue);
-            _hashCode = 31 * _hashCode + Objects.hashCode(reqEnumValue);
-            _hashCode = 31 * _hashCode + Objects.hashCode(optStrValue);
-            _hashCode = 31 * _hashCode + Objects.hashCode(strValue);
-            _hashCode = 31 * _hashCode + Objects.hashCode(reqStrValue);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Long.hashCode(value);
+        _hashCode = 31 * _hashCode + Long.hashCode(reqValue);
+        _hashCode = 31 * _hashCode + Objects.hashCode(optEnumValue);
+        _hashCode = 31 * _hashCode + Objects.hashCode(enumValue);
+        _hashCode = 31 * _hashCode + Objects.hashCode(reqEnumValue);
+        _hashCode = 31 * _hashCode + Objects.hashCode(optStrValue);
+        _hashCode = 31 * _hashCode + Objects.hashCode(strValue);
+        _hashCode = 31 * _hashCode + Objects.hashCode(reqStrValue);
+        return _hashCode;
     }
 
     

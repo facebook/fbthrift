@@ -195,10 +195,10 @@ public final class SomeStruct implements com.facebook.thrift.payload.ThriftSeria
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(reasonable);
-            _hashCode = 31 * _hashCode + Objects.hashCode(fine);
-            _hashCode = 31 * _hashCode + Objects.hashCode(questionable);
-            _hashCode = 31 * _hashCode + Objects.hashCode(tags);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Objects.hashCode(fine);
+        _hashCode = 31 * _hashCode + Objects.hashCode(questionable);
+        _hashCode = 31 * _hashCode + Objects.hashCode(tags);
+        return _hashCode;
     }
 
     

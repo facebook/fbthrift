@@ -115,7 +115,7 @@ public final class RenamedStruct implements com.facebook.thrift.payload.ThriftSe
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Long.hashCode(data);
-            return _hashCode;
+        return _hashCode;
     }
 
     

@@ -115,7 +115,7 @@ public final class MoveOnly implements com.facebook.thrift.payload.ThriftSeriali
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Objects.hashCode(ptr);
-            return _hashCode;
+        return _hashCode;
     }
 
     

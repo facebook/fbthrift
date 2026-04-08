@@ -476,18 +476,18 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
     public int hashCode() {
         int _hashCode = 1;
         _hashCode = 31 * _hashCode + Short.hashCode(myInt16);
-            _hashCode = 31 * _hashCode + Integer.hashCode(myInt32);
-            _hashCode = 31 * _hashCode + Long.hashCode(myInt64);
-            _hashCode = 31 * _hashCode + Objects.hashCode(myString);
-            _hashCode = 31 * _hashCode + Boolean.hashCode(myBool);
-            _hashCode = 31 * _hashCode + Double.hashCode(myDouble);
-            _hashCode = 31 * _hashCode + Objects.hashCode(mySet);
-            _hashCode = 31 * _hashCode + Objects.hashCode(myDataItem);
-            _hashCode = 31 * _hashCode + Objects.hashCode(myList);
-            _hashCode = 31 * _hashCode + Objects.hashCode(myMapList);
-            _hashCode = 31 * _hashCode + Objects.hashCode(myEmptyList);
-            _hashCode = 31 * _hashCode + Objects.hashCode(myEmptyMapList);
-            return _hashCode;
+        _hashCode = 31 * _hashCode + Integer.hashCode(myInt32);
+        _hashCode = 31 * _hashCode + Long.hashCode(myInt64);
+        _hashCode = 31 * _hashCode + Objects.hashCode(myString);
+        _hashCode = 31 * _hashCode + Boolean.hashCode(myBool);
+        _hashCode = 31 * _hashCode + Double.hashCode(myDouble);
+        _hashCode = 31 * _hashCode + Objects.hashCode(mySet);
+        _hashCode = 31 * _hashCode + Objects.hashCode(myDataItem);
+        _hashCode = 31 * _hashCode + Objects.hashCode(myList);
+        _hashCode = 31 * _hashCode + Objects.hashCode(myMapList);
+        _hashCode = 31 * _hashCode + Objects.hashCode(myEmptyList);
+        _hashCode = 31 * _hashCode + Objects.hashCode(myEmptyMapList);
+        return _hashCode;
     }
 
     
