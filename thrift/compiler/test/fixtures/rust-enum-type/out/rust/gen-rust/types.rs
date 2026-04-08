@@ -46,6 +46,7 @@ impl ::fbthrift::ThriftEnum for SmallEnum {
         self.0 as i32
     }
 
+    #[allow(clippy::useless_conversion)]
     fn from_inner_value(inner_value: i32) -> ::anyhow::Result<Self> {
         inner_value.try_into().map(Self).map_err(|e| {
             ::anyhow::anyhow!("Value {inner_value} is out of range for SmallEnum: {e}")
@@ -186,6 +187,7 @@ impl ::fbthrift::ThriftEnum for SignedEnum {
         self.0 as i32
     }
 
+    #[allow(clippy::useless_conversion)]
     fn from_inner_value(inner_value: i32) -> ::anyhow::Result<Self> {
         inner_value.try_into().map(Self).map_err(|e| {
             ::anyhow::anyhow!("Value {inner_value} is out of range for SignedEnum: {e}")
@@ -322,6 +324,7 @@ impl ::fbthrift::ThriftEnum for MediumEnum {
         self.0 as i32
     }
 
+    #[allow(clippy::useless_conversion)]
     fn from_inner_value(inner_value: i32) -> ::anyhow::Result<Self> {
         inner_value.try_into().map(Self).map_err(|e| {
             ::anyhow::anyhow!("Value {inner_value} is out of range for MediumEnum: {e}")
@@ -456,6 +459,7 @@ impl ::fbthrift::ThriftEnum for LargeEnum {
         self.0 as i32
     }
 
+    #[allow(clippy::useless_conversion)]
     fn from_inner_value(inner_value: i32) -> ::anyhow::Result<Self> {
         inner_value.try_into().map(Self).map_err(|e| {
             ::anyhow::anyhow!("Value {inner_value} is out of range for LargeEnum: {e}")
@@ -590,6 +594,7 @@ impl ::fbthrift::ThriftEnum for DefaultEnum {
         self.0 as i32
     }
 
+    #[allow(clippy::useless_conversion)]
     fn from_inner_value(inner_value: i32) -> ::anyhow::Result<Self> {
         inner_value.try_into().map(Self).map_err(|e| {
             ::anyhow::anyhow!("Value {inner_value} is out of range for DefaultEnum: {e}")

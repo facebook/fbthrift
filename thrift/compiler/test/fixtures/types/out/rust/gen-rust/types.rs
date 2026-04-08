@@ -493,6 +493,7 @@ impl ::fbthrift::ThriftEnum for has_bitwise_ops {
         self.0 as i32
     }
 
+    #[allow(clippy::useless_conversion)]
     fn from_inner_value(inner_value: i32) -> ::anyhow::Result<Self> {
         inner_value.try_into().map(Self).map_err(|e| {
             ::anyhow::anyhow!("Value {inner_value} is out of range for has_bitwise_ops: {e}")
@@ -633,6 +634,7 @@ impl ::fbthrift::ThriftEnum for is_unscoped {
         self.0 as i32
     }
 
+    #[allow(clippy::useless_conversion)]
     fn from_inner_value(inner_value: i32) -> ::anyhow::Result<Self> {
         inner_value.try_into().map(Self).map_err(|e| {
             ::anyhow::anyhow!("Value {inner_value} is out of range for is_unscoped: {e}")
@@ -767,6 +769,7 @@ impl ::fbthrift::ThriftEnum for MyForwardRefEnum {
         self.0 as i32
     }
 
+    #[allow(clippy::useless_conversion)]
     fn from_inner_value(inner_value: i32) -> ::anyhow::Result<Self> {
         inner_value.try_into().map(Self).map_err(|e| {
             ::anyhow::anyhow!("Value {inner_value} is out of range for MyForwardRefEnum: {e}")

@@ -264,6 +264,7 @@ impl ::fbthrift::ThriftEnum for E1 {
         self.0 as i32
     }
 
+    #[allow(clippy::useless_conversion)]
     fn from_inner_value(inner_value: i32) -> ::anyhow::Result<Self> {
         inner_value.try_into().map(Self).map_err(|e| {
             ::anyhow::anyhow!("Value {inner_value} is out of range for E1: {e}")
@@ -384,6 +385,7 @@ impl ::fbthrift::ThriftEnum for F2 {
         self.0 as i32
     }
 
+    #[allow(clippy::useless_conversion)]
     fn from_inner_value(inner_value: i32) -> ::anyhow::Result<Self> {
         inner_value.try_into().map(Self).map_err(|e| {
             ::anyhow::anyhow!("Value {inner_value} is out of range for E2: {e}")
@@ -508,6 +510,7 @@ impl ::fbthrift::ThriftEnum for EnumWithDerives {
         self.0 as i32
     }
 
+    #[allow(clippy::useless_conversion)]
     fn from_inner_value(inner_value: i32) -> ::anyhow::Result<Self> {
         inner_value.try_into().map(Self).map_err(|e| {
             ::anyhow::anyhow!("Value {inner_value} is out of range for EnumWithDerives: {e}")
