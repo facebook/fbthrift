@@ -61,6 +61,16 @@ Map<
   {{/if type.java_type?}}
 {{/let partial}}
 
+{{! Resolves through typedef layers (that don't override java_type) before
+    calling boxed_type. This produces the underlying concrete boxed type
+    for container instantiation (e.g. HashSet, ArrayList, HashMap). }}
+{{#let export partial resolved_boxed_type |type field_hasAdapter| captures |boxed_type|}}
+  {{#pragma ignore-newlines}}
+{{#if (and type.typedef? (not type.java_type?))}}{{#partial resolved_boxed_type type=type.resolved field_hasAdapter=field_hasAdapter}}
+{{#else}}{{#partial boxed_type type=type field_hasAdapter=field_hasAdapter}}
+{{/if (and type.typedef? (not type.java_type?))}}
+{{/let partial}}
+
 {{! Resolves the boxed type for Thrift serialization, handling binary/string
     types with adapter context for ByteBuf vs byte[] resolution.
     Recurses through typedefs one layer at a time. }}

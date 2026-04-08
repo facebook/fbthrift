@@ -34,7 +34,7 @@ public static {{struct:javaCapitalName}} read0(TProtocol oprot) throws TExceptio
           {{#field:type}}{{!
           }}{{field:nestedDepth++}}
           {{#type:container?}}{{!
-          }}{{> ResolvedBoxedType}} _fbthriftVar{{field:nestedDepth}};{{!
+          }}{{#partial types.resolved_boxed_type type=type:self field_hasAdapter=field:hasAdapter?}} _fbthriftVar{{field:nestedDepth}};{{!
           }}{{/type:container?}}{{!
           }}{{^type:container?}}{{!
           }}{{> ThriftFieldType}} _fbthriftVar{{field:nestedDepth}};{{!
