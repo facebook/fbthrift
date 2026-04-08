@@ -22,7 +22,7 @@
     }}{{^field:hasFieldAdapter?}}{{field:self.type.adapterTypeClassName}}{{/field:hasFieldAdapter?}}{{!
   }}{{/field:hasAdapter?}}{{!
   }}{{^field:hasAdapter?}}{{!
-    }}{{#field:optional?}}{{#field:type}}{{> BoxedType}}{{/field:type}}{{/field:optional?}}{{!
+    }}{{#field:optional?}}{{#partial types.boxed_type type=field:self.type field_hasAdapter=field:self.hasAdapter?}}{{/field:optional?}}{{!
     }}{{^field:optional?}}{{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}}{{/field:optional?}}{{!
   }}{{/field:hasAdapter?}}{{!
 }}{{/field:hasWrapper?}}

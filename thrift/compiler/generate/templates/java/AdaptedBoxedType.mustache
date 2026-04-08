@@ -40,7 +40,7 @@
     }}{{/type:isBinaryString?}}{{!
   }}{{/type:typedef?}}{{!
   }}{{^type:typedef?}}{{!
-    }}{{> BoxedType}}{{!
+    }}{{#partial types.boxed_type type=type:self field_hasAdapter=field:hasAdapter?}}{{!
   }}{{/type:typedef?}}{{!
 
 }}{{/type:java_type}}
