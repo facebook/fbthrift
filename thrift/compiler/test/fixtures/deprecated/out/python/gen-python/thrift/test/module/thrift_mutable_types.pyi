@@ -50,18 +50,18 @@ class User(_fbthrift_python_mutable_types.MutableStruct, _fbthrift_python_abstra
 
     def __init__(
         self, *,
-        id: _typing.Optional[builtins.int]=...,
-        name: _typing.Optional[builtins.str]=...,
-        full_name: _typing.Optional[builtins.str]=...,
+        id: builtins.int=...,
+        name: builtins.str=...,
+        full_name: builtins.str=...,
         email: _typing.Optional[builtins.str]=...,
         email_address: _typing.Optional[builtins.str]=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        id: _typing.Optional[builtins.int]=...,
-        name: _typing.Optional[builtins.str]=...,
-        full_name: _typing.Optional[builtins.str]=...,
+        id: builtins.int=...,
+        name: builtins.str=...,
+        full_name: builtins.str=...,
         email: _typing.Optional[builtins.str]=...,
         email_address: _typing.Optional[builtins.str]=...
     ) -> _typing.Self: ...
@@ -91,9 +91,9 @@ class ExampleUnion(_fbthrift_python_mutable_types.MutableUnion, _fbthrift_python
 
     def __init__(
         self, *,
-        stringValue: _typing.Optional[builtins.str]=...,
-        intValue: _typing.Optional[builtins.int]=...,
-        doubleValue: _typing.Optional[builtins.float]=...
+        stringValue: builtins.str=...,
+        intValue: builtins.int=...,
+        doubleValue: builtins.float=...
     ) -> None: ...
 
 

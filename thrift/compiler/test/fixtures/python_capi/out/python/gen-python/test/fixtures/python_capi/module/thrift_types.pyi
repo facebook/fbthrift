@@ -46,26 +46,26 @@ class MyStruct(_fbthrift_python_types.Struct, _fbthrift_python_abstract_types.My
     intSetty: _typing.Final[_typing.AbstractSet[builtins.int]] = ...
     def __init__(
         self, *,
-        inty: _typing.Optional[builtins.int]=...,
-        stringy: _typing.Optional[builtins.str]=...,
-        myItemy: _typing.Optional[_fbthrift_MyDataItem]=...,
-        myEnumy: _typing.Optional[_fbthrift_MyEnum]=...,
-        booly: _typing.Optional[builtins.bool]=...,
-        floatListy: _typing.Optional[_typing.Sequence[builtins.float]]=...,
-        strMappy: _typing.Optional[_typing.Mapping[builtins.bytes, builtins.str]]=...,
-        intSetty: _typing.Optional[_typing.AbstractSet[builtins.int]]=...
+        inty: builtins.int=...,
+        stringy: builtins.str=...,
+        myItemy: _fbthrift_MyDataItem=...,
+        myEnumy: _fbthrift_MyEnum=...,
+        booly: builtins.bool=...,
+        floatListy: _typing.Sequence[builtins.float]=...,
+        strMappy: _typing.Mapping[builtins.bytes, builtins.str]=...,
+        intSetty: _typing.AbstractSet[builtins.int]=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        inty: _typing.Optional[builtins.int]=...,
-        stringy: _typing.Optional[builtins.str]=...,
-        myItemy: _typing.Optional[_fbthrift_MyDataItem]=...,
-        myEnumy: _typing.Optional[_fbthrift_MyEnum]=...,
-        booly: _typing.Optional[builtins.bool]=...,
-        floatListy: _typing.Optional[_typing.Sequence[builtins.float]]=...,
-        strMappy: _typing.Optional[_typing.Mapping[builtins.bytes, builtins.str]]=...,
-        intSetty: _typing.Optional[_typing.AbstractSet[builtins.int]]=...
+        inty: builtins.int=...,
+        stringy: builtins.str=...,
+        myItemy: _fbthrift_MyDataItem=...,
+        myEnumy: _fbthrift_MyEnum=...,
+        booly: builtins.bool=...,
+        floatListy: _typing.Sequence[builtins.float]=...,
+        strMappy: _typing.Mapping[builtins.bytes, builtins.str]=...,
+        intSetty: _typing.AbstractSet[builtins.int]=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.int, builtins.str, _fbthrift_MyDataItem, _fbthrift_MyEnum, builtins.bool, _fbthrift_python_types.ImmutableList[builtins.float], _typing.Mapping[builtins.bytes, builtins.str], _typing.AbstractSet[builtins.int]]]]: ...
     def _to_python(self) -> _typing.Self: ...
@@ -79,12 +79,12 @@ class MyDataItem(_fbthrift_python_types.Struct, _fbthrift_python_abstract_types.
     s: _typing.Final[builtins.str] = ...
     def __init__(
         self, *,
-        s: _typing.Optional[builtins.str]=...
+        s: builtins.str=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        s: _typing.Optional[builtins.str]=...
+        s: builtins.str=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.str]]]: ...
     def _to_python(self) -> _typing.Self: ...
@@ -115,14 +115,14 @@ class DoubledPair(_fbthrift_python_types.Struct, _fbthrift_python_abstract_types
     x: _typing.Final[builtins.int] = ...
     def __init__(
         self, *,
-        s: _typing.Optional[builtins.str]=...,
-        x: _typing.Optional[builtins.int]=...
+        s: builtins.str=...,
+        x: builtins.int=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        s: _typing.Optional[builtins.str]=...,
-        x: _typing.Optional[builtins.int]=...
+        s: builtins.str=...,
+        x: builtins.int=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.str, builtins.int]]]: ...
     def _to_python(self) -> _typing.Self: ...
@@ -137,14 +137,14 @@ class StringPair(_fbthrift_python_types.Struct, _fbthrift_python_abstract_types.
     doubled: _typing.Final[builtins.str] = ...
     def __init__(
         self, *,
-        normal: _typing.Optional[builtins.str]=...,
-        doubled: _typing.Optional[builtins.str]=...
+        normal: builtins.str=...,
+        doubled: builtins.str=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        normal: _typing.Optional[builtins.str]=...,
-        doubled: _typing.Optional[builtins.str]=...
+        normal: builtins.str=...,
+        doubled: builtins.str=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.str, builtins.str]]]: ...
     def _to_python(self) -> _typing.Self: ...
@@ -189,42 +189,42 @@ class PrimitiveStruct(_fbthrift_python_types.Struct, _fbthrift_python_abstract_t
     some_error: _typing.Final[_fbthrift__test__fixtures__python_capi__thrift_dep__thrift_types.SomeError] = ...
     def __init__(
         self, *,
-        booly: _typing.Optional[builtins.bool]=...,
-        charry: _typing.Optional[builtins.int]=...,
-        shorty: _typing.Optional[builtins.int]=...,
-        inty: _typing.Optional[builtins.int]=...,
-        longy: _typing.Optional[builtins.int]=...,
+        booly: builtins.bool=...,
+        charry: builtins.int=...,
+        shorty: builtins.int=...,
+        inty: builtins.int=...,
+        longy: builtins.int=...,
         floaty: _typing.Optional[builtins.float]=...,
         dubby: _typing.Optional[builtins.float]=...,
         stringy: _typing.Optional[builtins.str]=...,
         bytey: _typing.Optional[builtins.bytes]=...,
-        buffy: _typing.Optional[_fbthrift_iobuf.IOBuf]=...,
-        pointbuffy: _typing.Optional[_fbthrift_iobuf.IOBuf]=...,
-        patched_struct: _typing.Optional[_fbthrift_MyStruct]=...,
-        empty_struct: _typing.Optional[_fbthrift_EmptyStruct]=...,
-        fbstring: _typing.Optional[builtins.bytes]=...,
-        managed_string_view: _typing.Optional[builtins.str]=...,
-        some_error: _typing.Optional[_fbthrift__test__fixtures__python_capi__thrift_dep__thrift_types._fbthrift_SomeError]=...
+        buffy: _fbthrift_iobuf.IOBuf=...,
+        pointbuffy: _fbthrift_iobuf.IOBuf=...,
+        patched_struct: _fbthrift_MyStruct=...,
+        empty_struct: _fbthrift_EmptyStruct=...,
+        fbstring: builtins.bytes=...,
+        managed_string_view: builtins.str=...,
+        some_error: _fbthrift__test__fixtures__python_capi__thrift_dep__thrift_types._fbthrift_SomeError=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        booly: _typing.Optional[builtins.bool]=...,
-        charry: _typing.Optional[builtins.int]=...,
-        shorty: _typing.Optional[builtins.int]=...,
-        inty: _typing.Optional[builtins.int]=...,
-        longy: _typing.Optional[builtins.int]=...,
+        booly: builtins.bool=...,
+        charry: builtins.int=...,
+        shorty: builtins.int=...,
+        inty: builtins.int=...,
+        longy: builtins.int=...,
         floaty: _typing.Optional[builtins.float]=...,
         dubby: _typing.Optional[builtins.float]=...,
         stringy: _typing.Optional[builtins.str]=...,
         bytey: _typing.Optional[builtins.bytes]=...,
-        buffy: _typing.Optional[_fbthrift_iobuf.IOBuf]=...,
-        pointbuffy: _typing.Optional[_fbthrift_iobuf.IOBuf]=...,
-        patched_struct: _typing.Optional[_fbthrift_MyStruct]=...,
-        empty_struct: _typing.Optional[_fbthrift_EmptyStruct]=...,
-        fbstring: _typing.Optional[builtins.bytes]=...,
-        managed_string_view: _typing.Optional[builtins.str]=...,
-        some_error: _typing.Optional[_fbthrift__test__fixtures__python_capi__thrift_dep__thrift_types._fbthrift_SomeError]=...
+        buffy: _fbthrift_iobuf.IOBuf=...,
+        pointbuffy: _fbthrift_iobuf.IOBuf=...,
+        patched_struct: _fbthrift_MyStruct=...,
+        empty_struct: _fbthrift_EmptyStruct=...,
+        fbstring: builtins.bytes=...,
+        managed_string_view: builtins.str=...,
+        some_error: _fbthrift__test__fixtures__python_capi__thrift_dep__thrift_types._fbthrift_SomeError=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.bool, builtins.int, builtins.int, builtins.int, builtins.int, builtins.float, builtins.float, builtins.str, builtins.bytes, _fbthrift_iobuf.IOBuf, _fbthrift_iobuf.IOBuf, _fbthrift_MyStruct, _fbthrift_EmptyStruct, builtins.bytes, builtins.str, _fbthrift__test__fixtures__python_capi__thrift_dep__thrift_types.SomeError]]]: ...
     def _to_python(self) -> _typing.Self: ...
@@ -241,18 +241,18 @@ class AdaptedFields(_fbthrift_python_types.Struct, _fbthrift_python_abstract_typ
     inline_adapted_int: _typing.Final[builtins.int] = ...
     def __init__(
         self, *,
-        adapted_int: _typing.Optional[builtins.int]=...,
-        list_adapted_int: _typing.Optional[_typing.Sequence[builtins.int]]=...,
-        set_adapted_int: _typing.Optional[_typing.AbstractSet[builtins.int]]=...,
-        inline_adapted_int: _typing.Optional[builtins.int]=...
+        adapted_int: builtins.int=...,
+        list_adapted_int: _typing.Sequence[builtins.int]=...,
+        set_adapted_int: _typing.AbstractSet[builtins.int]=...,
+        inline_adapted_int: builtins.int=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        adapted_int: _typing.Optional[builtins.int]=...,
-        list_adapted_int: _typing.Optional[_typing.Sequence[builtins.int]]=...,
-        set_adapted_int: _typing.Optional[_typing.AbstractSet[builtins.int]]=...,
-        inline_adapted_int: _typing.Optional[builtins.int]=...
+        adapted_int: builtins.int=...,
+        list_adapted_int: _typing.Sequence[builtins.int]=...,
+        set_adapted_int: _typing.AbstractSet[builtins.int]=...,
+        inline_adapted_int: builtins.int=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.int, _fbthrift_python_types.ImmutableList[builtins.int], _typing.AbstractSet[builtins.int], builtins.int]]]: ...
     def _to_python(self) -> _typing.Self: ...
@@ -274,28 +274,28 @@ class ListStruct(_fbthrift_python_types.Struct, _fbthrift_python_abstract_types.
     buf_ptrs: _typing.Final[_fbthrift_python_types.ImmutableList[_fbthrift_iobuf.IOBuf]] = ...
     def __init__(
         self, *,
-        boolz: _typing.Optional[_typing.Sequence[builtins.bool]]=...,
+        boolz: _typing.Sequence[builtins.bool]=...,
         intz: _typing.Optional[_typing.Sequence[builtins.int]]=...,
         stringz: _typing.Optional[_typing.Sequence[builtins.str]]=...,
-        encoded: _typing.Optional[_typing.Sequence[builtins.bytes]]=...,
-        uidz: _typing.Optional[_typing.Sequence[builtins.int]]=...,
-        matrix: _typing.Optional[_typing.Sequence[_typing.Sequence[builtins.float]]]=...,
-        ucharz: _typing.Optional[_typing.Sequence[_typing.Sequence[builtins.int]]]=...,
-        voxels: _typing.Optional[_typing.Sequence[_typing.Sequence[_typing.Sequence[builtins.int]]]]=...,
-        buf_ptrs: _typing.Optional[_typing.Sequence[_fbthrift_iobuf.IOBuf]]=...
+        encoded: _typing.Sequence[builtins.bytes]=...,
+        uidz: _typing.Sequence[builtins.int]=...,
+        matrix: _typing.Sequence[_typing.Sequence[builtins.float]]=...,
+        ucharz: _typing.Sequence[_typing.Sequence[builtins.int]]=...,
+        voxels: _typing.Sequence[_typing.Sequence[_typing.Sequence[builtins.int]]]=...,
+        buf_ptrs: _typing.Sequence[_fbthrift_iobuf.IOBuf]=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        boolz: _typing.Optional[_typing.Sequence[builtins.bool]]=...,
+        boolz: _typing.Sequence[builtins.bool]=...,
         intz: _typing.Optional[_typing.Sequence[builtins.int]]=...,
         stringz: _typing.Optional[_typing.Sequence[builtins.str]]=...,
-        encoded: _typing.Optional[_typing.Sequence[builtins.bytes]]=...,
-        uidz: _typing.Optional[_typing.Sequence[builtins.int]]=...,
-        matrix: _typing.Optional[_typing.Sequence[_typing.Sequence[builtins.float]]]=...,
-        ucharz: _typing.Optional[_typing.Sequence[_typing.Sequence[builtins.int]]]=...,
-        voxels: _typing.Optional[_typing.Sequence[_typing.Sequence[_typing.Sequence[builtins.int]]]]=...,
-        buf_ptrs: _typing.Optional[_typing.Sequence[_fbthrift_iobuf.IOBuf]]=...
+        encoded: _typing.Sequence[builtins.bytes]=...,
+        uidz: _typing.Sequence[builtins.int]=...,
+        matrix: _typing.Sequence[_typing.Sequence[builtins.float]]=...,
+        ucharz: _typing.Sequence[_typing.Sequence[builtins.int]]=...,
+        voxels: _typing.Sequence[_typing.Sequence[_typing.Sequence[builtins.int]]]=...,
+        buf_ptrs: _typing.Sequence[_fbthrift_iobuf.IOBuf]=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[_fbthrift_python_types.ImmutableList[builtins.bool], _fbthrift_python_types.ImmutableList[builtins.int], _fbthrift_python_types.ImmutableList[builtins.str], _fbthrift_python_types.ImmutableList[builtins.bytes], _fbthrift_python_types.ImmutableList[builtins.int], _fbthrift_python_types.ImmutableList[_fbthrift_python_types.ImmutableList[builtins.float]], _fbthrift_python_types.ImmutableList[_fbthrift_python_types.ImmutableList[builtins.int]], _fbthrift_python_types.ImmutableList[_fbthrift_python_types.ImmutableList[_fbthrift_python_types.ImmutableList[builtins.int]]], _fbthrift_python_types.ImmutableList[_fbthrift_iobuf.IOBuf]]]]: ...
     def _to_python(self) -> _typing.Self: ...
@@ -315,24 +315,24 @@ class SetStruct(_fbthrift_python_types.Struct, _fbthrift_python_abstract_types.S
     setz: _typing.Final[_fbthrift_python_types.ImmutableList[_typing.AbstractSet[builtins.int]]] = ...
     def __init__(
         self, *,
-        enumz: _typing.Optional[_typing.AbstractSet[_fbthrift_MyEnum]]=...,
+        enumz: _typing.AbstractSet[_fbthrift_MyEnum]=...,
         intz: _typing.Optional[_typing.AbstractSet[builtins.int]]=...,
         binnaz: _typing.Optional[_typing.AbstractSet[builtins.bytes]]=...,
-        encoded: _typing.Optional[_typing.AbstractSet[builtins.bytes]]=...,
-        uidz: _typing.Optional[_typing.AbstractSet[builtins.int]]=...,
-        charz: _typing.Optional[_typing.AbstractSet[builtins.int]]=...,
-        setz: _typing.Optional[_typing.Sequence[_typing.AbstractSet[builtins.int]]]=...
+        encoded: _typing.AbstractSet[builtins.bytes]=...,
+        uidz: _typing.AbstractSet[builtins.int]=...,
+        charz: _typing.AbstractSet[builtins.int]=...,
+        setz: _typing.Sequence[_typing.AbstractSet[builtins.int]]=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        enumz: _typing.Optional[_typing.AbstractSet[_fbthrift_MyEnum]]=...,
+        enumz: _typing.AbstractSet[_fbthrift_MyEnum]=...,
         intz: _typing.Optional[_typing.AbstractSet[builtins.int]]=...,
         binnaz: _typing.Optional[_typing.AbstractSet[builtins.bytes]]=...,
-        encoded: _typing.Optional[_typing.AbstractSet[builtins.bytes]]=...,
-        uidz: _typing.Optional[_typing.AbstractSet[builtins.int]]=...,
-        charz: _typing.Optional[_typing.AbstractSet[builtins.int]]=...,
-        setz: _typing.Optional[_typing.Sequence[_typing.AbstractSet[builtins.int]]]=...
+        encoded: _typing.AbstractSet[builtins.bytes]=...,
+        uidz: _typing.AbstractSet[builtins.int]=...,
+        charz: _typing.AbstractSet[builtins.int]=...,
+        setz: _typing.Sequence[_typing.AbstractSet[builtins.int]]=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[_typing.AbstractSet[_fbthrift_MyEnum], _typing.AbstractSet[builtins.int], _typing.AbstractSet[builtins.bytes], _typing.AbstractSet[builtins.bytes], _typing.AbstractSet[builtins.int], _typing.AbstractSet[builtins.int], _fbthrift_python_types.ImmutableList[_typing.AbstractSet[builtins.int]]]]]: ...
     def _to_python(self) -> _typing.Self: ...
@@ -355,30 +355,30 @@ class MapStruct(_fbthrift_python_types.Struct, _fbthrift_python_abstract_types.M
     unsigned_list_map: _typing.Final[_typing.Mapping[builtins.int, _fbthrift_python_types.ImmutableList[builtins.int]]] = ...
     def __init__(
         self, *,
-        enumz: _typing.Optional[_typing.Mapping[_fbthrift_MyEnum, builtins.str]]=...,
+        enumz: _typing.Mapping[_fbthrift_MyEnum, builtins.str]=...,
         intz: _typing.Optional[_typing.Mapping[builtins.int, builtins.str]]=...,
         binnaz: _typing.Optional[_typing.Mapping[builtins.bytes, _fbthrift_PrimitiveStruct]]=...,
-        encoded: _typing.Optional[_typing.Mapping[builtins.str, builtins.float]]=...,
-        flotz: _typing.Optional[_typing.Mapping[builtins.int, builtins.float]]=...,
-        map_list: _typing.Optional[_typing.Sequence[_typing.Mapping[builtins.int, builtins.int]]]=...,
-        list_map: _typing.Optional[_typing.Mapping[builtins.int, _typing.Sequence[builtins.int]]]=...,
-        fast_list_map: _typing.Optional[_typing.Mapping[builtins.int, _typing.Sequence[builtins.float]]]=...,
-        buf_map: _typing.Optional[_typing.Mapping[builtins.bytes, _fbthrift_iobuf.IOBuf]]=...,
-        unsigned_list_map: _typing.Optional[_typing.Mapping[builtins.int, _typing.Sequence[builtins.int]]]=...
+        encoded: _typing.Mapping[builtins.str, builtins.float]=...,
+        flotz: _typing.Mapping[builtins.int, builtins.float]=...,
+        map_list: _typing.Sequence[_typing.Mapping[builtins.int, builtins.int]]=...,
+        list_map: _typing.Mapping[builtins.int, _typing.Sequence[builtins.int]]=...,
+        fast_list_map: _typing.Mapping[builtins.int, _typing.Sequence[builtins.float]]=...,
+        buf_map: _typing.Mapping[builtins.bytes, _fbthrift_iobuf.IOBuf]=...,
+        unsigned_list_map: _typing.Mapping[builtins.int, _typing.Sequence[builtins.int]]=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        enumz: _typing.Optional[_typing.Mapping[_fbthrift_MyEnum, builtins.str]]=...,
+        enumz: _typing.Mapping[_fbthrift_MyEnum, builtins.str]=...,
         intz: _typing.Optional[_typing.Mapping[builtins.int, builtins.str]]=...,
         binnaz: _typing.Optional[_typing.Mapping[builtins.bytes, _fbthrift_PrimitiveStruct]]=...,
-        encoded: _typing.Optional[_typing.Mapping[builtins.str, builtins.float]]=...,
-        flotz: _typing.Optional[_typing.Mapping[builtins.int, builtins.float]]=...,
-        map_list: _typing.Optional[_typing.Sequence[_typing.Mapping[builtins.int, builtins.int]]]=...,
-        list_map: _typing.Optional[_typing.Mapping[builtins.int, _typing.Sequence[builtins.int]]]=...,
-        fast_list_map: _typing.Optional[_typing.Mapping[builtins.int, _typing.Sequence[builtins.float]]]=...,
-        buf_map: _typing.Optional[_typing.Mapping[builtins.bytes, _fbthrift_iobuf.IOBuf]]=...,
-        unsigned_list_map: _typing.Optional[_typing.Mapping[builtins.int, _typing.Sequence[builtins.int]]]=...
+        encoded: _typing.Mapping[builtins.str, builtins.float]=...,
+        flotz: _typing.Mapping[builtins.int, builtins.float]=...,
+        map_list: _typing.Sequence[_typing.Mapping[builtins.int, builtins.int]]=...,
+        list_map: _typing.Mapping[builtins.int, _typing.Sequence[builtins.int]]=...,
+        fast_list_map: _typing.Mapping[builtins.int, _typing.Sequence[builtins.float]]=...,
+        buf_map: _typing.Mapping[builtins.bytes, _fbthrift_iobuf.IOBuf]=...,
+        unsigned_list_map: _typing.Mapping[builtins.int, _typing.Sequence[builtins.int]]=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[_typing.Mapping[_fbthrift_MyEnum, builtins.str], _typing.Mapping[builtins.int, builtins.str], _typing.Mapping[builtins.bytes, _fbthrift_PrimitiveStruct], _typing.Mapping[builtins.str, builtins.float], _typing.Mapping[builtins.int, builtins.float], _fbthrift_python_types.ImmutableList[_typing.Mapping[builtins.int, builtins.int]], _typing.Mapping[builtins.int, _fbthrift_python_types.ImmutableList[builtins.int]], _typing.Mapping[builtins.int, _fbthrift_python_types.ImmutableList[builtins.float]], _typing.Mapping[builtins.bytes, _fbthrift_iobuf.IOBuf], _typing.Mapping[builtins.int, _fbthrift_python_types.ImmutableList[builtins.int]]]]]: ...
     def _to_python(self) -> _typing.Self: ...
@@ -401,30 +401,30 @@ class ComposeStruct(_fbthrift_python_types.Struct, _fbthrift_python_abstract_typ
     serial_error: _typing.Final[_fbthrift__test__fixtures__python_capi__serialized_dep__thrift_types.SerializedError] = ...
     def __init__(
         self, *,
-        enum_: _typing.Optional[_fbthrift_MyEnum]=...,
-        renamed_: _typing.Optional[_fbthrift_AnnoyingEnum]=...,
-        primitive: _typing.Optional[_fbthrift_PrimitiveStruct]=...,
-        aliased: _typing.Optional[_fbthrift_ListStruct]=...,
-        xenum: _typing.Optional[_fbthrift__test__fixtures__python_capi__thrift_dep__thrift_types._fbthrift_DepEnum]=...,
-        xstruct: _typing.Optional[_fbthrift__test__fixtures__python_capi__thrift_dep__thrift_types._fbthrift_DepStruct]=...,
-        friends: _typing.Optional[_typing.Sequence[_fbthrift__test__fixtures__python_capi__thrift_dep__thrift_types._fbthrift_DepStruct]]=...,
-        serial_struct: _typing.Optional[_fbthrift__test__fixtures__python_capi__serialized_dep__thrift_types._fbthrift_SerializedStruct]=...,
-        serial_union: _typing.Optional[_fbthrift__test__fixtures__python_capi__serialized_dep__thrift_types._fbthrift_SerializedUnion]=...,
-        serial_error: _typing.Optional[_fbthrift__test__fixtures__python_capi__serialized_dep__thrift_types._fbthrift_SerializedError]=...
+        enum_: _fbthrift_MyEnum=...,
+        renamed_: _fbthrift_AnnoyingEnum=...,
+        primitive: _fbthrift_PrimitiveStruct=...,
+        aliased: _fbthrift_ListStruct=...,
+        xenum: _fbthrift__test__fixtures__python_capi__thrift_dep__thrift_types._fbthrift_DepEnum=...,
+        xstruct: _fbthrift__test__fixtures__python_capi__thrift_dep__thrift_types._fbthrift_DepStruct=...,
+        friends: _typing.Sequence[_fbthrift__test__fixtures__python_capi__thrift_dep__thrift_types._fbthrift_DepStruct]=...,
+        serial_struct: _fbthrift__test__fixtures__python_capi__serialized_dep__thrift_types._fbthrift_SerializedStruct=...,
+        serial_union: _fbthrift__test__fixtures__python_capi__serialized_dep__thrift_types._fbthrift_SerializedUnion=...,
+        serial_error: _fbthrift__test__fixtures__python_capi__serialized_dep__thrift_types._fbthrift_SerializedError=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        enum_: _typing.Optional[_fbthrift_MyEnum]=...,
-        renamed_: _typing.Optional[_fbthrift_AnnoyingEnum]=...,
-        primitive: _typing.Optional[_fbthrift_PrimitiveStruct]=...,
-        aliased: _typing.Optional[_fbthrift_ListStruct]=...,
-        xenum: _typing.Optional[_fbthrift__test__fixtures__python_capi__thrift_dep__thrift_types._fbthrift_DepEnum]=...,
-        xstruct: _typing.Optional[_fbthrift__test__fixtures__python_capi__thrift_dep__thrift_types._fbthrift_DepStruct]=...,
-        friends: _typing.Optional[_typing.Sequence[_fbthrift__test__fixtures__python_capi__thrift_dep__thrift_types._fbthrift_DepStruct]]=...,
-        serial_struct: _typing.Optional[_fbthrift__test__fixtures__python_capi__serialized_dep__thrift_types._fbthrift_SerializedStruct]=...,
-        serial_union: _typing.Optional[_fbthrift__test__fixtures__python_capi__serialized_dep__thrift_types._fbthrift_SerializedUnion]=...,
-        serial_error: _typing.Optional[_fbthrift__test__fixtures__python_capi__serialized_dep__thrift_types._fbthrift_SerializedError]=...
+        enum_: _fbthrift_MyEnum=...,
+        renamed_: _fbthrift_AnnoyingEnum=...,
+        primitive: _fbthrift_PrimitiveStruct=...,
+        aliased: _fbthrift_ListStruct=...,
+        xenum: _fbthrift__test__fixtures__python_capi__thrift_dep__thrift_types._fbthrift_DepEnum=...,
+        xstruct: _fbthrift__test__fixtures__python_capi__thrift_dep__thrift_types._fbthrift_DepStruct=...,
+        friends: _typing.Sequence[_fbthrift__test__fixtures__python_capi__thrift_dep__thrift_types._fbthrift_DepStruct]=...,
+        serial_struct: _fbthrift__test__fixtures__python_capi__serialized_dep__thrift_types._fbthrift_SerializedStruct=...,
+        serial_union: _fbthrift__test__fixtures__python_capi__serialized_dep__thrift_types._fbthrift_SerializedUnion=...,
+        serial_error: _fbthrift__test__fixtures__python_capi__serialized_dep__thrift_types._fbthrift_SerializedError=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[_fbthrift_MyEnum, _fbthrift_AnnoyingEnum, _fbthrift_PrimitiveStruct, _fbthrift_ListStruct, _fbthrift__test__fixtures__python_capi__thrift_dep__thrift_types.DepEnum, _fbthrift__test__fixtures__python_capi__thrift_dep__thrift_types.DepStruct, _fbthrift_python_types.ImmutableList[_fbthrift__test__fixtures__python_capi__thrift_dep__thrift_types.DepStruct], _fbthrift__test__fixtures__python_capi__serialized_dep__thrift_types.SerializedStruct, _fbthrift__test__fixtures__python_capi__serialized_dep__thrift_types.SerializedUnion, _fbthrift__test__fixtures__python_capi__serialized_dep__thrift_types.SerializedError]]]: ...
     def _to_python(self) -> _typing.Self: ...
@@ -444,13 +444,13 @@ class Onion(_fbthrift_python_types.Union, _fbthrift_python_abstract_types.Onion)
     adapted_int: _typing.Final[builtins.int] = ...
     def __init__(
         self, *,
-        myEnum: _typing.Optional[_fbthrift_MyEnum]=...,
-        myStruct: _typing.Optional[_fbthrift_PrimitiveStruct]=...,
-        myString: _typing.Optional[builtins.str]=...,
-        intSet: _typing.Optional[_typing.AbstractSet[builtins.int]]=...,
-        doubleList: _typing.Optional[_typing.Sequence[builtins.float]]=...,
-        strMap: _typing.Optional[_typing.Mapping[builtins.bytes, builtins.str]]=...,
-        adapted_int: _typing.Optional[builtins.int]=...
+        myEnum: _fbthrift_MyEnum=...,
+        myStruct: _fbthrift_PrimitiveStruct=...,
+        myString: builtins.str=...,
+        intSet: _typing.AbstractSet[builtins.int]=...,
+        doubleList: _typing.Sequence[builtins.float]=...,
+        strMap: _typing.Mapping[builtins.bytes, builtins.str]=...,
+        adapted_int: builtins.int=...
     ) -> None: ...
 
 
@@ -494,9 +494,9 @@ class SomeBinary(_fbthrift_python_types.Union, _fbthrift_python_abstract_types.S
     iobufRef: _typing.Final[_fbthrift_iobuf.IOBuf] = ...
     def __init__(
         self, *,
-        iobuf: _typing.Optional[_fbthrift_iobuf.IOBuf]=...,
-        iobuf_ptr: _typing.Optional[_fbthrift_iobuf.IOBuf]=...,
-        iobufRef: _typing.Optional[_fbthrift_iobuf.IOBuf]=...
+        iobuf: _fbthrift_iobuf.IOBuf=...,
+        iobuf_ptr: _fbthrift_iobuf.IOBuf=...,
+        iobufRef: _fbthrift_iobuf.IOBuf=...
     ) -> None: ...
 
 

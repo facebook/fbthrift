@@ -33,8 +33,8 @@ class _fbthrift_MyService_query_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        s: _typing.Optional[_fbthrift__module__thrift_types._fbthrift_MyStruct]=...,
-        i: _typing.Optional[_fbthrift__includes__thrift_types._fbthrift_Included]=...
+        s: _fbthrift__module__thrift_types._fbthrift_MyStruct=...,
+        i: _fbthrift__includes__thrift_types._fbthrift_Included=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -62,8 +62,8 @@ class _fbthrift_MyService_has_arg_docs_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        s: _typing.Optional[_fbthrift__module__thrift_types._fbthrift_MyStruct]=...,
-        i: _typing.Optional[_fbthrift__includes__thrift_types._fbthrift_Included]=...
+        s: _fbthrift__module__thrift_types._fbthrift_MyStruct=...,
+        i: _fbthrift__includes__thrift_types._fbthrift_Included=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
