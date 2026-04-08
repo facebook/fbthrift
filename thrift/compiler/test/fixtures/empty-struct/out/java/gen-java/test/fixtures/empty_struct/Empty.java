@@ -30,7 +30,6 @@ public final class Empty implements com.facebook.thrift.payload.ThriftSerializab
     }
 
 
-
     public static Builder builder() {
       return new Builder();
     }
@@ -41,7 +40,7 @@ public final class Empty implements com.facebook.thrift.payload.ThriftSerializab
 
     public static class Builder {
 
-    public Builder() { }
+        public Builder() { }
         public Builder(Empty other) {
         }
 

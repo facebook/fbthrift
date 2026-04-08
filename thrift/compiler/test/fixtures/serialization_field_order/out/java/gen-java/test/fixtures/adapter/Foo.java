@@ -62,14 +62,14 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
 
         public int getField1() { return field1; }
 
-            @com.facebook.swift.codec.ThriftField(value=1, name="field2", requiredness=Requiredness.NONE)    public Builder setField2(int field2) {
+        @com.facebook.swift.codec.ThriftField(value=1, name="field2", requiredness=Requiredness.NONE)    public Builder setField2(int field2) {
             this.field2 = field2;
             return this;
         }
 
         public int getField2() { return field2; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="field3", requiredness=Requiredness.NONE)    public Builder setField3(int field3) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="field3", requiredness=Requiredness.NONE)    public Builder setField3(int field3) {
             this.field3 = field3;
             return this;
         }

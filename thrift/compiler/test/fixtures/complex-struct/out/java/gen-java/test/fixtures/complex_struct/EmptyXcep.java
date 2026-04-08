@@ -38,10 +38,9 @@ public final class EmptyXcep extends org.apache.thrift.TBaseException implements
     }
 
 
-
     public static class Builder {
 
-    public Builder() { }
+        public Builder() { }
         public Builder(EmptyXcep other) {
         }
 

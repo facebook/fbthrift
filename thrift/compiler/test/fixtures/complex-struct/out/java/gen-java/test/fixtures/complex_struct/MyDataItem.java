@@ -30,7 +30,6 @@ public final class MyDataItem implements com.facebook.thrift.payload.ThriftSeria
     }
 
 
-
     public static Builder builder() {
       return new Builder();
     }
@@ -41,7 +40,7 @@ public final class MyDataItem implements com.facebook.thrift.payload.ThriftSeria
 
     public static class Builder {
 
-    public Builder() { }
+        public Builder() { }
         public Builder(MyDataItem other) {
         }
 

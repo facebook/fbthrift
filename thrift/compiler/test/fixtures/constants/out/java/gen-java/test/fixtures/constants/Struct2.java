@@ -66,21 +66,21 @@ public final class Struct2 implements com.facebook.thrift.payload.ThriftSerializ
 
         public int getA() { return a; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="b", requiredness=Requiredness.NONE)    public Builder setB(String b) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="b", requiredness=Requiredness.NONE)    public Builder setB(String b) {
             this.b = b;
             return this;
         }
 
         public String getB() { return b; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="c", requiredness=Requiredness.NONE)    public Builder setC(test.fixtures.constants.Struct1 c) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="c", requiredness=Requiredness.NONE)    public Builder setC(test.fixtures.constants.Struct1 c) {
             this.c = c;
             return this;
         }
 
         public test.fixtures.constants.Struct1 getC() { return c; }
 
-            @com.facebook.swift.codec.ThriftField(value=4, name="d", requiredness=Requiredness.NONE)    public Builder setD(List<Integer> d) {
+        @com.facebook.swift.codec.ThriftField(value=4, name="d", requiredness=Requiredness.NONE)    public Builder setD(List<Integer> d) {
             this.d = d;
             return this;
         }

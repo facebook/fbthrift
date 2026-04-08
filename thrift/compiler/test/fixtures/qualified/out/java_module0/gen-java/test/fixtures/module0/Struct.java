@@ -58,7 +58,7 @@ public final class Struct implements com.facebook.thrift.payload.ThriftSerializa
 
         public int getFirst() { return first; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="second", requiredness=Requiredness.NONE)    public Builder setSecond(String second) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="second", requiredness=Requiredness.NONE)    public Builder setSecond(String second) {
             this.second = second;
             return this;
         }

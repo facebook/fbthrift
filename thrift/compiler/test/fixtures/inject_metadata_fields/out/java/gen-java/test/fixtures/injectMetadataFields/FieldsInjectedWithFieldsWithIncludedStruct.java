@@ -58,7 +58,7 @@ public final class FieldsInjectedWithFieldsWithIncludedStruct implements com.fac
 
         public String getStringField() { return stringField; }
 
-            @com.facebook.swift.codec.ThriftField(value=-1001, name="injected_field", isLegacyId=true, requiredness=Requiredness.NONE)    public Builder setInjectedField(test.fixtures.injectMetadataFields.InjectedField injectedField) {
+        @com.facebook.swift.codec.ThriftField(value=-1001, name="injected_field", isLegacyId=true, requiredness=Requiredness.NONE)    public Builder setInjectedField(test.fixtures.injectMetadataFields.InjectedField injectedField) {
             this.injectedField = injectedField;
             return this;
         }

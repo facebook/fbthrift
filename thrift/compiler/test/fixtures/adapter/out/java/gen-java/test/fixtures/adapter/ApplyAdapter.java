@@ -30,7 +30,6 @@ public final class ApplyAdapter implements com.facebook.thrift.payload.ThriftSer
     }
 
 
-
     public static Builder builder() {
       return new Builder();
     }
@@ -41,7 +40,7 @@ public final class ApplyAdapter implements com.facebook.thrift.payload.ThriftSer
 
     public static class Builder {
 
-    public Builder() { }
+        public Builder() { }
         public Builder(ApplyAdapter other) {
         }
 

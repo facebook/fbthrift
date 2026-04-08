@@ -86,56 +86,56 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
 
         public long getMajor() { return major; }
 
-            @com.facebook.swift.codec.ThriftField(value=1, name="abstract", requiredness=Requiredness.NONE)    public Builder setAbstract(String _abstract) {
+        @com.facebook.swift.codec.ThriftField(value=1, name="abstract", requiredness=Requiredness.NONE)    public Builder setAbstract(String _abstract) {
             this._abstract = _abstract;
             return this;
         }
 
         public String getAbstract() { return _abstract; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="annotation_with_quote", requiredness=Requiredness.NONE)    public Builder setAnnotationWithQuote(String annotationWithQuote) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="annotation_with_quote", requiredness=Requiredness.NONE)    public Builder setAnnotationWithQuote(String annotationWithQuote) {
             this.annotationWithQuote = annotationWithQuote;
             return this;
         }
 
         public String getAnnotationWithQuote() { return annotationWithQuote; }
 
-            @com.facebook.swift.codec.ThriftField(value=4, name="class_", requiredness=Requiredness.NONE)    public Builder setClass_(String class_) {
+        @com.facebook.swift.codec.ThriftField(value=4, name="class_", requiredness=Requiredness.NONE)    public Builder setClass_(String class_) {
             this.class_ = class_;
             return this;
         }
 
         public String getClass_() { return class_; }
 
-            @com.facebook.swift.codec.ThriftField(value=5, name="annotation_with_trailing_comma", requiredness=Requiredness.NONE)    public Builder setAnnotationWithTrailingComma(String annotationWithTrailingComma) {
+        @com.facebook.swift.codec.ThriftField(value=5, name="annotation_with_trailing_comma", requiredness=Requiredness.NONE)    public Builder setAnnotationWithTrailingComma(String annotationWithTrailingComma) {
             this.annotationWithTrailingComma = annotationWithTrailingComma;
             return this;
         }
 
         public String getAnnotationWithTrailingComma() { return annotationWithTrailingComma; }
 
-            @com.facebook.swift.codec.ThriftField(value=6, name="empty_annotations", requiredness=Requiredness.NONE)    public Builder setEmptyAnnotations(String emptyAnnotations) {
+        @com.facebook.swift.codec.ThriftField(value=6, name="empty_annotations", requiredness=Requiredness.NONE)    public Builder setEmptyAnnotations(String emptyAnnotations) {
             this.emptyAnnotations = emptyAnnotations;
             return this;
         }
 
         public String getEmptyAnnotations() { return emptyAnnotations; }
 
-            @com.facebook.swift.codec.ThriftField(value=7, name="my_enum", requiredness=Requiredness.NONE)    public Builder setMyEnum(test.fixtures.basicannotations.MyEnum myEnum) {
+        @com.facebook.swift.codec.ThriftField(value=7, name="my_enum", requiredness=Requiredness.NONE)    public Builder setMyEnum(test.fixtures.basicannotations.MyEnum myEnum) {
             this.myEnum = myEnum;
             return this;
         }
 
         public test.fixtures.basicannotations.MyEnum getMyEnum() { return myEnum; }
 
-            @com.facebook.swift.codec.ThriftField(value=8, name="cpp_type_annotation", requiredness=Requiredness.NONE)    public Builder setCppTypeAnnotation(List<String> cppTypeAnnotation) {
+        @com.facebook.swift.codec.ThriftField(value=8, name="cpp_type_annotation", requiredness=Requiredness.NONE)    public Builder setCppTypeAnnotation(List<String> cppTypeAnnotation) {
             this.cppTypeAnnotation = cppTypeAnnotation;
             return this;
         }
 
         public List<String> getCppTypeAnnotation() { return cppTypeAnnotation; }
 
-            @com.facebook.swift.codec.ThriftField(value=9, name="my_union", requiredness=Requiredness.NONE)    public Builder setMyUnion(test.fixtures.basicannotations.MyUnion myUnion) {
+        @com.facebook.swift.codec.ThriftField(value=9, name="my_union", requiredness=Requiredness.NONE)    public Builder setMyUnion(test.fixtures.basicannotations.MyUnion myUnion) {
             this.myUnion = myUnion;
             return this;
         }

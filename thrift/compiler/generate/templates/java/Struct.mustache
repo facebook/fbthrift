@@ -41,7 +41,7 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @com.facebook.swift.codec.ThriftStruct(value="{{struct:name}}", builder={{struct:javaCapitalName}}.Builder.class){{#struct:javaAnnotations?}} {{struct:javaAnnotations}} {{/struct:javaAnnotations?}}
 {{/struct:asBean?}}
 public final class {{struct:javaCapitalName}} implements com.facebook.thrift.payload.ThriftSerializable {
-    {{> struct/ThriftConstructor}}
+    {{#partial struct.thrift_constructor struct=struct:self}}
 
     public static Builder builder() {
       return new Builder();
@@ -51,7 +51,7 @@ public final class {{struct:javaCapitalName}} implements com.facebook.thrift.pay
       return new Builder(other);
     }
 
-    {{> struct/StructBuilder}}
+    {{#partial struct.struct_builder struct=struct:self}}
     {{> struct/AdapterDefinition}}
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();

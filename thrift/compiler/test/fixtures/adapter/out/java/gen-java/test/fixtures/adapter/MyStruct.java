@@ -58,7 +58,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
 
         public int getField() { return field; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="set_string", requiredness=Requiredness.NONE)    public Builder setSetString(com.facebook.thrift.my.AdaptedSet_2 setString) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="set_string", requiredness=Requiredness.NONE)    public Builder setSetString(com.facebook.thrift.my.AdaptedSet_2 setString) {
             this.setString = setString;
             return this;
         }

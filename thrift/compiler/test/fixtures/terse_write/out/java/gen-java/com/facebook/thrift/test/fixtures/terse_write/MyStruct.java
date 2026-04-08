@@ -30,7 +30,6 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     }
 
 
-
     public static Builder builder() {
       return new Builder();
     }
@@ -41,7 +40,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
 
     public static class Builder {
 
-    public Builder() { }
+        public Builder() { }
         public Builder(MyStruct other) {
         }
 

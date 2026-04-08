@@ -70,28 +70,28 @@ public final class User implements com.facebook.thrift.payload.ThriftSerializabl
 
         public long getId() { return id; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="name", requiredness=Requiredness.NONE)    public Builder setName(String name) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="name", requiredness=Requiredness.NONE)    public Builder setName(String name) {
             this.name = name;
             return this;
         }
 
         public String getName() { return name; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="full_name", requiredness=Requiredness.NONE)    public Builder setFullName(String fullName) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="full_name", requiredness=Requiredness.NONE)    public Builder setFullName(String fullName) {
             this.fullName = fullName;
             return this;
         }
 
         public String getFullName() { return fullName; }
 
-            @com.facebook.swift.codec.ThriftField(value=4, name="email", requiredness=Requiredness.OPTIONAL)    public Builder setEmail(String email) {
+        @com.facebook.swift.codec.ThriftField(value=4, name="email", requiredness=Requiredness.OPTIONAL)    public Builder setEmail(String email) {
             this.email = email;
             return this;
         }
 
         public String getEmail() { return email; }
 
-            @com.facebook.swift.codec.ThriftField(value=5, name="email_address", requiredness=Requiredness.OPTIONAL)    public Builder setEmailAddress(String emailAddress) {
+        @com.facebook.swift.codec.ThriftField(value=5, name="email_address", requiredness=Requiredness.OPTIONAL)    public Builder setEmailAddress(String emailAddress) {
             this.emailAddress = emailAddress;
             return this;
         }

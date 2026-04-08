@@ -62,14 +62,14 @@ public final class TerseAdaptedFields implements com.facebook.thrift.payload.Thr
 
         public int getIntField() { return intField; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="string_field", requiredness=Requiredness.TERSE)    public Builder setStringField(String stringField) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="string_field", requiredness=Requiredness.TERSE)    public Builder setStringField(String stringField) {
             this.stringField = stringField;
             return this;
         }
 
         public String getStringField() { return stringField; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="set_field", requiredness=Requiredness.TERSE)    public Builder setSetField(Set<Integer> setField) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="set_field", requiredness=Requiredness.TERSE)    public Builder setSetField(Set<Integer> setField) {
             this.setField = setField;
             return this;
         }

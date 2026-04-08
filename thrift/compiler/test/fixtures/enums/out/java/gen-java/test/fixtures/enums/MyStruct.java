@@ -66,21 +66,21 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
 
         public test.fixtures.enums.MyEnum2 getMe23() { return me23; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="me3_n3", requiredness=Requiredness.NONE)    public Builder setMe3N3(test.fixtures.enums.MyEnum3 me3N3) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="me3_n3", requiredness=Requiredness.NONE)    public Builder setMe3N3(test.fixtures.enums.MyEnum3 me3N3) {
             this.me3N3 = me3N3;
             return this;
         }
 
         public test.fixtures.enums.MyEnum3 getMe3N3() { return me3N3; }
 
-            @com.facebook.swift.codec.ThriftField(value=4, name="me1_t1", requiredness=Requiredness.NONE)    public Builder setMe1T1(test.fixtures.enums.MyEnum1 me1T1) {
+        @com.facebook.swift.codec.ThriftField(value=4, name="me1_t1", requiredness=Requiredness.NONE)    public Builder setMe1T1(test.fixtures.enums.MyEnum1 me1T1) {
             this.me1T1 = me1T1;
             return this;
         }
 
         public test.fixtures.enums.MyEnum1 getMe1T1() { return me1T1; }
 
-            @com.facebook.swift.codec.ThriftField(value=6, name="me1_t2", requiredness=Requiredness.NONE)    public Builder setMe1T2(test.fixtures.enums.MyEnum1 me1T2) {
+        @com.facebook.swift.codec.ThriftField(value=6, name="me1_t2", requiredness=Requiredness.NONE)    public Builder setMe1T2(test.fixtures.enums.MyEnum1 me1T2) {
             this.me1T2 = me1T2;
             return this;
         }

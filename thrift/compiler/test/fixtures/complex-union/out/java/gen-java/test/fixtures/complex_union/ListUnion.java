@@ -240,11 +240,10 @@ public final class ListUnion implements com.facebook.thrift.payload.ThriftSerial
         List<Long> _fbthriftVar0 = (List<Long>)this.value;
 
         oprot.writeListBegin(new TList(TType.I64, _fbthriftVar0.size()));
-    for (long _fbthriftVar1 : _fbthriftVar0) {
-        oprot.writeI64(_fbthriftVar1);
-    }
-    oprot.writeListEnd();
-
+        for (long _fbthriftVar1 : _fbthriftVar0) {
+            oprot.writeI64(_fbthriftVar1);
+        }
+        oprot.writeListEnd();
         oprot.writeFieldEnd();
         break;
       }
@@ -253,11 +252,10 @@ public final class ListUnion implements com.facebook.thrift.payload.ThriftSerial
         List<String> _fbthriftVar0 = (List<String>)this.value;
 
         oprot.writeListBegin(new TList(TType.STRING, _fbthriftVar0.size()));
-    for (String _fbthriftVar1 : _fbthriftVar0) {
-        oprot.writeString(_fbthriftVar1);
-    }
-    oprot.writeListEnd();
-
+        for (String _fbthriftVar1 : _fbthriftVar0) {
+            oprot.writeString(_fbthriftVar1);
+        }
+        oprot.writeListEnd();
         oprot.writeFieldEnd();
         break;
       }

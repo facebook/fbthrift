@@ -242,7 +242,6 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         int _fbthriftVar0 = (int)this.value;
 
         oprot.writeI32(_fbthriftVar0);
-
         oprot.writeFieldEnd();
         break;
       }
@@ -251,7 +250,6 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         String _fbthriftVar0 = (String)this.value;
 
         oprot.writeString(_fbthriftVar0);
-
         oprot.writeFieldEnd();
         break;
       }

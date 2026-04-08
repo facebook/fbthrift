@@ -62,14 +62,14 @@ public final class Val implements com.facebook.thrift.payload.ThriftSerializable
 
         public String getStrVal() { return strVal; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="intVal", requiredness=Requiredness.NONE)    public Builder setIntVal(int intVal) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="intVal", requiredness=Requiredness.NONE)    public Builder setIntVal(int intVal) {
             this.intVal = intVal;
             return this;
         }
 
         public int getIntVal() { return intVal; }
 
-            @com.facebook.swift.codec.ThriftField(value=9, name="typedefValue", requiredness=Requiredness.NONE)    public Builder setTypedefValue(Map<Short, String> typedefValue) {
+        @com.facebook.swift.codec.ThriftField(value=9, name="typedefValue", requiredness=Requiredness.NONE)    public Builder setTypedefValue(Map<Short, String> typedefValue) {
             this.typedefValue = typedefValue;
             return this;
         }

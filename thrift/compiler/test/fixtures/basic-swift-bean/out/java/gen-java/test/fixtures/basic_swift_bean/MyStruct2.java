@@ -49,7 +49,7 @@ public final class MyStruct2 implements com.facebook.thrift.payload.ThriftSerial
 
         public test.fixtures.basic_swift_bean.MyStruct1 getMyStruct1() { return myStruct1; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="myString", requiredness=Requiredness.NONE)    public Builder setMyString(String myString) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="myString", requiredness=Requiredness.NONE)    public Builder setMyString(String myString) {
             this.myString = myString;
             return this;
         }

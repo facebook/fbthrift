@@ -58,7 +58,7 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
 
         public long getMyLongField() { return myLongField; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="mapListOfFloats", requiredness=Requiredness.NONE)    public Builder setMapListOfFloats(Map<Integer, List<List<Float>>> mapListOfFloats) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="mapListOfFloats", requiredness=Requiredness.NONE)    public Builder setMapListOfFloats(Map<Integer, List<List<Float>>> mapListOfFloats) {
             this.mapListOfFloats = mapListOfFloats;
             return this;
         }

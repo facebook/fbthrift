@@ -58,7 +58,7 @@ public final class MyAnnotation implements com.facebook.thrift.payload.ThriftSer
 
         public String getSignature() { return signature; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="color", requiredness=Requiredness.NONE)    public Builder setColor(test.fixtures.adapter.Color color) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="color", requiredness=Requiredness.NONE)    public Builder setColor(test.fixtures.adapter.Color color) {
             this.color = color;
             return this;
         }

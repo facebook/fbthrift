@@ -110,98 +110,98 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
 
         public com.facebook.thrift.my.AdaptedI32_5137_1 getIntField() { return intField; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="optionalIntField", requiredness=Requiredness.OPTIONAL)    public Builder setOptionalIntField(com.facebook.thrift.my.AdaptedI32_5137_1 optionalIntField) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="optionalIntField", requiredness=Requiredness.OPTIONAL)    public Builder setOptionalIntField(com.facebook.thrift.my.AdaptedI32_5137_1 optionalIntField) {
             this.optionalIntField = optionalIntField;
             return this;
         }
 
         public com.facebook.thrift.my.AdaptedI32_5137_1 getOptionalIntField() { return optionalIntField; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="intFieldWithDefault", requiredness=Requiredness.NONE)    public Builder setIntFieldWithDefault(com.facebook.thrift.my.AdaptedI32_5137_1 intFieldWithDefault) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="intFieldWithDefault", requiredness=Requiredness.NONE)    public Builder setIntFieldWithDefault(com.facebook.thrift.my.AdaptedI32_5137_1 intFieldWithDefault) {
             this.intFieldWithDefault = intFieldWithDefault;
             return this;
         }
 
         public com.facebook.thrift.my.AdaptedI32_5137_1 getIntFieldWithDefault() { return intFieldWithDefault; }
 
-            @com.facebook.swift.codec.ThriftField(value=4, name="setField", requiredness=Requiredness.NONE)    public Builder setSetField(com.facebook.thrift.my.AdaptedSet_2 setField) {
+        @com.facebook.swift.codec.ThriftField(value=4, name="setField", requiredness=Requiredness.NONE)    public Builder setSetField(com.facebook.thrift.my.AdaptedSet_2 setField) {
             this.setField = setField;
             return this;
         }
 
         public com.facebook.thrift.my.AdaptedSet_2 getSetField() { return setField; }
 
-            @com.facebook.swift.codec.ThriftField(value=5, name="optionalSetField", requiredness=Requiredness.OPTIONAL)    public Builder setOptionalSetField(com.facebook.thrift.my.AdaptedSet_2 optionalSetField) {
+        @com.facebook.swift.codec.ThriftField(value=5, name="optionalSetField", requiredness=Requiredness.OPTIONAL)    public Builder setOptionalSetField(com.facebook.thrift.my.AdaptedSet_2 optionalSetField) {
             this.optionalSetField = optionalSetField;
             return this;
         }
 
         public com.facebook.thrift.my.AdaptedSet_2 getOptionalSetField() { return optionalSetField; }
 
-            @com.facebook.swift.codec.ThriftField(value=6, name="mapField", requiredness=Requiredness.NONE)    public Builder setMapField(com.facebook.thrift.my.AdaptedMap_string_ListWithElemAdapter_withAdapter_8454_3 mapField) {
+        @com.facebook.swift.codec.ThriftField(value=6, name="mapField", requiredness=Requiredness.NONE)    public Builder setMapField(com.facebook.thrift.my.AdaptedMap_string_ListWithElemAdapter_withAdapter_8454_3 mapField) {
             this.mapField = mapField;
             return this;
         }
 
         public com.facebook.thrift.my.AdaptedMap_string_ListWithElemAdapter_withAdapter_8454_3 getMapField() { return mapField; }
 
-            @com.facebook.swift.codec.ThriftField(value=7, name="optionalMapField", requiredness=Requiredness.OPTIONAL)    public Builder setOptionalMapField(com.facebook.thrift.my.AdaptedMap_string_ListWithElemAdapter_withAdapter_8454_3 optionalMapField) {
+        @com.facebook.swift.codec.ThriftField(value=7, name="optionalMapField", requiredness=Requiredness.OPTIONAL)    public Builder setOptionalMapField(com.facebook.thrift.my.AdaptedMap_string_ListWithElemAdapter_withAdapter_8454_3 optionalMapField) {
             this.optionalMapField = optionalMapField;
             return this;
         }
 
         public com.facebook.thrift.my.AdaptedMap_string_ListWithElemAdapter_withAdapter_8454_3 getOptionalMapField() { return optionalMapField; }
 
-            @com.facebook.swift.codec.ThriftField(value=8, name="binaryField", requiredness=Requiredness.NONE)    public Builder setBinaryField(com.facebook.thrift.my.AdaptedBinary_5673_3 binaryField) {
+        @com.facebook.swift.codec.ThriftField(value=8, name="binaryField", requiredness=Requiredness.NONE)    public Builder setBinaryField(com.facebook.thrift.my.AdaptedBinary_5673_3 binaryField) {
             this.binaryField = binaryField;
             return this;
         }
 
         public com.facebook.thrift.my.AdaptedBinary_5673_3 getBinaryField() { return binaryField; }
 
-            @com.facebook.swift.codec.ThriftField(value=9, name="longField", requiredness=Requiredness.NONE)    public Builder setLongField(com.facebook.thrift.my.AdaptedI64_1 longField) {
+        @com.facebook.swift.codec.ThriftField(value=9, name="longField", requiredness=Requiredness.NONE)    public Builder setLongField(com.facebook.thrift.my.AdaptedI64_1 longField) {
             this.longField = longField;
             return this;
         }
 
         public com.facebook.thrift.my.AdaptedI64_1 getLongField() { return longField; }
 
-            @com.facebook.swift.codec.ThriftField(value=10, name="adaptedLongField", requiredness=Requiredness.NONE)    public Builder setAdaptedLongField(com.facebook.thrift.my.AdaptedMyI64_2 adaptedLongField) {
+        @com.facebook.swift.codec.ThriftField(value=10, name="adaptedLongField", requiredness=Requiredness.NONE)    public Builder setAdaptedLongField(com.facebook.thrift.my.AdaptedMyI64_2 adaptedLongField) {
             this.adaptedLongField = adaptedLongField;
             return this;
         }
 
         public com.facebook.thrift.my.AdaptedMyI64_2 getAdaptedLongField() { return adaptedLongField; }
 
-            @com.facebook.swift.codec.ThriftField(value=11, name="doubleAdaptedField", requiredness=Requiredness.NONE)    public Builder setDoubleAdaptedField(com.facebook.thrift.my.AdaptedI64_1 doubleAdaptedField) {
+        @com.facebook.swift.codec.ThriftField(value=11, name="doubleAdaptedField", requiredness=Requiredness.NONE)    public Builder setDoubleAdaptedField(com.facebook.thrift.my.AdaptedI64_1 doubleAdaptedField) {
             this.doubleAdaptedField = doubleAdaptedField;
             return this;
         }
 
         public com.facebook.thrift.my.AdaptedI64_1 getDoubleAdaptedField() { return doubleAdaptedField; }
 
-            @com.facebook.swift.codec.ThriftField(value=12, name="adapted_list", requiredness=Requiredness.NONE)    public Builder setAdaptedList(List<Integer> adaptedList) {
+        @com.facebook.swift.codec.ThriftField(value=12, name="adapted_list", requiredness=Requiredness.NONE)    public Builder setAdaptedList(List<Integer> adaptedList) {
             this.adaptedList = adaptedList;
             return this;
         }
 
         public List<Integer> getAdaptedList() { return adaptedList; }
 
-            @com.facebook.swift.codec.ThriftField(value=13, name="adapted_set", requiredness=Requiredness.NONE)    public Builder setAdaptedSet(Set<Integer> adaptedSet) {
+        @com.facebook.swift.codec.ThriftField(value=13, name="adapted_set", requiredness=Requiredness.NONE)    public Builder setAdaptedSet(Set<Integer> adaptedSet) {
             this.adaptedSet = adaptedSet;
             return this;
         }
 
         public Set<Integer> getAdaptedSet() { return adaptedSet; }
 
-            @com.facebook.swift.codec.ThriftField(value=14, name="adapted_map", requiredness=Requiredness.NONE)    public Builder setAdaptedMap(Map<String, Integer> adaptedMap) {
+        @com.facebook.swift.codec.ThriftField(value=14, name="adapted_map", requiredness=Requiredness.NONE)    public Builder setAdaptedMap(Map<String, Integer> adaptedMap) {
             this.adaptedMap = adaptedMap;
             return this;
         }
 
         public Map<String, Integer> getAdaptedMap() { return adaptedMap; }
 
-            @com.facebook.swift.codec.ThriftField(value=15, name="adapted_list_nested", requiredness=Requiredness.NONE)    public Builder setAdaptedListNested(List<List<Map<Integer, Integer>>> adaptedListNested) {
+        @com.facebook.swift.codec.ThriftField(value=15, name="adapted_list_nested", requiredness=Requiredness.NONE)    public Builder setAdaptedListNested(List<List<Map<Integer, Integer>>> adaptedListNested) {
             this.adaptedListNested = adaptedListNested;
             return this;
         }

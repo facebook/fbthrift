@@ -347,7 +347,6 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         test.fixtures.basic.MyEnum _fbthriftVar0 = (test.fixtures.basic.MyEnum)this.value;
 
         oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
-
         oprot.writeFieldEnd();
         break;
       }
@@ -356,7 +355,6 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         test.fixtures.basic.MyStruct _fbthriftVar0 = (test.fixtures.basic.MyStruct)this.value;
 
         _fbthriftVar0.write0(oprot);
-
         oprot.writeFieldEnd();
         break;
       }
@@ -365,7 +363,6 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         test.fixtures.basic.MyDataItem _fbthriftVar0 = (test.fixtures.basic.MyDataItem)this.value;
 
         _fbthriftVar0.write0(oprot);
-
         oprot.writeFieldEnd();
         break;
       }
@@ -374,11 +371,10 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         Set<Float> _fbthriftVar0 = (Set<Float>)this.value;
 
         oprot.writeSetBegin(new TSet(TType.FLOAT, _fbthriftVar0.size()));
-    for (float _fbthriftVar1 : _fbthriftVar0) {
-        oprot.writeFloat(_fbthriftVar1);
-    }
-    oprot.writeSetEnd();
-
+        for (float _fbthriftVar1 : _fbthriftVar0) {
+            oprot.writeFloat(_fbthriftVar1);
+        }
+        oprot.writeSetEnd();
         oprot.writeFieldEnd();
         break;
       }

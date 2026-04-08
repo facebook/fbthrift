@@ -60,9 +60,9 @@ public final class {{struct:javaCapitalName}} extends org.apache.thrift.TBaseExc
       {{/struct:uri}}
     }
 
-    {{> struct/ThriftConstructor}}
+    {{#partial struct.thrift_constructor struct=struct:self}}
 
-    {{> struct/StructBuilder}}
+    {{#partial struct.struct_builder struct=struct:self}}
 
     {{#struct:fields}}
     {{#partial field.field_getter field=field:self}}

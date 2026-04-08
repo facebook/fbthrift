@@ -38,10 +38,9 @@ public final class FooEx extends org.apache.thrift.TBaseException implements com
     }
 
 
-
     public static class Builder {
 
-    public Builder() { }
+        public Builder() { }
         public Builder(FooEx other) {
         }
 

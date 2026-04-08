@@ -240,7 +240,6 @@ public final class ValUnion implements com.facebook.thrift.payload.ThriftSeriali
         test.fixtures.complex_union.Val _fbthriftVar0 = (test.fixtures.complex_union.Val)this.value;
 
         _fbthriftVar0.write0(oprot);
-
         oprot.writeFieldEnd();
         break;
       }
@@ -249,7 +248,6 @@ public final class ValUnion implements com.facebook.thrift.payload.ThriftSeriali
         test.fixtures.complex_union.Val _fbthriftVar0 = (test.fixtures.complex_union.Val)this.value;
 
         _fbthriftVar0.write0(oprot);
-
         oprot.writeFieldEnd();
         break;
       }

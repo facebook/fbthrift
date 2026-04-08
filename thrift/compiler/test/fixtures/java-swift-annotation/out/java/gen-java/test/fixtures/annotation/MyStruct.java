@@ -74,35 +74,35 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
 
         public long getIntField() { return intField; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)    public Builder setStringField(String stringField) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)    public Builder setStringField(String stringField) {
             this.stringField = stringField;
             return this;
         }
 
         public String getStringField() { return stringField; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE)    public Builder setDetailField(String detailField) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE)    public Builder setDetailField(String detailField) {
             this.detailField = detailField;
             return this;
         }
 
         public String getDetailField() { return detailField; }
 
-            @com.facebook.swift.codec.ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE)    public Builder setDetailMap(com.foo.FastIntLongMap detailMap) {
+        @com.facebook.swift.codec.ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE)    public Builder setDetailMap(com.foo.FastIntLongMap detailMap) {
             this.detailMap = detailMap;
             return this;
         }
 
         public com.foo.FastIntLongMap getDetailMap() { return detailMap; }
 
-            @com.facebook.swift.codec.ThriftField(value=5, name="titi", requiredness=Requiredness.NONE)    public Builder setToto(String toto) {
+        @com.facebook.swift.codec.ThriftField(value=5, name="titi", requiredness=Requiredness.NONE)    public Builder setToto(String toto) {
             this.toto = toto;
             return this;
         }
 
         public String getToto() { return toto; }
 
-            @org.apache.thrift.annotations.Sensitive
+        @org.apache.thrift.annotations.Sensitive
         @com.facebook.swift.codec.ThriftField(value=6, name="password", requiredness=Requiredness.NONE)    public Builder setPassword(String password) {
             this.password = password;
             return this;

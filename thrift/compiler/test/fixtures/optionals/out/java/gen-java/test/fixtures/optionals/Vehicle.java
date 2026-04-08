@@ -70,28 +70,28 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
 
         public test.fixtures.optionals.Color getColor() { return color; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="licensePlate", requiredness=Requiredness.OPTIONAL)    public Builder setLicensePlate(String licensePlate) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="licensePlate", requiredness=Requiredness.OPTIONAL)    public Builder setLicensePlate(String licensePlate) {
             this.licensePlate = licensePlate;
             return this;
         }
 
         public String getLicensePlate() { return licensePlate; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="description", requiredness=Requiredness.OPTIONAL)    public Builder setDescription(String description) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="description", requiredness=Requiredness.OPTIONAL)    public Builder setDescription(String description) {
             this.description = description;
             return this;
         }
 
         public String getDescription() { return description; }
 
-            @com.facebook.swift.codec.ThriftField(value=4, name="name", requiredness=Requiredness.OPTIONAL)    public Builder setName(String name) {
+        @com.facebook.swift.codec.ThriftField(value=4, name="name", requiredness=Requiredness.OPTIONAL)    public Builder setName(String name) {
             this.name = name;
             return this;
         }
 
         public String getName() { return name; }
 
-            @com.facebook.swift.codec.ThriftField(value=5, name="hasAC", requiredness=Requiredness.OPTIONAL)    public Builder setHasAC(Boolean hasAC) {
+        @com.facebook.swift.codec.ThriftField(value=5, name="hasAC", requiredness=Requiredness.OPTIONAL)    public Builder setHasAC(Boolean hasAC) {
             this.hasAC = hasAC;
             return this;
         }

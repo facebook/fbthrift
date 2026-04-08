@@ -58,7 +58,7 @@ public final class SecretStruct implements com.facebook.thrift.payload.ThriftSer
 
         public long getId() { return id; }
 
-            @org.apache.thrift.annotations.Sensitive
+        @org.apache.thrift.annotations.Sensitive
         @com.facebook.swift.codec.ThriftField(value=2, name="password", requiredness=Requiredness.NONE)    public Builder setPassword(String password) {
             this.password = password;
             return this;

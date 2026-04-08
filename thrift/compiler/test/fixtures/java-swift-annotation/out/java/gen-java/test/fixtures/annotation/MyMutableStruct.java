@@ -49,7 +49,7 @@ public final class MyMutableStruct implements com.facebook.thrift.payload.Thrift
 
         public long getIntField() { return intField; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)    public Builder setStringField(String stringField) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)    public Builder setStringField(String stringField) {
             this.stringField = stringField;
             return this;
         }

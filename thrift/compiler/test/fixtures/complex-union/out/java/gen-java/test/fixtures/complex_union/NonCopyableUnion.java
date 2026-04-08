@@ -200,7 +200,6 @@ public final class NonCopyableUnion implements com.facebook.thrift.payload.Thrif
         test.fixtures.complex_union.NonCopyableStruct _fbthriftVar0 = (test.fixtures.complex_union.NonCopyableStruct)this.value;
 
         _fbthriftVar0.write0(oprot);
-
         oprot.writeFieldEnd();
         break;
       }

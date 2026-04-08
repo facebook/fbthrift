@@ -30,7 +30,6 @@ public final class HeapAllocated implements com.facebook.thrift.payload.ThriftSe
     }
 
 
-
     public static Builder builder() {
       return new Builder();
     }
@@ -41,7 +40,7 @@ public final class HeapAllocated implements com.facebook.thrift.payload.ThriftSe
 
     public static class Builder {
 
-    public Builder() { }
+        public Builder() { }
         public Builder(HeapAllocated other) {
         }
 

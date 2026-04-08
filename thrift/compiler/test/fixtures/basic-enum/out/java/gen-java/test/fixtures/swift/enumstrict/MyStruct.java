@@ -58,7 +58,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
 
         public test.fixtures.swift.enumstrict.MyEnum getMyEnum() { return myEnum; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="myBigEnum", requiredness=Requiredness.NONE)    public Builder setMyBigEnum(test.fixtures.swift.enumstrict.MyBigEnum myBigEnum) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="myBigEnum", requiredness=Requiredness.NONE)    public Builder setMyBigEnum(test.fixtures.swift.enumstrict.MyBigEnum myBigEnum) {
             this.myBigEnum = myBigEnum;
             return this;
         }

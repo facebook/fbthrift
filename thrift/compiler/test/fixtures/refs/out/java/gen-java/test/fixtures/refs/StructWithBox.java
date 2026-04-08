@@ -62,14 +62,14 @@ public final class StructWithBox implements com.facebook.thrift.payload.ThriftSe
 
         public String getA() { return a; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="b", requiredness=Requiredness.OPTIONAL)    public Builder setB(List<Long> b) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="b", requiredness=Requiredness.OPTIONAL)    public Builder setB(List<Long> b) {
             this.b = b;
             return this;
         }
 
         public List<Long> getB() { return b; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="c", requiredness=Requiredness.OPTIONAL)    public Builder setC(test.fixtures.refs.StructWithRef c) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="c", requiredness=Requiredness.OPTIONAL)    public Builder setC(test.fixtures.refs.StructWithRef c) {
             this.c = c;
             return this;
         }

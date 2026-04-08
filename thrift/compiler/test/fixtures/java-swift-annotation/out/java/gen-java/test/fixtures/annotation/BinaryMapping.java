@@ -58,7 +58,7 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
 
         public Map<String, byte[]> getBinaryMap() { return binaryMap; }
 
-            @com.facebook.swift.codec.ThriftField(value=4, name="regularBinary", requiredness=Requiredness.NONE)    public Builder setRegularBinary(Map<String, byte[]> regularBinary) {
+        @com.facebook.swift.codec.ThriftField(value=4, name="regularBinary", requiredness=Requiredness.NONE)    public Builder setRegularBinary(Map<String, byte[]> regularBinary) {
             this.regularBinary = regularBinary;
             return this;
         }

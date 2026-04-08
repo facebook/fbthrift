@@ -194,7 +194,6 @@ public final class NonTriviallyDestructibleUnion implements com.facebook.thrift.
         int _fbthriftVar0 = (int)this.value;
 
         oprot.writeI32(_fbthriftVar0);
-
         oprot.writeFieldEnd();
         break;
       }

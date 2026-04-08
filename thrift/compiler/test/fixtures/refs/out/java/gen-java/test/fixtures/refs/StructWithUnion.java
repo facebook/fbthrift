@@ -62,14 +62,14 @@ public final class StructWithUnion implements com.facebook.thrift.payload.Thrift
 
         public test.fixtures.refs.MyUnion getU() { return u; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="aDouble", requiredness=Requiredness.NONE)    public Builder setADouble(double aDouble) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="aDouble", requiredness=Requiredness.NONE)    public Builder setADouble(double aDouble) {
             this.aDouble = aDouble;
             return this;
         }
 
         public double getADouble() { return aDouble; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="f", requiredness=Requiredness.NONE)    public Builder setF(test.fixtures.refs.MyField f) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="f", requiredness=Requiredness.NONE)    public Builder setF(test.fixtures.refs.MyField f) {
             this.f = f;
             return this;
         }

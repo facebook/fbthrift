@@ -70,7 +70,7 @@ public final class CustomFieldNames extends org.apache.thrift.TBaseException imp
 
         public String getErrorMessage() { return errorMessage; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="internal_error_message", requiredness=Requiredness.NONE)    public Builder setInternalGreatMessage(String internalGreatMessage) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="internal_error_message", requiredness=Requiredness.NONE)    public Builder setInternalGreatMessage(String internalGreatMessage) {
             this.internalGreatMessage = internalGreatMessage;
             return this;
         }

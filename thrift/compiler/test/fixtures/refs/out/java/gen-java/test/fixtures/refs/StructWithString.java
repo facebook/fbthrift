@@ -70,28 +70,28 @@ public final class StructWithString implements com.facebook.thrift.payload.Thrif
 
         public String getDefUniqueStringRef() { return defUniqueStringRef; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="def_shared_string_ref", requiredness=Requiredness.NONE)    public Builder setDefSharedStringRef(String defSharedStringRef) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="def_shared_string_ref", requiredness=Requiredness.NONE)    public Builder setDefSharedStringRef(String defSharedStringRef) {
             this.defSharedStringRef = defSharedStringRef;
             return this;
         }
 
         public String getDefSharedStringRef() { return defSharedStringRef; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="def_shared_string_const_ref", requiredness=Requiredness.NONE)    public Builder setDefSharedStringConstRef(String defSharedStringConstRef) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="def_shared_string_const_ref", requiredness=Requiredness.NONE)    public Builder setDefSharedStringConstRef(String defSharedStringConstRef) {
             this.defSharedStringConstRef = defSharedStringConstRef;
             return this;
         }
 
         public String getDefSharedStringConstRef() { return defSharedStringConstRef; }
 
-            @com.facebook.swift.codec.ThriftField(value=4, name="unique_string_ref", requiredness=Requiredness.NONE)    public Builder setUniqueStringRef(String uniqueStringRef) {
+        @com.facebook.swift.codec.ThriftField(value=4, name="unique_string_ref", requiredness=Requiredness.NONE)    public Builder setUniqueStringRef(String uniqueStringRef) {
             this.uniqueStringRef = uniqueStringRef;
             return this;
         }
 
         public String getUniqueStringRef() { return uniqueStringRef; }
 
-            @com.facebook.swift.codec.ThriftField(value=5, name="shared_string_ref", requiredness=Requiredness.NONE)    public Builder setSharedStringRef(String sharedStringRef) {
+        @com.facebook.swift.codec.ThriftField(value=5, name="shared_string_ref", requiredness=Requiredness.NONE)    public Builder setSharedStringRef(String sharedStringRef) {
             this.sharedStringRef = sharedStringRef;
             return this;
         }

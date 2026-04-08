@@ -392,7 +392,6 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
           oprot.writeFieldBegin(INT_FIELD_FIELD_DESC);
 
           oprot.writeI32(_fbthriftVar0);
-
           oprot.writeFieldEnd();
         }
         break;
@@ -403,11 +402,10 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
           oprot.writeFieldBegin(SET_FIELD_FIELD_DESC);
 
           oprot.writeSetBegin(new TSet(TType.STRING, _fbthriftVar0.size()));
-    for (String _fbthriftVar1 : _fbthriftVar0) {
-        oprot.writeString(_fbthriftVar1);
-    }
-    oprot.writeSetEnd();
-
+          for (String _fbthriftVar1 : _fbthriftVar0) {
+              oprot.writeString(_fbthriftVar1);
+          }
+          oprot.writeSetEnd();
           oprot.writeFieldEnd();
         }
         break;
@@ -418,24 +416,23 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
           oprot.writeFieldBegin(MAP_FIELD_FIELD_DESC);
 
           oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _fbthriftVar0.size()));
-    for (Map.Entry<String, com.facebook.thrift.my.AdaptedList_2> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-        {
-            String _fbthriftVar2 = _fbthriftVar1.getKey();
-            oprot.writeString(_fbthriftVar2);
-        }
-        {
-            com.facebook.thrift.my.AdaptedList_2 _fbthriftVar2 = _fbthriftVar1.getValue();
-            List<com.facebook.thrift.my.AdaptedString_1> _fbthriftVar3 = __ListWithElemAdapter_withAdapter_2312_Adapter.toThrift(_fbthriftVar2);
-            oprot.writeListBegin(new TList(TType.STRING, _fbthriftVar3.size()));
-            for (com.facebook.thrift.my.AdaptedString_1 _fbthriftVar4 : _fbthriftVar3) {
-                String _fbthriftVar5 = __StringWithAdapter_Adapter.toThrift(_fbthriftVar4);
-                oprot.writeString(_fbthriftVar5);
-            }
-            oprot.writeListEnd();
-        }
-    }
-    oprot.writeMapEnd();
-
+          for (Map.Entry<String, com.facebook.thrift.my.AdaptedList_2> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+              {
+                  String _fbthriftVar2 = _fbthriftVar1.getKey();
+                  oprot.writeString(_fbthriftVar2);
+              }
+              {
+                  com.facebook.thrift.my.AdaptedList_2 _fbthriftVar2 = _fbthriftVar1.getValue();
+                  List<com.facebook.thrift.my.AdaptedString_1> _fbthriftVar3 = __ListWithElemAdapter_withAdapter_2312_Adapter.toThrift(_fbthriftVar2);
+                  oprot.writeListBegin(new TList(TType.STRING, _fbthriftVar3.size()));
+                  for (com.facebook.thrift.my.AdaptedString_1 _fbthriftVar4 : _fbthriftVar3) {
+                      String _fbthriftVar5 = __StringWithAdapter_Adapter.toThrift(_fbthriftVar4);
+                      oprot.writeString(_fbthriftVar5);
+                  }
+                  oprot.writeListEnd();
+              }
+          }
+          oprot.writeMapEnd();
           oprot.writeFieldEnd();
         }
         break;
@@ -446,7 +443,6 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
           oprot.writeFieldBegin(BINARY_FIELD_FIELD_DESC);
 
           org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar0);
-
           oprot.writeFieldEnd();
         }
         break;
@@ -457,7 +453,6 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
           oprot.writeFieldBegin(LONG_FIELD_FIELD_DESC);
 
           oprot.writeI64(_fbthriftVar0);
-
           oprot.writeFieldEnd();
         }
         break;

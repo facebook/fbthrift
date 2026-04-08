@@ -90,63 +90,63 @@ public final class AdaptTestStruct implements com.facebook.thrift.payload.Thrift
 
         public long getDelay() { return delay; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="custom", requiredness=Requiredness.NONE)    public Builder setCustom(byte[] custom) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="custom", requiredness=Requiredness.NONE)    public Builder setCustom(byte[] custom) {
             this.custom = custom;
             return this;
         }
 
         public byte[] getCustom() { return custom; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="timeout", requiredness=Requiredness.NONE)    public Builder setTimeout(long timeout) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="timeout", requiredness=Requiredness.NONE)    public Builder setTimeout(long timeout) {
             this.timeout = timeout;
             return this;
         }
 
         public long getTimeout() { return timeout; }
 
-            @com.facebook.swift.codec.ThriftField(value=4, name="data", requiredness=Requiredness.NONE)    public Builder setData(long data) {
+        @com.facebook.swift.codec.ThriftField(value=4, name="data", requiredness=Requiredness.NONE)    public Builder setData(long data) {
             this.data = data;
             return this;
         }
 
         public long getData() { return data; }
 
-            @com.facebook.swift.codec.ThriftField(value=5, name="meta", requiredness=Requiredness.NONE)    public Builder setMeta(String meta) {
+        @com.facebook.swift.codec.ThriftField(value=5, name="meta", requiredness=Requiredness.NONE)    public Builder setMeta(String meta) {
             this.meta = meta;
             return this;
         }
 
         public String getMeta() { return meta; }
 
-            @com.facebook.swift.codec.ThriftField(value=6, name="indirectionString", requiredness=Requiredness.NONE)    public Builder setIndirectionString(String indirectionString) {
+        @com.facebook.swift.codec.ThriftField(value=6, name="indirectionString", requiredness=Requiredness.NONE)    public Builder setIndirectionString(String indirectionString) {
             this.indirectionString = indirectionString;
             return this;
         }
 
         public String getIndirectionString() { return indirectionString; }
 
-            @com.facebook.swift.codec.ThriftField(value=7, name="string_data", requiredness=Requiredness.NONE)    public Builder setStringData(String stringData) {
+        @com.facebook.swift.codec.ThriftField(value=7, name="string_data", requiredness=Requiredness.NONE)    public Builder setStringData(String stringData) {
             this.stringData = stringData;
             return this;
         }
 
         public String getStringData() { return stringData; }
 
-            @com.facebook.swift.codec.ThriftField(value=8, name="double_wrapped_bool", requiredness=Requiredness.NONE)    public Builder setDoubleWrappedBool(boolean doubleWrappedBool) {
+        @com.facebook.swift.codec.ThriftField(value=8, name="double_wrapped_bool", requiredness=Requiredness.NONE)    public Builder setDoubleWrappedBool(boolean doubleWrappedBool) {
             this.doubleWrappedBool = doubleWrappedBool;
             return this;
         }
 
         public boolean isDoubleWrappedBool() { return doubleWrappedBool; }
 
-            @com.facebook.swift.codec.ThriftField(value=9, name="double_wrapped_integer", requiredness=Requiredness.NONE)    public Builder setDoubleWrappedInteger(int doubleWrappedInteger) {
+        @com.facebook.swift.codec.ThriftField(value=9, name="double_wrapped_integer", requiredness=Requiredness.NONE)    public Builder setDoubleWrappedInteger(int doubleWrappedInteger) {
             this.doubleWrappedInteger = doubleWrappedInteger;
             return this;
         }
 
         public int getDoubleWrappedInteger() { return doubleWrappedInteger; }
 
-            @com.facebook.swift.codec.ThriftField(value=10, name="binary_data", requiredness=Requiredness.NONE)    public Builder setBinaryData(byte[] binaryData) {
+        @com.facebook.swift.codec.ThriftField(value=10, name="binary_data", requiredness=Requiredness.NONE)    public Builder setBinaryData(byte[] binaryData) {
             this.binaryData = binaryData;
             return this;
         }

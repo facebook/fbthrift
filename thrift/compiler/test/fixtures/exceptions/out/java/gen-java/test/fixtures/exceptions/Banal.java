@@ -38,10 +38,9 @@ public final class Banal extends org.apache.thrift.TBaseException implements com
     }
 
 
-
     public static class Builder {
 
-    public Builder() { }
+        public Builder() { }
         public Builder(Banal other) {
         }
 

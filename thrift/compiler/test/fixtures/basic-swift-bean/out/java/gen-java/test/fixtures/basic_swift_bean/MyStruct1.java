@@ -66,21 +66,21 @@ public final class MyStruct1 implements com.facebook.thrift.payload.ThriftSerial
 
         public long getMyIntField() { return myIntField; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)    public Builder setMyStringField(String myStringField) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)    public Builder setMyStringField(String myStringField) {
             this.myStringField = myStringField;
             return this;
         }
 
         public String getMyStringField() { return myStringField; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)    public Builder setMyDataField(test.fixtures.basic_swift_bean.MyDataItem myDataField) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)    public Builder setMyDataField(test.fixtures.basic_swift_bean.MyDataItem myDataField) {
             this.myDataField = myDataField;
             return this;
         }
 
         public test.fixtures.basic_swift_bean.MyDataItem getMyDataField() { return myDataField; }
 
-            @com.facebook.swift.codec.ThriftField(value=4, name="major", requiredness=Requiredness.NONE)    public Builder setMajor(long major) {
+        @com.facebook.swift.codec.ThriftField(value=4, name="major", requiredness=Requiredness.NONE)    public Builder setMajor(long major) {
             this.major = major;
             return this;
         }

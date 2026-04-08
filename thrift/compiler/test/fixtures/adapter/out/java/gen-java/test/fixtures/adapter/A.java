@@ -30,7 +30,6 @@ public final class A implements com.facebook.thrift.payload.ThriftSerializable {
     }
 
 
-
     public static Builder builder() {
       return new Builder();
     }
@@ -41,7 +40,7 @@ public final class A implements com.facebook.thrift.payload.ThriftSerializable {
 
     public static class Builder {
 
-    public Builder() { }
+        public Builder() { }
         public Builder(A other) {
         }
 

@@ -58,7 +58,7 @@ public final class Included implements com.facebook.thrift.payload.ThriftSeriali
 
         public long getMyIntField() { return myIntField; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="MyTransitiveField", requiredness=Requiredness.NONE)    public Builder setMyTransitiveField(test.fixtures.includes.transitive.Foo myTransitiveField) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="MyTransitiveField", requiredness=Requiredness.NONE)    public Builder setMyTransitiveField(test.fixtures.includes.transitive.Foo myTransitiveField) {
             this.myTransitiveField = myTransitiveField;
             return this;
         }

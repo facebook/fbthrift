@@ -38,10 +38,9 @@ public final class FooStreamEx extends org.apache.thrift.TBaseException implemen
     }
 
 
-
     public static class Builder {
 
-    public Builder() { }
+        public Builder() { }
         public Builder(FooStreamEx other) {
         }
 

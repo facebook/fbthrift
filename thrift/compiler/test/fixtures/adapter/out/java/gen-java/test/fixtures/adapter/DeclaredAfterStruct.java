@@ -30,7 +30,6 @@ public final class DeclaredAfterStruct implements com.facebook.thrift.payload.Th
     }
 
 
-
     public static Builder builder() {
       return new Builder();
     }
@@ -41,7 +40,7 @@ public final class DeclaredAfterStruct implements com.facebook.thrift.payload.Th
 
     public static class Builder {
 
-    public Builder() { }
+        public Builder() { }
         public Builder(DeclaredAfterStruct other) {
         }
 

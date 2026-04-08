@@ -66,21 +66,21 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
 
         public String getStringField() { return stringField; }
 
-            @com.facebook.swift.codec.ThriftField(value=-1100, name="injected_field", isLegacyId=true, requiredness=Requiredness.NONE)    public Builder setInjectedField(String injectedField) {
+        @com.facebook.swift.codec.ThriftField(value=-1100, name="injected_field", isLegacyId=true, requiredness=Requiredness.NONE)    public Builder setInjectedField(String injectedField) {
             this.injectedField = injectedField;
             return this;
         }
 
         public String getInjectedField() { return injectedField; }
 
-            @com.facebook.swift.codec.ThriftField(value=-1101, name="injected_structured_annotation_field", isLegacyId=true, requiredness=Requiredness.OPTIONAL)    public Builder setInjectedStructuredAnnotationField(String injectedStructuredAnnotationField) {
+        @com.facebook.swift.codec.ThriftField(value=-1101, name="injected_structured_annotation_field", isLegacyId=true, requiredness=Requiredness.OPTIONAL)    public Builder setInjectedStructuredAnnotationField(String injectedStructuredAnnotationField) {
             this.injectedStructuredAnnotationField = injectedStructuredAnnotationField;
             return this;
         }
 
         public String getInjectedStructuredAnnotationField() { return injectedStructuredAnnotationField; }
 
-            @com.facebook.swift.codec.ThriftField(value=-1102, name="injected_unstructured_annotation_field", isLegacyId=true, requiredness=Requiredness.OPTIONAL)    public Builder setInjectedUnstructuredAnnotationField(String injectedUnstructuredAnnotationField) {
+        @com.facebook.swift.codec.ThriftField(value=-1102, name="injected_unstructured_annotation_field", isLegacyId=true, requiredness=Requiredness.OPTIONAL)    public Builder setInjectedUnstructuredAnnotationField(String injectedUnstructuredAnnotationField) {
             this.injectedUnstructuredAnnotationField = injectedUnstructuredAnnotationField;
             return this;
         }

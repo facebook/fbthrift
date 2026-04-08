@@ -90,63 +90,63 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
 
         public long getId() { return id; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="name", requiredness=Requiredness.NONE)    public Builder setName(String name) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="name", requiredness=Requiredness.NONE)    public Builder setName(String name) {
             this.name = name;
             return this;
         }
 
         public String getName() { return name; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="age", requiredness=Requiredness.OPTIONAL)    public Builder setAge(Short age) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="age", requiredness=Requiredness.OPTIONAL)    public Builder setAge(Short age) {
             this.age = age;
             return this;
         }
 
         public Short getAge() { return age; }
 
-            @com.facebook.swift.codec.ThriftField(value=4, name="address", requiredness=Requiredness.OPTIONAL)    public Builder setAddress(String address) {
+        @com.facebook.swift.codec.ThriftField(value=4, name="address", requiredness=Requiredness.OPTIONAL)    public Builder setAddress(String address) {
             this.address = address;
             return this;
         }
 
         public String getAddress() { return address; }
 
-            @com.facebook.swift.codec.ThriftField(value=5, name="favoriteColor", requiredness=Requiredness.OPTIONAL)    public Builder setFavoriteColor(test.fixtures.optionals.Color favoriteColor) {
+        @com.facebook.swift.codec.ThriftField(value=5, name="favoriteColor", requiredness=Requiredness.OPTIONAL)    public Builder setFavoriteColor(test.fixtures.optionals.Color favoriteColor) {
             this.favoriteColor = favoriteColor;
             return this;
         }
 
         public test.fixtures.optionals.Color getFavoriteColor() { return favoriteColor; }
 
-            @com.facebook.swift.codec.ThriftField(value=6, name="friends", requiredness=Requiredness.OPTIONAL)    public Builder setFriends(Set<Long> friends) {
+        @com.facebook.swift.codec.ThriftField(value=6, name="friends", requiredness=Requiredness.OPTIONAL)    public Builder setFriends(Set<Long> friends) {
             this.friends = friends;
             return this;
         }
 
         public Set<Long> getFriends() { return friends; }
 
-            @com.facebook.swift.codec.ThriftField(value=7, name="bestFriend", requiredness=Requiredness.OPTIONAL)    public Builder setBestFriend(Long bestFriend) {
+        @com.facebook.swift.codec.ThriftField(value=7, name="bestFriend", requiredness=Requiredness.OPTIONAL)    public Builder setBestFriend(Long bestFriend) {
             this.bestFriend = bestFriend;
             return this;
         }
 
         public Long getBestFriend() { return bestFriend; }
 
-            @com.facebook.swift.codec.ThriftField(value=8, name="petNames", requiredness=Requiredness.OPTIONAL)    public Builder setPetNames(Map<test.fixtures.optionals.Animal, String> petNames) {
+        @com.facebook.swift.codec.ThriftField(value=8, name="petNames", requiredness=Requiredness.OPTIONAL)    public Builder setPetNames(Map<test.fixtures.optionals.Animal, String> petNames) {
             this.petNames = petNames;
             return this;
         }
 
         public Map<test.fixtures.optionals.Animal, String> getPetNames() { return petNames; }
 
-            @com.facebook.swift.codec.ThriftField(value=9, name="afraidOfAnimal", requiredness=Requiredness.OPTIONAL)    public Builder setAfraidOfAnimal(test.fixtures.optionals.Animal afraidOfAnimal) {
+        @com.facebook.swift.codec.ThriftField(value=9, name="afraidOfAnimal", requiredness=Requiredness.OPTIONAL)    public Builder setAfraidOfAnimal(test.fixtures.optionals.Animal afraidOfAnimal) {
             this.afraidOfAnimal = afraidOfAnimal;
             return this;
         }
 
         public test.fixtures.optionals.Animal getAfraidOfAnimal() { return afraidOfAnimal; }
 
-            @com.facebook.swift.codec.ThriftField(value=10, name="vehicles", requiredness=Requiredness.OPTIONAL)    public Builder setVehicles(List<test.fixtures.optionals.Vehicle> vehicles) {
+        @com.facebook.swift.codec.ThriftField(value=10, name="vehicles", requiredness=Requiredness.OPTIONAL)    public Builder setVehicles(List<test.fixtures.optionals.Vehicle> vehicles) {
             this.vehicles = vehicles;
             return this;
         }

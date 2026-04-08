@@ -66,21 +66,21 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
 
         public com.foo.FastLongStringMap getLsMap() { return lsMap; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)    public Builder setIoMap(com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)    public Builder setIoMap(com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap) {
             this.ioMap = ioMap;
             return this;
         }
 
         public com.foo.FastIntObjectMap<com.foo.FastIntLongMap> getIoMap() { return ioMap; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="binaryMap", requiredness=Requiredness.NONE)    public Builder setBinaryMap(Map<String, byte[]> binaryMap) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="binaryMap", requiredness=Requiredness.NONE)    public Builder setBinaryMap(Map<String, byte[]> binaryMap) {
             this.binaryMap = binaryMap;
             return this;
         }
 
         public Map<String, byte[]> getBinaryMap() { return binaryMap; }
 
-            @com.facebook.swift.codec.ThriftField(value=4, name="regularBinary", requiredness=Requiredness.NONE)    public Builder setRegularBinary(Map<String, byte[]> regularBinary) {
+        @com.facebook.swift.codec.ThriftField(value=4, name="regularBinary", requiredness=Requiredness.NONE)    public Builder setRegularBinary(Map<String, byte[]> regularBinary) {
             this.regularBinary = regularBinary;
             return this;
         }

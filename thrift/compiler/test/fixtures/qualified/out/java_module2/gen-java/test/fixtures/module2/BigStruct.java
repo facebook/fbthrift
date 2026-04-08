@@ -58,7 +58,7 @@ public final class BigStruct implements com.facebook.thrift.payload.ThriftSerial
 
         public test.fixtures.module2.Struct getS() { return s; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="id", requiredness=Requiredness.NONE)    public Builder setId(int id) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="id", requiredness=Requiredness.NONE)    public Builder setId(int id) {
             this.id = id;
             return this;
         }

@@ -70,7 +70,7 @@ public final class ReqXcep extends org.apache.thrift.TBaseException implements c
 
         public String getMessage() { return message; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="errorCode", requiredness=Requiredness.REQUIRED)    public Builder setErrorCode(int errorCode) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="errorCode", requiredness=Requiredness.REQUIRED)    public Builder setErrorCode(int errorCode) {
             this.errorCode = errorCode;
             return this;
         }

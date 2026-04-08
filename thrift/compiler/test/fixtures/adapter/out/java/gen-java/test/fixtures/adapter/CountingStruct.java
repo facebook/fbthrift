@@ -62,14 +62,14 @@ public final class CountingStruct implements com.facebook.thrift.payload.ThriftS
 
         public Long getRegularInt() { return regularInt; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="countingInt", requiredness=Requiredness.OPTIONAL)    public Builder setCountingInt(Long countingInt) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="countingInt", requiredness=Requiredness.OPTIONAL)    public Builder setCountingInt(Long countingInt) {
             this.countingInt = countingInt;
             return this;
         }
 
         public Long getCountingInt() { return countingInt; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="regularString", requiredness=Requiredness.OPTIONAL)    public Builder setRegularString(String regularString) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="regularString", requiredness=Requiredness.OPTIONAL)    public Builder setRegularString(String regularString) {
             this.regularString = regularString;
             return this;
         }

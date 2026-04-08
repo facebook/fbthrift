@@ -16,6 +16,7 @@
 
 }}
 {{#import "common/types" as types}}
+{{#import "struct/field" as field_helpers}}
 
 {{#let export partial default_instance |struct|}}
 private static class _{{struct.javaCapitalName}}Lazy {
@@ -24,6 +25,147 @@ private static class _{{struct.javaCapitalName}}Lazy {
 
 public static {{struct.javaCapitalName}} defaultInstance() {
     return  _{{struct.javaCapitalName}}Lazy._DEFAULT;
+}
+{{/let partial}}
+
+{{#let export partial thrift_constructor |struct| captures |types field_helpers|}}
+{{#if struct.asBean?}}
+@ThriftConstructor
+public {{struct.javaCapitalName}}() {
+  {{#each struct.fields as |field|}}
+  this.{{field.javaName}} = {{#if field.hasWrapper?}}null{{#else}}{{#partial field_helpers.field_value field=field struct=struct}}{{/if field.hasWrapper?}};
+  {{/each}}
+}
+{{#else}}
+{{#if (not struct.isBigStruct?)}}
+@ThriftConstructor
+public {{struct.javaCapitalName}}(
+    {{#each (array.enumerate struct.fields with_last=true) as |i field last?|}}
+    {{#partial field_helpers.thrift_field_annotation field=field}} final {{#partial types.field_type field=field}} {{field.javaName}}{{#if (not last?)}},{{/if (not last?)}}
+    {{/each}}
+) {
+    {{#each struct.fields as |field|}}
+    this.{{field.javaName}} = {{field.javaName}};
+    {{/each}}
+}
+
+{{/if (not struct.isBigStruct?)}}
+{{#if struct.fields?}}
+@ThriftConstructor
+protected {{struct.javaCapitalName}}() {
+  {{#each struct.fields as |field|}}
+  this.{{field.javaName}} = {{#if field.hasWrapper?}}null{{#else}}{{#partial field_helpers.field_value field=field struct=struct}}{{/if field.hasWrapper?}};
+  {{/each}}
+}
+{{/if struct.fields?}}
+{{/if struct.asBean?}}
+{{/let partial}}
+
+{{#let export partial create_struct |struct|}}
+{{struct.javaCapitalName}} result = new {{struct.javaCapitalName}}();
+{{#each struct.fields as |field|}}
+{{#if field.hasWrapper?}}
+    result.{{field.javaName}} = this.{{field.javaName}} == null ? _{{field.javaName}}_Wrapper.fromThrift(_{{field.javaName}}, new com.facebook.thrift.adapter.FieldContext({{field.id}}, result)) : this.{{field.javaName}};
+{{#else}}
+    result.{{field.javaName}} = this.{{field.javaName}};
+{{/if field.hasWrapper?}}
+{{/each}}
+return result;
+{{/let partial}}
+
+{{#let export partial struct_builder |struct| captures |types field_helpers create_struct|}}
+public static class Builder {
+    {{#each struct.fields as |field|}}
+    private {{#partial types.field_type field=field}} {{field.javaName}} = {{#if field.hasWrapper?}}null{{#else}}{{#partial field_helpers.field_value field=field struct=struct}}{{/if field.hasWrapper?}};
+    {{#if field.hasWrapper?}}
+    private {{#partial types.field_type_no_wrapper field=field}} _{{field.javaName}} = {{#partial field_helpers.field_value_no_wrapper field=field struct=struct}};
+    {{/if field.hasWrapper?}}
+    {{/each}}
+
+    {{#each struct.fields as |field|}}
+    {{#if field.isSensitive?}}
+    @org.apache.thrift.annotations.Sensitive
+    {{/if field.isSensitive?}}
+    {{#partial field_helpers.thrift_field_annotation field=field}}
+    {{#if field.hasWrapper?}}
+    public Builder set{{field.javaCapitalName}}({{field.wrapperType}} {{field.javaName}}) {
+        this.{{field.javaName}} = {{field.javaName}};
+        return this;
+    }
+    private Builder _set{{field.javaCapitalName}}({{#partial types.field_type_no_wrapper field=field}} {{field.javaName}}) {
+        this._{{field.javaName}} = {{field.javaName}};
+        return this;
+    }
+    {{#else}}
+    public Builder set{{field.javaCapitalName}}({{#partial types.field_type field=field}} {{field.javaName}}) {
+        this.{{field.javaName}} = {{field.javaName}};
+        return this;
+    }
+    {{/if field.hasWrapper?}}
+
+    public {{#partial types.field_type field=field}} {{#partial types.getter_name field=field}}() { return {{field.javaName}}; }
+
+    {{/each}}
+    public Builder() { }
+    public Builder({{struct.javaCapitalName}} other) {
+        {{#each struct.fields as |field|}}
+        this.{{field.javaName}} = other.{{field.javaName}};
+        {{/each}}
+    }
+
+    @ThriftConstructor
+    public {{struct.javaCapitalName}} build() {
+       {{#if (and (not struct.isBigStruct?) (not struct.asBean?) (not struct.hasWrapper?))}}
+        {{struct.javaCapitalName}} result = new {{struct.javaCapitalName}} (
+            {{#each (array.enumerate struct.fields with_last=true) as |i field last?|}}
+            this.{{field.javaName}}{{#if (not last?)}},{{/if (not last?)}}
+            {{/each}}
+        );
+        return result;
+        {{#else}}
+        {{#partial create_struct struct=struct}}
+        {{/if (and (not struct.isBigStruct?) (not struct.asBean?) (not struct.hasWrapper?))}}
+    }
+}
+{{/let partial}}
+
+{{#let export partial union_write |struct| captures |types field_helpers|}}
+public void write0(TProtocol oprot) throws TException {
+  if (this.id != 0 && this.value == null ){
+    if(allowNullFieldValues) {
+      // Warning: this path will generate corrupt serialized data!
+      return;
+    } else {
+      throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+    }
+  }
+  oprot.writeStructBegin(STRUCT_DESC);
+  switch (this.id) {
+  {{#each struct.fields as |field|}}
+  case _{{field.javaAllCapsName}}: {
+    {{#if field.hasAdapter?}}
+    {{#partial types.adapted_field_boxed_type type=field.type field_hasAdapter=field.hasAdapter?}} _fbthriftVar0 = {{#partial field_helpers.to_thrift_start field=field}}({{#partial types.field_type field=field}})this.value{{#partial field_helpers.to_thrift_end field=field}};
+    if (_fbthriftVar0 != null) {
+      oprot.writeFieldBegin({{field.javaTFieldName}});
+
+      {{#partial types.write_type field=field type=field.type depth=0}}
+      oprot.writeFieldEnd();
+    }
+    {{#else}}
+    oprot.writeFieldBegin({{field.javaTFieldName}});
+    {{#partial types.field_type field=field}} _fbthriftVar0 = ({{#partial types.field_type field=field}})this.value;
+
+    {{#partial types.write_type field=field type=field.type depth=0}}
+    oprot.writeFieldEnd();
+    {{/if field.hasAdapter?}}
+    break;
+  }
+  {{/each}}
+  default:
+      // ignore unknown field
+  }
+  oprot.writeFieldStop();
+  oprot.writeStructEnd();
 }
 {{/let partial}}
 
@@ -172,18 +314,6 @@ public int hashCode() {
     {{/each}}
     return _hashCode;
 }
-{{/let partial}}
-
-{{#let export partial create_struct |struct|}}
-{{struct.javaCapitalName}} result = new {{struct.javaCapitalName}}();
-{{#each struct.fields as |field|}}
-{{#if field.hasWrapper?}}
-    result.{{field.javaName}} = this.{{field.javaName}} == null ? _{{field.javaName}}_Wrapper.fromThrift(_{{field.javaName}}, new com.facebook.thrift.adapter.FieldContext({{field.id}}, result)) : this.{{field.javaName}};
-{{#else}}
-    result.{{field.javaName}} = this.{{field.javaName}};
-{{/if field.hasWrapper?}}
-{{/each}}
-return result;
 {{/let partial}}
 
 {{#let export partial exception_message |struct|}}

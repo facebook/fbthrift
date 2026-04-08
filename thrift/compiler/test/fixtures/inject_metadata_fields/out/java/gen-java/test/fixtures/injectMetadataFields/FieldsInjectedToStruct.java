@@ -58,7 +58,7 @@ public final class FieldsInjectedToStruct implements com.facebook.thrift.payload
 
         public String getStringField() { return stringField; }
 
-            @com.facebook.swift.codec.ThriftField(value=-1100, name="injected_field", isLegacyId=true, requiredness=Requiredness.NONE)    public Builder setInjectedField(String injectedField) {
+        @com.facebook.swift.codec.ThriftField(value=-1100, name="injected_field", isLegacyId=true, requiredness=Requiredness.NONE)    public Builder setInjectedField(String injectedField) {
             this.injectedField = injectedField;
             return this;
         }

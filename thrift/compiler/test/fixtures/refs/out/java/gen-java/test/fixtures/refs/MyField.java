@@ -86,56 +86,56 @@ public final class MyField implements com.facebook.thrift.payload.ThriftSerializ
 
         public Long getOptValue() { return optValue; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="value", requiredness=Requiredness.NONE)    public Builder setValue(long value) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="value", requiredness=Requiredness.NONE)    public Builder setValue(long value) {
             this.value = value;
             return this;
         }
 
         public long getValue() { return value; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="req_value", requiredness=Requiredness.REQUIRED)    public Builder setReqValue(long reqValue) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="req_value", requiredness=Requiredness.REQUIRED)    public Builder setReqValue(long reqValue) {
             this.reqValue = reqValue;
             return this;
         }
 
         public long getReqValue() { return reqValue; }
 
-            @com.facebook.swift.codec.ThriftField(value=4, name="opt_enum_value", requiredness=Requiredness.OPTIONAL)    public Builder setOptEnumValue(test.fixtures.refs.MyEnum optEnumValue) {
+        @com.facebook.swift.codec.ThriftField(value=4, name="opt_enum_value", requiredness=Requiredness.OPTIONAL)    public Builder setOptEnumValue(test.fixtures.refs.MyEnum optEnumValue) {
             this.optEnumValue = optEnumValue;
             return this;
         }
 
         public test.fixtures.refs.MyEnum getOptEnumValue() { return optEnumValue; }
 
-            @com.facebook.swift.codec.ThriftField(value=5, name="enum_value", requiredness=Requiredness.NONE)    public Builder setEnumValue(test.fixtures.refs.MyEnum enumValue) {
+        @com.facebook.swift.codec.ThriftField(value=5, name="enum_value", requiredness=Requiredness.NONE)    public Builder setEnumValue(test.fixtures.refs.MyEnum enumValue) {
             this.enumValue = enumValue;
             return this;
         }
 
         public test.fixtures.refs.MyEnum getEnumValue() { return enumValue; }
 
-            @com.facebook.swift.codec.ThriftField(value=6, name="req_enum_value", requiredness=Requiredness.REQUIRED)    public Builder setReqEnumValue(test.fixtures.refs.MyEnum reqEnumValue) {
+        @com.facebook.swift.codec.ThriftField(value=6, name="req_enum_value", requiredness=Requiredness.REQUIRED)    public Builder setReqEnumValue(test.fixtures.refs.MyEnum reqEnumValue) {
             this.reqEnumValue = reqEnumValue;
             return this;
         }
 
         public test.fixtures.refs.MyEnum getReqEnumValue() { return reqEnumValue; }
 
-            @com.facebook.swift.codec.ThriftField(value=7, name="opt_str_value", requiredness=Requiredness.OPTIONAL)    public Builder setOptStrValue(String optStrValue) {
+        @com.facebook.swift.codec.ThriftField(value=7, name="opt_str_value", requiredness=Requiredness.OPTIONAL)    public Builder setOptStrValue(String optStrValue) {
             this.optStrValue = optStrValue;
             return this;
         }
 
         public String getOptStrValue() { return optStrValue; }
 
-            @com.facebook.swift.codec.ThriftField(value=8, name="str_value", requiredness=Requiredness.NONE)    public Builder setStrValue(String strValue) {
+        @com.facebook.swift.codec.ThriftField(value=8, name="str_value", requiredness=Requiredness.NONE)    public Builder setStrValue(String strValue) {
             this.strValue = strValue;
             return this;
         }
 
         public String getStrValue() { return strValue; }
 
-            @com.facebook.swift.codec.ThriftField(value=9, name="req_str_value", requiredness=Requiredness.REQUIRED)    public Builder setReqStrValue(String reqStrValue) {
+        @com.facebook.swift.codec.ThriftField(value=9, name="req_str_value", requiredness=Requiredness.REQUIRED)    public Builder setReqStrValue(String reqStrValue) {
             this.reqStrValue = reqStrValue;
             return this;
         }

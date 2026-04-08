@@ -58,7 +58,7 @@ public final class Struct implements com.facebook.thrift.payload.ThriftSerializa
 
         public test.fixtures.module0.Struct getFirst() { return first; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="second", requiredness=Requiredness.NONE)    public Builder setSecond(test.fixtures.module1.Struct second) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="second", requiredness=Requiredness.NONE)    public Builder setSecond(test.fixtures.module1.Struct second) {
             this.second = second;
             return this;
         }

@@ -58,7 +58,7 @@ public final class NoEffect implements com.facebook.thrift.payload.ThriftSeriali
 
         public String getAnSnakeString() { return anSnakeString; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="aCamelI32", requiredness=Requiredness.NONE)    public Builder setACamelI32(int aCamelI32) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="aCamelI32", requiredness=Requiredness.NONE)    public Builder setACamelI32(int aCamelI32) {
             this.aCamelI32 = aCamelI32;
             return this;
         }

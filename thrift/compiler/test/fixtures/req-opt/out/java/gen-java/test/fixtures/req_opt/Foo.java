@@ -66,21 +66,21 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
 
         public int getMyInteger() { return myInteger; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="myString", requiredness=Requiredness.OPTIONAL)    public Builder setMyString(String myString) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="myString", requiredness=Requiredness.OPTIONAL)    public Builder setMyString(String myString) {
             this.myString = myString;
             return this;
         }
 
         public String getMyString() { return myString; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="myBools", requiredness=Requiredness.NONE)    public Builder setMyBools(List<Boolean> myBools) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="myBools", requiredness=Requiredness.NONE)    public Builder setMyBools(List<Boolean> myBools) {
             this.myBools = myBools;
             return this;
         }
 
         public List<Boolean> getMyBools() { return myBools; }
 
-            @com.facebook.swift.codec.ThriftField(value=4, name="myNumbers", requiredness=Requiredness.REQUIRED)    public Builder setMyNumbers(List<Integer> myNumbers) {
+        @com.facebook.swift.codec.ThriftField(value=4, name="myNumbers", requiredness=Requiredness.REQUIRED)    public Builder setMyNumbers(List<Integer> myNumbers) {
             this.myNumbers = myNumbers;
             return this;
         }

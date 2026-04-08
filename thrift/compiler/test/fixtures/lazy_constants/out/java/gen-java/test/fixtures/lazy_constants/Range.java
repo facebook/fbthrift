@@ -58,7 +58,7 @@ public final class Range implements com.facebook.thrift.payload.ThriftSerializab
 
         public int getMin() { return min; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="max", requiredness=Requiredness.REQUIRED)    public Builder setMax(int max) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="max", requiredness=Requiredness.REQUIRED)    public Builder setMax(int max) {
             this.max = max;
             return this;
         }

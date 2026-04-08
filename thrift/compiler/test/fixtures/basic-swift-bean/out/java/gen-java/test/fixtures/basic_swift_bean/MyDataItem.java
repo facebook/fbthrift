@@ -49,7 +49,7 @@ public final class MyDataItem implements com.facebook.thrift.payload.ThriftSeria
 
         public int getField1() { return field1; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="field2", requiredness=Requiredness.NONE)    public Builder setField2(int field2) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="field2", requiredness=Requiredness.NONE)    public Builder setField2(int field2) {
             this.field2 = field2;
             return this;
         }

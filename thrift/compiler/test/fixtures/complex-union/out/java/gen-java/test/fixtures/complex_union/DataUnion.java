@@ -248,7 +248,6 @@ public final class DataUnion implements com.facebook.thrift.payload.ThriftSerial
         byte[] _fbthriftVar0 = (byte[])this.value;
 
         org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar0);
-
         oprot.writeFieldEnd();
         break;
       }
@@ -257,7 +256,6 @@ public final class DataUnion implements com.facebook.thrift.payload.ThriftSerial
         String _fbthriftVar0 = (String)this.value;
 
         oprot.writeString(_fbthriftVar0);
-
         oprot.writeFieldEnd();
         break;
       }

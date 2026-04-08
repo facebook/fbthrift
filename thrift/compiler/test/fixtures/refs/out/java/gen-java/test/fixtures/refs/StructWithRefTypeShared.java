@@ -62,14 +62,14 @@ public final class StructWithRefTypeShared implements com.facebook.thrift.payloa
 
         public test.fixtures.refs.Empty getDefField() { return defField; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="opt_field", requiredness=Requiredness.OPTIONAL)    public Builder setOptField(test.fixtures.refs.Empty optField) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="opt_field", requiredness=Requiredness.OPTIONAL)    public Builder setOptField(test.fixtures.refs.Empty optField) {
             this.optField = optField;
             return this;
         }
 
         public test.fixtures.refs.Empty getOptField() { return optField; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="req_field", requiredness=Requiredness.REQUIRED)    public Builder setReqField(test.fixtures.refs.Empty reqField) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="req_field", requiredness=Requiredness.REQUIRED)    public Builder setReqField(test.fixtures.refs.Empty reqField) {
             this.reqField = reqField;
             return this;
         }

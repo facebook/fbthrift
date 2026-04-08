@@ -82,49 +82,49 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
 
         public test.fixtures.adapter.Foo getStructField() { return structField; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="optionalStructField", requiredness=Requiredness.OPTIONAL)    public Builder setOptionalStructField(test.fixtures.adapter.Foo optionalStructField) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="optionalStructField", requiredness=Requiredness.OPTIONAL)    public Builder setOptionalStructField(test.fixtures.adapter.Foo optionalStructField) {
             this.optionalStructField = optionalStructField;
             return this;
         }
 
         public test.fixtures.adapter.Foo getOptionalStructField() { return optionalStructField; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="structListField", requiredness=Requiredness.NONE)    public Builder setStructListField(List<com.facebook.thrift.my.AdaptedFoo_1> structListField) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="structListField", requiredness=Requiredness.NONE)    public Builder setStructListField(List<com.facebook.thrift.my.AdaptedFoo_1> structListField) {
             this.structListField = structListField;
             return this;
         }
 
         public List<com.facebook.thrift.my.AdaptedFoo_1> getStructListField() { return structListField; }
 
-            @com.facebook.swift.codec.ThriftField(value=4, name="optionalStructListField", requiredness=Requiredness.OPTIONAL)    public Builder setOptionalStructListField(List<com.facebook.thrift.my.AdaptedFoo_1> optionalStructListField) {
+        @com.facebook.swift.codec.ThriftField(value=4, name="optionalStructListField", requiredness=Requiredness.OPTIONAL)    public Builder setOptionalStructListField(List<com.facebook.thrift.my.AdaptedFoo_1> optionalStructListField) {
             this.optionalStructListField = optionalStructListField;
             return this;
         }
 
         public List<com.facebook.thrift.my.AdaptedFoo_1> getOptionalStructListField() { return optionalStructListField; }
 
-            @com.facebook.swift.codec.ThriftField(value=5, name="unionField", requiredness=Requiredness.NONE)    public Builder setUnionField(test.fixtures.adapter.Baz unionField) {
+        @com.facebook.swift.codec.ThriftField(value=5, name="unionField", requiredness=Requiredness.NONE)    public Builder setUnionField(test.fixtures.adapter.Baz unionField) {
             this.unionField = unionField;
             return this;
         }
 
         public test.fixtures.adapter.Baz getUnionField() { return unionField; }
 
-            @com.facebook.swift.codec.ThriftField(value=6, name="optionalUnionField", requiredness=Requiredness.OPTIONAL)    public Builder setOptionalUnionField(test.fixtures.adapter.Baz optionalUnionField) {
+        @com.facebook.swift.codec.ThriftField(value=6, name="optionalUnionField", requiredness=Requiredness.OPTIONAL)    public Builder setOptionalUnionField(test.fixtures.adapter.Baz optionalUnionField) {
             this.optionalUnionField = optionalUnionField;
             return this;
         }
 
         public test.fixtures.adapter.Baz getOptionalUnionField() { return optionalUnionField; }
 
-            @com.facebook.swift.codec.ThriftField(value=7, name="adaptedStructField", requiredness=Requiredness.NONE)    public Builder setAdaptedStructField(test.fixtures.adapter.DirectlyAdapted adaptedStructField) {
+        @com.facebook.swift.codec.ThriftField(value=7, name="adaptedStructField", requiredness=Requiredness.NONE)    public Builder setAdaptedStructField(test.fixtures.adapter.DirectlyAdapted adaptedStructField) {
             this.adaptedStructField = adaptedStructField;
             return this;
         }
 
         public test.fixtures.adapter.DirectlyAdapted getAdaptedStructField() { return adaptedStructField; }
 
-            @com.facebook.swift.codec.ThriftField(value=8, name="structListFieldWithTypedef", requiredness=Requiredness.NONE)    public Builder setStructListFieldWithTypedef(List<test.fixtures.adapter.Foo> structListFieldWithTypedef) {
+        @com.facebook.swift.codec.ThriftField(value=8, name="structListFieldWithTypedef", requiredness=Requiredness.NONE)    public Builder setStructListFieldWithTypedef(List<test.fixtures.adapter.Foo> structListFieldWithTypedef) {
             this.structListFieldWithTypedef = structListFieldWithTypedef;
             return this;
         }

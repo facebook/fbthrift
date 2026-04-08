@@ -66,21 +66,21 @@ public final class StructFieldAdaptedStruct implements com.facebook.thrift.paylo
 
         public test.fixtures.adapter.AdaptedStruct getAdaptedStruct() { return adaptedStruct; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="adaptedTypedef", requiredness=Requiredness.NONE)    public Builder setAdaptedTypedef(test.fixtures.adapter.AdaptedStruct adaptedTypedef) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="adaptedTypedef", requiredness=Requiredness.NONE)    public Builder setAdaptedTypedef(test.fixtures.adapter.AdaptedStruct adaptedTypedef) {
             this.adaptedTypedef = adaptedTypedef;
             return this;
         }
 
         public test.fixtures.adapter.AdaptedStruct getAdaptedTypedef() { return adaptedTypedef; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="directlyAdapted", requiredness=Requiredness.NONE)    public Builder setDirectlyAdapted(test.fixtures.adapter.DirectlyAdaptedStruct directlyAdapted) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="directlyAdapted", requiredness=Requiredness.NONE)    public Builder setDirectlyAdapted(test.fixtures.adapter.DirectlyAdaptedStruct directlyAdapted) {
             this.directlyAdapted = directlyAdapted;
             return this;
         }
 
         public test.fixtures.adapter.DirectlyAdaptedStruct getDirectlyAdapted() { return directlyAdapted; }
 
-            @com.facebook.swift.codec.ThriftField(value=4, name="typedefOfAdapted", requiredness=Requiredness.NONE)    public Builder setTypedefOfAdapted(test.fixtures.adapter.DirectlyAdaptedStruct typedefOfAdapted) {
+        @com.facebook.swift.codec.ThriftField(value=4, name="typedefOfAdapted", requiredness=Requiredness.NONE)    public Builder setTypedefOfAdapted(test.fixtures.adapter.DirectlyAdaptedStruct typedefOfAdapted) {
             this.typedefOfAdapted = typedefOfAdapted;
             return this;
         }

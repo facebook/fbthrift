@@ -58,7 +58,7 @@ public final class SimpleStruct implements com.facebook.thrift.payload.ThriftSer
 
         public long getAge() { return age; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="name", requiredness=Requiredness.NONE)    public Builder setName(String name) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="name", requiredness=Requiredness.NONE)    public Builder setName(String name) {
             this.name = name;
             return this;
         }

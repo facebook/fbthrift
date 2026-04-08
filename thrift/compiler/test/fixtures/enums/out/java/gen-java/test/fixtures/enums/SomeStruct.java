@@ -68,21 +68,21 @@ public final class SomeStruct implements com.facebook.thrift.payload.ThriftSeria
 
         public test.fixtures.enums.Metasyntactic getReasonable() { return reasonable; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="fine", requiredness=Requiredness.NONE)    public Builder setFine(test.fixtures.enums.Metasyntactic fine) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="fine", requiredness=Requiredness.NONE)    public Builder setFine(test.fixtures.enums.Metasyntactic fine) {
             this.fine = fine;
             return this;
         }
 
         public test.fixtures.enums.Metasyntactic getFine() { return fine; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="questionable", requiredness=Requiredness.NONE)    public Builder setQuestionable(test.fixtures.enums.Metasyntactic questionable) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="questionable", requiredness=Requiredness.NONE)    public Builder setQuestionable(test.fixtures.enums.Metasyntactic questionable) {
             this.questionable = questionable;
             return this;
         }
 
         public test.fixtures.enums.Metasyntactic getQuestionable() { return questionable; }
 
-            @com.facebook.swift.codec.ThriftField(value=4, name="tags", requiredness=Requiredness.NONE)    public Builder setTags(Set<Integer> tags) {
+        @com.facebook.swift.codec.ThriftField(value=4, name="tags", requiredness=Requiredness.NONE)    public Builder setTags(Set<Integer> tags) {
             this.tags = tags;
             return this;
         }

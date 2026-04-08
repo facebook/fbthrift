@@ -206,7 +206,7 @@ public final class {{struct:javaCapitalName}} implements com.facebook.thrift.pay
     {{/struct:fields}}
     }
 
-    {{> union/UnionWrite}}
+    {{#partial struct.union_write struct=struct:self}}
 
     {{> union/UnionRead}}
 

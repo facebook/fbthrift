@@ -170,203 +170,203 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
 
         public boolean isTerseBoolField() { return terseBoolField; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="terse_byte_field", requiredness=Requiredness.TERSE)    public Builder setTerseByteField(byte terseByteField) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="terse_byte_field", requiredness=Requiredness.TERSE)    public Builder setTerseByteField(byte terseByteField) {
             this.terseByteField = terseByteField;
             return this;
         }
 
         public byte getTerseByteField() { return terseByteField; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="terse_short_field", requiredness=Requiredness.TERSE)    public Builder setTerseShortField(short terseShortField) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="terse_short_field", requiredness=Requiredness.TERSE)    public Builder setTerseShortField(short terseShortField) {
             this.terseShortField = terseShortField;
             return this;
         }
 
         public short getTerseShortField() { return terseShortField; }
 
-            @com.facebook.swift.codec.ThriftField(value=4, name="terse_int_field", requiredness=Requiredness.TERSE)    public Builder setTerseIntField(int terseIntField) {
+        @com.facebook.swift.codec.ThriftField(value=4, name="terse_int_field", requiredness=Requiredness.TERSE)    public Builder setTerseIntField(int terseIntField) {
             this.terseIntField = terseIntField;
             return this;
         }
 
         public int getTerseIntField() { return terseIntField; }
 
-            @com.facebook.swift.codec.ThriftField(value=5, name="terse_long_field", requiredness=Requiredness.TERSE)    public Builder setTerseLongField(long terseLongField) {
+        @com.facebook.swift.codec.ThriftField(value=5, name="terse_long_field", requiredness=Requiredness.TERSE)    public Builder setTerseLongField(long terseLongField) {
             this.terseLongField = terseLongField;
             return this;
         }
 
         public long getTerseLongField() { return terseLongField; }
 
-            @com.facebook.swift.codec.ThriftField(value=6, name="terse_float_field", requiredness=Requiredness.TERSE)    public Builder setTerseFloatField(float terseFloatField) {
+        @com.facebook.swift.codec.ThriftField(value=6, name="terse_float_field", requiredness=Requiredness.TERSE)    public Builder setTerseFloatField(float terseFloatField) {
             this.terseFloatField = terseFloatField;
             return this;
         }
 
         public float getTerseFloatField() { return terseFloatField; }
 
-            @com.facebook.swift.codec.ThriftField(value=7, name="terse_double_field", requiredness=Requiredness.TERSE)    public Builder setTerseDoubleField(double terseDoubleField) {
+        @com.facebook.swift.codec.ThriftField(value=7, name="terse_double_field", requiredness=Requiredness.TERSE)    public Builder setTerseDoubleField(double terseDoubleField) {
             this.terseDoubleField = terseDoubleField;
             return this;
         }
 
         public double getTerseDoubleField() { return terseDoubleField; }
 
-            @com.facebook.swift.codec.ThriftField(value=8, name="terse_string_field", requiredness=Requiredness.TERSE)    public Builder setTerseStringField(String terseStringField) {
+        @com.facebook.swift.codec.ThriftField(value=8, name="terse_string_field", requiredness=Requiredness.TERSE)    public Builder setTerseStringField(String terseStringField) {
             this.terseStringField = terseStringField;
             return this;
         }
 
         public String getTerseStringField() { return terseStringField; }
 
-            @com.facebook.swift.codec.ThriftField(value=9, name="terse_binary_field", requiredness=Requiredness.TERSE)    public Builder setTerseBinaryField(byte[] terseBinaryField) {
+        @com.facebook.swift.codec.ThriftField(value=9, name="terse_binary_field", requiredness=Requiredness.TERSE)    public Builder setTerseBinaryField(byte[] terseBinaryField) {
             this.terseBinaryField = terseBinaryField;
             return this;
         }
 
         public byte[] getTerseBinaryField() { return terseBinaryField; }
 
-            @com.facebook.swift.codec.ThriftField(value=10, name="terse_enum_field", requiredness=Requiredness.TERSE)    public Builder setTerseEnumField(com.facebook.thrift.test.fixtures.terse_write.MyEnum terseEnumField) {
+        @com.facebook.swift.codec.ThriftField(value=10, name="terse_enum_field", requiredness=Requiredness.TERSE)    public Builder setTerseEnumField(com.facebook.thrift.test.fixtures.terse_write.MyEnum terseEnumField) {
             this.terseEnumField = terseEnumField;
             return this;
         }
 
         public com.facebook.thrift.test.fixtures.terse_write.MyEnum getTerseEnumField() { return terseEnumField; }
 
-            @com.facebook.swift.codec.ThriftField(value=11, name="terse_list_field", requiredness=Requiredness.TERSE)    public Builder setTerseListField(List<Short> terseListField) {
+        @com.facebook.swift.codec.ThriftField(value=11, name="terse_list_field", requiredness=Requiredness.TERSE)    public Builder setTerseListField(List<Short> terseListField) {
             this.terseListField = terseListField;
             return this;
         }
 
         public List<Short> getTerseListField() { return terseListField; }
 
-            @com.facebook.swift.codec.ThriftField(value=12, name="terse_set_field", requiredness=Requiredness.TERSE)    public Builder setTerseSetField(Set<Short> terseSetField) {
+        @com.facebook.swift.codec.ThriftField(value=12, name="terse_set_field", requiredness=Requiredness.TERSE)    public Builder setTerseSetField(Set<Short> terseSetField) {
             this.terseSetField = terseSetField;
             return this;
         }
 
         public Set<Short> getTerseSetField() { return terseSetField; }
 
-            @com.facebook.swift.codec.ThriftField(value=13, name="terse_map_field", requiredness=Requiredness.TERSE)    public Builder setTerseMapField(Map<Short, Short> terseMapField) {
+        @com.facebook.swift.codec.ThriftField(value=13, name="terse_map_field", requiredness=Requiredness.TERSE)    public Builder setTerseMapField(Map<Short, Short> terseMapField) {
             this.terseMapField = terseMapField;
             return this;
         }
 
         public Map<Short, Short> getTerseMapField() { return terseMapField; }
 
-            @com.facebook.swift.codec.ThriftField(value=14, name="terse_struct_field", requiredness=Requiredness.TERSE)    public Builder setTerseStructField(com.facebook.thrift.test.fixtures.terse_write.MyStruct terseStructField) {
+        @com.facebook.swift.codec.ThriftField(value=14, name="terse_struct_field", requiredness=Requiredness.TERSE)    public Builder setTerseStructField(com.facebook.thrift.test.fixtures.terse_write.MyStruct terseStructField) {
             this.terseStructField = terseStructField;
             return this;
         }
 
         public com.facebook.thrift.test.fixtures.terse_write.MyStruct getTerseStructField() { return terseStructField; }
 
-            @com.facebook.swift.codec.ThriftField(value=29, name="terse_union_field", requiredness=Requiredness.TERSE)    public Builder setTerseUnionField(com.facebook.thrift.test.fixtures.terse_write.MyUnion terseUnionField) {
+        @com.facebook.swift.codec.ThriftField(value=29, name="terse_union_field", requiredness=Requiredness.TERSE)    public Builder setTerseUnionField(com.facebook.thrift.test.fixtures.terse_write.MyUnion terseUnionField) {
             this.terseUnionField = terseUnionField;
             return this;
         }
 
         public com.facebook.thrift.test.fixtures.terse_write.MyUnion getTerseUnionField() { return terseUnionField; }
 
-            @com.facebook.swift.codec.ThriftField(value=15, name="bool_field", requiredness=Requiredness.NONE)    public Builder setBoolField(boolean boolField) {
+        @com.facebook.swift.codec.ThriftField(value=15, name="bool_field", requiredness=Requiredness.NONE)    public Builder setBoolField(boolean boolField) {
             this.boolField = boolField;
             return this;
         }
 
         public boolean isBoolField() { return boolField; }
 
-            @com.facebook.swift.codec.ThriftField(value=16, name="byte_field", requiredness=Requiredness.NONE)    public Builder setByteField(byte byteField) {
+        @com.facebook.swift.codec.ThriftField(value=16, name="byte_field", requiredness=Requiredness.NONE)    public Builder setByteField(byte byteField) {
             this.byteField = byteField;
             return this;
         }
 
         public byte getByteField() { return byteField; }
 
-            @com.facebook.swift.codec.ThriftField(value=17, name="short_field", requiredness=Requiredness.NONE)    public Builder setShortField(short shortField) {
+        @com.facebook.swift.codec.ThriftField(value=17, name="short_field", requiredness=Requiredness.NONE)    public Builder setShortField(short shortField) {
             this.shortField = shortField;
             return this;
         }
 
         public short getShortField() { return shortField; }
 
-            @com.facebook.swift.codec.ThriftField(value=18, name="int_field", requiredness=Requiredness.NONE)    public Builder setIntField(int intField) {
+        @com.facebook.swift.codec.ThriftField(value=18, name="int_field", requiredness=Requiredness.NONE)    public Builder setIntField(int intField) {
             this.intField = intField;
             return this;
         }
 
         public int getIntField() { return intField; }
 
-            @com.facebook.swift.codec.ThriftField(value=19, name="long_field", requiredness=Requiredness.NONE)    public Builder setLongField(long longField) {
+        @com.facebook.swift.codec.ThriftField(value=19, name="long_field", requiredness=Requiredness.NONE)    public Builder setLongField(long longField) {
             this.longField = longField;
             return this;
         }
 
         public long getLongField() { return longField; }
 
-            @com.facebook.swift.codec.ThriftField(value=20, name="float_field", requiredness=Requiredness.NONE)    public Builder setFloatField(float floatField) {
+        @com.facebook.swift.codec.ThriftField(value=20, name="float_field", requiredness=Requiredness.NONE)    public Builder setFloatField(float floatField) {
             this.floatField = floatField;
             return this;
         }
 
         public float getFloatField() { return floatField; }
 
-            @com.facebook.swift.codec.ThriftField(value=21, name="double_field", requiredness=Requiredness.NONE)    public Builder setDoubleField(double doubleField) {
+        @com.facebook.swift.codec.ThriftField(value=21, name="double_field", requiredness=Requiredness.NONE)    public Builder setDoubleField(double doubleField) {
             this.doubleField = doubleField;
             return this;
         }
 
         public double getDoubleField() { return doubleField; }
 
-            @com.facebook.swift.codec.ThriftField(value=22, name="string_field", requiredness=Requiredness.NONE)    public Builder setStringField(String stringField) {
+        @com.facebook.swift.codec.ThriftField(value=22, name="string_field", requiredness=Requiredness.NONE)    public Builder setStringField(String stringField) {
             this.stringField = stringField;
             return this;
         }
 
         public String getStringField() { return stringField; }
 
-            @com.facebook.swift.codec.ThriftField(value=23, name="binary_field", requiredness=Requiredness.NONE)    public Builder setBinaryField(byte[] binaryField) {
+        @com.facebook.swift.codec.ThriftField(value=23, name="binary_field", requiredness=Requiredness.NONE)    public Builder setBinaryField(byte[] binaryField) {
             this.binaryField = binaryField;
             return this;
         }
 
         public byte[] getBinaryField() { return binaryField; }
 
-            @com.facebook.swift.codec.ThriftField(value=24, name="enum_field", requiredness=Requiredness.NONE)    public Builder setEnumField(com.facebook.thrift.test.fixtures.terse_write.MyEnum enumField) {
+        @com.facebook.swift.codec.ThriftField(value=24, name="enum_field", requiredness=Requiredness.NONE)    public Builder setEnumField(com.facebook.thrift.test.fixtures.terse_write.MyEnum enumField) {
             this.enumField = enumField;
             return this;
         }
 
         public com.facebook.thrift.test.fixtures.terse_write.MyEnum getEnumField() { return enumField; }
 
-            @com.facebook.swift.codec.ThriftField(value=25, name="list_field", requiredness=Requiredness.NONE)    public Builder setListField(List<Short> listField) {
+        @com.facebook.swift.codec.ThriftField(value=25, name="list_field", requiredness=Requiredness.NONE)    public Builder setListField(List<Short> listField) {
             this.listField = listField;
             return this;
         }
 
         public List<Short> getListField() { return listField; }
 
-            @com.facebook.swift.codec.ThriftField(value=26, name="set_field", requiredness=Requiredness.NONE)    public Builder setSetField(Set<Short> setField) {
+        @com.facebook.swift.codec.ThriftField(value=26, name="set_field", requiredness=Requiredness.NONE)    public Builder setSetField(Set<Short> setField) {
             this.setField = setField;
             return this;
         }
 
         public Set<Short> getSetField() { return setField; }
 
-            @com.facebook.swift.codec.ThriftField(value=27, name="map_field", requiredness=Requiredness.NONE)    public Builder setMapField(Map<Short, Short> mapField) {
+        @com.facebook.swift.codec.ThriftField(value=27, name="map_field", requiredness=Requiredness.NONE)    public Builder setMapField(Map<Short, Short> mapField) {
             this.mapField = mapField;
             return this;
         }
 
         public Map<Short, Short> getMapField() { return mapField; }
 
-            @com.facebook.swift.codec.ThriftField(value=28, name="struct_field", requiredness=Requiredness.NONE)    public Builder setStructField(com.facebook.thrift.test.fixtures.terse_write.MyStruct structField) {
+        @com.facebook.swift.codec.ThriftField(value=28, name="struct_field", requiredness=Requiredness.NONE)    public Builder setStructField(com.facebook.thrift.test.fixtures.terse_write.MyStruct structField) {
             this.structField = structField;
             return this;
         }
 
         public com.facebook.thrift.test.fixtures.terse_write.MyStruct getStructField() { return structField; }
 
-            @com.facebook.swift.codec.ThriftField(value=30, name="union_field", requiredness=Requiredness.NONE)    public Builder setUnionField(com.facebook.thrift.test.fixtures.terse_write.MyUnion unionField) {
+        @com.facebook.swift.codec.ThriftField(value=30, name="union_field", requiredness=Requiredness.NONE)    public Builder setUnionField(com.facebook.thrift.test.fixtures.terse_write.MyUnion unionField) {
             this.unionField = unionField;
             return this;
         }

@@ -58,7 +58,7 @@ public final class StructWithInternBox implements com.facebook.thrift.payload.Th
 
         public test.fixtures.refs.Empty getField1() { return field1; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="field2", requiredness=Requiredness.NONE)    public Builder setField2(test.fixtures.refs.MyField field2) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="field2", requiredness=Requiredness.NONE)    public Builder setField2(test.fixtures.refs.MyField field2) {
             this.field2 = field2;
             return this;
         }

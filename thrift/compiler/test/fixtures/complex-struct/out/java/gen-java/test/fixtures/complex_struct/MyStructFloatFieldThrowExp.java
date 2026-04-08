@@ -66,21 +66,21 @@ public final class MyStructFloatFieldThrowExp implements com.facebook.thrift.pay
 
         public long getMyLongField() { return myLongField; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="MyByteField", requiredness=Requiredness.NONE)    public Builder setMyByteField(byte myByteField) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="MyByteField", requiredness=Requiredness.NONE)    public Builder setMyByteField(byte myByteField) {
             this.myByteField = myByteField;
             return this;
         }
 
         public byte getMyByteField() { return myByteField; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="myStringField", requiredness=Requiredness.NONE)    public Builder setMyStringField(String myStringField) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="myStringField", requiredness=Requiredness.NONE)    public Builder setMyStringField(String myStringField) {
             this.myStringField = myStringField;
             return this;
         }
 
         public String getMyStringField() { return myStringField; }
 
-            @com.facebook.swift.codec.ThriftField(value=4, name="myFloatField", requiredness=Requiredness.NONE)    public Builder setMyFloatField(float myFloatField) {
+        @com.facebook.swift.codec.ThriftField(value=4, name="myFloatField", requiredness=Requiredness.NONE)    public Builder setMyFloatField(float myFloatField) {
             this.myFloatField = myFloatField;
             return this;
         }

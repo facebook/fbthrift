@@ -62,14 +62,14 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
 
         public List<Integer> getI32List() { return i32List; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="StringSet", requiredness=Requiredness.NONE)    public Builder setStringSet(Set<String> stringSet) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="StringSet", requiredness=Requiredness.NONE)    public Builder setStringSet(Set<String> stringSet) {
             this.stringSet = stringSet;
             return this;
         }
 
         public Set<String> getStringSet() { return stringSet; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="StringToI64Map", requiredness=Requiredness.NONE)    public Builder setStringToI64Map(Map<String, Long> stringToI64Map) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="StringToI64Map", requiredness=Requiredness.NONE)    public Builder setStringToI64Map(Map<String, Long> stringToI64Map) {
             this.stringToI64Map = stringToI64Map;
             return this;
         }

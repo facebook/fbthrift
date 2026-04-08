@@ -62,14 +62,14 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
 
         public test.fixtures.includes.includes.Included getMyIncludedField() { return myIncludedField; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="MyOtherIncludedField", requiredness=Requiredness.NONE)    public Builder setMyOtherIncludedField(test.fixtures.includes.includes.Included myOtherIncludedField) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="MyOtherIncludedField", requiredness=Requiredness.NONE)    public Builder setMyOtherIncludedField(test.fixtures.includes.includes.Included myOtherIncludedField) {
             this.myOtherIncludedField = myOtherIncludedField;
             return this;
         }
 
         public test.fixtures.includes.includes.Included getMyOtherIncludedField() { return myOtherIncludedField; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="MyIncludedInt", requiredness=Requiredness.NONE)    public Builder setMyIncludedInt(long myIncludedInt) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="MyIncludedInt", requiredness=Requiredness.NONE)    public Builder setMyIncludedInt(long myIncludedInt) {
             this.myIncludedInt = myIncludedInt;
             return this;
         }

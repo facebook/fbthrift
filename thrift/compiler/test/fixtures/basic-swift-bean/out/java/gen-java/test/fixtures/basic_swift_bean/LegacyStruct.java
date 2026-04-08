@@ -49,7 +49,7 @@ public final class LegacyStruct implements com.facebook.thrift.payload.ThriftSer
 
         public int getNormal() { return normal; }
 
-            @com.facebook.swift.codec.ThriftField(value=-1, name="bad", isLegacyId=true, requiredness=Requiredness.NONE)    public Builder setBad(int bad) {
+        @com.facebook.swift.codec.ThriftField(value=-1, name="bad", isLegacyId=true, requiredness=Requiredness.NONE)    public Builder setBad(int bad) {
             this.bad = bad;
             return this;
         }

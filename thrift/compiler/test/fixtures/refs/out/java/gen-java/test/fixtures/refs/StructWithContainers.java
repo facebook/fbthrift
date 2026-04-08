@@ -74,35 +74,35 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
 
         public List<Integer> getListRef() { return listRef; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="set_ref", requiredness=Requiredness.NONE)    public Builder setSetRef(Set<Integer> setRef) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="set_ref", requiredness=Requiredness.NONE)    public Builder setSetRef(Set<Integer> setRef) {
             this.setRef = setRef;
             return this;
         }
 
         public Set<Integer> getSetRef() { return setRef; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="map_ref", requiredness=Requiredness.NONE)    public Builder setMapRef(Map<Integer, Integer> mapRef) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="map_ref", requiredness=Requiredness.NONE)    public Builder setMapRef(Map<Integer, Integer> mapRef) {
             this.mapRef = mapRef;
             return this;
         }
 
         public Map<Integer, Integer> getMapRef() { return mapRef; }
 
-            @com.facebook.swift.codec.ThriftField(value=4, name="list_ref_unique", requiredness=Requiredness.NONE)    public Builder setListRefUnique(List<Integer> listRefUnique) {
+        @com.facebook.swift.codec.ThriftField(value=4, name="list_ref_unique", requiredness=Requiredness.NONE)    public Builder setListRefUnique(List<Integer> listRefUnique) {
             this.listRefUnique = listRefUnique;
             return this;
         }
 
         public List<Integer> getListRefUnique() { return listRefUnique; }
 
-            @com.facebook.swift.codec.ThriftField(value=5, name="set_ref_shared", requiredness=Requiredness.NONE)    public Builder setSetRefShared(Set<Integer> setRefShared) {
+        @com.facebook.swift.codec.ThriftField(value=5, name="set_ref_shared", requiredness=Requiredness.NONE)    public Builder setSetRefShared(Set<Integer> setRefShared) {
             this.setRefShared = setRefShared;
             return this;
         }
 
         public Set<Integer> getSetRefShared() { return setRefShared; }
 
-            @com.facebook.swift.codec.ThriftField(value=6, name="list_ref_shared_const", requiredness=Requiredness.NONE)    public Builder setListRefSharedConst(List<Integer> listRefSharedConst) {
+        @com.facebook.swift.codec.ThriftField(value=6, name="list_ref_shared_const", requiredness=Requiredness.NONE)    public Builder setListRefSharedConst(List<Integer> listRefSharedConst) {
             this.listRefSharedConst = listRefSharedConst;
             return this;
         }

@@ -66,21 +66,21 @@ public final class StructWithFieldAdapter implements com.facebook.thrift.payload
 
         public com.facebook.thrift.my.AdaptedI32_1 getField() { return field; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="shared_field", requiredness=Requiredness.NONE)    public Builder setSharedField(int sharedField) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="shared_field", requiredness=Requiredness.NONE)    public Builder setSharedField(int sharedField) {
             this.sharedField = sharedField;
             return this;
         }
 
         public int getSharedField() { return sharedField; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="opt_shared_field", requiredness=Requiredness.OPTIONAL)    public Builder setOptSharedField(com.facebook.thrift.my.AdaptedI32_1 optSharedField) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="opt_shared_field", requiredness=Requiredness.OPTIONAL)    public Builder setOptSharedField(com.facebook.thrift.my.AdaptedI32_1 optSharedField) {
             this.optSharedField = optSharedField;
             return this;
         }
 
         public com.facebook.thrift.my.AdaptedI32_1 getOptSharedField() { return optSharedField; }
 
-            @com.facebook.swift.codec.ThriftField(value=4, name="opt_boxed_field", requiredness=Requiredness.OPTIONAL)    public Builder setOptBoxedField(Integer optBoxedField) {
+        @com.facebook.swift.codec.ThriftField(value=4, name="opt_boxed_field", requiredness=Requiredness.OPTIONAL)    public Builder setOptBoxedField(Integer optBoxedField) {
             this.optBoxedField = optBoxedField;
             return this;
         }

@@ -66,21 +66,21 @@ public final class Color implements com.facebook.thrift.payload.ThriftSerializab
 
         public double getRed() { return red; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="green", requiredness=Requiredness.NONE)    public Builder setGreen(double green) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="green", requiredness=Requiredness.NONE)    public Builder setGreen(double green) {
             this.green = green;
             return this;
         }
 
         public double getGreen() { return green; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="blue", requiredness=Requiredness.NONE)    public Builder setBlue(double blue) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="blue", requiredness=Requiredness.NONE)    public Builder setBlue(double blue) {
             this.blue = blue;
             return this;
         }
 
         public double getBlue() { return blue; }
 
-            @com.facebook.swift.codec.ThriftField(value=4, name="alpha", requiredness=Requiredness.NONE)    public Builder setAlpha(double alpha) {
+        @com.facebook.swift.codec.ThriftField(value=4, name="alpha", requiredness=Requiredness.NONE)    public Builder setAlpha(double alpha) {
             this.alpha = alpha;
             return this;
         }

@@ -16,6 +16,7 @@
 
 }}
 {{#import "common/types" as types}}
+{{#import "common/const_value" as const_value}}
 
 {{#let export partial thrift_field_annotation |field| captures |types|}}
   {{#pragma ignore-newlines}}
@@ -67,6 +68,48 @@ com.facebook.thrift.util.IntrinsicDefaults.{{#if field.hasAdapter?}}defaultByteB
 {{#else if field.type.set?}}com.facebook.thrift.util.IntrinsicDefaults.defaultSet()
 {{#else if field.type.enum?}}{{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}.fromInteger(0)
 {{/if field.type.byte?}}
+{{/let partial}}
+
+{{#let export partial field_value |field struct| captures |types const_value from_thrift_start from_thrift_end intrinsic_default|}}
+{{#pragma ignore-newlines}}
+  {{#if (object.eq? field.default_value null)}}
+    {{#if (and field.terse? field.hasAdapter?)}}
+{{#partial from_thrift_start field=field}}{{#if field.type.structured?}}{{#partial types.thrift_boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}.defaultInstance(){{#else}}{{#partial intrinsic_default field=field}}{{/if field.type.structured?}}{{#partial from_thrift_end field=field}}
+    {{#else if field.terse?}}
+{{#if field.type.structured?}}{{#partial types.field_type field=field}}.defaultInstance(){{#else}}{{#partial intrinsic_default field=field}}{{/if field.type.structured?}}
+    {{#else if (or field.hasAdapter? field.hasWrapper? field.optional?)}}
+null
+    {{#else}}
+{{#partial types.java_default_value type=field.type}}
+    {{/if (and field.terse? field.hasAdapter?)}}
+  {{#else}}
+    {{#if field.hasAdapter?}}
+{{#partial from_thrift_start field=field}}{{#if field.hasInitialValue?}}{{#partial const_value.const_value value=field.default_value root_const=null as_bean=struct.asBean? field_hasAdapter=field.hasAdapter?}}{{#else}}{{#if field.optional?}}null{{#else}}{{#partial types.java_default_value type=field.type}}{{/if field.optional?}}{{/if field.hasInitialValue?}}{{#partial from_thrift_end field=field}}
+    {{#else}}
+{{#if field.hasInitialValue?}}{{#partial const_value.const_value value=field.default_value root_const=null as_bean=struct.asBean? field_hasAdapter=field.hasAdapter?}}{{#else}}{{#if field.optional?}}null{{#else}}{{#partial types.java_default_value type=field.type}}{{/if field.optional?}}{{/if field.hasInitialValue?}}
+    {{/if field.hasAdapter?}}
+  {{/if (object.eq? field.default_value null)}}
+{{/let partial}}
+
+{{#let export partial field_value_no_wrapper |field struct| captures |types const_value from_thrift_start from_thrift_end intrinsic_default|}}
+{{#pragma ignore-newlines}}
+  {{#if (object.eq? field.default_value null)}}
+    {{#if (and field.terse? field.hasAdapter?)}}
+{{#partial from_thrift_start field=field}}{{#if field.type.structured?}}{{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}.defaultInstance(){{#else}}{{#partial intrinsic_default field=field}}{{/if field.type.structured?}}{{#partial from_thrift_end field=field}}
+    {{#else if field.terse?}}
+{{#if field.type.structured?}}{{#partial types.field_type field=field}}.defaultInstance(){{#else}}{{#partial intrinsic_default field=field}}{{/if field.type.structured?}}
+    {{#else if (or field.hasAdapter? field.optional?)}}
+null
+    {{#else}}
+{{#partial types.java_default_value type=field.type}}
+    {{/if (and field.terse? field.hasAdapter?)}}
+  {{#else}}
+    {{#if field.hasAdapter?}}
+{{#partial from_thrift_start field=field}}{{#if field.hasInitialValue?}}{{#partial const_value.const_value value=field.default_value root_const=null as_bean=struct.asBean? field_hasAdapter=field.hasAdapter?}}{{#else}}{{#if field.optional?}}null{{#else}}{{#partial types.java_default_value type=field.type}}{{/if field.optional?}}{{/if field.hasInitialValue?}}{{#partial from_thrift_end field=field}}
+    {{#else}}
+{{#if field.hasInitialValue?}}{{#partial const_value.const_value value=field.default_value root_const=null as_bean=struct.asBean? field_hasAdapter=field.hasAdapter?}}{{#else}}{{#if field.optional?}}null{{#else}}{{#partial types.java_default_value type=field.type}}{{/if field.optional?}}{{/if field.hasInitialValue?}}
+    {{/if field.hasAdapter?}}
+  {{/if (object.eq? field.default_value null)}}
 {{/let partial}}
 
 {{#let export partial field_nullability |field|}}

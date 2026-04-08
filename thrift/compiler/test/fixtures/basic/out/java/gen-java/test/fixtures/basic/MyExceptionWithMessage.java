@@ -93,21 +93,21 @@ public final class MyExceptionWithMessage extends org.apache.thrift.TBaseExcepti
 
         public long getMyIntField() { return myIntField; }
 
-            @com.facebook.swift.codec.ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)    public Builder setMyStringField(String myStringField) {
+        @com.facebook.swift.codec.ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)    public Builder setMyStringField(String myStringField) {
             this.myStringField = myStringField;
             return this;
         }
 
         public String getMyStringField() { return myStringField; }
 
-            @com.facebook.swift.codec.ThriftField(value=3, name="myStruct", requiredness=Requiredness.NONE)    public Builder setMyStruct(test.fixtures.basic.MyStruct myStruct) {
+        @com.facebook.swift.codec.ThriftField(value=3, name="myStruct", requiredness=Requiredness.NONE)    public Builder setMyStruct(test.fixtures.basic.MyStruct myStruct) {
             this.myStruct = myStruct;
             return this;
         }
 
         public test.fixtures.basic.MyStruct getMyStruct() { return myStruct; }
 
-            @com.facebook.swift.codec.ThriftField(value=4, name="myUnion", requiredness=Requiredness.NONE)    public Builder setMyUnion(test.fixtures.basic.MyUnion myUnion) {
+        @com.facebook.swift.codec.ThriftField(value=4, name="myUnion", requiredness=Requiredness.NONE)    public Builder setMyUnion(test.fixtures.basic.MyUnion myUnion) {
             this.myUnion = myUnion;
             return this;
         }
