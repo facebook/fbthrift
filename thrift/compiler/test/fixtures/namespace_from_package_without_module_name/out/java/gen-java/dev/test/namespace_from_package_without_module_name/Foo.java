@@ -84,7 +84,6 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         Foo.class, Foo::read0));
     }
     
-
     @com.facebook.swift.codec.ThriftField(value=1, name="MyInt", requiredness=Requiredness.NONE)
     public long getMyInt() { return myInt; }
 

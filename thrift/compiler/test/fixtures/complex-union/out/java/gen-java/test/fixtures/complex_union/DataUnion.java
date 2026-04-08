@@ -127,7 +127,6 @@ public final class DataUnion implements com.facebook.thrift.payload.ThriftSerial
         return res;
     }
 
-    
 
     @com.facebook.swift.codec.ThriftField(value=1, name="binaryData", requiredness=Requiredness.NONE)
     public byte[] getBinaryData() {

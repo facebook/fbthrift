@@ -102,12 +102,10 @@ public final class MyAnnotation implements com.facebook.thrift.payload.ThriftSer
         new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/MyAnnotation"),
         MyAnnotation.class, MyAnnotation::read0));
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="signature", requiredness=Requiredness.NONE)
     public String getSignature() { return signature; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="color", requiredness=Requiredness.NONE)
     public test.fixtures.adapter.Color getColor() { return color; }

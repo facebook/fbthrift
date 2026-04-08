@@ -80,7 +80,6 @@ public final class RecursiveStruct implements com.facebook.thrift.payload.Thrift
       THRIFT_NAMES_TO_IDS.put("mes", 1);
       FIELD_METADATA.put(1, MES_FIELD_DESC);
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="mes", requiredness=Requiredness.OPTIONAL, isRecursive=Recursiveness.TRUE)
     public List<test.fixtures.refs.RecursiveStruct> getMes() { return mes; }

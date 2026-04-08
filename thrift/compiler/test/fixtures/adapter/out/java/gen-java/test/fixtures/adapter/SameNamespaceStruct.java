@@ -84,7 +84,6 @@ public final class SameNamespaceStruct implements com.facebook.thrift.payload.Th
         SameNamespaceStruct.class, SameNamespaceStruct::read0));
     }
     
-
     @com.facebook.swift.codec.ThriftField(value=1, name="data", requiredness=Requiredness.NONE)
     public long getData() { return data; }
 

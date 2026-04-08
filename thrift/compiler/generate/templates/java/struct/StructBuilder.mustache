@@ -67,17 +67,17 @@ public static class Builder {
         return result;
         {{/struct:hasWrapper?}}
         {{#struct:hasWrapper?}}
-        {{> struct/CreateStruct}}
+        {{#partial struct.create_struct struct=struct:self}}
         {{/struct:hasWrapper?}}
         {{/struct:asBean?}}{{!
 
         }}{{#struct:asBean?}}
-        {{> struct/CreateStruct}}
+        {{#partial struct.create_struct struct=struct:self}}
         {{/struct:asBean?}}
         {{/struct:isBigStruct?}}{{!
 
         }}{{#struct:isBigStruct?}}
-        {{> struct/CreateStruct}}
+        {{#partial struct.create_struct struct=struct:self}}
         {{/struct:isBigStruct?}}{{!
 
         }}

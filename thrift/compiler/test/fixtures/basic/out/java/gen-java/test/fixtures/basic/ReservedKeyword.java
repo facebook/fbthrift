@@ -84,7 +84,6 @@ public final class ReservedKeyword implements com.facebook.thrift.payload.Thrift
         ReservedKeyword.class, ReservedKeyword::read0));
     }
     
-
     @com.facebook.swift.codec.ThriftField(value=1, name="reserved_field", requiredness=Requiredness.NONE)
     public int getReservedField() { return reservedField; }
 

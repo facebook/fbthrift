@@ -99,12 +99,10 @@ public final class Struct implements com.facebook.thrift.payload.ThriftSerializa
       THRIFT_NAMES_TO_IDS.put("second", 2);
       FIELD_METADATA.put(2, SECOND_FIELD_DESC);
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="first", requiredness=Requiredness.NONE)
     public test.fixtures.module0.Struct getFirst() { return first; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="second", requiredness=Requiredness.NONE)
     public test.fixtures.module1.Struct getSecond() { return second; }

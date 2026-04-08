@@ -90,7 +90,6 @@ public final class LegacyStruct implements com.facebook.thrift.payload.ThriftSer
       FIELD_METADATA.put(-1, BAD_FIELD_DESC);
     }
     
-
     @com.facebook.swift.codec.ThriftField(value=1, name="normal", requiredness=Requiredness.NONE)
     public int getNormal() { return normal; }
 
@@ -101,7 +100,6 @@ public final class LegacyStruct implements com.facebook.thrift.payload.ThriftSer
     }
 
     
-
     @com.facebook.swift.codec.ThriftField(value=-1, name="bad", isLegacyId=true, requiredness=Requiredness.NONE)
     public int getBad() { return bad; }
 

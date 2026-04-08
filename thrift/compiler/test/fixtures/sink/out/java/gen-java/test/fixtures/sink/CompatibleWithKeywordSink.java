@@ -80,7 +80,6 @@ public final class CompatibleWithKeywordSink implements com.facebook.thrift.payl
       THRIFT_NAMES_TO_IDS.put("sink", 1);
       FIELD_METADATA.put(1, SINK_FIELD_DESC);
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="sink", requiredness=Requiredness.NONE)
     public String getSink() { return sink; }

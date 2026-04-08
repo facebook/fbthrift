@@ -89,7 +89,6 @@ public final class MyStruct2 implements com.facebook.thrift.payload.ThriftSerial
       THRIFT_NAMES_TO_IDS.put("myString", 2);
       FIELD_METADATA.put(2, MY_STRING_FIELD_DESC);
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="myStruct1", requiredness=Requiredness.NONE)
     public test.fixtures.basic_swift_bean.MyStruct1 getMyStruct1() { return myStruct1; }
@@ -100,7 +99,6 @@ public final class MyStruct2 implements com.facebook.thrift.payload.ThriftSerial
         return this;
     }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="myString", requiredness=Requiredness.NONE)
     public String getMyString() { return myString; }

@@ -77,15 +77,15 @@ public final class TerseException extends org.apache.thrift.TBaseException imple
         }
     }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="msg", requiredness=Requiredness.TERSE)
     public String getMsg() { return msg; }
-    
+
     @java.lang.Override
     public String getMessage() {
       return msg;
     }
+
     
     public static com.facebook.thrift.payload.Reader<TerseException> asReader() {
       return TerseException::read0;

@@ -67,7 +67,6 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
     public MyUnion() {
     }
 
-    
 
     @ThriftUnionId
     public short getThriftId() {

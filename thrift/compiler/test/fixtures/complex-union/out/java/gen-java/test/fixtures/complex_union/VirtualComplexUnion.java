@@ -107,7 +107,7 @@ public final class VirtualComplexUnion implements com.facebook.thrift.payload.Th
         return res;
     }
 
-        @com.facebook.swift.codec.ThriftField
+    @com.facebook.swift.codec.ThriftField
     @Deprecated
     public void setThingOne(final String thingOne) {
         this.value = thingOne;
@@ -119,7 +119,6 @@ public final class VirtualComplexUnion implements com.facebook.thrift.payload.Th
         this.value = thingTwo;
         this.id = 2;
     }
-
 
     @com.facebook.swift.codec.ThriftField(value=1, name="thingOne", requiredness=Requiredness.NONE)
     public String getThingOne() {

@@ -118,17 +118,14 @@ public final class Val implements com.facebook.thrift.payload.ThriftSerializable
       THRIFT_NAMES_TO_IDS.put("typedefValue", 9);
       FIELD_METADATA.put(9, TYPEDEF_VALUE_FIELD_DESC);
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="strVal", requiredness=Requiredness.NONE)
     public String getStrVal() { return strVal; }
 
     
-
     @com.facebook.swift.codec.ThriftField(value=2, name="intVal", requiredness=Requiredness.NONE)
     public int getIntVal() { return intVal; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=9, name="typedefValue", requiredness=Requiredness.NONE)
     public Map<Short, String> getTypedefValue() { return typedefValue; }

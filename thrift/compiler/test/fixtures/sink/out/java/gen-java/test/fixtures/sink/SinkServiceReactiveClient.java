@@ -160,7 +160,7 @@ public class SinkServiceReactiveClient
                 .streamingRequestStreamingResponse(_sink, rpcOptions)
                 .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
-                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders(), _p.getBinaryHeaders()));
+                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void,  test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders(), _p.getBinaryHeaders()));
       })).single();
   }
 
@@ -205,7 +205,7 @@ public class SinkServiceReactiveClient
   private static final com.facebook.thrift.payload.Reader _methodAndReponse_FIRST_READER = Readers.wrap(test.fixtures.sink.InitialResponse.asReader());
 
   @java.lang.Override
-  public reactor.core.publisher.Flux<ResponseWrapper<com.facebook.thrift.model.StreamResponse<test.fixtures.sink.InitialResponse,test.fixtures.sink.FinalResponse>>> methodAndReponseWrapper( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Flux<ResponseWrapper<com.facebook.thrift.model.StreamResponse<test.fixtures.sink.InitialResponse, test.fixtures.sink.FinalResponse>>> methodAndReponseWrapper( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMapMany(_rpc -> getHeaders(rpcOptions).flatMapMany(headers -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -241,17 +241,17 @@ public class SinkServiceReactiveClient
             return _rpc
                 .streamingRequestStreamingResponse(_sink, rpcOptions)
                 .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
-                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<test.fixtures.sink.InitialResponse,test.fixtures.sink.FinalResponse>)_p.getData()), _p.getHeaders(), _p.getBinaryHeaders()));
+                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<test.fixtures.sink.InitialResponse, test.fixtures.sink.FinalResponse>)_p.getData()), _p.getHeaders(), _p.getBinaryHeaders()));
       }));
   }
 
   @java.lang.Override
-  public reactor.core.publisher.Flux<com.facebook.thrift.model.StreamResponse<test.fixtures.sink.InitialResponse,test.fixtures.sink.FinalResponse>> methodAndReponse( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Flux<com.facebook.thrift.model.StreamResponse<test.fixtures.sink.InitialResponse, test.fixtures.sink.FinalResponse>> methodAndReponse( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads, com.facebook.thrift.client.RpcOptions rpcOptions) {
       return methodAndReponseWrapper( payloads, rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override
-  public reactor.core.publisher.Flux<com.facebook.thrift.model.StreamResponse<test.fixtures.sink.InitialResponse,test.fixtures.sink.FinalResponse>> methodAndReponse( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads) {
+  public reactor.core.publisher.Flux<com.facebook.thrift.model.StreamResponse<test.fixtures.sink.InitialResponse, test.fixtures.sink.FinalResponse>> methodAndReponse( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads) {
       return methodAndReponse( payloads, com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
@@ -320,7 +320,7 @@ public class SinkServiceReactiveClient
                 .streamingRequestStreamingResponse(_sink, rpcOptions)
                 .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
-                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders(), _p.getBinaryHeaders()));
+                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void,  test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders(), _p.getBinaryHeaders()));
       })).single();
   }
 
@@ -399,7 +399,7 @@ public class SinkServiceReactiveClient
                 .streamingRequestStreamingResponse(_sink, rpcOptions)
                 .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
-                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders(), _p.getBinaryHeaders()));
+                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void,  test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders(), _p.getBinaryHeaders()));
       })).single();
   }
 
@@ -478,7 +478,7 @@ public class SinkServiceReactiveClient
                 .streamingRequestStreamingResponse(_sink, rpcOptions)
                 .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
-                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders(), _p.getBinaryHeaders()));
+                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void,  test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders(), _p.getBinaryHeaders()));
       })).single();
   }
 
@@ -557,7 +557,7 @@ public class SinkServiceReactiveClient
                 .streamingRequestStreamingResponse(_sink, rpcOptions)
                 .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
-                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders(), _p.getBinaryHeaders()));
+                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void,  test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders(), _p.getBinaryHeaders()));
       })).single();
   }
 
@@ -636,7 +636,7 @@ public class SinkServiceReactiveClient
                 .streamingRequestStreamingResponse(_sink, rpcOptions)
                 .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
-                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders(), _p.getBinaryHeaders()));
+                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void,  test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders(), _p.getBinaryHeaders()));
       })).single();
   }
 

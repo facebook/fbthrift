@@ -84,7 +84,6 @@ public final class MyStructWithCustomDefault implements com.facebook.thrift.payl
         MyStructWithCustomDefault.class, MyStructWithCustomDefault::read0));
     }
     
-
     @com.facebook.swift.codec.ThriftField(value=1, name="field1", requiredness=Requiredness.NONE)
     public long getField1() { return field1; }
 

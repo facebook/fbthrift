@@ -83,7 +83,6 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
         new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/B"),
         B.class, B::read0));
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
     public test.fixtures.adapter.A getA() { return a; }

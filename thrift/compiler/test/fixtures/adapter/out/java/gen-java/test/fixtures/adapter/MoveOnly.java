@@ -83,7 +83,6 @@ public final class MoveOnly implements com.facebook.thrift.payload.ThriftSeriali
         new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/MoveOnly"),
         MoveOnly.class, MoveOnly::read0));
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="ptr", requiredness=Requiredness.NONE)
     public test.fixtures.adapter.HeapAllocated getPtr() { return ptr; }

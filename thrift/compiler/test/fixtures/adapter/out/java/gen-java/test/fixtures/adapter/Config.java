@@ -83,7 +83,6 @@ public final class Config implements com.facebook.thrift.payload.ThriftSerializa
         new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/Config"),
         Config.class, Config::read0));
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="path", requiredness=Requiredness.NONE)
     public String getPath() { return path; }

@@ -15,6 +15,7 @@
   limitations under the License.
 
 }}
+{{#import "common/types" as types}}
 
 {{#let export partial default_instance |struct|}}
 private static class _{{struct.javaCapitalName}}Lazy {
@@ -24,6 +25,53 @@ private static class _{{struct.javaCapitalName}}Lazy {
 public static {{struct.javaCapitalName}} defaultInstance() {
     return  _{{struct.javaCapitalName}}Lazy._DEFAULT;
 }
+{{/let partial}}
+
+{{#let export partial union_builder |struct| captures |types|}}
+@ThriftConstructor
+public {{struct.javaCapitalName}}() {
+}
+{{#if struct.unionFieldTypeUnique?}}
+{{#each struct.fields as |field|}}
+
+@ThriftConstructor
+@Deprecated
+public {{struct.javaCapitalName}}(final {{#partial types.field_type field=field}} {{field.javaName}}) {
+    {{#if (not (or field.optional? field.required? field.isNumericOrVoid?))}}
+    if (!{{struct.javaCapitalName}}.allowNullFieldValues && {{field.javaName}} == null) {
+        throw new TProtocolException("Cannot initialize Union field '{{struct.javaCapitalName}}.{{field.javaName}}' with null value!");
+    }
+    {{/if (not (or field.optional? field.required? field.isNumericOrVoid?))}}
+    this.value = {{field.javaName}};
+    this.id = {{field.id}};
+}
+{{/each}}
+{{/if struct.unionFieldTypeUnique?}}
+{{#each struct.fields as |field|}}
+
+public static {{struct.javaCapitalName}} from{{field.javaCapitalName}}(final {{#partial types.field_type field=field}} {{field.javaName}}) {
+    {{struct.javaCapitalName}} res = new {{struct.javaCapitalName}}();
+    {{#if (not (or field.optional? field.required? field.isNumericOrVoid?))}}
+    if (!{{struct.javaCapitalName}}.allowNullFieldValues && {{field.javaName}} == null) {
+        throw new TProtocolException("Cannot initialize Union field '{{struct.javaCapitalName}}.{{field.javaName}}' with null value!");
+    }
+    {{/if (not (or field.optional? field.required? field.isNumericOrVoid?))}}
+    res.value = {{field.javaName}};
+    res.id = {{field.id}};
+    return res;
+}
+{{/each}}
+{{/let partial}}
+
+{{#let export partial union_setter |struct| captures |types|}}
+{{#each struct.fields as |field|}}
+@com.facebook.swift.codec.ThriftField
+@Deprecated
+public void set{{field.javaCapitalName}}(final {{#partial types.field_type field=field}} {{field.javaName}}) {
+    this.value = {{field.javaName}};
+    this.id = {{field.id}};
+}
+{{/each}}
 {{/let partial}}
 
 {{#let export partial struct_to_string |struct|}}
@@ -123,5 +171,24 @@ public int hashCode() {
     {{/if field.hasAdapterOrWrapper?}}
     {{/each}}
     return _hashCode;
+}
+{{/let partial}}
+
+{{#let export partial create_struct |struct|}}
+{{struct.javaCapitalName}} result = new {{struct.javaCapitalName}}();
+{{#each struct.fields as |field|}}
+{{#if field.hasWrapper?}}
+    result.{{field.javaName}} = this.{{field.javaName}} == null ? _{{field.javaName}}_Wrapper.fromThrift(_{{field.javaName}}, new com.facebook.thrift.adapter.FieldContext({{field.id}}, result)) : this.{{field.javaName}};
+{{#else}}
+    result.{{field.javaName}} = this.{{field.javaName}};
+{{/if field.hasWrapper?}}
+{{/each}}
+return result;
+{{/let partial}}
+
+{{#let export partial exception_message |struct|}}
+@java.lang.Override
+public String getMessage() {
+  return {{struct.exceptionMessage}};
 }
 {{/let partial}}

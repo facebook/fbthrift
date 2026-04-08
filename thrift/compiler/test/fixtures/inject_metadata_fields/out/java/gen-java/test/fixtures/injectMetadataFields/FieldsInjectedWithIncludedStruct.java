@@ -137,22 +137,18 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
       THRIFT_NAMES_TO_IDS.put("injected_unstructured_annotation_field", -1102);
       FIELD_METADATA.put(-1102, INJECTED_UNSTRUCTURED_ANNOTATION_FIELD_FIELD_DESC);
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="string_field", requiredness=Requiredness.NONE)
     public String getStringField() { return stringField; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=-1100, name="injected_field", isLegacyId=true, requiredness=Requiredness.NONE)
     public String getInjectedField() { return injectedField; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=-1101, name="injected_structured_annotation_field", isLegacyId=true, requiredness=Requiredness.OPTIONAL)
     public String getInjectedStructuredAnnotationField() { return injectedStructuredAnnotationField; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=-1102, name="injected_unstructured_annotation_field", isLegacyId=true, requiredness=Requiredness.OPTIONAL)
     public String getInjectedUnstructuredAnnotationField() { return injectedUnstructuredAnnotationField; }

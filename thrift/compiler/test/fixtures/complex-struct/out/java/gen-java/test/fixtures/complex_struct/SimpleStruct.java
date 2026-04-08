@@ -100,11 +100,9 @@ public final class SimpleStruct implements com.facebook.thrift.payload.ThriftSer
       FIELD_METADATA.put(2, NAME_FIELD_DESC);
     }
     
-
     @com.facebook.swift.codec.ThriftField(value=1, name="age", requiredness=Requiredness.NONE)
     public long getAge() { return age; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
     public String getName() { return name; }

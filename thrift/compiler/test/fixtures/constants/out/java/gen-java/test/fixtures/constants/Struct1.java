@@ -100,11 +100,9 @@ public final class Struct1 implements com.facebook.thrift.payload.ThriftSerializ
       FIELD_METADATA.put(2, B_FIELD_DESC);
     }
     
-
     @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
     public int getA() { return a; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="b", requiredness=Requiredness.NONE)
     public String getB() { return b; }

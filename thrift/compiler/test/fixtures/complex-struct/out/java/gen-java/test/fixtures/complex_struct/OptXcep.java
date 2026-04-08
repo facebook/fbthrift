@@ -93,11 +93,9 @@ public final class OptXcep extends org.apache.thrift.TBaseException implements c
         }
     }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.OPTIONAL)
     public String getMessage() { return message; }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="errorCode", requiredness=Requiredness.OPTIONAL)
     public Integer getErrorCode() { return errorCode; }

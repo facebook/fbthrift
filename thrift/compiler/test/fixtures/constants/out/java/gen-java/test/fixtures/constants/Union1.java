@@ -115,7 +115,6 @@ public final class Union1 implements com.facebook.thrift.payload.ThriftSerializa
         return res;
     }
 
-    
 
     @com.facebook.swift.codec.ThriftField(value=1, name="i", requiredness=Requiredness.NONE)
     public int getI() {

@@ -236,46 +236,37 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         MyStruct.class, MyStruct::read0));
     }
     
-
     @com.facebook.swift.codec.ThriftField(value=2, name="major", requiredness=Requiredness.NONE)
     public long getMajor() { return major; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="abstract", requiredness=Requiredness.NONE)
     public String getAbstract() { return _abstract; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="annotation_with_quote", requiredness=Requiredness.NONE)
     public String getAnnotationWithQuote() { return annotationWithQuote; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="class_", requiredness=Requiredness.NONE)
     public String getClass_() { return class_; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=5, name="annotation_with_trailing_comma", requiredness=Requiredness.NONE)
     public String getAnnotationWithTrailingComma() { return annotationWithTrailingComma; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=6, name="empty_annotations", requiredness=Requiredness.NONE)
     public String getEmptyAnnotations() { return emptyAnnotations; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=7, name="my_enum", requiredness=Requiredness.NONE)
     public test.fixtures.basicannotations.MyEnum getMyEnum() { return myEnum; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=8, name="cpp_type_annotation", requiredness=Requiredness.NONE)
     public List<String> getCppTypeAnnotation() { return cppTypeAnnotation; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=9, name="my_union", requiredness=Requiredness.NONE)
     public test.fixtures.basicannotations.MyUnion getMyUnion() { return myUnion; }

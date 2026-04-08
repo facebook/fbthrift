@@ -102,12 +102,10 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/basic_enum/MyStruct"),
         MyStruct.class, MyStruct::read0));
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE)
     public test.fixtures.swift.enumstrict.MyEnum getMyEnum() { return myEnum; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="myBigEnum", requiredness=Requiredness.NONE)
     public test.fixtures.swift.enumstrict.MyBigEnum getMyBigEnum() { return myBigEnum; }

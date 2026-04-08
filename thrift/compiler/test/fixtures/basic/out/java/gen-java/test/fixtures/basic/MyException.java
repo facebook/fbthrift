@@ -135,18 +135,14 @@ public final class MyException extends org.apache.thrift.TBaseException implemen
     }
 
     
-
     @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
     public long getMyIntField() { return myIntField; }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
     public String getMyStringField() { return myStringField; }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="myStruct", requiredness=Requiredness.NONE)
     public test.fixtures.basic.MyStruct getMyStruct() { return myStruct; }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="myUnion", requiredness=Requiredness.NONE)
     public test.fixtures.basic.MyUnion getMyUnion() { return myUnion; }

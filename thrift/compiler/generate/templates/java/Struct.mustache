@@ -93,10 +93,10 @@ public final class {{struct:javaCapitalName}} implements com.facebook.thrift.pay
     }{{!
 
     }}{{#struct:fields}}
-    {{> struct/FieldGetter}}{{!
-    }}{{#struct:asBean?}}
+    {{#partial field.field_getter field=field:self}}
+    {{#struct:asBean?}}
 
-    {{> struct/FieldSetter}}
+    {{#partial field.field_setter field=field:self struct=struct:self}}
     {{/struct:asBean?}}{{!
     }}
     {{/struct:fields}}

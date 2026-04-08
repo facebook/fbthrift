@@ -80,7 +80,6 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor implements com.faceb
       THRIFT_NAMES_TO_IDS.put("def_field", 1);
       FIELD_METADATA.put(1, DEF_FIELD_FIELD_DESC);
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
     public test.fixtures.refs.Empty getDefField() { return defField; }

@@ -99,12 +99,10 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
       THRIFT_NAMES_TO_IDS.put("regularBinary", 4);
       FIELD_METADATA.put(4, REGULAR_BINARY_FIELD_DESC);
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="binaryMap", requiredness=Requiredness.NONE)
     public Map<String, byte[]> getBinaryMap() { return binaryMap; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="regularBinary", requiredness=Requiredness.NONE)
     public Map<String, byte[]> getRegularBinary() { return regularBinary; }

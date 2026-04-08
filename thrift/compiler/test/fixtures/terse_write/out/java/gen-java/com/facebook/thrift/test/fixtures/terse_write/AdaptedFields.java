@@ -122,17 +122,14 @@ public final class AdaptedFields implements com.facebook.thrift.payload.ThriftSe
         AdaptedFields.class, AdaptedFields::read0));
     }
     
-
     @com.facebook.swift.codec.ThriftField(value=1, name="field1", requiredness=Requiredness.TERSE)
     public int getField1() { return field1; }
 
     
-
     @com.facebook.swift.codec.ThriftField(value=2, name="field2", requiredness=Requiredness.TERSE)
     public int getField2() { return field2; }
 
     
-
     @com.facebook.swift.codec.ThriftField(value=3, name="field3", requiredness=Requiredness.TERSE)
     public int getField3() { return field3; }
 

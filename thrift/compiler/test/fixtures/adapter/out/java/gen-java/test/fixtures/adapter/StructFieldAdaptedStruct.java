@@ -140,22 +140,18 @@ public final class StructFieldAdaptedStruct implements com.facebook.thrift.paylo
         new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/StructFieldAdaptedStruct"),
         StructFieldAdaptedStruct.class, StructFieldAdaptedStruct::read0));
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="adaptedStruct", requiredness=Requiredness.NONE)
     public test.fixtures.adapter.AdaptedStruct getAdaptedStruct() { return adaptedStruct; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="adaptedTypedef", requiredness=Requiredness.NONE)
     public test.fixtures.adapter.AdaptedStruct getAdaptedTypedef() { return adaptedTypedef; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="directlyAdapted", requiredness=Requiredness.NONE)
     public test.fixtures.adapter.DirectlyAdaptedStruct getDirectlyAdapted() { return directlyAdapted; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="typedefOfAdapted", requiredness=Requiredness.NONE)
     public test.fixtures.adapter.DirectlyAdaptedStruct getTypedefOfAdapted() { return typedefOfAdapted; }

@@ -142,22 +142,18 @@ public final class SomeStruct implements com.facebook.thrift.payload.ThriftSeria
         new com.facebook.thrift.type.UniversalName("test.dev/fixtures/enums/SomeStruct"),
         SomeStruct.class, SomeStruct::read0));
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="reasonable", requiredness=Requiredness.NONE)
     public test.fixtures.enums.Metasyntactic getReasonable() { return reasonable; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="fine", requiredness=Requiredness.NONE)
     public test.fixtures.enums.Metasyntactic getFine() { return fine; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="questionable", requiredness=Requiredness.NONE)
     public test.fixtures.enums.Metasyntactic getQuestionable() { return questionable; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="tags", requiredness=Requiredness.NONE)
     public Set<Integer> getTags() { return tags; }

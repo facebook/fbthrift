@@ -99,12 +99,10 @@ public final class AdaptedStructWithInternBox implements com.facebook.thrift.pay
       THRIFT_NAMES_TO_IDS.put("field2", 2);
       FIELD_METADATA.put(2, FIELD2_FIELD_DESC);
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="field1", requiredness=Requiredness.NONE)
     public test.fixtures.refs.Empty getField1() { return field1; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="field2", requiredness=Requiredness.NONE)
     public test.fixtures.refs.MyField getField2() { return field2; }

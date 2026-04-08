@@ -84,7 +84,6 @@ public final class AlsoMoveOnly implements com.facebook.thrift.payload.ThriftSer
         AlsoMoveOnly.class, AlsoMoveOnly::read0));
     }
     
-
     @com.facebook.swift.codec.ThriftField(value=1, name="ptr", requiredness=Requiredness.NONE)
     public long getPtr() { return ptr; }
 

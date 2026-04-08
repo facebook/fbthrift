@@ -100,11 +100,9 @@ public final class Included implements com.facebook.thrift.payload.ThriftSeriali
       FIELD_METADATA.put(2, MY_TRANSITIVE_FIELD_FIELD_DESC);
     }
     
-
     @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
     public long getMyIntField() { return myIntField; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="MyTransitiveField", requiredness=Requiredness.NONE)
     public test.fixtures.includes.transitive.Foo getMyTransitiveField() { return myTransitiveField; }

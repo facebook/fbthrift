@@ -218,42 +218,34 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
         new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/Bar"),
         Bar.class, Bar::read0));
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="structField", requiredness=Requiredness.NONE)
     public test.fixtures.adapter.Foo getStructField() { return structField; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="optionalStructField", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.adapter.Foo getOptionalStructField() { return optionalStructField; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="structListField", requiredness=Requiredness.NONE)
     public List<com.facebook.thrift.my.AdaptedFoo_1> getStructListField() { return structListField; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="optionalStructListField", requiredness=Requiredness.OPTIONAL)
     public List<com.facebook.thrift.my.AdaptedFoo_1> getOptionalStructListField() { return optionalStructListField; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=5, name="unionField", requiredness=Requiredness.NONE)
     public test.fixtures.adapter.Baz getUnionField() { return unionField; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=6, name="optionalUnionField", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.adapter.Baz getOptionalUnionField() { return optionalUnionField; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=7, name="adaptedStructField", requiredness=Requiredness.NONE)
     public test.fixtures.adapter.DirectlyAdapted getAdaptedStructField() { return adaptedStructField; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=8, name="structListFieldWithTypedef", requiredness=Requiredness.NONE)
     public List<test.fixtures.adapter.Foo> getStructListFieldWithTypedef() { return structListFieldWithTypedef; }

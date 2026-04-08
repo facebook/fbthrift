@@ -84,7 +84,6 @@ public final class AdaptedStruct implements com.facebook.thrift.payload.ThriftSe
         AdaptedStruct.class, AdaptedStruct::read0));
     }
     
-
     @com.facebook.swift.codec.ThriftField(value=1, name="data", requiredness=Requiredness.NONE)
     public long getData() { return data; }
 

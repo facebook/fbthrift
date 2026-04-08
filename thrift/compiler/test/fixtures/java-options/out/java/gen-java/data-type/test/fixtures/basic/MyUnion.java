@@ -190,7 +190,6 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         return res;
     }
 
-    
 
     @com.facebook.swift.codec.ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE)
     public test.fixtures.basic.MyEnum getMyEnum() {

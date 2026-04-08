@@ -38,7 +38,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
   {{/service:singleRequestFunctions}}
   {{#service:streamingFunctions}}
   private final java.util.List<com.facebook.thrift.payload.Reader> _{{function:java_name}}Readers;
-  private final com.facebook.thrift.server.generated.SingleRequestStreamResponseDelegate<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> _delegate_{{function:java_name}};
+  private final com.facebook.thrift.server.generated.SingleRequestStreamResponseDelegate<{{#partial types.stream_return_type function=function:self}}> _delegate_{{function:java_name}};
   {{^function:stream_has_first_response?}}
   private final com.facebook.thrift.server.generated.StreamResponseHandler<{{#partial types.boxed_type type=function:self.stream.elem_type field_hasAdapter=false}}> _handler_{{function:java_name}};
   {{/function:stream_has_first_response?}}

@@ -118,17 +118,14 @@ public final class Struct3 implements com.facebook.thrift.payload.ThriftSerializ
       THRIFT_NAMES_TO_IDS.put("c", 3);
       FIELD_METADATA.put(3, C_FIELD_DESC);
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
     public String getA() { return a; }
 
     
-
     @com.facebook.swift.codec.ThriftField(value=2, name="b", requiredness=Requiredness.NONE)
     public int getB() { return b; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="c", requiredness=Requiredness.NONE)
     public test.fixtures.constants.Struct2 getC() { return c; }

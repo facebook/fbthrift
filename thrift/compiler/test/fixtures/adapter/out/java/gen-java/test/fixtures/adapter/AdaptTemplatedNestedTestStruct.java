@@ -83,7 +83,6 @@ public final class AdaptTemplatedNestedTestStruct implements com.facebook.thrift
         new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/AdaptTemplatedNestedTestStruct"),
         AdaptTemplatedNestedTestStruct.class, AdaptTemplatedNestedTestStruct::read0));
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="adaptedStruct", requiredness=Requiredness.NONE)
     public test.fixtures.adapter.AdaptTemplatedTestStruct getAdaptedStruct() { return adaptedStruct; }

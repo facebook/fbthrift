@@ -216,7 +216,6 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
         return res;
     }
 
-    
 
     @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
     public com.facebook.thrift.my.AdaptedI32_5137_1 getIntField() {

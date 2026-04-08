@@ -96,11 +96,9 @@ public final class CustomException extends org.apache.thrift.TBaseException impl
         }
     }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="name", requiredness=Requiredness.NONE)
     public String getName() { return name; }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="result", requiredness=Requiredness.NONE)
     public test.fixtures.service_schema.Result getResult() { return result; }

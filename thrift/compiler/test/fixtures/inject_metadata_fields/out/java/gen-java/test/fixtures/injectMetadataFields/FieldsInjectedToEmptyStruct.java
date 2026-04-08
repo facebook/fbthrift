@@ -80,7 +80,6 @@ public final class FieldsInjectedToEmptyStruct implements com.facebook.thrift.pa
       THRIFT_NAMES_TO_IDS.put("injected_field", -1100);
       FIELD_METADATA.put(-1100, INJECTED_FIELD_FIELD_DESC);
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=-1100, name="injected_field", isLegacyId=true, requiredness=Requiredness.NONE)
     public String getInjectedField() { return injectedField; }

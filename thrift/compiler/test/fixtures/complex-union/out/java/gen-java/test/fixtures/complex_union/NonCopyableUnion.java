@@ -97,7 +97,6 @@ public final class NonCopyableUnion implements com.facebook.thrift.payload.Thrif
         return res;
     }
 
-    
 
     @com.facebook.swift.codec.ThriftField(value=1, name="s", requiredness=Requiredness.NONE)
     public test.fixtures.complex_union.NonCopyableStruct getS() {

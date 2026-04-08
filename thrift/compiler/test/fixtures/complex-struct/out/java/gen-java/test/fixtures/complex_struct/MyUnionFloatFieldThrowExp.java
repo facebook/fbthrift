@@ -187,7 +187,6 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
         return res;
     }
 
-    
 
     @com.facebook.swift.codec.ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE)
     public test.fixtures.complex_struct.MyEnum getMyEnum() {

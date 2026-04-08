@@ -119,17 +119,14 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       FIELD_METADATA.put(2, FIELD3_FIELD_DESC);
     }
     
-
     @com.facebook.swift.codec.ThriftField(value=3, name="field1", requiredness=Requiredness.NONE)
     public int getField1() { return field1; }
 
     
-
     @com.facebook.swift.codec.ThriftField(value=1, name="field2", requiredness=Requiredness.NONE)
     public int getField2() { return field2; }
 
     
-
     @com.facebook.swift.codec.ThriftField(value=2, name="field3", requiredness=Requiredness.NONE)
     public int getField3() { return field3; }
 

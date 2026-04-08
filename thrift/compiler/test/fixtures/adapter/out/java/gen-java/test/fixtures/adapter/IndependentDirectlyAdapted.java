@@ -84,7 +84,6 @@ public final class IndependentDirectlyAdapted implements com.facebook.thrift.pay
         IndependentDirectlyAdapted.class, IndependentDirectlyAdapted::read0));
     }
     
-
     @com.facebook.swift.codec.ThriftField(value=1, name="field", requiredness=Requiredness.NONE)
     public int getField() { return field; }
 

@@ -90,7 +90,6 @@ public final class MyMutableStruct implements com.facebook.thrift.payload.Thrift
       FIELD_METADATA.put(2, STRING_FIELD_FIELD_DESC);
     }
     
-
     @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
     public long getIntField() { return intField; }
 
@@ -100,7 +99,6 @@ public final class MyMutableStruct implements com.facebook.thrift.payload.Thrift
         return this;
     }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
     public String getStringField() { return stringField; }

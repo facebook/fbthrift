@@ -74,7 +74,6 @@ public final class BiDiMethodException extends org.apache.thrift.TBaseException 
         }
     }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.NONE)
     public String getMessage() { return message; }

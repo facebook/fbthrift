@@ -99,12 +99,10 @@ public final class FieldsInjectedWithFieldsWithIncludedStruct implements com.fac
       THRIFT_NAMES_TO_IDS.put("injected_field", -1001);
       FIELD_METADATA.put(-1001, INJECTED_FIELD_FIELD_DESC);
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="string_field", requiredness=Requiredness.NONE)
     public String getStringField() { return stringField; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=-1001, name="injected_field", isLegacyId=true, requiredness=Requiredness.NONE)
     public test.fixtures.injectMetadataFields.InjectedField getInjectedField() { return injectedField; }

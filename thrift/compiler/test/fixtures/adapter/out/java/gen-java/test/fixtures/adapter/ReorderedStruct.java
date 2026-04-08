@@ -83,7 +83,6 @@ public final class ReorderedStruct implements com.facebook.thrift.payload.Thrift
         new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/ReorderedStruct"),
         ReorderedStruct.class, ReorderedStruct::read0));
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="reordered_dependent_adapted", requiredness=Requiredness.NONE)
     public test.fixtures.adapter.DeclaredAfterStruct getReorderedDependentAdapted() { return reorderedDependentAdapted; }

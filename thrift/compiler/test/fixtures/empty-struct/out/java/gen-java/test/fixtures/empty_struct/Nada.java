@@ -67,7 +67,6 @@ public final class Nada implements com.facebook.thrift.payload.ThriftSerializabl
     public Nada() {
     }
 
-    
 
     @ThriftUnionId
     public short getThriftId() {

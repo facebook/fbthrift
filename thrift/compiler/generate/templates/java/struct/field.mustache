@@ -30,3 +30,22 @@
 }}{{#else if (and (not field.required?) (not field.isNumericOrVoid?))}}@Nullable{{!
 }}{{/if field.optional?}}
 {{/let partial}}
+
+{{#let export partial field_getter |field| captures |field_nullability thrift_field_annotation types|}}
+{{#if field.deprecated?}}
+@Deprecated
+{{/if field.deprecated?}}
+{{#partial field_nullability field=field}}
+
+{{#partial thrift_field_annotation field=field}}
+
+public {{#partial types.field_type field=field}} {{#if field.hasWrapper?}}get{{field.javaCapitalName}}{{#else}}{{#partial types.getter_name field=field}}{{/if field.hasWrapper?}}() { return {{field.javaName}}; }
+{{/let partial}}
+
+{{#let export partial field_setter |field struct| captures |types|}}
+@com.facebook.swift.codec.ThriftField
+public {{struct.javaCapitalName}} set{{field.javaCapitalName}}({{#partial types.field_type field=field}} {{field.javaName}}) {
+    this.{{field.javaName}} = {{field.javaName}};
+    return this;
+}
+{{/let partial}}

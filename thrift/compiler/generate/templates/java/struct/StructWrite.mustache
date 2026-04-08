@@ -28,7 +28,7 @@ public void write0(TProtocol oprot) throws TException {
   {{#field:type}}{{#partial types.adapted_field_boxed_type type=type:self field_hasAdapter=field:hasAdapter?}}{{/field:type}} _fbthriftVar{{field:nestedDepth}} = {{> ToThriftStart}}this.{{field:javaName}}{{> ToThriftEnd}};
   {{/field:hasAdapterOrWrapper?}}
   {{^field:hasAdapterOrWrapper?}}
-  {{> ThriftFieldType}} _fbthriftVar{{field:nestedDepth}} = this.{{field:javaName}};
+  {{#partial types.thrift_field_type field=field:self}} _fbthriftVar{{field:nestedDepth}} = this.{{field:javaName}};
   {{/field:hasAdapterOrWrapper?}}
   {{#field:isNullableOrOptionalNotEnum?}}
   {{#field:terse?}}

@@ -65,10 +65,11 @@ public final class {{struct:javaCapitalName}} extends org.apache.thrift.TBaseExc
     {{> struct/StructBuilder}}
 
     {{#struct:fields}}
-    {{> struct/FieldGetter}}
+    {{#partial field.field_getter field=field:self}}
     {{/struct:fields}}
     {{#struct:needsExceptionMessage?}}
-    {{> ExceptionMessage}}
+
+    {{#partial struct.exception_message struct=struct:self}}
     {{/struct:needsExceptionMessage?}}
 
     {{> struct/StructRead}}

@@ -448,7 +448,6 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         return res;
     }
 
-    
 
     @com.facebook.swift.codec.ThriftField(value=1, name="bool_field", requiredness=Requiredness.NONE)
     public boolean isBoolField() {

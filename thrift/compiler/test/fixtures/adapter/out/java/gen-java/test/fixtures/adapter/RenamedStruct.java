@@ -84,7 +84,6 @@ public final class RenamedStruct implements com.facebook.thrift.payload.ThriftSe
         RenamedStruct.class, RenamedStruct::read0));
     }
     
-
     @com.facebook.swift.codec.ThriftField(value=1, name="data", requiredness=Requiredness.NONE)
     public long getData() { return data; }
 

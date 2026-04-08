@@ -119,16 +119,13 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
       FIELD_METADATA.put(3, EMPLOYER_FIELD_DESC);
     }
     
-
     @com.facebook.swift.codec.ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED)
     public int getWeeks() { return weeks; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="title", requiredness=Requiredness.NONE)
     public String getTitle() { return title; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.lazy_constants.Company getEmployer() { return employer; }

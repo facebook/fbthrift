@@ -80,7 +80,6 @@ public final class A implements com.facebook.thrift.payload.ThriftSerializable {
       THRIFT_NAMES_TO_IDS.put("a", 1);
       FIELD_METADATA.put(1, A_FIELD_DESC);
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
     public String getA() { return a; }

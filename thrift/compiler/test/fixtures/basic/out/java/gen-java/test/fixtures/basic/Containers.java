@@ -121,17 +121,14 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
         new com.facebook.thrift.type.UniversalName("test.dev/fixtures/basic/Containers"),
         Containers.class, Containers::read0));
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="I32List", requiredness=Requiredness.NONE)
     public List<Integer> getI32List() { return i32List; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="StringSet", requiredness=Requiredness.NONE)
     public Set<String> getStringSet() { return stringSet; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="StringToI64Map", requiredness=Requiredness.NONE)
     public Map<String, Long> getStringToI64Map() { return stringToI64Map; }

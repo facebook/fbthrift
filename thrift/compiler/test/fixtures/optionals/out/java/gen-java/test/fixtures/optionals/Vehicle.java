@@ -156,27 +156,22 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
       THRIFT_NAMES_TO_IDS.put("hasAC", 5);
       FIELD_METADATA.put(5, HAS_AC_FIELD_DESC);
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="color", requiredness=Requiredness.NONE)
     public test.fixtures.optionals.Color getColor() { return color; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="licensePlate", requiredness=Requiredness.OPTIONAL)
     public String getLicensePlate() { return licensePlate; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="description", requiredness=Requiredness.OPTIONAL)
     public String getDescription() { return description; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="name", requiredness=Requiredness.OPTIONAL)
     public String getName() { return name; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=5, name="hasAC", requiredness=Requiredness.OPTIONAL)
     public Boolean isHasAC() { return hasAC; }

@@ -118,18 +118,15 @@ public final class StructWithSharedConst implements com.facebook.thrift.payload.
       THRIFT_NAMES_TO_IDS.put("req_shared_const", 3);
       FIELD_METADATA.put(3, REQ_SHARED_CONST_FIELD_DESC);
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="opt_shared_const", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.refs.MyField getOptSharedConst() { return optSharedConst; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="shared_const", requiredness=Requiredness.NONE)
     public test.fixtures.refs.MyField getSharedConst() { return sharedConst; }
 
     
-
     @com.facebook.swift.codec.ThriftField(value=3, name="req_shared_const", requiredness=Requiredness.REQUIRED)
     public test.fixtures.refs.MyField getReqSharedConst() { return reqSharedConst; }
 

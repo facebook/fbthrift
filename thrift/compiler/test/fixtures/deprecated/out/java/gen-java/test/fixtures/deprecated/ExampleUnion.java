@@ -148,7 +148,6 @@ public final class ExampleUnion implements com.facebook.thrift.payload.ThriftSer
         return res;
     }
 
-    
 
     @com.facebook.swift.codec.ThriftField(value=1, name="stringValue", requiredness=Requiredness.NONE)
     public String getStringValue() {

@@ -284,6 +284,96 @@ Map<{{#partial adapted_inner_boxed_type type=type.key_type}}, {{#partial adapted
 {{/if type.java_type?}}
 {{/let partial}}
 
+{{! Resolves the stream return type. For streams with a first response, produces
+    StreamResponse<FirstResponseType, ElemType>. For streams without a first
+    response, produces just the element type. }}
+{{#let export partial stream_return_type |function| captures |boxed_type|}}
+  {{#pragma ignore-newlines}}
+  {{#if function.stream_has_first_response?}}
+com.facebook.thrift.model.StreamResponse<
+{{#partial boxed_type type=function.return_type field_hasAdapter=false}},
+{{#partial boxed_type type=function.stream.elem_type field_hasAdapter=false}}>
+  {{#else}}
+{{#partial boxed_type type=function.stream.elem_type field_hasAdapter=false}}
+  {{/if function.stream_has_first_response?}}
+{{/let partial}}
+
+{{! Resolves the Thrift field type for variable declarations in read/write paths.
+    For optional fields, uses boxed types (with adapted_field_boxed_type when
+    the type has an adapter). For required fields, uses unboxed java_type. }}
+{{#let export partial thrift_field_type |field| captures |adapted_field_boxed_type boxed_type java_type|}}
+  {{#pragma ignore-newlines}}
+{{#if field.optional?}}
+  {{#if field.type.hasAdapter?}}
+{{#partial adapted_field_boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}
+  {{#else}}
+{{#partial boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}
+  {{/if field.type.hasAdapter?}}
+{{#else}}
+{{#partial java_type type=field.type has_adapter_override=field.hasAdapter?}}
+{{/if field.optional?}}
+{{/let partial}}
+
+{{! Resolves the stream response generic type used for casting in response
+    mapping. Always wraps in StreamResponse — uses the first response type
+    when present, otherwise Void. }}
+{{#let export partial stream_response_generic |function| captures |boxed_type|}}
+  {{#pragma ignore-newlines}}
+  {{#if function.stream_has_first_response?}}
+com.facebook.thrift.model.StreamResponse<
+{{#partial boxed_type type=function.return_type field_hasAdapter=false}}, {{!}}
+{{#partial boxed_type type=function.stream.elem_type field_hasAdapter=false}}>
+  {{#else}}
+com.facebook.thrift.model.StreamResponse<Void, {{!}}
+{{#partial boxed_type type=function.stream.elem_type field_hasAdapter=false}}>
+  {{/if function.stream_has_first_response?}}
+{{/let partial}}
+
+{{! Resolves the sink return type for a function with a sink.
+    With first response, produces Flux<StreamResponse<FirstResponseType, FinalResponseType>>.
+    Without, produces Mono<FinalResponseType>. }}
+{{#let export partial sink_return_type |function| captures |boxed_type|}}
+  {{#pragma ignore-newlines}}
+  {{#if function.sink_has_first_response?}}
+reactor.core.publisher.Flux<com.facebook.thrift.model.StreamResponse<
+{{#partial boxed_type type=function.return_type field_hasAdapter=false}}, {{!}}
+{{#partial boxed_type type=function.sink.final_response_type field_hasAdapter=false}}>>
+  {{#else}}
+reactor.core.publisher.Mono<
+{{#partial boxed_type type=function.sink.final_response_type field_hasAdapter=false}}>
+  {{/if function.sink_has_first_response?}}
+{{/let partial}}
+
+{{! Resolves the sink wrapper return type for a function with a sink.
+    With first response, produces Flux<ResponseWrapper<StreamResponse<FirstResponseType, FinalResponseType>>>.
+    Without, produces Mono<ResponseWrapper<FinalResponseType>>. }}
+{{#let export partial sink_wrapper_return_type |function| captures |boxed_type|}}
+  {{#pragma ignore-newlines}}
+  {{#if function.sink_has_first_response?}}
+reactor.core.publisher.Flux<ResponseWrapper<com.facebook.thrift.model.StreamResponse<
+{{#partial boxed_type type=function.return_type field_hasAdapter=false}}, {{!}}
+{{#partial boxed_type type=function.sink.final_response_type field_hasAdapter=false}}>>>
+  {{#else}}
+reactor.core.publisher.Mono<ResponseWrapper<
+{{#partial boxed_type type=function.sink.final_response_type field_hasAdapter=false}}>>
+  {{/if function.sink_has_first_response?}}
+{{/let partial}}
+
+{{! Resolves the sink response generic type used for casting in response
+    mapping. Always wraps in StreamResponse — uses the first response type
+    when present, otherwise Void. }}
+{{#let export partial sink_response_generic |function| captures |boxed_type|}}
+  {{#pragma ignore-newlines}}
+  {{#if function.sink_has_first_response?}}
+com.facebook.thrift.model.StreamResponse<
+{{#partial boxed_type type=function.return_type field_hasAdapter=false}}, {{!}}
+{{#partial boxed_type type=function.sink.final_response_type field_hasAdapter=false}}>
+  {{#else}}
+com.facebook.thrift.model.StreamResponse<Void, {{!}}
+{{#partial boxed_type type=function.sink.final_response_type field_hasAdapter=false}}>
+  {{/if function.sink_has_first_response?}}
+{{/let partial}}
+
 {{! Writes a Thrift value to the protocol for struct/union serialization.
     Takes a field object (for adapter context), type object, and depth integer
     (suffix for _fbthriftVar variables). The top-level call site passes depth

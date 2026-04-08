@@ -124,7 +124,6 @@ public final class AdaptTestUnion implements com.facebook.thrift.payload.ThriftS
         return res;
     }
 
-    
 
     @com.facebook.swift.codec.ThriftField(value=1, name="delay", requiredness=Requiredness.NONE)
     public long getDelay() {

@@ -160,28 +160,23 @@ public final class User implements com.facebook.thrift.payload.ThriftSerializabl
         User.class, User::read0));
     }
     
-
     @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE)
     public long getId() { return id; }
 
-    
     @Deprecated
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
     public String getName() { return name; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="full_name", requiredness=Requiredness.NONE)
     public String getFullName() { return fullName; }
 
-    
     @Deprecated
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="email", requiredness=Requiredness.OPTIONAL)
     public String getEmail() { return email; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=5, name="email_address", requiredness=Requiredness.OPTIONAL)
     public String getEmailAddress() { return emailAddress; }

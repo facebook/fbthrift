@@ -104,11 +104,9 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         MyStruct.class, MyStruct::read0));
     }
     
-
     @com.facebook.swift.codec.ThriftField(value=1, name="field", requiredness=Requiredness.NONE)
     public int getField() { return field; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="set_string", requiredness=Requiredness.NONE)
     public com.facebook.thrift.my.AdaptedSet_2 getSetString() { return setString; }

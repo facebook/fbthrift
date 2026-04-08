@@ -184,7 +184,7 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
         return res;
     }
 
-        @com.facebook.swift.codec.ThriftField
+    @com.facebook.swift.codec.ThriftField
     @Deprecated
     public void setIntValue(final long intValue) {
         this.value = intValue;
@@ -220,7 +220,6 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
         this.value = stringRef;
         this.id = 14;
     }
-
 
     @com.facebook.swift.codec.ThriftField(value=1, name="intValue", requiredness=Requiredness.NONE)
     public long getIntValue() {

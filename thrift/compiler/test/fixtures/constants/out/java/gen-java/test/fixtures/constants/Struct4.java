@@ -119,16 +119,13 @@ public final class Struct4 implements com.facebook.thrift.payload.ThriftSerializ
       FIELD_METADATA.put(3, C_FIELD_DESC);
     }
     
-
     @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
     public int getA() { return a; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="b", requiredness=Requiredness.OPTIONAL)
     public Double getB() { return b; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="c", requiredness=Requiredness.OPTIONAL)
     public Byte getC() { return c; }

@@ -91,7 +91,6 @@ public final class NonTriviallyDestructibleUnion implements com.facebook.thrift.
         return res;
     }
 
-    
 
     @com.facebook.swift.codec.ThriftField(value=1, name="int_field", requiredness=Requiredness.NONE)
     public int getIntField() {

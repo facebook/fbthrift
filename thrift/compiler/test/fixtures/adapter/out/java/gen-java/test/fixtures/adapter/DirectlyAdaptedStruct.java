@@ -84,7 +84,6 @@ public final class DirectlyAdaptedStruct implements com.facebook.thrift.payload.
         DirectlyAdaptedStruct.class, DirectlyAdaptedStruct::read0));
     }
     
-
     @com.facebook.swift.codec.ThriftField(value=1, name="data", requiredness=Requiredness.NONE)
     public long getData() { return data; }
 

@@ -100,12 +100,10 @@ public final class Range implements com.facebook.thrift.payload.ThriftSerializab
       FIELD_METADATA.put(2, MAX_FIELD_DESC);
     }
     
-
     @com.facebook.swift.codec.ThriftField(value=1, name="min", requiredness=Requiredness.REQUIRED)
     public int getMin() { return min; }
 
     
-
     @com.facebook.swift.codec.ThriftField(value=2, name="max", requiredness=Requiredness.REQUIRED)
     public int getMax() { return max; }
 

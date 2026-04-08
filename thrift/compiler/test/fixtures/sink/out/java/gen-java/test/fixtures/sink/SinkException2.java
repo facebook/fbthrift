@@ -75,7 +75,6 @@ public final class SinkException2 extends org.apache.thrift.TBaseException imple
     }
 
     
-
     @com.facebook.swift.codec.ThriftField(value=1, name="reason", requiredness=Requiredness.NONE)
     public long getReason() { return reason; }
 

@@ -93,19 +93,18 @@ public final class CustomFieldNames extends org.apache.thrift.TBaseException imp
         }
     }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="error_message", requiredness=Requiredness.NONE)
     public String getErrorMessage() { return errorMessage; }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="internal_error_message", requiredness=Requiredness.NONE)
     public String getInternalGreatMessage() { return internalGreatMessage; }
-    
+
     @java.lang.Override
     public String getMessage() {
       return internalGreatMessage;
     }
+
     
     public static com.facebook.thrift.payload.Reader<CustomFieldNames> asReader() {
       return CustomFieldNames::read0;

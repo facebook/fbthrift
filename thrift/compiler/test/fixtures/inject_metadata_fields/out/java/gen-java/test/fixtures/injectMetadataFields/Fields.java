@@ -80,7 +80,6 @@ public final class Fields implements com.facebook.thrift.payload.ThriftSerializa
       THRIFT_NAMES_TO_IDS.put("injected_field", 100);
       FIELD_METADATA.put(100, INJECTED_FIELD_FIELD_DESC);
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=100, name="injected_field", requiredness=Requiredness.NONE)
     public String getInjectedField() { return injectedField; }

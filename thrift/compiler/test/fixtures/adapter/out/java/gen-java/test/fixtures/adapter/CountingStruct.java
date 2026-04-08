@@ -121,17 +121,14 @@ public final class CountingStruct implements com.facebook.thrift.payload.ThriftS
         new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/CountingStruct"),
         CountingStruct.class, CountingStruct::read0));
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="regularInt", requiredness=Requiredness.OPTIONAL)
     public Long getRegularInt() { return regularInt; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="countingInt", requiredness=Requiredness.OPTIONAL)
     public Long getCountingInt() { return countingInt; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="regularString", requiredness=Requiredness.OPTIONAL)
     public String getRegularString() { return regularString; }

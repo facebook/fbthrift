@@ -94,7 +94,6 @@ public final class UnionToBeRenamed implements com.facebook.thrift.payload.Thrif
         return res;
     }
 
-    
 
     @com.facebook.swift.codec.ThriftField(value=1, name="reserved_field", requiredness=Requiredness.NONE)
     public int getReservedField() {

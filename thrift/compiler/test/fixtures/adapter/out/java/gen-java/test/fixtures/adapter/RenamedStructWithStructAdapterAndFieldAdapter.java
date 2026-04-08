@@ -84,7 +84,6 @@ public final class RenamedStructWithStructAdapterAndFieldAdapter implements com.
         RenamedStructWithStructAdapterAndFieldAdapter.class, RenamedStructWithStructAdapterAndFieldAdapter::read0));
     }
     
-
     @com.facebook.swift.codec.ThriftField(value=1, name="field", requiredness=Requiredness.NONE)
     public int getField() { return field; }
 

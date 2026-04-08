@@ -118,17 +118,14 @@ public final class StructWithUnion implements com.facebook.thrift.payload.Thrift
       THRIFT_NAMES_TO_IDS.put("f", 3);
       FIELD_METADATA.put(3, F_FIELD_DESC);
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="u", requiredness=Requiredness.NONE)
     public test.fixtures.refs.MyUnion getU() { return u; }
 
     
-
     @com.facebook.swift.codec.ThriftField(value=2, name="aDouble", requiredness=Requiredness.NONE)
     public double getADouble() { return aDouble; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="f", requiredness=Requiredness.NONE)
     public test.fixtures.refs.MyField getF() { return f; }

@@ -107,7 +107,7 @@ public final class ListUnion implements com.facebook.thrift.payload.ThriftSerial
         return res;
     }
 
-        @com.facebook.swift.codec.ThriftField
+    @com.facebook.swift.codec.ThriftField
     @Deprecated
     public void setIntListValue(final List<Long> intListValue) {
         this.value = intListValue;
@@ -119,7 +119,6 @@ public final class ListUnion implements com.facebook.thrift.payload.ThriftSerial
         this.value = stringListValue;
         this.id = 3;
     }
-
 
     @com.facebook.swift.codec.ThriftField(value=2, name="intListValue", requiredness=Requiredness.NONE)
     public List<Long> getIntListValue() {

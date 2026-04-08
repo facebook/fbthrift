@@ -83,7 +83,6 @@ public final class CircularAdaptee implements com.facebook.thrift.payload.Thrift
         new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/fixtures/adapter/CircularAdaptee"),
         CircularAdaptee.class, CircularAdaptee::read0));
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="field", requiredness=Requiredness.NONE)
     public test.fixtures.adapter.CircularStruct getField() { return field; }

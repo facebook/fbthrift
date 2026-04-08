@@ -90,7 +90,6 @@ public final class MyDataItem implements com.facebook.thrift.payload.ThriftSeria
       FIELD_METADATA.put(2, FIELD2_FIELD_DESC);
     }
     
-
     @com.facebook.swift.codec.ThriftField(value=1, name="field1", requiredness=Requiredness.NONE)
     public int getField1() { return field1; }
 
@@ -101,7 +100,6 @@ public final class MyDataItem implements com.facebook.thrift.payload.ThriftSeria
     }
 
     
-
     @com.facebook.swift.codec.ThriftField(value=2, name="field2", requiredness=Requiredness.NONE)
     public int getField2() { return field2; }
 

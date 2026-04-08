@@ -764,187 +764,150 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       THRIFT_NAMES_TO_IDS.put("map_i32_map_list_struct_i32", 37);
       FIELD_METADATA.put(37, MAP_I32_MAP_LIST_STRUCT_I32_FIELD_DESC);
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="struct_list", requiredness=Requiredness.NONE)
     public List<test.fixtures.complex_struct.MyStruct> getStructList() { return structList; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="union_list", requiredness=Requiredness.NONE)
     public List<test.fixtures.complex_struct.MyUnion> getUnionList() { return unionList; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=3, name="enum_list", requiredness=Requiredness.NONE)
     public List<test.fixtures.complex_struct.MyEnum> getEnumList() { return enumList; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="struct_set", requiredness=Requiredness.NONE)
     public Set<test.fixtures.complex_struct.MyStruct> getStructSet() { return structSet; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=5, name="union_set", requiredness=Requiredness.NONE)
     public Set<test.fixtures.complex_struct.MyUnion> getUnionSet() { return unionSet; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=6, name="enum_set", requiredness=Requiredness.NONE)
     public Set<test.fixtures.complex_struct.MyEnum> getEnumSet() { return enumSet; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=7, name="struct_map", requiredness=Requiredness.NONE)
     public Map<test.fixtures.complex_struct.MyStruct, Long> getStructMap() { return structMap; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=8, name="union_map", requiredness=Requiredness.NONE)
     public Map<test.fixtures.complex_struct.MyUnion, Long> getUnionMap() { return unionMap; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=9, name="enum_map", requiredness=Requiredness.NONE)
     public Map<test.fixtures.complex_struct.MyEnum, Long> getEnumMap() { return enumMap; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=10, name="struct_map_2", requiredness=Requiredness.NONE)
     public Map<Integer, test.fixtures.complex_struct.MyStruct> getStructMap2() { return structMap2; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=11, name="union_map_2", requiredness=Requiredness.NONE)
     public Map<Integer, test.fixtures.complex_struct.MyUnion> getUnionMap2() { return unionMap2; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=12, name="enum_map_2", requiredness=Requiredness.NONE)
     public Map<Integer, test.fixtures.complex_struct.MyEnum> getEnumMap2() { return enumMap2; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=13, name="list_map", requiredness=Requiredness.NONE)
     public Map<List<Integer>, Integer> getListMap() { return listMap; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=14, name="list_map_2", requiredness=Requiredness.NONE)
     public Map<Integer, List<Integer>> getListMap2() { return listMap2; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=15, name="set_map", requiredness=Requiredness.NONE)
     public Map<Set<Integer>, Integer> getSetMap() { return setMap; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=16, name="set_map_2", requiredness=Requiredness.NONE)
     public Map<Integer, Set<Integer>> getSetMap2() { return setMap2; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=17, name="map_map", requiredness=Requiredness.NONE)
     public Map<Map<Integer, Integer>, Integer> getMapMap() { return mapMap; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=18, name="map_map_2", requiredness=Requiredness.NONE)
     public Map<Integer, Map<Integer, Integer>> getMapMap2() { return mapMap2; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=19, name="list_list_i32", requiredness=Requiredness.NONE)
     public List<List<Integer>> getListListI32() { return listListI32; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=20, name="list_list_struct", requiredness=Requiredness.NONE)
     public List<List<test.fixtures.complex_struct.MyStruct>> getListListStruct() { return listListStruct; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=21, name="list_set_i32", requiredness=Requiredness.NONE)
     public List<Set<Integer>> getListSetI32() { return listSetI32; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=22, name="list_set_struct", requiredness=Requiredness.NONE)
     public List<Set<test.fixtures.complex_struct.MyStruct>> getListSetStruct() { return listSetStruct; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=23, name="list_map_i32_i32", requiredness=Requiredness.NONE)
     public List<Map<Integer, Integer>> getListMapI32I32() { return listMapI32I32; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=24, name="list_map_i32_struct", requiredness=Requiredness.NONE)
     public List<Map<Integer, test.fixtures.complex_struct.MyStruct>> getListMapI32Struct() { return listMapI32Struct; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=25, name="list_map_struct_i32", requiredness=Requiredness.NONE)
     public List<Map<test.fixtures.complex_struct.MyStruct, Integer>> getListMapStructI32() { return listMapStructI32; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=26, name="set_list_i32", requiredness=Requiredness.NONE)
     public Set<List<Integer>> getSetListI32() { return setListI32; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=27, name="set_list_struct", requiredness=Requiredness.NONE)
     public Set<List<test.fixtures.complex_struct.MyStruct>> getSetListStruct() { return setListStruct; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=28, name="set_set_i32", requiredness=Requiredness.NONE)
     public Set<Set<Integer>> getSetSetI32() { return setSetI32; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=29, name="set_set_struct", requiredness=Requiredness.NONE)
     public Set<Set<test.fixtures.complex_struct.MyStruct>> getSetSetStruct() { return setSetStruct; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=30, name="set_map_i32_i32", requiredness=Requiredness.NONE)
     public Set<Map<Integer, Integer>> getSetMapI32I32() { return setMapI32I32; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=31, name="set_map_i32_struct", requiredness=Requiredness.NONE)
     public Set<Map<Integer, test.fixtures.complex_struct.MyStruct>> getSetMapI32Struct() { return setMapI32Struct; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=32, name="set_map_struct_i32", requiredness=Requiredness.NONE)
     public Set<Map<test.fixtures.complex_struct.MyStruct, Integer>> getSetMapStructI32() { return setMapStructI32; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=33, name="map_i32_map_i32_i32", requiredness=Requiredness.NONE)
     public Map<Integer, Map<Integer, Integer>> getMapI32MapI32I32() { return mapI32MapI32I32; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=34, name="map_i32_map_struct_i32", requiredness=Requiredness.NONE)
     public Map<Integer, Map<test.fixtures.complex_struct.MyStruct, Integer>> getMapI32MapStructI32() { return mapI32MapStructI32; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=35, name="map_i32_map_i32_struct", requiredness=Requiredness.NONE)
     public Map<Integer, Map<Integer, test.fixtures.complex_struct.MyStruct>> getMapI32MapI32Struct() { return mapI32MapI32Struct; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=36, name="map_i32_map_list_i32_i32", requiredness=Requiredness.NONE)
     public Map<Integer, List<Map<Integer, Integer>>> getMapI32MapListI32I32() { return mapI32MapListI32I32; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=37, name="map_i32_map_list_struct_i32", requiredness=Requiredness.NONE)
     public Map<Integer, List<Map<test.fixtures.complex_struct.MyStruct, Integer>>> getMapI32MapListStructI32() { return mapI32MapListStructI32; }

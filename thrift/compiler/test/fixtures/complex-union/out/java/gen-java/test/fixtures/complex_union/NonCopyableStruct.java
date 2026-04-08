@@ -81,7 +81,6 @@ public final class NonCopyableStruct implements com.facebook.thrift.payload.Thri
       FIELD_METADATA.put(1, NUM_FIELD_DESC);
     }
     
-
     @com.facebook.swift.codec.ThriftField(value=1, name="num", requiredness=Requiredness.NONE)
     public long getNum() { return num; }
 

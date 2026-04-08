@@ -140,22 +140,18 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         new com.facebook.thrift.type.UniversalName("test.dev/fixtures/enums/MyStruct"),
         MyStruct.class, MyStruct::read0));
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="me2_3", requiredness=Requiredness.NONE)
     public test.fixtures.enums.MyEnum2 getMe23() { return me23; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=2, name="me3_n3", requiredness=Requiredness.NONE)
     public test.fixtures.enums.MyEnum3 getMe3N3() { return me3N3; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=4, name="me1_t1", requiredness=Requiredness.NONE)
     public test.fixtures.enums.MyEnum1 getMe1T1() { return me1T1; }
 
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=6, name="me1_t2", requiredness=Requiredness.NONE)
     public test.fixtures.enums.MyEnum1 getMe1T2() { return me1T2; }

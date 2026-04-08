@@ -80,7 +80,6 @@ public final class InitialResponse implements com.facebook.thrift.payload.Thrift
       THRIFT_NAMES_TO_IDS.put("content", 1);
       FIELD_METADATA.put(1, CONTENT_FIELD_DESC);
     }
-    
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="content", requiredness=Requiredness.NONE)
     public String getContent() { return content; }

@@ -121,7 +121,6 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         return res;
     }
 
-    
 
     @com.facebook.swift.codec.ThriftField(value=1, name="anInteger", requiredness=Requiredness.NONE)
     public int getAnInteger() {

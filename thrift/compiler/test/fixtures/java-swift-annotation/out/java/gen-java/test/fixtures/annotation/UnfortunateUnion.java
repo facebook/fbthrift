@@ -121,7 +121,6 @@ public final class UnfortunateUnion implements com.facebook.thrift.payload.Thrif
         return res;
     }
 
-    
 
     @com.facebook.swift.codec.ThriftField(value=1, name="an_snake_string", requiredness=Requiredness.NONE)
     public String getAnSnakeString() {
