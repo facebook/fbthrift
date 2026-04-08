@@ -198,6 +198,7 @@ public final class UnionToBeRenamed implements com.facebook.thrift.payload.Thrif
         int _fbthriftVar0 = (int)this.value;
 
         oprot.writeI32(_fbthriftVar0);
+
         oprot.writeFieldEnd();
         break;
       }

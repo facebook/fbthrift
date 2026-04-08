@@ -193,12 +193,14 @@ public final class Range implements com.facebook.thrift.payload.ThriftSerializab
       int _fbthriftVar0 = this.min;
       oprot.writeFieldBegin(MIN_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.max;
       oprot.writeFieldBegin(MAX_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

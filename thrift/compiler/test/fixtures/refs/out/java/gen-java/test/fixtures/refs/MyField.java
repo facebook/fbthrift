@@ -460,6 +460,7 @@ public final class MyField implements com.facebook.thrift.payload.ThriftSerializ
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPT_VALUE_FIELD_DESC);
         oprot.writeI64(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -467,12 +468,14 @@ public final class MyField implements com.facebook.thrift.payload.ThriftSerializ
       long _fbthriftVar0 = this.value;
       oprot.writeFieldBegin(VALUE_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       long _fbthriftVar0 = this.reqValue;
       oprot.writeFieldBegin(REQ_VALUE_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -480,6 +483,7 @@ public final class MyField implements com.facebook.thrift.payload.ThriftSerializ
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPT_ENUM_VALUE_FIELD_DESC);
         oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
+
         oprot.writeFieldEnd();
       }
       }
@@ -487,12 +491,14 @@ public final class MyField implements com.facebook.thrift.payload.ThriftSerializ
       test.fixtures.refs.MyEnum _fbthriftVar0 = this.enumValue;
       oprot.writeFieldBegin(ENUM_VALUE_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
+
       oprot.writeFieldEnd();
       }
       {
       test.fixtures.refs.MyEnum _fbthriftVar0 = this.reqEnumValue;
       oprot.writeFieldBegin(REQ_ENUM_VALUE_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
+
       oprot.writeFieldEnd();
       }
       {
@@ -500,6 +506,7 @@ public final class MyField implements com.facebook.thrift.payload.ThriftSerializ
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPT_STR_VALUE_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -508,6 +515,7 @@ public final class MyField implements com.facebook.thrift.payload.ThriftSerializ
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(STR_VALUE_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -516,6 +524,7 @@ public final class MyField implements com.facebook.thrift.payload.ThriftSerializ
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(REQ_STR_VALUE_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }

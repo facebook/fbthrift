@@ -284,6 +284,7 @@ public final class Struct2 implements com.facebook.thrift.payload.ThriftSerializ
       int _fbthriftVar0 = this.a;
       oprot.writeFieldBegin(A_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -291,6 +292,7 @@ public final class Struct2 implements com.facebook.thrift.payload.ThriftSerializ
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(B_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -299,6 +301,7 @@ public final class Struct2 implements com.facebook.thrift.payload.ThriftSerializ
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(C_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }
@@ -307,10 +310,11 @@ public final class Struct2 implements com.facebook.thrift.payload.ThriftSerializ
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(D_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.I32, _fbthriftVar0.size()));
-            for (int _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeI32(_fbthriftVar1);
-            }
-            oprot.writeListEnd();
+    for (int _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeI32(_fbthriftVar1);
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }

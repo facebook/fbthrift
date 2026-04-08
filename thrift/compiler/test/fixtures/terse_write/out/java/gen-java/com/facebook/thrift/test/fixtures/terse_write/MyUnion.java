@@ -786,6 +786,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         boolean _fbthriftVar0 = (boolean)this.value;
 
         oprot.writeBool(_fbthriftVar0);
+
         oprot.writeFieldEnd();
         break;
       }
@@ -794,6 +795,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         byte _fbthriftVar0 = (byte)this.value;
 
         oprot.writeByte(_fbthriftVar0);
+
         oprot.writeFieldEnd();
         break;
       }
@@ -802,6 +804,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         short _fbthriftVar0 = (short)this.value;
 
         oprot.writeI16(_fbthriftVar0);
+
         oprot.writeFieldEnd();
         break;
       }
@@ -810,6 +813,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         int _fbthriftVar0 = (int)this.value;
 
         oprot.writeI32(_fbthriftVar0);
+
         oprot.writeFieldEnd();
         break;
       }
@@ -818,6 +822,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         long _fbthriftVar0 = (long)this.value;
 
         oprot.writeI64(_fbthriftVar0);
+
         oprot.writeFieldEnd();
         break;
       }
@@ -826,6 +831,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         float _fbthriftVar0 = (float)this.value;
 
         oprot.writeFloat(_fbthriftVar0);
+
         oprot.writeFieldEnd();
         break;
       }
@@ -834,6 +840,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         double _fbthriftVar0 = (double)this.value;
 
         oprot.writeDouble(_fbthriftVar0);
+
         oprot.writeFieldEnd();
         break;
       }
@@ -842,6 +849,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         String _fbthriftVar0 = (String)this.value;
 
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
         break;
       }
@@ -850,6 +858,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         byte[] _fbthriftVar0 = (byte[])this.value;
 
         org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar0);
+
         oprot.writeFieldEnd();
         break;
       }
@@ -858,6 +867,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         com.facebook.thrift.test.fixtures.terse_write.MyEnum _fbthriftVar0 = (com.facebook.thrift.test.fixtures.terse_write.MyEnum)this.value;
 
         oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
+
         oprot.writeFieldEnd();
         break;
       }
@@ -866,10 +876,11 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         List<Short> _fbthriftVar0 = (List<Short>)this.value;
 
         oprot.writeListBegin(new TList(TType.I16, _fbthriftVar0.size()));
-            for (short _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeI16(_fbthriftVar1);
-            }
-            oprot.writeListEnd();
+    for (short _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeI16(_fbthriftVar1);
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
         break;
       }
@@ -878,10 +889,11 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         Set<Short> _fbthriftVar0 = (Set<Short>)this.value;
 
         oprot.writeSetBegin(new TSet(TType.I16, _fbthriftVar0.size()));
-            for (short _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeI16(_fbthriftVar1);
-            }
-            oprot.writeSetEnd();
+    for (short _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeI16(_fbthriftVar1);
+    }
+    oprot.writeSetEnd();
+
         oprot.writeFieldEnd();
         break;
       }
@@ -890,17 +902,18 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         Map<Short, Short> _fbthriftVar0 = (Map<Short, Short>)this.value;
 
         oprot.writeMapBegin(new TMap(TType.I16, TType.I16, _fbthriftVar0.size()));
-            for (Map.Entry<Short, Short> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Short _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI16(_fbthriftVar2);
-              }
-              {
-                Short _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeI16(_fbthriftVar2);
-              }
-            }
-            oprot.writeMapEnd();
+    for (Map.Entry<Short, Short> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Short _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI16(_fbthriftVar2);
+        }
+        {
+            Short _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeI16(_fbthriftVar2);
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
         break;
       }
@@ -909,6 +922,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         com.facebook.thrift.test.fixtures.terse_write.MyStruct _fbthriftVar0 = (com.facebook.thrift.test.fixtures.terse_write.MyStruct)this.value;
 
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
         break;
       }

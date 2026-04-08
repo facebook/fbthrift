@@ -232,6 +232,7 @@ public final class StructWithUnion implements com.facebook.thrift.payload.Thrift
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(U_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }
@@ -239,6 +240,7 @@ public final class StructWithUnion implements com.facebook.thrift.payload.Thrift
       double _fbthriftVar0 = this.aDouble;
       oprot.writeFieldBegin(A_DOUBLE_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -246,6 +248,7 @@ public final class StructWithUnion implements com.facebook.thrift.payload.Thrift
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(F_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }

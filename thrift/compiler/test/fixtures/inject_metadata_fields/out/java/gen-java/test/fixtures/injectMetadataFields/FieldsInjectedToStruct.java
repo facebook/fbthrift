@@ -194,6 +194,7 @@ public final class FieldsInjectedToStruct implements com.facebook.thrift.payload
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(STRING_FIELD_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -202,6 +203,7 @@ public final class FieldsInjectedToStruct implements com.facebook.thrift.payload
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(INJECTED_FIELD_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }

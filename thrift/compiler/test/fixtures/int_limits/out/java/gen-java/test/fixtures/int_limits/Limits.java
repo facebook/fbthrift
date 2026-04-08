@@ -421,48 +421,56 @@ public final class Limits implements com.facebook.thrift.payload.ThriftSerializa
       long _fbthriftVar0 = this.maxI64Field;
       oprot.writeFieldBegin(MAX_I64_FIELD_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       long _fbthriftVar0 = this.minI64Field;
       oprot.writeFieldBegin(MIN_I64_FIELD_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.maxI32Field;
       oprot.writeFieldBegin(MAX_I32_FIELD_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.minI32Field;
       oprot.writeFieldBegin(MIN_I32_FIELD_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       short _fbthriftVar0 = this.maxI16Field;
       oprot.writeFieldBegin(MAX_I16_FIELD_FIELD_DESC);
       oprot.writeI16(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       short _fbthriftVar0 = this.minI16Field;
       oprot.writeFieldBegin(MIN_I16_FIELD_FIELD_DESC);
       oprot.writeI16(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       byte _fbthriftVar0 = this.maxByteField;
       oprot.writeFieldBegin(MAX_BYTE_FIELD_FIELD_DESC);
       oprot.writeByte(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       byte _fbthriftVar0 = this.minByteField;
       oprot.writeFieldBegin(MIN_BYTE_FIELD_FIELD_DESC);
       oprot.writeByte(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

@@ -269,6 +269,7 @@ public final class MyStruct1 implements com.facebook.thrift.payload.ThriftSerial
       long _fbthriftVar0 = this.myIntField;
       oprot.writeFieldBegin(MY_INT_FIELD_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -276,6 +277,7 @@ public final class MyStruct1 implements com.facebook.thrift.payload.ThriftSerial
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_STRING_FIELD_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -284,6 +286,7 @@ public final class MyStruct1 implements com.facebook.thrift.payload.ThriftSerial
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_DATA_FIELD_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }
@@ -291,6 +294,7 @@ public final class MyStruct1 implements com.facebook.thrift.payload.ThriftSerial
       long _fbthriftVar0 = this.major;
       oprot.writeFieldBegin(MAJOR_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

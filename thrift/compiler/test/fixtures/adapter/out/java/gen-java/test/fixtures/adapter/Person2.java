@@ -159,6 +159,7 @@ public final class Person2 implements com.facebook.thrift.payload.ThriftSerializ
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(NAME_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }

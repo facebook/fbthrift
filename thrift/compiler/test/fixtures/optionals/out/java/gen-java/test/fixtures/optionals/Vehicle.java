@@ -308,6 +308,7 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(COLOR_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }
@@ -316,6 +317,7 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LICENSE_PLATE_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -324,6 +326,7 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(DESCRIPTION_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -332,6 +335,7 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(NAME_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -340,6 +344,7 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(HAS_AC_FIELD_DESC);
         oprot.writeBool(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }

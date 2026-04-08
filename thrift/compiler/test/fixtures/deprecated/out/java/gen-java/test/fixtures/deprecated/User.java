@@ -312,6 +312,7 @@ public final class User implements com.facebook.thrift.payload.ThriftSerializabl
       long _fbthriftVar0 = this.id;
       oprot.writeFieldBegin(ID_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -319,6 +320,7 @@ public final class User implements com.facebook.thrift.payload.ThriftSerializabl
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(NAME_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -327,6 +329,7 @@ public final class User implements com.facebook.thrift.payload.ThriftSerializabl
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(FULL_NAME_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -335,6 +338,7 @@ public final class User implements com.facebook.thrift.payload.ThriftSerializabl
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(EMAIL_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -343,6 +347,7 @@ public final class User implements com.facebook.thrift.payload.ThriftSerializabl
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(EMAIL_ADDRESS_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }

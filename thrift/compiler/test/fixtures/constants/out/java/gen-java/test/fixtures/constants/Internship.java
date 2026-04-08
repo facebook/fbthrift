@@ -307,6 +307,7 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
       int _fbthriftVar0 = this.weeks;
       oprot.writeFieldBegin(WEEKS_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -314,6 +315,7 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(TITLE_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -322,6 +324,7 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(EMPLOYER_FIELD_DESC);
         oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
+
         oprot.writeFieldEnd();
       }
       }
@@ -330,6 +333,7 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(COMPENSATION_FIELD_DESC);
         oprot.writeDouble(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -338,6 +342,7 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SCHOOL_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }

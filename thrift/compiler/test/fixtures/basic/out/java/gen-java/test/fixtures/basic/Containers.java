@@ -301,10 +301,11 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(I32_LIST_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.I32, _fbthriftVar0.size()));
-            for (int _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeI32(_fbthriftVar1);
-            }
-            oprot.writeListEnd();
+    for (int _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeI32(_fbthriftVar1);
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -313,10 +314,11 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(STRING_SET_FIELD_DESC);
         oprot.writeSetBegin(new TSet(TType.STRING, _fbthriftVar0.size()));
-            for (String _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeString(_fbthriftVar1);
-            }
-            oprot.writeSetEnd();
+    for (String _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeString(_fbthriftVar1);
+    }
+    oprot.writeSetEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -325,17 +327,18 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(STRING_TO_I64_MAP_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.STRING, TType.I64, _fbthriftVar0.size()));
-            for (Map.Entry<String, Long> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                String _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeString(_fbthriftVar2);
-              }
-              {
-                Long _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeI64(_fbthriftVar2);
-              }
-            }
-            oprot.writeMapEnd();
+    for (Map.Entry<String, Long> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            String _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeString(_fbthriftVar2);
+        }
+        {
+            Long _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeI64(_fbthriftVar2);
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }

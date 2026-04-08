@@ -289,18 +289,21 @@ public final class SomeStruct implements com.facebook.thrift.payload.ThriftSeria
       test.fixtures.enums.Metasyntactic _fbthriftVar0 = this.reasonable;
       oprot.writeFieldBegin(REASONABLE_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
+
       oprot.writeFieldEnd();
       }
       {
       test.fixtures.enums.Metasyntactic _fbthriftVar0 = this.fine;
       oprot.writeFieldBegin(FINE_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
+
       oprot.writeFieldEnd();
       }
       {
       test.fixtures.enums.Metasyntactic _fbthriftVar0 = this.questionable;
       oprot.writeFieldBegin(QUESTIONABLE_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
+
       oprot.writeFieldEnd();
       }
       {
@@ -308,10 +311,11 @@ public final class SomeStruct implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(TAGS_FIELD_DESC);
         oprot.writeSetBegin(new TSet(TType.I32, _fbthriftVar0.size()));
-            for (int _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeI32(_fbthriftVar1);
-            }
-            oprot.writeSetEnd();
+    for (int _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeI32(_fbthriftVar1);
+    }
+    oprot.writeSetEnd();
+
         oprot.writeFieldEnd();
       }
       }

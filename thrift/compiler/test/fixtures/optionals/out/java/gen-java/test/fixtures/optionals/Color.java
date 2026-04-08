@@ -269,24 +269,28 @@ public final class Color implements com.facebook.thrift.payload.ThriftSerializab
       double _fbthriftVar0 = this.red;
       oprot.writeFieldBegin(RED_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.green;
       oprot.writeFieldBegin(GREEN_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.blue;
       oprot.writeFieldBegin(BLUE_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.alpha;
       oprot.writeFieldBegin(ALPHA_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

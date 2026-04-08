@@ -283,3 +283,89 @@ Map<{{#partial adapted_inner_boxed_type type=type.key_type}}, {{#partial adapted
 {{#else}}{{#partial java_type type=type has_adapter_override=false}}
 {{/if type.java_type?}}
 {{/let partial}}
+
+{{! Writes a Thrift value to the protocol for struct/union serialization.
+    Takes a field object (for adapter context), type object, and depth integer
+    (suffix for _fbthriftVar variables). The top-level call site passes depth
+    equal to the variable index being written. Handles adapters, containers,
+    and recursion through typedefs. }}
+{{#let export partial write_type |field type depth| captures |ttype adapted_type adapted_boxed_type boxed_type|}}
+  {{#if type.typedef?}}
+    {{#if (or type.isBinaryString? (and type.java_type? type.binary?))}}
+org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar{{depth}});
+    {{#else}}
+{{#partial write_type field=field type=type.resolved depth=depth}}
+    {{/if (or type.isBinaryString? (and type.java_type? type.binary?))}}
+  {{#else if type.set?}}
+oprot.writeSetBegin(new TSet(TType.{{#partial ttype type=type.elem_type}}, _fbthriftVar{{depth}}.size()));
+for ({{#partial adapted_type type=type.elem_type has_adapter_override=field.hasAdapter?}} _fbthriftVar{{(int.add depth 1)}} : _fbthriftVar{{depth}}) {
+    {{#if type.elem_type.hasAdapter?}}
+    {{#partial adapted_boxed_type type=type.elem_type}} _fbthriftVar{{(int.add depth 2)}} = __{{type.elem_type.name}}_Adapter.toThrift(_fbthriftVar{{(int.add depth 1)}});
+    {{#partial write_type field=field type=type.elem_type depth=(int.add depth 2)}}
+    {{#else}}
+    {{#partial write_type field=field type=type.elem_type depth=(int.add depth 1)}}
+    {{/if type.elem_type.hasAdapter?}}
+}
+oprot.writeSetEnd();
+  {{#else if type.list?}}
+oprot.writeListBegin(new TList(TType.{{#partial ttype type=type.elem_type}}, _fbthriftVar{{depth}}.size()));
+for ({{#partial adapted_type type=type.elem_type has_adapter_override=field.hasAdapter?}} _fbthriftVar{{(int.add depth 1)}} : _fbthriftVar{{depth}}) {
+    {{#if type.elem_type.hasAdapter?}}
+    {{#partial adapted_boxed_type type=type.elem_type}} _fbthriftVar{{(int.add depth 2)}} = __{{type.elem_type.name}}_Adapter.toThrift(_fbthriftVar{{(int.add depth 1)}});
+    {{#partial write_type field=field type=type.elem_type depth=(int.add depth 2)}}
+    {{#else}}
+    {{#partial write_type field=field type=type.elem_type depth=(int.add depth 1)}}
+    {{/if type.elem_type.hasAdapter?}}
+}
+oprot.writeListEnd();
+  {{#else if type.map?}}
+oprot.writeMapBegin(new TMap(TType.{{#partial ttype type=type.key_type}}, TType.{{#partial ttype type=type.val_type}}, _fbthriftVar{{depth}}.size()));
+for (Map.Entry<{{#partial boxed_type type=type.key_type field_hasAdapter=field.hasAdapter?}}, {{#partial boxed_type type=type.val_type field_hasAdapter=field.hasAdapter?}}> _fbthriftVar{{(int.add depth 1)}} : _fbthriftVar{{depth}}.entrySet()) {
+    {
+        {{#partial boxed_type type=type.key_type field_hasAdapter=field.hasAdapter?}} _fbthriftVar{{(int.add depth 2)}} = _fbthriftVar{{(int.add depth 1)}}.getKey();
+        {{#if type.key_type.hasAdapter?}}
+        {{#partial adapted_boxed_type type=type.key_type}} _fbthriftVar{{(int.add depth 3)}} = __{{type.key_type.name}}_Adapter.toThrift(_fbthriftVar{{(int.add depth 2)}});
+        {{#partial write_type field=field type=type.key_type depth=(int.add depth 3)}}
+        {{#else}}
+        {{#partial write_type field=field type=type.key_type depth=(int.add depth 2)}}
+        {{/if type.key_type.hasAdapter?}}
+    }
+    {
+        {{#partial boxed_type type=type.val_type field_hasAdapter=field.hasAdapter?}} _fbthriftVar{{(int.add depth 2)}} = _fbthriftVar{{(int.add depth 1)}}.getValue();
+        {{#if type.val_type.hasAdapter?}}
+        {{#partial adapted_boxed_type type=type.val_type}} _fbthriftVar{{(int.add depth 3)}} = __{{type.val_type.name}}_Adapter.toThrift(_fbthriftVar{{(int.add depth 2)}});
+        {{#partial write_type field=field type=type.val_type depth=(int.add depth 3)}}
+        {{#else}}
+        {{#partial write_type field=field type=type.val_type depth=(int.add depth 2)}}
+        {{/if type.val_type.hasAdapter?}}
+    }
+}
+oprot.writeMapEnd();
+  {{#else if type.structured?}}
+_fbthriftVar{{depth}}.write0(oprot);
+  {{#else if type.enum?}}
+oprot.writeI32(_fbthriftVar{{depth}} == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar{{depth}}));
+  {{#else if type.binary?}}
+org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar{{depth}});
+  {{#else if type.string?}}
+    {{#if type.isBinaryString?}}
+org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar{{depth}});
+    {{#else}}
+oprot.writeString(_fbthriftVar{{depth}});
+    {{/if type.isBinaryString?}}
+  {{#else if type.bool?}}
+oprot.writeBool(_fbthriftVar{{depth}});
+  {{#else if type.byte?}}
+oprot.writeByte(_fbthriftVar{{depth}});
+  {{#else if type.i16?}}
+oprot.writeI16(_fbthriftVar{{depth}});
+  {{#else if type.i32?}}
+oprot.writeI32(_fbthriftVar{{depth}});
+  {{#else if type.i64?}}
+oprot.writeI64(_fbthriftVar{{depth}});
+  {{#else if type.float?}}
+oprot.writeFloat(_fbthriftVar{{depth}});
+  {{#else if type.double?}}
+oprot.writeDouble(_fbthriftVar{{depth}});
+  {{/if type.typedef?}}
+{{/let partial}}

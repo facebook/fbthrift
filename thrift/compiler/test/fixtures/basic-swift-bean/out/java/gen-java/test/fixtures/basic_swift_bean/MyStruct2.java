@@ -196,6 +196,7 @@ public final class MyStruct2 implements com.facebook.thrift.payload.ThriftSerial
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_STRUCT1_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }
@@ -204,6 +205,7 @@ public final class MyStruct2 implements com.facebook.thrift.payload.ThriftSerial
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_STRING_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }

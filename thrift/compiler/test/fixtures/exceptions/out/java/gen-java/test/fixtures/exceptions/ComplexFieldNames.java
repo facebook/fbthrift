@@ -158,6 +158,7 @@ public final class ComplexFieldNames extends org.apache.thrift.TBaseException im
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ERROR_MESSAGE_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -166,6 +167,7 @@ public final class ComplexFieldNames extends org.apache.thrift.TBaseException im
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(INTERNAL_ERROR_MESSAGE_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }

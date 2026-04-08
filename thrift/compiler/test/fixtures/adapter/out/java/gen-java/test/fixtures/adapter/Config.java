@@ -159,6 +159,7 @@ public final class Config implements com.facebook.thrift.payload.ThriftSerializa
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(PATH_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }

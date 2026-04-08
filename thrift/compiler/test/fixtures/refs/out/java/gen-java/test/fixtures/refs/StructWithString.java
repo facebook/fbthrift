@@ -308,6 +308,7 @@ public final class StructWithString implements com.facebook.thrift.payload.Thrif
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(DEF_UNIQUE_STRING_REF_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -316,6 +317,7 @@ public final class StructWithString implements com.facebook.thrift.payload.Thrif
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(DEF_SHARED_STRING_REF_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -324,6 +326,7 @@ public final class StructWithString implements com.facebook.thrift.payload.Thrif
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(DEF_SHARED_STRING_CONST_REF_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -332,6 +335,7 @@ public final class StructWithString implements com.facebook.thrift.payload.Thrif
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(UNIQUE_STRING_REF_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -340,6 +344,7 @@ public final class StructWithString implements com.facebook.thrift.payload.Thrif
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SHARED_STRING_REF_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }

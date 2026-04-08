@@ -194,6 +194,7 @@ public final class NoEffect implements com.facebook.thrift.payload.ThriftSeriali
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(AN_SNAKE_STRING_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -201,6 +202,7 @@ public final class NoEffect implements com.facebook.thrift.payload.ThriftSeriali
       int _fbthriftVar0 = this.aCamelI32;
       oprot.writeFieldBegin(A_CAMEL_I32_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

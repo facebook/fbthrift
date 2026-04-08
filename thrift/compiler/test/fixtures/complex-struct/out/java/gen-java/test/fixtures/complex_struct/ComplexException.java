@@ -341,6 +341,7 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -349,10 +350,11 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LIST_STRINGS_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.STRING, _fbthriftVar0.size()));
-            for (String _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeString(_fbthriftVar1);
-            }
-            oprot.writeListEnd();
+    for (String _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeString(_fbthriftVar1);
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -360,6 +362,7 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
       test.fixtures.complex_struct.MyEnum _fbthriftVar0 = this.errorEnum;
       oprot.writeFieldBegin(ERROR_ENUM_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
+
       oprot.writeFieldEnd();
       }
       {
@@ -367,6 +370,7 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(UNION_ERROR_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }
@@ -375,6 +379,7 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(STRUCT_ERROR_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }
@@ -383,17 +388,18 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LS_MAP_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I64, TType.STRING, _fbthriftVar0.size()));
-            for (Map.Entry<Long, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Long _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI64(_fbthriftVar2);
-              }
-              {
-                String _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeString(_fbthriftVar2);
-              }
-            }
-            oprot.writeMapEnd();
+    for (Map.Entry<Long, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Long _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI64(_fbthriftVar2);
+        }
+        {
+            String _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeString(_fbthriftVar2);
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }

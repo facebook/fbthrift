@@ -345,6 +345,7 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
         test.fixtures.complex_struct.MyEnum _fbthriftVar0 = (test.fixtures.complex_struct.MyEnum)this.value;
 
         oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
+
         oprot.writeFieldEnd();
         break;
       }
@@ -353,14 +354,15 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
         List<List<Float>> _fbthriftVar0 = (List<List<Float>>)this.value;
 
         oprot.writeListBegin(new TList(TType.LIST, _fbthriftVar0.size()));
-            for (List<Float> _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeListBegin(new TList(TType.FLOAT, _fbthriftVar1.size()));
-            for (float _fbthriftVar2 : _fbthriftVar1) {
-              oprot.writeFloat(_fbthriftVar2);
-            }
-            oprot.writeListEnd();
-            }
-            oprot.writeListEnd();
+    for (List<Float> _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeListBegin(new TList(TType.FLOAT, _fbthriftVar1.size()));
+        for (float _fbthriftVar2 : _fbthriftVar1) {
+            oprot.writeFloat(_fbthriftVar2);
+        }
+        oprot.writeListEnd();
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
         break;
       }
@@ -369,6 +371,7 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
         test.fixtures.complex_struct.MyDataItem _fbthriftVar0 = (test.fixtures.complex_struct.MyDataItem)this.value;
 
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
         break;
       }
@@ -377,6 +380,7 @@ public final class MyUnionFloatFieldThrowExp implements com.facebook.thrift.payl
         test.fixtures.complex_struct.ComplexNestedStruct _fbthriftVar0 = (test.fixtures.complex_struct.ComplexNestedStruct)this.value;
 
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
         break;
       }

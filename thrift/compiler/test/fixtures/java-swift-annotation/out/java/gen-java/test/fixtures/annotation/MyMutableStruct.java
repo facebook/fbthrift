@@ -195,6 +195,7 @@ public final class MyMutableStruct implements com.facebook.thrift.payload.Thrift
       long _fbthriftVar0 = this.intField;
       oprot.writeFieldBegin(INT_FIELD_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -202,6 +203,7 @@ public final class MyMutableStruct implements com.facebook.thrift.payload.Thrift
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(STRING_FIELD_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }

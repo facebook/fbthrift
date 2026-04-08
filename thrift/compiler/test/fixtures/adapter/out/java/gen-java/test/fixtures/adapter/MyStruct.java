@@ -212,6 +212,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       int _fbthriftVar0 = this.field;
       oprot.writeFieldBegin(FIELD_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -219,10 +220,11 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SET_STRING_FIELD_DESC);
         oprot.writeSetBegin(new TSet(TType.STRING, _fbthriftVar0.size()));
-            for (String _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeString(_fbthriftVar1);
-            }
-            oprot.writeSetEnd();
+    for (String _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeString(_fbthriftVar1);
+    }
+    oprot.writeSetEnd();
+
         oprot.writeFieldEnd();
       }
       }

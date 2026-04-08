@@ -159,6 +159,7 @@ public final class CircularAdaptee implements com.facebook.thrift.payload.Thrift
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(FIELD_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }

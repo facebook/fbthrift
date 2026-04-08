@@ -158,6 +158,7 @@ public final class ReservedKeyword implements com.facebook.thrift.payload.Thrift
       int _fbthriftVar0 = this.reservedField;
       oprot.writeFieldBegin(RESERVED_FIELD_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

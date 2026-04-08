@@ -275,6 +275,7 @@ public final class StructWithFieldAdapter implements com.facebook.thrift.payload
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(FIELD_FIELD_DESC);
         oprot.writeI32(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -282,6 +283,7 @@ public final class StructWithFieldAdapter implements com.facebook.thrift.payload
       int _fbthriftVar0 = this.sharedField;
       oprot.writeFieldBegin(SHARED_FIELD_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -289,6 +291,7 @@ public final class StructWithFieldAdapter implements com.facebook.thrift.payload
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPT_SHARED_FIELD_FIELD_DESC);
         oprot.writeI32(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -297,6 +300,7 @@ public final class StructWithFieldAdapter implements com.facebook.thrift.payload
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPT_BOXED_FIELD_FIELD_DESC);
         oprot.writeI32(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }

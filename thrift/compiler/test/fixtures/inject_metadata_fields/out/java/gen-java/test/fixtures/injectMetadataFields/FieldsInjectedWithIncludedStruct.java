@@ -270,6 +270,7 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(STRING_FIELD_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -278,6 +279,7 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(INJECTED_FIELD_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -286,6 +288,7 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(INJECTED_STRUCTURED_ANNOTATION_FIELD_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -294,6 +297,7 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(INJECTED_UNSTRUCTURED_ANNOTATION_FIELD_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }

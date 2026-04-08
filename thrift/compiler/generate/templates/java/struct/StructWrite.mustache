@@ -41,7 +41,7 @@ public void write0(TProtocol oprot) throws TException {
     {{#if field:self.type.structured?}}
     pos = p.mark();
     {{/if field:self.type.structured?}}
-    {{#field:type}}{{field:nestedDepth++}}{{> WriteType}}{{field:nestedDepth--}}{{/field:type}}
+    {{#field:type}}{{#partial types.write_type field=field:self type=type:self depth=field:nestedDepth}}{{/field:type}}
     {{#if field:self.type.structured?}}
     if (p.mark() - pos > p.getEmptyStructSize()) {
       p.writeFieldEnd();
@@ -58,10 +58,8 @@ public void write0(TProtocol oprot) throws TException {
   {{^field:terse?}}
   if (_fbthriftVar{{field:nestedDepth}} != null) {
     oprot.writeFieldBegin({{field:javaTFieldName}});
-    {{#field:type}}
-    {{field:nestedDepth++}}{{> WriteType}}{{field:nestedDepth--}}
-    {{/field:type}}{{!
-    }}oprot.writeFieldEnd();
+    {{#field:type}}{{#partial types.write_type field=field:self type=type:self depth=field:nestedDepth}}{{/field:type}}
+    oprot.writeFieldEnd();
   }
   {{/field:terse?}}
   {{/field:isNullableOrOptionalNotEnum?}}{{!
@@ -75,28 +73,22 @@ public void write0(TProtocol oprot) throws TException {
   if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar{{field:nestedDepth}})) {
   {{/if field:self.type.enum?}}
     oprot.writeFieldBegin({{field:javaTFieldName}});
-    {{#field:type}}
-    {{field:nestedDepth++}}{{> WriteType}}{{field:nestedDepth--}}
-    {{/field:type}}{{!
-    }}oprot.writeFieldEnd();
+    {{#field:type}}{{#partial types.write_type field=field:self type=type:self depth=field:nestedDepth}}{{/field:type}}
+    oprot.writeFieldEnd();
   };
   {{/field:terse?}}
   {{^field:terse?}}
   {{#field:hasAdapterOrWrapper?}}
   if (_fbthriftVar{{field:nestedDepth}} != null) {
     oprot.writeFieldBegin({{field:javaTFieldName}});
-    {{#field:type}}
-    {{field:nestedDepth++}}{{> WriteType}}{{field:nestedDepth--}}
-    {{/field:type}}{{!
-    }}oprot.writeFieldEnd();
+    {{#field:type}}{{#partial types.write_type field=field:self type=type:self depth=field:nestedDepth}}{{/field:type}}
+    oprot.writeFieldEnd();
   }
   {{/field:hasAdapterOrWrapper?}}
   {{^field:hasAdapterOrWrapper?}}
   oprot.writeFieldBegin({{field:javaTFieldName}});
-  {{#field:type}}
-  {{field:nestedDepth++}}{{> WriteType}}{{field:nestedDepth--}}
-  {{/field:type}}{{!
-  }}oprot.writeFieldEnd();
+  {{#field:type}}{{#partial types.write_type field=field:self type=type:self depth=field:nestedDepth}}{{/field:type}}
+  oprot.writeFieldEnd();
   {{/field:hasAdapterOrWrapper?}}{{!
   }}{{/field:terse?}}{{!
   }}{{/field:isNullableOrOptionalNotEnum?}}

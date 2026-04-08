@@ -158,6 +158,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       long _fbthriftVar0 = this.myInt;
       oprot.writeFieldBegin(MY_INT_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

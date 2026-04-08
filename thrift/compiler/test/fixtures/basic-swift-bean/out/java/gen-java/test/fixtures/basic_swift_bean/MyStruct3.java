@@ -794,18 +794,21 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
       short _fbthriftVar0 = this.myInt16;
       oprot.writeFieldBegin(MY_INT16_FIELD_DESC);
       oprot.writeI16(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.myInt32;
       oprot.writeFieldBegin(MY_INT32_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       long _fbthriftVar0 = this.myInt64;
       oprot.writeFieldBegin(MY_INT64_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -813,6 +816,7 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_STRING_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -820,12 +824,14 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
       boolean _fbthriftVar0 = this.myBool;
       oprot.writeFieldBegin(MY_BOOL_FIELD_DESC);
       oprot.writeBool(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.myDouble;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -833,10 +839,11 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_SET_FIELD_DESC);
         oprot.writeSetBegin(new TSet(TType.STRING, _fbthriftVar0.size()));
-            for (String _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeString(_fbthriftVar1);
-            }
-            oprot.writeSetEnd();
+    for (String _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeString(_fbthriftVar1);
+    }
+    oprot.writeSetEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -845,6 +852,7 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_DATA_ITEM_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }
@@ -853,10 +861,11 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_LIST_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar0.size()));
-            for (test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar1 : _fbthriftVar0) {
-              _fbthriftVar1.write0(oprot);
-            }
-            oprot.writeListEnd();
+    for (test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar1 : _fbthriftVar0) {
+        _fbthriftVar1.write0(oprot);
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -865,21 +874,22 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_MAP_LIST_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _fbthriftVar0.size()));
-            for (Map.Entry<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Integer _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI32(_fbthriftVar2);
-              }
-              {
-                List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar2.size()));
+    for (Map.Entry<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Integer _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI32(_fbthriftVar2);
+        }
+        {
+            List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar2.size()));
             for (test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar3 : _fbthriftVar2) {
-              _fbthriftVar3.write0(oprot);
+                _fbthriftVar3.write0(oprot);
             }
             oprot.writeListEnd();
-              }
-            }
-            oprot.writeMapEnd();
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -888,10 +898,11 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_EMPTY_LIST_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar0.size()));
-            for (test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar1 : _fbthriftVar0) {
-              _fbthriftVar1.write0(oprot);
-            }
-            oprot.writeListEnd();
+    for (test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar1 : _fbthriftVar0) {
+        _fbthriftVar1.write0(oprot);
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -900,21 +911,22 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_EMPTY_MAP_LIST_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _fbthriftVar0.size()));
-            for (Map.Entry<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Integer _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI32(_fbthriftVar2);
-              }
-              {
-                List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar2.size()));
+    for (Map.Entry<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Integer _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI32(_fbthriftVar2);
+        }
+        {
+            List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar2.size()));
             for (test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar3 : _fbthriftVar2) {
-              _fbthriftVar3.write0(oprot);
+                _fbthriftVar3.write0(oprot);
             }
             oprot.writeListEnd();
-              }
-            }
-            oprot.writeMapEnd();
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }

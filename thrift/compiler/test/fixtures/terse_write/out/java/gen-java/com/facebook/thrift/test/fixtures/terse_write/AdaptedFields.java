@@ -238,6 +238,7 @@ public final class AdaptedFields implements com.facebook.thrift.payload.ThriftSe
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
         oprot.writeFieldBegin(FIELD1_FIELD_DESC);
         oprot.writeI32(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       };
       }
@@ -246,6 +247,7 @@ public final class AdaptedFields implements com.facebook.thrift.payload.ThriftSe
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
         oprot.writeFieldBegin(FIELD2_FIELD_DESC);
         oprot.writeI32(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       };
       }
@@ -254,6 +256,7 @@ public final class AdaptedFields implements com.facebook.thrift.payload.ThriftSe
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
         oprot.writeFieldBegin(FIELD3_FIELD_DESC);
         oprot.writeI32(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       };
       }

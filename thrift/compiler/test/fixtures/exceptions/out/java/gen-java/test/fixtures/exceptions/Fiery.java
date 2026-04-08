@@ -120,6 +120,7 @@ public final class Fiery extends org.apache.thrift.TBaseException implements com
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }

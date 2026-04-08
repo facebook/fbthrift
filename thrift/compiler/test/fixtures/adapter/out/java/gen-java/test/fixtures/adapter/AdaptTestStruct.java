@@ -500,6 +500,7 @@ public final class AdaptTestStruct implements com.facebook.thrift.payload.Thrift
       long _fbthriftVar0 = this.delay;
       oprot.writeFieldBegin(DELAY_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -507,6 +508,7 @@ public final class AdaptTestStruct implements com.facebook.thrift.payload.Thrift
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(CUSTOM_FIELD_DESC);
         org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -514,12 +516,14 @@ public final class AdaptTestStruct implements com.facebook.thrift.payload.Thrift
       long _fbthriftVar0 = this.timeout;
       oprot.writeFieldBegin(TIMEOUT_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       long _fbthriftVar0 = this.data;
       oprot.writeFieldBegin(DATA_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -527,6 +531,7 @@ public final class AdaptTestStruct implements com.facebook.thrift.payload.Thrift
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(META_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -535,6 +540,7 @@ public final class AdaptTestStruct implements com.facebook.thrift.payload.Thrift
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(INDIRECTION_STRING_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -543,6 +549,7 @@ public final class AdaptTestStruct implements com.facebook.thrift.payload.Thrift
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(STRING_DATA_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -550,12 +557,14 @@ public final class AdaptTestStruct implements com.facebook.thrift.payload.Thrift
       boolean _fbthriftVar0 = this.doubleWrappedBool;
       oprot.writeFieldBegin(DOUBLE_WRAPPED_BOOL_FIELD_DESC);
       oprot.writeBool(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.doubleWrappedInteger;
       oprot.writeFieldBegin(DOUBLE_WRAPPED_INTEGER_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -563,6 +572,7 @@ public final class AdaptTestStruct implements com.facebook.thrift.payload.Thrift
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(BINARY_DATA_FIELD_DESC);
         org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }

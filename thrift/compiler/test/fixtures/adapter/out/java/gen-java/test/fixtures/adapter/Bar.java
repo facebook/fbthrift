@@ -472,6 +472,7 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(STRUCT_FIELD_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }
@@ -480,6 +481,7 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPTIONAL_STRUCT_FIELD_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }
@@ -488,11 +490,12 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(STRUCT_LIST_FIELD_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar0.size()));
-            for (com.facebook.thrift.my.AdaptedFoo_1 _fbthriftVar1 : _fbthriftVar0) {
-              test.fixtures.adapter.Foo _fbthriftVar2 = __FooWithAdapter_9317_Adapter.toThrift(_fbthriftVar1);
-              _fbthriftVar2.write0(oprot);
-            }
-            oprot.writeListEnd();
+    for (com.facebook.thrift.my.AdaptedFoo_1 _fbthriftVar1 : _fbthriftVar0) {
+        test.fixtures.adapter.Foo _fbthriftVar2 = __FooWithAdapter_9317_Adapter.toThrift(_fbthriftVar1);
+        _fbthriftVar2.write0(oprot);
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -501,11 +504,12 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPTIONAL_STRUCT_LIST_FIELD_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar0.size()));
-            for (com.facebook.thrift.my.AdaptedFoo_1 _fbthriftVar1 : _fbthriftVar0) {
-              test.fixtures.adapter.Foo _fbthriftVar2 = __FooWithAdapter_9317_Adapter.toThrift(_fbthriftVar1);
-              _fbthriftVar2.write0(oprot);
-            }
-            oprot.writeListEnd();
+    for (com.facebook.thrift.my.AdaptedFoo_1 _fbthriftVar1 : _fbthriftVar0) {
+        test.fixtures.adapter.Foo _fbthriftVar2 = __FooWithAdapter_9317_Adapter.toThrift(_fbthriftVar1);
+        _fbthriftVar2.write0(oprot);
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -514,6 +518,7 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(UNION_FIELD_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }
@@ -522,6 +527,7 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPTIONAL_UNION_FIELD_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }
@@ -530,6 +536,7 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ADAPTED_STRUCT_FIELD_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }
@@ -538,10 +545,11 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(STRUCT_LIST_FIELD_WITH_TYPEDEF_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar0.size()));
-            for (test.fixtures.adapter.Foo _fbthriftVar1 : _fbthriftVar0) {
-              _fbthriftVar1.write0(oprot);
-            }
-            oprot.writeListEnd();
+    for (test.fixtures.adapter.Foo _fbthriftVar1 : _fbthriftVar0) {
+        _fbthriftVar1.write0(oprot);
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }

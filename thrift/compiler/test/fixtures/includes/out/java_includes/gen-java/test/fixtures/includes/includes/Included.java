@@ -193,6 +193,7 @@ public final class Included implements com.facebook.thrift.payload.ThriftSeriali
       long _fbthriftVar0 = this.myIntField;
       oprot.writeFieldBegin(MY_INT_FIELD_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -200,6 +201,7 @@ public final class Included implements com.facebook.thrift.payload.ThriftSeriali
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_TRANSITIVE_FIELD_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }

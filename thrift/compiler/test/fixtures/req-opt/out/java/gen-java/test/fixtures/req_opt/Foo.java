@@ -299,6 +299,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       int _fbthriftVar0 = this.myInteger;
       oprot.writeFieldBegin(MY_INTEGER_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -306,6 +307,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_STRING_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -314,10 +316,11 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_BOOLS_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.BOOL, _fbthriftVar0.size()));
-            for (boolean _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeBool(_fbthriftVar1);
-            }
-            oprot.writeListEnd();
+    for (boolean _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeBool(_fbthriftVar1);
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -326,10 +329,11 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_NUMBERS_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.I32, _fbthriftVar0.size()));
-            for (int _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeI32(_fbthriftVar1);
-            }
-            oprot.writeListEnd();
+    for (int _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeI32(_fbthriftVar1);
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }

@@ -158,6 +158,7 @@ public final class RenamedStructWithStructAdapterAndFieldAdapter implements com.
       int _fbthriftVar0 = this.field;
       oprot.writeFieldBegin(FIELD_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

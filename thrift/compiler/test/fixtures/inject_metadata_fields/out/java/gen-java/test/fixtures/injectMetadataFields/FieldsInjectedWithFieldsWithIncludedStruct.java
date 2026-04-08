@@ -194,6 +194,7 @@ public final class FieldsInjectedWithFieldsWithIncludedStruct implements com.fac
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(STRING_FIELD_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -202,6 +203,7 @@ public final class FieldsInjectedWithFieldsWithIncludedStruct implements com.fac
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(INJECTED_FIELD_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }

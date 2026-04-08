@@ -376,17 +376,18 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LS_MAP_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I64, TType.STRING, _fbthriftVar0.size()));
-            for (Map.Entry<Long, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Long _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI64(_fbthriftVar2);
-              }
-              {
-                String _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeString(_fbthriftVar2);
-              }
-            }
-            oprot.writeMapEnd();
+    for (Map.Entry<Long, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Long _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI64(_fbthriftVar2);
+        }
+        {
+            String _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeString(_fbthriftVar2);
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -395,28 +396,29 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(IO_MAP_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I32, TType.MAP, _fbthriftVar0.size()));
-            for (Map.Entry<Integer, it.unimi.dsi.fastutil.ints.Int2LongArrayMap> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Integer _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI32(_fbthriftVar2);
-              }
-              {
-                it.unimi.dsi.fastutil.ints.Int2LongArrayMap _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeMapBegin(new TMap(TType.I32, TType.I64, _fbthriftVar2.size()));
+    for (Map.Entry<Integer, it.unimi.dsi.fastutil.ints.Int2LongArrayMap> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Integer _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI32(_fbthriftVar2);
+        }
+        {
+            it.unimi.dsi.fastutil.ints.Int2LongArrayMap _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeMapBegin(new TMap(TType.I32, TType.I64, _fbthriftVar2.size()));
             for (Map.Entry<Integer, Long> _fbthriftVar3 : _fbthriftVar2.entrySet()) {
-              {
-                Integer _fbthriftVar4 = _fbthriftVar3.getKey();
-                oprot.writeI32(_fbthriftVar4);
-              }
-              {
-                Long _fbthriftVar4 = _fbthriftVar3.getValue();
-                oprot.writeI64(_fbthriftVar4);
-              }
+                {
+                    Integer _fbthriftVar4 = _fbthriftVar3.getKey();
+                    oprot.writeI32(_fbthriftVar4);
+                }
+                {
+                    Long _fbthriftVar4 = _fbthriftVar3.getValue();
+                    oprot.writeI64(_fbthriftVar4);
+                }
             }
             oprot.writeMapEnd();
-              }
-            }
-            oprot.writeMapEnd();
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -424,6 +426,7 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
       java.math.BigInteger _fbthriftVar0 = this.bigInteger;
       oprot.writeFieldBegin(BIG_INTEGER_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -431,6 +434,7 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(BINARY_TEST_BUFFER_FIELD_DESC);
         org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }

@@ -246,6 +246,7 @@ public final class AdaptTestUnion implements com.facebook.thrift.payload.ThriftS
         long _fbthriftVar0 = (long)this.value;
 
         oprot.writeI64(_fbthriftVar0);
+
         oprot.writeFieldEnd();
         break;
       }
@@ -254,6 +255,7 @@ public final class AdaptTestUnion implements com.facebook.thrift.payload.ThriftS
         byte[] _fbthriftVar0 = (byte[])this.value;
 
         org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar0);
+
         oprot.writeFieldEnd();
         break;
       }

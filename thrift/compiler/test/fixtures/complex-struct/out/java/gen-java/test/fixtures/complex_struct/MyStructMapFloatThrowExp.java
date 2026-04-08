@@ -255,6 +255,7 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
       long _fbthriftVar0 = this.myLongField;
       oprot.writeFieldBegin(MY_LONG_FIELD_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -262,25 +263,26 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MAP_LIST_OF_FLOATS_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _fbthriftVar0.size()));
-            for (Map.Entry<Integer, List<List<Float>>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Integer _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI32(_fbthriftVar2);
-              }
-              {
-                List<List<Float>> _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeListBegin(new TList(TType.LIST, _fbthriftVar2.size()));
+    for (Map.Entry<Integer, List<List<Float>>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Integer _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI32(_fbthriftVar2);
+        }
+        {
+            List<List<Float>> _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeListBegin(new TList(TType.LIST, _fbthriftVar2.size()));
             for (List<Float> _fbthriftVar3 : _fbthriftVar2) {
-              oprot.writeListBegin(new TList(TType.FLOAT, _fbthriftVar3.size()));
-            for (float _fbthriftVar4 : _fbthriftVar3) {
-              oprot.writeFloat(_fbthriftVar4);
+                oprot.writeListBegin(new TList(TType.FLOAT, _fbthriftVar3.size()));
+                for (float _fbthriftVar4 : _fbthriftVar3) {
+                    oprot.writeFloat(_fbthriftVar4);
+                }
+                oprot.writeListEnd();
             }
             oprot.writeListEnd();
-            }
-            oprot.writeListEnd();
-              }
-            }
-            oprot.writeMapEnd();
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }

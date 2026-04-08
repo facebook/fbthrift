@@ -243,6 +243,7 @@ public final class UnfortunateUnion implements com.facebook.thrift.payload.Thrif
         String _fbthriftVar0 = (String)this.value;
 
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
         break;
       }
@@ -251,6 +252,7 @@ public final class UnfortunateUnion implements com.facebook.thrift.payload.Thrif
         int _fbthriftVar0 = (int)this.value;
 
         oprot.writeI32(_fbthriftVar0);
+
         oprot.writeFieldEnd();
         break;
       }

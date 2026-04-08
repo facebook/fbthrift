@@ -33,9 +33,7 @@ public void write0(TProtocol oprot) throws TException {
     if (_fbthriftVar{{field:nestedDepth}} != null) {
       oprot.writeFieldBegin({{field:javaTFieldName}});
 
-      {{#field:type}}
-      {{field:nestedDepth++}}{{> WriteType }}{{field:nestedDepth--}}
-      {{/field:type}}
+      {{#field:type}}{{#partial types.write_type field=field:self type=type:self depth=field:nestedDepth}}{{/field:type}}
       oprot.writeFieldEnd();
     }
     {{/field:hasAdapter?}}
@@ -43,9 +41,7 @@ public void write0(TProtocol oprot) throws TException {
     oprot.writeFieldBegin({{field:javaTFieldName}});
     {{#partial types.field_type field=field:self}} _fbthriftVar{{field:nestedDepth}} = ({{#partial types.field_type field=field:self}})this.value;
 
-    {{#field:type}}
-    {{field:nestedDepth++}}{{> WriteType }}{{field:nestedDepth--}}
-    {{/field:type}}
+    {{#field:type}}{{#partial types.write_type field=field:self type=type:self depth=field:nestedDepth}}{{/field:type}}
     oprot.writeFieldEnd();
     {{/field:hasAdapter?}}
     break;

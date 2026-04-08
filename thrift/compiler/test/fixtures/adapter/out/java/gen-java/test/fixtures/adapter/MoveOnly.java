@@ -159,6 +159,7 @@ public final class MoveOnly implements com.facebook.thrift.payload.ThriftSeriali
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(PTR_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }

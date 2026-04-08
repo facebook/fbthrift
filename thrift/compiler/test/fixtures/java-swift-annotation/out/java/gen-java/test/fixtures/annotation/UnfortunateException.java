@@ -154,6 +154,7 @@ public final class UnfortunateException extends org.apache.thrift.TBaseException
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(AN_SNAKE_STRING_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -161,6 +162,7 @@ public final class UnfortunateException extends org.apache.thrift.TBaseException
       int _fbthriftVar0 = this.aCamelI32;
       oprot.writeFieldBegin(A_CAMEL_I32_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

@@ -9364,6 +9364,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG1_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9372,6 +9373,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG2_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9380,6 +9382,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG3_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9388,6 +9391,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG4_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9396,6 +9400,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG5_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9404,6 +9409,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG6_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9412,6 +9418,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG7_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9420,6 +9427,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG8_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9428,6 +9436,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG9_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9435,126 +9444,147 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       int _fbthriftVar0 = this.myIntField10;
       oprot.writeFieldBegin(MY_INT_FIELD10_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.myIntField11;
       oprot.writeFieldBegin(MY_INT_FIELD11_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.myIntField12;
       oprot.writeFieldBegin(MY_INT_FIELD12_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.myIntField13;
       oprot.writeFieldBegin(MY_INT_FIELD13_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.myIntField14;
       oprot.writeFieldBegin(MY_INT_FIELD14_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.myIntField15;
       oprot.writeFieldBegin(MY_INT_FIELD15_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.myIntField16;
       oprot.writeFieldBegin(MY_INT_FIELD16_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.myIntField17;
       oprot.writeFieldBegin(MY_INT_FIELD17_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.myIntField18;
       oprot.writeFieldBegin(MY_INT_FIELD18_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.myIntField19;
       oprot.writeFieldBegin(MY_INT_FIELD19_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.myIntField20;
       oprot.writeFieldBegin(MY_INT_FIELD20_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.myDoubleField21;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD21_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.myDoubleField22;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD22_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.myDoubleField23;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD23_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.myDoubleField24;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD24_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.myDoubleField25;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD25_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.myDoubleField26;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD26_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.myDoubleField27;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD27_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.myDoubleField28;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD28_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.myDoubleField29;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD29_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.myDoubleField30;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD30_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -9562,6 +9592,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG31_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9570,6 +9601,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG32_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9578,6 +9610,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG33_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9586,6 +9619,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG34_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9594,6 +9628,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG35_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9602,6 +9637,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG36_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9610,6 +9646,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG37_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9618,6 +9655,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG38_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9626,6 +9664,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG39_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9634,6 +9673,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG40_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9642,6 +9682,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG41_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9650,6 +9691,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG42_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9658,6 +9700,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG43_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9666,6 +9709,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG44_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9674,6 +9718,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG45_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9682,6 +9727,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG46_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9690,6 +9736,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG47_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9698,6 +9745,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG48_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9706,6 +9754,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG49_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9714,6 +9763,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG50_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9722,6 +9772,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG51_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9730,6 +9781,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG52_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9738,6 +9790,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG53_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9746,6 +9799,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG54_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9754,6 +9808,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG55_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9762,6 +9817,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG56_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9770,6 +9826,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG57_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9778,6 +9835,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG58_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9786,6 +9844,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG59_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9794,6 +9853,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG60_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9802,6 +9862,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG61_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9810,6 +9871,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG62_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9818,6 +9880,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG63_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9826,6 +9889,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG64_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9834,6 +9898,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG65_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9842,6 +9907,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG66_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9850,6 +9916,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG67_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9858,6 +9925,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG68_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9866,6 +9934,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG69_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9874,6 +9943,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG70_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9882,6 +9952,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG71_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9890,6 +9961,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG72_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9898,6 +9970,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG73_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9906,6 +9979,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG74_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9914,6 +9988,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG75_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9922,6 +9997,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG76_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9930,6 +10006,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG77_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9938,6 +10015,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG78_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9946,6 +10024,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG79_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9954,6 +10033,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG80_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9962,6 +10042,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG81_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9970,6 +10051,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG82_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9978,6 +10060,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG83_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9986,6 +10069,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG84_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -9994,6 +10078,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG85_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10002,6 +10087,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG86_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10010,6 +10096,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG87_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10018,6 +10105,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG88_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10026,6 +10114,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG89_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10034,6 +10123,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG90_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10042,6 +10132,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG91_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10050,6 +10141,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG92_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10058,6 +10150,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG93_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10066,6 +10159,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG94_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10074,6 +10168,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG95_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10082,6 +10177,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG96_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10090,6 +10186,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG97_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10098,6 +10195,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG98_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10106,6 +10204,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG99_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10114,6 +10213,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG100_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10122,6 +10222,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG101_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10130,6 +10231,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG102_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10138,6 +10240,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG103_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10146,6 +10249,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG104_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10154,6 +10258,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG105_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10162,6 +10267,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG106_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10170,6 +10276,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG107_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10178,6 +10285,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG108_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10186,6 +10294,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG109_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10194,6 +10303,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG110_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10202,6 +10312,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG111_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10210,6 +10321,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG112_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10218,6 +10330,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG113_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10226,6 +10339,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG114_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10234,6 +10348,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG115_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10242,6 +10357,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG116_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10250,6 +10366,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG117_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10258,6 +10375,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG118_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10266,6 +10384,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG119_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10274,6 +10393,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG120_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10282,6 +10402,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG121_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10290,6 +10411,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG122_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10298,6 +10420,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG123_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10306,6 +10429,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG124_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10314,6 +10438,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG125_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10322,6 +10447,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG126_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10330,6 +10456,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG127_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10338,6 +10465,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG128_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10346,6 +10474,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG129_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10354,6 +10483,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG130_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10362,6 +10492,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG131_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10370,6 +10501,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG132_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10378,6 +10510,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG133_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10386,6 +10519,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG134_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10394,6 +10528,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG135_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10402,6 +10537,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG136_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10410,6 +10546,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG137_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10418,6 +10555,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG138_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10426,6 +10564,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG139_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10434,6 +10573,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG140_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10442,6 +10582,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG141_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10450,6 +10591,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG142_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10458,6 +10600,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG143_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10466,6 +10609,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG144_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10474,6 +10618,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG145_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10482,6 +10627,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG146_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10490,6 +10636,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG147_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10498,6 +10645,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG148_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10506,6 +10654,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG149_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10514,6 +10663,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG150_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10522,6 +10672,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG151_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10530,6 +10681,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG152_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10538,6 +10690,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG153_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10546,6 +10699,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG154_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10554,6 +10708,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG155_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10562,6 +10717,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG156_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10570,6 +10726,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG157_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10578,6 +10735,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG158_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10586,6 +10744,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG159_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10594,6 +10753,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG160_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10602,6 +10762,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG161_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10610,6 +10771,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG162_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10618,6 +10780,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG163_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10626,6 +10789,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG164_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10634,6 +10798,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG165_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10642,6 +10807,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG166_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10650,6 +10816,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG167_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10658,6 +10825,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG168_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10666,6 +10834,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG169_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10674,6 +10843,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG170_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10682,6 +10852,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG171_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10690,6 +10861,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG172_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10698,6 +10870,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG173_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10706,6 +10879,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG174_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10714,6 +10888,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG175_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10722,6 +10897,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG176_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10730,6 +10906,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG177_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10738,6 +10915,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG178_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10746,6 +10924,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG179_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10754,6 +10933,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG180_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10762,6 +10942,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG181_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10770,6 +10951,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG182_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10778,6 +10960,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG183_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10786,6 +10969,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG184_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10794,6 +10978,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG185_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10802,6 +10987,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG186_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10810,6 +10996,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG187_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10818,6 +11005,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG188_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10826,6 +11014,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG189_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10834,6 +11023,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG190_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10842,6 +11032,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG191_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10850,6 +11041,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG192_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10858,6 +11050,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG193_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10866,6 +11059,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG194_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10874,6 +11068,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG195_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10882,6 +11077,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG196_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10890,6 +11086,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG197_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10898,6 +11095,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG198_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10906,6 +11104,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG199_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10914,6 +11113,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG200_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10922,6 +11122,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG201_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10930,6 +11131,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG202_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10938,6 +11140,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG203_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10946,6 +11149,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG204_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10954,6 +11158,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG205_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10962,6 +11167,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG206_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10970,6 +11176,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG207_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10978,6 +11185,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG208_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10986,6 +11194,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG209_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -10994,6 +11203,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG210_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11002,6 +11212,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG211_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11010,6 +11221,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG212_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11018,6 +11230,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG213_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11026,6 +11239,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG214_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11034,6 +11248,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG215_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11042,6 +11257,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG216_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11050,6 +11266,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG217_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11058,6 +11275,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG218_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11066,6 +11284,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG219_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11074,6 +11293,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG220_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11082,6 +11302,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG221_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11090,6 +11311,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG222_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11098,6 +11320,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG223_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11106,6 +11329,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG224_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11114,6 +11338,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG225_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11122,6 +11347,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG226_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11130,6 +11356,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG227_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11138,6 +11365,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG228_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11146,6 +11374,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG229_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11154,6 +11383,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG230_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11162,6 +11392,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG231_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11170,6 +11401,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG232_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11178,6 +11410,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG233_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11186,6 +11419,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG234_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11194,6 +11428,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG235_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11202,6 +11437,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG236_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11210,6 +11446,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG237_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11218,6 +11455,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG238_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11226,6 +11464,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG239_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11234,6 +11473,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG240_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11242,6 +11482,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG241_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11250,6 +11491,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG242_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11258,6 +11500,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG243_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11266,6 +11509,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG244_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11274,6 +11518,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG245_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11282,6 +11527,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG246_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11290,6 +11536,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG247_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11298,6 +11545,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG248_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11306,6 +11554,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG249_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11314,6 +11563,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG250_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11322,6 +11572,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG251_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11330,6 +11581,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG252_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11338,6 +11590,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG253_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11346,6 +11599,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG254_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11354,6 +11608,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG255_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11362,6 +11617,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG256_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -11370,6 +11626,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG257_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }

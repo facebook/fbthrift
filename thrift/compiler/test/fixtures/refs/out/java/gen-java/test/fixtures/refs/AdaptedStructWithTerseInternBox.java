@@ -199,6 +199,7 @@ public final class AdaptedStructWithTerseInternBox implements com.facebook.thrif
         oprot.writeFieldBegin(FIELD1_FIELD_DESC);
         pos = p.mark();
         _fbthriftVar0.write0(oprot);
+
         if (p.mark() - pos > p.getEmptyStructSize()) {
           p.writeFieldEnd();
         } else {
@@ -212,6 +213,7 @@ public final class AdaptedStructWithTerseInternBox implements com.facebook.thrif
         oprot.writeFieldBegin(FIELD2_FIELD_DESC);
         pos = p.mark();
         _fbthriftVar0.write0(oprot);
+
         if (p.mark() - pos > p.getEmptyStructSize()) {
           p.writeFieldEnd();
         } else {

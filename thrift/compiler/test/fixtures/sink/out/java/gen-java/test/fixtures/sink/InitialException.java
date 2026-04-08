@@ -120,6 +120,7 @@ public final class InitialException extends org.apache.thrift.TBaseException imp
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(REASON_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }

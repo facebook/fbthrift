@@ -269,12 +269,14 @@ public final class MyStructFloatFieldThrowExp implements com.facebook.thrift.pay
       long _fbthriftVar0 = this.myLongField;
       oprot.writeFieldBegin(MY_LONG_FIELD_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       byte _fbthriftVar0 = this.myByteField;
       oprot.writeFieldBegin(MY_BYTE_FIELD_FIELD_DESC);
       oprot.writeByte(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -282,6 +284,7 @@ public final class MyStructFloatFieldThrowExp implements com.facebook.thrift.pay
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_STRING_FIELD_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -289,6 +292,7 @@ public final class MyStructFloatFieldThrowExp implements com.facebook.thrift.pay
       float _fbthriftVar0 = this.myFloatField;
       oprot.writeFieldBegin(MY_FLOAT_FIELD_FIELD_DESC);
       oprot.writeFloat(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

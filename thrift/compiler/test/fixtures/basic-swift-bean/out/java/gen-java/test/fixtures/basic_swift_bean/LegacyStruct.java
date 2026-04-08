@@ -195,12 +195,14 @@ public final class LegacyStruct implements com.facebook.thrift.payload.ThriftSer
       int _fbthriftVar0 = this.normal;
       oprot.writeFieldBegin(NORMAL_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.bad;
       oprot.writeFieldBegin(BAD_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

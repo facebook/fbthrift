@@ -158,6 +158,7 @@ public final class AlsoMoveOnly implements com.facebook.thrift.payload.ThriftSer
       long _fbthriftVar0 = this.ptr;
       oprot.writeFieldBegin(PTR_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

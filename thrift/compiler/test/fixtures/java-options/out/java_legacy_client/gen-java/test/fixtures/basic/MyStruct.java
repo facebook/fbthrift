@@ -477,6 +477,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       long _fbthriftVar0 = this.myIntField;
       oprot.writeFieldBegin(MY_INT_FIELD_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -484,6 +485,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_STRING_FIELD_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -492,6 +494,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_DATA_FIELD_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }
@@ -499,24 +502,28 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       test.fixtures.basic.MyEnum _fbthriftVar0 = this.myEnum;
       oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
+
       oprot.writeFieldEnd();
       }
       {
       boolean _fbthriftVar0 = this.oneway;
       oprot.writeFieldBegin(ONEWAY_FIELD_DESC);
       oprot.writeBool(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       boolean _fbthriftVar0 = this.readonly;
       oprot.writeFieldBegin(READONLY_FIELD_DESC);
       oprot.writeBool(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       boolean _fbthriftVar0 = this.idempotent;
       oprot.writeFieldBegin(IDEMPOTENT_FIELD_DESC);
       oprot.writeBool(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -524,10 +531,11 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(FLOAT_SET_FIELD_DESC);
         oprot.writeSetBegin(new TSet(TType.FLOAT, _fbthriftVar0.size()));
-            for (float _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeFloat(_fbthriftVar1);
-            }
-            oprot.writeSetEnd();
+    for (float _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeFloat(_fbthriftVar1);
+    }
+    oprot.writeSetEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -536,6 +544,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(NO_HACK_CODEGEN_FIELD_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }

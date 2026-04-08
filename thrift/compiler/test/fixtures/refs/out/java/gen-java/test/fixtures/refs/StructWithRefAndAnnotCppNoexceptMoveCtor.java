@@ -156,6 +156,7 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor implements com.faceb
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(DEF_FIELD_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }

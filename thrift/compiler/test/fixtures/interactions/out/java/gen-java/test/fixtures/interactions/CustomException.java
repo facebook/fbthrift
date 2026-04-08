@@ -120,6 +120,7 @@ public final class CustomException extends org.apache.thrift.TBaseException impl
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }

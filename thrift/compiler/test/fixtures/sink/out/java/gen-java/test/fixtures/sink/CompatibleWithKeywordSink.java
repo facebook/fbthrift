@@ -156,6 +156,7 @@ public final class CompatibleWithKeywordSink implements com.facebook.thrift.payl
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SINK_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }

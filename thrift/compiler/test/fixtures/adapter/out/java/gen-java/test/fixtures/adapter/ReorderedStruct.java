@@ -159,6 +159,7 @@ public final class ReorderedStruct implements com.facebook.thrift.payload.Thrift
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(REORDERED_DEPENDENT_ADAPTED_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }

@@ -194,6 +194,7 @@ public final class AdaptedStructWithInternBox implements com.facebook.thrift.pay
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(FIELD1_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }
@@ -202,6 +203,7 @@ public final class AdaptedStructWithInternBox implements com.facebook.thrift.pay
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(FIELD2_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }

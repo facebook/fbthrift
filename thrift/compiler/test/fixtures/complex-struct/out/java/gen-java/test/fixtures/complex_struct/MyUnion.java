@@ -429,6 +429,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         test.fixtures.complex_struct.MyEnum _fbthriftVar0 = (test.fixtures.complex_struct.MyEnum)this.value;
 
         oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
+
         oprot.writeFieldEnd();
         break;
       }
@@ -437,6 +438,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         test.fixtures.complex_struct.MyStruct _fbthriftVar0 = (test.fixtures.complex_struct.MyStruct)this.value;
 
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
         break;
       }
@@ -445,6 +447,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         test.fixtures.complex_struct.MyDataItem _fbthriftVar0 = (test.fixtures.complex_struct.MyDataItem)this.value;
 
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
         break;
       }
@@ -453,6 +456,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         test.fixtures.complex_struct.ComplexNestedStruct _fbthriftVar0 = (test.fixtures.complex_struct.ComplexNestedStruct)this.value;
 
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
         break;
       }
@@ -461,6 +465,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         long _fbthriftVar0 = (long)this.value;
 
         oprot.writeI64(_fbthriftVar0);
+
         oprot.writeFieldEnd();
         break;
       }
@@ -469,6 +474,7 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
         int _fbthriftVar0 = (int)this.value;
 
         oprot.writeI32(_fbthriftVar0);
+
         oprot.writeFieldEnd();
         break;
       }

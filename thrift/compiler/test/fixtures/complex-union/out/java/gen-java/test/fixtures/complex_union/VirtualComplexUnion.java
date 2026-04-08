@@ -241,6 +241,7 @@ public final class VirtualComplexUnion implements com.facebook.thrift.payload.Th
         String _fbthriftVar0 = (String)this.value;
 
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
         break;
       }
@@ -249,6 +250,7 @@ public final class VirtualComplexUnion implements com.facebook.thrift.payload.Th
         String _fbthriftVar0 = (String)this.value;
 
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
         break;
       }

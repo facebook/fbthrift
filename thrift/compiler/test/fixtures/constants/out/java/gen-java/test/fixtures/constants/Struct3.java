@@ -232,6 +232,7 @@ public final class Struct3 implements com.facebook.thrift.payload.ThriftSerializ
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(A_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -239,6 +240,7 @@ public final class Struct3 implements com.facebook.thrift.payload.ThriftSerializ
       int _fbthriftVar0 = this.b;
       oprot.writeFieldBegin(B_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -246,6 +248,7 @@ public final class Struct3 implements com.facebook.thrift.payload.ThriftSerializ
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(C_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }

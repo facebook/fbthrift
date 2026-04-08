@@ -623,12 +623,14 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
       long _fbthriftVar0 = this.myLongField;
       oprot.writeFieldBegin(MY_LONG_FIELD_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       long _fbthriftVar0 = this.myLongTypeDef;
       oprot.writeFieldBegin(MY_LONG_TYPE_DEF_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -636,6 +638,7 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_STRING_FIELD_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -644,6 +647,7 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_STRING_TYPEDEF_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -652,17 +656,18 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_MAP_FIELD_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, _fbthriftVar0.size()));
-            for (Map.Entry<Short, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Short _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI16(_fbthriftVar2);
-              }
-              {
-                String _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeString(_fbthriftVar2);
-              }
-            }
-            oprot.writeMapEnd();
+    for (Map.Entry<Short, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Short _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI16(_fbthriftVar2);
+        }
+        {
+            String _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeString(_fbthriftVar2);
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -671,17 +676,18 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_MAP_TYPEDEF_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, _fbthriftVar0.size()));
-            for (Map.Entry<Short, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Short _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI16(_fbthriftVar2);
-              }
-              {
-                String _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeString(_fbthriftVar2);
-              }
-            }
-            oprot.writeMapEnd();
+    for (Map.Entry<Short, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Short _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI16(_fbthriftVar2);
+        }
+        {
+            String _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeString(_fbthriftVar2);
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -690,10 +696,11 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_LIST_FIELD_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.DOUBLE, _fbthriftVar0.size()));
-            for (double _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeDouble(_fbthriftVar1);
-            }
-            oprot.writeListEnd();
+    for (double _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeDouble(_fbthriftVar1);
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -702,10 +709,11 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_LIST_TYPEDEF_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.DOUBLE, _fbthriftVar0.size()));
-            for (double _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeDouble(_fbthriftVar1);
-            }
-            oprot.writeListEnd();
+    for (double _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeDouble(_fbthriftVar1);
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -714,25 +722,26 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_MAP_LIST_OF_TYPE_DEF_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I16, TType.LIST, _fbthriftVar0.size()));
-            for (Map.Entry<Short, List<List<Double>>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Short _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI16(_fbthriftVar2);
-              }
-              {
-                List<List<Double>> _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeListBegin(new TList(TType.LIST, _fbthriftVar2.size()));
+    for (Map.Entry<Short, List<List<Double>>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Short _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI16(_fbthriftVar2);
+        }
+        {
+            List<List<Double>> _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeListBegin(new TList(TType.LIST, _fbthriftVar2.size()));
             for (List<Double> _fbthriftVar3 : _fbthriftVar2) {
-              oprot.writeListBegin(new TList(TType.DOUBLE, _fbthriftVar3.size()));
-            for (double _fbthriftVar4 : _fbthriftVar3) {
-              oprot.writeDouble(_fbthriftVar4);
+                oprot.writeListBegin(new TList(TType.DOUBLE, _fbthriftVar3.size()));
+                for (double _fbthriftVar4 : _fbthriftVar3) {
+                    oprot.writeDouble(_fbthriftVar4);
+                }
+                oprot.writeListEnd();
             }
             oprot.writeListEnd();
-            }
-            oprot.writeListEnd();
-              }
-            }
-            oprot.writeMapEnd();
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }

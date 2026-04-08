@@ -457,10 +457,11 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LIST_REF_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.I32, _fbthriftVar0.size()));
-            for (int _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeI32(_fbthriftVar1);
-            }
-            oprot.writeListEnd();
+    for (int _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeI32(_fbthriftVar1);
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -469,10 +470,11 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SET_REF_FIELD_DESC);
         oprot.writeSetBegin(new TSet(TType.I32, _fbthriftVar0.size()));
-            for (int _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeI32(_fbthriftVar1);
-            }
-            oprot.writeSetEnd();
+    for (int _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeI32(_fbthriftVar1);
+    }
+    oprot.writeSetEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -481,17 +483,18 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MAP_REF_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _fbthriftVar0.size()));
-            for (Map.Entry<Integer, Integer> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Integer _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI32(_fbthriftVar2);
-              }
-              {
-                Integer _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeI32(_fbthriftVar2);
-              }
-            }
-            oprot.writeMapEnd();
+    for (Map.Entry<Integer, Integer> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Integer _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI32(_fbthriftVar2);
+        }
+        {
+            Integer _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeI32(_fbthriftVar2);
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -500,10 +503,11 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LIST_REF_UNIQUE_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.I32, _fbthriftVar0.size()));
-            for (int _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeI32(_fbthriftVar1);
-            }
-            oprot.writeListEnd();
+    for (int _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeI32(_fbthriftVar1);
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -512,10 +516,11 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SET_REF_SHARED_FIELD_DESC);
         oprot.writeSetBegin(new TSet(TType.I32, _fbthriftVar0.size()));
-            for (int _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeI32(_fbthriftVar1);
-            }
-            oprot.writeSetEnd();
+    for (int _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeI32(_fbthriftVar1);
+    }
+    oprot.writeSetEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -524,10 +529,11 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LIST_REF_SHARED_CONST_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.I32, _fbthriftVar0.size()));
-            for (int _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeI32(_fbthriftVar1);
-            }
-            oprot.writeListEnd();
+    for (int _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeI32(_fbthriftVar1);
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }

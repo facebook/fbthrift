@@ -120,6 +120,7 @@ public final class SinkException1 extends org.apache.thrift.TBaseException imple
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(REASON_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }

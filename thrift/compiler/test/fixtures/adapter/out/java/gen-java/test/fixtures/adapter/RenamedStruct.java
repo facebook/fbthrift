@@ -158,6 +158,7 @@ public final class RenamedStruct implements com.facebook.thrift.payload.ThriftSe
       long _fbthriftVar0 = this.data;
       oprot.writeFieldBegin(DATA_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

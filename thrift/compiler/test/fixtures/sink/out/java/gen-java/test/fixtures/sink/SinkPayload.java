@@ -156,6 +156,7 @@ public final class SinkPayload implements com.facebook.thrift.payload.ThriftSeri
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(CONTENT_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }

@@ -158,6 +158,7 @@ public final class ExceptionWithStructuredAnnotation extends org.apache.thrift.T
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MESSAGE_FIELD_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -165,6 +166,7 @@ public final class ExceptionWithStructuredAnnotation extends org.apache.thrift.T
       int _fbthriftVar0 = this.errorCode;
       oprot.writeFieldBegin(ERROR_CODE_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

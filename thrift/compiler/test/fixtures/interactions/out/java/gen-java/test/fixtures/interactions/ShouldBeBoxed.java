@@ -156,6 +156,7 @@ public final class ShouldBeBoxed implements com.facebook.thrift.payload.ThriftSe
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SESSION_ID_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }

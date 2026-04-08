@@ -273,6 +273,7 @@ public final class StructFieldAdaptedStruct implements com.facebook.thrift.paylo
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ADAPTED_STRUCT_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }
@@ -281,6 +282,7 @@ public final class StructFieldAdaptedStruct implements com.facebook.thrift.paylo
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ADAPTED_TYPEDEF_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }
@@ -289,6 +291,7 @@ public final class StructFieldAdaptedStruct implements com.facebook.thrift.paylo
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(DIRECTLY_ADAPTED_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }
@@ -297,6 +300,7 @@ public final class StructFieldAdaptedStruct implements com.facebook.thrift.paylo
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(TYPEDEF_OF_ADAPTED_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }

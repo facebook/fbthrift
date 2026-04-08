@@ -195,6 +195,7 @@ public final class SecretStruct implements com.facebook.thrift.payload.ThriftSer
       long _fbthriftVar0 = this.id;
       oprot.writeFieldBegin(ID_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -202,6 +203,7 @@ public final class SecretStruct implements com.facebook.thrift.payload.ThriftSer
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(PASSWORD_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }

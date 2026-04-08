@@ -454,12 +454,14 @@ public final class TestStruct implements com.facebook.thrift.payload.ThriftSeria
       int _fbthriftVar0 = this.unqualifiedIntField;
       oprot.writeFieldBegin(UNQUALIFIED_INT_FIELD_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       boolean _fbthriftVar0 = this.unqualifiedBoolField;
       oprot.writeFieldBegin(UNQUALIFIED_BOOL_FIELD_FIELD_DESC);
       oprot.writeBool(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -467,10 +469,11 @@ public final class TestStruct implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(UNQUALIFIED_LIST_FIELD_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.I32, _fbthriftVar0.size()));
-            for (int _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeI32(_fbthriftVar1);
-            }
-            oprot.writeListEnd();
+    for (int _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeI32(_fbthriftVar1);
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -479,6 +482,7 @@ public final class TestStruct implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(UNQUALIFIED_STRUCT_FIELD_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }
@@ -487,6 +491,7 @@ public final class TestStruct implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPTIONAL_INT_FIELD_FIELD_DESC);
         oprot.writeI32(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -495,6 +500,7 @@ public final class TestStruct implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPTIONAL_BOOL_FIELD_FIELD_DESC);
         oprot.writeBool(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -503,10 +509,11 @@ public final class TestStruct implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPTIONAL_LIST_FIELD_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.I32, _fbthriftVar0.size()));
-            for (int _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeI32(_fbthriftVar1);
-            }
-            oprot.writeListEnd();
+    for (int _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeI32(_fbthriftVar1);
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -515,6 +522,7 @@ public final class TestStruct implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(OPTIONAL_STRUCT_FIELD_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }

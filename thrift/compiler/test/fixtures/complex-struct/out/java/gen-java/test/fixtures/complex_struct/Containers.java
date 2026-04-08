@@ -3060,10 +3060,11 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(STRUCT_LIST_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar0.size()));
-            for (test.fixtures.complex_struct.MyStruct _fbthriftVar1 : _fbthriftVar0) {
-              _fbthriftVar1.write0(oprot);
-            }
-            oprot.writeListEnd();
+    for (test.fixtures.complex_struct.MyStruct _fbthriftVar1 : _fbthriftVar0) {
+        _fbthriftVar1.write0(oprot);
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3072,10 +3073,11 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(UNION_LIST_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar0.size()));
-            for (test.fixtures.complex_struct.MyUnion _fbthriftVar1 : _fbthriftVar0) {
-              _fbthriftVar1.write0(oprot);
-            }
-            oprot.writeListEnd();
+    for (test.fixtures.complex_struct.MyUnion _fbthriftVar1 : _fbthriftVar0) {
+        _fbthriftVar1.write0(oprot);
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3084,10 +3086,11 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ENUM_LIST_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.I32, _fbthriftVar0.size()));
-            for (test.fixtures.complex_struct.MyEnum _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeI32(_fbthriftVar1 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar1));
-            }
-            oprot.writeListEnd();
+    for (test.fixtures.complex_struct.MyEnum _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeI32(_fbthriftVar1 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar1));
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3096,10 +3099,11 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(STRUCT_SET_FIELD_DESC);
         oprot.writeSetBegin(new TSet(TType.STRUCT, _fbthriftVar0.size()));
-            for (test.fixtures.complex_struct.MyStruct _fbthriftVar1 : _fbthriftVar0) {
-              _fbthriftVar1.write0(oprot);
-            }
-            oprot.writeSetEnd();
+    for (test.fixtures.complex_struct.MyStruct _fbthriftVar1 : _fbthriftVar0) {
+        _fbthriftVar1.write0(oprot);
+    }
+    oprot.writeSetEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3108,10 +3112,11 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(UNION_SET_FIELD_DESC);
         oprot.writeSetBegin(new TSet(TType.STRUCT, _fbthriftVar0.size()));
-            for (test.fixtures.complex_struct.MyUnion _fbthriftVar1 : _fbthriftVar0) {
-              _fbthriftVar1.write0(oprot);
-            }
-            oprot.writeSetEnd();
+    for (test.fixtures.complex_struct.MyUnion _fbthriftVar1 : _fbthriftVar0) {
+        _fbthriftVar1.write0(oprot);
+    }
+    oprot.writeSetEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3120,10 +3125,11 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ENUM_SET_FIELD_DESC);
         oprot.writeSetBegin(new TSet(TType.I32, _fbthriftVar0.size()));
-            for (test.fixtures.complex_struct.MyEnum _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeI32(_fbthriftVar1 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar1));
-            }
-            oprot.writeSetEnd();
+    for (test.fixtures.complex_struct.MyEnum _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeI32(_fbthriftVar1 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar1));
+    }
+    oprot.writeSetEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3132,17 +3138,18 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(STRUCT_MAP_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.STRUCT, TType.I64, _fbthriftVar0.size()));
-            for (Map.Entry<test.fixtures.complex_struct.MyStruct, Long> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                test.fixtures.complex_struct.MyStruct _fbthriftVar2 = _fbthriftVar1.getKey();
-                _fbthriftVar2.write0(oprot);
-              }
-              {
-                Long _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeI64(_fbthriftVar2);
-              }
-            }
-            oprot.writeMapEnd();
+    for (Map.Entry<test.fixtures.complex_struct.MyStruct, Long> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            test.fixtures.complex_struct.MyStruct _fbthriftVar2 = _fbthriftVar1.getKey();
+            _fbthriftVar2.write0(oprot);
+        }
+        {
+            Long _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeI64(_fbthriftVar2);
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3151,17 +3158,18 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(UNION_MAP_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.STRUCT, TType.I64, _fbthriftVar0.size()));
-            for (Map.Entry<test.fixtures.complex_struct.MyUnion, Long> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                test.fixtures.complex_struct.MyUnion _fbthriftVar2 = _fbthriftVar1.getKey();
-                _fbthriftVar2.write0(oprot);
-              }
-              {
-                Long _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeI64(_fbthriftVar2);
-              }
-            }
-            oprot.writeMapEnd();
+    for (Map.Entry<test.fixtures.complex_struct.MyUnion, Long> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            test.fixtures.complex_struct.MyUnion _fbthriftVar2 = _fbthriftVar1.getKey();
+            _fbthriftVar2.write0(oprot);
+        }
+        {
+            Long _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeI64(_fbthriftVar2);
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3170,17 +3178,18 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ENUM_MAP_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I32, TType.I64, _fbthriftVar0.size()));
-            for (Map.Entry<test.fixtures.complex_struct.MyEnum, Long> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                test.fixtures.complex_struct.MyEnum _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI32(_fbthriftVar2 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar2));
-              }
-              {
-                Long _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeI64(_fbthriftVar2);
-              }
-            }
-            oprot.writeMapEnd();
+    for (Map.Entry<test.fixtures.complex_struct.MyEnum, Long> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            test.fixtures.complex_struct.MyEnum _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI32(_fbthriftVar2 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar2));
+        }
+        {
+            Long _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeI64(_fbthriftVar2);
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3189,17 +3198,18 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(STRUCT_MAP2_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I32, TType.STRUCT, _fbthriftVar0.size()));
-            for (Map.Entry<Integer, test.fixtures.complex_struct.MyStruct> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Integer _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI32(_fbthriftVar2);
-              }
-              {
-                test.fixtures.complex_struct.MyStruct _fbthriftVar2 = _fbthriftVar1.getValue();
-                _fbthriftVar2.write0(oprot);
-              }
-            }
-            oprot.writeMapEnd();
+    for (Map.Entry<Integer, test.fixtures.complex_struct.MyStruct> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Integer _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI32(_fbthriftVar2);
+        }
+        {
+            test.fixtures.complex_struct.MyStruct _fbthriftVar2 = _fbthriftVar1.getValue();
+            _fbthriftVar2.write0(oprot);
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3208,17 +3218,18 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(UNION_MAP2_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I32, TType.STRUCT, _fbthriftVar0.size()));
-            for (Map.Entry<Integer, test.fixtures.complex_struct.MyUnion> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Integer _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI32(_fbthriftVar2);
-              }
-              {
-                test.fixtures.complex_struct.MyUnion _fbthriftVar2 = _fbthriftVar1.getValue();
-                _fbthriftVar2.write0(oprot);
-              }
-            }
-            oprot.writeMapEnd();
+    for (Map.Entry<Integer, test.fixtures.complex_struct.MyUnion> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Integer _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI32(_fbthriftVar2);
+        }
+        {
+            test.fixtures.complex_struct.MyUnion _fbthriftVar2 = _fbthriftVar1.getValue();
+            _fbthriftVar2.write0(oprot);
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3227,17 +3238,18 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ENUM_MAP2_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _fbthriftVar0.size()));
-            for (Map.Entry<Integer, test.fixtures.complex_struct.MyEnum> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Integer _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI32(_fbthriftVar2);
-              }
-              {
-                test.fixtures.complex_struct.MyEnum _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeI32(_fbthriftVar2 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar2));
-              }
-            }
-            oprot.writeMapEnd();
+    for (Map.Entry<Integer, test.fixtures.complex_struct.MyEnum> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Integer _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI32(_fbthriftVar2);
+        }
+        {
+            test.fixtures.complex_struct.MyEnum _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeI32(_fbthriftVar2 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar2));
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3246,21 +3258,22 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LIST_MAP_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.LIST, TType.I32, _fbthriftVar0.size()));
-            for (Map.Entry<List<Integer>, Integer> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                List<Integer> _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeListBegin(new TList(TType.I32, _fbthriftVar2.size()));
+    for (Map.Entry<List<Integer>, Integer> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            List<Integer> _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeListBegin(new TList(TType.I32, _fbthriftVar2.size()));
             for (int _fbthriftVar3 : _fbthriftVar2) {
-              oprot.writeI32(_fbthriftVar3);
+                oprot.writeI32(_fbthriftVar3);
             }
             oprot.writeListEnd();
-              }
-              {
-                Integer _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeI32(_fbthriftVar2);
-              }
-            }
-            oprot.writeMapEnd();
+        }
+        {
+            Integer _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeI32(_fbthriftVar2);
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3269,21 +3282,22 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LIST_MAP2_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _fbthriftVar0.size()));
-            for (Map.Entry<Integer, List<Integer>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Integer _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI32(_fbthriftVar2);
-              }
-              {
-                List<Integer> _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeListBegin(new TList(TType.I32, _fbthriftVar2.size()));
+    for (Map.Entry<Integer, List<Integer>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Integer _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI32(_fbthriftVar2);
+        }
+        {
+            List<Integer> _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeListBegin(new TList(TType.I32, _fbthriftVar2.size()));
             for (int _fbthriftVar3 : _fbthriftVar2) {
-              oprot.writeI32(_fbthriftVar3);
+                oprot.writeI32(_fbthriftVar3);
             }
             oprot.writeListEnd();
-              }
-            }
-            oprot.writeMapEnd();
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3292,21 +3306,22 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SET_MAP_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.SET, TType.I32, _fbthriftVar0.size()));
-            for (Map.Entry<Set<Integer>, Integer> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Set<Integer> _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeSetBegin(new TSet(TType.I32, _fbthriftVar2.size()));
+    for (Map.Entry<Set<Integer>, Integer> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Set<Integer> _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeSetBegin(new TSet(TType.I32, _fbthriftVar2.size()));
             for (int _fbthriftVar3 : _fbthriftVar2) {
-              oprot.writeI32(_fbthriftVar3);
+                oprot.writeI32(_fbthriftVar3);
             }
             oprot.writeSetEnd();
-              }
-              {
-                Integer _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeI32(_fbthriftVar2);
-              }
-            }
-            oprot.writeMapEnd();
+        }
+        {
+            Integer _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeI32(_fbthriftVar2);
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3315,21 +3330,22 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SET_MAP2_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I32, TType.SET, _fbthriftVar0.size()));
-            for (Map.Entry<Integer, Set<Integer>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Integer _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI32(_fbthriftVar2);
-              }
-              {
-                Set<Integer> _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeSetBegin(new TSet(TType.I32, _fbthriftVar2.size()));
+    for (Map.Entry<Integer, Set<Integer>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Integer _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI32(_fbthriftVar2);
+        }
+        {
+            Set<Integer> _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeSetBegin(new TSet(TType.I32, _fbthriftVar2.size()));
             for (int _fbthriftVar3 : _fbthriftVar2) {
-              oprot.writeI32(_fbthriftVar3);
+                oprot.writeI32(_fbthriftVar3);
             }
             oprot.writeSetEnd();
-              }
-            }
-            oprot.writeMapEnd();
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3338,28 +3354,29 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MAP_MAP_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.MAP, TType.I32, _fbthriftVar0.size()));
-            for (Map.Entry<Map<Integer, Integer>, Integer> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Map<Integer, Integer> _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _fbthriftVar2.size()));
+    for (Map.Entry<Map<Integer, Integer>, Integer> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Map<Integer, Integer> _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _fbthriftVar2.size()));
             for (Map.Entry<Integer, Integer> _fbthriftVar3 : _fbthriftVar2.entrySet()) {
-              {
-                Integer _fbthriftVar4 = _fbthriftVar3.getKey();
-                oprot.writeI32(_fbthriftVar4);
-              }
-              {
-                Integer _fbthriftVar4 = _fbthriftVar3.getValue();
-                oprot.writeI32(_fbthriftVar4);
-              }
+                {
+                    Integer _fbthriftVar4 = _fbthriftVar3.getKey();
+                    oprot.writeI32(_fbthriftVar4);
+                }
+                {
+                    Integer _fbthriftVar4 = _fbthriftVar3.getValue();
+                    oprot.writeI32(_fbthriftVar4);
+                }
             }
             oprot.writeMapEnd();
-              }
-              {
-                Integer _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeI32(_fbthriftVar2);
-              }
-            }
-            oprot.writeMapEnd();
+        }
+        {
+            Integer _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeI32(_fbthriftVar2);
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3368,28 +3385,29 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MAP_MAP2_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I32, TType.MAP, _fbthriftVar0.size()));
-            for (Map.Entry<Integer, Map<Integer, Integer>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Integer _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI32(_fbthriftVar2);
-              }
-              {
-                Map<Integer, Integer> _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _fbthriftVar2.size()));
+    for (Map.Entry<Integer, Map<Integer, Integer>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Integer _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI32(_fbthriftVar2);
+        }
+        {
+            Map<Integer, Integer> _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _fbthriftVar2.size()));
             for (Map.Entry<Integer, Integer> _fbthriftVar3 : _fbthriftVar2.entrySet()) {
-              {
-                Integer _fbthriftVar4 = _fbthriftVar3.getKey();
-                oprot.writeI32(_fbthriftVar4);
-              }
-              {
-                Integer _fbthriftVar4 = _fbthriftVar3.getValue();
-                oprot.writeI32(_fbthriftVar4);
-              }
+                {
+                    Integer _fbthriftVar4 = _fbthriftVar3.getKey();
+                    oprot.writeI32(_fbthriftVar4);
+                }
+                {
+                    Integer _fbthriftVar4 = _fbthriftVar3.getValue();
+                    oprot.writeI32(_fbthriftVar4);
+                }
             }
             oprot.writeMapEnd();
-              }
-            }
-            oprot.writeMapEnd();
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3398,14 +3416,15 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LIST_LIST_I32_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.LIST, _fbthriftVar0.size()));
-            for (List<Integer> _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeListBegin(new TList(TType.I32, _fbthriftVar1.size()));
-            for (int _fbthriftVar2 : _fbthriftVar1) {
-              oprot.writeI32(_fbthriftVar2);
-            }
-            oprot.writeListEnd();
-            }
-            oprot.writeListEnd();
+    for (List<Integer> _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeListBegin(new TList(TType.I32, _fbthriftVar1.size()));
+        for (int _fbthriftVar2 : _fbthriftVar1) {
+            oprot.writeI32(_fbthriftVar2);
+        }
+        oprot.writeListEnd();
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3414,14 +3433,15 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LIST_LIST_STRUCT_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.LIST, _fbthriftVar0.size()));
-            for (List<test.fixtures.complex_struct.MyStruct> _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar1.size()));
-            for (test.fixtures.complex_struct.MyStruct _fbthriftVar2 : _fbthriftVar1) {
-              _fbthriftVar2.write0(oprot);
-            }
-            oprot.writeListEnd();
-            }
-            oprot.writeListEnd();
+    for (List<test.fixtures.complex_struct.MyStruct> _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar1.size()));
+        for (test.fixtures.complex_struct.MyStruct _fbthriftVar2 : _fbthriftVar1) {
+            _fbthriftVar2.write0(oprot);
+        }
+        oprot.writeListEnd();
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3430,14 +3450,15 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LIST_SET_I32_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.SET, _fbthriftVar0.size()));
-            for (Set<Integer> _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeSetBegin(new TSet(TType.I32, _fbthriftVar1.size()));
-            for (int _fbthriftVar2 : _fbthriftVar1) {
-              oprot.writeI32(_fbthriftVar2);
-            }
-            oprot.writeSetEnd();
-            }
-            oprot.writeListEnd();
+    for (Set<Integer> _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeSetBegin(new TSet(TType.I32, _fbthriftVar1.size()));
+        for (int _fbthriftVar2 : _fbthriftVar1) {
+            oprot.writeI32(_fbthriftVar2);
+        }
+        oprot.writeSetEnd();
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3446,14 +3467,15 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LIST_SET_STRUCT_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.SET, _fbthriftVar0.size()));
-            for (Set<test.fixtures.complex_struct.MyStruct> _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeSetBegin(new TSet(TType.STRUCT, _fbthriftVar1.size()));
-            for (test.fixtures.complex_struct.MyStruct _fbthriftVar2 : _fbthriftVar1) {
-              _fbthriftVar2.write0(oprot);
-            }
-            oprot.writeSetEnd();
-            }
-            oprot.writeListEnd();
+    for (Set<test.fixtures.complex_struct.MyStruct> _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeSetBegin(new TSet(TType.STRUCT, _fbthriftVar1.size()));
+        for (test.fixtures.complex_struct.MyStruct _fbthriftVar2 : _fbthriftVar1) {
+            _fbthriftVar2.write0(oprot);
+        }
+        oprot.writeSetEnd();
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3462,21 +3484,22 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LIST_MAP_I32_I32_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.MAP, _fbthriftVar0.size()));
-            for (Map<Integer, Integer> _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _fbthriftVar1.size()));
-            for (Map.Entry<Integer, Integer> _fbthriftVar2 : _fbthriftVar1.entrySet()) {
-              {
+    for (Map<Integer, Integer> _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _fbthriftVar1.size()));
+        for (Map.Entry<Integer, Integer> _fbthriftVar2 : _fbthriftVar1.entrySet()) {
+            {
                 Integer _fbthriftVar3 = _fbthriftVar2.getKey();
                 oprot.writeI32(_fbthriftVar3);
-              }
-              {
+            }
+            {
                 Integer _fbthriftVar3 = _fbthriftVar2.getValue();
                 oprot.writeI32(_fbthriftVar3);
-              }
             }
-            oprot.writeMapEnd();
-            }
-            oprot.writeListEnd();
+        }
+        oprot.writeMapEnd();
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3485,21 +3508,22 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LIST_MAP_I32_STRUCT_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.MAP, _fbthriftVar0.size()));
-            for (Map<Integer, test.fixtures.complex_struct.MyStruct> _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeMapBegin(new TMap(TType.I32, TType.STRUCT, _fbthriftVar1.size()));
-            for (Map.Entry<Integer, test.fixtures.complex_struct.MyStruct> _fbthriftVar2 : _fbthriftVar1.entrySet()) {
-              {
+    for (Map<Integer, test.fixtures.complex_struct.MyStruct> _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeMapBegin(new TMap(TType.I32, TType.STRUCT, _fbthriftVar1.size()));
+        for (Map.Entry<Integer, test.fixtures.complex_struct.MyStruct> _fbthriftVar2 : _fbthriftVar1.entrySet()) {
+            {
                 Integer _fbthriftVar3 = _fbthriftVar2.getKey();
                 oprot.writeI32(_fbthriftVar3);
-              }
-              {
+            }
+            {
                 test.fixtures.complex_struct.MyStruct _fbthriftVar3 = _fbthriftVar2.getValue();
                 _fbthriftVar3.write0(oprot);
-              }
             }
-            oprot.writeMapEnd();
-            }
-            oprot.writeListEnd();
+        }
+        oprot.writeMapEnd();
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3508,21 +3532,22 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LIST_MAP_STRUCT_I32_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.MAP, _fbthriftVar0.size()));
-            for (Map<test.fixtures.complex_struct.MyStruct, Integer> _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeMapBegin(new TMap(TType.STRUCT, TType.I32, _fbthriftVar1.size()));
-            for (Map.Entry<test.fixtures.complex_struct.MyStruct, Integer> _fbthriftVar2 : _fbthriftVar1.entrySet()) {
-              {
+    for (Map<test.fixtures.complex_struct.MyStruct, Integer> _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeMapBegin(new TMap(TType.STRUCT, TType.I32, _fbthriftVar1.size()));
+        for (Map.Entry<test.fixtures.complex_struct.MyStruct, Integer> _fbthriftVar2 : _fbthriftVar1.entrySet()) {
+            {
                 test.fixtures.complex_struct.MyStruct _fbthriftVar3 = _fbthriftVar2.getKey();
                 _fbthriftVar3.write0(oprot);
-              }
-              {
+            }
+            {
                 Integer _fbthriftVar3 = _fbthriftVar2.getValue();
                 oprot.writeI32(_fbthriftVar3);
-              }
             }
-            oprot.writeMapEnd();
-            }
-            oprot.writeListEnd();
+        }
+        oprot.writeMapEnd();
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3531,14 +3556,15 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SET_LIST_I32_FIELD_DESC);
         oprot.writeSetBegin(new TSet(TType.LIST, _fbthriftVar0.size()));
-            for (List<Integer> _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeListBegin(new TList(TType.I32, _fbthriftVar1.size()));
-            for (int _fbthriftVar2 : _fbthriftVar1) {
-              oprot.writeI32(_fbthriftVar2);
-            }
-            oprot.writeListEnd();
-            }
-            oprot.writeSetEnd();
+    for (List<Integer> _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeListBegin(new TList(TType.I32, _fbthriftVar1.size()));
+        for (int _fbthriftVar2 : _fbthriftVar1) {
+            oprot.writeI32(_fbthriftVar2);
+        }
+        oprot.writeListEnd();
+    }
+    oprot.writeSetEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3547,14 +3573,15 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SET_LIST_STRUCT_FIELD_DESC);
         oprot.writeSetBegin(new TSet(TType.LIST, _fbthriftVar0.size()));
-            for (List<test.fixtures.complex_struct.MyStruct> _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar1.size()));
-            for (test.fixtures.complex_struct.MyStruct _fbthriftVar2 : _fbthriftVar1) {
-              _fbthriftVar2.write0(oprot);
-            }
-            oprot.writeListEnd();
-            }
-            oprot.writeSetEnd();
+    for (List<test.fixtures.complex_struct.MyStruct> _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar1.size()));
+        for (test.fixtures.complex_struct.MyStruct _fbthriftVar2 : _fbthriftVar1) {
+            _fbthriftVar2.write0(oprot);
+        }
+        oprot.writeListEnd();
+    }
+    oprot.writeSetEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3563,14 +3590,15 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SET_SET_I32_FIELD_DESC);
         oprot.writeSetBegin(new TSet(TType.SET, _fbthriftVar0.size()));
-            for (Set<Integer> _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeSetBegin(new TSet(TType.I32, _fbthriftVar1.size()));
-            for (int _fbthriftVar2 : _fbthriftVar1) {
-              oprot.writeI32(_fbthriftVar2);
-            }
-            oprot.writeSetEnd();
-            }
-            oprot.writeSetEnd();
+    for (Set<Integer> _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeSetBegin(new TSet(TType.I32, _fbthriftVar1.size()));
+        for (int _fbthriftVar2 : _fbthriftVar1) {
+            oprot.writeI32(_fbthriftVar2);
+        }
+        oprot.writeSetEnd();
+    }
+    oprot.writeSetEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3579,14 +3607,15 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SET_SET_STRUCT_FIELD_DESC);
         oprot.writeSetBegin(new TSet(TType.SET, _fbthriftVar0.size()));
-            for (Set<test.fixtures.complex_struct.MyStruct> _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeSetBegin(new TSet(TType.STRUCT, _fbthriftVar1.size()));
-            for (test.fixtures.complex_struct.MyStruct _fbthriftVar2 : _fbthriftVar1) {
-              _fbthriftVar2.write0(oprot);
-            }
-            oprot.writeSetEnd();
-            }
-            oprot.writeSetEnd();
+    for (Set<test.fixtures.complex_struct.MyStruct> _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeSetBegin(new TSet(TType.STRUCT, _fbthriftVar1.size()));
+        for (test.fixtures.complex_struct.MyStruct _fbthriftVar2 : _fbthriftVar1) {
+            _fbthriftVar2.write0(oprot);
+        }
+        oprot.writeSetEnd();
+    }
+    oprot.writeSetEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3595,21 +3624,22 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SET_MAP_I32_I32_FIELD_DESC);
         oprot.writeSetBegin(new TSet(TType.MAP, _fbthriftVar0.size()));
-            for (Map<Integer, Integer> _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _fbthriftVar1.size()));
-            for (Map.Entry<Integer, Integer> _fbthriftVar2 : _fbthriftVar1.entrySet()) {
-              {
+    for (Map<Integer, Integer> _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _fbthriftVar1.size()));
+        for (Map.Entry<Integer, Integer> _fbthriftVar2 : _fbthriftVar1.entrySet()) {
+            {
                 Integer _fbthriftVar3 = _fbthriftVar2.getKey();
                 oprot.writeI32(_fbthriftVar3);
-              }
-              {
+            }
+            {
                 Integer _fbthriftVar3 = _fbthriftVar2.getValue();
                 oprot.writeI32(_fbthriftVar3);
-              }
             }
-            oprot.writeMapEnd();
-            }
-            oprot.writeSetEnd();
+        }
+        oprot.writeMapEnd();
+    }
+    oprot.writeSetEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3618,21 +3648,22 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SET_MAP_I32_STRUCT_FIELD_DESC);
         oprot.writeSetBegin(new TSet(TType.MAP, _fbthriftVar0.size()));
-            for (Map<Integer, test.fixtures.complex_struct.MyStruct> _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeMapBegin(new TMap(TType.I32, TType.STRUCT, _fbthriftVar1.size()));
-            for (Map.Entry<Integer, test.fixtures.complex_struct.MyStruct> _fbthriftVar2 : _fbthriftVar1.entrySet()) {
-              {
+    for (Map<Integer, test.fixtures.complex_struct.MyStruct> _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeMapBegin(new TMap(TType.I32, TType.STRUCT, _fbthriftVar1.size()));
+        for (Map.Entry<Integer, test.fixtures.complex_struct.MyStruct> _fbthriftVar2 : _fbthriftVar1.entrySet()) {
+            {
                 Integer _fbthriftVar3 = _fbthriftVar2.getKey();
                 oprot.writeI32(_fbthriftVar3);
-              }
-              {
+            }
+            {
                 test.fixtures.complex_struct.MyStruct _fbthriftVar3 = _fbthriftVar2.getValue();
                 _fbthriftVar3.write0(oprot);
-              }
             }
-            oprot.writeMapEnd();
-            }
-            oprot.writeSetEnd();
+        }
+        oprot.writeMapEnd();
+    }
+    oprot.writeSetEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3641,21 +3672,22 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SET_MAP_STRUCT_I32_FIELD_DESC);
         oprot.writeSetBegin(new TSet(TType.MAP, _fbthriftVar0.size()));
-            for (Map<test.fixtures.complex_struct.MyStruct, Integer> _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeMapBegin(new TMap(TType.STRUCT, TType.I32, _fbthriftVar1.size()));
-            for (Map.Entry<test.fixtures.complex_struct.MyStruct, Integer> _fbthriftVar2 : _fbthriftVar1.entrySet()) {
-              {
+    for (Map<test.fixtures.complex_struct.MyStruct, Integer> _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeMapBegin(new TMap(TType.STRUCT, TType.I32, _fbthriftVar1.size()));
+        for (Map.Entry<test.fixtures.complex_struct.MyStruct, Integer> _fbthriftVar2 : _fbthriftVar1.entrySet()) {
+            {
                 test.fixtures.complex_struct.MyStruct _fbthriftVar3 = _fbthriftVar2.getKey();
                 _fbthriftVar3.write0(oprot);
-              }
-              {
+            }
+            {
                 Integer _fbthriftVar3 = _fbthriftVar2.getValue();
                 oprot.writeI32(_fbthriftVar3);
-              }
             }
-            oprot.writeMapEnd();
-            }
-            oprot.writeSetEnd();
+        }
+        oprot.writeMapEnd();
+    }
+    oprot.writeSetEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3664,28 +3696,29 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MAP_I32_MAP_I32_I32_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I32, TType.MAP, _fbthriftVar0.size()));
-            for (Map.Entry<Integer, Map<Integer, Integer>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Integer _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI32(_fbthriftVar2);
-              }
-              {
-                Map<Integer, Integer> _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _fbthriftVar2.size()));
+    for (Map.Entry<Integer, Map<Integer, Integer>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Integer _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI32(_fbthriftVar2);
+        }
+        {
+            Map<Integer, Integer> _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _fbthriftVar2.size()));
             for (Map.Entry<Integer, Integer> _fbthriftVar3 : _fbthriftVar2.entrySet()) {
-              {
-                Integer _fbthriftVar4 = _fbthriftVar3.getKey();
-                oprot.writeI32(_fbthriftVar4);
-              }
-              {
-                Integer _fbthriftVar4 = _fbthriftVar3.getValue();
-                oprot.writeI32(_fbthriftVar4);
-              }
+                {
+                    Integer _fbthriftVar4 = _fbthriftVar3.getKey();
+                    oprot.writeI32(_fbthriftVar4);
+                }
+                {
+                    Integer _fbthriftVar4 = _fbthriftVar3.getValue();
+                    oprot.writeI32(_fbthriftVar4);
+                }
             }
             oprot.writeMapEnd();
-              }
-            }
-            oprot.writeMapEnd();
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3694,28 +3727,29 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MAP_I32_MAP_STRUCT_I32_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I32, TType.MAP, _fbthriftVar0.size()));
-            for (Map.Entry<Integer, Map<test.fixtures.complex_struct.MyStruct, Integer>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Integer _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI32(_fbthriftVar2);
-              }
-              {
-                Map<test.fixtures.complex_struct.MyStruct, Integer> _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeMapBegin(new TMap(TType.STRUCT, TType.I32, _fbthriftVar2.size()));
+    for (Map.Entry<Integer, Map<test.fixtures.complex_struct.MyStruct, Integer>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Integer _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI32(_fbthriftVar2);
+        }
+        {
+            Map<test.fixtures.complex_struct.MyStruct, Integer> _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeMapBegin(new TMap(TType.STRUCT, TType.I32, _fbthriftVar2.size()));
             for (Map.Entry<test.fixtures.complex_struct.MyStruct, Integer> _fbthriftVar3 : _fbthriftVar2.entrySet()) {
-              {
-                test.fixtures.complex_struct.MyStruct _fbthriftVar4 = _fbthriftVar3.getKey();
-                _fbthriftVar4.write0(oprot);
-              }
-              {
-                Integer _fbthriftVar4 = _fbthriftVar3.getValue();
-                oprot.writeI32(_fbthriftVar4);
-              }
+                {
+                    test.fixtures.complex_struct.MyStruct _fbthriftVar4 = _fbthriftVar3.getKey();
+                    _fbthriftVar4.write0(oprot);
+                }
+                {
+                    Integer _fbthriftVar4 = _fbthriftVar3.getValue();
+                    oprot.writeI32(_fbthriftVar4);
+                }
             }
             oprot.writeMapEnd();
-              }
-            }
-            oprot.writeMapEnd();
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3724,28 +3758,29 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MAP_I32_MAP_I32_STRUCT_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I32, TType.MAP, _fbthriftVar0.size()));
-            for (Map.Entry<Integer, Map<Integer, test.fixtures.complex_struct.MyStruct>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Integer _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI32(_fbthriftVar2);
-              }
-              {
-                Map<Integer, test.fixtures.complex_struct.MyStruct> _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeMapBegin(new TMap(TType.I32, TType.STRUCT, _fbthriftVar2.size()));
+    for (Map.Entry<Integer, Map<Integer, test.fixtures.complex_struct.MyStruct>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Integer _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI32(_fbthriftVar2);
+        }
+        {
+            Map<Integer, test.fixtures.complex_struct.MyStruct> _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeMapBegin(new TMap(TType.I32, TType.STRUCT, _fbthriftVar2.size()));
             for (Map.Entry<Integer, test.fixtures.complex_struct.MyStruct> _fbthriftVar3 : _fbthriftVar2.entrySet()) {
-              {
-                Integer _fbthriftVar4 = _fbthriftVar3.getKey();
-                oprot.writeI32(_fbthriftVar4);
-              }
-              {
-                test.fixtures.complex_struct.MyStruct _fbthriftVar4 = _fbthriftVar3.getValue();
-                _fbthriftVar4.write0(oprot);
-              }
+                {
+                    Integer _fbthriftVar4 = _fbthriftVar3.getKey();
+                    oprot.writeI32(_fbthriftVar4);
+                }
+                {
+                    test.fixtures.complex_struct.MyStruct _fbthriftVar4 = _fbthriftVar3.getValue();
+                    _fbthriftVar4.write0(oprot);
+                }
             }
             oprot.writeMapEnd();
-              }
-            }
-            oprot.writeMapEnd();
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3754,32 +3789,33 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MAP_I32_MAP_LIST_I32_I32_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _fbthriftVar0.size()));
-            for (Map.Entry<Integer, List<Map<Integer, Integer>>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Integer _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI32(_fbthriftVar2);
-              }
-              {
-                List<Map<Integer, Integer>> _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeListBegin(new TList(TType.MAP, _fbthriftVar2.size()));
+    for (Map.Entry<Integer, List<Map<Integer, Integer>>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Integer _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI32(_fbthriftVar2);
+        }
+        {
+            List<Map<Integer, Integer>> _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeListBegin(new TList(TType.MAP, _fbthriftVar2.size()));
             for (Map<Integer, Integer> _fbthriftVar3 : _fbthriftVar2) {
-              oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _fbthriftVar3.size()));
-            for (Map.Entry<Integer, Integer> _fbthriftVar4 : _fbthriftVar3.entrySet()) {
-              {
-                Integer _fbthriftVar5 = _fbthriftVar4.getKey();
-                oprot.writeI32(_fbthriftVar5);
-              }
-              {
-                Integer _fbthriftVar5 = _fbthriftVar4.getValue();
-                oprot.writeI32(_fbthriftVar5);
-              }
-            }
-            oprot.writeMapEnd();
+                oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _fbthriftVar3.size()));
+                for (Map.Entry<Integer, Integer> _fbthriftVar4 : _fbthriftVar3.entrySet()) {
+                    {
+                        Integer _fbthriftVar5 = _fbthriftVar4.getKey();
+                        oprot.writeI32(_fbthriftVar5);
+                    }
+                    {
+                        Integer _fbthriftVar5 = _fbthriftVar4.getValue();
+                        oprot.writeI32(_fbthriftVar5);
+                    }
+                }
+                oprot.writeMapEnd();
             }
             oprot.writeListEnd();
-              }
-            }
-            oprot.writeMapEnd();
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -3788,32 +3824,33 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MAP_I32_MAP_LIST_STRUCT_I32_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _fbthriftVar0.size()));
-            for (Map.Entry<Integer, List<Map<test.fixtures.complex_struct.MyStruct, Integer>>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Integer _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI32(_fbthriftVar2);
-              }
-              {
-                List<Map<test.fixtures.complex_struct.MyStruct, Integer>> _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeListBegin(new TList(TType.MAP, _fbthriftVar2.size()));
+    for (Map.Entry<Integer, List<Map<test.fixtures.complex_struct.MyStruct, Integer>>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Integer _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI32(_fbthriftVar2);
+        }
+        {
+            List<Map<test.fixtures.complex_struct.MyStruct, Integer>> _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeListBegin(new TList(TType.MAP, _fbthriftVar2.size()));
             for (Map<test.fixtures.complex_struct.MyStruct, Integer> _fbthriftVar3 : _fbthriftVar2) {
-              oprot.writeMapBegin(new TMap(TType.STRUCT, TType.I32, _fbthriftVar3.size()));
-            for (Map.Entry<test.fixtures.complex_struct.MyStruct, Integer> _fbthriftVar4 : _fbthriftVar3.entrySet()) {
-              {
-                test.fixtures.complex_struct.MyStruct _fbthriftVar5 = _fbthriftVar4.getKey();
-                _fbthriftVar5.write0(oprot);
-              }
-              {
-                Integer _fbthriftVar5 = _fbthriftVar4.getValue();
-                oprot.writeI32(_fbthriftVar5);
-              }
-            }
-            oprot.writeMapEnd();
+                oprot.writeMapBegin(new TMap(TType.STRUCT, TType.I32, _fbthriftVar3.size()));
+                for (Map.Entry<test.fixtures.complex_struct.MyStruct, Integer> _fbthriftVar4 : _fbthriftVar3.entrySet()) {
+                    {
+                        test.fixtures.complex_struct.MyStruct _fbthriftVar5 = _fbthriftVar4.getKey();
+                        _fbthriftVar5.write0(oprot);
+                    }
+                    {
+                        Integer _fbthriftVar5 = _fbthriftVar4.getValue();
+                        oprot.writeI32(_fbthriftVar5);
+                    }
+                }
+                oprot.writeMapEnd();
             }
             oprot.writeListEnd();
-              }
-            }
-            oprot.writeMapEnd();
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }

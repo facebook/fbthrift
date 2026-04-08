@@ -1258,6 +1258,7 @@ public final class MyNomralStruct implements com.facebook.thrift.payload.ThriftS
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG1_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -1266,6 +1267,7 @@ public final class MyNomralStruct implements com.facebook.thrift.payload.ThriftS
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG2_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -1274,6 +1276,7 @@ public final class MyNomralStruct implements com.facebook.thrift.payload.ThriftS
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG3_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -1282,6 +1285,7 @@ public final class MyNomralStruct implements com.facebook.thrift.payload.ThriftS
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG4_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -1290,6 +1294,7 @@ public final class MyNomralStruct implements com.facebook.thrift.payload.ThriftS
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG5_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -1298,6 +1303,7 @@ public final class MyNomralStruct implements com.facebook.thrift.payload.ThriftS
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG6_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -1306,6 +1312,7 @@ public final class MyNomralStruct implements com.facebook.thrift.payload.ThriftS
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG7_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -1314,6 +1321,7 @@ public final class MyNomralStruct implements com.facebook.thrift.payload.ThriftS
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG8_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -1322,6 +1330,7 @@ public final class MyNomralStruct implements com.facebook.thrift.payload.ThriftS
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MSG9_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -1329,126 +1338,147 @@ public final class MyNomralStruct implements com.facebook.thrift.payload.ThriftS
       int _fbthriftVar0 = this.myIntField10;
       oprot.writeFieldBegin(MY_INT_FIELD10_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.myIntField11;
       oprot.writeFieldBegin(MY_INT_FIELD11_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.myIntField12;
       oprot.writeFieldBegin(MY_INT_FIELD12_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.myIntField13;
       oprot.writeFieldBegin(MY_INT_FIELD13_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.myIntField14;
       oprot.writeFieldBegin(MY_INT_FIELD14_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.myIntField15;
       oprot.writeFieldBegin(MY_INT_FIELD15_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.myIntField16;
       oprot.writeFieldBegin(MY_INT_FIELD16_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.myIntField17;
       oprot.writeFieldBegin(MY_INT_FIELD17_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.myIntField18;
       oprot.writeFieldBegin(MY_INT_FIELD18_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.myIntField19;
       oprot.writeFieldBegin(MY_INT_FIELD19_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.myIntField20;
       oprot.writeFieldBegin(MY_INT_FIELD20_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.myDoubleField21;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD21_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.myDoubleField22;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD22_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.myDoubleField23;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD23_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.myDoubleField24;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD24_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.myDoubleField25;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD25_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.myDoubleField26;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD26_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.myDoubleField27;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD27_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.myDoubleField28;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD28_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.myDoubleField29;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD29_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.myDoubleField30;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD30_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

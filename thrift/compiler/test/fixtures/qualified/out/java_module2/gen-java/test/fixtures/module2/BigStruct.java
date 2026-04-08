@@ -194,6 +194,7 @@ public final class BigStruct implements com.facebook.thrift.payload.ThriftSerial
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(S_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }
@@ -201,6 +202,7 @@ public final class BigStruct implements com.facebook.thrift.payload.ThriftSerial
       int _fbthriftVar0 = this.id;
       oprot.writeFieldBegin(ID_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

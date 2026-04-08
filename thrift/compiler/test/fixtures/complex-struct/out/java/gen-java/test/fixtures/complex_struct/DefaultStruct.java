@@ -1336,24 +1336,28 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
       long _fbthriftVar0 = this.myLongDFset;
       oprot.writeFieldBegin(MY_LONG_DFSET_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       long _fbthriftVar0 = this.myLongDF;
       oprot.writeFieldBegin(MY_LONG_DF_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.portDFset;
       oprot.writeFieldBegin(PORT_DFSET_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.portNum;
       oprot.writeFieldBegin(PORT_NUM_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -1361,6 +1365,7 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_BINARY_DFSET_FIELD_DESC);
         org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -1369,6 +1374,7 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_BINARY_FIELD_DESC);
         org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -1376,30 +1382,35 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
       byte _fbthriftVar0 = this.myByteDFSet;
       oprot.writeFieldBegin(MY_BYTE_DFSET_FIELD_DESC);
       oprot.writeByte(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       byte _fbthriftVar0 = this.myByte;
       oprot.writeFieldBegin(MY_BYTE_FIELD_DESC);
       oprot.writeByte(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.myDoubleDFset;
       oprot.writeFieldBegin(MY_DOUBLE_DFSET_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.myDoubleDFZero;
       oprot.writeFieldBegin(MY_DOUBLE_DFZERO_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.myDouble;
       oprot.writeFieldBegin(MY_DOUBLE_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -1407,17 +1418,18 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(FIELD3_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, _fbthriftVar0.size()));
-            for (Map.Entry<Integer, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Integer _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI32(_fbthriftVar2);
-              }
-              {
-                String _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeString(_fbthriftVar2);
-              }
-            }
-            oprot.writeMapEnd();
+    for (Map.Entry<Integer, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Integer _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI32(_fbthriftVar2);
+        }
+        {
+            String _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeString(_fbthriftVar2);
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -1426,10 +1438,11 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_LIST_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.I32, _fbthriftVar0.size()));
-            for (test.fixtures.complex_struct.MyEnum _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeI32(_fbthriftVar1 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar1));
-            }
-            oprot.writeListEnd();
+    for (test.fixtures.complex_struct.MyEnum _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeI32(_fbthriftVar1 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar1));
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -1438,10 +1451,11 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_SET_FIELD_DESC);
         oprot.writeSetBegin(new TSet(TType.STRING, _fbthriftVar0.size()));
-            for (String _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeString(_fbthriftVar1);
-            }
-            oprot.writeSetEnd();
+    for (String _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeString(_fbthriftVar1);
+    }
+    oprot.writeSetEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -1450,6 +1464,7 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SIMPLE_STRUCT_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }
@@ -1458,10 +1473,11 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LIST_STRUCT_DFSET_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar0.size()));
-            for (test.fixtures.complex_struct.SimpleStruct _fbthriftVar1 : _fbthriftVar0) {
-              _fbthriftVar1.write0(oprot);
-            }
-            oprot.writeListEnd();
+    for (test.fixtures.complex_struct.SimpleStruct _fbthriftVar1 : _fbthriftVar0) {
+        _fbthriftVar1.write0(oprot);
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -1470,6 +1486,7 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MY_UNION_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }
@@ -1478,10 +1495,11 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(LIST_UNION_DFSET_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar0.size()));
-            for (test.fixtures.complex_struct.MyUnion _fbthriftVar1 : _fbthriftVar0) {
-              _fbthriftVar1.write0(oprot);
-            }
-            oprot.writeListEnd();
+    for (test.fixtures.complex_struct.MyUnion _fbthriftVar1 : _fbthriftVar0) {
+        _fbthriftVar1.write0(oprot);
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -1490,21 +1508,22 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MAP_NESTLIST_STRUCT_DF_SET_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _fbthriftVar0.size()));
-            for (Map.Entry<Integer, List<test.fixtures.complex_struct.SimpleStruct>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Integer _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI32(_fbthriftVar2);
-              }
-              {
-                List<test.fixtures.complex_struct.SimpleStruct> _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar2.size()));
+    for (Map.Entry<Integer, List<test.fixtures.complex_struct.SimpleStruct>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Integer _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI32(_fbthriftVar2);
+        }
+        {
+            List<test.fixtures.complex_struct.SimpleStruct> _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar2.size()));
             for (test.fixtures.complex_struct.SimpleStruct _fbthriftVar3 : _fbthriftVar2) {
-              _fbthriftVar3.write0(oprot);
+                _fbthriftVar3.write0(oprot);
             }
             oprot.writeListEnd();
-              }
-            }
-            oprot.writeMapEnd();
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -1513,17 +1532,18 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(MAP_JAVA_TYPE_DFSET_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I64, TType.STRING, _fbthriftVar0.size()));
-            for (Map.Entry<Long, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Long _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI64(_fbthriftVar2);
-              }
-              {
-                String _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeString(_fbthriftVar2);
-              }
-            }
-            oprot.writeMapEnd();
+    for (Map.Entry<Long, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Long _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI64(_fbthriftVar2);
+        }
+        {
+            String _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeString(_fbthriftVar2);
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -1532,17 +1552,18 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(EMPTY_MAP_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I64, TType.I32, _fbthriftVar0.size()));
-            for (Map.Entry<Long, Integer> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Long _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI64(_fbthriftVar2);
-              }
-              {
-                Integer _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeI32(_fbthriftVar2);
-              }
-            }
-            oprot.writeMapEnd();
+    for (Map.Entry<Long, Integer> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Long _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI64(_fbthriftVar2);
+        }
+        {
+            Integer _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeI32(_fbthriftVar2);
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -1551,28 +1572,29 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ENUM_MAP_DFSET_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.STRING, TType.MAP, _fbthriftVar0.size()));
-            for (Map.Entry<String, Map<Integer, test.fixtures.complex_struct.MyEnum>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                String _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeString(_fbthriftVar2);
-              }
-              {
-                Map<Integer, test.fixtures.complex_struct.MyEnum> _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _fbthriftVar2.size()));
+    for (Map.Entry<String, Map<Integer, test.fixtures.complex_struct.MyEnum>> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            String _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeString(_fbthriftVar2);
+        }
+        {
+            Map<Integer, test.fixtures.complex_struct.MyEnum> _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _fbthriftVar2.size()));
             for (Map.Entry<Integer, test.fixtures.complex_struct.MyEnum> _fbthriftVar3 : _fbthriftVar2.entrySet()) {
-              {
-                Integer _fbthriftVar4 = _fbthriftVar3.getKey();
-                oprot.writeI32(_fbthriftVar4);
-              }
-              {
-                test.fixtures.complex_struct.MyEnum _fbthriftVar4 = _fbthriftVar3.getValue();
-                oprot.writeI32(_fbthriftVar4 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar4));
-              }
+                {
+                    Integer _fbthriftVar4 = _fbthriftVar3.getKey();
+                    oprot.writeI32(_fbthriftVar4);
+                }
+                {
+                    test.fixtures.complex_struct.MyEnum _fbthriftVar4 = _fbthriftVar3.getValue();
+                    oprot.writeI32(_fbthriftVar4 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar4));
+                }
             }
             oprot.writeMapEnd();
-              }
-            }
-            oprot.writeMapEnd();
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }

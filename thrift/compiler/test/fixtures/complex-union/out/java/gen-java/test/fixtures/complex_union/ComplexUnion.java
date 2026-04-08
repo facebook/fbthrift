@@ -414,6 +414,7 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
         long _fbthriftVar0 = (long)this.value;
 
         oprot.writeI64(_fbthriftVar0);
+
         oprot.writeFieldEnd();
         break;
       }
@@ -422,6 +423,7 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
         String _fbthriftVar0 = (String)this.value;
 
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
         break;
       }
@@ -430,10 +432,11 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
         List<Long> _fbthriftVar0 = (List<Long>)this.value;
 
         oprot.writeListBegin(new TList(TType.I64, _fbthriftVar0.size()));
-            for (long _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeI64(_fbthriftVar1);
-            }
-            oprot.writeListEnd();
+    for (long _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeI64(_fbthriftVar1);
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
         break;
       }
@@ -442,10 +445,11 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
         List<String> _fbthriftVar0 = (List<String>)this.value;
 
         oprot.writeListBegin(new TList(TType.STRING, _fbthriftVar0.size()));
-            for (String _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeString(_fbthriftVar1);
-            }
-            oprot.writeListEnd();
+    for (String _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeString(_fbthriftVar1);
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
         break;
       }
@@ -454,17 +458,18 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
         Map<Short, String> _fbthriftVar0 = (Map<Short, String>)this.value;
 
         oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, _fbthriftVar0.size()));
-            for (Map.Entry<Short, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Short _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI16(_fbthriftVar2);
-              }
-              {
-                String _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeString(_fbthriftVar2);
-              }
-            }
-            oprot.writeMapEnd();
+    for (Map.Entry<Short, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Short _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI16(_fbthriftVar2);
+        }
+        {
+            String _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeString(_fbthriftVar2);
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
         break;
       }
@@ -473,6 +478,7 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
         String _fbthriftVar0 = (String)this.value;
 
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
         break;
       }

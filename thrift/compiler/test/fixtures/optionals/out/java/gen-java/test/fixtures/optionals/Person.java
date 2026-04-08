@@ -563,6 +563,7 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
       long _fbthriftVar0 = this.id;
       oprot.writeFieldBegin(ID_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -570,6 +571,7 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(NAME_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -578,6 +580,7 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(AGE_FIELD_DESC);
         oprot.writeI16(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -586,6 +589,7 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ADDRESS_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -594,6 +598,7 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(FAVORITE_COLOR_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }
@@ -602,10 +607,11 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(FRIENDS_FIELD_DESC);
         oprot.writeSetBegin(new TSet(TType.I64, _fbthriftVar0.size()));
-            for (long _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeI64(_fbthriftVar1);
-            }
-            oprot.writeSetEnd();
+    for (long _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeI64(_fbthriftVar1);
+    }
+    oprot.writeSetEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -614,6 +620,7 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(BEST_FRIEND_FIELD_DESC);
         oprot.writeI64(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -622,17 +629,18 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(PET_NAMES_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, _fbthriftVar0.size()));
-            for (Map.Entry<test.fixtures.optionals.Animal, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                test.fixtures.optionals.Animal _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI32(_fbthriftVar2 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar2));
-              }
-              {
-                String _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeString(_fbthriftVar2);
-              }
-            }
-            oprot.writeMapEnd();
+    for (Map.Entry<test.fixtures.optionals.Animal, String> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            test.fixtures.optionals.Animal _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI32(_fbthriftVar2 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar2));
+        }
+        {
+            String _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeString(_fbthriftVar2);
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -641,6 +649,7 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(AFRAID_OF_ANIMAL_FIELD_DESC);
         oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
+
         oprot.writeFieldEnd();
       }
       }
@@ -649,10 +658,11 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(VEHICLES_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.STRUCT, _fbthriftVar0.size()));
-            for (test.fixtures.optionals.Vehicle _fbthriftVar1 : _fbthriftVar0) {
-              _fbthriftVar1.write0(oprot);
-            }
-            oprot.writeListEnd();
+    for (test.fixtures.optionals.Vehicle _fbthriftVar1 : _fbthriftVar0) {
+        _fbthriftVar1.write0(oprot);
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }

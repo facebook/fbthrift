@@ -253,6 +253,7 @@ public final class TerseAdaptedFields implements com.facebook.thrift.payload.Thr
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
         oprot.writeFieldBegin(INT_FIELD_FIELD_DESC);
         oprot.writeI32(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       };
       }
@@ -263,6 +264,7 @@ public final class TerseAdaptedFields implements com.facebook.thrift.payload.Thr
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
         oprot.writeFieldBegin(STRING_FIELD_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -273,10 +275,11 @@ public final class TerseAdaptedFields implements com.facebook.thrift.payload.Thr
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
         oprot.writeFieldBegin(SET_FIELD_FIELD_DESC);
         oprot.writeSetBegin(new TSet(TType.I32, _fbthriftVar0.size()));
-            for (int _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeI32(_fbthriftVar1);
-            }
-            oprot.writeSetEnd();
+    for (int _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeI32(_fbthriftVar1);
+    }
+    oprot.writeSetEnd();
+
         oprot.writeFieldEnd();
       }
       }

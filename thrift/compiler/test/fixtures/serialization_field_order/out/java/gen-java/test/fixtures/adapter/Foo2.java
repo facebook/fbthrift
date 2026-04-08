@@ -231,18 +231,21 @@ public final class Foo2 implements com.facebook.thrift.payload.ThriftSerializabl
       int _fbthriftVar0 = this.field1;
       oprot.writeFieldBegin(FIELD1_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.field2;
       oprot.writeFieldBegin(FIELD2_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.field3;
       oprot.writeFieldBegin(FIELD3_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

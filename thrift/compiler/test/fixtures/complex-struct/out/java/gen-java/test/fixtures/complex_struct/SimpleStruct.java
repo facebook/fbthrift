@@ -193,6 +193,7 @@ public final class SimpleStruct implements com.facebook.thrift.payload.ThriftSer
       long _fbthriftVar0 = this.age;
       oprot.writeFieldBegin(AGE_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -200,6 +201,7 @@ public final class SimpleStruct implements com.facebook.thrift.payload.ThriftSer
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(NAME_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }

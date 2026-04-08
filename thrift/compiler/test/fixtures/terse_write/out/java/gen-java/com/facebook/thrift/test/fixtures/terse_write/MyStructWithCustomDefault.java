@@ -158,6 +158,7 @@ public final class MyStructWithCustomDefault implements com.facebook.thrift.payl
       long _fbthriftVar0 = this.field1;
       oprot.writeFieldBegin(FIELD1_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

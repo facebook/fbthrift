@@ -156,6 +156,7 @@ public final class A implements com.facebook.thrift.payload.ThriftSerializable {
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(A_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }

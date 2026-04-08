@@ -289,6 +289,7 @@ public final class ExampleUnion implements com.facebook.thrift.payload.ThriftSer
         String _fbthriftVar0 = (String)this.value;
 
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
         break;
       }
@@ -297,6 +298,7 @@ public final class ExampleUnion implements com.facebook.thrift.payload.ThriftSer
         int _fbthriftVar0 = (int)this.value;
 
         oprot.writeI32(_fbthriftVar0);
+
         oprot.writeFieldEnd();
         break;
       }
@@ -305,6 +307,7 @@ public final class ExampleUnion implements com.facebook.thrift.payload.ThriftSer
         double _fbthriftVar0 = (double)this.value;
 
         oprot.writeDouble(_fbthriftVar0);
+
         oprot.writeFieldEnd();
         break;
       }

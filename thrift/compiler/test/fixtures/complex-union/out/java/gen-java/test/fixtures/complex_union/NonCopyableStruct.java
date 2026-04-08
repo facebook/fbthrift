@@ -155,6 +155,7 @@ public final class NonCopyableStruct implements com.facebook.thrift.payload.Thri
       long _fbthriftVar0 = this.num;
       oprot.writeFieldBegin(NUM_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

@@ -159,6 +159,7 @@ public final class AdaptTemplatedNestedTestStruct implements com.facebook.thrift
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ADAPTED_STRUCT_FIELD_DESC);
         _fbthriftVar0.write0(oprot);
+
         oprot.writeFieldEnd();
       }
       }

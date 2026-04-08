@@ -1100,36 +1100,42 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
       boolean _fbthriftVar0 = this.adaptedBool;
       oprot.writeFieldBegin(ADAPTED_BOOL_FIELD_DESC);
       oprot.writeBool(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       byte _fbthriftVar0 = this.adaptedByte;
       oprot.writeFieldBegin(ADAPTED_BYTE_FIELD_DESC);
       oprot.writeByte(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       short _fbthriftVar0 = this.adaptedShort;
       oprot.writeFieldBegin(ADAPTED_SHORT_FIELD_DESC);
       oprot.writeI16(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.adaptedInteger;
       oprot.writeFieldBegin(ADAPTED_INTEGER_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       long _fbthriftVar0 = this.adaptedLong;
       oprot.writeFieldBegin(ADAPTED_LONG_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.adaptedDouble;
       oprot.writeFieldBegin(ADAPTED_DOUBLE_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -1137,6 +1143,7 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ADAPTED_STRING_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -1145,10 +1152,11 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ADAPTED_LIST_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.I64, _fbthriftVar0.size()));
-            for (long _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeI64(_fbthriftVar1);
-            }
-            oprot.writeListEnd();
+    for (long _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeI64(_fbthriftVar1);
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -1157,10 +1165,11 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ADAPTED_SET_FIELD_DESC);
         oprot.writeSetBegin(new TSet(TType.I64, _fbthriftVar0.size()));
-            for (long _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeI64(_fbthriftVar1);
-            }
-            oprot.writeSetEnd();
+    for (long _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeI64(_fbthriftVar1);
+    }
+    oprot.writeSetEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -1169,17 +1178,18 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ADAPTED_MAP_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I64, TType.I64, _fbthriftVar0.size()));
-            for (Map.Entry<Long, Long> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Long _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI64(_fbthriftVar2);
-              }
-              {
-                Long _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeI64(_fbthriftVar2);
-              }
-            }
-            oprot.writeMapEnd();
+    for (Map.Entry<Long, Long> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Long _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI64(_fbthriftVar2);
+        }
+        {
+            Long _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeI64(_fbthriftVar2);
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -1187,36 +1197,42 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
       boolean _fbthriftVar0 = this.adaptedBoolDefault;
       oprot.writeFieldBegin(ADAPTED_BOOL_DEFAULT_FIELD_DESC);
       oprot.writeBool(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       byte _fbthriftVar0 = this.adaptedByteDefault;
       oprot.writeFieldBegin(ADAPTED_BYTE_DEFAULT_FIELD_DESC);
       oprot.writeByte(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       short _fbthriftVar0 = this.adaptedShortDefault;
       oprot.writeFieldBegin(ADAPTED_SHORT_DEFAULT_FIELD_DESC);
       oprot.writeI16(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       int _fbthriftVar0 = this.adaptedIntegerDefault;
       oprot.writeFieldBegin(ADAPTED_INTEGER_DEFAULT_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       long _fbthriftVar0 = this.adaptedLongDefault;
       oprot.writeFieldBegin(ADAPTED_LONG_DEFAULT_FIELD_DESC);
       oprot.writeI64(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
       double _fbthriftVar0 = this.adaptedDoubleDefault;
       oprot.writeFieldBegin(ADAPTED_DOUBLE_DEFAULT_FIELD_DESC);
       oprot.writeDouble(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       {
@@ -1224,6 +1240,7 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ADAPTED_STRING_DEFAULT_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
@@ -1231,6 +1248,7 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
       test.fixtures.adapter.ThriftAdaptedEnum _fbthriftVar0 = this.adaptedEnum;
       oprot.writeFieldBegin(ADAPTED_ENUM_FIELD_DESC);
       oprot.writeI32(_fbthriftVar0 == null ? 0 : com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0));
+
       oprot.writeFieldEnd();
       }
       {
@@ -1238,10 +1256,11 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ADAPTED_LIST_DEFAULT_FIELD_DESC);
         oprot.writeListBegin(new TList(TType.I64, _fbthriftVar0.size()));
-            for (long _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeI64(_fbthriftVar1);
-            }
-            oprot.writeListEnd();
+    for (long _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeI64(_fbthriftVar1);
+    }
+    oprot.writeListEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -1250,10 +1269,11 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ADAPTED_SET_DEFAULT_FIELD_DESC);
         oprot.writeSetBegin(new TSet(TType.I64, _fbthriftVar0.size()));
-            for (long _fbthriftVar1 : _fbthriftVar0) {
-              oprot.writeI64(_fbthriftVar1);
-            }
-            oprot.writeSetEnd();
+    for (long _fbthriftVar1 : _fbthriftVar0) {
+        oprot.writeI64(_fbthriftVar1);
+    }
+    oprot.writeSetEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -1262,17 +1282,18 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(ADAPTED_MAP_DEFAULT_FIELD_DESC);
         oprot.writeMapBegin(new TMap(TType.I64, TType.I64, _fbthriftVar0.size()));
-            for (Map.Entry<Long, Long> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
-              {
-                Long _fbthriftVar2 = _fbthriftVar1.getKey();
-                oprot.writeI64(_fbthriftVar2);
-              }
-              {
-                Long _fbthriftVar2 = _fbthriftVar1.getValue();
-                oprot.writeI64(_fbthriftVar2);
-              }
-            }
-            oprot.writeMapEnd();
+    for (Map.Entry<Long, Long> _fbthriftVar1 : _fbthriftVar0.entrySet()) {
+        {
+            Long _fbthriftVar2 = _fbthriftVar1.getKey();
+            oprot.writeI64(_fbthriftVar2);
+        }
+        {
+            Long _fbthriftVar2 = _fbthriftVar1.getValue();
+            oprot.writeI64(_fbthriftVar2);
+        }
+    }
+    oprot.writeMapEnd();
+
         oprot.writeFieldEnd();
       }
       }
@@ -1280,6 +1301,7 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
       boolean _fbthriftVar0 = this.doubleTypedefBool;
       oprot.writeFieldBegin(DOUBLE_TYPEDEF_BOOL_FIELD_DESC);
       oprot.writeBool(_fbthriftVar0);
+
       oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

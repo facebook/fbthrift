@@ -132,6 +132,7 @@ public final class TerseException extends org.apache.thrift.TBaseException imple
       if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
         oprot.writeFieldBegin(MSG_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }

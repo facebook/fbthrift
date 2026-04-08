@@ -124,6 +124,7 @@ public final class Serious extends org.apache.thrift.TBaseException implements c
       if (_fbthriftVar0 != null) {
         oprot.writeFieldBegin(SONNET_FIELD_DESC);
         oprot.writeString(_fbthriftVar0);
+
         oprot.writeFieldEnd();
       }
       }
