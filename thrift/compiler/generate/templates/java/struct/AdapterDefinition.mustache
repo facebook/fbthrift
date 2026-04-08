@@ -17,7 +17,7 @@
 }}{{!
 }}{{#struct:fields}}{{!
     }}{{#field:hasFieldAdapter?}}
-        private static final com.facebook.thrift.adapter.TypeAdapter<{{#field:type}}{{> BoxedType}}{{/field:type}}, {{field:fieldAdapterTypeClassName}}> _{{field:javaName}}_Adapter = new {{field:fieldAdapterClassName}}();
+        private static final com.facebook.thrift.adapter.TypeAdapter<{{#partial types.boxed_type type=field:self.type field_hasAdapter=field:hasAdapter?}}, {{field:fieldAdapterTypeClassName}}> _{{field:javaName}}_Adapter = new {{field:fieldAdapterClassName}}();
     {{/field:hasFieldAdapter?}}{{!
     }}{{#field:hasWrapper?}}
         private static final com.facebook.thrift.adapter.Wrapper<{{!
@@ -26,7 +26,7 @@
          }}{{^field:hasFieldAdapter?}}{{field:self.type.adapterTypeClassName}}{{/field:hasFieldAdapter?}}{{!
        }}{{/field:hasAdapter?}}{{!
        }}{{^field:hasAdapter?}}{{!
-         }}{{#field:type}}{{> BoxedType}}{{/field:type}}{{!
+         }}{{#partial types.boxed_type type=field:self.type field_hasAdapter=field:hasAdapter?}}{{!
        }}{{/field:hasAdapter?}}{{!
       }}, {{field:wrapperType}}, com.facebook.thrift.payload.ThriftSerializable> _{{field:javaName}}_Wrapper = new {{field:wrapper}}();
     {{/field:hasWrapper?}}{{!

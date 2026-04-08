@@ -40,10 +40,10 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
   private final java.util.List<com.facebook.thrift.payload.Reader> _{{function:java_name}}Readers;
   private final com.facebook.thrift.server.generated.SingleRequestStreamResponseDelegate<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> _delegate_{{function:java_name}};
   {{^function:stream_has_first_response?}}
-  private final com.facebook.thrift.server.generated.StreamResponseHandler<{{#function:return_type}}{{#function:stream_elem_type}}{{> BoxedType}}{{/function:stream_elem_type}}{{/function:return_type}}> _handler_{{function:java_name}};
+  private final com.facebook.thrift.server.generated.StreamResponseHandler<{{#partial types.boxed_type type=function:self.stream.elem_type field_hasAdapter=false}}> _handler_{{function:java_name}};
   {{/function:stream_has_first_response?}}
   {{#function:stream_has_first_response?}}
-  private final com.facebook.thrift.server.generated.StreamWithFirstResponseHandler<{{#function:return_type}}{{#function:stream_first_response_type}}{{> BoxedType}}{{/function:stream_first_response_type}},{{#function:stream_elem_type}}{{> BoxedType}}{{/function:stream_elem_type}}{{/function:return_type}}> _handler_{{function:java_name}};
+  private final com.facebook.thrift.server.generated.StreamWithFirstResponseHandler<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}},{{#partial types.boxed_type type=function:self.stream.elem_type field_hasAdapter=false}}> _handler_{{function:java_name}};
   {{/function:stream_has_first_response?}}
   {{/service:streamingFunctions}}
 
@@ -90,9 +90,9 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
       _ResponseWriterFactory_{{function:java_name}},
       _{{function:java_name}}Readers,
       "{{function:java_name}}",
-      new Class[]{ {{#function:exceptions?}}{{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}.class{{^last?}},{{/last?}}{{/function:exceptions}}{{/function:exceptions?}} },
+      new Class[]{ {{#function:exceptions?}}{{#function:exceptions}}{{#partial types.boxed_type type=field:self.type field_hasAdapter=field:hasAdapter?}}.class{{^last?}},{{/last?}}{{/function:exceptions}}{{/function:exceptions?}} },
       new Integer[]{ {{#function:exceptions?}}{{#function:exceptions}}{{field:id}}{{^last?}},{{/last?}}{{/function:exceptions}}{{/function:exceptions?}} },
-      new Class[]{ {{#if (not (array.empty? function:stream.exceptions))}}{{#function:stream_exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}.class{{^last?}},{{/last?}}{{/function:stream_exceptions}}{{/if}} },
+      new Class[]{ {{#if (not (array.empty? function:stream.exceptions))}}{{#function:stream_exceptions}}{{#partial types.boxed_type type=field:self.type field_hasAdapter=field:hasAdapter?}}.class{{^last?}},{{/last?}}{{/function:stream_exceptions}}{{/if}} },
       new Integer[]{ {{#if (not (array.empty? function:stream.exceptions))}}{{#function:stream_exceptions}}{{field:id}}{{^last?}},{{/last?}}{{/function:stream_exceptions}}{{/if}} }
     );
     {{/function:stream_has_first_response?}}
@@ -103,9 +103,9 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
       _ResponseWriterFactory_{{function:java_name}},
       _{{function:java_name}}Readers,
       "{{function:java_name}}",
-      new Class[]{ {{#function:exceptions?}}{{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}.class{{^last?}},{{/last?}}{{/function:exceptions}}{{/function:exceptions?}} },
+      new Class[]{ {{#function:exceptions?}}{{#function:exceptions}}{{#partial types.boxed_type type=field:self.type field_hasAdapter=field:hasAdapter?}}.class{{^last?}},{{/last?}}{{/function:exceptions}}{{/function:exceptions?}} },
       new Integer[]{ {{#function:exceptions?}}{{#function:exceptions}}{{field:id}}{{^last?}},{{/last?}}{{/function:exceptions}}{{/function:exceptions?}} },
-      new Class[]{ {{#if (not (array.empty? function:stream.exceptions))}}{{#function:stream_exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}.class{{^last?}},{{/last?}}{{/function:stream_exceptions}}{{/if}} },
+      new Class[]{ {{#if (not (array.empty? function:stream.exceptions))}}{{#function:stream_exceptions}}{{#partial types.boxed_type type=field:self.type field_hasAdapter=field:hasAdapter?}}.class{{^last?}},{{/last?}}{{/function:stream_exceptions}}{{/if}} },
       new Integer[]{ {{#if (not (array.empty? function:stream.exceptions))}}{{#function:stream_exceptions}}{{field:id}}{{^last?}},{{/last?}}{{/function:stream_exceptions}}{{/if}} }
     );
     {{/function:stream_has_first_response?}}
@@ -268,7 +268,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
 
           _chain.postRead(_data);
 
-          reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> _delegateResponse =
+          reactor.core.publisher.Mono<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}> _delegateResponse =
             _delegate
               .{{function:java_name}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}});
 

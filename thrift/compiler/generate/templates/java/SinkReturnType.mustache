@@ -16,10 +16,10 @@
 
 }}{{#function:sink?}}{{!
     }}{{#function:sink_has_first_response?}}reactor.core.publisher.Flux<com.facebook.thrift.model.StreamResponse<{{!
-    }}{{#function:sink_first_response_type}}{{> BoxedType}}{{/function:sink_first_response_type}},{{!
-    }}{{#function:sink_final_response_type}}{{> BoxedType}}{{/function:sink_final_response_type}}>>{{!
+    }}{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}},{{!
+    }}{{#partial types.boxed_type type=function:self.sink.final_response_type field_hasAdapter=false}}>>{{!
     }}{{/function:sink_has_first_response?}}{{!
     }}{{^function:sink_has_first_response?}}{{!
-    }}{{#function:sink_final_response_type}}reactor.core.publisher.Mono<{{> BoxedType}}>{{/function:sink_final_response_type}}{{!
+    }}reactor.core.publisher.Mono<{{#partial types.boxed_type type=function:self.sink.final_response_type field_hasAdapter=false}}>{{!
     }}{{/function:sink_has_first_response?}}{{!
 }}{{/function:sink?}}

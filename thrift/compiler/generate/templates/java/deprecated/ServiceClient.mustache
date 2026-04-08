@@ -45,7 +45,7 @@ public class {{service:javaCapitalName}}ClientImpl extends {{#if (object.notnull
     // Method Exceptions
     {{#service:singleRequestFunctions}}
     private static final Class[] {{function:java_name}}Exceptions = new Class[] {
-        {{#function:exceptions}}{{#field:type}}{{> BoxedType}}.class{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException.class};
+        {{#function:exceptions}}{{#partial types.boxed_type type=field:self.type field_hasAdapter=field:hasAdapter?}}.class, {{/function:exceptions}}org.apache.thrift.TException.class};
     {{/service:singleRequestFunctions}}
 
     public {{service:javaCapitalName}}ClientImpl(
@@ -89,7 +89,7 @@ public class {{service:javaCapitalName}}ClientImpl extends {{#if (object.notnull
     public {{#function:return_type}}{{#partial types.java_type type=type:self has_adapter_override=false}}{{/function:return_type}} {{function:java_name}}({{#function:args}}
         {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}){{!
           Exceptions
-        }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
+        }} throws {{#function:exceptions}}{{#partial types.boxed_type type=field:self.type field_hasAdapter=field:hasAdapter?}}, {{/function:exceptions}}org.apache.thrift.TException {
       {{#function:return_type}}{{^type:void?}}return {{/type:void?}}{{/function:return_type}}{{function:java_name}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}RpcOptions.EMPTY).getData();
     }
 
@@ -98,16 +98,16 @@ public class {{service:javaCapitalName}}ClientImpl extends {{#if (object.notnull
         {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}},{{/function:args}}
         RpcOptions rpcOptions){{!
           Exceptions
-        }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
+        }} throws {{#function:exceptions}}{{#partial types.boxed_type type=field:self.type field_hasAdapter=field:hasAdapter?}}, {{/function:exceptions}}org.apache.thrift.TException {
       {{#function:return_type}}{{^type:void?}}return {{/type:void?}}{{/function:return_type}}{{function:java_name}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}rpcOptions).getData();
     }
 
     @java.lang.Override
-    public ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}Wrapper({{#function:args}}
+    public ResponseWrapper<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}> {{function:java_name}}Wrapper({{#function:args}}
         {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}},{{/function:args}}
         RpcOptions rpcOptions){{!
           Exceptions
-        }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
+        }} throws {{#function:exceptions}}{{#partial types.boxed_type type=field:self.type field_hasAdapter=field:hasAdapter?}}, {{/function:exceptions}}org.apache.thrift.TException {
       try {
         return FutureUtil.get(executeWrapperWithOptions({{function:java_name}}MethodHandler, {{function:java_name}}Exceptions, rpcOptions{{#function:args}}, {{field:javaName}}{{/function:args}}));
       } catch (Throwable t) {
@@ -115,8 +115,8 @@ public class {{service:javaCapitalName}}ClientImpl extends {{#if (object.notnull
           throw (org.apache.thrift.TException) t;
         }
         {{#function:exceptions}}
-        if (t instanceof {{#field:type}}{{> BoxedType}}{{/field:type}}) {
-          throw ({{#field:type}}{{> BoxedType}}{{/field:type}}) t;
+        if (t instanceof {{#partial types.boxed_type type=field:self.type field_hasAdapter=field:hasAdapter?}}) {
+          throw ({{#partial types.boxed_type type=field:self.type field_hasAdapter=field:hasAdapter?}}) t;
         }
         {{/function:exceptions}}
         throw new org.apache.thrift.TException(t);

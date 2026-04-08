@@ -45,7 +45,7 @@ public class {{service:javaCapitalName}}ReactiveBlockingWrapper {{#if (object.no
   @java.lang.Override
   public {{#function:return_type}}{{#partial types.java_type type=type:self has_adapter_override=false}}{{/function:return_type}} {{function:java_name}}({{#function:args}} final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}){{!
           Exceptions
-        }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
+        }} throws {{#function:exceptions}}{{#partial types.boxed_type type=field:self.type field_hasAdapter=field:hasAdapter?}}, {{/function:exceptions}}org.apache.thrift.TException {
     {{#function:voidType}}
       {{function:java_name}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}com.facebook.thrift.client.RpcOptions.EMPTY);
     {{/function:voidType}}
@@ -59,7 +59,7 @@ public class {{service:javaCapitalName}}ReactiveBlockingWrapper {{#if (object.no
         final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}},{{/function:args}}
         com.facebook.thrift.client.RpcOptions rpcOptions){{!
           Exceptions
-        }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
+        }} throws {{#function:exceptions}}{{#partial types.boxed_type type=field:self.type field_hasAdapter=field:hasAdapter?}}, {{/function:exceptions}}org.apache.thrift.TException {
     {{#function:voidType}}
       {{function:java_name}}Wrapper({{#function:args}}{{field:javaName}},{{/function:args}}rpcOptions);
     {{/function:voidType}}
@@ -69,17 +69,17 @@ public class {{service:javaCapitalName}}ReactiveBlockingWrapper {{#if (object.no
   }
 
   @java.lang.Override
-  public com.facebook.thrift.client.ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:java_name}}Wrapper({{#function:args}}
+  public com.facebook.thrift.client.ResponseWrapper<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}> {{function:java_name}}Wrapper({{#function:args}}
     final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}},{{/function:args}}
     com.facebook.thrift.client.RpcOptions rpcOptions){{!
       Exceptions
-    }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
+    }} throws {{#function:exceptions}}{{#partial types.boxed_type type=field:self.type field_hasAdapter=field:hasAdapter?}}, {{/function:exceptions}}org.apache.thrift.TException {
       try {
         return _delegate.{{function:java_name}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}rpcOptions).block();
       } catch (Throwable t) {
         {{#function:exceptions}}
-        if (t instanceof {{#field:type}}{{> BoxedType}}{{/field:type}}) {
-          throw ({{#field:type}}{{> BoxedType}}{{/field:type}})t;
+        if (t instanceof {{#partial types.boxed_type type=field:self.type field_hasAdapter=field:hasAdapter?}}) {
+          throw ({{#partial types.boxed_type type=field:self.type field_hasAdapter=field:hasAdapter?}})t;
         }
         {{/function:exceptions}}
         throw com.facebook.thrift.util.ExceptionUtil.wrap(t);

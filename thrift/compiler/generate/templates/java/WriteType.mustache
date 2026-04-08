@@ -57,11 +57,11 @@
 
 }}{{#type:map?}}{{!
 }}oprot.writeMapBegin(new TMap(TType.{{#type:key_type}}{{#partial types.ttype type=type:self}}{{/type:key_type}}, TType.{{#type:value_type}}{{#partial types.ttype type=type:self}}{{/type:value_type}}, _fbthriftVar{{field:prevNestedDepth}}.size()));
-        for (Map.Entry<{{#type:key_type}}{{> BoxedType}}{{/type:key_type}}, {{#type:value_type}}{{> BoxedType}}{{/type:value_type}}> _fbthriftVar{{field:nestedDepth}} : _fbthriftVar{{field:prevNestedDepth}}.entrySet()) {
+        for (Map.Entry<{{#type:key_type}}{{#partial types.boxed_type type=type:self field_hasAdapter=field:hasAdapter?}}{{/type:key_type}}, {{#type:value_type}}{{#partial types.boxed_type type=type:self field_hasAdapter=field:hasAdapter?}}{{/type:value_type}}> _fbthriftVar{{field:nestedDepth}} : _fbthriftVar{{field:prevNestedDepth}}.entrySet()) {
           {
             {{#type:key_type}}{{!
             }}{{field:nestedDepth++}}{{!
-            }}{{> BoxedType}} _fbthriftVar{{field:nestedDepth}} = _fbthriftVar{{field:prevNestedDepth}}.getKey();
+            }}{{#partial types.boxed_type type=type:self field_hasAdapter=field:hasAdapter?}} _fbthriftVar{{field:nestedDepth}} = _fbthriftVar{{field:prevNestedDepth}}.getKey();
             {{#type:hasAdapter?}}{{field:nestedDepth++}}{{#partial types.adapted_boxed_type type=type:self}} _fbthriftVar{{field:nestedDepth}} = __{{type:name}}_Adapter.toThrift(_fbthriftVar{{field:prevNestedDepth}});
             {{/type:hasAdapter?}}{{field:nestedDepth++}}{{> WriteType}}{{field:nestedDepth--}}{{#type:hasAdapter?}}{{field:nestedDepth--}}{{/type:hasAdapter?}}{{!
             }}{{field:nestedDepth--}}{{!
@@ -70,7 +70,7 @@
           {
             {{#type:value_type}}{{!
             }}{{field:nestedDepth++}}{{!
-            }}{{> BoxedType}} _fbthriftVar{{field:nestedDepth}} = _fbthriftVar{{field:prevNestedDepth}}.getValue();
+            }}{{#partial types.boxed_type type=type:self field_hasAdapter=field:hasAdapter?}} _fbthriftVar{{field:nestedDepth}} = _fbthriftVar{{field:prevNestedDepth}}.getValue();
             {{#type:hasAdapter?}}{{field:nestedDepth++}}{{#partial types.adapted_boxed_type type=type:self}} _fbthriftVar{{field:nestedDepth}} = __{{type:name}}_Adapter.toThrift(_fbthriftVar{{field:prevNestedDepth}});
             {{/type:hasAdapter?}}{{field:nestedDepth++}}{{> WriteType}}{{field:nestedDepth--}}{{#type:hasAdapter?}}{{field:nestedDepth--}}{{/type:hasAdapter?}}{{!
             }}{{field:nestedDepth--}}{{!
