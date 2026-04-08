@@ -68,9 +68,9 @@ oprot.writeMapEnd();
 {{#else if type.structured?}}_fbthriftVar{{depth}}.write0(oprot);
 {{#else if type.enum?}}oprot.writeI32(_fbthriftVar{{depth}} == null ? 0 : _fbthriftVar{{depth}}.getValue());
 {{#else if type.binary?}}{{!
-}}{{#if (string.empty? type.javaType)}}oprot.writeBinary(java.nio.ByteBuffer.wrap(_fbthriftVar{{depth}}));
+}}{{#if (not type.java_type?)}}oprot.writeBinary(java.nio.ByteBuffer.wrap(_fbthriftVar{{depth}}));
 {{#else}}oprot.writeBinary(_fbthriftVar{{depth}});
-{{/if (string.empty? type.javaType)}}{{!
+{{/if (not type.java_type?)}}{{!
 }}{{#else if type.string?}}oprot.writeString(_fbthriftVar{{depth}});
 {{#else if type.bool?}}oprot.writeBool(_fbthriftVar{{depth}});
 {{#else if type.byte?}}oprot.writeByte(_fbthriftVar{{depth}});

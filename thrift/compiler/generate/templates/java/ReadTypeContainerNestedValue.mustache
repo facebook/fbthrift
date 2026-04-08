@@ -17,8 +17,8 @@
 }}{{#type:set?}}{{!
             }}{
             TSet _set{{field:nestedDepth}} = oprot.readSetBegin();
-            {{^type:javaType}}_fbthriftVar{{field:nestedDepth}} = new Hash{{> ResolvedBoxedType}}(Math.max(0, _set{{field:nestedDepth}}.size));{{/type:javaType}}{{!
-            }}{{#type:javaType}}_fbthriftVar{{field:nestedDepth}} = new {{type:javaType}}();{{/type:javaType}}{{!
+            {{^type:java_type}}_fbthriftVar{{field:nestedDepth}} = new Hash{{> ResolvedBoxedType}}(Math.max(0, _set{{field:nestedDepth}}.size));{{/type:java_type}}{{!
+            }}{{#type:java_type}}_fbthriftVar{{field:nestedDepth}} = new {{type:java_type}}();{{/type:java_type}}{{!
             }}
             for (int _i{{field:nestedDepth}} = 0; (_set{{field:nestedDepth}}.size < 0) ? oprot.peekSet() : (_i{{field:nestedDepth}} < _set{{field:nestedDepth}}.size); _i{{field:nestedDepth}}++) {
                 {{#type:set_elem_type}}
@@ -58,8 +58,8 @@
 }}{{#type:list?}}{{!
             }}{
             TList _list{{field:nestedDepth}} = oprot.readListBegin();
-            {{^type:javaType}}_fbthriftVar{{field:nestedDepth}} = new Array{{> ResolvedBoxedType}}(Math.max(0, _list{{field:nestedDepth}}.size));{{/type:javaType}}{{!
-            }}{{#type:javaType}}_fbthriftVar{{field:nestedDepth}} = new {{type:javaType}}();{{/type:javaType}}{{!
+            {{^type:java_type}}_fbthriftVar{{field:nestedDepth}} = new Array{{> ResolvedBoxedType}}(Math.max(0, _list{{field:nestedDepth}}.size));{{/type:java_type}}{{!
+            }}{{#type:java_type}}_fbthriftVar{{field:nestedDepth}} = new {{type:java_type}}();{{/type:java_type}}{{!
             }}
             for (int _i{{field:nestedDepth}} = 0; (_list{{field:nestedDepth}}.size < 0) ? oprot.peekList() : (_i{{field:nestedDepth}} < _list{{field:nestedDepth}}.size); _i{{field:nestedDepth}}++) {
                 {{#type:list_elem_type}}
@@ -99,8 +99,8 @@
 }}{{#type:map?}}{{!
             }}{
             TMap _map{{field:nestedDepth}} = oprot.readMapBegin();
-            {{^type:javaType}}_fbthriftVar{{field:nestedDepth}} = new Hash{{> ResolvedBoxedType}}(Math.max(0, _map{{field:nestedDepth}}.size));{{/type:javaType}}{{!
-            }}{{#type:javaType}}_fbthriftVar{{field:nestedDepth}} = new {{type:javaType}}();{{/type:javaType}}{{!
+            {{^type:java_type}}_fbthriftVar{{field:nestedDepth}} = new Hash{{> ResolvedBoxedType}}(Math.max(0, _map{{field:nestedDepth}}.size));{{/type:java_type}}{{!
+            }}{{#type:java_type}}_fbthriftVar{{field:nestedDepth}} = new {{type:java_type}}();{{/type:java_type}}{{!
             }}
             for (int _i{{field:nestedDepth}} = 0; (_map{{field:nestedDepth}}.size < 0) ? oprot.peekMap() : (_i{{field:nestedDepth}} < _map{{field:nestedDepth}}.size); _i{{field:nestedDepth}}++) {
                 {{#type:key_type}}

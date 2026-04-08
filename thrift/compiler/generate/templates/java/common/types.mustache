@@ -34,7 +34,7 @@
 }}
 {{#let export partial boxed_type |type field_hasAdapter|}}
   {{#pragma ignore-newlines}}
-{{#if (not (string.empty? type.javaType))}}{{type.javaType}}
+{{#if type.java_type?}}{{type.java_type}}
 {{#else if type.hasAdapter?}}{{type.adapterTypeClassName}}
   {{! Recurse through every layer of typedef, as each layer could have an adapter }}
   {{#else if (or type.binary? type.isBinaryString?)}}
@@ -58,7 +58,7 @@ Map<
 {{#partial boxed_type type=type.key_type field_hasAdapter=field_hasAdapter}}, {{!}}
 {{#partial boxed_type type=type.val_type field_hasAdapter=field_hasAdapter}}
 >
-  {{/if (not (string.empty? type.javaType))}}
+  {{/if type.java_type?}}
 {{/let partial}}
 
 {{! Resolves the boxed type for Thrift serialization, handling binary/string
@@ -66,7 +66,7 @@ Map<
     Recurses through typedefs one layer at a time. }}
 {{#let export partial thrift_boxed_type |type field_hasAdapter| captures |boxed_type|}}
   {{#pragma ignore-newlines}}
-{{#if (not (string.empty? type.javaType))}}{{type.javaType}}
+{{#if type.java_type?}}{{type.java_type}}
 {{#else if type.typedef?}}
   {{#if type.hasAdapter?}}
     {{#if type.true_type.binary?}}io.netty.buffer.ByteBuf
@@ -94,7 +94,7 @@ Map<
 {{#else if type.set?}}
   Set<{{#partial thrift_boxed_type type=type.elem_type field_hasAdapter=field_hasAdapter}}>
 {{#else}}{{#partial boxed_type type=type field_hasAdapter=false}}
-{{/if (not (string.empty? type.javaType))}}
+{{/if type.java_type?}}
 {{/let partial}}
 
 {{! Defines an unboxed Java type for a given Thrift type.
@@ -104,7 +104,7 @@ Map<
     could override javaType. }}
 {{#let export partial java_type |type| captures |boxed_type|}}
   {{#pragma ignore-newlines}}
-{{#if (not (string.empty? type.javaType))}}{{type.javaType}}
+{{#if type.java_type?}}{{type.java_type}}
 {{#else if type.isBinaryString?}}byte[]
 {{#else if type.typedef?}}{{#partial java_type type=type.resolved}}
 {{#else if type.void?}}void
@@ -116,7 +116,7 @@ Map<
 {{#else if type.double?}}double
 {{#else if type.float?}}float
 {{#else}}{{#partial boxed_type type=type field_hasAdapter=false}}
-{{/if (not (string.empty? type.javaType))}}
+{{/if type.java_type?}}
 {{/let partial}}
 
 {{! Resolves the boxed type within an adapter context, propagating
@@ -126,7 +126,7 @@ Map<
     binary elements correctly resolve to ByteBuf instead of byte[]. }}
 {{#let partial adapted_inner_boxed_type |type| captures |boxed_type|}}
   {{#pragma ignore-newlines}}
-{{#if (not (string.empty? type.javaType))}}{{type.javaType}}
+{{#if type.java_type?}}{{type.java_type}}
 {{#else if type.hasAdapter?}}{{type.adapterTypeClassName}}
 {{#else if (or type.binary? type.isBinaryString?)}}io.netty.buffer.ByteBuf
 {{#else if type.typedef?}}{{#partial adapted_inner_boxed_type type=type.resolved}}
@@ -136,7 +136,7 @@ Map<
 Map<{{#partial adapted_inner_boxed_type type=type.key_type}}, {{#partial adapted_inner_boxed_type type=type.val_type}}>
 {{#else}}
 {{#partial boxed_type type=type field_hasAdapter=false}}
-{{/if (not (string.empty? type.javaType))}}
+{{/if type.java_type?}}
 {{/let partial}}
 
 {{! Resolves the adapted boxed type for a typedef with an adapter.
@@ -144,12 +144,12 @@ Map<{{#partial adapted_inner_boxed_type type=type.key_type}}, {{#partial adapted
     For nested adapters, gives the typeClassName of the intermediate adapter. }}
 {{#let export partial adapted_boxed_type |type| captures |boxed_type adapted_inner_boxed_type|}}
   {{#pragma ignore-newlines}}
-{{#if (not (string.empty? type.javaType))}}{{type.javaType}}
+{{#if type.java_type?}}{{type.java_type}}
   {{#else if type.typedef?}}
 {{#if type.lastAdapter?}}{{#if type.isBinaryString?}}io.netty.buffer.ByteBuf{{#else}}{{#partial adapted_boxed_type type=type.resolved}}{{/if}}{{#else}}{{type.adapterTypeClassName}}{{/if}}
   {{#else}}
 {{#partial adapted_inner_boxed_type type=type}}
-  {{/if (not (string.empty? type.javaType))}}
+  {{/if type.java_type?}}
 {{/let partial}}
 
 {{! Defines the mapping of a Thrift type to the Java TType constant name. }}
@@ -215,7 +215,7 @@ Map<{{#partial adapted_inner_boxed_type type=type.key_type}}, {{#partial adapted
 {{#let export partial read_binary |type isAdapted field_hasAdapter|}}
   {{#pragma ignore-newlines}}
 {{#if (or isAdapted field_hasAdapter)}}org.apache.thrift.protocol.TProtocolUtil.readBinaryAsByteBuf(oprot)
-{{#else}}oprot.readBinary(){{#if (string.empty? type.javaType)}}.array(){{/if (string.empty? type.javaType)}}
+{{#else}}oprot.readBinary(){{#if (not type.java_type?)}}.array(){{/if (not type.java_type?)}}
 {{/if (or isAdapted field_hasAdapter)}}
 {{/let partial}}
 
@@ -225,9 +225,9 @@ Map<{{#partial adapted_inner_boxed_type type=type.key_type}}, {{#partial adapted
     always resolves to ByteBuf. }}
 {{#let export partial thrift_type |type| captures |java_type|}}
   {{#pragma ignore-newlines}}
-{{#if (not (string.empty? type.javaType))}}{{type.javaType}}
+{{#if type.java_type?}}{{type.java_type}}
 {{#else if type.typedef?}}{{#partial thrift_type type=type.resolved}}
 {{#else if (or type.binary? type.isBinaryString?)}}io.netty.buffer.ByteBuf
 {{#else}}{{#partial java_type type=type}}
-{{/if (not (string.empty? type.javaType))}}
+{{/if type.java_type?}}
 {{/let partial}}

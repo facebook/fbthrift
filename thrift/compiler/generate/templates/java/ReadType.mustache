@@ -19,7 +19,7 @@
     }}_fbthriftVar{{field:nestedDepth}} = {{#partial types.read_binary type=type:self isAdapted=false field_hasAdapter=field:hasAdapter?}};{{!
   }}{{/type:isBinaryString?}}{{!
   }}{{^type:isBinaryString?}}{{!
-  }}{{#type:javaType}}{{!
+  }}{{#type:java_type}}{{!
     }}{{#type:container?}}{{!
       }}{{#type:set?}}{{!
       }}{{> ReadTypeContainerNestedValue}}
@@ -39,10 +39,10 @@
       }}{{#type:typedef_type}}{{> ReadType}}{{/type:typedef_type}}{{!
       }}{{/type:binary?}}{{!
     }}{{/type:container?}}{{!
-  }}{{/type:javaType}}{{!
-  }}{{^type:javaType}}{{!
+  }}{{/type:java_type}}{{!
+  }}{{^type:java_type}}{{!
   }}{{#type:typedef_type}}{{> ReadType}}{{/type:typedef_type}}{{!
-  }}{{/type:javaType}}{{!
+  }}{{/type:java_type}}{{!
   }}{{/type:isBinaryString?}}{{!
 }}{{#else}}{{!
 }}{{#type:set?}}{{!

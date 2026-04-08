@@ -58,7 +58,7 @@ public boolean equals(java.lang.Object o) {
         {{#else if field.type.hasAdapter?}}
         __{{field.type.name}}_Adapter.equals({{field.javaName}}, other.{{field.javaName}}) &&
         {{#else}}
-        {{#if (and (string.empty? field.type.javaType) field.type.binary?)}}Arrays{{#else}}Objects{{/if (and (string.empty? field.type.javaType) field.type.binary?)}}.equals({{field.javaName}}, other.{{field.javaName}}) &&
+        {{#if (and (not field.type.java_type?) field.type.binary?)}}Arrays{{#else}}Objects{{/if (and (not field.type.java_type?) field.type.binary?)}}.equals({{field.javaName}}, other.{{field.javaName}}) &&
         {{/if field.hasWrapper?}}
         {{/each}}
         true;
@@ -72,7 +72,7 @@ public int hashCode() {
     {{#each struct.fields as |field|}}
     {{#if field.hasAdapterOrWrapper?}}
     _hashCode = 31 * _hashCode + Objects.hashCode({{field.javaName}});
-    {{#else if (not (string.empty? field.type.javaType))}}
+    {{#else if field.type.java_type?}}
     _hashCode = 31 * _hashCode + Objects.hashCode({{field.javaName}});
     {{#else if field.type.bool?}}
     {{#if field.optional?}}

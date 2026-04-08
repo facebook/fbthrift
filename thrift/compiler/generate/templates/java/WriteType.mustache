@@ -20,17 +20,17 @@
     }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar{{field:prevNestedDepth}});{{!
   }}{{/type:isBinaryString?}}{{!
   }}{{^type:isBinaryString?}}{{!
-    }}{{#type:javaType}}{{!
+    }}{{#type:java_type}}{{!
       }}{{#type:binary?}}{{!
         }}org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar{{field:prevNestedDepth}});{{!
       }}{{/type:binary?}}{{!
       }}{{^type:binary?}}{{!
         }}{{#type:typedef_type}}{{> WriteType}}{{/type:typedef_type}}{{!
       }}{{/type:binary?}}{{!
-    }}{{/type:javaType}}{{!
-    }}{{^type:javaType}}{{!
+    }}{{/type:java_type}}{{!
+    }}{{^type:java_type}}{{!
       }}{{#type:typedef_type}}{{> WriteType}}{{/type:typedef_type}}{{!
-    }}{{/type:javaType}}{{!
+    }}{{/type:java_type}}{{!
   }}{{/type:isBinaryString?}}{{!
 }}{{/type:typedef?}}{{!
 }}{{^type:typedef?}}{{!

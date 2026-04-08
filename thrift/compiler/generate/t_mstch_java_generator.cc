@@ -955,7 +955,12 @@ class t_mstch_java_generator : public t_mstch_generator {
       return t_typedef::get_first_unstructured_annotation_or_null(
                  &self, {"java.swift.type"}) == nullptr;
     });
-    def.property("javaType", [](const t_type& self) {
+    def.property("java_type?", [](const t_type& self) {
+      auto* val = t_typedef::get_first_unstructured_annotation_or_null(
+          &self, {"java.swift.type"});
+      return val != nullptr && !val->empty();
+    });
+    def.property("java_type", [](const t_type& self) {
       auto* val = t_typedef::get_first_unstructured_annotation_or_null(
           &self, {"java.swift.type"});
       return val ? *val : "";

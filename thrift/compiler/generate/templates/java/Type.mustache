@@ -15,7 +15,7 @@
   limitations under the License.
 
 }}{{#pragma ignore-newlines}}
-{{#if (not (string.empty? type:javaType))}}{{type:javaType}}
+{{#if type:java_type?}}{{type:java_type}}
 {{#else if type:isBinaryString?}}{{#if field:hasAdapter?}}io.netty.buffer.ByteBuf{{#else}}byte[]{{/if}}
 {{! Recurse through every layer of typedef, as one may override javaType}}
 {{#else if type:typedef?}}{{#type:typedef_type}}{{> Type}}{{/type:typedef_type}}
@@ -28,4 +28,4 @@
 {{#else if type:double?}}double
 {{#else if type:float?}}float
 {{#else}}{{> BoxedType}}
-{{/if (not (string.empty? type:javaType))}}
+{{/if type:java_type?}}
