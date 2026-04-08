@@ -119,7 +119,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     {{#function:args}}
-    _readerList.add({{#field:type}}{{> TypeReader }}{{/field:type}});
+    _readerList.add({{#partial types.type_reader type=field:self.type}});
     {{/function:args}}
 
     return _readerList;
@@ -189,7 +189,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     {{#function:args}}
-    _readerList.add({{#field:type}}{{> TypeReader }}{{/field:type}});
+    _readerList.add({{#partial types.type_reader type=field:self.type}});
     {{/function:args}}
 
     return _readerList;
@@ -342,7 +342,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#if (object.notnull? 
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     {{#function:args}}
-    _readerList.add({{#field:type}}{{> TypeReader }}{{/field:type}});
+    _readerList.add({{#partial types.type_reader type=field:self.type}});
     {{/function:args}}
 
     return _readerList;

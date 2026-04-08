@@ -190,7 +190,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
 
   private static final com.facebook.thrift.payload.Reader _{{function:java_name}}_READER = {{!
     }}{{#function:void?}}Readers.voidReader(){{/function:void?}}{{!
-    }}{{^function:void?}}{{#function:return_type}}{{> TypeReader }}{{/function:return_type}}{{/function:void?}};
+    }}{{^function:void?}}{{#partial types.type_reader type=function:self.return_type}}{{/function:void?}};
 
   @java.lang.Override
   public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}>> {{function:java_name}}Wrapper({{#function:args}}final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}, {{/function:args}} final com.facebook.thrift.client.RpcOptions rpcOptions) {
@@ -258,12 +258,12 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
 
   private static final com.facebook.thrift.payload.Reader _{{function:java_name}}_READER = {{!
     }}{{#function:void?}}Readers.voidReader(){{/function:void?}}{{!
-    }}{{^function:void?}}{{#function:return_type}}{{#function:stream_elem_type}}{{> TypeReader }}{{/function:stream_elem_type}}{{/function:return_type}}{{/function:void?}};
+    }}{{^function:void?}}{{#partial types.type_reader type=function:self.stream.elem_type}}{{/function:void?}};
 
   {{#function:return_type}}{{#function:stream_has_first_response?}}
   private static final com.facebook.thrift.payload.Reader _{{function:java_name}}_FIRST_READER = {{!
     }}{{#function:void?}}Readers.voidReader(){{/function:void?}}{{!
-    }}{{^function:void?}}{{#function:return_type}}{{#function:stream_first_response_type}}{{> TypeReader }}{{/function:stream_first_response_type}}{{/function:return_type}}{{/function:void?}};
+    }}{{^function:void?}}{{#partial types.type_reader type=function:self.return_type}}{{/function:void?}};
   {{/function:stream_has_first_response?}}{{/function:return_type}}
 
   @java.lang.Override
@@ -352,12 +352,12 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
 
   private static final com.facebook.thrift.payload.Reader _{{function:java_name}}_READER = {{!
     }}{{#function:void?}}Readers.voidReader(){{/function:void?}}{{!
-    }}{{^function:void?}}{{#function:return_type}}{{#function:sink_final_response_type}}{{> TypeReader }}{{/function:sink_final_response_type}}{{/function:return_type}}{{/function:void?}};
+    }}{{^function:void?}}{{#partial types.type_reader type=function:self.sink.final_response_type}}{{/function:void?}};
 
   {{#function:return_type}}{{#function:sink_has_first_response?}}
   private static final com.facebook.thrift.payload.Reader _{{function:java_name}}_FIRST_READER = {{!
     }}{{#function:void?}}Readers.voidReader(){{/function:void?}}{{!
-    }}{{^function:void?}}{{#function:return_type}}{{#function:sink_first_response_type}}{{> TypeReader }}{{/function:sink_first_response_type}}{{/function:return_type}}{{/function:void?}};
+    }}{{^function:void?}}{{#partial types.type_reader type=function:self.return_type}}{{/function:void?}};
   {{/function:sink_has_first_response?}}{{/function:return_type}}
 
   @java.lang.Override
@@ -457,7 +457,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
 
     private final com.facebook.thrift.payload.Reader _{{function:java_name}}_READER = {{!
       }}{{#function:void?}}Readers.voidReader(){{/function:void?}}{{!
-      }}{{^function:void?}}{{#function:return_type}}{{> TypeReader }}{{/function:return_type}}{{/function:void?}};
+      }}{{^function:void?}}{{#partial types.type_reader type=function:self.return_type}}{{/function:void?}};
 
     public reactor.core.publisher.Mono<{{#partial types.boxed_type type=function:self.return_type field_hasAdapter=false}}> {{function:java_name}}({{#function:args}}
     final {{#partial types.java_type type=field:self.type has_adapter_override=field:self.hasAdapter?}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) {
@@ -542,12 +542,12 @@ public class {{service:javaCapitalName}}ReactiveClient {{#if (object.notnull? se
 
     private final com.facebook.thrift.payload.Reader _{{function:java_name}}_READER = {{!
       }}{{#function:void?}}Readers.voidReader(){{/function:void?}}{{!
-      }}{{^function:void?}}{{#function:return_type}}{{#function:stream_elem_type}}{{> TypeReader }}{{/function:stream_elem_type}}{{/function:return_type}}{{/function:void?}};
+      }}{{^function:void?}}{{#partial types.type_reader type=function:self.stream.elem_type}}{{/function:void?}};
 
     {{#function:return_type}}{{#function:stream_has_first_response?}}
     private final com.facebook.thrift.payload.Reader _{{function:java_name}}_FIRST_READER = {{!
       }}{{#function:void?}}Readers.voidReader(){{/function:void?}}{{!
-      }}{{^function:void?}}{{#function:return_type}}{{#function:stream_first_response_type}}{{> TypeReader }}{{/function:stream_first_response_type}}{{/function:return_type}}{{/function:void?}};
+      }}{{^function:void?}}{{#partial types.type_reader type=function:self.return_type}}{{/function:void?}};
     {{/function:stream_has_first_response?}}{{/function:return_type}}
 
     @java.lang.Override

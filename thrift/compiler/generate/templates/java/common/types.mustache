@@ -314,6 +314,31 @@ com.facebook.thrift.model.StreamResponse<
 {{/if field.optional?}}
 {{/let partial}}
 
+{{! Generates a Reader expression for deserialization of a given Thrift type.
+    Recursively resolves typedefs and container types (list, map, set),
+    wraps structured/enum types via .asReader(), and returns primitive readers
+    for scalar types. }}
+{{#let export partial type_reader |type| captures |boxed_type|}}
+  {{#pragma ignore-newlines}}
+{{#if type.typedef?}}{{#partial type_reader type=type.true_type}}
+{{#else if type.list?}}Readers.listReader({{#partial type_reader type=type.elem_type}})
+{{#else if type.map?}}Readers.mapReader({{#partial type_reader type=type.key_type}},{{#partial type_reader type=type.val_type}})
+{{#else if type.set?}}Readers.setReader({{#partial type_reader type=type.elem_type}})
+{{#else if type.structured?}}Readers.wrap({{#partial boxed_type type=type field_hasAdapter=false}}.asReader())
+{{#else if type.enum?}}Readers.wrap({{#partial boxed_type type=type field_hasAdapter=false}}.asReader())
+{{#else if type.binary?}}Readers.binaryReader()
+{{#else if type.string?}}Readers.stringReader()
+{{#else if type.bool?}}Readers.booleanReader()
+{{#else if type.byte?}}Readers.byteReader()
+{{#else if type.i16?}}Readers.i16Reader()
+{{#else if type.i32?}}Readers.i32Reader()
+{{#else if type.i64?}}Readers.i64Reader()
+{{#else if type.float?}}Readers.floatReader()
+{{#else if type.double?}}Readers.doubleReader()
+{{#else if type.void?}}Readers.voidReader()
+{{/if type.typedef?}}
+{{/let partial}}
+
 {{! Resolves the stream response generic type used for casting in response
     mapping. Always wraps in StreamResponse — uses the first response type
     when present, otherwise Void. }}
