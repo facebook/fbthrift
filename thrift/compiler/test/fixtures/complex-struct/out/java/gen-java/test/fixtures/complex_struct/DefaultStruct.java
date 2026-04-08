@@ -927,8 +927,8 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setField3(_fbthriftVar1);
@@ -1113,8 +1113,8 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapNestlistStructDfSet(_fbthriftVar1);
@@ -1160,8 +1160,8 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
                   
             builder.setMapJavaTypeDFset(_fbthriftVar1);
@@ -1207,8 +1207,8 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setEmptyMap(_fbthriftVar1);
@@ -1277,8 +1277,8 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
                                                 _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
                                                 
                                             }
-                                            }
                                             oprot.readMapEnd();
+                                        }
                                 
                                 
                                 _fbthriftValue2 = _fbthriftVar2;
@@ -1288,8 +1288,8 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setEnumMapDFset(_fbthriftVar1);

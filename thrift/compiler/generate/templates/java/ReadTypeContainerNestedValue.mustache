@@ -196,6 +196,6 @@
                 }}{{#type:value_type}}{{#type:hasAdapter?}}__{{type:name}}_Adapter.fromThrift({{/type:hasAdapter?}}_fbthriftValue{{field:nestedDepth}}{{#type:hasAdapter?}}){{/type:hasAdapter?}});{{/type:value_type}}
                 {{field:nestedDepth--}}
             }
-            }
             oprot.readMapEnd();
+        }
 {{/type:map?}}

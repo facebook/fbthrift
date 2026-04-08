@@ -242,8 +242,8 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
                   
             builder.setLsMap(_fbthriftVar1);
@@ -312,8 +312,8 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
                                                 _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
                                                 
                                             }
-                                            }
                                             oprot.readMapEnd();
+                                        }
                                 
                                 
                                 _fbthriftValue2 = _fbthriftVar2;
@@ -323,8 +323,8 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
                   
             builder.setIoMap(_fbthriftVar1);

@@ -1147,8 +1147,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMShortString(_fbthriftVar1);
@@ -1194,8 +1194,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMIntegerString(_fbthriftVar1);
@@ -1241,8 +1241,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMStringMyStruct(_fbthriftVar1);
@@ -1288,8 +1288,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMStringBool(_fbthriftVar1);
@@ -1335,8 +1335,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMIntegerInteger(_fbthriftVar1);
@@ -1382,8 +1382,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMIntegerBool(_fbthriftVar1);
@@ -1585,8 +1585,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMListList(_fbthriftVar1);

@@ -670,8 +670,8 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMyMapList(_fbthriftVar1);
@@ -756,8 +756,8 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMyEmptyMapList(_fbthriftVar1);

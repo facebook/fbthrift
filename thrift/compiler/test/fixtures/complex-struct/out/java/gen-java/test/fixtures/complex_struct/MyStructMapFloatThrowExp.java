@@ -227,8 +227,8 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapListOfFloats(_fbthriftVar1);

@@ -854,8 +854,8 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setAdaptedMap(_fbthriftVar1);
@@ -1041,8 +1041,8 @@ public final class AdaptTemplatedTestStruct implements com.facebook.thrift.paylo
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setAdaptedMapDefault(_fbthriftVar1);

@@ -879,8 +879,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapStructListOfListOfLong(_fbthriftVar1);
@@ -926,8 +926,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMKeyStructValInt(_fbthriftVar1);
@@ -979,8 +979,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                             _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
                                             
                                         }
-                                        }
                                         oprot.readMapEnd();
+                                    }
                             
                             
                             _fbthriftVar1.add(_fbthriftVar2);
@@ -1052,8 +1052,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                             _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
                                             
                                         }
-                                        }
                                         oprot.readMapEnd();
+                                    }
                             
                             
                             _fbthriftVar1.add(_fbthriftVar2);
@@ -1119,8 +1119,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapKeySetValLong(_fbthriftVar1);
@@ -1179,8 +1179,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapKeyListValLong(_fbthriftVar1);
@@ -1240,8 +1240,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                                 _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
                                                 
                                             }
-                                            }
                                             oprot.readMapEnd();
+                                        }
                                 
                                 
                                 _fbthriftKey2 = _fbthriftVar2;
@@ -1283,8 +1283,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                                 _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
                                                 
                                             }
-                                            }
                                             oprot.readMapEnd();
+                                        }
                                 
                                 
                                 _fbthriftValue2 = _fbthriftVar2;
@@ -1294,8 +1294,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapKeyMapValMap(_fbthriftVar1);
@@ -1416,8 +1416,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                                 _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
                                                 
                                             }
-                                            }
                                             oprot.readMapEnd();
+                                        }
                                 
                                 
                                 _fbthriftValue2 = _fbthriftVar2;
@@ -1427,8 +1427,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapKeySetValMap(_fbthriftVar1);
@@ -1502,8 +1502,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                                                     _fbthriftVar3.put(_fbthriftKey4, _fbthriftValue4);
                                                                     
                                                                 }
-                                                                }
                                                                 oprot.readMapEnd();
+                                                            }
                                                     
                                                     
                                                     _fbthriftKey3 = _fbthriftVar3;
@@ -1522,8 +1522,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                                 _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
                                                 
                                             }
-                                            }
                                             oprot.readMapEnd();
+                                        }
                                 
                                 
                                 _fbthriftKey2 = _fbthriftVar2;
@@ -1565,8 +1565,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                                 _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
                                                 
                                             }
-                                            }
                                             oprot.readMapEnd();
+                                        }
                                 
                                 
                                 _fbthriftValue2 = _fbthriftVar2;
@@ -1576,8 +1576,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setNestedMaps(_fbthriftVar1);
@@ -1636,8 +1636,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapKeyIntValList(_fbthriftVar1);
@@ -1696,8 +1696,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapKeyIntValSet(_fbthriftVar1);
@@ -1756,8 +1756,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapKeySetValInt(_fbthriftVar1);
@@ -1845,8 +1845,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                                                                 _fbthriftVar3.put(_fbthriftKey4, _fbthriftValue4);
                                                                 
                                                             }
-                                                            }
                                                             oprot.readMapEnd();
+                                                        }
                                                 
                                                 
                                                 _fbthriftVar2.add(_fbthriftVar3);
@@ -1863,8 +1863,8 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapKeyListValSet(_fbthriftVar1);

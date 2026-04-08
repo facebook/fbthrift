@@ -490,8 +490,8 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setPetNames(_fbthriftVar1);

@@ -598,8 +598,8 @@ public final class ComplexUnion implements com.facebook.thrift.payload.ThriftSer
                               _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                               
                           }
-                          }
                           oprot.readMapEnd();
+                      }
 
 
               res.value = _fbthriftVar1;

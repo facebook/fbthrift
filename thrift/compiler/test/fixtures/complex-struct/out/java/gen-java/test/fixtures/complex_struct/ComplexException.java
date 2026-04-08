@@ -308,8 +308,8 @@ public final class ComplexException extends org.apache.thrift.TBaseException imp
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
                   
             builder.setLsMap(_fbthriftVar1);

@@ -1205,8 +1205,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapOfStringToI32(_fbthriftVar1);
@@ -1252,8 +1252,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapOfStringToA(_fbthriftVar1);
@@ -1312,8 +1312,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapOfStringToListOfI32(_fbthriftVar1);
@@ -1372,8 +1372,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapOfStringToListOfA(_fbthriftVar1);
@@ -1432,8 +1432,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapOfStringToSetOfI32(_fbthriftVar1);
@@ -1502,8 +1502,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                                                 _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
                                                 
                                             }
-                                            }
                                             oprot.readMapEnd();
+                                        }
                                 
                                 
                                 _fbthriftValue2 = _fbthriftVar2;
@@ -1513,8 +1513,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapOfStringToMapOfStringToI32(_fbthriftVar1);
@@ -1583,8 +1583,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                                                 _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
                                                 
                                             }
-                                            }
                                             oprot.readMapEnd();
+                                        }
                                 
                                 
                                 _fbthriftValue2 = _fbthriftVar2;
@@ -1594,8 +1594,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapOfStringToMapOfStringToA(_fbthriftVar1);
@@ -1699,8 +1699,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                                             _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
                                             
                                         }
-                                        }
                                         oprot.readMapEnd();
+                                    }
                             
                             
                             _fbthriftVar1.add(_fbthriftVar2);
@@ -1759,8 +1759,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                                             _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
                                             
                                         }
-                                        }
                                         oprot.readMapEnd();
+                                    }
                             
                             
                             _fbthriftVar1.add(_fbthriftVar2);
@@ -1924,8 +1924,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setOptionalMapOfStringToI32(_fbthriftVar1);
@@ -1971,8 +1971,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setOptionalMapOfStringToA(_fbthriftVar1);
@@ -2031,8 +2031,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setOptionalMapOfStringToListOfI32(_fbthriftVar1);
@@ -2091,8 +2091,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setOptionalMapOfStringToListOfA(_fbthriftVar1);
@@ -2151,8 +2151,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setOptionalMapOfStringToSetOfI32(_fbthriftVar1);
@@ -2301,8 +2301,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapOfI32ToStringWithDefaultValue(_fbthriftVar1);
@@ -2387,8 +2387,8 @@ public final class B implements com.facebook.thrift.payload.ThriftSerializable {
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapOfStringToListOfI32WithDefaultValue(_fbthriftVar1);

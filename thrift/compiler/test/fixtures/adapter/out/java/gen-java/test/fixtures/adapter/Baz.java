@@ -560,8 +560,8 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
                               _fbthriftVar1.put(_fbthriftKey2, __ListWithElemAdapter_withAdapter_2312_Adapter.fromThrift(_fbthriftValue2));
                               
                           }
-                          }
                           oprot.readMapEnd();
+                      }
 
 
               res.value = _mapField_Adapter.fromThrift(_fbthriftVar1);

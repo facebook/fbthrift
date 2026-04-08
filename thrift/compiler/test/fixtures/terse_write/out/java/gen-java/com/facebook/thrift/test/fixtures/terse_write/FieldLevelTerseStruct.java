@@ -1083,8 +1083,8 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setTerseMapField(_fbthriftVar1);
@@ -1314,8 +1314,8 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapField(_fbthriftVar1);

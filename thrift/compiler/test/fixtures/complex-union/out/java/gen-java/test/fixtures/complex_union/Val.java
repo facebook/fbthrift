@@ -238,8 +238,8 @@ public final class Val implements com.facebook.thrift.payload.ThriftSerializable
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setTypedefValue(_fbthriftVar1);

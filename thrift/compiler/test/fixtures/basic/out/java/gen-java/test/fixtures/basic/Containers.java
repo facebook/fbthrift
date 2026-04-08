@@ -271,8 +271,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setStringToI64Map(_fbthriftVar1);

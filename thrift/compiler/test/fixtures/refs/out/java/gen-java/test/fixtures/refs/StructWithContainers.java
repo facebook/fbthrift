@@ -346,8 +346,8 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapRef(_fbthriftVar1);

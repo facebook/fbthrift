@@ -642,8 +642,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                             _fbthriftVar1.put(_fbthriftKey2, __ListWithElemAdapter_withAdapter_2312_Adapter.fromThrift(_fbthriftValue2));
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapField(_mapField_Adapter.fromThrift(_fbthriftVar1));
@@ -702,8 +702,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                             _fbthriftVar1.put(_fbthriftKey2, __ListWithElemAdapter_withAdapter_2312_Adapter.fromThrift(_fbthriftValue2));
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setOptionalMapField(_optionalMapField_Adapter.fromThrift(_fbthriftVar1));
@@ -845,8 +845,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setAdaptedMap(_fbthriftVar1);
@@ -904,8 +904,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                                                             _fbthriftVar3.put(_fbthriftKey4, _fbthriftValue4);
                                                             
                                                         }
-                                                        }
                                                         oprot.readMapEnd();
+                                                    }
                                             
                                             
                                             _fbthriftVar2.add(_fbthriftVar3);

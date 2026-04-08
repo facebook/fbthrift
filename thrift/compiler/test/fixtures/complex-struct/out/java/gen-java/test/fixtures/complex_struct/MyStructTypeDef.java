@@ -416,8 +416,8 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMyMapField(_fbthriftVar1);
@@ -463,8 +463,8 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMyMapTypedef(_fbthriftVar1);
@@ -588,8 +588,8 @@ public final class MyStructTypeDef implements com.facebook.thrift.payload.Thrift
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMyMapListOfTypeDef(_fbthriftVar1);

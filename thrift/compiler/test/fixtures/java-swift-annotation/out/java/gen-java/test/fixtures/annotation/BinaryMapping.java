@@ -190,8 +190,8 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setBinaryMap(_fbthriftVar1);
@@ -237,8 +237,8 @@ public final class BinaryMapping implements com.facebook.thrift.payload.ThriftSe
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setRegularBinary(_fbthriftVar1);

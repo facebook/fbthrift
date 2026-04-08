@@ -1256,8 +1256,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setStructMap(_fbthriftVar1);
@@ -1303,8 +1303,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setUnionMap(_fbthriftVar1);
@@ -1350,8 +1350,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setEnumMap(_fbthriftVar1);
@@ -1397,8 +1397,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setStructMap2(_fbthriftVar1);
@@ -1444,8 +1444,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setUnionMap2(_fbthriftVar1);
@@ -1491,8 +1491,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setEnumMap2(_fbthriftVar1);
@@ -1551,8 +1551,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setListMap(_fbthriftVar1);
@@ -1611,8 +1611,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setListMap2(_fbthriftVar1);
@@ -1671,8 +1671,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setSetMap(_fbthriftVar1);
@@ -1731,8 +1731,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setSetMap2(_fbthriftVar1);
@@ -1792,8 +1792,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                                 _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
                                                 
                                             }
-                                            }
                                             oprot.readMapEnd();
+                                        }
                                 
                                 
                                 _fbthriftKey2 = _fbthriftVar2;
@@ -1812,8 +1812,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapMap(_fbthriftVar1);
@@ -1882,8 +1882,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                                 _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
                                                 
                                             }
-                                            }
                                             oprot.readMapEnd();
+                                        }
                                 
                                 
                                 _fbthriftValue2 = _fbthriftVar2;
@@ -1893,8 +1893,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapMap2(_fbthriftVar1);
@@ -2102,8 +2102,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                             _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
                                             
                                         }
-                                        }
                                         oprot.readMapEnd();
+                                    }
                             
                             
                             _fbthriftVar1.add(_fbthriftVar2);
@@ -2162,8 +2162,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                             _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
                                             
                                         }
-                                        }
                                         oprot.readMapEnd();
+                                    }
                             
                             
                             _fbthriftVar1.add(_fbthriftVar2);
@@ -2222,8 +2222,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                             _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
                                             
                                         }
-                                        }
                                         oprot.readMapEnd();
+                                    }
                             
                             
                             _fbthriftVar1.add(_fbthriftVar2);
@@ -2438,8 +2438,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                             _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
                                             
                                         }
-                                        }
                                         oprot.readMapEnd();
+                                    }
                             
                             
                             _fbthriftVar1.add(_fbthriftVar2);
@@ -2498,8 +2498,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                             _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
                                             
                                         }
-                                        }
                                         oprot.readMapEnd();
+                                    }
                             
                             
                             _fbthriftVar1.add(_fbthriftVar2);
@@ -2558,8 +2558,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                             _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
                                             
                                         }
-                                        }
                                         oprot.readMapEnd();
+                                    }
                             
                             
                             _fbthriftVar1.add(_fbthriftVar2);
@@ -2635,8 +2635,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                                 _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
                                                 
                                             }
-                                            }
                                             oprot.readMapEnd();
+                                        }
                                 
                                 
                                 _fbthriftValue2 = _fbthriftVar2;
@@ -2646,8 +2646,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapI32MapI32I32(_fbthriftVar1);
@@ -2716,8 +2716,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                                 _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
                                                 
                                             }
-                                            }
                                             oprot.readMapEnd();
+                                        }
                                 
                                 
                                 _fbthriftValue2 = _fbthriftVar2;
@@ -2727,8 +2727,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapI32MapStructI32(_fbthriftVar1);
@@ -2797,8 +2797,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                                 _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
                                                 
                                             }
-                                            }
                                             oprot.readMapEnd();
+                                        }
                                 
                                 
                                 _fbthriftValue2 = _fbthriftVar2;
@@ -2808,8 +2808,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapI32MapI32Struct(_fbthriftVar1);
@@ -2884,8 +2884,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                                                 _fbthriftVar3.put(_fbthriftKey4, _fbthriftValue4);
                                                                 
                                                             }
-                                                            }
                                                             oprot.readMapEnd();
+                                                        }
                                                 
                                                 
                                                 _fbthriftVar2.add(_fbthriftVar3);
@@ -2902,8 +2902,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapI32MapListI32I32(_fbthriftVar1);
@@ -2978,8 +2978,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                                                                 _fbthriftVar3.put(_fbthriftKey4, _fbthriftValue4);
                                                                 
                                                             }
-                                                            }
                                                             oprot.readMapEnd();
+                                                        }
                                                 
                                                 
                                                 _fbthriftVar2.add(_fbthriftVar3);
@@ -2996,8 +2996,8 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
                             _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                             
                         }
-                        }
                         oprot.readMapEnd();
+                    }
 
 
             builder.setMapI32MapListStructI32(_fbthriftVar1);

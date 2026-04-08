@@ -1106,8 +1106,8 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
                               _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
                               
                           }
-                          }
                           oprot.readMapEnd();
+                      }
 
 
               res.value = _fbthriftVar1;
