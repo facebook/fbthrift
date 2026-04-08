@@ -25,17 +25,17 @@ public void write0(TProtocol oprot) throws TException {
   {{#struct:fields_in_serialization_order}}
   {
   {{#field:hasAdapterOrWrapper?}}
-  {{#field:type}}{{#partial types.adapted_field_boxed_type type=type:self field_hasAdapter=field:hasAdapter?}}{{/field:type}} _fbthriftVar{{field:nestedDepth}} = {{> ToThriftStart}}this.{{field:javaName}}{{> ToThriftEnd}};
+  {{#field:type}}{{#partial types.adapted_field_boxed_type type=type:self field_hasAdapter=field:hasAdapter?}}{{/field:type}} _fbthriftVar0 = {{> ToThriftStart}}this.{{field:javaName}}{{> ToThriftEnd}};
   {{/field:hasAdapterOrWrapper?}}
   {{^field:hasAdapterOrWrapper?}}
-  {{#partial types.thrift_field_type field=field:self}} _fbthriftVar{{field:nestedDepth}} = this.{{field:javaName}};
+  {{#partial types.thrift_field_type field=field:self}} _fbthriftVar0 = this.{{field:javaName}};
   {{/field:hasAdapterOrWrapper?}}
   {{#field:isNullableOrOptionalNotEnum?}}
   {{#field:terse?}}
-  java.util.Objects.requireNonNull(_fbthriftVar{{field:nestedDepth}}, "{{field:javaName}} must not be null");
+  java.util.Objects.requireNonNull(_fbthriftVar0, "{{field:javaName}} must not be null");
   {{#if field:self.type.structured?}}structStart = p.mark();{{/if field:self.type.structured?}}
   {{#if (not field:self.type.structured?)}}
-  if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar{{field:nestedDepth}})) {
+  if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
   {{/if (not field:self.type.structured?)}}
     oprot.writeFieldBegin({{field:javaTFieldName}});
     {{#if field:self.type.structured?}}
@@ -56,7 +56,7 @@ public void write0(TProtocol oprot) throws TException {
   {{/if (not field:self.type.structured?)}}
   {{/field:terse?}}
   {{^field:terse?}}
-  if (_fbthriftVar{{field:nestedDepth}} != null) {
+  if (_fbthriftVar0 != null) {
     oprot.writeFieldBegin({{field:javaTFieldName}});
     {{#field:type}}{{#partial types.write_type field=field:self type=type:self depth=field:nestedDepth}}{{/field:type}}
     oprot.writeFieldEnd();
@@ -67,10 +67,10 @@ public void write0(TProtocol oprot) throws TException {
   }}{{^field:isNullableOrOptionalNotEnum?}}
   {{#field:terse?}}
   {{#if field:self.type.enum?}}
-  java.util.Objects.requireNonNull(_fbthriftVar{{field:nestedDepth}}, "{{field:javaName}} must not be null");
-  if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar{{field:nestedDepth}}))) {
+  java.util.Objects.requireNonNull(_fbthriftVar0, "{{field:javaName}} must not be null");
+  if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(com.facebook.thrift.util.EnumUtil.getValue(_fbthriftVar0))) {
   {{#else}}
-  if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar{{field:nestedDepth}})) {
+  if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
   {{/if field:self.type.enum?}}
     oprot.writeFieldBegin({{field:javaTFieldName}});
     {{#field:type}}{{#partial types.write_type field=field:self type=type:self depth=field:nestedDepth}}{{/field:type}}
@@ -79,7 +79,7 @@ public void write0(TProtocol oprot) throws TException {
   {{/field:terse?}}
   {{^field:terse?}}
   {{#field:hasAdapterOrWrapper?}}
-  if (_fbthriftVar{{field:nestedDepth}} != null) {
+  if (_fbthriftVar0 != null) {
     oprot.writeFieldBegin({{field:javaTFieldName}});
     {{#field:type}}{{#partial types.write_type field=field:self type=type:self depth=field:nestedDepth}}{{/field:type}}
     oprot.writeFieldEnd();

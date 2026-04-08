@@ -29,8 +29,8 @@ public void write0(TProtocol oprot) throws TException {
   {{#struct:fields}}
   case _{{field:javaAllCapsName}}: {
     {{#field:hasAdapter?}}
-    {{#field:type}}{{#partial types.adapted_field_boxed_type type=type:self field_hasAdapter=field:hasAdapter?}}{{/field:type}} _fbthriftVar{{field:nestedDepth}} = {{> ToThriftStart}}({{#partial types.field_type field=field:self}})this.value{{> ToThriftEnd}};
-    if (_fbthriftVar{{field:nestedDepth}} != null) {
+    {{#field:type}}{{#partial types.adapted_field_boxed_type type=type:self field_hasAdapter=field:hasAdapter?}}{{/field:type}} _fbthriftVar0 = {{> ToThriftStart}}({{#partial types.field_type field=field:self}})this.value{{> ToThriftEnd}};
+    if (_fbthriftVar0 != null) {
       oprot.writeFieldBegin({{field:javaTFieldName}});
 
       {{#field:type}}{{#partial types.write_type field=field:self type=type:self depth=field:nestedDepth}}{{/field:type}}
@@ -39,7 +39,7 @@ public void write0(TProtocol oprot) throws TException {
     {{/field:hasAdapter?}}
     {{^field:hasAdapter?}}
     oprot.writeFieldBegin({{field:javaTFieldName}});
-    {{#partial types.field_type field=field:self}} _fbthriftVar{{field:nestedDepth}} = ({{#partial types.field_type field=field:self}})this.value;
+    {{#partial types.field_type field=field:self}} _fbthriftVar0 = ({{#partial types.field_type field=field:self}})this.value;
 
     {{#field:type}}{{#partial types.write_type field=field:self type=type:self depth=field:nestedDepth}}{{/field:type}}
     oprot.writeFieldEnd();
