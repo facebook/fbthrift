@@ -945,16 +945,16 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
       auto compare = [](auto a, auto b) {
         if constexpr (kKeyOrder == KeyOrder::StableAscending) {
           return ::apache::thrift::op::detail::StableLessThan<Tag>{}(
-              (*a).first, (*b).first);
+              a->first, b->first);
         } else {
-          return (*a).first < (*b).first;
+          return a->first < b->first;
         }
       };
       std::sort(iters.begin(), iters.end(), compare);
       for (auto it : iters) {
         xfer += writeMapValueBegin(protocol);
-        xfer += key_methods::write(protocol, (*it).first);
-        xfer += mapped_methods::write(protocol, (*it).second);
+        xfer += key_methods::write(protocol, it->first);
+        xfer += mapped_methods::write(protocol, it->second);
         xfer += writeMapValueEnd(protocol);
       }
     } else {
