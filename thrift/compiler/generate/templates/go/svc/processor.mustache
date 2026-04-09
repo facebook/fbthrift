@@ -349,9 +349,6 @@ func (p *{{svc.go_name}}Processor) FunctionServiceMap() map[string]string {
     return p.functionServiceMap
 }
 
-func (p *{{svc.go_name}}Processor) PackageName() string {
-    return "{{svc.program.go_pkg_name}}"
-}
 {{/if (or svc.interaction? (not svc.extends))}}
 
 func (p *{{svc.go_name}}Processor) GetInteractionProcessors() []thrift.Processor {
