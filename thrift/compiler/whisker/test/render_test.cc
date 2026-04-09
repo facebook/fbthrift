@@ -782,6 +782,25 @@ class map_get : public dsl::function {
   }
 };
 
+/**
+ * A function that sets a bool to true when invoked. Returns a fixed string.
+ * Used to detect whether an expression was evaluated.
+ */
+class set_flag : public dsl::function {
+ public:
+  explicit set_flag(bool& flag) : flag_(flag) {}
+
+ private:
+  object invoke(context ctx) override {
+    ctx.declare_arity(0);
+    ctx.declare_named_arguments({});
+    flag_ = true;
+    return w::null;
+  }
+
+  bool& flag_;
+};
+
 } // namespace functions
 } // namespace
 
@@ -1700,6 +1719,254 @@ TEST_F(RenderTest, each_block_not_enough_captures) {
           "├─ [0] 'foo'\n"
           "├─ [1] 'bar'\n"
           "╰─ [2] 'baz'\n",
+          path_to_file,
+          1)));
+}
+
+TEST_F(RenderTest, each_separator_basic) {
+  auto result = render(
+      R"({{#each items as |item| separator=", " ~}})"
+      "\n"
+      "{{~ item ~}}"
+      "\n"
+      "{{~ /each}}",
+      w::map(
+          {{"items",
+            w::array({w::string("a"), w::string("b"), w::string("c")})}}));
+  EXPECT_EQ(*result, "a, b, c");
+}
+
+TEST_F(RenderTest, each_separator_single_item) {
+  auto result = render(
+      R"({{#each items as |item| separator=", " ~}})"
+      "\n"
+      "{{~ item ~}}"
+      "\n"
+      "{{~ /each}}",
+      w::map({{"items", w::array({w::string("only")})}}));
+  EXPECT_EQ(*result, "only");
+}
+
+TEST_F(RenderTest, each_separator_empty_array_else) {
+  auto result = render(
+      R"({{#each items as |item| separator=", " ~}})"
+      "\n"
+      "{{~ item ~}}"
+      "\n"
+      "{{~ #else ~}}"
+      "\n"
+      "none"
+      "\n"
+      "{{~ /each}}",
+      w::map({{"items", w::array()}}));
+  EXPECT_EQ(*result, "none");
+}
+
+TEST_F(RenderTest, each_separator_not_evaluated_for_empty_array) {
+  bool separator_evaluated = false;
+  auto result = render(
+      "{{#each items as |item| separator=(make_sep) ~}}"
+      "{{~ item ~}}"
+      "{{~ #else ~}}"
+      "none"
+      "{{~ /each}}",
+      w::map({
+          {"items", w::array()},
+          {"make_sep",
+           w::make_native_function<functions::set_flag>(separator_evaluated)},
+      }));
+  EXPECT_EQ(*result, "none");
+  EXPECT_FALSE(separator_evaluated);
+}
+
+TEST_F(RenderTest, each_separator_empty_string) {
+  auto result = render(
+      R"({{#each items as |item| separator="" ~}})"
+      "\n"
+      "{{~ item ~}}"
+      "\n"
+      "{{~ /each}}",
+      w::map(
+          {{"items",
+            w::array({w::string("a"), w::string("b"), w::string("c")})}}));
+  EXPECT_EQ(*result, "abc");
+}
+
+TEST_F(RenderTest, each_separator_variable) {
+  auto result = render(
+      "{{#each items as |item| separator=sep ~}}"
+      "\n"
+      "{{~ item ~}}"
+      "\n"
+      "{{~ /each}}",
+      w::map({
+          {"items", w::array({w::string("x"), w::string("y")})},
+          {"sep", w::string(" | ")},
+      }));
+  EXPECT_EQ(*result, "x | y");
+}
+
+TEST_F(RenderTest, each_separator_function_call) {
+  use_library(load_standard_library);
+  auto result = render(
+      R"({{#each items as |item| separator=(string.concat "-" "-") ~}})"
+      "\n"
+      "{{~ item ~}}"
+      "\n"
+      "{{~ /each}}",
+      w::map({{"items", w::array({w::string("a"), w::string("b")})}}));
+  EXPECT_EQ(*result, "a--b");
+}
+
+TEST_F(RenderTest, each_separator_no_tildes) {
+  auto result = render(
+      R"({{#each items as |item| separator=", "}})"
+      "\n"
+      "{{item}}\n"
+      "{{/each}}",
+      w::map({{"items", w::array({w::string("a"), w::string("b")})}}));
+  EXPECT_EQ(*result, "a\n, b\n");
+}
+
+TEST_F(RenderTest, each_separator_no_captures) {
+  auto result = render(
+      R"({{#each items separator="-" ~}})"
+      "\n"
+      "{{~ . ~}}"
+      "\n"
+      "{{~ /each}}",
+      w::map(
+          {{"items",
+            w::array({w::string("x"), w::string("y"), w::string("z")})}}));
+  EXPECT_EQ(*result, "x-y-z");
+}
+
+TEST_F(RenderTest, each_separator_multiple_captures) {
+  use_library(load_standard_library);
+  auto result = render(
+      R"({{#each (array.enumerate items) as |i item| separator="; " ~}})"
+      "\n"
+      "{{~ i}}={{item ~}}"
+      "\n"
+      "{{~ /each}}",
+      w::map({{"items", w::array({w::string("a"), w::string("b")})}}));
+  EXPECT_EQ(*result, "0=a; 1=b");
+}
+
+TEST_F(RenderTest, each_separator_empty_iteration) {
+  auto result = render(
+      R"({{#each items as |item| separator=", " ~}})"
+      "\n"
+      "{{~ #if item.show ~}}{{item.name}}{{~ /if ~}}"
+      "\n"
+      "{{~ /each}}",
+      w::map(
+          {{"items",
+            w::array(
+                {w::map({{"name", w::string("a")}, {"show", w::true_value}}),
+                 w::map({{"name", w::string("b")}, {"show", w::false_value}}),
+                 w::map(
+                     {{"name", w::string("c")}, {"show", w::true_value}})})}}));
+  EXPECT_EQ(*result, "a, , c");
+}
+
+TEST_F(RenderTest, each_separator_non_string_error) {
+  auto result = render(
+      "{{#each items as |item| separator=sep ~}}"
+      "\n"
+      "{{~ item ~}}"
+      "\n"
+      "{{~ /each}}",
+      w::map({
+          {"items", w::array({w::string("a")})},
+          {"sep", w::i64(42)},
+      }));
+  EXPECT_FALSE(result.has_value());
+  EXPECT_THAT(
+      diagnostics(),
+      testing::ElementsAre(diagnostic(
+          diagnostic_level::error,
+          "Separator must evaluate to a string. "
+          "The encountered value is:\n"
+          "i64(42)\n",
+          path_to_file,
+          1)));
+}
+
+TEST_F(RenderTest, each_separator_capture_named_separator) {
+  auto result = render(
+      R"({{#each items as |separator| separator=", " ~}})"
+      "\n"
+      "{{~ separator ~}}"
+      "\n"
+      "{{~ /each}}",
+      w::map({{"items", w::array({w::string("a"), w::string("b")})}}));
+  EXPECT_EQ(*result, "a, b");
+}
+
+TEST_F(RenderTest, each_separator_evaluated_in_outer_scope) {
+  // The separator expression is evaluated once in the outer scope before the
+  // loop. Here 'item' in the outer scope is "+", while the capture 'item'
+  // inside the loop takes on each element's value.
+  auto result = render(
+      "{{#each items as |item| separator=item ~}}"
+      "\n"
+      "{{~ item ~}}"
+      "\n"
+      "{{~ /each}}",
+      w::map({
+          {"items", w::array({w::string("a"), w::string("b"), w::string("c")})},
+          {"item", w::string("+")},
+      }));
+  EXPECT_EQ(*result, "a+b+c");
+}
+
+TEST_F(RenderTest, each_separator_evaluated_once) {
+  auto result = render(
+      "{{#each items as |item| separator=delim ~}}"
+      "\n"
+      "{{~ item ~}}"
+      "\n"
+      "{{~ /each}}",
+      w::map({
+          {"items", w::array({w::string("a"), w::string("b"), w::string("c")})},
+          {"delim", w::string("+")},
+      }));
+  EXPECT_EQ(*result, "a+b+c");
+}
+
+TEST_F(RenderTest, each_separator_with_pragma_ignore_newlines) {
+  // #pragma ignore-newlines suppresses AST newline nodes in the body,
+  // but newlines within the separator string are preserved because they
+  // are written via out_.write(std::string_view), not as AST newline nodes.
+  auto result = render(
+      "{{#pragma ignore-newlines}}\n"
+      "{{#each items as |item| separator=sep}}\n"
+      "{{item}}\n"
+      "{{/each}}",
+      w::map({
+          {"items", w::array({w::string("a"), w::string("b"), w::string("c")})},
+          {"sep", w::string(",\n")},
+      }));
+  EXPECT_EQ(*result, "a,\nb,\nc");
+}
+
+TEST_F(RenderTest, each_separator_non_array_error) {
+  auto result = render(
+      R"({{#each number as |n| separator=", " ~}})"
+      "\n"
+      "{{~ n ~}}"
+      "\n"
+      "{{~ /each}}",
+      w::map({{"number", w::i64(2)}}));
+  EXPECT_FALSE(result.has_value());
+  EXPECT_THAT(
+      diagnostics(),
+      testing::ElementsAre(diagnostic(
+          diagnostic_level::error,
+          "Expression 'number' does not evaluate to an array. "
+          "The encountered value is:\n"
+          "i64(2)\n",
           path_to_file,
           1)));
 }

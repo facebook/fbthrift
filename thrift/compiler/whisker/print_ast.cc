@@ -140,6 +140,10 @@ struct ast_visitor {
     for (const ast::identifier& captured : each_block.captured) {
       scope.make_child().print("element-capture '{}'", captured.name);
     }
+    if (each_block.separator.has_value()) {
+      scope.make_child().print(
+          "separator '{}'", escape(each_block.separator->to_string()));
+    }
     visit(each_block.body_elements, scope);
     if (const auto& else_clause = each_block.else_clause) {
       tree_printer::scope& else_scope = scope.make_child();

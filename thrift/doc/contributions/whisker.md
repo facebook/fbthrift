@@ -489,14 +489,219 @@ There are no people.
 
 </Example>
 
+#### Separator
+
+The `{{#each}}` block supports an optional `separator` parameter that inserts a string
+between iterations:
+
+```
+{{#each <iterable> [as |<captures>|] [separator=<expression>]}}
+  <body>
+{{/each}}
+```
+
+The separator expression is evaluated **once** — lazily on the first iteration — and
+must produce a string value. If the array is empty (and the `{{#else}}` clause is used),
+the separator expression is not evaluated. The separator is written to the output before
+each non-first iteration.
+The expression can be a string literal (`separator=", "`), a variable lookup
+(`separator=my_sep`), or a function call (`separator=(string.concat "," " ")`).
+
+<Example title="Comma-separated list">
+
+```whisker
+{{#each items as |item| separator=", " ~}}
+    {{~ item ~}}
+{{~ /each}}
+```
+
+```json title=Context
+{"items": ["alpha", "beta", "gamma"]}
+```
+
+```text title=Output
+alpha, beta, gamma
+```
+
+</Example>
+
+<Example title="Single item produces no separator">
+
+```whisker
+{{#each items as |item| separator=", " ~}}
+    {{~ item ~}}
+{{~ /each}}
+```
+
+```json title=Context
+{"items": ["only"]}
+```
+
+```text title=Output
+only
+```
+
+</Example>
+
+<Example title="Empty separator concatenates iterations">
+
+```whisker
+{{#each chars as |c| separator="" ~}}
+    {{~ c ~}}
+{{~ /each}}
+```
+
+```json title=Context
+{"chars": ["a", "b", "c"]}
+```
+
+```text title=Output
+abc
+```
+
+</Example>
+
+<Example title="Separator from variable or function call">
+
+The separator can be any expression that evaluates to a string — a literal, a variable
+lookup, or a function call:
+
+```whisker
+{{#each items as |item| separator=my_separator ~}}
+    {{~ item ~}}
+{{~ /each}}
+```
+
+```json title=Context
+{"items": ["x", "y", "z"], "my_separator": " | "}
+```
+
+```text title=Output
+x | y | z
+```
+
+</Example>
+
+<Example title="Building a function call with separator">
+
+A common pattern in code generation — building a comma-separated argument list:
+
+```whisker
+fn {{func_name}}(
+    {{~ #each args as |arg| separator=", " ~}}
+    {{~ arg.type}} {{arg.name ~}}
+    {{~ /each ~}}
+)
+```
+
+```json title=Context
+{
+  "func_name": "process",
+  "args": [
+    {"type": "int", "name": "count"},
+    {"type": "string", "name": "label"},
+    {"type": "bool", "name": "verbose"}
+  ]
+}
+```
+
+```text title=Output
+fn process(int count, string label, bool verbose)
+```
+
+Note the use of tildes (`~`) to strip template indentation and newlines. The separator
+inserts `, ` between arguments. Without tildes, the template whitespace would appear in
+the output — the separator parameter does not implicitly trim iteration output.
+
+</Example>
+
+<Example title="Separator with #else for empty arrays">
+
+The `{{#else}}` clause is supported and renders when the iterable is empty:
+
+```whisker
+[{{#each items as |item| separator=", " ~}}
+    {{~ item ~}}
+{{~ #else ~}}
+    empty
+{{~ /each}}]
+```
+
+```json title=Context
+{"items": []}
+```
+
+```text title=Output
+[empty]
+```
+
+</Example>
+
+##### Whitespace Control
+
+The separator parameter does **not** implicitly trim whitespace from each iteration's
+output. It behaves identically to `{{#each}}` without `separator`, except that the
+separator string is written between iterations.
+
+To produce single-line output from multi-line template source, use
+[tilde trimming](#tilde-whitespace-trimming) on the `{{#each}}`, body tags, and
+`{{/each}}` tags:
+
+```whisker
+{{! Without tildes — template whitespace leaks into output: }}
+{{#each items as |item| separator=", "}}
+    {{item}}
+{{/each}}
+{{! Output: "    alpha\n,     beta\n,     gamma\n" }}
+
+{{! With tildes — clean single-line output: }}
+{{#each items as |item| separator=", " ~}}
+    {{~ item ~}}
+{{~ /each}}
+{{! Output: "alpha, beta, gamma" }}
+```
+
+##### Interaction with Conditional Content
+
+If a conditional within the loop body produces empty output for some iterations, the
+separator is still inserted. Use array filtering upstream to exclude items:
+
+<Example title="Separator is inserted even for empty iterations">
+
+```whisker
+{{#each items as |item| separator=", " ~}}
+    {{~ #if item.visible ~}}{{item.name}}{{~ /if ~}}
+{{~ /each}}
+```
+
+```json title=Context
+{
+  "items": [
+    {"name": "a", "visible": true},
+    {"name": "b", "visible": false},
+    {"name": "c", "visible": true}
+  ]
+}
+```
+
+```text title=Output
+a, , c
+```
+
+Note the empty segment between separators — the separator is inserted between every
+pair of iterations regardless of whether the body produces output.
+
+</Example>
+
 <Grammar>
 
 ```
-each-block         → { each-block-open ~ body* ~ else-block ~ each-block-close }
-each-block-open    → { "{{" ~ "#" ~ "each" ~ expression ~ each-block-capture? ~ "}}" }
-each-block-capture → { "as" ~ "|" ~ identifier+ ~ "|" }
-else-block         → { "{{" ~ "#" ~ "else" ~ "}}" ~ body* }
-each-block-close   → { "{{" ~ "/" ~ "each" ~ "}}"  }
+each-block          → { each-block-open ~ body* ~ else-block ~ each-block-close }
+each-block-open     → { "{{" ~ "#" ~ "each" ~ expression ~ each-block-capture? ~ separator-clause? ~ "}}" }
+each-block-capture  → { "as" ~ "|" ~ identifier+ ~ "|" }
+separator-clause    → { "separator" ~ "=" ~ expression }
+else-block          → { "{{" ~ "#" ~ "else" ~ "}}" ~ body* }
+each-block-close    → { "{{" ~ "/" ~ "each" ~ "}}"  }
 ```
 
 </Grammar>

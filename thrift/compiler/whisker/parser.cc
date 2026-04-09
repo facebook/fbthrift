@@ -1865,9 +1865,11 @@ class parser {
   //   { each-block-open ~ body* ~ else-block ~ each-block-close }
   // each-block-open →
   //   { "{{" ~ "~"? ~ "#" ~ "each" ~ expression ~
-  //     each-block-capture? ~ "~"? ~ "}}" }
+  //     each-block-capture? ~ separator-clause? ~ "~"? ~ "}}" }
   // each-block-capture →
   //   { "as" ~ "|" ~ identifier+ ~ "|" }
+  // separator-clause →
+  //   { "separator" ~ "=" ~ expression }
   // else-block →
   //   { "{{" ~ "~"? ~ "#" ~ "else" ~ "~"? ~ "}}" ~ body* }
   // each-block-close →
@@ -1929,6 +1931,46 @@ class parser {
       return captures;
     });
 
+    constexpr std::string_view kSeparatorKeyword = "separator";
+
+    // Parse optional separator=<expression>
+    auto separator = std::invoke([&]() -> std::optional<ast::expression> {
+      const token* maybe_sep = try_consume_token(&scan, tok::identifier);
+      if (maybe_sep == nullptr) {
+        return std::nullopt;
+      }
+      if (maybe_sep->string_value() != kSeparatorKeyword) {
+        report_fatal_error(
+            scan,
+            "unexpected identifier '{}' in each-block opening tag. "
+            "Did you mean 'separator=<expression>'?",
+            maybe_sep->string_value());
+      }
+      if (!try_consume_token(&scan, tok::eq)) {
+        report_fatal_expected(
+            scan, "{} after 'separator' in each-block", tok::eq);
+      }
+      parse_result parsed_sep = parse_expression(scan.make_fresh());
+      if (!parsed_sep.has_value()) {
+        report_fatal_expected(
+            scan, "expression for separator value in each-block");
+      }
+      return std::move(parsed_sep).consume_and_advance(&scan);
+    });
+
+    // Check for duplicate or stray identifiers after separator
+    if (const token* stray = try_consume_token(&scan, tok::identifier)) {
+      if (stray->string_value() == kSeparatorKeyword) {
+        report_fatal_error(scan, "duplicate 'separator' clause in each-block");
+      } else {
+        report_fatal_error(
+            scan,
+            "unexpected identifier '{}' in each-block opening tag. "
+            "Did you mean 'separator=<expression>'?",
+            stray->string_value());
+      }
+    }
+
     open_strip.right = try_consume_token(&scan, tok::tilde) != nullptr;
     if (!try_consume_token(&scan, tok::close)) {
       report_fatal_expected(scan, "{} to open each-block", tok::close);
@@ -1967,6 +2009,7 @@ class parser {
             close_strip,
             std::move(iterable),
             std::move(captured),
+            std::move(separator),
             std::move(bodies),
             std::move(else_block),
         },

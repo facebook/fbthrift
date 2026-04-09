@@ -940,6 +940,152 @@ TEST_F(ParserTest, each_else_missing_close) {
           2)));
 }
 
+TEST_F(ParserTest, each_block_with_separator_string_literal) {
+  auto ast = parse_ast(
+      R"({{#each items as |item| separator=", "}})"
+      "\n"
+      "{{/each}}"
+      "\n");
+  EXPECT_EQ(
+      to_string(ast),
+      "root [path/to/test-1.whisker]\n"
+      "╰─ each-block <line:1:1, line:2:10>\n"
+      "   ├─ expression <line:1:9, col:14> 'items'\n"
+      "   ├─ element-capture 'item'\n"
+      "   ╰─ separator '\", \"'\n");
+}
+
+TEST_F(ParserTest, each_block_with_separator_variable) {
+  auto ast = parse_ast(
+      "{{#each items as |item| separator=sep}}"
+      "\n"
+      "{{/each}}"
+      "\n");
+  EXPECT_EQ(
+      to_string(ast),
+      "root [path/to/test-1.whisker]\n"
+      "╰─ each-block <line:1:1, line:2:10>\n"
+      "   ├─ expression <line:1:9, col:14> 'items'\n"
+      "   ├─ element-capture 'item'\n"
+      "   ╰─ separator 'sep'\n");
+}
+
+TEST_F(ParserTest, each_block_with_separator_function_call) {
+  auto ast = parse_ast(
+      "{{#each items as |item| separator=(not true)}}"
+      "\n"
+      "{{/each}}"
+      "\n");
+  EXPECT_EQ(
+      to_string(ast),
+      "root [path/to/test-1.whisker]\n"
+      "╰─ each-block <line:1:1, line:2:10>\n"
+      "   ├─ expression <line:1:9, col:14> 'items'\n"
+      "   ├─ element-capture 'item'\n"
+      "   ╰─ separator '(not true)'\n");
+}
+
+TEST_F(ParserTest, each_block_with_separator_no_captures) {
+  auto ast = parse_ast(
+      R"({{#each items separator=", "}})"
+      "\n"
+      "{{/each}}"
+      "\n");
+  EXPECT_EQ(
+      to_string(ast),
+      "root [path/to/test-1.whisker]\n"
+      "╰─ each-block <line:1:1, line:2:10>\n"
+      "   ├─ expression <line:1:9, col:14> 'items'\n"
+      "   ╰─ separator '\", \"'\n");
+}
+
+TEST_F(ParserTest, each_block_with_separator_and_tilde) {
+  auto ast = parse_ast(
+      R"({{~ #each items as |item| separator=", " ~}})"
+      "\n"
+      "{{~ item ~}}"
+      "\n"
+      "{{~ /each ~}}");
+  auto result = to_string(ast);
+  EXPECT_THAT(
+      result, testing::HasSubstr("each-block [strip-left, strip-right]"));
+  EXPECT_THAT(result, testing::HasSubstr("element-capture 'item'"));
+  EXPECT_THAT(result, testing::HasSubstr("separator '\", \"'"));
+  EXPECT_THAT(result, testing::HasSubstr("close [strip-left, strip-right]"));
+}
+
+TEST_F(ParserTest, each_block_unknown_identifier_error) {
+  parse_ast_should_fail(
+      R"({{#each items as |item| unknown="x"}})"
+      "\n"
+      "{{/each}}");
+  EXPECT_THAT(
+      diagnostics,
+      testing::ElementsAre(diagnostic(
+          diagnostic_level::error,
+          "unexpected identifier 'unknown' in each-block opening tag. "
+          "Did you mean 'separator=<expression>'?",
+          path_to_file(1),
+          1)));
+}
+
+TEST_F(ParserTest, each_block_duplicate_separator_error) {
+  parse_ast_should_fail(
+      R"({{#each items separator=", " separator="; "}})"
+      "\n"
+      "{{/each}}");
+  EXPECT_THAT(
+      diagnostics,
+      testing::ElementsAre(diagnostic(
+          diagnostic_level::error,
+          "duplicate 'separator' clause in each-block",
+          path_to_file(1),
+          1)));
+}
+
+TEST_F(ParserTest, each_block_capture_named_separator_with_separator_clause) {
+  auto ast = parse_ast(
+      R"({{#each items as |separator| separator=", "}})"
+      "\n"
+      "{{/each}}"
+      "\n");
+  EXPECT_EQ(
+      to_string(ast),
+      "root [path/to/test-1.whisker]\n"
+      "╰─ each-block <line:1:1, line:2:10>\n"
+      "   ├─ expression <line:1:9, col:14> 'items'\n"
+      "   ├─ element-capture 'separator'\n"
+      "   ╰─ separator '\", \"'\n");
+}
+
+TEST_F(ParserTest, each_block_separator_missing_value_error) {
+  parse_ast_should_fail(
+      "{{#each items separator=}}"
+      "\n"
+      "{{/each}}");
+  EXPECT_THAT(
+      diagnostics,
+      testing::ElementsAre(diagnostic(
+          diagnostic_level::error,
+          "expected expression for separator value in each-block but found `}}`",
+          path_to_file(1),
+          1)));
+}
+
+TEST_F(ParserTest, each_block_separator_missing_equals_error) {
+  parse_ast_should_fail(
+      "{{#each items separator}}"
+      "\n"
+      "{{/each}}");
+  EXPECT_THAT(
+      diagnostics,
+      testing::ElementsAre(diagnostic(
+          diagnostic_level::error,
+          "expected `=` after 'separator' in each-block but found `}}`",
+          path_to_file(1),
+          1)));
+}
+
 TEST_F(ParserTest, literals) {
   auto ast = parse_ast(
       "{{null}}\n"

@@ -566,6 +566,13 @@ struct each_block {
    */
   std::vector<identifier> captured;
 
+  /**
+   * Optional separator expression. When present, the rendered separator
+   * string is written between iterations. Evaluated lazily on the first
+   * iteration (not evaluated when the array is empty).
+   */
+  std::optional<expression> separator;
+
   bodies body_elements;
   std::optional<else_block> else_clause;
 };
