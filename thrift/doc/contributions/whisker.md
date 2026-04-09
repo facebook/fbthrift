@@ -1998,6 +1998,53 @@ The following table summarizes the interaction between standalone stripping and 
 
 ## Built-in functions
 
+### `newline`
+
+A built-in string constant containing a newline character (`"\n"`).
+Since `newline` forms an interpolation, it can be used in conjunction with whitespace control features such as tilde whitespace trimming or standalone lines to get the desired output.
+
+<Example>
+
+```whisker title=example.whisker
+first line{{newline}}second line
+```
+
+```text title=Output
+first line
+second line
+```
+
+</Example>
+
+<Example title="Example with tilde stripping">
+
+When using tildes to build single-line output, `{{newline}}` can reintroduce line breaks where needed.
+
+```whisker title=example.whisker
+{{~ #if has_doc ~}}
+  {{~ doc ~}}
+  {{~ newline ~}}
+{{~ /if ~}}
+void {{name}}();
+```
+
+```json title=Context
+{
+  "has_doc": true,
+  "doc": "// Does important things.",
+  "name": "process"
+}
+```
+
+```text title=Output
+// Does important things.
+void process();
+```
+
+Without `{{newline}}`, the tildes would collapse everything into `// Does important things.void process();`. Here, `{{newline}}` inserts an explicit line break between the doc comment and the declaration.
+
+</Example>
+
 ### Boolean logic
 
 #### `and`
