@@ -45,18 +45,18 @@ class SerializedStruct(_fbthrift_python_mutable_types.MutableStruct, _fbthrift_p
 
     def __init__(
         self, *,
-        s: _typing.Optional[builtins.str]=...,
-        i: _typing.Optional[builtins.int]=...,
+        s: builtins.str=...,
+        i: builtins.int=...,
         os: _typing.Optional[builtins.str]=...,
-        rs: _typing.Optional[builtins.str]=...
+        rs: builtins.str=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        s: _typing.Optional[builtins.str]=...,
-        i: _typing.Optional[builtins.int]=...,
+        s: builtins.str=...,
+        i: builtins.int=...,
         os: _typing.Optional[builtins.str]=...,
-        rs: _typing.Optional[builtins.str]=...
+        rs: builtins.str=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.str, builtins.int, builtins.str, builtins.str]]]: ...
     def _to_python(self) -> "test.fixtures.python_capi.serialized_dep.thrift_types.SerializedStruct": ...  # type: ignore
@@ -79,8 +79,8 @@ class SerializedUnion(_fbthrift_python_mutable_types.MutableUnion, _fbthrift_pyt
 
     def __init__(
         self, *,
-        s: _typing.Optional[builtins.str]=...,
-        i: _typing.Optional[builtins.int]=...
+        s: builtins.str=...,
+        i: builtins.int=...
     ) -> None: ...
 
 
@@ -119,9 +119,9 @@ class SerializedError(_fbthrift_python_mutable_exceptions.MutableGeneratedError,
 
     def __init__(
         self, *,
-        msg: _typing.Optional[builtins.str]=...,
+        msg: builtins.str=...,
         os: _typing.Optional[builtins.str]=...,
-        rs: _typing.Optional[builtins.str]=...
+        rs: builtins.str=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.str, builtins.str, builtins.str]]]: ...
@@ -155,18 +155,18 @@ class MarshalStruct(_fbthrift_python_mutable_types.MutableStruct, _fbthrift_pyth
 
     def __init__(
         self, *,
-        s: _typing.Optional[builtins.str]=...,
-        i: _typing.Optional[builtins.int]=...,
+        s: builtins.str=...,
+        i: builtins.int=...,
         os: _typing.Optional[builtins.str]=...,
-        rs: _typing.Optional[builtins.str]=...
+        rs: builtins.str=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        s: _typing.Optional[builtins.str]=...,
-        i: _typing.Optional[builtins.int]=...,
+        s: builtins.str=...,
+        i: builtins.int=...,
         os: _typing.Optional[builtins.str]=...,
-        rs: _typing.Optional[builtins.str]=...
+        rs: builtins.str=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.str, builtins.int, builtins.str, builtins.str]]]: ...
     def _to_python(self) -> "test.fixtures.python_capi.serialized_dep.thrift_types.MarshalStruct": ...  # type: ignore
@@ -189,8 +189,8 @@ class MarshalUnion(_fbthrift_python_mutable_types.MutableUnion, _fbthrift_python
 
     def __init__(
         self, *,
-        s: _typing.Optional[builtins.str]=...,
-        i: _typing.Optional[builtins.int]=...
+        s: builtins.str=...,
+        i: builtins.int=...
     ) -> None: ...
 
 
@@ -229,9 +229,9 @@ class MarshalError(_fbthrift_python_mutable_exceptions.MutableGeneratedError, _f
 
     def __init__(
         self, *,
-        msg: _typing.Optional[builtins.str]=...,
+        msg: builtins.str=...,
         os: _typing.Optional[builtins.str]=...,
-        rs: _typing.Optional[builtins.str]=...
+        rs: builtins.str=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.str, builtins.str, builtins.str]]]: ...

@@ -35,7 +35,7 @@ class SimpleException(_fbthrift_python_exceptions.GeneratedError, _fbthrift_pyth
     err_code: _typing.Final[builtins.int] = ...
     def __init__(
         self, *,
-        err_code: _typing.Optional[builtins.int]=...
+        err_code: builtins.int=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.int]]]: ...
@@ -80,15 +80,15 @@ class SimpleStruct(_fbthrift_python_types.Struct, _fbthrift_python_abstract_type
     opt_default_enum: _typing.Final[_typing.Optional[_fbthrift_AnEnum]] = ...
     def __init__(
         self, *,
-        is_on: _typing.Optional[builtins.bool]=...,
-        tiny_int: _typing.Optional[builtins.int]=...,
-        small_int: _typing.Optional[builtins.int]=...,
-        nice_sized_int: _typing.Optional[builtins.int]=...,
-        big_int: _typing.Optional[builtins.int]=...,
-        real: _typing.Optional[builtins.float]=...,
-        smaller_real: _typing.Optional[builtins.float]=...,
-        hidden_field: _typing.Optional[builtins.int]=...,
-        something: _typing.Optional[_typing.Mapping[builtins.int, builtins.int]]=...,
+        is_on: builtins.bool=...,
+        tiny_int: builtins.int=...,
+        small_int: builtins.int=...,
+        nice_sized_int: builtins.int=...,
+        big_int: builtins.int=...,
+        real: builtins.float=...,
+        smaller_real: builtins.float=...,
+        hidden_field: builtins.int=...,
+        something: _typing.Mapping[builtins.int, builtins.int]=...,
         opt_default_int: _typing.Optional[builtins.int]=...,
         opt_default_str: _typing.Optional[builtins.str]=...,
         opt_default_enum: _typing.Optional[_fbthrift_AnEnum]=...
@@ -96,15 +96,15 @@ class SimpleStruct(_fbthrift_python_types.Struct, _fbthrift_python_abstract_type
 
     def __call__(
         self, *,
-        is_on: _typing.Optional[builtins.bool]=...,
-        tiny_int: _typing.Optional[builtins.int]=...,
-        small_int: _typing.Optional[builtins.int]=...,
-        nice_sized_int: _typing.Optional[builtins.int]=...,
-        big_int: _typing.Optional[builtins.int]=...,
-        real: _typing.Optional[builtins.float]=...,
-        smaller_real: _typing.Optional[builtins.float]=...,
-        hidden_field: _typing.Optional[builtins.int]=...,
-        something: _typing.Optional[_typing.Mapping[builtins.int, builtins.int]]=...,
+        is_on: builtins.bool=...,
+        tiny_int: builtins.int=...,
+        small_int: builtins.int=...,
+        nice_sized_int: builtins.int=...,
+        big_int: builtins.int=...,
+        real: builtins.float=...,
+        smaller_real: builtins.float=...,
+        hidden_field: builtins.int=...,
+        something: _typing.Mapping[builtins.int, builtins.int]=...,
         opt_default_int: _typing.Optional[builtins.int]=...,
         opt_default_str: _typing.Optional[builtins.str]=...,
         opt_default_enum: _typing.Optional[_fbthrift_AnEnum]=...
@@ -124,18 +124,18 @@ class Float32Struct(_fbthrift_python_types.Struct, _fbthrift_python_abstract_typ
     float_map: _typing.Final[_typing.Mapping[builtins.str, _fbthrift_python_types.ImmutableList[builtins.float]]] = ...
     def __init__(
         self, *,
-        float32: _typing.Optional[builtins.float]=...,
-        float64: _typing.Optional[builtins.float]=...,
-        float_list: _typing.Optional[_typing.Sequence[builtins.float]]=...,
-        float_map: _typing.Optional[_typing.Mapping[builtins.str, _typing.Sequence[builtins.float]]]=...
+        float32: builtins.float=...,
+        float64: builtins.float=...,
+        float_list: _typing.Sequence[builtins.float]=...,
+        float_map: _typing.Mapping[builtins.str, _typing.Sequence[builtins.float]]=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        float32: _typing.Optional[builtins.float]=...,
-        float64: _typing.Optional[builtins.float]=...,
-        float_list: _typing.Optional[_typing.Sequence[builtins.float]]=...,
-        float_map: _typing.Optional[_typing.Mapping[builtins.str, _typing.Sequence[builtins.float]]]=...
+        float32: builtins.float=...,
+        float64: builtins.float=...,
+        float_list: _typing.Sequence[builtins.float]=...,
+        float_map: _typing.Mapping[builtins.str, _typing.Sequence[builtins.float]]=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.float, builtins.float, _fbthrift_python_types.ImmutableList[builtins.float], _typing.Mapping[builtins.str, _fbthrift_python_types.ImmutableList[builtins.float]]]]]: ...
     def _to_python(self) -> _typing.Self: ...
@@ -151,16 +151,16 @@ class HiddenTypeFieldsStruct(_fbthrift_python_types.Struct, _fbthrift_python_abs
     field3: _typing.Final[_typing.Mapping[builtins.int, _fbthrift_SimpleStruct]] = ...
     def __init__(
         self, *,
-        field1: _typing.Optional[_fbthrift_SimpleStruct]=...,
-        field2: _typing.Optional[_typing.Sequence[_fbthrift_SimpleStruct]]=...,
-        field3: _typing.Optional[_typing.Mapping[builtins.int, _fbthrift_SimpleStruct]]=...
+        field1: _fbthrift_SimpleStruct=...,
+        field2: _typing.Sequence[_fbthrift_SimpleStruct]=...,
+        field3: _typing.Mapping[builtins.int, _fbthrift_SimpleStruct]=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        field1: _typing.Optional[_fbthrift_SimpleStruct]=...,
-        field2: _typing.Optional[_typing.Sequence[_fbthrift_SimpleStruct]]=...,
-        field3: _typing.Optional[_typing.Mapping[builtins.int, _fbthrift_SimpleStruct]]=...
+        field1: _fbthrift_SimpleStruct=...,
+        field2: _typing.Sequence[_fbthrift_SimpleStruct]=...,
+        field3: _typing.Mapping[builtins.int, _fbthrift_SimpleStruct]=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[_fbthrift_SimpleStruct, _fbthrift_python_types.ImmutableList[_fbthrift_SimpleStruct], _typing.Mapping[builtins.int, _fbthrift_SimpleStruct]]]]: ...
     def _to_python(self) -> _typing.Self: ...
@@ -174,7 +174,7 @@ class AdaptedUnion(_fbthrift_python_types.Union, _fbthrift_python_abstract_types
     best: _typing.Final[builtins.int] = ...
     def __init__(
         self, *,
-        best: _typing.Optional[builtins.int]=...
+        best: builtins.int=...
     ) -> None: ...
 
 
@@ -204,7 +204,7 @@ class HiddenException(_fbthrift_python_exceptions.GeneratedError, _fbthrift_pyth
     test: _typing.Final[builtins.int] = ...
     def __init__(
         self, *,
-        test: _typing.Optional[builtins.int]=...
+        test: builtins.int=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.int]]]: ...
@@ -227,28 +227,28 @@ class ComplexStruct(_fbthrift_python_types.Struct, _fbthrift_python_abstract_typ
     bytes_with_cpp_type: _typing.Final[builtins.bytes] = ...
     def __init__(
         self, *,
-        structOne: _typing.Optional[_fbthrift_SimpleStruct]=...,
-        structTwo: _typing.Optional[_fbthrift_SimpleStruct]=...,
-        an_integer: _typing.Optional[builtins.int]=...,
-        name: _typing.Optional[builtins.str]=...,
-        an_enum: _typing.Optional[_fbthrift_AnEnum]=...,
-        some_bytes: _typing.Optional[builtins.bytes]=...,
-        sender: _typing.Optional[builtins.str]=...,
-        cdef_: _typing.Optional[builtins.str]=...,
-        bytes_with_cpp_type: _typing.Optional[builtins.bytes]=...
+        structOne: _fbthrift_SimpleStruct=...,
+        structTwo: _fbthrift_SimpleStruct=...,
+        an_integer: builtins.int=...,
+        name: builtins.str=...,
+        an_enum: _fbthrift_AnEnum=...,
+        some_bytes: builtins.bytes=...,
+        sender: builtins.str=...,
+        cdef_: builtins.str=...,
+        bytes_with_cpp_type: builtins.bytes=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        structOne: _typing.Optional[_fbthrift_SimpleStruct]=...,
-        structTwo: _typing.Optional[_fbthrift_SimpleStruct]=...,
-        an_integer: _typing.Optional[builtins.int]=...,
-        name: _typing.Optional[builtins.str]=...,
-        an_enum: _typing.Optional[_fbthrift_AnEnum]=...,
-        some_bytes: _typing.Optional[builtins.bytes]=...,
-        sender: _typing.Optional[builtins.str]=...,
-        cdef_: _typing.Optional[builtins.str]=...,
-        bytes_with_cpp_type: _typing.Optional[builtins.bytes]=...
+        structOne: _fbthrift_SimpleStruct=...,
+        structTwo: _fbthrift_SimpleStruct=...,
+        an_integer: builtins.int=...,
+        name: builtins.str=...,
+        an_enum: _fbthrift_AnEnum=...,
+        some_bytes: builtins.bytes=...,
+        sender: builtins.str=...,
+        cdef_: builtins.str=...,
+        bytes_with_cpp_type: builtins.bytes=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[_fbthrift_SimpleStruct, _fbthrift_SimpleStruct, builtins.int, builtins.str, _fbthrift_AnEnum, builtins.bytes, builtins.str, builtins.str, builtins.bytes]]]: ...
     def _to_python(self) -> _typing.Self: ...
@@ -262,7 +262,7 @@ class BinaryUnion(_fbthrift_python_types.Union, _fbthrift_python_abstract_types.
     iobuf_val: _typing.Final[_fbthrift_iobuf.IOBuf] = ...
     def __init__(
         self, *,
-        iobuf_val: _typing.Optional[_fbthrift_iobuf.IOBuf]=...
+        iobuf_val: _fbthrift_iobuf.IOBuf=...
     ) -> None: ...
 
 
@@ -292,12 +292,12 @@ class BinaryUnionStruct(_fbthrift_python_types.Struct, _fbthrift_python_abstract
     u: _typing.Final[_fbthrift_BinaryUnion] = ...
     def __init__(
         self, *,
-        u: _typing.Optional[_fbthrift_BinaryUnion]=...
+        u: _fbthrift_BinaryUnion=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        u: _typing.Optional[_fbthrift_BinaryUnion]=...
+        u: _fbthrift_BinaryUnion=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[_fbthrift_BinaryUnion]]]: ...
     def _to_python(self) -> _typing.Self: ...
@@ -319,28 +319,28 @@ class CustomFields(_fbthrift_python_types.Struct, _fbthrift_python_abstract_type
     struct_field: _typing.Final[_fbthrift_SimpleStruct] = ...
     def __init__(
         self, *,
-        bool_field: _typing.Optional[builtins.bool]=...,
-        integer_field: _typing.Optional[builtins.int]=...,
-        double_field: _typing.Optional[builtins.float]=...,
-        string_field: _typing.Optional[builtins.str]=...,
-        binary_field: _typing.Optional[builtins.bytes]=...,
-        list_field: _typing.Optional[_typing.Sequence[builtins.int]]=...,
-        set_field: _typing.Optional[_typing.AbstractSet[builtins.int]]=...,
-        map_field: _typing.Optional[_typing.Mapping[builtins.int, builtins.int]]=...,
-        struct_field: _typing.Optional[_fbthrift_SimpleStruct]=...
+        bool_field: builtins.bool=...,
+        integer_field: builtins.int=...,
+        double_field: builtins.float=...,
+        string_field: builtins.str=...,
+        binary_field: builtins.bytes=...,
+        list_field: _typing.Sequence[builtins.int]=...,
+        set_field: _typing.AbstractSet[builtins.int]=...,
+        map_field: _typing.Mapping[builtins.int, builtins.int]=...,
+        struct_field: _fbthrift_SimpleStruct=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        bool_field: _typing.Optional[builtins.bool]=...,
-        integer_field: _typing.Optional[builtins.int]=...,
-        double_field: _typing.Optional[builtins.float]=...,
-        string_field: _typing.Optional[builtins.str]=...,
-        binary_field: _typing.Optional[builtins.bytes]=...,
-        list_field: _typing.Optional[_typing.Sequence[builtins.int]]=...,
-        set_field: _typing.Optional[_typing.AbstractSet[builtins.int]]=...,
-        map_field: _typing.Optional[_typing.Mapping[builtins.int, builtins.int]]=...,
-        struct_field: _typing.Optional[_fbthrift_SimpleStruct]=...
+        bool_field: builtins.bool=...,
+        integer_field: builtins.int=...,
+        double_field: builtins.float=...,
+        string_field: builtins.str=...,
+        binary_field: builtins.bytes=...,
+        list_field: _typing.Sequence[builtins.int]=...,
+        set_field: _typing.AbstractSet[builtins.int]=...,
+        map_field: _typing.Mapping[builtins.int, builtins.int]=...,
+        struct_field: _fbthrift_SimpleStruct=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.bool, builtins.int, builtins.float, builtins.str, builtins.bytes, _fbthrift_python_types.ImmutableList[builtins.int], _typing.AbstractSet[builtins.int], _typing.Mapping[builtins.int, builtins.int], _fbthrift_SimpleStruct]]]: ...
     def _to_python(self) -> _typing.Self: ...
@@ -362,28 +362,28 @@ class CustomTypedefFields(_fbthrift_python_types.Struct, _fbthrift_python_abstra
     struct_field: _typing.Final[_fbthrift_SimpleStruct] = ...
     def __init__(
         self, *,
-        bool_field: _typing.Optional[builtins.bool]=...,
-        integer_field: _typing.Optional[builtins.int]=...,
-        double_field: _typing.Optional[builtins.float]=...,
-        string_field: _typing.Optional[builtins.str]=...,
-        binary_field: _typing.Optional[builtins.bytes]=...,
-        list_field: _typing.Optional[_typing.Sequence[builtins.int]]=...,
-        set_field: _typing.Optional[_typing.AbstractSet[builtins.int]]=...,
-        map_field: _typing.Optional[_typing.Mapping[builtins.int, builtins.int]]=...,
-        struct_field: _typing.Optional[_fbthrift_SimpleStruct]=...
+        bool_field: builtins.bool=...,
+        integer_field: builtins.int=...,
+        double_field: builtins.float=...,
+        string_field: builtins.str=...,
+        binary_field: builtins.bytes=...,
+        list_field: _typing.Sequence[builtins.int]=...,
+        set_field: _typing.AbstractSet[builtins.int]=...,
+        map_field: _typing.Mapping[builtins.int, builtins.int]=...,
+        struct_field: _fbthrift_SimpleStruct=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        bool_field: _typing.Optional[builtins.bool]=...,
-        integer_field: _typing.Optional[builtins.int]=...,
-        double_field: _typing.Optional[builtins.float]=...,
-        string_field: _typing.Optional[builtins.str]=...,
-        binary_field: _typing.Optional[builtins.bytes]=...,
-        list_field: _typing.Optional[_typing.Sequence[builtins.int]]=...,
-        set_field: _typing.Optional[_typing.AbstractSet[builtins.int]]=...,
-        map_field: _typing.Optional[_typing.Mapping[builtins.int, builtins.int]]=...,
-        struct_field: _typing.Optional[_fbthrift_SimpleStruct]=...
+        bool_field: builtins.bool=...,
+        integer_field: builtins.int=...,
+        double_field: builtins.float=...,
+        string_field: builtins.str=...,
+        binary_field: builtins.bytes=...,
+        list_field: _typing.Sequence[builtins.int]=...,
+        set_field: _typing.AbstractSet[builtins.int]=...,
+        map_field: _typing.Mapping[builtins.int, builtins.int]=...,
+        struct_field: _fbthrift_SimpleStruct=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.bool, builtins.int, builtins.float, builtins.str, builtins.bytes, _fbthrift_python_types.ImmutableList[builtins.int], _typing.AbstractSet[builtins.int], _typing.Mapping[builtins.int, builtins.int], _fbthrift_SimpleStruct]]]: ...
     def _to_python(self) -> _typing.Self: ...
@@ -405,28 +405,28 @@ class AdaptedTypedefFields(_fbthrift_python_types.Struct, _fbthrift_python_abstr
     struct_field: _typing.Final[_fbthrift_SimpleStruct] = ...
     def __init__(
         self, *,
-        bool_field: _typing.Optional[builtins.bool]=...,
-        integer_field: _typing.Optional[builtins.int]=...,
-        double_field: _typing.Optional[builtins.float]=...,
-        string_field: _typing.Optional[builtins.str]=...,
-        binary_field: _typing.Optional[builtins.bytes]=...,
-        list_field: _typing.Optional[_typing.Sequence[builtins.int]]=...,
-        set_field: _typing.Optional[_typing.AbstractSet[builtins.int]]=...,
-        map_field: _typing.Optional[_typing.Mapping[builtins.int, builtins.int]]=...,
-        struct_field: _typing.Optional[_fbthrift_SimpleStruct]=...
+        bool_field: builtins.bool=...,
+        integer_field: builtins.int=...,
+        double_field: builtins.float=...,
+        string_field: builtins.str=...,
+        binary_field: builtins.bytes=...,
+        list_field: _typing.Sequence[builtins.int]=...,
+        set_field: _typing.AbstractSet[builtins.int]=...,
+        map_field: _typing.Mapping[builtins.int, builtins.int]=...,
+        struct_field: _fbthrift_SimpleStruct=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        bool_field: _typing.Optional[builtins.bool]=...,
-        integer_field: _typing.Optional[builtins.int]=...,
-        double_field: _typing.Optional[builtins.float]=...,
-        string_field: _typing.Optional[builtins.str]=...,
-        binary_field: _typing.Optional[builtins.bytes]=...,
-        list_field: _typing.Optional[_typing.Sequence[builtins.int]]=...,
-        set_field: _typing.Optional[_typing.AbstractSet[builtins.int]]=...,
-        map_field: _typing.Optional[_typing.Mapping[builtins.int, builtins.int]]=...,
-        struct_field: _typing.Optional[_fbthrift_SimpleStruct]=...
+        bool_field: builtins.bool=...,
+        integer_field: builtins.int=...,
+        double_field: builtins.float=...,
+        string_field: builtins.str=...,
+        binary_field: builtins.bytes=...,
+        list_field: _typing.Sequence[builtins.int]=...,
+        set_field: _typing.AbstractSet[builtins.int]=...,
+        map_field: _typing.Mapping[builtins.int, builtins.int]=...,
+        struct_field: _fbthrift_SimpleStruct=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.bool, builtins.int, builtins.float, builtins.str, builtins.bytes, _fbthrift_python_types.ImmutableList[builtins.int], _typing.AbstractSet[builtins.int], _typing.Mapping[builtins.int, builtins.int], _fbthrift_SimpleStruct]]]: ...
     def _to_python(self) -> _typing.Self: ...
@@ -525,7 +525,7 @@ class _fbthrift_SimpleService_add_five_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        num: _typing.Optional[builtins.int]=...
+        num: builtins.int=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -578,8 +578,8 @@ class _fbthrift_SimpleService_concat_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        first: _typing.Optional[builtins.str]=...,
-        second: _typing.Optional[builtins.str]=...
+        first: builtins.str=...,
+        second: builtins.str=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -606,7 +606,7 @@ class _fbthrift_SimpleService_get_value_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        simple_struct: _typing.Optional[_fbthrift_SimpleStruct]=...
+        simple_struct: _fbthrift_SimpleStruct=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -633,7 +633,7 @@ class _fbthrift_SimpleService_negate_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        input: _typing.Optional[builtins.bool]=...
+        input: builtins.bool=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -660,7 +660,7 @@ class _fbthrift_SimpleService_tiny_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        input: _typing.Optional[builtins.int]=...
+        input: builtins.int=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -687,7 +687,7 @@ class _fbthrift_SimpleService_small_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        input: _typing.Optional[builtins.int]=...
+        input: builtins.int=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -714,7 +714,7 @@ class _fbthrift_SimpleService_big_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        input: _typing.Optional[builtins.int]=...
+        input: builtins.int=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -741,7 +741,7 @@ class _fbthrift_SimpleService_two_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        input: _typing.Optional[builtins.float]=...
+        input: builtins.float=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -820,7 +820,7 @@ class _fbthrift_SimpleService_sum_i16_list_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        numbers: _typing.Optional[_typing.Sequence[builtins.int]]=...
+        numbers: _typing.Sequence[builtins.int]=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -847,7 +847,7 @@ class _fbthrift_SimpleService_sum_i32_list_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        numbers: _typing.Optional[_typing.Sequence[builtins.int]]=...
+        numbers: _typing.Sequence[builtins.int]=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -874,7 +874,7 @@ class _fbthrift_SimpleService_sum_i64_list_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        numbers: _typing.Optional[_typing.Sequence[builtins.int]]=...
+        numbers: _typing.Sequence[builtins.int]=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -901,7 +901,7 @@ class _fbthrift_SimpleService_concat_many_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        words: _typing.Optional[_typing.Sequence[builtins.str]]=...
+        words: _typing.Sequence[builtins.str]=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -928,7 +928,7 @@ class _fbthrift_SimpleService_count_structs_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        items: _typing.Optional[_typing.Sequence[_fbthrift_SimpleStruct]]=...
+        items: _typing.Sequence[_fbthrift_SimpleStruct]=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -955,7 +955,7 @@ class _fbthrift_SimpleService_sum_set_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        numbers: _typing.Optional[_typing.AbstractSet[builtins.int]]=...
+        numbers: _typing.AbstractSet[builtins.int]=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -983,8 +983,8 @@ class _fbthrift_SimpleService_contains_word_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        words: _typing.Optional[_typing.AbstractSet[builtins.str]]=...,
-        word: _typing.Optional[builtins.str]=...
+        words: _typing.AbstractSet[builtins.str]=...,
+        word: builtins.str=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -1012,8 +1012,8 @@ class _fbthrift_SimpleService_get_map_value_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        words: _typing.Optional[_typing.Mapping[builtins.str, builtins.str]]=...,
-        key: _typing.Optional[builtins.str]=...
+        words: _typing.Mapping[builtins.str, builtins.str]=...,
+        key: builtins.str=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -1040,7 +1040,7 @@ class _fbthrift_SimpleService_map_length_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        items: _typing.Optional[_typing.Mapping[builtins.str, _fbthrift_SimpleStruct]]=...
+        items: _typing.Mapping[builtins.str, _fbthrift_SimpleStruct]=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -1067,7 +1067,7 @@ class _fbthrift_SimpleService_sum_map_values_args(_fbthrift_python_types.Struct)
 
     def __init__(
         self, *,
-        items: _typing.Optional[_typing.Mapping[builtins.str, builtins.int]]=...
+        items: _typing.Mapping[builtins.str, builtins.int]=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -1094,7 +1094,7 @@ class _fbthrift_SimpleService_complex_sum_i32_args(_fbthrift_python_types.Struct
 
     def __init__(
         self, *,
-        counter: _typing.Optional[_fbthrift_ComplexStruct]=...
+        counter: _fbthrift_ComplexStruct=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -1121,7 +1121,7 @@ class _fbthrift_SimpleService_repeat_name_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        counter: _typing.Optional[_fbthrift_ComplexStruct]=...
+        counter: _fbthrift_ComplexStruct=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -1173,7 +1173,7 @@ class _fbthrift_SimpleService_fib_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        n: _typing.Optional[builtins.int]=...
+        n: builtins.int=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -1200,7 +1200,7 @@ class _fbthrift_SimpleService_unique_words_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        words: _typing.Optional[_typing.Sequence[builtins.str]]=...
+        words: _typing.Sequence[builtins.str]=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -1227,7 +1227,7 @@ class _fbthrift_SimpleService_words_count_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        words: _typing.Optional[_typing.Sequence[builtins.str]]=...
+        words: _typing.Sequence[builtins.str]=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -1254,7 +1254,7 @@ class _fbthrift_SimpleService_set_enum_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        in_enum: _typing.Optional[_fbthrift_AnEnum]=...
+        in_enum: _fbthrift_AnEnum=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -1282,8 +1282,8 @@ class _fbthrift_SimpleService_list_of_lists_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        num_lists: _typing.Optional[builtins.int]=...,
-        num_items: _typing.Optional[builtins.int]=...
+        num_lists: builtins.int=...,
+        num_items: builtins.int=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -1310,7 +1310,7 @@ class _fbthrift_SimpleService_word_character_frequency_args(_fbthrift_python_typ
 
     def __init__(
         self, *,
-        sentence: _typing.Optional[builtins.str]=...
+        sentence: builtins.str=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -1337,7 +1337,7 @@ class _fbthrift_SimpleService_list_of_sets_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        some_words: _typing.Optional[builtins.str]=...
+        some_words: builtins.str=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -1364,7 +1364,7 @@ class _fbthrift_SimpleService_nested_map_argument_args(_fbthrift_python_types.St
 
     def __init__(
         self, *,
-        struct_map: _typing.Optional[_typing.Mapping[builtins.str, _typing.Sequence[_fbthrift_SimpleStruct]]]=...
+        struct_map: _typing.Mapping[builtins.str, _typing.Sequence[_fbthrift_SimpleStruct]]=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -1391,7 +1391,7 @@ class _fbthrift_SimpleService_make_sentence_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        word_chars: _typing.Optional[_typing.Sequence[_typing.Sequence[builtins.str]]]=...
+        word_chars: _typing.Sequence[_typing.Sequence[builtins.str]]=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -1418,7 +1418,7 @@ class _fbthrift_SimpleService_get_union_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        sets: _typing.Optional[_typing.Sequence[_typing.AbstractSet[builtins.int]]]=...
+        sets: _typing.Sequence[_typing.AbstractSet[builtins.int]]=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -1445,7 +1445,7 @@ class _fbthrift_SimpleService_get_keys_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        string_map: _typing.Optional[_typing.Sequence[_typing.Mapping[builtins.str, builtins.str]]]=...
+        string_map: _typing.Sequence[_typing.Mapping[builtins.str, builtins.str]]=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -1472,7 +1472,7 @@ class _fbthrift_SimpleService_lookup_double_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        key: _typing.Optional[builtins.int]=...
+        key: builtins.int=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -1499,7 +1499,7 @@ class _fbthrift_SimpleService_retrieve_binary_args(_fbthrift_python_types.Struct
 
     def __init__(
         self, *,
-        something: _typing.Optional[builtins.bytes]=...
+        something: builtins.bytes=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -1526,7 +1526,7 @@ class _fbthrift_SimpleService_contain_binary_args(_fbthrift_python_types.Struct)
 
     def __init__(
         self, *,
-        binaries: _typing.Optional[_typing.Sequence[builtins.bytes]]=...
+        binaries: _typing.Sequence[builtins.bytes]=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -1553,7 +1553,7 @@ class _fbthrift_SimpleService_contain_enum_args(_fbthrift_python_types.Struct):
 
     def __init__(
         self, *,
-        the_enum: _typing.Optional[_typing.Sequence[_fbthrift_AnEnum]]=...
+        the_enum: _typing.Sequence[_fbthrift_AnEnum]=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
@@ -1580,7 +1580,7 @@ class _fbthrift_SimpleService_get_binary_union_struct_args(_fbthrift_python_type
 
     def __init__(
         self, *,
-        u: _typing.Optional[_fbthrift_BinaryUnion]=...
+        u: _fbthrift_BinaryUnion=...
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[

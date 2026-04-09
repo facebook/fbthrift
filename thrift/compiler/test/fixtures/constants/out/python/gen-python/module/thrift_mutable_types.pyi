@@ -61,8 +61,8 @@ class Internship(_fbthrift_python_mutable_types.MutableStruct, _fbthrift_python_
 
     def __init__(
         self, *,
-        weeks: _typing.Optional[builtins.int]=...,
-        title: _typing.Optional[builtins.str]=...,
+        weeks: builtins.int=...,
+        title: builtins.str=...,
         employer: _typing.Optional[_fbthrift_Company]=...,
         compensation: _typing.Optional[builtins.float]=...,
         school: _typing.Optional[builtins.str]=...
@@ -70,8 +70,8 @@ class Internship(_fbthrift_python_mutable_types.MutableStruct, _fbthrift_python_
 
     def __call__(
         self, *,
-        weeks: _typing.Optional[builtins.int]=...,
-        title: _typing.Optional[builtins.str]=...,
+        weeks: builtins.int=...,
+        title: builtins.str=...,
         employer: _typing.Optional[_fbthrift_Company]=...,
         compensation: _typing.Optional[builtins.float]=...,
         school: _typing.Optional[builtins.str]=...
@@ -97,14 +97,14 @@ class Range(_fbthrift_python_mutable_types.MutableStruct, _fbthrift_python_abstr
 
     def __init__(
         self, *,
-        min: _typing.Optional[builtins.int]=...,
-        max: _typing.Optional[builtins.int]=...
+        min: builtins.int=...,
+        max: builtins.int=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        min: _typing.Optional[builtins.int]=...,
-        max: _typing.Optional[builtins.int]=...
+        min: builtins.int=...,
+        max: builtins.int=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.int, builtins.int]]]: ...
     def _to_python(self) -> "module.thrift_types.Range": ...  # type: ignore
@@ -127,14 +127,14 @@ class struct1(_fbthrift_python_mutable_types.MutableStruct, _fbthrift_python_abs
 
     def __init__(
         self, *,
-        a: _typing.Optional[builtins.int]=...,
-        b: _typing.Optional[builtins.str]=...
+        a: builtins.int=...,
+        b: builtins.str=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        a: _typing.Optional[builtins.int]=...,
-        b: _typing.Optional[builtins.str]=...
+        a: builtins.int=...,
+        b: builtins.str=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.int, builtins.str]]]: ...
     def _to_python(self) -> "module.thrift_types.struct1": ...  # type: ignore
@@ -167,18 +167,18 @@ class struct2(_fbthrift_python_mutable_types.MutableStruct, _fbthrift_python_abs
 
     def __init__(
         self, *,
-        a: _typing.Optional[builtins.int]=...,
-        b: _typing.Optional[builtins.str]=...,
-        c: _typing.Optional[_fbthrift_struct1]=...,
-        d: _typing.Optional[_fbthrift_python_mutable_containers.MutableList[builtins.int] | _fbthrift_python_mutable_types._ThriftListWrapper]=...
+        a: builtins.int=...,
+        b: builtins.str=...,
+        c: _fbthrift_struct1=...,
+        d: _fbthrift_python_mutable_containers.MutableList[builtins.int] | _fbthrift_python_mutable_types._ThriftListWrapper=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        a: _typing.Optional[builtins.int]=...,
-        b: _typing.Optional[builtins.str]=...,
-        c: _typing.Optional[_fbthrift_struct1]=...,
-        d: _typing.Optional[_fbthrift_python_mutable_containers.MutableList[builtins.int] | _fbthrift_python_mutable_types._ThriftListWrapper]=...
+        a: builtins.int=...,
+        b: builtins.str=...,
+        c: _fbthrift_struct1=...,
+        d: _fbthrift_python_mutable_containers.MutableList[builtins.int] | _fbthrift_python_mutable_types._ThriftListWrapper=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.int, builtins.str, _fbthrift_struct1, _fbthrift_python_mutable_containers.MutableList[builtins.int]]]]: ...
     def _to_python(self) -> "module.thrift_types.struct2": ...  # type: ignore
@@ -206,16 +206,16 @@ class struct3(_fbthrift_python_mutable_types.MutableStruct, _fbthrift_python_abs
 
     def __init__(
         self, *,
-        a: _typing.Optional[builtins.str]=...,
-        b: _typing.Optional[builtins.int]=...,
-        c: _typing.Optional[_fbthrift_struct2]=...
+        a: builtins.str=...,
+        b: builtins.int=...,
+        c: _fbthrift_struct2=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        a: _typing.Optional[builtins.str]=...,
-        b: _typing.Optional[builtins.int]=...,
-        c: _typing.Optional[_fbthrift_struct2]=...
+        a: builtins.str=...,
+        b: builtins.int=...,
+        c: _fbthrift_struct2=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.str, builtins.int, _fbthrift_struct2]]]: ...
     def _to_python(self) -> "module.thrift_types.struct3": ...  # type: ignore
@@ -243,14 +243,14 @@ class struct4(_fbthrift_python_mutable_types.MutableStruct, _fbthrift_python_abs
 
     def __init__(
         self, *,
-        a: _typing.Optional[builtins.int]=...,
+        a: builtins.int=...,
         b: _typing.Optional[builtins.float]=...,
         c: _typing.Optional[builtins.int]=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        a: _typing.Optional[builtins.int]=...,
+        a: builtins.int=...,
         b: _typing.Optional[builtins.float]=...,
         c: _typing.Optional[builtins.int]=...
     ) -> _typing.Self: ...
@@ -275,8 +275,8 @@ class union1(_fbthrift_python_mutable_types.MutableUnion, _fbthrift_python_abstr
 
     def __init__(
         self, *,
-        i: _typing.Optional[builtins.int]=...,
-        d: _typing.Optional[builtins.float]=...
+        i: builtins.int=...,
+        d: builtins.float=...
     ) -> None: ...
 
 
@@ -320,10 +320,10 @@ class union2(_fbthrift_python_mutable_types.MutableUnion, _fbthrift_python_abstr
 
     def __init__(
         self, *,
-        i: _typing.Optional[builtins.int]=...,
-        d: _typing.Optional[builtins.float]=...,
-        s: _typing.Optional[_fbthrift_struct1]=...,
-        u: _typing.Optional[_fbthrift_union1]=...
+        i: builtins.int=...,
+        d: builtins.float=...,
+        s: _fbthrift_struct1=...,
+        u: _fbthrift_union1=...
     ) -> None: ...
 
 

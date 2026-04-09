@@ -63,26 +63,26 @@ class Limits(_fbthrift_python_mutable_types.MutableStruct, _fbthrift_python_abst
 
     def __init__(
         self, *,
-        max_i64_field: _typing.Optional[builtins.int]=...,
-        min_i64_field: _typing.Optional[builtins.int]=...,
-        max_i32_field: _typing.Optional[builtins.int]=...,
-        min_i32_field: _typing.Optional[builtins.int]=...,
-        max_i16_field: _typing.Optional[builtins.int]=...,
-        min_i16_field: _typing.Optional[builtins.int]=...,
-        max_byte_field: _typing.Optional[builtins.int]=...,
-        min_byte_field: _typing.Optional[builtins.int]=...
+        max_i64_field: builtins.int=...,
+        min_i64_field: builtins.int=...,
+        max_i32_field: builtins.int=...,
+        min_i32_field: builtins.int=...,
+        max_i16_field: builtins.int=...,
+        min_i16_field: builtins.int=...,
+        max_byte_field: builtins.int=...,
+        min_byte_field: builtins.int=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        max_i64_field: _typing.Optional[builtins.int]=...,
-        min_i64_field: _typing.Optional[builtins.int]=...,
-        max_i32_field: _typing.Optional[builtins.int]=...,
-        min_i32_field: _typing.Optional[builtins.int]=...,
-        max_i16_field: _typing.Optional[builtins.int]=...,
-        min_i16_field: _typing.Optional[builtins.int]=...,
-        max_byte_field: _typing.Optional[builtins.int]=...,
-        min_byte_field: _typing.Optional[builtins.int]=...
+        max_i64_field: builtins.int=...,
+        min_i64_field: builtins.int=...,
+        max_i32_field: builtins.int=...,
+        min_i32_field: builtins.int=...,
+        max_i16_field: builtins.int=...,
+        min_i16_field: builtins.int=...,
+        max_byte_field: builtins.int=...,
+        min_byte_field: builtins.int=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.int, builtins.int, builtins.int, builtins.int, builtins.int, builtins.int, builtins.int, builtins.int]]]: ...
     def _to_python(self) -> "module.thrift_types.Limits": ...  # type: ignore

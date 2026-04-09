@@ -49,19 +49,19 @@ class TemplateLists(_fbthrift_python_mutable_types.MutableStruct, _fbthrift_pyth
     def __init__(
         self, *,
         std_string: _typing.Optional[_fbthrift_python_mutable_containers.MutableList[builtins.str] | _fbthrift_python_mutable_types._ThriftListWrapper]=...,
-        deque_string: _typing.Optional[_fbthrift_python_mutable_containers.MutableList[builtins.bytes] | _fbthrift_python_mutable_types._ThriftListWrapper]=...,
-        small_vector_iobuf: _typing.Optional[_fbthrift_python_mutable_containers.MutableList[_fbthrift_iobuf.IOBuf] | _fbthrift_python_mutable_types._ThriftListWrapper]=...,
-        nested_small_vector: _typing.Optional[_fbthrift_python_mutable_containers.MutableList[_fbthrift_python_mutable_containers.MutableList[builtins.str]] | _fbthrift_python_mutable_types._ThriftListWrapper]=...,
-        small_vector_tensor: _typing.Optional[_fbthrift_python_mutable_containers.MutableList[_fbthrift_python_mutable_containers.MutableList[_fbthrift_python_mutable_containers.MutableList[builtins.str]]] | _fbthrift_python_mutable_types._ThriftListWrapper]=...
+        deque_string: _fbthrift_python_mutable_containers.MutableList[builtins.bytes] | _fbthrift_python_mutable_types._ThriftListWrapper=...,
+        small_vector_iobuf: _fbthrift_python_mutable_containers.MutableList[_fbthrift_iobuf.IOBuf] | _fbthrift_python_mutable_types._ThriftListWrapper=...,
+        nested_small_vector: _fbthrift_python_mutable_containers.MutableList[_fbthrift_python_mutable_containers.MutableList[builtins.str]] | _fbthrift_python_mutable_types._ThriftListWrapper=...,
+        small_vector_tensor: _fbthrift_python_mutable_containers.MutableList[_fbthrift_python_mutable_containers.MutableList[_fbthrift_python_mutable_containers.MutableList[builtins.str]]] | _fbthrift_python_mutable_types._ThriftListWrapper=...
     ) -> None: ...
 
     def __call__(
         self, *,
         std_string: _typing.Optional[_fbthrift_python_mutable_containers.MutableList[builtins.str] | _fbthrift_python_mutable_types._ThriftListWrapper]=...,
-        deque_string: _typing.Optional[_fbthrift_python_mutable_containers.MutableList[builtins.bytes] | _fbthrift_python_mutable_types._ThriftListWrapper]=...,
-        small_vector_iobuf: _typing.Optional[_fbthrift_python_mutable_containers.MutableList[_fbthrift_iobuf.IOBuf] | _fbthrift_python_mutable_types._ThriftListWrapper]=...,
-        nested_small_vector: _typing.Optional[_fbthrift_python_mutable_containers.MutableList[_fbthrift_python_mutable_containers.MutableList[builtins.str]] | _fbthrift_python_mutable_types._ThriftListWrapper]=...,
-        small_vector_tensor: _typing.Optional[_fbthrift_python_mutable_containers.MutableList[_fbthrift_python_mutable_containers.MutableList[_fbthrift_python_mutable_containers.MutableList[builtins.str]]] | _fbthrift_python_mutable_types._ThriftListWrapper]=...
+        deque_string: _fbthrift_python_mutable_containers.MutableList[builtins.bytes] | _fbthrift_python_mutable_types._ThriftListWrapper=...,
+        small_vector_iobuf: _fbthrift_python_mutable_containers.MutableList[_fbthrift_iobuf.IOBuf] | _fbthrift_python_mutable_types._ThriftListWrapper=...,
+        nested_small_vector: _fbthrift_python_mutable_containers.MutableList[_fbthrift_python_mutable_containers.MutableList[builtins.str]] | _fbthrift_python_mutable_types._ThriftListWrapper=...,
+        small_vector_tensor: _fbthrift_python_mutable_containers.MutableList[_fbthrift_python_mutable_containers.MutableList[_fbthrift_python_mutable_containers.MutableList[builtins.str]]] | _fbthrift_python_mutable_types._ThriftListWrapper=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[_fbthrift_python_mutable_containers.MutableList[builtins.str], _fbthrift_python_mutable_containers.MutableList[builtins.bytes], _fbthrift_python_mutable_containers.MutableList[_fbthrift_iobuf.IOBuf], _fbthrift_python_mutable_containers.MutableList[_fbthrift_python_mutable_containers.MutableList[builtins.str]], _fbthrift_python_mutable_containers.MutableList[_fbthrift_python_mutable_containers.MutableList[_fbthrift_python_mutable_containers.MutableList[builtins.str]]]]]]: ...
     def _to_python(self) -> "test.fixtures.python_capi.containers.thrift_types.TemplateLists": ...  # type: ignore
@@ -109,24 +109,24 @@ class TemplateSets(_fbthrift_python_mutable_types.MutableStruct, _fbthrift_pytho
 
     def __init__(
         self, *,
-        std_set: _typing.Optional[_fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper]=...,
-        std_unordered: _typing.Optional[_fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper]=...,
-        folly_fast: _typing.Optional[_fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper]=...,
-        folly_node: _typing.Optional[_fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper]=...,
-        folly_value: _typing.Optional[_fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper]=...,
-        folly_vector: _typing.Optional[_fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper]=...,
-        folly_sorted_vector: _typing.Optional[_fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper]=...
+        std_set: _fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper=...,
+        std_unordered: _fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper=...,
+        folly_fast: _fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper=...,
+        folly_node: _fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper=...,
+        folly_value: _fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper=...,
+        folly_vector: _fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper=...,
+        folly_sorted_vector: _fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        std_set: _typing.Optional[_fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper]=...,
-        std_unordered: _typing.Optional[_fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper]=...,
-        folly_fast: _typing.Optional[_fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper]=...,
-        folly_node: _typing.Optional[_fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper]=...,
-        folly_value: _typing.Optional[_fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper]=...,
-        folly_vector: _typing.Optional[_fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper]=...,
-        folly_sorted_vector: _typing.Optional[_fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper]=...
+        std_set: _fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper=...,
+        std_unordered: _fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper=...,
+        folly_fast: _fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper=...,
+        folly_node: _fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper=...,
+        folly_value: _fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper=...,
+        folly_vector: _fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper=...,
+        folly_sorted_vector: _fbthrift_python_mutable_containers.MutableSet[builtins.str] | _fbthrift_python_mutable_types._ThriftSetWrapper=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[_fbthrift_python_mutable_containers.MutableSet[builtins.str], _fbthrift_python_mutable_containers.MutableSet[builtins.str], _fbthrift_python_mutable_containers.MutableSet[builtins.str], _fbthrift_python_mutable_containers.MutableSet[builtins.str], _fbthrift_python_mutable_containers.MutableSet[builtins.str], _fbthrift_python_mutable_containers.MutableSet[builtins.str], _fbthrift_python_mutable_containers.MutableSet[builtins.str]]]]: ...
     def _to_python(self) -> "test.fixtures.python_capi.containers.thrift_types.TemplateSets": ...  # type: ignore
@@ -174,24 +174,24 @@ class TemplateMaps(_fbthrift_python_mutable_types.MutableStruct, _fbthrift_pytho
 
     def __init__(
         self, *,
-        std_map: _typing.Optional[_fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper]=...,
-        std_unordered: _typing.Optional[_fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper]=...,
-        folly_fast: _typing.Optional[_fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper]=...,
-        folly_node: _typing.Optional[_fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper]=...,
-        folly_value: _typing.Optional[_fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper]=...,
-        folly_vector: _typing.Optional[_fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper]=...,
-        folly_sorted_vector: _typing.Optional[_fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper]=...
+        std_map: _fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper=...,
+        std_unordered: _fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper=...,
+        folly_fast: _fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper=...,
+        folly_node: _fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper=...,
+        folly_value: _fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper=...,
+        folly_vector: _fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper=...,
+        folly_sorted_vector: _fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        std_map: _typing.Optional[_fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper]=...,
-        std_unordered: _typing.Optional[_fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper]=...,
-        folly_fast: _typing.Optional[_fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper]=...,
-        folly_node: _typing.Optional[_fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper]=...,
-        folly_value: _typing.Optional[_fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper]=...,
-        folly_vector: _typing.Optional[_fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper]=...,
-        folly_sorted_vector: _typing.Optional[_fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper]=...
+        std_map: _fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper=...,
+        std_unordered: _fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper=...,
+        folly_fast: _fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper=...,
+        folly_node: _fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper=...,
+        folly_value: _fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper=...,
+        folly_vector: _fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper=...,
+        folly_sorted_vector: _fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str] | _fbthrift_python_mutable_types._ThriftMapWrapper=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[_fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str], _fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str], _fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str], _fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str], _fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str], _fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str], _fbthrift_python_mutable_containers.MutableMap[builtins.str, builtins.str]]]]: ...
     def _to_python(self) -> "test.fixtures.python_capi.containers.thrift_types.TemplateMaps": ...  # type: ignore
@@ -214,14 +214,14 @@ class TWrapped(_fbthrift_python_mutable_types.MutableStruct, _fbthrift_python_ab
 
     def __init__(
         self, *,
-        fieldA: _typing.Optional[builtins.str]=...,
-        fieldB: _typing.Optional[builtins.bytes]=...
+        fieldA: builtins.str=...,
+        fieldB: builtins.bytes=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        fieldA: _typing.Optional[builtins.str]=...,
-        fieldB: _typing.Optional[builtins.bytes]=...
+        fieldA: builtins.str=...,
+        fieldB: builtins.bytes=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[builtins.str, builtins.bytes]]]: ...
     def _to_python(self) -> "test.fixtures.python_capi.containers.thrift_types.TWrapped": ...  # type: ignore
@@ -239,12 +239,12 @@ class IndirectionA(_fbthrift_python_mutable_types.MutableStruct, _fbthrift_pytho
 
     def __init__(
         self, *,
-        lst: _typing.Optional[_fbthrift_python_mutable_containers.MutableList[_fbthrift_TWrapped] | _fbthrift_python_mutable_types._ThriftListWrapper]=...
+        lst: _fbthrift_python_mutable_containers.MutableList[_fbthrift_TWrapped] | _fbthrift_python_mutable_types._ThriftListWrapper=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        lst: _typing.Optional[_fbthrift_python_mutable_containers.MutableList[_fbthrift_TWrapped] | _fbthrift_python_mutable_types._ThriftListWrapper]=...
+        lst: _fbthrift_python_mutable_containers.MutableList[_fbthrift_TWrapped] | _fbthrift_python_mutable_types._ThriftListWrapper=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[_fbthrift_python_mutable_containers.MutableList[_fbthrift_TWrapped]]]]: ...
     def _to_python(self) -> "test.fixtures.python_capi.containers.thrift_types.IndirectionA": ...  # type: ignore
@@ -262,12 +262,12 @@ class IndirectionB(_fbthrift_python_mutable_types.MutableStruct, _fbthrift_pytho
 
     def __init__(
         self, *,
-        lst: _typing.Optional[_fbthrift_python_mutable_containers.MutableList[_fbthrift_TWrapped] | _fbthrift_python_mutable_types._ThriftListWrapper]=...
+        lst: _fbthrift_python_mutable_containers.MutableList[_fbthrift_TWrapped] | _fbthrift_python_mutable_types._ThriftListWrapper=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        lst: _typing.Optional[_fbthrift_python_mutable_containers.MutableList[_fbthrift_TWrapped] | _fbthrift_python_mutable_types._ThriftListWrapper]=...
+        lst: _fbthrift_python_mutable_containers.MutableList[_fbthrift_TWrapped] | _fbthrift_python_mutable_types._ThriftListWrapper=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[_fbthrift_python_mutable_containers.MutableList[_fbthrift_TWrapped]]]]: ...
     def _to_python(self) -> "test.fixtures.python_capi.containers.thrift_types.IndirectionB": ...  # type: ignore
@@ -285,12 +285,12 @@ class IndirectionC(_fbthrift_python_mutable_types.MutableStruct, _fbthrift_pytho
 
     def __init__(
         self, *,
-        lst: _typing.Optional[_fbthrift_python_mutable_containers.MutableList[_fbthrift_TWrapped] | _fbthrift_python_mutable_types._ThriftListWrapper]=...
+        lst: _fbthrift_python_mutable_containers.MutableList[_fbthrift_TWrapped] | _fbthrift_python_mutable_types._ThriftListWrapper=...
     ) -> None: ...
 
     def __call__(
         self, *,
-        lst: _typing.Optional[_fbthrift_python_mutable_containers.MutableList[_fbthrift_TWrapped] | _fbthrift_python_mutable_types._ThriftListWrapper]=...
+        lst: _fbthrift_python_mutable_containers.MutableList[_fbthrift_TWrapped] | _fbthrift_python_mutable_types._ThriftListWrapper=...
     ) -> _typing.Self: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[builtins.str, _typing.Union[_fbthrift_python_mutable_containers.MutableList[_fbthrift_TWrapped]]]]: ...
     def _to_python(self) -> "test.fixtures.python_capi.containers.thrift_types.IndirectionC": ...  # type: ignore
