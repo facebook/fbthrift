@@ -67,16 +67,6 @@ struct rust_codegen_options {
   // Enabled by `--gen rust:serde`.
   bool serde = false;
 
-  /**
-   * Whether to opt out of strictly requiring `serde=true` on `@rust.Adapter`
-   * annotations when `serde` is enabled (either via compiler option or the
-   * `@rust.Serde` annotation).
-   *
-   * DO_BEFORE(hchok, 20260415): Remove and enforce globally once all affected
-   * IDL files have been cleaned up.
-   */
-  bool deprecated_loose_adapter_serde = false;
-
   // Whether to emit derive(Valuable).
   // Enabled by `--gen rust:valuable`
   bool valuable = false;
@@ -1851,8 +1841,6 @@ void t_mstch_rust_generator::process_options(
   }
 
   options_.serde = has_compiler_option("serde");
-  options_.deprecated_loose_adapter_serde =
-      has_compiler_option("deprecated_loose_adapter_serde");
   options_.skip_none_serialization =
       has_compiler_option("skip_none_serialization");
   if (options_.skip_none_serialization) {
@@ -2040,13 +2028,10 @@ void validate_struct_annotations(
       } else if (
           rust_serde_enabled(options, s) &&
           !get_annotation_property_bool(adapter_annot, "serde")) {
-        diagnostic_level level = options.deprecated_loose_adapter_serde
-            ? diagnostic_level::warning
-            : diagnostic_level::error;
         ctx.report(
             field,
             "rust-field-adapter-rule",
-            level,
+            diagnostic_level::error,
             "Field `{}` has an @rust.Adapter without `serde = true` in a "
             "context where serde is enabled. Set `serde = true` on the "
             "@rust.Adapter annotation if the adapter's AdaptedType implements "
