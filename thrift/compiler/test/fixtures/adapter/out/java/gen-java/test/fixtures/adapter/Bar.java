@@ -341,21 +341,15 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
             
             List<com.facebook.thrift.my.AdaptedFoo_1> _fbthriftVar1;
             {
-                        TList _list1 = oprot.readListBegin();
-                        _fbthriftVar1 = new ArrayList<com.facebook.thrift.my.AdaptedFoo_1>(Math.max(0, _list1.size));
-                        for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                            
-                            test.fixtures.adapter.Foo _fbthriftVar2;
-                            _fbthriftVar2 = test.fixtures.adapter.Foo.read0(oprot);
-                            
-                            
-                            _fbthriftVar1.add(__FooWithAdapter_9317_Adapter.fromThrift(_fbthriftVar2));
-                            
-                        }
-                        oprot.readListEnd();
-                        }
-
-
+                TList _list1 = oprot.readListBegin();
+                _fbthriftVar1 = new ArrayList<com.facebook.thrift.my.AdaptedFoo_1>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                    test.fixtures.adapter.Foo _fbthriftVar2;
+                    _fbthriftVar2 = test.fixtures.adapter.Foo.read0(oprot);
+                    _fbthriftVar1.add(__FooWithAdapter_9317_Adapter.fromThrift(_fbthriftVar2));
+                }
+                oprot.readListEnd();
+            }
             builder.setStructListField(_fbthriftVar1);
             
           } else {
@@ -367,21 +361,15 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
             
             List<com.facebook.thrift.my.AdaptedFoo_1> _fbthriftVar1;
             {
-                        TList _list1 = oprot.readListBegin();
-                        _fbthriftVar1 = new ArrayList<com.facebook.thrift.my.AdaptedFoo_1>(Math.max(0, _list1.size));
-                        for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                            
-                            test.fixtures.adapter.Foo _fbthriftVar2;
-                            _fbthriftVar2 = test.fixtures.adapter.Foo.read0(oprot);
-                            
-                            
-                            _fbthriftVar1.add(__FooWithAdapter_9317_Adapter.fromThrift(_fbthriftVar2));
-                            
-                        }
-                        oprot.readListEnd();
-                        }
-
-
+                TList _list1 = oprot.readListBegin();
+                _fbthriftVar1 = new ArrayList<com.facebook.thrift.my.AdaptedFoo_1>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                    test.fixtures.adapter.Foo _fbthriftVar2;
+                    _fbthriftVar2 = test.fixtures.adapter.Foo.read0(oprot);
+                    _fbthriftVar1.add(__FooWithAdapter_9317_Adapter.fromThrift(_fbthriftVar2));
+                }
+                oprot.readListEnd();
+            }
             builder.setOptionalStructListField(_fbthriftVar1);
             
           } else {
@@ -426,21 +414,15 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
             
             List<test.fixtures.adapter.Foo> _fbthriftVar1;
             {
-                        TList _list1 = oprot.readListBegin();
-                        _fbthriftVar1 = new ArrayList<test.fixtures.adapter.Foo>(Math.max(0, _list1.size));
-                        for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                            
-                            test.fixtures.adapter.Foo _fbthriftVar2;
-                            _fbthriftVar2 = test.fixtures.adapter.Foo.read0(oprot);
-                            
-                            
-                            _fbthriftVar1.add(_fbthriftVar2);
-                            
-                        }
-                        oprot.readListEnd();
-                        }
-
-
+                TList _list1 = oprot.readListBegin();
+                _fbthriftVar1 = new ArrayList<test.fixtures.adapter.Foo>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                    test.fixtures.adapter.Foo _fbthriftVar2;
+                    _fbthriftVar2 = test.fixtures.adapter.Foo.read0(oprot);
+                    _fbthriftVar1.add(_fbthriftVar2);
+                }
+                oprot.readListEnd();
+            }
             builder.setStructListFieldWithTypedef(_fbthriftVar1);
             
           } else {

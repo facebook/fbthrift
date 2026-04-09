@@ -297,42 +297,26 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             
             com.foo.FastIntLongMap _fbthriftVar1;
             {
-                        TMap _map1 = oprot.readMapBegin();
-                        _fbthriftVar1 = new com.foo.FastIntLongMap();
-                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                            
-                            int _fbthriftKey2;
-                            
-                            
-                            long _fbthriftValue2;
-                            
+                TMap _map1 = oprot.readMapBegin();
+                _fbthriftVar1 = new com.foo.FastIntLongMap();
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                    int _fbthriftKey2;
+                    long _fbthriftValue2;
 
-                            {
-                                
-                                int _fbthriftVar2;
-                                _fbthriftVar2 = oprot.readI32();
-                                
-                                
-                                _fbthriftKey2 = _fbthriftVar2;
-                                
-                            }
-                            {
-                                
-                                long _fbthriftVar2;
-                                _fbthriftVar2 = oprot.readI64();
-                                
-                                
-                                _fbthriftValue2 = _fbthriftVar2;
-                                
-                            }
-                            
-                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                            
-                        }
-                        oprot.readMapEnd();
+                    {
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
+                        _fbthriftKey2 = _fbthriftVar2;
                     }
-
-                  
+                    {
+                        long _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI64();
+                        _fbthriftValue2 = _fbthriftVar2;
+                    }
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                }
+                oprot.readMapEnd();
+            }
             builder.setDetailMap(_fbthriftVar1);
             
           } else {

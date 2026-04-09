@@ -491,21 +491,15 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
               
               Set<String> _fbthriftVar1;
               {
-                          TSet _set1 = oprot.readSetBegin();
-                          _fbthriftVar1 = new HashSet<String>(Math.max(0, _set1.size));
-                          for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                              
-                              String _fbthriftVar2;
-                              _fbthriftVar2 = oprot.readString();
-                              
-                              
-                              _fbthriftVar1.add(_fbthriftVar2);
-                              
-                          }
-                          oprot.readSetEnd();
-                          }
-
-
+                  TSet _set1 = oprot.readSetBegin();
+                  _fbthriftVar1 = new HashSet<String>(Math.max(0, _set1.size));
+                  for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                      String _fbthriftVar2;
+                      _fbthriftVar2 = oprot.readString();
+                      _fbthriftVar1.add(_fbthriftVar2);
+                  }
+                  oprot.readSetEnd();
+              }
               res.value = __SetWithAdapter_Adapter.fromThrift(_fbthriftVar1);
 
             }
@@ -515,55 +509,35 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
               
               Map<String, com.facebook.thrift.my.AdaptedList_2> _fbthriftVar1;
               {
-                          TMap _map1 = oprot.readMapBegin();
-                          _fbthriftVar1 = new HashMap<String, com.facebook.thrift.my.AdaptedList_2>(Math.max(0, _map1.size));
-                          for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                              
-                              String _fbthriftKey2;
-                              
-                              
-                              List<com.facebook.thrift.my.AdaptedString_1> _fbthriftValue2;
-                              
+                  TMap _map1 = oprot.readMapBegin();
+                  _fbthriftVar1 = new HashMap<String, com.facebook.thrift.my.AdaptedList_2>(Math.max(0, _map1.size));
+                  for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                      String _fbthriftKey2;
+                      List<com.facebook.thrift.my.AdaptedString_1> _fbthriftValue2;
 
-                              {
-                                  
-                                  String _fbthriftVar2;
-                                  _fbthriftVar2 = oprot.readString();
-                                  
-                                  
-                                  _fbthriftKey2 = _fbthriftVar2;
-                                  
-                              }
-                              {
-                                  
-                                  List<com.facebook.thrift.my.AdaptedString_1> _fbthriftVar2;
-                                  {
-                                              TList _list2 = oprot.readListBegin();
-                                              _fbthriftVar2 = new ArrayList<com.facebook.thrift.my.AdaptedString_1>(Math.max(0, _list2.size));
-                                              for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
-                                                  
-                                                  String _fbthriftVar3;
-                                                  _fbthriftVar3 = oprot.readString();
-                                                  
-                                                  
-                                                  _fbthriftVar2.add(__StringWithAdapter_Adapter.fromThrift(_fbthriftVar3));
-                                                  
-                                              }
-                                              oprot.readListEnd();
-                                              }
-                                  
-                                  
-                                  _fbthriftValue2 = _fbthriftVar2;
-                                  
-                              }
-                              
-                              _fbthriftVar1.put(_fbthriftKey2, __ListWithElemAdapter_withAdapter_2312_Adapter.fromThrift(_fbthriftValue2));
-                              
-                          }
-                          oprot.readMapEnd();
+                      {
+                          String _fbthriftVar2;
+                          _fbthriftVar2 = oprot.readString();
+                          _fbthriftKey2 = _fbthriftVar2;
                       }
-
-
+                      {
+                          List<com.facebook.thrift.my.AdaptedString_1> _fbthriftVar2;
+                          {
+                              TList _list2 = oprot.readListBegin();
+                              _fbthriftVar2 = new ArrayList<com.facebook.thrift.my.AdaptedString_1>(Math.max(0, _list2.size));
+                              for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
+                                  String _fbthriftVar3;
+                                  _fbthriftVar3 = oprot.readString();
+                                  _fbthriftVar2.add(__StringWithAdapter_Adapter.fromThrift(_fbthriftVar3));
+                              }
+                              oprot.readListEnd();
+                          }
+                          _fbthriftValue2 = _fbthriftVar2;
+                      }
+                      _fbthriftVar1.put(_fbthriftKey2, __ListWithElemAdapter_withAdapter_2312_Adapter.fromThrift(_fbthriftValue2));
+                  }
+                  oprot.readMapEnd();
+              }
               res.value = _mapField_Adapter.fromThrift(_fbthriftVar1);
 
             }

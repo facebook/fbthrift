@@ -39,9 +39,8 @@ public static {{struct:javaCapitalName}} read0(TProtocol oprot) throws TExceptio
           }}{{^type:container?}}{{!
           }}{{#partial types.thrift_field_type field=field:self}} _fbthriftVar{{field:nestedDepth}};{{!
           }}{{/type:container?}}
-          {{> ReadType}}
+          {{#partial types.read_type field=field:self type=type:self depth=field:nestedDepth}}
           {{/field:type}}
-
           {{#field:hasAdapter?}}
           res.value = {{#partial field.from_thrift_start field=field:self}}_fbthriftVar{{field:nestedDepth}}{{#partial field.from_thrift_end field=field:self}};
           {{/field:hasAdapter?}}

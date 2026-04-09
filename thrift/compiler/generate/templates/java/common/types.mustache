@@ -15,6 +15,7 @@
   limitations under the License.
 
 }}
+{{#import "common/common" as common}}
 
 {{!
   `type_isAdapterSet` and `field_hasAdapter` are artefacts of mutable properties
@@ -482,5 +483,167 @@ oprot.writeI64(_fbthriftVar{{depth}});
 oprot.writeFloat(_fbthriftVar{{depth}});
   {{#else if type.double?}}
 oprot.writeDouble(_fbthriftVar{{depth}});
+  {{/if type.typedef?}}
+{{/let partial}}
+
+{{! Reads a Thrift value from the protocol for struct/union deserialization.
+    Takes a field object (for adapter context), type object, and depth integer
+    (suffix for _fbthriftVar variables). Handles typedefs, containers,
+    structured types, enums, binary/string, and primitives.
+    Replaces the mstch ReadType.mustache and ReadTypeContainerNestedValue.mustache. }}
+{{#let export partial read_type |field type depth| captures |resolved_boxed_type boxed_type thrift_type java_type thrift_field_type read_binary common|}}
+  {{#let partial read_container |field type depth| captures |read_type resolved_boxed_type boxed_type thrift_type java_type read_binary|}}
+    {{#if type.set?}}
+{
+    TSet _set{{depth}} = oprot.readSetBegin();
+    {{#if type.java_type?}}_fbthriftVar{{depth}} = new {{type.java_type}}();{{#else}}_fbthriftVar{{depth}} = new Hash{{#partial resolved_boxed_type type=type field_hasAdapter=field.hasAdapter?}}(Math.max(0, _set{{depth}}.size));{{/if type.java_type?}}
+    for (int _i{{depth}} = 0; (_set{{depth}}.size < 0) ? oprot.peekSet() : (_i{{depth}} < _set{{depth}}.size); _i{{depth}}++) {
+        {{#if type.true_type.elem_type.container?}}
+        {{#partial resolved_boxed_type type=type.true_type.elem_type field_hasAdapter=field.hasAdapter?}} _fbthriftVar{{(int.add depth 1)}};
+        {{#partial read_container field=field type=type.true_type.elem_type depth=(int.add depth 1)}}
+        {{#else}}
+        {{#if type.true_type.elem_type.hasAdapter?}}{{#partial thrift_type type=type.true_type.elem_type}}{{#else}}{{#partial java_type type=type.true_type.elem_type has_adapter_override=field.hasAdapter?}}{{/if type.true_type.elem_type.hasAdapter?}} _fbthriftVar{{(int.add depth 1)}};
+        {{#if type.true_type.elem_type.hasAdapter?}}
+          {{#if type.true_type.elem_type.structured?}}
+        _fbthriftVar{{(int.add depth 1)}} = {{#partial boxed_type type=type.true_type.elem_type.true_type field_hasAdapter=field.hasAdapter?}}.read0(oprot);
+          {{#else if type.true_type.elem_type.binary?}}
+        _fbthriftVar{{(int.add depth 1)}} = {{#partial read_binary type=type.true_type.elem_type.true_type isAdapted=true field_hasAdapter=false}};
+          {{#else}}
+        {{#partial read_type field=field type=type.true_type.elem_type.true_type depth=(int.add depth 1)}}
+          {{/if type.true_type.elem_type.structured?}}
+        {{#else}}
+        {{#partial read_type field=field type=type.true_type.elem_type depth=(int.add depth 1)}}
+        {{/if type.true_type.elem_type.hasAdapter?}}
+        {{/if type.true_type.elem_type.container?}}
+        _fbthriftVar{{depth}}.add({{#if type.true_type.elem_type.hasAdapter?}}__{{type.true_type.elem_type.name}}_Adapter.fromThrift({{/if type.true_type.elem_type.hasAdapter?}}_fbthriftVar{{(int.add depth 1)}}){{#if type.true_type.elem_type.hasAdapter?}}){{/if type.true_type.elem_type.hasAdapter?}};
+    }
+    oprot.readSetEnd();
+}
+    {{#else if type.list?}}
+{
+    TList _list{{depth}} = oprot.readListBegin();
+    {{#if type.java_type?}}_fbthriftVar{{depth}} = new {{type.java_type}}();{{#else}}_fbthriftVar{{depth}} = new Array{{#partial resolved_boxed_type type=type field_hasAdapter=field.hasAdapter?}}(Math.max(0, _list{{depth}}.size));{{/if type.java_type?}}
+    for (int _i{{depth}} = 0; (_list{{depth}}.size < 0) ? oprot.peekList() : (_i{{depth}} < _list{{depth}}.size); _i{{depth}}++) {
+        {{#if type.true_type.elem_type.container?}}
+        {{#partial resolved_boxed_type type=type.true_type.elem_type field_hasAdapter=field.hasAdapter?}} _fbthriftVar{{(int.add depth 1)}};
+        {{#partial read_container field=field type=type.true_type.elem_type depth=(int.add depth 1)}}
+        {{#else}}
+        {{#if type.true_type.elem_type.hasAdapter?}}{{#partial thrift_type type=type.true_type.elem_type}}{{#else}}{{#partial java_type type=type.true_type.elem_type has_adapter_override=field.hasAdapter?}}{{/if type.true_type.elem_type.hasAdapter?}} _fbthriftVar{{(int.add depth 1)}};
+        {{#if type.true_type.elem_type.hasAdapter?}}
+          {{#if type.true_type.elem_type.structured?}}
+        _fbthriftVar{{(int.add depth 1)}} = {{#partial boxed_type type=type.true_type.elem_type.true_type field_hasAdapter=field.hasAdapter?}}.read0(oprot);
+          {{#else if type.true_type.elem_type.binary?}}
+        _fbthriftVar{{(int.add depth 1)}} = {{#partial read_binary type=type.true_type.elem_type.true_type isAdapted=true field_hasAdapter=false}};
+          {{#else}}
+        {{#partial read_type field=field type=type.true_type.elem_type.true_type depth=(int.add depth 1)}}
+          {{/if type.true_type.elem_type.structured?}}
+        {{#else}}
+        {{#partial read_type field=field type=type.true_type.elem_type depth=(int.add depth 1)}}
+        {{/if type.true_type.elem_type.hasAdapter?}}
+        {{/if type.true_type.elem_type.container?}}
+        _fbthriftVar{{depth}}.add({{#if type.true_type.elem_type.hasAdapter?}}__{{type.true_type.elem_type.name}}_Adapter.fromThrift({{/if type.true_type.elem_type.hasAdapter?}}_fbthriftVar{{(int.add depth 1)}}){{#if type.true_type.elem_type.hasAdapter?}}){{/if type.true_type.elem_type.hasAdapter?}};
+    }
+    oprot.readListEnd();
+}
+    {{#else if type.map?}}
+{
+    TMap _map{{depth}} = oprot.readMapBegin();
+    {{#if type.java_type?}}_fbthriftVar{{depth}} = new {{type.java_type}}();{{#else}}_fbthriftVar{{depth}} = new Hash{{#partial resolved_boxed_type type=type field_hasAdapter=field.hasAdapter?}}(Math.max(0, _map{{depth}}.size));{{/if type.java_type?}}
+    for (int _i{{depth}} = 0; (_map{{depth}}.size < 0) ? oprot.peekMap() : (_i{{depth}} < _map{{depth}}.size); _i{{depth}}++) {
+        {{#if type.true_type.key_type.container?}}
+        {{#partial resolved_boxed_type type=type.true_type.key_type field_hasAdapter=field.hasAdapter?}} _fbthriftKey{{(int.add depth 1)}};
+        {{#else}}
+        {{#if type.true_type.key_type.hasAdapter?}}{{#partial thrift_type type=type.true_type.key_type}}{{#else}}{{#partial java_type type=type.true_type.key_type has_adapter_override=field.hasAdapter?}}{{/if type.true_type.key_type.hasAdapter?}} _fbthriftKey{{(int.add depth 1)}};
+        {{/if type.true_type.key_type.container?}}
+        {{#if type.true_type.val_type.container?}}
+        {{#partial resolved_boxed_type type=type.true_type.val_type field_hasAdapter=field.hasAdapter?}} _fbthriftValue{{(int.add depth 1)}};
+        {{#else}}
+        {{#if type.true_type.val_type.hasAdapter?}}{{#partial thrift_type type=type.true_type.val_type}}{{#else}}{{#partial java_type type=type.true_type.val_type has_adapter_override=field.hasAdapter?}}{{/if type.true_type.val_type.hasAdapter?}} _fbthriftValue{{(int.add depth 1)}};
+        {{/if type.true_type.val_type.container?}}
+
+        {
+            {{#if type.true_type.key_type.container?}}
+            {{#partial resolved_boxed_type type=type.true_type.key_type field_hasAdapter=field.hasAdapter?}} _fbthriftVar{{(int.add depth 1)}};
+            {{#partial read_container field=field type=type.true_type.key_type depth=(int.add depth 1)}}
+            {{#else}}
+            {{#if type.true_type.key_type.hasAdapter?}}{{#partial thrift_type type=type.true_type.key_type}}{{#else}}{{#partial java_type type=type.true_type.key_type has_adapter_override=field.hasAdapter?}}{{/if type.true_type.key_type.hasAdapter?}} _fbthriftVar{{(int.add depth 1)}};
+            {{#if type.true_type.key_type.hasAdapter?}}
+              {{#if type.true_type.key_type.structured?}}
+            _fbthriftVar{{(int.add depth 1)}} = {{#partial boxed_type type=type.true_type.key_type.true_type field_hasAdapter=field.hasAdapter?}}.read0(oprot);
+              {{#else if type.true_type.key_type.binary?}}
+            _fbthriftVar{{(int.add depth 1)}} = {{#partial read_binary type=type.true_type.key_type.true_type isAdapted=true field_hasAdapter=false}};
+              {{#else}}
+            {{#partial read_type field=field type=type.true_type.key_type.true_type depth=(int.add depth 1)}}
+              {{/if type.true_type.key_type.structured?}}
+            {{#else}}
+            {{#partial read_type field=field type=type.true_type.key_type depth=(int.add depth 1)}}
+            {{/if type.true_type.key_type.hasAdapter?}}
+            {{/if type.true_type.key_type.container?}}
+            _fbthriftKey{{(int.add depth 1)}} = _fbthriftVar{{(int.add depth 1)}};
+        }
+        {
+            {{#if type.true_type.val_type.container?}}
+            {{#partial resolved_boxed_type type=type.true_type.val_type field_hasAdapter=field.hasAdapter?}} _fbthriftVar{{(int.add depth 1)}};
+            {{#partial read_container field=field type=type.true_type.val_type depth=(int.add depth 1)}}
+            {{#else}}
+            {{#if type.true_type.val_type.hasAdapter?}}{{#partial thrift_type type=type.true_type.val_type}}{{#else}}{{#partial java_type type=type.true_type.val_type has_adapter_override=field.hasAdapter?}}{{/if type.true_type.val_type.hasAdapter?}} _fbthriftVar{{(int.add depth 1)}};
+            {{#if type.true_type.val_type.hasAdapter?}}
+              {{#if type.true_type.val_type.structured?}}
+            _fbthriftVar{{(int.add depth 1)}} = {{#partial boxed_type type=type.true_type.val_type.true_type field_hasAdapter=field.hasAdapter?}}.read0(oprot);
+              {{#else if type.true_type.val_type.binary?}}
+            _fbthriftVar{{(int.add depth 1)}} = {{#partial read_binary type=type.true_type.val_type.true_type isAdapted=true field_hasAdapter=false}};
+              {{#else}}
+            {{#partial read_type field=field type=type.true_type.val_type.true_type depth=(int.add depth 1)}}
+              {{/if type.true_type.val_type.structured?}}
+            {{#else}}
+            {{#partial read_type field=field type=type.true_type.val_type depth=(int.add depth 1)}}
+            {{/if type.true_type.val_type.hasAdapter?}}
+            {{/if type.true_type.val_type.container?}}
+            _fbthriftValue{{(int.add depth 1)}} = _fbthriftVar{{(int.add depth 1)}};
+        }
+        _fbthriftVar{{depth}}.put({{#if type.true_type.key_type.hasAdapter?}}__{{type.true_type.key_type.name}}_Adapter.fromThrift({{/if type.true_type.key_type.hasAdapter?}}_fbthriftKey{{(int.add depth 1)}}{{#if type.true_type.key_type.hasAdapter?}}){{/if type.true_type.key_type.hasAdapter?}}, {{#if type.true_type.val_type.hasAdapter?}}__{{type.true_type.val_type.name}}_Adapter.fromThrift({{/if type.true_type.val_type.hasAdapter?}}_fbthriftValue{{(int.add depth 1)}}{{#if type.true_type.val_type.hasAdapter?}}){{/if type.true_type.val_type.hasAdapter?}});
+    }
+    oprot.readMapEnd();
+}
+    {{/if type.set?}}
+  {{/let partial}}
+  {{#if type.typedef?}}
+    {{#if type.isBinaryString?}}
+_fbthriftVar{{depth}} = {{#partial read_binary type=type isAdapted=false field_hasAdapter=field.hasAdapter?}};
+    {{#else if (and type.java_type? type.container?)}}
+{{#partial read_container field=field type=type depth=depth}}
+    {{#else if (and type.java_type? type.binary?)}}
+_fbthriftVar{{depth}} = {{#partial read_binary type=type isAdapted=false field_hasAdapter=field.hasAdapter?}};
+    {{#else}}
+{{#partial read_type field=field type=type.resolved depth=depth}}
+    {{/if type.isBinaryString?}}
+  {{#else if (or type.set? type.list? type.map?)}}
+{{#partial read_container field=field type=type depth=depth}}
+  {{#else if type.structured?}}
+_fbthriftVar{{depth}} = {{#partial boxed_type type=type field_hasAdapter=field.hasAdapter?}}.read0(oprot);
+  {{#else if type.enum?}}
+_fbthriftVar{{depth}} = {{#partial boxed_type type=type field_hasAdapter=field.hasAdapter?}}.fromInteger(oprot.readI32());
+  {{#else if type.binary?}}
+_fbthriftVar{{depth}} = {{#partial read_binary type=type isAdapted=false field_hasAdapter=field.hasAdapter?}};
+  {{#else if type.string?}}
+    {{#if type.isBinaryString?}}
+_fbthriftVar{{depth}} = {{#partial read_binary type=type isAdapted=false field_hasAdapter=field.hasAdapter?}};
+    {{#else}}
+_fbthriftVar{{depth}} = oprot.readString({{#partial common.utf8_validation field=field}});
+    {{/if type.isBinaryString?}}
+  {{#else if type.bool?}}
+_fbthriftVar{{depth}} = oprot.readBool();
+  {{#else if type.byte?}}
+_fbthriftVar{{depth}} = oprot.readByte();
+  {{#else if type.i16?}}
+_fbthriftVar{{depth}} = oprot.readI16();
+  {{#else if type.i32?}}
+_fbthriftVar{{depth}} = oprot.readI32();
+  {{#else if type.i64?}}
+_fbthriftVar{{depth}} = oprot.readI64();
+  {{#else if type.float?}}
+_fbthriftVar{{depth}} = oprot.readFloat();
+  {{#else if type.double?}}
+_fbthriftVar{{depth}} = oprot.readDouble();
   {{/if type.typedef?}}
 {{/let partial}}

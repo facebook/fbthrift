@@ -562,21 +562,15 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
             
             Set<String> _fbthriftVar1;
             {
-                        TSet _set1 = oprot.readSetBegin();
-                        _fbthriftVar1 = new HashSet<String>(Math.max(0, _set1.size));
-                        for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                            
-                            String _fbthriftVar2;
-                            _fbthriftVar2 = oprot.readString();
-                            
-                            
-                            _fbthriftVar1.add(_fbthriftVar2);
-                            
-                        }
-                        oprot.readSetEnd();
-                        }
-
-
+                TSet _set1 = oprot.readSetBegin();
+                _fbthriftVar1 = new HashSet<String>(Math.max(0, _set1.size));
+                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                    String _fbthriftVar2;
+                    _fbthriftVar2 = oprot.readString();
+                    _fbthriftVar1.add(_fbthriftVar2);
+                }
+                oprot.readSetEnd();
+            }
             builder.setMySet(_fbthriftVar1);
             
           } else {
@@ -599,21 +593,15 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
             
             List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftVar1;
             {
-                        TList _list1 = oprot.readListBegin();
-                        _fbthriftVar1 = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(Math.max(0, _list1.size));
-                        for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                            
-                            test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar2;
-                            _fbthriftVar2 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
-                            
-                            
-                            _fbthriftVar1.add(_fbthriftVar2);
-                            
-                        }
-                        oprot.readListEnd();
-                        }
-
-
+                TList _list1 = oprot.readListBegin();
+                _fbthriftVar1 = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                    test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar2;
+                    _fbthriftVar2 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
+                    _fbthriftVar1.add(_fbthriftVar2);
+                }
+                oprot.readListEnd();
+            }
             builder.setMyList(_fbthriftVar1);
             
           } else {
@@ -625,55 +613,35 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
             
             Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _fbthriftVar1;
             {
-                        TMap _map1 = oprot.readMapBegin();
-                        _fbthriftVar1 = new HashMap<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>(Math.max(0, _map1.size));
-                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                            
-                            int _fbthriftKey2;
-                            
-                            
-                            List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftValue2;
-                            
+                TMap _map1 = oprot.readMapBegin();
+                _fbthriftVar1 = new HashMap<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                    int _fbthriftKey2;
+                    List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftValue2;
 
-                            {
-                                
-                                int _fbthriftVar2;
-                                _fbthriftVar2 = oprot.readI32();
-                                
-                                
-                                _fbthriftKey2 = _fbthriftVar2;
-                                
-                            }
-                            {
-                                
-                                List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftVar2;
-                                {
-                                            TList _list2 = oprot.readListBegin();
-                                            _fbthriftVar2 = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(Math.max(0, _list2.size));
-                                            for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
-                                                
-                                                test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar3;
-                                                _fbthriftVar3 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
-                                                
-                                                
-                                                _fbthriftVar2.add(_fbthriftVar3);
-                                                
-                                            }
-                                            oprot.readListEnd();
-                                            }
-                                
-                                
-                                _fbthriftValue2 = _fbthriftVar2;
-                                
-                            }
-                            
-                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                            
-                        }
-                        oprot.readMapEnd();
+                    {
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
+                        _fbthriftKey2 = _fbthriftVar2;
                     }
-
-
+                    {
+                        List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftVar2;
+                        {
+                            TList _list2 = oprot.readListBegin();
+                            _fbthriftVar2 = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(Math.max(0, _list2.size));
+                            for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
+                                test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar3;
+                                _fbthriftVar3 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
+                                _fbthriftVar2.add(_fbthriftVar3);
+                            }
+                            oprot.readListEnd();
+                        }
+                        _fbthriftValue2 = _fbthriftVar2;
+                    }
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                }
+                oprot.readMapEnd();
+            }
             builder.setMyMapList(_fbthriftVar1);
             
           } else {
@@ -685,21 +653,15 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
             
             List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftVar1;
             {
-                        TList _list1 = oprot.readListBegin();
-                        _fbthriftVar1 = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(Math.max(0, _list1.size));
-                        for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                            
-                            test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar2;
-                            _fbthriftVar2 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
-                            
-                            
-                            _fbthriftVar1.add(_fbthriftVar2);
-                            
-                        }
-                        oprot.readListEnd();
-                        }
-
-
+                TList _list1 = oprot.readListBegin();
+                _fbthriftVar1 = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                    test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar2;
+                    _fbthriftVar2 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
+                    _fbthriftVar1.add(_fbthriftVar2);
+                }
+                oprot.readListEnd();
+            }
             builder.setMyEmptyList(_fbthriftVar1);
             
           } else {
@@ -711,55 +673,35 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
             
             Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _fbthriftVar1;
             {
-                        TMap _map1 = oprot.readMapBegin();
-                        _fbthriftVar1 = new HashMap<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>(Math.max(0, _map1.size));
-                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                            
-                            int _fbthriftKey2;
-                            
-                            
-                            List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftValue2;
-                            
+                TMap _map1 = oprot.readMapBegin();
+                _fbthriftVar1 = new HashMap<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                    int _fbthriftKey2;
+                    List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftValue2;
 
-                            {
-                                
-                                int _fbthriftVar2;
-                                _fbthriftVar2 = oprot.readI32();
-                                
-                                
-                                _fbthriftKey2 = _fbthriftVar2;
-                                
-                            }
-                            {
-                                
-                                List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftVar2;
-                                {
-                                            TList _list2 = oprot.readListBegin();
-                                            _fbthriftVar2 = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(Math.max(0, _list2.size));
-                                            for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
-                                                
-                                                test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar3;
-                                                _fbthriftVar3 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
-                                                
-                                                
-                                                _fbthriftVar2.add(_fbthriftVar3);
-                                                
-                                            }
-                                            oprot.readListEnd();
-                                            }
-                                
-                                
-                                _fbthriftValue2 = _fbthriftVar2;
-                                
-                            }
-                            
-                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                            
-                        }
-                        oprot.readMapEnd();
+                    {
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
+                        _fbthriftKey2 = _fbthriftVar2;
                     }
-
-
+                    {
+                        List<test.fixtures.basic_swift_bean.MyDataItem> _fbthriftVar2;
+                        {
+                            TList _list2 = oprot.readListBegin();
+                            _fbthriftVar2 = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(Math.max(0, _list2.size));
+                            for (int _i2 = 0; (_list2.size < 0) ? oprot.peekList() : (_i2 < _list2.size); _i2++) {
+                                test.fixtures.basic_swift_bean.MyDataItem _fbthriftVar3;
+                                _fbthriftVar3 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
+                                _fbthriftVar2.add(_fbthriftVar3);
+                            }
+                            oprot.readListEnd();
+                        }
+                        _fbthriftValue2 = _fbthriftVar2;
+                    }
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                }
+                oprot.readMapEnd();
+            }
             builder.setMyEmptyMapList(_fbthriftVar1);
             
           } else {

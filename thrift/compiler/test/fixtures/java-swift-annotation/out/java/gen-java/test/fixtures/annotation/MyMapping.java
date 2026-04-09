@@ -210,42 +210,26 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
             
             com.foo.FastLongStringMap _fbthriftVar1;
             {
-                        TMap _map1 = oprot.readMapBegin();
-                        _fbthriftVar1 = new com.foo.FastLongStringMap();
-                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                            
-                            long _fbthriftKey2;
-                            
-                            
-                            String _fbthriftValue2;
-                            
+                TMap _map1 = oprot.readMapBegin();
+                _fbthriftVar1 = new com.foo.FastLongStringMap();
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                    long _fbthriftKey2;
+                    String _fbthriftValue2;
 
-                            {
-                                
-                                long _fbthriftVar2;
-                                _fbthriftVar2 = oprot.readI64();
-                                
-                                
-                                _fbthriftKey2 = _fbthriftVar2;
-                                
-                            }
-                            {
-                                
-                                String _fbthriftVar2;
-                                _fbthriftVar2 = oprot.readString();
-                                
-                                
-                                _fbthriftValue2 = _fbthriftVar2;
-                                
-                            }
-                            
-                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                            
-                        }
-                        oprot.readMapEnd();
+                    {
+                        long _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI64();
+                        _fbthriftKey2 = _fbthriftVar2;
                     }
-
-                  
+                    {
+                        String _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readString();
+                        _fbthriftValue2 = _fbthriftVar2;
+                    }
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                }
+                oprot.readMapEnd();
+            }
             builder.setLsMap(_fbthriftVar1);
             
           } else {
@@ -257,76 +241,46 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
             
             com.foo.FastIntObjectMap<com.foo.FastIntLongMap> _fbthriftVar1;
             {
-                        TMap _map1 = oprot.readMapBegin();
-                        _fbthriftVar1 = new com.foo.FastIntObjectMap<com.foo.FastIntLongMap>();
-                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                            
-                            int _fbthriftKey2;
-                            
-                            
-                            com.foo.FastIntLongMap _fbthriftValue2;
-                            
+                TMap _map1 = oprot.readMapBegin();
+                _fbthriftVar1 = new com.foo.FastIntObjectMap<com.foo.FastIntLongMap>();
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                    int _fbthriftKey2;
+                    com.foo.FastIntLongMap _fbthriftValue2;
 
-                            {
-                                
-                                int _fbthriftVar2;
-                                _fbthriftVar2 = oprot.readI32();
-                                
-                                
-                                _fbthriftKey2 = _fbthriftVar2;
-                                
-                            }
-                            {
-                                
-                                com.foo.FastIntLongMap _fbthriftVar2;
-                                {
-                                            TMap _map2 = oprot.readMapBegin();
-                                            _fbthriftVar2 = new com.foo.FastIntLongMap();
-                                            for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
-                                                
-                                                int _fbthriftKey3;
-                                                
-                                                
-                                                long _fbthriftValue3;
-                                                
-
-                                                {
-                                                    
-                                                    int _fbthriftVar3;
-                                                    _fbthriftVar3 = oprot.readI32();
-                                                    
-                                                    
-                                                    _fbthriftKey3 = _fbthriftVar3;
-                                                    
-                                                }
-                                                {
-                                                    
-                                                    long _fbthriftVar3;
-                                                    _fbthriftVar3 = oprot.readI64();
-                                                    
-                                                    
-                                                    _fbthriftValue3 = _fbthriftVar3;
-                                                    
-                                                }
-                                                
-                                                _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
-                                                
-                                            }
-                                            oprot.readMapEnd();
-                                        }
-                                
-                                
-                                _fbthriftValue2 = _fbthriftVar2;
-                                
-                            }
-                            
-                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                            
-                        }
-                        oprot.readMapEnd();
+                    {
+                        int _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI32();
+                        _fbthriftKey2 = _fbthriftVar2;
                     }
+                    {
+                        com.foo.FastIntLongMap _fbthriftVar2;
+                        {
+                            TMap _map2 = oprot.readMapBegin();
+                            _fbthriftVar2 = new com.foo.FastIntLongMap();
+                            for (int _i2 = 0; (_map2.size < 0) ? oprot.peekMap() : (_i2 < _map2.size); _i2++) {
+                                int _fbthriftKey3;
+                                long _fbthriftValue3;
 
-                  
+                                {
+                                    int _fbthriftVar3;
+                                    _fbthriftVar3 = oprot.readI32();
+                                    _fbthriftKey3 = _fbthriftVar3;
+                                }
+                                {
+                                    long _fbthriftVar3;
+                                    _fbthriftVar3 = oprot.readI64();
+                                    _fbthriftValue3 = _fbthriftVar3;
+                                }
+                                _fbthriftVar2.put(_fbthriftKey3, _fbthriftValue3);
+                            }
+                            oprot.readMapEnd();
+                        }
+                        _fbthriftValue2 = _fbthriftVar2;
+                    }
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                }
+                oprot.readMapEnd();
+            }
             builder.setIoMap(_fbthriftVar1);
             
           } else {
@@ -338,42 +292,26 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
             
             Map<String, byte[]> _fbthriftVar1;
             {
-                        TMap _map1 = oprot.readMapBegin();
-                        _fbthriftVar1 = new HashMap<String, byte[]>(Math.max(0, _map1.size));
-                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                            
-                            String _fbthriftKey2;
-                            
-                            
-                            byte[] _fbthriftValue2;
-                            
+                TMap _map1 = oprot.readMapBegin();
+                _fbthriftVar1 = new HashMap<String, byte[]>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                    String _fbthriftKey2;
+                    byte[] _fbthriftValue2;
 
-                            {
-                                
-                                String _fbthriftVar2;
-                                _fbthriftVar2 = oprot.readString();
-                                
-                                
-                                _fbthriftKey2 = _fbthriftVar2;
-                                
-                            }
-                            {
-                                
-                                byte[] _fbthriftVar2;
-                                _fbthriftVar2 = oprot.readBinary().array();
-                                
-                                
-                                _fbthriftValue2 = _fbthriftVar2;
-                                
-                            }
-                            
-                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                            
-                        }
-                        oprot.readMapEnd();
+                    {
+                        String _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readString();
+                        _fbthriftKey2 = _fbthriftVar2;
                     }
-
-
+                    {
+                        byte[] _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readBinary().array();
+                        _fbthriftValue2 = _fbthriftVar2;
+                    }
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                }
+                oprot.readMapEnd();
+            }
             builder.setBinaryMap(_fbthriftVar1);
             
           } else {
@@ -385,42 +323,26 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
             
             Map<String, byte[]> _fbthriftVar1;
             {
-                        TMap _map1 = oprot.readMapBegin();
-                        _fbthriftVar1 = new HashMap<String, byte[]>(Math.max(0, _map1.size));
-                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                            
-                            String _fbthriftKey2;
-                            
-                            
-                            byte[] _fbthriftValue2;
-                            
+                TMap _map1 = oprot.readMapBegin();
+                _fbthriftVar1 = new HashMap<String, byte[]>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                    String _fbthriftKey2;
+                    byte[] _fbthriftValue2;
 
-                            {
-                                
-                                String _fbthriftVar2;
-                                _fbthriftVar2 = oprot.readString();
-                                
-                                
-                                _fbthriftKey2 = _fbthriftVar2;
-                                
-                            }
-                            {
-                                
-                                byte[] _fbthriftVar2;
-                                _fbthriftVar2 = oprot.readBinary().array();
-                                
-                                
-                                _fbthriftValue2 = _fbthriftVar2;
-                                
-                            }
-                            
-                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                            
-                        }
-                        oprot.readMapEnd();
+                    {
+                        String _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readString();
+                        _fbthriftKey2 = _fbthriftVar2;
                     }
-
-
+                    {
+                        byte[] _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readBinary().array();
+                        _fbthriftValue2 = _fbthriftVar2;
+                    }
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                }
+                oprot.readMapEnd();
+            }
             builder.setRegularBinary(_fbthriftVar1);
             
           } else {

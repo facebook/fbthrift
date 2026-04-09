@@ -1026,21 +1026,15 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
               
               List<Short> _fbthriftVar1;
               {
-                          TList _list1 = oprot.readListBegin();
-                          _fbthriftVar1 = new ArrayList<Short>(Math.max(0, _list1.size));
-                          for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                              
-                              short _fbthriftVar2;
-                              _fbthriftVar2 = oprot.readI16();
-                              
-                              
-                              _fbthriftVar1.add(_fbthriftVar2);
-                              
-                          }
-                          oprot.readListEnd();
-                          }
-
-
+                  TList _list1 = oprot.readListBegin();
+                  _fbthriftVar1 = new ArrayList<Short>(Math.max(0, _list1.size));
+                  for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                      short _fbthriftVar2;
+                      _fbthriftVar2 = oprot.readI16();
+                      _fbthriftVar1.add(_fbthriftVar2);
+                  }
+                  oprot.readListEnd();
+              }
               res.value = _fbthriftVar1;
               
             }
@@ -1050,21 +1044,15 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
               
               Set<Short> _fbthriftVar1;
               {
-                          TSet _set1 = oprot.readSetBegin();
-                          _fbthriftVar1 = new HashSet<Short>(Math.max(0, _set1.size));
-                          for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                              
-                              short _fbthriftVar2;
-                              _fbthriftVar2 = oprot.readI16();
-                              
-                              
-                              _fbthriftVar1.add(_fbthriftVar2);
-                              
-                          }
-                          oprot.readSetEnd();
-                          }
-
-
+                  TSet _set1 = oprot.readSetBegin();
+                  _fbthriftVar1 = new HashSet<Short>(Math.max(0, _set1.size));
+                  for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                      short _fbthriftVar2;
+                      _fbthriftVar2 = oprot.readI16();
+                      _fbthriftVar1.add(_fbthriftVar2);
+                  }
+                  oprot.readSetEnd();
+              }
               res.value = _fbthriftVar1;
               
             }
@@ -1074,42 +1062,26 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
               
               Map<Short, Short> _fbthriftVar1;
               {
-                          TMap _map1 = oprot.readMapBegin();
-                          _fbthriftVar1 = new HashMap<Short, Short>(Math.max(0, _map1.size));
-                          for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                              
-                              short _fbthriftKey2;
-                              
-                              
-                              short _fbthriftValue2;
-                              
+                  TMap _map1 = oprot.readMapBegin();
+                  _fbthriftVar1 = new HashMap<Short, Short>(Math.max(0, _map1.size));
+                  for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                      short _fbthriftKey2;
+                      short _fbthriftValue2;
 
-                              {
-                                  
-                                  short _fbthriftVar2;
-                                  _fbthriftVar2 = oprot.readI16();
-                                  
-                                  
-                                  _fbthriftKey2 = _fbthriftVar2;
-                                  
-                              }
-                              {
-                                  
-                                  short _fbthriftVar2;
-                                  _fbthriftVar2 = oprot.readI16();
-                                  
-                                  
-                                  _fbthriftValue2 = _fbthriftVar2;
-                                  
-                              }
-                              
-                              _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                              
-                          }
-                          oprot.readMapEnd();
+                      {
+                          short _fbthriftVar2;
+                          _fbthriftVar2 = oprot.readI16();
+                          _fbthriftKey2 = _fbthriftVar2;
                       }
-
-
+                      {
+                          short _fbthriftVar2;
+                          _fbthriftVar2 = oprot.readI16();
+                          _fbthriftValue2 = _fbthriftVar2;
+                      }
+                      _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                  }
+                  oprot.readMapEnd();
+              }
               res.value = _fbthriftVar1;
               
             }

@@ -187,21 +187,15 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             
             List<Integer> _fbthriftVar1;
             {
-                        TList _list1 = oprot.readListBegin();
-                        _fbthriftVar1 = new ArrayList<Integer>(Math.max(0, _list1.size));
-                        for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
-                            
-                            int _fbthriftVar2;
-                            _fbthriftVar2 = oprot.readI32();
-                            
-                            
-                            _fbthriftVar1.add(_fbthriftVar2);
-                            
-                        }
-                        oprot.readListEnd();
-                        }
-
-
+                TList _list1 = oprot.readListBegin();
+                _fbthriftVar1 = new ArrayList<Integer>(Math.max(0, _list1.size));
+                for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                    int _fbthriftVar2;
+                    _fbthriftVar2 = oprot.readI32();
+                    _fbthriftVar1.add(_fbthriftVar2);
+                }
+                oprot.readListEnd();
+            }
             builder.setI32List(_fbthriftVar1);
             
           } else {
@@ -213,21 +207,15 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             
             Set<String> _fbthriftVar1;
             {
-                        TSet _set1 = oprot.readSetBegin();
-                        _fbthriftVar1 = new HashSet<String>(Math.max(0, _set1.size));
-                        for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
-                            
-                            String _fbthriftVar2;
-                            _fbthriftVar2 = oprot.readString();
-                            
-                            
-                            _fbthriftVar1.add(_fbthriftVar2);
-                            
-                        }
-                        oprot.readSetEnd();
-                        }
-
-
+                TSet _set1 = oprot.readSetBegin();
+                _fbthriftVar1 = new HashSet<String>(Math.max(0, _set1.size));
+                for (int _i1 = 0; (_set1.size < 0) ? oprot.peekSet() : (_i1 < _set1.size); _i1++) {
+                    String _fbthriftVar2;
+                    _fbthriftVar2 = oprot.readString();
+                    _fbthriftVar1.add(_fbthriftVar2);
+                }
+                oprot.readSetEnd();
+            }
             builder.setStringSet(_fbthriftVar1);
             
           } else {
@@ -239,42 +227,26 @@ public final class Containers implements com.facebook.thrift.payload.ThriftSeria
             
             Map<String, Long> _fbthriftVar1;
             {
-                        TMap _map1 = oprot.readMapBegin();
-                        _fbthriftVar1 = new HashMap<String, Long>(Math.max(0, _map1.size));
-                        for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
-                            
-                            String _fbthriftKey2;
-                            
-                            
-                            long _fbthriftValue2;
-                            
+                TMap _map1 = oprot.readMapBegin();
+                _fbthriftVar1 = new HashMap<String, Long>(Math.max(0, _map1.size));
+                for (int _i1 = 0; (_map1.size < 0) ? oprot.peekMap() : (_i1 < _map1.size); _i1++) {
+                    String _fbthriftKey2;
+                    long _fbthriftValue2;
 
-                            {
-                                
-                                String _fbthriftVar2;
-                                _fbthriftVar2 = oprot.readString();
-                                
-                                
-                                _fbthriftKey2 = _fbthriftVar2;
-                                
-                            }
-                            {
-                                
-                                long _fbthriftVar2;
-                                _fbthriftVar2 = oprot.readI64();
-                                
-                                
-                                _fbthriftValue2 = _fbthriftVar2;
-                                
-                            }
-                            
-                            _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
-                            
-                        }
-                        oprot.readMapEnd();
+                    {
+                        String _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readString();
+                        _fbthriftKey2 = _fbthriftVar2;
                     }
-
-
+                    {
+                        long _fbthriftVar2;
+                        _fbthriftVar2 = oprot.readI64();
+                        _fbthriftValue2 = _fbthriftVar2;
+                    }
+                    _fbthriftVar1.put(_fbthriftKey2, _fbthriftValue2);
+                }
+                oprot.readMapEnd();
+            }
             builder.setStringToI64Map(_fbthriftVar1);
             
           } else {
