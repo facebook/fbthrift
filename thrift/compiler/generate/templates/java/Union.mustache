@@ -32,7 +32,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("{{struct:name}}"){{#struct:javaAnnotations?}} {{struct:javaAnnotations}} {{/struct:javaAnnotations?}}
 public final class {{struct:javaCapitalName}} implements com.facebook.thrift.payload.ThriftSerializable {
-    {{> struct/AdapterDefinition}}
+    {{#partial struct.adapter_definition struct=struct:self}}
 
     private static final boolean allowNullFieldValues =
         System.getProperty("thrift.union.allow-null-field-values", "false").equalsIgnoreCase("true");

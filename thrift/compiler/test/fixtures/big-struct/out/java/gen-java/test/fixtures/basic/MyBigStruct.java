@@ -2875,6 +2875,7 @@ public final class MyBigStruct implements com.facebook.thrift.payload.ThriftSeri
             return result;
         }
     }
+
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();

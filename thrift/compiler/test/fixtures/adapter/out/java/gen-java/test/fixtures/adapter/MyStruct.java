@@ -80,6 +80,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             return result;
         }
     }
+
     private static final com.facebook.thrift.adapter.TypeAdapter<Set<String>, com.facebook.thrift.my.AdaptedSet_2> __SetWithAdapter_Adapter = new com.facebook.thrift.my.Adapter2();
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();

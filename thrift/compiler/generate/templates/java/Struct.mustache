@@ -52,7 +52,8 @@ public final class {{struct:javaCapitalName}} implements com.facebook.thrift.pay
     }
 
     {{#partial struct.struct_builder struct=struct:self}}
-    {{> struct/AdapterDefinition}}
+
+    {{#partial struct.adapter_definition struct=struct:self}}
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();

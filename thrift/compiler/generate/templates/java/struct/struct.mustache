@@ -28,6 +28,25 @@ public static {{struct.javaCapitalName}} defaultInstance() {
 }
 {{/let partial}}
 
+{{#let export partial adapter_definition |struct| captures |types|}}
+{{#each struct.fields as |field|}}
+{{#if field.hasFieldAdapter?}}
+private static final com.facebook.thrift.adapter.TypeAdapter<{{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}, {{field.fieldAdapterTypeClassName}}> _{{field.javaName}}_Adapter = new {{field.fieldAdapterClassName}}();
+{{/if field.hasFieldAdapter?}}
+{{#if field.hasWrapper?}}
+private static final com.facebook.thrift.adapter.Wrapper<{{!
+}}{{#if field.hasFieldAdapter?}}{{field.fieldAdapterTypeClassName}}{{!
+}}{{#else if field.hasAdapter?}}{{field.type.adapterTypeClassName}}{{!
+}}{{#else}}{{#partial types.boxed_type type=field.type field_hasAdapter=field.hasAdapter?}}{{!
+}}{{/if field.hasFieldAdapter?}}{{!
+}}, {{field.wrapperType}}, com.facebook.thrift.payload.ThriftSerializable> _{{field.javaName}}_Wrapper = new {{field.wrapper}}();
+{{/if field.hasWrapper?}}
+{{/each}}
+{{#each struct.unique_adapted_typedefs as |typedef|}}
+private static final com.facebook.thrift.adapter.TypeAdapter<{{#partial types.adapted_boxed_type type=typedef}}, {{typedef.adapterTypeClassName}}> __{{typedef.name}}_Adapter = new {{typedef.adapterClassName}}();
+{{/each}}
+{{/let partial}}
+
 {{#let export partial thrift_constructor |struct| captures |types field_helpers|}}
 {{#if struct.asBean?}}
 @ThriftConstructor
@@ -214,7 +233,6 @@ public static {{struct.javaCapitalName}} read0(TProtocol oprot) throws TExceptio
     return res;
 }
 {{/let partial}}
-
 {{#let export partial union_builder |struct| captures |types|}}
 @ThriftConstructor
 public {{struct.javaCapitalName}}() {

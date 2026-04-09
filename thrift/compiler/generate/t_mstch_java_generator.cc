@@ -853,14 +853,11 @@ class t_mstch_java_generator : public t_mstch_generator {
 
     def.property("unique_adapted_typedefs", [&proto](const t_structured& self) {
       std::set<std::string> seen;
-      whisker::array::raw per_field;
+      whisker::array::raw result;
       for (const auto& field : self.fields()) {
-        whisker::array::raw field_typedefs;
-        collect_adapted_typedefs(
-            field.type().get_type(), seen, field_typedefs, proto);
-        per_field.emplace_back(whisker::make::array(std::move(field_typedefs)));
+        collect_adapted_typedefs(&field.type().deref(), seen, result, proto);
       }
-      return whisker::make::array(std::move(per_field));
+      return whisker::make::array(std::move(result));
     });
 
     def.property("asBean?", [](const t_structured& self) {

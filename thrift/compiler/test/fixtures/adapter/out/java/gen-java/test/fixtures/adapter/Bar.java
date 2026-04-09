@@ -158,6 +158,7 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
             return result;
         }
     }
+
     private static final com.facebook.thrift.adapter.TypeAdapter<test.fixtures.adapter.Foo, com.facebook.thrift.my.AdaptedFoo_1> __FooWithAdapter_9317_Adapter = new com.facebook.thrift.my.Adapter1();
     private static final com.facebook.thrift.adapter.TypeAdapter<test.fixtures.adapter.Foo, com.facebook.thrift.my.AdaptedFoo_1> __FooWithAdapter_Adapter = new com.facebook.thrift.my.Adapter1();
 

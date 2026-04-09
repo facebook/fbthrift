@@ -70,6 +70,7 @@ public final class MyStruct2 implements com.facebook.thrift.payload.ThriftSerial
             return result;
         }
     }
+
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap<>();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap<>();

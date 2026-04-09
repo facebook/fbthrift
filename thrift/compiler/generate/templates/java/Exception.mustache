@@ -34,7 +34,7 @@ import com.google.common.collect.*;
 public final class {{struct:javaCapitalName}} extends org.apache.thrift.TBaseException implements com.facebook.thrift.payload.ThriftSerializable {
     private static final long serialVersionUID = 1L;
 
-    {{> struct/AdapterDefinition}}
+    {{#partial struct.adapter_definition struct=struct:self}}
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
