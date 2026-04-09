@@ -761,8 +761,10 @@ std::vector<ast_mutator> pre_validation_standard_mutators() {
             node.find_structured_annotation_or_null(kCppTypeUri)) {
       const t_type* node_type = node.type().get_type();
       if (node_type->is<t_container>()) {
+        auto generated_annot = annot->clone();
+        generated_annot->set_generated();
         const_cast<t_type&>(*node_type)
-            .add_structured_annotation(annot->clone());
+            .add_structured_annotation(std::move(generated_annot));
       }
     }
   });

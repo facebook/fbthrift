@@ -30,6 +30,8 @@
 #include <utility>
 #include <vector>
 
+#include <algorithm>
+
 #include <boost/algorithm/string.hpp>
 
 #include <thrift/compiler/ast/t_const_value.h>
@@ -67,6 +69,14 @@ class t_name_generator {
 std::string unescape(std::string s) {
   boost::replace_all(s, "\\\\", "\\");
   return s;
+}
+
+bool has_non_generated_structured_annotations(
+    node_list_view<const t_const> annotations) {
+  return std::any_of(
+      annotations.begin(), annotations.end(), [](const t_const& annotation) {
+        return !annotation.generated();
+      });
 }
 
 class t_result_struct final : public t_structured {
@@ -1701,7 +1711,8 @@ void t_hack_generator::close_generator() {
     annotations_out << indent() << "return dict[\n";
     indent_up();
     for (const t_const* tconst : program_->consts()) {
-      if (tconst->structured_annotations().empty()) {
+      if (!has_non_generated_structured_annotations(
+              tconst->structured_annotations())) {
         continue;
       }
       annotations_out << indent() << "'" << tconst->name() << "' => "
@@ -1870,7 +1881,8 @@ void t_hack_generator::generate_enum(const t_enum* tenum) {
   annotations_out << indent() << "'constants' => dict[\n";
   indent_up();
   for (const t_enum_value& constant : tenum->values()) {
-    if (constant.structured_annotations().empty()) {
+    if (!has_non_generated_structured_annotations(
+            constant.structured_annotations())) {
       continue;
     }
     annotations_out << indent() << "'" << constant.name() << "' => "
@@ -5068,8 +5080,10 @@ void t_hack_generator::generate_php_struct_structured_annotations_method(
   indent(annotations_out) << "'fields' => dict[\n";
   indent_up();
   for (auto&& field : tstruct->fields()) {
-    if ((field.structured_annotations().empty() &&
-         field.type()->structured_annotations().empty()) ||
+    if ((!has_non_generated_structured_annotations(
+             field.structured_annotations()) &&
+         !has_non_generated_structured_annotations(
+             field.type()->structured_annotations())) ||
         skip_codegen(&field)) {
       continue;
     }
@@ -5330,10 +5344,13 @@ std::string t_hack_generator::render_structured_annotations(
     t_name_generator& namer) {
   std::ostringstream out;
   out << "dict[";
-  if (!annotations.empty()) {
+  if (has_non_generated_structured_annotations(annotations)) {
     out << "\n";
     indent_up();
     for (const auto& annotation : annotations) {
+      if (annotation.generated()) {
+        continue;
+      }
       indent(out) << "'" << hack_name(annotation.type()) << "' => "
                   << render_const_value_helper(
                          annotation.type(),
@@ -6435,7 +6452,8 @@ void t_hack_generator::generate_service_helpers(
   annotations_out << indent() << "'functions' => dict[\n";
   indent_up();
   for (const auto& function : get_supported_client_functions(tservice)) {
-    if (function->structured_annotations().empty()) {
+    if (!has_non_generated_structured_annotations(
+            function->structured_annotations())) {
       continue;
     }
     annotations_out << indent() << "'" << find_hack_name(function) << "' => "
