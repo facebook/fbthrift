@@ -242,7 +242,6 @@ public final class TerseAdaptedFields implements com.facebook.thrift.payload.Thr
         {
             String _fbthriftVar0 = this.stringField;
             java.util.Objects.requireNonNull(_fbthriftVar0, "stringField must not be null");
-            
             if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
               oprot.writeFieldBegin(STRING_FIELD_FIELD_DESC);
               oprot.writeString(_fbthriftVar0);
@@ -252,7 +251,6 @@ public final class TerseAdaptedFields implements com.facebook.thrift.payload.Thr
         {
             Set<Integer> _fbthriftVar0 = this.setField;
             java.util.Objects.requireNonNull(_fbthriftVar0, "setField must not be null");
-            
             if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
               oprot.writeFieldBegin(SET_FIELD_FIELD_DESC);
               oprot.writeSetBegin(new TSet(TType.I32, _fbthriftVar0.size()));

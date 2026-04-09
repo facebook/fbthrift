@@ -1275,7 +1275,6 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
         {
             String _fbthriftVar0 = this.terseStringField;
             java.util.Objects.requireNonNull(_fbthriftVar0, "terseStringField must not be null");
-            
             if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
               oprot.writeFieldBegin(TERSE_STRING_FIELD_FIELD_DESC);
               oprot.writeString(_fbthriftVar0);
@@ -1285,7 +1284,6 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
         {
             byte[] _fbthriftVar0 = this.terseBinaryField;
             java.util.Objects.requireNonNull(_fbthriftVar0, "terseBinaryField must not be null");
-            
             if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
               oprot.writeFieldBegin(TERSE_BINARY_FIELD_FIELD_DESC);
               org.apache.thrift.protocol.TProtocolUtil.writeBinary(oprot, _fbthriftVar0);
@@ -1304,7 +1302,6 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
         {
             List<Short> _fbthriftVar0 = this.terseListField;
             java.util.Objects.requireNonNull(_fbthriftVar0, "terseListField must not be null");
-            
             if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
               oprot.writeFieldBegin(TERSE_LIST_FIELD_FIELD_DESC);
               oprot.writeListBegin(new TList(TType.I16, _fbthriftVar0.size()));
@@ -1318,7 +1315,6 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
         {
             Set<Short> _fbthriftVar0 = this.terseSetField;
             java.util.Objects.requireNonNull(_fbthriftVar0, "terseSetField must not be null");
-            
             if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
               oprot.writeFieldBegin(TERSE_SET_FIELD_FIELD_DESC);
               oprot.writeSetBegin(new TSet(TType.I16, _fbthriftVar0.size()));
@@ -1332,7 +1328,6 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
         {
             Map<Short, Short> _fbthriftVar0 = this.terseMapField;
             java.util.Objects.requireNonNull(_fbthriftVar0, "terseMapField must not be null");
-            
             if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
               oprot.writeFieldBegin(TERSE_MAP_FIELD_FIELD_DESC);
               oprot.writeMapBegin(new TMap(TType.I16, TType.I16, _fbthriftVar0.size()));

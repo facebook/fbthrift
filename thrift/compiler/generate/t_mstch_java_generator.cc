@@ -31,8 +31,8 @@
 #include <thrift/compiler/ast/uri.h>
 #include <thrift/compiler/generate/cpp/name_resolver.h>
 #include <thrift/compiler/generate/java/util.h>
-#include <thrift/compiler/generate/t_mstch_generator.h>
-#include <thrift/compiler/whisker/mstch_compat.h>
+#include <thrift/compiler/generate/t_whisker_generator.h>
+#include <thrift/compiler/generate/templates.h>
 
 using namespace std;
 
@@ -75,20 +75,6 @@ std::string get_constants_class_name(const t_program& prog) {
 
     return java_class_name;
   }
-}
-
-template <typename Node>
-mstch::node get_structed_annotation_attribute(
-    const Node* node, const char* uri, const std::string& key) {
-  if (auto annotation = node->find_structured_annotation_or_null(uri)) {
-    for (const auto& item : annotation->value()->get_map()) {
-      if (item.first->get_string() == key) {
-        return item.second->get_string();
-      }
-    }
-  }
-
-  return nullptr;
 }
 
 template <typename Node>
@@ -334,11 +320,9 @@ void validate_java_enum_intrinsic_default(
   }
 }
 
-class t_mstch_java_generator : public t_mstch_generator {
+class t_mstch_java_generator : public t_whisker_generator {
  public:
-  using t_mstch_generator::t_mstch_generator;
-
-  std::string template_prefix() const override { return "java"; }
+  using t_whisker_generator::t_whisker_generator;
 
   void generate_program() override;
 
@@ -347,6 +331,22 @@ class t_mstch_java_generator : public t_mstch_generator {
   }
 
  private:
+  std::string template_prefix() const override { return "java"; }
+
+  whisker::source_manager template_source_manager() const final {
+    return whisker::source_manager{
+        std::make_unique<in_memory_source_manager_backend>(
+            create_templates_by_path())};
+  }
+
+  strictness_options strictness() const override {
+    return strictness_options{
+        .boolean_conditional = false,
+        .printable_types = false,
+        .undefined_variables = true,
+    };
+  }
+
   void initialize_context(context_visitor& visitor) override {
     visitor.add_service_visitor([this](
                                     const whisker_generator_visitor_context&,
@@ -1066,59 +1066,43 @@ class t_mstch_java_generator : public t_mstch_generator {
    */
   void generate_rpc_interfaces() {
     const t_program* program = get_program();
-    const auto& id = program->path();
-    if (!mstch_context_.program_cache.count(id)) {
-      mstch_context_.program_cache[id] =
-          mstch_context_.program_factory->make_mstch_object(
-              program, mstch_context_);
-    }
     auto raw_package_dir = std::filesystem::path{
         java::package_to_path(get_namespace_or_default(*program))};
-    auto package_dir = has_option("separate_data_type_from_services")
+    auto package_dir = has_compiler_option("separate_data_type_from_services")
         ? "services" / raw_package_dir
         : raw_package_dir;
 
     for (const t_service* service : program->services()) {
-      auto& cache = mstch_context_.service_cache;
       auto filename = java::mangle_java_name(service->name(), true) + ".java";
-      const auto& item_id = id + service->name();
-      if (!cache.count(item_id)) {
-        cache[item_id] = mstch_context_.service_factory->make_mstch_object(
-            service, mstch_context_);
-      }
-
-      render_to_file(cache[item_id], "Service", package_dir / filename);
+      whisker::object context = whisker::make::map({
+          {"service",
+           whisker::make::native_handle(
+               render_state().prototypes->create<t_service>(*service))},
+      });
+      render_to_file(package_dir / filename, "Service", context);
     }
   }
 
-  template <typename T, typename Factory, typename Cache>
+  template <typename T>
   void generate_items(
-      const Factory& factory,
-      Cache& c,
       const t_program* program,
       const std::vector<T*>& items,
-      const std::string& tpl_path) {
-    const auto& id = program->path();
-    if (!mstch_context_.program_cache.count(id)) {
-      mstch_context_.program_cache[id] =
-          mstch_context_.program_factory->make_mstch_object(
-              program, mstch_context_);
-    }
+      const std::string& tpl_path,
+      const std::string& context_key) {
     auto raw_package_dir = std::filesystem::path{
         java::package_to_path(get_namespace_or_default(*program))};
-    auto package_dir = has_option("separate_data_type_from_services")
+    auto package_dir = has_compiler_option("separate_data_type_from_services")
         ? "data-type" / raw_package_dir
         : raw_package_dir;
 
     for (const T* item : items) {
       auto classname = java::mangle_java_name(item->name(), true);
       auto filename = classname + ".java";
-      const auto& item_id = id + item->name();
-      if (!c.count(item_id)) {
-        c[item_id] = factory.make_mstch_object(item, mstch_context_);
-      }
-
-      render_to_file(c[item_id], tpl_path, package_dir / filename);
+      whisker::object context = whisker::make::map({
+          {context_key,
+           resolve_derived_t_type(*render_state().prototypes, *item)},
+      });
+      render_to_file(package_dir / filename, tpl_path, context);
     }
   }
 
@@ -1126,253 +1110,146 @@ class t_mstch_java_generator : public t_mstch_generator {
    * Generate Service Client implementation - Sync & Async. Writes
    * output to package_dir
    */
-  void generate_services() {
-    const auto& service_factory = *mstch_context_.service_factory;
-    auto& cache = mstch_context_.service_cache;
-    const t_program* program = get_program();
-    const auto& id = program->path();
-    if (!mstch_context_.program_cache.count(id)) {
-      mstch_context_.program_cache[id] =
-          mstch_context_.program_factory->make_mstch_object(
-              program, mstch_context_);
-    }
+  void render_service_to_file(
+      const t_service& service,
+      const std::filesystem::path& package_dir,
+      const std::string& tpl_path,
+      const std::string& filename) {
+    whisker::object context = whisker::make::map({
+        {"service",
+         whisker::make::native_handle(
+             render_state().prototypes->create<t_service>(service))},
+    });
+    render_to_file(package_dir / filename, tpl_path, context);
+  }
 
+  void generate_services() {
+    const t_program* program = get_program();
     auto raw_package_dir = std::filesystem::path{
         java::package_to_path(get_namespace_or_default(*program))};
 
-    auto package_dir = has_option("separate_data_type_from_services")
+    auto package_dir = has_compiler_option("separate_data_type_from_services")
         ? "services" / raw_package_dir
         : raw_package_dir;
 
-    // Iterate through services
     for (const t_service* service : program->services()) {
       auto service_name = java::mangle_java_name(service->name(), true);
-      // NOTE: generation of ClientImpl and AsyncClientImpl is deprecated and
-      // only customers who are still using netty3 for some reason should use it
-      // for backward compatibility reasons.
-      if (has_option("deprecated_allow_leagcy_reflection_client")) {
-        // Generate deprecated sync client
-        auto sync_filename = service_name + "ClientImpl.java";
-        const auto& sync_service_id = id + service->name() + "Client";
-        if (!cache.count(sync_service_id)) {
-          cache[sync_service_id] =
-              service_factory.make_mstch_object(service, mstch_context_);
-        }
-
-        render_to_file(
-            cache[sync_service_id],
+      if (has_compiler_option("deprecated_allow_leagcy_reflection_client")) {
+        render_service_to_file(
+            *service,
+            package_dir,
             "deprecated/ServiceClient",
-            package_dir / sync_filename);
-
-        // Generate deprecated async client
-        auto async_filename = service_name + "AsyncClientImpl.java";
-        const auto& async_service_id = id + service->name() + "AsyncClient";
-        if (!cache.count(async_service_id)) {
-          cache[async_service_id] =
-              service_factory.make_mstch_object(service, mstch_context_);
-        }
-
-        render_to_file(
-            cache[async_service_id],
+            service_name + "ClientImpl.java");
+        render_service_to_file(
+            *service,
+            package_dir,
             "deprecated/ServiceAsyncClient",
-            package_dir / async_filename);
+            service_name + "AsyncClientImpl.java");
       }
 
-      // Generate Async to Reactive Wrapper
-      auto async_reactive_wrapper_filename =
-          service_name + "AsyncReactiveWrapper.java";
-      const auto& async_reactive_wrapper_id =
-          id + service->name() + "AsyncReactiveWrapper";
-      if (!cache.count(async_reactive_wrapper_id)) {
-        cache[async_reactive_wrapper_id] =
-            service_factory.make_mstch_object(service, mstch_context_);
-      }
-
-      render_to_file(
-          cache[async_reactive_wrapper_id],
+      render_service_to_file(
+          *service,
+          package_dir,
           "AsyncReactiveWrapper",
-          package_dir / async_reactive_wrapper_filename);
-
-      // Generate Blocking to Reactive Wrapper
-      auto blocking_reactive_wrapper_filename =
-          service_name + "BlockingReactiveWrapper.java";
-      const auto& blocking_reactive_wrapper_id =
-          id + service->name() + "BlockingReactiveWrapper";
-      if (!cache.count(blocking_reactive_wrapper_id)) {
-        cache[blocking_reactive_wrapper_id] =
-            service_factory.make_mstch_object(service, mstch_context_);
-      }
-
-      render_to_file(
-          cache[blocking_reactive_wrapper_id],
+          service_name + "AsyncReactiveWrapper.java");
+      render_service_to_file(
+          *service,
+          package_dir,
           "BlockingReactiveWrapper",
-          package_dir / blocking_reactive_wrapper_filename);
-
-      // Generate Reactive to Async Wrapper
-      auto reactive_async_wrapper_filename =
-          service_name + "ReactiveAsyncWrapper.java";
-      const auto& reactive_async_wrapper_id =
-          id + service->name() + "ReactiveAsyncWrapper";
-      if (!cache.count(reactive_async_wrapper_id)) {
-        cache[reactive_async_wrapper_id] =
-            service_factory.make_mstch_object(service, mstch_context_);
-      }
-
-      render_to_file(
-          cache[reactive_async_wrapper_id],
+          service_name + "BlockingReactiveWrapper.java");
+      render_service_to_file(
+          *service,
+          package_dir,
           "ReactiveAsyncWrapper",
-          package_dir / reactive_async_wrapper_filename);
-
-      // Generate Reactive to Blocking Wrapper
-      auto reactive_blocking_wrapper_filename =
-          service_name + "ReactiveBlockingWrapper.java";
-      const auto& reactive_blocking_wrapper_id =
-          id + service->name() + "ReactiveBlockingWrapper";
-      if (!cache.count(reactive_blocking_wrapper_id)) {
-        cache[reactive_blocking_wrapper_id] =
-            service_factory.make_mstch_object(service, mstch_context_);
-      }
-
-      render_to_file(
-          cache[reactive_blocking_wrapper_id],
+          service_name + "ReactiveAsyncWrapper.java");
+      render_service_to_file(
+          *service,
+          package_dir,
           "ReactiveBlockingWrapper",
-          package_dir / reactive_blocking_wrapper_filename);
-
-      // Generate Reactive Client
-      auto reactive_client_filename = service_name + "ReactiveClient.java";
-      const auto& reactive_client_wrapper_id =
-          id + service->name() + "ReactiveClient";
-      if (!cache.count(reactive_client_wrapper_id)) {
-        cache[reactive_client_wrapper_id] =
-            service_factory.make_mstch_object(service, mstch_context_);
-      }
-
-      render_to_file(
-          cache[reactive_client_wrapper_id],
+          service_name + "ReactiveBlockingWrapper.java");
+      render_service_to_file(
+          *service,
+          package_dir,
           "ReactiveClient",
-          package_dir / reactive_client_filename);
-
-      // Generate RpcServerHandler
-      auto rpc_server_handler_filename = service_name + "RpcServerHandler.java";
-      const auto& rpc_server_handler_id =
-          id + service->name() + "RpcServerHandler";
-      if (!cache.count(rpc_server_handler_id)) {
-        cache[rpc_server_handler_id] =
-            service_factory.make_mstch_object(service, mstch_context_);
-      }
-
-      render_to_file(
-          cache[rpc_server_handler_id],
+          service_name + "ReactiveClient.java");
+      render_service_to_file(
+          *service,
+          package_dir,
           "RpcServerHandler",
-          package_dir / rpc_server_handler_filename);
-
-      auto metadata_handler_filename =
-          service_name + "ThriftMetadataHandler.java";
-      const auto& metadata_handler_id =
-          id + service->name() + "ThriftMetadataHandler";
-      if (!cache.count(metadata_handler_id)) {
-        cache[metadata_handler_id] =
-            service_factory.make_mstch_object(service, mstch_context_);
-      }
-
-      render_to_file(
-          cache[metadata_handler_id],
+          service_name + "RpcServerHandler.java");
+      render_service_to_file(
+          *service,
+          package_dir,
           "ThriftMetadataHandler",
-          package_dir / metadata_handler_filename);
-      render_to_file(
-          cache[metadata_handler_id],
+          service_name + "ThriftMetadataHandler.java");
+      render_service_to_file(
+          *service,
+          package_dir,
           "ThriftMetadataHandlerEnums",
-          package_dir /
-              fmt::format("{}ThriftMetadataHandlerEnums.java", service_name));
-      render_to_file(
-          cache[metadata_handler_id],
+          service_name + "ThriftMetadataHandlerEnums.java");
+      render_service_to_file(
+          *service,
+          package_dir,
           "ThriftMetadataHandlerStructs",
-          package_dir /
-              fmt::format("{}ThriftMetadataHandlerStructs.java", service_name));
-      render_to_file(
-          cache[metadata_handler_id],
+          service_name + "ThriftMetadataHandlerStructs.java");
+      render_service_to_file(
+          *service,
+          package_dir,
           "ThriftMetadataHandlerExceptions",
-          package_dir /
-              fmt::format(
-                  "{}ThriftMetadataHandlerExceptions.java", service_name));
+          service_name + "ThriftMetadataHandlerExceptions.java");
     }
   }
 
   void generate_constants(const t_program* program) {
     if (program->consts().empty()) {
-      // Only generate Constants.java if we actually have constants
       return;
     }
-    const auto& prog = cached_program(program);
-
     auto raw_package_dir = std::filesystem::path{
         java::package_to_path(get_namespace_or_default(*program))};
-    auto package_dir = has_option("separate_data_type_from_services")
+    auto package_dir = has_compiler_option("separate_data_type_from_services")
         ? "data-type" / raw_package_dir
         : raw_package_dir;
 
     auto constant_file_name = get_constants_class_name(*program) + ".java";
-    render_to_file(prog, "Constants", package_dir / constant_file_name);
+    render_to_file(
+        package_dir / constant_file_name, "Constants", whisker::make::null);
   }
 
   void generate_placeholder(const t_program* program) {
     auto package_dir = std::filesystem::path{
         java::package_to_path(get_namespace_or_default(*program))};
     auto placeholder_file_name = ".generated_" + program->name();
-    if (has_option("separate_data_type_from_services")) {
-      write_output("data-type" / package_dir / placeholder_file_name, "");
-      write_output("services" / package_dir / placeholder_file_name, "");
+    if (has_compiler_option("separate_data_type_from_services")) {
+      write_to_file("data-type" / package_dir / placeholder_file_name, "");
+      write_to_file("services" / package_dir / placeholder_file_name, "");
     } else {
-      write_output(package_dir / placeholder_file_name, "");
+      write_to_file(package_dir / placeholder_file_name, "");
     }
   }
 
   void generate_type_list(const t_program* program) {
-    // NOTE: ideally, we do not really need to generated type list if
-    // `type_list.size() == 0`, but due to build system limitations.
-    // all java_library need at least one .java file.
-
     auto java_namespace = get_namespace_or_default(*program);
     auto raw_package_dir =
         std::filesystem::path{java::package_to_path(java_namespace)};
-    auto package_dir = has_option("separate_data_type_from_services")
+    auto package_dir = has_compiler_option("separate_data_type_from_services")
         ? "data-type" / raw_package_dir
         : raw_package_dir;
 
     auto list_hash = compute_type_list_hash(*program);
-
-    std::string file_name = "__fbthrift_TypeList_" + list_hash + ".java";
-
-    const auto& prog = cached_program(program);
-    render_to_file(prog, "TypeList", package_dir / file_name);
+    std::string file_name =
+        fmt::format("__fbthrift_TypeList_{}.java", list_hash);
+    render_to_file(package_dir / file_name, "TypeList", whisker::make::null);
   }
 };
 
 void t_mstch_java_generator::generate_program() {
   out_dir_base_ = "gen-java";
 
-  auto name = get_program()->name();
-  const auto& id = get_program()->path();
-  if (!mstch_context_.program_cache.count(id)) {
-    mstch_context_.program_cache[id] =
-        mstch_context_.program_factory->make_mstch_object(
-            get_program(), mstch_context_);
-  }
-
   generate_items(
-      *mstch_context_.struct_factory,
-      mstch_context_.struct_cache,
-      get_program(),
-      get_program()->structured_definitions(),
-      "Object");
+      get_program(), get_program()->structured_definitions(), "Object", "self");
   generate_rpc_interfaces();
   generate_services();
-  generate_items(
-      *mstch_context_.enum_factory,
-      mstch_context_.enum_cache,
-      get_program(),
-      get_program()->enums(),
-      "Enum");
+  generate_items(get_program(), get_program()->enums(), "Enum", "self");
   generate_constants(get_program());
   generate_placeholder(get_program());
   generate_type_list(get_program());

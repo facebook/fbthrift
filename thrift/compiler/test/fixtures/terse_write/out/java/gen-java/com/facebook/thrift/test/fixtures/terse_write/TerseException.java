@@ -125,7 +125,6 @@ public final class TerseException extends org.apache.thrift.TBaseException imple
         {
             String _fbthriftVar0 = this.msg;
             java.util.Objects.requireNonNull(_fbthriftVar0, "msg must not be null");
-            
             if (!com.facebook.thrift.util.IntrinsicDefaults.isDefault(_fbthriftVar0)) {
               oprot.writeFieldBegin(MSG_FIELD_DESC);
               oprot.writeString(_fbthriftVar0);
